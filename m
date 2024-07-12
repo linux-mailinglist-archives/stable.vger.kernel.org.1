@@ -1,176 +1,161 @@
-Return-Path: <stable+bounces-59194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E2192FB94
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 15:39:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D3D692FBAE
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 15:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B4B21F224AD
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 13:39:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31C5F1C22483
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 13:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FFE170826;
-	Fri, 12 Jul 2024 13:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7276D16F29A;
+	Fri, 12 Jul 2024 13:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C8G7Ckra"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="jwCjyeKN"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CCA14F9D0
-	for <stable@vger.kernel.org>; Fri, 12 Jul 2024 13:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04C12BB15;
+	Fri, 12 Jul 2024 13:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720791587; cv=none; b=FyqpY/0sjSiy/Zsnx+7vlP0inXO+WcACA7uzdbCSEjWwbcSdAmRpQe4acSHn4lP5Yd76LzoGYeRaDHaY1AsBuwkJ0HXUY0T10cMvY31QRgBQFTBjQw0OklDcxw8O/f+JOW7wdGMGzcEEr3u+nsD+GtkLho3C+nhXqWUpscSQPQI=
+	t=1720791953; cv=none; b=RRJ5s+FLlVb4ztpmBf4d6fdg6O8KVuiC42rhIi1626mKloBpGrio53O1W8xy10/60TgEMm1OC6EDhZX/Y6QmfdtD19AD8C3C2vgYACp6K96iZSY06JwzjAfZ/Y9EIBeyYEQ73Ygn9EWn4oFbc8Ugn2o5MKfHZRB0Epo3fExnRFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720791587; c=relaxed/simple;
-	bh=K3JBCCsidiDsLCQv0D4erX3z+IiavHg3lRrtCpUooUc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RNIOvVC/8Kp2Wgi7oZ531RH5dVXCameeWuz0aQbS+bpXgxztQlLGKOySQM0a8A3JAjD9dTUiwo68N3LBfM+BaWO1EX3fDDfjqvAMst9imblbEFFdZ77zPGkCqmf3IfT3XMUjUbSWRQofxw5aO00tICE9NN77oEPMNJyDu6fgUs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C8G7Ckra; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720791585; x=1752327585;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=K3JBCCsidiDsLCQv0D4erX3z+IiavHg3lRrtCpUooUc=;
-  b=C8G7Ckra7wQnSX0xPp8yAtyaiXspVpH6f1qHeQztRbE30NJmczzuIRUG
-   bjKJ6YSWc8fmBIrvLnON65wlbPC6VZ+Wx8nz0h6i5q0yQ9OgfjLdcin8D
-   BGVCpR1dKja6GpIH275Oe+g6ZQSaRWuMrGqsUefpE35ZBid6QuSrWm1nj
-   3Ss8Rjni36MsurD9/ZbjIUlhI1RagGz2JGZSjdeFNzZlmDxf3pP886871
-   dGxSbjKXBaWejGgl7/OFZN1spHs9Xi3irhWwJ9Q35tR15j9fZcmuzwRnC
-   XSyp8CiECQlUhKy1AmcKX4us9oAKGk26SGjuStoP/+3IYYpL/mo/CSt0L
-   w==;
-X-CSE-ConnectionGUID: 6dMlazx5Spq0eXNFIuvyag==
-X-CSE-MsgGUID: iXI+BWpeT+y6sHFk5eI3kw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11131"; a="40759243"
-X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; 
-   d="scan'208";a="40759243"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2024 06:39:45 -0700
-X-CSE-ConnectionGUID: qkBL5bQ5R5GQRii+E3d5MA==
-X-CSE-MsgGUID: FVTRpR0pTK2eRlGt3LzFdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; 
-   d="scan'208";a="53210815"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO intel.com) ([10.245.246.61])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2024 06:39:41 -0700
-Date: Fri, 12 Jul 2024 15:39:39 +0200
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: "Gote, Nitin R" <nitin.r.gote@intel.com>
-Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
-	"Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
-	"Wilson, Chris P" <chris.p.wilson@intel.com>,
-	"tursulin@ursulin.net" <tursulin@ursulin.net>,
-	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"Das, Nirmoy" <nirmoy.das@intel.com>,
-	"janusz.krzysztofik@linux.intel.com" <janusz.krzysztofik@linux.intel.com>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] drm/i915/gt: Do not consider preemption during
- execlists_dequeue for gen8
-Message-ID: <ZpEyGzBVM2ZaXcWM@ashyti-mobl2.lan>
-References: <20240711163208.1355736-1-nitin.r.gote@intel.com>
- <CH0PR11MB54443CBE8B4A052419FFFD1BE5A52@CH0PR11MB5444.namprd11.prod.outlook.com>
- <ZpAfyzKlqlMrd4nj@intel.com>
- <SJ0PR11MB586743B1AF7DABD0F131E906D0A62@SJ0PR11MB5867.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1720791953; c=relaxed/simple;
+	bh=o+4Nno4p9kTEGnjycsFuoOAxBV4KU4nOQMA4urnZIWE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Fzl8v95FRzkwyfbjafj90bwqrmywHC4qDlTgDHCGC+MsLIQ0WQtJGZUwmvKyb7w1LJOXB5si9xCGWiI2UgR6pNjOuybQm3s56pRwhkauOYcaIT+warWruSpGV1lop6MElQSaFfk6nctGL70sDRRa1CvrnZlyf2nsf/laGgspG5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=jwCjyeKN; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=gWM32B86wx1XISKeXKW53i5p7I1IPlyOLxGF4sKFg+M=; t=1720791950;
+	x=1721223950; b=jwCjyeKNPSV7VXrimyDPwn/npCkg6V5X0C0LZEPsCaWrcioGeK0Vpl9vbMnH9
+	AfixhD/2fzb+uMrhYOK7h1pecHfN3plCgptkxfFOEi4lkm5iXLkwlqfwBo5d3tlyRvUQQSOw3wQ0u
+	tPw7sliPnRF9Nr8xV6rK1DtJysXR5OEDXD9KqzL8a5YlhNWOKkVmZRa3xgNJQ5rvde1u954ZUvkFK
+	ApWs6byZfjiNpZPiFfizSwnNoEAxL24srfW3cF9DO6lZQuVqLZm3jUaU1Jd1QPLJ3ajO+2U7XYdQZ
+	zagabd7zoMVcObzC2MdovGtff0QC5eSUOd/6+P+UC5tW9Zonrg==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sSGao-0000g3-Oz; Fri, 12 Jul 2024 15:45:46 +0200
+Message-ID: <868ccc20-00b3-4472-b081-0d26254a0f66@leemhuis.info>
+Date: Fri, 12 Jul 2024 15:45:45 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SJ0PR11MB586743B1AF7DABD0F131E906D0A62@SJ0PR11MB5867.namprd11.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [LTP] [PATCH 1/1] nfsstat01: Update client RPC calls for kernel
+ 6.9
+To: Chuck Lever III <chuck.lever@oracle.com>, Greg KH <greg@kroah.com>
+Cc: Sherry Yang <sherry.yang@oracle.com>,
+ Calum Mackay <calum.mackay@oracle.com>, linux-stable
+ <stable@vger.kernel.org>, Petr Vorel <pvorel@suse.cz>,
+ Trond Myklebust <trondmy@hammerspace.com>, Anna Schumaker <anna@kernel.org>,
+ Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+ "kernel-team@fb.com" <kernel-team@fb.com>,
+ "ltp@lists.linux.it" <ltp@lists.linux.it>, Avinesh Kumar <akumar@suse.de>,
+ Neil Brown <neilb@suse.de>, Josef Bacik <josef@toxicpanda.com>,
+ Jeff Layton <jlayton@kernel.org>,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <d4b235df-4ee5-4824-9d48-e3b3c1f1f4d1@oracle.com>
+ <2fc3a3fd-7433-45ba-b281-578355dca64c@oracle.com>
+ <296EA0E6-0E72-4EA1-8B31-B025EB531F9B@oracle.com>
+ <2024070638-shale-avalanche-1b51@gregkh>
+ <E1A8C506-12CF-474B-9C1C-25EC93FCC206@oracle.com>
+ <2024070814-very-vitamins-7021@gregkh>
+ <64D2D29F-BCC0-4A44-BB75-D85B80B75959@oracle.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+In-Reply-To: <64D2D29F-BCC0-4A44-BB75-D85B80B75959@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1720791950;39225201;
+X-HE-SMSGID: 1sSGao-0000g3-Oz
 
-Hi Nitin,
-
-> > > > We're seeing a GPU HANG issue on a CHV platform, which was caused by
-> > > > bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries
-> > for gen8").
-> > > >
-> > > > Gen8 platform has only timeslice and doesn't support a preemption
-> > > > mechanism as engines do not have a preemption timer and doesn't send
-> > > > an irq if the preemption timeout expires.
-> > >
-> > > That seems to mean the original can_preempt function was inaccurately
-> > > built, so fixing it here makes the most sense to me, especially if it's causing
-> > problems.
-> > >
-> > > Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com> -Jonathan
-> > > Cavitt
-> > >
-> > > > So, add a fix to not consider preemption during dequeuing for gen8
-> > > > platforms.
-> > > >
-> > > > v2: Simplify can_preempt() function (Tvrtko Ursulin)
-> > > >
-> > > > v3:
-> > > >  - Inside need_preempt(), condition of can_preempt() is not required
-> > > >    as simplified can_preempt() is enough. (Chris Wilson)
-> > > >
-> > > > Fixes: bac24f59f454 ("drm/i915/execlists: Enable coarse preemption
-> > > > boundaries for gen8")
-> > 
-> > Something strange in here...
-> > 
-> > This patch is not using directly or indirectly (I915_ENGINE_HAS_PREEMPTION)
-> > the can_preempt()...
-> >
+On 08.07.24 19:49, Chuck Lever III wrote:
+>> On Jul 8, 2024, at 6:36 AM, Greg KH <greg@kroah.com> wrote:
+>> On Sat, Jul 06, 2024 at 07:46:19AM +0000, Sherry Yang wrote:
+>>>> On Jul 6, 2024, at 12:11 AM, Greg KH <greg@kroah.com> wrote:
+>>>> On Fri, Jul 05, 2024 at 02:19:18PM +0000, Chuck Lever III wrote:
+>>>>>> On Jul 2, 2024, at 6:55 PM, Calum Mackay <calum.mackay@oracle.com> wrote:
+>>>>>> On 02/07/2024 5:54 pm, Calum Mackay wrote:
+>>>>>>> I noticed your LTP patch [1][2] which adjusts the nfsstat01 test on v6.9 kernels, to account for Josef's changes [3], which restrict the NFS/RPC stats per-namespace.
+>>>>>>> I see that Josef's changes were backported, as far back as longterm v5.4,
+> [...]
+>>>>>> I'm wondering if this difference between NFS client, and NFS server, stat behaviour, across kernel versions, may perhaps cause some user confusion?
+>>>>>
+>>>>> As a refresher for the stable folken, Josef's changes make
+>>>>> nfsstats silo'd, so they no longer show counts from the whole
+>>>>> system, but only for NFS operations relating to the local net
+>>>>> namespace. That is a surprising change for some users, tools,
+>>>>> and testing.
+>>>>>
+>>>>> I'm not clear on whether there are any rules/guidelines around
+>>>>> LTS backports causing behavior changes that user tools, like
+>>>>> nfsstat, might be impacted by.
+>>>>
+>>>> The same rules that apply for Linus's tree (i.e. no userspace
+>>>> regressions.)
+>>> [...]
+>>> If no userspace regression, should we revert the Josef’s NFS client-side changes on LTS?
+>>
+>> This sounds like a regression in Linus's tree too, so why isn't it
+>> reverted there first?
 > 
-> Thank you Rodrigo for the review comment. Seems like you are right.
-> Fixes: bac24f59f454 is misleading as it's not using can_preempt(). 
-> The bug could be from the commit bac24f59f454 as mentioned in the issue
-> But this change fixes the original implementation of can_preempt()  in below commit.
-> Fixes: 751f82b353a6 ("drm/i915/gt: Only disable preemption on gen8 render engines").
-> 
-> I will update the Fixes in the commit description and will send in v4.
+> There is a change in behavior in the upstream code, but Josef's
+> patches fix an information leak and make the statistics more
+> sensible in container environments. I'm not certain that
+> should be considered a regression, but confess I don't know
+> the regression rules to this fine a degree of detail.
 
-no need to resend it, I will update it before pushing.
+Chuck pointed me to this thread (I had an eye on it already anyway) and
+asked for advice. Take everything I write here with a grain of salt, as
+this is somewhat tricky situation which makes it hard to predict how
+Linus would actually want to see this handled. Maybe I should have CCed
+him, but I doubt he cares right now; but we maybe should bring him in,
+if an actual user complains.
 
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+With that out of the way, let me write a few thoughts:
 
-I think the first mention in the commit log is correct, though,
-as that's the reason where the issue was generated.
+* That some test breaks is not a regression, as regressions are about
+"practical issues", not some ABI/API changes that only some tests care
+about. So if it's just a test that broke update it.
 
-Thanks,
-Andi
+* If a user would reported something like "this change broke my app" it
+obviously would be something totally different. But that did not happen
+yet afaics -- or did it? But from the discussion it sounds like that is
+something that will likely happen down the road. If that's the case I'd
+say it's best to prevent that from happening.
 
-> > > > Closes:
-> > > > https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11396
-> > > > Suggested-by: Andi Shyti <andi.shyti@intel.com>
-> > > > Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
-> > > > Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> > > > CC: <stable@vger.kernel.org> # v5.2+
-> > > > ---
-> > > >  drivers/gpu/drm/i915/gt/intel_execlists_submission.c | 6 +-----
-> > > >  1 file changed, 1 insertion(+), 5 deletions(-)
-> > > >
-> > > > diff --git a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-> > > > b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-> > > > index 21829439e686..72090f52fb85 100644
-> > > > --- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-> > > > +++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-> > > > @@ -3315,11 +3315,7 @@ static void remove_from_engine(struct
-> > > > i915_request *rq)
-> > > >
-> > > >  static bool can_preempt(struct intel_engine_cs *engine)  {
-> > > > -	if (GRAPHICS_VER(engine->i915) > 8)
-> > > > -		return true;
-> > > > -
-> > > > -	/* GPGPU on bdw requires extra w/a; not implemented */
-> > > > -	return engine->class != RENDER_CLASS;
-> > > > +	return GRAPHICS_VER(engine->i915) > 8;
-> > > >  }
-> > > >
-> > > >  static void kick_execlists(const struct i915_request *rq, int prio)
-> > > > --
-> > > > 2.25.1
-> > > >
-> > > >
+* Not sure how Linus would react if a user would complain that some
+workflow broke because rpc_stat are now per net namespace and shows
+different numbers (e.g. using a format that does not break any apps). It
+would likely depend on the actual case and how bad he would consider the
+information leak.
+
+> If it is indeed a regression, how can we go about retaining
+> both behaviors (selectable by Kconfig or perhaps administrative
+> UI)?
+
+That likely might be the best idea if user report an actual regression
+due to this. But switching the format of any existing file creates quite
+some trouble, as others already mentioned in this thread. So maybe
+providing the newer format in a different file and allowing to disable
+the older one though a Kconfig setting might be the best way forward.
+Sure, it would take years until people would have switched over, but
+that's how it is with our "no regressions" rule.
+
+Does that help?
+
+Ciao, Thorsten
 
