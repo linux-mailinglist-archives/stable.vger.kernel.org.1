@@ -1,450 +1,409 @@
-Return-Path: <stable+bounces-59185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2544792F88C
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 11:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF4192F8C7
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 12:16:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BFA81F2448C
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 09:57:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6848F1F235E6
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 10:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE59146D79;
-	Fri, 12 Jul 2024 09:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CE514039E;
+	Fri, 12 Jul 2024 10:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="LQmvcmb4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4qKDswz"
 X-Original-To: stable@vger.kernel.org
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013012.outbound.protection.outlook.com [52.101.67.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FE614D71D;
-	Fri, 12 Jul 2024 09:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720778241; cv=fail; b=WFk3BuxIQjJ60LLzQpFu0XFyolnSCl4xNoX4uO5HOM5S0vGb7W1S0Qrv3lZrxcfZo5VVtVxBruMwIhabvWpC1I8Y6i1s9TEgrs18XG4uTuDuxtDpG57ln15ZNgd4L67xAMGpW+4T4gffUhWQWplxOfBw4GDHNUk+genwUJvbr2Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720778241; c=relaxed/simple;
-	bh=GQlAOvcnuYKOYHutkH5P1rERI4V0LYBk7Lcrj22C+4E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bRCzP62CuZ5jNb/cYiRwlX+gM/TZQRpLp+5LsVH5qS5PVnta3G9Oz4LMtL7Pk/Xxb5UMUidoFFKCnj+bq6N7WwJx5MyhRWt+pmij+sULDGT20yKoW6pXFilnNLh5h0AnpoKPMKW9B9pbZ0rbUuo5+0UfV6iNr7KyHJw6Ji1h5gI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=LQmvcmb4; arc=fail smtp.client-ip=52.101.67.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NSflWVzChaJIrzMSj75h30sth9WsSZsss88ah1mMUus9KQeScJq6Yg7uluTNNTXmX62Jmm4KC40LNkFc1d3dYK/FZ0TRLJI0isfXfCrpe34GeWkyjwwO3cAZOmqTZXKcl2TEbUyMjpO7QTWNjoZIUWppWk+GgGaeunPdnKCeoANrjt33WcyF/klIiKEd+Rb9lrZHHKq45xS5yn28feZ5VikjYlpOTTZ9egeGZz026Xy492TEluDFhlUSKAij0I48MCqdLhFj63hht9M1omdFBDWUXFjcOwlo4OB4TMTHJnhWLTO4PdqZpND2Y7mx9XsN/hy2r7EzhLv9/6L9rRobow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C+IUua9VXwUehUpKMbwuGTuNg1MRc5BSAaD7Lih6WeM=;
- b=Y4XiFiPr5cRzB8JzRfzFp22m4ZAGFsvvJOHbRkw05GcmNuruWQb2daMKRmIyYGqqCGSvyJ0sAeitq3USUuvDRvxJ+QjHcyUpaHkfl0+7SMBvkFWgX+tBhKrS462tsQmgzXK2CMjnupL7pqpU6TvYH0h1hfxBBstKug06+ZWisawdYJ9OYMEDVUuTgWEyD2ujXEnIV+isfok1DOY5CvGmQLwktuCVZnNCPm0YoPwZyn+NKYfkEQzSIgbcaP9i6eJsePBEjJ4wrTY9cU2Chlulns5pnJvc1CVJ/0OE5ys/MJfd6+dLWQBzfYpE1XK3AaW2l+pPwkBqzg6nzJL7IWREjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C+IUua9VXwUehUpKMbwuGTuNg1MRc5BSAaD7Lih6WeM=;
- b=LQmvcmb4xhmCb9XkHNwlqvw7969EY8igw7pSwXFpyHS/fIbuIbmNncbvcg0vCaXvEJ64QIhugykseYChH+TTiP7nRc4MpNczxjppYi5txj1ljwN+BaUqaH5X4IE955KJTc4tkvODiu+666qBk1YUgv7vpDViMv+yp6YK2CGTmjo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB7PR04MB4555.eurprd04.prod.outlook.com (2603:10a6:5:33::26) by
- AM9PR04MB8340.eurprd04.prod.outlook.com (2603:10a6:20b:3e0::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.22; Fri, 12 Jul
- 2024 09:57:13 +0000
-Received: from DB7PR04MB4555.eurprd04.prod.outlook.com
- ([fe80::86ff:def:c14a:a72a]) by DB7PR04MB4555.eurprd04.prod.outlook.com
- ([fe80::86ff:def:c14a:a72a%4]) with mapi id 15.20.7741.017; Fri, 12 Jul 2024
- 09:57:13 +0000
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Rob Herring <robh@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] soc: fsl: qbman: fix unconditional WARN_ON() on Arm during fsl_qman_probe()
-Date: Fri, 12 Jul 2024 12:56:58 +0300
-Message-Id: <20240712095658.577186-2-vladimir.oltean@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240712095658.577186-1-vladimir.oltean@nxp.com>
-References: <20240712095658.577186-1-vladimir.oltean@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VI1P195CA0050.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:802:5a::39) To DB7PR04MB4555.eurprd04.prod.outlook.com
- (2603:10a6:5:33::26)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B728910F7;
+	Fri, 12 Jul 2024 10:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720779401; cv=none; b=AIqQupjBpjxBpMPVvtStmolYUoSUjGwTLrimA6psUphL5ivxz32RPGdgE2b71wOsRRergJ9bgR/dZS0KskaNqVh4NQYos2QC//W4JMNJQG/NrlQp0Ezp/0hWOhubrZtFz8VPtzps61xlCIIsW0VSca1pt2lPpocLQkiFAUUFv8g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720779401; c=relaxed/simple;
+	bh=mh0swyd6XbUBdJOO8a4j8TNVvTeDM2OpRLb1t2gTakY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hS/UnaGuA9+nwW/dhwQ3eX/lMnuipPNngj+AhCqFXSRyn2Bkxgw0ifxzWEPrU21nhHR8Z/ThmqsMWpokqoYmniNKzT0u7fes5ZnNItEqpau6zKqrozf7mJGiATrG3P6GXYWoTF+2/9Jjb8Rr2YXbfm7xJHD8scV8zy5SAE2MrhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4qKDswz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093CCC32782;
+	Fri, 12 Jul 2024 10:16:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720779401;
+	bh=mh0swyd6XbUBdJOO8a4j8TNVvTeDM2OpRLb1t2gTakY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=b4qKDswzZmTYk5KJNuolwpdUFN3nws816pktA7dbcn/AELsDC2LAGLQ6LtgnX9wqn
+	 cbXaUzv8C2RiHyUd/s0HZHLSSD1TjVsZaEyoXfHVJOASgFCrLXBG2kTvqu3f2KAtj2
+	 L7Z8YeSTWWApuiNoPFW6cd0Dl2F0niBiKGmeMM/SAKFfQFVaVnYaEZxS2D5zrgtVGT
+	 jN8zg91jtd/0e1xumCFpJy7tSvGSBFN589X96PSe2EE369ObSWn3WTgvA0VVq3VQpI
+	 M13F5pd13oY6skBTrV+GVAzEKWECJM214Izd+edVz81rjO3bfDGmHgDVS8lUDBLVTN
+	 x4UThyNJ8yaaw==
+Message-ID: <f74754b59ffc564ef882566beda87b3f354da48c.camel@kernel.org>
+Subject: Re: [LTP] [PATCH 1/1] nfsstat01: Update client RPC calls for kernel
+ 6.9
+From: Jeff Layton <jlayton@kernel.org>
+To: NeilBrown <neilb@suse.de>
+Cc: Chuck Lever III <chuck.lever@oracle.com>, Greg KH <greg@kroah.com>, 
+ Sherry Yang <sherry.yang@oracle.com>, Calum Mackay
+ <calum.mackay@oracle.com>, linux-stable <stable@vger.kernel.org>, Petr
+ Vorel <pvorel@suse.cz>, Trond Myklebust <trondmy@hammerspace.com>, Anna
+ Schumaker <anna@kernel.org>, Linux NFS Mailing List
+ <linux-nfs@vger.kernel.org>, "kernel-team@fb.com" <kernel-team@fb.com>,
+ "ltp@lists.linux.it" <ltp@lists.linux.it>, Avinesh Kumar <akumar@suse.de>,
+ Josef Bacik <josef@toxicpanda.com>
+Date: Fri, 12 Jul 2024 06:16:38 -0400
+In-Reply-To: <172076474233.15471.345629269384872391@noble.neil.brown.name>
+References: <>, <d8e74e544880a85a35656e296bf60ce5f186a333.camel@kernel.org>
+	 <172076474233.15471.345629269384872391@noble.neil.brown.name>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40app2) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB7PR04MB4555:EE_|AM9PR04MB8340:EE_
-X-MS-Office365-Filtering-Correlation-Id: be498fc7-7886-4726-8cfa-08dca2590142
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|366016|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?QOi7P/W2TZjLrsL7GNL1yjpTDfLX0+p1B//mHTvZNiFP7QpgxvZMokxIxCfG?=
- =?us-ascii?Q?c7eMmioNq2dVp5+2VJMykLLKoLgAIF0DkuQnXnjtCrUvyGJsmpN1XVdRmvUp?=
- =?us-ascii?Q?kAV0Eq5CCgN2TATEkEPmaAUKZSszAlrT5ZUDl1xo9X32SQvLFvcEtm9eRMKT?=
- =?us-ascii?Q?MY0feDytTx9iHdFa/dy6b+NhVrQaN/j2ESI+gXQxl385+V6z4tFyN0qPvyvt?=
- =?us-ascii?Q?cU3jNa88uyl6ClH+ist5pCiVof1HnTZwGIDQtApq7GtVnF4iGt9ArnSjDSvj?=
- =?us-ascii?Q?Ckeuw6XH751EPTuzsU3pCYXj7TTs7cKwW+UxjB8qrvQ9W6buwWr2ervSydil?=
- =?us-ascii?Q?qosMDyFNyc84hpriQzpsb52Livf/Irxlc6fmAJ4he2fwxv7xey5iZh5WE1sc?=
- =?us-ascii?Q?uWv7L6bl9yShPtc/rfNu8ju0KbB+Hn9drB4uybdpTbyjb2dtLS3Rd5ZpKHwj?=
- =?us-ascii?Q?dsyIky7ZkUp/fv8Hg+IncVHiPGeqb2g5dvePRWiAJRkoYY50C6SzS74ezoPg?=
- =?us-ascii?Q?z1HqqFwR4prGkYaqk/7vas7SGDrW3F9dLBe9o7+lo7rzikg3BPu4MH0YaPaS?=
- =?us-ascii?Q?DSimXq/aTm0b0h4LcQAnNPgeFeUT7lQg9lcGa6wcNhWmq3wtbecFm1DU/eQ/?=
- =?us-ascii?Q?BpEyjm0C5sKNGhUtplESn4E3E/++yVd3YjbP7TngOe8XxbEzn7L5o4UjLl0D?=
- =?us-ascii?Q?D+o+E0TRzV+upQY4I29GeTN4jcEQEDgb07f7t6c/GaoVsehlQP8sfiLrDmf+?=
- =?us-ascii?Q?im6CUhZgaJq5oN2C4IsYD+BdOEV/iVwWYmiqs4iVxN3hIaWhte9Q/faLJmWV?=
- =?us-ascii?Q?k7lvUOlKo/C91wE9sNrnnCzVYA2Rzj1VDyf7jKnaOMHzHso9UYOIBI7s8Aia?=
- =?us-ascii?Q?sJcDrzgZRlPilbb8nj/JmKoko4EGcKHEQDe/HLg0nr1/8vZwMq2yuF5Jz1kN?=
- =?us-ascii?Q?ZsMsQSxqrSxOxPc1XoceWcxWWly1Eyx9nhL0Tl+Zxuea0HGQyN9d5uE2xOy1?=
- =?us-ascii?Q?B7Kd7Q16pkHm5afUKOI4YAm6J861SC5T2rissll8ta8F+bn1e3BevbZQ+Veu?=
- =?us-ascii?Q?LONpcMLkPv3/kGqolK6fJ/dsLRfqSOWlHXp7HyCP+5hy/3+6HptiQoaUKXLe?=
- =?us-ascii?Q?Mk2E1uz7QoEzU6NOFZLPOBBm4k2csSUk7OX3cLI7h2csYGTR5ht3J10gQ2o3?=
- =?us-ascii?Q?vz0d8rEh3jG8/3NdKI2VDB7tfClVlSYTxel/S2bVOLMV17RvXL8dFOrYlozS?=
- =?us-ascii?Q?qL5x6vFXxvkipnatY01aUA6eSV3meQhHGty1DyTKfX2nvGcNcyVP+9WIN/9B?=
- =?us-ascii?Q?3Dyb8kAF//1oVf0mildgIutfjCBObiOlhEs0Hgo50jij6lD/o4Rz/jIyXAyq?=
- =?us-ascii?Q?qps7VNVfe/WbIDVb1MKQlDkyWz4cTSZCR3jjz1ngHa3KknU+eg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4555.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DlcoK6RZGwm6r68etzJ9QamzuTHV/WbRLLoeVM3NoMJHgFxa0XyED+XilQaQ?=
- =?us-ascii?Q?X4T/buWo5KW/q4NGfdPWlXm19zS55IhXKLfk55esRbCkz9LODJDNSSrYvFZ8?=
- =?us-ascii?Q?1Ulmqx8Id9//hOOs1Pikzho8elXzRfDCivhx6SgxauJnfHvYGF1+VmyjfPAe?=
- =?us-ascii?Q?ztsvRGLKCLOwjVoDHeoqUmqL5wBBo+sjSBPudaJ6+AZTJQLRkp3LQiGvwNLv?=
- =?us-ascii?Q?D66MS4EspEF85bJl68tFoJnK45EIBV8Eow05+10GOWUCdcySgt2UrJNfXAH1?=
- =?us-ascii?Q?yQ5wAYmLV4vD3gWBZ0ozefXdWpt6aunivr0pohWPYadNOJLtlH6gysSZDtqG?=
- =?us-ascii?Q?Y6RGuEKtwvS1lgaGebB+vj0GJj9Y89coANz0B3rf8z41XIDfTXigLbGtmbzK?=
- =?us-ascii?Q?T84+tvYKidraD6gPww3xuD7TTIyMxS9FSjay+A7debPuB8DKcZ9n2fW5iCkt?=
- =?us-ascii?Q?PNbUfhvvmlkwjteINs3bKflDkLIL6BDblQT86w8kai63VskqqLqeULLFyyJT?=
- =?us-ascii?Q?6znZYluDYuNBAqg5dH2UlXVyGmHnKMnmNUWx7bb71WW8NP5AvQ4AJpIulFIQ?=
- =?us-ascii?Q?aU8fs3SczfWeuRL09RaL0N9I7bmDucrkMqNHPP2VX9ZG1lhMFln74dtnDZV2?=
- =?us-ascii?Q?LQUJeaqZOefFvN4p0jDiI3r91Zp7vrcI05CArnfTMeljVfHIyPnop4Nml4vl?=
- =?us-ascii?Q?Nd+cQzjWQu/dsqVPtkXqA9p8Pk0D4iWrMeO7rYw2PpfeUwNbAc/AXs+wGQYQ?=
- =?us-ascii?Q?xINfc6kPgM2Ga2/EE7YT7gXRgOhPnB0JuautZr8rRz9lzwK/Q+0sTDnpR5I0?=
- =?us-ascii?Q?CNtBQqtpEdo6mA3z3j5aTM8md9W8ryvxLSSqYeRsTKHt56vPuMsGwbs+Faky?=
- =?us-ascii?Q?gK6+iGTenYqyUwYQ4+7ssYURkAMMAginLODr7C3fZAUpWqyClbI0Bq396cbu?=
- =?us-ascii?Q?y4yez4dsnbGDAbtNHfoIjuRk8AC9qEBiBiUN46ME+r+ZDIMtFXio6+MuEX0A?=
- =?us-ascii?Q?qy50twGoZ4oWVh2DfzPXW+JwqYq1kbE6Sjb66XnxAXyxlMLw2NCzD1pxgqnG?=
- =?us-ascii?Q?lRfPdbmIcA0YV3YeCUyZWbsGda/qNsefaULUjg9pTOMNc6N2BdZBahSlwRVa?=
- =?us-ascii?Q?Z7vfGlyUN7HIVQuPTY0cVTe7Cz7kVp+V8MReKneU3+dKxdWQlUxDAf8jKjew?=
- =?us-ascii?Q?syUA11usK5gBNgZfA8hSP3DNqLnmxEWAmUqqTbR+r5hduzr3TJjRHVZd872y?=
- =?us-ascii?Q?kbJr6olnnTvQx9PRgBl2Iwa0ICIoBfiRDqWzYkYWJMjaqQj9sZzGb6KEhMG0?=
- =?us-ascii?Q?/6mM2Dg//WSleVOgZE+gxatJek6XGxNutcrW8GanNB9Y03XmWSa17aW9aNIv?=
- =?us-ascii?Q?q+eClvI3U9zPhSqnzMmX1iSpjOCOm9A3JdBrSjDIWHKpy3aMrHQ3NX7It7+Q?=
- =?us-ascii?Q?eNpLKPgm1Qrj3czkME0S3KBqrTYtqv51boZ1kAjLnq9BX0HK5zE4C1J5MFV+?=
- =?us-ascii?Q?e45kAn+igBOYhqnn+RobdPCXVyiy7nWUKi0zcxXIEdV/NlM/AgHLiXzNEwsl?=
- =?us-ascii?Q?FKZZbrMZxEx8D6a+VGGPkLFE0Dj7YukePA1cu/flram9TAE6DQ4G8shcT/tr?=
- =?us-ascii?Q?zQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be498fc7-7886-4726-8cfa-08dca2590142
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4555.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2024 09:57:13.8731
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hyUYbxyv4e8vHF9nlUyo1iDsJpO1BeNP//GEWEN7wpAmPfI+GEqnPWBwYEcvEAl1NpHzDG7Lpqd9f0UQwr88sw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8340
 
-The blamed commit performed a lossy transformation of the original logic.
-Due to it, on Arm DPAA1 platforms, we are now faced with this WARN on
-each boot:
+On Fri, 2024-07-12 at 16:12 +1000, NeilBrown wrote:
+> On Fri, 12 Jul 2024, Jeff Layton wrote:
+> > On Fri, 2024-07-12 at 08:58 +1000, NeilBrown wrote:
+> > > On Fri, 12 Jul 2024, Jeff Layton wrote:
+> > > > On Mon, 2024-07-08 at 17:49 +0000, Chuck Lever III wrote:
+> > > > >=20
+> > > > > > On Jul 8, 2024, at 6:36=E2=80=AFAM, Greg KH <greg@kroah.com> wr=
+ote:
+> > > > > >=20
+> > > > > > On Sat, Jul 06, 2024 at 07:46:19AM +0000, Sherry Yang wrote:
+> > > > > > >=20
+> > > > > > >=20
+> > > > > > > > On Jul 6, 2024, at 12:11=E2=80=AFAM, Greg KH <greg@kroah.co=
+m> wrote:
+> > > > > > > >=20
+> > > > > > > > On Fri, Jul 05, 2024 at 02:19:18PM +0000, Chuck Lever III w=
+rote:
+> > > > > > > > >=20
+> > > > > > > > >=20
+> > > > > > > > > > On Jul 2, 2024, at 6:55=E2=80=AFPM, Calum Mackay <calum=
+.mackay@oracle.com> wrote:
+> > > > > > > > > >=20
+> > > > > > > > > > To clarify=E2=80=A6
+> > > > > > > > > >=20
+> > > > > > > > > > On 02/07/2024 5:54 pm, Calum Mackay wrote:
+> > > > > > > > > > > hi Petr,
+> > > > > > > > > > > I noticed your LTP patch [1][2] which adjusts the nfs=
+stat01 test on v6.9 kernels, to account for Josef's changes [3], which rest=
+rict the NFS/RPC stats per-namespace.
+> > > > > > > > > > > I see that Josef's changes were backported, as far ba=
+ck as longterm v5.4,
+> > > > > > > > > >=20
+> > > > > > > > > > Sorry, that's not quite accurate.
+> > > > > > > > > >=20
+> > > > > > > > > > Josef's NFS client changes were all backported from v6.=
+9, as far as longterm v5.4.y:
+> > > > > > > > > >=20
+> > > > > > > > > > 2057a48d0dd0 sunrpc: add a struct rpc_stats arg to rpc_=
+create_args
+> > > > > > > > > > d47151b79e32 nfs: expose /proc/net/sunrpc/nfs in net na=
+mespaces
+> > > > > > > > > > 1548036ef120 nfs: make the rpc_stat per net namespace
+> > > > > > > > > >=20
+> > > > > > > > > >=20
+> > > > > > > > > > Of Josef's NFS server changes, four were backported fro=
+m v6.9 to v6.8:
+> > > > > > > > > >=20
+> > > > > > > > > > 418b9687dece sunrpc: use the struct net as the svc proc=
+ private
+> > > > > > > > > > d98416cc2154 nfsd: rename NFSD_NET_* to NFSD_STATS_*
+> > > > > > > > > > 93483ac5fec6 nfsd: expose /proc/net/sunrpc/nfsd in net =
+namespaces
+> > > > > > > > > > 4b14885411f7 nfsd: make all of the nfsd stats per-netwo=
+rk namespace
+> > > > > > > > > >=20
+> > > > > > > > > > and the others remained only in v6.9:
+> > > > > > > > > >=20
+> > > > > > > > > > ab42f4d9a26f sunrpc: don't change ->sv_stats if it does=
+n't exist
+> > > > > > > > > > a2214ed588fb nfsd: stop setting ->pg_stats for unused s=
+tats
+> > > > > > > > > > f09432386766 sunrpc: pass in the sv_stats struct throug=
+h svc_create_pooled
+> > > > > > > > > > 3f6ef182f144 sunrpc: remove ->pg_stats from svc_program
+> > > > > > > > > > e41ee44cc6a4 nfsd: remove nfsd_stats, make th_cnt a glo=
+bal counter
+> > > > > > > > > > 16fb9808ab2c nfsd: make svc_stat per-network namespace =
+instead of global
+> > > > > > > > > >=20
+> > > > > > > > > >=20
+> > > > > > > > > >=20
+> > > > > > > > > > I'm wondering if this difference between NFS client, an=
+d NFS server, stat behaviour, across kernel versions, may perhaps cause som=
+e user confusion?
+> > > > > > > > >=20
+> > > > > > > > > As a refresher for the stable folken, Josef's changes mak=
+e
+> > > > > > > > > nfsstats silo'd, so they no longer show counts from the w=
+hole
+> > > > > > > > > system, but only for NFS operations relating to the local=
+ net
+> > > > > > > > > namespace. That is a surprising change for some users, to=
+ols,
+> > > > > > > > > and testing.
+> > > > > > > > >=20
+> > > > > > > > > I'm not clear on whether there are any rules/guidelines a=
+round
+> > > > > > > > > LTS backports causing behavior changes that user tools, l=
+ike
+> > > > > > > > > nfsstat, might be impacted by.
+> > > > > > > >=20
+> > > > > > > > The same rules that apply for Linus's tree (i.e. no userspa=
+ce
+> > > > > > > > regressions.)
+> > > > > > >=20
+> > > > > > > Given the current data we have, LTP nfsstat01[1] failed on LT=
+S v5.4.278 because of kernel commit 1548036ef1204 ("nfs:
+> > > > > > > make the rpc_stat per net namespace") [2]. Other LTS which ba=
+ckported the same commit are very likely troubled with the same LTP test fa=
+ilure.
+> > > > > > >=20
+> > > > > > > The following are the LTP nfsstat01 failure output
+> > > > > > >=20
+> > > > > > > =3D=3D=3D=3D=3D=3D=3D=3D
+> > > > > > > network 1 TINFO: initialize 'lhost' 'ltp_ns_veth2' interface
+> > > > > > > network 1 TINFO: add local addr 10.0.0.2/24
+> > > > > > > network 1 TINFO: add local addr fd00:1:1:1::2/64
+> > > > > > > network 1 TINFO: initialize 'rhost' 'ltp_ns_veth1' interface
+> > > > > > > network 1 TINFO: add remote addr 10.0.0.1/24
+> > > > > > > network 1 TINFO: add remote addr fd00:1:1:1::1/64
+> > > > > > > network 1 TINFO: Network config (local -- remote):
+> > > > > > > network 1 TINFO: ltp_ns_veth2 -- ltp_ns_veth1
+> > > > > > > network 1 TINFO: 10.0.0.2/24 -- 10.0.0.1/24
+> > > > > > > network 1 TINFO: fd00:1:1:1::2/64 -- fd00:1:1:1::1/64
+> > > > > > > <<<test_start>>>
+> > > > > > > tag=3Dveth|nfsstat3_01 stime=3D1719943586
+> > > > > > > cmdline=3D"nfsstat01"
+> > > > > > > contacts=3D""
+> > > > > > > analysis=3Dexit
+> > > > > > > <<<test_output>>>
+> > > > > > > incrementing stop
+> > > > > > > nfsstat01 1 TINFO: timeout per run is 0h 20m 0s
+> > > > > > > nfsstat01 1 TINFO: setup NFSv3, socket type udp
+> > > > > > > nfsstat01 1 TINFO: Mounting NFS: mount -t nfs -o proto=3Dudp,=
+vers=3D3 10.0.0.2:/tmp/netpan-4577/LTP_nfsstat01.lz6zhgQHoV/3/udp /tmp/netp=
+an-4577/LTP_nfsstat01.lz6zhgQHoV/3/0
+> > > > > > > nfsstat01 1 TINFO: checking RPC calls for server/client
+> > > > > > > nfsstat01 1 TINFO: calls 98/0
+> > > > > > > nfsstat01 1 TINFO: Checking for tracking of RPC calls for ser=
+ver/client
+> > > > > > > nfsstat01 1 TINFO: new calls 102/0
+> > > > > > > nfsstat01 1 TPASS: server RPC calls increased
+> > > > > > > nfsstat01 1 TFAIL: client RPC calls not increased
+> > > > > > > nfsstat01 1 TINFO: checking NFS calls for server/client
+> > > > > > > nfsstat01 1 TINFO: calls 2/2
+> > > > > > > nfsstat01 1 TINFO: Checking for tracking of NFS calls for ser=
+ver/client
+> > > > > > > nfsstat01 1 TINFO: new calls 3/3
+> > > > > > > nfsstat01 1 TPASS: server NFS calls increased
+> > > > > > > nfsstat01 1 TPASS: client NFS calls increased
+> > > > > > > nfsstat01 2 TINFO: Cleaning up testcase
+> > > > > > > nfsstat01 2 TINFO: SELinux enabled in enforcing mode, this ma=
+y affect test results
+> > > > > > > nfsstat01 2 TINFO: it can be disabled with TST_DISABLE_SELINU=
+X=3D1 (requires super/root)
+> > > > > > > nfsstat01 2 TINFO: install seinfo to find used SELinux profil=
+es
+> > > > > > > nfsstat01 2 TINFO: loaded SELinux profiles: none
+> > > > > > >=20
+> > > > > > > Summary:
+> > > > > > > passed 3
+> > > > > > > failed 1
+> > > > > > > skipped 0
+> > > > > > > warnings 0
+> > > > > > > <<<execution_status>>>
+> > > > > > > initiation_status=3D"ok"
+> > > > > > > duration=3D1 termination_type=3Dexited termination_id=3D1 cor=
+efile=3Dno
+> > > > > > > cutime=3D11 cstime=3D16
+> > > > > > > <<<test_end>>>
+> > > > > > > ltp-pan reported FAIL
+> > > > > > > =3D=3D=3D=3D=3D=3D=3D=3D
+> > > > > > >=20
+> > > > > > > We can observe the number of RPC client calls is 0, which is =
+wired. And this happens from the kernel commit 57d1ce96d7655 ("nfs: make th=
+e rpc_stat per net namespace=E2=80=9D). So now we=E2=80=99re not sure the k=
+ernel backport of nfs client changes is proper, or the LTP tests / userspac=
+e need to be modified.
+> > > > > > >=20
+> > > > > > > If no userspace regression, should we revert the Josef=E2=80=
+=99s NFS client-side changes on LTS?
+> > > > > >=20
+> > > > > > This sounds like a regression in Linus's tree too, so why isn't=
+ it
+> > > > > > reverted there first?
+> > > > >=20
+> > > > > There is a change in behavior in the upstream code, but Josef's
+> > > > > patches fix an information leak and make the statistics more
+> > > > > sensible in container environments. I'm not certain that
+> > > > > should be considered a regression, but confess I don't know
+> > > > > the regression rules to this fine a degree of detail.
+> > > > >=20
+> > > > > If it is indeed a regression, how can we go about retaining
+> > > > > both behaviors (selectable by Kconfig or perhaps administrative
+> > > > > UI)?
+> > > > >=20
+> > > >=20
+> > > > I'd argue that the old behavior was a bug, and that Josef fixed
+> > > > it.=C2=A0These stats should probably have been made per-net when al=
+l of the
+> > > > original nfsd namespace work was done, but no one noticed until
+> > > > recently. Whoops.=C2=A0
+> > > >=20
+> > > > A couple of hacky ideas for how we might deal with this:
+> > > >=20
+> > > > 1/ add a new line to the output of /proc/net/rpc/nfsd. It could jus=
+t
+> > > > say "per-net\n" or "per-net <netns_id_number>\n" or something. nfss=
+tat
+> > > > should ignore it, but LTP test could look for it and handle it
+> > > > appropriately. That could even be useful later for nfsstat too I gu=
+ess.
+> > > >=20
+> > > > 2/ move the file to a new name and make the old filename be a symli=
+nk
+> > > > to the new one. nfsstat would still work, but LTP would be able to =
+see
+> > > > whether it was a symlink to detect the difference...or could just m=
+ake
+> > > > a new symlink that points to the file and LTP could look for its
+> > > > presence.
+> > >=20
+> > > I don't think it makes sense to present a solution which requires
+> > > LTP to be modified.  If we are willing to modify LTP, then we should
+> > > modify it to work with the per-net stats.
+> > >=20
+> > > I think we need to create a new interface for the per-net stats, then
+> > > deprecate the old interface and remove it in (say) 2 years.  That giv=
+en
+> > > LTP time to update, and means that an old LTP won't give incorrect
+> > > numbers, it will simply fail.
+> > >=20
+> > > All we need to do is bikeshed the new interface.
+> > >   netlink ?
+> > >   /proc/net/rpc-pernet/nfsd ?
+> > >=20
+> > > This means that we still need to keep the combined stats, or to combi=
+ne
+> > > all the per-net stats on each access.
+> > >=20
+> >=20
+> > How much of this functionality would we need to restore?
+> >=20
+> > Prior to Josef's patches, you would get info about global stats from
+> > relevant stats procfiles in a container. That seems like an information
+> > leak to me, but fixing that is probably going to break _somebody_.
+> > Where do we draw the line and why?
+> >=20
+> > LTP is just a testsuite. Asking them to alter tests in order to cope
+> > with a bugfix seems entirely reasonable to me. If someone can make a
+> > case for real-world applications that rely on the old semantics, then
+> > I'd be more open to changing this, but I just don't see the upside of
+> > restoring legacy behavior here.
+>=20
+> If it is OK to ask them to alter the tests, ask them to alter the tests
+> to work with today's kernel and don't make any change to the kernel.
+> Maybe the tests will have to be fixed to "PASS" both the old and the new
+> results, but that probably isn't rocket science.
+>=20
+> My point is that if we are going to change the kernel to accommodate LTP
+> at all, we should accommodate LTP as it is today.  If we are going to
+> change LTP to accommodate the kernel, then it should accommodate the
+> kernel as it is today.
+>=20
 
-------------[ cut here ]------------
-Unexpected architecture using non shared-dma-mem reservations
-WARNING: CPU: 0 PID: 1 at drivers/soc/fsl/qbman/qman_ccsr.c:795 fsl_qman_probe+0x1d0/0x768
-pc : fsl_qman_probe+0x1d0/0x768
-lr : fsl_qman_probe+0x1b0/0x768
-Call trace:
- fsl_qman_probe+0x1d0/0x768
- platform_probe+0xa8/0xd0
- really_probe+0x128/0x2c8
+The problem is that there is no way for userland tell the difference
+between the older and newer behavior. That was what I was suggesting we
+add.
 
-Prior to the refactoring, the logic in fsl_qman_probe() was as follows:
-
-	if (fqd_a) { // previously found using RESERVEDMEM_OF_DECLARE("fsl,qman-fqd") [0]
- #ifdef CONFIG_PPC
-		/*
-		 * For PPC backward DT compatibility
-		 * FQD memory MUST be zero'd by software
-		 */
-		zero_priv_mem(fqd_a, fqd_sz);
- #else
-		WARN(1, "Unexpected architecture using non shared-dma-mem reservations");
- #endif
-	} else {
-		// Find FQD using new-style device tree bindings [1]
-		ret = qbman_init_private_mem(dev, 0, &fqd_a, &fqd_sz);
-	}
-
-After the refactoring, the search for the new-style and the old-style
-got flipped, and both got absorbed into qbman_init_private_mem().
-
-This creates a problem, because there is no longer a place to put the
-"fqd_a != 0" branch within fsl_qman_probe(). The callee,
-qbman_init_private_mem(), does not distinguish between FQD, PFDR and
-FBPR, and zero_priv_mem() must execute only for FQD.
-
-Split qbman_init_private_mem() into two different functions:
-qbman_find_reserved_mem_by_idx() for new-style bindings, and
-qbman_find_reserved_mem_by_compatible() for old-style.
-
-Let callers explicitly call both, which permits fsl_qman_probe() to
-zero-initialize the FQD memory on PowerPC if it matched on a compatible
-string.
-
-[0] Legacy bindings used by PowerPC:
-
-/ {
-	reserved-memory {
-		qman_fqd: qman-fqd {
-			compatible = "fsl,qman-fqd";
-			alloc-ranges = <0 0 0x10000 0>;
-			size = <0 0x400000>;
-			alignment = <0 0x400000>;
-		};
-	};
-};
-
-[1] New bindings:
-
-/ {
-	reserved-memory {
-		qman_fqd: qman-fqd {
-			compatible = "shared-dma-pool";
-			size = <0 0x800000>;
-			alignment = <0 0x800000>;
-			no-map;
-		};
-
-		qman_pfdr: qman-pfdr {
-			compatible = "shared-dma-pool";
-			size = <0 0x2000000>;
-			alignment = <0 0x2000000>;
-			no-map;
-		};
-	};
-
-	soc {
-		qman: qman@1880000 {
-			compatible = "fsl,qman";
-			reg = <0x0 0x1880000 0x0 0x10000>;
-			memory-region = <&qman_fqd &qman_pfdr>;
-		};
-	};
-};
-
-Fixes: 3e62273ac63a ("soc: fsl: qbman: Remove RESERVEDMEM_OF_DECLARE usage")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
- drivers/soc/fsl/qbman/bman_ccsr.c | 11 ++++--
- drivers/soc/fsl/qbman/dpaa_sys.c  | 62 ++++++++++++++++++++++---------
- drivers/soc/fsl/qbman/dpaa_sys.h  |  7 ++--
- drivers/soc/fsl/qbman/qman_ccsr.c | 40 +++++++++++++-------
- 4 files changed, 82 insertions(+), 38 deletions(-)
-
-diff --git a/drivers/soc/fsl/qbman/bman_ccsr.c b/drivers/soc/fsl/qbman/bman_ccsr.c
-index b0f26f6f731e..d8a440a265c5 100644
---- a/drivers/soc/fsl/qbman/bman_ccsr.c
-+++ b/drivers/soc/fsl/qbman/bman_ccsr.c
-@@ -231,11 +231,14 @@ static int fsl_bman_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	ret = qbman_init_private_mem(dev, 0, "fsl,bman-fbpr", &fbpr_a, &fbpr_sz);
-+	ret = qbman_find_reserved_mem_by_idx(dev, 0, &fbpr_a, &fbpr_sz);
-+	if (ret)
-+		ret = qbman_find_reserved_mem_by_compatible(dev, "fsl,bman-fbpr",
-+							    &fbpr_a, &fbpr_sz);
- 	if (ret) {
--		dev_err(dev, "qbman_init_private_mem() failed 0x%x\n",
--			ret);
--		return -ENODEV;
-+		dev_err(dev, "Failed to find FBPR reserved-memory region: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
- 	}
- 
- 	dev_dbg(dev, "Allocated FBPR 0x%llx 0x%zx\n", fbpr_a, fbpr_sz);
-diff --git a/drivers/soc/fsl/qbman/dpaa_sys.c b/drivers/soc/fsl/qbman/dpaa_sys.c
-index b1cee145cbd7..7c775c4c8a21 100644
---- a/drivers/soc/fsl/qbman/dpaa_sys.c
-+++ b/drivers/soc/fsl/qbman/dpaa_sys.c
-@@ -31,28 +31,14 @@
- #include <linux/dma-mapping.h>
- #include "dpaa_sys.h"
- 
--/*
-- * Initialize a devices private memory region
-- */
--int qbman_init_private_mem(struct device *dev, int idx, const char *compat,
--			   dma_addr_t *addr, size_t *size)
-+static int qbman_reserved_mem_lookup(struct device_node *mem_node,
-+				     dma_addr_t *addr, size_t *size)
- {
--	struct device_node *mem_node;
- 	struct reserved_mem *rmem;
- 
--	mem_node = of_parse_phandle(dev->of_node, "memory-region", idx);
--	if (!mem_node) {
--		mem_node = of_find_compatible_node(NULL, NULL, compat);
--		if (!mem_node) {
--			dev_err(dev, "No memory-region found for index %d or compatible '%s'\n",
--				idx, compat);
--			return -ENODEV;
--		}
--	}
--
- 	rmem = of_reserved_mem_lookup(mem_node);
- 	if (!rmem) {
--		dev_err(dev, "of_reserved_mem_lookup() returned NULL\n");
-+		pr_err("of_reserved_mem_lookup(%pOF) returned NULL\n", mem_node);
- 		return -ENODEV;
- 	}
- 	*addr = rmem->base;
-@@ -60,3 +46,45 @@ int qbman_init_private_mem(struct device *dev, int idx, const char *compat,
- 
- 	return 0;
- }
-+
-+/**
-+ * qbman_find_reserved_mem_by_idx() - Find QBMan reserved-memory node
-+ * @dev: Pointer to QMan or BMan device structure
-+ * @idx: for BMan, pass 0 for the FBPR region.
-+ *	 for QMan, pass 0 for the FQD region and 1 for the PFDR region.
-+ * @addr: Pointer to storage for the region's base address.
-+ * @size: Pointer to storage for the region's size.
-+ */
-+int qbman_find_reserved_mem_by_idx(struct device *dev, int idx,
-+				   dma_addr_t *addr, size_t *size)
-+{
-+	struct device_node *mem_node;
-+
-+	mem_node = of_parse_phandle(dev->of_node, "memory-region", idx);
-+	if (!mem_node)
-+		return -ENODEV;
-+
-+	return qbman_reserved_mem_lookup(mem_node, addr, size);
-+}
-+
-+/**
-+ * qbman_find_reserved_mem_by_compatible() - Find QBMan reserved-memory node (PowerPC)
-+ * @dev: Pointer to QMan or BMan device structure
-+ * @compat: one of "fsl,bman-fbpr", "fsl,qman-fqd" or "fsl,qman-pfdr"
-+ * @addr: Pointer to storage for the region's base address.
-+ * @size: Pointer to storage for the region's size.
-+ *
-+ * This is a legacy variant of qbman_find_reserved_mem_by_idx(), which should
-+ * only be used for backwards compatibility with certain PowerPC device trees.
-+ */
-+int qbman_find_reserved_mem_by_compatible(struct device *dev, const char *compat,
-+					  dma_addr_t *addr, size_t *size)
-+{
-+	struct device_node *mem_node;
-+
-+	mem_node = of_find_compatible_node(NULL, NULL, compat);
-+	if (!mem_node)
-+		return -ENODEV;
-+
-+	return qbman_reserved_mem_lookup(mem_node, addr, size);
-+}
-diff --git a/drivers/soc/fsl/qbman/dpaa_sys.h b/drivers/soc/fsl/qbman/dpaa_sys.h
-index 16485bde9636..1c80244b34d1 100644
---- a/drivers/soc/fsl/qbman/dpaa_sys.h
-+++ b/drivers/soc/fsl/qbman/dpaa_sys.h
-@@ -100,9 +100,10 @@ static inline u8 dpaa_cyc_diff(u8 ringsize, u8 first, u8 last)
- /* Offset applied to genalloc pools due to zero being an error return */
- #define DPAA_GENALLOC_OFF	0x80000000
- 
--/* Initialize the devices private memory region */
--int qbman_init_private_mem(struct device *dev, int idx, const char *compat,
--			   dma_addr_t *addr, size_t *size);
-+int qbman_find_reserved_mem_by_idx(struct device *dev, int idx,
-+				   dma_addr_t *addr, size_t *size);
-+int qbman_find_reserved_mem_by_compatible(struct device *dev, const char *compat,
-+					  dma_addr_t *addr, size_t *size);
- 
- /* memremap() attributes for different platforms */
- #ifdef CONFIG_PPC
-diff --git a/drivers/soc/fsl/qbman/qman_ccsr.c b/drivers/soc/fsl/qbman/qman_ccsr.c
-index 392e54f14dbe..4735b450d97e 100644
---- a/drivers/soc/fsl/qbman/qman_ccsr.c
-+++ b/drivers/soc/fsl/qbman/qman_ccsr.c
-@@ -731,6 +731,7 @@ static int fsl_qman_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct device_node *node = dev->of_node;
-+	bool fqd_found_by_compatible = false;
- 	struct resource *res;
- 	int ret, err_irq;
- 	u16 id;
-@@ -779,29 +780,40 @@ static int fsl_qman_probe(struct platform_device *pdev)
- 	* in order to ensure allocations from the correct regions the
- 	* driver initializes then allocates each piece in order
- 	*/
--	ret = qbman_init_private_mem(dev, 0, "fsl,qman-fqd", &fqd_a, &fqd_sz);
-+	ret = qbman_find_reserved_mem_by_idx(dev, 0, &fqd_a, &fqd_sz);
- 	if (ret) {
--		dev_err(dev, "qbman_init_private_mem() for FQD failed 0x%x\n",
--			ret);
--		return -ENODEV;
-+		ret = qbman_find_reserved_mem_by_compatible(dev, "fsl,qman-fqd",
-+							    &fqd_a, &fqd_sz);
-+		if (ret == 0)
-+			fqd_found_by_compatible = true;
- 	}
-+	if (ret) {
-+		dev_err(dev, "Failed to find FQD reserved-memory region: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
-+	}
-+	if (fqd_found_by_compatible) {
- #ifdef CONFIG_PPC
--	/*
--	 * For PPC backward DT compatibility
--	 * FQD memory MUST be zero'd by software
--	 */
--	zero_priv_mem(fqd_a, fqd_sz);
-+		/*
-+		 * For PPC backward DT compatibility
-+		 * FQD memory MUST be zero'd by software
-+		 */
-+		zero_priv_mem(fqd_a, fqd_sz);
- #else
--	WARN(1, "Unexpected architecture using non shared-dma-mem reservations");
-+		WARN(1, "Unexpected architecture using non shared-dma-mem reservations");
- #endif
-+	}
- 	dev_dbg(dev, "Allocated FQD 0x%llx 0x%zx\n", fqd_a, fqd_sz);
- 
- 	/* Setup PFDR memory */
--	ret = qbman_init_private_mem(dev, 1, "fsl,qman-pfdr", &pfdr_a, &pfdr_sz);
-+	ret = qbman_find_reserved_mem_by_idx(dev, 1, &pfdr_a, &pfdr_sz);
-+	if (ret)
-+		ret = qbman_find_reserved_mem_by_compatible(dev, "fsl,qman-pfdr",
-+							    &pfdr_a, &pfdr_sz);
- 	if (ret) {
--		dev_err(dev, "qbman_init_private_mem() for PFDR failed 0x%x\n",
--			ret);
--		return -ENODEV;
-+		dev_err(dev, "Failed to find PFDR reserved-memory region: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
- 	}
- 	dev_dbg(dev, "Allocated PFDR 0x%llx 0x%zx\n", pfdr_a, pfdr_sz);
- 
--- 
-2.34.1
-
+To be clear, I hold this opinion loosely. If the consensus is that we
+need to revert things then so be it. I just don't see the value of
+doing that in this particular situation.
+--=20
+Jeff Layton <jlayton@kernel.org>
 
