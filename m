@@ -1,120 +1,232 @@
-Return-Path: <stable+bounces-59207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0790592FFE1
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 19:39:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 960A293010A
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 21:42:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B015F28456A
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 17:38:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 541F22818BD
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 19:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB773174EF9;
-	Fri, 12 Jul 2024 17:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC38E381BA;
+	Fri, 12 Jul 2024 19:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LmFiD8uY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cktrqCsx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72308176AA1;
-	Fri, 12 Jul 2024 17:38:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AF52032A;
+	Fri, 12 Jul 2024 19:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720805935; cv=none; b=Dy4Vms4V54RtAAh7sLNFCEbn6Xou8GlyTlR86djt8H2JbNojpDmdeGtg5sOMjH8zeDlSAw7dNvihJYxgCpdvSXzIPHB/gWDnihfQ01P2ZrEkHbHVuiwGnQrJhMWl0wSU0U66TC8sC2J2ERXvQh7fZNJ47Z33XJh6M0pUXfk1NaI=
+	t=1720813334; cv=none; b=R2VzcApKeqJeNMwI90+HN+lF0Qm1wqFuF2gy6UQL+OTWHNvkj6D9oJkfFi/zfUg2kIjfFfQD7m6ExnJ0xKo32xJDLzu4bALT0dP4PlLHhzEM5g0/mYxyuIa+bEvu38rRtNuEsiJg2q04TAokhlzlHP3+1HVd3Cdsad1OV21MlH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720805935; c=relaxed/simple;
-	bh=1V/ENdQTei7MNCNaneHTy5T1yttqICLHC3xv6bU0BGc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LgiYZH1JZNz6r2ffuUzn4+W42qZ5HSNQ438blrewWtCDKlMRytY/h5+BjXrCTvGNOcV9yiMwVVnMx0RomqRsEeTJfE4sdN9tMPAsn88mPCQhMt5Vlqq6J/3bRLLy2HEP3agP6zaf9+KNNgv/Ch/mMSopPvZB+ihr7UKnqHLoVJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LmFiD8uY; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-78c84837564so299028a12.3;
-        Fri, 12 Jul 2024 10:38:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720805934; x=1721410734; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=L9FqVr/rhZyzwfnucHeAewr1d8dwEYOh9P/Sief1hgk=;
-        b=LmFiD8uYVfKLWOe9V9TvP0LPCszsCBpMG933NgkfOcV/Xc5sSw+QhdkOQ2HvBkPmTb
-         1QiRR/YKcH6M2coP84jcFwCu5BqRqX4Fzq413PCtAUURADbzkCb/EIbXmExijIPnF/nA
-         V6YUvsvyCc61zTcltLhuyCmyqcBSuOTGBrl2aTk+Eg6Vedr1VMhJGQ/4XNaz+7EUMD/l
-         X48O8hAJbhHVgnsiGvvCsnjfmwE4FNby3nGQPuicO6QQ9o7jAM4iWZ3HvKGlPJijpuGY
-         qTMalG/9c8O/GQ6hDIhMkP3e1eW24+SiL21HrtsezW0fgWTXClWE+sdpmswPmVLvrnoV
-         F6jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720805934; x=1721410734;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L9FqVr/rhZyzwfnucHeAewr1d8dwEYOh9P/Sief1hgk=;
-        b=fUOckZpY0FOIt8bQZg1m4at/5elK9yXb88LxjuuHSkvWWCwDixB0ZMhuOFlheRP3Yt
-         Fg22AfQUppOgQ58LUFFZKoAOmEVHO/3gGe5Vx+e6kjhIpmKKfdtH694lAfgsik4QTq+q
-         MhkjInesLWDm5410bLpmoo5I2+sqzcdRh4DG6DnWKzhXRDmI3WW2MzfuNJZzrlcCzC69
-         aCZV4sYRjvHHR4njaDYmww5cnzFvom6F+o0eWHUgu+3O0uLPta4cM4sJzlwQbbx3hrOY
-         ov745uBEHk2UY1LCRi8M9y+0/wfvUaA9f0GK9Fyv1dvAuJfcW8F4ubi+dmragfonQUBe
-         h3xg==
-X-Forwarded-Encrypted: i=1; AJvYcCWjc6ejoPrt1I2RTQsU0yYc/jnalOv1iyt4pU9ml11gCshQ94c4ZiP7yuUiN/Hy8jrH61QP8W4rlCAKz5kyS8lOcvs13NZpbpXeb92nybwF9Qq8IKX+ei0V5pGHf2prYdYG16rs
-X-Gm-Message-State: AOJu0YzIN9bNOV4W3EGYfzLa9GVQqqNnjhJNCoRHHqnCw4cYbB+rVPmJ
-	W1NpB9L75pXEkZ6p32fQQxMK8cxIk+g9Rz3bv+3j8tQDQqb1+hUK
-X-Google-Smtp-Source: AGHT+IHdX+ao63nA1fTMZfLSJG7Xybt0fUskH7EuIH0b1VguS4qarFsUTpYI3p+dG3HrORxzZF31lg==
-X-Received: by 2002:a05:6a21:3394:b0:1be:dd1c:a6e3 with SMTP id adf61e73a8af0-1c2984e11d9mr13338042637.54.1720805933399;
-        Fri, 12 Jul 2024 10:38:53 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-1fbb6a3ca56sm69551665ad.118.2024.07.12.10.38.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jul 2024 10:38:51 -0700 (PDT)
-Message-ID: <191d8761-0784-44f6-9b8e-5d3c1c15c5ad@gmail.com>
-Date: Fri, 12 Jul 2024 10:38:48 -0700
+	s=arc-20240116; t=1720813334; c=relaxed/simple;
+	bh=TgRCdc2jdk93faAJSlXtDv3nImud6PYYBQfTIb7ydxE=;
+	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=DC1qeBT2qhlNumxAUUxDIHZZJZN/OTnu6/sz5iaicB3/AdD/egImUTCmW/MQB56bU+korZkABcJ/UPu4316k/YMbd3YP005BDcSbk660qKFjJnsSw8bDmg0AOaKzUCfF+Cc4HYRcx8xkz1S9DjCnbs07IDVlQEt4ij2H07WXEc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cktrqCsx; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720813332; x=1752349332;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TgRCdc2jdk93faAJSlXtDv3nImud6PYYBQfTIb7ydxE=;
+  b=cktrqCsxk6s/BTAqzq5X094L3D/Eguh5LF3Vf7N62aAYm0O4trwuUINI
+   iI7Cuzrqy22piQ61cnKj3FwNqupP+8608iWZ11K+VROsiqfRwkddFzViv
+   tcYVKdyPKhIZSLRaOyF9LL2HtVUU+dkD39FhRPsdyFrXuu8ToqvFRK6Ns
+   b7Xe3/Xs4iUrtslUzA6eWkHZqbxdo5OklMg6WhEchNirIF032oxTlJ7lP
+   x4mRn4u3hb40bYD5LwqMPprQdxARU05vkAIKDYh9ddwe8lZGeN+W/GbnI
+   85hKaBY9QysM3PHLl1wqzJDBFmP6wbLCTLoZTeG+Xwnh9PyNuP2md1xiQ
+   Q==;
+X-CSE-ConnectionGUID: YeMiUY/1SmSRffp0DNnr2g==
+X-CSE-MsgGUID: uuWnC/y5Rju/cQ+sNasEow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11131"; a="35813289"
+X-IronPort-AV: E=Sophos;i="6.09,203,1716274800"; 
+   d="scan'208";a="35813289"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2024 12:42:12 -0700
+X-CSE-ConnectionGUID: +FGsCYj1TGWmcg4WjdjiCg==
+X-CSE-MsgGUID: vjGVLZT5TvaFY6q+LMl7qA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,203,1716274800"; 
+   d="scan'208";a="53366204"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.125.110.177])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2024 12:42:11 -0700
+Subject: [PATCH] driver core: Fix uevent_show() vs driver detach race
+From: Dan Williams <dan.j.williams@intel.com>
+To: gregkh@linuxfoundation.org
+Cc: syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>, stable@vger.kernel.org,
+ Ashish Sangwan <a.sangwan@samsung.com>, Namjae Jeon <namjae.jeon@samsung.com>,
+ Dirk Behme <dirk.behme@de.bosch.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
+Date: Fri, 12 Jul 2024 12:42:09 -0700
+Message-ID: <172081332794.577428.9738802016494057132.stgit@dwillia2-xfh.jf.intel.com>
+User-Agent: StGit/0.18-3-g996c
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.9 000/197] 6.9.9-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240709110708.903245467@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-On 7/9/24 04:07, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.9 release.
-> There are 197 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 11 Jul 2024 11:06:25 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.9-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+uevent_show() wants to de-reference dev->driver->name. There is no clean
+way for a device attribute to de-reference dev->driver unless that
+attribute is defined via (struct device_driver).dev_groups. Instead, the
+anti-pattern of taking the device_lock() in the attribute handler risks
+deadlocks with code paths that remove device attributes while holding
+the lock.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+This deadlock is typically invisible to lockdep given the device_lock()
+is marked lockdep_set_novalidate_class(), but some subsystems allocate a
+local lockdep key for @dev->mutex to reveal reports of the form:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+ ======================================================
+ WARNING: possible circular locking dependency detected
+ 6.10.0-rc7+ #275 Tainted: G           OE    N
+ ------------------------------------------------------
+ modprobe/2374 is trying to acquire lock:
+ ffff8c2270070de0 (kn->active#6){++++}-{0:0}, at: __kernfs_remove+0xde/0x220
+
+ but task is already holding lock:
+ ffff8c22016e88f8 (&cxl_root_key){+.+.}-{3:3}, at: device_release_driver_internal+0x39/0x210
+
+ which lock already depends on the new lock.
+
+
+ the existing dependency chain (in reverse order) is:
+
+ -> #1 (&cxl_root_key){+.+.}-{3:3}:
+        __mutex_lock+0x99/0xc30
+        uevent_show+0xac/0x130
+        dev_attr_show+0x18/0x40
+        sysfs_kf_seq_show+0xac/0xf0
+        seq_read_iter+0x110/0x450
+        vfs_read+0x25b/0x340
+        ksys_read+0x67/0xf0
+        do_syscall_64+0x75/0x190
+        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ -> #0 (kn->active#6){++++}-{0:0}:
+        __lock_acquire+0x121a/0x1fa0
+        lock_acquire+0xd6/0x2e0
+        kernfs_drain+0x1e9/0x200
+        __kernfs_remove+0xde/0x220
+        kernfs_remove_by_name_ns+0x5e/0xa0
+        device_del+0x168/0x410
+        device_unregister+0x13/0x60
+        devres_release_all+0xb8/0x110
+        device_unbind_cleanup+0xe/0x70
+        device_release_driver_internal+0x1c7/0x210
+        driver_detach+0x47/0x90
+        bus_remove_driver+0x6c/0xf0
+        cxl_acpi_exit+0xc/0x11 [cxl_acpi]
+        __do_sys_delete_module.isra.0+0x181/0x260
+        do_syscall_64+0x75/0x190
+        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The observation though is that driver objects are typically much longer
+lived than device objects. It is reasonable to perform lockless
+de-reference of a @driver pointer even if it is racing detach from a
+device. Given the infrequency of driver unregistration, use
+synchronize_rcu() in module_remove_driver() to close any potential
+races.  It is potentially overkill to suffer synchronize_rcu() just to
+handle the rare module removal racing uevent_show() event.
+
+Thanks to Tetsuo Handa for the debug analysis of the syzbot report [1].
+
+Fixes: c0a40097f0bc ("drivers: core: synchronize really_probe() and dev_uevent()")
+Reported-by: syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com
+Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Closes: http://lore.kernel.org/5aa5558f-90a4-4864-b1b1-5d6784c5607d@I-love.SAKURA.ne.jp [1]
+Link: http://lore.kernel.org/669073b8ea479_5fffa294c1@dwillia2-xfh.jf.intel.com.notmuch
+Cc: stable@vger.kernel.org
+Cc: Ashish Sangwan <a.sangwan@samsung.com>
+Cc: Namjae Jeon <namjae.jeon@samsung.com>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/base/core.c   |   13 ++++++++-----
+ drivers/base/module.c |    4 ++++
+ 2 files changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 2b4c0624b704..b5399262198a 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -25,6 +25,7 @@
+ #include <linux/mutex.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/netdevice.h>
++#include <linux/rcupdate.h>
+ #include <linux/sched/signal.h>
+ #include <linux/sched/mm.h>
+ #include <linux/string_helpers.h>
+@@ -2640,6 +2641,7 @@ static const char *dev_uevent_name(const struct kobject *kobj)
+ static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
+ {
+ 	const struct device *dev = kobj_to_dev(kobj);
++	struct device_driver *driver;
+ 	int retval = 0;
+ 
+ 	/* add device node properties if present */
+@@ -2668,8 +2670,12 @@ static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
+ 	if (dev->type && dev->type->name)
+ 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
+ 
+-	if (dev->driver)
+-		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
++	/* Synchronize with module_remove_driver() */
++	rcu_read_lock();
++	driver = READ_ONCE(dev->driver);
++	if (driver)
++		add_uevent_var(env, "DRIVER=%s", driver->name);
++	rcu_read_unlock();
+ 
+ 	/* Add common DT information about the device */
+ 	of_device_uevent(dev, env);
+@@ -2739,11 +2745,8 @@ static ssize_t uevent_show(struct device *dev, struct device_attribute *attr,
+ 	if (!env)
+ 		return -ENOMEM;
+ 
+-	/* Synchronize with really_probe() */
+-	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
+-	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
+ 
+diff --git a/drivers/base/module.c b/drivers/base/module.c
+index a1b55da07127..b0b79b9c189d 100644
+--- a/drivers/base/module.c
++++ b/drivers/base/module.c
+@@ -7,6 +7,7 @@
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
++#include <linux/rcupdate.h>
+ #include "base.h"
+ 
+ static char *make_driver_name(struct device_driver *drv)
+@@ -97,6 +98,9 @@ void module_remove_driver(struct device_driver *drv)
+ 	if (!drv)
+ 		return;
+ 
++	/* Synchronize with dev_uevent() */
++	synchronize_rcu();
++
+ 	sysfs_remove_link(&drv->p->kobj, "module");
+ 
+ 	if (drv->owner)
 
 
