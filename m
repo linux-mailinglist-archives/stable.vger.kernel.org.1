@@ -1,198 +1,215 @@
-Return-Path: <stable+bounces-59180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C664D92F6B8
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 10:11:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E5F92F7CE
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 11:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17651F2162B
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 08:11:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A52BB20E89
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 09:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477AB13D8BA;
-	Fri, 12 Jul 2024 08:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24710140E50;
+	Fri, 12 Jul 2024 09:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="nmTW7MVZ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="QVl3ekrY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7C413D899
-	for <stable@vger.kernel.org>; Fri, 12 Jul 2024 08:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BB11422B4;
+	Fri, 12 Jul 2024 09:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720771865; cv=none; b=iJDp/VXHAps6rMAf6yNDYlwvfbTzJImyOq8whS2YhmbphiQi8bUZAr7vVxWsKE6i1PTG85XAdpY/LS1UAbjEnLTcJ4j2sWdztcZtiYDKm2scGpOKtEczX99dgWbY3xv5cH7SPx4l6XOgmABmKiLR03+1xELFCQfqExvrxgLVQkQ=
+	t=1720776011; cv=none; b=rBh/lJ3yJFApm/A79KdSmWdq70u1KBqdzJN/Vmaib0YJHYpUkFjagk/pbSGPkdPDUFfvmfDLbypbDs32jg6rP1qQ3CRt+vuNPJMf5cDzIRgiUU16dPxVhjf5/jrp1FWBfEsHNwbxlLx1JkDDtsc2d79yI/e91O7xmBHqS9BSScw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720771865; c=relaxed/simple;
-	bh=i1+qZclYiOIInwUHzr+r2Hd+CoX3xcH06uERIYaiPJc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mOUne/0AUX+jeRKd6FpX6OUyTTvkmKJo2Af8ssDxw+FMGXU/Eq5cCG8n2ESJxIOuO4ctD8tJEHWafiEPNJIc1qkBCrp4fVNLNXFf+/Pm99Dy4VGDNe5a2X1zvmwIi+dSuG/+c8QJXqbr1M2BiiXzbd8mM0P/mxQR23wwL+oIwdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=nmTW7MVZ; arc=none smtp.client-ip=99.78.197.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1720771863; x=1752307863;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wpPd6LiFf6ZQVqiwLNKMA9gLj8OXIYXSqFUGbY2xP2Q=;
-  b=nmTW7MVZR6FjHpS2nQ+snbyRIv/tMEgbeNCVbypHPjvl7lXBVBLRxhZX
-   MlNyuM/xLjJBxObs2F7VHsI4UvGadSl6t02fT+30AheRVYUSBjQjLGID8
-   ZpQr+CUd/SWE7yxHKarx2bTRKK6motYrGAbT/gpoHA/BWlBuu4e0ycBlp
-   8=;
-X-IronPort-AV: E=Sophos;i="6.09,202,1716249600"; 
-   d="scan'208";a="105128984"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2024 08:10:58 +0000
-Received: from EX19MTAUEA002.ant.amazon.com [10.0.44.209:20673]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.23.255:2525] with esmtp (Farcaster)
- id c2839147-7647-426e-af02-0585773b0ade; Fri, 12 Jul 2024 08:10:58 +0000 (UTC)
-X-Farcaster-Flow-ID: c2839147-7647-426e-af02-0585773b0ade
-Received: from EX19EXOUEA001.ant.amazon.com (10.252.134.47) by
- EX19MTAUEA002.ant.amazon.com (10.252.134.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Fri, 12 Jul 2024 08:10:58 +0000
-Received: from EX19MTAUEA001.ant.amazon.com (10.252.134.203) by
- EX19EXOUEA001.ant.amazon.com (10.252.134.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Fri, 12 Jul 2024 08:10:58 +0000
-Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com
- (10.253.65.58) by mail-relay.amazon.com (10.252.134.102) with Microsoft SMTP
- Server id 15.2.1258.34 via Frontend Transport; Fri, 12 Jul 2024 08:10:58
- +0000
-Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
-	id B341420D54; Fri, 12 Jul 2024 08:10:57 +0000 (UTC)
-From: Hagar Hemdan <hagarhem@amazon.com>
-To:
-CC: <stable@vger.kernel.org>, felix <fuzhen5@huawei.com>, Trond Myklebust
-	<trond.myklebust@hammerspace.com>, Hagar Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 5.4] SUNRPC: Fix RPC client cleaned up the freed pipefs dentries
-Date: Fri, 12 Jul 2024 08:10:56 +0000
-Message-ID: <20240712081056.12721-1-hagarhem@amazon.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1720776011; c=relaxed/simple;
+	bh=JFV3wuE42s862gFMz1W1mKhz2VN8ZG4mVI/AHJKGWFI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jd+ltJR5x8DN+5JJqXeDqE701J5NqWex5XPpOC9vksh4l0+lJWwQFN+CDRWHe6YuB2cYlQXgxHvUo2EiyotWJFPcda6StxQxxwMBSRxkQu8XtDdZZoAbTiqKpKrNHMpKK6R9eDz/ZK9vG6KMVZNTl1dD9E//aIBX3Pb9TaPhqLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=QVl3ekrY; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=CV+7c2KCoiFZRjgIBxG8BPV9ZzjPkMf+tPSeCNTaUYY=; b=QVl3ekrYNZ1CuEcNgpGSUVyyy1
+	z7rXUCBm+Y7yVtn4dEZ2OtNNiZDMaWe8LShWXyksLVQJYcbI0DGvdRZTOwHUSg2s3aBG+LM+Zh/db
+	yqQ9Ze4dSG6yM4A/KijzF4sj/nFzVVLjRMSaXKk5OEAYvkRzlTvjMZ5CG3kXpxImtUEiBvTsAcLPq
+	rjtFbWVWGURSYkJUeQ2QtopkFYfzAE5JAiVhuWC/FiyMiEWA/HlXd7wQnYZyeusMpUlsEz8jYnbow
+	JboWDKr5vGJAPtE+YtHQBXihXc4dvBMJWSovzPHtI7FFTlmIAlZAC4rb7qbthIYMphKJmwvnFgnOw
+	HGY0tVsA==;
+Received: from [84.69.19.168] (helo=[192.168.0.101])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1sSCRM-00EDWr-OU; Fri, 12 Jul 2024 11:19:44 +0200
+Message-ID: <916e4781-54b5-417a-be22-499739e4d818@igalia.com>
+Date: Fri, 12 Jul 2024 10:19:43 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm/numa_balancing: Teach mpol_to_str about the
+ balancing mode
+To: "Huang, Ying" <ying.huang@intel.com>, Tvrtko Ursulin
+ <tursulin@igalia.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
+ Mel Gorman <mgorman@suse.de>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Rik van Riel <riel@surriel.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Dave Hansen <dave.hansen@intel.com>, Andi Kleen <ak@linux.intel.com>,
+ Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
+ stable@vger.kernel.org
+References: <20240708075632.95857-1-tursulin@igalia.com>
+ <87ttgzaxzi.fsf@yhuang6-desk2.ccr.corp.intel.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <87ttgzaxzi.fsf@yhuang6-desk2.ccr.corp.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: felix <fuzhen5@huawei.com>
 
-[ Upstream commit bfca5fb4e97c46503ddfc582335917b0cc228264 ]
+On 09/07/2024 07:19, Huang, Ying wrote:
+> Tvrtko Ursulin <tursulin@igalia.com> writes:
+> 
+>> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>>
+>> Since balancing mode was added in
+>> bda420b98505 ("numa balancing: migrate on fault among multiple bound nodes"),
+>> it was possible to set this mode but it wouldn't be shown in
+>> /proc/<pid>/numa_maps since there was no support for it in the
+>> mpol_to_str() helper.
+>>
+>> Furthermore, because the balancing mode sets the MPOL_F_MORON flag, it
+>> would be displayed as 'default' due a workaround introduced a few years
+>> earlier in
+>> 8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in numa_maps").
+>>
+>> To tidy this up we implement two changes:
+>>
+>> Replace the MPOL_F_MORON check by pointer comparison against the
+>> preferred_node_policy array. By doing this we generalise the current
+>> special casing and replace the incorrect 'default' with the correct
+>> 'bind' for the mode.
+>>
+>> Secondly, we add a string representation and corresponding handling for
+>> the MPOL_F_NUMA_BALANCING flag.
+>>
+>> With the two changes together we start showing the balancing flag when it
+>> is set and therefore complete the fix.
+>>
+>> Representation format chosen is to separate multiple flags with vertical
+>> bars, following what existed long time ago in kernel 2.6.25. But as
+>> between then and now there wasn't a way to display multiple flags, this
+>> patch does not change the format in practice.
+>>
+>> Some /proc/<pid>/numa_maps output examples:
+>>
+>>   555559580000 bind=balancing:0-1,3 file=...
+>>   555585800000 bind=balancing|static:0,2 file=...
+>>   555635240000 prefer=relative:0 file=
+>>
+>> v2:
+>>   * Fully fix by introducing MPOL_F_KERNEL.
+>>
+>> v3:
+>>   * Abandoned the MPOL_F_KERNEL approach in favour of pointer comparisons.
+>>   * Removed lookup generalisation for easier backporting.
+>>   * Replaced commas as separator with vertical bars.
+>>   * Added a few more words about the string format in the commit message.
+>>
+>> v4:
+>>   * Use is_power_of_2.
+>>   * Use ARRAY_SIZE and update recommended buffer size for two flags.
+>>
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>> Fixes: bda420b98505 ("numa balancing: migrate on fault among multiple bound nodes")
+>> References: 8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in numa_maps")
+>> Cc: Huang Ying <ying.huang@intel.com>
+>> Cc: Mel Gorman <mgorman@suse.de>
+>> Cc: Peter Zijlstra <peterz@infradead.org>
+>> Cc: Ingo Molnar <mingo@redhat.com>
+>> Cc: Rik van Riel <riel@surriel.com>
+>> Cc: Johannes Weiner <hannes@cmpxchg.org>
+>> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+>> Cc: Dave Hansen <dave.hansen@intel.com>
+>> Cc: Andi Kleen <ak@linux.intel.com>
+>> Cc: Michal Hocko <mhocko@suse.com>
+>> Cc: David Rientjes <rientjes@google.com>
+>> Cc: <stable@vger.kernel.org> # v5.12+
+> 
+> LGTM, Thanks!
+> 
+> Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
 
-RPC client pipefs dentries cleanup is in separated rpc_remove_pipedir()
-workqueue,which takes care about pipefs superblock locking.
-In some special scenarios, when kernel frees the pipefs sb of the
-current client and immediately alloctes a new pipefs sb,
-rpc_remove_pipedir function would misjudge the existence of pipefs
-sb which is not the one it used to hold. As a result,
-the rpc_remove_pipedir would clean the released freed pipefs dentries.
+Thank you!
 
-To fix this issue, rpc_remove_pipedir should check whether the
-current pipefs sb is consistent with the original pipefs sb.
+Andrew, this appears safe to pick up now as a replacement for the 
+identically named patch you previously picked up but then had to back 
+out from the queue.
 
-This error can be catched by KASAN:
-=========================================================
-[  250.497700] BUG: KASAN: slab-use-after-free in dget_parent+0x195/0x200
-[  250.498315] Read of size 4 at addr ffff88800a2ab804 by task kworker/0:18/106503
-[  250.500549] Workqueue: events rpc_free_client_work
-[  250.501001] Call Trace:
-[  250.502880]  kasan_report+0xb6/0xf0
-[  250.503209]  ? dget_parent+0x195/0x200
-[  250.503561]  dget_parent+0x195/0x200
-[  250.503897]  ? __pfx_rpc_clntdir_depopulate+0x10/0x10
-[  250.504384]  rpc_rmdir_depopulate+0x1b/0x90
-[  250.504781]  rpc_remove_client_dir+0xf5/0x150
-[  250.505195]  rpc_free_client_work+0xe4/0x230
-[  250.505598]  process_one_work+0x8ee/0x13b0
-...
-[   22.039056] Allocated by task 244:
-[   22.039390]  kasan_save_stack+0x22/0x50
-[   22.039758]  kasan_set_track+0x25/0x30
-[   22.040109]  __kasan_slab_alloc+0x59/0x70
-[   22.040487]  kmem_cache_alloc_lru+0xf0/0x240
-[   22.040889]  __d_alloc+0x31/0x8e0
-[   22.041207]  d_alloc+0x44/0x1f0
-[   22.041514]  __rpc_lookup_create_exclusive+0x11c/0x140
-[   22.041987]  rpc_mkdir_populate.constprop.0+0x5f/0x110
-[   22.042459]  rpc_create_client_dir+0x34/0x150
-[   22.042874]  rpc_setup_pipedir_sb+0x102/0x1c0
-[   22.043284]  rpc_client_register+0x136/0x4e0
-[   22.043689]  rpc_new_client+0x911/0x1020
-[   22.044057]  rpc_create_xprt+0xcb/0x370
-[   22.044417]  rpc_create+0x36b/0x6c0
-...
-[   22.049524] Freed by task 0:
-[   22.049803]  kasan_save_stack+0x22/0x50
-[   22.050165]  kasan_set_track+0x25/0x30
-[   22.050520]  kasan_save_free_info+0x2b/0x50
-[   22.050921]  __kasan_slab_free+0x10e/0x1a0
-[   22.051306]  kmem_cache_free+0xa5/0x390
-[   22.051667]  rcu_core+0x62c/0x1930
-[   22.051995]  __do_softirq+0x165/0x52a
-[   22.052347]
-[   22.052503] Last potentially related work creation:
-[   22.052952]  kasan_save_stack+0x22/0x50
-[   22.053313]  __kasan_record_aux_stack+0x8e/0xa0
-[   22.053739]  __call_rcu_common.constprop.0+0x6b/0x8b0
-[   22.054209]  dentry_free+0xb2/0x140
-[   22.054540]  __dentry_kill+0x3be/0x540
-[   22.054900]  shrink_dentry_list+0x199/0x510
-[   22.055293]  shrink_dcache_parent+0x190/0x240
-[   22.055703]  do_one_tree+0x11/0x40
-[   22.056028]  shrink_dcache_for_umount+0x61/0x140
-[   22.056461]  generic_shutdown_super+0x70/0x590
-[   22.056879]  kill_anon_super+0x3a/0x60
-[   22.057234]  rpc_kill_sb+0x121/0x200
+Thanks!
 
-Fixes: 0157d021d23a ("SUNRPC: handle RPC client pipefs dentries by network namespace aware routines")
-Signed-off-by: felix <fuzhen5@huawei.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
----
- include/linux/sunrpc/clnt.h | 1 +
- net/sunrpc/clnt.c           | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+Tvrtko
 
-diff --git a/include/linux/sunrpc/clnt.h b/include/linux/sunrpc/clnt.h
-index 18d4cf2d637b..db22a87f3b0a 100644
---- a/include/linux/sunrpc/clnt.h
-+++ b/include/linux/sunrpc/clnt.h
-@@ -73,6 +73,7 @@ struct rpc_clnt {
- #endif
- 	struct rpc_xprt_iter	cl_xpi;
- 	const struct cred	*cl_cred;
-+	struct super_block *pipefs_sb;
- };
- 
- /*
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index dc3226edf22f..2e08876bf856 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -113,7 +113,8 @@ static void rpc_clnt_remove_pipedir(struct rpc_clnt *clnt)
- 
- 	pipefs_sb = rpc_get_sb_net(net);
- 	if (pipefs_sb) {
--		__rpc_clnt_remove_pipedir(clnt);
-+		if (pipefs_sb == clnt->pipefs_sb)
-+			__rpc_clnt_remove_pipedir(clnt);
- 		rpc_put_sb_net(net);
- 	}
- }
-@@ -153,6 +154,8 @@ rpc_setup_pipedir(struct super_block *pipefs_sb, struct rpc_clnt *clnt)
- {
- 	struct dentry *dentry;
- 
-+	clnt->pipefs_sb = pipefs_sb;
-+
- 	if (clnt->cl_program->pipe_dir_name != NULL) {
- 		dentry = rpc_setup_pipedir_sb(pipefs_sb, clnt);
- 		if (IS_ERR(dentry))
--- 
-2.40.1
-
+>> ---
+>>   mm/mempolicy.c | 18 ++++++++++++++----
+>>   1 file changed, 14 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+>> index aec756ae5637..a1bf9aa15c33 100644
+>> --- a/mm/mempolicy.c
+>> +++ b/mm/mempolicy.c
+>> @@ -3293,8 +3293,9 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
+>>    * @pol:  pointer to mempolicy to be formatted
+>>    *
+>>    * Convert @pol into a string.  If @buffer is too short, truncate the string.
+>> - * Recommend a @maxlen of at least 32 for the longest mode, "interleave", the
+>> - * longest flag, "relative", and to display at least a few node ids.
+>> + * Recommend a @maxlen of at least 51 for the longest mode, "weighted
+>> + * interleave", plus the longest flag flags, "relative|balancing", and to
+>> + * display at least a few node ids.
+>>    */
+>>   void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
+>>   {
+>> @@ -3303,7 +3304,10 @@ void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
+>>   	unsigned short mode = MPOL_DEFAULT;
+>>   	unsigned short flags = 0;
+>>   
+>> -	if (pol && pol != &default_policy && !(pol->flags & MPOL_F_MORON)) {
+>> +	if (pol &&
+>> +	    pol != &default_policy &&
+>> +	    !(pol >= &preferred_node_policy[0] &&
+>> +	      pol <= &preferred_node_policy[ARRAY_SIZE(preferred_node_policy) - 1])) {
+>>   		mode = pol->mode;
+>>   		flags = pol->flags;
+>>   	}
+>> @@ -3331,12 +3335,18 @@ void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
+>>   		p += snprintf(p, buffer + maxlen - p, "=");
+>>   
+>>   		/*
+>> -		 * Currently, the only defined flags are mutually exclusive
+>> +		 * Static and relative are mutually exclusive.
+>>   		 */
+>>   		if (flags & MPOL_F_STATIC_NODES)
+>>   			p += snprintf(p, buffer + maxlen - p, "static");
+>>   		else if (flags & MPOL_F_RELATIVE_NODES)
+>>   			p += snprintf(p, buffer + maxlen - p, "relative");
+>> +
+>> +		if (flags & MPOL_F_NUMA_BALANCING) {
+>> +			if (!is_power_of_2(flags & MPOL_MODE_FLAGS))
+>> +				p += snprintf(p, buffer + maxlen - p, "|");
+>> +			p += snprintf(p, buffer + maxlen - p, "balancing");
+>> +		}
+>>   	}
+>>   
+>>   	if (!nodes_empty(nodes))
 
