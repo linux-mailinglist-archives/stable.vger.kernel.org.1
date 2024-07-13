@@ -1,146 +1,264 @@
-Return-Path: <stable+bounces-59229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5060593040B
-	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 08:06:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EC393056E
+	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 13:48:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 055781F234DD
-	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 06:06:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 490711C20F83
+	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 11:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981FA20328;
-	Sat, 13 Jul 2024 06:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0314649633;
+	Sat, 13 Jul 2024 11:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="n5mrmF0y"
 X-Original-To: stable@vger.kernel.org
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26BB1BC3F;
-	Sat, 13 Jul 2024 06:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743DE2F37
+	for <stable@vger.kernel.org>; Sat, 13 Jul 2024 11:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720850756; cv=none; b=ib9zF/v70PMmmTXnv5fd/l1t6SxpnkHqlnkieR55sH9F/V4h+77Sg+4QJFF+jPxatg56QWGH0Rd4HKS9dtDcS6mPGUK/LQRiIFM9NYDyzpW4ZpWub2OLiX50Ui2MxAVWrPsDjfZ+pIxJbrhY8muT+UcqAtoBjgiQE3yoDRXzWA4=
+	t=1720871277; cv=none; b=BBTyWLR7ak0+G29EiuKUNgzTSj/M76sh0xUHLFYtr9CKwKRo0aZVQZC4Hvx4d7JnGnfLtMlpUA94ZzI1ota3u5keRWWBpXDS2+8TLgQTIMKK3z6/Nn3PILjkdlPpWiEw9T5Iob4HEBQxnuCO91cKtWhe0R4iNEn72eg0Qa2y+6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720850756; c=relaxed/simple;
-	bh=K2A3fNtbN6zhjfJlhkdlCGhsFi26ZBg/y12J88LRJnc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z+IvypcSsqPVAbEpThqy4ATzQYWwyyM4nx+IoVR1WbQ/GB1B6CNt3XYO9FpqR8WPKzC4kkEW4Yvkb2JGxeMuirvjXbO5aLWP4mrSnYbSG4ONEh6u3UFE13pzxj+gA3J+NGIC2nEDlAajpDlSNj7jH5N2z+gykgH83+g/QsKNtOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from fsav115.sakura.ne.jp (fsav115.sakura.ne.jp [27.133.134.242])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 46D65P7C049264;
-	Sat, 13 Jul 2024 15:05:25 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav115.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav115.sakura.ne.jp);
- Sat, 13 Jul 2024 15:05:25 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav115.sakura.ne.jp)
-Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 46D65Ocg049261
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Sat, 13 Jul 2024 15:05:25 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <0b34da9e-c13f-4fab-a67d-244b0ebba394@I-love.SAKURA.ne.jp>
-Date: Sat, 13 Jul 2024 15:05:24 +0900
+	s=arc-20240116; t=1720871277; c=relaxed/simple;
+	bh=5WvmWXDTlTqUEU/wCMOlpy5sr9n9SMsPEPPRJa1LetY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aP1PdZ9xpdrG5It520Alnghnv/heEDAHn1zILKrGRqlEf17/k0WCEpoKZEFYXi9koMsZNq91hLBFCn+qOj6XGaS4kZXkiIZsUglPhWSkvb13PR3/aUevB/3YotHyesoajUE2/10Bs30NV3BvbIna/PO78Ve+g5A48DD17NkY62g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=n5mrmF0y; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 6ACBD3F169
+	for <stable@vger.kernel.org>; Sat, 13 Jul 2024 11:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1720871272;
+	bh=Xeyb4xFbMHwVNWqXqt5P/olU71cDvQcbJ6W6oSqvzIU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=n5mrmF0yrY6qd4q+hY2Ttti/hEpw3WJ4iiWkoJlXiBrmm5RRx4HXFMxCPd3Zsicgj
+	 UhPJ+xWrNkzByhWAUlxP9H5ZTCS5EZxRIaS/16BFGIdxhdDo4IofOsLgI7hRiQoeGp
+	 ba0B2JhoQ5dPRsgebJQ06BfCi+pasgvB1ysL241Yeh9oBOk6VeC4sbDP7n+MKLhK1A
+	 DZp0Y4Cst/8ofVYoQZf4MW4ngVtjTRA5c5VLlDTchaRxdmiaXlItQrf3R0ejpKqyNk
+	 sfySLh/yE4STA4skc7Ck9ycV8HTEMTJv63Yj6XHd3u1MBxsqVJkeskwTauZSuZhNVc
+	 23wHmR5tvA/Cg==
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-70b09456066so2188160b3a.0
+        for <stable@vger.kernel.org>; Sat, 13 Jul 2024 04:47:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720871271; x=1721476071;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xeyb4xFbMHwVNWqXqt5P/olU71cDvQcbJ6W6oSqvzIU=;
+        b=spytDz9KZ6Kgvh428V91ma4SCJa5ZEgYJH845lInX5QdiS0zs7ktcEbdz07qLqlp2C
+         JIo16VlxnJFZVILAUCemh7WgjF+hvLd9VZY9lDygnjgxkLIk1ZyvU8AB5AWmwxIIYj/r
+         dnJsIYH+PnbIngM9QVQFpClBohmYvni8meHN7kFSPaErDEPqJ2ao4XUymxXia8lPvvm4
+         EXeTbdZHU3QgRDha3hpMwJMfhZ6oavJVYwGhyMP9cXexyI1DMf3Kh6zeXywwUqOkZVP8
+         8rpVM0DF9SEY2sGrJC0IbWaj4dU9UknTxvkSBoNZsmtj/qpEaqOKtwO7UsMzFTUtEJUG
+         0stw==
+X-Forwarded-Encrypted: i=1; AJvYcCWeNArBtFMK/JHzg7eiuV5kmxifh2wAhqfRnrTC6IDXGyHKPypmmyjH2gKgQLfhhyJQooFvAbT569NvYr0hClNQPRemqnYu
+X-Gm-Message-State: AOJu0YzS4Jy1K6YNjs/GXXdW8wvXAU5uPXXpLD7/duTYCy9NKjQPQu92
+	NpocnZDMhRE2i/0ed59ByZMv7sntxTMF76aVRtAxpUBfyshOn9h3KaTocSWEDcg8FCIlcJCyChZ
+	JiTeOdtEuQOU85hOAbIUgT/8rygHF4OPX/2aHc1P/SC+ElWPh0qP2OYjUKFk2hhRUQSW4cA==
+X-Received: by 2002:a05:6a21:6d96:b0:1c3:aec6:7663 with SMTP id adf61e73a8af0-1c3aec67f87mr10134569637.39.1720871270720;
+        Sat, 13 Jul 2024 04:47:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHJEqTBDsaW5/fz/vuPt5hrrgdyBom73QfckDVmukJFq+P58RO+em/bIhNecZyr9Lk5UNXvKg==
+X-Received: by 2002:a05:6a21:6d96:b0:1c3:aec6:7663 with SMTP id adf61e73a8af0-1c3aec67f87mr10134555637.39.1720871270236;
+        Sat, 13 Jul 2024 04:47:50 -0700 (PDT)
+Received: from chengendu.. (2001-b011-381c-1f42-e6d2-b6a4-92e8-5a32.dynamic-ip6.hinet.net. [2001:b011:381c:1f42:e6d2:b6a4:92e8:5a32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fc0bb9a364sm9230375ad.64.2024.07.13.04.47.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Jul 2024 04:47:49 -0700 (PDT)
+From: Chengen Du <chengen.du@canonical.com>
+To: willemdebruijn.kernel@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kaber@trash.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengen Du <chengen.du@canonical.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v10] af_packet: Handle outgoing VLAN packets without hardware offloading
+Date: Sat, 13 Jul 2024 19:47:35 +0800
+Message-ID: <20240713114735.62360-1-chengen.du@canonical.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] driver core: Fix uevent_show() vs driver detach race
-To: Dan Williams <dan.j.williams@intel.com>, gregkh@linuxfoundation.org
-Cc: syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com,
-        stable@vger.kernel.org, Ashish Sangwan <a.sangwan@samsung.com>,
-        Namjae Jeon <namjae.jeon@samsung.com>,
-        Dirk Behme <dirk.behme@de.bosch.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-cxl@vger.kernel.org
-References: <172081332794.577428.9738802016494057132.stgit@dwillia2-xfh.jf.intel.com>
- <dfcb0456-dd75-4b9f-9cc8-f0658cd9ce29@I-love.SAKURA.ne.jp>
- <6691c0f8da1dd_8e85329468@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Language: en-US
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <6691c0f8da1dd_8e85329468@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2024/07/13 8:49, Dan Williams wrote:
->>> +	/* Synchronize with dev_uevent() */
->>> +	synchronize_rcu();
->>> +
->>
->> this synchronize_rcu(), in order to make sure that
->> READ_ONCE(dev->driver) in dev_uevent() observes NULL?
-> 
-> No, this synchronize_rcu() is to make sure that if dev_uevent() wins the
-> race and observes that dev->driver is not NULL that it is still safe to
-> dereference that result because the 'struct device_driver' object is
-> still live.
+The issue initially stems from libpcap. The ethertype will be overwritten
+as the VLAN TPID if the network interface lacks hardware VLAN offloading.
+In the outbound packet path, if hardware VLAN offloading is unavailable,
+the VLAN tag is inserted into the payload but then cleared from the sk_buff
+struct. Consequently, this can lead to a false negative when checking for
+the presence of a VLAN tag, causing the packet sniffing outcome to lack
+VLAN tag information (i.e., TCI-TPID). As a result, the packet capturing
+tool may be unable to parse packets as expected.
 
-I can't catch what the pair of rcu_read_lock()/rcu_read_unlock() in dev_uevent()
-and synchronize_rcu() in module_remove_driver() is for.
+The TCI-TPID is missing because the prb_fill_vlan_info() function does not
+modify the tp_vlan_tci/tp_vlan_tpid values, as the information is in the
+payload and not in the sk_buff struct. The skb_vlan_tag_present() function
+only checks vlan_all in the sk_buff struct. In cooked mode, the L2 header
+is stripped, preventing the packet capturing tool from determining the
+correct TCI-TPID value. Additionally, the protocol in SLL is incorrect,
+which means the packet capturing tool cannot parse the L3 header correctly.
 
-I think that the below race is possible.
-Please explain how "/* Synchronize with module_remove_driver() */" works.
+Link: https://github.com/the-tcpdump-group/libpcap/issues/1105
+Link: https://lore.kernel.org/netdev/20240520070348.26725-1-chengen.du@canonical.com/T/#u
+Fixes: 393e52e33c6c ("packet: deliver VLAN TCI to userspace")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengen Du <chengen.du@canonical.com>
+---
+ net/packet/af_packet.c | 86 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 84 insertions(+), 2 deletions(-)
 
-  Thread1:                Thread2:
-
-  static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
-  {
-  	const struct device *dev = kobj_to_dev(kobj);
-  	struct device_driver *driver;
-  	int retval = 0;
-  
-  	(...snipped...)
-  
-  	if (dev->type && dev->type->name)
-  		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
-  
-                          void module_remove_driver(struct device_driver *drv)
-                          {
-                          	struct module_kobject *mk = NULL;
-                          	char *driver_name;
-                          
-                          	if (!drv)
-                          		return;
-                          
-                          	/* Synchronize with dev_uevent() */
-                          	synchronize_rcu(); // <= This can be no-op because rcu_read_lock() in dev_uevent() is not yet called.
-  
-  	// <= At this moment Thread1 can sleep for arbitrary duration due to preemption, can't it?
-  
-  	/* Synchronize with module_remove_driver() */
-  	rcu_read_lock(); // <= What does this RCU want to synchronize with?
-  
-                          	sysfs_remove_link(&drv->p->kobj, "module");
-                          
-                          	if (drv->owner)
-                          		mk = &drv->owner->mkobj;
-                          	else if (drv->p->mkobj)
-                          		mk = drv->p->mkobj;
-                          	if (mk && mk->drivers_dir) {
-                          		driver_name = make_driver_name(drv);
-                          		if (driver_name) {
-                          			sysfs_remove_link(mk->drivers_dir, driver_name);
-                          			kfree(driver_name);
-                          		}
-                          	}
-                          }
-
-  	driver = READ_ONCE(dev->driver); // <= module_remove_driver() can be already completed even with RCU protection, can't it?
-  	if (driver)
-  		add_uevent_var(env, "DRIVER=%s", driver->name);
-  	rcu_read_unlock();
-  
-  	/* Add common DT information about the device */
-  	of_device_uevent(dev, env);
-  
-  	(..snipped...)
-  }
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index ea3ebc160e25..4692a9ef110b 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -538,6 +538,61 @@ static void *packet_current_frame(struct packet_sock *po,
+ 	return packet_lookup_frame(po, rb, rb->head, status);
+ }
+ 
++static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
++{
++	u8 *skb_orig_data = skb->data;
++	int skb_orig_len = skb->len;
++	struct vlan_hdr vhdr, *vh;
++	unsigned int header_len;
++
++	if (!dev)
++		return 0;
++
++	/* In the SOCK_DGRAM scenario, skb data starts at the network
++	 * protocol, which is after the VLAN headers. The outer VLAN
++	 * header is at the hard_header_len offset in non-variable
++	 * length link layer headers. If it's a VLAN device, the
++	 * min_header_len should be used to exclude the VLAN header
++	 * size.
++	 */
++	if (dev->min_header_len == dev->hard_header_len)
++		header_len = dev->hard_header_len;
++	else if (is_vlan_dev(dev))
++		header_len = dev->min_header_len;
++	else
++		return 0;
++
++	skb_push(skb, skb->data - skb_mac_header(skb));
++	vh = skb_header_pointer(skb, header_len, sizeof(vhdr), &vhdr);
++	if (skb_orig_data != skb->data) {
++		skb->data = skb_orig_data;
++		skb->len = skb_orig_len;
++	}
++	if (unlikely(!vh))
++		return 0;
++
++	return ntohs(vh->h_vlan_TCI);
++}
++
++static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
++{
++	__be16 proto = skb->protocol;
++
++	if (unlikely(eth_type_vlan(proto))) {
++		u8 *skb_orig_data = skb->data;
++		int skb_orig_len = skb->len;
++
++		skb_push(skb, skb->data - skb_mac_header(skb));
++		proto = __vlan_get_protocol(skb, proto, NULL);
++		if (skb_orig_data != skb->data) {
++			skb->data = skb_orig_data;
++			skb->len = skb_orig_len;
++		}
++	}
++
++	return proto;
++}
++
+ static void prb_del_retire_blk_timer(struct tpacket_kbdq_core *pkc)
+ {
+ 	del_timer_sync(&pkc->retire_blk_timer);
+@@ -1007,10 +1062,16 @@ static void prb_clear_rxhash(struct tpacket_kbdq_core *pkc,
+ static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
+ 			struct tpacket3_hdr *ppd)
+ {
++	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
++
+ 	if (skb_vlan_tag_present(pkc->skb)) {
+ 		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
+ 		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
+ 		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
++		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
++		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
++		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+ 	} else {
+ 		ppd->hv1.tp_vlan_tci = 0;
+ 		ppd->hv1.tp_vlan_tpid = 0;
+@@ -2428,6 +2489,10 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+ 			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
+ 			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
+ 			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++		} else if (unlikely(sk->sk_type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
++			h.h2->tp_vlan_tci = vlan_get_tci(skb, skb->dev);
++			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
++			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+ 		} else {
+ 			h.h2->tp_vlan_tci = 0;
+ 			h.h2->tp_vlan_tpid = 0;
+@@ -2457,7 +2522,8 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	sll->sll_halen = dev_parse_header(skb, sll->sll_addr);
+ 	sll->sll_family = AF_PACKET;
+ 	sll->sll_hatype = dev->type;
+-	sll->sll_protocol = skb->protocol;
++	sll->sll_protocol = (sk->sk_type == SOCK_DGRAM) ?
++		vlan_get_protocol_dgram(skb) : skb->protocol;
+ 	sll->sll_pkttype = skb->pkt_type;
+ 	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
+ 		sll->sll_ifindex = orig_dev->ifindex;
+@@ -3482,7 +3548,8 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 		/* Original length was stored in sockaddr_ll fields */
+ 		origlen = PACKET_SKB_CB(skb)->sa.origlen;
+ 		sll->sll_family = AF_PACKET;
+-		sll->sll_protocol = skb->protocol;
++		sll->sll_protocol = (sock->type == SOCK_DGRAM) ?
++			vlan_get_protocol_dgram(skb) : skb->protocol;
+ 	}
+ 
+ 	sock_recv_cmsgs(msg, sk, skb);
+@@ -3539,6 +3606,21 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
+ 			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
+ 			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++		} else if (unlikely(sock->type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
++			struct sockaddr_ll *sll = &PACKET_SKB_CB(skb)->sa.ll;
++			struct net_device *dev;
++
++			rcu_read_lock();
++			dev = dev_get_by_index_rcu(sock_net(sk), sll->sll_ifindex);
++			if (dev) {
++				aux.tp_vlan_tci = vlan_get_tci(skb, dev);
++				aux.tp_vlan_tpid = ntohs(skb->protocol);
++				aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++			} else {
++				aux.tp_vlan_tci = 0;
++				aux.tp_vlan_tpid = 0;
++			}
++			rcu_read_unlock();
+ 		} else {
+ 			aux.tp_vlan_tci = 0;
+ 			aux.tp_vlan_tpid = 0;
+-- 
+2.43.0
 
 
