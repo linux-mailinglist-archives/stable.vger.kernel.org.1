@@ -1,264 +1,143 @@
-Return-Path: <stable+bounces-59230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EC393056E
-	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 13:48:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCED39305A3
+	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 14:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 490711C20F83
-	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 11:48:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 708091F21CEF
+	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 12:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0314649633;
-	Sat, 13 Jul 2024 11:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE82E12FB2A;
+	Sat, 13 Jul 2024 12:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="n5mrmF0y"
+	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="iB4SSS82"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743DE2F37
-	for <stable@vger.kernel.org>; Sat, 13 Jul 2024 11:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61813219F
+	for <stable@vger.kernel.org>; Sat, 13 Jul 2024 12:47:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720871277; cv=none; b=BBTyWLR7ak0+G29EiuKUNgzTSj/M76sh0xUHLFYtr9CKwKRo0aZVQZC4Hvx4d7JnGnfLtMlpUA94ZzI1ota3u5keRWWBpXDS2+8TLgQTIMKK3z6/Nn3PILjkdlPpWiEw9T5Iob4HEBQxnuCO91cKtWhe0R4iNEn72eg0Qa2y+6E=
+	t=1720874844; cv=none; b=RlJxpVPBEjdO7FYJKjVtYIKB8843iUQK2sADsHseLZtxzhEHJWTCBHH1D59w/Bud7oitan/1gxAFZByRUSV6Ra4e3DRGsqIvOErdl4BhbCihi6FQ7MT+GwF6fw6wRykXi3a9k8tbX7tdZI7J5qxYtFBNxSq4I5owuWLQX81XgDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720871277; c=relaxed/simple;
-	bh=5WvmWXDTlTqUEU/wCMOlpy5sr9n9SMsPEPPRJa1LetY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aP1PdZ9xpdrG5It520Alnghnv/heEDAHn1zILKrGRqlEf17/k0WCEpoKZEFYXi9koMsZNq91hLBFCn+qOj6XGaS4kZXkiIZsUglPhWSkvb13PR3/aUevB/3YotHyesoajUE2/10Bs30NV3BvbIna/PO78Ve+g5A48DD17NkY62g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=n5mrmF0y; arc=none smtp.client-ip=185.125.188.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 6ACBD3F169
-	for <stable@vger.kernel.org>; Sat, 13 Jul 2024 11:47:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1720871272;
-	bh=Xeyb4xFbMHwVNWqXqt5P/olU71cDvQcbJ6W6oSqvzIU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
-	b=n5mrmF0yrY6qd4q+hY2Ttti/hEpw3WJ4iiWkoJlXiBrmm5RRx4HXFMxCPd3Zsicgj
-	 UhPJ+xWrNkzByhWAUlxP9H5ZTCS5EZxRIaS/16BFGIdxhdDo4IofOsLgI7hRiQoeGp
-	 ba0B2JhoQ5dPRsgebJQ06BfCi+pasgvB1ysL241Yeh9oBOk6VeC4sbDP7n+MKLhK1A
-	 DZp0Y4Cst/8ofVYoQZf4MW4ngVtjTRA5c5VLlDTchaRxdmiaXlItQrf3R0ejpKqyNk
-	 sfySLh/yE4STA4skc7Ck9ycV8HTEMTJv63Yj6XHd3u1MBxsqVJkeskwTauZSuZhNVc
-	 23wHmR5tvA/Cg==
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-70b09456066so2188160b3a.0
-        for <stable@vger.kernel.org>; Sat, 13 Jul 2024 04:47:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720871271; x=1721476071;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xeyb4xFbMHwVNWqXqt5P/olU71cDvQcbJ6W6oSqvzIU=;
-        b=spytDz9KZ6Kgvh428V91ma4SCJa5ZEgYJH845lInX5QdiS0zs7ktcEbdz07qLqlp2C
-         JIo16VlxnJFZVILAUCemh7WgjF+hvLd9VZY9lDygnjgxkLIk1ZyvU8AB5AWmwxIIYj/r
-         dnJsIYH+PnbIngM9QVQFpClBohmYvni8meHN7kFSPaErDEPqJ2ao4XUymxXia8lPvvm4
-         EXeTbdZHU3QgRDha3hpMwJMfhZ6oavJVYwGhyMP9cXexyI1DMf3Kh6zeXywwUqOkZVP8
-         8rpVM0DF9SEY2sGrJC0IbWaj4dU9UknTxvkSBoNZsmtj/qpEaqOKtwO7UsMzFTUtEJUG
-         0stw==
-X-Forwarded-Encrypted: i=1; AJvYcCWeNArBtFMK/JHzg7eiuV5kmxifh2wAhqfRnrTC6IDXGyHKPypmmyjH2gKgQLfhhyJQooFvAbT569NvYr0hClNQPRemqnYu
-X-Gm-Message-State: AOJu0YzS4Jy1K6YNjs/GXXdW8wvXAU5uPXXpLD7/duTYCy9NKjQPQu92
-	NpocnZDMhRE2i/0ed59ByZMv7sntxTMF76aVRtAxpUBfyshOn9h3KaTocSWEDcg8FCIlcJCyChZ
-	JiTeOdtEuQOU85hOAbIUgT/8rygHF4OPX/2aHc1P/SC+ElWPh0qP2OYjUKFk2hhRUQSW4cA==
-X-Received: by 2002:a05:6a21:6d96:b0:1c3:aec6:7663 with SMTP id adf61e73a8af0-1c3aec67f87mr10134569637.39.1720871270720;
-        Sat, 13 Jul 2024 04:47:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJEqTBDsaW5/fz/vuPt5hrrgdyBom73QfckDVmukJFq+P58RO+em/bIhNecZyr9Lk5UNXvKg==
-X-Received: by 2002:a05:6a21:6d96:b0:1c3:aec6:7663 with SMTP id adf61e73a8af0-1c3aec67f87mr10134555637.39.1720871270236;
-        Sat, 13 Jul 2024 04:47:50 -0700 (PDT)
-Received: from chengendu.. (2001-b011-381c-1f42-e6d2-b6a4-92e8-5a32.dynamic-ip6.hinet.net. [2001:b011:381c:1f42:e6d2:b6a4:92e8:5a32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fc0bb9a364sm9230375ad.64.2024.07.13.04.47.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jul 2024 04:47:49 -0700 (PDT)
-From: Chengen Du <chengen.du@canonical.com>
-To: willemdebruijn.kernel@gmail.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kaber@trash.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengen Du <chengen.du@canonical.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v10] af_packet: Handle outgoing VLAN packets without hardware offloading
-Date: Sat, 13 Jul 2024 19:47:35 +0800
-Message-ID: <20240713114735.62360-1-chengen.du@canonical.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1720874844; c=relaxed/simple;
+	bh=xZLNfkg6Nq4XTIY/Bndu/mqP9e+QUaD+KGDAB6Xqkz0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rHdp/FnW0ReTI2ul4QwwgXasUI+M8BEhWOwFNDVfblpYtEoGeQRt1wOI5Sdj/PT8u4fEHjHotlPNgLwHUtZdShMfmUhmZ5JBvUeVQ7ZyJ/BV74slPma68bzrQLOn7wq5saElT+zigbP1+xUjqI261uV2b6lU/h0Vr19zhCeNghw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=iB4SSS82; arc=none smtp.client-ip=193.222.135.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 47963 invoked from network); 13 Jul 2024 14:40:39 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1720874440; bh=xZLNfkg6Nq4XTIY/Bndu/mqP9e+QUaD+KGDAB6Xqkz0=;
+          h=Subject:To:Cc:From;
+          b=iB4SSS82aYraFWXixHvG2FD9hrUQUmU8dBCukI87ok1j7C2uUUiNJfGvpgS2HXjzt
+           AF/Pg9LgBTimUgcbFzl74csu+59Vf1rUvYrcyU6oYQM4NmDFfYDrXxeuJEqOYDyfnE
+           /m4zKBnkiByN7oCRQZWO6GAY0Lc/xyjp0VTAdfhE=
+Received: from aafe223.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.134.223])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <yukuai1@huaweicloud.com>; 13 Jul 2024 14:40:39 +0200
+Message-ID: <5d698ca4-b6a0-4567-ab6c-899b34293056@o2.pl>
+Date: Sat, 13 Jul 2024 14:40:36 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] md/raid1: set max_sectors during early return from
+ choose_slow_rdev()
+To: Yu Kuai <yukuai1@huaweicloud.com>, linux-raid@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org, Song Liu <song@kernel.org>,
+ Paul Luse <paul.e.luse@linux.intel.com>, Xiao Ni <xni@redhat.com>,
+ Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>,
+ "yukuai (C)" <yukuai3@huawei.com>
+References: <349e4894-b6ea-6bc4-b040-4a816b6960ab@huaweicloud.com>
+ <20240711202316.10775-1-mat.jonczyk@o2.pl>
+ <e9585300-1666-ca71-8684-8824fe2ddaf1@huaweicloud.com>
+Content-Language: en-GB
+From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
+ 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
+ TANkZ3QqXNX2
+In-Reply-To: <e9585300-1666-ca71-8684-8824fe2ddaf1@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-WP-MailID: 2cda0889d6b0ad5206b8d2265bcfc8ce
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [IYNR]                               
 
-The issue initially stems from libpcap. The ethertype will be overwritten
-as the VLAN TPID if the network interface lacks hardware VLAN offloading.
-In the outbound packet path, if hardware VLAN offloading is unavailable,
-the VLAN tag is inserted into the payload but then cleared from the sk_buff
-struct. Consequently, this can lead to a false negative when checking for
-the presence of a VLAN tag, causing the packet sniffing outcome to lack
-VLAN tag information (i.e., TCI-TPID). As a result, the packet capturing
-tool may be unable to parse packets as expected.
+W dniu 12.07.2024 o 03:16, Yu Kuai pisze:
+> Hi,
+>
+> 在 2024/07/12 4:23, Mateusz Jończyk 写道:
+>> Linux 6.9+ is unable to start a degraded RAID1 array with one drive,
+>> when that drive has a write-mostly flag set. During such an attempt,
+>> the following assertion in bio_split() is hit:
+>>
+[snip]
+>
+> Thanks for the patch!
+>
+> Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+>
+> BTW, do you have plans to add a new test to mdadm tests? I'll
+> pick it up if you don't, just let me know.
+>
+> Thanks,
+> Kuai
 
-The TCI-TPID is missing because the prb_fill_vlan_info() function does not
-modify the tp_vlan_tci/tp_vlan_tpid values, as the information is in the
-payload and not in the sk_buff struct. The skb_vlan_tag_present() function
-only checks vlan_all in the sk_buff struct. In cooked mode, the L2 header
-is stripped, preventing the packet capturing tool from determining the
-correct TCI-TPID value. Additionally, the protocol in SLL is incorrect,
-which means the packet capturing tool cannot parse the L3 header correctly.
+Yes, I'm working on it.
 
-Link: https://github.com/the-tcpdump-group/libpcap/issues/1105
-Link: https://lore.kernel.org/netdev/20240520070348.26725-1-chengen.du@canonical.com/T/#u
-Fixes: 393e52e33c6c ("packet: deliver VLAN TCI to userspace")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengen Du <chengen.du@canonical.com>
----
- net/packet/af_packet.c | 86 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 84 insertions(+), 2 deletions(-)
+Greetings,
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index ea3ebc160e25..4692a9ef110b 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -538,6 +538,61 @@ static void *packet_current_frame(struct packet_sock *po,
- 	return packet_lookup_frame(po, rb, rb->head, status);
- }
- 
-+static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
-+{
-+	u8 *skb_orig_data = skb->data;
-+	int skb_orig_len = skb->len;
-+	struct vlan_hdr vhdr, *vh;
-+	unsigned int header_len;
-+
-+	if (!dev)
-+		return 0;
-+
-+	/* In the SOCK_DGRAM scenario, skb data starts at the network
-+	 * protocol, which is after the VLAN headers. The outer VLAN
-+	 * header is at the hard_header_len offset in non-variable
-+	 * length link layer headers. If it's a VLAN device, the
-+	 * min_header_len should be used to exclude the VLAN header
-+	 * size.
-+	 */
-+	if (dev->min_header_len == dev->hard_header_len)
-+		header_len = dev->hard_header_len;
-+	else if (is_vlan_dev(dev))
-+		header_len = dev->min_header_len;
-+	else
-+		return 0;
-+
-+	skb_push(skb, skb->data - skb_mac_header(skb));
-+	vh = skb_header_pointer(skb, header_len, sizeof(vhdr), &vhdr);
-+	if (skb_orig_data != skb->data) {
-+		skb->data = skb_orig_data;
-+		skb->len = skb_orig_len;
-+	}
-+	if (unlikely(!vh))
-+		return 0;
-+
-+	return ntohs(vh->h_vlan_TCI);
-+}
-+
-+static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
-+{
-+	__be16 proto = skb->protocol;
-+
-+	if (unlikely(eth_type_vlan(proto))) {
-+		u8 *skb_orig_data = skb->data;
-+		int skb_orig_len = skb->len;
-+
-+		skb_push(skb, skb->data - skb_mac_header(skb));
-+		proto = __vlan_get_protocol(skb, proto, NULL);
-+		if (skb_orig_data != skb->data) {
-+			skb->data = skb_orig_data;
-+			skb->len = skb_orig_len;
-+		}
-+	}
-+
-+	return proto;
-+}
-+
- static void prb_del_retire_blk_timer(struct tpacket_kbdq_core *pkc)
- {
- 	del_timer_sync(&pkc->retire_blk_timer);
-@@ -1007,10 +1062,16 @@ static void prb_clear_rxhash(struct tpacket_kbdq_core *pkc,
- static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
- 			struct tpacket3_hdr *ppd)
- {
-+	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
-+
- 	if (skb_vlan_tag_present(pkc->skb)) {
- 		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
- 		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
- 		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
-+		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
-+		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
-+		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
- 	} else {
- 		ppd->hv1.tp_vlan_tci = 0;
- 		ppd->hv1.tp_vlan_tpid = 0;
-@@ -2428,6 +2489,10 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
- 			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
- 			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
- 			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+		} else if (unlikely(sk->sk_type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
-+			h.h2->tp_vlan_tci = vlan_get_tci(skb, skb->dev);
-+			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
-+			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
- 		} else {
- 			h.h2->tp_vlan_tci = 0;
- 			h.h2->tp_vlan_tpid = 0;
-@@ -2457,7 +2522,8 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
- 	sll->sll_halen = dev_parse_header(skb, sll->sll_addr);
- 	sll->sll_family = AF_PACKET;
- 	sll->sll_hatype = dev->type;
--	sll->sll_protocol = skb->protocol;
-+	sll->sll_protocol = (sk->sk_type == SOCK_DGRAM) ?
-+		vlan_get_protocol_dgram(skb) : skb->protocol;
- 	sll->sll_pkttype = skb->pkt_type;
- 	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
- 		sll->sll_ifindex = orig_dev->ifindex;
-@@ -3482,7 +3548,8 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 		/* Original length was stored in sockaddr_ll fields */
- 		origlen = PACKET_SKB_CB(skb)->sa.origlen;
- 		sll->sll_family = AF_PACKET;
--		sll->sll_protocol = skb->protocol;
-+		sll->sll_protocol = (sock->type == SOCK_DGRAM) ?
-+			vlan_get_protocol_dgram(skb) : skb->protocol;
- 	}
- 
- 	sock_recv_cmsgs(msg, sk, skb);
-@@ -3539,6 +3606,21 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
- 			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
- 			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+		} else if (unlikely(sock->type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
-+			struct sockaddr_ll *sll = &PACKET_SKB_CB(skb)->sa.ll;
-+			struct net_device *dev;
-+
-+			rcu_read_lock();
-+			dev = dev_get_by_index_rcu(sock_net(sk), sll->sll_ifindex);
-+			if (dev) {
-+				aux.tp_vlan_tci = vlan_get_tci(skb, dev);
-+				aux.tp_vlan_tpid = ntohs(skb->protocol);
-+				aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+			} else {
-+				aux.tp_vlan_tci = 0;
-+				aux.tp_vlan_tpid = 0;
-+			}
-+			rcu_read_unlock();
- 		} else {
- 			aux.tp_vlan_tci = 0;
- 			aux.tp_vlan_tpid = 0;
--- 
-2.43.0
+Mateusz
 
 
