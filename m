@@ -1,212 +1,272 @@
-Return-Path: <stable+bounces-59226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C0F930308
-	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 03:29:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D447D93038A
+	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 05:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F9B5B22CA7
-	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 01:29:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34BE41F21FB3
+	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 03:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B170D101C4;
-	Sat, 13 Jul 2024 01:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CE617557;
+	Sat, 13 Jul 2024 03:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="N8tu0RX9"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="AAMItSQN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F17DF59;
-	Sat, 13 Jul 2024 01:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E681870;
+	Sat, 13 Jul 2024 03:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720834179; cv=none; b=SO70VIjszYExzVcTAq3PfCTo2Mu+PQcWIjIIfagZL4gMGEuhSuZUB2BSNukkpCB/XCBE6mKpGcAXXVrCyE7aVycdLrf7bjYqRPB6mtcgvqO+rb9a9Nn8YJxMCFJMuyQl2hXH10cQq2INLyk69joyT6AhV7KEMGp0o+MTYwpdp8I=
+	t=1720840358; cv=none; b=E97RhZaMfgDUr5hq2lXLNLA0g3EdupECsP4gTtxsy++2b99YrbX9G1xD/A4G4ZgoATcPKuc5Xlh+jgWuxelbL7iJRSW487jweKR48jiYqT1nZ/j9uNAivht0A7+0YTwmIJ0PY4my9PMbb3dakBdIY9L20ZHxl9fwoSVz+9ALV4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720834179; c=relaxed/simple;
-	bh=//ETqcHbGhRaGGv0MF97Oap/KPY3voP7FxRvhQPjS7k=;
-	h=Date:To:From:Subject:Message-Id; b=XaRDWJMnN5vC/lpy8OOD8NnRqJp82d9WTN4wKBysSvFHXRYefk+grxSBapLsZNwpDvke7xlZyhIP+BIOMTJ8jo4+TDcjU2mF9Bkx6Z4V+KWPvBHZAq3yNYEEUg9+cb2pcZeBXYpPOouQSmpi3oOKNBWWzuWElzHi7BDrboipYQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=N8tu0RX9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1931C32782;
-	Sat, 13 Jul 2024 01:29:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1720834178;
-	bh=//ETqcHbGhRaGGv0MF97Oap/KPY3voP7FxRvhQPjS7k=;
-	h=Date:To:From:Subject:From;
-	b=N8tu0RX9YnasGtQs52tI2QaCbg7wpXSqJc4B5vrEDlg90ezIwGo8FiGdVfnm3tcKa
-	 Gl/uKejxyXLOXkon/ovvWrUX9ygxANY0zOuMd0CPF6uEA7Iog2B4Z+Cpp6Jfzmf+iP
-	 H1tyZ9KmSFORAZN3vJ4rfmx3zm1zVigm23lUxezE=
-Date: Fri, 12 Jul 2024 18:29:38 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,william.kucharski@oracle.com,stable@vger.kernel.org,ryan.roberts@arm.com,david@redhat.com,gshan@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-huge_memory-avoid-pmd-size-page-cache-if-needed.patch removed from -mm tree
-Message-Id: <20240713012938.B1931C32782@smtp.kernel.org>
+	s=arc-20240116; t=1720840358; c=relaxed/simple;
+	bh=QR27xcWmStjlqSAat08CkaXmphu8Ploeo02GNfppi7E=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pLMfxKznW9Krfgk4VuQ1POI1Z9XXbMkmo3rwAHU+CgVlxMLPszQWyd/GUmOsGOwA+55axO0/aCT/c2S9NjOAkf2UZN2K4XNpcgP2enXfh6UJ5/UmRRvkYYRTWcEeUPyYACWvZsk/0H5m0/47fo5WoyrtPoeT5B+DDXuKK+/IhDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=AAMItSQN; arc=none smtp.client-ip=52.119.213.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1720840358; x=1752376358;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tgEH/Tv2YiMTlRqR/V3T8vQ21V48oFRfQ0p3PQbjNpc=;
+  b=AAMItSQNlmGCQbyjuIUNhUDOaBa/0kRSnKoA/IAcnN3Zdf/c4c6wxwOI
+   7LlM/nFqYwikP7gwRGu0BJcYrPZAQp9VFNVKfYc84S7GgfduYGcgcr5Lg
+   Jj0eoEOwhvekcjTBH2OhfHgCBdKyueZYZRYSZW8FgpOseJlh5h2dBHlQk
+   I=;
+X-IronPort-AV: E=Sophos;i="6.09,204,1716249600"; 
+   d="scan'208";a="645781367"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2024 03:12:36 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:46744]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.2.113:2525] with esmtp (Farcaster)
+ id 7b787d18-0c15-43a1-b3c6-00967d9649a1; Sat, 13 Jul 2024 03:12:34 +0000 (UTC)
+X-Farcaster-Flow-ID: 7b787d18-0c15-43a1-b3c6-00967d9649a1
+Received: from EX19D021UWA001.ant.amazon.com (10.13.139.24) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Sat, 13 Jul 2024 03:12:34 +0000
+Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
+ EX19D021UWA001.ant.amazon.com (10.13.139.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Sat, 13 Jul 2024 03:12:33 +0000
+Received: from dev-dsk-apanyaki-2b-4798319e.us-west-2.amazon.com (10.2.90.201)
+ by mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34
+ via Frontend Transport; Sat, 13 Jul 2024 03:12:33 +0000
+From: Andrew Paniakin <apanyaki@amazon.com>
+To: <stable@vger.kernel.org>
+CC: Benjamin Herrenschmidt <benh@amazon.com>, Hazem Mohamed Abuelfotoh
+	<abuehaze@amazon.com>, Paulo Alcantara <pc@manguebit.com>, Paulo Alcantara
+	<pc@cjr.nz>, Steve French <stfrench@microsoft.com>, Andrew Paniakin
+	<apanyaki@amazon.com>, Steve French <sfrench@samba.org>, Ronnie Sahlberg
+	<lsahlber@redhat.com>, Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey
+	<tom@talpey.com>, "open list:COMMON INTERNET FILE SYSTEM CLIENT (CIFS and
+ SMB3)" <linux-cifs@vger.kernel.org>, "moderated list:COMMON INTERNET FILE
+ SYSTEM CLIENT (CIFS and SMB3)" <samba-technical@lists.samba.org>, open list
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH 6.1] cifs: use origin fullpath for automounts
+Date: Sat, 13 Jul 2024 03:11:47 +0000
+Message-ID: <20240713031147.20332-1-apanyaki@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
+From: Paulo Alcantara <pc@cjr.nz>
 
-The quilt patch titled
-     Subject: mm/huge_memory: avoid PMD-size page cache if needed
-has been removed from the -mm tree.  Its filename was
-     mm-huge_memory-avoid-pmd-size-page-cache-if-needed.patch
+commit 7ad54b98fc1f141cfb70cfe2a3d6def5a85169ff upstream.
 
-This patch was dropped because an updated version will be issued
+Use TCP_Server_Info::origin_fullpath instead of cifs_tcon::tree_name
+when building source paths for automounts as it will be useful for
+domain-based DFS referrals where the connections and referrals would
+get either re-used from the cache or re-created when chasing the dfs
+link.
 
-------------------------------------------------------
-From: Gavin Shan <gshan@redhat.com>
-Subject: mm/huge_memory: avoid PMD-size page cache if needed
-Date: Thu, 11 Jul 2024 20:48:40 +1000
-
-Currently, xarray can't support arbitrary page cache size and the largest
-and supported page cache size is defined as MAX_PAGECACHE_ORDER in commit
-099d90642a71 ("mm/filemap: make MAX_PAGECACHE_ORDER acceptable to
-xarray").  However, it's possible to have 512MB page cache in the huge
-memory collapsing path on ARM64 system whose base page size is 64KB.  A
-warning is raised when the huge page cache is split as shown in the
-following example.
-
-[root@dhcp-10-26-1-207 ~]# cat /proc/1/smaps | grep KernelPageSize
-KernelPageSize:       64 kB
-[root@dhcp-10-26-1-207 ~]# cat /tmp/test.c
-   :
-int main(int argc, char **argv)
-{
-	const char *filename = TEST_XFS_FILENAME;
-	int fd = 0;
-	void *buf = (void *)-1, *p;
-	int pgsize = getpagesize();
-	int ret = 0;
-
-	if (pgsize != 0x10000) {
-		fprintf(stdout, "System with 64KB base page size is required!\n");
-		return -EPERM;
-	}
-
-	system("echo 0 > /sys/devices/virtual/bdi/253:0/read_ahead_kb");
-	system("echo 1 > /proc/sys/vm/drop_caches");
-
-	/* Open xfs or shmem file */
-	fd = open(filename, O_RDONLY);
-	assert(fd > 0);
-
-	/* Create VMA */
-	buf = mmap(NULL, TEST_MEM_SIZE, PROT_READ, MAP_SHARED, fd, 0);
-	assert(buf != (void *)-1);
-	fprintf(stdout, "mapped buffer at 0x%p\n", buf);
-
-	/* Populate VMA */
-	ret = madvise(buf, TEST_MEM_SIZE, MADV_NOHUGEPAGE);
-	assert(ret == 0);
-	ret = madvise(buf, TEST_MEM_SIZE, MADV_POPULATE_READ);
-	assert(ret == 0);
-
-	/* Collapse VMA */
-	ret = madvise(buf, TEST_MEM_SIZE, MADV_HUGEPAGE);
-	assert(ret == 0);
-	ret = madvise(buf, TEST_MEM_SIZE, MADV_COLLAPSE);
-	if (ret) {
-		fprintf(stdout, "Error %d to madvise(MADV_COLLAPSE)\n", errno);
-		goto out;
-	}
-
-	/* Split xarray. The file needs to reopened with write permission */
-	munmap(buf, TEST_MEM_SIZE);
-	buf = (void *)-1;
-	close(fd);
-	fd = open(filename, O_RDWR);
-	assert(fd > 0);
-	fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
- 		  TEST_MEM_SIZE - pgsize, pgsize);
-out:
-	if (buf != (void *)-1)
-		munmap(buf, TEST_MEM_SIZE);
-	if (fd > 0)
-		close(fd);
-
-	return ret;
-}
-
-[root@dhcp-10-26-1-207 ~]# gcc /tmp/test.c -o /tmp/test
-[root@dhcp-10-26-1-207 ~]# /tmp/test
- ------------[ cut here ]------------
- WARNING: CPU: 25 PID: 7560 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
- Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib    \
- nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct      \
- nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4      \
- ip_set rfkill nf_tables nfnetlink vfat fat virtio_balloon drm fuse   \
- xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64 virtio_net  \
- sha1_ce net_failover virtio_blk virtio_console failover dimlib virtio_mmio
- CPU: 25 PID: 7560 Comm: test Kdump: loaded Not tainted 6.10.0-rc7-gavin+ #9
- Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
- pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
- pc : xas_split_alloc+0xf8/0x128
- lr : split_huge_page_to_list_to_order+0x1c4/0x780
- sp : ffff8000ac32f660
- x29: ffff8000ac32f660 x28: ffff0000e0969eb0 x27: ffff8000ac32f6c0
- x26: 0000000000000c40 x25: ffff0000e0969eb0 x24: 000000000000000d
- x23: ffff8000ac32f6c0 x22: ffffffdfc0700000 x21: 0000000000000000
- x20: 0000000000000000 x19: ffffffdfc0700000 x18: 0000000000000000
- x17: 0000000000000000 x16: ffffd5f3708ffc70 x15: 0000000000000000
- x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
- x11: ffffffffffffffc0 x10: 0000000000000040 x9 : ffffd5f3708e692c
- x8 : 0000000000000003 x7 : 0000000000000000 x6 : ffff0000e0969eb8
- x5 : ffffd5f37289e378 x4 : 0000000000000000 x3 : 0000000000000c40
- x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
- Call trace:
-  xas_split_alloc+0xf8/0x128
-  split_huge_page_to_list_to_order+0x1c4/0x780
-  truncate_inode_partial_folio+0xdc/0x160
-  truncate_inode_pages_range+0x1b4/0x4a8
-  truncate_pagecache_range+0x84/0xa0
-  xfs_flush_unmap_range+0x70/0x90 [xfs]
-  xfs_file_fallocate+0xfc/0x4d8 [xfs]
-  vfs_fallocate+0x124/0x2f0
-  ksys_fallocate+0x4c/0xa0
-  __arm64_sys_fallocate+0x24/0x38
-  invoke_syscall.constprop.0+0x7c/0xd8
-  do_el0_svc+0xb4/0xd0
-  el0_svc+0x44/0x1d8
-  el0t_64_sync_handler+0x134/0x150
-  el0t_64_sync+0x17c/0x180
-
-Fix it by avoiding PMD-sized page cache in the huge memory collapsing
-path.  After this patch is applied, the test program fails with error
--EINVAL returned from __thp_vma_allowable_orders() and the madvise()
-system call to collapse the page caches.
-
-Link: https://lkml.kernel.org/r/20240711104840.200573-1-gshan@redhat.com
-Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: William Kucharski <william.kucharski@oracle.com>
-Cc: <stable@vger.kernel.org>	[5.17+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[apanyaki: backport to v6.1-stable]
+Signed-off-by: Andrew Paniakin <apanyaki@amazon.com>
 ---
+This patch fixes issue reported in
+https://lore.kernel.org/regressions/ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com
 
- mm/huge_memory.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+1. The set_dest_addr function gets ip address differntly. In kernel 6.1
+the dns_resolve_server_name_to_ip function returns string instead of
+struct sockaddr, this string needs to be converted with
+cifs_convert_address then.
 
---- a/mm/huge_memory.c~mm-huge_memory-avoid-pmd-size-page-cache-if-needed
-+++ a/mm/huge_memory.c
-@@ -136,7 +136,8 @@ unsigned long __thp_vma_allowable_orders
+2. There's no tmp.leaf_fullpath field in kernel 6.1, it was introduced
+later in a1c0d00572fc ("cifs: share dfs connections and supers")
+
+3. __build_path_from_dentry_optional_prefix and
+dfs_get_automount_devname were added to fs/smb/client/cifsproto.h
+instead of fs/cifs/dfs.h which doesn't exist in 6.1
+---
+ fs/smb/client/cifs_dfs_ref.c | 34 ++++++++++++++++++++++++++++++++--
+ fs/smb/client/cifsproto.h    | 18 ++++++++++++++++++
+ fs/smb/client/dir.c          | 21 +++++++++++++++------
+ 3 files changed, 65 insertions(+), 8 deletions(-)
+
+diff --git a/fs/smb/client/cifs_dfs_ref.c b/fs/smb/client/cifs_dfs_ref.c
+index 020e71fe1454..876f9a43a99d 100644
+--- a/fs/smb/client/cifs_dfs_ref.c
++++ b/fs/smb/client/cifs_dfs_ref.c
+@@ -258,6 +258,31 @@ char *cifs_compose_mount_options(const char *sb_mountdata,
+ 	goto compose_mount_options_out;
+ }
  
- 		while (orders) {
- 			addr = vma->vm_end - (PAGE_SIZE << order);
--			if (thp_vma_suitable_order(vma, addr, order))
-+			if (!(vma->vm_file && order > MAX_PAGECACHE_ORDER) &&
-+			    thp_vma_suitable_order(vma, addr, order))
- 				break;
- 			order = next_order(&orders, order);
- 		}
-_
-
-Patches currently in -mm which might be from gshan@redhat.com are
-
++static int set_dest_addr(struct smb3_fs_context *ctx, const char *full_path)
++{
++	struct sockaddr *addr = (struct sockaddr *)&ctx->dstaddr;
++	char *str_addr = NULL;
++	int rc;
++
++	rc = dns_resolve_server_name_to_ip(full_path, &str_addr, NULL);
++	if (rc < 0)
++		goto out;
++
++	rc = cifs_convert_address(addr, str_addr, strlen(str_addr));
++	if (!rc) {
++		cifs_dbg(FYI, "%s: failed to convert ip address\n", __func__);
++		rc = -EINVAL;
++		goto out;
++	}
++
++	cifs_set_port(addr, ctx->port);
++	rc = 0;
++
++out:
++	kfree(str_addr);
++	return rc;
++}
++
+ /*
+  * Create a vfsmount that we can automount
+  */
+@@ -295,8 +320,7 @@ static struct vfsmount *cifs_dfs_do_automount(struct path *path)
+ 	ctx = smb3_fc2context(fc);
+ 
+ 	page = alloc_dentry_path();
+-	/* always use tree name prefix */
+-	full_path = build_path_from_dentry_optional_prefix(mntpt, page, true);
++	full_path = dfs_get_automount_devname(mntpt, page);
+ 	if (IS_ERR(full_path)) {
+ 		mnt = ERR_CAST(full_path);
+ 		goto out;
+@@ -315,6 +339,12 @@ static struct vfsmount *cifs_dfs_do_automount(struct path *path)
+ 		goto out;
+ 	}
+ 
++	rc = set_dest_addr(ctx, full_path);
++	if (rc) {
++		mnt = ERR_PTR(rc);
++		goto out;
++	}
++
+ 	rc = smb3_parse_devname(full_path, ctx);
+ 	if (!rc)
+ 		mnt = fc_mount(fc);
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index f37e4da0fe40..6dbc9afd6728 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -57,8 +57,26 @@ extern void exit_cifs_idmap(void);
+ extern int init_cifs_spnego(void);
+ extern void exit_cifs_spnego(void);
+ extern const char *build_path_from_dentry(struct dentry *, void *);
++char *__build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
++					       const char *tree, int tree_len,
++					       bool prefix);
+ extern char *build_path_from_dentry_optional_prefix(struct dentry *direntry,
+ 						    void *page, bool prefix);
++static inline char *dfs_get_automount_devname(struct dentry *dentry, void *page)
++{
++	struct cifs_sb_info *cifs_sb = CIFS_SB(dentry->d_sb);
++	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
++	struct TCP_Server_Info *server = tcon->ses->server;
++
++	if (unlikely(!server->origin_fullpath))
++		return ERR_PTR(-EREMOTE);
++
++	return __build_path_from_dentry_optional_prefix(dentry, page,
++							server->origin_fullpath,
++							strlen(server->origin_fullpath),
++							true);
++}
++
+ static inline void *alloc_dentry_path(void)
+ {
+ 	return __getname();
+diff --git a/fs/smb/client/dir.c b/fs/smb/client/dir.c
+index 863c7bc3db86..477302157ab3 100644
+--- a/fs/smb/client/dir.c
++++ b/fs/smb/client/dir.c
+@@ -78,14 +78,13 @@ build_path_from_dentry(struct dentry *direntry, void *page)
+ 						      prefix);
+ }
+ 
+-char *
+-build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
+-				       bool prefix)
++char *__build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
++					       const char *tree, int tree_len,
++					       bool prefix)
+ {
+ 	int dfsplen;
+ 	int pplen = 0;
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(direntry->d_sb);
+-	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
+ 	char dirsep = CIFS_DIR_SEP(cifs_sb);
+ 	char *s;
+ 
+@@ -93,7 +92,7 @@ build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	if (prefix)
+-		dfsplen = strnlen(tcon->tree_name, MAX_TREE_SIZE + 1);
++		dfsplen = strnlen(tree, tree_len + 1);
+ 	else
+ 		dfsplen = 0;
+ 
+@@ -123,7 +122,7 @@ build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
+ 	}
+ 	if (dfsplen) {
+ 		s -= dfsplen;
+-		memcpy(s, tcon->tree_name, dfsplen);
++		memcpy(s, tree, dfsplen);
+ 		if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_POSIX_PATHS) {
+ 			int i;
+ 			for (i = 0; i < dfsplen; i++) {
+@@ -135,6 +134,16 @@ build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
+ 	return s;
+ }
+ 
++char *build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
++					     bool prefix)
++{
++	struct cifs_sb_info *cifs_sb = CIFS_SB(direntry->d_sb);
++	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
++
++	return __build_path_from_dentry_optional_prefix(direntry, page, tcon->tree_name,
++							MAX_TREE_SIZE, prefix);
++}
++
+ /*
+  * Don't allow path components longer than the server max.
+  * Don't allow the separator character in a path component.
+-- 
+2.40.1
 
 
