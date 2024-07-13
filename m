@@ -1,184 +1,212 @@
-Return-Path: <stable+bounces-59225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F629302FF
-	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 03:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C0F930308
+	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 03:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC572B22CF1
-	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 01:21:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F9B5B22CA7
+	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 01:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A3BDF53;
-	Sat, 13 Jul 2024 01:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B170D101C4;
+	Sat, 13 Jul 2024 01:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H/8qeVwW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="N8tu0RX9"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8010C13C
-	for <stable@vger.kernel.org>; Sat, 13 Jul 2024 01:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F17DF59;
+	Sat, 13 Jul 2024 01:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720833663; cv=none; b=i3Yc0zkVWRcVN3oiumSn0hzSvrPRHuJSibRa/0pOwpo6oHcbLaIyTwJ7FgXLp+Ch5AWJlyu1U/OVw8bMNsYgw2HoIdFOSnDEs2Sgrccx+Bv37JrnqzlRnCol9nC23/Bl0gsdJ4liXGU/q+HFODBaKyGBiTpahntCFXRznAgNmmo=
+	t=1720834179; cv=none; b=SO70VIjszYExzVcTAq3PfCTo2Mu+PQcWIjIIfagZL4gMGEuhSuZUB2BSNukkpCB/XCBE6mKpGcAXXVrCyE7aVycdLrf7bjYqRPB6mtcgvqO+rb9a9Nn8YJxMCFJMuyQl2hXH10cQq2INLyk69joyT6AhV7KEMGp0o+MTYwpdp8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720833663; c=relaxed/simple;
-	bh=aVyfw7JdPdUtf4GaiIYGi/odljZbAjGNkPFeSDeaUgY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K07CTyxUBErifIyS1kiiJ+hMIT/6+yoQ27WP7L6Bl5UYbug5sZ/8vxR+phX+ltqEfoebDUewx6kK3QgjlM6E9nmFJYWkKnDJp3h0oE5gK5aLmPGcakH04QZrnlaRnCt9nNlHF2e5A74VbKJU/FJwD1joLGN+pjJIb1LMcrYRDr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H/8qeVwW; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720833660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/iL0dvijJhywJqZhh6YxHqmlU8neDjGAit2qrbamF7g=;
-	b=H/8qeVwWF+gH9Y4/VjvH19R07AOc5+N2si6P0JSrindelMG0kTaVa7OS+E22NT9BZhWYm9
-	uLWCM9KmCwrT05DKhm96qdH4iYgzeBT7VAeCOJ6uVPo4qvvavRGG6d5CpfXuyIpJs4Hcco
-	92LzPC3A+MEH9Jk1JqjCEt+aks0zPpc=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-160-h2QOJeMEMSamV67eWL8png-1; Fri, 12 Jul 2024 21:20:59 -0400
-X-MC-Unique: h2QOJeMEMSamV67eWL8png-1
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-3d92b2a96beso2271164b6e.3
-        for <stable@vger.kernel.org>; Fri, 12 Jul 2024 18:20:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720833658; x=1721438458;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/iL0dvijJhywJqZhh6YxHqmlU8neDjGAit2qrbamF7g=;
-        b=jgf7MzzIjqhcmPyQStfCQndeGAuZUQrRJXOmYf77xD4D0YIA7upK8AZi0fvEG4y0bh
-         B3JHN5SNMs+RfCjZXUjYBj2IRRLnwGlBuby+82mrfJ2cuz/z/TKf382fzeoveb5DbqIn
-         s5qq7ASoE0bK/M/RM7T0sXJE28OoUzLLCTNYImDfZ+DLvfosSiF5r+LOgbyhgztJB8Ez
-         M3Ifrm+5MY0EffrxdkNC2HPz1lGtCit2f3AAg9/X4bdshk3qcBnx9Tha9mMtfMHeIa45
-         ADAW/7itty5F4lrILoPEGR9tKdZQOaaHlMMOxtjl1uNEH4fR6OfYda7Wbx+pa0nkEkyq
-         wIlA==
-X-Forwarded-Encrypted: i=1; AJvYcCXYYTJQNNklH2JEIscAwXAnW9ZxlF7U5vLPDGF9YjDSWb9Yvw5fn6alj2ZL1MuMUdkZtTpske96t7lEZLUr3iCHVJdQeHxs
-X-Gm-Message-State: AOJu0Yzx41SV94P/9qrmGVVgehoqIHMCTsUW5I/G+/dQWxKqvrD2Toid
-	7pAnGC0WL0SoWii6SvvwSh4FKwK0us/50WyPMYpSAHXcsKUXQbAPJ2DLpCkgqJlKTMfjGXf1BDk
-	YeDrlwcbx/tNPKc/JEktMqhEKL7MWFFuu2AlH6tGlgJT7c05ODWVJpw==
-X-Received: by 2002:a05:6808:16a8:b0:3d9:1dfd:d79a with SMTP id 5614622812f47-3d93c014e65mr14870361b6e.20.1720833658627;
-        Fri, 12 Jul 2024 18:20:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHwM1KZ3Ckytuh5q+rnuDDvKzvS9TWQso2ZWcE9TuCoNXLEdoSIGRCCXm3q/1jvM2uAYdKVfg==
-X-Received: by 2002:a05:6808:16a8:b0:3d9:1dfd:d79a with SMTP id 5614622812f47-3d93c014e65mr14870348b6e.20.1720833658226;
-        Fri, 12 Jul 2024 18:20:58 -0700 (PDT)
-Received: from [172.20.2.228] ([4.28.11.157])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-78e34d2c4edsm66714a12.49.2024.07.12.18.20.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jul 2024 18:20:57 -0700 (PDT)
-Message-ID: <801b3438-92e6-4b34-8238-cce67f1899f1@redhat.com>
-Date: Sat, 13 Jul 2024 03:20:56 +0200
+	s=arc-20240116; t=1720834179; c=relaxed/simple;
+	bh=//ETqcHbGhRaGGv0MF97Oap/KPY3voP7FxRvhQPjS7k=;
+	h=Date:To:From:Subject:Message-Id; b=XaRDWJMnN5vC/lpy8OOD8NnRqJp82d9WTN4wKBysSvFHXRYefk+grxSBapLsZNwpDvke7xlZyhIP+BIOMTJ8jo4+TDcjU2mF9Bkx6Z4V+KWPvBHZAq3yNYEEUg9+cb2pcZeBXYpPOouQSmpi3oOKNBWWzuWElzHi7BDrboipYQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=N8tu0RX9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1931C32782;
+	Sat, 13 Jul 2024 01:29:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1720834178;
+	bh=//ETqcHbGhRaGGv0MF97Oap/KPY3voP7FxRvhQPjS7k=;
+	h=Date:To:From:Subject:From;
+	b=N8tu0RX9YnasGtQs52tI2QaCbg7wpXSqJc4B5vrEDlg90ezIwGo8FiGdVfnm3tcKa
+	 Gl/uKejxyXLOXkon/ovvWrUX9ygxANY0zOuMd0CPF6uEA7Iog2B4Z+Cpp6Jfzmf+iP
+	 H1tyZ9KmSFORAZN3vJ4rfmx3zm1zVigm23lUxezE=
+Date: Fri, 12 Jul 2024 18:29:38 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,william.kucharski@oracle.com,stable@vger.kernel.org,ryan.roberts@arm.com,david@redhat.com,gshan@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-huge_memory-avoid-pmd-size-page-cache-if-needed.patch removed from -mm tree
+Message-Id: <20240713012938.B1931C32782@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: huge_memory: use !CONFIG_64BIT to relax huge page
- alignment on 32 bit machines
-To: Yang Shi <yang@os.amperecomputing.com>, corsac@debian.org,
- willy@infradead.org, jirislaby@kernel.org, surenb@google.com,
- riel@surriel.com, cl@linux.com, carnil@debian.org, ben@decadent.org.uk,
- akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240712155855.1130330-1-yang@os.amperecomputing.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240712155855.1130330-1-yang@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 12.07.24 17:58, Yang Shi wrote:
-> Yves-Alexis Perez reported commit 4ef9ad19e176 ("mm: huge_memory: don't
-> force huge page alignment on 32 bit") didn't work for x86_32 [1].  It is
-> because x86_32 uses CONFIG_X86_32 instead of CONFIG_32BIT.
-> 
-> !CONFIG_64BIT should cover all 32 bit machines.
-> 
-> [1] https://lore.kernel.org/linux-mm/CAHbLzkr1LwH3pcTgM+aGQ31ip2bKqiqEQ8=FQB+t2c3dhNKNHA@mail.gmail.com/
-> 
-> Fixes: 4ef9ad19e176 ("mm: huge_memory: don't force huge page alignment on 32 bit")
-> Reported-by: Yves-Alexis Perez <corsac@debian.org>
-> Tested-By: Yves-Alexis Perez <corsac@debian.org>
-> Cc: <stable@vger.kernel.org>    [6.8+]
-> Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-> ---
->   mm/huge_memory.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 2120f7478e55..64f00aedf9af 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -857,7 +857,7 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
->   	loff_t off_align = round_up(off, size);
->   	unsigned long len_pad, ret, off_sub;
->   
-> -	if (IS_ENABLED(CONFIG_32BIT) || in_compat_syscall())
-> +	if (!IS_ENABLED(CONFIG_64BIT) || in_compat_syscall())
->   		return 0;
->   
->   	if (off_end <= off_align || (off_end - off_align) < size)
 
-Acked-by: David Hildenbrand <david@redhat.com>
+The quilt patch titled
+     Subject: mm/huge_memory: avoid PMD-size page cache if needed
+has been removed from the -mm tree.  Its filename was
+     mm-huge_memory-avoid-pmd-size-page-cache-if-needed.patch
 
--- 
-Cheers,
+This patch was dropped because an updated version will be issued
 
-David / dhildenb
+------------------------------------------------------
+From: Gavin Shan <gshan@redhat.com>
+Subject: mm/huge_memory: avoid PMD-size page cache if needed
+Date: Thu, 11 Jul 2024 20:48:40 +1000
+
+Currently, xarray can't support arbitrary page cache size and the largest
+and supported page cache size is defined as MAX_PAGECACHE_ORDER in commit
+099d90642a71 ("mm/filemap: make MAX_PAGECACHE_ORDER acceptable to
+xarray").  However, it's possible to have 512MB page cache in the huge
+memory collapsing path on ARM64 system whose base page size is 64KB.  A
+warning is raised when the huge page cache is split as shown in the
+following example.
+
+[root@dhcp-10-26-1-207 ~]# cat /proc/1/smaps | grep KernelPageSize
+KernelPageSize:       64 kB
+[root@dhcp-10-26-1-207 ~]# cat /tmp/test.c
+   :
+int main(int argc, char **argv)
+{
+	const char *filename = TEST_XFS_FILENAME;
+	int fd = 0;
+	void *buf = (void *)-1, *p;
+	int pgsize = getpagesize();
+	int ret = 0;
+
+	if (pgsize != 0x10000) {
+		fprintf(stdout, "System with 64KB base page size is required!\n");
+		return -EPERM;
+	}
+
+	system("echo 0 > /sys/devices/virtual/bdi/253:0/read_ahead_kb");
+	system("echo 1 > /proc/sys/vm/drop_caches");
+
+	/* Open xfs or shmem file */
+	fd = open(filename, O_RDONLY);
+	assert(fd > 0);
+
+	/* Create VMA */
+	buf = mmap(NULL, TEST_MEM_SIZE, PROT_READ, MAP_SHARED, fd, 0);
+	assert(buf != (void *)-1);
+	fprintf(stdout, "mapped buffer at 0x%p\n", buf);
+
+	/* Populate VMA */
+	ret = madvise(buf, TEST_MEM_SIZE, MADV_NOHUGEPAGE);
+	assert(ret == 0);
+	ret = madvise(buf, TEST_MEM_SIZE, MADV_POPULATE_READ);
+	assert(ret == 0);
+
+	/* Collapse VMA */
+	ret = madvise(buf, TEST_MEM_SIZE, MADV_HUGEPAGE);
+	assert(ret == 0);
+	ret = madvise(buf, TEST_MEM_SIZE, MADV_COLLAPSE);
+	if (ret) {
+		fprintf(stdout, "Error %d to madvise(MADV_COLLAPSE)\n", errno);
+		goto out;
+	}
+
+	/* Split xarray. The file needs to reopened with write permission */
+	munmap(buf, TEST_MEM_SIZE);
+	buf = (void *)-1;
+	close(fd);
+	fd = open(filename, O_RDWR);
+	assert(fd > 0);
+	fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
+ 		  TEST_MEM_SIZE - pgsize, pgsize);
+out:
+	if (buf != (void *)-1)
+		munmap(buf, TEST_MEM_SIZE);
+	if (fd > 0)
+		close(fd);
+
+	return ret;
+}
+
+[root@dhcp-10-26-1-207 ~]# gcc /tmp/test.c -o /tmp/test
+[root@dhcp-10-26-1-207 ~]# /tmp/test
+ ------------[ cut here ]------------
+ WARNING: CPU: 25 PID: 7560 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
+ Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib    \
+ nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct      \
+ nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4      \
+ ip_set rfkill nf_tables nfnetlink vfat fat virtio_balloon drm fuse   \
+ xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64 virtio_net  \
+ sha1_ce net_failover virtio_blk virtio_console failover dimlib virtio_mmio
+ CPU: 25 PID: 7560 Comm: test Kdump: loaded Not tainted 6.10.0-rc7-gavin+ #9
+ Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
+ pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+ pc : xas_split_alloc+0xf8/0x128
+ lr : split_huge_page_to_list_to_order+0x1c4/0x780
+ sp : ffff8000ac32f660
+ x29: ffff8000ac32f660 x28: ffff0000e0969eb0 x27: ffff8000ac32f6c0
+ x26: 0000000000000c40 x25: ffff0000e0969eb0 x24: 000000000000000d
+ x23: ffff8000ac32f6c0 x22: ffffffdfc0700000 x21: 0000000000000000
+ x20: 0000000000000000 x19: ffffffdfc0700000 x18: 0000000000000000
+ x17: 0000000000000000 x16: ffffd5f3708ffc70 x15: 0000000000000000
+ x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+ x11: ffffffffffffffc0 x10: 0000000000000040 x9 : ffffd5f3708e692c
+ x8 : 0000000000000003 x7 : 0000000000000000 x6 : ffff0000e0969eb8
+ x5 : ffffd5f37289e378 x4 : 0000000000000000 x3 : 0000000000000c40
+ x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
+ Call trace:
+  xas_split_alloc+0xf8/0x128
+  split_huge_page_to_list_to_order+0x1c4/0x780
+  truncate_inode_partial_folio+0xdc/0x160
+  truncate_inode_pages_range+0x1b4/0x4a8
+  truncate_pagecache_range+0x84/0xa0
+  xfs_flush_unmap_range+0x70/0x90 [xfs]
+  xfs_file_fallocate+0xfc/0x4d8 [xfs]
+  vfs_fallocate+0x124/0x2f0
+  ksys_fallocate+0x4c/0xa0
+  __arm64_sys_fallocate+0x24/0x38
+  invoke_syscall.constprop.0+0x7c/0xd8
+  do_el0_svc+0xb4/0xd0
+  el0_svc+0x44/0x1d8
+  el0t_64_sync_handler+0x134/0x150
+  el0t_64_sync+0x17c/0x180
+
+Fix it by avoiding PMD-sized page cache in the huge memory collapsing
+path.  After this patch is applied, the test program fails with error
+-EINVAL returned from __thp_vma_allowable_orders() and the madvise()
+system call to collapse the page caches.
+
+Link: https://lkml.kernel.org/r/20240711104840.200573-1-gshan@redhat.com
+Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: William Kucharski <william.kucharski@oracle.com>
+Cc: <stable@vger.kernel.org>	[5.17+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/huge_memory.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/mm/huge_memory.c~mm-huge_memory-avoid-pmd-size-page-cache-if-needed
++++ a/mm/huge_memory.c
+@@ -136,7 +136,8 @@ unsigned long __thp_vma_allowable_orders
+ 
+ 		while (orders) {
+ 			addr = vma->vm_end - (PAGE_SIZE << order);
+-			if (thp_vma_suitable_order(vma, addr, order))
++			if (!(vma->vm_file && order > MAX_PAGECACHE_ORDER) &&
++			    thp_vma_suitable_order(vma, addr, order))
+ 				break;
+ 			order = next_order(&orders, order);
+ 		}
+_
+
+Patches currently in -mm which might be from gshan@redhat.com are
+
 
 
