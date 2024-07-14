@@ -1,106 +1,115 @@
-Return-Path: <stable+bounces-59243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2599309CE
-	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 13:48:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08979309E7
+	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 14:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3179281B14
-	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 11:48:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 724251F21538
+	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 12:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14ED411CAB;
-	Sun, 14 Jul 2024 11:48:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b="yiUwUQT3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E676BFCF;
+	Sun, 14 Jul 2024 12:21:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from www17.your-server.de (www17.your-server.de [213.133.104.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68628B656
-	for <stable@vger.kernel.org>; Sun, 14 Jul 2024 11:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6100B2AD18;
+	Sun, 14 Jul 2024 12:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720957695; cv=none; b=cVH5TSPVVjHPJtok5d0IQf6ABKaNROzliR8PI4xEXc9CE/C46BL73TMhcK+XVq9CFI8Ji23QG0DH6l3w8CVTmYQaOQap/ys4o6RZ7xF/9sF5/a2QA9YTFHKrP7cLJ7FWm45iKWLSK0hZCi2E1zCiA5FmpruNiNOSM7Ad0wP9BPw=
+	t=1720959691; cv=none; b=Jwbf/dUwHFi1g5gcsyPQLKHVcvpA0AeBVDbEytHCP2ZmQ0HJ/yq99QqFGXx5wqfyTKPXV161IS/5JB4E17N6ldCD9aNPGxlP0MbtDox26iPA7Nznd0lSvF1RpY/ZrZC6bcWRSTVJWkB02Dso1MliSgvrvQ64y1njjd5V/0i/Qcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720957695; c=relaxed/simple;
-	bh=4iXsrwG0Jc+yquer4CjBRG1CDYMIEiQDIIdL3SzzykA=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=PdX9KdLI4bZf3zg31FIQCLUsYFMlNTTMjo6k7TbsZMwFnysTgC5puKW5YhowYhUovAPf3YgR5F+fnsbys+CTU242J2uf97la+1D7vfr+sxkHbOF8tsE6UsCs8Gngsd3Y9ot4DvxWrYt50yihPLtEFkQAjwTl5+dLMlrB8601RYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de; spf=pass smtp.mailfrom=m3y3r.de; dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b=yiUwUQT3; arc=none smtp.client-ip=213.133.104.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m3y3r.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=m3y3r.de;
-	s=default2402; h=Content-Type:MIME-Version:Message-ID:Subject:To:From:Date:
-	Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References; bh=WBpfBwAx/e7rZP3UMXEhS46oFqQQGu1Qx6kcHxqyglI=; b=yi
-	UwUQT3muUuFTTMPr13Npf0QbzQ14TsaEku2zY6pp863thMLndrJjGhu4psuzoL4yQkGag5ycHeW3M
-	19Abl0Qmb8YU2RpdYyUq2aNefzIjkKp5OYxIdjip5KpUqIof5jBxuc+SZA7MTR7ZWmzA1CB2FleTU
-	tFevZhstij7AO4UE4Lyb4oxnOjMnv9y/G+Trrt/Scn+OdtKbfMa4+Hk94UxCtbSPOsXBzq2pJDVf+
-	PmH+nLjb0XCoowuJfdwR4ogr6Pp3NtUR7/Fw3hE8FBhjuozr3t2g/eAmTBdmxq+4JR4lLAx0f6OGx
-	ISB9dGlbyXBzw+pZ2mN93EkzExPoZ/tg==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www17.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <thomas@m3y3r.de>)
-	id 1sSxQo-0007tg-M4
-	for stable@vger.kernel.org; Sun, 14 Jul 2024 13:30:18 +0200
-Received: from [2a00:6020:509f:6000:41e7:900f:edc:2880] (helo=localhost.localdomain)
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <thomas@m3y3r.de>)
-	id 1sSxQo-000EOH-1S
-	for stable@vger.kernel.org;
-	Sun, 14 Jul 2024 13:30:18 +0200
-Date: Sun, 14 Jul 2024 13:30:16 +0200
-From: Thomas Meyer <thomas@m3y3r.de>
-To: stable@vger.kernel.org
-Subject: 5.15.x: randomize_layout_plugin.c: 'last_stmt' was not declared in
- this scope?
-Message-ID: <ZpO2yOXdylWmyaaj@localhost.localdomain>
+	s=arc-20240116; t=1720959691; c=relaxed/simple;
+	bh=YRHv5fsDJGyctfKksAdnR2UkCnhiBMAz5R3uCj7+QQk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FzbOgxDJN79lTLwKt42mVYDxnvYqXtvFcKJ+eHAiUa6+MSR8RGzH9aYAdsmvKSUNiQbdiEse3tK8BvWnc95vTVUy4lu7oGn0ZDfxDN2AbqG+AqJOwDKjhWTAPC55iREspSMkcAJUmvxMUE8KTPsf3en2BrWpWoFFS8UwbSKrrwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowABHaCUOwZNmidK1FQ--.9182S2;
+	Sun, 14 Jul 2024 20:14:15 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: fbarrat@linux.ibm.com,
+	ajd@linux.ibm.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	imunsie@au1.ibm.com,
+	manoj@linux.vnet.ibm.com,
+	mpe@ellerman.id.au,
+	clombard@linux.vnet.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] cxl: Fix possible null pointer dereference in read_handle()
+Date: Sun, 14 Jul 2024 20:14:04 +0800
+Message-Id: <20240714121404.1385892-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Authenticated-Sender: thomas@m3y3r.de
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27336/Sun Jul 14 10:33:25 2024)
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABHaCUOwZNmidK1FQ--.9182S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ury7CF4DWFWDGFWDWFWxZwb_yoW8JFyfpr
+	WxJryUCrWDJw4jya1DX3y8AFyY9as5KFWagFy8u34fZws8XF18X345ua40va4qy348tFyS
+	qF4Dtan0gay8A3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
+	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
+	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
+	JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
+	sGvfC2KfnxnUUI43ZEXa7VUbHa0DUUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Good day,
+In read_handle(), of_get_address() may return NULL which is later
+dereferenced. Fix this by adding NULL check.
 
-I wanted to upgrade my kernel to the latest 5.15.162 but it seems to fail with
-this error message after upgrading to fedora 40, any ideas what could be the
-problem?
+Based on our customized static analysis tool, extract vulnerability
+features[1], then match similar vulnerability features in this function.
 
-$ make
-  HOSTCXX scripts/gcc-plugins/randomize_layout_plugin.so
-scripts/gcc-plugins/randomize_layout_plugin.c: In function 'bool dominated_by_is_err(const_tree, basic_block)':
-scripts/gcc-plugins/randomize_layout_plugin.c:693:20: error: 'last_stmt' was not declared in this scope; did you mean 'call_stmt'?
-  693 |         dom_stmt = last_stmt(dom);
-      |                    ^~~~~~~~~
-      |                    call_stmt
-make[2]: *** [scripts/gcc-plugins/Makefile:48: scripts/gcc-plugins/randomize_layout_plugin.so] Error 1
-make[1]: *** [scripts/Makefile.build:552: scripts/gcc-plugins] Error 2
-make: *** [Makefile:1246: scripts] Error 2
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit
+/?id=2d9adecc88ab678785b581ab021f039372c324cb
 
-Maybe a problem with gcc 14?
+Cc: stable@vger.kernel.org
+Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v3:
+- fixed up the changelog text as suggestions.
+Changes in v2:
+- added an explanation of how the potential vulnerability was discovered,
+but not meet the description specification requirements.
+---
+ drivers/misc/cxl/of.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-My current kernel was compiled with gcc 13:
-[    0.000000] [      T0] Linux version 5.15.160 (thomas2@localhost.localdomain) (gcc (GCC) 13.3.1 20240522 (Red Hat 13.3.1-1), GNU ld version 2.40-14.fc39) #15 PREEMPT Sat Jun 1 16:54:27 CEST 2024
-
-$ gcc --version
-gcc (GCC) 14.1.1 20240522 (Red Hat 14.1.1-4)
-
-any help appreciated.
-
-with kind regards
-thomas
-
-PS: please cc my as I'm not subscribed to the list.
+diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+index bcc005dff1c0..d8dbb3723951 100644
+--- a/drivers/misc/cxl/of.c
++++ b/drivers/misc/cxl/of.c
+@@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *handle)
+ 
+ 	/* Get address and size of the node */
+ 	prop = of_get_address(np, 0, &size, NULL);
+-	if (size)
++	if (!prop || size)
+ 		return -EINVAL;
+ 
+ 	/* Helper to read a big number; size is in cells (not bytes) */
+-- 
+2.25.1
 
 
