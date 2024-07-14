@@ -1,112 +1,102 @@
-Return-Path: <stable+bounces-59252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9B6930BA5
-	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 22:41:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43206930BB1
+	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 22:55:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 007FB1C214DF
-	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 20:41:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01F73280CD5
+	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 20:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5590913DDB5;
-	Sun, 14 Jul 2024 20:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9895413CFBB;
+	Sun, 14 Jul 2024 20:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N45LsQ0l"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bHdGE0Na"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3EC13D89B;
-	Sun, 14 Jul 2024 20:41:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE96118AED;
+	Sun, 14 Jul 2024 20:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720989707; cv=none; b=IDIdgI5be+dNkNCsWLl22S+hEQMctnfZaTHXooAQwP4kJt4LTV6JxtK0uf38vxN8Gkc7eim+rmRPDDbUmlea/Kaqbq0oezf6G0SFnHkv5VdwnYiEjRwEe02BrYk6BPTkn9Bp8uEgmF4EVkF3/lyCpYbXZW8gMd8lqB10ZtPCJOM=
+	t=1720990500; cv=none; b=I82DWussEbXdmSQ1iqI8Z90OMee+pU2bVPFYHLq91RbHtAoCgWhDAWUUQ/a58UyFeSECa+svXv59cSQCx3uSVvQJp7BbRAOXkwP5snwIhxQTGebBNopBbdpERl7cftSrJJzxrTEwrvpR3mP9ezZyp4CyfD55Ye3sUaWbz7f2chE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720989707; c=relaxed/simple;
-	bh=Rbhi9raS35yjLs44ICMqmzwlTLdlFu8DJr1zq7AF6AA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NJGmSSNnxhy2gp42LA3ULlZTNSVsdtQIifx+2CTvy9vkWNTcKgE09guGSA4ovzKZIGHeZVbirZHKJrPNEVMwZ6AXu/ViOF/LFlxrTuTIS1q1ubwbri8B5I+VNhf7vLdSyqhbcOyC5cRZK2nvTbFurLd4LAQVOCUQudJddKosXhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N45LsQ0l; arc=none smtp.client-ip=209.85.208.44
+	s=arc-20240116; t=1720990500; c=relaxed/simple;
+	bh=W1yqfKj+E6sNKafGXp4QFzyomqwKN4BP4CSrNMWT8xg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XzrF5cIOfmDaObLsobPFjiRchkJePJU5IqGFX0NAutlIDrOOUGkyJJQmqKv52gg2yKsksWVNNRmshT+X34ym5nNA01VOFs4HlchayqRhR0PsxBjEMJ41RAVLFvkAvo5aqf3xPtUBxRCKBv+lS0SPGrjMwMFYIvNGZJkzlcLfMfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bHdGE0Na; arc=none smtp.client-ip=209.85.208.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-595850e7e11so4460488a12.1;
-        Sun, 14 Jul 2024 13:41:45 -0700 (PDT)
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2eeb1ba0468so42383111fa.0;
+        Sun, 14 Jul 2024 13:54:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720989704; x=1721594504; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1720990497; x=1721595297; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Z/cK++aNJsVXbuZ4CO83IGAtI8ojo7ZZbJZliVitl0M=;
-        b=N45LsQ0l2Bvria4dNQMr2t+IdhoiOH2w2MeNq7VDJVGDRIb4RIyrWL3HXdcnVhQtBI
-         DIGTkw34p8Olf+QaOFppnfbzDurVZCmGBH8cd23rryD26bCT0SgXrzv8jF0q7nC/OmEm
-         eFiArPh85U93J0dAcYe3AdABTwsHPOEeCQa/eq7su6bmPdolxraDyMeun4gkMn4MdXML
-         +dJc+VWbpTESj1nRZFdmvzpWA4GaNoUQ1OoF93nEzjmL1yAKg7DMplp5yuLlMClcD/lZ
-         oPLJzJb07fzjRKnulLQ1Cpzh+fosStEDrXg9u3Um4ZeBnnxLE9TpWNRDxZ7E02OciMBV
-         w4Bw==
+        bh=X4v9yh3TKbyCiRcM0Hm0vfZMcOoFanDFliV++pw3Igk=;
+        b=bHdGE0NaBi/j4iM4lP0AF2ePGdREzPL7i1PuKne6MsS6P37Mt8apM0VMOqyqX1WiAt
+         Qi3ybwIC9MnSwtc7IBStn2d7E+kmFQq0p3VCbWa1G3o+qJOIj4vKwbpJgxd25EJ4oefn
+         y+wS7iHKf3gEkyVFIsv/1vIW5RKrxxt/QCVYhFdKLN34XENk8lHQtZVxSxq0Nq7WHe+S
+         QX2pmIZyuZQddAjxETtJ4Wog2jIR7h6FAoh6Zox7gTeVT8mH5B/9qKXTIc1jz7kGvREN
+         VRkQ0CPT0WXy6vhRBNNkPJ6Jh4PsP6hcTm1M5e/CROlBM04FfUEuMkPVmALCjyVLnRyV
+         0/3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720989704; x=1721594504;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1720990497; x=1721595297;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Z/cK++aNJsVXbuZ4CO83IGAtI8ojo7ZZbJZliVitl0M=;
-        b=O8hpcd4DWIeXlGBMCjAkTQCOnXwMOCOy5/cWQqdcGhDY1P4CU07Np63/22TfmRBudd
-         xkCvnSU/q3aFhyp39+Uud9EPKInTd2S39EgMjiPXGZlTyUxEh8Am2qv10tpWwdMZkLHg
-         /LlpZldBAaEKf0wxyTsQu+f58LvjG4VbASE2VFhaDxVhHM7XnlHoU0R23B512lbY818x
-         YAdp93vvUtk+33oHbOGBotyeru5eYYbVuz/23N0N8V6MY/DZwB7ELg7gKupPta2+rURa
-         nmIAjqViSAzXEEAfGQqYf1P6TXvhWg0OeBrpQVDZs4Ro0owg2vrJmPJeout2xb/NyT6R
-         Z24A==
-X-Forwarded-Encrypted: i=1; AJvYcCUSoOWdX52FijYPIfDui55txZ4cAJHHeT3bygoBWk9ICmx0DONhmeVa2QLJ+gNfNTo0wJGo2myTQy/ODX2Coh60MbRyCGKcTfO7eMeyZ5Bxca9fwMDsKkthAnFqFAxAqHKISYlLcThaPikumbEHdtPSq4HPc5z2ZNJzzds3Me3g
-X-Gm-Message-State: AOJu0YxQb1yqwz4lawEe9IlPdMWWgnbHTbVB8oJPFGanNZq3YOLJ8A/M
-	db7ck//g8+QBIb/QogFmEPOsMK/aG2puAotdj6ooB50WorpQU0D1ePCEbOQa9eDkIWEbXNXuGqB
-	hnWmC3Fr2Mo98RKCfLQe8C5jkbnU=
-X-Google-Smtp-Source: AGHT+IFFU4LKVj2rB7Y2ql4XbS+Q0ZtDsClPyxLPu1EwMtucLEgaSQSDlc3rjRfkgzPGNZviraCFeIooj9FdKqL4z9M=
-X-Received: by 2002:a50:ee0b:0:b0:58d:836e:5d83 with SMTP id
- 4fb4d7f45d1cf-594ba59f8eamr10226955a12.22.1720989703622; Sun, 14 Jul 2024
- 13:41:43 -0700 (PDT)
+        bh=X4v9yh3TKbyCiRcM0Hm0vfZMcOoFanDFliV++pw3Igk=;
+        b=T/EUQUQ/2nfPHPJPP+yxcB7Oa0rKwtZIxdu6LITxqqZCeFa09C4Zg/efI8eX/fclo0
+         kDKEpkuxD/FOHfUUa0I6ndTzcgaGuOfuqtmZl+DlJONfnLm0pX0mIyJWm29HFr1B/FoN
+         hDwl1DCuyNrgKn6RC6vvYgAtxfzU/jwvQuRzW2bO5OYfQxexUKJYaxOgNkIDYX9mcR7/
+         QvvpXFuIq+03JHkp21z7qEsph6lrgLkyGmTt2PkOv6YZzjV/uVvQ0rD/iOR1nc1shFSL
+         +iaRFJ2vRJsSXP/C0SQ7KNHOMGVsG4pqTVveJwojsJMRtTVx+lFCXt/ztUoaZ2qer/lQ
+         JFng==
+X-Forwarded-Encrypted: i=1; AJvYcCXxmrZm37KlriEuh9PshRFuADgF7Y5h5k23Qd+was0/ZdfkFvYtIwmQ/u0dS1jpcsOMKHshklcoRe5wkRqZiVdwrF2nWcViuiGM1mcXuqpDYkJ/c16994NBhtkWdgmsrPxa6SyeaN1QYR2auXiEKju5bTw2HQ3gjMEW6p0vuMfF
+X-Gm-Message-State: AOJu0YyovwyqjyqRetxoeEhX7JCu1jixp0wuegG+vIOO3c6T26maESwa
+	EL6W501tlKg65HleZp6eIzTd6n6+srYfVv5lm5C+e5hiB8RWJDlbXwttA73t
+X-Google-Smtp-Source: AGHT+IE6umD2PQY9dYePZFeiMEylR7CcDejrl5iUvXUweEKTMdaVp6IvP25oegFRXqF9D7PS4vK9PA==
+X-Received: by 2002:a2e:880a:0:b0:2eb:e258:717f with SMTP id 38308e7fff4ca-2eeb318a0ecmr114034771fa.42.1720990496888;
+        Sun, 14 Jul 2024 13:54:56 -0700 (PDT)
+Received: from foxbook (bip217.neoplus.adsl.tpnet.pl. [83.28.131.217])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-59b24a770cesm2529395a12.19.2024.07.14.13.54.55
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Sun, 14 Jul 2024 13:54:56 -0700 (PDT)
+Date: Sun, 14 Jul 2024 22:54:51 +0200
+From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
+To: Tim Lewis <elatllat@gmail.com>
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, mathias.nyman@linux.intel.com,
+ niklas.neronin@linux.intel.com, stable@vger.kernel.org,
+ regressions@lists.linux.dev, Salvatore Bonaccorso <carnil@debian.org>
+Subject: Re: [PATCH 6.1 000/102] 6.1.98-rc1 review
+Message-ID: <20240714225451.193914d1@foxbook>
+In-Reply-To: <CA+3zgmtwunPaLbKygi0y+XY7XUd2cBGVP8So8MXxK_1pOX3miQ@mail.gmail.com>
+References: <CA+3zgmsCgQs_LVV6fOwu3v2t_Vd=C3Wrv9QrbNpsmMq4RD=ZoQ@mail.gmail.com>
+	<20240714173043.668756e4@foxbook>
+	<ZpP3RU-MKb4pMmZH@eldamar.lan>
+	<CA+3zgmtwunPaLbKygi0y+XY7XUd2cBGVP8So8MXxK_1pOX3miQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+3zgmsCgQs_LVV6fOwu3v2t_Vd=C3Wrv9QrbNpsmMq4RD=ZoQ@mail.gmail.com>
- <20240714173043.668756e4@foxbook> <ZpP3RU-MKb4pMmZH@eldamar.lan>
-In-Reply-To: <ZpP3RU-MKb4pMmZH@eldamar.lan>
-From: Tim Lewis <elatllat@gmail.com>
-Date: Sun, 14 Jul 2024 16:41:31 -0400
-Message-ID: <CA+3zgmtwunPaLbKygi0y+XY7XUd2cBGVP8So8MXxK_1pOX3miQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/102] 6.1.98-rc1 review
-To: gregkh@linuxfoundation.org
-Cc: =?UTF-8?Q?Micha=C5=82_Pecio?= <michal.pecio@gmail.com>, 
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	mathias.nyman@linux.intel.com, niklas.neronin@linux.intel.com, 
-	stable@vger.kernel.org, regressions@lists.linux.dev, 
-	Salvatore Bonaccorso <carnil@debian.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, Jul 14, 2024 at 11:32=E2=80=AFAM Micha=C5=82 Pecio <michal.pecio@gm=
-ail.com> wrote:
->  see if my suggested solution works.
+> > Not on 6.1.y:
+>     drivers/usb/host/xhci-ring.c:2644:31: error: ~@~Xir~@~Y undeclared
+> (first use in this fuunction); did you mean ~@~Xidr~@~Y?
+>     2644 |                 inc_deq(xhci, ir->event_ring);
+Sorry, I didn't notice that v6.1 is different. You need this instead:
 
-On Sun, Jul 14, 2024 at 12:05=E2=80=AFPM Salvatore Bonaccorso <carnil@debia=
-n.org> wrote:
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D219039
+  inc_deq(xhci, xhci->event_ring);
 
-Not on 6.1.y:
-    drivers/usb/host/xhci-ring.c:2644:31: error: ~@~Xir~@~Y undeclared
-(first use in this fuunction); did you mean ~@~Xidr~@~Y?
-    2644 |                 inc_deq(xhci, ir->event_ring);
-
-On Sun, Jul 14, 2024 at 2:30=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
-> Ick
-
-We now have 3 USB HDD Vendors that are reported to crash the kernel
-because of this patch.  I think it best we take time to sort out the
-long standing minor issue this patch is for, after we quickly revert
-the major issues it is causing. Can we get it removed from 6.6.y and
-older branches for the hopefully soon next release?
+Another refactor interfering with backporting :(
 
