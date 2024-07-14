@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-59242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1397A9308DC
-	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 09:17:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2599309CE
+	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 13:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 495D51F21710
-	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 07:17:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3179281B14
+	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 11:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECD615ACB;
-	Sun, 14 Jul 2024 07:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14ED411CAB;
+	Sun, 14 Jul 2024 11:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJde2r67"
+	dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b="yiUwUQT3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www17.your-server.de (www17.your-server.de [213.133.104.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ABB1755B;
-	Sun, 14 Jul 2024 07:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68628B656
+	for <stable@vger.kernel.org>; Sun, 14 Jul 2024 11:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720941470; cv=none; b=pamhzOMdYj3wQyZoVWenq+RPBawUBH6VBIXH85BesT2cqfZjcQ3TmgsudouD8FOoR14KytBEJ9vzNWWLELkq5yIC0lLYt75xXflDBQZ3CkQ8+I/K3mW4gK/ryfXDd59LyNtn3Y/jc7wy/eC/ebGag7NWpKIQtsJaHJedXljt5IE=
+	t=1720957695; cv=none; b=cVH5TSPVVjHPJtok5d0IQf6ABKaNROzliR8PI4xEXc9CE/C46BL73TMhcK+XVq9CFI8Ji23QG0DH6l3w8CVTmYQaOQap/ys4o6RZ7xF/9sF5/a2QA9YTFHKrP7cLJ7FWm45iKWLSK0hZCi2E1zCiA5FmpruNiNOSM7Ad0wP9BPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720941470; c=relaxed/simple;
-	bh=ioMRz+Lm4SFBaMuTqAHdAqZFIxJWs68Xh1hJmi0Nstg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U78bZEoE14ApGpq/dSmZWEzgxjK61zdQyjI/TGRCOdk4bs+ERNvAoHupzBUHeRFk44MOoS3DvmoB6jxLW70NnvVTrBX7udFKWR1xccE7bPHftFhGEg/q4Bx7pJafC/iWCke0On+2XbcRCclJhMQC01f0kby3h2R+g9uuLsparVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJde2r67; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5EEC116B1;
-	Sun, 14 Jul 2024 07:17:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720941469;
-	bh=ioMRz+Lm4SFBaMuTqAHdAqZFIxJWs68Xh1hJmi0Nstg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rJde2r67PfeTliz3CEkynFL/EvGmMsig0YSf3jnIdcX3ZsDwxW9BPVwoX7emlaAOI
-	 +dV0ZK8/edPGj8FFOX2SK/7jMBL8SA/6Qoqe6fPv4bwEj0A7JXSKkUUFNAMWR0csAi
-	 p6NLKyo2HV8aXxfpaxC8smGhQN33TrBhOG66THaI=
-Date: Sun, 14 Jul 2024 09:17:46 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	stable@vger.kernel.org, Ashish Sangwan <a.sangwan@samsung.com>,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
-Subject: Re: [PATCH] driver core: Fix uevent_show() vs driver detach race
-Message-ID: <2024071438-perceive-earache-db11@gregkh>
-References: <172081332794.577428.9738802016494057132.stgit@dwillia2-xfh.jf.intel.com>
+	s=arc-20240116; t=1720957695; c=relaxed/simple;
+	bh=4iXsrwG0Jc+yquer4CjBRG1CDYMIEiQDIIdL3SzzykA=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=PdX9KdLI4bZf3zg31FIQCLUsYFMlNTTMjo6k7TbsZMwFnysTgC5puKW5YhowYhUovAPf3YgR5F+fnsbys+CTU242J2uf97la+1D7vfr+sxkHbOF8tsE6UsCs8Gngsd3Y9ot4DvxWrYt50yihPLtEFkQAjwTl5+dLMlrB8601RYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de; spf=pass smtp.mailfrom=m3y3r.de; dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b=yiUwUQT3; arc=none smtp.client-ip=213.133.104.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m3y3r.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=m3y3r.de;
+	s=default2402; h=Content-Type:MIME-Version:Message-ID:Subject:To:From:Date:
+	Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References; bh=WBpfBwAx/e7rZP3UMXEhS46oFqQQGu1Qx6kcHxqyglI=; b=yi
+	UwUQT3muUuFTTMPr13Npf0QbzQ14TsaEku2zY6pp863thMLndrJjGhu4psuzoL4yQkGag5ycHeW3M
+	19Abl0Qmb8YU2RpdYyUq2aNefzIjkKp5OYxIdjip5KpUqIof5jBxuc+SZA7MTR7ZWmzA1CB2FleTU
+	tFevZhstij7AO4UE4Lyb4oxnOjMnv9y/G+Trrt/Scn+OdtKbfMa4+Hk94UxCtbSPOsXBzq2pJDVf+
+	PmH+nLjb0XCoowuJfdwR4ogr6Pp3NtUR7/Fw3hE8FBhjuozr3t2g/eAmTBdmxq+4JR4lLAx0f6OGx
+	ISB9dGlbyXBzw+pZ2mN93EkzExPoZ/tg==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
+	by www17.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <thomas@m3y3r.de>)
+	id 1sSxQo-0007tg-M4
+	for stable@vger.kernel.org; Sun, 14 Jul 2024 13:30:18 +0200
+Received: from [2a00:6020:509f:6000:41e7:900f:edc:2880] (helo=localhost.localdomain)
+	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <thomas@m3y3r.de>)
+	id 1sSxQo-000EOH-1S
+	for stable@vger.kernel.org;
+	Sun, 14 Jul 2024 13:30:18 +0200
+Date: Sun, 14 Jul 2024 13:30:16 +0200
+From: Thomas Meyer <thomas@m3y3r.de>
+To: stable@vger.kernel.org
+Subject: 5.15.x: randomize_layout_plugin.c: 'last_stmt' was not declared in
+ this scope?
+Message-ID: <ZpO2yOXdylWmyaaj@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,131 +68,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <172081332794.577428.9738802016494057132.stgit@dwillia2-xfh.jf.intel.com>
+X-Authenticated-Sender: thomas@m3y3r.de
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27336/Sun Jul 14 10:33:25 2024)
 
-On Fri, Jul 12, 2024 at 12:42:09PM -0700, Dan Williams wrote:
-> uevent_show() wants to de-reference dev->driver->name. There is no clean
-> way for a device attribute to de-reference dev->driver unless that
-> attribute is defined via (struct device_driver).dev_groups. Instead, the
-> anti-pattern of taking the device_lock() in the attribute handler risks
-> deadlocks with code paths that remove device attributes while holding
-> the lock.
-> 
-> This deadlock is typically invisible to lockdep given the device_lock()
-> is marked lockdep_set_novalidate_class(), but some subsystems allocate a
-> local lockdep key for @dev->mutex to reveal reports of the form:
-> 
->  ======================================================
->  WARNING: possible circular locking dependency detected
->  6.10.0-rc7+ #275 Tainted: G           OE    N
->  ------------------------------------------------------
->  modprobe/2374 is trying to acquire lock:
->  ffff8c2270070de0 (kn->active#6){++++}-{0:0}, at: __kernfs_remove+0xde/0x220
-> 
->  but task is already holding lock:
->  ffff8c22016e88f8 (&cxl_root_key){+.+.}-{3:3}, at: device_release_driver_internal+0x39/0x210
-> 
->  which lock already depends on the new lock.
-> 
-> 
->  the existing dependency chain (in reverse order) is:
-> 
->  -> #1 (&cxl_root_key){+.+.}-{3:3}:
->         __mutex_lock+0x99/0xc30
->         uevent_show+0xac/0x130
->         dev_attr_show+0x18/0x40
->         sysfs_kf_seq_show+0xac/0xf0
->         seq_read_iter+0x110/0x450
->         vfs_read+0x25b/0x340
->         ksys_read+0x67/0xf0
->         do_syscall_64+0x75/0x190
->         entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> 
->  -> #0 (kn->active#6){++++}-{0:0}:
->         __lock_acquire+0x121a/0x1fa0
->         lock_acquire+0xd6/0x2e0
->         kernfs_drain+0x1e9/0x200
->         __kernfs_remove+0xde/0x220
->         kernfs_remove_by_name_ns+0x5e/0xa0
->         device_del+0x168/0x410
->         device_unregister+0x13/0x60
->         devres_release_all+0xb8/0x110
->         device_unbind_cleanup+0xe/0x70
->         device_release_driver_internal+0x1c7/0x210
->         driver_detach+0x47/0x90
->         bus_remove_driver+0x6c/0xf0
->         cxl_acpi_exit+0xc/0x11 [cxl_acpi]
->         __do_sys_delete_module.isra.0+0x181/0x260
->         do_syscall_64+0x75/0x190
->         entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> 
-> The observation though is that driver objects are typically much longer
-> lived than device objects. It is reasonable to perform lockless
-> de-reference of a @driver pointer even if it is racing detach from a
-> device. Given the infrequency of driver unregistration, use
-> synchronize_rcu() in module_remove_driver() to close any potential
-> races.  It is potentially overkill to suffer synchronize_rcu() just to
-> handle the rare module removal racing uevent_show() event.
-> 
-> Thanks to Tetsuo Handa for the debug analysis of the syzbot report [1].
-> 
-> Fixes: c0a40097f0bc ("drivers: core: synchronize really_probe() and dev_uevent()")
-> Reported-by: syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com
-> Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-> Closes: http://lore.kernel.org/5aa5558f-90a4-4864-b1b1-5d6784c5607d@I-love.SAKURA.ne.jp [1]
-> Link: http://lore.kernel.org/669073b8ea479_5fffa294c1@dwillia2-xfh.jf.intel.com.notmuch
-> Cc: stable@vger.kernel.org
-> Cc: Ashish Sangwan <a.sangwan@samsung.com>
-> Cc: Namjae Jeon <namjae.jeon@samsung.com>
-> Cc: Dirk Behme <dirk.behme@de.bosch.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/base/core.c   |   13 ++++++++-----
->  drivers/base/module.c |    4 ++++
->  2 files changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 2b4c0624b704..b5399262198a 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -25,6 +25,7 @@
->  #include <linux/mutex.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/netdevice.h>
-> +#include <linux/rcupdate.h>
->  #include <linux/sched/signal.h>
->  #include <linux/sched/mm.h>
->  #include <linux/string_helpers.h>
-> @@ -2640,6 +2641,7 @@ static const char *dev_uevent_name(const struct kobject *kobj)
->  static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
->  {
->  	const struct device *dev = kobj_to_dev(kobj);
-> +	struct device_driver *driver;
->  	int retval = 0;
->  
->  	/* add device node properties if present */
-> @@ -2668,8 +2670,12 @@ static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
->  	if (dev->type && dev->type->name)
->  		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
->  
-> -	if (dev->driver)
-> -		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
-> +	/* Synchronize with module_remove_driver() */
-> +	rcu_read_lock();
-> +	driver = READ_ONCE(dev->driver);
-> +	if (driver)
-> +		add_uevent_var(env, "DRIVER=%s", driver->name);
-> +	rcu_read_unlock();
+Good day,
 
-It's a lot of work for a "simple" thing of just "tell userspace what
-happened" type of thing.  But it makes sense.
+I wanted to upgrade my kernel to the latest 5.15.162 but it seems to fail with
+this error message after upgrading to fedora 40, any ideas what could be the
+problem?
 
-I'll queue this up after -rc1 is out, there's no rush before then as
-it's only lockdep warnings happening now, right?
+$ make
+  HOSTCXX scripts/gcc-plugins/randomize_layout_plugin.so
+scripts/gcc-plugins/randomize_layout_plugin.c: In function 'bool dominated_by_is_err(const_tree, basic_block)':
+scripts/gcc-plugins/randomize_layout_plugin.c:693:20: error: 'last_stmt' was not declared in this scope; did you mean 'call_stmt'?
+  693 |         dom_stmt = last_stmt(dom);
+      |                    ^~~~~~~~~
+      |                    call_stmt
+make[2]: *** [scripts/gcc-plugins/Makefile:48: scripts/gcc-plugins/randomize_layout_plugin.so] Error 1
+make[1]: *** [scripts/Makefile.build:552: scripts/gcc-plugins] Error 2
+make: *** [Makefile:1246: scripts] Error 2
 
-thanks,
+Maybe a problem with gcc 14?
 
-greg k-h
+My current kernel was compiled with gcc 13:
+[    0.000000] [      T0] Linux version 5.15.160 (thomas2@localhost.localdomain) (gcc (GCC) 13.3.1 20240522 (Red Hat 13.3.1-1), GNU ld version 2.40-14.fc39) #15 PREEMPT Sat Jun 1 16:54:27 CEST 2024
+
+$ gcc --version
+gcc (GCC) 14.1.1 20240522 (Red Hat 14.1.1-4)
+
+any help appreciated.
+
+with kind regards
+thomas
+
+PS: please cc my as I'm not subscribed to the list.
+
 
