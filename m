@@ -1,232 +1,122 @@
-Return-Path: <stable+bounces-59237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6519307B6
-	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 00:33:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB8F930844
+	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 04:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 511C92824A1
-	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 22:33:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB8E32824E9
+	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 02:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DE914A624;
-	Sat, 13 Jul 2024 22:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C051B320E;
+	Sun, 14 Jul 2024 02:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="d70HG5kO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FZrsFv5r"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2FE14388E
-	for <stable@vger.kernel.org>; Sat, 13 Jul 2024 22:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71627F;
+	Sun, 14 Jul 2024 02:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720910014; cv=none; b=GQhYE1XKXeTm9D6AUor7/JE1yEtae13evC1rdw84VORAw5+kcT9hvkjU1vHBWeLTsxcga+SsGbCj+vmY/0+ehobxSsAFJjmQvEdoTwPscbOUzdRtbIBYNcGpsN3D0i4gD9kQTTKh3kw8/yv6Ctm3lWNzNbqyrPgDCrhFn1fBHIA=
+	t=1720923470; cv=none; b=JJF8mOxDi+B1l8ignXu8zRuUjl2MJ6hIkmA36P0OuPzIS7hTEmPfh3+AQ4jVk1OW+Y96c0Jzwl1YcFSEAMS1Sw4Y4kcH56HYUS5G9x3cDIytLyGslP648Xq5TMF87QlGTmDJ1y8wrYBYuQMKdOaOv6mMf1UkGSMFyy4LTUsO0AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720910014; c=relaxed/simple;
-	bh=3CXyrYSrmPb64WZII5vJE5PCpHH/1D0iX1ETEE6XCE8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NY0pWXI1+QbDyr5kcfj8qq847EAQMmrdwP+4bUEuiRreTPexkgSaP29qA5KMEuyUcgQ8r9wMlOymIqRKYeIaFMZcVUt+APk2QODjaOx09P5YeMMpV2cO0a2059oGXOscrm3Yzuwi1J+/Z3sRadmW5GBnYpPG6zVwnSSYASlQk2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=d70HG5kO; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-52eafec1e84so4238816e87.0
-        for <stable@vger.kernel.org>; Sat, 13 Jul 2024 15:33:31 -0700 (PDT)
+	s=arc-20240116; t=1720923470; c=relaxed/simple;
+	bh=7saIKA8qMpKbEd9wBs8h8mybAWFy2v0tt43dMyJFu6Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DwMO6IMTkaEshnMVyADP7kAE1M9oKK3aP0iOM+Eh3bbPSiIYTN7cTjzptYFAp5/1+uLfrNwIlLk6Ka1N9Z+/DOshB3omdlf9OYQ0bF3q3F56U3G4MQcwjN8IzTprRxK4FZohPXbYLqqemwDX/8kK97YGD9731TxE+kwmOSVVVeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FZrsFv5r; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3679f806223so2498869f8f.0;
+        Sat, 13 Jul 2024 19:17:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720910010; x=1721514810; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mvEv4Gz0ta82e2qmUjNC9xU8qmNOnjV53fsNG0mOdZI=;
-        b=d70HG5kOtDBLzNqiIPKuosLFTIFEjEQAdigLlph3iawkxcXiT5XNDCsunVIWDB8Uq3
-         u+QkhS/u7pug/4r4wQPTSqcDJBOixJKwd/iHwaKC9mkN+SrQD9/afepgu+wCFUooRO+Z
-         LzQUNk5XMizOdMrlGoTkUHZjyAygFSmZqoxXWctqUtQAgCV/Q00W4EQ0F3rloXv8I0C2
-         nUr7Jghg8tpVVc1bTKtYdOnjSjonH3PFhP177TFY/PBQPlmU6fQfca/Pixq4KaiKoR8A
-         azQ3/lf6/onucEyRyZ2xyHXJ1A0aEH3SObQ5cqliIBfLyyLQVJpeygbix90/KUE6XnB/
-         XkDQ==
+        d=gmail.com; s=20230601; t=1720923466; x=1721528266; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gCoKA5BrfWhFEib4kaVyxIYyuyejdXkK7Z8BehM2NAc=;
+        b=FZrsFv5r0WkQGig74vHthNc2Qo7q6mpNhbxoS+3898Ek1RgZuUHpdFif4/JvCAwPIn
+         SmyKB0bqMJcuNAT60YYQzlWTWGwmgfMJgo+f4P7WGVLV8AqwPvxCy32buBYkJW4qzR38
+         GunodH83WyT85mtVAO/1ClqJEQhqKERch3BzYz/E9QrI0rbsNFdm5ZUhiR04oK5bJVYN
+         luwQOZ9V9+QcYMax+TnXUTrTTjyZxMijfhNtWHei45rrJi3mDEXeVNDkiJFVJYxti3GS
+         utoJmndkxRLfDIUFc9B2g36Re0Tbn8rqGS5yRcyWj6YgZ5DtryGy11kgWB5f7ytb/9XA
+         iAQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720910010; x=1721514810;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1720923466; x=1721528266;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mvEv4Gz0ta82e2qmUjNC9xU8qmNOnjV53fsNG0mOdZI=;
-        b=ZoAqjmiOGktGvEWLi2vSlIABM3Taexvdm2Nb8gnKIxRuIxCvZ8lDE89UweAjau4Jb2
-         +uHaduC/G9HSy/FZzzOfcEW1fh7rgeMH0Js0ySRbYd+0zKkK4itErRpLMVRILLLuW3IP
-         iECb9mbK1S2rJshcddg9V/8niXrem4VYEtG9qIdZTxZifsXaiim2dOq/hhS9bocCJp1A
-         X2q04qeVxGG0dvBYYkHVvBZXxJpkZIIhyfdu2OvXJhFAnqmg7DbNtvB/3hyNbfQdca0e
-         Eto9/0zOXAiAtPg/SAU7MiaYWAvnhFi3o9j+N8iLvqRTISgOz1tzRkHyqZ833BG5EBFK
-         2/7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVsk0UVFqMK0y64OJgZ22VIDG+tRJNBhv8t5549bpGEn5aL+FbB/7800/DZtrH7mnhbVMj9nUt6c6swku/D0+ellHFMvNwO
-X-Gm-Message-State: AOJu0YxTBMvwGTDMEwgFPnQ2j/SHXdm2qKvulMDt+9l0ni7EHmwu6kDk
-	AIdpqCzN2KjCAlWPX0EWuOUU4+YTYw6FiHxWBCsrtfGU1MSwsdLx6l++xlpi0zM=
-X-Google-Smtp-Source: AGHT+IHUkzJY8gJ3KS5kY/6nl7sWuA/rT6ok5vNO/3cnlv+sFkffPabRIlb5WJhlg2gt3YBk8Jys5Q==
-X-Received: by 2002:a05:6512:ea0:b0:52c:e03d:fa33 with SMTP id 2adb3069b0e04-52eb99d4d27mr11720207e87.62.1720910009699;
-        Sat, 13 Jul 2024 15:33:29 -0700 (PDT)
-Received: from [127.0.1.1] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-368155f7891sm227401f8f.52.2024.07.13.15.33.28
+        bh=gCoKA5BrfWhFEib4kaVyxIYyuyejdXkK7Z8BehM2NAc=;
+        b=w9Rp6WBCsFDH/1z7wJBRaKDgfK9OJZJZ4CFzw/stwJWONDZB2CW2jHwm0gIThT8koU
+         rbNOBZcXSofkNM4k57FzYOWwbfD6x+B4VscFC+RdapVpAj1sq4Knp8peXT9YwYFIkhHp
+         JSZPtdl/07+toDJVfwz2s6y7abqYBQH5ncWCOA3eDpvqybM7K2cGXT+dxgFdfGYWVzc0
+         Z4fiS1TyXzWcD0ERQZ6NBMqI/gLLRJKRw462PiEn9qbVTExMOW69gTK8UkqC+h4ZLRsS
+         +bVeM3FeFKmdiUCS4R8sDqU8oG+OWq95WGgLEcws0LAqlVTu749WToiAH13LZ0j/9tqz
+         EBIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXE5mjp/uGH9Z0Nqz8/F8ZJgdL+Ox2DdfoaxgpbGHVx96fvxQWMQ1hJAcDY4DbCf5N/RHTa0Zpsro7YnjCNDmj1S3bHHSxJNVQx82A1L6iyehm2if3FF8lL2RqMeqOIL27B2g==
+X-Gm-Message-State: AOJu0YzSU7G9f5GjBibCM7Ck8/JoVtiCOeQXT9teiohyzWlQ34kbI3Bm
+	u26mj/d/L2cVJ5cQICAGxnCjtToUv5V+GS/h+Zi2e9sk7S9HyHHoNybNW9s4wW4=
+X-Google-Smtp-Source: AGHT+IGng0aKTTKKDJUqgv6okJdzbLOCEt9gvgMrG99Ho+nKg8+Q7fOUTL/vjd0GDDqaH/ulLAvH7g==
+X-Received: by 2002:a05:6000:e02:b0:367:938f:550 with SMTP id ffacd0b85a97d-367ff70537dmr5290238f8f.25.1720923466105;
+        Sat, 13 Jul 2024 19:17:46 -0700 (PDT)
+Received: from localhost.localdomain ([156.197.1.65])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427a5e774besm38142655e9.5.2024.07.13.19.17.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jul 2024 15:33:29 -0700 (PDT)
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date: Sat, 13 Jul 2024 23:33:29 +0100
-Subject: [PATCH v3] media: ov5675: Fix power on/off delay timings
+        Sat, 13 Jul 2024 19:17:45 -0700 (PDT)
+From: botta633 <bottaawesome633@gmail.com>
+To: linux-kernel@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	linux-ext4@vger.kernel.org,
+	syzkaller@googlegroups.com,
+	Ahmed Ehab <bottaawesome633@gmail.com>,
+	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] ext4: Forcing subclasses to have same name pointer as their parent class
+Date: Sun, 14 Jul 2024 08:14:26 +0300
+Message-ID: <20240714051427.114044-1-bottaawesome633@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240713-linux-next-ov5675-v3-1-527f5b985836@linaro.org>
-X-B4-Tracking: v=1; b=H4sIALgAk2YC/4XNwQrCMAyA4VeRnI20ncucJ99DPHRdthWklXaWy
- di72w08CILHPyRfZogcLEc472YInGy03uUo9jswg3Y9o21zgxLqKCop8G7dc0LH04g+lVSVSKI
- RfCpMVXQS8t0jcGenzbzecg82jj68thdJrtOPJn9oSaJAqrluyJAyki55Rwd/8KGHlUvqL6FQY
- itYkzaKiesvYlmWNwmoRLr2AAAA
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
- Jacopo Mondi <jacopo@jmondi.org>
-Cc: Johan Hovold <johan@kernel.org>, 
- Kieran Bingham <kieran.bingham@ideasonboard.com>, 
- dave.stevenson@raspberrypi.com, linux-media@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-X-Mailer: b4 0.15-dev-13183
+Content-Transfer-Encoding: 8bit
 
-The ov5675 specification says that the gap between XSHUTDN deassert and the
-first I2C transaction should be a minimum of 8192 XVCLK cycles.
+From: Ahmed Ehab <bottaawesome633@gmail.com>
 
-Right now we use a usleep_rage() that gives a sleep time of between about
-430 and 860 microseconds.
+Preventing lockdep_set_subclass from creating a new instance of the 
+string literal. Hence, we will always have the same class->name among
+parent and subclasses. This prevents kernel panics when looking up a 
+lock class while comparing class locks and class names.
 
-On the Lenovo X13s we have observed that in about 1/20 cases the current
-timing is too tight and we start transacting before the ov5675's reset
-cycle completes, leading to I2C bus transaction failures.
-
-The reset racing is sometimes triggered at initial chip probe but, more
-usually on a subsequent power-off/power-on cycle e.g.
-
-[   71.451662] ov5675 24-0010: failed to write reg 0x0103. error = -5
-[   71.451686] ov5675 24-0010: failed to set plls
-
-The current quiescence period we have is too tight. Instead of expressing
-the post reset delay in terms of the current XVCLK this patch converts the
-power-on and power-off delays to the maximum theoretical delay @ 6 MHz with
-an additional buffer.
-
-1.365 milliseconds on the power-on path is 1.5 milliseconds with grace.
-85.3 microseconds on the power-off path is 90 microseconds with grace.
-
-Fixes: 49d9ad719e89 ("media: ov5675: add device-tree support and support runtime PM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
+Fixes: fd5e3f5fe27
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
 ---
-v3:
-- Fixed my out-by-one 853 -> 85.3 us calc and the 900 us -> 90us calc as a
-  result.
-- Link to v2: https://lore.kernel.org/r/20240711-linux-next-ov5675-v2-1-d0ea6ac2e6e9@linaro.org
+ include/linux/lockdep.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v2:
-- Drop patch to read and act on reported XVCLK
-- Use worst-case timings + a reasonable grace period in-lieu of previous
-  xvclk calculations on power-on and power-off.
-- Link to v1: https://lore.kernel.org/r/20240711-linux-next-ov5675-v1-0-69e9b6c62c16@linaro.org
-
-v1:
-One long running saga for me on the Lenovo X13s is the occasional failure
-to either probe or subsequently bring-up the ov5675 main RGB sensor on the
-laptop.
-
-Initially I suspected the PMIC for this part as the PMIC is using a new
-interface on an I2C bus instead of an SPMI bus. In particular I thought
-perhaps the I2C write to PMIC had completed but the regulator output hadn't
-become stable from the perspective of the SoC. This however doesn't appear
-to be the case - I can introduce a delay of milliseconds on the PMIC path
-without resolving the sensor reset problem.
-
-Secondly I thought about reset pin polarity or drive-strength but, again
-playing about with both didn't yield decent results.
-
-I also played with the duration of reset to no avail.
-
-The error manifested as an I2C write timeout to the sensor which indicated
-that the chip likely hadn't come out reset. An intermittent fault appearing
-in perhaps 1/10 or 1/20 reset cycles.
-
-Looking at the expression of the reset we see that there is a minimum time
-expressed in XVCLK cycles between reset completion and first I2C
-transaction to the sensor. The specification calls out the minimum delay @
-8192 XVCLK cycles and the ov5675 driver meets that timing almost exactly.
-
-A little too exactly - testing finally showed that we were too racy with
-respect to the minimum quiescence between reset completion and first
-command to the chip.
-
-Fixing this error I choose to base the fix again on the number of clocks
-but to also support any clock rate the chip could support by moving away
-from a define to reading and using the XVCLK.
-
-True enough only 19.2 MHz is currently supported but for the hypothetical
-case where some other frequency is supported in the future, I wanted the
-fix introduced in this series to still hold.
-
-Hence this series:
-
-1. Allows for any clock rate to be used in the valid range for the reset.
-2. Elongates the post-reset period based on clock cycles which can now
-vary.
-
-Patch #2 can still be backported to stable irrespective of patch #1.
----
- drivers/media/i2c/ov5675.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/media/i2c/ov5675.c b/drivers/media/i2c/ov5675.c
-index 3641911bc73f..5b5127f8953f 100644
---- a/drivers/media/i2c/ov5675.c
-+++ b/drivers/media/i2c/ov5675.c
-@@ -972,12 +972,10 @@ static int ov5675_set_stream(struct v4l2_subdev *sd, int enable)
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index 08b0d1d9d78b..df8fa5929de7 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -173,7 +173,7 @@ static inline void lockdep_init_map(struct lockdep_map *lock, const char *name,
+ 			      (lock)->dep_map.lock_type)
  
- static int ov5675_power_off(struct device *dev)
- {
--	/* 512 xvclk cycles after the last SCCB transation or MIPI frame end */
--	u32 delay_us = DIV_ROUND_UP(512, OV5675_XVCLK_19_2 / 1000 / 1000);
- 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
- 	struct ov5675 *ov5675 = to_ov5675(sd);
- 
--	usleep_range(delay_us, delay_us * 2);
-+	usleep_range(90, 100);
- 
- 	clk_disable_unprepare(ov5675->xvclk);
- 	gpiod_set_value_cansleep(ov5675->reset_gpio, 1);
-@@ -988,7 +986,6 @@ static int ov5675_power_off(struct device *dev)
- 
- static int ov5675_power_on(struct device *dev)
- {
--	u32 delay_us = DIV_ROUND_UP(8192, OV5675_XVCLK_19_2 / 1000 / 1000);
- 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
- 	struct ov5675 *ov5675 = to_ov5675(sd);
- 	int ret;
-@@ -1014,8 +1011,11 @@ static int ov5675_power_on(struct device *dev)
- 
- 	gpiod_set_value_cansleep(ov5675->reset_gpio, 0);
- 
--	/* 8192 xvclk cycles prior to the first SCCB transation */
--	usleep_range(delay_us, delay_us * 2);
-+	/* Worst case quiesence gap is 1.365 milliseconds @ 6MHz XVCLK
-+	 * Add an additional threshold grace period to ensure reset
-+	 * completion before initiating our first I2C transaction.
-+	 */
-+	usleep_range(1500, 1600);
- 
- 	return 0;
- }
-
----
-base-commit: 523b23f0bee3014a7a752c9bb9f5c54f0eddae88
-change-id: 20240710-linux-next-ov5675-60b0e83c73f1
-
-Best regards,
+ #define lockdep_set_subclass(lock, sub)					\
+-	lockdep_init_map_type(&(lock)->dep_map, #lock, (lock)->dep_map.key, sub,\
++	lockdep_init_map_type(&(lock)->dep_map, (lock)->dep_map.name, (lock)->dep_map.key, sub,\
+ 			      (lock)->dep_map.wait_type_inner,		\
+ 			      (lock)->dep_map.wait_type_outer,		\
+ 			      (lock)->dep_map.lock_type)
 -- 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-
+2.45.2
 
