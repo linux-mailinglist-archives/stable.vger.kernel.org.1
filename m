@@ -1,149 +1,79 @@
-Return-Path: <stable+bounces-59240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B893D930854
-	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 04:29:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C393F9308CB
+	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 08:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 462211F2184E
-	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 02:29:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76B77281AEF
+	for <lists+stable@lfdr.de>; Sun, 14 Jul 2024 06:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0326F8495;
-	Sun, 14 Jul 2024 02:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D16011CAB;
+	Sun, 14 Jul 2024 06:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DibKUocx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWqIFQX0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B79A92F;
-	Sun, 14 Jul 2024 02:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E567110E0;
+	Sun, 14 Jul 2024 06:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720924179; cv=none; b=uyZnqb1CLTk6LmwONDW6XwpLXXkh/CJCIhV6SBN+iQCdchQ1PxE2eAvbRvPvlqERPS8bZTWAd2lIIgAqczqDS1Whg5yaGM5E5l4voUrJZs0/Eiji9L84V3KktQWm7sOLVbv54+lJuTpjgmGDre0j4MSfdDfAwNd/ez0lOxR4IAQ=
+	t=1720938617; cv=none; b=b8jPgu73gZpKw31hbRxkrMVUCCTfOU1gAd8lMlji0FwKEw5ofd/uvytDWgo8blt61htcdQA0YxcfYPiY3X2K1pR0mIb15SNkfmmfwlivxQlb4bdIM/n+5Doo/ELFW2m7uWAYUeb8g+Q+xauqrRe4fvm/wKWB4e/JsbnZ4e09AF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720924179; c=relaxed/simple;
-	bh=gvaCtxw0JmqX0qKNFkwrK622sEzBsNuUqWwdfi1veZI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HO0DL7ly8my0VL9mtNcxnw5Gq6iv8wtyWQ4cEY3yzZC6TvvQr0pgPQwgzwceG/lU73dbxRZt3rC+XcLzu8zPUBfIWYBFzKYjqKjJWYJc1OV5p9pIqjT5dygma+cAyjD7/m6ffu8Jx/NtW0EVHRdD+q38ya8yBoQ0k2dq3Fm27K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DibKUocx; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4266b1f1b21so21336705e9.1;
-        Sat, 13 Jul 2024 19:29:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720924176; x=1721528976; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7uTtxkGrUED0qsLRRVKEM+k/1Ov/NZS6SczaERixb68=;
-        b=DibKUocxo7UdohX02RbknBx06eH0pyD/2/5mUNPnFtd0zNrl9CKFE6YfFBxD7bj5mK
-         V1wMH14gZEOU2J4CAN4Mu/A/y6UMxU+cX0whwp5vVnV9o+huppDUTZyOheFDpuFb8Mtj
-         R0jn23EGrTDFtXOPyBqAHSW8A1iceceot6oH9HPCNyzVGXVoSW1qR+t/xcrOEcAtAfWC
-         zOorDI8yZQyOgm5n2TrpxRZslMEKSyRXOOzs8Vyf14doH74Z+MjdMsbTaFgk51qWqf5c
-         5PYv8ndimPHTiUcWZ3Xhm+wHETcNsLotGBWUef0RmcuVZoBWRZzevrNBjHAcsEP3TFOc
-         mQ6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720924176; x=1721528976;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7uTtxkGrUED0qsLRRVKEM+k/1Ov/NZS6SczaERixb68=;
-        b=aktxBxzsx0X3ilArgbvsmeBed8jWfoDk9cF8GLEYuph0iBR1XF9OcLo8KFYsAO+qja
-         tus1FlfB85X1SBzp1x/AZv+mpnNpzfjUMfiQYe2+X910DzhYPDAOEpl136Nk9ISSdsgO
-         adYINAhCbtFEohcmdj+EN46zK/u9HagrUT8MYkwhZPbcxrTxDUzvQjVAqlELXJ5mvjvT
-         9bkWHfj1uAVV1qnjBKc9VZ7psh+K+hey0kPCP1us1Tg8Oz6J0nZUx5GbrLSvQ1dcrmdk
-         LwzTmKrb+AJ8pGAA+29s563TtTdmHMQ/20yrbCfR2H6sSouufTReZu6iCnz4PdmUMAFX
-         5HZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWGIDOggGE5caxXlJjN+IrdQ/JHqYYDsqZLgq+xRMcaNrI3FvIGKE5IIADbK/JRD/Ri1wX+v2qYIMxYujRt9Rog66HNLqYUfFJkkf8MMlA+m1zoLbPgGkrCp7u1b6TpTzi2Cg==
-X-Gm-Message-State: AOJu0Yynvt298E0hg3iGvfRI+jtpqvcgDo7/DW3vzw4T0n22Rfx69goV
-	lLuLRn/LzPGms+DYTsNFSHrUPTArwSq8fusmkAzvF4/C+xeAFdJnuJROxQVoFK4=
-X-Google-Smtp-Source: AGHT+IHl8Y8wLqDxJzkDVIy/A1pwLR4+D5zIzHFndDxbJqI0GiE3G+KkSNQb9LjffrW2mOyVJKvV1A==
-X-Received: by 2002:a05:600c:524f:b0:427:9dad:8063 with SMTP id 5b1f17b1804b1-4279dad8478mr44072335e9.12.1720924175722;
-        Sat, 13 Jul 2024 19:29:35 -0700 (PDT)
-Received: from localhost.localdomain ([156.197.1.65])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4279f2d7955sm72759145e9.47.2024.07.13.19.29.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jul 2024 19:29:35 -0700 (PDT)
-From: botta633 <bottaawesome633@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	linux-ext4@vger.kernel.org,
-	syzkaller@googlegroups.com,
-	Ahmed Ehab <bottaawesome633@gmail.com>,
-	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
+	s=arc-20240116; t=1720938617; c=relaxed/simple;
+	bh=sBFgd+WEItz8VUi9xED8kOMJ/eLuvd8BybD7/TtbeCg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FLNkh/CVxr/ARZDJ0Gn3J00WObTjiE2zGLlANFovlE64iB9W7Vy4/Xioa2gmNeGaDajLU5zYQu46kSULR+qI5M8ln7t3ZecrJyiYpNvcgxxPft2AoBURhtAEbQD5Rp99PMVI4e/DImCCk+5OL/FTHalFIG5EejgsptyFtrsKq9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWqIFQX0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEAB8C116B1;
+	Sun, 14 Jul 2024 06:30:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1720938616;
+	bh=sBFgd+WEItz8VUi9xED8kOMJ/eLuvd8BybD7/TtbeCg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PWqIFQX0tWCG2xqXOskafUvZ5NM1EeF/g74Uk5vPhJk2puPCsvTkl3L3Pg5jFVm9n
+	 jPDmnbMLc5tfz1GUjgKgLWgeIn/eNOKM4QQ42Yq9ViLNOcOG+uvLBZqCm+GAZY1+e5
+	 VsNpLybT38R8uI3phlM8J6phzWZDtAFFt+v3BG7o=
+Date: Sun, 14 Jul 2024 08:30:12 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Tim Lewis <elatllat@gmail.com>
+Cc: Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	linux-usb@vger.kernel.org, open list <linux-kernel@vger.kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] ext4: Testing lock class and subclass got the same name pointer
-Date: Sun, 14 Jul 2024 08:26:40 +0300
-Message-ID: <20240714052640.115476-1-bottaawesome633@gmail.com>
-X-Mailer: git-send-email 2.45.2
+Subject: Re: [PATCH 6.1 000/102] 6.1.98-rc1 review
+Message-ID: <2024071447-saddled-backrest-bf16@gregkh>
+References: <CA+3zgmvct7BWib9A7O1ykUf=0nZpdbdpXBdPWOCqfPuyCT3fug@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+3zgmvct7BWib9A7O1ykUf=0nZpdbdpXBdPWOCqfPuyCT3fug@mail.gmail.com>
 
-From: Ahmed Ehab <bottaawesome633@gmail.com>
+On Sat, Jul 13, 2024 at 01:52:52PM -0400, Tim Lewis wrote:
+> The patch
+>     usb: xhci: prevent potential failure in handle_tx_event() for
+> Transfer events without TRB
+>     https://patches.linaro.org/project/linux-usb/patch/20240429140245.3955523-11-mathias.nyman@linux.intel.com/
+> causes The Linux kernel
+>     6.1.98
+>     https://lkml.org/lkml/2024/7/9/645
+> to crash when plugging in a USB Seagate drive.
+>     https://www.seagate.com/ca/en/products/gaming-drives/pc-gaming/firecuda-gaming-hub/
+> This is a regression.
 
-Checking if the lockdep_map->name will change when setting the subclass.
-It shouldn't change so that the lock class and subclass will have the same name
+Ick, is this also a problem with the latest 6.6 and/or the latest 6.9
+and/or Linus's tree?
 
+thanks,
 
-Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
-Fixes: fd5e3f5fe27
-Cc: <stable@vger.kernel.org>
-Signed-off-by: botta633 <bottaawesome633@gmail.com>
----
- lib/locking-selftest.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/lib/locking-selftest.c b/lib/locking-selftest.c
-index 6f6a5fc85b42..1d7885205f36 100644
---- a/lib/locking-selftest.c
-+++ b/lib/locking-selftest.c
-@@ -2710,12 +2710,24 @@ static void local_lock_3B(void)
- 
- }
- 
-+static void class_subclass_X1_name(void)
-+{
-+	const char *name_before_subclass = rwsem_X1.dep_map.name;
-+	const char *name_after_subclass;
-+
-+	WARN_ON(!rwsem_X1.dep_map.name);
-+	lockdep_set_subclass(&rwsem_X1, 1);
-+	WARN_ON(name_before_subclass != name_after_subclass);
-+}
-+
- static void local_lock_tests(void)
- {
- 	printk("  --------------------------------------------------------------------------\n");
- 	printk("  | local_lock tests |\n");
- 	printk("  ---------------------\n");
- 
-+	init_class_X(&lock_X1, &rwlock_X1, &mutex_X1, &rwsem_X1);
-+
- 	print_testname("local_lock inversion  2");
- 	dotest(local_lock_2, SUCCESS, LOCKTYPE_LL);
- 	pr_cont("\n");
-@@ -2727,6 +2739,10 @@ static void local_lock_tests(void)
- 	print_testname("local_lock inversion 3B");
- 	dotest(local_lock_3B, FAILURE, LOCKTYPE_LL);
- 	pr_cont("\n");
-+
-+	print_testname("Class and subclass");
-+	dotest(class_subclass_X1_name, SUCCESS, LOCKTYPE_RWSEM);
-+	pr_cont("\n");
- }
- 
- static void hardirq_deadlock_softirq_not_deadlock(void)
--- 
-2.45.2
-
+greg k-h
 
