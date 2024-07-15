@@ -1,232 +1,122 @@
-Return-Path: <stable+bounces-59265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2951930CE6
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 04:59:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD53930CF7
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 05:30:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 023471C20DDB
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 02:59:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8250A1F21319
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 03:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D299DDA6;
-	Mon, 15 Jul 2024 02:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26BE176ADA;
+	Mon, 15 Jul 2024 03:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mlSoUAFM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W5tjvXXF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B1B6AB8
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 02:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08254176AB1;
+	Mon, 15 Jul 2024 03:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721012334; cv=none; b=Yp6JdZ9v0ySC3lz9f5wAf6pHmj2+Fn+Fdq11fQLCyi+3G5GwAk8K0HG5eJKW/qxPTvIg9DF1H6FJtpb0mltL8eZ1PuSjp9ix9QXujHL+hKKQ1oZVQkyR4XMLCphD0ZjrbG4xzO4yfTpYxD2FSf76FGaoi1xtu8IpkauGZYMsV7c=
+	t=1721014226; cv=none; b=DAZez2yMztdSRBrX8vg4bJvvuirRQBVhigZgoBImTZ+nItYIIJkfQZdq6Ggs29NWT/NVc/QZ70XUUjg0xTioCcny6ttV4MeKWllQ9ZSgeCMdszysTx7otnzroa8ry4q6nlEiMWH8e9HowJDCWkT0sSzafbeomHARU8VmZgBjuNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721012334; c=relaxed/simple;
-	bh=KF8l2h/GrUQnQ0eHMCYrJFiN4LDzhTvBEiBndZsaNAo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RFRbaF1KyXpPhn2VnJggIWnR3KY6V0qiYFwdX0J8aL9WnQiQvdMgk/ZQzb2rquK+Cm9EPk22z8LTHd+dZqQCKmyjylXy/YaKwcW2xyDICz807DVqCqTxRiElUFQXqZuU7/mFEaxRQH3NSm/K4yMjLH1t20yWNV2jlejU9KbL9gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mlSoUAFM; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e05a8aa4478so1599611276.1
-        for <stable@vger.kernel.org>; Sun, 14 Jul 2024 19:58:52 -0700 (PDT)
+	s=arc-20240116; t=1721014226; c=relaxed/simple;
+	bh=cJRpNo/iI7BuI5w3pjrX7vr/qCEOdaeQjJjGilw2xA4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VkBlIAOf5pIjpSWi/1ijl49oM8WbaVvEV6KrhdTggB+NsqRnTC6qxPSkXlgdChNIVafImDu9UYnh7w+Jow5ozIKGvFs1ekXlvohR20AgkF6m57iGMukk6/GC61crJ2sl53o+v9FzeNy/1uqqtZ0R8wtQOdNlhMPjoNlHiC8QI1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W5tjvXXF; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4266f3e0df8so25929465e9.2;
+        Sun, 14 Jul 2024 20:30:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721012331; x=1721617131; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=l9iRN9tyg2Ah/12TCH+6DWgzr6OQh5TsD/9/hu4zUUM=;
-        b=mlSoUAFM63IAqE5dXLdLcxwJyQnCS6unfFC6kQcorCot57f9mTA/bOcTuoQ1LhU5ci
-         eRmD7iVFdBlXS9DlzK4+meVFrj2EnPO5obPgrfuiubVHVp6upRBDtt3uDK3vF02XiuPl
-         xYyt6mG+ZVMdzeuPWwIOkXeE3vvPFV486OZbza/ByqOrVS0qCruAjhWGhiShTH/y0uTy
-         XhNJr8Is9jw+EvdTaXQedy9nLBEzYgE5o1kysfRht/Dh+3aZAxhzojJ/J9XXH0W1p+xW
-         +Lg2vnixGOwuJx7Vj+eT8DWJfP8SluJlWJULQxXBNGagGE61tABwo0zS55e1TXZkLX1C
-         bAWg==
+        d=gmail.com; s=20230601; t=1721014222; x=1721619022; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gd89MrgNcMORm5VAgplz/lj1KoWR6pPa+D0jHSmlnRY=;
+        b=W5tjvXXF0OiJmJZbhaNFQboKOh4M/xZkC7mibSXhkziOvKhKR4RXJCEOu01mfwHrap
+         67q14hoGEJIUV7g6I8e0c0UAWcw81W/SQz+G85FamOVvZ6FbbhiqewqTm6e9OVXsdq3z
+         AFCiud/Siuf/Gab7sFaBG1XiClFnRa58bi0XdHTu6UCQAfiH0HuuHIW/6277Pu6C3HnH
+         imuxP41TENjV1xD18am61OgW857ZIYGh1NKEtyLoN6FyxW5jmRCVh2mx+t8BL17qWKG9
+         gBl2G9ZqP7sapjfZ5UYMmHc50NKnVPeiX439Ho2y+iuxtGlmLgX39HYiXOK2OQV9K8Ky
+         lPWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721012331; x=1721617131;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l9iRN9tyg2Ah/12TCH+6DWgzr6OQh5TsD/9/hu4zUUM=;
-        b=HefmCjdsGrGH2aAaQogV3r0aoV8O6m6u9gx/rS7fr0kPPUzD2x/xMQ6q6N/ebS8mTO
-         aUzPSZZvGWvfUSk2NeQyhOudzICEbmnm+9u2JU9f0DZBiV98fhDkGIKRliYSWkLGpnmg
-         RmCy9ogHFblQT9cE9pWEg3BKPTWy18S5KsGg15lrjbS/gaNGWmXro9HngUgwqgTl1EiY
-         p9Si5FPT2VDAWjkpkEfpuFRakB+hgvdZkex4krcIeC7wPhiYQiRAptNHLD/ck6wXGtDl
-         V2OAATktYmjvOKmYvpc0q2bT/zORlPJl9dvhC12SwrkgUpXRlf+2zMx7fLmGeCBmAgqS
-         wWbA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1Z0gwZAsErAMBOQHqn7dVoeJ3Pf7NoWveZMH/Z45F77nieGkhlweK4o3XeT1Sq3d2RiIDdZMsYZtb6rP7P86YjGG8bcEW
-X-Gm-Message-State: AOJu0YwJanlMmjagovbMFSGScl+Pya6vNS4exYynv4V1Wn40uc0TDT0A
-	ZBgQxQXOOTnvCFAkzRUsDwqTpZIX2Gy3BAmeV9wIbGb+eXwHY/wpJ/WvsYoXVdvkyntKcFPO1Nf
-	bT9AhHg==
-X-Google-Smtp-Source: AGHT+IG41R17PIhFanq46nM/cn4uF1bXHxLFiyZobEJOoUojYLHpl+dfgdfv4dT5UhCbD8OSz+wp2yF0QGiZ
-X-Received: from kyletso-p620lin01.ntc.corp.google.com ([2401:fa00:a7:c:d8dc:1c82:c8b9:bf19])
- (user=kyletso job=sendgmr) by 2002:a05:6902:100f:b0:e03:52c8:ad30 with SMTP
- id 3f1490d57ef6-e058a8c5ebcmr541144276.3.1721012331177; Sun, 14 Jul 2024
- 19:58:51 -0700 (PDT)
-Date: Mon, 15 Jul 2024 10:58:27 +0800
+        d=1e100.net; s=20230601; t=1721014222; x=1721619022;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Gd89MrgNcMORm5VAgplz/lj1KoWR6pPa+D0jHSmlnRY=;
+        b=AjfGAwy/vUNGi4cXlsnXfU7d9gG8V5QPOb+4OuZtG3W4yRGhdsQ82moqgtVQhC3sJ9
+         GGizjsJAA+iQ+3DP1mp7F6nm5OpENwM8yp8vCjCE/FsRG3UHleX/T3B6MJogOWvrAkPe
+         GYEe0ZYJWRXl21pdpPxAGuVqPh9QUJhrjEBYwVGnrwdJKuI79xRFOrDq6IhKJSfr7EB5
+         IOVBM6SddCbMLKg6ZXlHG1HwBDgF0JRLcqn1j7/pgkyTP4umMwfPIShNXOLphexVw7Zg
+         3d9zm7O03G6x1e7k5iH+WBXq0EzuEfGmaYgRbMb6VwZtTk5OBgiOQUQ/Xa3IHe6Js1HS
+         itnA==
+X-Forwarded-Encrypted: i=1; AJvYcCV55PdxrdoW+7QKYMV+RFGvUmSQdNXkMWy+B7oVH+UT5GtiCl3sHYjtIITONClhG0wlW2uHyofy/VYJqJmMqAdLDtUOjrYEweb2w7dV+FgCWxtMrALk1fH6v7D2hoVrwOtpjQ==
+X-Gm-Message-State: AOJu0YzRNXSGaua3bQ6ve0h8Uu9nRt7FKXEbDajuYde5SXF9fmWeeyjI
+	QKX96Lbjd0fk4OUFUo7KNtApu24LfTg5dB00EFthev5hp4BD8e9DOgJRtxOPrOM=
+X-Google-Smtp-Source: AGHT+IEJHTUDhkpWC4FUHsV9d5ygPc+ar72qJsf69EryJll+78vWGb6OWByA8KSGbXIPbu7rk4Fx8g==
+X-Received: by 2002:a05:600c:2248:b0:426:641f:25e2 with SMTP id 5b1f17b1804b1-426708f14d7mr128152005e9.25.1721014221730;
+        Sun, 14 Jul 2024 20:30:21 -0700 (PDT)
+Received: from localhost.localdomain ([197.35.224.179])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4279f25a962sm102645215e9.12.2024.07.14.20.30.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Jul 2024 20:30:21 -0700 (PDT)
+From: botta633 <bottaawesome633@gmail.com>
+To: linux-kernel@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	linux-ext4@vger.kernel.org,
+	syzkaller@googlegroups.com,
+	Ahmed Ehab <bottaawesome633@gmail.com>,
+	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] locking/lockdep: Forcing subclasses to have same
+Date: Mon, 15 Jul 2024 09:27:38 +0300
+Message-ID: <20240715062739.388591-1-bottaawesome633@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.45.2.993.g49e7a77208-goog
-Message-ID: <20240715025827.3092761-1-kyletso@google.com>
-Subject: [PATCH] usb: dwc3: Runtime get and put usb power_supply handle
-From: Kyle Tso <kyletso@google.com>
-To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, raychi@google.com
-Cc: badhri@google.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	royluo@google.com, Kyle Tso <kyletso@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-It is possible that the usb power_supply is registered after the probe
-of dwc3. In this case, trying to get the usb power_supply during the
-probe will fail and there is no chance to try again. Also the usb
-power_supply might be unregistered at anytime so that the handle of it
-in dwc3 would become invalid. To fix this, get the handle right before
-calling to power_supply functions and put it afterward.
+From: Ahmed Ehab <bottaawesome633@gmail.com>
 
-Fixes: 6f0764b5adea ("usb: dwc3: add a power supply for current control")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
+Preventing lockdep_set_subclass from creating a new instance of the
+string literal. Hence, we will always have the same class->name among
+parent and subclasses. This prevents kernel panics when looking up a
+lock class while comparing class locks and class names.
+
+Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
+Fixes: de8f5e4f2dc1f ("lockdep: Introduce wait-type checks")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
 ---
- drivers/usb/dwc3/core.c   | 25 +++++--------------------
- drivers/usb/dwc3/core.h   |  4 ++--
- drivers/usb/dwc3/gadget.c | 19 ++++++++++++++-----
- 3 files changed, 21 insertions(+), 27 deletions(-)
+ include/linux/lockdep.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 734de2a8bd21..ab563edd9b4c 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1631,8 +1631,6 @@ static void dwc3_get_properties(struct dwc3 *dwc)
- 	u8			tx_thr_num_pkt_prd = 0;
- 	u8			tx_max_burst_prd = 0;
- 	u8			tx_fifo_resize_max_num;
--	const char		*usb_psy_name;
--	int			ret;
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index 08b0d1d9d78b..df8fa5929de7 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -173,7 +173,7 @@ static inline void lockdep_init_map(struct lockdep_map *lock, const char *name,
+ 			      (lock)->dep_map.lock_type)
  
- 	/* default to highest possible threshold */
- 	lpm_nyet_threshold = 0xf;
-@@ -1667,12 +1665,7 @@ static void dwc3_get_properties(struct dwc3 *dwc)
- 
- 	dwc->sys_wakeup = device_may_wakeup(dwc->sysdev);
- 
--	ret = device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
--	if (ret >= 0) {
--		dwc->usb_psy = power_supply_get_by_name(usb_psy_name);
--		if (!dwc->usb_psy)
--			dev_err(dev, "couldn't get usb power supply\n");
--	}
-+	device_property_read_string(dev, "usb-psy-name", &dwc->usb_psy_name);
- 
- 	dwc->has_lpm_erratum = device_property_read_bool(dev,
- 				"snps,has-lpm-erratum");
-@@ -2133,18 +2126,16 @@ static int dwc3_probe(struct platform_device *pdev)
- 	dwc3_get_software_properties(dwc);
- 
- 	dwc->reset = devm_reset_control_array_get_optional_shared(dev);
--	if (IS_ERR(dwc->reset)) {
--		ret = PTR_ERR(dwc->reset);
--		goto err_put_psy;
--	}
-+	if (IS_ERR(dwc->reset))
-+		return PTR_ERR(dwc->reset);
- 
- 	ret = dwc3_get_clocks(dwc);
- 	if (ret)
--		goto err_put_psy;
-+		return ret;
- 
- 	ret = reset_control_deassert(dwc->reset);
- 	if (ret)
--		goto err_put_psy;
-+		return ret;
- 
- 	ret = dwc3_clk_enable(dwc);
- 	if (ret)
-@@ -2245,9 +2236,6 @@ static int dwc3_probe(struct platform_device *pdev)
- 	dwc3_clk_disable(dwc);
- err_assert_reset:
- 	reset_control_assert(dwc->reset);
--err_put_psy:
--	if (dwc->usb_psy)
--		power_supply_put(dwc->usb_psy);
- 
- 	return ret;
- }
-@@ -2276,9 +2264,6 @@ static void dwc3_remove(struct platform_device *pdev)
- 	pm_runtime_set_suspended(&pdev->dev);
- 
- 	dwc3_free_event_buffers(dwc);
--
--	if (dwc->usb_psy)
--		power_supply_put(dwc->usb_psy);
- }
- 
- #ifdef CONFIG_PM
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index 1e561fd8b86e..ecfe2cc224f7 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -1045,7 +1045,7 @@ struct dwc3_scratchpad_array {
-  * @role_sw: usb_role_switch handle
-  * @role_switch_default_mode: default operation mode of controller while
-  *			usb role is USB_ROLE_NONE.
-- * @usb_psy: pointer to power supply interface.
-+ * @usb_psy_name: name of the usb power supply interface.
-  * @usb2_phy: pointer to USB2 PHY
-  * @usb3_phy: pointer to USB3 PHY
-  * @usb2_generic_phy: pointer to array of USB2 PHYs
-@@ -1223,7 +1223,7 @@ struct dwc3 {
- 	struct usb_role_switch	*role_sw;
- 	enum usb_dr_mode	role_switch_default_mode;
- 
--	struct power_supply	*usb_psy;
-+	const char		*usb_psy_name;
- 
- 	u32			fladj;
- 	u32			ref_clk_per;
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 89fc690fdf34..c89b5b5a64cf 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3049,20 +3049,29 @@ static void dwc3_gadget_set_ssp_rate(struct usb_gadget *g,
- 
- static int dwc3_gadget_vbus_draw(struct usb_gadget *g, unsigned int mA)
- {
--	struct dwc3		*dwc = gadget_to_dwc(g);
-+	struct dwc3			*dwc = gadget_to_dwc(g);
-+	struct power_supply		*usb_psy;
- 	union power_supply_propval	val = {0};
- 	int				ret;
- 
- 	if (dwc->usb2_phy)
- 		return usb_phy_set_power(dwc->usb2_phy, mA);
- 
--	if (!dwc->usb_psy)
-+	if (!dwc->usb_psy_name)
- 		return -EOPNOTSUPP;
- 
--	val.intval = 1000 * mA;
--	ret = power_supply_set_property(dwc->usb_psy, POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT, &val);
-+	usb_psy = power_supply_get_by_name(dwc->usb_psy_name);
-+	if (usb_psy) {
-+		val.intval = 1000 * mA;
-+		ret = power_supply_set_property(usb_psy, POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
-+						&val);
-+		power_supply_put(usb_psy);
-+		return ret;
-+	}
- 
--	return ret;
-+	dev_err(dwc->dev, "couldn't get usb power supply\n");
-+
-+	return -EOPNOTSUPP;
- }
- 
- /**
+ #define lockdep_set_subclass(lock, sub)					\
+-	lockdep_init_map_type(&(lock)->dep_map, #lock, (lock)->dep_map.key, sub,\
++	lockdep_init_map_type(&(lock)->dep_map, (lock)->dep_map.name, (lock)->dep_map.key, sub,\
+ 			      (lock)->dep_map.wait_type_inner,		\
+ 			      (lock)->dep_map.wait_type_outer,		\
+ 			      (lock)->dep_map.lock_type)
 -- 
-2.45.2.993.g49e7a77208-goog
-
+2.45.2
 
