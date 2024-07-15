@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-59298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A09F931146
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:35:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7564A931147
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D488C283894
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 09:35:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 253261F23040
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 09:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8080C186E4D;
-	Mon, 15 Jul 2024 09:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0115184133;
+	Mon, 15 Jul 2024 09:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DcpNesUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpR/G9SO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9311862AB
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 09:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEDC186E51
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 09:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721036143; cv=none; b=NWe7HYgETFt9DWfqvHicES1X8sUJeK16gGEI6ULu/hvChHZf8m9U38r469eN9hEVvfa/pzUVD+j1fLc6/gKyhxbpvMgUb5AZNejunm1LFb5se7reFUbuFZGZofHJeSchalo4FB3Tz5tCkwqb2WnYL7vt128FOr/mX5HaUrexoOk=
+	t=1721036146; cv=none; b=i+dcrCf9g5Y9M8SX4hp5WUva7b6gb2Kk9LHqHkQRDEnsXhmvxQalqtm5kDp+l+dnamRdFJ98p/jAI9Fx0hoP2FNuvkD+m7HpThPKBuVQkCiOF/9mqtC405OcnoFE+Se3DBlSyMVa4MBnauNgtmtvYWy1DeLRpSHN7falkAh1sqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721036143; c=relaxed/simple;
-	bh=EShyFTyByI5VJoq2HYFq6ZlgwbNvKU3YdvCX2uzRnjE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bzZxElhAIu9dKDRaFdz8gMwgGqVkSxSGm4woptqm436nXw4uy2eHEwwPzRwR2sqOFSCFnhwX7VXAilx1Rm67sXccvgummUylWqkMo8HR1qRfsX6BcrQeVIpvJOJy12I6pJvLzOJFWNsftT8HjuzVBCqP7OiqyIf7PmBvb58uhZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DcpNesUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D99EC32782;
-	Mon, 15 Jul 2024 09:35:42 +0000 (UTC)
+	s=arc-20240116; t=1721036146; c=relaxed/simple;
+	bh=9K8w+xQkB7iFy1IDl5Gm65diejWfI/tzNQ0YUtXmKcc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lV9UuKeOq3L05RFmdPcIAbsV+svr0M9FN/UkOPicLj9pHHmDTkd2JarpqyNk874RYLPpRO+EAxrnBy78Sz8WjHL/yWYOqZG9Aq6Onc08Xr0dEZ7WqyhoqE0L/x4fVpsVs5q/DnZ8igbfM96pgdIT68tiuALKXsBOUN0HAUQtLJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpR/G9SO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E600C32782;
+	Mon, 15 Jul 2024 09:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721036142;
-	bh=EShyFTyByI5VJoq2HYFq6ZlgwbNvKU3YdvCX2uzRnjE=;
+	s=korg; t=1721036146;
+	bh=9K8w+xQkB7iFy1IDl5Gm65diejWfI/tzNQ0YUtXmKcc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DcpNesUCKbkI3t7x8aWynyo3yV/eJzUmhzA7Y+Dq4ZqnjjPxWSoZTUmGxpw1A3hyk
-	 rTqJA5bmmXBOhxsD/yBl3K8Uj8h4GsicytfEa7mipYz5ve/F/bE+fOjZYkEuFdVb89
-	 IrLhCjfF4QljA2LTMi+EL0jtMpFWwBvVJ+Pz8e3g=
-Subject: FAILED: patch "[PATCH] nilfs2: fix kernel bug on rename operation of broken" failed to apply to 6.1-stable tree
+	b=KpR/G9SO6fgIikPTmVg89QyP/ROiYZEyZH+Au0Bv0hTo/hVjfOdskwbE39zS/1/UF
+	 Ik3vH8SRkdmnszo6ihH6Q9BkoADnlAhQd+sk72+tfrDcyS23b4tsX3F4IR+FVYtwCx
+	 KF2lk1IIS1PczGv3VnVRTUl75JJNGKE1xLN5elPY=
+Subject: FAILED: patch "[PATCH] nilfs2: fix kernel bug on rename operation of broken" failed to apply to 5.10-stable tree
 To: konishi.ryusuke@gmail.com,akpm@linux-foundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jul 2024 11:35:37 +0200
-Message-ID: <2024071537-acetone-vastly-d974@gregkh>
+Date: Mon, 15 Jul 2024 11:35:38 +0200
+Message-ID: <2024071538-overreach-eatable-7ae6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x a9e1ddc09ca55746079cc479aa3eb6411f0d99d4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071537-acetone-vastly-d974@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071538-overreach-eatable-7ae6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -80,6 +80,8 @@ a4bf041e44d5 ("nilfs2: convert nilfs_find_entry to use a folio")
 584db20c181f ("nilfs2: move page release outside of nilfs_delete_entry and nilfs_set_link")
 b3e1cc3935ff ("nilfs2: convert to new timestamp accessors")
 e21d4f419402 ("nilfs2: convert to ctime accessor functions")
+21a87d88c225 ("nilfs2: fix NULL pointer dereference at nilfs_bmap_lookup_at_level()")
+79ea65563ad8 ("nilfs2: Remove check for PageError")
 
 thanks,
 
