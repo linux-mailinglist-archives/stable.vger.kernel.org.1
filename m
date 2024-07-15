@@ -1,337 +1,123 @@
-Return-Path: <stable+bounces-59292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA657931106
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:17:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 132D8931116
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09C2A1C21E0B
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 09:17:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 937FDB20D5D
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 09:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6683F1836CB;
-	Mon, 15 Jul 2024 09:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72458186E34;
+	Mon, 15 Jul 2024 09:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIwn4zFP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pDiQVj0m"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2849223B1
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 09:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4D1185E64
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 09:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721035017; cv=none; b=QXok1pSj52O2A/f22TrbNNZLr5ElsVQIjSi4y9xHL8xK8vWiv+0Jkx97CXfzcX5aQ3gEgnP4f5ed8gKNU54gQbkT7X/P4jB0zk260Nkr4jyc3GR4B5xbGuYqa+NHs0NR24YZRMx5Z/6RtoINoyVltDmjcysvywDc0UrRe+V6IAY=
+	t=1721035324; cv=none; b=muJtIQbXTLDUosUF7BMziTU8cYPgEF8u2/6IHBClW0FPPGEVhpNDrRghJs9+ylg2udTkIaf97pZGik9KeE/xvhnfRiD8JYurmTBLg+cpsUbPoNfsAicaoSWAbI6UFcVDpDmVgKBwisMS6eHeEbLRpPy7XQLM7XrCaXjBwkzKbtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721035017; c=relaxed/simple;
-	bh=LZtZFEWPOXO+rOUccPUD3tbXxFJAfbObDDZszxq4jNA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fcmHv1VWMjBWPj8uRc9IAmtQY+15GD6x7jcRnGhSuj1cTy0AOH/oiu4VUx32w96weHEA/Zuxs3SFuoJjVC66eicwoiBlHchIMjpgGiFF322NDNUW63DRqeGbOkdnBG9dmCqGfTRI1VRkpx30tp62GNXtKk4XzBJYh1FU3wiz9CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIwn4zFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941D6C32782;
-	Mon, 15 Jul 2024 09:16:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721035017;
-	bh=LZtZFEWPOXO+rOUccPUD3tbXxFJAfbObDDZszxq4jNA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=LIwn4zFPVQgoKA8k+h4Ys1aG/ibonaxwglC66cNKf+Fq6BABa3CqUwVrDJW63ppZt
-	 DYQr6/mUaFspeD+PF7kjAPQxDVLleDbSBhCwBTzPaiso8pLU3m0BjCXXYLKMjwvcqI
-	 BxU+ugjQaG+mYUAdpoIID6xn4RDqKJny40sU6g5o=
-Subject: FAILED: patch "[PATCH] mm/filemap: make MAX_PAGECACHE_ORDER acceptable to xarray" failed to apply to 6.1-stable tree
-To: gshan@redhat.com,akpm@linux-foundation.org,david@redhat.com,ddutile@redhat.com,djwong@kernel.org,hughd@google.com,ryan.roberts@arm.com,stable@vger.kernel.org,torvalds@linux-foundation.org,william.kucharski@oracle.com,willy@infradead.org,zhenyzha@redhat.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jul 2024 11:16:54 +0200
-Message-ID: <2024071553-sturdily-proud-355b@gregkh>
+	s=arc-20240116; t=1721035324; c=relaxed/simple;
+	bh=gQwFkfYUsyCNMfYcisVu8rGAr0bAMxYc/UTVv9C0Lws=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OSGGqnfjV4n1+J48XFZcAOnqytXe7TDEf4mqfVoNYNHrZdRtJRX6uurYwA86f8ghX8jHkaBtuSu328N7Ci9Jx3vfFQ/TyYp73/2GQJHxcmf+rXyb6yY3Q5GHBB2YIomPpyKxkSVqX0n9N9AIctwX11BEThHqbHEwmccZLiqJGhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pDiQVj0m; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2eea8ea8c06so58595761fa.2
+        for <stable@vger.kernel.org>; Mon, 15 Jul 2024 02:22:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721035321; x=1721640121; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uzUrcSKPOx3F10gumq/RtLo0BiUspDhF63mAJeflmlw=;
+        b=pDiQVj0mKE7a5n/IbC55rtkNVGYTYeCowQ4c/Ekt42J73wRE/WRu8w8ToXgWNDj88D
+         JjqkvfIbEYd9fCj89AY51o7wkIWEH4EEGJJ8hUEyDVq/CuAPsM9d1XKp3OB6AjjQD6nC
+         MqS2g6XF/EX5CBcm+x2Y2h+kJL0zkWVWCGba6N75GDEEkRqGjfjer3YV8ifUffxXf9pO
+         tPTkxHxZ9qcxGcWEKdc5qzDk+aaI6ivV275z1WOj23WCNPerM3NyxhUQj4Kk760V8/w9
+         Lz8KrtoTQ1UGiF3jR1QEWEIKWI/xFQ7Qf2Hi3ELJ0ueA0knA3TR8Is8B6eS9BJQ6hgkP
+         gFag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721035321; x=1721640121;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uzUrcSKPOx3F10gumq/RtLo0BiUspDhF63mAJeflmlw=;
+        b=R1qFkWUwSe/tCfSeF5+ixgkJ9WO26/AWY4ROSmb1h/HtSsmipYOtVQfQDJXK3WNsiP
+         H5+O9r173tS894JidndEQKhVZRc7BqfhTRTYKyq90n22h3amoJB1kW62UnpHesfDPbHG
+         V5FFhJkykP+N/mDGYiL8QQGGeuoti8+N2IUitDsmbWwHl3yrrDxm99ehNeo1HjnowlpH
+         n6EErDxaVr48qyyRqaZ//kTjxBXAHswi6bPM0MwwsU5PU9glR0zofELwcev7AyNl/6UC
+         FvwJPo7caNKjtlJlbqqQMRsSm1lBib747z5bEtQ0c4t47b2A0nS8JilG8cqJUHzau78R
+         3wqA==
+X-Forwarded-Encrypted: i=1; AJvYcCVaeMdtrvytQQ2rBhvJ76Ldu7yHH0rqy4FvLFtKMFIKBGDq58RSdVX/I5UpgGV2LO+H/7vWiHONIx2ZKjbzeyr7+JU1l/ZB
+X-Gm-Message-State: AOJu0YzQaCbMD0WwmCMs/SuBz7zN/2uLCHrMHX6PQT3J2PxasyomRXJK
+	7SbzPZr3kpMUTniQmi7L818pOGacXYRsRa42qiJVX7HnYbMuXlqZ7tDO6teSFaM=
+X-Google-Smtp-Source: AGHT+IF/+AJbHLXohqSQ0XRGQc/GKg4cNhF8cuLtHAuiUlm5z+UVxHHPYV/1+FE6SNp+cer/mIRn8g==
+X-Received: by 2002:a2e:9dd3:0:b0:2ee:8777:f86a with SMTP id 38308e7fff4ca-2eeb3188d1cmr119886761fa.37.1721035320730;
+        Mon, 15 Jul 2024 02:22:00 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:e709:abf9:48b3:5079? ([2a05:6e02:1041:c10:e709:abf9:48b3:5079])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3680dafbec3sm5764675f8f.85.2024.07.15.02.21.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Jul 2024 02:22:00 -0700 (PDT)
+Message-ID: <343175eb-ac00-4a41-844d-ae1c9901cf1d@linaro.org>
+Date: Mon, 15 Jul 2024 11:21:59 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/12] thermal/drivers: simplify probe()
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Amit Kucheria <amitk@kernel.org>,
+ Thara Gopinath <thara.gopinath@gmail.com>
+Cc: linux-pm@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
+References: <20240709-thermal-probe-v1-0-241644e2b6e0@linaro.org>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20240709-thermal-probe-v1-0-241644e2b6e0@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+On 09/07/2024 14:59, Krzysztof Kozlowski wrote:
+> Simplify error handling in probe() and also fix one possible issue in
+> remove().
+> 
+> Best regards,
+> Krzysztof
+> 
+> ---
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Applied, thanks
 
-To reproduce the conflict and resubmit, you may use the following commands:
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 099d90642a711caae377f53309abfe27e8724a8b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071553-sturdily-proud-355b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-099d90642a71 ("mm/filemap: make MAX_PAGECACHE_ORDER acceptable to xarray")
-79c137454815 ("filemap: add helper mapping_max_folio_size()")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 099d90642a711caae377f53309abfe27e8724a8b Mon Sep 17 00:00:00 2001
-From: Gavin Shan <gshan@redhat.com>
-Date: Thu, 27 Jun 2024 10:39:49 +1000
-Subject: [PATCH] mm/filemap: make MAX_PAGECACHE_ORDER acceptable to xarray
-
-Patch series "mm/filemap: Limit page cache size to that supported by
-xarray", v2.
-
-Currently, xarray can't support arbitrary page cache size.  More details
-can be found from the WARN_ON() statement in xas_split_alloc().  In our
-test whose code is attached below, we hit the WARN_ON() on ARM64 system
-where the base page size is 64KB and huge page size is 512MB.  The issue
-was reported long time ago and some discussions on it can be found here
-[1].
-
-[1] https://www.spinics.net/lists/linux-xfs/msg75404.html
-
-In order to fix the issue, we need to adjust MAX_PAGECACHE_ORDER to one
-supported by xarray and avoid PMD-sized page cache if needed.  The code
-changes are suggested by David Hildenbrand.
-
-PATCH[1] adjusts MAX_PAGECACHE_ORDER to that supported by xarray
-PATCH[2-3] avoids PMD-sized page cache in the synchronous readahead path
-PATCH[4] avoids PMD-sized page cache for shmem files if needed
-
-Test program
-============
-# cat test.c
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <sys/syscall.h>
-#include <sys/mman.h>
-
-#define TEST_XFS_FILENAME	"/tmp/data"
-#define TEST_SHMEM_FILENAME	"/dev/shm/data"
-#define TEST_MEM_SIZE		0x20000000
-
-int main(int argc, char **argv)
-{
-	const char *filename;
-	int fd = 0;
-	void *buf = (void *)-1, *p;
-	int pgsize = getpagesize();
-	int ret;
-
-	if (pgsize != 0x10000) {
-		fprintf(stderr, "64KB base page size is required\n");
-		return -EPERM;
-	}
-
-	system("echo force > /sys/kernel/mm/transparent_hugepage/shmem_enabled");
-	system("rm -fr /tmp/data");
-	system("rm -fr /dev/shm/data");
-	system("echo 1 > /proc/sys/vm/drop_caches");
-
-	/* Open xfs or shmem file */
-	filename = TEST_XFS_FILENAME;
-	if (argc > 1 && !strcmp(argv[1], "shmem"))
-		filename = TEST_SHMEM_FILENAME;
-
-	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC);
-	if (fd < 0) {
-		fprintf(stderr, "Unable to open <%s>\n", filename);
-		return -EIO;
-	}
-
-	/* Extend file size */
-	ret = ftruncate(fd, TEST_MEM_SIZE);
-	if (ret) {
-		fprintf(stderr, "Error %d to ftruncate()\n", ret);
-		goto cleanup;
-	}
-
-	/* Create VMA */
-	buf = mmap(NULL, TEST_MEM_SIZE,
-		   PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-	if (buf == (void *)-1) {
-		fprintf(stderr, "Unable to mmap <%s>\n", filename);
-		goto cleanup;
-	}
-
-	fprintf(stdout, "mapped buffer at 0x%p\n", buf);
-	ret = madvise(buf, TEST_MEM_SIZE, MADV_HUGEPAGE);
-        if (ret) {
-		fprintf(stderr, "Unable to madvise(MADV_HUGEPAGE)\n");
-		goto cleanup;
-	}
-
-	/* Populate VMA */
-	ret = madvise(buf, TEST_MEM_SIZE, MADV_POPULATE_WRITE);
-	if (ret) {
-		fprintf(stderr, "Error %d to madvise(MADV_POPULATE_WRITE)\n", ret);
-		goto cleanup;
-	}
-
-	/* Punch the file to enforce xarray split */
-	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
-        		TEST_MEM_SIZE - pgsize, pgsize);
-	if (ret)
-		fprintf(stderr, "Error %d to fallocate()\n", ret);
-
-cleanup:
-	if (buf != (void *)-1)
-		munmap(buf, TEST_MEM_SIZE);
-	if (fd > 0)
-		close(fd);
-
-	return 0;
-}
-
-# gcc test.c -o test
-# cat /proc/1/smaps | grep KernelPageSize | head -n 1
-KernelPageSize:       64 kB
-# ./test shmem
-   :
-------------[ cut here ]------------
-WARNING: CPU: 17 PID: 5253 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
-Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib  \
-nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct    \
-nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4    \
-ip_set nf_tables rfkill nfnetlink vfat fat virtio_balloon          \
-drm fuse xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64  \
-virtio_net sha1_ce net_failover failover virtio_console virtio_blk \
-dimlib virtio_mmio
-CPU: 17 PID: 5253 Comm: test Kdump: loaded Tainted: G W 6.10.0-rc5-gavin+ #12
-Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : xas_split_alloc+0xf8/0x128
-lr : split_huge_page_to_list_to_order+0x1c4/0x720
-sp : ffff80008a92f5b0
-x29: ffff80008a92f5b0 x28: ffff80008a92f610 x27: ffff80008a92f728
-x26: 0000000000000cc0 x25: 000000000000000d x24: ffff0000cf00c858
-x23: ffff80008a92f610 x22: ffffffdfc0600000 x21: 0000000000000000
-x20: 0000000000000000 x19: ffffffdfc0600000 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000018000000000 x15: 3374004000000000
-x14: 0000e00000000000 x13: 0000000000002000 x12: 0000000000000020
-x11: 3374000000000000 x10: 3374e1c0ffff6000 x9 : ffffb463a84c681c
-x8 : 0000000000000003 x7 : 0000000000000000 x6 : ffff00011c976ce0
-x5 : ffffb463aa47e378 x4 : 0000000000000000 x3 : 0000000000000cc0
-x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
-Call trace:
- xas_split_alloc+0xf8/0x128
- split_huge_page_to_list_to_order+0x1c4/0x720
- truncate_inode_partial_folio+0xdc/0x160
- shmem_undo_range+0x2bc/0x6a8
- shmem_fallocate+0x134/0x430
- vfs_fallocate+0x124/0x2e8
- ksys_fallocate+0x4c/0xa0
- __arm64_sys_fallocate+0x24/0x38
- invoke_syscall.constprop.0+0x7c/0xd8
- do_el0_svc+0xb4/0xd0
- el0_svc+0x44/0x1d8
- el0t_64_sync_handler+0x134/0x150
- el0t_64_sync+0x17c/0x180
-
-
-This patch (of 4):
-
-The largest page cache order can be HPAGE_PMD_ORDER (13) on ARM64 with
-64KB base page size.  The xarray entry with this order can't be split as
-the following error messages indicate.
-
-------------[ cut here ]------------
-WARNING: CPU: 35 PID: 7484 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
-Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib  \
-nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct    \
-nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4    \
-ip_set rfkill nf_tables nfnetlink vfat fat virtio_balloon drm      \
-fuse xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64      \
-sha1_ce virtio_net net_failover virtio_console virtio_blk failover \
-dimlib virtio_mmio
-CPU: 35 PID: 7484 Comm: test Kdump: loaded Tainted: G W 6.10.0-rc5-gavin+ #9
-Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : xas_split_alloc+0xf8/0x128
-lr : split_huge_page_to_list_to_order+0x1c4/0x720
-sp : ffff800087a4f6c0
-x29: ffff800087a4f6c0 x28: ffff800087a4f720 x27: 000000001fffffff
-x26: 0000000000000c40 x25: 000000000000000d x24: ffff00010625b858
-x23: ffff800087a4f720 x22: ffffffdfc0780000 x21: 0000000000000000
-x20: 0000000000000000 x19: ffffffdfc0780000 x18: 000000001ff40000
-x17: 00000000ffffffff x16: 0000018000000000 x15: 51ec004000000000
-x14: 0000e00000000000 x13: 0000000000002000 x12: 0000000000000020
-x11: 51ec000000000000 x10: 51ece1c0ffff8000 x9 : ffffbeb961a44d28
-x8 : 0000000000000003 x7 : ffffffdfc0456420 x6 : ffff0000e1aa6eb8
-x5 : 20bf08b4fe778fca x4 : ffffffdfc0456420 x3 : 0000000000000c40
-x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
-Call trace:
- xas_split_alloc+0xf8/0x128
- split_huge_page_to_list_to_order+0x1c4/0x720
- truncate_inode_partial_folio+0xdc/0x160
- truncate_inode_pages_range+0x1b4/0x4a8
- truncate_pagecache_range+0x84/0xa0
- xfs_flush_unmap_range+0x70/0x90 [xfs]
- xfs_file_fallocate+0xfc/0x4d8 [xfs]
- vfs_fallocate+0x124/0x2e8
- ksys_fallocate+0x4c/0xa0
- __arm64_sys_fallocate+0x24/0x38
- invoke_syscall.constprop.0+0x7c/0xd8
- do_el0_svc+0xb4/0xd0
- el0_svc+0x44/0x1d8
- el0t_64_sync_handler+0x134/0x150
- el0t_64_sync+0x17c/0x180
-
-Fix it by decreasing MAX_PAGECACHE_ORDER to the largest supported order
-by xarray. For this specific case, MAX_PAGECACHE_ORDER is dropped from
-13 to 11 when CONFIG_BASE_SMALL is disabled.
-
-Link: https://lkml.kernel.org/r/20240627003953.1262512-1-gshan@redhat.com
-Link: https://lkml.kernel.org/r/20240627003953.1262512-2-gshan@redhat.com
-Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Darrick J. Wong <djwong@kernel.org>
-Cc: Don Dutile <ddutile@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: William Kucharski <william.kucharski@oracle.com>
-Cc: Zhenyu Zhang <zhenyzha@redhat.com>
-Cc: <stable@vger.kernel.org>	[5.18+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 59f1df0cde5a..a0a026d2d244 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -354,11 +354,18 @@ static inline void mapping_set_gfp_mask(struct address_space *m, gfp_t mask)
-  * a good order (that's 1MB if you're using 4kB pages)
-  */
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--#define MAX_PAGECACHE_ORDER	HPAGE_PMD_ORDER
-+#define PREFERRED_MAX_PAGECACHE_ORDER	HPAGE_PMD_ORDER
- #else
--#define MAX_PAGECACHE_ORDER	8
-+#define PREFERRED_MAX_PAGECACHE_ORDER	8
- #endif
- 
-+/*
-+ * xas_split_alloc() does not support arbitrary orders. This implies no
-+ * 512MB THP on ARM64 with 64KB base page size.
-+ */
-+#define MAX_XAS_ORDER		(XA_CHUNK_SHIFT * 2 - 1)
-+#define MAX_PAGECACHE_ORDER	min(MAX_XAS_ORDER, PREFERRED_MAX_PAGECACHE_ORDER)
-+
- /**
-  * mapping_set_large_folios() - Indicate the file supports large folios.
-  * @mapping: The file.
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
 
