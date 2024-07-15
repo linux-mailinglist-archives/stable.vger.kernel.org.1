@@ -1,190 +1,142 @@
-Return-Path: <stable+bounces-59373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0EC6931D12
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 00:14:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB8E931D22
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 00:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 405B51F22455
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 22:14:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 731331C21B83
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 22:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAAB13CFA5;
-	Mon, 15 Jul 2024 22:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E5B13C9CD;
+	Mon, 15 Jul 2024 22:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ho0RaTE3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gWplKzem"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC61861FFA
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 22:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E591B13B791
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 22:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721081673; cv=none; b=kf7b6lAyjxUHkC0TpQlQW74rV4VHo+lmQvBJWbJfKsd16N8JsjIj8cbYW83zyCSPrnWOipAeTMioTyT+mY4RjKEt9xsZb/5U5w+I7vEALVT5mL8ZpZVTfAOQLQc1mSdFaiuJ5hwrhMYqAJznyUfspvNMuUZSlD4be2QaTUkcjTY=
+	t=1721082112; cv=none; b=XC7IkxTEC0h0D06cZb64R3tYd6JtCoBpdJsWio7Vo1V95nbtRdUK0vKyfXGj7z0QPBDZ2VrcJ832NH+b3C+eZAg2liQDSLMtlS6ApR0CIQkk5MSa9ZwW8u+lvhXu/5fjxj8Ch1KNgSzpi1Ygi2YT06t5uZgay7lslMlfJp2UsFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721081673; c=relaxed/simple;
-	bh=LjFADk2GYzrpE1gXp7BUKGW0BwefJlJqWxKDFlPQjzk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nOyLgIH9fZorBUVl25wFLw+J490B1if5Qxh1c5Ac6Jzt8HTQDzKh8Q39xe4v16KTslQ1JODyrlckhwhVnAzUKy/9fVk1mGWiTIS9xjlfCZZFlJsWPc7W5W+K4kjyC2faNu/odVd4u2q9IZnPvz/g2VrDP7EnC4UAm+27a9MKgxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ho0RaTE3; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721081672; x=1752617672;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LjFADk2GYzrpE1gXp7BUKGW0BwefJlJqWxKDFlPQjzk=;
-  b=ho0RaTE39WDKSR78Pxn7ZbecKUdOx439KgvpwyxzK3uUEku6h6p8BrNX
-   o5G/omfpO26Go7DkpcRHWedsv4QC8R4QJUEe8WxRdGQfdeyjohsImgolO
-   oMWVv4basxI5mfCsIlJ0PM99UafvjCRFB77OdnC7kYfmB4c/yc03CapU+
-   9uWpEWF83Y/tVc4kR8JH451Km0rqydHU8PTnSREURS725IxqwtELa029a
-   4gFDi2mGLOJPzdN/ZLlj4EuA8nj6bYfO0F24YW3L3T+S4Pf4m+vIaydOZ
-   d2epH8VXejxkiBm3nkq0X4H5a+q0fT5NG7otQmZGwShJHuGHjUsJUkcNk
-   w==;
-X-CSE-ConnectionGUID: R+PEpE8DTkijS6EjbqcCxw==
-X-CSE-MsgGUID: ISiZ1juXT5CFHydCuo0yGQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11134"; a="18683019"
-X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
-   d="scan'208";a="18683019"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2024 15:14:30 -0700
-X-CSE-ConnectionGUID: m6oXyLm8SbmDGBaxUvD9Mw==
-X-CSE-MsgGUID: wDv5TPuoT3y2oH6Ha1LACQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
-   d="scan'208";a="54030544"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO intel.com) ([10.245.246.155])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2024 15:14:27 -0700
-Date: Tue, 16 Jul 2024 00:14:22 +0200
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: "Gote, Nitin R" <nitin.r.gote@intel.com>
-Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
-	"Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
-	"Wilson, Chris P" <chris.p.wilson@intel.com>,
-	"tursulin@ursulin.net" <tursulin@ursulin.net>,
-	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"Das, Nirmoy" <nirmoy.das@intel.com>,
-	"janusz.krzysztofik@linux.intel.com" <janusz.krzysztofik@linux.intel.com>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] drm/i915/gt: Do not consider preemption during
- execlists_dequeue for gen8
-Message-ID: <ZpWfPjVificBZgBD@ashyti-mobl2.lan>
-References: <20240711163208.1355736-1-nitin.r.gote@intel.com>
- <CH0PR11MB54443CBE8B4A052419FFFD1BE5A52@CH0PR11MB5444.namprd11.prod.outlook.com>
- <ZpAfyzKlqlMrd4nj@intel.com>
- <SJ0PR11MB586743B1AF7DABD0F131E906D0A62@SJ0PR11MB5867.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1721082112; c=relaxed/simple;
+	bh=ngdjgUJXky3VHvdEx1HlSdhKUC14SCUQRFpJ5WWPihI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Tql3yDmCZheyOagAE+8TAUNQ5L28lgniWQ/+BKisNGGCmSosXD/lm1q4mGaw19t1fLjFLdAh0vyBfaerEvzratsrfxj5Qo391bwWR1eyJQqW5xeuldCRMPQJXAuQg2/uepREDdDhvbAWNJOXlJ/aFMaC61ibRUjnC4tQMhO70zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gWplKzem; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721082110;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vSAEoL90D2rESPJlR69imt1VdlcdBUDuG1SRzwUyeIM=;
+	b=gWplKzemf2uKodaPtzZMfhGuktxQX7cD+yMsRl+yytRToMIlJR2vJatBLLbUw/9DSqmYPS
+	gmlbyQ6toBxFCLI1ShaZshoq+FZ/3QFHx+IvZ6IgGE2IEeiwnPRg93/O2b+jiD8qAxJjRY
+	HgnN4Lp79x4uuAgpkiZttzHaXeHl4FY=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-111-Jg_asFbhPNqtDQQ-7dk6HQ-1; Mon, 15 Jul 2024 18:21:48 -0400
+X-MC-Unique: Jg_asFbhPNqtDQQ-7dk6HQ-1
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-80ba1cbd94eso383054239f.1
+        for <stable@vger.kernel.org>; Mon, 15 Jul 2024 15:21:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721082107; x=1721686907;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vSAEoL90D2rESPJlR69imt1VdlcdBUDuG1SRzwUyeIM=;
+        b=MoKhYmmWCE41Ok6qb0yBgXF36KUHCWlwt2s7Jkn7CO0xmwvU11i1r0aRq/CgfWYDoR
+         4N5H0fEt19E18YVHokrKf2tsb6R/TNU2JM0LLdwrZYygMecJPY9O72ahGnkOsQakt0Lo
+         MdGrirKXuuvEsIVQVyuLn7Z+de6r+xb+cKGLRG2Z+D+c4xhroYY+lgwsHmyGLVcy+dqB
+         U2LXb/EPFAfktioPtD3TEF28AKV8WljIyjKSGqDBQyiA74YZYVM2qInkLrUJbRhi7Wpk
+         25TgeQQB/NE/gGpNChRZOgdEqoN0iBWkQgsCBUnhAsvTUk9ei/bDJiAS6uNFW517Ghxl
+         VRIw==
+X-Forwarded-Encrypted: i=1; AJvYcCX1anCkicEu8pnxk/Nv4WMujkmZ+u4rlLiEO4ZWQD87Y6UOKvwgs90u/AV1M/7nkJcm/Ex54/b+pzf+Zi5PydPV5eIaWfgT
+X-Gm-Message-State: AOJu0YwHOcGAPiiGdT1baYJis2WbBFIB+6mrJZZzSxFM+V5B2HX8zvZp
+	O7WINNZv3n7EFJAicXWxXBr0U2WWzElexjjR9EwiPZbAm0EIRoxGnJywzj2aDe4RiiRbTy3mfmA
+	cgb+dKOC/FExk6zKGbmzQ+RECXcAaLHfrsvSkw6phwpUt7Fu51h1eBw==
+X-Received: by 2002:a05:6602:164a:b0:7fd:5a50:b215 with SMTP id ca18e2360f4ac-815744480f8mr74236339f.3.1721082107645;
+        Mon, 15 Jul 2024 15:21:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH56AwbTBEr+fC4H4bofZFcNEN2qYObHuoInT4K+ZAkNVsvEwJ48WyEwxwjmu/zT5AlH3QSuw==
+X-Received: by 2002:a05:6602:164a:b0:7fd:5a50:b215 with SMTP id ca18e2360f4ac-815744480f8mr74233839f.3.1721082107313;
+        Mon, 15 Jul 2024 15:21:47 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-80e11f90077sm158091939f.18.2024.07.15.15.21.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jul 2024 15:21:46 -0700 (PDT)
+Date: Mon, 15 Jul 2024 16:21:45 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Leah Rumancik <leah.rumancik@gmail.com>, Sasha Levin
+ <sashal@kernel.org>, stable@vger.kernel.org, Miaohe Lin
+ <linmiaohe@huawei.com>, Thorvald Natvig <thorvald@google.com>, Jane Chu
+ <jane.chu@oracle.com>, Christian Brauner <brauner@kernel.org>, Heiko
+ Carstens <hca@linux.ibm.com>, Kent Overstreet <kent.overstreet@linux.dev>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mateusz Guzik
+ <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>, Muchun Song
+ <muchun.song@linux.dev>, Oleg Nesterov <oleg@redhat.com>, Peng Zhang
+ <zhangpeng.00@bytedance.com>, Tycho Andersen <tandersen@netflix.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 6.6] fork: defer linking file vma until vma is fully
+ initialized
+Message-ID: <20240715162145.6e13cbff.alex.williamson@redhat.com>
+In-Reply-To: <20240715203541.389415-1-axelrasmussen@google.com>
+References: <CACzhbgRoMEAzkEVZPMEHR2JsNn5ZNw1SwKqP1FVzej4g_87snQ@mail.gmail.com>
+	<20240715203541.389415-1-axelrasmussen@google.com>
+Organization: Red Hat
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SJ0PR11MB586743B1AF7DABD0F131E906D0A62@SJ0PR11MB5867.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On Mon, 15 Jul 2024 13:35:41 -0700
+Axel Rasmussen <axelrasmussen@google.com> wrote:
 
-On Fri, Jul 12, 2024 at 03:25:23PM +0200, Gote, Nitin R wrote:
-> > -----Original Message-----
-> > From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> > Sent: Thursday, July 11, 2024 11:39 PM
-> > To: Cavitt, Jonathan <jonathan.cavitt@intel.com>
-> > Cc: Gote, Nitin R <nitin.r.gote@intel.com>; Wilson, Chris P
-> > <chris.p.wilson@intel.com>; tursulin@ursulin.net; intel-
-> > gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org; Shyti, Andi
-> > <andi.shyti@intel.com>; Das, Nirmoy <nirmoy.das@intel.com>;
-> > janusz.krzysztofik@linux.intel.com; Chris Wilson
-> > <chris.p.wilson@linux.intel.com>; stable@vger.kernel.org
-> > Subject: Re: [PATCH v3] drm/i915/gt: Do not consider preemption during
-> > execlists_dequeue for gen8
-> > 
-> > On Thu, Jul 11, 2024 at 04:28:53PM +0000, Cavitt, Jonathan wrote:
-> > > -----Original Message-----
-> > > From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf Of
-> > > Nitin Gote
-> > > Sent: Thursday, July 11, 2024 9:32 AM
-> > > To: Wilson, Chris P <chris.p.wilson@intel.com>; tursulin@ursulin.net;
-> > > intel-gfx@lists.freedesktop.org
-> > > Cc: dri-devel@lists.freedesktop.org; Shyti, Andi
-> > > <andi.shyti@intel.com>; Das, Nirmoy <nirmoy.das@intel.com>;
-> > > janusz.krzysztofik@linux.intel.com; Gote, Nitin R
-> > > <nitin.r.gote@intel.com>; Chris Wilson
-> > > <chris.p.wilson@linux.intel.com>; stable@vger.kernel.org
-> > > Subject: [PATCH v3] drm/i915/gt: Do not consider preemption during
-> > > execlists_dequeue for gen8
-> > > >
-> > > > We're seeing a GPU HANG issue on a CHV platform, which was caused by
-> > > > bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries
-> > for gen8").
-> > > >
-> > > > Gen8 platform has only timeslice and doesn't support a preemption
-> > > > mechanism as engines do not have a preemption timer and doesn't send
-> > > > an irq if the preemption timeout expires.
-> > >
-> > > That seems to mean the original can_preempt function was inaccurately
-> > > built, so fixing it here makes the most sense to me, especially if it's causing
-> > problems.
-> > >
-> > > Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com> -Jonathan
-> > > Cavitt
-> > >
-> > > > So, add a fix to not consider preemption during dequeuing for gen8
-> > > > platforms.
-> > > >
-> > > > v2: Simplify can_preempt() function (Tvrtko Ursulin)
-> > > >
-> > > > v3:
-> > > >  - Inside need_preempt(), condition of can_preempt() is not required
-> > > >    as simplified can_preempt() is enough. (Chris Wilson)
-> > > >
-> > > > Fixes: bac24f59f454 ("drm/i915/execlists: Enable coarse preemption
-> > > > boundaries for gen8")
-> > 
-> > Something strange in here...
-> > 
-> > This patch is not using directly or indirectly (I915_ENGINE_HAS_PREEMPTION)
-> > the can_preempt()...
-> >
+> I tried out Sasha's suggestion. Note that *just* taking
+> aac6db75a9 ("vfio/pci: Use unmap_mapping_range()") is not sufficient, we also
+> need b7c5e64fec ("vfio: Create vfio_fs_type with inode per device").
 > 
-> Thank you Rodrigo for the review comment. Seems like you are right.
-> Fixes: bac24f59f454 is misleading as it's not using can_preempt(). 
-> The bug could be from the commit bac24f59f454 as mentioned in the issue
-> But this change fixes the original implementation of can_preempt()  in below commit.
-> Fixes: 751f82b353a6 ("drm/i915/gt: Only disable preemption on gen8 render engines").
+> But, the good news is both of those apply more or less cleanly to 6.6. And, at
+> least under a very basic test which exercises VFIO memory mapping, things seem
+> to work properly with that change.
 > 
-> I will update the Fixes in the commit description and will send in v4.
+> I would agree with Leah that these seem a bit big to be stable fixes. But, I'm
+> encouraged by the fact that Sasha suggested taking them. If there are no big
+> objections (Alex? :) ) I can send the backport patches this week.
+> 
 
-Can I reword the commit log to something similar:
+If you were to take those, I think you'd also want:
 
-    drm/i915/gt: Do not consider preemption during execlists_dequeue for gen8
+d71a989cf5d9 ("vfio/pci: Insert full vma on mmap'd MMIO fault")
 
-    We're seeing a GPU hang issue on a CHV platform, which was caused by commit
-    bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for
-    Gen8").
+which helps avoid a potential regression in VM startup latency vs
+faulting each page of the VMA.  Ideally we'd have had huge_fault
+working for pfnmaps before this conversion to avoid the latter commit.
 
-    The Gen8 platform only supports timeslicing and doesn't have a preemption
-    mechanism, as its engines do not have a preemption timer.
+I'm a bit confused by the lineage here though, 35e351780fa9 ("fork:
+defer linking file vma until vma is fully initialized") entered v6.9
+whereas these vfio changes all came in v6.10, so why does the v6.6
+backport end up with dependencies on these newer commits?  Is there
+something that needs to be fixed in v6.9-stable as well?
 
-    Commit 751f82b353a6 ("drm/i915/gt: Only disable preemption on Gen8 render
-    engines") addressed this issue only for render engines. This patch extends
-    that fix by ensuring that preemption is not considered for all engines on
-    Gen8 platforms.
+Aside from the size of aac6db75a9 in particular, I'm not aware of any
+outstanding issues that would otherwise dissuade backport to
+v6.6-stable.  Thanks,
 
-    v4:
-     - Use the correct Fixes tag (Rodrigo Vivi)
-     - Reworded commit log (Andi Shyti)
+Alex
 
-    v3:
-     - Inside need_preempt(), condition of can_preempt() is not required
-       as simplified can_preempt() is enough. (Chris Wilson)
-
-    v2: Simplify can_preempt() function (Tvrtko Ursulin)
-
-Andi
 
