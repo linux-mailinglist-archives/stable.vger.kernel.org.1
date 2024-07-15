@@ -1,77 +1,57 @@
-Return-Path: <stable+bounces-59359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8815931876
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 18:27:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9589318E1
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 18:57:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E136B1C20FAF
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 16:27:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BAFB281A65
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 16:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459911C2A3;
-	Mon, 15 Jul 2024 16:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52583208A9;
+	Mon, 15 Jul 2024 16:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ihl6hK5R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YbyGedrB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8D8E556
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 16:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FA01CAB8
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 16:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721060839; cv=none; b=mLVuq8OrvryVTsTRoTdC7AoxiSxXLMmdz1w4EmZtaJ29o+vQrwbtsxIsDHYXC87VDh5qWohRw+sG2Nuh67VXa3DviSkg+0jYRdFLxVzA6Z2lXQUH+jpEvT4I8hGf73nVpX0rfKei+o1xEi9UYiD13QDhaLAsXJo6uGE25ut62AI=
+	t=1721062640; cv=none; b=kLcGCL3R1LKZKgNBnyydJZPHNoVRUkPw//D2ZLkrz1dJbx3A/3ALrhtTZIuKXTK5GPmKJvbtP217nZkoEkqI3AofY2ewFPUgSfL12uxR49Ti0aGI8msGouZa6QuUKd2GUURZoASUOLxJp6tPKgb3yx3QV1kRS9gNhFY6LAQCt5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721060839; c=relaxed/simple;
-	bh=kjZaKa7Yy3SsKy6z3Y6+0MyoiyO4FHBO9KeKYKWgF1E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=unS2HM57YnePozi0QjYgH9JN3T5VSbD0NBGZV3od3azEzaKubMX5wRHJwBcUMaQdDDlKYUe0glKQAFrAJBS8CICYHy3UgSUI+ufmMmZFXyTgwA3Zz0wbDHc5gebDbM548OPggAZ4OLe8u4JOl0GQY6M1uoUi7WDobyGjLCBJqyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ihl6hK5R; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-70b09c2ade6so2926190b3a.3
-        for <stable@vger.kernel.org>; Mon, 15 Jul 2024 09:27:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721060836; x=1721665636; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CR9XMGHVRfXioS9lgeIqkeVvd3FXXcJnxuvbUivr094=;
-        b=ihl6hK5RZUwWa1QtcgW3MBoivLMgB8nWLi4CphDWSHoprPBIDn13ZWEOEEAoEP0Q9a
-         hrXKryyPtTtQq6A0zwlIuofcD1nvdL6egEtuW05ZB/MAw7CLhYmSoj/OVMxVxCPQldsO
-         Ukr4SzcgY8GAkd/N/f6Ugd/qE2BHQrxQz2YclJShN4/AVumgZYqdmyIqh5VkStu0x4jI
-         nbDjRWoBWF7nvcO7algMUgaDvbFm8d7np1E6zum8ApdIo+xM90XnmPnuvt58B9n4V7dv
-         YCXiTOUmHhN+j58qXx5WjQDZ5B83NkJxNBA1soLC/5tIWdfG2pyrMa1lCN92BsPcLQbG
-         dgYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721060836; x=1721665636;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CR9XMGHVRfXioS9lgeIqkeVvd3FXXcJnxuvbUivr094=;
-        b=qLGII5H0AGmON27Dw+Kczg0qEgygzUpfuG0n+OEzVFvVKrPxSiGrxzg+AMBCg2NK9+
-         NPtLrefYljgZJOVMjnHc0XH3D6zyUF8+NKjFDlxLydAswEIbuC2UiamrixH2UGJILXHR
-         MVGYL/w3zdcOlhlDmTAgydQFQfCMGhFbxUXuqCmwXrW0zfyo5RO1soWObcvjO1H8Y0jR
-         9tebkWsuENdV3a4F+gI/9dSF+lnbvcXATzPxSzMcumG5fBjLxlWWWUKH9boPwjN9moSy
-         m8GieWeBfUqyQ8tWjkMQOOCNxy4DYZaFwavq1lpCNBbd4tXv0azu1EMxmdo1Fx+mKmwR
-         JRbQ==
-X-Gm-Message-State: AOJu0Yxs/ruch1/D4zKilWsfbig/3kV7tXttYabyawQdgFZZ9Q7Ls2Zm
-	UZIJyJwOMKXEC+ueHS7c2TSNdoTuHYCDF/v4UOUZnx2Qdv1dg1Wf+eRCQQ==
-X-Google-Smtp-Source: AGHT+IHwWV3yqWo0womJbuPfyFmRYENDW2z7JqNnqkmJzi5ASOmGcLzom3APbDUDW0IfAzA/86p11A==
-X-Received: by 2002:a05:6a21:2fc7:b0:1c3:b263:d992 with SMTP id adf61e73a8af0-1c3ee4c6fabmr484901637.5.1721060836121;
-        Mon, 15 Jul 2024 09:27:16 -0700 (PDT)
-Received: from carrot.. (i222-151-34-139.s42.a014.ap.plala.or.jp. [222.151.34.139])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2caedcac15csm4571160a91.56.2024.07.15.09.27.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jul 2024 09:27:15 -0700 (PDT)
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org
-Subject: [PATCH 4.19 5.4 5.10 5.15 6.1 6.6] nilfs2: fix kernel bug on rename operation of broken directory
-Date: Tue, 16 Jul 2024 01:27:11 +0900
-Message-Id: <20240715162711.6850-1-konishi.ryusuke@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1721062640; c=relaxed/simple;
+	bh=2+Zgygw757qK8L+zbR8igQkEdL2qtGjhWO6k9gZTlbM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=oFayZd41qJ84lpGgEbvmfUmVCAKsDC9D6Mz3E5R02d9PAfAe06G5VEbjfE91ESFqSpphRxfsx7qLiCb40DsPdAr3CQFaX5SES4kqsmJz/gBObiZj0n9wxPuQua+4n7Guf5JAbUbuzR9cAfxCyOpSlX93shElaQNsv31KVo1X51o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YbyGedrB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35331C32782;
+	Mon, 15 Jul 2024 16:57:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721062639;
+	bh=2+Zgygw757qK8L+zbR8igQkEdL2qtGjhWO6k9gZTlbM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YbyGedrB1G/i/Mjp7/dYgwFbSD6IXGDbQLXpzZMMcqoBRfup35j8bCWRHETDOvY3d
+	 Py7Q8gd7yCApeHQtB9YXMh173ZvbTN7e6wKLnIhkwsb5yrKNzM/3oPjcnp6rMhxuzk
+	 4ZMWFU1PqmtU5AvHg1nMguRqBBDa1VdV9F15qd+IIXBzsg7AdoaX5tM0Zoxv8Fo8BZ
+	 vh7ypyc0F/X3zPu030kkBw06RTuGQw+UV3OxPZC4X2YUS1MX8eILLhYOYObGiq34HX
+	 kt5NORJ9K8N07AF+sJ3qSFIppjXddeZj9Z2CAFkyk67kLquX/F8BFqHo9u4cA0Fjeo
+	 i+iryfAQuR+sg==
+From: SeongJae Park <sj@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] mm/damon/core: merge regions aggressively when max_nr_regions" failed to apply to 6.1-stable tree
+Date: Mon, 15 Jul 2024 09:57:17 -0700
+Message-Id: <20240715165717.73852-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <2024071547-slum-anemic-a0cc@gregkh>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,90 +60,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-commit a9e1ddc09ca55746079cc479aa3eb6411f0d99d4 upstream.
+Hi Greg,
 
-Syzbot reported that in rename directory operation on broken directory on
-nilfs2, __block_write_begin_int() called to prepare block write may fail
-BUG_ON check for access exceeding the folio/page size.
+On Mon, 15 Jul 2024 13:34:48 +0200 <gregkh@linuxfoundation.org> wrote:
 
-This is because nilfs_dotdot(), which gets parent directory reference
-entry ("..") of the directory to be moved or renamed, does not check
-consistency enough, and may return location exceeding folio/page size for
-broken directories.
+> 
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6
 
-Fix this issue by checking required directory entries ("." and "..") in
-the first chunk of the directory in nilfs_dotdot().
+But this doesn't reproduce the failure on my machine, like below?
 
-Link: https://lkml.kernel.org/r/20240628165107.9006-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d3abed1ad3d367fa2627
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-Please apply this patch to the stable trees indicated by the subject
-prefix instead of the patch that failed.
+    $ git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+    [...]
+    $ git checkout FETCH_HEAD
+    [...]
+    HEAD is now at cac15753b8ce Linux 6.1.99
+    $ git cherry-pick -x 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6
+    Auto-merging mm/damon/core.c
+    [detached HEAD ecd04159c5f3] mm/damon/core: merge regions aggressively when max_nr_regions is unmet
+     Date: Mon Jun 24 10:58:14 2024 -0700
+     1 file changed, 19 insertions(+), 2 deletions(-)
 
-This patch is tailored to take page/folio conversion into account and
-can be applied to these stable trees.
+Could the faulure depend on something such as git version?  For such a case,
+attaching the resulting patch below.
 
-Also, all the builds and tests I did on each stable tree passed.
 
 Thanks,
-Ryusuke Konishi
+SJ
 
- fs/nilfs2/dir.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+[...]
 
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index 51c982ad9608..53e4e63c607e 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -396,11 +396,39 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
- 
- struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
+====================== >8 ========================
+From ecd04159c5f3c58dc540864d48e9480c7617717c Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Mon, 24 Jun 2024 10:58:14 -0700
+Subject: [PATCH 6.1.y] mm/damon/core: merge regions aggressively when
+ max_nr_regions is unmet
+
+DAMON keeps the number of regions under max_nr_regions by skipping regions
+split operations when doing so can make the number higher than the limit.
+It works well for preventing violation of the limit.  But, if somehow the
+violation happens, it cannot recovery well depending on the situation.  In
+detail, if the real number of regions having different access pattern is
+higher than the limit, the mechanism cannot reduce the number below the
+limit.  In such a case, the system could suffer from high monitoring
+overhead of DAMON.
+
+The violation can actually happen.  For an example, the user could reduce
+max_nr_regions while DAMON is running, to be lower than the current number
+of regions.  Fix the problem by repeating the merge operations with
+increasing aggressiveness in kdamond_merge_regions() for the case, until
+the limit is met.
+
+[sj@kernel.org: increase regions merge aggressiveness while respecting min_nr_regions]
+  Link: https://lkml.kernel.org/r/20240626164753.46270-1-sj@kernel.org
+[sj@kernel.org: ensure max threshold attempt for max_nr_regions violation]
+  Link: https://lkml.kernel.org/r/20240627163153.75969-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20240624175814.89611-1-sj@kernel.org
+Fixes: b9a6ac4e4ede ("mm/damon: adaptively adjust regions")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6)
+---
+ mm/damon/core.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 5db9bec8ae67..ab5c351b276c 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -921,14 +921,31 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
+  * access frequencies are similar.  This is for minimizing the monitoring
+  * overhead under the dynamically changeable access pattern.  If a merge was
+  * unnecessarily made, later 'kdamond_split_regions()' will revert it.
++ *
++ * The total number of regions could be higher than the user-defined limit,
++ * max_nr_regions for some cases.  For example, the user can update
++ * max_nr_regions to a number that lower than the current number of regions
++ * while DAMON is running.  For such a case, repeat merging until the limit is
++ * met while increasing @threshold up to possible maximum level.
+  */
+ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
+ 				  unsigned long sz_limit)
  {
--	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
-+	struct page *page;
-+	struct nilfs_dir_entry *de, *next_de;
-+	size_t limit;
-+	char *msg;
+ 	struct damon_target *t;
++	unsigned int nr_regions;
++	unsigned int max_thres;
  
-+	de = nilfs_get_page(dir, 0, &page);
- 	if (IS_ERR(de))
- 		return NULL;
--	return nilfs_next_entry(de);
-+
-+	limit = nilfs_last_byte(dir, 0);  /* is a multiple of chunk size */
-+	if (unlikely(!limit || le64_to_cpu(de->inode) != dir->i_ino ||
-+		     !nilfs_match(1, ".", de))) {
-+		msg = "missing '.'";
-+		goto fail;
-+	}
-+
-+	next_de = nilfs_next_entry(de);
-+	/*
-+	 * If "next_de" has not reached the end of the chunk, there is
-+	 * at least one more record.  Check whether it matches "..".
-+	 */
-+	if (unlikely((char *)next_de == (char *)de + nilfs_chunk_size(dir) ||
-+		     !nilfs_match(2, "..", next_de))) {
-+		msg = "missing '..'";
-+		goto fail;
-+	}
-+	*p = page;
-+	return next_de;
-+
-+fail:
-+	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
-+	nilfs_put_page(page);
-+	return NULL;
+-	damon_for_each_target(t, c)
+-		damon_merge_regions_of(t, threshold, sz_limit);
++	max_thres = c->attrs.aggr_interval /
++		(c->attrs.sample_interval ?  c->attrs.sample_interval : 1);
++	do {
++		nr_regions = 0;
++		damon_for_each_target(t, c) {
++			damon_merge_regions_of(t, threshold, sz_limit);
++			nr_regions += damon_nr_regions(t);
++		}
++		threshold = max(1, threshold * 2);
++	} while (nr_regions > c->attrs.max_nr_regions &&
++			threshold / 2 < max_thres);
  }
  
- ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
+ /*
 -- 
-2.43.5
+2.39.2
 
 
