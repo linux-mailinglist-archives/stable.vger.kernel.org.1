@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-59287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B2193109B
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 10:52:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3787A9310AB
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 10:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 986011C21B96
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 08:52:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7916BB21DD1
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 08:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83375185E46;
-	Mon, 15 Jul 2024 08:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D97113B59B;
+	Mon, 15 Jul 2024 08:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHzh6UrS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlyyl15+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C401836FF
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 08:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21941849D3
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 08:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721033496; cv=none; b=cEWzVxhYMXIUVfz1zG2Hd5TnyXYC7XE4KHq/kSt9nPetDqDWNu0BR/VY0dCadavpGT1Q0512ZHeWkspk1OEzMF9CcQbcnUBxp5htjhv4ekOZ+KtLd1dehn5dki/T57I32xD+TnStZuH2Yt8H0kVYPLYN3Ct3CPe3Yc2gwgXmT+A=
+	t=1721033621; cv=none; b=NI7mZ5qNBPlHqof+9mwGsCfZpKSURcHWv1kbzmHNQVpWf3De+dzVkgKvNXGLbc191bLDZ1VexCajsbAOUcMxzXKJ6xjlntxS9YKt9tdi3NQ1TkB2KyorFxU1PRJxZBXnmfRhncnmVtxlW21BRPANB7hLLeTcsuUSjSSDYf1IkVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721033496; c=relaxed/simple;
-	bh=/z6i+Ld3m2CjW+UL3LJjAUWAcahmQr7IzrE5Au1aN5U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Hz74CYGNamdMR4grp8Ev9w3ZvldJF4oUY9ZKp5tH5DsYsPmJ35prIX+XRZ+DH68odSR/Eat2eUqXgNeQuWw2LGz4n2/ow4F9izV6ccMB+51Js/qRNTI4VCJ0ad4Pl/BPx/olLPLIXKfrSJEtGk/leNZQmRonC/zgREXBh7YVv7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHzh6UrS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BB0C32782;
-	Mon, 15 Jul 2024 08:51:35 +0000 (UTC)
+	s=arc-20240116; t=1721033621; c=relaxed/simple;
+	bh=ZVn1DAMJq4OQ3I3TRiMCzxOfp/IU1nkyh8Efjm9f/8k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MDAtiixU4AHK6W8vQMs1v9+FkVIJUpEgdI6xhNqxP5kFPZieXKNnAEts1ssEJPS+DR6DCSoMer+qtU1pouQ7Y8Xxdah9Xy0jm1aQEOBeksB9QIGhO3p0dnTh/5DgaKmhNRk2qxEeFvWo671DXE9EBv4ih8wZmpSvPQeVHqxI0dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlyyl15+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E829DC4AF0A;
+	Mon, 15 Jul 2024 08:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721033495;
-	bh=/z6i+Ld3m2CjW+UL3LJjAUWAcahmQr7IzrE5Au1aN5U=;
+	s=korg; t=1721033620;
+	bh=ZVn1DAMJq4OQ3I3TRiMCzxOfp/IU1nkyh8Efjm9f/8k=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fHzh6UrSDS2+Y48War2VSbVJDDuEaPX3AeJ3SvUrF8hCqAi6Ngn3touS+enuv2eW0
-	 1T16aCndxnleEvlWbSYwWkYlXm/6mQ+PRg5tmOtsD2m4nwrqvP6SQZChncpf0Gp/DV
-	 Km3+OAWxjHrS8p+YGDn4s/oaLu2oa8CZ6iJzCCyY=
-Subject: FAILED: patch "[PATCH] net: ks8851: Fix deadlock with the SPI chip variant" failed to apply to 5.10-stable tree
-To: ronald.wahl@raritan.com,davem@davemloft.net,edumazet@google.com,horms@kernel.org,kuba@kernel.org,pabeni@redhat.com
+	b=vlyyl15+4VLrhR/8v9MMI3h7ELt4a/jLLTH2xzAU5SzsybdmaZxIWB192/zVIL09V
+	 Lf4MkpJ9txAdaV5KocVsh+OhoDwPv+O+jK29DEZvM3t0LubwLAqZPX2qt8RsmYxA3l
+	 02eXDvUwf4TMR0UON2zxYy88V9XwhuVbqxa0QrMs=
+Subject: FAILED: patch "[PATCH] USB: serial: mos7840: fix crash on resume" failed to apply to 5.4-stable tree
+To: d.smirnov@inbox.lv,johan@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jul 2024 10:51:24 +0200
-Message-ID: <2024071524-yin-woozy-adaf@gregkh>
+Date: Mon, 15 Jul 2024 10:53:37 +0200
+Message-ID: <2024071537-emergency-sprawl-4c37@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0913ec336a6c0c4a2b296bd9f74f8e41c4c83c8c
+git cherry-pick -x c15a688e49987385baa8804bf65d570e362f8576
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071524-yin-woozy-adaf@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071537-emergency-sprawl-4c37@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-0913ec336a6c ("net: ks8851: Fix deadlock with the SPI chip variant")
-317a215d4932 ("net: ks8851: Fix another TX stall caused by wrong ISR flag handling")
-e0863634bf9f ("net: ks8851: Queue RX packets in IRQ handler instead of disabling BHs")
-be0384bf599c ("net: ks8851: Handle softirqs at the end of IRQ thread to fix hang")
-f96f700449b6 ("net: ks8851: Inline ks8851_rx_skb()")
-3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
-90f77c1c512f ("net: ethernet: Use netif_rx().")
-2dc95a4d30ed ("net: Add dm9051 driver")
-47aeea0d57e8 ("net: lan966x: Implement the callback SWITCHDEV_ATTR_ID_BRIDGE_MC_DISABLED")
-2e49761e4fd1 ("net: lan966x: Add support for multiple bridge flags")
-e14f72398df4 ("net: lan966x: Extend switchdev bridge flags")
-6d2c186afa5d ("net: lan966x: Add vlan support.")
-cf2f60897e92 ("net: lan966x: Add support to offload the forwarding.")
-5ccd66e01cbe ("net: lan966x: add support for interrupts from analyzer")
-2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-12c2d0a5b8e2 ("net: lan966x: add ethtool configuration and statistics")
-e18aba8941b4 ("net: lan966x: add mactable support")
-d28d6d2e37d1 ("net: lan966x: add port module support")
-db8bcaad5393 ("net: lan966x: add the basic lan966x driver")
-a97c69ba4f30 ("net: ax88796c: ASIX AX88796C SPI Ethernet Adapter Driver")
+c15a688e4998 ("USB: serial: mos7840: fix crash on resume")
+7183192196a6 ("USB: serial: mos7840: rip out broken interrupt handling")
 
 thanks,
 
@@ -96,115 +78,95 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0913ec336a6c0c4a2b296bd9f74f8e41c4c83c8c Mon Sep 17 00:00:00 2001
-From: Ronald Wahl <ronald.wahl@raritan.com>
-Date: Sat, 6 Jul 2024 12:13:37 +0200
-Subject: [PATCH] net: ks8851: Fix deadlock with the SPI chip variant
+From c15a688e49987385baa8804bf65d570e362f8576 Mon Sep 17 00:00:00 2001
+From: Dmitry Smirnov <d.smirnov@inbox.lv>
+Date: Sat, 15 Jun 2024 01:45:56 +0300
+Subject: [PATCH] USB: serial: mos7840: fix crash on resume
 
-When SMP is enabled and spinlocks are actually functional then there is
-a deadlock with the 'statelock' spinlock between ks8851_start_xmit_spi
-and ks8851_irq:
+Since commit c49cfa917025 ("USB: serial: use generic method if no
+alternative is provided in usb serial layer"), USB serial core calls the
+generic resume implementation when the driver has not provided one.
 
-    watchdog: BUG: soft lockup - CPU#0 stuck for 27s!
-    call trace:
-      queued_spin_lock_slowpath+0x100/0x284
-      do_raw_spin_lock+0x34/0x44
-      ks8851_start_xmit_spi+0x30/0xb8
-      ks8851_start_xmit+0x14/0x20
-      netdev_start_xmit+0x40/0x6c
-      dev_hard_start_xmit+0x6c/0xbc
-      sch_direct_xmit+0xa4/0x22c
-      __qdisc_run+0x138/0x3fc
-      qdisc_run+0x24/0x3c
-      net_tx_action+0xf8/0x130
-      handle_softirqs+0x1ac/0x1f0
-      __do_softirq+0x14/0x20
-      ____do_softirq+0x10/0x1c
-      call_on_irq_stack+0x3c/0x58
-      do_softirq_own_stack+0x1c/0x28
-      __irq_exit_rcu+0x54/0x9c
-      irq_exit_rcu+0x10/0x1c
-      el1_interrupt+0x38/0x50
-      el1h_64_irq_handler+0x18/0x24
-      el1h_64_irq+0x64/0x68
-      __netif_schedule+0x6c/0x80
-      netif_tx_wake_queue+0x38/0x48
-      ks8851_irq+0xb8/0x2c8
-      irq_thread_fn+0x2c/0x74
-      irq_thread+0x10c/0x1b0
-      kthread+0xc8/0xd8
-      ret_from_fork+0x10/0x20
+This can trigger a crash on resume with mos7840 since support for
+multiple read URBs was added back in 2011. Specifically, both port read
+URBs are now submitted on resume for open ports, but the context pointer
+of the second URB is left set to the core rather than mos7840 port
+structure.
 
-This issue has not been identified earlier because tests were done on
-a device with SMP disabled and so spinlocks were actually NOPs.
+Fix this by implementing dedicated suspend and resume functions for
+mos7840.
 
-Now use spin_(un)lock_bh for TX queue related locking to avoid execution
-of softirq work synchronously that would lead to a deadlock.
+Tested with Delock 87414 USB 2.0 to 4x serial adapter.
 
-Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org # 5.10+
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240706101337.854474-1-rwahl@gmx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Dmitry Smirnov <d.smirnov@inbox.lv>
+[ johan: analyse crash and rewrite commit message; set busy flag on
+         resume; drop bulk-in check; drop unnecessary usb_kill_urb() ]
+Fixes: d83b405383c9 ("USB: serial: add support for multiple read urbs")
+Cc: stable@vger.kernel.org	# 3.3
+Signed-off-by: Johan Hovold <johan@kernel.org>
 
-diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
-index 6453c92f0fa7..13462811eaae 100644
---- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -352,11 +352,11 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
- 		netif_dbg(ks, intr, ks->netdev,
- 			  "%s: txspace %d\n", __func__, tx_space);
- 
--		spin_lock(&ks->statelock);
-+		spin_lock_bh(&ks->statelock);
- 		ks->tx_space = tx_space;
- 		if (netif_queue_stopped(ks->netdev))
- 			netif_wake_queue(ks->netdev);
--		spin_unlock(&ks->statelock);
-+		spin_unlock_bh(&ks->statelock);
- 	}
- 
- 	if (status & IRQ_SPIBEI) {
-@@ -635,14 +635,14 @@ static void ks8851_set_rx_mode(struct net_device *dev)
- 
- 	/* schedule work to do the actual set of the data if needed */
- 
--	spin_lock(&ks->statelock);
-+	spin_lock_bh(&ks->statelock);
- 
- 	if (memcmp(&rxctrl, &ks->rxctrl, sizeof(rxctrl)) != 0) {
- 		memcpy(&ks->rxctrl, &rxctrl, sizeof(ks->rxctrl));
- 		schedule_work(&ks->rxctrl_work);
- 	}
- 
--	spin_unlock(&ks->statelock);
-+	spin_unlock_bh(&ks->statelock);
+diff --git a/drivers/usb/serial/mos7840.c b/drivers/usb/serial/mos7840.c
+index 8b0308d84270..85697466b147 100644
+--- a/drivers/usb/serial/mos7840.c
++++ b/drivers/usb/serial/mos7840.c
+@@ -1737,6 +1737,49 @@ static void mos7840_port_remove(struct usb_serial_port *port)
+ 	kfree(mos7840_port);
  }
  
- static int ks8851_set_mac_address(struct net_device *dev, void *addr)
-diff --git a/drivers/net/ethernet/micrel/ks8851_spi.c b/drivers/net/ethernet/micrel/ks8851_spi.c
-index 670c1de966db..3062cc0f9199 100644
---- a/drivers/net/ethernet/micrel/ks8851_spi.c
-+++ b/drivers/net/ethernet/micrel/ks8851_spi.c
-@@ -340,10 +340,10 @@ static void ks8851_tx_work(struct work_struct *work)
++static int mos7840_suspend(struct usb_serial *serial, pm_message_t message)
++{
++	struct moschip_port *mos7840_port;
++	struct usb_serial_port *port;
++	int i;
++
++	for (i = 0; i < serial->num_ports; ++i) {
++		port = serial->port[i];
++		if (!tty_port_initialized(&port->port))
++			continue;
++
++		mos7840_port = usb_get_serial_port_data(port);
++
++		usb_kill_urb(mos7840_port->read_urb);
++		mos7840_port->read_urb_busy = false;
++	}
++
++	return 0;
++}
++
++static int mos7840_resume(struct usb_serial *serial)
++{
++	struct moschip_port *mos7840_port;
++	struct usb_serial_port *port;
++	int res;
++	int i;
++
++	for (i = 0; i < serial->num_ports; ++i) {
++		port = serial->port[i];
++		if (!tty_port_initialized(&port->port))
++			continue;
++
++		mos7840_port = usb_get_serial_port_data(port);
++
++		mos7840_port->read_urb_busy = true;
++		res = usb_submit_urb(mos7840_port->read_urb, GFP_NOIO);
++		if (res)
++			mos7840_port->read_urb_busy = false;
++	}
++
++	return 0;
++}
++
+ static struct usb_serial_driver moschip7840_4port_device = {
+ 	.driver = {
+ 		   .owner = THIS_MODULE,
+@@ -1764,6 +1807,8 @@ static struct usb_serial_driver moschip7840_4port_device = {
+ 	.port_probe = mos7840_port_probe,
+ 	.port_remove = mos7840_port_remove,
+ 	.read_bulk_callback = mos7840_bulk_in_callback,
++	.suspend = mos7840_suspend,
++	.resume = mos7840_resume,
+ };
  
- 	tx_space = ks8851_rdreg16_spi(ks, KS_TXMIR);
- 
--	spin_lock(&ks->statelock);
-+	spin_lock_bh(&ks->statelock);
- 	ks->queued_len -= dequeued_len;
- 	ks->tx_space = tx_space;
--	spin_unlock(&ks->statelock);
-+	spin_unlock_bh(&ks->statelock);
- 
- 	ks8851_unlock_spi(ks, &flags);
- }
+ static struct usb_serial_driver * const serial_drivers[] = {
 
 
