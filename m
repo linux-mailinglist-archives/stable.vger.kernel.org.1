@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-59332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60E0931315
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 13:28:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB4793131B
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 13:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27408B213B0
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:28:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C6212827DD
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759EB188CD4;
-	Mon, 15 Jul 2024 11:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7611C4500D;
+	Mon, 15 Jul 2024 11:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BM7+Z9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzAaEY+h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3699E1465B8
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 11:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3412C1E89C
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 11:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721042927; cv=none; b=m/4SSgZuC6qy4e0HqLFvdTS2T3XIneJtDdHX2HZJzxRj+giZdnkI13zMRx/tGgq43zhaoemKlk35WWbNis8T0fQ/ceoAxl83eyACcJzFqyWZ1w9oyI8dHMrNIDOjUg5ZF8Y7bhqioTg6prZaGGi3Pcw7DrrMuMpWUn0ZINE6kkY=
+	t=1721043095; cv=none; b=QHNAN099cgAlcZOsFVO2qrZJH6sA6W3w3SpbSiK5MI9Cv7YPdaJkBOuz55bYmOrUUhAso7Qit4YIdxatbV2CLDAAku8iljBl9JvC7dwOAbOYr1eMt6UQiZVfKUzX0wjyo7DPxKc0BFbiHIwYINzFHSmxeDcWBnfTGFO1iaNPJ5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721042927; c=relaxed/simple;
-	bh=yIruiI3AwfCpTuZ8CSJaEP9OEnPG7YpopFbxPj6v12I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FouDJDcj33oq9rDbsylH1eF+CxBIiBVcYLMT5Uw2NbhZyVtkj4tFc+1DiMrOpiPpRbiCVzpNL1c8gT3COZDwreJY3WN+LM0ZaKx6WRtcFCIYSgGucUpASFFmm4tUHyFuO9DNIoRwYPbcnwoj83szryeU3OQQ0+eUWML0lGgobcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BM7+Z9n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D48C4AF0E;
-	Mon, 15 Jul 2024 11:28:46 +0000 (UTC)
+	s=arc-20240116; t=1721043095; c=relaxed/simple;
+	bh=4e1blWcsnCUhvxx6gABQ3t5zaaTYFZv4YtlSmbhjoQI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KJJ/+G3gKe1iPwYa6I9kVjomrJ5go7dlCSgQkf/afAKKJUnIhCI8jNGmvSbYZcSHp32STI8vSHi3jjIx8Elj/dr23UDI6yPgckXwLBoFXoMMwDF11Dl9XEq4P7Ul7Inz0yetCoH++dfqlGUNif0stPI35aMpx6/zl+XtR9VoRyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzAaEY+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2287BC32782;
+	Mon, 15 Jul 2024 11:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721042927;
-	bh=yIruiI3AwfCpTuZ8CSJaEP9OEnPG7YpopFbxPj6v12I=;
+	s=korg; t=1721043094;
+	bh=4e1blWcsnCUhvxx6gABQ3t5zaaTYFZv4YtlSmbhjoQI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2BM7+Z9ncARoD+dJfipEJX4YlUcBJkkjVbb2w2roZa3rA6HdCVd5Qh5V8uxOXqmdA
-	 6CzwFB3Wa41pce+1qpjBNIyNr6riPbLnzPxrKa1BwNAkS0mZmgAPKbuRx0PRcBUlqj
-	 zQQGnPjupCMN61tN1YKlCAqg+XRSYdHk8EDO9K5U=
-Subject: FAILED: patch "[PATCH] ACPI: processor_idle: Fix invalid comparison with insertion" failed to apply to 4.19-stable tree
-To: visitorckw@gmail.com,belegdol@gmail.com,rafael.j.wysocki@intel.com,stable@vger.kernel.org
+	b=vzAaEY+hoUdsSqjcwddaPdtFdQxU6Q7/roplG8VTGY760214rLkP2164aCUzQ1pNm
+	 GoW/pb7Q1+O014usY3qLitZyHJTFpK+ZCCMVbScsPBCL1jNz89QgUOiJP/Ka1TiZVv
+	 gpg4jaSBMNki/goAnJxkjf7Dex2nQOfN18KXTcl8=
+Subject: FAILED: patch "[PATCH] mm/readahead: limit page cache size in page_cache_ra_order()" failed to apply to 6.6-stable tree
+To: gshan@redhat.com,akpm@linux-foundation.org,david@redhat.com,ddutile@redhat.com,djwong@kernel.org,hughd@google.com,ryan.roberts@arm.com,stable@vger.kernel.org,torvalds@linux-foundation.org,william.kucharski@oracle.com,willy@infradead.org,zhenyzha@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jul 2024 13:28:31 +0200
-Message-ID: <2024071531-underpaid-plop-ac0c@gregkh>
+Date: Mon, 15 Jul 2024 13:31:31 +0200
+Message-ID: <2024071531-junkyard-cornea-9a80@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 233323f9b9f828cd7cd5145ad811c1990b692542
+git cherry-pick -x 1f789a45c3f1aa77531db21768fca70b66c0eeb1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071531-underpaid-plop-ac0c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071531-junkyard-cornea-9a80@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-233323f9b9f8 ("ACPI: processor_idle: Fix invalid comparison with insertion sort for latency")
-0e6078c3c673 ("ACPI: processor idle: Use swap() instead of open coding it")
-65ea8f2c6e23 ("ACPI: processor idle: Fix up C-state latency if not ordered")
+1f789a45c3f1 ("mm/readahead: limit page cache size in page_cache_ra_order()")
+e03c16fb4af1 ("readahead: use ilog2 instead of a while loop in page_cache_ra_order()")
 
 thanks,
 
@@ -79,99 +78,53 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 233323f9b9f828cd7cd5145ad811c1990b692542 Mon Sep 17 00:00:00 2001
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-Date: Tue, 2 Jul 2024 04:56:39 +0800
-Subject: [PATCH] ACPI: processor_idle: Fix invalid comparison with insertion
- sort for latency
+From 1f789a45c3f1aa77531db21768fca70b66c0eeb1 Mon Sep 17 00:00:00 2001
+From: Gavin Shan <gshan@redhat.com>
+Date: Thu, 27 Jun 2024 10:39:50 +1000
+Subject: [PATCH] mm/readahead: limit page cache size in page_cache_ra_order()
 
-The acpi_cst_latency_cmp() comparison function currently used for
-sorting C-state latencies does not satisfy transitivity, causing
-incorrect sorting results.
+In page_cache_ra_order(), the maximal order of the page cache to be
+allocated shouldn't be larger than MAX_PAGECACHE_ORDER.  Otherwise, it's
+possible the large page cache can't be supported by xarray when the
+corresponding xarray entry is split.
 
-Specifically, if there are two valid acpi_processor_cx elements A and B
-and one invalid element C, it may occur that A < B, A = C, and B = C.
-Sorting algorithms assume that if A < B and A = C, then C < B, leading
-to incorrect ordering.
+For example, HPAGE_PMD_ORDER is 13 on ARM64 when the base page size is
+64KB.  The PMD-sized page cache can't be supported by xarray.
 
-Given the small size of the array (<=8), we replace the library sort
-function with a simple insertion sort that properly ignores invalid
-elements and sorts valid ones based on latency. This change ensures
-correct ordering of the C-state latencies.
+Link: https://lkml.kernel.org/r/20240627003953.1262512-3-gshan@redhat.com
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Darrick J. Wong <djwong@kernel.org>
+Cc: Don Dutile <ddutile@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: William Kucharski <william.kucharski@oracle.com>
+Cc: Zhenyu Zhang <zhenyzha@redhat.com>
+Cc: <stable@vger.kernel.org>	[5.18+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Fixes: 65ea8f2c6e23 ("ACPI: processor idle: Fix up C-state latency if not ordered")
-Reported-by: Julian Sikorski <belegdol@gmail.com>
-Closes: https://lore.kernel.org/lkml/70674dc7-5586-4183-8953-8095567e73df@gmail.com
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Tested-by: Julian Sikorski <belegdol@gmail.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240701205639.117194-1-visitorckw@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index bd6a7857ce05..831fa4a12159 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -16,7 +16,6 @@
- #include <linux/acpi.h>
- #include <linux/dmi.h>
- #include <linux/sched.h>       /* need_resched() */
--#include <linux/sort.h>
- #include <linux/tick.h>
- #include <linux/cpuidle.h>
- #include <linux/cpu.h>
-@@ -386,25 +385,24 @@ static void acpi_processor_power_verify_c3(struct acpi_processor *pr,
- 	acpi_write_bit_register(ACPI_BITREG_BUS_MASTER_RLD, 1);
- }
+diff --git a/mm/readahead.c b/mm/readahead.c
+index c1b23989d9ca..817b2a352d78 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -503,11 +503,11 @@ void page_cache_ra_order(struct readahead_control *ractl,
  
--static int acpi_cst_latency_cmp(const void *a, const void *b)
-+static void acpi_cst_latency_sort(struct acpi_processor_cx *states, size_t length)
- {
--	const struct acpi_processor_cx *x = a, *y = b;
-+	int i, j, k;
+ 	limit = min(limit, index + ra->size - 1);
  
--	if (!(x->valid && y->valid))
--		return 0;
--	if (x->latency > y->latency)
--		return 1;
--	if (x->latency < y->latency)
--		return -1;
--	return 0;
--}
--static void acpi_cst_latency_swap(void *a, void *b, int n)
--{
--	struct acpi_processor_cx *x = a, *y = b;
-+	for (i = 1; i < length; i++) {
-+		if (!states[i].valid)
-+			continue;
- 
--	if (!(x->valid && y->valid))
--		return;
--	swap(x->latency, y->latency);
-+		for (j = i - 1, k = i; j >= 0; j--) {
-+			if (!states[j].valid)
-+				continue;
+-	if (new_order < MAX_PAGECACHE_ORDER) {
++	if (new_order < MAX_PAGECACHE_ORDER)
+ 		new_order += 2;
+-		new_order = min_t(unsigned int, MAX_PAGECACHE_ORDER, new_order);
+-		new_order = min_t(unsigned int, new_order, ilog2(ra->size));
+-	}
 +
-+			if (states[j].latency > states[k].latency)
-+				swap(states[j].latency, states[k].latency);
-+
-+			k = j;
-+		}
-+	}
- }
++	new_order = min_t(unsigned int, MAX_PAGECACHE_ORDER, new_order);
++	new_order = min_t(unsigned int, new_order, ilog2(ra->size));
  
- static int acpi_processor_power_verify(struct acpi_processor *pr)
-@@ -449,10 +447,7 @@ static int acpi_processor_power_verify(struct acpi_processor *pr)
- 
- 	if (buggy_latency) {
- 		pr_notice("FW issue: working around C-state latencies out of order\n");
--		sort(&pr->power.states[1], max_cstate,
--		     sizeof(struct acpi_processor_cx),
--		     acpi_cst_latency_cmp,
--		     acpi_cst_latency_swap);
-+		acpi_cst_latency_sort(&pr->power.states[1], max_cstate);
- 	}
- 
- 	lapic_timer_propagate_broadcast(pr);
+ 	/* See comment in page_cache_ra_unbounded() */
+ 	nofs = memalloc_nofs_save();
 
 
