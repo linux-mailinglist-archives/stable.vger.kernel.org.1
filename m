@@ -1,87 +1,96 @@
-Return-Path: <stable+bounces-59354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0858393168C
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 16:20:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA5E9316F9
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 16:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B30EB1F22387
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 14:20:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 394D41F21FC6
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 14:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3261218E77F;
-	Mon, 15 Jul 2024 14:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813AC18EFE5;
+	Mon, 15 Jul 2024 14:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="greNMbVr"
 X-Original-To: stable@vger.kernel.org
-Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727BD1DA26;
-	Mon, 15 Jul 2024 14:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4258518EFCD
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 14:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721053214; cv=none; b=H4bvTE92d8Axc1unTUAAPo/sPXI3Zd9YL5dWmVlkbDi0CunjxnA8CUtOoYlsetsIbH/2pCphk8M0wTCs1SQERrqldxnT8396dMmdLjak55WGb27dhqjAwFuRWgn+BGRErd9JkQENUQua7UQ2wyTTBJ0+fv93iF/KkKuX5F91VQ4=
+	t=1721054432; cv=none; b=uvYwpY5nhcmEJYM+XKcXn8Qjoz+M9tKdiLGfWKBOP25iJe0E18nBalt0hf2Sn9QgK1PLgcRPCvAWSKiVcZC8G+FbHVEcSciT8t1i/xxAzfWNtY2lZb4v3ZCGqKbzGysEtyW53fybKSfRgZM0Al1t8eBCSby8f0ZgRJDuZa0JQ/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721053214; c=relaxed/simple;
-	bh=quZa7S0jffabVIp8/Lw2BsYsR0GBbInYQnTttYsv3ZI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KRts2V1LWvALVsKe8VjRb4T+a7MN9K0TyUPwCHI5wYCkgYh07S3C5oGqrPLYOTR//LmiJ+yPLnaG5bG1EKm6KW7+GGzTaYwknTX+Y9+AeCqidEdFJad9550XFGjeJ5RtBtGnVtCDKVqFKadPGvFuZBwxKwlfnvJyxOIw2COsIv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
-Received: from [78.30.37.63] (port=51214 helo=gnumonks.org)
-	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <pablo@gnumonks.org>)
-	id 1sTMYa-006TTH-Jg; Mon, 15 Jul 2024 16:20:03 +0200
-Date: Mon, 15 Jul 2024 16:19:59 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc: Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
-	netfilter-devel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH nf] netfilter: restore default behavior for
- nf_conntrack_events
-Message-ID: <ZpUwD_KJAmRXBdnv@calendula>
-References: <20240604135438.2613064-1-nicolas.dichtel@6wind.com>
- <Znv-YuDbgwk_1gOX@calendula>
- <523daa3d-83b0-495a-bf6e-3b8fd661cffd@6wind.com>
+	s=arc-20240116; t=1721054432; c=relaxed/simple;
+	bh=KzDd9XQYgO857UobzAp/4Deac60lHHMkorgQg6A0eas=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=XWH+Z+E9Y1hnEVYbGGpGUCZHa4hzt6G85VOmBpptMzMfhm+IZnrXjAU2vlEssqbwRULON0fkOgdmM2NqQ+RacMGXtkHF0crihsKY0CpiCLgKtBnmNN9ldqmIi03UedHI/ohiArSVE3/VyEevrumUjlPHe5QsADVGF43OKpY8vDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=greNMbVr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 100EDC32782;
+	Mon, 15 Jul 2024 14:40:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721054432;
+	bh=KzDd9XQYgO857UobzAp/4Deac60lHHMkorgQg6A0eas=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=greNMbVrmbZU+hLx+7PFSF/bhj0vdj3njF1i8X3k9R2h6IdvDOsXSZ3N4buYNmsd2
+	 RmQY3pScpEXeZPCh+zuM/v0R4P3sR1uXTs5uG6TQN4mBygn3vyyWOfnwFo1AswQRFT
+	 i5/ZpKZ+VVQFyF/UCq9zstoeuc5MLnkgBnPSNZMXt9hG8eQ3tmsR+jdjOVHNdIgsyF
+	 P89o74wqhojS7TNDhB80BNJmQbPJ4PDbttswZgct5IAN7YNgGb2fZ77p5CirLNwR+h
+	 HvuDgSyPMIiwzBW7CSClb8ExAR6W8194R+/SqghXSkSR7QY2/DChbgjT+QRVH+0Sy4
+	 rLJAIHEOZOGVg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0127CC43443;
+	Mon, 15 Jul 2024 14:40:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <523daa3d-83b0-495a-bf6e-3b8fd661cffd@6wind.com>
-X-Spam-Score: -1.9 (-)
+Subject: Re: [f2fs-dev] [PATCH v3 1/2] f2fs: use meta inode for GC of atomic file
+From: patchwork-bot+f2fs@kernel.org
+Message-Id: 
+ <172105443200.17443.3328341243004034413.git-patchwork-notify@kernel.org>
+Date: Mon, 15 Jul 2024 14:40:32 +0000
+References: <20240710115117.61255-1-s_min.jeong@samsung.com>
+In-Reply-To: <20240710115117.61255-1-s_min.jeong@samsung.com>
+To: Sunmin Jeong <s_min.jeong@samsung.com>
+Cc: jaegeuk@kernel.org, chao@kernel.org, daehojeong@google.com,
+ stable@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+ sj1557.seo@samsung.com
 
-On Wed, Jul 03, 2024 at 09:37:59AM +0200, Nicolas Dichtel wrote:
-> Hi Pablo,
+Hello:
+
+This series was applied to jaegeuk/f2fs.git (dev)
+by Jaegeuk Kim <jaegeuk@kernel.org>:
+
+On Wed, 10 Jul 2024 20:51:17 +0900 you wrote:
+> The page cache of the atomic file keeps new data pages which will be
+> stored in the COW file. It can also keep old data pages when GCing the
+> atomic file. In this case, new data can be overwritten by old data if a
+> GC thread sets the old data page as dirty after new data page was
+> evicted.
 > 
-> Le 26/06/2024 à 13:41, Pablo Neira Ayuso a écrit :
-> > Hi Nicolas,
-> > 
-> > On Tue, Jun 04, 2024 at 03:54:38PM +0200, Nicolas Dichtel wrote:
-> >> Since the below commit, there are regressions for legacy setups:
-> >> 1/ conntracks are created while there are no listener
-> >> 2/ a listener starts and dumps all conntracks to get the current state
-> >> 3/ conntracks deleted before the listener has started are not advertised
-> >>
-> >> This is problematic in containers, where conntracks could be created early.
-> >> This sysctl is part of unsafe sysctl and could not be changed easily in
-> >> some environments.
-> >>
-> >> Let's switch back to the legacy behavior.
-> > 
-> > Maybe it is possible to annotate destroy events in a percpu area if
-> > the conntrack extension is not available. This code used to follow
-> > such approach time ago.
->
-> Thanks for the feedback. I was wondering if just sending the destroy event would
-> be possible. TBH, I'm not very familiar with this part of the code, I need to
-> dig a bit. I won't have time for this right now, any help would be appreciated.
+> Also, since all writes to the atomic file are redirected to COW inodes,
+> GC for the atomic file is not working well as below.
+> 
+> [...]
 
-I will take a look and get back to you.
+Here is the summary with links:
+  - [f2fs-dev,v3,1/2] f2fs: use meta inode for GC of atomic file
+    https://git.kernel.org/jaegeuk/f2fs/c/b40a2b003709
+  - [f2fs-dev,v3,2/2] f2fs: use meta inode for GC of COW file
+    https://git.kernel.org/jaegeuk/f2fs/c/f18d00769336
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
