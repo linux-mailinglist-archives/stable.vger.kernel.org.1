@@ -1,142 +1,274 @@
-Return-Path: <stable+bounces-59374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB8E931D22
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 00:21:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2C4931DA6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 01:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 731331C21B83
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 22:21:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD3DB1F225B8
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 23:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E5B13C9CD;
-	Mon, 15 Jul 2024 22:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFBA14036F;
+	Mon, 15 Jul 2024 23:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gWplKzem"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Gi8pENbh"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E591B13B791
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 22:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CCFC208A9;
+	Mon, 15 Jul 2024 23:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721082112; cv=none; b=XC7IkxTEC0h0D06cZb64R3tYd6JtCoBpdJsWio7Vo1V95nbtRdUK0vKyfXGj7z0QPBDZ2VrcJ832NH+b3C+eZAg2liQDSLMtlS6ApR0CIQkk5MSa9ZwW8u+lvhXu/5fjxj8Ch1KNgSzpi1Ygi2YT06t5uZgay7lslMlfJp2UsFs=
+	t=1721086540; cv=none; b=fVXHT0OZ5PMDOPEvgA7l9MiDz3oUUBVjuFXXI0z/uwcnH7C6USvEjE3WLHLs9kV/NA0hEqHmGIEvroB/Lk/zPv5Igur+/CrNzPEC+bK56vq5SU2E6u7dyzUE2RgA5Vov3R7o4FbGuopYsL4MMifu1HTFdffcVda50qPZ6TY/Bpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721082112; c=relaxed/simple;
-	bh=ngdjgUJXky3VHvdEx1HlSdhKUC14SCUQRFpJ5WWPihI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tql3yDmCZheyOagAE+8TAUNQ5L28lgniWQ/+BKisNGGCmSosXD/lm1q4mGaw19t1fLjFLdAh0vyBfaerEvzratsrfxj5Qo391bwWR1eyJQqW5xeuldCRMPQJXAuQg2/uepREDdDhvbAWNJOXlJ/aFMaC61ibRUjnC4tQMhO70zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gWplKzem; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721082110;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vSAEoL90D2rESPJlR69imt1VdlcdBUDuG1SRzwUyeIM=;
-	b=gWplKzemf2uKodaPtzZMfhGuktxQX7cD+yMsRl+yytRToMIlJR2vJatBLLbUw/9DSqmYPS
-	gmlbyQ6toBxFCLI1ShaZshoq+FZ/3QFHx+IvZ6IgGE2IEeiwnPRg93/O2b+jiD8qAxJjRY
-	HgnN4Lp79x4uuAgpkiZttzHaXeHl4FY=
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
- [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-111-Jg_asFbhPNqtDQQ-7dk6HQ-1; Mon, 15 Jul 2024 18:21:48 -0400
-X-MC-Unique: Jg_asFbhPNqtDQQ-7dk6HQ-1
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-80ba1cbd94eso383054239f.1
-        for <stable@vger.kernel.org>; Mon, 15 Jul 2024 15:21:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721082107; x=1721686907;
-        h=content-transfer-encoding:mime-version:organization:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vSAEoL90D2rESPJlR69imt1VdlcdBUDuG1SRzwUyeIM=;
-        b=MoKhYmmWCE41Ok6qb0yBgXF36KUHCWlwt2s7Jkn7CO0xmwvU11i1r0aRq/CgfWYDoR
-         4N5H0fEt19E18YVHokrKf2tsb6R/TNU2JM0LLdwrZYygMecJPY9O72ahGnkOsQakt0Lo
-         MdGrirKXuuvEsIVQVyuLn7Z+de6r+xb+cKGLRG2Z+D+c4xhroYY+lgwsHmyGLVcy+dqB
-         U2LXb/EPFAfktioPtD3TEF28AKV8WljIyjKSGqDBQyiA74YZYVM2qInkLrUJbRhi7Wpk
-         25TgeQQB/NE/gGpNChRZOgdEqoN0iBWkQgsCBUnhAsvTUk9ei/bDJiAS6uNFW517Ghxl
-         VRIw==
-X-Forwarded-Encrypted: i=1; AJvYcCX1anCkicEu8pnxk/Nv4WMujkmZ+u4rlLiEO4ZWQD87Y6UOKvwgs90u/AV1M/7nkJcm/Ex54/b+pzf+Zi5PydPV5eIaWfgT
-X-Gm-Message-State: AOJu0YwHOcGAPiiGdT1baYJis2WbBFIB+6mrJZZzSxFM+V5B2HX8zvZp
-	O7WINNZv3n7EFJAicXWxXBr0U2WWzElexjjR9EwiPZbAm0EIRoxGnJywzj2aDe4RiiRbTy3mfmA
-	cgb+dKOC/FExk6zKGbmzQ+RECXcAaLHfrsvSkw6phwpUt7Fu51h1eBw==
-X-Received: by 2002:a05:6602:164a:b0:7fd:5a50:b215 with SMTP id ca18e2360f4ac-815744480f8mr74236339f.3.1721082107645;
-        Mon, 15 Jul 2024 15:21:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH56AwbTBEr+fC4H4bofZFcNEN2qYObHuoInT4K+ZAkNVsvEwJ48WyEwxwjmu/zT5AlH3QSuw==
-X-Received: by 2002:a05:6602:164a:b0:7fd:5a50:b215 with SMTP id ca18e2360f4ac-815744480f8mr74233839f.3.1721082107313;
-        Mon, 15 Jul 2024 15:21:47 -0700 (PDT)
-Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-80e11f90077sm158091939f.18.2024.07.15.15.21.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jul 2024 15:21:46 -0700 (PDT)
-Date: Mon, 15 Jul 2024 16:21:45 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Leah Rumancik <leah.rumancik@gmail.com>, Sasha Levin
- <sashal@kernel.org>, stable@vger.kernel.org, Miaohe Lin
- <linmiaohe@huawei.com>, Thorvald Natvig <thorvald@google.com>, Jane Chu
- <jane.chu@oracle.com>, Christian Brauner <brauner@kernel.org>, Heiko
- Carstens <hca@linux.ibm.com>, Kent Overstreet <kent.overstreet@linux.dev>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mateusz Guzik
- <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>, Muchun Song
- <muchun.song@linux.dev>, Oleg Nesterov <oleg@redhat.com>, Peng Zhang
- <zhangpeng.00@bytedance.com>, Tycho Andersen <tandersen@netflix.com>,
- Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 6.6] fork: defer linking file vma until vma is fully
- initialized
-Message-ID: <20240715162145.6e13cbff.alex.williamson@redhat.com>
-In-Reply-To: <20240715203541.389415-1-axelrasmussen@google.com>
-References: <CACzhbgRoMEAzkEVZPMEHR2JsNn5ZNw1SwKqP1FVzej4g_87snQ@mail.gmail.com>
-	<20240715203541.389415-1-axelrasmussen@google.com>
-Organization: Red Hat
+	s=arc-20240116; t=1721086540; c=relaxed/simple;
+	bh=rfcDkYHnmVPeWCmDCIvvc173cwPGZmKlWrcWXLgMdRU=;
+	h=Date:To:From:Subject:Message-Id; b=sFUDey8ztSSf4B69jPNtYA0Xh7zg+Fh/hj310hUqm11tW9GDAWwh6bFHWP2oD5WcpUOZzboLrZV4EsE2f4Pq8dmvM5xVRHl2ndAfK4w27WIF8gmWHXrWwBzNXiJ4JJEbExNDLVjF2hbFYpnNq3TsSHb9oB+PvK0hr/Tgjpz6eAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Gi8pENbh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76161C32782;
+	Mon, 15 Jul 2024 23:35:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1721086539;
+	bh=rfcDkYHnmVPeWCmDCIvvc173cwPGZmKlWrcWXLgMdRU=;
+	h=Date:To:From:Subject:From;
+	b=Gi8pENbhrZyyCpwR4bL+6K/YrsFSvHsM/VEjc2dCEavUSijyG1h2AkoZr9hlQ8bjo
+	 t1NCwdY/6NxBysVAfINpteDRh34ABe1ZJJ/BUJa9xfRzpMDG1ALcVjjsaMSTo3Wrx/
+	 r1VY+cVQN6qdlVPr/Z26tbr0BRPpI2R6Cd/p7Rno=
+Date: Mon, 15 Jul 2024 16:35:38 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,willy@infradead.org,william.kucharski@oracle.com,stable@vger.kernel.org,ryan.roberts@arm.com,peterx@redhat.com,ddutile@redhat.com,david@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,gshan@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-huge_memory-avoid-pmd-size-page-cache-if-needed.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240715233539.76161C32782@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Mon, 15 Jul 2024 13:35:41 -0700
-Axel Rasmussen <axelrasmussen@google.com> wrote:
 
-> I tried out Sasha's suggestion. Note that *just* taking
-> aac6db75a9 ("vfio/pci: Use unmap_mapping_range()") is not sufficient, we also
-> need b7c5e64fec ("vfio: Create vfio_fs_type with inode per device").
-> 
-> But, the good news is both of those apply more or less cleanly to 6.6. And, at
-> least under a very basic test which exercises VFIO memory mapping, things seem
-> to work properly with that change.
-> 
-> I would agree with Leah that these seem a bit big to be stable fixes. But, I'm
-> encouraged by the fact that Sasha suggested taking them. If there are no big
-> objections (Alex? :) ) I can send the backport patches this week.
-> 
+The patch titled
+     Subject: mm/huge_memory: avoid PMD-size page cache if needed
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-huge_memory-avoid-pmd-size-page-cache-if-needed.patch
 
-If you were to take those, I think you'd also want:
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-avoid-pmd-size-page-cache-if-needed.patch
 
-d71a989cf5d9 ("vfio/pci: Insert full vma on mmap'd MMIO fault")
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-which helps avoid a potential regression in VM startup latency vs
-faulting each page of the VMA.  Ideally we'd have had huge_fault
-working for pfnmaps before this conversion to avoid the latter commit.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-I'm a bit confused by the lineage here though, 35e351780fa9 ("fork:
-defer linking file vma until vma is fully initialized") entered v6.9
-whereas these vfio changes all came in v6.10, so why does the v6.6
-backport end up with dependencies on these newer commits?  Is there
-something that needs to be fixed in v6.9-stable as well?
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Aside from the size of aac6db75a9 in particular, I'm not aware of any
-outstanding issues that would otherwise dissuade backport to
-v6.6-stable.  Thanks,
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-Alex
+------------------------------------------------------
+From: Gavin Shan <gshan@redhat.com>
+Subject: mm/huge_memory: avoid PMD-size page cache if needed
+Date: Mon, 15 Jul 2024 10:04:23 +1000
+
+xarray can't support arbitrary page cache size.  the largest and supported
+page cache size is defined as MAX_PAGECACHE_ORDER by commit 099d90642a71
+("mm/filemap: make MAX_PAGECACHE_ORDER acceptable to xarray").  However,
+it's possible to have 512MB page cache in the huge memory's collapsing
+path on ARM64 system whose base page size is 64KB.  512MB page cache is
+breaking the limitation and a warning is raised when the xarray entry is
+split as shown in the following example.
+
+[root@dhcp-10-26-1-207 ~]# cat /proc/1/smaps | grep KernelPageSize
+KernelPageSize:       64 kB
+[root@dhcp-10-26-1-207 ~]# cat /tmp/test.c
+   :
+int main(int argc, char **argv)
+{
+	const char *filename = TEST_XFS_FILENAME;
+	int fd = 0;
+	void *buf = (void *)-1, *p;
+	int pgsize = getpagesize();
+	int ret = 0;
+
+	if (pgsize != 0x10000) {
+		fprintf(stdout, "System with 64KB base page size is required!\n");
+		return -EPERM;
+	}
+
+	system("echo 0 > /sys/devices/virtual/bdi/253:0/read_ahead_kb");
+	system("echo 1 > /proc/sys/vm/drop_caches");
+
+	/* Open the xfs file */
+	fd = open(filename, O_RDONLY);
+	assert(fd > 0);
+
+	/* Create VMA */
+	buf = mmap(NULL, TEST_MEM_SIZE, PROT_READ, MAP_SHARED, fd, 0);
+	assert(buf != (void *)-1);
+	fprintf(stdout, "mapped buffer at 0x%p\n", buf);
+
+	/* Populate VMA */
+	ret = madvise(buf, TEST_MEM_SIZE, MADV_NOHUGEPAGE);
+	assert(ret == 0);
+	ret = madvise(buf, TEST_MEM_SIZE, MADV_POPULATE_READ);
+	assert(ret == 0);
+
+	/* Collapse VMA */
+	ret = madvise(buf, TEST_MEM_SIZE, MADV_HUGEPAGE);
+	assert(ret == 0);
+	ret = madvise(buf, TEST_MEM_SIZE, MADV_COLLAPSE);
+	if (ret) {
+		fprintf(stdout, "Error %d to madvise(MADV_COLLAPSE)\n", errno);
+		goto out;
+	}
+
+	/* Split xarray entry. Write permission is needed */
+	munmap(buf, TEST_MEM_SIZE);
+	buf = (void *)-1;
+	close(fd);
+	fd = open(filename, O_RDWR);
+	assert(fd > 0);
+	fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
+ 		  TEST_MEM_SIZE - pgsize, pgsize);
+out:
+	if (buf != (void *)-1)
+		munmap(buf, TEST_MEM_SIZE);
+	if (fd > 0)
+		close(fd);
+
+	return ret;
+}
+
+[root@dhcp-10-26-1-207 ~]# gcc /tmp/test.c -o /tmp/test
+[root@dhcp-10-26-1-207 ~]# /tmp/test
+ ------------[ cut here ]------------
+ WARNING: CPU: 25 PID: 7560 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
+ Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib    \
+ nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct      \
+ nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4      \
+ ip_set rfkill nf_tables nfnetlink vfat fat virtio_balloon drm fuse   \
+ xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64 virtio_net  \
+ sha1_ce net_failover virtio_blk virtio_console failover dimlib virtio_mmio
+ CPU: 25 PID: 7560 Comm: test Kdump: loaded Not tainted 6.10.0-rc7-gavin+ #9
+ Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
+ pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+ pc : xas_split_alloc+0xf8/0x128
+ lr : split_huge_page_to_list_to_order+0x1c4/0x780
+ sp : ffff8000ac32f660
+ x29: ffff8000ac32f660 x28: ffff0000e0969eb0 x27: ffff8000ac32f6c0
+ x26: 0000000000000c40 x25: ffff0000e0969eb0 x24: 000000000000000d
+ x23: ffff8000ac32f6c0 x22: ffffffdfc0700000 x21: 0000000000000000
+ x20: 0000000000000000 x19: ffffffdfc0700000 x18: 0000000000000000
+ x17: 0000000000000000 x16: ffffd5f3708ffc70 x15: 0000000000000000
+ x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+ x11: ffffffffffffffc0 x10: 0000000000000040 x9 : ffffd5f3708e692c
+ x8 : 0000000000000003 x7 : 0000000000000000 x6 : ffff0000e0969eb8
+ x5 : ffffd5f37289e378 x4 : 0000000000000000 x3 : 0000000000000c40
+ x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
+ Call trace:
+  xas_split_alloc+0xf8/0x128
+  split_huge_page_to_list_to_order+0x1c4/0x780
+  truncate_inode_partial_folio+0xdc/0x160
+  truncate_inode_pages_range+0x1b4/0x4a8
+  truncate_pagecache_range+0x84/0xa0
+  xfs_flush_unmap_range+0x70/0x90 [xfs]
+  xfs_file_fallocate+0xfc/0x4d8 [xfs]
+  vfs_fallocate+0x124/0x2f0
+  ksys_fallocate+0x4c/0xa0
+  __arm64_sys_fallocate+0x24/0x38
+  invoke_syscall.constprop.0+0x7c/0xd8
+  do_el0_svc+0xb4/0xd0
+  el0_svc+0x44/0x1d8
+  el0t_64_sync_handler+0x134/0x150
+  el0t_64_sync+0x17c/0x180
+
+Fix it by correcting the supported page cache orders, different sets for
+DAX and other files.  With it corrected, 512MB page cache becomes
+disallowed on all non-DAX files on ARM64 system where the base page size
+is 64KB.  After this patch is applied, the test program fails with error
+-EINVAL returned from __thp_vma_allowable_orders() and the madvise()
+system call to collapse the page caches.
+
+Link: https://lkml.kernel.org/r/20240715000423.316491-1-gshan@redhat.com
+Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Don Dutile <ddutile@redhat.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: William Kucharski <william.kucharski@oracle.com>
+Cc: <stable@vger.kernel.org>	[5.17+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/huge_mm.h |   12 +++++++++---
+ mm/huge_memory.c        |   12 ++++++++++--
+ 2 files changed, 19 insertions(+), 5 deletions(-)
+
+--- a/include/linux/huge_mm.h~mm-huge_memory-avoid-pmd-size-page-cache-if-needed
++++ a/include/linux/huge_mm.h
+@@ -72,14 +72,20 @@ extern struct kobj_attribute shmem_enabl
+ #define THP_ORDERS_ALL_ANON	((BIT(PMD_ORDER + 1) - 1) & ~(BIT(0) | BIT(1)))
+ 
+ /*
+- * Mask of all large folio orders supported for file THP.
++ * Mask of all large folio orders supported for file THP. Folios in a DAX
++ * file is never split and the MAX_PAGECACHE_ORDER limit does not apply to
++ * it.
+  */
+-#define THP_ORDERS_ALL_FILE	(BIT(PMD_ORDER) | BIT(PUD_ORDER))
++#define THP_ORDERS_ALL_FILE_DAX		\
++	(BIT(PMD_ORDER) | BIT(PUD_ORDER))
++#define THP_ORDERS_ALL_FILE_DEFAULT	\
++	((BIT(MAX_PAGECACHE_ORDER + 1) - 1) & ~BIT(0))
+ 
+ /*
+  * Mask of all large folio orders supported for THP.
+  */
+-#define THP_ORDERS_ALL		(THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE)
++#define THP_ORDERS_ALL	\
++	(THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DAX | THP_ORDERS_ALL_FILE_DEFAULT)
+ 
+ #define TVA_SMAPS		(1 << 0)	/* Will be used for procfs */
+ #define TVA_IN_PF		(1 << 1)	/* Page fault handler */
+--- a/mm/huge_memory.c~mm-huge_memory-avoid-pmd-size-page-cache-if-needed
++++ a/mm/huge_memory.c
+@@ -88,9 +88,17 @@ unsigned long __thp_vma_allowable_orders
+ 	bool smaps = tva_flags & TVA_SMAPS;
+ 	bool in_pf = tva_flags & TVA_IN_PF;
+ 	bool enforce_sysfs = tva_flags & TVA_ENFORCE_SYSFS;
++	unsigned long supported_orders;
++
+ 	/* Check the intersection of requested and supported orders. */
+-	orders &= vma_is_anonymous(vma) ?
+-			THP_ORDERS_ALL_ANON : THP_ORDERS_ALL_FILE;
++	if (vma_is_anonymous(vma))
++		supported_orders = THP_ORDERS_ALL_ANON;
++	else if (vma_is_dax(vma))
++		supported_orders = THP_ORDERS_ALL_FILE_DAX;
++	else
++		supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
++
++	orders &= supported_orders;
+ 	if (!orders)
+ 		return 0;
+ 
+_
+
+Patches currently in -mm which might be from gshan@redhat.com are
+
+mm-huge_memory-avoid-pmd-size-page-cache-if-needed.patch
 
 
