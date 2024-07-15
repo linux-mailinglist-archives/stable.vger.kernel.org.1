@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-59288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3787A9310AB
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 10:53:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C3B79310AC
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 10:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7916BB21DD1
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 08:53:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D56DCB227F0
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 08:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D97113B59B;
-	Mon, 15 Jul 2024 08:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E2D1836CE;
+	Mon, 15 Jul 2024 08:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlyyl15+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKCCGbgf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21941849D3
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 08:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B273513B59B
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 08:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721033621; cv=none; b=NI7mZ5qNBPlHqof+9mwGsCfZpKSURcHWv1kbzmHNQVpWf3De+dzVkgKvNXGLbc191bLDZ1VexCajsbAOUcMxzXKJ6xjlntxS9YKt9tdi3NQ1TkB2KyorFxU1PRJxZBXnmfRhncnmVtxlW21BRPANB7hLLeTcsuUSjSSDYf1IkVY=
+	t=1721033629; cv=none; b=uZbxNE4l0GEet271Rz6qWxqZ3vOlyPJzqUqn+d72PGv5w2d31jb37yEpCkIkDlAJQ9dwJZk6jQN/khAc1JjT4Dicdmheh5Sha8Wo0RdXCahPFy8xUaVVQsKi7uHH1MisK1nrUFhvOV5t5h4k5fRhHRo4J+ln10SkrnFcnjBL9/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721033621; c=relaxed/simple;
-	bh=ZVn1DAMJq4OQ3I3TRiMCzxOfp/IU1nkyh8Efjm9f/8k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MDAtiixU4AHK6W8vQMs1v9+FkVIJUpEgdI6xhNqxP5kFPZieXKNnAEts1ssEJPS+DR6DCSoMer+qtU1pouQ7Y8Xxdah9Xy0jm1aQEOBeksB9QIGhO3p0dnTh/5DgaKmhNRk2qxEeFvWo671DXE9EBv4ih8wZmpSvPQeVHqxI0dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlyyl15+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E829DC4AF0A;
-	Mon, 15 Jul 2024 08:53:39 +0000 (UTC)
+	s=arc-20240116; t=1721033629; c=relaxed/simple;
+	bh=dSnrShJrI5NIJdWMx2X/+qURsKFGkRZW9da7CwhOWf0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jXR3rkEVfBAZcSkeHKoq+yfR38JdeQTzrX4TwGqrK6+qd/5iqI57aEWV+1cfSiPd92fuG8b8146EEEW9dmiN3kcrF7SMkn1czygvjwo1fqjos2hmB/qgarYUlSoGez3NZqkBhktOnP4KZNCMP7wi4WvZb3hdqUqeaxJxOyNooeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKCCGbgf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85BDC32782;
+	Mon, 15 Jul 2024 08:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721033620;
-	bh=ZVn1DAMJq4OQ3I3TRiMCzxOfp/IU1nkyh8Efjm9f/8k=;
+	s=korg; t=1721033629;
+	bh=dSnrShJrI5NIJdWMx2X/+qURsKFGkRZW9da7CwhOWf0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=vlyyl15+4VLrhR/8v9MMI3h7ELt4a/jLLTH2xzAU5SzsybdmaZxIWB192/zVIL09V
-	 Lf4MkpJ9txAdaV5KocVsh+OhoDwPv+O+jK29DEZvM3t0LubwLAqZPX2qt8RsmYxA3l
-	 02eXDvUwf4TMR0UON2zxYy88V9XwhuVbqxa0QrMs=
-Subject: FAILED: patch "[PATCH] USB: serial: mos7840: fix crash on resume" failed to apply to 5.4-stable tree
+	b=jKCCGbgfE5tJNudnIrJVyzXNQKIeOGlNQQhEBDDoaMCkitt8sWalFOFNVFJuJQi1F
+	 rEg7GUwl0Cr4G4DYYKa588IQ371XQgq8Pw/FhrsLxu/ulGCJBZjO3GiOr4KuMFx8Fl
+	 9fOTricdoGhw+iond2iQPKoxf3MD4MVG2vKq7Sac=
+Subject: FAILED: patch "[PATCH] USB: serial: mos7840: fix crash on resume" failed to apply to 4.19-stable tree
 To: d.smirnov@inbox.lv,johan@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jul 2024 10:53:37 +0200
-Message-ID: <2024071537-emergency-sprawl-4c37@gregkh>
+Date: Mon, 15 Jul 2024 10:53:38 +0200
+Message-ID: <2024071538-nerd-march-746a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x c15a688e49987385baa8804bf65d570e362f8576
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071537-emergency-sprawl-4c37@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071538-nerd-march-746a@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 c15a688e4998 ("USB: serial: mos7840: fix crash on resume")
 7183192196a6 ("USB: serial: mos7840: rip out broken interrupt handling")
+32d8a6fc5bd6 ("USB: serial: mos7840: remove set but not used variables 'st, data1, iflag'")
 
 thanks,
 
