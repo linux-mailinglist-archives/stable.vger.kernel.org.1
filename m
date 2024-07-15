@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-59297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D31F931145
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:35:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A09F931146
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC4EF1F2305F
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D488C283894
 	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 09:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23343186E40;
-	Mon, 15 Jul 2024 09:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8080C186E4D;
+	Mon, 15 Jul 2024 09:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLUqUfoG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DcpNesUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D9418629D
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 09:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9311862AB
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 09:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721036139; cv=none; b=EzMxcnSr5HJkZDVu5k3uHzu9k67PzxbOAMZYXd8DXgijFxBnr9TP8G95ZvYPQ3reXTnu184CbScUOgoUAAycEPflToKKSMypSlq5AIWbud0JO8/0q5a8H+LJgbFZfBTlineuVqtx1akJyPO7MShhw8pbzsRm5WyG970HajeLXQ4=
+	t=1721036143; cv=none; b=NWe7HYgETFt9DWfqvHicES1X8sUJeK16gGEI6ULu/hvChHZf8m9U38r469eN9hEVvfa/pzUVD+j1fLc6/gKyhxbpvMgUb5AZNejunm1LFb5se7reFUbuFZGZofHJeSchalo4FB3Tz5tCkwqb2WnYL7vt128FOr/mX5HaUrexoOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721036139; c=relaxed/simple;
-	bh=3tfecHa7ehnWEBfm0zkqU2+CXQXKMv7pqJndY+09XqU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=U+Tw8iRtBQxZG/eDNsKLk3An6slQkiN0vmlYBYPPImLggxscbYEtAcg59WMcK40eeVLJvBHod2jure+WkdyZzI+AnZNhH9/hWKOcGezICZR73pXWpRWI7mhrLGfWQs4JcBNwe/tNDIS7mtyFq3ia8sXj/+hpRpY7GE9g4s6aViE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLUqUfoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FAEC32782;
-	Mon, 15 Jul 2024 09:35:38 +0000 (UTC)
+	s=arc-20240116; t=1721036143; c=relaxed/simple;
+	bh=EShyFTyByI5VJoq2HYFq6ZlgwbNvKU3YdvCX2uzRnjE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bzZxElhAIu9dKDRaFdz8gMwgGqVkSxSGm4woptqm436nXw4uy2eHEwwPzRwR2sqOFSCFnhwX7VXAilx1Rm67sXccvgummUylWqkMo8HR1qRfsX6BcrQeVIpvJOJy12I6pJvLzOJFWNsftT8HjuzVBCqP7OiqyIf7PmBvb58uhZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DcpNesUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D99EC32782;
+	Mon, 15 Jul 2024 09:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721036139;
-	bh=3tfecHa7ehnWEBfm0zkqU2+CXQXKMv7pqJndY+09XqU=;
+	s=korg; t=1721036142;
+	bh=EShyFTyByI5VJoq2HYFq6ZlgwbNvKU3YdvCX2uzRnjE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=kLUqUfoGzkjGn2uQNWFqsYAkSEPCVeQK/zX94XNXZ8MzwIi3fkN6/j9FnXZ0VnAyn
-	 F+Awy47CcOIhAKD8gOgiLc6Mw/rIpLIx6xzOOdhGE44KNEKx/EPHiMIUGWWnmNMxNG
-	 TOJFzj7SvjE9zb9rda+iLSjt3OlIQYk7iHlmPtp0=
-Subject: FAILED: patch "[PATCH] nilfs2: fix kernel bug on rename operation of broken" failed to apply to 6.6-stable tree
+	b=DcpNesUCKbkI3t7x8aWynyo3yV/eJzUmhzA7Y+Dq4ZqnjjPxWSoZTUmGxpw1A3hyk
+	 rTqJA5bmmXBOhxsD/yBl3K8Uj8h4GsicytfEa7mipYz5ve/F/bE+fOjZYkEuFdVb89
+	 IrLhCjfF4QljA2LTMi+EL0jtMpFWwBvVJ+Pz8e3g=
+Subject: FAILED: patch "[PATCH] nilfs2: fix kernel bug on rename operation of broken" failed to apply to 6.1-stable tree
 To: konishi.ryusuke@gmail.com,akpm@linux-foundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jul 2024 11:35:36 +0200
-Message-ID: <2024071536-overstay-scholar-83a6@gregkh>
+Date: Mon, 15 Jul 2024 11:35:37 +0200
+Message-ID: <2024071537-acetone-vastly-d974@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x a9e1ddc09ca55746079cc479aa3eb6411f0d99d4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071536-overstay-scholar-83a6@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071537-acetone-vastly-d974@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -79,6 +79,7 @@ a4bf041e44d5 ("nilfs2: convert nilfs_find_entry to use a folio")
 8cf57c6df818 ("nilfs2: eliminate staggered calls to kunmap in nilfs_rename")
 584db20c181f ("nilfs2: move page release outside of nilfs_delete_entry and nilfs_set_link")
 b3e1cc3935ff ("nilfs2: convert to new timestamp accessors")
+e21d4f419402 ("nilfs2: convert to ctime accessor functions")
 
 thanks,
 
