@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-59329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A354C931312
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 13:28:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F21931314
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 13:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33DE828120B
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:28:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 601E2B229D3
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6DB188CDB;
-	Mon, 15 Jul 2024 11:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174C2188CD4;
+	Mon, 15 Jul 2024 11:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYMuIU58"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THyXDJk+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1C11465B8
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 11:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB23F1465B8
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 11:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721042912; cv=none; b=dJ5wUTGtMmQf+xeAdimiRuPdNH3sBb8fDLQUUjrzVIAhoyZIxMeEYp0p5pytKEMtGwxPnA5jJsGe75SWH2+x5y1E+dmQQaD96Nn0IjUuspZE5EtWhXmN0H60/RvhdmfDKjSkS9dW6wTKs+osAzwBQgtM5hsVC5iqlJZHX2FxJwk=
+	t=1721042920; cv=none; b=FIJIivr9BNi5VcPcrey04F7wJkKfCyI/vNcer0UmTwnGItG7B+KJhm70El9FV9vAGcVFvZEcS3eGzH07ah9QNfkKOZXQo8JygeNQt4akCL/L8NQe05dXrgNbXCWDhYgAXZ+ryiqVjvyX3zrc/GnSrjv/UffdU8fN6HvBjOSYnQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721042912; c=relaxed/simple;
-	bh=N/frTcY7MS7fT1iasCsxSbV8nH9VVwBJrTq0EX0FxoA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OX+L5MWD8kKE7eUXWRdM77UGzWm95SmScYa5trNZSQOF/rBPOQ/kXut2LMlsqBeqnhHr3rsLwxECENjnTUozNE6L14vCRv1fZ+zWyW1HYWNi8/sPGHPUENaZwHbiNCyzjRPK244exS8un9JT5uuoaJ5oPB9EqrwRFyUk/dOn4Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYMuIU58; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445B2C32782;
-	Mon, 15 Jul 2024 11:28:31 +0000 (UTC)
+	s=arc-20240116; t=1721042920; c=relaxed/simple;
+	bh=huSIrlG3mm4EDDgr7amZri6sljqDnIQT7BEoCrVKUtQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tLQkvabwWaSJqwlbkgExFG7PqgcXeyR+YdePBxYDeJbFo5F2bsRnwb6WtRPFZS8URJdOTDesfP4vgy28IlaVSR0Kix+kjUrpoBksxsr2x1tjT+FCzs8ZmvSlgGcxeXKWHNfvx7Li1lsNiVCx6JjIH+Cvf2TrvVQPUEHH4paxeV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THyXDJk+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40787C32782;
+	Mon, 15 Jul 2024 11:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721042911;
-	bh=N/frTcY7MS7fT1iasCsxSbV8nH9VVwBJrTq0EX0FxoA=;
+	s=korg; t=1721042920;
+	bh=huSIrlG3mm4EDDgr7amZri6sljqDnIQT7BEoCrVKUtQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cYMuIU58VGwJwOh2EcJRc7fUnv+GZadxXmqlNhwf35mt1y0AuQY2S9Vdev9Avd8HN
-	 yAvoEWebq7KmGhakeEch/fbprQPyytvyKEq7ocjhGrv5HYM52qfHDw41S80U2mVGm+
-	 qhRkIWzfn/VaXsBiw2xnCs9DdGLyfkL7mjjitsCg=
-Subject: FAILED: patch "[PATCH] ACPI: processor_idle: Fix invalid comparison with insertion" failed to apply to 5.15-stable tree
+	b=THyXDJk+D5kGqtlUVKf2JRY9I+Tf1N98sNdkCX30BOkmtezzvXxzNsKh9QoOVjZUs
+	 vUJAXWI6JZKLVtTxff7Da4wne3ORaq4jn2rqKYOF6nzQlk9ke9zcpegDEc1k5t9mVU
+	 BiNSea3jptg3cPRwlEkDjxTqC/YBuJsQGKJvLez4=
+Subject: FAILED: patch "[PATCH] ACPI: processor_idle: Fix invalid comparison with insertion" failed to apply to 5.10-stable tree
 To: visitorckw@gmail.com,belegdol@gmail.com,rafael.j.wysocki@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jul 2024 13:28:28 +0200
-Message-ID: <2024071528-foothill-overdraft-d69a@gregkh>
+Date: Mon, 15 Jul 2024 13:28:29 +0200
+Message-ID: <2024071529-prognosis-achiness-85fd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 233323f9b9f828cd7cd5145ad811c1990b692542
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071528-foothill-overdraft-d69a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071529-prognosis-achiness-85fd@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 233323f9b9f8 ("ACPI: processor_idle: Fix invalid comparison with insertion sort for latency")
 0e6078c3c673 ("ACPI: processor idle: Use swap() instead of open coding it")
+65ea8f2c6e23 ("ACPI: processor idle: Fix up C-state latency if not ordered")
 
 thanks,
 
