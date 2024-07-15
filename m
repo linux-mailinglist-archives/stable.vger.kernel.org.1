@@ -1,105 +1,152 @@
-Return-Path: <stable+bounces-59305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F2093115D
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:37:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E09493117F
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C6C5282FA6
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 09:37:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFE5AB23457
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 09:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A696B186E4A;
-	Mon, 15 Jul 2024 09:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F3A186E53;
+	Mon, 15 Jul 2024 09:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DqH4d4g5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1a3ITj8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E516F199A2;
-	Mon, 15 Jul 2024 09:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6594186E51
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 09:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721036230; cv=none; b=XQwyiepnLnKnlQJ/G2IsQkHrj7Zf1GKAChalfp5nXAqXqcNThyyMlG+oVryXlrdby6oPNPlTkdJNDSjemnjgYDA/1gSbWgUmTfmkE4KJpsJIcZsxqBO0tuvaP8XA9rGGXM7Dc+B5LjO0KsNxBwku2WNefuWpqn2So6OsfZRAjF8=
+	t=1721036542; cv=none; b=ChG/9wGR9kbqyXTlyAbMfyow3eDQhMJn2KkbPBIFjv71jvjshLZOHpGrSq+1RTBw4SpviFtHA0pSTGBayIVCRXkoVXo5kF4x2rTWU/FFKYcNo37yiia/GPNL5U5AFRXh7rY9bIfLrkYMGJCw1CRIOX/CDLaJw8Xryf2hDKRm8BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721036230; c=relaxed/simple;
-	bh=HlxvjKSw37Exxqwv0WvuuxqcpniDdZENVsSWO+JV4Ms=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HSQqn65l7xZGPDwfXd/g9nm4ZcyGy95+Af6crBCByKmszooJiWMf6VroZfMWyVNkcPE3SMYahvxxPwUluCsNnOIsrPwhGbmYdCtwHmyP6IIM9mLD2Sj4M3kNvGaiV1zuM37/WiOy2YXdKaUAKVEhyOP1wb+hpIwq9Ij4K8EshB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DqH4d4g5; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-58b447c5112so5461812a12.3;
-        Mon, 15 Jul 2024 02:37:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721036227; x=1721641027; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HlxvjKSw37Exxqwv0WvuuxqcpniDdZENVsSWO+JV4Ms=;
-        b=DqH4d4g5z9XMQGBsP+5olfNMHHcCtZwYR0zO+niEHw/F6VVDb1KeeFgDI+rUUgjtQk
-         TN+XaeiNlsHGi0g6MF0qRId825yWBj1lDjqTMV179uZQlQk4oaQYSuy9Eg1JLXsuis8s
-         yD5x/wX7gdmK3DybToizq9433TITXmNvt7y0HOIlkOvH9eo1nDUQ7DHxRKkigeS6ZxKR
-         fZsWUTOcTC6lQ2OoQTLRQyy7g7dqIA9jeTGAG0Fz4FBx8ma7bjt2gIVNCYoIMZFJojUM
-         3WykHTC018DtaSheV7484LsfLTO7FWod0IQG0YwZ5Mp8xDV7saTcJVBNbQvgla2Zm+0g
-         aCxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721036227; x=1721641027;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HlxvjKSw37Exxqwv0WvuuxqcpniDdZENVsSWO+JV4Ms=;
-        b=YZJLv+kmSulIw+FnoJKv+VR9oO2bqNw4zS7BF54Bfy8j+VtZ6+4zwBaQiaWoUhfwVW
-         mJNns7bVzNv+rJyutUc1OuaFb7X+Base4huepaJ+CHi5qn16IUI3KK8myP2BpO+0JquU
-         v6CkXBsNv7uA1AIP2yn3dLm/REUk39JeTCt/YhKNTSSNCx+0SoK+uI9q320Ou7dJBCJK
-         Zcpt5inMu2dtWYep7r16hTrEvXB6O7RmFT+LN64CyAYGP1jh37E9aEIqhNyAKYZP4/si
-         BswrkYJVfM3H7dMLTygrP8CwTG0gG72Mr37HQdYSuHWDC8iLuVUjMFjE8aN1oix5FuVc
-         01HA==
-X-Forwarded-Encrypted: i=1; AJvYcCWaKE8KS1MXiKPy8qdQBE8PD1pXZfTHvf6CuWlC/0ANASmY2KfGmlDkooaTXgXhR2BNxidpl+9XzRaHUIR5cJ1STyLHBrkUAW6+AnAJzqGfWmhTq3p3HfT3p0Nka5G+lHbZBQ==
-X-Gm-Message-State: AOJu0Yzo2L4x8O+egUVa6wm8lAXJlPAewHL+cSLDFqBBYfh5eQAq74eX
-	A2o3BoulHc698B8hZzuBwLzbbdoXrnOTwUQLXUmcoAKyVa7ZZ/El
-X-Google-Smtp-Source: AGHT+IEOrWpmly9UTC7vtn+qdLIa1iu+1Yk5P6cQKfgejLAj0rOHvN9wAOhDaWPYh7GNC7BHfEEyuQ==
-X-Received: by 2002:a17:906:fa08:b0:a72:b811:4d43 with SMTP id a640c23a62f3a-a780b883462mr1076718966b.59.1721036226951;
-        Mon, 15 Jul 2024 02:37:06 -0700 (PDT)
-Received: from [10.176.235.56] ([137.201.254.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc5d1f57sm196384766b.72.2024.07.15.02.37.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jul 2024 02:37:06 -0700 (PDT)
-Message-ID: <b547225a0315f1729c07a5d59f0db91c33af8e51.camel@gmail.com>
-Subject: Re: [PATCH v2] ufs: core: fix deadlock when rtc update
-From: Bean Huo <huobean@gmail.com>
-To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org, 
-	martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com, 
-	jejb@linux.ibm.com, beanhuo@micron.com
-Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org, 
- chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com, 
- chaotian.jing@mediatek.com, jiajie.hao@mediatek.com,
- powen.kao@mediatek.com,  qilin.tan@mediatek.com, lin.gui@mediatek.com,
- tun-yu.yu@mediatek.com,  eddie.huang@mediatek.com, naomi.chu@mediatek.com,
- chu.stanley@gmail.com,  stable@vger.kernel.org
-Date: Mon, 15 Jul 2024 11:37:04 +0200
-In-Reply-To: <20240715063831.29792-1-peter.wang@mediatek.com>
-References: <20240715063831.29792-1-peter.wang@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1721036542; c=relaxed/simple;
+	bh=q8fpQmkTEj7DiuzlhRzcdENRDhqWu9IUcxuUMjqinDE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pEZBwM5KPMTUf13alDUenhApcMay/DFiagVDsZ1NCGBLng2qJqJ6FuZ0jvSl/VRSJGk5s+IOpJU5UyV6R7jDz95ajOIf1thcf2mQBPrTPvwN/022xAnI2+ME8jK4FmFKd2oQ0hyfzeqqdkgdu5ktQebDmA96y4uv2Pa6H91H5HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1a3ITj8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5F3C32782;
+	Mon, 15 Jul 2024 09:42:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1721036542;
+	bh=q8fpQmkTEj7DiuzlhRzcdENRDhqWu9IUcxuUMjqinDE=;
+	h=Subject:To:Cc:From:Date:From;
+	b=r1a3ITj8EkxcWQkN3VWBUiE2AOpVW/cFJz2H0nWV2XmFJcrgL7SqiIhoFsXXlLtoR
+	 xccZSvFJ3KQHGKFzPCpI/fhA8ofo5AXF0P5Bt6XO6s44D46HjwGulwixvqvp7cIHCU
+	 OzsELTUHxW7+gaNumOqFcMNmb3r+Tz45GuRDNnao=
+Subject: FAILED: patch "[PATCH] scsi: sd: Do not repeat the starting disk message" failed to apply to 6.1-stable tree
+To: dlemoal@kernel.org,bvanassche@acm.org,john.g.garry@oracle.com,martin.petersen@oracle.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 15 Jul 2024 11:42:19 +0200
+Message-ID: <2024071518-municipal-zigzagged-a93d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2024-07-15 at 14:38 +0800, peter.wang@mediatek.com wrote:
-> Fixes: 6bf999e0eb41 ("scsi: ufs: core: Add UFS RTC support")
-> Cc: <stable@vger.kernel.org> 6.9.x
->=20
-> Signed-off-by: Peter Wang <peter.wang@mediatek.com>
 
-ignore my previous two emails, I saw you have just skipped update, not
-skip schedule in this version.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Reviewed-by: Bean Huo <beanhuo@micron.com>
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071518-municipal-zigzagged-a93d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+7a6bbc2829d4 ("scsi: sd: Do not repeat the starting disk message")
+0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
+c4367ac83805 ("scsi: Remove scsi device no_start_on_resume flag")
+99398d2070ab ("scsi: sd: Do not issue commands to suspended disks on shutdown")
+8b4d9469d0b0 ("ata: libata-scsi: Fix delayed scsi_rescan_device() execution")
+ff48b37802e5 ("scsi: Do not attempt to rescan suspended devices")
+aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
+3cc2ffe5c16d ("scsi: sd: Differentiate system and runtime start/stop management")
+2a5a4326e583 ("Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4 Mon Sep 17 00:00:00 2001
+From: Damien Le Moal <dlemoal@kernel.org>
+Date: Tue, 2 Jul 2024 06:53:26 +0900
+Subject: [PATCH] scsi: sd: Do not repeat the starting disk message
+
+The SCSI disk message "Starting disk" to signal resuming of a suspended
+disk is printed in both sd_resume() and sd_resume_common() which results
+in this message being printed twice when resuming from e.g. autosuspend:
+
+$ echo 5000 > /sys/block/sda/device/power/autosuspend_delay_ms
+$ echo auto > /sys/block/sda/device/power/control
+
+[ 4962.438293] sd 0:0:0:0: [sda] Synchronizing SCSI cache
+[ 4962.501121] sd 0:0:0:0: [sda] Stopping disk
+
+$ echo on > /sys/block/sda/device/power/control
+
+[ 4972.805851] sd 0:0:0:0: [sda] Starting disk
+[ 4980.558806] sd 0:0:0:0: [sda] Starting disk
+
+Fix this double print by removing the call to sd_printk() from sd_resume()
+and moving the call to sd_printk() in sd_resume_common() earlier in the
+function, before the check using sd_do_start_stop().  Doing so, the message
+is printed once regardless if sd_resume_common() actually executes
+sd_start_stop_device() (i.e. SCSI device case) or not (libsas and libata
+managed ATA devices case).
+
+Fixes: 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240701215326.128067-1-dlemoal@kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index fe82baa924f8..6203915945a4 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -4117,8 +4117,6 @@ static int sd_resume(struct device *dev)
+ {
+ 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
+ 
+-	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
+-
+ 	if (opal_unlock_from_suspend(sdkp->opal_dev)) {
+ 		sd_printk(KERN_NOTICE, sdkp, "OPAL unlock failed\n");
+ 		return -EIO;
+@@ -4135,12 +4133,13 @@ static int sd_resume_common(struct device *dev, bool runtime)
+ 	if (!sdkp)	/* E.g.: runtime resume at the start of sd_probe() */
+ 		return 0;
+ 
++	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
++
+ 	if (!sd_do_start_stop(sdkp->device, runtime)) {
+ 		sdkp->suspended = false;
+ 		return 0;
+ 	}
+ 
+-	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
+ 	ret = sd_start_stop_device(sdkp, 1);
+ 	if (!ret) {
+ 		sd_resume(dev);
+
 
