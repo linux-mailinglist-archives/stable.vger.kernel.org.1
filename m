@@ -1,166 +1,112 @@
-Return-Path: <stable+bounces-59295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B01693113B
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:32:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DF8931140
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACD2CB22957
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 09:31:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2A39B23949
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 09:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686FD18629D;
-	Mon, 15 Jul 2024 09:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764201862A9;
+	Mon, 15 Jul 2024 09:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8tpkUjc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OCFQo+q1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACD4199A2
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 09:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24AA199A2;
+	Mon, 15 Jul 2024 09:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721035900; cv=none; b=i55ssaqcd9cp4hduCGRFjABvPksc5QTX7sP1QNinShYntHZEYPvcWiEpPCAWzxIyXyIxvaCvKjmx+wUlq9gQajDvSxGozNS+oWqwtHb0AmGVJl0Bw0g2eWMCoHyfYW80T0AVG68e2F9f2Wx3lFCxhdsQ+GoufuZAFaFWywuPCf0=
+	t=1721036047; cv=none; b=dRUe1rTwOe7PUxXAx8gFtKdCn6D6soKNBTOMixt4YCBhu5QPoEqkpRpU1Mc4VTobU1pswYHzIsxQmFQwCrTsuFcG6472ebaQenvJDp0eQVC4rM9No74EY/h2Bt7GAPS6udwRCUJlDY1QyUUaLOJkMGLlfW1ZUKCaj5c2spjly3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721035900; c=relaxed/simple;
-	bh=PCtklBOH92Z7jQ4i3JTcRxfyLrIZL5jjXEBNBK7DgM8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M+cwClBKgHoYNB68rnbZ3EKH6Y0/OhVrUUvejFTJEEGE/nlETsuPU4s0RJr7VzH56D15ooGc2MyQ2V2B84/dDyNf2GHMBjvEuxwdWoCUAUnYtlxH+iEk0HwIK/zd7MV2LtzHemErIetAUsNBVzYMxUEZh3ddRbVIXIPd6sm41/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8tpkUjc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30073C32782;
-	Mon, 15 Jul 2024 09:31:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721035899;
-	bh=PCtklBOH92Z7jQ4i3JTcRxfyLrIZL5jjXEBNBK7DgM8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=c8tpkUjcQ7Hv1DtAKW5B5qz4EkU6XUBzXE0ZM8PI2ACbPWlNNBwS4W+7EOmdzVanF
-	 U6xguCRrv1PpQFRaZFWnNqJ3BIMAWIv1GCCzzA9vPqE/Ggf2WORIys5AWOCLiEDymh
-	 +yH5MAz4lMZlH+j/sWga0H4aFMpI29MfELYQzUgQ=
-Subject: FAILED: patch "[PATCH] mm/filemap: skip to create PMD-sized page cache if needed" failed to apply to 6.1-stable tree
-To: gshan@redhat.com,akpm@linux-foundation.org,david@redhat.com,ddutile@redhat.com,djwong@kernel.org,hughd@google.com,ryan.roberts@arm.com,stable@vger.kernel.org,torvalds@linux-foundation.org,william.kucharski@oracle.com,willy@infradead.org,zhenyzha@redhat.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jul 2024 11:31:36 +0200
-Message-ID: <2024071536-overreach-kite-5c51@gregkh>
+	s=arc-20240116; t=1721036047; c=relaxed/simple;
+	bh=jsJtdePkienB11b2Gh7dlE22owXRs5pqbIPeZpvqS8Y=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kY6AMGQcKKH3s+bvef6U0Lwcsy6jQzHg3GuvpRc9ZMyOV6Ot5D95uGHBeZ6tbOT2gDqgvMbStCLrKriOzVcqzfpfHKwhsfu0UovZjCysFe6vzPRVHlL7e9QZF2TKdK7pE2QD139GMfBX5r4bLQm3XpwthFzdE5QxKbvdJpgh6IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OCFQo+q1; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-58b447c511eso5044963a12.2;
+        Mon, 15 Jul 2024 02:34:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721036044; x=1721640844; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jsJtdePkienB11b2Gh7dlE22owXRs5pqbIPeZpvqS8Y=;
+        b=OCFQo+q1EZKkM+C42y1BH4ZKGzRrXTeNNNdYGtXOhCmNscbUIyWKgTWlU9HENyIK1h
+         5kSv1YchyJMS+om2cuuNOhIU8yFIoyjyjbS76BD90yk324z+RB8QV7cis0Nv5Rme6BqS
+         BmmutjxetM1/WOH3UZlP9d+zmLSRnxgNQULen8GoKog8ORiXEAWHQRhu1OPcSM9HpXlu
+         tpyrb7uehukQb5xMasV0M2Rg0eKbjvW+RDWxPhiJpDKxXz3qe+idVUeD7NuD6ONRl1/D
+         T1AnmhXwloP436U6NnbUt0sRUJVUUOLjG3I23eH9RhTW1vKuAWnTuQjMSB4O3fIYGYzn
+         KEuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721036044; x=1721640844;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jsJtdePkienB11b2Gh7dlE22owXRs5pqbIPeZpvqS8Y=;
+        b=WIL4yVpqE6OxnN+JQmEhBMeq8eIfmSz7TvAu8H2v9T6OhEqH05RceCdLgxSsJL6NY7
+         h013zctZMZkdNUzmY4DanZUIarv775o4IfjR//aMXK+JlA86zqzEBZbSk+/6kSn6br1W
+         mE6r9yx4s62zfopAUYuYJsBdjlnjxZ6FESpcU/KnmEtNd29Gn3Cdbmm86d3iLLV9YSvm
+         MDmhkP1JEYlTkerTrxqPXXh2U1bqShlH0CXGqDk2RJCJrSgYbi58QvBtmjdDGh9XsLM7
+         bpQ13IIM7dS9eKXsCcA5sH0/FdKOk9sLhZkYliwCJ7N7txlW7Sc53bq5D2u+Ec8deClg
+         yDGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWF4WUv3JQ9cHV9jmJ60EKRzShcqx9sJrzmCZdNzfJ0pWltgh0gWDzHrWIp+H7horbR+no80ywdGujaDSRvD1bk2lMvFyC2yixX7dF+M20h68FdwUVfsq4efcBqEEWGMJWf0w==
+X-Gm-Message-State: AOJu0YzoTTs+DCpHEmjMwAxiMgziI6XKTsQYbX3wuxNwXaZ7OBf5fblr
+	8ko8dA+GEa8TO8ezxBpzs13Uyw9oKP5whk3fsCx1/j3mkqL7TVRg
+X-Google-Smtp-Source: AGHT+IF1iBD5PBdiW1MXVxPLPw1ldsebD8ec0RQWnh38kfGvPUgFftx9YwQtPep3wbySXU4twET9ag==
+X-Received: by 2002:a05:6402:1d56:b0:595:71c7:39dd with SMTP id 4fb4d7f45d1cf-59571c73a66mr14805326a12.34.1721036043742;
+        Mon, 15 Jul 2024 02:34:03 -0700 (PDT)
+Received: from [10.176.235.56] ([137.201.254.41])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-59b268a291asm3129099a12.76.2024.07.15.02.34.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jul 2024 02:34:03 -0700 (PDT)
+Message-ID: <37c27c61ebf9e1db06a0d93adcc588fcaccec8ab.camel@gmail.com>
+Subject: Re: [PATCH v2] ufs: core: fix deadlock when rtc update
+From: Bean Huo <huobean@gmail.com>
+To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org, 
+	martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com, 
+	jejb@linux.ibm.com, beanhuo@micron.com
+Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org, 
+ chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com, 
+ chaotian.jing@mediatek.com, jiajie.hao@mediatek.com,
+ powen.kao@mediatek.com,  qilin.tan@mediatek.com, lin.gui@mediatek.com,
+ tun-yu.yu@mediatek.com,  eddie.huang@mediatek.com, naomi.chu@mediatek.com,
+ chu.stanley@gmail.com,  stable@vger.kernel.org
+Date: Mon, 15 Jul 2024 11:34:01 +0200
+In-Reply-To: <20240715063831.29792-1-peter.wang@mediatek.com>
+References: <20240715063831.29792-1-peter.wang@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
 
-
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 3390916aca7af1893ed2ebcdfee1d6fdb65bb058
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071536-overreach-kite-5c51@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-3390916aca7a ("mm/filemap: skip to create PMD-sized page cache if needed")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 3390916aca7af1893ed2ebcdfee1d6fdb65bb058 Mon Sep 17 00:00:00 2001
-From: Gavin Shan <gshan@redhat.com>
-Date: Thu, 27 Jun 2024 10:39:51 +1000
-Subject: [PATCH] mm/filemap: skip to create PMD-sized page cache if needed
-
-On ARM64, HPAGE_PMD_ORDER is 13 when the base page size is 64KB.  The
-PMD-sized page cache can't be supported by xarray as the following error
-messages indicate.
-
-------------[ cut here ]------------
-WARNING: CPU: 35 PID: 7484 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
-Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib  \
-nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct    \
-nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4    \
-ip_set rfkill nf_tables nfnetlink vfat fat virtio_balloon drm      \
-fuse xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64      \
-sha1_ce virtio_net net_failover virtio_console virtio_blk failover \
-dimlib virtio_mmio
-CPU: 35 PID: 7484 Comm: test Kdump: loaded Tainted: G W 6.10.0-rc5-gavin+ #9
-Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : xas_split_alloc+0xf8/0x128
-lr : split_huge_page_to_list_to_order+0x1c4/0x720
-sp : ffff800087a4f6c0
-x29: ffff800087a4f6c0 x28: ffff800087a4f720 x27: 000000001fffffff
-x26: 0000000000000c40 x25: 000000000000000d x24: ffff00010625b858
-x23: ffff800087a4f720 x22: ffffffdfc0780000 x21: 0000000000000000
-x20: 0000000000000000 x19: ffffffdfc0780000 x18: 000000001ff40000
-x17: 00000000ffffffff x16: 0000018000000000 x15: 51ec004000000000
-x14: 0000e00000000000 x13: 0000000000002000 x12: 0000000000000020
-x11: 51ec000000000000 x10: 51ece1c0ffff8000 x9 : ffffbeb961a44d28
-x8 : 0000000000000003 x7 : ffffffdfc0456420 x6 : ffff0000e1aa6eb8
-x5 : 20bf08b4fe778fca x4 : ffffffdfc0456420 x3 : 0000000000000c40
-x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
-Call trace:
- xas_split_alloc+0xf8/0x128
- split_huge_page_to_list_to_order+0x1c4/0x720
- truncate_inode_partial_folio+0xdc/0x160
- truncate_inode_pages_range+0x1b4/0x4a8
- truncate_pagecache_range+0x84/0xa0
- xfs_flush_unmap_range+0x70/0x90 [xfs]
- xfs_file_fallocate+0xfc/0x4d8 [xfs]
- vfs_fallocate+0x124/0x2e8
- ksys_fallocate+0x4c/0xa0
- __arm64_sys_fallocate+0x24/0x38
- invoke_syscall.constprop.0+0x7c/0xd8
- do_el0_svc+0xb4/0xd0
- el0_svc+0x44/0x1d8
- el0t_64_sync_handler+0x134/0x150
- el0t_64_sync+0x17c/0x180
-
-Fix it by skipping to allocate PMD-sized page cache when its size is
-larger than MAX_PAGECACHE_ORDER.  For this specific case, we will fall to
-regular path where the readahead window is determined by BDI's sysfs file
-(read_ahead_kb).
-
-Link: https://lkml.kernel.org/r/20240627003953.1262512-4-gshan@redhat.com
-Fixes: 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Darrick J. Wong <djwong@kernel.org>
-Cc: Don Dutile <ddutile@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: William Kucharski <william.kucharski@oracle.com>
-Cc: Zhenyu Zhang <zhenyzha@redhat.com>
-Cc: <stable@vger.kernel.org>	[5.18+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 54b15bb96056..fedefb10d947 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3124,7 +3124,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	/* Use the readahead code, even if readahead is disabled */
--	if (vm_flags & VM_HUGEPAGE) {
-+	if ((vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER) {
- 		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
- 		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
- 		ra->size = HPAGE_PMD_NR;
+T24gTW9uLCAyMDI0LTA3LTE1IGF0IDE0OjM4ICswODAwLCBwZXRlci53YW5nQG1lZGlhdGVrLmNv
+bSB3cm90ZToKPiBAQCAtODE3MSw3ICs4MTcxLDEwIEBAIHN0YXRpYyB2b2lkIHVmc2hjZF91cGRh
+dGVfcnRjKHN0cnVjdCB1ZnNfaGJhCj4gKmhiYSkKPiDCoMKgwqDCoMKgwqDCoMKgICovCj4gwqDC
+oMKgwqDCoMKgwqDCoHZhbCA9IHRzNjQudHZfc2VjIC0gaGJhLT5kZXZfaW5mby5ydGNfdGltZV9i
+YXNlbGluZTsKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoHVmc2hjZF9ycG1fZ2V0X3N5bmMoaGJhKTsK
+PiArwqDCoMKgwqDCoMKgwqAvKiBTa2lwIHVwZGF0ZSBSVEMgaWYgUlBNIHN0YXRlIGlzIG5vdCBS
+UE1fQUNUSVZFICovCj4gK8KgwqDCoMKgwqDCoMKgaWYgKHVmc2hjZF9ycG1fZ2V0X2lmX2FjdGl2
+ZShoYmEpIDw9IDApCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybjsKPiAr
+Cj4gwqDCoMKgwqDCoMKgwqDCoGVyciA9IHVmc2hjZF9xdWVyeV9hdHRyKGhiYSwgVVBJVV9RVUVS
+WV9PUENPREVfV1JJVEVfQVRUUiwKPiBRVUVSWV9BVFRSX0lETl9TRUNPTkRTX1BBU1NFRCwKPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgMCwgMCwgJnZhbCk7Cj4gwqDCoMKgwqDCoMKgwqDCoHVmc2hjZF9ycG1fcHV0X3N5bmMo
+aGJhKTsKCk15IHN1Z2dlc3Rpb24gd291bGQgYmUgdG8gbm90IHJldHVybiBoZXJlIGFuZCBqdXN0
+IHNraXAgdGhlIHVwZGF0ZSwgYnV0CnJlc2NoZWR1bGUgaXQgZm9yIHRoZSBuZXh0IHRpbWUgdGhh
+dCBkb2Vzbid0IGFmZmVjdCB0aGUgc3VzcGVuZC9yZXN1bWUKZmxvdyB5b3UncmUgd29ycmllZCBh
+Ym91dC4K
 
 
