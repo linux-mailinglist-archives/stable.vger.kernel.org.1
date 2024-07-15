@@ -1,100 +1,117 @@
-Return-Path: <stable+bounces-59261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DDAA930C8A
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 04:13:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B38930CDF
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 04:55:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFF111C20B84
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 02:13:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFF4C1C20D2E
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 02:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235C95258;
-	Mon, 15 Jul 2024 02:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UjIJPNdv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242338F47;
+	Mon, 15 Jul 2024 02:55:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BC14C9A
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 02:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382DCB64E;
+	Mon, 15 Jul 2024 02:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721009617; cv=none; b=ZJWxuquL2UNNyaicIuYrwCx4QJ1LXrCScazQkkW7fm9rEcmoaulO3E/xAD/MJ0/bD24l9624Y1Nk+1mOI/9mcTDYe9ZnyGzkWjr7R5T5p0gOTdjH8vdP2V6BX3arjp/vJAubDj9QSFqsdYJxmP2BI2YX8braB90QJgNWjHHOqSY=
+	t=1721012109; cv=none; b=pzbwY/yMz9irNeexD+qMIphIhlzdonlwVTfPv+f77syHO7gB/z33JWBHEPpgvcnycbIpg9EeYSdP9hX2LpQ2iI7tHVky1dvW+KbnMfbGgVfVf3U6OQtq/TUd9eSZvUcUcH7JcXiK530NZ8I0wslDtv/YUdxiUgHtZ2TU7FAXHWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721009617; c=relaxed/simple;
-	bh=e0uvzaOCXdANb3s7pw3Uw4jYcQ+GH1eDFIwJQy5e3oY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=R3JoIcCvjzy/0MY1s1pxkjxp7J66yMXi+kHavb86LWCF9DWRrqmWMrvM7ZBxt1D5X3nXUOInB6qaRM/H5ZmsPzNKLEH2POhivJA31W78DkN0iiCRMuN3plWjAu37UOuK7kJHfZwYhGiH8DDyCpRYaW+Qnk/PJSKO+1fclMBvC7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UjIJPNdv; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721009616; x=1752545616;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=e0uvzaOCXdANb3s7pw3Uw4jYcQ+GH1eDFIwJQy5e3oY=;
-  b=UjIJPNdvLesDmiQw9QKEaJxjYbRTNTllYEzslW/r0c8aWY+ma33d/jeV
-   alaps6xe+HFCS4U88ljLa7R+nRMaETzcgzKH9LLRBrirx5ZumskKlRP57
-   5EnfMBx9dJmBls/i/TIRd11xgmkpY3mxzjkbz90ZAeT+5BqhfC6akQFc2
-   TtXpMtVlhK6wLnXwieUo4sQL4ZNF/Eioedq+TewAHIXhBCqU7j3Atkk1K
-   g6uXCER19slycTgg0WN4Ea2WnQ0h+hHzja70DmHfsrHab2h5ohjR5jvyY
-   QoPm/dqrI9SWldLJ9Rafm5aSC9gpOq79J3d+YJQOcS1PS/0VXwtDo66YK
-   Q==;
-X-CSE-ConnectionGUID: na0VAQhgTnu7NiAvOVWVAg==
-X-CSE-MsgGUID: Xb1uAfOHQQeEoxqDUbMELA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11133"; a="40901847"
-X-IronPort-AV: E=Sophos;i="6.09,209,1716274800"; 
-   d="scan'208";a="40901847"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2024 19:13:36 -0700
-X-CSE-ConnectionGUID: UGfzAzmZQKOpvTPVMLvFUQ==
-X-CSE-MsgGUID: wBRO0O1SRTykJA+VCwB0tg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,209,1716274800"; 
-   d="scan'208";a="54296977"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 14 Jul 2024 19:13:34 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sTBDX-000dsH-35;
-	Mon, 15 Jul 2024 02:13:31 +0000
-Date: Mon, 15 Jul 2024 10:13:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2 1/4] dt-bindings: ata: Add i.MX8QM AHCI compatible
- string
-Message-ID: <ZpSFvh0iTHUb1rTu@6724a33121ae>
+	s=arc-20240116; t=1721012109; c=relaxed/simple;
+	bh=/ez42frQCtT6kQJneykkNLRbmMfDnxtHh6OLFtt3OTU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=b2Xec9P+TWxlV+re9Ije6z0KX2VhGjLeKzlnAhrTrqZLgMG2kSLxfk2rMESL7C5O9swf2Gfi0PGY2G40zpw0qhQEM/9/e1OycqqpeCPTfrUaMnjPeKmlN2p7eUVLqPQI1yEuxoywoTN/hlMMIKJZS5v829MN3K7s+Hyg+Xe1KFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowAB3mCVzj5Rm64nOFQ--.12171S2;
+	Mon, 15 Jul 2024 10:54:50 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: fbarrat@linux.ibm.com,
+	ajd@linux.ibm.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	mpe@ellerman.id.au,
+	manoj@linux.vnet.ibm.com,
+	imunsie@au1.ibm.com,
+	clombard@linux.vnet.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] cxl: Fix possible null pointer dereference in read_handle()
+Date: Mon, 15 Jul 2024 10:54:42 +0800
+Message-Id: <20240715025442.3229209-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1721008436-24288-2-git-send-email-hongxing.zhu@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAB3mCVzj5Rm64nOFQ--.12171S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJry7Gr18tF4rKFyxGr4fAFb_yoW8GF1UpF
+	Z7GFWjyFyDJanFyF4kXa18ZFyaka4rKFWYgFy09w1fZws8XrWrZa43Ca4F9a4jyrW8t3W0
+	va1DtF1avrWUZ3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
+	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
+	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
+	JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
+	sGvfC2KfnxnUUI43ZEXa7VUbHa0DUUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Hi,
+In read_handle(), of_get_address() may return NULL if getting address and
+size of the node failed. When of_read_number() uses prop to handle
+conversions between different byte orders, it could lead to a null pointer
+dereference. Add NULL check to fix potential issue.
 
-Thanks for your patch.
+Found by static analysis.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Cc: stable@vger.kernel.org
+Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v4:
+- modified vulnerability description according to suggestions, making the 
+process of static analysis of vulnerabilities clearer. No active research 
+on developer behavior.
+Changes in v3:
+- fixed up the changelog text as suggestions.
+Changes in v2:
+- added an explanation of how the potential vulnerability was discovered,
+but not meet the description specification requirements.
+---
+ drivers/misc/cxl/of.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2 1/4] dt-bindings: ata: Add i.MX8QM AHCI compatible string
-Link: https://lore.kernel.org/stable/1721008436-24288-2-git-send-email-hongxing.zhu%40nxp.com
-
+diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+index bcc005dff1c0..d8dbb3723951 100644
+--- a/drivers/misc/cxl/of.c
++++ b/drivers/misc/cxl/of.c
+@@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *handle)
+ 
+ 	/* Get address and size of the node */
+ 	prop = of_get_address(np, 0, &size, NULL);
+-	if (size)
++	if (!prop || size)
+ 		return -EINVAL;
+ 
+ 	/* Helper to read a big number; size is in cells (not bytes) */
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.25.1
 
 
