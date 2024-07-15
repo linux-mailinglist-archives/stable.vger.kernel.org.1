@@ -1,123 +1,115 @@
-Return-Path: <stable+bounces-59293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132D8931116
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:22:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B767931131
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 937FDB20D5D
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 09:22:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C2FFB216E3
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 09:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72458186E34;
-	Mon, 15 Jul 2024 09:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE1B186E33;
+	Mon, 15 Jul 2024 09:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pDiQVj0m"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GbQZiVp5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4D1185E64
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 09:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4E4185E53;
+	Mon, 15 Jul 2024 09:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721035324; cv=none; b=muJtIQbXTLDUosUF7BMziTU8cYPgEF8u2/6IHBClW0FPPGEVhpNDrRghJs9+ylg2udTkIaf97pZGik9KeE/xvhnfRiD8JYurmTBLg+cpsUbPoNfsAicaoSWAbI6UFcVDpDmVgKBwisMS6eHeEbLRpPy7XQLM7XrCaXjBwkzKbtY=
+	t=1721035765; cv=none; b=PKTrc+BLXBGA18SHrTs5RRbxF510Agz2ulHlc8ocjE5ZElqd2kj0jzk3qnFV87n02+MxL9tctxfJ2dfmnycQFdNJVicb+b4TcYH2/shqXbGhGIWTrzdcyRmZlGhO289I+Cg46xOLiVGTCGKgsCmtdfUzf77v+rk35y2S0pFXy2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721035324; c=relaxed/simple;
-	bh=gQwFkfYUsyCNMfYcisVu8rGAr0bAMxYc/UTVv9C0Lws=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OSGGqnfjV4n1+J48XFZcAOnqytXe7TDEf4mqfVoNYNHrZdRtJRX6uurYwA86f8ghX8jHkaBtuSu328N7Ci9Jx3vfFQ/TyYp73/2GQJHxcmf+rXyb6yY3Q5GHBB2YIomPpyKxkSVqX0n9N9AIctwX11BEThHqbHEwmccZLiqJGhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pDiQVj0m; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2eea8ea8c06so58595761fa.2
-        for <stable@vger.kernel.org>; Mon, 15 Jul 2024 02:22:02 -0700 (PDT)
+	s=arc-20240116; t=1721035765; c=relaxed/simple;
+	bh=b7mFPIS7KuET9lAFKCCguvkomBVJYnuLNdS4MKxbOHs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jjkXexJlRQAxp0CIB7OVIDFcWaZ0fm0cLLoX83s+arygmtVCS71Q9rqiR5TLle5HMLir72J0iI0QLV4PDOLebPdMvjk5IQn9iumJIE9DQOpodFqbiJmHZZEFVRdPNJcAsjTTChRuz0jk3uRe/mtpXIEiO6sj8uo8lkSbJ1IKkfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GbQZiVp5; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-59589a9be92so5468278a12.2;
+        Mon, 15 Jul 2024 02:29:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721035321; x=1721640121; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uzUrcSKPOx3F10gumq/RtLo0BiUspDhF63mAJeflmlw=;
-        b=pDiQVj0mKE7a5n/IbC55rtkNVGYTYeCowQ4c/Ekt42J73wRE/WRu8w8ToXgWNDj88D
-         JjqkvfIbEYd9fCj89AY51o7wkIWEH4EEGJJ8hUEyDVq/CuAPsM9d1XKp3OB6AjjQD6nC
-         MqS2g6XF/EX5CBcm+x2Y2h+kJL0zkWVWCGba6N75GDEEkRqGjfjer3YV8ifUffxXf9pO
-         tPTkxHxZ9qcxGcWEKdc5qzDk+aaI6ivV275z1WOj23WCNPerM3NyxhUQj4Kk760V8/w9
-         Lz8KrtoTQ1UGiF3jR1QEWEIKWI/xFQ7Qf2Hi3ELJ0ueA0knA3TR8Is8B6eS9BJQ6hgkP
-         gFag==
+        d=gmail.com; s=20230601; t=1721035762; x=1721640562; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=b7mFPIS7KuET9lAFKCCguvkomBVJYnuLNdS4MKxbOHs=;
+        b=GbQZiVp5knUaTfeccePFGB0VOnUj346xTIjeLNuXVYShvWfBR9wKuUyZ+IZKaB6ury
+         uxPLIEM3ydDmxP6q8Sx7iF2fPiVRpe6hXhwDgieBdoQtN8ovg/hrbDI/3cgKm5i8vfY/
+         IoO0lu+Y//CB3SrQh0jwVCU81bGnj9viGIcsbCk3XbNMFd/xRk3c5Rb54nwL8bzcPZrV
+         w8FtJqhCCxC7EQYPr+NaRAJwF5vL91Fs9X6O5XiyM3DxiSndTMbDag7VuxFpvAm5T8aA
+         UVfNiGNJw1G3+kNqJKUHRy7jxqHnd4Afnj5BK0M3plhF9t8bjpB9PAi9LWBUV9wU1gwe
+         j4ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721035321; x=1721640121;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uzUrcSKPOx3F10gumq/RtLo0BiUspDhF63mAJeflmlw=;
-        b=R1qFkWUwSe/tCfSeF5+ixgkJ9WO26/AWY4ROSmb1h/HtSsmipYOtVQfQDJXK3WNsiP
-         H5+O9r173tS894JidndEQKhVZRc7BqfhTRTYKyq90n22h3amoJB1kW62UnpHesfDPbHG
-         V5FFhJkykP+N/mDGYiL8QQGGeuoti8+N2IUitDsmbWwHl3yrrDxm99ehNeo1HjnowlpH
-         n6EErDxaVr48qyyRqaZ//kTjxBXAHswi6bPM0MwwsU5PU9glR0zofELwcev7AyNl/6UC
-         FvwJPo7caNKjtlJlbqqQMRsSm1lBib747z5bEtQ0c4t47b2A0nS8JilG8cqJUHzau78R
-         3wqA==
-X-Forwarded-Encrypted: i=1; AJvYcCVaeMdtrvytQQ2rBhvJ76Ldu7yHH0rqy4FvLFtKMFIKBGDq58RSdVX/I5UpgGV2LO+H/7vWiHONIx2ZKjbzeyr7+JU1l/ZB
-X-Gm-Message-State: AOJu0YzQaCbMD0WwmCMs/SuBz7zN/2uLCHrMHX6PQT3J2PxasyomRXJK
-	7SbzPZr3kpMUTniQmi7L818pOGacXYRsRa42qiJVX7HnYbMuXlqZ7tDO6teSFaM=
-X-Google-Smtp-Source: AGHT+IF/+AJbHLXohqSQ0XRGQc/GKg4cNhF8cuLtHAuiUlm5z+UVxHHPYV/1+FE6SNp+cer/mIRn8g==
-X-Received: by 2002:a2e:9dd3:0:b0:2ee:8777:f86a with SMTP id 38308e7fff4ca-2eeb3188d1cmr119886761fa.37.1721035320730;
-        Mon, 15 Jul 2024 02:22:00 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:e709:abf9:48b3:5079? ([2a05:6e02:1041:c10:e709:abf9:48b3:5079])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3680dafbec3sm5764675f8f.85.2024.07.15.02.21.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jul 2024 02:22:00 -0700 (PDT)
-Message-ID: <343175eb-ac00-4a41-844d-ae1c9901cf1d@linaro.org>
-Date: Mon, 15 Jul 2024 11:21:59 +0200
+        d=1e100.net; s=20230601; t=1721035762; x=1721640562;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b7mFPIS7KuET9lAFKCCguvkomBVJYnuLNdS4MKxbOHs=;
+        b=q2P/AMbG7YUEiQuSzPnMJjq4medecvSH1WQ+24UAdwpBx1nbbLN0XxnzYSegUuydLU
+         UWOIGdm8wtJgu9A7v7MDnBrSuwQk+1L1z/90Gc97CTIEfCLxjwgnuvdwl+wIgB8836mb
+         3HNP6Di15X1c7dSHS6aLEDAdEla8cytuULBRQQ1sl4VEUy8zOI3rRbOgcmiBolc2Bnnt
+         XRvmQ21n7IEstt0j4Xghk4ilGbvLs12h6h2rzigRO4nHiOdn8k3Yqhkcb17bLWNuAQLy
+         iIDhghZqJ+WlGSCI75sFkxVCyzwA2vWtTAbZ+0JJJfM+3L7AuTonp/3s9iFjjME589Fw
+         cmLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3o87Ndipqjmyb0rzNalmbeGtxmC+1S7tLZn1ZJvZmYPyEyj+WoQQS4YKH5CUI2bPME+6345Lna5j2vBAL1QxMp1cPlCHi36ZeaJHhQ9zPBKvjf6qOqDNgJIs4hSlmzFzkGQ==
+X-Gm-Message-State: AOJu0YxI2RPrEfeBNSWnDuWh8ez5+cD1axEW9IjKQTagGHmvOSPZeu9r
+	faedhhWZ+59CWywVL/PrvcNG1rR3SLQoQ76QrP4NnrD2zRsXs7NP
+X-Google-Smtp-Source: AGHT+IGv1K1+lIe/0yB05R4JzCCdf0eydJmVPPAPqknqyilGw1RhtZ7nOd93r+iW83j1MR/dSqKldQ==
+X-Received: by 2002:a05:6402:270c:b0:57c:68fd:2bc9 with SMTP id 4fb4d7f45d1cf-594baa8bd2amr14998683a12.3.1721035761474;
+        Mon, 15 Jul 2024 02:29:21 -0700 (PDT)
+Received: from [10.176.235.56] ([137.201.254.41])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-59b24f56d2fsm3134232a12.25.2024.07.15.02.29.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jul 2024 02:29:21 -0700 (PDT)
+Message-ID: <68370e680ab4d39ce5710086ee62711b22ea48ee.camel@gmail.com>
+Subject: Re: [PATCH v2] ufs: core: fix deadlock when rtc update
+From: Bean Huo <huobean@gmail.com>
+To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org, 
+	martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com, 
+	jejb@linux.ibm.com, beanhuo@micron.com
+Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org, 
+ chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com, 
+ chaotian.jing@mediatek.com, jiajie.hao@mediatek.com,
+ powen.kao@mediatek.com,  qilin.tan@mediatek.com, lin.gui@mediatek.com,
+ tun-yu.yu@mediatek.com,  eddie.huang@mediatek.com, naomi.chu@mediatek.com,
+ chu.stanley@gmail.com,  stable@vger.kernel.org
+Date: Mon, 15 Jul 2024 11:29:19 +0200
+In-Reply-To: <20240715063831.29792-1-peter.wang@mediatek.com>
+References: <20240715063831.29792-1-peter.wang@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/12] thermal/drivers: simplify probe()
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
- <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Amit Kucheria <amitk@kernel.org>,
- Thara Gopinath <thara.gopinath@gmail.com>
-Cc: linux-pm@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
-References: <20240709-thermal-probe-v1-0-241644e2b6e0@linaro.org>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20240709-thermal-probe-v1-0-241644e2b6e0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 09/07/2024 14:59, Krzysztof Kozlowski wrote:
-> Simplify error handling in probe() and also fix one possible issue in
-> remove().
-> 
-> Best regards,
-> Krzysztof
-> 
-> ---
+On Mon, 2024-07-15 at 14:38 +0800, peter.wang@mediatek.com wrote:
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ufshcd_rpm_get_sync(hba);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Skip update RTC if RPM stat=
+e is not RPM_ACTIVE */
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ufshcd_rpm_get_if_active(h=
+ba) <=3D 0)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0return;
 
-Applied, thanks
+I understood your intention of this 'retun', but my understanding is
+you assume that __ufshcd_wl_resume() will schedule rtc update work,
+however, before the time that __ufshcd_wl_resume() completes, the RPM
+status is not RPM_ACTIVE until __ufshcd_wl_resume() completes and
+__update_runtime_status(dev, RPM_ACTIVE) is called.
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+If rtc update work is performed before __update_runtime_status(dev,
+RPM_ACTIVE), here you return, then no RTC work will be scheduled.
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+do you think it is possible?
 
 
