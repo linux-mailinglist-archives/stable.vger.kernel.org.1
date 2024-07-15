@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-59325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDF9931242
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 12:28:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D80C931311
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 13:28:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 239C51C224C4
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 10:28:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBA021F23C9E
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 11:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F95218784D;
-	Mon, 15 Jul 2024 10:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DE4188CD4;
+	Mon, 15 Jul 2024 11:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A62GneK1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUsARzA7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36A5187561
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 10:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4B31850B3
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 11:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721039284; cv=none; b=VKEDVsGFWmxvLMF3CwGebfYy7eKR6zFMRzRXaLiI95OYiG8AN9BbHU6pCG6QmoZab0QpFSJMuQnxX17zdfKauv/t1oLcJLgBMPb9+9zh8y9NPLoycUbI9gG2JaODmbiAv/34XKs1eeIbL9RrSAWyF6oaPxRAjk7JKZbg8/pYZd8=
+	t=1721042884; cv=none; b=GAPWafuRf4Q/zgeQdlAvxhD5WhSmlruY2EFZcpyRquEksw8p3HpZjnXcsCxR9WzMWUKcI/tdf1t1pZYut8PC/0Wf5yS610fkW+xdxPGNySOMNETcq/lYNdtwX5Rl8Pezg6HboGt+jOfDqw7eVH8l0/++j6jbTqxX8VtxyEPKOqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721039284; c=relaxed/simple;
-	bh=m0Dzygpan4X/CCrq8Efh0z4JxuKGcwXonAXwVB203Ss=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pZ4FTPRsEHr0yg/uuXmzVaMfzxJRJ3ytc1sLynqkbfV7df9vfLz1QdU3QNd7tNbXfyPPKoZAk+iGrPo8oLXf0WWdw/DKGVSD1MkNengfuSKW74Xar53MY7FlMN259xjmtCkq8AqfSmPYmrjImjGdP8yWiA27ZZB8XDgtPJbN4Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A62GneK1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598DBC32782;
-	Mon, 15 Jul 2024 10:28:04 +0000 (UTC)
+	s=arc-20240116; t=1721042884; c=relaxed/simple;
+	bh=yonukFrKB+VdVyrdY5zn6mf6Myp7WqqeKMHuFOa78E0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s605AvX0jJQwhHjKt+awxhbx6yHdU2mTxazXoaRRcmvifuqsbubdlbXy+PMXvcsLu/KfU3Rr3QeoeSsRlJ3A1WEDbQQAqXRWsDxWzvfKuX0V3hhHksH1spD4Bl3kZ1PUkv3Wa7oZqVNyG7T6+yEznJ9b+8kMaa7aiLvkXfUmrfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUsARzA7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9819C4AF0A;
+	Mon, 15 Jul 2024 11:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721039284;
-	bh=m0Dzygpan4X/CCrq8Efh0z4JxuKGcwXonAXwVB203Ss=;
+	s=korg; t=1721042884;
+	bh=yonukFrKB+VdVyrdY5zn6mf6Myp7WqqeKMHuFOa78E0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=A62GneK13m1PhJd6XinhD3dVMMgp9f/xwvzPlecFoWtYzkC4EVcL3A0N/sKlqjGXt
-	 E0FnP8SvW/OUo3T/2e2MeS8QT4tHUHS6WKXdZt9YJt6Ip6NR2mfoN8mbT3Rm969V2n
-	 OUklgGyxZNfg2hcEb35SWHOCkiwQDMuL2GigqLyo=
-Subject: FAILED: patch "[PATCH] Fix userfaultfd_api to return EINVAL as expected" failed to apply to 5.10-stable tree
-To: audra@redhat.com,aarcange@redhat.com,akpm@linux-foundation.org,brauner@kernel.org,jack@suse.cz,peterx@redhat.com,raquini@redhat.com,rppt@linux.vnet.ibm.com,shli@fb.com,shuah@kernel.org,stable@vger.kernel.org,viro@zeniv.linux.org.uk
+	b=eUsARzA7YiddfOdFDJVKxAROHDhPnnkc8MTuF2hWVSho1IIP3BpQa7d4wbNOVRcxC
+	 +hRoa8t1ChFiuidjvNnINj5UB2NWp4DVxL+0lzSYk1tFCqiEKqlyjhEXvMfWLRwa1t
+	 +ba3/ZHCIDkf6EQaNMFeRQn8i2m8fnnb35c/wZQA=
+Subject: FAILED: patch "[PATCH] pmdomain: qcom: rpmhpd: Skip retention level for Power" failed to apply to 6.1-stable tree
+To: quic_tdas@quicinc.com,andersson@kernel.org,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jul 2024 12:27:40 +0200
-Message-ID: <2024071539-magnetize-nimble-15ba@gregkh>
+Date: Mon, 15 Jul 2024 13:28:01 +0200
+Message-ID: <2024071501-tasty-grandpa-318b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,37 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1723f04caacb32cadc4e063725d836a0c4450694
+git cherry-pick -x ddab91f4b2de5c5b46e312a90107d9353087d8ea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071539-magnetize-nimble-15ba@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071501-tasty-grandpa-318b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-1723f04caacb ("Fix userfaultfd_api to return EINVAL as expected")
-2ff559f31a5d ("Revert "userfaultfd: don't fail on unrecognized features"")
-914eedcb9ba0 ("userfaultfd: don't fail on unrecognized features")
-b1f9e876862d ("mm/uffd: enable write protection for shmem & hugetlbfs")
-824ddc601adc ("userfaultfd: provide unmasked address on page-fault")
-964ab0040ff9 ("userfaultfd/shmem: advertise shmem minor fault support")
-c949b097ef2e ("userfaultfd/shmem: support minor fault registration for shmem")
-00b151f21f39 ("mm/userfaultfd: fail uffd-wp registration if not supported")
-b8da5cd4e5f1 ("userfaultfd: update documentation to describe minor fault handling")
-f619147104c8 ("userfaultfd: add UFFDIO_CONTINUE ioctl")
-7677f7fd8be7 ("userfaultfd: add minor fault registration mode")
-44835d20b2a0 ("mm: add FGP_ENTRY")
-8f251a3d5ce3 ("hugetlb: convert page_huge_active() HPageMigratable flag")
-d6995da31122 ("hugetlb: use page.private for hugetlb specific page flags")
-99ca0edb41aa ("Merge tag 'arm64-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux")
+ddab91f4b2de ("pmdomain: qcom: rpmhpd: Skip retention level for Power Domains")
+e2ad626f8f40 ("pmdomain: Rename the genpd subsystem to pmdomain")
+b683a3620748 ("genpd: imx: relocate scu-pd under genpd")
+fe38a2d570df ("MAINTAINERS: adjust file entry in STARFIVE JH71XX PMU CONTROLLER DRIVER")
+7ed363cd8d0a ("genpd: move owl-sps-helper.c from drivers/soc")
+b43f11e5b453 ("ARM: ux500: Move power-domain driver to the genpd dir")
+444ffc820d90 ("soc: xilinx: Move power-domain driver to the genpd dir")
+2449efaaf913 ("soc: ti: Mover power-domain drivers to the genpd dir")
+27e0fef61ffd ("soc: tegra: Move powergate-bpmp driver to the genpd dir")
+fd697e216040 ("soc: sunxi: Move power-domain driver to the genpd dir")
+f3fb16291f48 ("soc: starfive: Move the power-domain driver to the genpd dir")
+4419644bfc7f ("soc: samsung: Move power-domain driver to the genpd dir")
+a8fcd3da73de ("soc: rockchip: Mover power-domain driver to the genpd dir")
+86341a84495c ("soc: renesas: Move power-domain drivers to the genpd dir")
+84e9c58c2166 ("soc: qcom: Move power-domain drivers to the genpd dir")
+fcd9632122d7 ("soc: mediatek: Move power-domain drivers to the genpd dir")
+e5300b2c3fe0 ("soc: imx: Move power-domain drivers to the genpd dir")
+aded002384c1 ("soc: bcm: Move power-domain drivers to the genpd dir")
+869b9dd3339a ("soc: apple: Move power-domain driver to the genpd dir")
+22f86fab644b ("soc: amlogic: Move power-domain drivers to the genpd dir")
 
 thanks,
 
@@ -91,64 +96,79 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1723f04caacb32cadc4e063725d836a0c4450694 Mon Sep 17 00:00:00 2001
-From: Audra Mitchell <audra@redhat.com>
-Date: Wed, 26 Jun 2024 09:05:11 -0400
-Subject: [PATCH] Fix userfaultfd_api to return EINVAL as expected
+From ddab91f4b2de5c5b46e312a90107d9353087d8ea Mon Sep 17 00:00:00 2001
+From: Taniya Das <quic_tdas@quicinc.com>
+Date: Tue, 25 Jun 2024 10:03:11 +0530
+Subject: [PATCH] pmdomain: qcom: rpmhpd: Skip retention level for Power
+ Domains
 
-Currently if we request a feature that is not set in the Kernel config we
-fail silently and return all the available features.  However, the man
-page indicates we should return an EINVAL.
+In the cases where the power domain connected to logics is allowed to
+transition from a level(L)-->power collapse(0)-->retention(1) or
+vice versa retention(1)-->power collapse(0)-->level(L)  will cause the
+logic to lose the configurations. The ARC does not support retention
+to collapse transition on MxC rails.
 
-We need to fix this issue since we can end up with a Kernel warning should
-a program request the feature UFFD_FEATURE_WP_UNPOPULATED on a kernel with
-the config not set with this feature.
+The targets from SM8450 onwards the PLL logics of clock controllers are
+connected to MxC rails and the recommended configurations are carried
+out during the clock controller probes. The MxC transition as mentioned
+above should be skipped to ensure the PLL settings are intact across
+clock controller power on & off.
 
- [  200.812896] WARNING: CPU: 91 PID: 13634 at mm/memory.c:1660 zap_pte_range+0x43d/0x660
- [  200.820738] Modules linked in:
- [  200.869387] CPU: 91 PID: 13634 Comm: userfaultfd Kdump: loaded Not tainted 6.9.0-rc5+ #8
- [  200.877477] Hardware name: Dell Inc. PowerEdge R6525/0N7YGH, BIOS 2.7.3 03/30/2022
- [  200.885052] RIP: 0010:zap_pte_range+0x43d/0x660
+On older targets that do not split MX into MxA and MxC does not collapse
+the logic and it is parked always at RETENTION, thus this issue is never
+observed on those targets.
 
-Link: https://lkml.kernel.org/r/20240626130513.120193-1-audra@redhat.com
-Fixes: e06f1e1dd499 ("userfaultfd: wp: enabled write protection in userfaultfd API")
-Signed-off-by: Audra Mitchell <audra@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rafael Aquini <raquini@redhat.com>
-Cc: Shaohua Li <shli@fb.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # v5.17
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20240625-avoid_mxc_retention-v2-1-af9c2f549a5f@quicinc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index eee7320ab0b0..17e409ceaa33 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -2057,7 +2057,7 @@ static int userfaultfd_api(struct userfaultfd_ctx *ctx,
- 		goto out;
- 	features = uffdio_api.features;
- 	ret = -EINVAL;
--	if (uffdio_api.api != UFFD_API || (features & ~UFFD_API_FEATURES))
-+	if (uffdio_api.api != UFFD_API)
- 		goto err_out;
- 	ret = -EPERM;
- 	if ((features & UFFD_FEATURE_EVENT_FORK) && !capable(CAP_SYS_PTRACE))
-@@ -2081,6 +2081,11 @@ static int userfaultfd_api(struct userfaultfd_ctx *ctx,
- 	uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
- 	uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
- #endif
+diff --git a/drivers/pmdomain/qcom/rpmhpd.c b/drivers/pmdomain/qcom/rpmhpd.c
+index de9121ef4216..d2cb4271a1ca 100644
+--- a/drivers/pmdomain/qcom/rpmhpd.c
++++ b/drivers/pmdomain/qcom/rpmhpd.c
+@@ -40,6 +40,7 @@
+  * @addr:		Resource address as looped up using resource name from
+  *			cmd-db
+  * @state_synced:	Indicator that sync_state has been invoked for the rpmhpd resource
++ * @skip_retention_level: Indicate that retention level should not be used for the power domain
+  */
+ struct rpmhpd {
+ 	struct device	*dev;
+@@ -56,6 +57,7 @@ struct rpmhpd {
+ 	const char	*res_name;
+ 	u32		addr;
+ 	bool		state_synced;
++	bool            skip_retention_level;
+ };
+ 
+ struct rpmhpd_desc {
+@@ -173,6 +175,7 @@ static struct rpmhpd mxc = {
+ 	.pd = { .name = "mxc", },
+ 	.peer = &mxc_ao,
+ 	.res_name = "mxc.lvl",
++	.skip_retention_level = true,
+ };
+ 
+ static struct rpmhpd mxc_ao = {
+@@ -180,6 +183,7 @@ static struct rpmhpd mxc_ao = {
+ 	.active_only = true,
+ 	.peer = &mxc,
+ 	.res_name = "mxc.lvl",
++	.skip_retention_level = true,
+ };
+ 
+ static struct rpmhpd nsp = {
+@@ -819,6 +823,9 @@ static int rpmhpd_update_level_mapping(struct rpmhpd *rpmhpd)
+ 		return -EINVAL;
+ 
+ 	for (i = 0; i < rpmhpd->level_count; i++) {
++		if (rpmhpd->skip_retention_level && buf[i] == RPMH_REGULATOR_LEVEL_RETENTION)
++			continue;
 +
-+	ret = -EINVAL;
-+	if (features & ~uffdio_api.features)
-+		goto err_out;
-+
- 	uffdio_api.ioctls = UFFD_API_IOCTLS;
- 	ret = -EFAULT;
- 	if (copy_to_user(buf, &uffdio_api, sizeof(uffdio_api)))
+ 		rpmhpd->level[i] = buf[i];
+ 
+ 		/* Remember the first corner with non-zero level */
 
 
