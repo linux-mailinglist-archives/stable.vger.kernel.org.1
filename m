@@ -1,117 +1,232 @@
-Return-Path: <stable+bounces-59264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B38930CDF
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 04:55:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2951930CE6
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 04:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFF4C1C20D2E
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 02:55:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 023471C20DDB
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 02:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242338F47;
-	Mon, 15 Jul 2024 02:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D299DDA6;
+	Mon, 15 Jul 2024 02:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mlSoUAFM"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382DCB64E;
-	Mon, 15 Jul 2024 02:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B1B6AB8
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 02:58:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721012109; cv=none; b=pzbwY/yMz9irNeexD+qMIphIhlzdonlwVTfPv+f77syHO7gB/z33JWBHEPpgvcnycbIpg9EeYSdP9hX2LpQ2iI7tHVky1dvW+KbnMfbGgVfVf3U6OQtq/TUd9eSZvUcUcH7JcXiK530NZ8I0wslDtv/YUdxiUgHtZ2TU7FAXHWs=
+	t=1721012334; cv=none; b=Yp6JdZ9v0ySC3lz9f5wAf6pHmj2+Fn+Fdq11fQLCyi+3G5GwAk8K0HG5eJKW/qxPTvIg9DF1H6FJtpb0mltL8eZ1PuSjp9ix9QXujHL+hKKQ1oZVQkyR4XMLCphD0ZjrbG4xzO4yfTpYxD2FSf76FGaoi1xtu8IpkauGZYMsV7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721012109; c=relaxed/simple;
-	bh=/ez42frQCtT6kQJneykkNLRbmMfDnxtHh6OLFtt3OTU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=b2Xec9P+TWxlV+re9Ije6z0KX2VhGjLeKzlnAhrTrqZLgMG2kSLxfk2rMESL7C5O9swf2Gfi0PGY2G40zpw0qhQEM/9/e1OycqqpeCPTfrUaMnjPeKmlN2p7eUVLqPQI1yEuxoywoTN/hlMMIKJZS5v829MN3K7s+Hyg+Xe1KFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAB3mCVzj5Rm64nOFQ--.12171S2;
-	Mon, 15 Jul 2024 10:54:50 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: fbarrat@linux.ibm.com,
-	ajd@linux.ibm.com,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org,
-	mpe@ellerman.id.au,
-	manoj@linux.vnet.ibm.com,
-	imunsie@au1.ibm.com,
-	clombard@linux.vnet.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] cxl: Fix possible null pointer dereference in read_handle()
-Date: Mon, 15 Jul 2024 10:54:42 +0800
-Message-Id: <20240715025442.3229209-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1721012334; c=relaxed/simple;
+	bh=KF8l2h/GrUQnQ0eHMCYrJFiN4LDzhTvBEiBndZsaNAo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RFRbaF1KyXpPhn2VnJggIWnR3KY6V0qiYFwdX0J8aL9WnQiQvdMgk/ZQzb2rquK+Cm9EPk22z8LTHd+dZqQCKmyjylXy/YaKwcW2xyDICz807DVqCqTxRiElUFQXqZuU7/mFEaxRQH3NSm/K4yMjLH1t20yWNV2jlejU9KbL9gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mlSoUAFM; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e05a8aa4478so1599611276.1
+        for <stable@vger.kernel.org>; Sun, 14 Jul 2024 19:58:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721012331; x=1721617131; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=l9iRN9tyg2Ah/12TCH+6DWgzr6OQh5TsD/9/hu4zUUM=;
+        b=mlSoUAFM63IAqE5dXLdLcxwJyQnCS6unfFC6kQcorCot57f9mTA/bOcTuoQ1LhU5ci
+         eRmD7iVFdBlXS9DlzK4+meVFrj2EnPO5obPgrfuiubVHVp6upRBDtt3uDK3vF02XiuPl
+         xYyt6mG+ZVMdzeuPWwIOkXeE3vvPFV486OZbza/ByqOrVS0qCruAjhWGhiShTH/y0uTy
+         XhNJr8Is9jw+EvdTaXQedy9nLBEzYgE5o1kysfRht/Dh+3aZAxhzojJ/J9XXH0W1p+xW
+         +Lg2vnixGOwuJx7Vj+eT8DWJfP8SluJlWJULQxXBNGagGE61tABwo0zS55e1TXZkLX1C
+         bAWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721012331; x=1721617131;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=l9iRN9tyg2Ah/12TCH+6DWgzr6OQh5TsD/9/hu4zUUM=;
+        b=HefmCjdsGrGH2aAaQogV3r0aoV8O6m6u9gx/rS7fr0kPPUzD2x/xMQ6q6N/ebS8mTO
+         aUzPSZZvGWvfUSk2NeQyhOudzICEbmnm+9u2JU9f0DZBiV98fhDkGIKRliYSWkLGpnmg
+         RmCy9ogHFblQT9cE9pWEg3BKPTWy18S5KsGg15lrjbS/gaNGWmXro9HngUgwqgTl1EiY
+         p9Si5FPT2VDAWjkpkEfpuFRakB+hgvdZkex4krcIeC7wPhiYQiRAptNHLD/ck6wXGtDl
+         V2OAATktYmjvOKmYvpc0q2bT/zORlPJl9dvhC12SwrkgUpXRlf+2zMx7fLmGeCBmAgqS
+         wWbA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1Z0gwZAsErAMBOQHqn7dVoeJ3Pf7NoWveZMH/Z45F77nieGkhlweK4o3XeT1Sq3d2RiIDdZMsYZtb6rP7P86YjGG8bcEW
+X-Gm-Message-State: AOJu0YwJanlMmjagovbMFSGScl+Pya6vNS4exYynv4V1Wn40uc0TDT0A
+	ZBgQxQXOOTnvCFAkzRUsDwqTpZIX2Gy3BAmeV9wIbGb+eXwHY/wpJ/WvsYoXVdvkyntKcFPO1Nf
+	bT9AhHg==
+X-Google-Smtp-Source: AGHT+IG41R17PIhFanq46nM/cn4uF1bXHxLFiyZobEJOoUojYLHpl+dfgdfv4dT5UhCbD8OSz+wp2yF0QGiZ
+X-Received: from kyletso-p620lin01.ntc.corp.google.com ([2401:fa00:a7:c:d8dc:1c82:c8b9:bf19])
+ (user=kyletso job=sendgmr) by 2002:a05:6902:100f:b0:e03:52c8:ad30 with SMTP
+ id 3f1490d57ef6-e058a8c5ebcmr541144276.3.1721012331177; Sun, 14 Jul 2024
+ 19:58:51 -0700 (PDT)
+Date: Mon, 15 Jul 2024 10:58:27 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAB3mCVzj5Rm64nOFQ--.12171S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJry7Gr18tF4rKFyxGr4fAFb_yoW8GF1UpF
-	Z7GFWjyFyDJanFyF4kXa18ZFyaka4rKFWYgFy09w1fZws8XrWrZa43Ca4F9a4jyrW8t3W0
-	va1DtF1avrWUZ3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
-	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
-	JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
-	sGvfC2KfnxnUUI43ZEXa7VUbHa0DUUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2.993.g49e7a77208-goog
+Message-ID: <20240715025827.3092761-1-kyletso@google.com>
+Subject: [PATCH] usb: dwc3: Runtime get and put usb power_supply handle
+From: Kyle Tso <kyletso@google.com>
+To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, raychi@google.com
+Cc: badhri@google.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	royluo@google.com, Kyle Tso <kyletso@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-In read_handle(), of_get_address() may return NULL if getting address and
-size of the node failed. When of_read_number() uses prop to handle
-conversions between different byte orders, it could lead to a null pointer
-dereference. Add NULL check to fix potential issue.
+It is possible that the usb power_supply is registered after the probe
+of dwc3. In this case, trying to get the usb power_supply during the
+probe will fail and there is no chance to try again. Also the usb
+power_supply might be unregistered at anytime so that the handle of it
+in dwc3 would become invalid. To fix this, get the handle right before
+calling to power_supply functions and put it afterward.
 
-Found by static analysis.
-
+Fixes: 6f0764b5adea ("usb: dwc3: add a power supply for current control")
 Cc: stable@vger.kernel.org
-Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Kyle Tso <kyletso@google.com>
 ---
-Changes in v4:
-- modified vulnerability description according to suggestions, making the 
-process of static analysis of vulnerabilities clearer. No active research 
-on developer behavior.
-Changes in v3:
-- fixed up the changelog text as suggestions.
-Changes in v2:
-- added an explanation of how the potential vulnerability was discovered,
-but not meet the description specification requirements.
----
- drivers/misc/cxl/of.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c   | 25 +++++--------------------
+ drivers/usb/dwc3/core.h   |  4 ++--
+ drivers/usb/dwc3/gadget.c | 19 ++++++++++++++-----
+ 3 files changed, 21 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
-index bcc005dff1c0..d8dbb3723951 100644
---- a/drivers/misc/cxl/of.c
-+++ b/drivers/misc/cxl/of.c
-@@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *handle)
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 734de2a8bd21..ab563edd9b4c 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1631,8 +1631,6 @@ static void dwc3_get_properties(struct dwc3 *dwc)
+ 	u8			tx_thr_num_pkt_prd = 0;
+ 	u8			tx_max_burst_prd = 0;
+ 	u8			tx_fifo_resize_max_num;
+-	const char		*usb_psy_name;
+-	int			ret;
  
- 	/* Get address and size of the node */
- 	prop = of_get_address(np, 0, &size, NULL);
--	if (size)
-+	if (!prop || size)
- 		return -EINVAL;
+ 	/* default to highest possible threshold */
+ 	lpm_nyet_threshold = 0xf;
+@@ -1667,12 +1665,7 @@ static void dwc3_get_properties(struct dwc3 *dwc)
  
- 	/* Helper to read a big number; size is in cells (not bytes) */
+ 	dwc->sys_wakeup = device_may_wakeup(dwc->sysdev);
+ 
+-	ret = device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
+-	if (ret >= 0) {
+-		dwc->usb_psy = power_supply_get_by_name(usb_psy_name);
+-		if (!dwc->usb_psy)
+-			dev_err(dev, "couldn't get usb power supply\n");
+-	}
++	device_property_read_string(dev, "usb-psy-name", &dwc->usb_psy_name);
+ 
+ 	dwc->has_lpm_erratum = device_property_read_bool(dev,
+ 				"snps,has-lpm-erratum");
+@@ -2133,18 +2126,16 @@ static int dwc3_probe(struct platform_device *pdev)
+ 	dwc3_get_software_properties(dwc);
+ 
+ 	dwc->reset = devm_reset_control_array_get_optional_shared(dev);
+-	if (IS_ERR(dwc->reset)) {
+-		ret = PTR_ERR(dwc->reset);
+-		goto err_put_psy;
+-	}
++	if (IS_ERR(dwc->reset))
++		return PTR_ERR(dwc->reset);
+ 
+ 	ret = dwc3_get_clocks(dwc);
+ 	if (ret)
+-		goto err_put_psy;
++		return ret;
+ 
+ 	ret = reset_control_deassert(dwc->reset);
+ 	if (ret)
+-		goto err_put_psy;
++		return ret;
+ 
+ 	ret = dwc3_clk_enable(dwc);
+ 	if (ret)
+@@ -2245,9 +2236,6 @@ static int dwc3_probe(struct platform_device *pdev)
+ 	dwc3_clk_disable(dwc);
+ err_assert_reset:
+ 	reset_control_assert(dwc->reset);
+-err_put_psy:
+-	if (dwc->usb_psy)
+-		power_supply_put(dwc->usb_psy);
+ 
+ 	return ret;
+ }
+@@ -2276,9 +2264,6 @@ static void dwc3_remove(struct platform_device *pdev)
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 
+ 	dwc3_free_event_buffers(dwc);
+-
+-	if (dwc->usb_psy)
+-		power_supply_put(dwc->usb_psy);
+ }
+ 
+ #ifdef CONFIG_PM
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index 1e561fd8b86e..ecfe2cc224f7 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1045,7 +1045,7 @@ struct dwc3_scratchpad_array {
+  * @role_sw: usb_role_switch handle
+  * @role_switch_default_mode: default operation mode of controller while
+  *			usb role is USB_ROLE_NONE.
+- * @usb_psy: pointer to power supply interface.
++ * @usb_psy_name: name of the usb power supply interface.
+  * @usb2_phy: pointer to USB2 PHY
+  * @usb3_phy: pointer to USB3 PHY
+  * @usb2_generic_phy: pointer to array of USB2 PHYs
+@@ -1223,7 +1223,7 @@ struct dwc3 {
+ 	struct usb_role_switch	*role_sw;
+ 	enum usb_dr_mode	role_switch_default_mode;
+ 
+-	struct power_supply	*usb_psy;
++	const char		*usb_psy_name;
+ 
+ 	u32			fladj;
+ 	u32			ref_clk_per;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 89fc690fdf34..c89b5b5a64cf 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3049,20 +3049,29 @@ static void dwc3_gadget_set_ssp_rate(struct usb_gadget *g,
+ 
+ static int dwc3_gadget_vbus_draw(struct usb_gadget *g, unsigned int mA)
+ {
+-	struct dwc3		*dwc = gadget_to_dwc(g);
++	struct dwc3			*dwc = gadget_to_dwc(g);
++	struct power_supply		*usb_psy;
+ 	union power_supply_propval	val = {0};
+ 	int				ret;
+ 
+ 	if (dwc->usb2_phy)
+ 		return usb_phy_set_power(dwc->usb2_phy, mA);
+ 
+-	if (!dwc->usb_psy)
++	if (!dwc->usb_psy_name)
+ 		return -EOPNOTSUPP;
+ 
+-	val.intval = 1000 * mA;
+-	ret = power_supply_set_property(dwc->usb_psy, POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT, &val);
++	usb_psy = power_supply_get_by_name(dwc->usb_psy_name);
++	if (usb_psy) {
++		val.intval = 1000 * mA;
++		ret = power_supply_set_property(usb_psy, POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
++						&val);
++		power_supply_put(usb_psy);
++		return ret;
++	}
+ 
+-	return ret;
++	dev_err(dwc->dev, "couldn't get usb power supply\n");
++
++	return -EOPNOTSUPP;
+ }
+ 
+ /**
 -- 
-2.25.1
+2.45.2.993.g49e7a77208-goog
 
 
