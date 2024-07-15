@@ -1,148 +1,107 @@
-Return-Path: <stable+bounces-59272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 391BC930D70
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 07:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B34930DA9
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 07:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE6731F21310
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 05:15:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D4E81F21516
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 05:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F425183099;
-	Mon, 15 Jul 2024 05:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD71713B59B;
+	Mon, 15 Jul 2024 05:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="IJufC1hE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pT3pfWb5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S09H0GWD"
 X-Original-To: stable@vger.kernel.org
-Received: from flow1-smtp.messagingengine.com (flow1-smtp.messagingengine.com [103.168.172.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF1D13AA39;
-	Mon, 15 Jul 2024 05:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5EA1F94C;
+	Mon, 15 Jul 2024 05:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721020542; cv=none; b=jxnIqugBc/+Iz6e6qa+4Mh0UjWhRGcvxPfhEGxSzbRd18slvtSXh6faeQ2+kPn/NnLpWwtphgm+zV1989MyUz6Z5vSsb7SrIJncKXl3EF1oBxoK22+cd+4pH6FqU10leCbvGbJm5ruc0RO7Y8mDvgeSlSS0sxV0OReNAwr5H7IA=
+	t=1721022311; cv=none; b=Ev9m11kRnfjT/Dmk8gsCAhf3XMUAmH3lg0AiyjzX7TGn9I59TrY4+GtmvtiMwfkxpPuBVxK3Fmo4IDbLM6v3uLahbODtKKe4jI9J/rIs4uJSSQi6MOBNEnEWxcs3uZFYgqmNd9SnIORZz3ouWWpLa3UanpQxDsuXlbeyKBT+TsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721020542; c=relaxed/simple;
-	bh=XBsZbKGiVtTrKlyP1R6GYcTiqxjh19bGVWk3vIktpF8=;
+	s=arc-20240116; t=1721022311; c=relaxed/simple;
+	bh=NBoxsThlV5YMJKSVODJO9PEIu4bUXR+/jBPgTxeHo2Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cq2ZRIjlIPRKZNZp1P098D6Ojp0gM3qK6yLdal2DQNwqcxi+dYMdwRzIm02/xTmjqgsHtBWoxc6t7W4mW5ii240yvp24IXn3Z3mjRcrp3FtTts5tHjZfm4J22QQIvAyKELRTpIvAl2CN0NAJPS6MTefai7OMnzJVFEQnbmcyMkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=IJufC1hE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pT3pfWb5; arc=none smtp.client-ip=103.168.172.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailflow.nyi.internal (Postfix) with ESMTP id 0AC5620054E;
-	Mon, 15 Jul 2024 01:15:39 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute7.internal (MEProxy); Mon, 15 Jul 2024 01:15:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1721020539; x=1721027739; bh=1ACFvhP62g
-	scbHqyYeARu0YHLy0C0ta9v4Ydldd1YuU=; b=IJufC1hEunLX8ShlvfQOj3gHeZ
-	tuMhkLLiuonq83SQrIF7ocSp5I/XfR4t5AK74YQMcasmzenZxy2vn07UYZGwlbBp
-	5XrDmdrJ9tOHHVzR1IAFcV4nNe0AOpST5V0I1N9u9sdJ1EsHeGqdDLvSkYB20JPS
-	uElbGdqdcJlKyp3kMaw/BCKPX5LS87KK+zjHXCmRG/JcMnGTx9d/H1ois9+fsOgo
-	x4ieMhf0wv+UKthJ4/yBtMelhIxmM8DMdIDipHoA7IJF2Y1AfQYULW/BzFM3ttL6
-	mBIeKVb+QA0TkVEJhg9ubHsgUZDX+XE0ruoC3O216horTNs8O4rhrxsUBWuw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1721020539; x=1721027739; bh=1ACFvhP62gscbHqyYeARu0YHLy0C
-	0ta9v4Ydldd1YuU=; b=pT3pfWb5lhsvBc8ig/lReN6EuBpyTD1rNcNe/NzywA9D
-	yawjrBoUcciq8rkL8OxRTRpFyqhrVD29c+lf09n/k3eaWu4ls2pMkweyk1A9xser
-	KMWpESlhTJhGAFriiRKML1MSyQ7+dTnTdw8ZKMWS8ejvZPDR/NdkGvTepDgB9lW3
-	UQwRsOCNQhwytpMy+wIL4wr/wx52By0Q76qMfaGFR0IHDdmD2ROCREmPMBfCD2c+
-	DKkHh14CBnwp1MQKQ3/7ESotzUombvXa7etBzE1R3sW9YXB9qQxAz8kus1XVy8Rg
-	LX+JvZ2z8AtI76ncd6BItzdupvQEcWz6lNtrHkHW4w==
-X-ME-Sender: <xms:ebCUZt-D3rte0sCxnqARy97iKOLUloqvW3f5OBOvgg8jU2T6wlqY5g>
-    <xme:ebCUZhucwiOaq8xm2Gc6rJl8nJOu2JOlyWDIHGLmsKgne9cAfrwhb8GiG5iRk6o5l
-    TqnU6fBYsP7Ew>
-X-ME-Received: <xmr:ebCUZrARYVzvRpECQ7CxQ5fJV5VXC-09THSqIrnJAL7T4-_gGO8356d0dBlHmput4TfzC-w3efnzNel_Pel8Fc05pCz8Jk9f5PcJHA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrgedugdelhecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
-    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
-    drtghomh
-X-ME-Proxy: <xmx:ebCUZhcUXL5iJ2IWw0WVuf_06XNPLWQTwYVu-_o_jNoHRtBosdYQ_Q>
-    <xmx:ebCUZiP8uHq0tA0-Pp2gGhumc43M4oi7ezbmMzxUlHV6InnFrdJI0w>
-    <xmx:ebCUZjlpdb41GrQU-mJnPzZEsO5V462CluKCQKOgKgzgvbmYye0grw>
-    <xmx:ebCUZsuUsHXNnnWFstQk9UcG5D7rUp4LYxGzEomfcGarQlnxCW5hdQ>
-    <xmx:erCUZrz7kLiuR7vYXy6YusCZveJodqhFSp9ZR7LUIASnPv7fRsWlVtvD>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 15 Jul 2024 01:15:36 -0400 (EDT)
-Date: Mon, 15 Jul 2024 07:15:34 +0200
-From: Greg KH <greg@kroah.com>
-To: botta633 <bottaawesome633@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
-	linux-ext4@vger.kernel.org, syzkaller@googlegroups.com,
-	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] locking/lockdep: Forcing subclasses to have same
- name pointer as their parent class
-Message-ID: <2024071514-gift-bride-a420@gregkh>
-References: <20240715063447.391668-1-bottaawesome633@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=BvdnGFNB/ofmjgik4foCYk9erjrUgQLYuPbV2lqfQHRCtKdiktp1W/iGwKSgRG7eWqhhBNHUDh3waGJhj0hYDbHCBRia9dJVF8ArRaWQER21own9SaqKZy0GMynXmzElzVyItkKR1I3DKGBZnrV0AsfIQyBJS+UfESFZ/d8ycyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S09H0GWD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BFDC4AF0A;
+	Mon, 15 Jul 2024 05:45:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1721022310;
+	bh=NBoxsThlV5YMJKSVODJO9PEIu4bUXR+/jBPgTxeHo2Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S09H0GWDhJjfmBpx+yEvnmibPChqCIv3Wy2DZWKcR+LC3m1lbTB3GQ1WMgy/Q0swj
+	 cN34ZtXoFEs4oCT//jhjw68LjZmfG4ixHXVc5t4iqCAHbgEh0r0wzV9IKU4banQnwS
+	 qyleiUgWxoS4jKQteTJ9yPhkyOK2i1e9+oKyZO5c=
+Date: Mon, 15 Jul 2024 07:45:07 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: =?utf-8?Q?Micha=C5=82?= Pecio <michal.pecio@gmail.com>,
+	elatllat@gmail.com, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, mathias.nyman@linux.intel.com,
+	niklas.neronin@linux.intel.com, stable@vger.kernel.org,
+	regressions@lists.linux.dev
+Subject: Re: [PATCH 6.1 000/102] 6.1.98-rc1 review
+Message-ID: <2024071540-commute-curler-26d3@gregkh>
+References: <CA+3zgmsCgQs_LVV6fOwu3v2t_Vd=C3Wrv9QrbNpsmMq4RD=ZoQ@mail.gmail.com>
+ <20240714173043.668756e4@foxbook>
+ <ZpP3RU-MKb4pMmZH@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240715063447.391668-1-bottaawesome633@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZpP3RU-MKb4pMmZH@eldamar.lan>
 
-On Mon, Jul 15, 2024 at 09:34:46AM +0300, botta633 wrote:
-> From: Ahmed Ehab <bottaawesome633@gmail.com>
+On Sun, Jul 14, 2024 at 06:05:25PM +0200, Salvatore Bonaccorso wrote:
+> Hi,
 > 
-> Preventing lockdep_set_subclass from creating a new instance of the
-> string literal. Hence, we will always have the same class->name among
-> parent and subclasses. This prevents kernel panics when looking up a
-> lock class while comparing class locks and class names.
+> On Sun, Jul 14, 2024 at 05:32:39PM +0200, Michał Pecio wrote:
+> > This looks like bug 219039, please see if my suggested solution works.
+> > 
+> > The upstream commit is correct, because the call to inc_deq() has been
+> > moved outside handle_tx_event() so there is no longer this critical
+> > difference between doing 'goto cleanup' and 'return 0'. The intended
+> > change of this commit also makes sense to me.
+> > 
+> > This refactor is already present in v6.9 so I don't think the commit
+> > will have any effect besides fixing the isochronous bug which it is
+> > meant to fix.
+> > 
+> > But it is not present in v6.6 and v6.1, so they break/crash/hang/etc.
+> > Symptoms may vary, but I believe the root cause is the same because the
+> > code is visibly wrong.
+> > 
+> > 
+> > I would like to use this opportunity to point out that the xhci driver
+> > is currenty undergoing (much needed IMO) cleanups and refactors and
+> > this is not the first time when a naive, verbatim backport is attempted
+> > of a patch which works fine on upstream, but causes problems on earlier
+> > kernels. These things need special scrutiny, beyond just "CC:stable".
 > 
-> Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
-> Fixes: de8f5e4f2dc1f ("lockdep: Introduce wait-type checks")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
-> ---
->  include/linux/lockdep.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> For tracking I guess this should go as well to the regressions list?
+> 
+> #regzbot introduced: 948554f1bb16e15b90006c109c3a558c66d4c4ac
+> #regzbot title: freezes on plugging USB connector due to 948554f1bb16 ("usb: xhci: prevent potential failure in handle_tx_event() for Transfer events without TRB")
+> #regzbot monitor: https://bugzilla.kernel.org/show_bug.cgi?id=219039
+> 
+> Thorsten I hope I got the most bits correctly, how would one inform
+> regzbot about the regresssion for 6.1.98 and 6.6.39 but not happening
+> in the upper versions?
 
-Hi,
-
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
-
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+I'll handle this and go release new kernels with just this reverted in
+it.  Let my morning coffee kick in first...
 
 thanks,
 
-greg k-h's patch email bot
+greg k-h
 
