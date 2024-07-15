@@ -1,83 +1,96 @@
-Return-Path: <stable+bounces-59364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B207931900
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 19:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB168931917
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 19:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FE04B20BB9
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 17:12:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FA30B222B9
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 17:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C40C3B295;
-	Mon, 15 Jul 2024 17:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3382421D;
+	Mon, 15 Jul 2024 17:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgSP+ynl"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="F30Pq+Uv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FC117BB4
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 17:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09E6446AF;
+	Mon, 15 Jul 2024 17:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721063565; cv=none; b=kpymuZ2LvGItFc63+ReCFUiVi7ZnYylfsUydtzxi9/45lERM0G0wKoh/Sdu7GtGa35KR+IJ880fB6BDZjkWoCT6V3LCTyXjg8xdu5n9iUddzgW7lftXlcfhbtHGgbJ5hfcBupEZWVKe9vyh/7qKHl3Oxdkpm5l3ow8UMXRxYTVo=
+	t=1721063890; cv=none; b=q5zomAQwDGBHk+6n1KA4B7cLZDae72Cq7QuiuXQP+Yn6A9uOnHZXCf0h2Cgj3Df1meJNHASWEhAgAmCUzBLXORiV+0ny+JjlE0Da1knsxaVbksCg8JceR/1ophnAOGgSWApUs9qPyLBCwvI7pO+kRJyh0tBnKLb0zv2jISp+fVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721063565; c=relaxed/simple;
-	bh=e4UsLlcsZ+Xq+XJSubh6fDPlQcSi9RrRLw337z42nmk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jEwIgavk142irfTi9ay1AegYsZ1LBbPygxnqdWK9CoOrT+UiMUdB/ojWUpArDDuI+MnlA9MoSlsfqzWhhD7dEvgxb4f2A1RRw6nBnDeZntUYsHKKXrg/AnjNFbJJ5j+DGdA2SV681woY+2g+guq7rEQxmy8I/DSvWUsBGu1fcZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgSP+ynl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA636C32782;
-	Mon, 15 Jul 2024 17:12:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721063565;
-	bh=e4UsLlcsZ+Xq+XJSubh6fDPlQcSi9RrRLw337z42nmk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dgSP+ynlXSFopp1qd9mQBmp+MRpbqapK00pOkvXwB/pMpD6J/466JyBMPyS0sIum7
-	 IpURfW/hMxuNuHQ0o4MZEx3r/7de0nr5y7K4VbAzCHUZ12Q1fsNNyEuw8YqJuHrDlf
-	 4M8t+zTxaGWZ2rq8L9Jbmx8/qd7CCHPV+RLm7f2I=
-Date: Mon, 15 Jul 2024 19:12:42 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] mm/damon/core: merge regions aggressively
- when max_nr_regions" failed to apply to 5.15-stable tree
-Message-ID: <2024071532-pebble-jailhouse-48b2@gregkh>
-References: <2024071546-swerve-grew-de52@gregkh>
- <20240715170209.74009-1-sj@kernel.org>
+	s=arc-20240116; t=1721063890; c=relaxed/simple;
+	bh=Kc6gbiGyEmsVnB1vPxC1tTwvIpD0gWXSMS/KS+dJzxA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DsW24ejaGUmyzH8pfpYXuuf43wbvosj91HWid6GzGmGPPf5Cj9155DPFXR3ZBM/9iYjVt7lOhn014Rzv32qdK3FMZfWbsOzBIw0tGSw1TRvg32B8FZIQKWkALUIF66nlVqdlez30cEu+y8FpGvwykacWHJ6updJY/xEaSPfRNJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=F30Pq+Uv; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4WN86L5F5BzlgMVQ;
+	Mon, 15 Jul 2024 17:18:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1721063877; x=1723655878; bh=Kc6gbiGyEmsVnB1vPxC1tTwv
+	IpD0gWXSMS/KS+dJzxA=; b=F30Pq+UvVEfiLLMb5CzuwRCSNbWtz47LqN/b3x2a
+	e4BBGHhsb+s7Hbyu7S/AcIZfp1zM5ibyynLqUK6p+zU5TUPSB2cmg+AEpgks5M0S
+	wcKJB2JfczZZWjBpdHi5aJGYQoX7Z/w85MepNLb01JlGY4BuRrWYLMoJU2vcwBkD
+	S4Qgqi7AqpfmRb1qGXK8SiEiIyfxovoqBaen5tVMOrDK2Q2Ut+NMoTdZEC+elq9i
+	29j4SQc2cBcWGeDiVmASqr1q4zfHHUm7j24K3kxtcDp1SNlxTG7eLLMwecoohgly
+	Itjq1KVdWyuJvK5vxQlw6gEBtitVwHXsTMrKJsFrmGEItg==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id R5oPzZTHmg02; Mon, 15 Jul 2024 17:17:57 +0000 (UTC)
+Received: from [IPV6:2a00:79e0:2e14:8:30c:88a5:456e:8b88] (unknown [104.135.204.80])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4WN86C1jNwzlgMVL;
+	Mon, 15 Jul 2024 17:17:55 +0000 (UTC)
+Message-ID: <814b2e3f-3386-45b6-ba72-7a1143e57e33@acm.org>
+Date: Mon, 15 Jul 2024 10:17:54 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240715170209.74009-1-sj@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ufs: core: fix deadlock when rtc update
+To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org,
+ martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com,
+ jejb@linux.ibm.com
+Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
+ chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com,
+ chaotian.jing@mediatek.com, jiajie.hao@mediatek.com, powen.kao@mediatek.com,
+ qilin.tan@mediatek.com, lin.gui@mediatek.com, tun-yu.yu@mediatek.com,
+ eddie.huang@mediatek.com, naomi.chu@mediatek.com, chu.stanley@gmail.com,
+ huobean@gmail.com, stable@vger.kernel.org
+References: <20240715063831.29792-1-peter.wang@mediatek.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240715063831.29792-1-peter.wang@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 15, 2024 at 10:02:09AM -0700, SeongJae Park wrote:
-> Hi Greg,
-> 
-> On Mon, 15 Jul 2024 13:34:47 +0200 <gregkh@linuxfoundation.org> wrote:
-> 
-> > 
-> > The patch below does not apply to the 5.15-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6
-> 
-> Similar to the failure of this patch for 6.1.y, I cannot reproduce the conflict
-> on my setup.  Attaching the patch for successfully cherry-picked one on my
-> machine for any possible case.
+On 7/14/24 11:38 PM, peter.wang@mediatek.com wrote:
+> There is a deadlock when runtime suspend waits for the flush of RTC work,
+> and the RTC work calls ufshcd_rpm_get_sync to wait for runtime resume.
 
-Same issue as 6.1, it breaks the build :(
+The above description is too brief - a description of how the fix works
+is missing. Please include a more detailed description in future
+patches.
 
+Anyway:
+
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 
