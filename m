@@ -1,90 +1,50 @@
-Return-Path: <stable+bounces-59269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A3A930D05
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 05:37:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB96930D4F
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 06:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1972B20B21
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 03:37:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD6041F21352
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 04:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCCF183089;
-	Mon, 15 Jul 2024 03:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D63513A3E0;
+	Mon, 15 Jul 2024 04:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WmQ8KJR3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nA5KIRzD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF491D68F;
-	Mon, 15 Jul 2024 03:37:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDC1A2D;
+	Mon, 15 Jul 2024 04:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721014663; cv=none; b=f5gZG7lYbbs+l5Sr450/STQLp9Py2gqGDUHsmaf8CdS7+kubCpRmtw/HM4Oq51MJIK02aImNMCdnf1OBrUxTjHQAGeuGJekDXxmDM8jQ1mOIrk9zhoZh0BwWl34Y0WHFAqxHqsSiR9G1jfMwsANOIrX2iXSsOqNh1MCGRJ2f/b8=
+	t=1721018431; cv=none; b=Uto/XXaJjxDQPm/1aGkOZwBHN5jtje4J+k9/LaurlzBaDHGVBcfru7BVV2aytHnaxfHl9fuL1s8VR2TMhS3iCn38wN4dRjEdnxQeE6LtF/O1AKlBOKC5nYz/JWJcnfGFJAJdAq8A5dxip4N8e4jqZSQcs98OyVtSqLegJZN8Ez4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721014663; c=relaxed/simple;
-	bh=Y0PadggLRkA95euQ2qJyyCo+WToLY6xDRBOzjxa9woc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/42dUr9lHyNZLtmrwhHszT3+ggLrUPnyx5bA+eA5P4fvybbxyM5/tZEY9qdCuggEhAHfrrzQVattPERgPNr2IlhQuk7jpINHCJJ2MDL2U3HTD1cksP/CVhGcAMtlYM3shy2p2+NP8QYjmn3mQXHnsqWIVeQehidasWADPeNpX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WmQ8KJR3; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4266182a9d7so23988065e9.0;
-        Sun, 14 Jul 2024 20:37:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721014660; x=1721619460; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cncGZVsdVkoJ+Ta2O3z5A5pVfum/7e9lqGRcPz/LKR8=;
-        b=WmQ8KJR3JICKFzAXDX5pcL60bJq7xx6B/S6ojH9mWQA1UvZZnpZV2ZLC9uSKZwzeyO
-         KGNuhC+snDniAdGfPhXCMK/FsIkJ+lI2DE2CBhPrdxJbk10BYuXah5wYH9pXX4tK9RtL
-         BUmqIeHj3WKZyuqhspoYHX9EmAcLJT73iYavZWYPhjeHw4WkkncTfl7GScNSVZ1Xc7A8
-         lLJCckuZAWzy3CtjgG3IRARVJGsYasX4h90nXHLbfcLUwAPMbY3c2jAQwN0xIpc8F7lC
-         gdYZUi3ED7WQLLEzV459fVLyCWwtAO0/qPgBG3cC9tbSGiZCU02H7dYdVFI+0iAj0Y/f
-         K9Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721014660; x=1721619460;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cncGZVsdVkoJ+Ta2O3z5A5pVfum/7e9lqGRcPz/LKR8=;
-        b=XMLci0okIfXJqqxRuxgjQZAJUgC4sRW0gFvqlvkloiyuUnMcNDeBoNusPmclj6vPvy
-         9xknth7iJjuzc5wkxGZ3tAbed0DiYFixq60uq4epo41o7sjbYM9iBh1TVnmbKk/KRpsM
-         o6/pLW62Izcyt+yYU8Fh/EEkeLJ8Y68/n+sriCvN1vAz73lGOEXl7AIfiW8090Xv9tOD
-         55RwrBwcOj0pfMHmJMtw/7JcjRr5ShcuoxPEEiEFq2eIPK1VTirEtZDTNoKJZhBmd4Ik
-         ok1qHo/3th2lIzScOH3c8eCa6daDfYPU1TzECvD6BCUBSfHaoZkhFSDxQFctLFqEMWBb
-         0lzg==
-X-Forwarded-Encrypted: i=1; AJvYcCVcykjEKOFt2348i55EKijL+ZnqlHFFcGRNUvIZo+vAjvmQEeCUcz5xxtPOQE2ykmxcbIozwOlEe85MsUs8durzq1510+h97w31AROUU9dHsr17JEnzX3i0ZhdZz2lGnoYqGw==
-X-Gm-Message-State: AOJu0YwD667Q05cRYzkx6Oq1Y5uNHbOEMHN9oLdK9f7IsM7FadpN06bt
-	FpBqruAUCpxoCedfPSUJdOLgX6/19vb+UScAd2xfS9Oj/NKX7pnU6jUGmFkiuDQ=
-X-Google-Smtp-Source: AGHT+IGCp9pnBR3+YaVvySCjBtKchpkQcveoCrHmToVOhcPnS6s9hzhxCX3gnzThxrRvYtHTAuP2UA==
-X-Received: by 2002:a05:600c:54c3:b0:426:5440:854a with SMTP id 5b1f17b1804b1-426707cca09mr119389945e9.1.1721014659861;
-        Sun, 14 Jul 2024 20:37:39 -0700 (PDT)
-Received: from localhost.localdomain ([197.35.224.179])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4279f25b946sm102604485e9.19.2024.07.14.20.37.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jul 2024 20:37:39 -0700 (PDT)
-From: botta633 <bottaawesome633@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	linux-ext4@vger.kernel.org,
-	syzkaller@googlegroups.com,
-	Ahmed Ehab <bottaawesome633@gmail.com>,
-	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v4 2/2] locking/lockdep: Testing lock class and subclass got the same name pointer
-Date: Mon, 15 Jul 2024 09:34:47 +0300
-Message-ID: <20240715063447.391668-2-bottaawesome633@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240715063447.391668-1-bottaawesome633@gmail.com>
-References: <20240715063447.391668-1-bottaawesome633@gmail.com>
+	s=arc-20240116; t=1721018431; c=relaxed/simple;
+	bh=6zMSjDbtjmrHn7+EQHecK0I5Qyss7k/CP011FOFvUpw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=MhbInk3m6Qb8S4dBp6oeXi0iTkoFl6aHg9SW/x+ViTB0+3BmCQoFqpAvl/oZge10D6pM1KGAfKZBycSTyjZylH/oeke5v65ApfCvG/DNT8AxgqJ9y+eOISOJZNJ6v1fCAhXNbEhiJ1WKQir62u+jBtQVZgHvlsmVzcAL69KNJvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nA5KIRzD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 790D0C4AF0A;
+	Mon, 15 Jul 2024 04:40:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721018430;
+	bh=6zMSjDbtjmrHn7+EQHecK0I5Qyss7k/CP011FOFvUpw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=nA5KIRzDCB09X9B/EL+vacyskyNFqJM+gen1xp0DOdZ9Zd/VSaJcEwwI99G9yh1yE
+	 uM2R3CDzMf6ocLTXmMvAeLgPR1eQUBoLL5M2Kw+D7+IJB8fvRo1mSqUNVa8J0v1K2J
+	 KWRZB+PCAwHBU136HmxJ2wyDWBUFofKIh7kpiHG7W/xqqWiVPGPrzUwMmRuYP1nT+8
+	 fz9FinX+3Y0q2+5u25bU0WSpc3jxDQ1nfKoFfxISBHOS9Ds29nlE+SoXNFSxeI0fqK
+	 LgsP+ozPkEJehvQCzhTfE/kgLkUVXgIyVyBkM41Ya5zTIpTHQyZEbPYwugTDH7qwyy
+	 mJIG+tuB6gPHQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 64671C43614;
+	Mon, 15 Jul 2024 04:40:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,61 +52,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v10] af_packet: Handle outgoing VLAN packets without
+ hardware offloading
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172101843040.2749.1887961636233742988.git-patchwork-notify@kernel.org>
+Date: Mon, 15 Jul 2024 04:40:30 +0000
+References: <20240713114735.62360-1-chengen.du@canonical.com>
+In-Reply-To: <20240713114735.62360-1-chengen.du@canonical.com>
+To: Chengen Du <chengen.du@canonical.com>
+Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, kaber@trash.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-From: Ahmed Ehab <bottaawesome633@gmail.com>
+Hello:
 
-Checking if the lockdep_map->name will change when setting the subclass.
-It shouldn't change so that the lock class and subclass will have the same
-name
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
-Fixes: de8f5e4f2dc1f ("lockdep: Introduce wait-type checks")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
----
- lib/locking-selftest.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+On Sat, 13 Jul 2024 19:47:35 +0800 you wrote:
+> The issue initially stems from libpcap. The ethertype will be overwritten
+> as the VLAN TPID if the network interface lacks hardware VLAN offloading.
+> In the outbound packet path, if hardware VLAN offloading is unavailable,
+> the VLAN tag is inserted into the payload but then cleared from the sk_buff
+> struct. Consequently, this can lead to a false negative when checking for
+> the presence of a VLAN tag, causing the packet sniffing outcome to lack
+> VLAN tag information (i.e., TCI-TPID). As a result, the packet capturing
+> tool may be unable to parse packets as expected.
+> 
+> [...]
 
-diff --git a/lib/locking-selftest.c b/lib/locking-selftest.c
-index 6f6a5fc85b42..aeed613799ca 100644
---- a/lib/locking-selftest.c
-+++ b/lib/locking-selftest.c
-@@ -2710,6 +2710,25 @@ static void local_lock_3B(void)
- 
- }
- 
-+ /** 
-+  * after setting the subclass the lockdep_map.name changes
-+  * if we initialize a new string literal for the subclass
-+  * we will have a new name pointer
-+  */
-+static void class_subclass_X1_name_test(void)
-+{
-+	printk("  --------------------------------------------------------------------------\n");
-+	printk("  | class and subclass name test|\n");
-+	printk("  ---------------------\n");
-+	const char *name_before_setting_subclass = rwsem_X1.dep_map.name;
-+	const char *name_after_setting_subclass;
-+
-+	WARN_ON(!rwsem_X1.dep_map.name);
-+	lockdep_set_subclass(&rwsem_X1, 1);
-+	name_after_setting_subclass = rwsem_X1.dep_map.name;
-+	WARN_ON(name_before_setting_subclass != name_after_setting_subclass);
-+}
-+
- static void local_lock_tests(void)
- {
- 	printk("  --------------------------------------------------------------------------\n");
-@@ -2916,6 +2935,8 @@ void locking_selftest(void)
- 
- 	local_lock_tests();
- 
-+	class_subclass_X1_name_test();
-+
- 	print_testname("hardirq_unsafe_softirq_safe");
- 	dotest(hardirq_deadlock_softirq_not_deadlock, FAILURE, LOCKTYPE_SPECIAL);
- 	pr_cont("\n");
+Here is the summary with links:
+  - [net,v10] af_packet: Handle outgoing VLAN packets without hardware offloading
+    https://git.kernel.org/netdev/net/c/79eecf631c14
+
+You are awesome, thank you!
 -- 
-2.45.2
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
