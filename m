@@ -1,130 +1,189 @@
-Return-Path: <stable+bounces-59351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F099D931589
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 15:19:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB75B93159B
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 15:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F8FC2825C3
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 13:19:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6520E1F222A8
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 13:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F30D18D4B3;
-	Mon, 15 Jul 2024 13:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C7918E762;
+	Mon, 15 Jul 2024 13:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="qG+JJCdr"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="005uXhEI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wmoErXPa"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80AA189F59;
-	Mon, 15 Jul 2024 13:19:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626E618D4D6;
+	Mon, 15 Jul 2024 13:20:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721049578; cv=none; b=iT6wSWQoLwMrZIXjiMhJMx7RW6gXXKGNSTanqjkW2oQoXwlVkYg/Gr65PBaPeVI1YQh17vpuQnq8jtWShZZeDa7BtcXaGaa44o+5ccHIxq9wI84/OrrNkNUghlive8Dq/FrJk1+j+N6Kogyf3dmyqxdSDeRu9YHYTsQCN2qqjWM=
+	t=1721049642; cv=none; b=ByGLGZaJgnvCT/YCmHZB2YD37V90Llgza69D6ztpK//mIZsAMh9O41pd947kkvzezBvZ95keYF+YHGGLvUPi6GEfKL7fMCzhrM22nnpV6J9F3CUjw5pR0gvkXNSzumYgJKnK+DxveZKrimYJ41Qx6NwlVUq3JKVvI3Iy5VhFYJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721049578; c=relaxed/simple;
-	bh=vPG94mdyUfScDU9XjxT9wJHj1nF1OhhTm8LfdKYGKyU=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=dv5Y2bLFLkrvN0+hlv7DybIE8V/mS2qzl0l+unuujZsQM+ac7TPVvgaFMAj04PgFeK7hfGFmvYxXCN+mdvc/j/gJDvZuE480QUQSHuhx2qTEOleT4wVTPMHhTSjh153QSknvDyIv++5sFYRjXU2aJ0e12vIvVHuGcALst52I2/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=qG+JJCdr; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1721049540; x=1721654340; i=markus.elfring@web.de;
-	bh=vPG94mdyUfScDU9XjxT9wJHj1nF1OhhTm8LfdKYGKyU=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=qG+JJCdrVFKUMJy5ceJT8hntkrkhkXkHlZ6hlrGWBwS2fyMgXfdUJqnU33WrLFTB
-	 t50JYaF5OFIKjzhs14wJIHHw+IsL/DwBR9d0oCjuxzq/CTlPIE1uKdkpXdUzO6ZEK
-	 sOKT3hRskQNqSsxKmTroR1UNBdvgUnDTQ4AqSC1Wa/kg+CAEeGI/bpdn/fY4Ah9O5
-	 4AqO6kMoT2l2RHrdfLIiSw4OM2I6iw5BzoydhAqSkDJyrImZ79Jf7BYHMPZcHf0fm
-	 bQn8WnlYPtNrLMAOetuIP6iAj4jtGZ9j9YDGQIx0bIZyUfQxmOQyjg9W3zkpLkLoK
-	 z7l6LtplhOMGpbzbgA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1N0Icn-1s6kgV12v9-00xrqD; Mon, 15
- Jul 2024 15:19:00 +0200
-Message-ID: <6c50de6d-7f35-4427-bd11-5f02f5e90c08@web.de>
-Date: Mon, 15 Jul 2024 15:18:56 +0200
+	s=arc-20240116; t=1721049642; c=relaxed/simple;
+	bh=wLGdLu0qQckiDICmhDi1Ji4Yn3PhMPDZS1VRG/8F1y8=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=XYucYEsiXX7p65d/0tSyNksyD87usq3YW7fRi7K53jMhMcsc3ZIGOM/9eASSXWYyY3p3sQ1F38jRy+AQ1+LEpar+XOqYH9lFGEYCeZQTWHrOO+yIJIiUpjU3vwaeDJDMCbP3wmke+snwS8vq6LR9DwGMqfJUj+Tl8ezSjpgqDYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=005uXhEI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wmoErXPa; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 15 Jul 2024 13:20:37 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1721049638;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rYaCVeE0wi2yZEzqFtnuUE0nbRMql5G/XocG4zSx27k=;
+	b=005uXhEIzV+E/mke/Iw9c84d0CTXMcsKdgzN3VgeaCeIMixFbDXDZr8KZQVNVPDOSJecZk
+	phpz/HTtvSGM1m/PqP/KBdmb/LIL3GnkAWhR5VNCr0Cql9toEuRmKgq/ZrHzyRmUAAsz05
+	84nF9iTp9VtM63gKRb9HcY3Avf6cV3HGmln7dXziOnNQ5m1JDtRY/G38k0Js+3133HqfCe
+	knDc1a16Qt3jak1u+ys5aTeenIuq47rEi1Z0IG7W9UFu1emfYCR3V87bf7bKfxWhGhzZ78
+	EDUnplt/8w4ltEE7W50aPchCCB3hBfrnTkiv3Ltfsk2wxalH9NwMPz3IvNq3dA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1721049638;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rYaCVeE0wi2yZEzqFtnuUE0nbRMql5G/XocG4zSx27k=;
+	b=wmoErXPajs29JdzZHoz/yLdku2RCKNAmn/zkOv6pxMq/bbBW4uf6wTiDRbOWo8+aXuGvme
+	SvEPn2D3QA1GCBCA==
+From: "tip-bot2 for Shenwei Wang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/core] irqchip/imx-irqsteer: Handle runtime power management
+ correctly
+Cc: Shenwei Wang <shenwei.wang@nxp.com>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ maz@kernel.org
+In-Reply-To: <20240703163250.47887-1-shenwei.wang@nxp.com>
+References: <20240703163250.47887-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: make24@iscas.ac.cn, linuxppc-dev@lists.ozlabs.org,
- kernel-janitors@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Aleksandr Mishin <amishin@t-argos.ru>, Andrew Donnellan <ajd@linux.ibm.com>,
- Arnd Bergmann <arnd@arndb.de>, Frederic Barrat <fbarrat@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ian Munsie <imunsie@au1.ibm.com>, Maxime Ripard <mripard@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Shuah Khan <shuah@kernel.org>,
- Wei Liu <wei.liu@kernel.org>
-References: <20240715025442.3229209-1-make24@iscas.ac.cn>
-Subject: Re: [PATCH v4] cxl: Fix possible null pointer dereference in
- read_handle()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240715025442.3229209-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:60AT5T8BRZHQ6Gfv9u427isOzaT1ol9JQSTUXVRY8R+RWiR+wlg
- uOOY0ka3OvtSIcX6lXp4OgDSPrJFLe03Ofze5Hs3wM9Z9IePcr3uBn+DZP1YpGcBh3A49id
- zatBnGaU1zQtqqXMksLXbjlMe4ZRKgt2qtbHowpg44jp0okSPQESB/hzUIbO43MhyUft7NK
- S3n1WF9VfhlErESXakadA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:viLqW/CObXo=;0l1lBepkdtz8vogJ+28NR/ACuF1
- orJWguKXGfvjM4ndYEQhEBoyIbZYVTbZH4X1Cqxb/x01Utdj3CvDfE5wT2jmbFKkCWdblPM8a
- cjAmiD+2zhYJvPABeiLM7gy/DtyL3PmpuOxIFV/zozqKwTpNwQx2pMRhGkllRwoM/Nps+La8W
- cjAjmITuRSge2ykwpRHJ+7+cPiIKkvKtUvuDp7GJYlL3jMwMMgpxLyTjgcUIDx3peD5lU463P
- JOdpKWLzZ+WuQKI2BYPFXPrxRO3quZqrrhx5EWXsmUQdVM0t8DsliOp4NnCQdMbUinmUi5QUN
- ZY9ZvajK6GAUozrTrAtQ5l0ULyYjHMCDqYrQ2vtFkL5T6hWhyuESPpg+tRSNnnfWWze1gQS6f
- mi5dLB+sZugZ6K1zTYXaq1me90EBn3G6KmNbw/IAr7XI0Vf0aqmGVDOQ0Rxr7X10ICsAuGTDo
- 4sUlUiiGNv43NEP25qFrZktinKTimy6tMFm/rlc0ki/nP5uvCQ8R0Pcuhs607n1fOunsrkzxh
- A3KkhwczFYgOqLoHJBMpw6l+5P5p3bcVIR0AgqqIdzt7m+TGZH8MJyc85CJRZMGXkwoS6o5mG
- BqS3stnqgZc5iX9g6xBU0n7NaF8qwr+NirvNsgimUQMesbMValrBB1HYRg7UsvNKKDkzpteAV
- WGUSDaLt72FP+m5Pdap3cf0cX+XpeVz7dSILoZRZ2NnUoIWiry9bED1b8qLQLsgRUKWYheKlH
- 2wMek/9d295pYAzNuUYG0oDUE/g9ThlXKOO2E/FzceIJxXZxk5Mc7o0UFt9KreO9u7XX3NVp/
- 0KkwSfS6nZJ0c3pc6uu8Ldig==
+Message-ID: <172104963751.2215.3695875382290467494.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-> In read_handle(), of_get_address() may return NULL if getting address an=
-d
-> size of the node failed. When of_read_number() uses prop to handle
-> conversions between different byte orders, it could lead to a null point=
-er
-> dereference. Add NULL check to fix potential issue.
->
-> Found by static analysis.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+The following commit has been merged into the irq/core branch of tip:
 
-How will interests evolve for caring more according to known research
-and development processes?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.10#n398
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/researcher-guidelines.rst?h=3Dv6.10#n5
+Commit-ID:     33b1c47d1fc0b5f06a393bb915db85baacba18ea
+Gitweb:        https://git.kernel.org/tip/33b1c47d1fc0b5f06a393bb915db85baacba18ea
+Author:        Shenwei Wang <shenwei.wang@nxp.com>
+AuthorDate:    Wed, 03 Jul 2024 11:32:50 -05:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 15 Jul 2024 15:13:56 +02:00
 
+irqchip/imx-irqsteer: Handle runtime power management correctly
 
-> ---
-> Changes in v4:
-> - modified vulnerability description according to suggestions, making th=
-e
-> process of static analysis of vulnerabilities clearer. No active researc=
-h
-> on developer behavior.
-=E2=80=A6
+The power domain is automatically activated from clk_prepare(). However, on
+certain platforms like i.MX8QM and i.MX8QXP, the power-on handling invokes
+sleeping functions, which triggers the 'scheduling while atomic' bug in the
+context switch path during device probing:
 
-Does such information indicate any communication difficulties?
+ BUG: scheduling while atomic: kworker/u13:1/48/0x00000002
+ Call trace:
+  __schedule_bug+0x54/0x6c
+  __schedule+0x7f0/0xa94
+  schedule+0x5c/0xc4
+  schedule_preempt_disabled+0x24/0x40
+  __mutex_lock.constprop.0+0x2c0/0x540
+  __mutex_lock_slowpath+0x14/0x20
+  mutex_lock+0x48/0x54
+  clk_prepare_lock+0x44/0xa0
+  clk_prepare+0x20/0x44
+  imx_irqsteer_resume+0x28/0xe0
+  pm_generic_runtime_resume+0x2c/0x44
+  __genpd_runtime_resume+0x30/0x80
+  genpd_runtime_resume+0xc8/0x2c0
+  __rpm_callback+0x48/0x1d8
+  rpm_callback+0x6c/0x78
+  rpm_resume+0x490/0x6b4
+  __pm_runtime_resume+0x50/0x94
+  irq_chip_pm_get+0x2c/0xa0
+  __irq_do_set_handler+0x178/0x24c
+  irq_set_chained_handler_and_data+0x60/0xa4
+  mxc_gpio_probe+0x160/0x4b0
 
-Regards,
-Markus
+Cure this by implementing the irq_bus_lock/sync_unlock() interrupt chip
+callbacks and handle power management in them as they are invoked from
+non-atomic context.
+
+[ tglx: Rewrote change log, added Fixes tag ]
+
+Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240703163250.47887-1-shenwei.wang@nxp.com
+---
+ drivers/irqchip/irq-imx-irqsteer.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+index 20cf7a9..75a0e98 100644
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -36,6 +36,7 @@ struct irqsteer_data {
+ 	int			channel;
+ 	struct irq_domain	*domain;
+ 	u32			*saved_reg;
++	struct device		*dev;
+ };
+ 
+ static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
+@@ -72,10 +73,26 @@ static void imx_irqsteer_irq_mask(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&data->lock, flags);
+ }
+ 
++static void imx_irqsteer_irq_bus_lock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
++
++	pm_runtime_get_sync(data->dev);
++}
++
++static void imx_irqsteer_irq_bus_sync_unlock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
++
++	pm_runtime_put_autosuspend(data->dev);
++}
++
+ static const struct irq_chip imx_irqsteer_irq_chip = {
+-	.name		= "irqsteer",
+-	.irq_mask	= imx_irqsteer_irq_mask,
+-	.irq_unmask	= imx_irqsteer_irq_unmask,
++	.name			= "irqsteer",
++	.irq_mask		= imx_irqsteer_irq_mask,
++	.irq_unmask		= imx_irqsteer_irq_unmask,
++	.irq_bus_lock		= imx_irqsteer_irq_bus_lock,
++	.irq_bus_sync_unlock	= imx_irqsteer_irq_bus_sync_unlock,
+ };
+ 
+ static int imx_irqsteer_irq_map(struct irq_domain *h, unsigned int irq,
+@@ -150,6 +167,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+ 	if (!data)
+ 		return -ENOMEM;
+ 
++	data->dev = &pdev->dev;
+ 	data->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(data->regs)) {
+ 		dev_err(&pdev->dev, "failed to initialize reg\n");
 
