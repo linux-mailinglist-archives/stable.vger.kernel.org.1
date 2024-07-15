@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-59316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A3E931221
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 12:19:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 083A2931222
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 12:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90AC91F23581
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B745228461A
 	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 10:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71469187351;
-	Mon, 15 Jul 2024 10:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2798D187359;
+	Mon, 15 Jul 2024 10:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zy6tLmSO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fxpp4OBW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6B31862A2
-	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 10:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6DA1862A2
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 10:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721038737; cv=none; b=WDdp1qRkwo+sjp+Nf31UEvMhLGLOrzm8QQdjz/nCyDnpU1jg9G3ARr9Do5jdxhIlgXDonpP3m3H8LsCY2eQuoY8rcuAC0dKj9Z8LQ74ShAU8IqoOjkw6b6xvF2LJ4VU4Nmq+58dSJLhx4/Kg7RIQwdPiPiG52VN5Wx1doaLg7hU=
+	t=1721038740; cv=none; b=iCU0HdzMRsE49LfeDRNxQvVawUw6SQNRRr8vY5mc2ETtQ5iLrccDgh+cKGx80FCtyev7FIlzw387euuJSmTqml/RpvqM/Zw2Njbots9jOpHEdgxvJiRHUXZi9sQmBT3KNk2I9SwRs2cr3pmzoE9bNwjl2PCzgrn4yWX92qLx884=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721038737; c=relaxed/simple;
-	bh=mq9/zdJK8sNekEXmAeAV1tpG3ckq+eJBM7N14yKhkbc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FEIuha8LnpLZiL5XZpotYvhktGtF/umJcotRbrhC3TZvueCV1+NrBVgBp0lzhZVQpP5L5vXapxSJYLDLWwAeGxCo25HXXFDNIZR6Rdm4Q1kyIq0shNVB/ZbGUeWwW4tjO5RMNQUdtb4wHOSCBqmy9+Ox2kA+vJoZARbhgNDkAJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zy6tLmSO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2131C32782;
-	Mon, 15 Jul 2024 10:18:56 +0000 (UTC)
+	s=arc-20240116; t=1721038740; c=relaxed/simple;
+	bh=4fSFsAeeEv2u6cCFsxT8uTFW/UITpZSKrMKDhajx3Xw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ionO2CPLV+Adnr2wSam1q5v2JGWwLrQmuHZszq74FS1UgBNFPDJK8iyGZmb/ErtbK56r+LdFeS3SEZT3HygqrflQrNcqdFxmhBhgEd2fZWFMhuZNttwMA3JIrSeLQ5jGpJBjNEt/KvRA96nAmZOceJeeouaRJ+1rU9obR7cOqdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fxpp4OBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6237BC32782;
+	Mon, 15 Jul 2024 10:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721038737;
-	bh=mq9/zdJK8sNekEXmAeAV1tpG3ckq+eJBM7N14yKhkbc=;
+	s=korg; t=1721038740;
+	bh=4fSFsAeeEv2u6cCFsxT8uTFW/UITpZSKrMKDhajx3Xw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Zy6tLmSOpM+HLv9CROguH4wXlyOWkmfdzCPVVENPeRa+whUfH87wPDu67czzpCtao
-	 HeIRSTov9P7pvEhyFHRUuTZTlUFf/0xvh/2xuo+F2u+fawJCPON//9Jyu/5A+2g3Zm
-	 m9KemCTzU2gPiAkOM3W5l+u1iRnzd1BriS/C+piU=
-Subject: FAILED: patch "[PATCH] serial: qcom-geni: fix hard lockup on buffer flush" failed to apply to 6.1-stable tree
+	b=Fxpp4OBWgCTaWtzGiMGKAN6T+BjaHzp05HPDzMiu7uMMpYEoSPuvZEYMqXzrWIcK2
+	 o9WWTFU2iNnbSq+KprmiAC1nTR09J6w7s48N4gfdzfg5SJdgKNvaCks7JYVud5slt+
+	 eGmRHy0PWLAqwN0PzTCOglNeR0jqUUD0Gj+8tDys=
+Subject: FAILED: patch "[PATCH] serial: qcom-geni: fix hard lockup on buffer flush" failed to apply to 5.15-stable tree
 To: johan+linaro@kernel.org,dianders@chromium.org,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jul 2024 12:18:54 +0200
-Message-ID: <2024071554-plunder-envelope-5c9d@gregkh>
+Date: Mon, 15 Jul 2024 12:18:55 +0200
+Message-ID: <2024071554-arrival-handiness-71ea@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 507786c51ccf8df726df804ae316a8c52537b407
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071554-plunder-envelope-5c9d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071554-arrival-handiness-71ea@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -81,6 +81,8 @@ fe6a00e8fcbe ("tty: serial: qcom-geni-serial: refactor qcom_geni_serial_isr()")
 68c6bd92c86c ("tty: serial: qcom-geni-serial: remove unused symbols")
 d0fabb0dc1a6 ("tty: serial: qcom-geni-serial: drop unneeded forward definitions")
 35781d8356a2 ("tty: serial: qcom-geni-serial: Add support for Hibernation feature")
+654a8d6c93e7 ("tty: serial: qcom-geni-serial: Implement start_rx callback")
+c2194bc999d4 ("tty: serial: qcom-geni-serial: Remove uart frequency table. Instead, find suitable frequency with call to clk_round_rate.")
 
 thanks,
 
