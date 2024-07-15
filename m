@@ -1,220 +1,182 @@
-Return-Path: <stable+bounces-59348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0551C93149C
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 14:47:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8113993153D
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 15:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E56E1C2155D
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 12:47:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AE9A281E4F
+	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 13:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68C218C326;
-	Mon, 15 Jul 2024 12:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB7418EA85;
+	Mon, 15 Jul 2024 12:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cherry.de header.i=@cherry.de header.b="mUeMBDg7"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="epdGOJ81"
 X-Original-To: stable@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020129.outbound.protection.outlook.com [52.101.69.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10ED4291E;
-	Mon, 15 Jul 2024 12:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.129
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721047648; cv=fail; b=pirNuTdpZRpmYar8PtmXmur89+Uh6aHwARvQDrGSl75dHPO9WQfTkUtie8XxULEGqzjL4QNk7dQEHJXEL4kykmP3ATbUzsm4gpwM25qdQdYTC4fIWYPGBblhJPCLWqPvbX9ZsTK1Bc8m8IPbLf594r5wE9wWonMJgHgkyxQgWuo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721047648; c=relaxed/simple;
-	bh=tf7uXB/AQJXk3ctWF3GX4e98gV19bM4B3zb9mMUKnIA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=aRByggAkdqJd4Apz/PMfe2zmM8tyc8DBMkkzwcIqMNNF0s9lI9rx4m//qMJnPafsV44trp5HmeMgJ1bPzwxhgsYJLPLCnV7179IMG4LSxmW6kauu2wu5FfMWIwfVACPQBo7wKxtAi3k10GHOnEqLpG1MmnFYSpF6P/L7lVBGxw8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cherry.de; spf=pass smtp.mailfrom=cherry.de; dkim=pass (1024-bit key) header.d=cherry.de header.i=@cherry.de header.b=mUeMBDg7; arc=fail smtp.client-ip=52.101.69.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cherry.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherry.de
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W5N5Vwbo/IAI46yCZPdAi4uvzKu/7nJfIWhGBVlTxCLaSB3UGn2GEGgMxxop8PlsyMYHRpZGf4CX+ma1ZgtJWkGWiXeewp9WpJLb3p+aXuLWtppB0J/M5S9LEEV/7QWSoxzU+RaQE4P0xoCAJ30jDIs6ozFq54vVpHb5S598jcrZC7Q6lr9VJaOBtAcpOFVnHpjgytjs2OZgJ7BBbZ/WuOUt0Fb59QN+rqpW6wlwClWpUIarNqbC1rFwV3OF+fRoue61Sf3w5r/AXVOjNDdg37kyslEx/HRWD5vdsJtr8hKOXGkItYAfSJAdxIHYnGvLRSdFvoXztR9t7U/6FPC1rg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7GdJr33zHzyeogkCPTsigWJ9HINu1o49WqSZX5Wp8BE=;
- b=nw+/gEPYoPtlvKRfKuOc05SC2sPPTc2nNWSae8guWl8rhidOPh8u1iwQ68xwgYdKm20e1OUHTvLl3LXEzwrbw/eQo/mfKsPNbxRXIKmQ0+E8fOuTo6jV1qnAGcDEtaXBdlUBpyXt+MRygKMg9+vkCVo102ErAqDoqZ/sd+t/ph1MXQcYpCLwtu4vaAJfGqmMXyqCUCWFlYDPH9HGB2Y958gobcE+BUAa8ICX7eggCqDF/YKKst0S5mqs4Br0QrqY0roPK6I9meymTta1gA1cyTmUKr9pTriYKDXkQTYjAdyvNYudVgg83qctxU9HctSocB+t8PMBeI/d6kbuvTj00g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7GdJr33zHzyeogkCPTsigWJ9HINu1o49WqSZX5Wp8BE=;
- b=mUeMBDg7VHspKHMrNRR2HkG8OEbea06sTAv/51+wkQMDSiItiQEVFkmqxVvl8Cyu0kMCd47yvoQlumQMZ+vwe3133TzRu8yllTZgCrcE8Nd+ziMtuZq5nYotdwyGDEdnvHOLKG2IvmRRmRz4TtV6IUbi9CtByJL4icO/qA7ADbc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by GVXPR04MB10149.eurprd04.prod.outlook.com (2603:10a6:150:1c2::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.27; Mon, 15 Jul
- 2024 12:47:19 +0000
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a%4]) with mapi id 15.20.7762.020; Mon, 15 Jul 2024
- 12:47:19 +0000
-Message-ID: <37877d57-f0c6-4985-b907-d23204a29b1d@cherry.de>
-Date: Mon, 15 Jul 2024 14:47:17 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] media: ov5675: Fix power on/off delay timings
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- Jacopo Mondi <jacopo@jmondi.org>
-Cc: Johan Hovold <johan@kernel.org>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- dave.stevenson@raspberrypi.com, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240713-linux-next-ov5675-v3-1-527f5b985836@linaro.org>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20240713-linux-next-ov5675-v3-1-527f5b985836@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: WA0P291CA0020.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1::17) To AS8PR04MB8897.eurprd04.prod.outlook.com
- (2603:10a6:20b:42c::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB95818732C
+	for <stable@vger.kernel.org>; Mon, 15 Jul 2024 12:57:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721048239; cv=none; b=P+yxhqSgDISNEa1rL3UyvO6POWE9JvAF10kwauNY+c4KZIOx0edWKfKL0pmcO/aNz3VNbjLU2vqC963HHudHRjfN3n0R5eZJT+YzcCQXJJ/cTcFrrtJNw1lgNO8hbvg87TET7UMjdDWZXVicS4MJ8r9ZZMk6Q2Ros2DK60+EJDA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721048239; c=relaxed/simple;
+	bh=+4kd2F1VnGUNVU9oW0bAD/syychtxHxo8PxEX9mf8lU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VXqWqYFGbk6lN1qx8y5MNTf6H5YI7TDxvwoCp3fcniv1A3YYewnpdJaRkl0EJA1c+4mLdn1zUfeOugnllF2FJoIrQhkM0tHMDdRAkL2mTVf/qZnePBtePHT5kdZphjUwKDOjaSRIC9GMfUVPA/x1mYJiqgRJxh9yrxDeWAHEGuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=epdGOJ81; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4265c2b602aso28386925e9.3
+        for <stable@vger.kernel.org>; Mon, 15 Jul 2024 05:57:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721048236; x=1721653036; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BnmqxlBPCkR2j92uKnpeN2blqkcOYQP6/xqO49jA5GI=;
+        b=epdGOJ81C972Q6N/kibjjvAz+Bcprfdu2kfWNj2Mr7bL+MJYdKR/mSynoFGqaSHBDt
+         4oSyFq3SQodr8Tgf0AxWkwIuFXKIkdX/95qGATCdJcQjiZnqQk+dQt4V4UdxL/jbXCnt
+         AUEWEXysJSKcREiJoXAhzJTbhPVhDWlI+oD+doksBxQZtHF/Cn4HItYYO3FP6CV1tjX/
+         7xW5h7Aku9rLJHT/Dys0PbkaaqGadGYaNjOkNiyI7SnPA1p2Qb47cAf4rhldfw1FF54P
+         yqrmddbtOpUbD6vLXPiKMJGsz9hXjtsFVN5t5AvOFh3WRLMXlrkwcugMBZ1M4AG7OuQ2
+         vUwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721048236; x=1721653036;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BnmqxlBPCkR2j92uKnpeN2blqkcOYQP6/xqO49jA5GI=;
+        b=pu1Nop+nZUgJoQQAsT072ND726DVZECPFhd/I19mpptTzUHtZRqjqq2kB2jIyNgF1k
+         0hm/PYTslsmJ//YWM9WAO+WJR7qFe9YdsuSAc1oC2Reqqjp12F4reOdMzml+ItnxsTkQ
+         tZXYxYddiD0zEXwG3JxQT3uDZ6Sxr40Z0UIOLswN98z9zKbjB288JI5SE2fJ3PhdnKWr
+         AUiWLWHXPZhHlVl4d0PeUjME0IEHSTfJtse0mTX8gpscnaowkKqeztl+0S1P73BjmVXP
+         eX4FnumH+GwP+2ZQyBAjk/jiothvDswX/XDAsANO0HZcU6QHCmhDXo/M3AmHx9ImwzFr
+         JUqA==
+X-Forwarded-Encrypted: i=1; AJvYcCVqd0Xnh+VSkz/Iz8IGCdW8TDHsc3wkrtOrcPsHdT4vzgUbr5FCl8OCoRmR/kXEUk7QzCg5o+zJW+uyv9GkjiNxUxjpRquc
+X-Gm-Message-State: AOJu0YzUovHUEqI7EzUH5YYlmVAVSbfvHi7bj66kgS9UyviUylGlPM2q
+	Us3FUtf2hE65QNFLUcxhy73RqOgiivz6bC9Mlirk3yFQVDre7orLx1CLkWR95hI=
+X-Google-Smtp-Source: AGHT+IESyZ4Z7rBrd/pjuZAtkysmd8HKrQLlJxI1+a1THWh40nxYbZNSoSFDLdkyn5qOYjRQF4e3JA==
+X-Received: by 2002:a5d:4ed2:0:b0:35f:28e1:5028 with SMTP id ffacd0b85a97d-367cea67f26mr12074672f8f.15.1721048232708;
+        Mon, 15 Jul 2024 05:57:12 -0700 (PDT)
+Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:8261:5fff:fe11:bdda])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3680dafbf19sm6303018f8f.68.2024.07.15.05.57.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jul 2024 05:57:12 -0700 (PDT)
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Date: Mon, 15 Jul 2024 14:57:06 +0200
+Subject: [PATCH] power: supply: qcom_battmgr: return EAGAIN when firmware
+ service is not up
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|GVXPR04MB10149:EE_
-X-MS-Office365-Filtering-Correlation-Id: c970dabe-0189-45ca-1074-08dca4cc4392
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SGpvcUo2SXU0d2hrSnJMOVBTczFpTUxNQzB4eE1IN0tLeEhBcms4M0dxMEdo?=
- =?utf-8?B?WG92Um4yRWlhcmRheXBUdGFHaldrYVJSTmhCRmR1NWczZ2dnMEVmNjdmaUd6?=
- =?utf-8?B?Q05zTU5XTkRlYmxsbHVBbXkybkhPa0xSYy9iZmszeVlyZlVGSHo2SUhndzNP?=
- =?utf-8?B?Y1ZGb29EcjZCYVBRSENPaVU1QWozR3BKYTZPRW1Mejl1L3dLU2VHYmhsZHJx?=
- =?utf-8?B?ZitGeFBqWks0UjZUZlJRa1ROUHRVTHRhK3FsblVKY05LTzVNZ1pQajhEaHk5?=
- =?utf-8?B?bVZoL3BTQ0hqQ003ZjlHL2FsellWWVBmL25yaHBlU3Q5aXhmdklwNTBwVjE3?=
- =?utf-8?B?cm9QRS9WY0JtTWFoVFpoSEFReFplT3NpZXNEYmFlWHoxaVFTS3NvMVZza0Ja?=
- =?utf-8?B?d3VpUk41QzU5Yk9RMnBIazRSck13L1cxMXBUaHE2NEZrWkhENytVcWJOMnRU?=
- =?utf-8?B?TlN1cDZ3bWphaEhMK25remkvQWpvZmZSM3pSdENLSEppQ3NqdnpXc3JoMUV0?=
- =?utf-8?B?ZjZ0Wk5vOFpTUWhwenBEZ213dGQxWkUyd08xeVpTVDN6QnVRbVNHZjhWK2x6?=
- =?utf-8?B?Y3Z1ZnQzczFJVG1OeHB1MDFyY2hWa1RJSjAyOUlCUHljWDFkaHVNbkc2cmZk?=
- =?utf-8?B?eXkzaDdUMWl5SVBURlFyRWp3bkF1Q0l6WE5aelBYUzhaWEtTbHljZGtxaGVD?=
- =?utf-8?B?Y05zVkk4VzF0OVlBeGw5L2pSTEpTTS91NEZQRnRVY3lGcWJIamwxQnY3bFRB?=
- =?utf-8?B?SS8rN0tlQmNWekZPaTJMd1NGUWlxcU9La0M5NW1WSHpMUStRangrOC9OTG9y?=
- =?utf-8?B?RWc3Tk41cFg5dkFnWk1mdUc0R0JHZmVLVDZRREdvT01ZN2pTQkowUVlhTGpH?=
- =?utf-8?B?TEk5WEZvbis4ZDJLNHZwMU41L1h1U01LdW5QNSsyVVROMFU2Q3VHVWE0SXdK?=
- =?utf-8?B?bk8yQkZ5TmovT0lSRitQVmxOci9USFhvQlcyKzlrMkRCcnIwMTBrOUZLR2VX?=
- =?utf-8?B?QjBTL1hKR3RYNk9OeWViejRJbXJQelBESVJpcTNIWVdla0N2aFdtVXYyTmZz?=
- =?utf-8?B?cThLbVcrMXl5UXhqMTI2M1BMODVyN3lIRnd5M3VSZ2tIZ2ZNK1dEUldkZ05n?=
- =?utf-8?B?UVorNGVPTXV5bGpUbmtYa2t6UGd5UnFCeG8rNFJGQ2dmN3lBTUUwOWJCMjZ4?=
- =?utf-8?B?YlpiMm84aUwrN2FvK3BqTDlNL1ZRbGJxUkNicG8xQUh6WlF0bitLbFExZE11?=
- =?utf-8?B?dUpxcy93TWw3QzE1ekJjN0F3UExmV3hKQk40RXFRbTUvTGN0Y3lybVIxN0xa?=
- =?utf-8?B?NVR4K2tuNHFKaGhBOFpDaHJTaVB3UHlxU1ZWRSsveWdEaGFnVW04UlRNcGhh?=
- =?utf-8?B?d2RIR3dOTlJpeWFDNjZ1dEtKZitqUFZKNFQrNk9zTTlHNVJSNUJ3OGNESjFR?=
- =?utf-8?B?ZXMzdDZaRXdUbFY5UjhZbEU4aE9zY3Nna3NFbnl2Ym1FK2NKTHE2ZTBReTRB?=
- =?utf-8?B?ZGszajNFbXY2U0hkd1M4b2s3b25mMnUvZ1o3V1hqUnF6cTFlYk5uVlA2bm1s?=
- =?utf-8?B?MjZxMXVHZmdsVFNNNTBoTk9OUlVSdkhtVnczTjU3UUNRbW9sNEx2Q2FsTjBS?=
- =?utf-8?B?TUhMclJWS1hzR3dqMVI0R2xZWXYvSUFBbzZKN2Y5bWNPU2NPRmFkREt2dmlJ?=
- =?utf-8?B?cjkxcy9vaEFVQ2pyWmcxbEtWM3ZZZmk2ZERaZzN5Qng1amdscklLaElLQ2tP?=
- =?utf-8?B?RFM4R1NCaDdTam9IVm04WVI5Uzh2bHpqZGY3ZE1JUHZLczFDZERXVHN5dmFW?=
- =?utf-8?B?aCtwTFllTCtlSjI2T2JCZz09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RFphMGlkbFduRFlUU3VsWENlUzhTVXZMRHBJQUgvWUhTWUZYVjlucWtMOHRP?=
- =?utf-8?B?WnFJTFdnNTVjelE4R0NlZTFXQnVPZm9zRFBXTHVJOWp4WmNIQ2UwVE1Lc0lT?=
- =?utf-8?B?Ujd4dUNNV1k2OGRrNG9wcmg2aThudEJMM0RScjMvei9CU0g0MDdnS2dhYW5p?=
- =?utf-8?B?aTdGRWJranUzNC80dENhWXZpclFuNmJvRmVlNnNWT2Rac2cyeHJiOWExbVdY?=
- =?utf-8?B?UjZzRDJXckFFUXBSYmRHOU1TYUl5d3l2WEpmTnJEdHJqQzBWN2d5UjJ5ZWZh?=
- =?utf-8?B?bUg1cTYxWXE4L3ZkRC92alpxRmY5OGZSa1B3T05POUppcWMrdldTVDdGNUdZ?=
- =?utf-8?B?cmFDUlhGeGpHVTZFbXA2UHF1WkpyYjZsbUc4dm5STzlWSmxQVmFHQ0pQcEgr?=
- =?utf-8?B?SHRSTVljVFlPbjd0WFRNcmRZbVBZK21SR1Z5K1JLZyt5TTMzaVd6bGdxL0JX?=
- =?utf-8?B?cjZzVkJaWGZFWGxsZUJaMlF0VnN5QzV6L3FRclFjeThJR3F5WEhURmNwRWgz?=
- =?utf-8?B?SjVnd2hXRStmSWJ5VUFnVGR6SDU5ZVZZQ2lyd09kVjJXR2M5ak5jeUtSc2k1?=
- =?utf-8?B?OC8zOUwzOTFzeWdabjFIZmQ5NEtONmJRWGhUQ2FDMEFxcnhYR000Mkt2Q0NH?=
- =?utf-8?B?clpxMGZkTzBSRW5DSkY3RGkyOG50SjBna1hiS0U3YURPOGhWNm1qWlovMnQ0?=
- =?utf-8?B?c3RZZ1dRanBQZUJOM2swVHU0Tnc5VFc3ZS9RSjk1S3hNMk9rd3RZL0V0STk3?=
- =?utf-8?B?Q3NtVllhWVJlUUlYTFE2SHlhbUVSU3VVaENzOTdQZGFWK0ZEOUNJOFVNZmRF?=
- =?utf-8?B?Tm9OYTdzaVBzZEIycC9lUkNFZWFuV3BLaklsdk11bDlPUElPVlFwZEFud3Fa?=
- =?utf-8?B?eXE2RDNmS1ZOYy9vRkJwOEY4WXlHbTZVUHhrWlhSY2I5a1k2UFF4aWNITWNH?=
- =?utf-8?B?Ui92eHJqZVJHYzY1blhwbXFNdE1NRmp0bGYyRkdWQThNZUdORzVVaHNpbk5D?=
- =?utf-8?B?REdEUm5neUVUWThmWnlhWi8vYXp4ditSRjZlV0NoN1BPWlV2VkZ6aEJueXlo?=
- =?utf-8?B?dHZ4bnBpN1hrbDlDeUNIRmJyT0NHOXlBVHlCUkdjS0NIM2pBWjBMUEI4SW82?=
- =?utf-8?B?NjIwdGhyeGJLMTFJTjhPSzNaQ2U2SzBZZ01COXoxSm1tUGIxNVliOTk4ZkVQ?=
- =?utf-8?B?VC9qa2ZCYU5CY0xOUGk1N0xtZkl1b2RoZFNLRGUvNmZkb0doUDIyWGFhOXFr?=
- =?utf-8?B?Y1M1ejk5Nk9TdHdtNEUzaDEwT2F5Y3JjdDI0TFZwUUhIZXRUeWQ5TkJKWGEy?=
- =?utf-8?B?aU1oaDFUdWJrWWg2bVVSN1IwNko5UkZ1eFpKWG9iSFFLcWljRDZORUp2SUZM?=
- =?utf-8?B?d0tQUGlkUkxZbC9SU05wdnVBUGIyVXFxRmxESTRJVC85aEd6Yjl2Z1dzZUZw?=
- =?utf-8?B?S0xLYzlQUWhwTlF6TVVWaGV0bmRIOEdmdG9HNmt5M2phdUNyN0ZVRGpiQ1NI?=
- =?utf-8?B?UUR1VFV5SXZKQ21WTmNCc1BpM2Z5c0hBZjlFMlZtWXB0dmVUR2RSV3JWRWc2?=
- =?utf-8?B?Sm8xVFFWNDdoQ2dlSFk2RzRYc3hyMGNJU2tSN0hiMjJHYUpJYzVuOGZqbjA4?=
- =?utf-8?B?b3prOTl4M3hiYVZIK0RkTkcwMGdhZkptZSt5d0w1ZFFXWWhDSWhQcmRmYnFa?=
- =?utf-8?B?S3BTNmhDOGI1SzJsaXMvNWVtRW9zcStCcUQwRjA4MS81ME9iYmh6dmlxdm1p?=
- =?utf-8?B?NW9McEliWDV2U05QVnF6bm5kZ1h3N2J6MzVvckFLek9FZ1pRdU5TUi9Yeis0?=
- =?utf-8?B?OFR1b2JVRkhLTDRha1FEcFJmUzhGTmJ3cDhyQnVmWFdMdStJQ3Y2WEJ6Ymdl?=
- =?utf-8?B?OXR0ZXRVejJxRVVoWlRNUlU4TlJSUURROStxSXhubjdtbnR0bWRGU0kwRXRz?=
- =?utf-8?B?ZXpCY1JOZy9FWU9YWFU2b21TYVExbEZqU2IyS2Z6MUg5YTcxQkRGdG9RdGhj?=
- =?utf-8?B?K2haZ2VzKzREd1g4RFcwYTA4bitBeUpHVVlZQ2k5Z2VhRkJLQnk3WktzZ2tR?=
- =?utf-8?B?aXNqNFcxSnNjMjkzTE55SGMrZm81TlExRmNwdmh2WmtkQ2xjbUdLSFZIYzVm?=
- =?utf-8?B?bVVHaytaRStMWUdwVUpBa0hPNnN3OExGcU1PVEJCaFBaNTZtdlVrMi9ZUTR4?=
- =?utf-8?B?OGc9PQ==?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: c970dabe-0189-45ca-1074-08dca4cc4392
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2024 12:47:19.5212
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: F9z15EQFrpf00ytHOCV9DE6KimXh1+5C/rjxE+G7igFWsQVwi9K9v4IYpdPyD6EKYmu5ByPwmudldI3iuTfx6aO3F+NGG9D3NvEN+SaLwA4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10149
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240715-topic-sm8x50-upstream-fix-battmgr-temp-tz-warn-v1-1-16e842ccead7@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAKEclWYC/x2NQQrCMBAAv1L27EIaGq1+RTzEZFv3kDRsVi0t/
+ bvB48Aws0MlYapw63YQ+nDlJTfoTx2El88zIcfGYI0dzKV3qEvhgDWNqzP4LlWFfMKJV3x61TQ
+ LKqWCuuHXS8bgvJ2u7hztGKFFi1Bz/8P74zh+jUtAj4AAAAA=
+To: Sebastian Reichel <sre@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, 
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-arm-msm@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Neil Armstrong <neil.armstrong@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2617;
+ i=neil.armstrong@linaro.org; h=from:subject:message-id;
+ bh=+4kd2F1VnGUNVU9oW0bAD/syychtxHxo8PxEX9mf8lU=;
+ b=owEBbQKS/ZANAwAKAXfc29rIyEnRAcsmYgBmlRyn4WsgPHsjeq6W3RktjkoSu9goVIP+o9UE2tCo
+ gJLzYGqJAjMEAAEKAB0WIQQ9U8YmyFYF/h30LIt33NvayMhJ0QUCZpUcpwAKCRB33NvayMhJ0cfoEA
+ CquF4UV2qZzHb9lnIWqRh/BggKsTGggRpl2qQU8AW8IAZIIqFTV/h+dHY3jwIFkIS8tVYGZii7glFg
+ 6WXp6wQkX9hHlGA08zmW0aJhIgNVS3aQ8jmeInD/IBPj/m059AxH44FSqjjWrZdKXMTn6UjXqMa2d1
+ lgX0bANe2yZjzmhOuIxAaPiBTKwjSJeyM8q6kGT0j0bAA+YYpfHv+D04H+d1RGy57NWrjlaberAi15
+ 3Yby5R+veUvn5wb6xbTM0rlNht37iM+KrrZKiSweiNm3xgDbnJS7xWourNCOH9rMDFFahz24AsfiP0
+ f6RupQTTErVSjadBOTzjECgcz0KZ/iLMpcL/EBqrko5vFh08xaH1426wBGsReEOTz4b2MeJXvrnnED
+ nsHV6wXUw7PZehBKgjIZF+eLOfarMsPgu3vSkU8QAydZN9yPzLo/HNzFXasgA2r50bKSOViemKxUiu
+ pjSyuUCCUJpjtUVSbxh5zOgniFxeULOgkH8au11Oq1LMTtkfdCPbi6Tb3GROP1KEOl/Yil52iiQZUr
+ PpjgM7rM5EAF564IgwfGiIW0Pi1ujP3FPx+18XJyihMcnhydjZEM5rn8z8jnnN7fGxJaBr8Gy9RPtI
+ x0kipwe/6gUtT4AM4bmiRu8wcQ/yOkI1cWaTp7KKWiFzjpS4dUIqnIu46RGw==
+X-Developer-Key: i=neil.armstrong@linaro.org; a=openpgp;
+ fpr=89EC3D058446217450F22848169AB7B1A4CFF8AE
 
-Hi Bryan,
+The driver returns -ENODEV when the firmware battmrg service hasn't
+started yet, while per-se -ENODEV is fine, we usually use -EAGAIN to
+tell the user to retry again later. And the power supply core uses
+-EGAIN when the device isn't initialized, let's use the same return.
 
-On 7/14/24 12:33 AM, Bryan O'Donoghue wrote:
-> The ov5675 specification says that the gap between XSHUTDN deassert and the
-> first I2C transaction should be a minimum of 8192 XVCLK cycles.
-> 
-> Right now we use a usleep_rage() that gives a sleep time of between about
-> 430 and 860 microseconds.
-> 
-> On the Lenovo X13s we have observed that in about 1/20 cases the current
-> timing is too tight and we start transacting before the ov5675's reset
-> cycle completes, leading to I2C bus transaction failures.
-> 
-> The reset racing is sometimes triggered at initial chip probe but, more
-> usually on a subsequent power-off/power-on cycle e.g.
-> 
-> [   71.451662] ov5675 24-0010: failed to write reg 0x0103. error = -5
-> [   71.451686] ov5675 24-0010: failed to set plls
-> 
-> The current quiescence period we have is too tight. Instead of expressing
-> the post reset delay in terms of the current XVCLK this patch converts the
-> power-on and power-off delays to the maximum theoretical delay @ 6 MHz with
-> an additional buffer.
-> 
-> 1.365 milliseconds on the power-on path is 1.5 milliseconds with grace.
-> 85.3 microseconds on the power-off path is 90 microseconds with grace.
-> 
-> Fixes: 49d9ad719e89 ("media: ov5675: add device-tree support and support runtime PM")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+This notably causes an infinite spam of:
+thermal thermal_zoneXX: failed to read out thermal zone (-19)
+because the thermal core doesn't understand -ENODEV, but only
+considers -EAGAIN as a non-fatal error.
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+While it didn't appear until now, commit [1] fixes thermal core
+and no more ignores thermal zones returning an error at first
+temperature update.
 
-Doesn't seem to break my camera on RK3399 Puma on Haikou with Haikou 
-Video Demo adapter, so:
+[1] 5725f40698b9 ("thermal: core: Call monitor_thermal_zone() if zone temperature is invalid")
 
-Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # RK3399 Puma with 
-Haikou Video Demo
+Link: https://lore.kernel.org/all/2ed4c630-204a-4f80-a37f-f2ca838eb455@linaro.org/
+Cc: stable@vger.kernel.org
+Fixes: 29e8142b5623 ("power: supply: Introduce Qualcomm PMIC GLINK power supply")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+---
+ drivers/power/supply/qcom_battmgr.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Thanks!
-Quentin
+diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
+index 46f36dcb185c..bde874b5e0e7 100644
+--- a/drivers/power/supply/qcom_battmgr.c
++++ b/drivers/power/supply/qcom_battmgr.c
+@@ -486,7 +486,7 @@ static int qcom_battmgr_bat_get_property(struct power_supply *psy,
+ 	int ret;
+ 
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
+ 
+ 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
+ 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
+@@ -683,7 +683,7 @@ static int qcom_battmgr_ac_get_property(struct power_supply *psy,
+ 	int ret;
+ 
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
+ 
+ 	ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
+ 	if (ret)
+@@ -748,7 +748,7 @@ static int qcom_battmgr_usb_get_property(struct power_supply *psy,
+ 	int ret;
+ 
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
+ 
+ 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
+ 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
+@@ -867,7 +867,7 @@ static int qcom_battmgr_wls_get_property(struct power_supply *psy,
+ 	int ret;
+ 
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
+ 
+ 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
+ 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
+
+---
+base-commit: 91e3b24eb7d297d9d99030800ed96944b8652eaf
+change-id: 20240715-topic-sm8x50-upstream-fix-battmgr-temp-tz-warn-c5a2f956d28d
+
+Best regards,
+-- 
+Neil Armstrong <neil.armstrong@linaro.org>
+
 
