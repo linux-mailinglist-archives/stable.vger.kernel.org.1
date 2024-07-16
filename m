@@ -1,260 +1,273 @@
-Return-Path: <stable+bounces-59377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8265F931DCF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 01:54:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E85C6931E0D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 02:28:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEBC51F2210E
-	for <lists+stable@lfdr.de>; Mon, 15 Jul 2024 23:54:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BB6C1F221F1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 00:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E8414386C;
-	Mon, 15 Jul 2024 23:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC17196;
+	Tue, 16 Jul 2024 00:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="A4HXDqiM"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xpvD5BYU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2771E890;
-	Mon, 15 Jul 2024 23:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A12191
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 00:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721087638; cv=none; b=lbjMlujWHPHvNVZpZpGLi8nHXdoP2rMuNu/B2xA6aYQc6tq+YI7ln+DlPHkU6RxNaW7QmPpKRVWNeA5EwWqOGcqFZFYJXORLSicy5P5Vo7CYEC5FWOCG8wDJtdQH+03C4yfkjkFJAR9fNN9J32ZR2tJ4YTWjFM3uRIw7X6XJS9k=
+	t=1721089733; cv=none; b=laBQxqbUq5t5zUToQUbcQ2K+2imYL/ZnbhKBO+at9rvRKq3vGwjPU/NrWqpdcXrfzwiIAIGSLQwVECbKgo909BS9KzdGJRxbtJsOBNFBumewqox85dsDMlBHbZBP6LpWWPshRn6s0+wTYVl8yjQ7qAwpVd2RHUekMH93J1opfdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721087638; c=relaxed/simple;
-	bh=prQR4brytc/+vSQ3ahSYAOvTm611kr6wxZ7Ip+ppN2w=;
-	h=Date:To:From:Subject:Message-Id; b=I4z+GyvoUKXgbJqSFYM4HmPOWEgTwAtiw7Cgsif3sFuPWBnZYNv5ggJb2Q0j0zNKw8At9FDa/E3J/GfJEtcBDCmwpuauG6kDozTUduCebPwPGqSJA8gL+2WtczUvBBX4BbtNJH30hkSUoAmEZSksYzaTwPb8qR3c3NToE6OluYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=A4HXDqiM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B52C32782;
-	Mon, 15 Jul 2024 23:53:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1721087637;
-	bh=prQR4brytc/+vSQ3ahSYAOvTm611kr6wxZ7Ip+ppN2w=;
-	h=Date:To:From:Subject:From;
-	b=A4HXDqiMBkt5bI6aBucTLFTNJkuHwz5MRIeO8k/mWZr7RUU2PEa4jKFishuv8wdqT
-	 FRugM7U4/PQNVSPj6tspZY+nFloOeVVbvDNVSqkFNzABGKuqLf8bB6+xgxmHcmfTUf
-	 8OH7c22GxmQw+EPmB7/XjGaooWtMZz1gEvzx3Vgc=
-Date: Mon, 15 Jul 2024 16:53:57 -0700
-To: mm-commits@vger.kernel.org,tjmercier@google.com,stable@vger.kernel.org,yuzhao@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-mglru-fix-ineffective-protection-calculation.patch added to mm-unstable branch
-Message-Id: <20240715235357.95B52C32782@smtp.kernel.org>
+	s=arc-20240116; t=1721089733; c=relaxed/simple;
+	bh=GIFgbUjQP3Vz277VyMSIYFasUvcxMEYHx+8CqkkMukA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=n9iUBciom4NFvMVaCpXE/3VPDdpsSfBzhGNxIHe2Vi2131aPjsRh+Ze0rz/+6X9kYrxAz3gVbnlbA4ZqGTWpQY0DaQo/qXkulcMgJPk85nCXM6lvSnL4Wwrs7Ix6E2GSDymEUWMRKPMJzvK3yCqPvH+VzcbrDoIBIqW+icz+L9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jstultz.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xpvD5BYU; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jstultz.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-5e4df21f22dso3960528a12.0
+        for <stable@vger.kernel.org>; Mon, 15 Jul 2024 17:28:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721089731; x=1721694531; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=G+6TDAsVIX+6TyoCKalzwlmSqVWfMv5WGuuuki+ewUo=;
+        b=xpvD5BYU5QA5f7FzkJHxLFI56wDT2pEvBK0QrqMF7jGgeXdcLA/H9zKu/6nUw0GVng
+         XgTfThSahzDAAoZ+kEb/F/cRB4/K7RLXgqkFTsj+HT58WteacOfPGIIMfTmn/98rt5Z4
+         iBkYpZLHg1D7cMeI0HjFyDFYj8cMXamgtvTBORY9tJTgcw/soiS73Z1pSWnpYDUt3hL/
+         nuWRGofJ5Uj3i+XCoyFOqEQU9A+Z8DCqLc/UaHegdE9sdqIZYx+PJEuz/Qqzp284Na2J
+         /Rl3q8DHRjoIM6SnFcMfyDkQUghEUszkpEWmaYgj3dte4S/KqGobYltxy8QjRDpzgsG5
+         Le6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721089731; x=1721694531;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=G+6TDAsVIX+6TyoCKalzwlmSqVWfMv5WGuuuki+ewUo=;
+        b=c+fQwiGyaD5pYPIhYY87+ZxaRVAEpHI8j4tXfqOqmiXPYlOS3Kpj+l3Sg4OYlJSPXM
+         AjINxuUqdE+ysi5XKyhpbXUVrHVCn+mJFOuUnvtTfT8j5ga3Dap4AWUebo+JljEBxx96
+         IuYHlP+zyxq7wY4PHFtKu7gRqu/K9zhDVg95r8Aw3UYzWaen1FoqSldSyQAOBLcSFop8
+         /RRYwJJ5H626mzdGgXKuVdmRS0eXNApxJfNtFnz37cnO3iVo3I4EXieUNALrEcs4I1n4
+         vr9hotwdf9vsTszfvSwqBYi8RC8hdwHofX/A2y19YsMZXB5T6SKzL42uhtq3aNI3WK/q
+         mTYQ==
+X-Gm-Message-State: AOJu0Yyc6XA9WVqQZc6rcTTafQbhrwkGUtkNQED10oA0NBLkxmpbFZvU
+	X6JqRkcz1s07bg8ge+Jx9/w9CPZeO8HiwDGOVuY1NqyJ2i9aqNygmblAtYlJGlPYGjH0ccB/PMT
+	ziMd6TCYeR2n404RyynIKwvevCJk0/GaNynCh9iUpjayIFxcq6fwmkwYgJtZa1VQF42hDNvDu4X
+	+oLo1IGrpsGsmGeG92Kn1TRehrjXCXB1k/2PVR
+X-Google-Smtp-Source: AGHT+IGnTgKuaGF+43mUTmJ8jtGQOR7q8Rh9SBgpQTN/Y0q4D+gZdGZITbpopuKIYkjj4y+tTHEoFVBUujKx
+X-Received: from jstultz-noogler2.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:600])
+ (user=jstultz job=sendgmr) by 2002:a63:7f52:0:b0:701:d445:c8f7 with SMTP id
+ 41be03b00d2f7-79632b31457mr585a12.3.1721089728814; Mon, 15 Jul 2024 17:28:48
+ -0700 (PDT)
+Date: Mon, 15 Jul 2024 17:28:21 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2.993.g49e7a77208-goog
+Message-ID: <20240716002835.349841-1-jstultz@google.com>
+Subject: [PATCH 6.6] sched: Move psi_account_irqtime() out of
+ update_rq_clock_task() hotpath
+From: John Stultz <jstultz@google.com>
+To: stable@vger.kernel.org
+Cc: John Stultz <jstultz@google.com>, Jimmy Shiu <jimmyshiu@google.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Qais Yousef <qyousef@layalina.io>
+Content-Type: text/plain; charset="UTF-8"
 
+commit ddae0ca2a8fe12d0e24ab10ba759c3fbd755ada8 upstream.
 
-The patch titled
-     Subject: mm/mglru: fix ineffective protection calculation
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-mglru-fix-ineffective-protection-calculation.patch
+It was reported that in moving to 6.1, a larger then 10%
+regression was seen in the performance of
+clock_gettime(CLOCK_THREAD_CPUTIME_ID,...).
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mglru-fix-ineffective-protection-calculation.patch
+Using a simple reproducer, I found:
+5.10:
+100000000 calls in 24345994193 ns => 243.460 ns per call
+100000000 calls in 24288172050 ns => 242.882 ns per call
+100000000 calls in 24289135225 ns => 242.891 ns per call
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+6.1:
+100000000 calls in 28248646742 ns => 282.486 ns per call
+100000000 calls in 28227055067 ns => 282.271 ns per call
+100000000 calls in 28177471287 ns => 281.775 ns per call
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+The cause of this was finally narrowed down to the addition of
+psi_account_irqtime() in update_rq_clock_task(), in commit
+52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ
+pressure").
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+In my initial attempt to resolve this, I leaned towards moving
+all accounting work out of the clock_gettime() call path, but it
+wasn't very pretty, so it will have to wait for a later deeper
+rework. Instead, Peter shared this approach:
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Rework psi_account_irqtime() to use its own psi_irq_time base
+for accounting, and move it out of the hotpath, calling it
+instead from sched_tick() and __schedule().
 
-------------------------------------------------------
-From: Yu Zhao <yuzhao@google.com>
-Subject: mm/mglru: fix ineffective protection calculation
-Date: Fri, 12 Jul 2024 17:29:56 -0600
+In testing this, we found the importance of ensuring
+psi_account_irqtime() is run under the rq_lock, which Johannes
+Weiner helpfully explained, so also add some lockdep annotations
+to make that requirement clear.
 
-mem_cgroup_calculate_protection() is not stateless and should only be used
-as part of a top-down tree traversal.  shrink_one() traverses the per-node
-memcg LRU instead of the root_mem_cgroup tree, and therefore it should not
-call mem_cgroup_calculate_protection().
+With this change the performance is back in-line with 5.10:
+6.1+fix:
+100000000 calls in 24297324597 ns => 242.973 ns per call
+100000000 calls in 24318869234 ns => 243.189 ns per call
+100000000 calls in 24291564588 ns => 242.916 ns per call
 
-The existing misuse in shrink_one() can cause ineffective protection of
-sub-trees that are grandchildren of root_mem_cgroup.  Fix it by reusing
-lru_gen_age_node(), which already traverses the root_mem_cgroup tree, to
-calculate the protection.
-
-Previously lru_gen_age_node() opportunistically skips the first pass,
-i.e., when scan_control->priority is DEF_PRIORITY.  On the second pass,
-lruvec_is_sizable() uses appropriate scan_control->priority, set by
-set_initial_priority() from lru_gen_shrink_node(), to decide whether a
-memcg is too small to reclaim from.
-
-Now lru_gen_age_node() unconditionally traverses the root_mem_cgroup tree.
-So it should call set_initial_priority() upfront, to make sure
-lruvec_is_sizable() uses appropriate scan_control->priority on the first
-pass.  Otherwise, lruvec_is_reclaimable() can return false negatives and
-result in premature OOM kills when min_ttl_ms is used.
-
-Link: https://lkml.kernel.org/r/20240712232956.1427127-1-yuzhao@google.com
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Reported-by: T.J. Mercier <tjmercier@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Jimmy Shiu <jimmyshiu@google.com>
+Originally-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Link: https://lore.kernel.org/r/20240618215909.4099720-1-jstultz@google.com
+Fixes: 52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ pressure")
+[jstultz: Fixed up minor collisions w/ 6.6-stable]
+Signed-off-by: John Stultz <jstultz@google.com>
 ---
+ kernel/sched/core.c  |  7 +++++--
+ kernel/sched/psi.c   | 21 ++++++++++++++++-----
+ kernel/sched/sched.h |  1 +
+ kernel/sched/stats.h | 11 ++++++++---
+ 4 files changed, 30 insertions(+), 10 deletions(-)
 
- mm/vmscan.c |   82 +++++++++++++++++++++++---------------------------
- 1 file changed, 38 insertions(+), 44 deletions(-)
-
---- a/mm/vmscan.c~mm-mglru-fix-ineffective-protection-calculation
-+++ a/mm/vmscan.c
-@@ -3915,6 +3915,32 @@ done:
-  *                          working set protection
-  ******************************************************************************/
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index dcb30e304871..820880960513 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -722,7 +722,6 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
  
-+static void set_initial_priority(struct pglist_data *pgdat, struct scan_control *sc)
-+{
-+	int priority;
-+	unsigned long reclaimable;
-+
-+	if (sc->priority != DEF_PRIORITY || sc->nr_to_reclaim < MIN_LRU_BATCH)
-+		return;
-+	/*
-+	 * Determine the initial priority based on
-+	 * (total >> priority) * reclaimed_to_scanned_ratio = nr_to_reclaim,
-+	 * where reclaimed_to_scanned_ratio = inactive / total.
-+	 */
-+	reclaimable = node_page_state(pgdat, NR_INACTIVE_FILE);
-+	if (can_reclaim_anon_pages(NULL, pgdat->node_id, sc))
-+		reclaimable += node_page_state(pgdat, NR_INACTIVE_ANON);
-+
-+	/* round down reclaimable and round up sc->nr_to_reclaim */
-+	priority = fls_long(reclaimable) - 1 - fls_long(sc->nr_to_reclaim - 1);
-+
-+	/*
-+	 * The estimation is based on LRU pages only, so cap it to prevent
-+	 * overshoots of shrinker objects by large margins.
-+	 */
-+	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
-+}
-+
- static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
+ 	rq->prev_irq_time += irq_delta;
+ 	delta -= irq_delta;
+-	psi_account_irqtime(rq->curr, irq_delta);
+ 	delayacct_irq(rq->curr, irq_delta);
+ #endif
+ #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
+@@ -5641,7 +5640,7 @@ void scheduler_tick(void)
  {
- 	int gen, type, zone;
-@@ -3948,19 +3974,17 @@ static bool lruvec_is_reclaimable(struct
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	DEFINE_MIN_SEQ(lruvec);
+ 	int cpu = smp_processor_id();
+ 	struct rq *rq = cpu_rq(cpu);
+-	struct task_struct *curr = rq->curr;
++	struct task_struct *curr;
+ 	struct rq_flags rf;
+ 	unsigned long thermal_pressure;
+ 	u64 resched_latency;
+@@ -5653,6 +5652,9 @@ void scheduler_tick(void)
  
--	/* see the comment on lru_gen_folio */
--	gen = lru_gen_from_seq(min_seq[LRU_GEN_FILE]);
--	birth = READ_ONCE(lruvec->lrugen.timestamps[gen]);
--
--	if (time_is_after_jiffies(birth + min_ttl))
-+	if (mem_cgroup_below_min(NULL, memcg))
- 		return false;
+ 	rq_lock(rq, &rf);
  
- 	if (!lruvec_is_sizable(lruvec, sc))
- 		return false;
++	curr = rq->curr;
++	psi_account_irqtime(rq, curr, NULL);
++
+ 	update_rq_clock(rq);
+ 	thermal_pressure = arch_scale_thermal_pressure(cpu_of(rq));
+ 	update_thermal_load_avg(rq_clock_thermal(rq), rq, thermal_pressure);
+@@ -6690,6 +6692,7 @@ static void __sched notrace __schedule(unsigned int sched_mode)
+ 		++*switch_count;
  
--	mem_cgroup_calculate_protection(NULL, memcg);
-+	/* see the comment on lru_gen_folio */
-+	gen = lru_gen_from_seq(min_seq[LRU_GEN_FILE]);
-+	birth = READ_ONCE(lruvec->lrugen.timestamps[gen]);
+ 		migrate_disable_switch(rq, prev);
++		psi_account_irqtime(rq, prev, next);
+ 		psi_sched_switch(prev, next, !task_on_rq_queued(prev));
  
--	return !mem_cgroup_below_min(NULL, memcg);
-+	return time_is_before_jiffies(birth + min_ttl);
- }
+ 		trace_sched_switch(sched_mode & SM_MASK_PREEMPT, prev, next, prev_state);
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index 1d0f634725a6..431971acc763 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -784,6 +784,7 @@ static void psi_group_change(struct psi_group *group, int cpu,
+ 	enum psi_states s;
+ 	u32 state_mask;
  
- /* to protect the working set of the last N jiffies */
-@@ -3970,23 +3994,20 @@ static void lru_gen_age_node(struct pgli
- {
- 	struct mem_cgroup *memcg;
- 	unsigned long min_ttl = READ_ONCE(lru_gen_min_ttl);
-+	bool reclaimable = !min_ttl;
- 
- 	VM_WARN_ON_ONCE(!current_is_kswapd());
- 
--	/* check the order to exclude compaction-induced reclaim */
--	if (!min_ttl || sc->order || sc->priority == DEF_PRIORITY)
--		return;
-+	set_initial_priority(pgdat, sc);
- 
- 	memcg = mem_cgroup_iter(NULL, NULL, NULL);
- 	do {
- 		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
- 
--		if (lruvec_is_reclaimable(lruvec, sc, min_ttl)) {
--			mem_cgroup_iter_break(NULL, memcg);
--			return;
--		}
-+		mem_cgroup_calculate_protection(NULL, memcg);
- 
--		cond_resched();
-+		if (!reclaimable)
-+			reclaimable = lruvec_is_reclaimable(lruvec, sc, min_ttl);
- 	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)));
++	lockdep_assert_rq_held(cpu_rq(cpu));
+ 	groupc = per_cpu_ptr(group->pcpu, cpu);
  
  	/*
-@@ -3994,7 +4015,7 @@ static void lru_gen_age_node(struct pgli
- 	 * younger than min_ttl. However, another possibility is all memcgs are
- 	 * either too small or below min.
- 	 */
--	if (mutex_trylock(&oom_lock)) {
-+	if (!reclaimable && mutex_trylock(&oom_lock)) {
- 		struct oom_control oc = {
- 			.gfp_mask = sc->gfp_mask,
- 		};
-@@ -4786,8 +4807,7 @@ static int shrink_one(struct lruvec *lru
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 
--	mem_cgroup_calculate_protection(NULL, memcg);
--
-+	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
- 	if (mem_cgroup_below_min(NULL, memcg))
- 		return MEMCG_LRU_YOUNG;
- 
-@@ -4911,32 +4931,6 @@ static void lru_gen_shrink_lruvec(struct
- 	blk_finish_plug(&plug);
+@@ -1002,19 +1003,29 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
  }
  
--static void set_initial_priority(struct pglist_data *pgdat, struct scan_control *sc)
--{
--	int priority;
--	unsigned long reclaimable;
--
--	if (sc->priority != DEF_PRIORITY || sc->nr_to_reclaim < MIN_LRU_BATCH)
--		return;
--	/*
--	 * Determine the initial priority based on
--	 * (total >> priority) * reclaimed_to_scanned_ratio = nr_to_reclaim,
--	 * where reclaimed_to_scanned_ratio = inactive / total.
--	 */
--	reclaimable = node_page_state(pgdat, NR_INACTIVE_FILE);
--	if (can_reclaim_anon_pages(NULL, pgdat->node_id, sc))
--		reclaimable += node_page_state(pgdat, NR_INACTIVE_ANON);
--
--	/* round down reclaimable and round up sc->nr_to_reclaim */
--	priority = fls_long(reclaimable) - 1 - fls_long(sc->nr_to_reclaim - 1);
--
--	/*
--	 * The estimation is based on LRU pages only, so cap it to prevent
--	 * overshoots of shrinker objects by large margins.
--	 */
--	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
--}
--
- static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *sc)
+ #ifdef CONFIG_IRQ_TIME_ACCOUNTING
+-void psi_account_irqtime(struct task_struct *task, u32 delta)
++void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_struct *prev)
  {
- 	struct blk_plug plug;
-_
-
-Patches currently in -mm which might be from yuzhao@google.com are
-
-mm-mglru-fix-ineffective-protection-calculation.patch
+-	int cpu = task_cpu(task);
++	int cpu = task_cpu(curr);
+ 	struct psi_group *group;
+ 	struct psi_group_cpu *groupc;
+-	u64 now;
++	u64 now, irq;
++	s64 delta;
+ 
+-	if (!task->pid)
++	if (!curr->pid)
++		return;
++
++	lockdep_assert_rq_held(rq);
++	group = task_psi_group(curr);
++	if (prev && task_psi_group(prev) == group)
+ 		return;
+ 
+ 	now = cpu_clock(cpu);
++	irq = irq_time_read(cpu);
++	delta = (s64)(irq - rq->psi_irq_time);
++	if (delta < 0)
++		return;
++	rq->psi_irq_time = irq;
+ 
+-	group = task_psi_group(task);
+ 	do {
+ 		if (!group->enabled)
+ 			continue;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 35c38daa2d3e..2e8f26a919ed 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1094,6 +1094,7 @@ struct rq {
+ 
+ #ifdef CONFIG_IRQ_TIME_ACCOUNTING
+ 	u64			prev_irq_time;
++	u64			psi_irq_time;
+ #endif
+ #ifdef CONFIG_PARAVIRT
+ 	u64			prev_steal_time;
+diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
+index 38f3698f5e5b..b02dfc322951 100644
+--- a/kernel/sched/stats.h
++++ b/kernel/sched/stats.h
+@@ -110,8 +110,12 @@ __schedstats_from_se(struct sched_entity *se)
+ void psi_task_change(struct task_struct *task, int clear, int set);
+ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 		     bool sleep);
+-void psi_account_irqtime(struct task_struct *task, u32 delta);
+-
++#ifdef CONFIG_IRQ_TIME_ACCOUNTING
++void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_struct *prev);
++#else
++static inline void psi_account_irqtime(struct rq *rq, struct task_struct *curr,
++				       struct task_struct *prev) {}
++#endif /*CONFIG_IRQ_TIME_ACCOUNTING */
+ /*
+  * PSI tracks state that persists across sleeps, such as iowaits and
+  * memory stalls. As a result, it has to distinguish between sleeps,
+@@ -192,7 +196,8 @@ static inline void psi_ttwu_dequeue(struct task_struct *p) {}
+ static inline void psi_sched_switch(struct task_struct *prev,
+ 				    struct task_struct *next,
+ 				    bool sleep) {}
+-static inline void psi_account_irqtime(struct task_struct *task, u32 delta) {}
++static inline void psi_account_irqtime(struct rq *rq, struct task_struct *curr,
++				       struct task_struct *prev) {}
+ #endif /* CONFIG_PSI */
+ 
+ #ifdef CONFIG_SCHED_INFO
+-- 
+2.45.2.993.g49e7a77208-goog
 
 
