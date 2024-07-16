@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-60020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5BE932D07
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F352932ADE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B4801C220A8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B2B3282688
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0093119B59C;
-	Tue, 16 Jul 2024 16:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2579D1DFF7;
+	Tue, 16 Jul 2024 15:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNncZpZi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KY5o2tDJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD50D136643;
-	Tue, 16 Jul 2024 16:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D445FB641;
+	Tue, 16 Jul 2024 15:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145616; cv=none; b=AGlMjCIVvsZnsHLR88EYn+q6vZTqLZ7L1K2nssUydlz1UZSvBAYCjqy43+UZ01r0Y6fdDQ43V+1GpGduvfyQ03dO80Eo+V5HclmmVqXknyshLc7sZpXztxe60/KtN3rEGdRLPI+wVTQnOeKUKrHfrvK6/A8Z3RmuZp/vnq7ZlDY=
+	t=1721144339; cv=none; b=LOkjfsl8kOAp5D3ml9eEs2yoG1unTLKHA+l4j/J1EIRvHRJWc9+CzqtrnOvXCmribjTE0OU1fJQ4kBWCeu16ASa94+ya/KQqPXr8m2o5kOC4m5M7NtbSoR5KaphpjXCxPS4eYYMGOGycjM91hGaspF0boJB3UWU2YdEZhR25dkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145616; c=relaxed/simple;
-	bh=Zv34NrZp5fFTgdpCnEVHdvXpD/1s9S1QNswDYF9BaO8=;
+	s=arc-20240116; t=1721144339; c=relaxed/simple;
+	bh=Zyc1bc/1aCug2rUGEDBNnJ1Gl7naFEEYS6jfEKzw7tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ews5fZ2M9oB6ISD4Mp7WNzTbHfcj5Ub4qma3ZN+Sx4IoZYihry0bvq3j5PDHM3C5Bl/GVvMdclcXzw6lrxHvnzVSWRnZdCaP4XP+GKn9zCfhorXxSeuURzwy2jwQDmT7bNKfmuMpaJY4fbWEpdg6NxPUhinfUgPcV3oV4TzfLDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNncZpZi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32425C4AF0B;
-	Tue, 16 Jul 2024 16:00:16 +0000 (UTC)
+	 MIME-Version; b=BaYhp8h6cmfdn/ulBW0XngcDc7rhBjU7owDYCIjYqRE2fDfNlDtM4pxH4XplRC1UxMdCmzE3fOBBlI1dxelWnvifcB9TzefiIHoHnWJrHsW0hB/iPgL94yedSf9uajtIQQQoobk1ftFlvcmzl1GcjZmDZWRfqNCsScK6PZLxi9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KY5o2tDJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5EDC116B1;
+	Tue, 16 Jul 2024 15:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145616;
-	bh=Zv34NrZp5fFTgdpCnEVHdvXpD/1s9S1QNswDYF9BaO8=;
+	s=korg; t=1721144339;
+	bh=Zyc1bc/1aCug2rUGEDBNnJ1Gl7naFEEYS6jfEKzw7tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNncZpZiR62twAayvrelSGsYabApiZVfApiwSMKCz8bTmbghuuRN7g6+d8MC4uWFZ
-	 ssExithsySEhiYExwMFKAUmiga0vaA3DjoHZahP8zRPXGdDYi+glEBv8a6osmjLaKL
-	 a/yq48P2sReUKeTBaZBk8TqZRhJPDP6OUxCDHLOw=
+	b=KY5o2tDJ2vSUnvQ2Hfi8Xd197t7U3axttLtkB9of5tMWOnGUSwb+zcCAZwL/NRcEZ
+	 PRSCzq3FytkVkzGF5+rl37DuZdQpIFOqgo349FQvFR3yX/u6sBZM31fKiRQ83jAoMI
+	 Wp5lE2EQuxYegKjP7THUXgbvgOohv8M9k4N+U+yA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
 	Jeff Layton <jlayton@kernel.org>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/121] cachefiles: wait for ondemand_object_worker to finish when dropping object
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.4 39/78] drm/amdgpu/atomfirmware: silence UBSAN warning
 Date: Tue, 16 Jul 2024 17:31:11 +0200
-Message-ID: <20240716152751.677258835@linuxfoundation.org>
+Message-ID: <20240716152742.147794627@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 12e009d60852f7bce0afc373ca0b320f14150418 ]
+commit d0417264437a8fa05f894cabba5a26715b32d78e upstream.
 
-When queuing ondemand_object_worker() to re-open the object,
-cachefiles_object is not pinned. The cachefiles_object may be freed when
-the pending read request is completed intentionally and the related
-erofs is umounted. If ondemand_object_worker() runs after the object is
-freed, it will incur use-after-free problem as shown below.
+This is a variable sized array.
 
-process A  processs B  process C  process D
-
-cachefiles_ondemand_send_req()
-// send a read req X
-// wait for its completion
-
-           // close ondemand fd
-           cachefiles_ondemand_fd_release()
-           // set object as CLOSE
-
-                       cachefiles_ondemand_daemon_read()
-                       // set object as REOPENING
-                       queue_work(fscache_wq, &info->ondemand_work)
-
-                                // close /dev/cachefiles
-                                cachefiles_daemon_release
-                                cachefiles_flush_reqs
-                                complete(&req->done)
-
-// read req X is completed
-// umount the erofs fs
-cachefiles_put_object()
-// object will be freed
-cachefiles_ondemand_deinit_obj_info()
-kmem_cache_free(object)
-                       // both info and object are freed
-                       ondemand_object_worker()
-
-When dropping an object, it is no longer necessary to reopen the object,
-so use cancel_work_sync() to cancel or wait for ondemand_object_worker()
-to finish.
-
-Fixes: 0a7e54c1959c ("cachefiles: resend an open request if the read request's object is closed")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240628062930.2467993-8-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/110420.html
+Tested-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cachefiles/ondemand.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/include/atomfirmware.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index acaecfce8aaa9..1f6561814e702 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -661,6 +661,9 @@ void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
- 		}
- 	}
- 	xa_unlock(&cache->reqs);
-+
-+	/* Wait for ondemand_object_worker() to finish to avoid UAF. */
-+	cancel_work_sync(&object->ondemand->ondemand_work);
- }
+--- a/drivers/gpu/drm/amd/include/atomfirmware.h
++++ b/drivers/gpu/drm/amd/include/atomfirmware.h
+@@ -653,7 +653,7 @@ struct atom_gpio_pin_lut_v2_1
+ {
+   struct  atom_common_table_header  table_header;
+   /*the real number of this included in the structure is calcualted by using the (whole structure size - the header size)/size of atom_gpio_pin_lut  */
+-  struct  atom_gpio_pin_assignment  gpio_pin[8];
++  struct  atom_gpio_pin_assignment  gpio_pin[];
+ };
  
- int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
--- 
-2.43.0
-
+ 
 
 
 
