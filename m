@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-60208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2CA932DDF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:10:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF96932E10
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA7941C21CB6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:10:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A308282339
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B99919B3EE;
-	Tue, 16 Jul 2024 16:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3E119DFB3;
+	Tue, 16 Jul 2024 16:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U405r0qn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUfUvFZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E391DDCE;
-	Tue, 16 Jul 2024 16:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93C417A930;
+	Tue, 16 Jul 2024 16:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721146209; cv=none; b=bX+w3/SfrX5mtoBuKCNbjk/iNgtV7R1mQqZUqh6e/I9FKX0tvRuay2l8iWTH4zORkNDttsf9piJLkIHlxIHRDX/t2YjPLILf6BordduzkoAzX8ow4Gxc8HP6wxzK0MjCnH+W9nbS+uCKUaA3WTcce0Ji8uvWoCaHAYybEP5w/WI=
+	t=1721146331; cv=none; b=q3GCpavwtoLhgFhPUtcfVoUF2E0mXaWf37cPrxcpcY6zzK+2QR71brzeReAl+49ASQae7iKn7MfkUo47LCQiYfrPZiRcW5S9ooHzklnhkpI/KcG9R/qlxrusxqa3/t6nGK8GNGPXN06BTEPeQl1ANR0Cprme06rQZRaTftLvSGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721146209; c=relaxed/simple;
-	bh=482s+RPCh22koZ0kXhVJ3nDa+mQPw3WvwoDB7zheM70=;
+	s=arc-20240116; t=1721146331; c=relaxed/simple;
+	bh=rSQYLsXCBhL690GxKfDbibYrK9D6WuZs2mCE/PgQuq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UwPthF3PUTkzi0JATxjpNxYdzobnhXCJ6dh5VVFBnFNNCtGrzmCZVMhc54SVIh1BDkQTF8Wlzrl3SoNBbB6ShK+6Mhdqc+uFVKdFpSclj1X/qh0gR+DYBgObsaYlIe1sEVDyT70JngFHd0svMkAz8Taq9dN7peUoeCbsYWiOe4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U405r0qn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5545C116B1;
-	Tue, 16 Jul 2024 16:10:08 +0000 (UTC)
+	 MIME-Version; b=KvBmEp68tIt7Pv2s0H3Uej7w1wk8OrO+aV/NT/QjWX5tM8XlvIzsrW3HFdBvwWe2rip5JFSiG0SqMVJHhPKPeAokjFOa3BqOsQIP2qKMAuSAbdOG4Ba3SwYFoUVFXzq4ePANxzhr6qPrYCM6uIPPjvQiWMSTdjUqtn5UvgtOnLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUfUvFZE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A7AC116B1;
+	Tue, 16 Jul 2024 16:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721146209;
-	bh=482s+RPCh22koZ0kXhVJ3nDa+mQPw3WvwoDB7zheM70=;
+	s=korg; t=1721146331;
+	bh=rSQYLsXCBhL690GxKfDbibYrK9D6WuZs2mCE/PgQuq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U405r0qnQtvW31SxfTaefBkyi+1FIrQk6daVts6A8df3gEyptzqMH/y4QFSLHJPUK
-	 MwtCc5abC5fVhSm/aSgtr4uZ5AkZOYTyEFibwJPPLafQwwus1Xum9H3cGuD3aqGtK8
-	 z3V5h3jAUqzUCynGC1CbkzqgpVdrut5fPpu3K9Qs=
+	b=UUfUvFZEhpfcDXWQua0qJokisUAixnHFG/ZfRmysX5JsYQHQ8b5l7Ps52cGCfkV71
+	 KfWPBC/4gG5jS6TGAtEOWlhzRYFp4UxD7ithqMQdZirLDnBOhG3Ypk9qyRema2RAmJ
+	 5EcwcGetfnOEwtahvitxtCjam6SGA7uGwtDvKFdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Hui Lee <jianhui.lee@canonical.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 090/144] net: ethernet: mtk-star-emac: set mac_managed_pm when probing
-Date: Tue, 16 Jul 2024 17:32:39 +0200
-Message-ID: <20240716152756.001623345@linuxfoundation.org>
+Subject: [PATCH 5.15 091/144] ppp: reject claimed-as-LCP but actually malformed packets
+Date: Tue, 16 Jul 2024 17:32:40 +0200
+Message-ID: <20240716152756.039102575@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -67,53 +67,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jian Hui Lee <jianhui.lee@canonical.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 8c6790b5c25dfac11b589cc37346bcf9e23ad468 ]
+[ Upstream commit f2aeb7306a898e1cbd03963d376f4b6656ca2b55 ]
 
-The below commit introduced a warning message when phy state is not in
-the states: PHY_HALTED, PHY_READY, and PHY_UP.
-commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+Since 'ppp_async_encode()' assumes valid LCP packets (with code
+from 1 to 7 inclusive), add 'ppp_check_packet()' to ensure that
+LCP packet has an actual body beyond PPP_LCP header bytes, and
+reject claimed-as-LCP but actually malformed data otherwise.
 
-mtk-star-emac doesn't need mdiobus suspend/resume. To fix the warning
-message during resume, indicate the phy resume/suspend is managed by the
-mac when probing.
-
-Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
-Signed-off-by: Jian Hui Lee <jianhui.lee@canonical.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20240708065210.4178980-1-jianhui.lee@canonical.com
+Reported-by: syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ec0723ba9605678b14bf
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_star_emac.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ppp/ppp_generic.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-index 67f9e4415ae92..392648246d8f4 100644
---- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
-+++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-@@ -1446,6 +1446,7 @@ static int mtk_star_probe(struct platform_device *pdev)
- {
- 	struct device_node *of_node;
- 	struct mtk_star_priv *priv;
-+	struct phy_device *phydev;
- 	struct net_device *ndev;
- 	struct device *dev;
- 	void __iomem *base;
-@@ -1552,6 +1553,12 @@ static int mtk_star_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index c1f11d1df4cd6..7a8a717770fcc 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -70,6 +70,7 @@
+ #define MPHDRLEN_SSN	4	/* ditto with short sequence numbers */
  
- 	netif_napi_add(ndev, &priv->napi, mtk_star_poll, NAPI_POLL_WEIGHT);
+ #define PPP_PROTO_LEN	2
++#define PPP_LCP_HDRLEN	4
  
-+	phydev = of_phy_find_device(priv->phy_node);
-+	if (phydev) {
-+		phydev->mac_managed_pm = true;
-+		put_device(&phydev->mdio.dev);
-+	}
-+
- 	return devm_register_netdev(dev, ndev);
+ /*
+  * An instance of /dev/ppp can be associated with either a ppp
+@@ -490,6 +491,15 @@ static ssize_t ppp_read(struct file *file, char __user *buf,
+ 	return ret;
  }
  
++static bool ppp_check_packet(struct sk_buff *skb, size_t count)
++{
++	/* LCP packets must include LCP header which 4 bytes long:
++	 * 1-byte code, 1-byte identifier, and 2-byte length.
++	 */
++	return get_unaligned_be16(skb->data) != PPP_LCP ||
++		count >= PPP_PROTO_LEN + PPP_LCP_HDRLEN;
++}
++
+ static ssize_t ppp_write(struct file *file, const char __user *buf,
+ 			 size_t count, loff_t *ppos)
+ {
+@@ -512,6 +522,11 @@ static ssize_t ppp_write(struct file *file, const char __user *buf,
+ 		kfree_skb(skb);
+ 		goto out;
+ 	}
++	ret = -EINVAL;
++	if (unlikely(!ppp_check_packet(skb, count))) {
++		kfree_skb(skb);
++		goto out;
++	}
+ 
+ 	switch (pf->kind) {
+ 	case INTERFACE:
 -- 
 2.43.0
 
