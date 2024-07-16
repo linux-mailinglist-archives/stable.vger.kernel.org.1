@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-59872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3EE932C30
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50608932B92
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E68E31F2447B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06D95281C48
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657EF19B59C;
-	Tue, 16 Jul 2024 15:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEFC17A93F;
+	Tue, 16 Jul 2024 15:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQz2Bh03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fiwy5TBt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2380C17C9E9;
-	Tue, 16 Jul 2024 15:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689C412B72;
+	Tue, 16 Jul 2024 15:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145162; cv=none; b=nMUqEzpU0TGCoVaJGVNbDCNBNXGkUw64acxF22VDOwV/RYuXrVP6PJTnBEUhIiMgUlpMh8N6/Nqc4xGzuhwb5A2X2uEqjiI7tQMbecvVYmaWpTGxUF84E/0Ff5i9rmLvfAfEH7+R6129uEW7AXEDsBpDOzYkK+I2O6VVyZCcBKw=
+	t=1721144806; cv=none; b=gQ0U2VXlPLLGx62EFAitMfab7WAnUaCf0VxQCOk94iBCWPS/8r6bg+AXX65BiCa9IVZEzHi/yHNZkP0TETYoKsjonU1rpBlBBKpvqnNnYiy7YqG4CMS6qlWMXNgVXUMitqdVbw73m2TASFw60EaJ18DssWGjoz10VOfM/fZIGac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145162; c=relaxed/simple;
-	bh=/IY7ZHL+os4wN3edEl8EFA36dKaz3RB9HV3FgczjU7Q=;
+	s=arc-20240116; t=1721144806; c=relaxed/simple;
+	bh=tsFrQN7rwfn7fqv7qapKsIXr3AFRyXGHeA2pQC8wI2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmaQ0N3hALaeGIz1Hn9TGlsFvYA5pS5qliCao8Bp1FzbY+lA0XSt0ce2eUd4g5hu5rhCnh6Cpf4MfGWwllH3wfAb6aGtsMhkpbKJPZH9WcXbv/TrXcJ/rVjIEMYJd/6S6s2glAV1brb/TgaiE58nAD4HgdObz3z8yAymYx7kr0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQz2Bh03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBC3C116B1;
-	Tue, 16 Jul 2024 15:52:41 +0000 (UTC)
+	 MIME-Version; b=r3HeiNRiwCDaulT+YBg15qm3QTvf41Ev6EW2Ovhobn4+BhHyY67PjCevMh0lTWPLg8PtE6Xwg8Eqzrji0ZfevtD3CkOC/O8QOupAAmJfzYDar1fbe+p1pGGzxLx0cwfYz85wJGpiA6GU3pBYqi8UWrpSAdSElfE03ULhNHL1uzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fiwy5TBt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E386FC116B1;
+	Tue, 16 Jul 2024 15:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145162;
-	bh=/IY7ZHL+os4wN3edEl8EFA36dKaz3RB9HV3FgczjU7Q=;
+	s=korg; t=1721144806;
+	bh=tsFrQN7rwfn7fqv7qapKsIXr3AFRyXGHeA2pQC8wI2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qQz2Bh03W+9Wg+WS70zi0eUEJqWjgHGGv8hdzoFeI1IrGvcCGQ4Xv8sQlugiAjzAe
-	 aqDzlVbTpD13U71y4GHtmkC6HC2qdnPjvz/r/zDBSXmqDUTTgqI4MoNe/7mZRrCXKm
-	 vI2Yp8NxPWiaSUERbwoUBvPQc6akZhkkiFrGiawc=
+	b=Fiwy5TBtrJtqX5tkiHhjOJt8sbyg480t8sjW/J0sAFo9pO6AHjwLVmITY0xQQGTQH
+	 U1vxHmmiFC0MapfrrkEosdcTyl5UNHkUNQD9uWXOfEpBCkjyR81cxUdRgYQ+agp3Vu
+	 4+s4cI5uLNwiG35+E3SaLaCNvHPiY9WvFwtF/ZdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Dhruva Gole <d-gole@ti.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.9 119/143] cpufreq: Allow drivers to advertise boost enabled
+	Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+	Russell King <russell.king@oracle.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Puranjay Mohan <pjy@amazon.com>
+Subject: [PATCH 5.10 100/108] arm64/bpf: Remove 128MB limit for BPF JIT programs
 Date: Tue, 16 Jul 2024 17:31:55 +0200
-Message-ID: <20240716152800.558972878@linuxfoundation.org>
+Message-ID: <20240716152749.834677594@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +64,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Russell King <russell.king@oracle.com>
 
-commit 102fa9c4b439ca3bd93d13fb53f5b7592d96a109 upstream.
+commit b89ddf4cca43f1269093942cf5c4e457fd45c335 upstream.
 
-The behavior introduced in commit f37a4d6b4a2c ("cpufreq: Fix per-policy
-boost behavior on SoCs using cpufreq_boost_set_sw()") sets up the boost
-policy incorrectly when boost has been enabled by the platform firmware
-initially even if a driver sets the policy up.
+Commit 91fc957c9b1d ("arm64/bpf: don't allocate BPF JIT programs in module
+memory") restricts BPF JIT program allocation to a 128MB region to ensure
+BPF programs are still in branching range of each other. However this
+restriction should not apply to the aarch64 JIT, since BPF_JMP | BPF_CALL
+are implemented as a 64-bit move into a register and then a BLR instruction -
+which has the effect of being able to call anything without proximity
+limitation.
 
-This is because policy_has_boost_freq() assumes that there is a frequency
-table set up by the driver and that the boost frequencies are advertised
-in that table. This assumption doesn't work for acpi-cpufreq or
-amd-pstate. Only use this check to enable boost if it's not already
-enabled instead of also disabling it if alreayd enabled.
+The practical reason to relax this restriction on JIT memory is that 128MB of
+JIT memory can be quickly exhausted, especially where PAGE_SIZE is 64KB - one
+page is needed per program. In cases where seccomp filters are applied to
+multiple VMs on VM launch - such filters are classic BPF but converted to
+BPF - this can severely limit the number of VMs that can be launched. In a
+world where we support BPF JIT always on, turning off the JIT isn't always an
+option either.
 
-Fixes: f37a4d6b4a2c ("cpufreq: Fix per-policy boost behavior on SoCs using cpufreq_boost_set_sw()")
-Link: https://patch.msgid.link/20240626204723.6237-1-mario.limonciello@amd.com
-Reviewed-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Suggested-by: Viresh Kumar <viresh.kumar@linaro.org>
-Suggested-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 91fc957c9b1d ("arm64/bpf: don't allocate BPF JIT programs in module memory")
+Suggested-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Signed-off-by: Russell King <russell.king@oracle.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Alan Maguire <alan.maguire@oracle.com>
+Link: https://lore.kernel.org/bpf/1636131046-5982-2-git-send-email-alan.maguire@oracle.com
+[Replace usage of in_bpf_jit() with is_bpf_text_address()]
+Signed-off-by: Puranjay Mohan <pjy@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/extable.h |    9 ---------
+ arch/arm64/include/asm/memory.h  |    5 +----
+ arch/arm64/kernel/traps.c        |    2 +-
+ arch/arm64/mm/extable.c          |    3 ++-
+ arch/arm64/mm/ptdump.c           |    2 --
+ arch/arm64/net/bpf_jit_comp.c    |    7 ++-----
+ 6 files changed, 6 insertions(+), 22 deletions(-)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -1431,7 +1431,8 @@ static int cpufreq_online(unsigned int c
- 		}
+--- a/arch/arm64/include/asm/extable.h
++++ b/arch/arm64/include/asm/extable.h
+@@ -22,15 +22,6 @@ struct exception_table_entry
  
- 		/* Let the per-policy boost flag mirror the cpufreq_driver boost during init */
--		policy->boost_enabled = cpufreq_boost_enabled() && policy_has_boost_freq(policy);
-+		if (cpufreq_boost_enabled() && policy_has_boost_freq(policy))
-+			policy->boost_enabled = true;
+ #define ARCH_HAS_RELATIVE_EXTABLE
  
- 		/*
- 		 * The initialization has succeeded and the policy is online.
+-static inline bool in_bpf_jit(struct pt_regs *regs)
+-{
+-	if (!IS_ENABLED(CONFIG_BPF_JIT))
+-		return false;
+-
+-	return regs->pc >= BPF_JIT_REGION_START &&
+-	       regs->pc < BPF_JIT_REGION_END;
+-}
+-
+ #ifdef CONFIG_BPF_JIT
+ int arm64_bpf_fixup_exception(const struct exception_table_entry *ex,
+ 			      struct pt_regs *regs);
+--- a/arch/arm64/include/asm/memory.h
++++ b/arch/arm64/include/asm/memory.h
+@@ -44,11 +44,8 @@
+ #define _PAGE_OFFSET(va)	(-(UL(1) << (va)))
+ #define PAGE_OFFSET		(_PAGE_OFFSET(VA_BITS))
+ #define KIMAGE_VADDR		(MODULES_END)
+-#define BPF_JIT_REGION_START	(KASAN_SHADOW_END)
+-#define BPF_JIT_REGION_SIZE	(SZ_128M)
+-#define BPF_JIT_REGION_END	(BPF_JIT_REGION_START + BPF_JIT_REGION_SIZE)
+ #define MODULES_END		(MODULES_VADDR + MODULES_VSIZE)
+-#define MODULES_VADDR		(BPF_JIT_REGION_END)
++#define MODULES_VADDR		(_PAGE_END(VA_BITS_MIN))
+ #define MODULES_VSIZE		(SZ_128M)
+ #define VMEMMAP_START		(-VMEMMAP_SIZE - SZ_2M)
+ #define VMEMMAP_END		(VMEMMAP_START + VMEMMAP_SIZE)
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -912,7 +912,7 @@ static struct break_hook bug_break_hook
+ static int reserved_fault_handler(struct pt_regs *regs, unsigned int esr)
+ {
+ 	pr_err("%s generated an invalid instruction at %pS!\n",
+-		in_bpf_jit(regs) ? "BPF JIT" : "Kernel text patching",
++		"Kernel text patching",
+ 		(void *)instruction_pointer(regs));
+ 
+ 	/* We cannot handle this */
+--- a/arch/arm64/mm/extable.c
++++ b/arch/arm64/mm/extable.c
+@@ -5,6 +5,7 @@
+ 
+ #include <linux/extable.h>
+ #include <linux/uaccess.h>
++#include <linux/filter.h>
+ 
+ int fixup_exception(struct pt_regs *regs)
+ {
+@@ -14,7 +15,7 @@ int fixup_exception(struct pt_regs *regs
+ 	if (!fixup)
+ 		return 0;
+ 
+-	if (in_bpf_jit(regs))
++	if (is_bpf_text_address(regs->pc))
+ 		return arm64_bpf_fixup_exception(fixup, regs);
+ 
+ 	regs->pc = (unsigned long)&fixup->fixup + fixup->fixup;
+--- a/arch/arm64/mm/ptdump.c
++++ b/arch/arm64/mm/ptdump.c
+@@ -41,8 +41,6 @@ static struct addr_marker address_marker
+ 	{ 0 /* KASAN_SHADOW_START */,	"Kasan shadow start" },
+ 	{ KASAN_SHADOW_END,		"Kasan shadow end" },
+ #endif
+-	{ BPF_JIT_REGION_START,		"BPF start" },
+-	{ BPF_JIT_REGION_END,		"BPF end" },
+ 	{ MODULES_VADDR,		"Modules start" },
+ 	{ MODULES_END,			"Modules end" },
+ 	{ VMALLOC_START,		"vmalloc() area" },
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -1145,15 +1145,12 @@ out:
+ 
+ u64 bpf_jit_alloc_exec_limit(void)
+ {
+-	return BPF_JIT_REGION_SIZE;
++	return VMALLOC_END - VMALLOC_START;
+ }
+ 
+ void *bpf_jit_alloc_exec(unsigned long size)
+ {
+-	return __vmalloc_node_range(size, PAGE_SIZE, BPF_JIT_REGION_START,
+-				    BPF_JIT_REGION_END, GFP_KERNEL,
+-				    PAGE_KERNEL, 0, NUMA_NO_NODE,
+-				    __builtin_return_address(0));
++	return vmalloc(size);
+ }
+ 
+ void bpf_jit_free_exec(void *addr)
 
 
 
