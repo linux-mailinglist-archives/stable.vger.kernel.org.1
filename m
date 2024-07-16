@@ -1,233 +1,250 @@
-Return-Path: <stable+bounces-59397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE545932227
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 10:44:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B4F93228C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 11:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83437282877
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 08:44:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2196283146
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 09:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDB343146;
-	Tue, 16 Jul 2024 08:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A867E13F42A;
+	Tue, 16 Jul 2024 09:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TU8V3bqc"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="QyCYAM5Z";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="QyCYAM5Z"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3C817D376
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 08:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DEF5FEE6;
+	Tue, 16 Jul 2024 09:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721119479; cv=none; b=P9eTjF4meNreOLM18bNGyA+MDd4r2Irn2J6ojG4x9GAjNLkfAxblvlJpgLjLgNEl57mk/JY+3+wf1w5hRqyzqJxBco8d4CjlRtasTwL8cW+iUGeYRaM6NW9fGQ8Pqsoi40gKUQtfxuJMnRiOHpgP2A6boK4uCdJHH0AhQnAjPUk=
+	t=1721121373; cv=none; b=FlgkAFwXr/rwCp7CabVEONVRULck8rSmnFH4xZIInRVDla+mzo09Ozkr4JA9Rb23K8aduizASDUpsDwz0RlUnFgnm9xR5XyAE/4+tuBQWUXfv0ofnpuY+/1/jGfuEm2visNgrj3TWpxV6H2U/S+qozUYk4awDxbdUNGS7232JZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721119479; c=relaxed/simple;
-	bh=bJgFpj7HSjVp+2XEzLICb30ytlLsa2sPDPnYN72jVhg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LwsrRPziK73lMu8D5J9Qz6aa0GGJVTdoKcmlRtbA1xPgEIivk57DYsX2Vww2kobMIpPzNjFlF+hm8KHGi2mIlpmIV+F0Zxj6d+ngVaoC1pSVAv5OcHzYTLvRXQ6djQwtV0ZpHsuzafoHAVgC5MJZFeI2/qqRWKkwbR1xlYmOLYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TU8V3bqc; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721119476;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=23o/XGTBuRL7DJpbS8tEUOVYjPKAI+3lkmMp5biIX9g=;
-	b=TU8V3bqcWWFptg/3AotMW9FpHAod4f//UcsQmbcrmBURuqwlo1scVbx9tsqF4scmPsQPuG
-	R8nh0gK+rNY2ogyAzBRVFA1BbF6fOc1T6gp5PD+A0KH1DingFwF6goAxkkVXuW5KZHEXeP
-	HBy/WhpEnmPCfB3ZYfRCHK3OY96gK/k=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-672-OobYpWbIOlOiMbNoYT6fXQ-1; Tue, 16 Jul 2024 04:44:34 -0400
-X-MC-Unique: OobYpWbIOlOiMbNoYT6fXQ-1
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-649731dd35bso3495112a12.0
-        for <stable@vger.kernel.org>; Tue, 16 Jul 2024 01:44:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721119473; x=1721724273;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=23o/XGTBuRL7DJpbS8tEUOVYjPKAI+3lkmMp5biIX9g=;
-        b=Wfbt2IQFK3H+UMavF/lnSgWyAgWd3IjIDj891diGz68pC2YoNtvuQgfAdM5+Csj1Hg
-         0scEs9rP9VQ1NdDpk3UvavKsAoeES3MBjZnc7tWIXJ6gsx5h7yTU2mng+KwBWtauuvcs
-         ys/TAy/mTkNrstFQVx7ioMqFH5Z2WASV9CMnOWsv3SD9imuXvNQMcUhOXoZoLePgtFV5
-         FU/9kyHkiUBI1oaPvK1pReeqv9GkUTYiPyWNT/BWnWqpRytQJ2PUfwXiKAaLP4mBhUMv
-         q2+H7PdA8pblj2RbjD9fVDJ9yZGC6dLZl+qyIydzZ390zOOfuT+V6eERkstJFT5KrfCs
-         kxcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnOOQIxoGc68jWrovrqRdfCNY1So5rUw/mF4khmtkNgRxzBDA7nu80h9oAnfXtxE1o8x83l8R3HskrcN0seyqAONqlYHlm
-X-Gm-Message-State: AOJu0YyQmPZMAMzE0+/anseH+LuRLC1peYFmCnHZZh0w6xCKEWXujUVi
-	z35VttvgNwTAqqJLvkMqq43NI19tomWCcZ78ltPZUO4rJ69WX36gzvg6vddnEf8KE3Qm+B8JdCN
-	QeLJWkhS7a9BSLKSniLFB+bmwnyNShogmjbn8UhDTEOI46hKHIys0Hw==
-X-Received: by 2002:a05:6a20:6a1c:b0:1c0:f5ea:d447 with SMTP id adf61e73a8af0-1c3f124bc61mr1716445637.31.1721119472978;
-        Tue, 16 Jul 2024 01:44:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGuhwZ8MUsO3VjyJAJJSNdyWpTUivpRh9m1rSzOkaojLNjlmJv24ndTc4XZ84/nAM9tAlDBGQ==
-X-Received: by 2002:a05:6a20:6a1c:b0:1c0:f5ea:d447 with SMTP id adf61e73a8af0-1c3f124bc61mr1716430637.31.1721119472618;
-        Tue, 16 Jul 2024 01:44:32 -0700 (PDT)
-Received: from [10.72.116.106] ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fc0ee8ad03sm53405115ad.246.2024.07.16.01.44.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jul 2024 01:44:32 -0700 (PDT)
-Message-ID: <875d0760-f5fa-4516-b7b5-9011fa8f6049@redhat.com>
-Date: Tue, 16 Jul 2024 16:44:27 +0800
+	s=arc-20240116; t=1721121373; c=relaxed/simple;
+	bh=5cP7OIQVR2dmtsz4oIsA7AaRpuCuToiZVD2PLIJ19Bg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cnm1HhDxRgdP93ocowa+MRhew1hTeJD0+ux3O9HhTbsXZxNtw3i3bgVyYcggJzhI4uRVdfaiPQzZ8fmRnPS3f7F5n4UjiDKLCvdl5YGQFP+F7cfdoANTGZ+zk9ZnT6VpigFWiwrjCB+pBmc2EvQIotb64zWlXme8ubgWKcrwOqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=QyCYAM5Z; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=QyCYAM5Z; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 99A631F898;
+	Tue, 16 Jul 2024 09:16:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1721121369; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=11ZY7PLYj426xE59CvkeEnqZyKq2GcDcCyy0siAsbsU=;
+	b=QyCYAM5Z5PJwjm5k8PXO/1+FlbmHbfJNS2SECdQ7Dx9NG35Ha/bu9j1WJF4l0O1CZvVML7
+	7GhBahuFCOnZsC2I59ropZsx+3REzApI0StzRLHxhzv3NIBVt5dUM2ai3RtJ0Rf95HdnAC
+	peIUeJzGr++70ocORbv99B4OqEdghnc=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=QyCYAM5Z
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1721121369; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=11ZY7PLYj426xE59CvkeEnqZyKq2GcDcCyy0siAsbsU=;
+	b=QyCYAM5Z5PJwjm5k8PXO/1+FlbmHbfJNS2SECdQ7Dx9NG35Ha/bu9j1WJF4l0O1CZvVML7
+	7GhBahuFCOnZsC2I59ropZsx+3REzApI0StzRLHxhzv3NIBVt5dUM2ai3RtJ0Rf95HdnAC
+	peIUeJzGr++70ocORbv99B4OqEdghnc=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E4F6F13795;
+	Tue, 16 Jul 2024 09:16:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id odRhJ1c6lmagGAAAD6G6ig
+	(envelope-from <wqu@suse.com>); Tue, 16 Jul 2024 09:16:07 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6] btrfs: tree-checker: add type and sequence check for inline backrefs
+Date: Tue, 16 Jul 2024 18:45:49 +0930
+Message-ID: <63189f5d922db2bc525f5251be46fe857e00a2d6.1721120987.git.wqu@suse.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ceph: force sending a cap update msg back to MDS for
- revoke op
-To: Venky Shankar <vshankar@redhat.com>
-Cc: ceph-devel@vger.kernel.org, jlayton@kernel.org, stable@vger.kernel.org
-References: <20240711104019.987090-1-xiubli@redhat.com>
- <CACPzV1kjU5KYynz4KX9=z6LB6KELUqCZOBc126bpgpyrzRaWsQ@mail.gmail.com>
-Content-Language: en-US
-From: Xiubo Li <xiubli@redhat.com>
-In-Reply-To: <CACPzV1kjU5KYynz4KX9=z6LB6KELUqCZOBc126bpgpyrzRaWsQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_COUNT_TWO(0.00)[2];
+	DWL_DNSWL_BLOCKED(0.00)[suse.com:dkim];
+	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[suse.com:+]
+X-Spam-Flag: NO
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 99A631F898
 
+commit 1645c283a87c61f84b2bffd81f50724df959b11a upstream.
 
-On 7/16/24 16:00, Venky Shankar wrote:
-> Hi Xiubo,
->
-> On Thu, Jul 11, 2024 at 4:10 PM <xiubli@redhat.com> wrote:
->> From: Xiubo Li <xiubli@redhat.com>
->>
->> If a client sends out a cap update dropping caps with the prior 'seq'
->> just before an incoming cap revoke request, then the client may drop
->> the revoke because it believes it's already released the requested
->> capabilities.
->>
->> This causes the MDS to wait indefinitely for the client to respond
->> to the revoke. It's therefore always a good idea to ack the cap
->> revoke request with the bumped up 'seq'.
->>
->> Currently if the cap->issued equals to the newcaps the check_caps()
->> will do nothing, we should force flush the caps.
->>
->> Cc: stable@vger.kernel.org
->> Link: https://tracker.ceph.com/issues/61782
->> Signed-off-by: Xiubo Li <xiubli@redhat.com>
->> ---
->>   fs/ceph/caps.c  | 16 ++++++++++++----
->>   fs/ceph/super.h |  7 ++++---
->>   2 files changed, 16 insertions(+), 7 deletions(-)
->>
->> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
->> index 24c31f795938..ba5809cf8f02 100644
->> --- a/fs/ceph/caps.c
->> +++ b/fs/ceph/caps.c
->> @@ -2024,6 +2024,8 @@ bool __ceph_should_report_size(struct ceph_inode_info *ci)
->>    *  CHECK_CAPS_AUTHONLY - we should only check the auth cap
->>    *  CHECK_CAPS_FLUSH - we should flush any dirty caps immediately, without
->>    *    further delay.
->> + *  CHECK_CAPS_FLUSH_FORCE - we should flush any caps immediately, without
->> + *    further delay.
->>    */
->>   void ceph_check_caps(struct ceph_inode_info *ci, int flags)
->>   {
->> @@ -2105,7 +2107,7 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
->>          }
->>
->>          doutc(cl, "%p %llx.%llx file_want %s used %s dirty %s "
->> -             "flushing %s issued %s revoking %s retain %s %s%s%s\n",
->> +             "flushing %s issued %s revoking %s retain %s %s%s%s%s\n",
->>               inode, ceph_vinop(inode), ceph_cap_string(file_wanted),
->>               ceph_cap_string(used), ceph_cap_string(ci->i_dirty_caps),
->>               ceph_cap_string(ci->i_flushing_caps),
->> @@ -2113,7 +2115,8 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
->>               ceph_cap_string(retain),
->>               (flags & CHECK_CAPS_AUTHONLY) ? " AUTHONLY" : "",
->>               (flags & CHECK_CAPS_FLUSH) ? " FLUSH" : "",
->> -            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "");
->> +            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "",
->> +            (flags & CHECK_CAPS_FLUSH_FORCE) ? " FLUSH_FORCE" : "");
->>
->>          /*
->>           * If we no longer need to hold onto old our caps, and we may
->> @@ -2223,6 +2226,9 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
->>                                  goto ack;
->>                  }
->>
->> +               if (flags & CHECK_CAPS_FLUSH_FORCE)
->> +                       goto ack;
-> Maybe check this early on inside the
->
->          for (p = rb_first(&ci->i_caps); p; p = rb_next(p)) {
->
->
->          }
->
-> loop?
+[BUG]
+There is a bug report that ntfs2btrfs had a bug that it can lead to
+transaction abort and the filesystem flips to read-only.
 
-Yeah, we can do this ealier, let me improved it.
+[CAUSE]
+For inline backref items, kernel has a strict requirement for their
+ordered, they must follow the following rules:
 
-Thanks
+- All btrfs_extent_inline_ref::type should be in an ascending order
 
-- Xiubo
+- Within the same type, the items should follow a descending order by
+  their sequence number
 
+  For EXTENT_DATA_REF type, the sequence number is result from
+  hash_extent_data_ref().
+  For other types, their sequence numbers are
+  btrfs_extent_inline_ref::offset.
 
->> +
->>                  /* things we might delay */
->>                  if ((cap->issued & ~retain) == 0)
->>                          continue;     /* nope, all good */
->> @@ -3518,6 +3524,7 @@ static void handle_cap_grant(struct inode *inode,
->>          bool queue_invalidate = false;
->>          bool deleted_inode = false;
->>          bool fill_inline = false;
->> +       int flags = 0;
->>
->>          /*
->>           * If there is at least one crypto block then we'll trust
->> @@ -3751,6 +3758,7 @@ static void handle_cap_grant(struct inode *inode,
->>          /* don't let check_caps skip sending a response to MDS for revoke msgs */
->>          if (le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
->>                  cap->mds_wanted = 0;
->> +               flags |= CHECK_CAPS_FLUSH_FORCE;
->>                  if (cap == ci->i_auth_cap)
->>                          check_caps = 1; /* check auth cap only */
->>                  else
->> @@ -3806,9 +3814,9 @@ static void handle_cap_grant(struct inode *inode,
->>
->>          mutex_unlock(&session->s_mutex);
->>          if (check_caps == 1)
->> -               ceph_check_caps(ci, CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOINVAL);
->> +               ceph_check_caps(ci, flags | CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOINVAL);
->>          else if (check_caps == 2)
->> -               ceph_check_caps(ci, CHECK_CAPS_NOINVAL);
->> +               ceph_check_caps(ci, flags | CHECK_CAPS_NOINVAL);
->>   }
->>
->>   /*
->> diff --git a/fs/ceph/super.h b/fs/ceph/super.h
->> index b0b368ed3018..831e8ec4d5da 100644
->> --- a/fs/ceph/super.h
->> +++ b/fs/ceph/super.h
->> @@ -200,9 +200,10 @@ struct ceph_cap {
->>          struct list_head caps_item;
->>   };
->>
->> -#define CHECK_CAPS_AUTHONLY   1  /* only check auth cap */
->> -#define CHECK_CAPS_FLUSH      2  /* flush any dirty caps */
->> -#define CHECK_CAPS_NOINVAL    4  /* don't invalidate pagecache */
->> +#define CHECK_CAPS_AUTHONLY     1  /* only check auth cap */
->> +#define CHECK_CAPS_FLUSH        2  /* flush any dirty caps */
->> +#define CHECK_CAPS_NOINVAL      4  /* don't invalidate pagecache */
->> +#define CHECK_CAPS_FLUSH_FORCE  8  /* force flush any caps */
->>
->>   struct ceph_cap_flush {
->>          u64 tid;
->> --
->> 2.45.1
->>
->
+Thus if there is any code not following above rules, the resulted
+inline backrefs can prevent the kernel to locate the needed inline
+backref and lead to transaction abort.
+
+[FIX]
+Ntrfs2btrfs has already fixed the problem, and btrfs-progs has added the
+ability to detect such problems.
+
+For kernel, let's be more noisy and be more specific about the order, so
+that the next time kernel hits such problem we would reject it in the
+first place, without leading to transaction abort.
+
+Cc: stable@vger.kernel.org # 6.6
+Link: https://github.com/kdave/btrfs-progs/pull/622
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+[ Fix a conflict due to header cleanup. ]
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+---
+ fs/btrfs/tree-checker.c | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+
+diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
+index cc6bc5985120..5d6cfa618dc4 100644
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -29,6 +29,7 @@
+ #include "accessors.h"
+ #include "file-item.h"
+ #include "inode-item.h"
++#include "extent-tree.h"
+ 
+ /*
+  * Error message should follow the following format:
+@@ -1274,6 +1275,8 @@ static int check_extent_item(struct extent_buffer *leaf,
+ 	unsigned long ptr;	/* Current pointer inside inline refs */
+ 	unsigned long end;	/* Extent item end */
+ 	const u32 item_size = btrfs_item_size(leaf, slot);
++	u8 last_type = 0;
++	u64 last_seq = U64_MAX;
+ 	u64 flags;
+ 	u64 generation;
+ 	u64 total_refs;		/* Total refs in btrfs_extent_item */
+@@ -1320,6 +1323,18 @@ static int check_extent_item(struct extent_buffer *leaf,
+ 	 *    2.2) Ref type specific data
+ 	 *         Either using btrfs_extent_inline_ref::offset, or specific
+ 	 *         data structure.
++	 *
++	 *    All above inline items should follow the order:
++	 *
++	 *    - All btrfs_extent_inline_ref::type should be in an ascending
++	 *      order
++	 *
++	 *    - Within the same type, the items should follow a descending
++	 *      order by their sequence number. The sequence number is
++	 *      determined by:
++	 *      * btrfs_extent_inline_ref::offset for all types  other than
++	 *        EXTENT_DATA_REF
++	 *      * hash_extent_data_ref() for EXTENT_DATA_REF
+ 	 */
+ 	if (unlikely(item_size < sizeof(*ei))) {
+ 		extent_err(leaf, slot,
+@@ -1401,6 +1416,7 @@ static int check_extent_item(struct extent_buffer *leaf,
+ 		struct btrfs_extent_inline_ref *iref;
+ 		struct btrfs_extent_data_ref *dref;
+ 		struct btrfs_shared_data_ref *sref;
++		u64 seq;
+ 		u64 dref_offset;
+ 		u64 inline_offset;
+ 		u8 inline_type;
+@@ -1414,6 +1430,7 @@ static int check_extent_item(struct extent_buffer *leaf,
+ 		iref = (struct btrfs_extent_inline_ref *)ptr;
+ 		inline_type = btrfs_extent_inline_ref_type(leaf, iref);
+ 		inline_offset = btrfs_extent_inline_ref_offset(leaf, iref);
++		seq = inline_offset;
+ 		if (unlikely(ptr + btrfs_extent_inline_ref_size(inline_type) > end)) {
+ 			extent_err(leaf, slot,
+ "inline ref item overflows extent item, ptr %lu iref size %u end %lu",
+@@ -1444,6 +1461,10 @@ static int check_extent_item(struct extent_buffer *leaf,
+ 		case BTRFS_EXTENT_DATA_REF_KEY:
+ 			dref = (struct btrfs_extent_data_ref *)(&iref->offset);
+ 			dref_offset = btrfs_extent_data_ref_offset(leaf, dref);
++			seq = hash_extent_data_ref(
++					btrfs_extent_data_ref_root(leaf, dref),
++					btrfs_extent_data_ref_objectid(leaf, dref),
++					btrfs_extent_data_ref_offset(leaf, dref));
+ 			if (unlikely(!IS_ALIGNED(dref_offset,
+ 						 fs_info->sectorsize))) {
+ 				extent_err(leaf, slot,
+@@ -1470,6 +1491,24 @@ static int check_extent_item(struct extent_buffer *leaf,
+ 				   inline_type);
+ 			return -EUCLEAN;
+ 		}
++		if (inline_type < last_type) {
++			extent_err(leaf, slot,
++				   "inline ref out-of-order: has type %u, prev type %u",
++				   inline_type, last_type);
++			return -EUCLEAN;
++		}
++		/* Type changed, allow the sequence starts from U64_MAX again. */
++		if (inline_type > last_type)
++			last_seq = U64_MAX;
++		if (seq > last_seq) {
++			extent_err(leaf, slot,
++"inline ref out-of-order: has type %u offset %llu seq 0x%llx, prev type %u seq 0x%llx",
++				   inline_type, inline_offset, seq,
++				   last_type, last_seq);
++			return -EUCLEAN;
++		}
++		last_type = inline_type;
++		last_seq = seq;
+ 		ptr += btrfs_extent_inline_ref_size(inline_type);
+ 	}
+ 	/* No padding is allowed */
+-- 
+2.45.2
 
 
