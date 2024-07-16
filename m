@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-60370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26A7933421
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 00:13:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C36933427
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 00:13:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E6891F23201
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 22:13:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C779B2834E0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 22:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A322143C6C;
-	Tue, 16 Jul 2024 22:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2703B144D07;
+	Tue, 16 Jul 2024 22:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="muyZ68k0"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FjmQLgMj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AF013D8AC
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 22:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43453143C40
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 22:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721167990; cv=none; b=mLSl7E0CxLPHWOV1syv1W5CIWPOCDb/ygKRXq3cj1TGu2I89rryGWXfsuqmMFXQPJdz9gvfQIj+BVG3TMXR+JMkVRM8TBxH5ER1j0Gxju8ykFpNxIj0OhJx0NxJS0SjD52I/TOj5QO7Y9CFjYE0cfWnyvchV50+9HjgGKReoHuo=
+	t=1721167991; cv=none; b=evZLrrs1i2Fx2CaRmLdtW5DkiPAkGI0EUYjArP+BkDe53kyMWHBKyaPHepSzTPP/iO7wzmfPRfuTbcdDpTbsw12k2q2daB5K6TpfFUkjIy/RH/qquuS6UYTrpTY2wBkCg8dQnnPZeCC8oc1jXDEpiyGAQAGGQghuoU24US+LXIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721167990; c=relaxed/simple;
-	bh=kezXaT3v6LZXlObjaJmSDpR0VCdvNGV2dck36xLGu9M=;
+	s=arc-20240116; t=1721167991; c=relaxed/simple;
+	bh=XMtSAnQLUPLTjEcZ9/jJuTztPkljj4KBCEwVdIRm9FQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=q5C6gSLHBvBr/1cvUbTDES3MOKYr/aSUeXDwSQrYlVLgOGBjP2mgJP0Mti/hG6LL0pE14n4BSomxBWP7gj7st/53rK5nNVgCKCtLm3nCLRTp6DoWmUsIsIP0BhxTLGuibnKUiz7aNqtMHP6cfSGkGKhB4e0vOqaPsaDXZmDUE88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=muyZ68k0; arc=none smtp.client-ip=209.85.208.180
+	 In-Reply-To:To:Cc; b=l38JAuAUQtSDUtHTeBnkHCh6vINDp30N6i6tkzNI+7f8w3OtAdHmpk//anzsnv4Mgy7k+DPlymOBWyRHuDV2r3Qua7c4PriQ4h4RJ8Bh2qOXHfTnzO1TvKh1cYjVwTV2RDgpNkVoRoxBrDAXPlXSojlwh7aA2yttjBHvaXa6GVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FjmQLgMj; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2eabd22d3f4so70833811fa.1
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-595850e7e11so7412618a12.1
         for <stable@vger.kernel.org>; Tue, 16 Jul 2024 15:13:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721167986; x=1721772786; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1721167987; x=1721772787; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rXxJu7W4ql54UYL0JTMsFKchNv7XNstoFoH6eTpHkCk=;
-        b=muyZ68k08p/8rs5/4bea7a7oDg2V8WFy5+9lwPJELXJFCFRvLqqzvJDPU4szrzhphO
-         xfoxoktPVVTjk8AY5yaak8MMa8XmoC7ddRj6yZ6u1FmZr9p5ISDgMSpDcgQtCUM/cWeQ
-         9rMCv/AV1MqAJZdN8vWEG4FEdEUXaPa46Qfyyx41zeI3SdMxaWDCxPZuEr8tGC/QbAPX
-         +G2AbqxkCqUTJhpzJ6rx4Hjh3ctqYPxsynM+NT4eHpAG1yNJzgpBJCJmIpHB+TBOJzM9
-         Rx/jEJZibKicMy01LL3vcQN5CJYuHuspIUffAPLIE00tWZAi7faKHwmPsy0zxF5REwRS
-         Gyfw==
+        bh=N37H6kLbkNAIPuExxunsB7bhPLTHsDDj/8KnxxdH8yw=;
+        b=FjmQLgMjigIdM1J3dcOZykVf0m/v3rTlS5b8bZ/rbCa1+m6MqBp91Ybu/YUBW8fR6I
+         wUgnXFEJeMW1qSXGMCyCZ6XxFykfQe/7Bhxn0VihsmXD1aENdk/JqBocGb2xtsSEP04L
+         0ppImgesB9rCJv2Xu6elhVNxOAOPEY2B3vd3H9DZiUIH8wf30LOFQywn5pDGFgTr1bgs
+         NB3PrQuuIqu8OCykSm8mfckpi/QtWy40QincLyLT4Q80v8/OkrDeWj7MsPtfPNCnG07S
+         6Ka53AhIpqvv1a18CulBy3nRV4GBtIB/2vX1hkaYzflc4C7HobqrP5jvKAcYMg2WAApN
+         oM1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721167986; x=1721772786;
+        d=1e100.net; s=20230601; t=1721167987; x=1721772787;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rXxJu7W4ql54UYL0JTMsFKchNv7XNstoFoH6eTpHkCk=;
-        b=njRoIngVfdNPhhI3MOyaUKH/Pmi6Hc73iQ9eXMBL0EYr0e8SQVGO+IgpVNAw/ecr1W
-         N5vtEDcG8+MWvS7hQLikRTwdtuueGm8LDPWJANaz4ZJ8R0eM5AAYI5h5p3SqLeQeDxTx
-         qSU4U+sA/lg69lx+xlWekpGRuAdFo/1+3yix8T5MfChX5yQ6d3gR+HPqH1ScIhve6URe
-         EDEI1Ktq9AuHg9nWHtYjJ4toTFRJD3er+jmCl5BZ0qaPH0FP3Q9VbrjD+9AAvbOcfm1h
-         Dm3YLCWFFQ9P5vHM1R83Thogdtzkax3+qngOwh7w1saC4v8GtCkdk5dnG7AVr+FNgGUt
-         wjOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZ76oI5BYoOey6qVVu8IJDa+T2FNLxEZDrlPjDwf0K/uh1pBoEegYqIB58kMq2VuguChKM9oyRH06eLPAtSTDdtObWq6zU
-X-Gm-Message-State: AOJu0Yw3kNWTyIzpRZoDnuiziAxbxmgIE2BENXpX3VzzG+2rWA5BwARB
-	5BNVhw+UI6MId1h8a9nk4PwwtqSxfduKmaZVydOV0cuxQ6tsbn3kpg8xAGlxCR9+vIG5GrfiKNI
-	TZeg=
-X-Google-Smtp-Source: AGHT+IFzUHyuPnjpUGz0IiohdSN62RZaXgipj8QdfEilZoZBDmtYvGzyUHXTF3ThfgoYDkCfoEFz6g==
-X-Received: by 2002:a05:651c:4ca:b0:2ee:8ce9:3037 with SMTP id 38308e7fff4ca-2eef41d8b29mr28242261fa.37.1721167986188;
-        Tue, 16 Jul 2024 15:13:06 -0700 (PDT)
+        bh=N37H6kLbkNAIPuExxunsB7bhPLTHsDDj/8KnxxdH8yw=;
+        b=GPdv8EXUMbX8IsXQluolvfTklzo8xMtUcSTteVL/XgIjYn08F7tokZI99LU5xg+F0m
+         oMvC7t5B4Iy1qZxKVz4Mq6Uj2ltR9wveEk68Dk9s252dsZUCmo8I2JrvYzVf/KcBU/0S
+         wPONFHCQ18jlOdce4XxiS3deUUwBgyT2hV/upBC4JarluXlh8GDy3eqYjAzlGW2dIokn
+         r162STce2VQ34pWeWRmRtSpPDrpm9+Kfrn4ava4GoY6TZb8rYjTK+qx1lR+olpsGJOj6
+         irx+TVLhXqFIE9BrylTNjl7+HVSYdCvTWAgdhRTLApkpgyEOQSEfSu88OtbOef/k5BWW
+         g/zg==
+X-Forwarded-Encrypted: i=1; AJvYcCWZBOtOlAZJktzdVkm4tO49dHN+tvno+n3j24Lr5oeD+QP+A8/PSbXRERGUi42N3harJVyt246s9OWnTC7vvqNYiD2QCdLo
+X-Gm-Message-State: AOJu0YwaEjyNqcqeh8Ms8hTc9N/P1AgTUye4v6sghyX07eoslRD+Pdjw
+	ZSlTygJUf6WupVbfwoaedslEuKhq5fmgEXYpFU7atDRA/Qd80K6zL0h5q9jOD24BrhOhqN1ArEO
+	AEVc=
+X-Google-Smtp-Source: AGHT+IG+MADQTpWKslhKvuJZKyGIHvh1adrMraY/f13ntQtqMtGVpyG6NOKMVQVgZZdl1PITC4I3bw==
+X-Received: by 2002:a50:a6d7:0:b0:58c:74ae:24ee with SMTP id 4fb4d7f45d1cf-59ef06b97fcmr1807973a12.38.1721167987397;
+        Tue, 16 Jul 2024 15:13:07 -0700 (PDT)
 Received: from [127.0.1.1] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-59b268a28ddsm5582997a12.71.2024.07.16.15.13.05
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-59b268a28ddsm5582997a12.71.2024.07.16.15.13.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jul 2024 15:13:05 -0700 (PDT)
+        Tue, 16 Jul 2024 15:13:07 -0700 (PDT)
 From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date: Tue, 16 Jul 2024 23:13:24 +0100
-Subject: [PATCH v2 1/2] media: qcom: camss: Remove use_count guard in
- stop_streaming
+Date: Tue, 16 Jul 2024 23:13:25 +0100
+Subject: [PATCH v2 2/2] media: qcom: camss: Fix ordering of
+ pm_runtime_enable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,7 +80,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240716-linux-next-24-07-13-camss-fixes-v2-1-e60c9f6742f2@linaro.org>
+Message-Id: <20240716-linux-next-24-07-13-camss-fixes-v2-2-e60c9f6742f2@linaro.org>
 References: <20240716-linux-next-24-07-13-camss-fixes-v2-0-e60c9f6742f2@linaro.org>
 In-Reply-To: <20240716-linux-next-24-07-13-camss-fixes-v2-0-e60c9f6742f2@linaro.org>
 To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
@@ -94,88 +94,58 @@ Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  Bryan O'Donoghue <bryan.odonoghue@linaro.org>, stable@vger.kernel.org
 X-Mailer: b4 0.15-dev-13183
 
-The use_count check was introduced so that multiple concurrent Raw Data
-Interfaces RDIs could be driven by different virtual channels VCs on the
-CSIPHY input driving the video pipeline.
+pm_runtime_enable() should happen prior to vfe_get() since vfe_get() calls
+pm_runtime_resume_and_get().
 
-This is an invalid use of use_count though as use_count pertains to the
-number of times a video entity has been opened by user-space not the number
-of active streams.
+This is a basic race condition that doesn't show up for most users so is
+not widely reported. If you blacklist qcom-camss in modules.d and then
+subsequently modprobe the module post-boot it is possible to reliably show
+this error up.
 
-If use_count and stream-on count don't agree then stop_streaming() will
-break as is currently the case and has become apparent when using CAMSS
-with libcamera's released softisp 0.3.
+The kernel log for this error looks like this:
 
-The use of use_count like this is a bit hacky and right now breaks regular
-usage of CAMSS for a single stream case. As an example the "qcam"
-application in libcamera will fail with an -EBUSY result on stream stop and
-cannot then subsequently be restarted.
+qcom-camss ac5a000.camss: Failed to power up pipeline: -13
 
-The kernel log for this fault looks like this:
-
-[ 1265.509831] WARNING: CPU: 5 PID: 919 at drivers/media/common/videobuf2/videobuf2-core.c:2183 __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
-...
-[ 1265.510630] Call trace:
-[ 1265.510636]  __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
-[ 1265.510648]  vb2_core_streamoff+0x24/0xcc [videobuf2_common]
-[ 1265.510660]  vb2_ioctl_streamoff+0x5c/0xa8 [videobuf2_v4l2]
-[ 1265.510673]  v4l_streamoff+0x24/0x30 [videodev]
-[ 1265.510707]  __video_do_ioctl+0x190/0x3f4 [videodev]
-[ 1265.510732]  video_usercopy+0x304/0x8c4 [videodev]
-[ 1265.510757]  video_ioctl2+0x18/0x34 [videodev]
-[ 1265.510782]  v4l2_ioctl+0x40/0x60 [videodev]
-...
-[ 1265.510944] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 0 in active state
-[ 1265.511175] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 1 in active state
-[ 1265.511398] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 2 in active st
-
-One CAMSS specific way to handle multiple VCs on the same RDI might be:
-
-- Reference count each pipeline enable for CSIPHY, CSID, VFE and RDIx.
-- The video buffers are already associated with msm_vfeN_rdiX so
-  release video buffers when told to do so by stop_streaming.
-- Only release the power-domains for the CSIPHY, CSID and VFE when
-  their internal refcounts drop.
-
-Either way refusing to release video buffers based on use_count is
-erroneous and should be reverted. The silicon enabling code for selecting
-VCs is perfectly fine. Its a "known missing feature" that concurrent VCs
-won't work with CAMSS right now.
-
-Initial testing with this code didn't show an error but, SoftISP and "real"
-usage with Google Hangouts breaks the upstream code pretty quickly, we need
-to do a partial revert and take another pass at VCs.
-
-This commit partially reverts commit 89013969e232 ("media: camss: sm8250:
-Pipeline starting and stopping for multiple virtual channels")
-
-Fixes: 89013969e232 ("media: camss: sm8250: Pipeline starting and stopping for multiple virtual channels")
+Fixes: 02afa816dbbf ("media: camss: Add basic runtime PM support")
 Reported-by: Johan Hovold <johan+linaro@kernel.org>
 Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com/
 Tested-by: Johan Hovold <johan+linaro@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/media/platform/qcom/camss/camss-video.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/media/platform/qcom/camss/camss.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-video.c b/drivers/media/platform/qcom/camss/camss-video.c
-index cd72feca618c..3b8fc31d957c 100644
---- a/drivers/media/platform/qcom/camss/camss-video.c
-+++ b/drivers/media/platform/qcom/camss/camss-video.c
-@@ -297,12 +297,6 @@ static void video_stop_streaming(struct vb2_queue *q)
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index 51b1d3550421..d64985ca6e88 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -2283,6 +2283,8 @@ static int camss_probe(struct platform_device *pdev)
  
- 		ret = v4l2_subdev_call(subdev, video, s_stream, 0);
+ 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
  
--		if (entity->use_count > 1) {
--			/* Don't stop if other instances of the pipeline are still running */
--			dev_dbg(video->camss->dev, "Video pipeline still used, don't stop streaming.\n");
--			return;
--		}
++	pm_runtime_enable(dev);
++
+ 	num_subdevs = camss_of_parse_ports(camss);
+ 	if (num_subdevs < 0) {
+ 		ret = num_subdevs;
+@@ -2323,8 +2325,6 @@ static int camss_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
+-	pm_runtime_enable(dev);
 -
- 		if (ret) {
- 			dev_err(video->camss->dev, "Video pipeline stop failed: %d\n", ret);
- 			return;
+ 	return 0;
+ 
+ err_register_subdevs:
+@@ -2332,6 +2332,7 @@ static int camss_probe(struct platform_device *pdev)
+ err_v4l2_device_unregister:
+ 	v4l2_device_unregister(&camss->v4l2_dev);
+ 	v4l2_async_nf_cleanup(&camss->notifier);
++	pm_runtime_disable(dev);
+ err_genpd_cleanup:
+ 	camss_genpd_cleanup(camss);
+ 
 
 -- 
 2.45.2
