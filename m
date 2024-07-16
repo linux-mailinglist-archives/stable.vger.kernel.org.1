@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-59825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF714932BF8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FBC932B56
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AE131F21915
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31DC3B239FF
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD4019B3EC;
-	Tue, 16 Jul 2024 15:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE6219AA40;
+	Tue, 16 Jul 2024 15:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncRS46Ow"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cukTmU51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A66F1DA4D;
-	Tue, 16 Jul 2024 15:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDD81DDF5;
+	Tue, 16 Jul 2024 15:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145025; cv=none; b=oEk/MTtu6fANaHHMdwPmGfn/N6ASCKJglqPq+L+UXJl6TLuiYOvLp3nNTIpVlTQZJZTyOvn4jDX5iYQac3Hwoowa1S4u7k19iRFD/tH+xpb8+ITl+K6vRp4SyiwipWeGJxfNuSxBX2QhRc7Tjd55VH0lIWqSjCvqVmRYdtj934w=
+	t=1721144634; cv=none; b=kP0/dWpqd8p4TfeVdi07s2tR0jIDEHsq+i6McAQQptxlHQu6jLIGg92CHJXyddFILhgyPt+O1SiX8QRgGcTudO3GQgGUhDte9CMGLI8FfSmlLwy55IdbutBiV+vfZDffuXJCtuekDYQMrIjkZivUH0GldGEqmidYrhPoJxp79/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145025; c=relaxed/simple;
-	bh=kgS5HLOFECUsBWjkAB8begdtzm+SCy3f7rU6ZnBvuXQ=;
+	s=arc-20240116; t=1721144634; c=relaxed/simple;
+	bh=mXpQibZxJOknLLvPrLIEsMBSgz5r5x/3hghzg/wmujo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GN7dYb3CtrenRCas3RN60B9DZbRlM9lE7V/FfLC2iIOGCLBDaTiD7A9Xmxtipbt9pE4iDptt/wN073lN0WCA+9UHEnkA59A9NUELeTmEhGjdQ5iygi8lIsNJ65vflpiCfwcxUYVuXzS5Vvy1ZPOQ5jHBvr/rh0w6OwildRgH7Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncRS46Ow; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36749C116B1;
-	Tue, 16 Jul 2024 15:50:24 +0000 (UTC)
+	 MIME-Version; b=ZfValYKdDIRKNqE9PI8EbeWt5ybPqYsN2QNVz75owdLNxaq5OCdPp35H8hl1x6L2KwGyQ0TbaCp8IN66I6jUwUAuTOfGKpy9+0pqGAxUZvCrecl1hffesSuHw+P7CB72j+QJHYlV/c9LQYBqHL4l57LrPOs2XKT+age+XaPufgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cukTmU51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732EBC116B1;
+	Tue, 16 Jul 2024 15:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145024;
-	bh=kgS5HLOFECUsBWjkAB8begdtzm+SCy3f7rU6ZnBvuXQ=;
+	s=korg; t=1721144633;
+	bh=mXpQibZxJOknLLvPrLIEsMBSgz5r5x/3hghzg/wmujo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ncRS46Ow6Xia4bQSkucoJ9amt1zcvJdUIjTHDL0CBrsyuJthqdGCQVEkP/RSXBX+x
-	 XdabU6XHyc/e0ORkEnWrA9bWiu48zPd+1d2eyVY3ztHTZW233+LCuMIGxZ22j0jf/u
-	 tHyqtdtGfozwtMVUMxj26xvzwiAyN/O0as9N1wIw=
+	b=cukTmU51pTqGsSUHO4xiUSZUjLKh9V2ONQAA0wmOqByZheeM+OkZxFhCnqVUfBbfS
+	 9PWe8fPzk6dCgjJAKW6Jr9vkVzOdyv1alL/SmqpIl61jSw3kCoGWElLhdMfnmh0AfN
+	 8k/zsbSbq2CreC2t+7HgjQrH/88FQN7mQdZ8bwLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vanillan Wang <vanillanwang@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.9 074/143] USB: serial: option: add Rolling RW350-GL variants
+	Alex Turin <alex@vastdata.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 055/108] nvmet: fix a possible leak when destroy a ctrl during qp establishment
 Date: Tue, 16 Jul 2024 17:31:10 +0200
-Message-ID: <20240716152758.824222967@linuxfoundation.org>
+Message-ID: <20240716152748.099135515@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vanillan Wang <vanillanwang@163.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-commit ae420771551bd9f04347c59744dd062332bdec3e upstream.
+[ Upstream commit c758b77d4a0a0ed3a1292b3fd7a2aeccd1a169a4 ]
 
-Update the USB serial option driver support for the Rolling
-RW350-GL
-- VID:PID 33f8:0802, RW350-GL are laptop M.2 cards (with
-MBIM interfaces for /Linux/Chrome OS)
+In nvmet_sq_destroy we capture sq->ctrl early and if it is non-NULL we
+know that a ctrl was allocated (in the admin connect request handler)
+and we need to release pending AERs, clear ctrl->sqs and sq->ctrl
+(for nvme-loop primarily), and drop the final reference on the ctrl.
 
-Here are the outputs of usb-devices:
+However, a small window is possible where nvmet_sq_destroy starts (as
+a result of the client giving up and disconnecting) concurrently with
+the nvme admin connect cmd (which may be in an early stage). But *before*
+kill_and_confirm of sq->ref (i.e. the admin connect managed to get an sq
+live reference). In this case, sq->ctrl was allocated however after it was
+captured in a local variable in nvmet_sq_destroy.
+This prevented the final reference drop on the ctrl.
 
-usbmode=63: mbim, pipe
+Solve this by re-capturing the sq->ctrl after all inflight request has
+completed, where for sure sq->ctrl reference is final, and move forward
+based on that.
 
-T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0802 Rev=00.01
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=USB DATA CARD
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+This issue was observed in an environment with many hosts connecting
+multiple ctrls simoutanuosly, creating a delay in allocating a ctrl
+leading up to this race window.
 
-usbmode=64: mbim, others at (If#= 5 adb)
-
-MBIM(MI0) + GNSS(MI2) + AP log(MI3) + AP META(MI4) + ADB(MI5) +
-MD AT(MI6) + MD META(MI7) + NPT(MI8) + Debug(MI9)
-
-T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  5 Spd=5000 MxCh= 0
-D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0802 Rev=00.01
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=USB DATA CARD
-C:  #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=06(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=07(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=08(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=09(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8a(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Signed-off-by: Vanillan Wang <vanillanwang@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Alex Turin <alex@vastdata.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvme/target/core.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2333,6 +2333,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
- 	  .driver_info = RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
+diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
+index 59109eb8e8e46..a04bb02c1251b 100644
+--- a/drivers/nvme/target/core.c
++++ b/drivers/nvme/target/core.c
+@@ -795,6 +795,15 @@ void nvmet_sq_destroy(struct nvmet_sq *sq)
+ 	wait_for_completion(&sq->free_done);
+ 	percpu_ref_exit(&sq->ref);
+ 
++	/*
++	 * we must reference the ctrl again after waiting for inflight IO
++	 * to complete. Because admin connect may have sneaked in after we
++	 * store sq->ctrl locally, but before we killed the percpu_ref. the
++	 * admin connect allocates and assigns sq->ctrl, which now needs a
++	 * final ref put, as this ctrl is going away.
++	 */
++	ctrl = sq->ctrl;
++
+ 	if (ctrl) {
+ 		/*
+ 		 * The teardown flow may take some time, and the host may not
+-- 
+2.43.0
+
 
 
 
