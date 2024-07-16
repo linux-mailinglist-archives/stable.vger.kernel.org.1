@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-59788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95276932BC1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:48:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0122E932B20
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C17571C22EF2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:48:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FC1F1F2327D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95041DA4D;
-	Tue, 16 Jul 2024 15:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 279641448ED;
+	Tue, 16 Jul 2024 15:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxdMyi2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ky6qlS92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878CF12B72;
-	Tue, 16 Jul 2024 15:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1C1F9E8;
+	Tue, 16 Jul 2024 15:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144910; cv=none; b=WV8dsQc0clOK/Oh0xVl5cTlTsFwARfdi6z+zVwrzVZ6+keVh41mnkdhMJT5uO5z0jDMuXHFpjIlDulNTItNl4pjxsCCFlLcAP9EiS5Wf31giPbV+Jq7zmq/PYU5EeNOcr+13zfrZ52WuOHsELDPhZMNI5IA0zcsC11oAiUJPSQ8=
+	t=1721144511; cv=none; b=WFVStIl2KxGiilz5LF8Zmb0fMupvhqYxrSXtrsP57OZnoJYYOuJYCUqtZImcistAhvok+NHT2dGPzMvJxt8BxATO8vkdnHd4Zo+U1eBhR9duAFtGOwyyvP288BVoIx/rd/lkTrdHgTQk/K3NGSsHJqlcjU4uXd/jKMea8trxbwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144910; c=relaxed/simple;
-	bh=eo4TmgqCxcXYnqUsTfWQuqfqiy0cOXhFs0K6nh094Ws=;
+	s=arc-20240116; t=1721144511; c=relaxed/simple;
+	bh=YsCBcTyTBubVp+GTQD+WuH1lDDFuZroeyxLrXailNr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y110kSFYQZrQw5hRQ3EOzcFm1SemSyHIpXLUn2P3Ch0KIalOmulL4rTsjotNrMOr0uyKALIGFWsk4VPxlbfEM7aenDDQ7fW+NUCce0jm+NwHP8emtw+mC/VbbBJ8GTHItdkdzaTXm/Ea3c80qP6B5D3Ho9a7iIXCwYmEyeIJQ2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxdMyi2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C980C116B1;
-	Tue, 16 Jul 2024 15:48:29 +0000 (UTC)
+	 MIME-Version; b=AnoLSIMTU/Z5jHfZJ0WlUc4sWEBAhY23dLY3PVrrEybOyDhudqjM7UYiUNbQfZ8XV73YWFAj3kp6jWlpiOx9TdAKo7d7Ltkqdbj0dt7ab/YpR2nm+iQXhrZPJfPfbyjZ2/4H5wUMZFZEWJVlP5DMQS5Q/FxxDNmwK5YqcB8n+vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ky6qlS92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C44DC116B1;
+	Tue, 16 Jul 2024 15:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144910;
-	bh=eo4TmgqCxcXYnqUsTfWQuqfqiy0cOXhFs0K6nh094Ws=;
+	s=korg; t=1721144511;
+	bh=YsCBcTyTBubVp+GTQD+WuH1lDDFuZroeyxLrXailNr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxdMyi2vhTMsk/x0/QU8S9KyNYZPmi5AocaYf8mo8/OZstV4cvL/P3WpfLc3RsZK/
-	 NNGClHHc6G3wkt3xiRjIe1UCmpndEu9Wx6qFVjH8+FVBrZ6CfJ91aGgt7C8ETE/Srw
-	 MV6sbxOXmHj7bFE7Lv7/eUO3TIcQGepRKjsZgFlU=
+	b=Ky6qlS92Jylw2ojPLd8xpH4hWuf3OHRwRmBdS6bPbHX+J6e+jGynYfRRxMSZFLmG4
+	 mFAGm59oHHryBPju0xL+qpoYyq8YF8PB4FnIl5ESjcTUAcbea0AZHYbTb1GHNyTMrt
+	 cgAAGMBfBqZAvLxlnzHgsZKX09XWeKiHO6pi4hvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Hui Lee <jianhui.lee@canonical.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 037/143] net: ethernet: mtk-star-emac: set mac_managed_pm when probing
+Subject: [PATCH 5.10 018/108] media: dvb-frontends: tda10048: Fix integer overflow
 Date: Tue, 16 Jul 2024 17:30:33 +0200
-Message-ID: <20240716152757.415496556@linuxfoundation.org>
+Message-ID: <20240716152746.699479403@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Hui Lee <jianhui.lee@canonical.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 8c6790b5c25dfac11b589cc37346bcf9e23ad468 ]
+[ Upstream commit 1aa1329a67cc214c3b7bd2a14d1301a795760b07 ]
 
-The below commit introduced a warning message when phy state is not in
-the states: PHY_HALTED, PHY_READY, and PHY_UP.
-commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+state->xtal_hz can be up to 16M, so it can overflow a 32 bit integer
+when multiplied by pll_mfactor.
 
-mtk-star-emac doesn't need mdiobus suspend/resume. To fix the warning
-message during resume, indicate the phy resume/suspend is managed by the
-mac when probing.
+Create a new 64 bit variable to hold the calculations.
 
-Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
-Signed-off-by: Jian Hui Lee <jianhui.lee@canonical.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20240708065210.4178980-1-jianhui.lee@canonical.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-25-3c4865f5a4b0@chromium.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_star_emac.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/media/dvb-frontends/tda10048.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-index 31aebeb2e2858..25989c79c92e6 100644
---- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
-+++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-@@ -1524,6 +1524,7 @@ static int mtk_star_probe(struct platform_device *pdev)
- {
- 	struct device_node *of_node;
- 	struct mtk_star_priv *priv;
-+	struct phy_device *phydev;
- 	struct net_device *ndev;
- 	struct device *dev;
- 	void __iomem *base;
-@@ -1649,6 +1650,12 @@ static int mtk_star_probe(struct platform_device *pdev)
- 	netif_napi_add(ndev, &priv->rx_napi, mtk_star_rx_poll);
- 	netif_napi_add_tx(ndev, &priv->tx_napi, mtk_star_tx_poll);
+diff --git a/drivers/media/dvb-frontends/tda10048.c b/drivers/media/dvb-frontends/tda10048.c
+index f1d5e77d5dcce..db829754f1359 100644
+--- a/drivers/media/dvb-frontends/tda10048.c
++++ b/drivers/media/dvb-frontends/tda10048.c
+@@ -410,6 +410,7 @@ static int tda10048_set_if(struct dvb_frontend *fe, u32 bw)
+ 	struct tda10048_config *config = &state->config;
+ 	int i;
+ 	u32 if_freq_khz;
++	u64 sample_freq;
  
-+	phydev = of_phy_find_device(priv->phy_node);
-+	if (phydev) {
-+		phydev->mac_managed_pm = true;
-+		put_device(&phydev->mdio.dev);
-+	}
-+
- 	return devm_register_netdev(dev, ndev);
- }
+ 	dprintk(1, "%s(bw = %d)\n", __func__, bw);
  
+@@ -451,9 +452,11 @@ static int tda10048_set_if(struct dvb_frontend *fe, u32 bw)
+ 	dprintk(1, "- pll_pfactor = %d\n", state->pll_pfactor);
+ 
+ 	/* Calculate the sample frequency */
+-	state->sample_freq = state->xtal_hz * (state->pll_mfactor + 45);
+-	state->sample_freq /= (state->pll_nfactor + 1);
+-	state->sample_freq /= (state->pll_pfactor + 4);
++	sample_freq = state->xtal_hz;
++	sample_freq *= state->pll_mfactor + 45;
++	do_div(sample_freq, state->pll_nfactor + 1);
++	do_div(sample_freq, state->pll_pfactor + 4);
++	state->sample_freq = sample_freq;
+ 	dprintk(1, "- sample_freq = %d\n", state->sample_freq);
+ 
+ 	/* Update the I/F */
 -- 
 2.43.0
 
