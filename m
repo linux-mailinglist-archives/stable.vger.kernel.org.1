@@ -1,60 +1,73 @@
-Return-Path: <stable+bounces-59485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23904932939
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:40:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D7293293C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2510284331
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:40:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEA80B21BBA
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C383E1AD403;
-	Tue, 16 Jul 2024 14:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C5E1A2C06;
+	Tue, 16 Jul 2024 14:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otIN4zQf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B1WiCmqF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799D11AD3FC;
-	Tue, 16 Jul 2024 14:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE9B1990D7;
+	Tue, 16 Jul 2024 14:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721140207; cv=none; b=XwZ/GRbRqbgsIGhhsbXdFEC8Rl1w77tUpfYPVvvo//oWkW5iIcc7cPFj3/Z086dIMd2LjYzTpciDQQsHIiGX9NaEGdods7bsFvCmZj3Pm1Z8VwGY3dVv7wFjsFml8k43xOlVAgMT3jr/4MiGmp2IeetGsJ4eoYsF1F60BtEZiHQ=
+	t=1721140213; cv=none; b=ogB7P2uzKgB4PQP968deb1owWBWpHWvlq7DS9OkOU9vJlX7c68eiiYtQBSN8RFjU3LQ+9niQEctZfTtwhh8XO34drqkvIJNu0jbu3+gb7nBHLA/ymrRBc6ldiJDUWA213NCrj0qvBOa3UG3FesabegdpefIWKVSjdxdj9CLusNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721140207; c=relaxed/simple;
-	bh=LjbHBl9XT8eYnK5YHkHUGmwhL5Jidg3r9ntRdAhG60E=;
+	s=arc-20240116; t=1721140213; c=relaxed/simple;
+	bh=U+xuZ+SSYRANK4+OprKoEHOV9pVEOFuelFsbBJh26Us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPFPyG1BMZIkkGmMWw4i4aOJD13Cme6R3m43HmFML8Byw6mO4a55bYyRGCwch+kDTUs6s0a/479cr+J8Y5L19bd5yDpC1Jt/NYy13fQXxWbtBmkvBk/EQpKsD5AnBP8AEwChPPf8SSMgoJrt9GC9IUvOoVhL88SOe5yolPy1y+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otIN4zQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06F6C116B1;
-	Tue, 16 Jul 2024 14:30:05 +0000 (UTC)
+	 MIME-Version; b=sIAFFpDeTZXGppJPan1RKy2a4Iy49ZchGsG8dmL6BvtYK4yf/oMcE7tTjc+OLQd/gtDURxtqCVyGdXcqWs45wVzB0x8b3Ie34C/2X+DDMzVC1c8wgTI51IAjQTqYWrJAW9FhBPx9MyQp7xjtqePl6/Nugh4XRkrAdNWSNP/4Swg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B1WiCmqF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1676DC116B1;
+	Tue, 16 Jul 2024 14:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721140207;
-	bh=LjbHBl9XT8eYnK5YHkHUGmwhL5Jidg3r9ntRdAhG60E=;
+	s=k20201202; t=1721140213;
+	bh=U+xuZ+SSYRANK4+OprKoEHOV9pVEOFuelFsbBJh26Us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=otIN4zQfpCXyj7mJM418i1sZHYz4/harxuAMKsQ0JqkSwvfXIytxko/LBhz4T6WmG
-	 1rVQ2HzrsvGTqjMxO2uqEdXcoBRAB5VnG80+dSfLWqmQswDAi+uoX5zm+QhsVC8a+p
-	 4QBY5K23v3+ST3/Onlt+Mq3c4DgERZbre1d6Tz6ghKzzDpBC71IhNc3TMLEbR/GNoo
-	 narowg0rE34knIHlHAnhjBdAtltI18AbI4UDPCAo7Cmk8p3rJm1OGBvmXUAG6uTPke
-	 hx5RHXHvDfFEeT4ROE6akQp8iv8xJ3G+THQ2j2jXGhL+G9fQW6T7BPYC6TLvIHhkS2
-	 8/mnCoQNvpWyw==
+	b=B1WiCmqFX8uZxL1dZF/IwRnnq5Hq2Ix82vGfVZvRqDQvsRxMhCZC3JQE/wZfCAUGJ
+	 BD2L3htuvQzK0VrlUKaBKpgfuonjFEhDsMqCpDUQ0D0Q2mnhKQBRJivKRhCPpADJUN
+	 70MTA3T/aMoa5ZW6/kNEmxlWlgMuC59sYRq24LVfRrGRAZnftnJldFB7l1OZtvl5Bi
+	 jxiJX3Njz/5SxwoIF+cDZQfVUBFqz6feuXwCOMKArp7d1WyDahUX7RLJaqfkmMLJGP
+	 TuhJOwifMdk3vBEdyJ9CtHynAJNvz/nfSrFXU5bSB3lT81Bs83c1Q9bKH4s6ESlVqr
+	 9WOYNdpEAutBQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+Cc: Tom Chung <chiahsuan.chung@amd.com>,
+	Sun peng Li <sunpeng.li@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 5/7] Bluetooth: hci_core: cancel all works upon hci_unregister_dev()
-Date: Tue, 16 Jul 2024 10:29:45 -0400
-Message-ID: <20240716142953.2714154-5-sashal@kernel.org>
+	harry.wentland@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	alex.hung@amd.com,
+	hamza.mahfooz@amd.com,
+	roman.li@amd.com,
+	mario.limonciello@amd.com,
+	joshua@froggi.es,
+	wayne.lin@amd.com,
+	srinivasan.shanmugam@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.10 6/7] drm/amd/display: Reset freesync config before update new state
+Date: Tue, 16 Jul 2024 10:29:46 -0400
+Message-ID: <20240716142953.2714154-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716142953.2714154-1-sashal@kernel.org>
 References: <20240716142953.2714154-1-sashal@kernel.org>
@@ -69,52 +82,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.221
 Content-Transfer-Encoding: 8bit
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit 0d151a103775dd9645c78c97f77d6e2a5298d913 ]
+[ Upstream commit 6b8487cdf9fc7bae707519ac5b5daeca18d1e85b ]
 
-syzbot is reporting that calling hci_release_dev() from hci_error_reset()
-due to hci_dev_put() from hci_error_reset() can cause deadlock at
-destroy_workqueue(), for hci_error_reset() is called from
-hdev->req_workqueue which destroy_workqueue() needs to flush.
+[Why]
+Sometimes the new_crtc_state->vrr_infopacket did not sync up with the
+current state.
+It will affect the update_freesync_state_on_stream() does not update
+the state correctly.
 
-We need to make sure that hdev->{rx_work,cmd_work,tx_work} which are
-queued into hdev->workqueue and hdev->{power_on,error_reset} which are
-queued into hdev->req_workqueue are no longer running by the moment
+[How]
+Reset the freesync config before get_freesync_config_for_crtc() to
+make sure we have the correct new_crtc_state for VRR.
 
-       destroy_workqueue(hdev->workqueue);
-       destroy_workqueue(hdev->req_workqueue);
-
-are called from hci_release_dev().
-
-Call cancel_work_sync() on these work items from hci_unregister_dev()
-as soon as hdev->list is removed from hci_dev_list.
-
-Reported-by: syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=da0a9c9721e36db712e8
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index b9cf5bc9364c1..c8c1cd55c0eb0 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -3839,7 +3839,11 @@ void hci_unregister_dev(struct hci_dev *hdev)
- 	list_del(&hdev->list);
- 	write_unlock(&hci_dev_list_lock);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 29ef0ed44d5f4..c957ef1283f68 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8385,6 +8385,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
+ 	}
  
-+	cancel_work_sync(&hdev->rx_work);
-+	cancel_work_sync(&hdev->cmd_work);
-+	cancel_work_sync(&hdev->tx_work);
- 	cancel_work_sync(&hdev->power_on);
-+	cancel_work_sync(&hdev->error_reset);
+ 	/* Update Freesync settings. */
++	reset_freesync_config_for_crtc(dm_new_crtc_state);
+ 	get_freesync_config_for_crtc(dm_new_crtc_state,
+ 				     dm_new_conn_state);
  
- 	if (!test_bit(HCI_QUIRK_NO_SUSPEND_NOTIFIER, &hdev->quirks)) {
- 		hci_suspend_clear_tasks(hdev);
 -- 
 2.43.0
 
