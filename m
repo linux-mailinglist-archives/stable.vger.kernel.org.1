@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-59503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A84932A74
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:34:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B00932B40
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793811C22359
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:34:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEE61284F5D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18771DDCE;
-	Tue, 16 Jul 2024 15:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E1319DF98;
+	Tue, 16 Jul 2024 15:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZYXzVOq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1neQ56IB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEA5CA40;
-	Tue, 16 Jul 2024 15:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B882119F48B;
+	Tue, 16 Jul 2024 15:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144047; cv=none; b=FkPcuj4ZNojTx6yB1QDWck4M5DhKSGm+SwYEF9qYDI099mjkLLqnbw1Fqp4O0LxpzS/Gi3rxnTvIX0Tu+ka2iLducQF0xJs8YEIcqBDRoaJnoC+h/0YTEUIijAludZ8Dcfjl6Q9Yxh/aec/VwQFQ2XSsHVwcedjoVN8lzhNNdmA=
+	t=1721144575; cv=none; b=dJlUOQfV6xTIFTiOWkWdB+Y4daFoxzORJ/rN4iGk+eyVHLOk4W+wjhpWQ2mVYRqaVm0Rme2oWEdOspAyDjAu1f6DRvUoYF7QgmIdCf44UBu6Iiv1ULlATgT5roPYgCpOj+XGxP+p4Gut2KQcSo59xminm1JB33ItHDjQsCvi5t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144047; c=relaxed/simple;
-	bh=MVm8RJbDgJFoEbcbO03zviJLDq1JusZe44rKOiuOgw8=;
+	s=arc-20240116; t=1721144575; c=relaxed/simple;
+	bh=3xtUjeWTQZa0IhX35LrYHgRu63/IiHhUbhpwNxEKlRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SIWs58Z2odgnlhjwFlAdwJZLIWSinuEXGG6asaIb8lJd7WZ4pReLe8MT5IeXTsYCxjO4Mu6UwcGhhVllqyPhRHkhfp+SLTG9dHHDpzuE59z0AvYZEH1wPuB5MaSz04wpZ4bAjfmVjUCgNRLMO3rctu1laYt0ALvqH0CD99eQPqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZYXzVOq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7859C4AF0B;
-	Tue, 16 Jul 2024 15:34:06 +0000 (UTC)
+	 MIME-Version; b=g+B1QVKXErpEqnlEVxcL0TYYiGWXGXCSc2vGJvXoGyWMlZYkUjMNL51c+BegJX7S+j1T6d4q0GJ7l5M2OMGAqiUJ4277vLLzCQ9l0+eCexPiReL1YMVznJXbqN+gVIm3LY+66L18xV0oBO96oNn4SIcdqP3j8kIs2KrS6r56sIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1neQ56IB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AAEC4AF0B;
+	Tue, 16 Jul 2024 15:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144047;
-	bh=MVm8RJbDgJFoEbcbO03zviJLDq1JusZe44rKOiuOgw8=;
+	s=korg; t=1721144575;
+	bh=3xtUjeWTQZa0IhX35LrYHgRu63/IiHhUbhpwNxEKlRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZYXzVOqmuEh26bDL/OseDSJDS14pfxSQMfyW8fxo2FvQwV9N9mldwww+OGP33OPX
-	 KxZwAxtqIwNsIM9aos0F3p/4K6gUGeL2c7Brle3pnZQIQkx0HStztTOxp1j94yq/YB
-	 TyzxZLTneNQ5HWNdE/8qXmuAnW6MkDABGa1qq/8Q=
+	b=1neQ56IBEP7se0ZVgA/Rq22RcnhsK3Rgi1vpwF4eaFri5F905UjiF5IxCjmUOAFgf
+	 rXcC+p/YT530WuhKqAzXf3+qnqfSjVy8vDJjakpZZfZesBeCGyXvkIqneZVyn3+RWn
+	 8yQFrKhQSN9eIxaTwg4ZL+gh7lhiP+SOt85qdI2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Yue Sun <samsun1006219@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jay Vosburgh <jay.vosburgh@canonical.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 10/66] media: dvb-frontends: tda18271c2dd: Remove casting during div
+Subject: [PATCH 5.10 030/108] bonding: Fix out-of-bounds read in bond_option_arp_ip_targets_set()
 Date: Tue, 16 Jul 2024 17:30:45 +0200
-Message-ID: <20240716152738.559333938@linuxfoundation.org>
+Message-ID: <20240716152747.155872942@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Sam Sun <samsun1006219@gmail.com>
 
-[ Upstream commit e9a844632630e18ed0671a7e3467431bd719952e ]
+[ Upstream commit e271ff53807e8f2c628758290f0e499dbe51cb3d ]
 
-do_div() divides 64 bits by 32. We were adding a casting to the divider
-to 64 bits, for a number that fits perfectly in 32 bits. Remove it.
+In function bond_option_arp_ip_targets_set(), if newval->string is an
+empty string, newval->string+1 will point to the byte after the
+string, causing an out-of-bound read.
 
-Found by cocci:
-drivers/media/dvb-frontends/tda18271c2dd.c:355:1-7: WARNING: do_div() does a 64-by-32 division, please consider using div64_u64 instead.
-drivers/media/dvb-frontends/tda18271c2dd.c:331:1-7: WARNING: do_div() does a 64-by-32 division, please consider using div64_u64 instead.
+BUG: KASAN: slab-out-of-bounds in strlen+0x7d/0xa0 lib/string.c:418
+Read of size 1 at addr ffff8881119c4781 by task syz-executor665/8107
+CPU: 1 PID: 8107 Comm: syz-executor665 Not tainted 6.7.0-rc7 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
+ print_address_description mm/kasan/report.c:364 [inline]
+ print_report+0xc1/0x5e0 mm/kasan/report.c:475
+ kasan_report+0xbe/0xf0 mm/kasan/report.c:588
+ strlen+0x7d/0xa0 lib/string.c:418
+ __fortify_strlen include/linux/fortify-string.h:210 [inline]
+ in4_pton+0xa3/0x3f0 net/core/utils.c:130
+ bond_option_arp_ip_targets_set+0xc2/0x910
+drivers/net/bonding/bond_options.c:1201
+ __bond_opt_set+0x2a4/0x1030 drivers/net/bonding/bond_options.c:767
+ __bond_opt_set_notify+0x48/0x150 drivers/net/bonding/bond_options.c:792
+ bond_opt_tryset_rtnl+0xda/0x160 drivers/net/bonding/bond_options.c:817
+ bonding_sysfs_store_option+0xa1/0x120 drivers/net/bonding/bond_sysfs.c:156
+ dev_attr_store+0x54/0x80 drivers/base/core.c:2366
+ sysfs_kf_write+0x114/0x170 fs/sysfs/file.c:136
+ kernfs_fop_write_iter+0x337/0x500 fs/kernfs/file.c:334
+ call_write_iter include/linux/fs.h:2020 [inline]
+ new_sync_write fs/read_write.c:491 [inline]
+ vfs_write+0x96a/0xd80 fs/read_write.c:584
+ ksys_write+0x122/0x250 fs/read_write.c:637
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+---[ end trace ]---
 
-Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-8-3c4865f5a4b0@chromium.org
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fix it by adding a check of string length before using it.
+
+Fixes: f9de11a16594 ("bonding: add ip checks when store ip target")
+Signed-off-by: Yue Sun <samsun1006219@gmail.com>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20240702-bond-oob-v6-1-2dfdba195c19@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/tda18271c2dd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_options.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/tda18271c2dd.c b/drivers/media/dvb-frontends/tda18271c2dd.c
-index 5ce58612315da..c399338908d0a 100644
---- a/drivers/media/dvb-frontends/tda18271c2dd.c
-+++ b/drivers/media/dvb-frontends/tda18271c2dd.c
-@@ -345,7 +345,7 @@ static int CalcMainPLL(struct tda_state *state, u32 freq)
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index fe55c81608daa..fa0bf77870d43 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -1100,9 +1100,9 @@ static int bond_option_arp_ip_targets_set(struct bonding *bond,
+ 	__be32 target;
  
- 	OscFreq = (u64) freq * (u64) Div;
- 	OscFreq *= (u64) 16384;
--	do_div(OscFreq, (u64)16000000);
-+	do_div(OscFreq, 16000000);
- 	MainDiv = OscFreq;
- 
- 	state->m_Regs[MPD] = PostDiv & 0x77;
-@@ -369,7 +369,7 @@ static int CalcCalPLL(struct tda_state *state, u32 freq)
- 	OscFreq = (u64)freq * (u64)Div;
- 	/* CalDiv = u32( OscFreq * 16384 / 16000000 ); */
- 	OscFreq *= (u64)16384;
--	do_div(OscFreq, (u64)16000000);
-+	do_div(OscFreq, 16000000);
- 	CalDiv = OscFreq;
- 
- 	state->m_Regs[CPD] = PostDiv;
+ 	if (newval->string) {
+-		if (!in4_pton(newval->string+1, -1, (u8 *)&target, -1, NULL)) {
+-			netdev_err(bond->dev, "invalid ARP target %pI4 specified\n",
+-				   &target);
++		if (strlen(newval->string) < 1 ||
++		    !in4_pton(newval->string + 1, -1, (u8 *)&target, -1, NULL)) {
++			netdev_err(bond->dev, "invalid ARP target specified\n");
+ 			return ret;
+ 		}
+ 		if (newval->string[0] == '+')
 -- 
 2.43.0
 
