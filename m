@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-59639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4874B932B09
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932F4932CB9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A1751F21AD8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5397A284C4B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5D51E895;
-	Tue, 16 Jul 2024 15:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D48E19E809;
+	Tue, 16 Jul 2024 15:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoWhSEOh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snR8Qjt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A220B641;
-	Tue, 16 Jul 2024 15:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7BF19DF75;
+	Tue, 16 Jul 2024 15:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144453; cv=none; b=uPkZEeCV24JiPlWmPvvPivSgtVYiooK2IvlKLA/TAFlOe4R6/nWUmCmdE/iP3y6kN3CCc53EUo2wrSuxWTdXe3yTeag2WqrB6GYcYWAHHjETa9MrJMeZ3Vo9KXge7ml8cfuPjXoFXjKk4vUVh6g8PGPgrU9HQW7jotLXZ8E7sd4=
+	t=1721145452; cv=none; b=DJ6OSf6OCG+/KNhkhuxV3vdPMDkkXekcXcewkZ9DPLJxZFZPR9alS/Z3V/QBMEAjkqUjrvFObnwsO61+salQeQs4tcUqXF5AIjoDy1BIXuQOvHRxibKKu0NHyx+sueFsuNemCJIv7KA947aH8zB1igcu5rgoQdZi2W/JYa1FRHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144453; c=relaxed/simple;
-	bh=1AMTbCA4LVtUGtyhjtqulmnNfcqyzxOZDWFsZijm7i8=;
+	s=arc-20240116; t=1721145452; c=relaxed/simple;
+	bh=NdCbljlbaCnCqvi0cOEpqt315PkUxxeRJZk79ofACKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1ssG2mTkzj6/OLuXGcM5SlxyX2LFfPp60NNZOcmQe2CGCxSnOyFs6DtYe4SEPx7AFcv9ES603sTd2azYPC52/PIhUo111B4+CLzEWQBR4pbmtxczcjFuxDmyH0fERcIbLm6lVf5/ukZxbnlC4zznh/KTkhC35bKntekXKaUmFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoWhSEOh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24F3C116B1;
-	Tue, 16 Jul 2024 15:40:52 +0000 (UTC)
+	 MIME-Version; b=VY8GWqAk2EoZbLrwv00MBFxPZ490PU3UVAUE5CcSxnG/67ccDz+OG1iGXjqCQ3exMax9gfH2ru/LoqzoHPThrg9Gqb9BP4MrqugDQ+HSZLzSOLkSpZIdXyEnv+9MlmFZSWf9I8q51gxAZVOUgzpO2wirJtrDG+FS6EYb5ldAD44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snR8Qjt9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947CEC4AF0D;
+	Tue, 16 Jul 2024 15:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144453;
-	bh=1AMTbCA4LVtUGtyhjtqulmnNfcqyzxOZDWFsZijm7i8=;
+	s=korg; t=1721145452;
+	bh=NdCbljlbaCnCqvi0cOEpqt315PkUxxeRJZk79ofACKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LoWhSEOhp5KHru5DzQKm0fR4kHO3RmMxadN2wGX1AJowfQoIv+MteopbGmyrXcnCi
-	 S0jlAVBnMJGGyjRWUUKP3crlaikmKhTM3mb7crXMgtMSGe7l9eEiDqx98YIo2LmT6H
-	 WmHgbYo3JDB/AM9VFSDHUArjFpOg9BJPIUsYoXkI=
+	b=snR8Qjt9N/eSNfA1iBUqLgVpsR2Bwnyk7A7c/jjjNOiwIitVy7244etbT5g6jVjjG
+	 1PsotAyJ2RPussgwoN5WfoAt6ZsbRSEJdKQ8NbAZlhp8naigAhRkGt8porP7VmrxrM
+	 HsYyb3MMIjzqyOWEuszYcS9Az6ImOY3580Ws351s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 77/78] nilfs2: fix kernel bug on rename operation of broken directory
+	Srujana Challa <schalla@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 38/96] octeontx2-af: update cpt lf alloc mailbox
 Date: Tue, 16 Jul 2024 17:31:49 +0200
-Message-ID: <20240716152743.620245428@linuxfoundation.org>
+Message-ID: <20240716152747.974729001@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Srujana Challa <schalla@marvell.com>
 
-commit a9e1ddc09ca55746079cc479aa3eb6411f0d99d4 upstream.
+[ Upstream commit c0688ec002a451d04a51d43b849765c5ce6cb36f ]
 
-Syzbot reported that in rename directory operation on broken directory on
-nilfs2, __block_write_begin_int() called to prepare block write may fail
-BUG_ON check for access exceeding the folio/page size.
+The CN10K CPT coprocessor contains a context processor
+to accelerate updates to the IPsec security association
+contexts. The context processor contains a context cache.
+This patch updates CPT LF ALLOC mailbox to config ctx_ilen
+requested by VFs. CPT_LF_ALLOC:ctx_ilen is the size of
+initial context fetch.
 
-This is because nilfs_dotdot(), which gets parent directory reference
-entry ("..") of the directory to be moved or renamed, does not check
-consistency enough, and may return location exceeding folio/page size for
-broken directories.
-
-Fix this issue by checking required directory entries ("." and "..") in
-the first chunk of the directory in nilfs_dotdot().
-
-Link: https://lkml.kernel.org/r/20240628165107.9006-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d3abed1ad3d367fa2627
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Srujana Challa <schalla@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 845fe19139ab ("octeontx2-af: fix a issue with cpt_lf_alloc mailbox")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c |   32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/mbox.h    |  2 ++
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c | 10 +++++++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -396,11 +396,39 @@ found:
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index be70269e91684..7c3d7e61afeb3 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -1628,6 +1628,8 @@ struct cpt_lf_alloc_req_msg {
+ 	u16 sso_pf_func;
+ 	u16 eng_grpmsk;
+ 	int blkaddr;
++	u8 ctx_ilen_valid : 1;
++	u8 ctx_ilen : 7;
+ };
  
- struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
- {
--	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
-+	struct page *page;
-+	struct nilfs_dir_entry *de, *next_de;
-+	size_t limit;
-+	char *msg;
+ #define CPT_INLINE_INBOUND      0
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
+index 63a52cc8592a0..b226a4d376aab 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
+@@ -17,7 +17,7 @@
+ #define	PCI_DEVID_OTX2_CPT10K_PF 0xA0F2
  
-+	de = nilfs_get_page(dir, 0, &page);
- 	if (IS_ERR(de))
- 		return NULL;
--	return nilfs_next_entry(de);
-+
-+	limit = nilfs_last_byte(dir, 0);  /* is a multiple of chunk size */
-+	if (unlikely(!limit || le64_to_cpu(de->inode) != dir->i_ino ||
-+		     !nilfs_match(1, ".", de))) {
-+		msg = "missing '.'";
-+		goto fail;
-+	}
-+
-+	next_de = nilfs_next_entry(de);
-+	/*
-+	 * If "next_de" has not reached the end of the chunk, there is
-+	 * at least one more record.  Check whether it matches "..".
-+	 */
-+	if (unlikely((char *)next_de == (char *)de + nilfs_chunk_size(dir) ||
-+		     !nilfs_match(2, "..", next_de))) {
-+		msg = "missing '..'";
-+		goto fail;
-+	}
-+	*p = page;
-+	return next_de;
-+
-+fail:
-+	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
-+	nilfs_put_page(page);
-+	return NULL;
- }
+ /* Length of initial context fetch in 128 byte words */
+-#define CPT_CTX_ILEN    2ULL
++#define CPT_CTX_ILEN    1ULL
  
- ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
+ #define cpt_get_eng_sts(e_min, e_max, rsp, etype)                   \
+ ({                                                                  \
+@@ -429,8 +429,12 @@ int rvu_mbox_handler_cpt_lf_alloc(struct rvu *rvu,
+ 
+ 		/* Set CPT LF group and priority */
+ 		val = (u64)req->eng_grpmsk << 48 | 1;
+-		if (!is_rvu_otx2(rvu))
+-			val |= (CPT_CTX_ILEN << 17);
++		if (!is_rvu_otx2(rvu)) {
++			if (req->ctx_ilen_valid)
++				val |= (req->ctx_ilen << 17);
++			else
++				val |= (CPT_CTX_ILEN << 17);
++		}
+ 
+ 		rvu_write64(rvu, blkaddr, CPT_AF_LFX_CTL(cptlf), val);
+ 
+-- 
+2.43.0
+
 
 
 
