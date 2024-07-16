@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-59572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA125932ABF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C423932A80
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:34:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B1751C228E9
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C51CB1F2346F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349731DDF5;
-	Tue, 16 Jul 2024 15:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8021DA4D;
+	Tue, 16 Jul 2024 15:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7q685OH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXIrhk79"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8167CA40;
-	Tue, 16 Jul 2024 15:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DCACA40;
+	Tue, 16 Jul 2024 15:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144254; cv=none; b=r2ZT/ROpE79KzyRkkJjOuZArxSvxdrYlbj1wIQ/F4jroas+lWfMRcDrlbP+rs7fQQwu5TceTQtRYxPHok/rN2orQvWT9sMOok1vrsRx19l2D50Eb0Iu61aTa2KOFIQzWNnh5sNyI5epvAp2HWfgM6Bvv2DbocZE38IQzOgebD10=
+	t=1721144077; cv=none; b=W2IvUpYtt63mauPy8f+0NqBEp7DdspbWrwLf/E1ODlZjc5/50sYbSaVHXbAicqXp7ssBjvRfNejTgvoYJH/ud0F6ccosM4Cg5zt5H34acYTtHNn0sYXbKB8d9vWhAajzfirl4+enbLG6vTRQRvSgL56raEhURDPT6O9c8uvu3QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144254; c=relaxed/simple;
-	bh=bYURrXaxF15XGDxoFtxQE1VvuD6f2pB7u0jNl5fgf7U=;
+	s=arc-20240116; t=1721144077; c=relaxed/simple;
+	bh=Nlk7dzb+VAUlDzB7PLoqsomt7kFhs0gsE47O1p5vlA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwwK6qo1J3fBfkh2qqJuHRd8zbkRlXZoMP6kG5aYxYf20x+dRcfFjArUTS6+kzPknf2I73VFWdTFIO+j5zwBroT1atGUQ4yGATfR9XKVk203rMIR0FXqUROA2PoyxqdgU3umUxYVuuNzw8iqfnGAW98xaNC+CSbU5kMt1dtD/Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7q685OH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CA7C116B1;
-	Tue, 16 Jul 2024 15:37:33 +0000 (UTC)
+	 MIME-Version; b=UwMkocnoCCURGHEaKizk5Xckd1TbTHTpUjQ1o85+xGLNF7Brvx2f7u2m/leSO8w4ShWwFTHbedaQD93gOgrvTFILB8KIbiTpm5lh9L5Sv43kOolUN+iT2GOBSTLeaAuxULFimWpZz02doezAuZI6KKxWxKyyWIu0ovngdMgj3uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXIrhk79; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98726C4AF0B;
+	Tue, 16 Jul 2024 15:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144253;
-	bh=bYURrXaxF15XGDxoFtxQE1VvuD6f2pB7u0jNl5fgf7U=;
+	s=korg; t=1721144077;
+	bh=Nlk7dzb+VAUlDzB7PLoqsomt7kFhs0gsE47O1p5vlA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7q685OHUmP7zFwYTXLu8a3AQ+dDITrA05lUC52Oxbcc+mlyDXNRKYtlBqTKlTk60
-	 KgV3wJVbMLAJnV6hDelBwRz8wnePHMAX9mYOK+HF05wN3Dfkk+MYsvrsMWQ7TV0dh8
-	 li1bEfh3p6AwbZrsN38qrSdTooQzMuzGVOta28os=
+	b=HXIrhk79xpL5REW225Vl1G6y3e6h0cvqgBFbfpsKZvIe4PLfKZWy6mJnAQBo9WrPf
+	 /3cAq7jN8ZZhzpF8bM5wMfSsUN0LEQ9+9DBp/XwkxONWJVxBfHHgOAh+UuwQH9HdUE
+	 l2Foa34N6SFPrZo7dhwrdaSvos8XuiCxrlT3Be7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kees Cook <keescook@chromium.org>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 11/78] Input: ff-core - prefer struct_size over open coded arithmetic
+Subject: [PATCH 4.19 08/66] Input: ff-core - prefer struct_size over open coded arithmetic
 Date: Tue, 16 Jul 2024 17:30:43 +0200
-Message-ID: <20240716152741.063442553@linuxfoundation.org>
+Message-ID: <20240716152738.484854383@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -106,10 +106,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/input/ff-core.c b/drivers/input/ff-core.c
-index 1cf5deda06e19..a765e185c7a12 100644
+index 66a46c84e28f5..7d83de2c536dd 100644
 --- a/drivers/input/ff-core.c
 +++ b/drivers/input/ff-core.c
-@@ -12,8 +12,10 @@
+@@ -24,8 +24,10 @@
  /* #define DEBUG */
  
  #include <linux/input.h>
@@ -120,7 +120,7 @@ index 1cf5deda06e19..a765e185c7a12 100644
  #include <linux/sched.h>
  #include <linux/slab.h>
  
-@@ -318,9 +320,8 @@ int input_ff_create(struct input_dev *dev, unsigned int max_effects)
+@@ -330,9 +332,8 @@ int input_ff_create(struct input_dev *dev, unsigned int max_effects)
  		return -EINVAL;
  	}
  
