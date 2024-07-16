@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-59889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730A3932C49
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C84D6932CB4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 330D928483D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 050291C2095A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3857319E7FE;
-	Tue, 16 Jul 2024 15:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C14A19FA9D;
+	Tue, 16 Jul 2024 15:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEct9Hq2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/m1Mp9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB61F19DF71;
-	Tue, 16 Jul 2024 15:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B3619FA98;
+	Tue, 16 Jul 2024 15:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145218; cv=none; b=CapssOhdM7m50Prr3Se+9aGHlj+LA3bBZrg5jtBWs514ad3BWZKXsRK0Mr+ljhsB+szqoYHp/NjALS9YYp7zKBRYj1eyToYWYGuu3o3NGatEHBpuE5Tgfu3Q9xkmBKSn4tnLH1TTKubTjkMLvUrrs95x8MRzQjnmHm9NrtzU8oU=
+	t=1721145434; cv=none; b=KtcU/goT+OOohith0SAewTgQK5CYCUIVcTDqatu+8tvTKY2YEeoiWSpFdAGG5J98SDogVBfacNjHIlMcpyAB06rm91Oo6xiZDL7ihY6wzJZ8MSCZwWmskfb89h1dBOjWXGC6zWnTUqDraXFK98uZ08/vDC+E0WxZfQAGPg79oDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145218; c=relaxed/simple;
-	bh=gDm01j+4s7qrN7mNsqhSK78FjHnhhvezKFC2BrLKGgw=;
+	s=arc-20240116; t=1721145434; c=relaxed/simple;
+	bh=/sOL/Ru/5hljYTinAPEVRekUtapfreyqUBgdWw6fD/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6HRdVQ8EORHmvSMeKvay1rpGSFxl5nm1yqGyopjoLCraOeLnfViSK4jufQWuRuP7FMtQjBxxCRz7mTCoY1hf1RoY2Lio9g1pAg7PQIkabqX1AzX7H6aQCRt2V7ZO+e4rhoiXi6Gs1oHulqteL2fFfoVwVveMw8TYqSQK9s8X8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEct9Hq2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F9AC116B1;
-	Tue, 16 Jul 2024 15:53:37 +0000 (UTC)
+	 MIME-Version; b=L/MdKYYLmbhYSoMxdzsaZkhii18k6jdng+0S7pXeP2hyLs8LL1a5B8H6b4jh1DtIuCv8TN+J24TkFjiDirCbln6CBlZJIxuoZppKwWmShtDXMh4c7D/XbzRhVc+GxuLRWkCtA3Zb0EeOgzYjJt3qjmCGidyuDAlPt0xLRBEsaBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/m1Mp9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F10C116B1;
+	Tue, 16 Jul 2024 15:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145217;
-	bh=gDm01j+4s7qrN7mNsqhSK78FjHnhhvezKFC2BrLKGgw=;
+	s=korg; t=1721145434;
+	bh=/sOL/Ru/5hljYTinAPEVRekUtapfreyqUBgdWw6fD/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pEct9Hq20jxJT64EBn5HEnVOgTcCziHoPxzNDThpc1kAXkv9HClf72/ozFI4PI6zy
-	 mhIhbit57VxgwgzK5gP9ob3tXE3n2JiI8v+5TrtLxPPyci7oEyKEWUBYyAkyYI2DpI
-	 UXJkN4StHg5Nh7rtrW7iMhpS+xviHf2m6QnaWEwo=
+	b=q/m1Mp9nlIY65holM/5RxAUIwpDBQEdeVeO9lVFiT2kNp4tJrtLLm6+ykXWG1J4H1
+	 ffvrIjA3MUWv5jMx+T7CbE2kLwgbn4nIRfHOnfs7k4uNxa7dHoQLx3qQd97Fro4SP9
+	 vz+of0oBCj0W6D6HOM53UWuv0ifDz09pX2uQ0o7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 137/143] i2c: mark HostNotify target address as used
+	Yoonho Shin <yoonho.shin@samsung.com>,
+	Hobin Woo <hobin.woo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 62/96] ksmbd: discard write access to the directory open
 Date: Tue, 16 Jul 2024 17:32:13 +0200
-Message-ID: <20240716152801.265658998@linuxfoundation.org>
+Message-ID: <20240716152748.892347656@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Hobin Woo <hobin.woo@samsung.com>
 
-[ Upstream commit bd9f5348089b65612e5ca976e2ae22f005340331 ]
+commit e2e33caa5dc2eae7bddf88b22ce11ec3d760e5cd upstream.
 
-I2C core handles the local target for receiving HostNotify alerts. There
-is no separate driver bound to that address. That means userspace can
-access it if desired, leading to further complications if controllers
-are not capable of reading their own local target. Bind the local target
-to the dummy driver so it will be marked as "handled by the kernel" if
-the HostNotify feature is used. That protects aginst userspace access
-and prevents other drivers binding to it.
+may_open() does not allow a directory to be opened with the write access.
+However, some writing flags set by client result in adding write access
+on server, making ksmbd incompatible with FUSE file system. Simply, let's
+discard the write access when opening a directory.
 
-Fixes: 2a71593da34d ("i2c: smbus: add core function handling SMBus host-notify")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+list_add corruption. next is NULL.
+------------[ cut here ]------------
+kernel BUG at lib/list_debug.c:26!
+pc : __list_add_valid+0x88/0xbc
+lr : __list_add_valid+0x88/0xbc
+Call trace:
+__list_add_valid+0x88/0xbc
+fuse_finish_open+0x11c/0x170
+fuse_open_common+0x284/0x5e8
+fuse_dir_open+0x14/0x24
+do_dentry_open+0x2a4/0x4e0
+dentry_open+0x50/0x80
+smb2_open+0xbe4/0x15a4
+handle_ksmbd_work+0x478/0x5ec
+process_one_work+0x1b4/0x448
+worker_thread+0x25c/0x430
+kthread+0x104/0x1d4
+ret_from_fork+0x10/0x20
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Yoonho Shin <yoonho.shin@samsung.com>
+Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-core-base.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/smb2pdu.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index db0d1ac82910e..7e7b15440832b 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1067,6 +1067,7 @@ EXPORT_SYMBOL(i2c_find_device_by_fwnode);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2062,15 +2062,22 @@ out_err1:
+  * @access:		file access flags
+  * @disposition:	file disposition flags
+  * @may_flags:		set with MAY_ flags
++ * @is_dir:		is creating open flags for directory
+  *
+  * Return:      file open flags
+  */
+ static int smb2_create_open_flags(bool file_present, __le32 access,
+ 				  __le32 disposition,
+-				  int *may_flags)
++				  int *may_flags,
++				  bool is_dir)
+ {
+ 	int oflags = O_NONBLOCK | O_LARGEFILE;
  
- static const struct i2c_device_id dummy_id[] = {
- 	{ "dummy", 0 },
-+	{ "smbus_host_notify", 0 },
- 	{ },
- };
++	if (is_dir) {
++		access &= ~FILE_WRITE_DESIRE_ACCESS_LE;
++		ksmbd_debug(SMB, "Discard write access to a directory\n");
++	}
++
+ 	if (access & FILE_READ_DESIRED_ACCESS_LE &&
+ 	    access & FILE_WRITE_DESIRE_ACCESS_LE) {
+ 		oflags |= O_RDWR;
+@@ -2983,7 +2990,9 @@ int smb2_open(struct ksmbd_work *work)
  
--- 
-2.43.0
-
+ 	open_flags = smb2_create_open_flags(file_present, daccess,
+ 					    req->CreateDisposition,
+-					    &may_flags);
++					    &may_flags,
++		req->CreateOptions & FILE_DIRECTORY_FILE_LE ||
++		(file_present && S_ISDIR(d_inode(path.dentry)->i_mode)));
+ 
+ 	if (!test_tree_conn_flag(tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
+ 		if (open_flags & (O_CREAT | O_TRUNC)) {
 
 
 
