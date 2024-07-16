@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-60007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DF3932CF5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A195A932AE6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3746328199B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D191A1C22369
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C520C19AD72;
-	Tue, 16 Jul 2024 15:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2325B19DF63;
+	Tue, 16 Jul 2024 15:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oTz+iqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsmZwq6m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8331A1DA4D;
-	Tue, 16 Jul 2024 15:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DA619B3D3;
+	Tue, 16 Jul 2024 15:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145573; cv=none; b=HeEGBBor8gLgoeeL3pMC5XrrHYj+p8U+oBdhNAJ1W2Upbh2S8h30uSeqXiaisWrWsmdTuHNKp6sqJsdJ5FbsbzdbBjd0sGo3FCyOSe9IelTMsrq/W7xFMaICFLIqkSMYa4phSzIWnHVMY7VpSXuzCOaFrA6fcq93S6uMIeQmwdc=
+	t=1721144354; cv=none; b=jWurNN6jO7bVrTNWqjSXzuV6i0fCszuqH4uZwmNw3bBEHcvbkemieVJN+TMMUzQ2SNKHtDUhw4N5HVBBjEBHJ1WoR9zq9qkOjE8+YrSE69lIpRheCkc2vnNHo5N/b+bTPbfWMfkWhhAjQIO/RbCfX2yLkOCvY33otErULphsv30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145573; c=relaxed/simple;
-	bh=8qDH4wPRuGoIIFEYT1f+Yx5buClCyUGPaCeTaYbIWlc=;
+	s=arc-20240116; t=1721144354; c=relaxed/simple;
+	bh=MHxW7qHYqLWMSeYHOL9a9xqnzg+OPTzaAqb2jhE8AFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tMhCgxHNPCqPcm3Fl5SuQps5bI+lh0xMhLLEmJ6Z2qS3VK4QJm5XFhIuLFt2xuyxFqzCyp20A0+C9EobuZUWEGib6xbOoKTK2xQDzqsGDUQyNUReVOd/D29HrzIphg+haB5SuxGMuOoauvI5Z0lQ2gqaLlSy6d5JbkbeQUI2/eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oTz+iqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E2FC116B1;
-	Tue, 16 Jul 2024 15:59:32 +0000 (UTC)
+	 MIME-Version; b=gnvhXoqpTTvC/+T0letR2Hhai85Wt/sbS4maox/75wYSxvQtBkeKlfgVpqGBoN8d5Z1lHYTm+SYScnHUZO11U1k07AUeELem8iPIvrkdAe4IKqIdK9O4RcuzHOJc0SDhGJTgtJA4uWsnVR5ydzVNxWQiLqBLr3bHLh6tss2SeTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsmZwq6m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55039C116B1;
+	Tue, 16 Jul 2024 15:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145573;
-	bh=8qDH4wPRuGoIIFEYT1f+Yx5buClCyUGPaCeTaYbIWlc=;
+	s=korg; t=1721144354;
+	bh=MHxW7qHYqLWMSeYHOL9a9xqnzg+OPTzaAqb2jhE8AFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2oTz+iqCIrNQzqhy/KdQG19x7Sf3rYBO4KHRrsZ3T4LVL6pFXUuNEwZHirAGTXqyL
-	 7AgHaSV6FbltO2SrL3LEliGazDPsUFnlobNMx1rXgCMVXeAkidTM6jb/7oOFiqOLrI
-	 J7+gn7OzBlQG9WtWmo4gDw5bqyXMx444SddhLZUo=
+	b=lsmZwq6mz3aHkA3c0iK0KmRaNcai9ETS6TG5n4BjUkmAX7Su9M+SztKoJpA+Db6g/
+	 NNXknR7E3GZdolflTtzxYwiQBgIJbHk39uyAnWTMJhuODQAYuYFd8ezMhBdwvq6+Hk
+	 il4u5MrQzhq1Xr1671GV5XnDveLYZ1popdeR/fEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Light=20Hsieh=20 ?= <Light.Hsieh@mediatek.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Alexander Aring <aahringo@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/121] filelock: fix potential use-after-free in posix_lock_inode
+Subject: [PATCH 5.4 44/78] nvme-multipath: find NUMA path only for online numa-node
 Date: Tue, 16 Jul 2024 17:31:16 +0200
-Message-ID: <20240716152751.869808523@linuxfoundation.org>
+Message-ID: <20240716152742.344742857@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-[ Upstream commit 1b3ec4f7c03d4b07bad70697d7e2f4088d2cfe92 ]
+[ Upstream commit d3a043733f25d743f3aa617c7f82dbcb5ee2211a ]
 
-Light Hsieh reported a KASAN UAF warning in trace_posix_lock_inode().
-The request pointer had been changed earlier to point to a lock entry
-that was added to the inode's list. However, before the tracepoint could
-fire, another task raced in and freed that lock.
+In current native multipath design when a shared namespace is created,
+we loop through each possible numa-node, calculate the NUMA distance of
+that node from each nvme controller and then cache the optimal IO path
+for future reference while sending IO. The issue with this design is that
+we may refer to the NUMA distance table for an offline node which may not
+be populated at the time and so we may inadvertently end up finding and
+caching a non-optimal path for IO. Then latter when the corresponding
+numa-node becomes online and hence the NUMA distance table entry for that
+node is created, ideally we should re-calculate the multipath node distance
+for the newly added node however that doesn't happen unless we rescan/reset
+the controller. So essentially, we may keep using non-optimal IO path for a
+node which is made online after namespace is created.
+This patch helps fix this issue ensuring that when a shared namespace is
+created, we calculate the multipath node distance for each online numa-node
+instead of each possible numa-node. Then latter when a node becomes online
+and we receive any IO on that newly added node, we would calculate the
+multipath node distance for newly added node but this time NUMA distance
+table would have been already populated for newly added node. Hence we
+would be able to correctly calculate the multipath node distance and choose
+the optimal path for the IO.
 
-Fix this by moving the tracepoint inside the spinlock, which should
-ensure that this doesn't happen.
-
-Fixes: 74f6f5912693 ("locks: fix KASAN: use-after-free in trace_event_raw_event_filelock_lock")
-Link: https://lore.kernel.org/linux-fsdevel/724ffb0a2962e912ea62bb0515deadf39c325112.camel@kernel.org/
-Reported-by: Light Hsieh (謝明燈) <Light.Hsieh@mediatek.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/r/20240702-filelock-6-10-v1-1-96e766aadc98@kernel.org
-Reviewed-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/locks.c | 2 +-
+ drivers/nvme/host/multipath.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/locks.c b/fs/locks.c
-index 76ad05f8070ad..fb717dae90297 100644
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -1314,9 +1314,9 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
- 		locks_wake_up_blocks(left);
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 4f3220aef7c47..36d63da71b2f9 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -437,7 +437,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
+ 		int node, srcu_idx;
+ 
+ 		srcu_idx = srcu_read_lock(&head->srcu);
+-		for_each_node(node)
++		for_each_online_node(node)
+ 			__nvme_find_path(head, node);
+ 		srcu_read_unlock(&head->srcu, srcu_idx);
  	}
-  out:
-+	trace_posix_lock_inode(inode, request, error);
- 	spin_unlock(&ctx->flc_lock);
- 	percpu_up_read(&file_rwsem);
--	trace_posix_lock_inode(inode, request, error);
- 	/*
- 	 * Free any unused locks.
- 	 */
 -- 
 2.43.0
 
