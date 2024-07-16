@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-59962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B022932CB6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1ED932C4A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05E961F24569
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F98B1C231BA
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687B919FA90;
-	Tue, 16 Jul 2024 15:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E02A19DF71;
+	Tue, 16 Jul 2024 15:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e223QyNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T66wN697"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AD119DFBF;
-	Tue, 16 Jul 2024 15:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3B51DDCE;
+	Tue, 16 Jul 2024 15:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145440; cv=none; b=U4YrZ/3ylRz1VClocGlkkNcobH/C4Zogtqw5im3fwiDbntkoIavqLCxghiqpISzRtdtfvvAN16mbkZf9cpq/r3EHAH1sXS8w7a76zvA91CD9BeeHC9YGKIl175O09n52CeN+KhrYhTZ2MwssVtk5e3Nwdm60X4uip/dWMZEHzJ0=
+	t=1721145224; cv=none; b=FAkVLp8LD1PouD6yTQ+wHDTXsFD7gWCOOMIBlowLauZ/29SvRubxtxdvC19M3Qkkwp1UlJC2KFUvk99LrS9qsd1KqrbGq0I8HOU1fflZXEkjD304uQM6OXY1vLe9iD2aAL0oQRltQAgmdEUnECa4kjAd8Bh0AtcnoamWNaogKSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145440; c=relaxed/simple;
-	bh=Y1X8tafjm46fgUxSfNH3KHnDMo8RFz+JFhJmhWjTk1U=;
+	s=arc-20240116; t=1721145224; c=relaxed/simple;
+	bh=NsqVSpuxgu0bfKmbBl/hvnFXuf7PXMEDuMiqVUho2jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oI7aZMOoObIoozSMMMzMs2W86JHCDMm7l9nIM6XKDzhzVYX34GnLRINyuZTiyWrzaD/itQHLpx54ltsesWbf9lh2x5TSMtgtZL7fKg4XJGQmcN1dhFU63hwiybSn0eLEE5i6LjjkR+1yO2ZYo7zQvA7u1dp+utSonH2UrbxC9Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e223QyNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E67C116B1;
-	Tue, 16 Jul 2024 15:57:19 +0000 (UTC)
+	 MIME-Version; b=rKk0qYq9qMMQlcFk7Bv3FjDZ2mEm+7inE6H5pQczZCYliN/prTDlsIvbAlgBqx0d9cFtCQWLzaMtViErS4CblRwegUf820qGSwgl2mVvedAa+bgqDDutRW1EcydNsMKHa/vRsjfMZfbfYSFzhwbJYdZhexad+o9jEYg9YfMi1Hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T66wN697; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B7EC116B1;
+	Tue, 16 Jul 2024 15:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145440;
-	bh=Y1X8tafjm46fgUxSfNH3KHnDMo8RFz+JFhJmhWjTk1U=;
+	s=korg; t=1721145224;
+	bh=NsqVSpuxgu0bfKmbBl/hvnFXuf7PXMEDuMiqVUho2jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e223QyNnXxBj1HogM088bOdHooJw0A4S28QavPCTzrLxgbUMup8jKttVofEY7Pc1+
-	 hMtHBi4SC/+YCWvIWNrr0butavzRnmXGsi3y+kOAE8vTzYvt7NyUe74U2+dCHigvnw
-	 jSeyqdIjWVUQUnjlJrdVDwvfplhf6is6Jzj/5/tU=
+	b=T66wN697YUI3gkwom/KqELQ93yUNmT+2iIxc/H+tJbfngKfHTFyCSPjmA28TQ9znQ
+	 4JMCzExx/FfD5y5XFQJusAu7hXujEjuT2fmLPY5bFQ9Xu1FFgY6AQek9pnR/PjATE7
+	 oEGWjtjsRkSdkKcmK6cNCKNFYAXszHYciCjGIRoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Chakraborty <joychakr@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.1 64/96] nvmem: meson-efuse: Fix return value of nvmem callbacks
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 139/143] i2c: testunit: avoid re-issued work after read message
 Date: Tue, 16 Jul 2024 17:32:15 +0200
-Message-ID: <20240716152748.969216985@linuxfoundation.org>
+Message-ID: <20240716152801.341624200@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Chakraborty <joychakr@google.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 7a0a6d0a7c805f9380381f4deedffdf87b93f408 upstream.
+[ Upstream commit 119736c7af442ab398dbb806865988c98ef60d46 ]
 
-Read/write callbacks registered with nvmem core expect 0 to be returned
-on success and a negative value to be returned on failure.
+The to-be-fixed commit rightfully prevented that the registers will be
+cleared. However, the index must be cleared. Otherwise a read message
+will re-issue the last work. Fix it and add a comment describing the
+situation.
 
-meson_efuse_read() and meson_efuse_write() call into
-meson_sm_call_read() and meson_sm_call_write() respectively which return
-the number of bytes read or written on success as per their api
-description.
-
-Fix to return error if meson_sm_call_read()/meson_sm_call_write()
-returns an error else return 0.
-
-Fixes: a29a63bdaf6f ("nvmem: meson-efuse: simplify read callback")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628113704.13742-3-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c422b6a63024 ("i2c: testunit: don't erase registers after STOP")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/meson-efuse.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/i2c/i2c-slave-testunit.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/nvmem/meson-efuse.c
-+++ b/drivers/nvmem/meson-efuse.c
-@@ -18,18 +18,24 @@ static int meson_efuse_read(void *contex
- 			    void *val, size_t bytes)
- {
- 	struct meson_sm_firmware *fw = context;
-+	int ret;
- 
--	return meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
--				  bytes, 0, 0, 0);
-+	ret = meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
-+				 bytes, 0, 0, 0);
+diff --git a/drivers/i2c/i2c-slave-testunit.c b/drivers/i2c/i2c-slave-testunit.c
+index ca43e98cae1b2..23a11e4e92567 100644
+--- a/drivers/i2c/i2c-slave-testunit.c
++++ b/drivers/i2c/i2c-slave-testunit.c
+@@ -118,6 +118,13 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
+ 			queue_delayed_work(system_long_wq, &tu->worker,
+ 					   msecs_to_jiffies(10 * tu->regs[TU_REG_DELAY]));
+ 		}
 +
-+	return ret < 0 ? ret : 0;
- }
++		/*
++		 * Reset reg_idx to avoid that work gets queued again in case of
++		 * STOP after a following read message. But do not clear TU regs
++		 * here because we still need them in the workqueue!
++		 */
++		tu->reg_idx = 0;
+ 		break;
  
- static int meson_efuse_write(void *context, unsigned int offset,
- 			     void *val, size_t bytes)
- {
- 	struct meson_sm_firmware *fw = context;
-+	int ret;
-+
-+	ret = meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
-+				  bytes, 0, 0, 0);
- 
--	return meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
--				   bytes, 0, 0, 0);
-+	return ret < 0 ? ret : 0;
- }
- 
- static const struct of_device_id meson_efuse_match[] = {
+ 	case I2C_SLAVE_WRITE_REQUESTED:
+-- 
+2.43.0
+
 
 
 
