@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-59684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E906932B46
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C35B932C12
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE353283056
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A161C21E5D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23B319AA78;
-	Tue, 16 Jul 2024 15:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EE719E809;
+	Tue, 16 Jul 2024 15:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UT61kr8h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhu4IeQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81459F9E8;
-	Tue, 16 Jul 2024 15:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE06E19E7D0;
+	Tue, 16 Jul 2024 15:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144595; cv=none; b=FK5QTxilZAqPGOKCIPcdFiwmuRPaAvDl5E7q6/mto6hgoZCY/BrvEyB/lfYAJj73PIN3Oh3d9RhntyuUZfx0Js1+tKWM/NJOUSZKPLFAUCt4V5Qc3at+ONMieQS4o5CgPsQjdJI3XzREnR3fOE3mOTSFetpgNB/PDAlqZ3pgEVQ=
+	t=1721145082; cv=none; b=p59iBwS+rLhg4w8mbppJpwf0+Vg/DRHun8pWOP9pmCqVG92pRi7kdDRXlXUdRZpo2buEEDeaTx7K4FSHmhbKQldrlAoOYJ1yuIkMLVgW/8cTqJd9/FWtjYzJYq3p3dDxZVFyo9Gvf6N4FvnnlrjvwjCsENDNRP/XYIbz/HmQMSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144595; c=relaxed/simple;
-	bh=BlQfTdrkdZXfpPgTyOG94oeYcMBykS/Leisn0ugbkL8=;
+	s=arc-20240116; t=1721145082; c=relaxed/simple;
+	bh=V81mbv92dVm1SJNPswVMypbql+0qTAw+0iJsPwb8W3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dTdG5IEHxFolhhNKeuhFN0pkJqpQeSBIOCquBRkLduHfS/eIc3+vE+tWN3rBhrRBklxi/WyI/8ZOgCb+CKrTyIBW2qrgZ6LxGbmLDQ1YWq3GDq8L/YG+c6NOu+KTZYNCckGJvV2zVKs3wu0p3fcYQDVSEJXlMUKOh8w0J8Cscts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UT61kr8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065BFC4AF0D;
-	Tue, 16 Jul 2024 15:43:14 +0000 (UTC)
+	 MIME-Version; b=ksxjJyLwkgtgOYERWWWzO97X6PYhHkjyMHUztA6BCpE3MXGwZ7/ZSz4C5W3n7zQG0lcZ1nH421MsSDXG3hO4dxTI9mgQ+uSuNHgXqqNfphmncMuUsJDYzBb27RAv8m/KF6PFfeZdjdmdTCMHHfFRaUmhxRwRykJ8TWC3/9SV+qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhu4IeQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523A4C116B1;
+	Tue, 16 Jul 2024 15:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144595;
-	bh=BlQfTdrkdZXfpPgTyOG94oeYcMBykS/Leisn0ugbkL8=;
+	s=korg; t=1721145082;
+	bh=V81mbv92dVm1SJNPswVMypbql+0qTAw+0iJsPwb8W3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UT61kr8h115PCq3WE+l5pfVBot1orEo4LiormGwS9M6sI37OcK2Ke5xSMWqMRAM6b
-	 hBFYpTKLrqoFGzuxu1w2tlftyocrJtaMp8OmnneN2/SecmWE8/mjrmHcCUUykIARRq
-	 ixjY1CkO52YCwOCpmo8yQ/7wuRI3/HSYsGd5/BCo=
+	b=jhu4IeQThyXDs+RfcmJ9Djf3j3aNdK8IjL4YvlnveIbfTiPEeHU7TjqG3yEN0Sctx
+	 oBbY0KVy4rSqNQBgKc3w3xN5jCn5/k7hLAGfVKlG7L+VWFyeGAGAok8HH+lNCNAqc2
+	 e60V8R3dcb5PgSqkS35OuqSJ/dP18vMebhlRv5cA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 043/108] drm/amdgpu/atomfirmware: silence UBSAN warning
+	Michal Mazur <mmazur2@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 062/143] octeontx2-af: fix detection of IP layer
 Date: Tue, 16 Jul 2024 17:30:58 +0200
-Message-ID: <20240716152747.646286104@linuxfoundation.org>
+Message-ID: <20240716152758.364262905@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Michal Mazur <mmazur2@marvell.com>
 
-commit d0417264437a8fa05f894cabba5a26715b32d78e upstream.
+[ Upstream commit 404dc0fd6fb0bb942b18008c6f8c0320b80aca20 ]
 
-This is a variable sized array.
+Checksum and length checks are not enabled for IPv4 header with
+options and IPv6 with extension headers.
+To fix this a change in enum npc_kpu_lc_ltype is required which will
+allow adjustment of LTYPE_MASK to detect all types of IP headers.
 
-Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/110420.html
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 21e6699e5cd6 ("octeontx2-af: Add NPC KPU profile")
+Signed-off-by: Michal Mazur <mmazur2@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/include/atomfirmware.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/npc.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/include/atomfirmware.h
-+++ b/drivers/gpu/drm/amd/include/atomfirmware.h
-@@ -690,7 +690,7 @@ struct atom_gpio_pin_lut_v2_1
- {
-   struct  atom_common_table_header  table_header;
-   /*the real number of this included in the structure is calcualted by using the (whole structure size - the header size)/size of atom_gpio_pin_lut  */
--  struct  atom_gpio_pin_assignment  gpio_pin[8];
-+  struct  atom_gpio_pin_assignment  gpio_pin[];
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
+index d883157393ea0..6c3aca6f278db 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/npc.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
+@@ -63,8 +63,13 @@ enum npc_kpu_lb_ltype {
+ 	NPC_LT_LB_CUSTOM1 = 0xF,
  };
  
- 
++/* Don't modify ltypes up to IP6_EXT, otherwise length and checksum of IP
++ * headers may not be checked correctly. IPv4 ltypes and IPv6 ltypes must
++ * differ only at bit 0 so mask 0xE can be used to detect extended headers.
++ */
+ enum npc_kpu_lc_ltype {
+-	NPC_LT_LC_IP = 1,
++	NPC_LT_LC_PTP = 1,
++	NPC_LT_LC_IP,
+ 	NPC_LT_LC_IP_OPT,
+ 	NPC_LT_LC_IP6,
+ 	NPC_LT_LC_IP6_EXT,
+@@ -72,7 +77,6 @@ enum npc_kpu_lc_ltype {
+ 	NPC_LT_LC_RARP,
+ 	NPC_LT_LC_MPLS,
+ 	NPC_LT_LC_NSH,
+-	NPC_LT_LC_PTP,
+ 	NPC_LT_LC_FCOE,
+ 	NPC_LT_LC_NGIO,
+ 	NPC_LT_LC_CUSTOM0 = 0xE,
+-- 
+2.43.0
+
 
 
 
