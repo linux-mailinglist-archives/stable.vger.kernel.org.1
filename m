@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-60260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83320932E1B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:12:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0812932E1D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5F3CB2391E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:12:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21540B239E2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF8619B59C;
-	Tue, 16 Jul 2024 16:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B45A19B59C;
+	Tue, 16 Jul 2024 16:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwFYJE0k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ezt072aR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F7A1DDCE;
-	Tue, 16 Jul 2024 16:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFD01DDCE;
+	Tue, 16 Jul 2024 16:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721146364; cv=none; b=elh4Go2eZnEkAqa0sGssogzf3sj7JaUfwKa3Jahh2/exOiU2bywlAky4+SLoapZ/ZHxbkXiMclXAQxxAUpQF2rnXq4ovasvWJSmISlKkJThz+SVd4c27vP1ACaDNzRY0r+GLnJw3PqZnCTlwfdRpR/xfppmgDqQx4m7MpUJu8YU=
+	t=1721146370; cv=none; b=UqHPv8TfFS8nM+zEKK+n1tVKfcNqb7BjOq8E8KhDzikkQzikzPQbuBKDZIeTdnTP/ADOKTgmiyPkhy8Ky4wpgGm2SHJe9F1/zS83rJR4bXoReXYfLsN5oBtMJZ1KbdSz+w8wCT2t8JOk0WtYH5+BnFQzNdRqMkcQwmxthR8lja8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721146364; c=relaxed/simple;
-	bh=YeIrip024P1fHtRYDYBQUQWQBhzGStfHw52b2IpdBzk=;
+	s=arc-20240116; t=1721146370; c=relaxed/simple;
+	bh=smD16ZXdtFdHpeFbQwrtxQHss9oWLYmXHlUUY4I8byg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N86KY2OrKlkQo6WyfrRz3yN6UY4+sJ1FrWHqx8nTJXt2/YK24t7p/2+cgLLQ3N0fehQHJrd1/g5aefepxSl5uz8RkWMMVSJ4tKUnHsINUq6JBG/N6yGd22nhTGyRcs2r07PdEJyRSnIMPxaD8GjNNtTwAFfglUY4Ms9Xg87t/KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwFYJE0k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8235BC116B1;
-	Tue, 16 Jul 2024 16:12:43 +0000 (UTC)
+	 MIME-Version; b=eg/35KWFFpH0hgeAa8rsI01mrym8DcSJ1rEgTyb4wFZ5pKLrYQ3yMShFJww0NicTEgGRXXBCI7mxdrgnOoTai0ISoEzt26qdttlc9XMGhQbN8MCXiA4G+/Scrjpd2zkt4ev+PbBZpvl9Z857TCjYeeZ2NagfB4+EHnZgXHP5tPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ezt072aR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA5EC116B1;
+	Tue, 16 Jul 2024 16:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721146363;
-	bh=YeIrip024P1fHtRYDYBQUQWQBhzGStfHw52b2IpdBzk=;
+	s=korg; t=1721146369;
+	bh=smD16ZXdtFdHpeFbQwrtxQHss9oWLYmXHlUUY4I8byg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EwFYJE0kRphBL3HzmTJKo+O5vLpBAiPe2A5cDPHDSRc2jHTHM3Mx/JKCa3Di58cK+
-	 YdBVrxAKsaZCqQGPhHnRTc2hLUs1cckV3q6m3yxwWx+lWIyCL7I60eRKuV2hqL8gLH
-	 YfOG3p+xrQHVa+l4vkMGLQJQ/VDnZHWyO56e3P4w=
+	b=Ezt072aRt7P/4CDD7rQfO39XlM1XtHJDhp2A9zvN/rI+s0aytMv/nx9s0O6dKgzKJ
+	 I1HWsMoGo9FIiNdPhBrWJmkvdKvgxq557RLUT/4tX4yB6f3QVi8cMeFjv6VYI01LTA
+	 2XqFCW6/Q+/Ea0/7vJuEz2axCRzBrCrsCuIozTww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fangrui Song <maskray@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/144] kbuild: Make ld-version.sh more robust against version string changes
-Date: Tue, 16 Jul 2024 17:33:32 +0200
-Message-ID: <20240716152758.005910662@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 5.15 144/144] i2c: rcar: fix error code in probe()
+Date: Tue, 16 Jul 2024 17:33:33 +0200
+Message-ID: <20240716152758.042335378@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -68,74 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 9852f47ac7c993990317570ff125e30ad901e213 ]
+commit 37a672be3ae357a0f87fbc00897fa7fcb3d7d782 upstream.
 
-After [1] in upstream LLVM, ld.lld's version output became slightly
-different when the cmake configuration option LLVM_APPEND_VC_REV is
-disabled.
+Return an error code if devm_reset_control_get_exclusive() fails.
+The current code returns success.
 
-Before:
-
-  Debian LLD 19.0.0 (compatible with GNU linkers)
-
-After:
-
-  Debian LLD 19.0.0, compatible with GNU linkers
-
-This results in ld-version.sh failing with
-
-  scripts/ld-version.sh: 18: arithmetic expression: expecting EOF: "10000 * 19 + 100 * 0 + 0,"
-
-because the trailing comma is included in the patch level part of the
-expression. While [1] has been partially reverted in [2] to avoid this
-breakage (as it impacts the configuration stage and it is present in all
-LTS branches), it would be good to make ld-version.sh more robust
-against such miniscule changes like this one.
-
-Use POSIX shell parameter expansion [3] to remove the largest suffix
-after just numbers and periods, replacing of the current removal of
-everything after a hyphen. ld-version.sh continues to work for a number
-of distributions (Arch Linux, Debian, and Fedora) and the kernel.org
-toolchains and no longer errors on a version of ld.lld with [1].
-
-Fixes: 02aff8592204 ("kbuild: check the minimum linker version in Kconfig")
-Link: https://github.com/llvm/llvm-project/commit/0f9fbbb63cfcd2069441aa2ebef622c9716f8dbb [1]
-Link: https://github.com/llvm/llvm-project/commit/649cdfc4b6781a350dfc87d9b2a4b5a4c3395909 [2]
-Link: https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html [3]
-Suggested-by: Fangrui Song <maskray@google.com>
-Reviewed-by: Fangrui Song <maskray@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0e864b552b23 ("i2c: rcar: reset controller is mandatory for Gen3+")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/ld-version.sh | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-rcar.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
-index a78b804b680cf..b9513d224476f 100755
---- a/scripts/ld-version.sh
-+++ b/scripts/ld-version.sh
-@@ -57,9 +57,11 @@ else
- 	fi
- fi
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -1105,8 +1105,10 @@ static int rcar_i2c_probe(struct platfor
+ 	/* R-Car Gen3+ needs a reset before every transfer */
+ 	if (priv->devtype >= I2C_RCAR_GEN3) {
+ 		priv->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+-		if (IS_ERR(priv->rstc))
++		if (IS_ERR(priv->rstc)) {
++			ret = PTR_ERR(priv->rstc);
+ 			goto out_pm_put;
++		}
  
--# Some distributions append a package release number, as in 2.34-4.fc32
--# Trim the hyphen and any characters that follow.
--version=${version%-*}
-+# There may be something after the version, such as a distribution's package
-+# release number (like Fedora's "2.34-4.fc32") or punctuation (like LLD briefly
-+# added before the "compatible with GNU linkers" string), so remove everything
-+# after just numbers and periods.
-+version=${version%%[!0-9.]*}
- 
- cversion=$(get_canonical_version $version)
- min_cversion=$(get_canonical_version $min_version)
--- 
-2.43.0
-
+ 		ret = reset_control_status(priv->rstc);
+ 		if (ret < 0)
 
 
 
