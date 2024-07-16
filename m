@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-59970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C407932CBF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D13F932C4E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DCE61C22081
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A40791F21F6F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC1519E7CF;
-	Tue, 16 Jul 2024 15:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6666C19DFB9;
+	Tue, 16 Jul 2024 15:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBGjOmQ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3N9qv6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD65D1DDCE;
-	Tue, 16 Jul 2024 15:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251AF19AD46;
+	Tue, 16 Jul 2024 15:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145464; cv=none; b=sdEW/2vSEPzxVf2g08KUMDM3qvDjJvI3uOI1kgZFH+mtyUWshIqH8rLNzWi4TU6EvwWc5FhBj3usBggoWT3KflOhG+O2K+Yy0Wfr9fHVE+ttADy4gLXdC0aoS43nWlLaSf9krbNnoxfphURtQAkKUCVnwmb5wd1ieRL6wKhteSg=
+	t=1721145230; cv=none; b=P5952JTa8PleLQA5lqwkIsEyjapDIJGOk1Ur+eh7VPdCXF1ns1uhDY9JcFTWOSUCn6GF7R7jXEkTmrkpo8OxuwQIQPyC4Obpv0Pm3Vb5jjMkKgGMjKkKNLdY1G4MfDc8qQNoTFW9Dauru/D6g2qlrnRqMOKu843mBA99g8+moQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145464; c=relaxed/simple;
-	bh=y86DfBuR18B5TKIZ4qwhBuu2VAD2qmsbD6FMNwahIcY=;
+	s=arc-20240116; t=1721145230; c=relaxed/simple;
+	bh=XQc5vX/JkZ0kZQITdrW5e1Ol6dYayfE20NOfU63QFY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnAhYM473S1LhzM79ogggfRregWo2fS5PcPD/46w2hR1x7usZiwQOmOIk6gaX3hY4J6Qa9Ydy1HB5wilDtnG6O+1C4Yu98arPBjiElAz62E8QmQkNIRPDzzOkzrV0IPz/lUjnul+71n2UE6EAo/6tKgJv3ZDwQOhCm5KGDMzMmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBGjOmQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D0DC116B1;
-	Tue, 16 Jul 2024 15:57:43 +0000 (UTC)
+	 MIME-Version; b=j7xayLRHP/FDzwFc2E57CAdtW3Jc2h+WJzT2RxjQEiDB/dv2vZHg1EZ3zAsyKw97xqk+I0hO7KrzJHz/DZC9uDdc5EHTUaVQ0y56f/w2+r0fYNYH/0OLchnBJiaIMhIeKUo30mRcs8B15AaqF6eIzMf8pBSUD5pm79v96e8vcUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3N9qv6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A92C116B1;
+	Tue, 16 Jul 2024 15:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145463;
-	bh=y86DfBuR18B5TKIZ4qwhBuu2VAD2qmsbD6FMNwahIcY=;
+	s=korg; t=1721145230;
+	bh=XQc5vX/JkZ0kZQITdrW5e1Ol6dYayfE20NOfU63QFY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBGjOmQ0giCwB2f9UkwYs/ZF8hqJ7iq6DFi/Tns1ZgHFzRKumKI7YTkqiDh5wEQNW
-	 UX2ZU/veRZGYoXgPXgtwXtZlMDmtDsHcLjZPCqyYBLkgs3oxhJIrjpKecsRX1PW7+C
-	 OYT8+sWOC8p8IWmY9Hv5iOi9LBbgb4RZ0yGk9Pk0=
+	b=H3N9qv6RgwSIm73/7FUxEYyKKRd8M5PViEfAii7yKCQfA52FV9uJXxXxipYF+9WYM
+	 kqZzTzLI09Mb1ckViSQk20St1XIHpo1lUXjQbttc5Q7gxSQn5GBCp48u5DIXYynyn5
+	 xoRdL7K3Mo8qEcomgBjGVgonBC4NAWbUWVElIAx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.1 66/96] platform/x86: toshiba_acpi: Fix array out-of-bounds access
+	Suman Maity <suman.m.maity@oracle.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 141/143] x86/bhi: Avoid warning in #DB handler due to BHI mitigation
 Date: Tue, 16 Jul 2024 17:32:17 +0200
-Message-ID: <20240716152749.048010671@linuxfoundation.org>
+Message-ID: <20240716152801.419703320@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +66,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Alexandre Chartre <alexandre.chartre@oracle.com>
 
-commit b6e02c6b0377d4339986e07aeb696c632cd392aa upstream.
+[ Upstream commit ac8b270b61d48fcc61f052097777e3b5e11591e0 ]
 
-In order to use toshiba_dmi_quirks[] together with the standard DMI
-matching functions, it must be terminated by a empty entry.
+When BHI mitigation is enabled, if SYSENTER is invoked with the TF flag set
+then entry_SYSENTER_compat() uses CLEAR_BRANCH_HISTORY and calls the
+clear_bhb_loop() before the TF flag is cleared. This causes the #DB handler
+(exc_debug_kernel()) to issue a warning because single-step is used outside the
+entry_SYSENTER_compat() function.
 
-Since this entry is missing, an array out-of-bounds access occurs
-every time the quirk list is processed.
+To address this issue, entry_SYSENTER_compat() should use CLEAR_BRANCH_HISTORY
+after making sure the TF flag is cleared.
 
-Fix this by adding the terminating empty entry.
+The problem can be reproduced with the following sequence:
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202407091536.8b116b3d-lkp@intel.com
-Fixes: 3cb1f40dfdc3 ("drivers/platform: toshiba_acpi: Call HCI_PANEL_POWER_ON on resume on some models")
-Cc: stable@vger.kernel.org
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20240709143851.10097-1-W_Armin@gmx.de
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ cat sysenter_step.c
+  int main()
+  { asm("pushf; pop %ax; bts $8,%ax; push %ax; popf; sysenter"); }
+
+  $ gcc -o sysenter_step sysenter_step.c
+
+  $ ./sysenter_step
+  Segmentation fault (core dumped)
+
+The program is expected to crash, and the #DB handler will issue a warning.
+
+Kernel log:
+
+  WARNING: CPU: 27 PID: 7000 at arch/x86/kernel/traps.c:1009 exc_debug_kernel+0xd2/0x160
+  ...
+  RIP: 0010:exc_debug_kernel+0xd2/0x160
+  ...
+  Call Trace:
+  <#DB>
+   ? show_regs+0x68/0x80
+   ? __warn+0x8c/0x140
+   ? exc_debug_kernel+0xd2/0x160
+   ? report_bug+0x175/0x1a0
+   ? handle_bug+0x44/0x90
+   ? exc_invalid_op+0x1c/0x70
+   ? asm_exc_invalid_op+0x1f/0x30
+   ? exc_debug_kernel+0xd2/0x160
+   exc_debug+0x43/0x50
+   asm_exc_debug+0x1e/0x40
+  RIP: 0010:clear_bhb_loop+0x0/0xb0
+  ...
+  </#DB>
+  <TASK>
+   ? entry_SYSENTER_compat_after_hwframe+0x6e/0x8d
+  </TASK>
+
+  [ bp: Massage commit message. ]
+
+Fixes: 7390db8aea0d ("x86/bhi: Add support for clearing branch history at syscall entry")
+Reported-by: Suman Maity <suman.m.maity@oracle.com>
+Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20240524070459.3674025-1-alexandre.chartre@oracle.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/toshiba_acpi.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/entry/entry_64_compat.S | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/platform/x86/toshiba_acpi.c
-+++ b/drivers/platform/x86/toshiba_acpi.c
-@@ -3305,6 +3305,7 @@ static const struct dmi_system_id toshib
- 		},
- 	 .driver_data = (void *)(QUIRK_TURN_ON_PANEL_ON_RESUME | QUIRK_HCI_HOTKEY_QUICKSTART),
- 	},
-+	{ }
- };
+diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
+index c779046cc3fe7..2e8ead6090393 100644
+--- a/arch/x86/entry/entry_64_compat.S
++++ b/arch/x86/entry/entry_64_compat.S
+@@ -90,10 +90,6 @@ SYM_INNER_LABEL(entry_SYSENTER_compat_after_hwframe, SYM_L_GLOBAL)
  
- static int toshiba_acpi_add(struct acpi_device *acpi_dev)
+ 	cld
+ 
+-	IBRS_ENTER
+-	UNTRAIN_RET
+-	CLEAR_BRANCH_HISTORY
+-
+ 	/*
+ 	 * SYSENTER doesn't filter flags, so we need to clear NT and AC
+ 	 * ourselves.  To save a few cycles, we can check whether
+@@ -117,6 +113,16 @@ SYM_INNER_LABEL(entry_SYSENTER_compat_after_hwframe, SYM_L_GLOBAL)
+ 	jnz	.Lsysenter_fix_flags
+ .Lsysenter_flags_fixed:
+ 
++	/*
++	 * CPU bugs mitigations mechanisms can call other functions. They
++	 * should be invoked after making sure TF is cleared because
++	 * single-step is ignored only for instructions inside the
++	 * entry_SYSENTER_compat function.
++	 */
++	IBRS_ENTER
++	UNTRAIN_RET
++	CLEAR_BRANCH_HISTORY
++
+ 	movq	%rsp, %rdi
+ 	call	do_SYSENTER_32
+ 	jmp	sysret32_from_system_call
+-- 
+2.43.0
+
 
 
 
