@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-60061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6163932D31
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A5F932C45
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60309B23B06
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 804EE1C2316A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43A0199EA3;
-	Tue, 16 Jul 2024 16:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B9F19DFB3;
+	Tue, 16 Jul 2024 15:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSchz2td"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="op9t6ozI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932261DDCE;
-	Tue, 16 Jul 2024 16:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1454217A93F;
+	Tue, 16 Jul 2024 15:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145737; cv=none; b=bl69sVA6zUi1BV3+VQ//LqDT7L31k9wEGOWOtlneqYXTjrD8ss/QtZnDXwzosAx7o47FVow0HJqgCrD5lPRfuRdRjP0UYf0En0DwIqsxoEGDKjY6yKFlmuo36dDrbrXQWG01WoxWUaeEKOV40cFR3ODS9jTfOQrT7Hs/M/x0gQM=
+	t=1721145212; cv=none; b=M0D/8+y0CMIkGOoAZOCMJDQ9B6fy7XBbC6zCTZiI6vYFB3HSOZ3OZYzV4N47UI1f5blpC5j9u/V0Jz9Q9nLBk1AkrvPqDCpn+gvFqXi/dm51i2FielRey7SPdkLnQ81U6aZf0l4l9eeb4d67liNxUf+W4SuktWnkizZditjvU/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145737; c=relaxed/simple;
-	bh=79cB9qV7RZAOzVQuE4d7T13IfnyEAyIFIVDC352j/pY=;
+	s=arc-20240116; t=1721145212; c=relaxed/simple;
+	bh=IiWJyf/9/uDPgV5Oe3Bx2xBH1pd53qqPrTXmT4Dri4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihlXBX/YV1ejfBRGQaj4LtCPzrysMo85VOeWM20sWEtmaaFtwUYg3/18lQrUiKHihfB4Zcj/Bg1N79tt0fA8SdYF3T3gcK9QC8/AcF98aAeIx622KK+ME6KXKmxbF7JdA5XZDh9QwN+8Qa670knJpYUmbMNFSwPHoNWv+GJndgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSchz2td; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176CBC116B1;
-	Tue, 16 Jul 2024 16:02:16 +0000 (UTC)
+	 MIME-Version; b=P+FBEkP7MSv3W8FQaQVBDeKzjpulq1W7JhGEY4eSv1CQUw9g9GcWDYUinjLN5Zk40PvCO9QVmbRJWhen4x2wvcpD+F5zmWEhK+YGiH2czoZXFqUz2GMyyvBmlRkp8eajOwgF/kcmcrlj53YnkG8NjPxUtAQE6qf/pm4gOGnvnEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=op9t6ozI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E27DC116B1;
+	Tue, 16 Jul 2024 15:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145737;
-	bh=79cB9qV7RZAOzVQuE4d7T13IfnyEAyIFIVDC352j/pY=;
+	s=korg; t=1721145212;
+	bh=IiWJyf/9/uDPgV5Oe3Bx2xBH1pd53qqPrTXmT4Dri4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSchz2tdsdjforSP+fF6mHkOnB+mVOVwnDccggMc5oWxWLiFLMZjs7qh8W4KIK4yE
-	 WcLafL4IGARlkC9h3IDCX2kvJSZr6rc6knXQq4MAflapJj3579Hcdj25qgekYQS2kX
-	 KTsleyQsj7P3QaUX/qnci7yVyyiKbxzsDLAIITPY=
+	b=op9t6ozIzQLBWz70bu8Tcfvg4dsQX7CrE898NTyXWK/S8lBXvzPWXvc8px8q9d/GK
+	 pvSam29tHbXV13DtK8cF/mNzEr4ivDHqwvuRtRecTdBBjsIg9474jBkbM4rULvIUra
+	 TTR7WmLtaCqJnAZYI3mjxDcgDKF+FDyzszn73ik4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Chakraborty <joychakr@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 6.6 068/121] misc: microchip: pci1xxxx: Fix return value of nvmem callbacks
-Date: Tue, 16 Jul 2024 17:32:10 +0200
-Message-ID: <20240716152753.943134233@linuxfoundation.org>
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 135/143] i2c: rcar: bring hardware to known state when probing
+Date: Tue, 16 Jul 2024 17:32:11 +0200
+Message-ID: <20240716152801.189186289@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Chakraborty <joychakr@google.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit a6a0f04e7d28378c181f76d32e4f965aa6a8b0a5 upstream.
+[ Upstream commit 4e36c0f20cb1c74c7bd7ea31ba432c1c4a989031 ]
 
-Read/write callbacks registered with nvmem core expect 0 to be returned
-on success and a negative value to be returned on failure.
+When probing, the hardware is not brought into a known state. This may
+be a problem when a hypervisor restarts Linux without resetting the
+hardware, leaving an old state running. Make sure the hardware gets
+initialized, especially interrupts should be cleared and disabled.
 
-Currently pci1xxxx_otp_read()/pci1xxxx_otp_write() and
-pci1xxxx_eeprom_read()/pci1xxxx_eeprom_write() return the number of
-bytes read/written on success.
-Fix to return 0 on success.
-
-Fixes: 9ab5465349c0 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX EEPROM via NVMEM sysfs")
-Fixes: 0969001569e4 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX OTP via NVMEM sysfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240612070031.1215558-1-joychakr@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Closes: https://lore.kernel.org/r/20240702045535.2000393-1-dirk.behme@de.bosch.com
+Fixes: 6ccbe607132b ("i2c: add Renesas R-Car I2C driver")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/i2c/busses/i2c-rcar.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-+++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-@@ -153,7 +153,6 @@ static int pci1xxxx_eeprom_read(void *pr
+diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
+index 828aa2ea0fe4c..ec73463ea9b5e 100644
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -257,6 +257,14 @@ static void rcar_i2c_init(struct rcar_i2c_priv *priv)
+ 	}
+ }
  
- 		buf[byte] = readl(rb + MMAP_EEPROM_OFFSET(EEPROM_DATA_REG));
- 	}
--	ret = byte;
- error:
- 	release_sys_lock(priv);
- 	return ret;
-@@ -197,7 +196,6 @@ static int pci1xxxx_eeprom_write(void *p
- 			goto error;
- 		}
- 	}
--	ret = byte;
- error:
- 	release_sys_lock(priv);
- 	return ret;
-@@ -258,7 +256,6 @@ static int pci1xxxx_otp_read(void *priv_
++static void rcar_i2c_reset_slave(struct rcar_i2c_priv *priv)
++{
++	rcar_i2c_write(priv, ICSIER, 0);
++	rcar_i2c_write(priv, ICSSR, 0);
++	rcar_i2c_write(priv, ICSCR, SDBS);
++	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
++}
++
+ static int rcar_i2c_bus_barrier(struct rcar_i2c_priv *priv)
+ {
+ 	int ret;
+@@ -1033,11 +1041,8 @@ static int rcar_unreg_slave(struct i2c_client *slave)
  
- 		buf[byte] = readl(rb + MMAP_OTP_OFFSET(OTP_RD_DATA_OFFSET));
+ 	/* ensure no irq is running before clearing ptr */
+ 	disable_irq(priv->irq);
+-	rcar_i2c_write(priv, ICSIER, 0);
+-	rcar_i2c_write(priv, ICSSR, 0);
++	rcar_i2c_reset_slave(priv);
+ 	enable_irq(priv->irq);
+-	rcar_i2c_write(priv, ICSCR, SDBS);
+-	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
+ 
+ 	priv->slave = NULL;
+ 
+@@ -1152,7 +1157,9 @@ static int rcar_i2c_probe(struct platform_device *pdev)
+ 		goto out_pm_disable;
  	}
--	ret = byte;
- error:
- 	release_sys_lock(priv);
- 	return ret;
-@@ -315,7 +312,6 @@ static int pci1xxxx_otp_write(void *priv
- 			goto error;
- 		}
- 	}
--	ret = byte;
- error:
- 	release_sys_lock(priv);
- 	return ret;
+ 
+-	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
++	/* Bring hardware to known state */
++	rcar_i2c_init(priv);
++	rcar_i2c_reset_slave(priv);
+ 
+ 	if (priv->devtype < I2C_RCAR_GEN3) {
+ 		irqflags |= IRQF_NO_THREAD;
+-- 
+2.43.0
+
 
 
 
