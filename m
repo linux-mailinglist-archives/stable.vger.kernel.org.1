@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-60037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D0F932D19
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5A1932B05
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE8D6B24B38
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4F3DB225B5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5065119AD5A;
-	Tue, 16 Jul 2024 16:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6365C1E894;
+	Tue, 16 Jul 2024 15:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxt0OjXx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/yGHjfd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6FE1DDE9;
-	Tue, 16 Jul 2024 16:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D9FB641;
+	Tue, 16 Jul 2024 15:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145667; cv=none; b=DRtAGwEr8rWX4fx7wHs+IWCU8/okdbmKrAseN1jU6AyKhQDOy5eS0xI3mrbzKEe/9Z8oYN+XUksQDNb92ODMYJIZ0zd+0rmBKWIRsn/xi0nG8D7SQykTdOXcg3WmrJaqkcvk0kAtXTw6IO3zHpVPgGeKjNkMs3dXQhwPTezKfMc=
+	t=1721144441; cv=none; b=annsN/KhmHOXnpRi400s1V8bRLfSVVc7tv+/fIizh12oJW/kPIaxRsAb56IURuRdzYLS3WdeU9z7DL0V7f4I62YrTIUPB7seHpf05Wp1y9zd1NOsvEPtJxwAJxd2BdsuuSEWq5g5FvoQDN//yWemYq8VIEfDkusEY2pVQkky4Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145667; c=relaxed/simple;
-	bh=2hfRZ8sCa0urjZUnLNmerxS2cNFR+ffLRXl9g9nIKn0=;
+	s=arc-20240116; t=1721144441; c=relaxed/simple;
+	bh=9tXbk/NT760stJ68JuYgmfH8KRcdc6HTw/NaG0Y8Z3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsrdVkAfdwAuxM09cSrzH+94fhOjctOXddj6K49uXu3NjSIhZkQsb+tjZcfmLPEA99oQRwRssGzFu9OEkI0bFyOaA8dzJHZtQkndw8Lb49iad/v0O1TcehRrYej5SiAN54nwJF6xv3mUZyF9wAbYgyk6+HkLQZUOLPPFmFimzaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxt0OjXx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85932C116B1;
-	Tue, 16 Jul 2024 16:01:06 +0000 (UTC)
+	 MIME-Version; b=lAitNettseXFUW4FUvB6QScW67OHXOpwzbULus1xZYY7JprEq7tOyLpTl99XTzRyoOPadsQ7ryaVVY5lxzOH2nhQJZe2nawih/LHgLU1VF4oALaU5mqytRy4byY1ztYDd/+nDhRWrQrh3G5HI7PEkYU0ajvlbauxuQOnG3FjV7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/yGHjfd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D59C116B1;
+	Tue, 16 Jul 2024 15:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145666;
-	bh=2hfRZ8sCa0urjZUnLNmerxS2cNFR+ffLRXl9g9nIKn0=;
+	s=korg; t=1721144441;
+	bh=9tXbk/NT760stJ68JuYgmfH8KRcdc6HTw/NaG0Y8Z3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wxt0OjXxMTGKyT9z7HqoNJYxO4Agu1jvxq4laJ6e0qi05x/B48AlKOPClFql+1X9z
-	 V19iUY/8qZFLsCIoU4cbdGZRXKNj+DGhPIepTEPJWUfSb0xtmOWFTHyVgU47qiHRdq
-	 gEqu9vp/M+mLKnLKKPrsnyWzYjyw49v+eBjWEcxw=
+	b=v/yGHjfdYsw1EQMBkqHcHafzI/ZGhbQu89eqkuGVvb0M6JnzTb9lopqNzgMxm6ZpF
+	 CCTghipOAb4+4qjqYPkcGGQSbTNlG6emBmIdsCId/EDBVf+1WBmbtjAuuVelHffa/m
+	 sdCW4R+nMg1DD9D+wzireIxwrxl8WBtmI0vyXtzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/121] firmware: cs_dsp: Use strnlen() on name fields in V1 wmfw files
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Soheil Hassas Yeganeh <soheil@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 73/78] tcp: refactor tcp_retransmit_timer()
 Date: Tue, 16 Jul 2024 17:31:45 +0200
-Message-ID: <20240716152752.981348273@linuxfoundation.org>
+Message-ID: <20240716152743.462711905@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 680e126ec0400f6daecf0510c5bb97a55779ff03 ]
+commit 0d580fbd2db084a5c96ee9c00492236a279d5e0f upstream.
 
-Use strnlen() instead of strlen() on the algorithm and coefficient name
-string arrays in V1 wmfw files.
+It appears linux-4.14 stable needs a backport of commit
+88f8598d0a30 ("tcp: exit if nothing to retransmit on RTO timeout")
 
-In V1 wmfw files the name is a NUL-terminated string in a fixed-size
-array. cs_dsp should protect against overrunning the array if the NUL
-terminator is missing.
+Since tcp_rtx_queue_empty() is not in pre 4.15 kernels,
+let's refactor tcp_retransmit_timer() to only use tcp_rtx_queue_head()
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f6bc909e7673 ("firmware: cs_dsp: add driver to support firmware loading on Cirrus Logic DSPs")
-Link: https://patch.msgid.link/20240708144855.385332-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+I will provide to stable teams the squashed patches.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_timer.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index 5eba9e913f7c3..bd1651e709365 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1128,7 +1128,7 @@ static int cs_dsp_coeff_parse_alg(struct cs_dsp *dsp,
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -452,6 +452,7 @@ void tcp_retransmit_timer(struct sock *s
+ 	struct net *net = sock_net(sk);
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 	struct request_sock *req;
++	struct sk_buff *skb;
  
- 		blk->id = le32_to_cpu(raw->id);
- 		blk->name = raw->name;
--		blk->name_len = strlen(raw->name);
-+		blk->name_len = strnlen(raw->name, ARRAY_SIZE(raw->name));
- 		blk->ncoeff = le32_to_cpu(raw->ncoeff);
+ 	req = rcu_dereference_protected(tp->fastopen_rsk,
+ 					lockdep_sock_is_held(sk));
+@@ -464,7 +465,12 @@ void tcp_retransmit_timer(struct sock *s
+ 		 */
+ 		return;
+ 	}
+-	if (!tp->packets_out || WARN_ON_ONCE(tcp_rtx_queue_empty(sk)))
++
++	if (!tp->packets_out)
++		return;
++
++	skb = tcp_rtx_queue_head(sk);
++	if (WARN_ON_ONCE(!skb))
+ 		return;
  
- 		pos = sizeof(*raw);
-@@ -1204,7 +1204,7 @@ static int cs_dsp_coeff_parse_coeff(struct cs_dsp *dsp,
- 			return -EOVERFLOW;
- 
- 		blk->name = raw->name;
--		blk->name_len = strlen(raw->name);
-+		blk->name_len = strnlen(raw->name, ARRAY_SIZE(raw->name));
- 		blk->ctl_type = le16_to_cpu(raw->ctl_type);
- 		blk->flags = le16_to_cpu(raw->flags);
- 		blk->len = le32_to_cpu(raw->len);
--- 
-2.43.0
-
+ 	if (!tp->snd_wnd && !sock_flag(sk, SOCK_DEAD) &&
+@@ -496,7 +502,7 @@ void tcp_retransmit_timer(struct sock *s
+ 			goto out;
+ 		}
+ 		tcp_enter_loss(sk);
+-		tcp_retransmit_skb(sk, tcp_rtx_queue_head(sk), 1);
++		tcp_retransmit_skb(sk, skb, 1);
+ 		__sk_dst_reset(sk);
+ 		goto out_reset_timer;
+ 	}
 
 
 
