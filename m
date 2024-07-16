@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-60059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7973932D2F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 542D8932C57
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 051481C21713
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAD181F244C4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0774119AD72;
-	Tue, 16 Jul 2024 16:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1487319AD72;
+	Tue, 16 Jul 2024 15:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1zgUHkC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6ohuJTm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99901DDCE;
-	Tue, 16 Jul 2024 16:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C812F1DDCE;
+	Tue, 16 Jul 2024 15:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145731; cv=none; b=jgiLMtGUSClpipp3YYF3ilp9V5rMVvkquoYixvTQ1FPwG0Gt1LODHarl05zbaL/LSwNE8o22JPbSI3O19+6KdleJNw9OLyZVlY/ISA/8ZnGBxkiian7E9Jdni3anHxfP38G3mvSK6vF3Uwk6rMFu41DHZeBaS+eoOgWDHEj6Ago=
+	t=1721145259; cv=none; b=NmAqBeGYBQeYPspfRUV0LySC1IVhE5XPxrHtnjSDSJjlPnSWvMj6pcXcbIyNCMXaYbSBxkk4VHgtdmyouF2HzMBC2yY5o5+/35m9Wxa3TBTgLDYjRZfbsveYthrDvLN20lwgwGt46c8V6G5t32mCFheokGPnlKHNYLkKJkFlfDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145731; c=relaxed/simple;
-	bh=4KNSWdpTTT9bn/Ir7JMPiS51tEjpZTL6Zk0YNiSTtbU=;
+	s=arc-20240116; t=1721145259; c=relaxed/simple;
+	bh=TuNS8Frcuw6KV79fdNjs9r9Mp0z22Ueg4ZoDmvrcBy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYRm07wvrJkbSTRfhK4PLij3inVAvBnLRq7eX+skYNcJGbC7bqWaZRg/zn+l96QAfWben4BcfXTI94Igzau27gSKcA4ZDnk9IH5rIlRVLcnZhPQcLhIAnm50/qbtVatll+nwVJMasggolp0Sl/Y46lS9T4xkEKkWmlOul2nxTZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1zgUHkC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448A7C116B1;
-	Tue, 16 Jul 2024 16:02:11 +0000 (UTC)
+	 MIME-Version; b=W50E94pvISUtQcGmu+SJOpM9ua2p2P8knmpVWAB4n/BkKqUM0oW4wt6Ev1j7dEkTiW1hWmh5k/RG6Rm5CI6tNt+Uwk9PuIXkuSQm1x9Z5HTOMOPaq0SbPMj4Ura49bz/87z+YMtc49Qw9VemZipyzKaeqbqwhEdO0+7NaGYujCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6ohuJTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAFBC116B1;
+	Tue, 16 Jul 2024 15:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145731;
-	bh=4KNSWdpTTT9bn/Ir7JMPiS51tEjpZTL6Zk0YNiSTtbU=;
+	s=korg; t=1721145259;
+	bh=TuNS8Frcuw6KV79fdNjs9r9Mp0z22Ueg4ZoDmvrcBy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1zgUHkCBxaU+FOLGpZMtyJgXaFgizGSHZr8my0F1Ej/nzzDXQvHShK+BcNJWapif
-	 YEB/e0RamXQQmzXrr8IJXWujoGMlQFGqfNHR5Alfo2vKRlmEi7nlZtWhZb3Zd38M33
-	 7poodz2UM4SPZC/YF2XaJ0E4fow/+nAwUPKkYbqQ=
+	b=t6ohuJTmCP+SlYfQ0pgo7xzWYmaNiGEhR+pECi6kFl9s6XmCWcoMpnevn5HEnN4A7
+	 KTJyp53WqBotSg/bR6DAvBG3UksOrMzBFEJdLSI5sVnC86lqIxfAxTc1P36DcpLf7W
+	 xAgGeCAnUhlEnMzxXuUxWS2oF8NkAuoKwtjEp2ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 066/121] usb: gadget: configfs: Prevent OOB read/write in usb_string_copy()
-Date: Tue, 16 Jul 2024 17:32:08 +0200
-Message-ID: <20240716152753.867195799@linuxfoundation.org>
+	Komal Bajaj <quic_kbajaj@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.9 133/143] Revert "dt-bindings: cache: qcom,llcc: correct QDU1000 reg entries"
+Date: Tue, 16 Jul 2024 17:32:09 +0200
+Message-ID: <20240716152801.109108201@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Komal Bajaj <quic_kbajaj@quicinc.com>
 
-commit 6d3c721e686ea6c59e18289b400cc95c76e927e0 upstream.
+commit e227c11179dfb6970360c95a8d7b007eb3b223d6 upstream.
 
-Userspace provided string 's' could trivially have the length zero. Left
-unchecked this will firstly result in an OOB read in the form
-`if (str[0 - 1] == '\n') followed closely by an OOB write in the form
-`str[0 - 1] = '\0'`.
+This reverts commit f0f99f371822c48847e02e56d6e7de507e18f186.
 
-There is already a validating check to catch strings that are too long.
-Let's supply an additional check for invalid strings that are too short.
+QDU1000 has 7 register regions. The earlier commit 8e2506d01231
+("dt-bindings: cache: qcom,llcc: Add LLCC compatible for QDU1000/QRU1000")
+to add llcc compatible was reflecting the same, but dtsi change for
+QDU1000 was not aligning with its binding. Later, commit f0f99f371822
+("dt-bindings: cache: qcom,llcc: correct QDU1000 reg entries") was merged
+intended to fix this misalignment.
 
-Signed-off-by: Lee Jones <lee@kernel.org>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240705074339.633717-1-lee@kernel.org
+After the LLCC driver refactor, each LLCC bank/channel need to be
+represented as one register space to avoid mapping to the region where
+access is not there. Hence, revert the commit f0f99f371822 ("dt-bindings:
+cache: qcom,llcc: correct QDU1000 reg entries") to align QDU1000 llcc
+binding with its dtsi node.
+
+Signed-off-by: Komal Bajaj <quic_kbajaj@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240619061641.5261-3-quic_kbajaj@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/configfs.c |    3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/devicetree/bindings/cache/qcom,llcc.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -115,9 +115,12 @@ static int usb_string_copy(const char *s
- 	int ret;
- 	char *str;
- 	char *copy = *s_copy;
-+
- 	ret = strlen(s);
- 	if (ret > USB_MAX_STRING_LEN)
- 		return -EOVERFLOW;
-+	if (ret < 1)
-+		return -EINVAL;
- 
- 	if (copy) {
- 		str = copy;
+diff --git a/Documentation/devicetree/bindings/cache/qcom,llcc.yaml b/Documentation/devicetree/bindings/cache/qcom,llcc.yaml
+index 07ccbda4a0ab..b9a9f2cf32a1 100644
+--- a/Documentation/devicetree/bindings/cache/qcom,llcc.yaml
++++ b/Documentation/devicetree/bindings/cache/qcom,llcc.yaml
+@@ -66,7 +66,6 @@ allOf:
+         compatible:
+           contains:
+             enum:
+-              - qcom,qdu1000-llcc
+               - qcom,sc7180-llcc
+               - qcom,sm6350-llcc
+     then:
+@@ -104,6 +103,7 @@ allOf:
+         compatible:
+           contains:
+             enum:
++              - qcom,qdu1000-llcc
+               - qcom,sc8180x-llcc
+               - qcom,sc8280xp-llcc
+               - qcom,x1e80100-llcc
+-- 
+2.45.2
+
 
 
 
