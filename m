@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-59754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C849932B9A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:47:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E53932C94
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECF37281AC5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:47:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6200F1F245CB
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E5A19E7FC;
-	Tue, 16 Jul 2024 15:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6944B19E7D8;
+	Tue, 16 Jul 2024 15:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aM1bb8pR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ry1SlNOl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E4619E7E3;
-	Tue, 16 Jul 2024 15:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2894F1DDCE;
+	Tue, 16 Jul 2024 15:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144813; cv=none; b=Kvv9DxEmnHS7PN8E9cY8aTy3gweS6ibEptcdNYwb8BKR+ooAhueLZLlyiwOBEKZKUBk+zzN1t9J3BPidSDWvF6WxEL8g3bF0yCVsP9FWlfIK/64YJ9OSSA8VpyxWmkTQcbI3a/mhk+Jad2V8U0ha6GyZa0uG9W1Wu8lZfWhCvXw=
+	t=1721145375; cv=none; b=HmE8AU0y3tmmpiauKgvkxLThHF/77PauRyvfPFRghEMr0xHd4aSkundN4KPPQ8gdMxooXormQAjetmMK5R/fntqp2rIUXZXIIMLFdnFo8R/hhJnY8P6J5rTR8uxQlfVfPyqeTwum+qa4Wevi/JOXXy2QBKSOBMJB7NXhSPsOnIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144813; c=relaxed/simple;
-	bh=zftNQ9RKLhVgNCLTqyJadC7VNZgBUvIowAo7LmrjOZU=;
+	s=arc-20240116; t=1721145375; c=relaxed/simple;
+	bh=5uhX+owR3fgVD/3L9P4Aj96r1Ntg8sEMt8HLgNBGzGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U07DVhE27UvSb3KjRGVsnW6EbgUM4Iid0vwfV+oP/zPv+oMnLQabXMZy6VjFbf3Yp+2mx6l6ZOM2d7Z9Qss9lULkn3IaCIszAWJmcXb2sbuFowCGOHR5eEXgJJMQRB1e2V3C8fmQgsIPtlXgZR1hd6Bky3+qG+FuHvLH0q4L5jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aM1bb8pR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B20C4AF0B;
-	Tue, 16 Jul 2024 15:46:52 +0000 (UTC)
+	 MIME-Version; b=KTVYZQYbGECsb+45LgA1Ppu0fAEdVndFXQCfalVaSayTW1xX3JH4nV5FUPeFoFyGcEzGq87XGoawWn3By9TuK8VhR5l3iNxUIvO79PRlJHnsuRHWpH4WBODlvTEeNoF77vo7kwAf/0d8E1EjtJNJE7FyvHBKFbdLNZhnU/e6tjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry1SlNOl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3A0C116B1;
+	Tue, 16 Jul 2024 15:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144812;
-	bh=zftNQ9RKLhVgNCLTqyJadC7VNZgBUvIowAo7LmrjOZU=;
+	s=korg; t=1721145375;
+	bh=5uhX+owR3fgVD/3L9P4Aj96r1Ntg8sEMt8HLgNBGzGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aM1bb8pR9JyEb938gkx269bJZXmfhUx+XT+6uU5T+x9Svy9UV6lIeNLuQBC5S+loO
-	 95UdTF0M+HfwVegyri2A8wf5pMYuQwySHA75R6QfY+ETOpJ90hYnmdb5nLXLwvVrbP
-	 2l0cwV/to0QvUj7NAzuP0N+rNq4pLrPgSOyL8+q4=
+	b=ry1SlNOltz66Otzq23cC/17u7ZosE56wquHaRcn8FA063jEFUy/KR0tTbCc+oRIz2
+	 U1deovClNegK9iy5vUA04EI41y0JrfAMAJMtVRrn4S7h+GP0XKk2a1SkbwBi1Ggm2n
+	 rtRabZ1BUkguk+DxBqWtIr+l5wek9LdFE/25OkZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/108] i2c: mark HostNotify target address as used
+	Eric Dumazet <edumazet@google.com>,
+	Menglong Dong <imagedong@tencent.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 46/96] tcp: use signed arithmetic in tcp_rtx_probe0_timed_out()
 Date: Tue, 16 Jul 2024 17:31:57 +0200
-Message-ID: <20240716152749.912624394@linuxfoundation.org>
+Message-ID: <20240716152748.277641581@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit bd9f5348089b65612e5ca976e2ae22f005340331 ]
+commit 36534d3c54537bf098224a32dc31397793d4594d upstream.
 
-I2C core handles the local target for receiving HostNotify alerts. There
-is no separate driver bound to that address. That means userspace can
-access it if desired, leading to further complications if controllers
-are not capable of reading their own local target. Bind the local target
-to the dummy driver so it will be marked as "handled by the kernel" if
-the HostNotify feature is used. That protects aginst userspace access
-and prevents other drivers binding to it.
+Due to timer wheel implementation, a timer will usually fire
+after its schedule.
 
-Fixes: 2a71593da34d ("i2c: smbus: add core function handling SMBus host-notify")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For instance, for HZ=1000, a timeout between 512ms and 4s
+has a granularity of 64ms.
+For this range of values, the extra delay could be up to 63ms.
+
+For TCP, this means that tp->rcv_tstamp may be after
+inet_csk(sk)->icsk_timeout whenever the timer interrupt
+finally triggers, if one packet came during the extra delay.
+
+We need to make sure tcp_rtx_probe0_timed_out() handles this case.
+
+Fixes: e89688e3e978 ("net: tcp: fix unexcepted socket die when snd_wnd is 0")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Menglong Dong <imagedong@tencent.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Link: https://lore.kernel.org/r/20240607125652.1472540-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-core-base.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp_timer.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index e8a89e18c640e..6fac638e423ac 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -969,6 +969,7 @@ EXPORT_SYMBOL_GPL(i2c_unregister_device);
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -446,8 +446,13 @@ static bool tcp_rtx_probe0_timed_out(con
+ {
+ 	const struct tcp_sock *tp = tcp_sk(sk);
+ 	const int timeout = TCP_RTO_MAX * 2;
+-	u32 rcv_delta, rtx_delta;
++	u32 rtx_delta;
++	s32 rcv_delta;
  
- static const struct i2c_device_id dummy_id[] = {
- 	{ "dummy", 0 },
-+	{ "smbus_host_notify", 0 },
- 	{ },
- };
- 
--- 
-2.43.0
-
++	/* Note: timer interrupt might have been delayed by at least one jiffy,
++	 * and tp->rcv_tstamp might very well have been written recently.
++	 * rcv_delta can thus be negative.
++	 */
+ 	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
+ 	if (rcv_delta <= timeout)
+ 		return false;
 
 
 
