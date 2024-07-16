@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-60104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59719932D63
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:04:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94AF5932D64
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:04:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E9C51F21393
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:04:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F31A1F2121B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:04:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD9B19B59C;
-	Tue, 16 Jul 2024 16:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C6419AD59;
+	Tue, 16 Jul 2024 16:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKu13d/u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EmbrDIva"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03761DDCE;
-	Tue, 16 Jul 2024 16:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA341DDCE;
+	Tue, 16 Jul 2024 16:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145886; cv=none; b=TYKGEQMEvcPKw2blqUUF5Laop+f/FXF0q084AotHKNVsKwh2dEaQcdKcUWqVVG0yopWjV039YyyYVJS6HMZqsnhEHaY12BcHXnaSMDhSwZ5hmsNj7fdb28rghcp/LKXyPb/xnznBIPllBc4pWBnl5EdrB4A+9gyvfIQv6rShxg8=
+	t=1721145889; cv=none; b=pwXLjL1tUttN0jKthXiG5rhOC2eWyDqfW6V7PmEbQRQyG8V71tR2D0ExeKajwCXipTltPFjtwFj/mjMlbvp7Rvqwt1+zujyLioJ9MblfRI4baepBhPyw349P1tOJBcX16f44V9CtOothnIjzifYzt0eFHHQz+wXi/TRNXIK9hYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145886; c=relaxed/simple;
-	bh=JshEkCG6EzpqN0dFx50I+LmhkBhOrbOwaC5U8JwQOXM=;
+	s=arc-20240116; t=1721145889; c=relaxed/simple;
+	bh=9NgpkoVgX5lcIm2Lpwchcn9BCoIUkndTV2Kj4TEqJf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZFZdt0ezjcAQJyopggNJVsXmHPm0tru8iC0xYal3ctp4r4KdX6qch/tlXxGAqDgUlZUHNPmquKohJMBlFW0gF5ISKtYlHqg5ATQAOzdIH8o3yZxRBo85TC6bOmkHx5xMgJds7b0iuHQagjNuey/QrzUWelFabmP/9YOpEOqr9nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKu13d/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD04C116B1;
-	Tue, 16 Jul 2024 16:04:45 +0000 (UTC)
+	 MIME-Version; b=qhaoYvc07HwZsKaRX5hadrCwRcWVU7Gu4Rfkk8OKs27AQcmcO6ur2WN6c81diVpTzzsXT6KWoZa6Us/cyS8Fji8IZzcik23BAVPfAO6Iewe8jn2XwMvTAWPIk5nqKrGdL2mWIrEmgIvmDQdqAIbQPAIa+dDW30/189fh8lDX6oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EmbrDIva; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CBAC116B1;
+	Tue, 16 Jul 2024 16:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145885;
-	bh=JshEkCG6EzpqN0dFx50I+LmhkBhOrbOwaC5U8JwQOXM=;
+	s=korg; t=1721145888;
+	bh=9NgpkoVgX5lcIm2Lpwchcn9BCoIUkndTV2Kj4TEqJf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKu13d/uCQeJRKVEhb6YKTKwFz4JH31OgSq84xUL8OH5QBf+whW6u8iOs0q9FNa7B
-	 DdwyHdCImiqVSf7pVBWjQyRiKqIhiS1RmZFyM9jkFUzteB2JMZMWn+nLAF5EcfEMtt
-	 ilk5xfOat3Lum4a+tTxK+aQH7FcGrfTu8ETJWrmg=
+	b=EmbrDIvaPCQpYvxj8psDGfKQzyCu8eCZHZW2Nh0PaEocOMMpHjLvH47p7R8NNHBjF
+	 lTyLdrvsYHcxA141bR6XVG+D0tV2Hs9OYlJxVlWtk71nBfg7yyatUArCuaw8FD24uJ
+	 /KfhRflAgdroEELiMi1y6TDKP9pb0pWtdLY5Aq14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/121] i2c: rcar: bring hardware to known state when probing
-Date: Tue, 16 Jul 2024 17:32:52 +0200
-Message-ID: <20240716152755.561104587@linuxfoundation.org>
+Subject: [PATCH 6.6 111/121] i2c: mark HostNotify target address as used
+Date: Tue, 16 Jul 2024 17:32:53 +0200
+Message-ID: <20240716152755.599175203@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
 References: <20240716152751.312512071@linuxfoundation.org>
@@ -70,67 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 4e36c0f20cb1c74c7bd7ea31ba432c1c4a989031 ]
+[ Upstream commit bd9f5348089b65612e5ca976e2ae22f005340331 ]
 
-When probing, the hardware is not brought into a known state. This may
-be a problem when a hypervisor restarts Linux without resetting the
-hardware, leaving an old state running. Make sure the hardware gets
-initialized, especially interrupts should be cleared and disabled.
+I2C core handles the local target for receiving HostNotify alerts. There
+is no separate driver bound to that address. That means userspace can
+access it if desired, leading to further complications if controllers
+are not capable of reading their own local target. Bind the local target
+to the dummy driver so it will be marked as "handled by the kernel" if
+the HostNotify feature is used. That protects aginst userspace access
+and prevents other drivers binding to it.
 
-Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Closes: https://lore.kernel.org/r/20240702045535.2000393-1-dirk.behme@de.bosch.com
-Fixes: 6ccbe607132b ("i2c: add Renesas R-Car I2C driver")
+Fixes: 2a71593da34d ("i2c: smbus: add core function handling SMBus host-notify")
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/i2c/i2c-core-base.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index a32a93f9a60d0..2fec6cb09757a 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -223,6 +223,14 @@ static void rcar_i2c_init(struct rcar_i2c_priv *priv)
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 3642d42463209..1e873ff0a624d 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1064,6 +1064,7 @@ EXPORT_SYMBOL(i2c_find_device_by_fwnode);
  
- }
+ static const struct i2c_device_id dummy_id[] = {
+ 	{ "dummy", 0 },
++	{ "smbus_host_notify", 0 },
+ 	{ },
+ };
  
-+static void rcar_i2c_reset_slave(struct rcar_i2c_priv *priv)
-+{
-+	rcar_i2c_write(priv, ICSIER, 0);
-+	rcar_i2c_write(priv, ICSSR, 0);
-+	rcar_i2c_write(priv, ICSCR, SDBS);
-+	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
-+}
-+
- static int rcar_i2c_bus_barrier(struct rcar_i2c_priv *priv)
- {
- 	int ret;
-@@ -975,11 +983,8 @@ static int rcar_unreg_slave(struct i2c_client *slave)
- 
- 	/* ensure no irq is running before clearing ptr */
- 	disable_irq(priv->irq);
--	rcar_i2c_write(priv, ICSIER, 0);
--	rcar_i2c_write(priv, ICSSR, 0);
-+	rcar_i2c_reset_slave(priv);
- 	enable_irq(priv->irq);
--	rcar_i2c_write(priv, ICSCR, SDBS);
--	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
- 
- 	priv->slave = NULL;
- 
-@@ -1092,7 +1097,9 @@ static int rcar_i2c_probe(struct platform_device *pdev)
- 		goto out_pm_disable;
- 	}
- 
--	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
-+	/* Bring hardware to known state */
-+	rcar_i2c_init(priv);
-+	rcar_i2c_reset_slave(priv);
- 
- 	if (priv->devtype < I2C_RCAR_GEN3) {
- 		irqflags |= IRQF_NO_THREAD;
 -- 
 2.43.0
 
