@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-59874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95966932C32
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D18932B93
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 510A2284C41
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42FDC1F2099A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD57319DF53;
-	Tue, 16 Jul 2024 15:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1935195B27;
+	Tue, 16 Jul 2024 15:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ror1fgM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nId1gjLS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE5217A93F;
-	Tue, 16 Jul 2024 15:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F16312B72;
+	Tue, 16 Jul 2024 15:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145168; cv=none; b=BuUVTfd11ttJK+j+vEQ8NekIT1hehn7Z/jlRM3qh7PZ9jcOE38Z13mvr4JSlslPdYyAru2QCZ/jxKntbBKFwUZFWke1TZw4t+ayKGCjjcwiHRPNv28g4GwBtlW+C6NnrxMyALnbK5lMCRcBjxX+uAdlx1st2tAyYqHdQgkLzc/Q=
+	t=1721144809; cv=none; b=kPSAbTFoIy4DVSHsuBAPcKgBafFefcZcjcln+MvMnOD2W87X0VSXNHJ4pXHj4c/ie+U70jumtJQyDM26uKIqAELYz/Z2YVyy1fnKsBf2lbzWZEyWWfZto1GXHXiUNhmLrbUCFfga4g47hKNC6CDOnkfR1mlyDNsqURMITPF2hak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145168; c=relaxed/simple;
-	bh=jSs8+24+wsWiog2gy3u9O/QYrRA2WEahyy48Ry3/bzM=;
+	s=arc-20240116; t=1721144809; c=relaxed/simple;
+	bh=EcHLPFSBcaSPyd8e0BxFBWInHwVfGakeG/iaO4l/Jp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lba6913PwtaFy2CDtyZkBg3TJX0mn/amN9OuAN9uWl8gLiT941wSd4hl58qaaVLk/nOXylt1QEchVfjE7SM5XJlyBfg+VI+zFvcTYqcdP2eSelCB6z6Kh9A9bXcoyWQJNBoGg7l0fCEJVegUyCLkWBWHKSz+rM2xZ6wFBY7h8a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ror1fgM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E07C116B1;
-	Tue, 16 Jul 2024 15:52:47 +0000 (UTC)
+	 MIME-Version; b=A3wDHfQwuPnuX6qNOJbFfTFip7qUUKMfo/l+jMbw1UrHTq8EOhHK1AbbmUBW7hl1PLRNWGJecqupxI0Xwa9znqui8iNgJ4lR/U42epK8k+lfoK5bIJ30f8LPSIZjjIxpR/TLqicsrs6EsBISI8FjNsxAXhWUqaJRWxJZ+FVyOjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nId1gjLS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF220C4AF0B;
+	Tue, 16 Jul 2024 15:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145168;
-	bh=jSs8+24+wsWiog2gy3u9O/QYrRA2WEahyy48Ry3/bzM=;
+	s=korg; t=1721144809;
+	bh=EcHLPFSBcaSPyd8e0BxFBWInHwVfGakeG/iaO4l/Jp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ror1fgM7YPSfThHvx6UsqfZUYY2t6JUwMMtlRD9Dfpi9SNmGtRNjgay7tMEVsotMR
-	 J5l/GM1qe6i4ctxbPEyUqHzXdtGTjOsdhL6JDUd/PUASV1xNryfMyFLB6n8+951Dv+
-	 gjP50/VijsgG5K7ddjBBvcsxmrlZbIvBZJcAtVF8=
+	b=nId1gjLS8nkA5vIbkvycgWncMZ2ju2YdJasw3nGkJd/+EP+MF+jAsiX7mz6H1Nc4a
+	 8WcCOsR5nXdJ8eZBDPFwGb3nPiLdmANeInL/TOcpgZwCEmHg75Ve7G5M1s8lp7CDZ8
+	 w5i7/Ax0K9UUUSEG1BMcHErdtHTmJAdI+KqlaTGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.9 120/143] wireguard: selftests: use acpi=off instead of -no-acpi for recent QEMU
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 101/108] i2c: rcar: bring hardware to known state when probing
 Date: Tue, 16 Jul 2024 17:31:56 +0200
-Message-ID: <20240716152800.597048864@linuxfoundation.org>
+Message-ID: <20240716152749.873831353@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason A. Donenfeld <Jason@zx2c4.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 2cb489eb8dfc291060516df313ff31f4f9f3d794 upstream.
+[ Upstream commit 4e36c0f20cb1c74c7bd7ea31ba432c1c4a989031 ]
 
-QEMU 9.0 removed -no-acpi, in favor of machine properties, so update the
-Makefile to use the correct QEMU invocation.
+When probing, the hardware is not brought into a known state. This may
+be a problem when a hypervisor restarts Linux without resetting the
+hardware, leaving an old state running. Make sure the hardware gets
+initialized, especially interrupts should be cleared and disabled.
 
-Cc: stable@vger.kernel.org
-Fixes: b83fdcd9fb8a ("wireguard: selftests: use microvm on x86")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Link: https://patch.msgid.link/20240704154517.1572127-2-Jason@zx2c4.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Closes: https://lore.kernel.org/r/20240702045535.2000393-1-dirk.behme@de.bosch.com
+Fixes: 6ccbe607132b ("i2c: add Renesas R-Car I2C driver")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/wireguard/qemu/Makefile |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-rcar.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/tools/testing/selftests/wireguard/qemu/Makefile
-+++ b/tools/testing/selftests/wireguard/qemu/Makefile
-@@ -109,9 +109,9 @@ KERNEL_ARCH := x86_64
- KERNEL_BZIMAGE := $(KERNEL_BUILD_PATH)/arch/x86/boot/bzImage
- QEMU_VPORT_RESULT := virtio-serial-device
- ifeq ($(HOST_ARCH),$(ARCH))
--QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off -no-acpi
-+QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off,acpi=off
- else
--QEMU_MACHINE := -cpu max -machine microvm -no-acpi
-+QEMU_MACHINE := -cpu max -machine microvm,acpi=off
- endif
- else ifeq ($(ARCH),i686)
- CHOST := i686-linux-musl
-@@ -120,9 +120,9 @@ KERNEL_ARCH := x86
- KERNEL_BZIMAGE := $(KERNEL_BUILD_PATH)/arch/x86/boot/bzImage
- QEMU_VPORT_RESULT := virtio-serial-device
- ifeq ($(subst x86_64,i686,$(HOST_ARCH)),$(ARCH))
--QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off -no-acpi
-+QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off,acpi=off
- else
--QEMU_MACHINE := -cpu coreduo -machine microvm -no-acpi
-+QEMU_MACHINE := -cpu coreduo -machine microvm,acpi=off
- endif
- else ifeq ($(ARCH),mips64)
- CHOST := mips64-linux-musl
+diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
+index 6a7a7a074a975..029d999708261 100644
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -220,6 +220,14 @@ static void rcar_i2c_init(struct rcar_i2c_priv *priv)
+ 
+ }
+ 
++static void rcar_i2c_reset_slave(struct rcar_i2c_priv *priv)
++{
++	rcar_i2c_write(priv, ICSIER, 0);
++	rcar_i2c_write(priv, ICSSR, 0);
++	rcar_i2c_write(priv, ICSCR, SDBS);
++	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
++}
++
+ static int rcar_i2c_bus_barrier(struct rcar_i2c_priv *priv)
+ {
+ 	int ret;
+@@ -888,11 +896,8 @@ static int rcar_unreg_slave(struct i2c_client *slave)
+ 
+ 	/* ensure no irq is running before clearing ptr */
+ 	disable_irq(priv->irq);
+-	rcar_i2c_write(priv, ICSIER, 0);
+-	rcar_i2c_write(priv, ICSSR, 0);
++	rcar_i2c_reset_slave(priv);
+ 	enable_irq(priv->irq);
+-	rcar_i2c_write(priv, ICSCR, SDBS);
+-	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
+ 
+ 	priv->slave = NULL;
+ 
+@@ -1004,7 +1009,9 @@ static int rcar_i2c_probe(struct platform_device *pdev)
+ 		goto out_pm_disable;
+ 	}
+ 
+-	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
++	/* Bring hardware to known state */
++	rcar_i2c_init(priv);
++	rcar_i2c_reset_slave(priv);
+ 
+ 	if (priv->devtype < I2C_RCAR_GEN3) {
+ 		irqflags |= IRQF_NO_THREAD;
+-- 
+2.43.0
+
 
 
 
