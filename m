@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-59545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7A9932AA2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23263932B44
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2100282DC7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D394A282CD7
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DB71DA4D;
-	Tue, 16 Jul 2024 15:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC14319DF63;
+	Tue, 16 Jul 2024 15:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDCVsLwz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8nMvIyG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED29BCA40;
-	Tue, 16 Jul 2024 15:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFB5195B27;
+	Tue, 16 Jul 2024 15:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144172; cv=none; b=k2qgalU6ZGB2btqPOJeUNrYuZhaydpTf4SjXF5HMSQ8AOMvvx85xCeutI2Aloog1+cv+pOQYA3fwWhOb7QBdj7FWqdMoe5yt5xlrbkB1BchbvGGDPmoL5UdXFl5XGzRufab6KaXIOFf4m/r2lyGxoAdpcLQbI80+TqqKiwPhjl0=
+	t=1721144584; cv=none; b=cs61N8gHMBoD1ZgaGwhPFE42wQE9cViackzD84LzN+knCX5SghAYYqTzj5jOh7P16scugreAiYB1BTduSwteo5fzFuNIhhr0ayFGTfILM9YJ5NGoGJ3/oemqqAZLPVtFz3HPQfJ8vRti80hiSCJKHL+DXgGWKkKluQmfLwByokI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144172; c=relaxed/simple;
-	bh=vVg3K6dmkluoDCRG04APAsv1lG3XbD4E5UvTQMSvZgc=;
+	s=arc-20240116; t=1721144584; c=relaxed/simple;
+	bh=Jz1BtFCZdV0+h/+XKjcD6HgVOPE1cuX6SuEhvYeKcqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYkYFOeaw1zT0FK5gWv9q0acUslbJGqQRMRcGUuKm6H5QNSzLmWyKrjobFpx6oOD+DSsOs7Awg5VSdL8bJp6xZNifMkhRf25gVGh//U/G5Nf4as59FF/oqCXwQiNLLQhtmZsZmKTgrlszK9bRU2WM1E/XzJD9f6Fl0JGy7NRr1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDCVsLwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF9FC116B1;
-	Tue, 16 Jul 2024 15:36:11 +0000 (UTC)
+	 MIME-Version; b=VdgM+R8vFwHbJChM6MnK42kCcNWW2FS4jwlR6XPp4NqRmTNtY/LoH+PPRZdE4AggV6km657++O1Q1XA/7RakLHE8v+Mmk2Xm5R/a2RVn1/RHfCI37cmoCRObBaax/dMktjY/34gVTr9PJ3886xpaBwBfBLXq1KO+wO5LmNJxP4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8nMvIyG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F34BC4AF0B;
+	Tue, 16 Jul 2024 15:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144171;
-	bh=vVg3K6dmkluoDCRG04APAsv1lG3XbD4E5UvTQMSvZgc=;
+	s=korg; t=1721144584;
+	bh=Jz1BtFCZdV0+h/+XKjcD6HgVOPE1cuX6SuEhvYeKcqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDCVsLwz1eL8hMrgPxs1/ahqxsA5zyfUbfPlVn/sSyNAEtpywR03a8g7iW9Ujq4jN
-	 3XdJgf0DIuPPoA1OFHag9jC6rFAsqbcwvKqCsqP51lBsM5u3EL1H+o4DG76UZHLSd9
-	 TQs5X4FP0rcEsDwVlNS7hXqQslKGttWovW+1Hxtw=
+	b=U8nMvIyGmEcUlRSEtT4Z1P02L7sVqvHmwVUiR48bqaxBnykQN2605qLgFVvNhQ4XB
+	 83kXZqSfHw+6XrefySNoZZWWk2h2hU1bA3i49sNNNYLZqZb0rGB/E+bhfWvDN4HNra
+	 1WGdQLGXL64XOGM+VZRd0veuMCvLEfaCqzBhPyrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yousuk Seung <ysseung@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Soheil Hassas Yeganeh <soheil@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 21/66] tcp: add ece_ack flag to reno sack functions
+	Jan Kara <jack@suse.cz>,
+	Zach OKeefe <zokeefe@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 041/108] Revert "mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again"
 Date: Tue, 16 Jul 2024 17:30:56 +0200
-Message-ID: <20240716152738.972563975@linuxfoundation.org>
+Message-ID: <20240716152747.572424146@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,136 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yousuk Seung <ysseung@google.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit c634e34f6ebfb75259e6ce467523fd3adf30d3d2 ]
+commit 30139c702048f1097342a31302cbd3d478f50c63 upstream.
 
-Pass a boolean flag that tells the ECE state of the current ack to reno
-sack functions. This is pure refactor for future patches to improve
-tracking delivered counts.
+Patch series "mm: Avoid possible overflows in dirty throttling".
 
-Signed-off-by: Yousuk Seung <ysseung@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Acked-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: a6458ab7fd4f ("UPSTREAM: tcp: fix DSACK undo in fast recovery to call tcp_try_to_open()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Dirty throttling logic assumes dirty limits in page units fit into
+32-bits.  This patch series makes sure this is true (see patch 2/2 for
+more details).
+
+
+This patch (of 2):
+
+This reverts commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78.
+
+The commit is broken in several ways.  Firstly, the removed (u64) cast
+from the multiplication will introduce a multiplication overflow on 32-bit
+archs if wb_thresh * bg_thresh >= 1<<32 (which is actually common - the
+default settings with 4GB of RAM will trigger this).  Secondly, the
+div64_u64() is unnecessarily expensive on 32-bit archs.  We have
+div64_ul() in case we want to be safe & cheap.  Thirdly, if dirty
+thresholds are larger than 1<<32 pages, then dirty balancing is going to
+blow up in many other spectacular ways anyway so trying to fix one
+possible overflow is just moot.
+
+Link: https://lkml.kernel.org/r/20240621144017.30993-1-jack@suse.cz
+Link: https://lkml.kernel.org/r/20240621144246.11148-1-jack@suse.cz
+Fixes: 9319b647902c ("mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-By: Zach O'Keefe <zokeefe@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ mm/page-writeback.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index e51aa5a149c0f..88216b87c986f 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -1897,7 +1897,7 @@ static void tcp_check_reno_reordering(struct sock *sk, const int addend)
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1546,7 +1546,7 @@ static inline void wb_dirty_limits(struc
+ 	 */
+ 	dtc->wb_thresh = __wb_calc_thresh(dtc);
+ 	dtc->wb_bg_thresh = dtc->thresh ?
+-		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
++		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
  
- /* Emulate SACKs for SACKless connection: account for a new dupack. */
- 
--static void tcp_add_reno_sack(struct sock *sk, int num_dupack)
-+static void tcp_add_reno_sack(struct sock *sk, int num_dupack, bool ece_ack)
- {
- 	if (num_dupack) {
- 		struct tcp_sock *tp = tcp_sk(sk);
-@@ -1915,7 +1915,7 @@ static void tcp_add_reno_sack(struct sock *sk, int num_dupack)
- 
- /* Account for ACK, ACKing some data in Reno Recovery phase. */
- 
--static void tcp_remove_reno_sacks(struct sock *sk, int acked)
-+static void tcp_remove_reno_sacks(struct sock *sk, int acked, bool ece_ack)
- {
- 	struct tcp_sock *tp = tcp_sk(sk);
- 
-@@ -2720,7 +2720,7 @@ static void tcp_process_loss(struct sock *sk, int flag, int num_dupack,
- 		 * delivered. Lower inflight to clock out (re)tranmissions.
- 		 */
- 		if (after(tp->snd_nxt, tp->high_seq) && num_dupack)
--			tcp_add_reno_sack(sk, num_dupack);
-+			tcp_add_reno_sack(sk, num_dupack, flag & FLAG_ECE);
- 		else if (flag & FLAG_SND_UNA_ADVANCED)
- 			tcp_reset_reno_sack(tp);
- 	}
-@@ -2803,6 +2803,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	int fast_rexmit = 0, flag = *ack_flag;
-+	bool ece_ack = flag & FLAG_ECE;
- 	bool do_lost = num_dupack || ((flag & FLAG_DATA_SACKED) &&
- 				      tcp_force_fast_retransmit(sk));
- 
-@@ -2811,7 +2812,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
- 
- 	/* Now state machine starts.
- 	 * A. ECE, hence prohibit cwnd undoing, the reduction is required. */
--	if (flag & FLAG_ECE)
-+	if (ece_ack)
- 		tp->prior_ssthresh = 0;
- 
- 	/* B. In all the states check for reneging SACKs. */
-@@ -2852,7 +2853,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
- 	case TCP_CA_Recovery:
- 		if (!(flag & FLAG_SND_UNA_ADVANCED)) {
- 			if (tcp_is_reno(tp))
--				tcp_add_reno_sack(sk, num_dupack);
-+				tcp_add_reno_sack(sk, num_dupack, ece_ack);
- 		} else {
- 			if (tcp_try_undo_partial(sk, prior_snd_una))
- 				return;
-@@ -2877,7 +2878,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
- 		if (tcp_is_reno(tp)) {
- 			if (flag & FLAG_SND_UNA_ADVANCED)
- 				tcp_reset_reno_sack(tp);
--			tcp_add_reno_sack(sk, num_dupack);
-+			tcp_add_reno_sack(sk, num_dupack, ece_ack);
- 		}
- 
- 		if (icsk->icsk_ca_state <= TCP_CA_Disorder)
-@@ -2901,7 +2902,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
- 		}
- 
- 		/* Otherwise enter Recovery state */
--		tcp_enter_recovery(sk, (flag & FLAG_ECE));
-+		tcp_enter_recovery(sk, ece_ack);
- 		fast_rexmit = 1;
- 	}
- 
-@@ -3077,7 +3078,7 @@ static void tcp_ack_tstamp(struct sock *sk, struct sk_buff *skb,
-  */
- static int tcp_clean_rtx_queue(struct sock *sk, u32 prior_fack,
- 			       u32 prior_snd_una,
--			       struct tcp_sacktag_state *sack)
-+			       struct tcp_sacktag_state *sack, bool ece_ack)
- {
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
- 	u64 first_ackt, last_ackt;
-@@ -3215,7 +3216,7 @@ static int tcp_clean_rtx_queue(struct sock *sk, u32 prior_fack,
- 		}
- 
- 		if (tcp_is_reno(tp)) {
--			tcp_remove_reno_sacks(sk, pkts_acked);
-+			tcp_remove_reno_sacks(sk, pkts_acked, ece_ack);
- 
- 			/* If any of the cumulatively ACKed segments was
- 			 * retransmitted, non-SACK case cannot confirm that
-@@ -3720,7 +3721,8 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 		goto no_queue;
- 
- 	/* See if we can take anything off of the retransmit queue. */
--	flag |= tcp_clean_rtx_queue(sk, prior_fack, prior_snd_una, &sack_state);
-+	flag |= tcp_clean_rtx_queue(sk, prior_fack, prior_snd_una, &sack_state,
-+				    flag & FLAG_ECE);
- 
- 	tcp_rack_update_reo_wnd(sk, &rs);
- 
--- 
-2.43.0
-
+ 	/*
+ 	 * In order to avoid the stacked BDI deadlock we need
 
 
 
