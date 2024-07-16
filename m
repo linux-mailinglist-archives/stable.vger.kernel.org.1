@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-59513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C423932A80
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:34:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC5E932B64
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C51CB1F2346F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:34:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34BE81F210B4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8021DA4D;
-	Tue, 16 Jul 2024 15:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C627195B27;
+	Tue, 16 Jul 2024 15:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXIrhk79"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VB4Iyy8F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DCACA40;
-	Tue, 16 Jul 2024 15:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9A3F9E8;
+	Tue, 16 Jul 2024 15:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144077; cv=none; b=W2IvUpYtt63mauPy8f+0NqBEp7DdspbWrwLf/E1ODlZjc5/50sYbSaVHXbAicqXp7ssBjvRfNejTgvoYJH/ud0F6ccosM4Cg5zt5H34acYTtHNn0sYXbKB8d9vWhAajzfirl4+enbLG6vTRQRvSgL56raEhURDPT6O9c8uvu3QQ=
+	t=1721144678; cv=none; b=W5DVn4IFCR6vHxosbAxqxUtfIz5kfXAU0y8sN6XvBERiMdRCV23WD4ZHtr/QNsA0Fr5P98TImh9OPvhZUVacOemqMmLknqLYXxlsQpf5KVCnwGCVPH0OxVZToVPmPGYTj8ye5f1VE38y7nIXPT2ftNeTqK0kmD2eEOm8iK3MJfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144077; c=relaxed/simple;
-	bh=Nlk7dzb+VAUlDzB7PLoqsomt7kFhs0gsE47O1p5vlA0=;
+	s=arc-20240116; t=1721144678; c=relaxed/simple;
+	bh=vtK1dVywseekplm/5yzQDfowVWc+eQEhcfCCzvzB5Ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UwMkocnoCCURGHEaKizk5Xckd1TbTHTpUjQ1o85+xGLNF7Brvx2f7u2m/leSO8w4ShWwFTHbedaQD93gOgrvTFILB8KIbiTpm5lh9L5Sv43kOolUN+iT2GOBSTLeaAuxULFimWpZz02doezAuZI6KKxWxKyyWIu0ovngdMgj3uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXIrhk79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98726C4AF0B;
-	Tue, 16 Jul 2024 15:34:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uOOHgrHsk/5InXbUfxY4g21ibMjlTzipjY8Hw5+yk8rK3Ze8feTW46JKlaBFhc2fndSz5bPeOWHcn9yM2B+UHwFpjvPp3gAPe0Yog8KSwZAIAbZBJZBR6xmiOvtvh8832uhTW82TexdbulUBFql1FpYp892ylpBd6qY/9hmcjaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VB4Iyy8F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEBDC4AF0D;
+	Tue, 16 Jul 2024 15:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144077;
-	bh=Nlk7dzb+VAUlDzB7PLoqsomt7kFhs0gsE47O1p5vlA0=;
+	s=korg; t=1721144678;
+	bh=vtK1dVywseekplm/5yzQDfowVWc+eQEhcfCCzvzB5Ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HXIrhk79xpL5REW225Vl1G6y3e6h0cvqgBFbfpsKZvIe4PLfKZWy6mJnAQBo9WrPf
-	 /3cAq7jN8ZZhzpF8bM5wMfSsUN0LEQ9+9DBp/XwkxONWJVxBfHHgOAh+UuwQH9HdUE
-	 l2Foa34N6SFPrZo7dhwrdaSvos8XuiCxrlT3Be7I=
+	b=VB4Iyy8FIO4X3qJi/0i2TJZQfb7hGtGhKi1bVxP5ZbiKWFctSolbFX7c9yeXGcFCE
+	 ogd2s8m4PsfacnUwo9mGCVFrmK12GCrEAfV+nyKgdjoqMxtybLyxjXyJSu65o2NK8O
+	 eEexakTjMky4hPDPZnI/XaID7nX4sqJ7eF5+zXEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Archer <erick.archer@outlook.com>,
-	Kees Cook <keescook@chromium.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Jozef Hopko <jozef.hopko@altana.com>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Ajay Singh <ajay.kathat@microchip.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 08/66] Input: ff-core - prefer struct_size over open coded arithmetic
-Date: Tue, 16 Jul 2024 17:30:43 +0200
-Message-ID: <20240716152738.484854383@linuxfoundation.org>
+Subject: [PATCH 5.10 029/108] wifi: wilc1000: fix ies_len type in connect path
+Date: Tue, 16 Jul 2024 17:30:44 +0200
+Message-ID: <20240716152747.118825509@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Archer <erick.archer@outlook.com>
+From: Jozef Hopko <jozef.hopko@altana.com>
 
-[ Upstream commit a08b8f8557ad88ffdff8905e5da972afe52e3307 ]
+[ Upstream commit 39ab8fff623053a50951b659e5f6b72343d7d78c ]
 
-This is an effort to get rid of all multiplications from allocation
-functions in order to prevent integer overflows [1][2].
+Commit 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
+made sure that the IEs data was manipulated under the relevant RCU section.
+Unfortunately, while doing so, the commit brought a faulty implicit cast
+from int to u8 on the ies_len variable, making the parsing fail to be
+performed correctly if the IEs block is larger than 255 bytes. This failure
+can be observed with Access Points appending a lot of IEs TLVs in their
+beacon frames (reproduced with a Pixel phone acting as an Access Point,
+which brough 273 bytes of IE data in my testing environment).
 
-As the "ff" variable is a pointer to "struct ff_device" and this
-structure ends in a flexible array:
+Fix IEs parsing by removing this undesired implicit cast.
 
-struct ff_device {
-	[...]
-	struct file *effect_owners[] __counted_by(max_effects);
-};
-
-the preferred way in the kernel is to use the struct_size() helper to
-do the arithmetic instead of the calculation "size + count * size" in
-the kzalloc() function.
-
-The struct_size() helper returns SIZE_MAX on overflow. So, refactor
-the comparison to take advantage of this.
-
-This way, the code is more readable and safer.
-
-This code was detected with the help of Coccinelle, and audited and
-modified manually.
-
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
-Link: https://github.com/KSPP/linux/issues/160 [2]
-Signed-off-by: Erick Archer <erick.archer@outlook.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/AS8PR02MB72371E646714BAE2E51A6A378B152@AS8PR02MB7237.eurprd02.prod.outlook.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
+Signed-off-by: Jozef Hopko <jozef.hopko@altana.com>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Acked-by: Ajay Singh <ajay.kathat@microchip.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240701-wilc_fix_ies_data-v1-1-7486cbacf98a@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/ff-core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/hif.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/ff-core.c b/drivers/input/ff-core.c
-index 66a46c84e28f5..7d83de2c536dd 100644
---- a/drivers/input/ff-core.c
-+++ b/drivers/input/ff-core.c
-@@ -24,8 +24,10 @@
- /* #define DEBUG */
+diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
+index 457386f9de990..3f167bf4eef35 100644
+--- a/drivers/net/wireless/microchip/wilc1000/hif.c
++++ b/drivers/net/wireless/microchip/wilc1000/hif.c
+@@ -364,7 +364,8 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
+ 	struct ieee80211_p2p_noa_attr noa_attr;
+ 	const struct cfg80211_bss_ies *ies;
+ 	struct wilc_join_bss_param *param;
+-	u8 rates_len = 0, ies_len;
++	u8 rates_len = 0;
++	int ies_len;
+ 	int ret;
  
- #include <linux/input.h>
-+#include <linux/limits.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
-+#include <linux/overflow.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- 
-@@ -330,9 +332,8 @@ int input_ff_create(struct input_dev *dev, unsigned int max_effects)
- 		return -EINVAL;
- 	}
- 
--	ff_dev_size = sizeof(struct ff_device) +
--				max_effects * sizeof(struct file *);
--	if (ff_dev_size < max_effects) /* overflow */
-+	ff_dev_size = struct_size(ff, effect_owners, max_effects);
-+	if (ff_dev_size == SIZE_MAX) /* overflow */
- 		return -EINVAL;
- 
- 	ff = kzalloc(ff_dev_size, GFP_KERNEL);
+ 	param = kzalloc(sizeof(*param), GFP_KERNEL);
 -- 
 2.43.0
 
