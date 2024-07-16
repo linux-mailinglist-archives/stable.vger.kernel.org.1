@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6A7932C8D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E844932B7B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B03B51C20E78
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 801B51C22D72
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2748A19F49F;
-	Tue, 16 Jul 2024 15:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA3A17A93F;
+	Tue, 16 Jul 2024 15:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRoLsfnu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqZVpwtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71A719F499;
-	Tue, 16 Jul 2024 15:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFA61EA73;
+	Tue, 16 Jul 2024 15:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145357; cv=none; b=Rop8zwWucFpM3PNb/yTcXBtDVVWdWYEoyKvYaSoERTcnC/6s//TiBg6vnF6sh78SN921HYmjKRA5m/9o/QjVmgma750YHC9U9C5jgSWx8R026oyTqxTAKXvBI6rWQMuuZDnwU2dq7x7UDgTjvwc0kJp9vFq8lSgiEmCP7CFWAMU=
+	t=1721144736; cv=none; b=EieJ3zsWcVctFQhcEteZ1gbANTY4N5YAiwaciAOAmXimSG/pIgypF0tDJCKEB4MCduWfTlROcC71CP7Z30KeKZwhKAl8YJFh2a8qekAqJzQ+2ofBo/n/pcLGAVJ9O1pl9x6FU/udFZg2kNw4DS7r8ddUL42FxhxqtBQR+qQnUmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145357; c=relaxed/simple;
-	bh=IbdNYdEkVuwT11hHNWbpRcYClrL8mwBJW0IbsVtSQp0=;
+	s=arc-20240116; t=1721144736; c=relaxed/simple;
+	bh=imMjoyL2X5JO8V35tp0GiTqzoU0SVaFlTQFek9ZpMN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwjlXSTV8NXJ3BVzIDCYgB61dm523W0KpfrjJI6BuLcasn5C5ifp6vTIdZfNiAm3dHUbjxZofvYRpLjI7RKa7rGEt99cAhg7QeT9j7kmBxfskp6LHKbv+eYVOqNQhH0sB1MWmEj9hSQrPLd1Mtf3EGxkuIw4f+BhQkIqjKROauU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRoLsfnu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC1EC116B1;
-	Tue, 16 Jul 2024 15:55:56 +0000 (UTC)
+	 MIME-Version; b=M/pxFTfwFJBG/UD+O3WeKQJfepU9mfgrnXh8n3y59FqJ6ycvcyFF9u4VO1lePtbt8sqmwrrcUauntfzlhFfJj4+3P02aKDIKxmPm1Dn7+MklqvVT1XY2cqYFpsWsdn6k92gB9WtOrRJMWIUczXcUhTGSImAZpugrmBa/6iCOg5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqZVpwtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5850C116B1;
+	Tue, 16 Jul 2024 15:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145357;
-	bh=IbdNYdEkVuwT11hHNWbpRcYClrL8mwBJW0IbsVtSQp0=;
+	s=korg; t=1721144736;
+	bh=imMjoyL2X5JO8V35tp0GiTqzoU0SVaFlTQFek9ZpMN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRoLsfnua5+5snfo7/iC06xdvZaUzlpfA2/oGxEpy8907+t585mhwnFU0ytBnbVN1
-	 C3/n+k9k733VCxAcZxPN8UgN8XKrQrNlcIMAR6XSI9U8jPjwEsCAqrTS+eS02UHfFW
-	 zXxZsojWu+5eHnDD8rCncdbO00wMOAg1660rFjYE=
+	b=QqZVpwtr/MjNxnjDSDyb40pxp4p0htZSWVEepbjfBm64R/e+KwrqCuIhMahmlRll8
+	 bEikZ4NsnO6rdiRo0Rh+bE9JmvwYnjngm614MjVgR/7GC1DijkdW/MY9SQMnCQK6so
+	 P12C4mXjV/LurY9P7/xXnxY7ENxGnqpt9CJnEuBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 32/96] firmware: cs_dsp: Return error if block header overflows file
+	Nazar Bilinskyi <nbilinskyi@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 088/108] ALSA: hda/realtek: Enable Mute LED on HP 250 G7
 Date: Tue, 16 Jul 2024 17:31:43 +0200
-Message-ID: <20240716152747.749364924@linuxfoundation.org>
+Message-ID: <20240716152749.368031251@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Nazar Bilinskyi <nbilinskyi@gmail.com>
 
-[ Upstream commit 959fe01e85b7241e3ec305d657febbe82da16a02 ]
+commit b46953029c52bd3a3306ff79f631418b75384656 upstream.
 
-Return an error from cs_dsp_power_up() if a block header is longer
-than the amount of data left in the file.
+HP 250 G7 has a mute LED that can be made to work using quirk
+ALC269_FIXUP_HP_LINE1_MIC1_LED. Enable already existing quirk.
 
-The previous code in cs_dsp_load() and cs_dsp_load_coeff() would loop
-while there was enough data left in the file for a valid region. This
-protected against overrunning the end of the file data, but it didn't
-abort the file processing with an error.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f6bc909e7673 ("firmware: cs_dsp: add driver to support firmware loading on Cirrus Logic DSPs")
-Link: https://patch.msgid.link/20240627141432.93056-3-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Nazar Bilinskyi <nbilinskyi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240709080546.18344-1-nbilinskyi@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index fd1145b2894b3..208c799af7968 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1348,8 +1348,13 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 	cs_dsp_dbg(dsp, "%s: timestamp %llu\n", file,
- 		   le64_to_cpu(footer->timestamp));
- 
--	while (pos < firmware->size &&
--	       sizeof(*region) < firmware->size - pos) {
-+	while (pos < firmware->size) {
-+		/* Is there enough data for a complete block header? */
-+		if (sizeof(*region) > firmware->size - pos) {
-+			ret = -EOVERFLOW;
-+			goto out_fw;
-+		}
-+
- 		region = (void *)&(firmware->data[pos]);
- 		region_name = "Unknown";
- 		reg = 0;
-@@ -2037,8 +2042,13 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 	pos = le32_to_cpu(hdr->len);
- 
- 	blocks = 0;
--	while (pos < firmware->size &&
--	       sizeof(*blk) < firmware->size - pos) {
-+	while (pos < firmware->size) {
-+		/* Is there enough data for a complete block header? */
-+		if (sizeof(*blk) > firmware->size - pos) {
-+			ret = -EOVERFLOW;
-+			goto out_fw;
-+		}
-+
- 		blk = (void *)(&firmware->data[pos]);
- 
- 		type = le16_to_cpu(blk->type);
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9057,6 +9057,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x83b9, "HP Spectre x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x841c, "HP Pavilion 15-CK0xx", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8497, "HP Envy x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
++	SND_PCI_QUIRK(0x103c, 0x84a6, "HP 250 G7 Notebook PC", ALC269_FIXUP_HP_LINE1_MIC1_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x84ae, "HP 15-db0403ng", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x84da, "HP OMEN dc0019-ur", ALC295_FIXUP_HP_OMEN),
+ 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
 
 
 
