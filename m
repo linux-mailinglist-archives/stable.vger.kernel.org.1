@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-59847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90353932C16
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F49C932B48
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBEAA1C2318B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A0E11F24552
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F183919EEA1;
-	Tue, 16 Jul 2024 15:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADE419E7C6;
+	Tue, 16 Jul 2024 15:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpQ6SryN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hP8rdXWi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD9019E830;
-	Tue, 16 Jul 2024 15:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609D3F9E8;
+	Tue, 16 Jul 2024 15:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145088; cv=none; b=AES8hTYOjMLziaGCzUHnf1P70/sNqowoz3OBQvMAJ/J2y5KTyiWwl7c0CqC/r8lpO6OhnbbAs8DiU5fp0UKCsttc7axnI619dcmIaZq4uzHmBo21077FN6it47vMxjhhdkIuYCyIfB9C1fuVJCra3RuUf20yqCN+Jve5B/SjaF8=
+	t=1721144601; cv=none; b=n80jOilJA38nmKLW+kWckg/v1j8XDd1P6cZxGiu0tkcO3S0f7suFJKJHOlizK9xysGzqlB/i8ggvLCo2cExi+l7Wlryzvi2xvzVcZROa0ruDRt2kd28VRX4Y9XYruHQCYvr4/TyNWVGnA+ouzrxQiR5Z4X9xYn9pa2aXRrxsPaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145088; c=relaxed/simple;
-	bh=YlSBSYv2EKKz5XP3Dbyt9sxJD6WYyg3psupP4v7SNM8=;
+	s=arc-20240116; t=1721144601; c=relaxed/simple;
+	bh=AO1IGUwfLEp9hhAHLygnIZzSl1t/k52qtqXkXGQ62KU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4ITkXmkY1q9KsEKEsaXBXmAerBgZ/MUQTuiNLXl245XvQvHvbkw6VgKe1irRYVgEljaG+smofKK2F0uXr3lRnOJrRWcz5+WL9jfOF/YSl7mGHaMFZiKa+SQ5wqE1wwfGbGrkz9GkHK50qy1AU/vmOXfcyU0+Dvdpn2rEC+jmWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpQ6SryN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E167C116B1;
-	Tue, 16 Jul 2024 15:51:28 +0000 (UTC)
+	 MIME-Version; b=eHsJWuTRmBCGRoZ5g2YBHtBBsvK+ZD42I6whaDyTuy/zsmuxJrprMbAVQmainE7IucGTE7v/gay+lP90u0gcEiXkixtxoTrfLIkCxtp+61kII/2F0XGiES5c1Csl1IM2Zk1h1nDnNZxWdA2ex/V+fhOL2tvaWWhQ+AGiT69MyVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hP8rdXWi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE009C116B1;
+	Tue, 16 Jul 2024 15:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145088;
-	bh=YlSBSYv2EKKz5XP3Dbyt9sxJD6WYyg3psupP4v7SNM8=;
+	s=korg; t=1721144601;
+	bh=AO1IGUwfLEp9hhAHLygnIZzSl1t/k52qtqXkXGQ62KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FpQ6SryNQlhWHGdwvLmuSb8Z6+lV5gyoAkeDChdUi/JWczyN6k0Jbn1As5lsb3cHw
-	 ll/DCKDkfJfMOgPwBgjVn+VSXFwqAJoHl5FGjL3D+Dmv0QpLNCzRyzHNkhfGVG2MMx
-	 Qh6/gKqBsHOZOkr1Ktx9YrXfaeStF9ewfB+lsMHs=
+	b=hP8rdXWirGtSgOBON4yCYN9QHyCCKZ85ZLmzxrT2mNiWy8jvc6Uaconsg2RA31TYH
+	 fSNKFhoAWlJ3QBsvkP9cXtwSCoNaEuLV61pzPGyUh1J2P3zXbMc4heLT6fJp9eeP7F
+	 XChXXgWo2Yi78krNcCl+0OKQXnQyhbi9Nnl5Jogc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satheesh Paul <psatheesh@marvell.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 064/143] octeontx2-af: fix issue with IPv4 match for RSS
+	Ghadi Elie Rahme <ghadi.rahme@canonical.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 045/108] bnx2x: Fix multiple UBSAN array-index-out-of-bounds
 Date: Tue, 16 Jul 2024 17:31:00 +0200
-Message-ID: <20240716152758.441789029@linuxfoundation.org>
+Message-ID: <20240716152747.721687360@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satheesh Paul <psatheesh@marvell.com>
+From: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
 
-[ Upstream commit 60795bbf047654c9f8ae88d34483233a56033578 ]
+commit 134061163ee5ca4759de5c24ca3bd71608891ba7 upstream.
 
-While performing RSS based on IPv4, packets with
-IPv4 options are not being considered. Adding changes
-to match both plain IPv4 and IPv4 with option header.
+Fix UBSAN warnings that occur when using a system with 32 physical
+cpu cores or more, or when the user defines a number of Ethernet
+queues greater than or equal to FP_SB_MAX_E1x using the num_queues
+module parameter.
 
-Fixes: 41a7aa7b800d ("octeontx2-af: NIX Rx flowkey configuration for RSS")
-Signed-off-by: Satheesh Paul <psatheesh@marvell.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently there is a read/write out of bounds that occurs on the array
+"struct stats_query_entry query" present inside the "bnx2x_fw_stats_req"
+struct in "drivers/net/ethernet/broadcom/bnx2x/bnx2x.h".
+Looking at the definition of the "struct stats_query_entry query" array:
+
+struct stats_query_entry query[FP_SB_MAX_E1x+
+         BNX2X_FIRST_QUEUE_QUERY_IDX];
+
+FP_SB_MAX_E1x is defined as the maximum number of fast path interrupts and
+has a value of 16, while BNX2X_FIRST_QUEUE_QUERY_IDX has a value of 3
+meaning the array has a total size of 19.
+Since accesses to "struct stats_query_entry query" are offset-ted by
+BNX2X_FIRST_QUEUE_QUERY_IDX, that means that the total number of Ethernet
+queues should not exceed FP_SB_MAX_E1x (16). However one of these queues
+is reserved for FCOE and thus the number of Ethernet queues should be set
+to [FP_SB_MAX_E1x -1] (15) if FCOE is enabled or [FP_SB_MAX_E1x] (16) if
+it is not.
+
+This is also described in a comment in the source code in
+drivers/net/ethernet/broadcom/bnx2x/bnx2x.h just above the Macro definition
+of FP_SB_MAX_E1x. Below is the part of this explanation that it important
+for this patch
+
+/*
+  * The total number of L2 queues, MSIX vectors and HW contexts (CIDs) is
+  * control by the number of fast-path status blocks supported by the
+  * device (HW/FW). Each fast-path status block (FP-SB) aka non-default
+  * status block represents an independent interrupts context that can
+  * serve a regular L2 networking queue. However special L2 queues such
+  * as the FCoE queue do not require a FP-SB and other components like
+  * the CNIC may consume FP-SB reducing the number of possible L2 queues
+  *
+  * If the maximum number of FP-SB available is X then:
+  * a. If CNIC is supported it consumes 1 FP-SB thus the max number of
+  *    regular L2 queues is Y=X-1
+  * b. In MF mode the actual number of L2 queues is Y= (X-1/MF_factor)
+  * c. If the FCoE L2 queue is supported the actual number of L2 queues
+  *    is Y+1
+  * d. The number of irqs (MSIX vectors) is either Y+1 (one extra for
+  *    slow-path interrupts) or Y+2 if CNIC is supported (one additional
+  *    FP interrupt context for the CNIC).
+  * e. The number of HW context (CID count) is always X or X+1 if FCoE
+  *    L2 queue is supported. The cid for the FCoE L2 queue is always X.
+  */
+
+However this driver also supports NICs that use the E2 controller which can
+handle more queues due to having more FP-SB represented by FP_SB_MAX_E2.
+Looking at the commits when the E2 support was added, it was originally
+using the E1x parameters: commit f2e0899f0f27 ("bnx2x: Add 57712 support").
+Back then FP_SB_MAX_E2 was set to 16 the same as E1x. However the driver
+was later updated to take full advantage of the E2 instead of having it be
+limited to the capabilities of the E1x. But as far as we can tell, the
+array "stats_query_entry query" was still limited to using the FP-SB
+available to the E1x cards as part of an oversignt when the driver was
+updated to take full advantage of the E2, and now with the driver being
+aware of the greater queue size supported by E2 NICs, it causes the UBSAN
+warnings seen in the stack traces below.
+
+This patch increases the size of the "stats_query_entry query" array by
+replacing FP_SB_MAX_E1x with FP_SB_MAX_E2 to be large enough to handle
+both types of NICs.
+
+Stack traces:
+
+UBSAN: array-index-out-of-bounds in
+       drivers/net/ethernet/broadcom/bnx2x/bnx2x_stats.c:1529:11
+index 20 is out of range for type 'stats_query_entry [19]'
+CPU: 12 PID: 858 Comm: systemd-network Not tainted 6.9.0-060900rc7-generic
+	     #202405052133
+Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
+	       BIOS P89 10/21/2019
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x76/0xa0
+ dump_stack+0x10/0x20
+ __ubsan_handle_out_of_bounds+0xcb/0x110
+ bnx2x_prep_fw_stats_req+0x2e1/0x310 [bnx2x]
+ bnx2x_stats_init+0x156/0x320 [bnx2x]
+ bnx2x_post_irq_nic_init+0x81/0x1a0 [bnx2x]
+ bnx2x_nic_load+0x8e8/0x19e0 [bnx2x]
+ bnx2x_open+0x16b/0x290 [bnx2x]
+ __dev_open+0x10e/0x1d0
+RIP: 0033:0x736223927a0a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca
+      64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00
+      f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+RSP: 002b:00007ffc0bb2ada8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000583df50f9c78 RCX: 0000736223927a0a
+RDX: 0000000000000020 RSI: 0000583df50ee510 RDI: 0000000000000003
+RBP: 0000583df50d4940 R08: 00007ffc0bb2adb0 R09: 0000000000000080
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000583df5103ae0
+R13: 000000000000035a R14: 0000583df50f9c30 R15: 0000583ddddddf00
+</TASK>
+---[ end trace ]---
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in
+       drivers/net/ethernet/broadcom/bnx2x/bnx2x_stats.c:1546:11
+index 28 is out of range for type 'stats_query_entry [19]'
+CPU: 12 PID: 858 Comm: systemd-network Not tainted 6.9.0-060900rc7-generic
+	     #202405052133
+Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
+	       BIOS P89 10/21/2019
+Call Trace:
+<TASK>
+dump_stack_lvl+0x76/0xa0
+dump_stack+0x10/0x20
+__ubsan_handle_out_of_bounds+0xcb/0x110
+bnx2x_prep_fw_stats_req+0x2fd/0x310 [bnx2x]
+bnx2x_stats_init+0x156/0x320 [bnx2x]
+bnx2x_post_irq_nic_init+0x81/0x1a0 [bnx2x]
+bnx2x_nic_load+0x8e8/0x19e0 [bnx2x]
+bnx2x_open+0x16b/0x290 [bnx2x]
+__dev_open+0x10e/0x1d0
+RIP: 0033:0x736223927a0a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca
+      64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00
+      f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+RSP: 002b:00007ffc0bb2ada8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000583df50f9c78 RCX: 0000736223927a0a
+RDX: 0000000000000020 RSI: 0000583df50ee510 RDI: 0000000000000003
+RBP: 0000583df50d4940 R08: 00007ffc0bb2adb0 R09: 0000000000000080
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000583df5103ae0
+R13: 000000000000035a R14: 0000583df50f9c30 R15: 0000583ddddddf00
+ </TASK>
+---[ end trace ]---
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in
+       drivers/net/ethernet/broadcom/bnx2x/bnx2x_sriov.c:1895:8
+index 29 is out of range for type 'stats_query_entry [19]'
+CPU: 13 PID: 163 Comm: kworker/u96:1 Not tainted 6.9.0-060900rc7-generic
+	     #202405052133
+Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
+	       BIOS P89 10/21/2019
+Workqueue: bnx2x bnx2x_sp_task [bnx2x]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x76/0xa0
+ dump_stack+0x10/0x20
+ __ubsan_handle_out_of_bounds+0xcb/0x110
+ bnx2x_iov_adjust_stats_req+0x3c4/0x3d0 [bnx2x]
+ bnx2x_storm_stats_post.part.0+0x4a/0x330 [bnx2x]
+ ? bnx2x_hw_stats_post+0x231/0x250 [bnx2x]
+ bnx2x_stats_start+0x44/0x70 [bnx2x]
+ bnx2x_stats_handle+0x149/0x350 [bnx2x]
+ bnx2x_attn_int_asserted+0x998/0x9b0 [bnx2x]
+ bnx2x_sp_task+0x491/0x5c0 [bnx2x]
+ process_one_work+0x18d/0x3f0
+ </TASK>
+---[ end trace ]---
+
+Fixes: 50f0a562f8cc ("bnx2x: add fcoe statistics")
+Signed-off-by: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20240627111405.1037812-1-ghadi.rahme@canonical.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/bnx2x/bnx2x.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 19fe3ed5c0ee6..3dc828cf6c5a6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -3866,6 +3866,8 @@ static int get_flowkey_alg_idx(struct nix_hw *nix_hw, u32 flow_cfg)
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x.h
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x.h
+@@ -1262,7 +1262,7 @@ enum {
  
- /* Mask to match ipv6(NPC_LT_LC_IP6) and ipv6 ext(NPC_LT_LC_IP6_EXT) */
- #define NPC_LT_LC_IP6_MATCH_MSK ((~(NPC_LT_LC_IP6 ^ NPC_LT_LC_IP6_EXT)) & 0xf)
-+/* Mask to match both ipv4(NPC_LT_LC_IP) and ipv4 ext(NPC_LT_LC_IP_OPT) */
-+#define NPC_LT_LC_IP_MATCH_MSK  ((~(NPC_LT_LC_IP ^ NPC_LT_LC_IP_OPT)) & 0xf)
+ struct bnx2x_fw_stats_req {
+ 	struct stats_query_header hdr;
+-	struct stats_query_entry query[FP_SB_MAX_E1x+
++	struct stats_query_entry query[FP_SB_MAX_E2 +
+ 		BNX2X_FIRST_QUEUE_QUERY_IDX];
+ };
  
- static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- {
-@@ -3936,7 +3938,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 			field->hdr_offset = 9; /* offset */
- 			field->bytesm1 = 0; /* 1 byte */
- 			field->ltype_match = NPC_LT_LC_IP;
--			field->ltype_mask = 0xF;
-+			field->ltype_mask = NPC_LT_LC_IP_MATCH_MSK;
- 			break;
- 		case NIX_FLOW_KEY_TYPE_IPV4:
- 		case NIX_FLOW_KEY_TYPE_INNR_IPV4:
-@@ -3963,8 +3965,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 					field->bytesm1 = 3; /* DIP, 4 bytes */
- 				}
- 			}
--
--			field->ltype_mask = 0xF; /* Match only IPv4 */
-+			field->ltype_mask = NPC_LT_LC_IP_MATCH_MSK;
- 			keyoff_marker = false;
- 			break;
- 		case NIX_FLOW_KEY_TYPE_IPV6:
--- 
-2.43.0
-
 
 
 
