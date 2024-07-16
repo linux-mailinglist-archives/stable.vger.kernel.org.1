@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-59563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFB8932AB4
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B255932C3E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC5F11F2429E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED376283F57
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E620F9E8;
-	Tue, 16 Jul 2024 15:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5E619AD93;
+	Tue, 16 Jul 2024 15:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVKHbcO5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+tihxIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DE1CA40;
-	Tue, 16 Jul 2024 15:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4649F17A93F;
+	Tue, 16 Jul 2024 15:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144227; cv=none; b=Fg0QkR2H6V5lGO5U0dgi01qsfNrXFB58Rve88JRMa6HIro/vQSWQUGCfYhFiS3gwe2uEB6DyI6pSXr83P3aa+VDX11cVBer+Oy3K21ZuCAkUZa16iuW8QDr2pClxRhgqhJ2mUp0e/RoOG0BY52hpQb4XCHlNfLdyPShcLM+crew=
+	t=1721145203; cv=none; b=qvdIJ02LeS9lo3Ama2j5BQYNu61f5QHK8NUl9R6MrX+VYSHXgFcje5TMAYSM3d3sQVyhoc2FCFNI/SqiI/vsxNcsctzKPJyIZkuON5xQW+Ww8FjuRrK/FWb5YIS5yFJ3gNPtvmIPvKDxUV3VecNY6FvblOR/hV37P47kyfKGFpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144227; c=relaxed/simple;
-	bh=N/de5h/CoKa3QwVF5bd0ow5cueyvbUQV+CMKFNqXEMs=;
+	s=arc-20240116; t=1721145203; c=relaxed/simple;
+	bh=Iyd9VvNoOwO6/dNefeT+baHFOi3Jc1RRbAOFeIHO7AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EtuWE4wkw0KRvi0OrN5TK+gosS/gSwl3lO7ZEZad6UHs9jzEEA3vGDgdjKMtCbzN877IUbW4M/CRvta7Tbs430xbIqNxwf30+tbxEAFY1dNZ5CJYgUjt8xQ8DjHJR/dL1L8AYf0/DjaKUbA8kJIbGUcvxylfPoFWl+YtFpEGOt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVKHbcO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4350C116B1;
-	Tue, 16 Jul 2024 15:37:06 +0000 (UTC)
+	 MIME-Version; b=BzwzDyvid3DVXrVBzoTkY+9IfWC2wKsI52UXm+ypvBCFQMMKMYwKcr+FDcjWd1KH1dWy75toRAJaPVFisikd7fd24JqQV5ZbaGxyb/i3EL55y4AU7S3WVj9P+t2Blqz5buyP0vmEwzAPp/dOi7R3/auE6yH253f+9arKR9YVRas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+tihxIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E40C116B1;
+	Tue, 16 Jul 2024 15:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144227;
-	bh=N/de5h/CoKa3QwVF5bd0ow5cueyvbUQV+CMKFNqXEMs=;
+	s=korg; t=1721145203;
+	bh=Iyd9VvNoOwO6/dNefeT+baHFOi3Jc1RRbAOFeIHO7AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zVKHbcO5km+f6OY+gugT+n/+iAI9mAIzbe3tXsR/vo0dglit2uFTPHXF93pbULIhI
-	 YS02VxrxnDcLEJuCrB9Rf+XxjeQOdkEPdZWULAdgzwG6vPnVjkJ1kiIg+wSaY6tN80
-	 X5glYzJoangiJHi+3/L8+dOFp7HO5s8jZJan4bkc=
+	b=O+tihxICuKLHG3xfcN73sdNN6+FxWpSmgCdl2jfqfxwLqzTpCjZtniprzpFyc9EY5
+	 q4gvae8ZOQaBKKjslQjtNgic6uMQ8V92asGYru1rWHPvr1ibDgNdcpRbqMItQ/Wh5m
+	 vfq4Gqb/4brzge58QYSbeFBDtFmv0EzWEo9cGrq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.19 51/66] USB: serial: option: add Fibocom FM350-GL
+	Gavin Shan <gshan@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Don Dutile <ddutile@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	William Kucharski <william.kucharski@oracle.com>,
+	Zhenyu Zhang <zhenyzha@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 090/143] mm/filemap: skip to create PMD-sized page cache if needed
 Date: Tue, 16 Jul 2024 17:31:26 +0200
-Message-ID: <20240716152740.112074287@linuxfoundation.org>
+Message-ID: <20240716152759.437051659@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,126 +68,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjørn Mork <bjorn@mork.no>
+From: Gavin Shan <gshan@redhat.com>
 
-commit 2604e08ff251dba330e16b65e80074c9c540aad7 upstream.
+commit 3390916aca7af1893ed2ebcdfee1d6fdb65bb058 upstream.
 
-FM350-GL is 5G Sub-6 WWAN module which uses M.2 form factor interface.
-It is based on Mediatek's MTK T700 CPU. The module supports PCIe Gen3
-x1 and USB 2.0 and 3.0 interfaces.
+On ARM64, HPAGE_PMD_ORDER is 13 when the base page size is 64KB.  The
+PMD-sized page cache can't be supported by xarray as the following error
+messages indicate.
 
-The manufacturer states that USB is "for debug" but it has been
-confirmed to be fully functional, except for modem-control requests on
-some of the interfaces.
+------------[ cut here ]------------
+WARNING: CPU: 35 PID: 7484 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
+Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib  \
+nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct    \
+nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4    \
+ip_set rfkill nf_tables nfnetlink vfat fat virtio_balloon drm      \
+fuse xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64      \
+sha1_ce virtio_net net_failover virtio_console virtio_blk failover \
+dimlib virtio_mmio
+CPU: 35 PID: 7484 Comm: test Kdump: loaded Tainted: G W 6.10.0-rc5-gavin+ #9
+Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
+pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+pc : xas_split_alloc+0xf8/0x128
+lr : split_huge_page_to_list_to_order+0x1c4/0x720
+sp : ffff800087a4f6c0
+x29: ffff800087a4f6c0 x28: ffff800087a4f720 x27: 000000001fffffff
+x26: 0000000000000c40 x25: 000000000000000d x24: ffff00010625b858
+x23: ffff800087a4f720 x22: ffffffdfc0780000 x21: 0000000000000000
+x20: 0000000000000000 x19: ffffffdfc0780000 x18: 000000001ff40000
+x17: 00000000ffffffff x16: 0000018000000000 x15: 51ec004000000000
+x14: 0000e00000000000 x13: 0000000000002000 x12: 0000000000000020
+x11: 51ec000000000000 x10: 51ece1c0ffff8000 x9 : ffffbeb961a44d28
+x8 : 0000000000000003 x7 : ffffffdfc0456420 x6 : ffff0000e1aa6eb8
+x5 : 20bf08b4fe778fca x4 : ffffffdfc0456420 x3 : 0000000000000c40
+x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
+Call trace:
+ xas_split_alloc+0xf8/0x128
+ split_huge_page_to_list_to_order+0x1c4/0x720
+ truncate_inode_partial_folio+0xdc/0x160
+ truncate_inode_pages_range+0x1b4/0x4a8
+ truncate_pagecache_range+0x84/0xa0
+ xfs_flush_unmap_range+0x70/0x90 [xfs]
+ xfs_file_fallocate+0xfc/0x4d8 [xfs]
+ vfs_fallocate+0x124/0x2e8
+ ksys_fallocate+0x4c/0xa0
+ __arm64_sys_fallocate+0x24/0x38
+ invoke_syscall.constprop.0+0x7c/0xd8
+ do_el0_svc+0xb4/0xd0
+ el0_svc+0x44/0x1d8
+ el0t_64_sync_handler+0x134/0x150
+ el0t_64_sync+0x17c/0x180
 
-USB device composition is controlled by AT+GTUSBMODE=<mode> command.
-Two values are currently supported for the <mode>:
+Fix it by skipping to allocate PMD-sized page cache when its size is
+larger than MAX_PAGECACHE_ORDER.  For this specific case, we will fall to
+regular path where the readahead window is determined by BDI's sysfs file
+(read_ahead_kb).
 
-40: RNDIS+AT+AP(GNSS)+META+DEBUG+NPT+ADB
-41: RNDIS+AT+AP(GNSS)+META+DEBUG+NPT+ADB+AP(LOG)+AP(META) (default value)
-
-[ Note that the functions above are not ordered by interface number. ]
-
-Mode 40 corresponds to:
-
-T:  Bus=03 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#= 22 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0e8d ProdID=7126 Rev= 0.01
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FM350-GL
-C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=02 Prot=ff Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Mode 41 corresponds to:
-
-T:  Bus=03 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0e8d ProdID=7127 Rev= 0.01
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FM350-GL
-C:* #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=02 Prot=ff Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lkml.kernel.org/r/20240627003953.1262512-4-gshan@redhat.com
+Fixes: 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Darrick J. Wong <djwong@kernel.org>
+Cc: Don Dutile <ddutile@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: William Kucharski <william.kucharski@oracle.com>
+Cc: Zhenyu Zhang <zhenyzha@redhat.com>
+Cc: <stable@vger.kernel.org>	[5.18+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2230,6 +2230,10 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, MEDIATEK_PRODUCT_7106_2COM, 0x02, 0x02, 0x01) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, MEDIATEK_PRODUCT_DC_4COM2, 0xff, 0x02, 0x01) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, MEDIATEK_PRODUCT_DC_4COM2, 0xff, 0x00, 0x00) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7126, 0xff, 0x00, 0x00),
-+	  .driver_info = NCTRL(2) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7127, 0xff, 0x00, 0x00),
-+	  .driver_info = NCTRL(2) | NCTRL(3) | NCTRL(4) },
- 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MEN200) },
- 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MPL200),
- 	  .driver_info = RSVD(1) | RSVD(4) },
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3100,7 +3100,7 @@ static struct file *do_sync_mmap_readahe
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	/* Use the readahead code, even if readahead is disabled */
+-	if (vm_flags & VM_HUGEPAGE) {
++	if ((vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER) {
+ 		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+ 		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
+ 		ra->size = HPAGE_PMD_NR;
 
 
 
