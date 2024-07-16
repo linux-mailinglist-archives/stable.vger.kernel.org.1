@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC3F932CBE
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C28932B02
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 440251F242BD
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01AE5282457
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFB019E7FF;
-	Tue, 16 Jul 2024 15:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944801DFF0;
+	Tue, 16 Jul 2024 15:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NufDXBDK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWIWs7NE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082811DDCE;
-	Tue, 16 Jul 2024 15:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CF6B641;
+	Tue, 16 Jul 2024 15:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145461; cv=none; b=hPAk0Ur6YLYWC24jNjzhuMZfnzOqMM3PtHLj0RfIWYcBWvy0QRxtpUpzhF7NEfoS1zpTbSrIX8bpXmcwMIM9RJ0lrNqY0a49i6VlprN/dSqdtK1yeY8VLMZIVOTmrkA8+Qng24fsMJfIcAjrBzSrIv3CFautcBnvN90s7TXKDZc=
+	t=1721144432; cv=none; b=MNH2Zm5EZLJAIT41lViwt/jTxG5HH0O2BzxX2b8kQtQPQdgCbdrv2dHpXu4vQuMRKsPdoFkE+kDkxzLrCkPH+e13Jmd+ixUWYQUx4RtVfh0pCi6TdQetv6qsiUMUiGXiP8S8PNnDuCUWqFcVYk8AN7qX342VXp7rdPXXj655Vro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145461; c=relaxed/simple;
-	bh=vALNRUNckyJo14cXVeXcwEsOPBQ/H2pUh4QEKqoA6HA=;
+	s=arc-20240116; t=1721144432; c=relaxed/simple;
+	bh=N1NA2LlHvCG9kxeD31w/NqEpjg19FFfcPw6r6ppqRnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sB+punamIqUb+2kiyIsU8zXzbGpymiuKPFLCiYnfAWL/QCHtl1S2YJGWF/pCXpMQWkOpkCzgqIOJTMEA7SAF7wHaj2HBtgKQTxrwUQT9oc7pIpryYG8Poa6MIOB4qTD3sNFgpRfFUiw2eJfjjVnXoJsGDxlGqN4hnG/BiszpRGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NufDXBDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DDDC116B1;
-	Tue, 16 Jul 2024 15:57:40 +0000 (UTC)
+	 MIME-Version; b=lkln/fpIyv4cuviL5pHigvFKKAuUSfsk2K4t6JWbnJ4u8vYYHVxKnILWjThKc7TSh4vDsFEmdzpd8ToUmLtSJ/6vah9Id2Tv2YK2orBaftU14lMbREthnJ8SewZbTMWWX8AEp9bfM9C/FUsnQdUxVXy42x8FQmdyqnwoRVWT6kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWIWs7NE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC450C116B1;
+	Tue, 16 Jul 2024 15:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145460;
-	bh=vALNRUNckyJo14cXVeXcwEsOPBQ/H2pUh4QEKqoA6HA=;
+	s=korg; t=1721144432;
+	bh=N1NA2LlHvCG9kxeD31w/NqEpjg19FFfcPw6r6ppqRnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NufDXBDKw/qA4r7jSoUkTeg8O5OKV2pZ+4uUry+Xt2GTSCYQ5ooP2hY0x+tSRP6oL
-	 DMbsvNFLUrgxnmt4s2oK4PbQoE+TDqCfXI4qKRMIxL0K9P5dQmy8KF9375vPO1EuK/
-	 7fbukplryCWjX8bbeATL3R2SeANzjsIYs0BgkNSg=
+	b=MWIWs7NExBmgx50Xxlb1sQKsGF7icpaax80ut13v/nTojtIatDVCx6I6hS7feq7ZN
+	 J9kgFoJuX6DCR/OGnXsJ5V9IC7AOz1H4bAuQI14ObwEB7Ap6ulBucv0JsBoVJkxU/b
+	 GcenF+FXAjdQDAmg7iZ2i22Ku1uNOGhfyyhmNOxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 31/96] firmware: cs_dsp: Fix overflow checking of wmfw header
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 70/78] ALSA: hda/realtek: Limit mic boost on VAIO PRO PX
 Date: Tue, 16 Jul 2024 17:31:42 +0200
-Message-ID: <20240716152747.709668928@linuxfoundation.org>
+Message-ID: <20240716152743.350270745@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit 3019b86bce16fbb5bc1964f3544d0ce7d0137278 ]
+commit 6db03b1929e207d2c6e84e75a9cd78124b3d6c6d upstream.
 
-Fix the checking that firmware file buffer is large enough for the
-wmfw header, to prevent overrunning the buffer.
+The internal mic boost on the VAIO models VJFE-CL and VJFE-IL is too high.
+Fix this by applying the ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine
+to limit the gain.
 
-The original code tested that the firmware data buffer contained
-enough bytes for the sums of the size of the structs
-
-	wmfw_header + wmfw_adsp1_sizes + wmfw_footer
-
-But wmfw_adsp1_sizes is only used on ADSP1 firmware. For ADSP2 and
-Halo Core the equivalent struct is wmfw_adsp2_sizes, which is
-4 bytes longer. So the length check didn't guarantee that there
-are enough bytes in the firmware buffer for a header with
-wmfw_adsp2_sizes.
-
-This patch splits the length check into three separate parts. Each
-of the wmfw_header, wmfw_adsp?_sizes and wmfw_footer are checked
-separately before they are used.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f6bc909e7673 ("firmware: cs_dsp: add driver to support firmware loading on Cirrus Logic DSPs")
-Link: https://patch.msgid.link/20240627141432.93056-2-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240705141012.5368-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index 64ed9d3f5d5d8..fd1145b2894b3 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1228,6 +1228,10 @@ static unsigned int cs_dsp_adsp1_parse_sizes(struct cs_dsp *dsp,
- 	const struct wmfw_adsp1_sizes *adsp1_sizes;
- 
- 	adsp1_sizes = (void *)&firmware->data[pos];
-+	if (sizeof(*adsp1_sizes) > firmware->size - pos) {
-+		cs_dsp_err(dsp, "%s: file truncated\n", file);
-+		return 0;
-+	}
- 
- 	cs_dsp_dbg(dsp, "%s: %d DM, %d PM, %d ZM\n", file,
- 		   le32_to_cpu(adsp1_sizes->dm), le32_to_cpu(adsp1_sizes->pm),
-@@ -1244,6 +1248,10 @@ static unsigned int cs_dsp_adsp2_parse_sizes(struct cs_dsp *dsp,
- 	const struct wmfw_adsp2_sizes *adsp2_sizes;
- 
- 	adsp2_sizes = (void *)&firmware->data[pos];
-+	if (sizeof(*adsp2_sizes) > firmware->size - pos) {
-+		cs_dsp_err(dsp, "%s: file truncated\n", file);
-+		return 0;
-+	}
- 
- 	cs_dsp_dbg(dsp, "%s: %d XM, %d YM %d PM, %d ZM\n", file,
- 		   le32_to_cpu(adsp2_sizes->xm), le32_to_cpu(adsp2_sizes->ym),
-@@ -1283,7 +1291,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 	struct regmap *regmap = dsp->regmap;
- 	unsigned int pos = 0;
- 	const struct wmfw_header *header;
--	const struct wmfw_adsp1_sizes *adsp1_sizes;
- 	const struct wmfw_footer *footer;
- 	const struct wmfw_region *region;
- 	const struct cs_dsp_region *mem;
-@@ -1296,10 +1303,8 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 
- 	ret = -EINVAL;
- 
--	pos = sizeof(*header) + sizeof(*adsp1_sizes) + sizeof(*footer);
--	if (pos >= firmware->size) {
--		cs_dsp_err(dsp, "%s: file too short, %zu bytes\n",
--			   file, firmware->size);
-+	if (sizeof(*header) >= firmware->size) {
-+		ret = -EOVERFLOW;
- 		goto out_fw;
- 	}
- 
-@@ -1327,13 +1332,16 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 
- 	pos = sizeof(*header);
- 	pos = dsp->ops->parse_sizes(dsp, file, pos, firmware);
-+	if ((pos == 0) || (sizeof(*footer) > firmware->size - pos)) {
-+		ret = -EOVERFLOW;
-+		goto out_fw;
-+	}
- 
- 	footer = (void *)&firmware->data[pos];
- 	pos += sizeof(*footer);
- 
- 	if (le32_to_cpu(header->len) != pos) {
--		cs_dsp_err(dsp, "%s: unexpected header length %d\n",
--			   file, le32_to_cpu(header->len));
-+		ret = -EOVERFLOW;
- 		goto out_fw;
- 	}
- 
-@@ -1459,6 +1467,9 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 	cs_dsp_buf_free(&buf_list);
- 	kfree(text);
- 
-+	if (ret == -EOVERFLOW)
-+		cs_dsp_err(dsp, "%s: file content overflows file data\n", file);
-+
- 	return ret;
- }
- 
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -8331,6 +8331,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
+ 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
+ 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
++	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x1252, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+@@ -8494,6 +8495,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
++	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+ 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
 
 
 
