@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-59714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E18D932B66
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D36932C26
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCF9F1F21170
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C7562853FD
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56621195B27;
-	Tue, 16 Jul 2024 15:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1040219DFB3;
+	Tue, 16 Jul 2024 15:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxoX4jxL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aS6Tqnz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A4FF9E8;
-	Tue, 16 Jul 2024 15:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45C219AD46;
+	Tue, 16 Jul 2024 15:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144684; cv=none; b=BOuo7cdb5uBO/KYQlkUQNk8//hZchHfLhe0jyObaMO/tScZMgc68e/Si9whhezgHvvTn2qN8789hKWDz3ZcsMr2O/oro2ujwjyh1Dj5OPu7gf7QwjzJZd4OKnhtcRP7YbeJqFwAYvA0KSaUoYKGVxJgWYcsamsuyH0P/thQpJCw=
+	t=1721145132; cv=none; b=aDcljTJ62BoMSv8s0mOE22Tj50VJ74pS/WPk1TfDsOsH4X02fqT3uH+7/UFltuvkNDX5/EW+J4cUqXKx+zeL2HM9CdUxBuWCt8ywzYPoUdSNAgM/I0cXUJB+bcLdcbNqWETaJoF4CNIfMBotflILtFAF1vtTIAQDieCS4XQkaZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144684; c=relaxed/simple;
-	bh=nPzp8PL+BJ+lwlIqJbRueOhL3HMOnVbnXtupuOOVroA=;
+	s=arc-20240116; t=1721145132; c=relaxed/simple;
+	bh=D9MmMUgNZXfbMm+IwaBP3VOl/vRNpdbP86qvzraulto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3gM5LmfWmzepzmjIEYRW6XHqc7BhjJDpicHW6uOx7+5c6uJawRm+KWMAY2F+2A4HgW7nQT2XtGG7R8+BLmLVhJldERXC7jj4iPdIsimnuqrJj2jtr2XdP5pmZ4VDIse3APVbsX9cH+W/0YE8eTLew4KaINFEGfhqR0aD6gt5ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxoX4jxL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA7FC4AF0B;
-	Tue, 16 Jul 2024 15:44:43 +0000 (UTC)
+	 MIME-Version; b=K3aOLznhTSeVSYsCmvFBUx9FG71CTHPHqvvMQRz0rCTkSHPXmNM+ETiEWw6J4HC0rep8QcTt4suoeXbEyj9LReUYWarkPSUDboNBipQimEP/MWQJl3U9ZZzbC8l8gBx8wV2jEy0zL8Fb/7Yuluu+yx5qu1Wvx101b4n4C2bF+8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aS6Tqnz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408C8C116B1;
+	Tue, 16 Jul 2024 15:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144684;
-	bh=nPzp8PL+BJ+lwlIqJbRueOhL3HMOnVbnXtupuOOVroA=;
+	s=korg; t=1721145132;
+	bh=D9MmMUgNZXfbMm+IwaBP3VOl/vRNpdbP86qvzraulto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TxoX4jxLNAbQGRVVdF1bDbsAA1CqYR02JIrNP9F60hw7F/BQ7bKDD2oeXVngwH6P8
-	 oCkRP8qn6XAiFlfMrIyLZqVXCryD9uM+CwvjytnJi11TtHpVQgS3l86tfyVnfsdAgm
-	 GXKSgrd3XXgL8cIN4oIXs8JmBzigT9+9ZbHXDQk0=
+	b=aS6Tqnz37wYcAtGtPTu7z68HfHF6zzaMqi8DFHVmo+QWIBmiRGmh3ItP1adV0aPas
+	 +7McBKrb3ioDV2whCfMPAqnVv7CXqDkrB30+WXKM0mEgeS1mO3jR2FouLuz9FCuRS5
+	 JP8uD5bFP3En+cDSKQcWXvS+0cLkz/OM/3naBM10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Menglong Dong <imagedong@tencent.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 073/108] tcp: use signed arithmetic in tcp_rtx_probe0_timed_out()
+	Yoonho Shin <yoonho.shin@samsung.com>,
+	Hobin Woo <hobin.woo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.9 092/143] ksmbd: discard write access to the directory open
 Date: Tue, 16 Jul 2024 17:31:28 +0200
-Message-ID: <20240716152748.784336228@linuxfoundation.org>
+Message-ID: <20240716152759.515830155@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hobin Woo <hobin.woo@samsung.com>
 
-commit 36534d3c54537bf098224a32dc31397793d4594d upstream.
+commit e2e33caa5dc2eae7bddf88b22ce11ec3d760e5cd upstream.
 
-Due to timer wheel implementation, a timer will usually fire
-after its schedule.
+may_open() does not allow a directory to be opened with the write access.
+However, some writing flags set by client result in adding write access
+on server, making ksmbd incompatible with FUSE file system. Simply, let's
+discard the write access when opening a directory.
 
-For instance, for HZ=1000, a timeout between 512ms and 4s
-has a granularity of 64ms.
-For this range of values, the extra delay could be up to 63ms.
+list_add corruption. next is NULL.
+------------[ cut here ]------------
+kernel BUG at lib/list_debug.c:26!
+pc : __list_add_valid+0x88/0xbc
+lr : __list_add_valid+0x88/0xbc
+Call trace:
+__list_add_valid+0x88/0xbc
+fuse_finish_open+0x11c/0x170
+fuse_open_common+0x284/0x5e8
+fuse_dir_open+0x14/0x24
+do_dentry_open+0x2a4/0x4e0
+dentry_open+0x50/0x80
+smb2_open+0xbe4/0x15a4
+handle_ksmbd_work+0x478/0x5ec
+process_one_work+0x1b4/0x448
+worker_thread+0x25c/0x430
+kthread+0x104/0x1d4
+ret_from_fork+0x10/0x20
 
-For TCP, this means that tp->rcv_tstamp may be after
-inet_csk(sk)->icsk_timeout whenever the timer interrupt
-finally triggers, if one packet came during the extra delay.
-
-We need to make sure tcp_rtx_probe0_timed_out() handles this case.
-
-Fixes: e89688e3e978 ("net: tcp: fix unexcepted socket die when snd_wnd is 0")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Menglong Dong <imagedong@tencent.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Link: https://lore.kernel.org/r/20240607125652.1472540-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Yoonho Shin <yoonho.shin@samsung.com>
+Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_timer.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -459,8 +459,13 @@ static bool tcp_rtx_probe0_timed_out(con
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2051,15 +2051,22 @@ out_err1:
+  * @access:		file access flags
+  * @disposition:	file disposition flags
+  * @may_flags:		set with MAY_ flags
++ * @is_dir:		is creating open flags for directory
+  *
+  * Return:      file open flags
+  */
+ static int smb2_create_open_flags(bool file_present, __le32 access,
+ 				  __le32 disposition,
+-				  int *may_flags)
++				  int *may_flags,
++				  bool is_dir)
  {
- 	const struct tcp_sock *tp = tcp_sk(sk);
- 	const int timeout = TCP_RTO_MAX * 2;
--	u32 rcv_delta, rtx_delta;
-+	u32 rtx_delta;
-+	s32 rcv_delta;
+ 	int oflags = O_NONBLOCK | O_LARGEFILE;
  
-+	/* Note: timer interrupt might have been delayed by at least one jiffy,
-+	 * and tp->rcv_tstamp might very well have been written recently.
-+	 * rcv_delta can thus be negative.
-+	 */
- 	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
- 	if (rcv_delta <= timeout)
- 		return false;
++	if (is_dir) {
++		access &= ~FILE_WRITE_DESIRE_ACCESS_LE;
++		ksmbd_debug(SMB, "Discard write access to a directory\n");
++	}
++
+ 	if (access & FILE_READ_DESIRED_ACCESS_LE &&
+ 	    access & FILE_WRITE_DESIRE_ACCESS_LE) {
+ 		oflags |= O_RDWR;
+@@ -3167,7 +3174,9 @@ int smb2_open(struct ksmbd_work *work)
+ 
+ 	open_flags = smb2_create_open_flags(file_present, daccess,
+ 					    req->CreateDisposition,
+-					    &may_flags);
++					    &may_flags,
++		req->CreateOptions & FILE_DIRECTORY_FILE_LE ||
++		(file_present && S_ISDIR(d_inode(path.dentry)->i_mode)));
+ 
+ 	if (!test_tree_conn_flag(tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
+ 		if (open_flags & (O_CREAT | O_TRUNC)) {
 
 
 
