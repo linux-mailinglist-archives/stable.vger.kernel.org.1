@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-59743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD2D932B88
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4F1932B0B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C91E1C21104
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9E7D280FBC
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E10419AD46;
-	Tue, 16 Jul 2024 15:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8961E895;
+	Tue, 16 Jul 2024 15:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdwXIoye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AREUMtcg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9DE1DA4D;
-	Tue, 16 Jul 2024 15:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A867B641;
+	Tue, 16 Jul 2024 15:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144774; cv=none; b=A/+L6iU2nk+2MeoDDcPJ8BXiVAyD6nq2QSzjkFKDQGgkWWHHRwx+ykwLH97PcGMtA781pHDtst+nEvrApQlYMG5i5V4yuqUVnqds40MvW5UYzaby2m1EZY5ZLK+QENHvUSVZF8nNSkyhp796mguMOxdwzdbbQqpByAEZ7/zl7dI=
+	t=1721144462; cv=none; b=dBEF/9Pbn65/+ZjRlgaAs27svLGSUsSa/vkvr2s32Tn6JecKCdTwXnaWUB+nQyJu4hJFhThfZFMhB47teEmDbpROxLBnW5tmeIcrNYvoFD3KxS88ouVlaBcKhtNbSOcq33jGLs+zHs99ZwlvE2JA9wXbFa5onGmfwH5pp1q+LQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144774; c=relaxed/simple;
-	bh=nyp4ZMJXSG0ckSDr3wVck9f2sngwWWccIGP72NT5teA=;
+	s=arc-20240116; t=1721144462; c=relaxed/simple;
+	bh=qQrfzvZBB43qGL/KT6ZWTfuPIjmY4ksiocp63WSMgGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EagfC4PkROGC5vS/vQ4uam8J9cznzWzCtMAxnAdJW2vTTr63XviMBJC53Mji3Ivk8Rhmkfp7vRio/d3xO9HNCBNiFsNI/sAXVfumz/q29X9O5MS27OnFg+iRUkHDTwAyXo08JbYmvWpRHvmOx1nYNTt6SwYYTwppo/5JzEwiCQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdwXIoye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7DBC116B1;
-	Tue, 16 Jul 2024 15:46:14 +0000 (UTC)
+	 MIME-Version; b=tjdq1zlpPmFgF5XsqnmTj4S4Z2Pn6WtHJq2XxBdkujecIDU7S6efo+J8EptHb9X2ngiicq7u7/xRHF/Jxd6gDH83lcMDV/Mz1L9LkxFKRmuV3S9DZCAyRRfvWZc8Ke+yPsjnQgRj6oy7+cA3t/uzRjJO4BY/v9+B4m3FKlmwYvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AREUMtcg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA189C116B1;
+	Tue, 16 Jul 2024 15:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144774;
-	bh=nyp4ZMJXSG0ckSDr3wVck9f2sngwWWccIGP72NT5teA=;
+	s=korg; t=1721144462;
+	bh=qQrfzvZBB43qGL/KT6ZWTfuPIjmY4ksiocp63WSMgGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wdwXIoye5dDK2HUC6t2HwVsfHhqFOHbXwOPx8n2oz7Phchq+42bYCMNAN7Uto/PtD
-	 7pIRvd/RjOfpR99NoTmC1rLckkPjvdGfHsOttANQsTFMs07JlaJVOWnkGwT0YLxn+y
-	 uKLkjEPwNujijQm8W81kyhY8Wz8T5sQnQY5B6/Z0=
+	b=AREUMtcggqAJussCcaxmb2xJqTAUeQ2K3zOivkTHU0b1Z6DNgxwcLjHo7ftqcrl9Z
+	 i3S7Q9tlHB5cicmcNUmnnewiJkzD/ax9dkk1amap8gbK+thA4CBcY7p+c4YuEWiLaU
+	 thGhovAfg6ph4qPBvIVRHLGW0k6T49QAxBQ7oR5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 071/108] ARM: davinci: Convert comma to semicolon
+Subject: [PATCH 5.4 54/78] ppp: reject claimed-as-LCP but actually malformed packets
 Date: Tue, 16 Jul 2024 17:31:26 +0200
-Message-ID: <20240716152748.708010966@linuxfoundation.org>
+Message-ID: <20240716152742.732360887@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit acc3815db1a02d654fbc19726ceaadca0d7dd81c ]
+[ Upstream commit f2aeb7306a898e1cbd03963d376f4b6656ca2b55 ]
 
-Replace a comma between expression statements by a semicolon.
+Since 'ppp_async_encode()' assumes valid LCP packets (with code
+from 1 to 7 inclusive), add 'ppp_check_packet()' to ensure that
+LCP packet has an actual body beyond PPP_LCP header bytes, and
+reject claimed-as-LCP but actually malformed data otherwise.
 
-Fixes: efc1bb8a6fd5 ("davinci: add power management support")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reported-by: syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ec0723ba9605678b14bf
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-davinci/pm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ppp/ppp_generic.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/arm/mach-davinci/pm.c b/arch/arm/mach-davinci/pm.c
-index 323ee4e657c45..94d7d69b9db7c 100644
---- a/arch/arm/mach-davinci/pm.c
-+++ b/arch/arm/mach-davinci/pm.c
-@@ -62,7 +62,7 @@ static void davinci_pm_suspend(void)
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 078c0f474f966..3cd4196b36b21 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -70,6 +70,7 @@
+ #define MPHDRLEN_SSN	4	/* ditto with short sequence numbers */
  
- 	/* Configure sleep count in deep sleep register */
- 	val = __raw_readl(pm_config.deepsleep_reg);
--	val &= ~DEEPSLEEP_SLEEPCOUNT_MASK,
-+	val &= ~DEEPSLEEP_SLEEPCOUNT_MASK;
- 	val |= pm_config.sleepcount;
- 	__raw_writel(val, pm_config.deepsleep_reg);
+ #define PPP_PROTO_LEN	2
++#define PPP_LCP_HDRLEN	4
  
+ /*
+  * An instance of /dev/ppp can be associated with either a ppp
+@@ -491,6 +492,15 @@ static ssize_t ppp_read(struct file *file, char __user *buf,
+ 	return ret;
+ }
+ 
++static bool ppp_check_packet(struct sk_buff *skb, size_t count)
++{
++	/* LCP packets must include LCP header which 4 bytes long:
++	 * 1-byte code, 1-byte identifier, and 2-byte length.
++	 */
++	return get_unaligned_be16(skb->data) != PPP_LCP ||
++		count >= PPP_PROTO_LEN + PPP_LCP_HDRLEN;
++}
++
+ static ssize_t ppp_write(struct file *file, const char __user *buf,
+ 			 size_t count, loff_t *ppos)
+ {
+@@ -513,6 +523,11 @@ static ssize_t ppp_write(struct file *file, const char __user *buf,
+ 		kfree_skb(skb);
+ 		goto out;
+ 	}
++	ret = -EINVAL;
++	if (unlikely(!ppp_check_packet(skb, count))) {
++		kfree_skb(skb);
++		goto out;
++	}
+ 
+ 	switch (pf->kind) {
+ 	case INTERFACE:
 -- 
 2.43.0
 
