@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-59909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0554D932C60
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45657932B0C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93C5F1F23914
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF4D61F216D5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFBF19E7C6;
-	Tue, 16 Jul 2024 15:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86381CA40;
+	Tue, 16 Jul 2024 15:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojGSPT1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zffs64cp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BD619DF73;
-	Tue, 16 Jul 2024 15:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBE9B641;
+	Tue, 16 Jul 2024 15:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145277; cv=none; b=Hqxqn3ePYwArAx1QCdwwrID+wMlKh7mRivuctFcuatWkpaLLifGmLSVcmwCm/eFCULSAhTSTLeKD4ktycK5yhavEZOBpPk9TbqkYPjaV6XBF6aA7aRIs1se8tiVsIUB9ty40G2QGXFubUYTndnawC1mf5bLyRPNQ8xTgoA65unk=
+	t=1721144459; cv=none; b=ejUTwKrTdEok9DN4zKNGZTF/vm9C6wKps3D5G6bzRJRSMbvhAOEfaXwQTZN87x6G22iJ/lTBUL+6tP3vSOPuuHjO61xZTc+LbXNRGsP41jIVXiCDTV2GST3wPCj+f6OdgcfzLtlATuZ2d6ycC1p22EBe11ErGzEvCxSZ5VyvNG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145277; c=relaxed/simple;
-	bh=ortJVA7tcxjOxTS86XGooe3v9ZctGi5b2D6xvs4hmdU=;
+	s=arc-20240116; t=1721144459; c=relaxed/simple;
+	bh=PTlOzA4iuDXm8LE07gcHF7uxMF1xYE7SWnVyTioPJws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFRE5OeejNTb0f/anVoDhPzGte5Ho1D/KJxMeTI9l/SRiDlLan2CLK/46m8bSixKf3dl1qLuZXGNnydC9ebDsIPfPB4Z5A6IYU/qbgl4h7TUdD30F0780Tj2V9LdNPXRZvIn6v7G5HO6DlbK4SJsewcwWOUxB0oiZWkeWyE6pq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojGSPT1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33B6C4AF0D;
-	Tue, 16 Jul 2024 15:54:36 +0000 (UTC)
+	 MIME-Version; b=fJIN9VUEPD+nIT8QaC3b77wKGyMBDZRkFE5vc6GkA9Ppt8WlinDLdBYEYzOi+8FZyIQ6FxG+aD0pMimkP0C19bW0jr10/Yiv5yT8+xq5i6UCLmWiFi7lccwuwkXvQp3aAJM1CNX6Yb81m/s6MEwlQGLDeN6WvEg5x2GWHIGQUkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zffs64cp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B382BC116B1;
+	Tue, 16 Jul 2024 15:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145277;
-	bh=ortJVA7tcxjOxTS86XGooe3v9ZctGi5b2D6xvs4hmdU=;
+	s=korg; t=1721144459;
+	bh=PTlOzA4iuDXm8LE07gcHF7uxMF1xYE7SWnVyTioPJws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojGSPT1n3Qf942KTBWPjWn+JEnjvMsCICSjLJFKD7q5HDgf308Nb8dyy6j4Dxe9uW
-	 oZAJMvc/ILYwi7WfinlN/wXrwLNIYEQYGGWC96zs4YTgVgPAsFeCpb7FHp7CDogI+8
-	 1nD+98YsD40nSEuJM655hqRsbdO3C8g9zE1Vzi+0=
+	b=zffs64cprwNoMwcn2PmfW++BIg2edUkXQ749bOBWMKhIUKjrNoZfsws7yP1oShexH
+	 iPrHe9bNvWDa6k3Kr/2vdxvSoCRNU1i3z7ocB/RETUmXdKStKePBp1jpLSs10tuJ45
+	 JJIumYL6KOZZmE3xpwLe9ypSnrJmspcclGs7yOtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Joe Perches <joe@perches.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
 	Andrew Lunn <andrew@lunn.ch>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 13/96] net: phy: microchip: lan87xx: reinit PHY after cable test
-Date: Tue, 16 Jul 2024 17:31:24 +0200
-Message-ID: <20240716152747.028029770@linuxfoundation.org>
+Subject: [PATCH 5.4 53/78] net: ethernet: lantiq_etop: fix double free in detach
+Date: Tue, 16 Jul 2024 17:31:25 +0200
+Message-ID: <20240716152742.692147925@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 30f747b8d53bc73555f268d0f48f56174fa5bf10 ]
+[ Upstream commit e1533b6319ab9c3a97dad314dd88b3783bc41b69 ]
 
-Reinit PHY after cable test, otherwise link can't be established on
-tested port. This issue is reproducible on LAN9372 switches with
-integrated 100BaseT1 PHYs.
+The number of the currently released descriptor is never incremented
+which results in the same skb being released multiple times.
 
-Fixes: 788050256c411 ("net: phy: microchip_t1: add cable test support for lan87xx phy")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Fixes: 504d4721ee8e ("MIPS: Lantiq: Add ethernet driver")
+Reported-by: Joe Perches <joe@perches.com>
+Closes: https://lore.kernel.org/all/fc1bf93d92bb5b2f99c6c62745507cc22f3a7b2d.camel@perches.com/
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240705084954.83048-1-o.rempel@pengutronix.de
+Link: https://patch.msgid.link/20240708205826.5176-1-olek2@wp.pl
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/microchip_t1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/lantiq_etop.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
-index 8569a545e0a3f..9517243e3051e 100644
---- a/drivers/net/phy/microchip_t1.c
-+++ b/drivers/net/phy/microchip_t1.c
-@@ -711,7 +711,7 @@ static int lan87xx_cable_test_report(struct phy_device *phydev)
- 	ethnl_cable_test_result(phydev, ETHTOOL_A_CABLE_PAIR_A,
- 				lan87xx_cable_test_report_trans(detect));
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index 98aa172da051f..932796080c7f7 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -213,9 +213,9 @@ ltq_etop_free_channel(struct net_device *dev, struct ltq_etop_chan *ch)
+ 	if (ch->dma.irq)
+ 		free_irq(ch->dma.irq, priv);
+ 	if (IS_RX(ch->idx)) {
+-		int desc;
++		struct ltq_dma_channel *dma = &ch->dma;
  
--	return 0;
-+	return phy_init_hw(phydev);
+-		for (desc = 0; desc < LTQ_DESC_NUM; desc++)
++		for (dma->desc = 0; dma->desc < LTQ_DESC_NUM; dma->desc++)
+ 			dev_kfree_skb_any(ch->skb[ch->dma.desc]);
+ 	}
  }
- 
- static int lan87xx_cable_test_get_status(struct phy_device *phydev,
 -- 
 2.43.0
 
