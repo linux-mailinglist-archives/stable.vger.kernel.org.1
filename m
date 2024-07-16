@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-60313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5ED3933038
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0700933039
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11D2F1C22299
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:37:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C09CD1C20CB9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6311A651F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCA81A652F;
 	Tue, 16 Jul 2024 18:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nsrniOlO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gjw3rELS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BDB1A2553;
-	Tue, 16 Jul 2024 18:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844211A6522;
+	Tue, 16 Jul 2024 18:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154826; cv=none; b=Q8cLhgn+cbBYivTRSfqj8A0seC5UZKWMfNlyuDhhhdzuV4knZR4U1cL0CRs6fP+fWECai11Jv9V1UCi5/VLHURSfVaGkfIO3nV02IhU1kqupV7i4zXwikBkpSa0RvyHRh780+i3T+zRfjsUrCDKqYb9b8zaEUsXSdk+hT62txFk=
+	t=1721154826; cv=none; b=Rn9+N+oCUnH2prOAKm6LNSzs7pUUPsCM4tXXhwRtup3wRTujs1NT1Ro8Y7wkFHcF6tKqJSyi6Ad87o2RP2SQiAiYiPomh1MyLJzMq6yzrFCx/zFPgdgzo7SZERVpaPvpOmKwz0VnigF527Y5xBx2x4Oa+Ebdv5WZhyG/Ww5ktKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1721154826; c=relaxed/simple;
-	bh=ndvNxnnobdXY1qRGFjwKkxZc5JAWm9Mq+lzm6iZ2oDw=;
+	bh=B154PBKiYl5EWcFNNPsQO6OKsGY+pG6XCthbORAZL/o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G6uaVHVqpsRfVZWxzPcJ9cWiv7YuDBXdclsm/QPZixvM/bXuXdwYPjFD4xkNrZQP1mYP3AXcq7fR8/p60tYM6dKt0jXziuOvuNj4wV1OLEw+vaCtYEM+MhtS4E47/y7I4P4FmH3g7yrH5SF2nXFJ7XXuHEcgwJ2uLaYGXs9aRkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nsrniOlO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9198C4AF0D;
-	Tue, 16 Jul 2024 18:33:44 +0000 (UTC)
+	 MIME-Version; b=cwqEjc/L6sm47S1WE14iEv439diWqiLqsYkNwpME+uLpyvJEjbEn0IyS8yZyhGNuaCyKJ+d6lZz7vK3E5OeSf2fexwoK35r4ZvIfr/51dJhsaBM5OIMCFeAJSvf3gF/KX3cgy2B3dziyQ8ph5r3xcslHKzeuSmEtqnF+M2lR+pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gjw3rELS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32FFC4AF0F;
+	Tue, 16 Jul 2024 18:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154825;
-	bh=ndvNxnnobdXY1qRGFjwKkxZc5JAWm9Mq+lzm6iZ2oDw=;
+	s=k20201202; t=1721154826;
+	bh=B154PBKiYl5EWcFNNPsQO6OKsGY+pG6XCthbORAZL/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsrniOlOCA9NbqSZROhsTDlJdmUSh/BIZPZSXpXBQ5Kz0mQHgIaawfAfa05qS7c7Z
-	 Nt517df9+ryBl4iNVvRHO0QYiHqNe+f2+PE1Y+cT06qDHrkbbJ6KHOMaZ8ZlcO7uBL
-	 Khgw3NMxO2iJoplVwD2WmD+mtCc/ZQp5lIQa17/0f8D4VcOdhAxbfiojHSPVSzgD79
-	 o8wwBgfor7wEvlp+fS96m/lE/l3Eo+M/W1el70kLQ/yex2Nae/moHQ2cKyM+Ef27km
-	 32YbxdsRMNi1/FQ8WHzMyUJxWaXDPW/6BmpEzEBygVxVyjWM9cy0WJFPxNgQt1hs8r
-	 d5LKPgNkl/6ww==
+	b=gjw3rELSz2/fCMGSuNWZ10azZwg3mYDgyAqtfvlP832tU+6N3FLJn+IuvProFtFYT
+	 IweLKEc4JMCkzpyvgFIM4lRGbSxCr/8M9xpnnTKG6bqihzxFrWThfu1sWZ8rA7RMie
+	 p+0bphGvjbJaKeKZ1K4C8H50AAmXXG1yhe6jn7E3M3HTbhvPJedzf+LUxDykAf+wB8
+	 M6zJhR7S58Eu7CLgS3HlmcQXYRjw8FVOP5HttxscCQTAOfJiekydgXZlquULnWgylv
+	 1hnSyuhuXjz1TKXE6gdW4tu/Jzm9mzWPmhYoTja8YCC0rXb+MZfOG8aLlr3av03LuF
+	 R5tdHbMUyfYvg==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: David Laight <David.Laight@ACULAB.COM>,
-	linux-kernel@vger.kernel.org,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
+Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	SeongJae Park <sj@kernel.org>
-Subject: [PATCH 5.15.y 7/8] minmax: relax check to allow comparison between unsigned arguments and signed constants
-Date: Tue, 16 Jul 2024 11:33:32 -0700
-Message-Id: <20240716183333.138498-8-sj@kernel.org>
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y 8/8] mm/damon/core: merge regions aggressively when max_nr_regions is unmet
+Date: Tue, 16 Jul 2024 11:33:33 -0700
+Message-Id: <20240716183333.138498-9-sj@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240716183333.138498-1-sj@kernel.org>
 References: <20240716183333.138498-1-sj@kernel.org>
@@ -68,76 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: David Laight <David.Laight@ACULAB.COM>
+commit 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6 upstream.
 
-commit 867046cc7027703f60a46339ffde91a1970f2901 upstream.
+DAMON keeps the number of regions under max_nr_regions by skipping regions
+split operations when doing so can make the number higher than the limit.
+It works well for preventing violation of the limit.  But, if somehow the
+violation happens, it cannot recovery well depending on the situation.  In
+detail, if the real number of regions having different access pattern is
+higher than the limit, the mechanism cannot reduce the number below the
+limit.  In such a case, the system could suffer from high monitoring
+overhead of DAMON.
 
-Allow (for example) min(unsigned_var, 20).
+The violation can actually happen.  For an example, the user could reduce
+max_nr_regions while DAMON is running, to be lower than the current number
+of regions.  Fix the problem by repeating the merge operations with
+increasing aggressiveness in kdamond_merge_regions() for the case, until
+the limit is met.
 
-The opposite min(signed_var, 20u) is still errored.
-
-Since a comparison between signed and unsigned never makes the unsigned
-value negative it is only necessary to adjust the __types_ok() test.
-
-Link: https://lkml.kernel.org/r/633b64e2f39e46bb8234809c5595b8c7@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 867046cc7027703f60a46339ffde91a1970f2901)
+[sj@kernel.org: increase regions merge aggressiveness while respecting min_nr_regions]
+  Link: https://lkml.kernel.org/r/20240626164753.46270-1-sj@kernel.org
+[sj@kernel.org: ensure max threshold attempt for max_nr_regions violation]
+  Link: https://lkml.kernel.org/r/20240627163153.75969-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20240624175814.89611-1-sj@kernel.org
+Fixes: b9a6ac4e4ede ("mm/damon: adaptively adjust regions")
 Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6)
+Signed-off-by: SeongJae Park <sj@kernel.org>
+[Remove use of unexisting damon_ctx->attrs field]
 ---
- include/linux/minmax.h | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ mm/damon/core.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index f76b7145fc11..dd52969698f7 100644
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -9,13 +9,18 @@
- /*
-  * min()/max()/clamp() macros must accomplish three things:
-  *
-- * - avoid multiple evaluations of the arguments (so side-effects like
-+ * - Avoid multiple evaluations of the arguments (so side-effects like
-  *   "x++" happen only once) when non-constant.
-- * - perform signed v unsigned type-checking (to generate compile
-- *   errors instead of nasty runtime surprises).
-- * - retain result as a constant expressions when called with only
-+ * - Retain result as a constant expressions when called with only
-  *   constant expressions (to avoid tripping VLA warnings in stack
-  *   allocation usage).
-+ * - Perform signed v unsigned type-checking (to generate compile
-+ *   errors instead of nasty runtime surprises).
-+ * - Unsigned char/short are always promoted to signed int and can be
-+ *   compared against signed or unsigned arguments.
-+ * - Unsigned arguments can be compared against non-negative signed constants.
-+ * - Comparison of a signed argument against an unsigned constant fails
-+ *   even if the constant is below __INT_MAX__ and could be cast to int.
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 7a4912d6e65f..4f031412f65c 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -507,14 +507,31 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
+  * access frequencies are similar.  This is for minimizing the monitoring
+  * overhead under the dynamically changeable access pattern.  If a merge was
+  * unnecessarily made, later 'kdamond_split_regions()' will revert it.
++ *
++ * The total number of regions could be higher than the user-defined limit,
++ * max_nr_regions for some cases.  For example, the user can update
++ * max_nr_regions to a number that lower than the current number of regions
++ * while DAMON is running.  For such a case, repeat merging until the limit is
++ * met while increasing @threshold up to possible maximum level.
   */
- #define __typecheck(x, y) \
- 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
-@@ -25,9 +30,14 @@
- 	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
- 		is_signed_type(typeof(x)), 0)
- 
--#define __types_ok(x, y) 			\
--	(__is_signed(x) == __is_signed(y) ||	\
--		__is_signed((x) + 0) == __is_signed((y) + 0))
-+/* True for a non-negative signed int constant */
-+#define __is_noneg_int(x)	\
-+	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
+ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
+ 				  unsigned long sz_limit)
+ {
+ 	struct damon_target *t;
+-
+-	damon_for_each_target(t, c)
+-		damon_merge_regions_of(t, threshold, sz_limit);
++	unsigned int nr_regions;
++	unsigned int max_thres;
 +
-+#define __types_ok(x, y) 					\
-+	(__is_signed(x) == __is_signed(y) ||			\
-+		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
-+		__is_noneg_int(x) || __is_noneg_int(y))
++	max_thres = c->aggr_interval /
++		(c->sample_interval ?  c->sample_interval : 1);
++	do {
++		nr_regions = 0;
++		damon_for_each_target(t, c) {
++			damon_merge_regions_of(t, threshold, sz_limit);
++			nr_regions += damon_nr_regions(t);
++		}
++		threshold = max(1, threshold * 2);
++	} while (nr_regions > c->max_nr_regions &&
++			threshold / 2 < max_thres);
+ }
  
- #define __cmp_op_min <
- #define __cmp_op_max >
+ /*
 -- 
 2.39.2
 
