@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-59791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38AC0932BC5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:48:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B37C932A73
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8B95281F62
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:48:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39AFE1C22341
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEE0195B27;
-	Tue, 16 Jul 2024 15:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF584E54C;
+	Tue, 16 Jul 2024 15:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJs9M3YA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwZ4L31P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EDF19AD46;
-	Tue, 16 Jul 2024 15:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956E1CA40;
+	Tue, 16 Jul 2024 15:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144919; cv=none; b=Pmo508L4hTfP95lewmFqS6ijZu/1dG9P2eQPDk7DWLvyeVep5cYCdWpS+52MNQb6UXeglZRlqEXddrGhl8LqlhtfPyxdkmVTPmzdfrnsAF8C0hkaRFadBNSO9dt0GzWuXgHYYDF0mmaiscarQq6MniSiwl5Gz5xfgA0+mz+/s8k=
+	t=1721144044; cv=none; b=fVDxvp9bzl8+qtpuEyyBF8KIXfNf3qMo005ANjzdMJTCzo+9GAHDerKm1A1aOAw8c69rBjYs25DITK+RjiI5esJDnPlovY2gOQq+CISTq2zFbeDTZ6RgYpkcljrwwiAclF9u1pWZsgi69NZ4bfHNBVYegxbXovn0QFAEG8SRFu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144919; c=relaxed/simple;
-	bh=nYcS2vy4aWmKBusZtIa8jmIBijIDI5YQJVRWrI8j8ck=;
+	s=arc-20240116; t=1721144044; c=relaxed/simple;
+	bh=9jEI5xG6HUcp3ygZVdbDhyQoJDDdFvK53ClBSlVyhms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PO/YeA1ZyhR2JhYAyxggxTXFIBX1kNFgjx9frqVVQuG4+pIAeneXcrmx0MuJDC6vF8KNLZbysbn7Me48d3FHXmg+HMezzURv3KluUQKQEfKbGMGIclKv8gM3+DmoZFeFzj9y03I9VULf9AeeCe7iD51ogRKhn4yQsnCeAIgFeTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJs9M3YA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87A0C116B1;
-	Tue, 16 Jul 2024 15:48:38 +0000 (UTC)
+	 MIME-Version; b=fU0pWu0gNhc/Vmx7gMsh/VBTnR1DSLbEZZGXMOM/cc3Mk5IsDcn4i7UwZc3FhFdwya+j3Zfj9yEV5vSNbilBHFf6z7TYcGpyrwIiJBxSZuZalSnwcBaIkAA1wupUDpPJTgwkRXg+v1uspJWUkccI27hqTZn/U9bnlPE7pw5IFyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwZ4L31P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985C1C116B1;
+	Tue, 16 Jul 2024 15:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144919;
-	bh=nYcS2vy4aWmKBusZtIa8jmIBijIDI5YQJVRWrI8j8ck=;
+	s=korg; t=1721144044;
+	bh=9jEI5xG6HUcp3ygZVdbDhyQoJDDdFvK53ClBSlVyhms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJs9M3YAk7/cp0HB4bqtUjeuLqeP7j6dCsfSpFELaxJd+YwcUw3vUPgDB8xy7WBx3
-	 KLglnK0hSug2jzFtf1YOuyATdoP9KHOWDgO31HElNRZcERx6o7lJvaw6OzHXL0U6d0
-	 RLRtJn4+NoIyXfFq6CiAfriLdGY6zSm6Dds6vm0M=
+	b=rwZ4L31PYLHihV8+q5IH0gxBfru8iZdzBLvZIWizr6eZPy/Qg1H6vpR85UfrPsgEG
+	 gQro7qrOSDahtLjhr2vTUt22n0dQbKX2ZbpGvc6nxCOv8e5ijQCDyHcOfvbBPJkOS/
+	 Dgodko0JNEuGonzC8UC9vpW7QyXRzgXFNcDRMLps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 040/143] netfilter: nfnetlink_queue: drop bogus WARN_ON
+Subject: [PATCH 4.19 01/66] media: dvb: as102-fe: Fix as10x_register_addr packing
 Date: Tue, 16 Jul 2024 17:30:36 +0200
-Message-ID: <20240716152757.530595479@linuxfoundation.org>
+Message-ID: <20240716152738.221610486@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 631a4b3ddc7831b20442c59c28b0476d0704c9af ]
+[ Upstream commit 309422d280748c74f57f471559980268ac27732a ]
 
-Happens when rules get flushed/deleted while packet is out, so remove
-this WARN_ON.
+This structure is embedded in multiple other structures that are packed,
+which conflicts with it being aligned.
 
-This WARN exists in one form or another since v4.14, no need to backport
-this to older releases, hence use a more recent fixes tag.
+drivers/media/usb/as102/as10x_cmd.h:379:30: warning: field reg_addr within 'struct as10x_dump_memory::(unnamed at drivers/media/usb/as102/as10x_cmd.h:373:2)' is less aligned than 'struct as10x_register_addr' and is usually due to 'struct as10x_dump_memory::(unnamed at drivers/media/usb/as102/as10x_cmd.h:373:2)' being packed, which can lead to unaligned accesses [-Wunaligned-access]
 
-Fixes: 3f8019688894 ("netfilter: move nf_reinject into nfnetlink_queue modules")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202407081453.11ac0f63-lkp@intel.com
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Mark it as being packed.
+
+Marking the inner struct as 'packed' does not change the layout, since the
+whole struct is already packed, it just silences the clang warning. See
+also this llvm discussion:
+
+https://github.com/llvm/llvm-project/issues/55520
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_queue.c | 2 +-
+ drivers/media/dvb-frontends/as102_fe_types.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index f1c31757e4969..55e28e1da66ec 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -325,7 +325,7 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
- 	hooks = nf_hook_entries_head(net, pf, entry->state.hook);
+diff --git a/drivers/media/dvb-frontends/as102_fe_types.h b/drivers/media/dvb-frontends/as102_fe_types.h
+index 80a5398b580fe..661d7574a6c73 100644
+--- a/drivers/media/dvb-frontends/as102_fe_types.h
++++ b/drivers/media/dvb-frontends/as102_fe_types.h
+@@ -183,6 +183,6 @@ struct as10x_register_addr {
+ 	uint32_t addr;
+ 	/* register mode access */
+ 	uint8_t mode;
+-};
++} __packed;
  
- 	i = entry->hook_index;
--	if (WARN_ON_ONCE(!hooks || i >= hooks->num_hook_entries)) {
-+	if (!hooks || i >= hooks->num_hook_entries) {
- 		kfree_skb_reason(skb, SKB_DROP_REASON_NETFILTER_DROP);
- 		nf_queue_entry_free(entry);
- 		return;
+ #endif
 -- 
 2.43.0
 
