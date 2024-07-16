@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714BA932BD5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26912932AC3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D1C5281497
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98FE2B22F69
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3C219DF88;
-	Tue, 16 Jul 2024 15:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D9B1DA4D;
+	Tue, 16 Jul 2024 15:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Is4mlIyB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jj+v9rbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09ECB1DA4D;
-	Tue, 16 Jul 2024 15:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3139CA40;
+	Tue, 16 Jul 2024 15:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144960; cv=none; b=B+KEQbSvpcDOQOTw+xtH007FBmNzEmM3h7xrK2NrQXkXbrJ6NYITTbo7cctfoa7gqZzRzZJvM3/SAl+GQi6rEs9mQbl4XKBVGqdIMstTMOZj/8JxwBmK4kdOO/56ZwaQF2JRNY9CvO8wMRN1e07xFffre/S9DHEafw8cAufiS58=
+	t=1721144265; cv=none; b=hmoY8PyxNbbh7yiQCgoqn76BC9RDUbz5tEZ57IUvpomM4NNXcrtja20uGq40I0ppLB2xeGH7bSuCbMC+S5V3lKa1jdyzeASkUN1m0M+KVkX/Yatkk05YVfx7g88/jw0Q/cHKvHEy+SdLs5zLDgl9ABd3ZUPzRL3j3dBP13XzSOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144960; c=relaxed/simple;
-	bh=j67RivgkszF4mfAg/g0MaLKZCLSbK2iUBIVNvUmmcjU=;
+	s=arc-20240116; t=1721144265; c=relaxed/simple;
+	bh=mzW9VnNPi8hfVWwWylxief5gTWGYDuDD4WzgDE6loPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPNCCtu+3iROJswnKdu7BDGfz6UbJHwlInIPQLD9Gw54nqrclSeUqCNZSdwxfY2aJBpO58MTUwwQ7ti0ZP8q1bYIdyFAeLoR3w9IzVK8sahB/riqh8PEUR+Any/3TW6zLPMcRpHY7buVem+/b9P/EKJ75DXhDYQt1EvnaBwGtUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Is4mlIyB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DCEC116B1;
-	Tue, 16 Jul 2024 15:49:19 +0000 (UTC)
+	 MIME-Version; b=Zn4v0zquayg69Y7j/48d6bH1QvmR3Ai2R3WKIx9Hi6pitVV1mGushNcdK29UPUOMoouxmsEmYm06A5UTJeuOJZg7VKw25KQwNIRwcBiLwuEl0CwE2X7IihX7xYSsKwZn0c4Ek4awZTB9fBqYiPDVyVw6nsMPw5P96XxtF7JgAGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jj+v9rbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588E1C116B1;
+	Tue, 16 Jul 2024 15:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144959;
-	bh=j67RivgkszF4mfAg/g0MaLKZCLSbK2iUBIVNvUmmcjU=;
+	s=korg; t=1721144265;
+	bh=mzW9VnNPi8hfVWwWylxief5gTWGYDuDD4WzgDE6loPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Is4mlIyBqL7fmkSIfVBXW06Z34QK6MLCtbQCX1c3fd2p6Eo6O7YZJBbjeM3hwjvdJ
-	 n3cR9Rm9pVEaO+O72lM7tkzpDwjbOGN08726Wm7OSNwoXwf09xyuIaldBAsD43fTJc
-	 s14d85mDb8CfmRXdh94SoF3tThilTEWofgyvEQ08=
+	b=Jj+v9rbZqkrEJe+A6YDxnXkOO/xck7mHgsdnsaXQTZll2/zN4kv7cAOKT/ySQO7Ax
+	 OmHEB+frfiL0X7f69kIoN76H2F1Sx0/AA1S8ZS9GVYKjlOCnIbEL5Pd0hZvY1Gy4TU
+	 p3kxNREe51/FAcQ9pcZ5m2Z/R46DEa9D12GNDnbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 051/143] firmware: cs_dsp: Fix overflow checking of wmfw header
+Subject: [PATCH 5.4 15/78] media: dvb-frontends: tda10048: Fix integer overflow
 Date: Tue, 16 Jul 2024 17:30:47 +0200
-Message-ID: <20240716152757.948652609@linuxfoundation.org>
+Message-ID: <20240716152741.217609837@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 3019b86bce16fbb5bc1964f3544d0ce7d0137278 ]
+[ Upstream commit 1aa1329a67cc214c3b7bd2a14d1301a795760b07 ]
 
-Fix the checking that firmware file buffer is large enough for the
-wmfw header, to prevent overrunning the buffer.
+state->xtal_hz can be up to 16M, so it can overflow a 32 bit integer
+when multiplied by pll_mfactor.
 
-The original code tested that the firmware data buffer contained
-enough bytes for the sums of the size of the structs
+Create a new 64 bit variable to hold the calculations.
 
-	wmfw_header + wmfw_adsp1_sizes + wmfw_footer
-
-But wmfw_adsp1_sizes is only used on ADSP1 firmware. For ADSP2 and
-Halo Core the equivalent struct is wmfw_adsp2_sizes, which is
-4 bytes longer. So the length check didn't guarantee that there
-are enough bytes in the firmware buffer for a header with
-wmfw_adsp2_sizes.
-
-This patch splits the length check into three separate parts. Each
-of the wmfw_header, wmfw_adsp?_sizes and wmfw_footer are checked
-separately before they are used.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f6bc909e7673 ("firmware: cs_dsp: add driver to support firmware loading on Cirrus Logic DSPs")
-Link: https://patch.msgid.link/20240627141432.93056-2-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-25-3c4865f5a4b0@chromium.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/media/dvb-frontends/tda10048.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index 9f3d665cfdcf7..5acd6611dba31 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1267,6 +1267,10 @@ static unsigned int cs_dsp_adsp1_parse_sizes(struct cs_dsp *dsp,
- 	const struct wmfw_adsp1_sizes *adsp1_sizes;
+diff --git a/drivers/media/dvb-frontends/tda10048.c b/drivers/media/dvb-frontends/tda10048.c
+index f1d5e77d5dcce..db829754f1359 100644
+--- a/drivers/media/dvb-frontends/tda10048.c
++++ b/drivers/media/dvb-frontends/tda10048.c
+@@ -410,6 +410,7 @@ static int tda10048_set_if(struct dvb_frontend *fe, u32 bw)
+ 	struct tda10048_config *config = &state->config;
+ 	int i;
+ 	u32 if_freq_khz;
++	u64 sample_freq;
  
- 	adsp1_sizes = (void *)&firmware->data[pos];
-+	if (sizeof(*adsp1_sizes) > firmware->size - pos) {
-+		cs_dsp_err(dsp, "%s: file truncated\n", file);
-+		return 0;
-+	}
+ 	dprintk(1, "%s(bw = %d)\n", __func__, bw);
  
- 	cs_dsp_dbg(dsp, "%s: %d DM, %d PM, %d ZM\n", file,
- 		   le32_to_cpu(adsp1_sizes->dm), le32_to_cpu(adsp1_sizes->pm),
-@@ -1283,6 +1287,10 @@ static unsigned int cs_dsp_adsp2_parse_sizes(struct cs_dsp *dsp,
- 	const struct wmfw_adsp2_sizes *adsp2_sizes;
+@@ -451,9 +452,11 @@ static int tda10048_set_if(struct dvb_frontend *fe, u32 bw)
+ 	dprintk(1, "- pll_pfactor = %d\n", state->pll_pfactor);
  
- 	adsp2_sizes = (void *)&firmware->data[pos];
-+	if (sizeof(*adsp2_sizes) > firmware->size - pos) {
-+		cs_dsp_err(dsp, "%s: file truncated\n", file);
-+		return 0;
-+	}
+ 	/* Calculate the sample frequency */
+-	state->sample_freq = state->xtal_hz * (state->pll_mfactor + 45);
+-	state->sample_freq /= (state->pll_nfactor + 1);
+-	state->sample_freq /= (state->pll_pfactor + 4);
++	sample_freq = state->xtal_hz;
++	sample_freq *= state->pll_mfactor + 45;
++	do_div(sample_freq, state->pll_nfactor + 1);
++	do_div(sample_freq, state->pll_pfactor + 4);
++	state->sample_freq = sample_freq;
+ 	dprintk(1, "- sample_freq = %d\n", state->sample_freq);
  
- 	cs_dsp_dbg(dsp, "%s: %d XM, %d YM %d PM, %d ZM\n", file,
- 		   le32_to_cpu(adsp2_sizes->xm), le32_to_cpu(adsp2_sizes->ym),
-@@ -1322,7 +1330,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 	struct regmap *regmap = dsp->regmap;
- 	unsigned int pos = 0;
- 	const struct wmfw_header *header;
--	const struct wmfw_adsp1_sizes *adsp1_sizes;
- 	const struct wmfw_footer *footer;
- 	const struct wmfw_region *region;
- 	const struct cs_dsp_region *mem;
-@@ -1338,10 +1345,8 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 
- 	ret = -EINVAL;
- 
--	pos = sizeof(*header) + sizeof(*adsp1_sizes) + sizeof(*footer);
--	if (pos >= firmware->size) {
--		cs_dsp_err(dsp, "%s: file too short, %zu bytes\n",
--			   file, firmware->size);
-+	if (sizeof(*header) >= firmware->size) {
-+		ret = -EOVERFLOW;
- 		goto out_fw;
- 	}
- 
-@@ -1369,13 +1374,16 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 
- 	pos = sizeof(*header);
- 	pos = dsp->ops->parse_sizes(dsp, file, pos, firmware);
-+	if ((pos == 0) || (sizeof(*footer) > firmware->size - pos)) {
-+		ret = -EOVERFLOW;
-+		goto out_fw;
-+	}
- 
- 	footer = (void *)&firmware->data[pos];
- 	pos += sizeof(*footer);
- 
- 	if (le32_to_cpu(header->len) != pos) {
--		cs_dsp_err(dsp, "%s: unexpected header length %d\n",
--			   file, le32_to_cpu(header->len));
-+		ret = -EOVERFLOW;
- 		goto out_fw;
- 	}
- 
-@@ -1501,6 +1509,9 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 	cs_dsp_buf_free(&buf_list);
- 	kfree(text);
- 
-+	if (ret == -EOVERFLOW)
-+		cs_dsp_err(dsp, "%s: file content overflows file data\n", file);
-+
- 	return ret;
- }
- 
+ 	/* Update the I/F */
 -- 
 2.43.0
 
