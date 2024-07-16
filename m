@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-60033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845F3932D15
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0554D932C60
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15208B24B1D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93C5F1F23914
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4621199EA3;
-	Tue, 16 Jul 2024 16:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFBF19E7C6;
+	Tue, 16 Jul 2024 15:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zV0fCeON"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojGSPT1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7245B1DDCE;
-	Tue, 16 Jul 2024 16:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BD619DF73;
+	Tue, 16 Jul 2024 15:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145655; cv=none; b=evxBi5y4856iAp+U7Hz/cj6ZgOcdRa7pvoP1+T/IyzEUg8sTCJnIQ3FUwpX06SJTqUFxlAhfFtM2G9eaqtTHY76WRXgUC4ul/0R0Fi/If5aMOO8U89Fo9AeHceiqmwDR6PDv8G14xnUpiWgwdff4xUPwZ727q2a88o8KH78JO9w=
+	t=1721145277; cv=none; b=Hqxqn3ePYwArAx1QCdwwrID+wMlKh7mRivuctFcuatWkpaLLifGmLSVcmwCm/eFCULSAhTSTLeKD4ktycK5yhavEZOBpPk9TbqkYPjaV6XBF6aA7aRIs1se8tiVsIUB9ty40G2QGXFubUYTndnawC1mf5bLyRPNQ8xTgoA65unk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145655; c=relaxed/simple;
-	bh=L2Uv/cFnNsgJdTmvbo1RSadnUGYuSErbO0S2Zo9Syj8=;
+	s=arc-20240116; t=1721145277; c=relaxed/simple;
+	bh=ortJVA7tcxjOxTS86XGooe3v9ZctGi5b2D6xvs4hmdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOZUtvchQ/1BtpGmzV1M6OtAwXmd2Y2ZHdkvIn819aRTQfJC2lgcYNR3Do3bH9A7mkHEyG4SXo4MR/Mvst98UInsaaJv1Be4zwtBvk2s+0LZ/OOVCn52MgdV3EdO2ibeznZMt0vlP7CeeLpFlJYLJI35ITXaQ1egAjnRZpzSzfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zV0fCeON; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9E9C116B1;
-	Tue, 16 Jul 2024 16:00:54 +0000 (UTC)
+	 MIME-Version; b=sFRE5OeejNTb0f/anVoDhPzGte5Ho1D/KJxMeTI9l/SRiDlLan2CLK/46m8bSixKf3dl1qLuZXGNnydC9ebDsIPfPB4Z5A6IYU/qbgl4h7TUdD30F0780Tj2V9LdNPXRZvIn6v7G5HO6DlbK4SJsewcwWOUxB0oiZWkeWyE6pq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojGSPT1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33B6C4AF0D;
+	Tue, 16 Jul 2024 15:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145655;
-	bh=L2Uv/cFnNsgJdTmvbo1RSadnUGYuSErbO0S2Zo9Syj8=;
+	s=korg; t=1721145277;
+	bh=ortJVA7tcxjOxTS86XGooe3v9ZctGi5b2D6xvs4hmdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zV0fCeON15N9zZln3Lv2DxDZNIrPf7G1zd8W5cRpksHdLa0+hXgGFW9BBkwuQIOWG
-	 W2c38GV9yfDmAc8794kMCIQ+Z0LeUF8YPfQcw1N4kPAkEXs0jHjM+YvE6j2/Asx/fP
-	 wYtYUmJ2OnMjIpD9Hhrfl1OUUlsZL6TRwfwPGI0A=
+	b=ojGSPT1n3Qf942KTBWPjWn+JEnjvMsCICSjLJFKD7q5HDgf308Nb8dyy6j4Dxe9uW
+	 oZAJMvc/ILYwi7WfinlN/wXrwLNIYEQYGGWC96zs4YTgVgPAsFeCpb7FHp7CDogI+8
+	 1nD+98YsD40nSEuJM655hqRsbdO3C8g9zE1Vzi+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/121] octeontx2-af: Fix incorrect value output on error path in rvu_check_rsrc_availability()
+Subject: [PATCH 6.1 13/96] net: phy: microchip: lan87xx: reinit PHY after cable test
 Date: Tue, 16 Jul 2024 17:31:24 +0200
-Message-ID: <20240716152752.176086310@linuxfoundation.org>
+Message-ID: <20240716152747.028029770@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 442e26af9aa8115c96541026cbfeaaa76c85d178 ]
+[ Upstream commit 30f747b8d53bc73555f268d0f48f56174fa5bf10 ]
 
-In rvu_check_rsrc_availability() in case of invalid SSOW req, an incorrect
-data is printed to error log. 'req->sso' value is printed instead of
-'req->ssow'. Looks like "copy-paste" mistake.
+Reinit PHY after cable test, otherwise link can't be established on
+tested port. This issue is reproducible on LAN9372 switches with
+integrated 100BaseT1 PHYs.
 
-Fix this mistake by replacing 'req->sso' with 'req->ssow'.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 746ea74241fa ("octeontx2-af: Add RVU block LF provisioning support")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240705095317.12640-1-amishin@t-argos.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 788050256c411 ("net: phy: microchip_t1: add cable test support for lan87xx phy")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20240705084954.83048-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
+ drivers/net/phy/microchip_t1.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 32645aefd5934..5906f5f8d1904 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -1638,7 +1638,7 @@ static int rvu_check_rsrc_availability(struct rvu *rvu,
- 		if (req->ssow > block->lf.max) {
- 			dev_err(&rvu->pdev->dev,
- 				"Func 0x%x: Invalid SSOW req, %d > max %d\n",
--				 pcifunc, req->sso, block->lf.max);
-+				 pcifunc, req->ssow, block->lf.max);
- 			return -EINVAL;
- 		}
- 		mappedlfs = rvu_get_rsrc_mapcount(pfvf, block->addr);
+diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
+index 8569a545e0a3f..9517243e3051e 100644
+--- a/drivers/net/phy/microchip_t1.c
++++ b/drivers/net/phy/microchip_t1.c
+@@ -711,7 +711,7 @@ static int lan87xx_cable_test_report(struct phy_device *phydev)
+ 	ethnl_cable_test_result(phydev, ETHTOOL_A_CABLE_PAIR_A,
+ 				lan87xx_cable_test_report_trans(detect));
+ 
+-	return 0;
++	return phy_init_hw(phydev);
+ }
+ 
+ static int lan87xx_cable_test_get_status(struct phy_device *phydev,
 -- 
 2.43.0
 
