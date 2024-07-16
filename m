@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B92D932AA9
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0642932B6A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73498B231B5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C7802813D4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77211DA4D;
-	Tue, 16 Jul 2024 15:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF2C1448ED;
+	Tue, 16 Jul 2024 15:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQpKOuC9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R64CjFni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60CCCA40;
-	Tue, 16 Jul 2024 15:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C066DF9E8;
+	Tue, 16 Jul 2024 15:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144186; cv=none; b=HneNQRF43RuG+MKqf3klHRwYodSdSQranr/SzcEbOFCG1yPeznXOrUcC9FxJr/Y9dGaUDoyM+RSrCFtZkcy/PbsLx6TLLMhmjNWMjOzABZZij8r8B+TDv+kzQG9foqm5dq9+AGb/rT/RrFD0jFTrMPi4O4T9Re7b5f3jOLtww0Y=
+	t=1721144695; cv=none; b=SYu43k5+SUkTe6TEtOeEvorlbdtZp/gGrAoLUOivJdoxMgEzgmjVcYzJNLRnI1/SWU4Fq9CWP0bBb3b/pUqZ6phIuYnYevydltLAOqb1noVZZCmkpCjv3ZGmvvDCek/gyjbXy3URqN1Hjc8cqT/N8oTj16jWm3kAcu7dD0vujeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144186; c=relaxed/simple;
-	bh=JOUk7xoWkf4lHN66o5bolfBXhATdGlGf1DC1i5wSlzg=;
+	s=arc-20240116; t=1721144695; c=relaxed/simple;
+	bh=p/bPQJPqMR3eOtqFJ82G4kYv8Nz9KullLxAEQPoAT7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBH6e0jhym9gUp2F6/KApku60tFLqEjD0RzbgNyiEXCmC6UFQ2mxCW8n2aTPqng0z5Jpg7w9nDPQOSAeovT9bHaDjm3/y3hg2kxFqfNWQpxc/mP210firy13twmpZvXkcBC0b9G3Z4GA/KSyFQWvKy0VSsHrqfxuogacBK0rXG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQpKOuC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B970C116B1;
-	Tue, 16 Jul 2024 15:36:25 +0000 (UTC)
+	 MIME-Version; b=XNcTtxY8cOyYG5DNHkhQSjjNicz2+82GSv8Wmion/GkZymo++2hw5j8QvjKxQlYT89kz3IPK6zNy3W+nRoiBCekgBvom8kbs/godTSCDbA+S0hKg7idrK/GBQxsQnFziR2bd+3IEonzEW4y6xhO63IIaBB28B05clfVbr4lts2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R64CjFni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B8BC116B1;
+	Tue, 16 Jul 2024 15:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144186;
-	bh=JOUk7xoWkf4lHN66o5bolfBXhATdGlGf1DC1i5wSlzg=;
+	s=korg; t=1721144695;
+	bh=p/bPQJPqMR3eOtqFJ82G4kYv8Nz9KullLxAEQPoAT7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zQpKOuC9hJXRebQL0gNMP7zZfxeBMu3GyvJPtt9hRjNVwis/efRxBV8rMWvor9Giw
-	 y5WM9sZVwrCQkWEqcIokE1PtEcwkVspTaIihReJr04uRrIhE96pOroCa6g9o0U98ZA
-	 jDwzoN0s7RZa5D9wYVIv8tFxI6rQbnesn6MISmyE=
+	b=R64CjFni3cnrpNueeLg9ztiCPmKuzWM6HUOeD9NUg17cP6zAUbE/aSpK6lDdEA/bI
+	 P5kAQiYyiuF8dBlCp9z0W25FKH7qmx+rc4Y08XK2tUT2enyMShdyWdOGxIlKzqtyWn
+	 3q4OL9PDaMbQmyi5SsokpUNF0imaI0GP4E6vZKR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Oliver Neukum <oneukum@suse.com>,
-	syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
-Subject: [PATCH 4.19 57/66] USB: core: Fix duplicate endpoint bug by clearing reserved bits in the descriptor
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 077/108] USB: serial: option: add Telit FN912 rmnet compositions
 Date: Tue, 16 Jul 2024 17:31:32 +0200
-Message-ID: <20240716152740.338292001@linuxfoundation.org>
+Message-ID: <20240716152748.938988698@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-commit a368ecde8a5055b627749b09c6218ef793043e47 upstream.
+commit 9a590ff283421b71560deded2110dbdcbe1f7d1d upstream.
 
-Syzbot has identified a bug in usbcore (see the Closes: tag below)
-caused by our assumption that the reserved bits in an endpoint
-descriptor's bEndpointAddress field will always be 0.  As a result of
-the bug, the endpoint_is_duplicate() routine in config.c (and possibly
-other routines as well) may believe that two descriptors are for
-distinct endpoints, even though they have the same direction and
-endpoint number.  This can lead to confusion, including the bug
-identified by syzbot (two descriptors with matching endpoint numbers
-and directions, where one was interrupt and the other was bulk).
+Add the following Telit FN912 compositions:
 
-To fix the bug, we will clear the reserved bits in bEndpointAddress
-when we parse the descriptor.  (Note that both the USB-2.0 and USB-3.1
-specs say these bits are "Reserved, reset to zero".)  This requires us
-to make a copy of the descriptor earlier in usb_parse_endpoint() and
-use the copy instead of the original when checking for duplicates.
+0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3000 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-and-tested-by: syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/0000000000003d868e061bc0f554@google.com/
-Fixes: 0a8fd1346254 ("USB: fix problems with duplicate endpoint addresses")
-CC: Oliver Neukum <oneukum@suse.com>
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/205a5edc-7fef-4159-b64a-80374b6b101a@rowland.harvard.edu
+0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3001 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/config.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -291,6 +291,20 @@ static int usb_parse_endpoint(struct dev
- 	if (ifp->desc.bNumEndpoints >= num_ep)
- 		goto skip_to_next_endpoint_or_interface_descriptor;
- 
-+	/* Save a copy of the descriptor and use it instead of the original */
-+	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
-+	memcpy(&endpoint->desc, d, n);
-+	d = &endpoint->desc;
-+
-+	/* Clear the reserved bits in bEndpointAddress */
-+	i = d->bEndpointAddress &
-+			(USB_ENDPOINT_DIR_MASK | USB_ENDPOINT_NUMBER_MASK);
-+	if (i != d->bEndpointAddress) {
-+		dev_notice(ddev, "config %d interface %d altsetting %d has an endpoint descriptor with address 0x%X, changing to 0x%X\n",
-+		    cfgno, inum, asnum, d->bEndpointAddress, i);
-+		endpoint->desc.bEndpointAddress = i;
-+	}
-+
- 	/* Check for duplicate endpoint addresses */
- 	if (config_endpoint_is_duplicate(config, inum, asnum, d)) {
- 		dev_warn(ddev, "config %d interface %d altsetting %d has a duplicate endpoint with address 0x%X, skipping\n",
-@@ -308,10 +322,8 @@ static int usb_parse_endpoint(struct dev
- 		}
- 	}
- 
--	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
-+	/* Accept this endpoint */
- 	++ifp->desc.bNumEndpoints;
--
--	memcpy(&endpoint->desc, d, n);
- 	INIT_LIST_HEAD(&endpoint->urb_list);
- 
- 	/*
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1425,6 +1425,10 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1901, 0xff),	/* Telit LN940 (MBIM) */
+ 	  .driver_info = NCTRL(0) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3000, 0xff),	/* Telit FN912 */
++	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3001, 0xff),	/* Telit FN912 */
++	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7010, 0xff),	/* Telit LE910-S1 (RNDIS) */
+ 	  .driver_info = NCTRL(2) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7011, 0xff),	/* Telit LE910-S1 (ECM) */
 
 
 
