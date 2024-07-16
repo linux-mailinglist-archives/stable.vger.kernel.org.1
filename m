@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01688932B06
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B35BF932D1A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF93F2834FC
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E42F21C22A66
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535291E895;
-	Tue, 16 Jul 2024 15:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EA017A930;
+	Tue, 16 Jul 2024 16:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1LXYOi5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mB9h0fMl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA98B641;
-	Tue, 16 Jul 2024 15:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111371DDCE;
+	Tue, 16 Jul 2024 16:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144444; cv=none; b=PJdmSfEVI0VGwcnjOCJ4QdHg/0ZJs4qtYaHgEhV2sxy5jiUN3yBVknD6TT3F51AZPZUJFaozwMheuV42FhfhCdkzBXlW7n8cGwlKFse2PDoN0/Rk8IxW2OmGXQWqJKj6gnuJkUFVQISSPyvNxcGYwwtE6FYhnBZ2htQHWT3NvjQ=
+	t=1721145670; cv=none; b=k/2ATLEn8qmZCTH/gTnYSO1DnPN0jaeu7lE80fwR3s30GaG76LDuHSUrRGyv7vMBNSrwCfF4xVXJh0dm1o1on6sTZMImGIbEFGd1LjaZAy9GnjTa73Ftl6TTvZyddg08f7SlNhfibwPKS8JCCcpnhfNI8Ees+EpqIciilQKdvGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144444; c=relaxed/simple;
-	bh=BMfkVUMgJTHzvxxEj/ELBoDrY1jGg9ymkTofbD2FCr8=;
+	s=arc-20240116; t=1721145670; c=relaxed/simple;
+	bh=tJrs9q8wfKY+KwkdRymiYpsroCB+FcNstDf6b+CXNxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fzB7xGmn8RCq1BwcEOlloJuJp3tFgiFudI0sB76/1/PpJSOBt+DCeFhwLChCpIf40l83k+XSurLSNOypDba/UD5cQDOWz3WPgYNzo+GQbmGG4S//S1BRuhKAfEz66aD4xuHPa++LJYOsO3ylFrfE0JWyaWkdVU2NmTF2wmXXcrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1LXYOi5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85226C4AF0B;
-	Tue, 16 Jul 2024 15:40:43 +0000 (UTC)
+	 MIME-Version; b=AYx/y0X+nGBtfrlLtfa0UIDzMfZ3EqogCJ+2WPooL86ryimJZGMbpoeLWXy8+RdZMqybLHBCVOPLo9dkOH4vaqzsCyzvrNV/bu+K+e035t365gXGwPdFuxRTaMhMTqOIWxnD2XCodtmLmjxJeu7O1zfzl5px8sYXD1RFdpaB+Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mB9h0fMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82383C116B1;
+	Tue, 16 Jul 2024 16:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144443;
-	bh=BMfkVUMgJTHzvxxEj/ELBoDrY1jGg9ymkTofbD2FCr8=;
+	s=korg; t=1721145669;
+	bh=tJrs9q8wfKY+KwkdRymiYpsroCB+FcNstDf6b+CXNxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x1LXYOi540Rksar3blA5bWW4xSOXFmLHzpA606wP2j0QMTfeOsWdxlPgzv3Q5PeG/
-	 skczvhJwue2AealPISnmTEZ4Rt/okJSJN4iin5+CtOov6RFvxEFK+EU/EZQsaetjMa
-	 UpF6n3Sx47P/idlw1zJJ2HMQfYaNMGgK1dQnimpE=
+	b=mB9h0fMl2DOgx60IizOj3+s2tMCJ8lArYY/zCUywjvUylcbs6P8tJoQZK/wuXKAHu
+	 +d/eK01rjju4nujY9pGDPbyXeYvXMmsZckqzlHqpcnK7r6QibxVRjJarQU0R9SSlRn
+	 zrbHRg4LnhugJUjnG9xBaG371YBO5ph8JnTZ6Fhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <imagedong@tencent.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 74/78] net: tcp: fix unexcepted socket die when snd_wnd is 0
+	Chen Ni <nichen@iscas.ac.cn>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 044/121] ARM: davinci: Convert comma to semicolon
 Date: Tue, 16 Jul 2024 17:31:46 +0200
-Message-ID: <20240716152743.502125303@linuxfoundation.org>
+Message-ID: <20240716152753.020335054@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <imagedong@tencent.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit e89688e3e97868451a5d05b38a9d2633d6785cd4 upstream.
+[ Upstream commit acc3815db1a02d654fbc19726ceaadca0d7dd81c ]
 
-In tcp_retransmit_timer(), a window shrunk connection will be regarded
-as timeout if 'tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX'. This is not
-right all the time.
+Replace a comma between expression statements by a semicolon.
 
-The retransmits will become zero-window probes in tcp_retransmit_timer()
-if the 'snd_wnd==0'. Therefore, the icsk->icsk_rto will come up to
-TCP_RTO_MAX sooner or later.
-
-However, the timer can be delayed and be triggered after 122877ms, not
-TCP_RTO_MAX, as I tested.
-
-Therefore, 'tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX' is always true
-once the RTO come up to TCP_RTO_MAX, and the socket will die.
-
-Fix this by replacing the 'tcp_jiffies32' with '(u32)icsk->icsk_timeout',
-which is exact the timestamp of the timeout.
-
-However, "tp->rcv_tstamp" can restart from idle, then tp->rcv_tstamp
-could already be a long time (minutes or hours) in the past even on the
-first RTO. So we double check the timeout with the duration of the
-retransmission.
-
-Meanwhile, making "2 * TCP_RTO_MAX" as the timeout to avoid the socket
-dying too soon.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://lore.kernel.org/netdev/CADxym3YyMiO+zMD4zj03YPM3FBi-1LHi6gSD2XT8pyAMM096pg@mail.gmail.com/
-Signed-off-by: Menglong Dong <imagedong@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: efc1bb8a6fd5 ("davinci: add power management support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_timer.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ arch/arm/mach-davinci/pm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -434,6 +434,22 @@ static void tcp_fastopen_synack_timer(st
- 			  TCP_TIMEOUT_INIT << req->num_timeout, TCP_RTO_MAX);
- }
+diff --git a/arch/arm/mach-davinci/pm.c b/arch/arm/mach-davinci/pm.c
+index 8aa39db095d76..2c5155bd376ba 100644
+--- a/arch/arm/mach-davinci/pm.c
++++ b/arch/arm/mach-davinci/pm.c
+@@ -61,7 +61,7 @@ static void davinci_pm_suspend(void)
  
-+static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
-+				     const struct sk_buff *skb)
-+{
-+	const struct tcp_sock *tp = tcp_sk(sk);
-+	const int timeout = TCP_RTO_MAX * 2;
-+	u32 rcv_delta, rtx_delta;
-+
-+	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
-+	if (rcv_delta <= timeout)
-+		return false;
-+
-+	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
-+			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
-+
-+	return rtx_delta > timeout;
-+}
+ 	/* Configure sleep count in deep sleep register */
+ 	val = __raw_readl(pm_config.deepsleep_reg);
+-	val &= ~DEEPSLEEP_SLEEPCOUNT_MASK,
++	val &= ~DEEPSLEEP_SLEEPCOUNT_MASK;
+ 	val |= pm_config.sleepcount;
+ 	__raw_writel(val, pm_config.deepsleep_reg);
  
- /**
-  *  tcp_retransmit_timer() - The TCP retransmit timeout handler
-@@ -497,7 +513,7 @@ void tcp_retransmit_timer(struct sock *s
- 					    tp->snd_una, tp->snd_nxt);
- 		}
- #endif
--		if (tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX) {
-+		if (tcp_rtx_probe0_timed_out(sk, skb)) {
- 			tcp_write_err(sk);
- 			goto out;
- 		}
+-- 
+2.43.0
+
 
 
 
