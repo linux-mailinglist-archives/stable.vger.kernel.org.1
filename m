@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E72932CE9
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAFBC932D5C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A274B23AF1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90BB81F20F3C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A0719E830;
-	Tue, 16 Jul 2024 15:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9347219AD59;
+	Tue, 16 Jul 2024 16:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cv1WAvF+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AiimV7XG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2545719AD93;
-	Tue, 16 Jul 2024 15:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524021DDCE;
+	Tue, 16 Jul 2024 16:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145535; cv=none; b=cdEbHZLquV2wk40U9z7dszFq4nh9hUr33LlKbg/HDYH4MaMNgkNsSb1Obzqn5F5gCxsLHiHltCYswowviYrgUwZVjMwUpr9kdyq/hiMgwUsaOoXJuK7Is6l2tcUiX8jPtqtSmGT10qjDhmczO+aP/9iKlBvdVOYKrK1/4QqwHzk=
+	t=1721145858; cv=none; b=G43r0aHUpLJLTTlbrk8ZAqfrrpaSiGzs+AlNTrMein8hdmfcBjA1oWMXBk0uvstHi8b18JZhcC2HKZ45XACvopF794I/xnel2knDLVrC9XKsiVUniIsW7huq+SIuJgoBPb/gfC1fo2uUB18IhjgMYzwAJMy4ncoNtqUqMPTELvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145535; c=relaxed/simple;
-	bh=dQiey/ZovuebsT5NY8fTKJQONmVsKLpij+M3ayfBSsk=;
+	s=arc-20240116; t=1721145858; c=relaxed/simple;
+	bh=8+1HwU6TBHtGHtEZa67CP78u+hTUm4IyMwQiCspDj9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TATgtFvfWED24KglmiOwxhim/fTVoGBeKe4BJh3o8z0MzThtHzsMk/42x/YT2ZolaWoIEWrh/SdJz300hbf/ZG58y0e5+SGcK5uzrg3ECPZBB00pADrOiLG4C7tithX1/AT3tmRt64kEcv9heo5/pYi5U5lZlXgPzeBcvFn0rUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cv1WAvF+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F929C116B1;
-	Tue, 16 Jul 2024 15:58:54 +0000 (UTC)
+	 MIME-Version; b=YrIWjLygAeHylwaBvNOeWSK+A7LuFR8jvCnfzcXAqAMcbiqY4FDi7jglTW29DpG0sFEGIys0x+eGcb0aTS+uiApzZKObXWvX2nDg2RwSsAULrBcDIn4qxT6ooAtbvScwV1yJkqFPQAoA5NmBWiz2CaJ8lxUp5sNjRWKng6s2jlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AiimV7XG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE670C116B1;
+	Tue, 16 Jul 2024 16:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145535;
-	bh=dQiey/ZovuebsT5NY8fTKJQONmVsKLpij+M3ayfBSsk=;
+	s=korg; t=1721145858;
+	bh=8+1HwU6TBHtGHtEZa67CP78u+hTUm4IyMwQiCspDj9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cv1WAvF+PaBhnttwvozX5kzsbUPTtq+VBAAnUoSw1WR2IFkWNbMD50jXLEgtaoS4G
-	 lQtI3q3VXcJOKFkswl+OQi8mcjgn993DGNgzjT+/tA3vgYaZHNP+BRHKhQEMIWbTQr
-	 bc6rO6ghm+ROZse392dgHUs1qX8RSYhXxNSeSc+M=
+	b=AiimV7XGaj0pIOCSuDFeDjcF7J1BatnJTbGx0syiW7C4iRd7Txig5OsMATvns5BLC
+	 k+4btgQoi9JiAuLgbeBhebC4Uh6qhwCeJ/Vc9WoRXy2G6YqKaD127Fc7V6btPoBHTS
+	 T7jkl4m0X+h2vIxQ/hdNUhWPzEA243kjSKI/q0K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 6.1 96/96] i2c: rcar: fix error code in probe()
+	Ignat Korchagin <ignat@cloudflare.com>,
+	John Hubbard <jhubbard@nvidia.com>
+Subject: [PATCH 6.6 105/121] [PATCH] selftests/net: fix gro.c compilation failure due to non-existent opt_ipproto_off
 Date: Tue, 16 Jul 2024 17:32:47 +0200
-Message-ID: <20240716152750.203443803@linuxfoundation.org>
+Message-ID: <20240716152755.369817923@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: John Hubbard <jhubbard@nvidia.com>
 
-commit 37a672be3ae357a0f87fbc00897fa7fcb3d7d782 upstream.
+Linux 6.6 does not have an opt_ipproto_off variable in gro.c at all (it
+was added in later kernel versions), so attempting to initialize one
+breaks the build.
 
-Return an error code if devm_reset_control_get_exclusive() fails.
-The current code returns success.
-
-Fixes: 0e864b552b23 ("i2c: rcar: reset controller is mandatory for Gen3+")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: c80d53c484e8 ("selftests/net: fix uninitialized variables")
+Cc: <stable@vger.kernel.org> # 6.6
+Reported-by: Ignat Korchagin <ignat@cloudflare.com>
+Closes: https://lore.kernel.org/all/8B1717DB-8C4A-47EE-B28C-170B630C4639@cloudflare.com/#t
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-rcar.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/gro.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -1121,8 +1121,10 @@ static int rcar_i2c_probe(struct platfor
- 	/* R-Car Gen3+ needs a reset before every transfer */
- 	if (priv->devtype >= I2C_RCAR_GEN3) {
- 		priv->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
--		if (IS_ERR(priv->rstc))
-+		if (IS_ERR(priv->rstc)) {
-+			ret = PTR_ERR(priv->rstc);
- 			goto out_pm_put;
-+		}
+--- a/tools/testing/selftests/net/gro.c
++++ b/tools/testing/selftests/net/gro.c
+@@ -113,9 +113,6 @@ static void setup_sock_filter(int fd)
+ 		next_off = offsetof(struct ipv6hdr, nexthdr);
+ 	ipproto_off = ETH_HLEN + next_off;
  
- 		ret = reset_control_status(priv->rstc);
- 		if (ret < 0)
+-	/* Overridden later if exthdrs are used: */
+-	opt_ipproto_off = ipproto_off;
+-
+ 	if (strcmp(testname, "ip") == 0) {
+ 		if (proto == PF_INET)
+ 			optlen = sizeof(struct ip_timestamp);
 
 
 
