@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-60089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD86932D55
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA9C932CD8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91CC4B24D04
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 302BD1F24116
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106F419DF59;
-	Tue, 16 Jul 2024 16:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3FF19F479;
+	Tue, 16 Jul 2024 15:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9GoHiH1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+VMN6o9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C119E19B59C;
-	Tue, 16 Jul 2024 16:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F1019E7F7;
+	Tue, 16 Jul 2024 15:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145820; cv=none; b=HZeVqglC3aG4QHIopMb++YCftEdwgpUmHZpmG7tgcSif0UOrGuVbGBtlT/IaCTMeoDjxWBkSfXP92OfUy0wIaGEAXCTvpmQbP6npZaGkkZhJQsd9aKd7bsLB5MRXC6N4/N4h9HgfELrahYl8dEWg+9e4W1JNciNQwjj5w3A7vR4=
+	t=1721145505; cv=none; b=jNNxm/pEiawOKVqtT1BcMiK2rYubn/sPRqV94pbcb+YE7AknmzjREcexse4uOqi1jhy813MTDn/XGW6tyDqkNLSLLRieaRwRn00CT6OL9eCJ5b7ILiyeaIi/7Jpi7oZhmXPytKqWCty5z/w00eDfXhnHGVjfbaOTfg78UwdgfFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145820; c=relaxed/simple;
-	bh=GL6TNVmMZhk052JNlIqTcRSdeYI0Lp12/NZhSzATjEo=;
+	s=arc-20240116; t=1721145505; c=relaxed/simple;
+	bh=6nw21849+HOvAQSpCeJ3wILEFJjYqY7FNPLGxtejA24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOSa2pOpw2hkS+zag++sYi2Dasbp7EqrEGWrRaM+oV0NxiwT46khndxO3BGCXj5nmuDza6mds90EVHSn/fxN7GcgzF5EyQrL361Wie05m86K3gI7SCMpsMR79h4cgXbu/LcLwmQSc0Uz4gvW8T5iXyl7lxewJj+mC94P9eKEQis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9GoHiH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A26C116B1;
-	Tue, 16 Jul 2024 16:03:39 +0000 (UTC)
+	 MIME-Version; b=OR7DYjbB4Ls8oq+zQyVe1AAydPi6xMFtKLiULuOF/B/VsGpidJNp9QRHaAEkP99EoIz8aNRoVDIgagTE53n2IBQ2lWqqdjJssHvxhyuLMNFZVdjngYPoHrFWQwbnoQdTTZ4lGYaFFIiQ6lAHKmF+D3Ob7ZqYEcZmPmZyfAB+xI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+VMN6o9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EFBC116B1;
+	Tue, 16 Jul 2024 15:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145820;
-	bh=GL6TNVmMZhk052JNlIqTcRSdeYI0Lp12/NZhSzATjEo=;
+	s=korg; t=1721145505;
+	bh=6nw21849+HOvAQSpCeJ3wILEFJjYqY7FNPLGxtejA24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9GoHiH1HtzB9iNbICjLUIQ4WH35X+27yEMnUOc6owEw/c2gGX/v0sWtZ5PLz4s+R
-	 l1P163XijJGHmFcd0tYaeKwPaYdGhv4XTU6UPZG/rVqqcCzG5U4PurtxLqdqKiCcfV
-	 SkAiOlr73MKvk+ppeqJwu6rlUsEc/bpzGqT6/8cg=
+	b=R+VMN6o9EqPz03vgbgr2rQ4irCpQj9maP5ZMb9P98kp98BeRgfl2j/fCUZyYiCZus
+	 ZBhXm7I94V6ynfLmNXswnTD/mkAFAhCdvkUmvWNNwiQQhmh2HkDW0Yl80INrCmeirE
+	 Nin269GgAQX+A2P22zg3cG6R6nOHmh6niPvSaScs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 096/121] wireguard: send: annotate intentional data race in checking empty queue
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 87/96] i2c: mark HostNotify target address as used
 Date: Tue, 16 Jul 2024 17:32:38 +0200
-Message-ID: <20240716152755.022202290@linuxfoundation.org>
+Message-ID: <20240716152749.859834743@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason A. Donenfeld <Jason@zx2c4.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 381a7d453fa2ac5f854a154d3c9b1bbb90c4f94f upstream.
+[ Upstream commit bd9f5348089b65612e5ca976e2ae22f005340331 ]
 
-KCSAN reports a race in wg_packet_send_keepalive, which is intentional:
+I2C core handles the local target for receiving HostNotify alerts. There
+is no separate driver bound to that address. That means userspace can
+access it if desired, leading to further complications if controllers
+are not capable of reading their own local target. Bind the local target
+to the dummy driver so it will be marked as "handled by the kernel" if
+the HostNotify feature is used. That protects aginst userspace access
+and prevents other drivers binding to it.
 
-    BUG: KCSAN: data-race in wg_packet_send_keepalive / wg_packet_send_staged_packets
-
-    write to 0xffff88814cd91280 of 8 bytes by task 3194 on cpu 0:
-     __skb_queue_head_init include/linux/skbuff.h:2162 [inline]
-     skb_queue_splice_init include/linux/skbuff.h:2248 [inline]
-     wg_packet_send_staged_packets+0xe5/0xad0 drivers/net/wireguard/send.c:351
-     wg_xmit+0x5b8/0x660 drivers/net/wireguard/device.c:218
-     __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
-     netdev_start_xmit include/linux/netdevice.h:4954 [inline]
-     xmit_one net/core/dev.c:3548 [inline]
-     dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3564
-     __dev_queue_xmit+0xeff/0x1d80 net/core/dev.c:4349
-     dev_queue_xmit include/linux/netdevice.h:3134 [inline]
-     neigh_connected_output+0x231/0x2a0 net/core/neighbour.c:1592
-     neigh_output include/net/neighbour.h:542 [inline]
-     ip6_finish_output2+0xa66/0xce0 net/ipv6/ip6_output.c:137
-     ip6_finish_output+0x1a5/0x490 net/ipv6/ip6_output.c:222
-     NF_HOOK_COND include/linux/netfilter.h:303 [inline]
-     ip6_output+0xeb/0x220 net/ipv6/ip6_output.c:243
-     dst_output include/net/dst.h:451 [inline]
-     NF_HOOK include/linux/netfilter.h:314 [inline]
-     ndisc_send_skb+0x4a2/0x670 net/ipv6/ndisc.c:509
-     ndisc_send_rs+0x3ab/0x3e0 net/ipv6/ndisc.c:719
-     addrconf_dad_completed+0x640/0x8e0 net/ipv6/addrconf.c:4295
-     addrconf_dad_work+0x891/0xbc0
-     process_one_work kernel/workqueue.c:2633 [inline]
-     process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2706
-     worker_thread+0x525/0x730 kernel/workqueue.c:2787
-     kthread+0x1d7/0x210 kernel/kthread.c:388
-     ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
-     ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
-
-    read to 0xffff88814cd91280 of 8 bytes by task 3202 on cpu 1:
-     skb_queue_empty include/linux/skbuff.h:1798 [inline]
-     wg_packet_send_keepalive+0x20/0x100 drivers/net/wireguard/send.c:225
-     wg_receive_handshake_packet drivers/net/wireguard/receive.c:186 [inline]
-     wg_packet_handshake_receive_worker+0x445/0x5e0 drivers/net/wireguard/receive.c:213
-     process_one_work kernel/workqueue.c:2633 [inline]
-     process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2706
-     worker_thread+0x525/0x730 kernel/workqueue.c:2787
-     kthread+0x1d7/0x210 kernel/kthread.c:388
-     ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
-     ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
-
-    value changed: 0xffff888148fef200 -> 0xffff88814cd91280
-
-Mark this race as intentional by using the skb_queue_empty_lockless()
-function rather than skb_queue_empty(), which uses READ_ONCE()
-internally to annotate the race.
-
-Cc: stable@vger.kernel.org
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Link: https://patch.msgid.link/20240704154517.1572127-5-Jason@zx2c4.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2a71593da34d ("i2c: smbus: add core function handling SMBus host-notify")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireguard/send.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/i2c-core-base.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireguard/send.c
-+++ b/drivers/net/wireguard/send.c
-@@ -222,7 +222,7 @@ void wg_packet_send_keepalive(struct wg_
- {
- 	struct sk_buff *skb;
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 8af82f42af30b..d6a879f1542c5 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1049,6 +1049,7 @@ EXPORT_SYMBOL(i2c_find_device_by_fwnode);
  
--	if (skb_queue_empty(&peer->staged_packet_queue)) {
-+	if (skb_queue_empty_lockless(&peer->staged_packet_queue)) {
- 		skb = alloc_skb(DATA_PACKET_HEAD_ROOM + MESSAGE_MINIMUM_LENGTH,
- 				GFP_ATOMIC);
- 		if (unlikely(!skb))
+ static const struct i2c_device_id dummy_id[] = {
+ 	{ "dummy", 0 },
++	{ "smbus_host_notify", 0 },
+ 	{ },
+ };
+ 
+-- 
+2.43.0
+
 
 
 
