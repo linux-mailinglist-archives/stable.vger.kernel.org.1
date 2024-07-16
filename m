@@ -1,153 +1,98 @@
-Return-Path: <stable+bounces-60371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C36933427
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 00:13:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86EF5933433
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 00:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C779B2834E0
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 22:13:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DBB11C22326
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 22:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2703B144D07;
-	Tue, 16 Jul 2024 22:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BE913FD99;
+	Tue, 16 Jul 2024 22:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FjmQLgMj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XSs8u8ZW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43453143C40
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 22:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1AC25779;
+	Tue, 16 Jul 2024 22:27:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721167991; cv=none; b=evZLrrs1i2Fx2CaRmLdtW5DkiPAkGI0EUYjArP+BkDe53kyMWHBKyaPHepSzTPP/iO7wzmfPRfuTbcdDpTbsw12k2q2daB5K6TpfFUkjIy/RH/qquuS6UYTrpTY2wBkCg8dQnnPZeCC8oc1jXDEpiyGAQAGGQghuoU24US+LXIU=
+	t=1721168878; cv=none; b=YFDzxL7nBmdJldqgzR0T3ZNOQzdE6N+Df4XerxJV+L65h+x4p2fKhRNsl+TRYcDnSk221hSpM0FZ9g7VMuNqk7dBi0FpeKHp8zp2ZEUDA+Prk42Ox41JPwOk/jKaaOb544R/dZnho4S8biHdf8JI2o+hfVvT4S5A5i5ZTD9OeCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721167991; c=relaxed/simple;
-	bh=XMtSAnQLUPLTjEcZ9/jJuTztPkljj4KBCEwVdIRm9FQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=l38JAuAUQtSDUtHTeBnkHCh6vINDp30N6i6tkzNI+7f8w3OtAdHmpk//anzsnv4Mgy7k+DPlymOBWyRHuDV2r3Qua7c4PriQ4h4RJ8Bh2qOXHfTnzO1TvKh1cYjVwTV2RDgpNkVoRoxBrDAXPlXSojlwh7aA2yttjBHvaXa6GVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FjmQLgMj; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-595850e7e11so7412618a12.1
-        for <stable@vger.kernel.org>; Tue, 16 Jul 2024 15:13:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721167987; x=1721772787; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=N37H6kLbkNAIPuExxunsB7bhPLTHsDDj/8KnxxdH8yw=;
-        b=FjmQLgMjigIdM1J3dcOZykVf0m/v3rTlS5b8bZ/rbCa1+m6MqBp91Ybu/YUBW8fR6I
-         wUgnXFEJeMW1qSXGMCyCZ6XxFykfQe/7Bhxn0VihsmXD1aENdk/JqBocGb2xtsSEP04L
-         0ppImgesB9rCJv2Xu6elhVNxOAOPEY2B3vd3H9DZiUIH8wf30LOFQywn5pDGFgTr1bgs
-         NB3PrQuuIqu8OCykSm8mfckpi/QtWy40QincLyLT4Q80v8/OkrDeWj7MsPtfPNCnG07S
-         6Ka53AhIpqvv1a18CulBy3nRV4GBtIB/2vX1hkaYzflc4C7HobqrP5jvKAcYMg2WAApN
-         oM1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721167987; x=1721772787;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=N37H6kLbkNAIPuExxunsB7bhPLTHsDDj/8KnxxdH8yw=;
-        b=GPdv8EXUMbX8IsXQluolvfTklzo8xMtUcSTteVL/XgIjYn08F7tokZI99LU5xg+F0m
-         oMvC7t5B4Iy1qZxKVz4Mq6Uj2ltR9wveEk68Dk9s252dsZUCmo8I2JrvYzVf/KcBU/0S
-         wPONFHCQ18jlOdce4XxiS3deUUwBgyT2hV/upBC4JarluXlh8GDy3eqYjAzlGW2dIokn
-         r162STce2VQ34pWeWRmRtSpPDrpm9+Kfrn4ava4GoY6TZb8rYjTK+qx1lR+olpsGJOj6
-         irx+TVLhXqFIE9BrylTNjl7+HVSYdCvTWAgdhRTLApkpgyEOQSEfSu88OtbOef/k5BWW
-         g/zg==
-X-Forwarded-Encrypted: i=1; AJvYcCWZBOtOlAZJktzdVkm4tO49dHN+tvno+n3j24Lr5oeD+QP+A8/PSbXRERGUi42N3harJVyt246s9OWnTC7vvqNYiD2QCdLo
-X-Gm-Message-State: AOJu0YwaEjyNqcqeh8Ms8hTc9N/P1AgTUye4v6sghyX07eoslRD+Pdjw
-	ZSlTygJUf6WupVbfwoaedslEuKhq5fmgEXYpFU7atDRA/Qd80K6zL0h5q9jOD24BrhOhqN1ArEO
-	AEVc=
-X-Google-Smtp-Source: AGHT+IG+MADQTpWKslhKvuJZKyGIHvh1adrMraY/f13ntQtqMtGVpyG6NOKMVQVgZZdl1PITC4I3bw==
-X-Received: by 2002:a50:a6d7:0:b0:58c:74ae:24ee with SMTP id 4fb4d7f45d1cf-59ef06b97fcmr1807973a12.38.1721167987397;
-        Tue, 16 Jul 2024 15:13:07 -0700 (PDT)
-Received: from [127.0.1.1] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-59b268a28ddsm5582997a12.71.2024.07.16.15.13.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jul 2024 15:13:07 -0700 (PDT)
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date: Tue, 16 Jul 2024 23:13:25 +0100
-Subject: [PATCH v2 2/2] media: qcom: camss: Fix ordering of
- pm_runtime_enable
+	s=arc-20240116; t=1721168878; c=relaxed/simple;
+	bh=XICf/J4vEdapWSlC6sB0/YElc+k5l1HHspEipF/GID4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lQvVOrGBa3cOmxv2R96qYShEwW2sE+ywlRAMhMoHOZJ6yZxb2U/u3eDFgr1ZjBj3l6yYCQPcPTt+u1qBM1wMJdvLpMilFPeQ0A0J45466lZMqytxmufjE9CHaORMSWQAKSL9kRL/kgyNroxVOG/8sZSLjBw4AFt847aT9rGZ5t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XSs8u8ZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D111C116B1;
+	Tue, 16 Jul 2024 22:27:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721168878;
+	bh=XICf/J4vEdapWSlC6sB0/YElc+k5l1HHspEipF/GID4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XSs8u8ZWC33CIePBO3MmP4uKeWQfbTDddsDj5CUFjfT8zWno7AS6gJCrexsqTFApc
+	 uG2E5k+B4vWkG1LdlPQw0fLnlyFP+BEmMzQyGJryenbNGhVet7POfjAoplMKy2ooF5
+	 G5d2H+jO1qz5kfUDAXAFedT4lrI70z+p5cpe486pqlAN9dEPiI1x7GxcdCn2nYZHDE
+	 euytfPGKXgH2zVV0ZKEd38OuKMWyd8A+uWEeT0H5w/VeilBUbL2IWjLoyz3kLZqABL
+	 yf96Ul+Sx2Moafy5uYOyAKSHelaOGaNlqSuyUERd6BjlHmO7t2YBd+gzFDgXc3S1WU
+	 WAChr+FfhLkqA==
+Date: Tue, 16 Jul 2024 23:27:51 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 5.10 000/108] 5.10.222-rc1 review
+Message-ID: <14f3a52b-c934-45e8-8d39-2fc199f3c3f6@sirena.org.uk>
+References: <20240716152745.988603303@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240716-linux-next-24-07-13-camss-fixes-v2-2-e60c9f6742f2@linaro.org>
-References: <20240716-linux-next-24-07-13-camss-fixes-v2-0-e60c9f6742f2@linaro.org>
-In-Reply-To: <20240716-linux-next-24-07-13-camss-fixes-v2-0-e60c9f6742f2@linaro.org>
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hansverk@cisco.com>, Hans Verkuil <hverkuil-cisco@xs4all.nl>, 
- Milen Mitkov <quic_mmitkov@quicinc.com>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, 
- Johan Hovold <johan+linaro@kernel.org>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-13183
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="zTkn3FRT4d+unsDg"
+Content-Disposition: inline
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+X-Cookie: Think honk if you're a telepath.
 
-pm_runtime_enable() should happen prior to vfe_get() since vfe_get() calls
-pm_runtime_resume_and_get().
 
-This is a basic race condition that doesn't show up for most users so is
-not widely reported. If you blacklist qcom-camss in modules.d and then
-subsequently modprobe the module post-boot it is possible to reliably show
-this error up.
+--zTkn3FRT4d+unsDg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The kernel log for this error looks like this:
+On Tue, Jul 16, 2024 at 05:30:15PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.222 release.
+> There are 108 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-qcom-camss ac5a000.camss: Failed to power up pipeline: -13
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Fixes: 02afa816dbbf ("media: camss: Add basic runtime PM support")
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com/
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/media/platform/qcom/camss/camss.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+--zTkn3FRT4d+unsDg
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index 51b1d3550421..d64985ca6e88 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -2283,6 +2283,8 @@ static int camss_probe(struct platform_device *pdev)
- 
- 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
- 
-+	pm_runtime_enable(dev);
-+
- 	num_subdevs = camss_of_parse_ports(camss);
- 	if (num_subdevs < 0) {
- 		ret = num_subdevs;
-@@ -2323,8 +2325,6 @@ static int camss_probe(struct platform_device *pdev)
- 		}
- 	}
- 
--	pm_runtime_enable(dev);
--
- 	return 0;
- 
- err_register_subdevs:
-@@ -2332,6 +2332,7 @@ static int camss_probe(struct platform_device *pdev)
- err_v4l2_device_unregister:
- 	v4l2_device_unregister(&camss->v4l2_dev);
- 	v4l2_async_nf_cleanup(&camss->notifier);
-+	pm_runtime_disable(dev);
- err_genpd_cleanup:
- 	camss_genpd_cleanup(camss);
- 
+-----BEGIN PGP SIGNATURE-----
 
--- 
-2.45.2
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmaW8+YACgkQJNaLcl1U
+h9D2ZQf7BX3dbGU4rvvrtSJgk/gZbVBNglgvPGznUitD8WVhh9tTDiELl0xTNYwe
+3vRiRlcN4szARBAy6ZNZ2uCYcMRHVDWxjiYtuffwUiBIsXLsdjxh8rFanEajoL0W
+HbX/cgSyEpQ6b1zSWoJlfn3cEz/7xnm8YyyhUpZN6lYFgKT2uZcEvwC6WEWFY96K
+jtNHRkFubL3uSDwy2xGCjQVGfQilREiWHtEZOiW00VemA2TiIK6JBIXI+j81RUsv
+CkzncFgmWalPlIF+FJhmk+WnWxfB3xSL8zRv2X7DxK9ZFbsTpHYbXX56IodaZ9W2
+jWhvSoN0letC8dnZlPafZKgC8VjEhg==
+=B/Ne
+-----END PGP SIGNATURE-----
 
+--zTkn3FRT4d+unsDg--
 
