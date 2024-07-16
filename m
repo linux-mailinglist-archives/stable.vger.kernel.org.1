@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-59573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5E4932AC0
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D122932BD3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C48DBB22D94
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA3391F218B9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583941DA4D;
-	Tue, 16 Jul 2024 15:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA6819EEA9;
+	Tue, 16 Jul 2024 15:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Btu7DgyJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fidfcqhw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170F3CA40;
-	Tue, 16 Jul 2024 15:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9B019E7C6;
+	Tue, 16 Jul 2024 15:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144257; cv=none; b=GwtRHROe68dAWA7wHz/Y9LnUkPKUDc76bac0/j0lN76dZkN7PXtv+7xfBfCs3IXzuQjC0k1r0ro98BpfXRg1GJNmgNsrmrm9NZ0l98bQ7XujKMyxMSEJY+7iI8Kd/gI+BJWJUDWr49x65xqapTEaCImvCn+gufxdQ22HefPIaEQ=
+	t=1721144946; cv=none; b=pW091gkkAZd3mIJ33JYiD6nLy2GhOIz4dCqgdVz6U7pb0Wa6qlM3ngUj8ZlJhiS/GMbg9S77zDNyBSbAfXS+YabrTU+O+3/8j9Y5FagnMQc2r1iMPtsk4CBC/x81DTftnmKlsns6TpslEcHz1ERB7nU+aFJgSX3x3O17OWedobM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144257; c=relaxed/simple;
-	bh=jBtWT8au1PqxjmrqZwXOwLhL5SVDqGtX+YX7L1rSRb4=;
+	s=arc-20240116; t=1721144946; c=relaxed/simple;
+	bh=Uf6HwnpM7fW92u9IffeKmi4t9f5jeE3+Al/+DOtuC54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sX6kdbboMAU2cJ4mGaIy0NH8qpL2K5I3oMwBtMHGIUWQPP9hzsTlDFUoizO7vTqBGmukQxWUcMbTbmxwxNjpe75d/gsNAzA2+4bWsctTI0A/HB3bnc9pHOiZDeiiqnKeS4dzKar5axIoDfDLyd34pcaG/FMoCI3WBWHJk3+ow7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Btu7DgyJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654A9C116B1;
-	Tue, 16 Jul 2024 15:37:36 +0000 (UTC)
+	 MIME-Version; b=h6aYEQ5K5eed7VgLe33CiDcBabEoMeeOb5HPlNSYp35P8xUwomGQEA2OxVSDMQqjeohzyCrcKghQT6gQYnuAHSirNDJAUyO1zgWWgTYTlFmsiztMOT5Bq5VeNDcM6uEI7cP73XJreLKy6rRJSVG7spOCW5XAYATuFLywTI38T08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fidfcqhw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98309C116B1;
+	Tue, 16 Jul 2024 15:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144257;
-	bh=jBtWT8au1PqxjmrqZwXOwLhL5SVDqGtX+YX7L1rSRb4=;
+	s=korg; t=1721144946;
+	bh=Uf6HwnpM7fW92u9IffeKmi4t9f5jeE3+Al/+DOtuC54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Btu7DgyJfnNWk4N8Ja9+krvdkJitlEvcJURZ0pu8HHr1DrP2sYx0gB3VRKgFJZuaz
-	 gPgsmtYFxslSFmFWgvmZhrnhR5/9cUV14NwQcdNJiast3K8ICNk1JJZ2XPB8DoW+ef
-	 ADnzTwDcJQvjrtOXOwQot48hL6bsC0D1VC/Tqxpo=
+	b=fidfcqhwKpXDZwKC6ARKyrxO7di/ah16RSYWKm4oyAlkKffkKBNgZeSxZZN3rqDu4
+	 G2cyE0VqzME8k80m+Hqdbc6bPp5blVCTcQWp9csMQq+BB8U6rbssab0aOSHoIx+ter
+	 6PEQTbexQFwPgDXcedzOBBW0M3fJbX43a17Nj8Ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 12/78] net: dsa: mv88e6xxx: Correct check for empty list
+Subject: [PATCH 6.9 048/143] arm64: dts: qcom: x1e80100: Fix PCIe 6a reg offsets and add MHI
 Date: Tue, 16 Jul 2024 17:30:44 +0200
-Message-ID: <20240716152741.100860813@linuxfoundation.org>
+Message-ID: <20240716152757.834737519@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 4c7f3950a9fd53a62b156c0fe7c3a2c43b0ba19b ]
+[ Upstream commit 8e99e770f7eab8f8127098df7824373c4b4e8b5c ]
 
-Since commit a3c53be55c95 ("net: dsa: mv88e6xxx: Support multiple MDIO
-busses") mv88e6xxx_default_mdio_bus() has checked that the
-return value of list_first_entry() is non-NULL.
+The actual size of the DBI region is 0xf20 and the start of the
+ELBI region is 0xf40, according to the documentation. So fix them.
+While at it, add the MHI region as well.
 
-This appears to be intended to guard against the list chip->mdios being
-empty.  However, it is not the correct check as the implementation of
-list_first_entry is not designed to return NULL for empty lists.
-
-Instead, use list_first_entry_or_null() which does return NULL if the
-list is empty.
-
-Flagged by Smatch.
-Compile tested only.
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240430-mv88e6xx-list_empty-v3-1-c35c69d88d2e@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5eb83fc10289 ("arm64: dts: qcom: x1e80100: Add PCIe nodes")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20240604-x1e80100-dts-fixes-pcie6a-v2-1-0b4d8c6256e5@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 81e6227cc8758..cf3d574374376 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -115,8 +115,8 @@ struct mii_bus *mv88e6xxx_default_mdio_bus(struct mv88e6xxx_chip *chip)
- {
- 	struct mv88e6xxx_mdio_bus *mdio_bus;
- 
--	mdio_bus = list_first_entry(&chip->mdios, struct mv88e6xxx_mdio_bus,
--				    list);
-+	mdio_bus = list_first_entry_or_null(&chip->mdios,
-+					    struct mv88e6xxx_mdio_bus, list);
- 	if (!mdio_bus)
- 		return NULL;
- 
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index 6b40082bac68c..ee78185ca5387 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -2737,15 +2737,17 @@
+ 			device_type = "pci";
+ 			compatible = "qcom,pcie-x1e80100";
+ 			reg = <0 0x01bf8000 0 0x3000>,
+-			      <0 0x70000000 0 0xf1d>,
+-			      <0 0x70000f20 0 0xa8>,
++			      <0 0x70000000 0 0xf20>,
++			      <0 0x70000f40 0 0xa8>,
+ 			      <0 0x70001000 0 0x1000>,
+-			      <0 0x70100000 0 0x100000>;
++			      <0 0x70100000 0 0x100000>,
++			      <0 0x01bfb000 0 0x1000>;
+ 			reg-names = "parf",
+ 				    "dbi",
+ 				    "elbi",
+ 				    "atu",
+-				    "config";
++				    "config",
++				    "mhi";
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 			ranges = <0x01000000 0 0x00000000 0 0x70200000 0 0x100000>,
 -- 
 2.43.0
 
