@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-60003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58D3932CF1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9367932BFA
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E60CD1C22187
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88D062827A3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2EF19DF73;
-	Tue, 16 Jul 2024 15:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2B719DFB3;
+	Tue, 16 Jul 2024 15:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBUeX8/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTglqeY5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91C91DDCE;
-	Tue, 16 Jul 2024 15:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898201DDCE;
+	Tue, 16 Jul 2024 15:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145561; cv=none; b=KleC8XeX+hHbOrpu2y81cw9emF64c2nbqxwlReUfx3PEOZYbLKC0IIqPFkagM83tgYjgXd8k2EaR/WelCH/rwoa62OVryQ8Kcb0fCReiC60wU4X9BQmFakFRqjv4K/zC5BU/15aX25UIBlCQH4blW60q34qPfgo6+4lSXllqVFM=
+	t=1721145031; cv=none; b=jAPUNEIQnGBXVGvl+sbtS70Z5/AoO8cCpBdwzfPPPoqY1aqXmzUSZUtsAymaxZfO8ELGJFQB8lUkO+lGpI4jvhi9GN41NM/dI68YiGh0se05qXEntgDeXF6YR/S4UzWpYO4GFzcISIuyGANNrGrMSJkyvuHBBWZonrpRaOW1Qmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145561; c=relaxed/simple;
-	bh=60rFwg3EZt4Vryy7HgXAOEV4lq+Xpvw4T3I/df8L7oM=;
+	s=arc-20240116; t=1721145031; c=relaxed/simple;
+	bh=sN+5AqOCbAEV8VRTc6V/2nPMZXxEVW0fwf74xU/NKEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gLUT1Xt2yV9THZvDhV6pXCxf4NJfwjGSCd6WE46bl9szXI26IjoGV+q7Nn7rO72GCyH0IsSW1oyJm6X4RCjuP8Z6zfpPX9ke0es1Vj2EO/1hCwWkGD+TL5OwxjhaT0qfHOVP/xPoD+6LMfZyvbX6LIKQKOfNOYO6PcPjKjrkXNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBUeX8/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E1AC4AF0E;
-	Tue, 16 Jul 2024 15:59:20 +0000 (UTC)
+	 MIME-Version; b=WuitesKovh8WnZqKes2I05thj1KWWU/IanbsrkAbnbj1snO5XjwShpmXENten9IZFY19r+5jQJdSsDFxvPZ2nPz5onGnKF+jFxR8oBnBFx+9qH5FVffyrM46q1ltKieugbEMwhG/hMLbw2XzKFVF6463lESDfYNHlQTncyhyZo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTglqeY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9550BC116B1;
+	Tue, 16 Jul 2024 15:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145561;
-	bh=60rFwg3EZt4Vryy7HgXAOEV4lq+Xpvw4T3I/df8L7oM=;
+	s=korg; t=1721145031;
+	bh=sN+5AqOCbAEV8VRTc6V/2nPMZXxEVW0fwf74xU/NKEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBUeX8/D3lUUGkhJU4Y5896ZZCoktNQpUaxLtWM7F/iwyWwglwF2bg1uAs0UskM9K
-	 Dxyg5SduHUtbQESTlhDyGL7RIIZ2QbBwTm3ciW+s32aEmpDevzfj79uBcFhcfA9EQZ
-	 /v+QaSgwIfmHbpzWZkQ4ft3zhLUrxiapm+wuOjsU=
+	b=TTglqeY5kv1ycH5Ce5chPCEEJ+DXNLU9n2Jruo7HW2lx/gP4pZcGJpKPyMEXdRPb2
+	 oHYMJ2aD1uzNyKWOJpu+7PZN/LWquym9S+2VeI5PtgnI1M3OdUwFDj7SkwqmvjvjVR
+	 URNeq3EBEs33Snp1moYghKKTDpJh56YVMB5pQt4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/121] cachefiles: cyclic allocation of msg_id to avoid reuse
+	stable <stable@kernel.org>,
+	jinxiaobo <jinxiaobo@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.9 076/143] USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
 Date: Tue, 16 Jul 2024 17:31:12 +0200
-Message-ID: <20240716152751.715781068@linuxfoundation.org>
+Message-ID: <20240716152758.901914509@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,128 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 19f4f399091478c95947f6bd7ad61622300c30d9 ]
+commit 3859e85de30815a20bce7db712ce3d94d40a682d upstream.
 
-Reusing the msg_id after a maliciously completed reopen request may cause
-a read request to remain unprocessed and result in a hung, as shown below:
+START BP-850K is a dot matrix printer that crashes when
+it receives a Set-Interface request and needs USB_QUIRK_NO_SET_INTF
+to work properly.
 
-       t1       |      t2       |      t3
--------------------------------------------------
-cachefiles_ondemand_select_req
- cachefiles_ondemand_object_is_close(A)
- cachefiles_ondemand_set_object_reopening(A)
- queue_work(fscache_object_wq, &info->work)
-                ondemand_object_worker
-                 cachefiles_ondemand_init_object(A)
-                  cachefiles_ondemand_send_req(OPEN)
-                    // get msg_id 6
-                    wait_for_completion(&req_A->done)
-cachefiles_ondemand_daemon_read
- // read msg_id 6 req_A
- cachefiles_ondemand_get_fd
- copy_to_user
-                                // Malicious completion msg_id 6
-                                copen 6,-1
-                                cachefiles_ondemand_copen
-                                 complete(&req_A->done)
-                                 // will not set the object to close
-                                 // because ondemand_id && fd is valid.
-
-                // ondemand_object_worker() is done
-                // but the object is still reopening.
-
-                                // new open req_B
-                                cachefiles_ondemand_init_object(B)
-                                 cachefiles_ondemand_send_req(OPEN)
-                                 // reuse msg_id 6
-process_open_req
- copen 6,A.size
- // The expected failed copen was executed successfully
-
-Expect copen to fail, and when it does, it closes fd, which sets the
-object to close, and then close triggers reopen again. However, due to
-msg_id reuse resulting in a successful copen, the anonymous fd is not
-closed until the daemon exits. Therefore read requests waiting for reopen
-to complete may trigger hung task.
-
-To avoid this issue, allocate the msg_id cyclically to avoid reusing the
-msg_id for a very short duration of time.
-
-Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240628062930.2467993-9-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: jinxiaobo <jinxiaobo@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/202E4B2BD0F0FEA4+20240702154408.631201-1-wangyuli@uniontech.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cachefiles/internal.h |  1 +
- fs/cachefiles/ondemand.c | 20 ++++++++++++++++----
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 94f59123726ca..111ad6ecd4baf 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -129,6 +129,7 @@ struct cachefiles_cache {
- 	unsigned long			req_id_next;
- 	struct xarray			ondemand_ids;	/* xarray for ondemand_id allocation */
- 	u32				ondemand_id_next;
-+	u32				msg_id_next;
- };
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -506,6 +506,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x1b1c, 0x1b38), .driver_info = USB_QUIRK_DELAY_INIT |
+ 	  USB_QUIRK_DELAY_CTRL_MSG },
  
- static inline bool cachefiles_in_ondemand_mode(struct cachefiles_cache *cache)
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 1f6561814e702..51173ab6dbd84 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -505,20 +505,32 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
- 		smp_mb();
- 
- 		if (opcode == CACHEFILES_OP_CLOSE &&
--			!cachefiles_ondemand_object_is_open(object)) {
-+		    !cachefiles_ondemand_object_is_open(object)) {
- 			WARN_ON_ONCE(object->ondemand->ondemand_id == 0);
- 			xas_unlock(&xas);
- 			ret = -EIO;
- 			goto out;
- 		}
- 
--		xas.xa_index = 0;
-+		/*
-+		 * Cyclically find a free xas to avoid msg_id reuse that would
-+		 * cause the daemon to successfully copen a stale msg_id.
-+		 */
-+		xas.xa_index = cache->msg_id_next;
- 		xas_find_marked(&xas, UINT_MAX, XA_FREE_MARK);
-+		if (xas.xa_node == XAS_RESTART) {
-+			xas.xa_index = 0;
-+			xas_find_marked(&xas, cache->msg_id_next - 1, XA_FREE_MARK);
-+		}
- 		if (xas.xa_node == XAS_RESTART)
- 			xas_set_err(&xas, -EBUSY);
++	/* START BP-850k Printer */
++	{ USB_DEVICE(0x1bc3, 0x0003), .driver_info = USB_QUIRK_NO_SET_INTF },
 +
- 		xas_store(&xas, req);
--		xas_clear_mark(&xas, XA_FREE_MARK);
--		xas_set_mark(&xas, CACHEFILES_REQ_NEW);
-+		if (xas_valid(&xas)) {
-+			cache->msg_id_next = xas.xa_index + 1;
-+			xas_clear_mark(&xas, XA_FREE_MARK);
-+			xas_set_mark(&xas, CACHEFILES_REQ_NEW);
-+		}
- 		xas_unlock(&xas);
- 	} while (xas_nomem(&xas, GFP_KERNEL));
- 
--- 
-2.43.0
-
+ 	/* MIDI keyboard WORLDE MINI */
+ 	{ USB_DEVICE(0x1c75, 0x0204), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
 
 
 
