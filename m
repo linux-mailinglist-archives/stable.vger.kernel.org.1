@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-59675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E959F932B3C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 817A8932BD8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8ECD284DB8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B27741C2286A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779B819EEDB;
-	Tue, 16 Jul 2024 15:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EF719DF53;
+	Tue, 16 Jul 2024 15:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQb7bJRi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uP3nc7/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370A319EEC4;
-	Tue, 16 Jul 2024 15:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39F31DA4D;
+	Tue, 16 Jul 2024 15:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144567; cv=none; b=X1GB/EWKoRWydgRXlLp+1vSTBpCZENU4vtKA/0gNQRDzNb3KfoW4GTaPdBuXZlDHWOl7ooUCXnTt47YGgg9c/UpzuiERkpXYaFmk/rFvtpVqvUxk1Ry+VuNtjuDSQZRgddAm7AzTzz6Gw1M1c/xAb8JbcQKfbZMRtgQT6VAlR5s=
+	t=1721144969; cv=none; b=NMlvHaNZLbhE0e/DSOgrUE1N3cNveGRjA5mTUkxh9ZwPWipQKUwHKf6gIZ7avB/uMQZ5HJudtIkj8rgUOEbsjCjGSM3qwx4BgtRvrXQZkYHZ4uai19Ldpvy6Coc+tFe5wz5Nd+c2k3Jl3mVndf9lA3SIaJMjAnSaIZXBeQGVqUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144567; c=relaxed/simple;
-	bh=0S6C/lGX6b64WV+g2HJ/LdiFrP5NXff9FKlYfV8uQ/U=;
+	s=arc-20240116; t=1721144969; c=relaxed/simple;
+	bh=sWjf2/v4pXpdiTQyTMTpliBF/PySGcE5z2l6tglekJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBXRiOWTxGY00PCYFjM7chXwBy91y3qU125tNM8nk7hpjA04nGtahlnj+MyJDF75S3tgO4ak5iY+zLwoU+auHbw68YX8o6URvrVDwyUD/Vl3gU+fyPBJl4O4uYSikVT6lS39I2AZVF4D19EqCzO/6JdHoMCQQwb4wuspPp6F1Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQb7bJRi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586E3C4AF0E;
-	Tue, 16 Jul 2024 15:42:46 +0000 (UTC)
+	 MIME-Version; b=ESH/nK1b2BTy+EDQm2BlT9FNeZkLzeeaz/E/h1+x1TdDH8wCUe7XiY7FtkRUJAAQDSDwsgRzw+0YWknLrrKX8wJumayoG600qsFr1/5fWlNGiooATa/gmcgex3uaoy9CQiS52/FmLK7R/2b/Aqq5U3bPeBC31LO+tzbNkrbv6B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uP3nc7/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBFEC116B1;
+	Tue, 16 Jul 2024 15:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144566;
-	bh=0S6C/lGX6b64WV+g2HJ/LdiFrP5NXff9FKlYfV8uQ/U=;
+	s=korg; t=1721144968;
+	bh=sWjf2/v4pXpdiTQyTMTpliBF/PySGcE5z2l6tglekJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQb7bJRiElzHzOeWaQZPQfCNN5ng/oCeM7ElgoEU6fXAZ03+1cxML/rjNlGvSC1C5
-	 HvMvzRPihjgNZJqQKjkeszO/6DRPi/wN7xzvZSkFOYJkUqMPy/M2VLtSy0Iw0H+LbU
-	 kgTFti/qNKPvZhymn/ZL0R3I4TzbGnejjhnqFwus=
+	b=uP3nc7/Rl8Wncu02megkyEZnPlRMxNCQz6gOgspdKsizrbiVuXpIoXE8k73sIwInx
+	 id51Vmxdo/b+/F5mAPgAk/52HJ537g6nybSHhffTFwVSOviyIkugORakTBsv6lKAe6
+	 pKaTUyXXVye2ZVuDjbr8mQmF57odt0kg6KHW+8wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hugh Dickins <hughd@google.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 008/108] drm/amd/display: Check index msg_id before read or write
+Subject: [PATCH 6.9 027/143] net: fix rc7s __skb_datagram_iter()
 Date: Tue, 16 Jul 2024 17:30:23 +0200
-Message-ID: <20240716152746.317204199@linuxfoundation.org>
+Message-ID: <20240716152757.032549650@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Hugh Dickins <hughd@google.com>
 
-[ Upstream commit 59d99deb330af206a4541db0c4da8f73880fba03 ]
+[ Upstream commit f153831097b4435f963e385304cc0f1acba1c657 ]
 
-[WHAT]
-msg_id is used as an array index and it cannot be a negative value, and
-therefore cannot be equal to MOD_HDCP_MESSAGE_ID_INVALID (-1).
+X would not start in my old 32-bit partition (and the "n"-handling looks
+just as wrong on 64-bit, but for whatever reason did not show up there):
+"n" must be accumulated over all pages before it's added to "offset" and
+compared with "copy", immediately after the skb_frag_foreach_page() loop.
 
-[HOW]
-Check whether msg_id is valid before reading and setting.
-
-This fixes 4 OVERRUN issues reported by Coverity.
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: d2d30a376d9c ("net: allow skb_datagram_iter to be called from any context")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Link: https://patch.msgid.link/fef352e8-b89a-da51-f8ce-04bc39ee6481@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/core/datagram.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-index f7b5583ee609a..8e9caae7c9559 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-@@ -156,6 +156,10 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
+diff --git a/net/core/datagram.c b/net/core/datagram.c
+index cb72923acc21c..99abfafb0b439 100644
+--- a/net/core/datagram.c
++++ b/net/core/datagram.c
+@@ -442,11 +442,12 @@ static int __skb_datagram_iter(const struct sk_buff *skb, int offset,
+ 			if (copy > len)
+ 				copy = len;
  
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+		return MOD_HDCP_STATUS_DDC_FAILURE;
-+	}
-+
- 	if (is_dp_hdcp(hdcp)) {
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
-@@ -215,6 +219,10 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
- 
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+		return MOD_HDCP_STATUS_DDC_FAILURE;
-+	}
-+
- 	if (is_dp_hdcp(hdcp)) {
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
++			n = 0;
+ 			skb_frag_foreach_page(frag,
+ 					      skb_frag_off(frag) + offset - start,
+ 					      copy, p, p_off, p_len, copied) {
+ 				vaddr = kmap_local_page(p);
+-				n = INDIRECT_CALL_1(cb, simple_copy_to_iter,
++				n += INDIRECT_CALL_1(cb, simple_copy_to_iter,
+ 					vaddr + p_off, p_len, data, to);
+ 				kunmap_local(vaddr);
+ 			}
 -- 
 2.43.0
 
