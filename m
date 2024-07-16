@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-60148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBDF7932D9A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:07:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA82932DA6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 092AB1C20C6A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:07:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C50DC1F211C6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C370919F469;
-	Tue, 16 Jul 2024 16:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344DE19EEAA;
+	Tue, 16 Jul 2024 16:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMHR4Uro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmeCgMEj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F31F19EEC4;
-	Tue, 16 Jul 2024 16:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67FB1DDCE;
+	Tue, 16 Jul 2024 16:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721146025; cv=none; b=EhjGjpIG7i0AOGiaK38yoZn8WD3sfwporhqNBABcofjVDE/6bjymysouWVNHk696iKWCf+Ui2zDWOG68eVRgDO5PnGqc2dm/jaF8D7inKQw9ga5bDBjjcsSiATRAa+Qs0Uk9P8lRPOAKyo8yKhkhsz0O7qbROhHWOSEZHWI9rA4=
+	t=1721146058; cv=none; b=IR5PMw9Y0b/eZ9tMFYEAdcRIO5s3Hv959UinKPh3hGvucU84eBajSi/Wr5F+LJ5UtQd/TCj8wYXWhqA8cKuMHAI2D8gwSUW2MFzdjzOQOFLLDm3Wd5LNEFOvhpOCXuJUXJZQL4EVBDUPJ18di5jMWc67mCIX1Z3Uk6AYM4AeB50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721146025; c=relaxed/simple;
-	bh=3VoESR0NXDS24Fo27KTrxOEU4NaMCf6yH1k4so0W1KY=;
+	s=arc-20240116; t=1721146058; c=relaxed/simple;
+	bh=zR6SyYH+qa31azhZ9x1UZR6cEo/h6fciHoGVOBVVa4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uJOF8VMR7EENk1IdmFXbFYLZIJjwt2zq6OUdG/+K0FuytoGvEogYNhmJlK2MC9lU1wp0o5B9ac9PNGDUG0mElop5rBF66rOGjHtcJgW8JAPt7GYrOa9/ZG653vIG2o/fnxXEzaNUPy2CoEb4YEoZhHKsjT3EfVAaSq7d0We+IQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMHR4Uro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05786C116B1;
-	Tue, 16 Jul 2024 16:07:04 +0000 (UTC)
+	 MIME-Version; b=cq6dWKls3JODmwAyN0D3+wcCwWgMBixpEUeVEshQl1gXF4ETTRubJdl+radhSD0r3MmlBdklKIqNATH/U+abr85RorrVDMAFHWe7jY9nJCKm2DQab9Ks99EZqqIQZNt61jHCKFCxM4F2qnx/qcrOzCLVc5R2wZCNz15P8R7ejvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmeCgMEj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B656C116B1;
+	Tue, 16 Jul 2024 16:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721146025;
-	bh=3VoESR0NXDS24Fo27KTrxOEU4NaMCf6yH1k4so0W1KY=;
+	s=korg; t=1721146057;
+	bh=zR6SyYH+qa31azhZ9x1UZR6cEo/h6fciHoGVOBVVa4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMHR4UrouPhjD7Nk58N+sTGqAxWq5rVrQxnFuspYRaQfQuM1urq8Evncj+tw8bwbw
-	 yXx0+YKIHzRfVk0VDxWGbNbbZvOUcqJGUT45RJRPIjw8bHLQCgO3l71ngGFtz+OyVQ
-	 oHYEMoX4g0IRbqHX4ljh4CaK5ecwHjMV9tXll/M0=
+	b=DmeCgMEjdADwnq5x/Pn/HpJ9EhAwmh7fuvGM0Fhs/DaQWOpmGIxeh/TaXE7Kac2ql
+	 Lj3340811BiUVPCkHSRwkGTKjORscwTyZnzFXnHpI/WOY7HNMaTT+EP9IWwAYXkU7X
+	 lt8cD2w6WIgYe1Nxm1YZqGI0XXYAaNcrp2Dn/RdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Greg Kurz <groug@kaod.org>,
-	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Naama Meir <naamax.meir@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 025/144] powerpc/xmon: Check cpu id in commands "c#", "dp#" and "dx#"
-Date: Tue, 16 Jul 2024 17:31:34 +0200
-Message-ID: <20240716152753.505659315@linuxfoundation.org>
+Subject: [PATCH 5.15 026/144] igc: fix a log entry using uninitialized netdev
+Date: Tue, 16 Jul 2024 17:31:35 +0200
+Message-ID: <20240716152753.545173142@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -61,63 +63,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kurz <groug@kaod.org>
+From: Corinna Vinschen <vinschen@redhat.com>
 
-[ Upstream commit 8873aab8646194a4446117bb617cc71bddda2dee ]
+[ Upstream commit 86167183a17e03ec77198897975e9fdfbd53cb0b ]
 
-All these commands end up peeking into the PACA using the user
-originated cpu id as an index. Check the cpu id is valid in order
-to prevent xmon to crash. Instead of printing an error, this follows
-the same behavior as the "lp s #" command : ignore the buggy cpu id
-parameter and fall back to the #-less version of the command.
+During successful probe, igc logs this:
 
-Signed-off-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/161531347060.252863.10490063933688958044.stgit@bahia.lan
+[    5.133667] igc 0000:01:00.0 (unnamed net_device) (uninitialized): PHC added
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The reason is that igc_ptp_init() is called very early, even before
+register_netdev() has been called. So the netdev_info() call works
+on a partially uninitialized netdev.
+
+Fix this by calling igc_ptp_init() after register_netdev(), right
+after the media autosense check, just as in igb.  Add a comment,
+just as in igb.
+
+Now the log message is fine:
+
+[    5.200987] igc 0000:01:00.0 eth0: PHC added
+
+Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
+Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/xmon/xmon.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 8b5277c3b1476..4178d5e8b42d9 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -1356,7 +1356,7 @@ static int cpu_cmd(void)
- 	}
- 	termch = cpu;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 6185566fbb98c..16a3d0f67ec96 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6673,8 +6673,6 @@ static int igc_probe(struct pci_dev *pdev,
+ 	device_set_wakeup_enable(&adapter->pdev->dev,
+ 				 adapter->flags & IGC_FLAG_WOL_SUPPORTED);
  
--	if (!scanhex(&cpu)) {
-+	if (!scanhex(&cpu) || cpu >= num_possible_cpus()) {
- 		/* print cpus waiting or in xmon */
- 		printf("cpus stopped:");
- 		last_cpu = first_cpu = NR_CPUS;
-@@ -2771,7 +2771,7 @@ static void dump_pacas(void)
+-	igc_ptp_init(adapter);
+-
+ 	igc_tsn_clear_schedule(adapter);
  
- 	termch = c;	/* Put c back, it wasn't 'a' */
+ 	/* reset the hardware with the new settings */
+@@ -6696,6 +6694,9 @@ static int igc_probe(struct pci_dev *pdev,
+ 	/* Check if Media Autosense is enabled */
+ 	adapter->ei = *ei;
  
--	if (scanhex(&num))
-+	if (scanhex(&num) && num < num_possible_cpus())
- 		dump_one_paca(num);
- 	else
- 		dump_one_paca(xmon_owner);
-@@ -2844,7 +2844,7 @@ static void dump_xives(void)
- 
- 	termch = c;	/* Put c back, it wasn't 'a' */
- 
--	if (scanhex(&num))
-+	if (scanhex(&num) && num < num_possible_cpus())
- 		dump_one_xive(num);
- 	else
- 		dump_one_xive(xmon_owner);
++	/* do hw tstamp init after resetting */
++	igc_ptp_init(adapter);
++
+ 	/* print pcie link status and MAC address */
+ 	pcie_print_link_status(pdev);
+ 	netdev_info(netdev, "MAC: %pM\n", netdev->dev_addr);
 -- 
 2.43.0
 
