@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F84932CA3
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90DEB932B7C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90523281161
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B48B281B3C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C093819DF73;
-	Tue, 16 Jul 2024 15:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1D619DF70;
+	Tue, 16 Jul 2024 15:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3hc+hQH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMeyAWTC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCB719AD72;
-	Tue, 16 Jul 2024 15:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9741EA73;
+	Tue, 16 Jul 2024 15:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145390; cv=none; b=NZGYWbJMTsenuZZWWQn1HcRvObK3ev4qM4ojqxYfWuan3kDEk9HmKi8KIZFopkN81VVuNSncgz/u7TkPXNHsoj5LNYGryKUnaSMN9V1VaK24rbB0gRtJtZi3cTD7OS/sK2u9V6HtXFniCEz4Ix18GHwpzhb/8lGNkOKpw7jn4OU=
+	t=1721144739; cv=none; b=g4BTQG3fZPQaa97nAYF20USp++eCVwQhJJLeTkr3vCrOtv+pxWzBF1z+Xo5tg/glOQUVGy45q4SqPo6u0+cQW47UbDsvNruEBjHIAoR5MyZmwy92/k8Hf7llC8sphkqr+qqBb0b3z4Iqml+C62QnE8sV80ARO27EocipekeFZiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145390; c=relaxed/simple;
-	bh=ORY/iqQMZuCID2t6whPYr4EkzEwXYGivDoOVI8+MV7g=;
+	s=arc-20240116; t=1721144739; c=relaxed/simple;
+	bh=OqfyFGIceYXrXT3SFw3qnAqD5Gmovq0JY0jxLfaQe88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6oUyW37MAW1EwLNnPPRU87L53nS37hH9M9VJi08anO/nvVJKMPMShZHFfB1qITYUqtYIMHHHwNFu+mi5nsHCHA+zECptd/d5Z/E6Y9mFcjHCcRNO0fpZAiJ+FPBomzlnUpEFfCIoyGjJYbiBna1FErry0ukK+T/262P66n/fkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3hc+hQH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F75C116B1;
-	Tue, 16 Jul 2024 15:56:29 +0000 (UTC)
+	 MIME-Version; b=oTOeewNMbVNzYEUy8/A3ckDbEeqFqLVJLnO8r8yIEOMyqjiOlniMGdrn6aQMehNC56/yMz5Ip0B7/R+tr1dm22r0J9I4y63hPs805s1FV4Z/wBpF37t/wd07VnPYXjTRbOuN+7Blooi6m6iAI0i+ddUh43YzhwpKIWNfcSkRtAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMeyAWTC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FD5C4AF0B;
+	Tue, 16 Jul 2024 15:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145390;
-	bh=ORY/iqQMZuCID2t6whPYr4EkzEwXYGivDoOVI8+MV7g=;
+	s=korg; t=1721144739;
+	bh=OqfyFGIceYXrXT3SFw3qnAqD5Gmovq0JY0jxLfaQe88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3hc+hQHUxY+mLhWaTZ4gAbjd+fpBS4oH1MniWw7WSD+euagQ+YGXP7/ABfBWS1CN
-	 P/mAqzrXE04PpsimNqGVCg/E5VsJLUO3Od//5UA07T378NmgYdmI690HoXWnsS8Ctn
-	 mecHxIornMJ6k3SdX4YUuHCkAmP5HyEKomXVSNF8=
+	b=GMeyAWTCELApD5eS7Hc0HpzfuMKsfL8ANHQFB310I1Kh0qtGB6b8bGEyDf4rckw3y
+	 7PI2xU6z8/6zzNMMbzsdUE3v2takgipyNeX1iVYhnJqzP3GISMuJ8YkOXb4Jczx8oK
+	 QrgymzhHMRKQh4z7P+c4SVDuXgJXrftAPw04/h98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 33/96] firmware: cs_dsp: Validate payload length before processing block
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 089/108] ALSA: hda/realtek: Limit mic boost on VAIO PRO PX
 Date: Tue, 16 Jul 2024 17:31:44 +0200
-Message-ID: <20240716152747.787145492@linuxfoundation.org>
+Message-ID: <20240716152749.405718750@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit 6598afa9320b6ab13041616950ca5f8f938c0cf1 ]
+commit 6db03b1929e207d2c6e84e75a9cd78124b3d6c6d upstream.
 
-Move the payload length check in cs_dsp_load() and cs_dsp_coeff_load()
-to be done before the block is processed.
+The internal mic boost on the VAIO models VJFE-CL and VJFE-IL is too high.
+Fix this by applying the ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine
+to limit the gain.
 
-The check that the length of a block payload does not exceed the number
-of remaining bytes in the firwmware file buffer was being done near the
-end of the loop iteration. However, some code before that check used the
-length field without validating it.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f6bc909e7673 ("firmware: cs_dsp: add driver to support firmware loading on Cirrus Logic DSPs")
-Link: https://patch.msgid.link/20240627141432.93056-4-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240705141012.5368-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 36 +++++++++++++-------------------
- 1 file changed, 15 insertions(+), 21 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index 208c799af7968..7882f3a5f8556 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1356,6 +1356,12 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 		}
- 
- 		region = (void *)&(firmware->data[pos]);
-+
-+		if (le32_to_cpu(region->len) > firmware->size - pos - sizeof(*region)) {
-+			ret = -EOVERFLOW;
-+			goto out_fw;
-+		}
-+
- 		region_name = "Unknown";
- 		reg = 0;
- 		text = NULL;
-@@ -1412,16 +1418,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 			   regions, le32_to_cpu(region->len), offset,
- 			   region_name);
- 
--		if (le32_to_cpu(region->len) >
--		    firmware->size - pos - sizeof(*region)) {
--			cs_dsp_err(dsp,
--				   "%s.%d: %s region len %d bytes exceeds file length %zu\n",
--				   file, regions, region_name,
--				   le32_to_cpu(region->len), firmware->size);
--			ret = -EINVAL;
--			goto out_fw;
--		}
--
- 		if (text) {
- 			memcpy(text, region->data, le32_to_cpu(region->len));
- 			cs_dsp_info(dsp, "%s: %s\n", file, text);
-@@ -2051,6 +2047,11 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 
- 		blk = (void *)(&firmware->data[pos]);
- 
-+		if (le32_to_cpu(blk->len) > firmware->size - pos - sizeof(*blk)) {
-+			ret = -EOVERFLOW;
-+			goto out_fw;
-+		}
-+
- 		type = le16_to_cpu(blk->type);
- 		offset = le16_to_cpu(blk->offset);
- 		version = le32_to_cpu(blk->ver) >> 8;
-@@ -2146,17 +2147,6 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 		}
- 
- 		if (reg) {
--			if (le32_to_cpu(blk->len) >
--			    firmware->size - pos - sizeof(*blk)) {
--				cs_dsp_err(dsp,
--					   "%s.%d: %s region len %d bytes exceeds file length %zu\n",
--					   file, blocks, region_name,
--					   le32_to_cpu(blk->len),
--					   firmware->size);
--				ret = -EINVAL;
--				goto out_fw;
--			}
--
- 			buf = cs_dsp_buf_alloc(blk->data,
- 					       le32_to_cpu(blk->len),
- 					       &buf_list);
-@@ -2196,6 +2186,10 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 	regmap_async_complete(regmap);
- 	cs_dsp_buf_free(&buf_list);
- 	kfree(text);
-+
-+	if (ret == -EOVERFLOW)
-+		cs_dsp_err(dsp, "%s: file content overflows file data\n", file);
-+
- 	return ret;
- }
- 
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9190,6 +9190,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
+ 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
+ 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
++	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x1252, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+@@ -9397,6 +9398,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
++	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+ 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
 
 
 
