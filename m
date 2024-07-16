@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-60019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCDC0932D05
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B762932AE0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0FAC1C21B75
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13F5FB23B38
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B69619AD93;
-	Tue, 16 Jul 2024 16:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8668D19AA40;
+	Tue, 16 Jul 2024 15:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKu01aP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RU9hwOvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B6D136643;
-	Tue, 16 Jul 2024 16:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437AA1DFF7;
+	Tue, 16 Jul 2024 15:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145614; cv=none; b=qxzgZV4cABmin41XGutbNmDH1r2zu+4jTTdRPQR7MojZhaO0FGatfh++Sg1pxMx9DM8l7eHcWg6K6fhd4tLd73KirerbLj4llBbqcQ5d6FdksngHD6NMMz9Wu1rWQK3v7IvVXc/AN/EVK+ZKUWjni2AEdxhRrxeJL1G3RCROZhc=
+	t=1721144337; cv=none; b=Ka9h3ZXH+QHXBxTqWMLzC83InX0jUqlbw8y2gqThINOroDmyFrii+6Cgp5tFxeMFwmBQjadVPD+opnCZnsIZ6KGvk8rz/zf0f3B93yjjbPPJow48zINKLqP63qhB1dKF/HLc/jR/S35UCv6ODJvTMeH4CQNTFMu4CeFNnG1tuiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145614; c=relaxed/simple;
-	bh=cgGbM2RLQtd1VTA+Ukbi0h4MJP50JBJCJl+EopxmAYE=;
+	s=arc-20240116; t=1721144337; c=relaxed/simple;
+	bh=rRdzPznRmuau2UKUTdjCT/whoeyrV/8+2Vs/P5dlwSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKfNdYT3s+m0tYonj8I8z2wHOGBKfss3ysFFhj42YiTWlWJimXi97rfk9xTbXRBvSDDM56nM+ulYJLQ7h/GE6kkmtGMTPjO0UKXVzM2nrY79UT7ghRC2ScutUFBKiVvOzQAJ94ia2V9SzKWm4H5RTo/YmtE3SIhIKqvuYTRvjdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKu01aP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F43C116B1;
-	Tue, 16 Jul 2024 16:00:13 +0000 (UTC)
+	 MIME-Version; b=XdiOzCkqCgGEcHpi1BI3O72RJE7nsTbbI6I8SwIEkXfs7R9T5lK2af0qCHwV674O21LmYzDrvHH5lye4+zvoSnMQCxq6tuhwnnJzEAOXmYA/VSqtS2SdnW6e+TqOdXMcns1QefPfe+wh/zFiwjxgdoKmiajsbS4j0Ihv7r7ECEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RU9hwOvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60503C116B1;
+	Tue, 16 Jul 2024 15:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145613;
-	bh=cgGbM2RLQtd1VTA+Ukbi0h4MJP50JBJCJl+EopxmAYE=;
+	s=korg; t=1721144336;
+	bh=rRdzPznRmuau2UKUTdjCT/whoeyrV/8+2Vs/P5dlwSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKu01aP3moZcq7de3AGnOsaGO7N20ghyw2LDbBcwzCW/Pr7HagpD5/EtVzoaVLDLW
-	 4/tLdV8ccSY0CJmA+e0K1Dez9RAyRE/Hx01dgQxg7W6QjUKc7x/gaPKtlNidSU75MQ
-	 XR6G/C8s5vJoaCwEp2r8MXwNNBmnPjjnf6l63OpY=
+	b=RU9hwOvhnnVleiE+QV+m/602vRJBvbXg8QUINfy9TDAXMMVp7lcosrwHyfnKY+xvE
+	 b6ZbDhwi9ktbNivyWoRhxy0MOSTHBbLvGyJCH695HqsTgpMsot9OW4wu28Yuv2Vsw2
+	 TfhQcm5vQkFurZdv48H6FFK2uOKT6iskCax+7fVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/121] cachefiles: cancel all requests for the object that is being dropped
+	Ma Ke <make24@iscas.ac.cn>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 5.4 38/78] drm/nouveau: fix null pointer dereference in nouveau_connector_get_modes
 Date: Tue, 16 Jul 2024 17:31:10 +0200
-Message-ID: <20240716152751.639233768@linuxfoundation.org>
+Message-ID: <20240716152742.111709289@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 751f524635a4f076117d714705eeddadaf6748ee ]
+commit 80bec6825b19d95ccdfd3393cf8ec15ff2a749b4 upstream.
 
-Because after an object is dropped, requests for that object are useless,
-cancel them to avoid causing other problems.
+In nouveau_connector_get_modes(), the return value of drm_mode_duplicate()
+is assigned to mode, which will lead to a possible NULL pointer
+dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-This prepares for the later addition of cancel_work_sync(). After the
-reopen requests is generated, cancel it to avoid cancel_work_sync()
-blocking by waiting for daemon to complete the reopen requests.
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240628062930.2467993-7-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 12e009d60852 ("cachefiles: wait for ondemand_object_worker to finish when dropping object")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6ee738610f41 ("drm/nouveau: Add DRM driver for NVIDIA GPUs")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240627074204.3023776-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cachefiles/ondemand.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/gpu/drm/nouveau/nouveau_connector.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index cc2de0e3ee60f..acaecfce8aaa9 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -636,12 +636,31 @@ int cachefiles_ondemand_init_object(struct cachefiles_object *object)
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -968,6 +968,9 @@ nouveau_connector_get_modes(struct drm_c
+ 		struct drm_display_mode *mode;
  
- void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
- {
-+	unsigned long index;
-+	struct cachefiles_req *req;
-+	struct cachefiles_cache *cache;
+ 		mode = drm_mode_duplicate(dev, nv_connector->native_mode);
++		if (!mode)
++			return 0;
 +
- 	if (!object->ondemand)
- 		return;
- 
- 	cachefiles_ondemand_send_req(object, CACHEFILES_OP_CLOSE, 0,
- 			cachefiles_ondemand_init_close_req, NULL);
-+
-+	if (!object->ondemand->ondemand_id)
-+		return;
-+
-+	/* Cancel all requests for the object that is being dropped. */
-+	cache = object->volume->cache;
-+	xa_lock(&cache->reqs);
- 	cachefiles_ondemand_set_object_dropping(object);
-+	xa_for_each(&cache->reqs, index, req) {
-+		if (req->object == object) {
-+			req->error = -EIO;
-+			complete(&req->done);
-+			__xa_erase(&cache->reqs, index);
-+		}
-+	}
-+	xa_unlock(&cache->reqs);
- }
- 
- int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
--- 
-2.43.0
-
+ 		drm_mode_probed_add(connector, mode);
+ 		ret = 1;
+ 	}
 
 
 
