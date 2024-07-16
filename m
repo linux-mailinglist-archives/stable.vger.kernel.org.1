@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326B7932B8C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215F0932CA4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 642C01C2099B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA6331F24618
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F9A17A93F;
-	Tue, 16 Jul 2024 15:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F2C19EEA4;
+	Tue, 16 Jul 2024 15:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUQoyb1S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqzRaywZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8560012B72;
-	Tue, 16 Jul 2024 15:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773C019AD72;
+	Tue, 16 Jul 2024 15:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144786; cv=none; b=dQV6Q2r9G2w+5jaerQcrgNh9RVzJ7HMlzlFpa32HZd9DGSi5zOL/VG1c2SdV9wSi9boFEqkpAT7ey6bV5z9KaA516RQgV2zTYXtN90QvQlh4hK3NVKHkUBfOdO4mJys2I/EB0xDqupsfwBBSbp62m+tf5cSjwvogiYi1mveceAc=
+	t=1721145393; cv=none; b=JBm63PNoKvEPA7/VloghV/d4c0RMyYEEoffvJ61l058+Ku8/2TaSWHj9hYUBUknk/6Iz2DyxnFoIXHxpMS2vfJwJu+OUHlRjV7jB36KLzBHT9vCDz/HBcdEo1rvssQZcbDKJZEanct/D3C2/uwQSTSzgVTnFbeTXxTJI55nPTUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144786; c=relaxed/simple;
-	bh=2icpJDg4vXMX/GZFsyjQ7FWuKbx3XaCMtLGOPBZiLGE=;
+	s=arc-20240116; t=1721145393; c=relaxed/simple;
+	bh=VGWnFG2fx6inF7IM+FlrdiDqZpRlhHzhir400ACICNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6DInpGdktDHkbdHjBLjzEFU4rqrr6ZYj3mESy8Azjgmxl8JnDo16+H+lnDP4KKEQfbVxQoswNBV0g6Fb9rn2bN+qdAuCrTmVgR0k0Y+jFop59ILfLbs55/L07bUrdgbmqtvx7+beA1TBXKhP4dYBb6Hlu1L9+B8XybdqnO/vuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUQoyb1S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D36C116B1;
-	Tue, 16 Jul 2024 15:46:25 +0000 (UTC)
+	 MIME-Version; b=UpO8l9ZCekYLkNpNOv/pB4PekuhwOr5IJGHQRD+g+Dju1ldYvicC61+TskGverDP/Q9mC6QSh9KVNQiWc6ewVhTu3sg9MCeYLGHULhATPvTmhKsW4QIqiHeR1uD4c41+FHZUawbazaFG8c8ZXKj4g+iKGf6fmCmpqBR6dVm0cFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqzRaywZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2227C4AF0E;
+	Tue, 16 Jul 2024 15:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144786;
-	bh=2icpJDg4vXMX/GZFsyjQ7FWuKbx3XaCMtLGOPBZiLGE=;
+	s=korg; t=1721145393;
+	bh=VGWnFG2fx6inF7IM+FlrdiDqZpRlhHzhir400ACICNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OUQoyb1SgIRr3MlC+s/vRPawWJVSaM9Vj2orL5EweiWIf5XcOpRf8Wv/LtII+0Ptk
-	 vTasw6SCkeUtDmPI5NPlbtbDwfOXz+zZGHA2Vgvt2xOowhgUar9Bu4YDzonXK7G15M
-	 3bOAzKhko0CZx6NArHAHjBFJ0TSmpfFs+JgvaVC4=
+	b=qqzRaywZdIZnX3worTIoiff1ZmO0sv+JNlsUWeRgjGVpAHIFdPZCSrQ36+csCJwnf
+	 qUDUooz/N1wje0YUjNC7G29zjjWxHluPlT2qQOLdI1I4mrUUOuzlFbEBHNAlo2iEpJ
+	 9aP1QPbfTA2JrB/id93mBU2Igv9TBsOoSEUBODhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 106/108] i2c: rcar: ensure Gen3+ reset does not disturb local targets
-Date: Tue, 16 Jul 2024 17:32:01 +0200
-Message-ID: <20240716152750.067070776@linuxfoundation.org>
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 51/96] USB: serial: option: add Telit FN912 rmnet compositions
+Date: Tue, 16 Jul 2024 17:32:02 +0200
+Message-ID: <20240716152748.468866688@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit ea5ea84c9d3570dc06e8fc5ee2273eaa584aa3ac ]
+commit 9a590ff283421b71560deded2110dbdcbe1f7d1d upstream.
 
-R-Car Gen3+ needs a reset before every controller transfer. That erases
-configuration of a potentially in parallel running local target
-instance. To avoid this disruption, avoid controller transfers if a
-local target is running. Also, disable SMBusHostNotify because it
-requires being a controller and local target at the same time.
+Add the following Telit FN912 compositions:
 
-Fixes: 3b770017b03a ("i2c: rcar: handle RXDMA HW behaviour on Gen3")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3000 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3001 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index 41c9d15c3bc69..db3a5b80f1aa8 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -796,6 +796,10 @@ static int rcar_i2c_do_reset(struct rcar_i2c_priv *priv)
- {
- 	int ret;
- 
-+	/* Don't reset if a slave instance is currently running */
-+	if (priv->slave)
-+		return -EISCONN;
-+
- 	ret = reset_control_reset(priv->rstc);
- 	if (ret)
- 		return ret;
-@@ -1027,6 +1031,7 @@ static int rcar_i2c_probe(struct platform_device *pdev)
- 	if (of_property_read_bool(dev->of_node, "smbus"))
- 		priv->flags |= ID_P_HOST_NOTIFY;
- 
-+	/* R-Car Gen3+ needs a reset before every transfer */
- 	if (priv->devtype >= I2C_RCAR_GEN3) {
- 		priv->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
- 		if (IS_ERR(priv->rstc))
-@@ -1035,6 +1040,9 @@ static int rcar_i2c_probe(struct platform_device *pdev)
- 		ret = reset_control_status(priv->rstc);
- 		if (ret < 0)
- 			goto out_pm_put;
-+
-+		/* hard reset disturbs HostNotify local target, so disable it */
-+		priv->flags &= ~ID_P_HOST_NOTIFY;
- 	}
- 
- 	ret = platform_get_irq(pdev, 0);
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1425,6 +1425,10 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1901, 0xff),	/* Telit LN940 (MBIM) */
+ 	  .driver_info = NCTRL(0) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3000, 0xff),	/* Telit FN912 */
++	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3001, 0xff),	/* Telit FN912 */
++	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7010, 0xff),	/* Telit LE910-S1 (RNDIS) */
+ 	  .driver_info = NCTRL(2) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7011, 0xff),	/* Telit LE910-S1 (ECM) */
 
 
 
