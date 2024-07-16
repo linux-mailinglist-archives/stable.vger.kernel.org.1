@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB57932AFC
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CF1A932C1D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 592F0280FE0
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 175A3284F0F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25471E895;
-	Tue, 16 Jul 2024 15:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9395119F46C;
+	Tue, 16 Jul 2024 15:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUzxqtX1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZgNmyVu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F968B641;
-	Tue, 16 Jul 2024 15:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5107717A93F;
+	Tue, 16 Jul 2024 15:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144414; cv=none; b=kGOG0Krrii6ccvelUYyT1Jz0jUneqHF1iocXYLSs63n9XjQl31UrFB4W2sz0YAScuazlxVXv0v0AooIX/GER6b+Uzriyq5EiEV6uj8nx/YZqCgCsB4uFKsoLXFsRuddi6I6V9dpLk67qON66AVwCGBH1Z++26YBUoTDHBTPwH/k=
+	t=1721145106; cv=none; b=gaq9HqEh42fxRTHntRxneIPUddcpST/ZQD9XSZNX4fpl2M5WADw7ynxsw0qaYUd3ePte8dnKMdYgyL3SsMHXz8xRto0d2hOJbbXGJ7u2OYzzC8GKUnjU80Ze5I5JQMSgasSfkwWkQ1lY3rm63uk5LVjVfbrzHhFBCjHR38cEx/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144414; c=relaxed/simple;
-	bh=siWKAdMSWtqQHfQYTj4YtGeSqae57eCwUhnXXD+1BlQ=;
+	s=arc-20240116; t=1721145106; c=relaxed/simple;
+	bh=FzMdAoUN0grSqFg2BedME6W4cL9Q0n/j1kU32WLWsi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DD4oaNT446eDTqOel+Qqa2niidBQuICmCJfazE7OboFHsgZEPHkvZzKop7UBuDJTjKZmSsqbDIbI9BvUpGKwQbVxjIQkMRoyiMx30i5SHy5gSXLgQaKr89yw3T1HdjqchnYHi/sWq6tvL/MbF1GTRoAMS6uFlzr/ooe1fEGr594=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUzxqtX1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081C5C116B1;
-	Tue, 16 Jul 2024 15:40:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c+dzZWlkJoksAbBAShGYj2RYG6ooLOigRBned4fropeS3IrkGL5KR/OSphOthEc0z7aCgJhXTLvL2vv6iIO6Dn9kG6r0jlwSVLWH+vRTFKGoTH8obSaywCHvKgcuKmEWDfvBFJFSQ7JJsB+MkJ1BF24Rn6PrFGxELEfEJNI3ZsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZgNmyVu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0E9C4AF0D;
+	Tue, 16 Jul 2024 15:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144414;
-	bh=siWKAdMSWtqQHfQYTj4YtGeSqae57eCwUhnXXD+1BlQ=;
+	s=korg; t=1721145106;
+	bh=FzMdAoUN0grSqFg2BedME6W4cL9Q0n/j1kU32WLWsi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uUzxqtX13XH6UsiuIImp8XPqr0mvvBIoLPh4KQyFqKYe5ZWuHuymgvbe7rKrS+9AU
-	 Cv25NKgVi00tk4urr8znaJgkJ4ZfI32rkxKAioRlPkCpQtQsy9nz/Ry9owIXLp/PI1
-	 qFIWuGAb8CPixUJReZgYcGZuAkyrzPtMSa8eM0x8=
+	b=pZgNmyVuMPIMjbs/xF8cN7WJTZdFanB4F1VzXCC9C7w8NOm9HtC/nkyf3BN1AdM62
+	 geXPf58IXzVUOSfI3gi3sJxxe0nt8cS1XaRbwmyhcM8hAdn/08PsVu3fl5J9hUmbv9
+	 Pa0y2HbQEbtqJmS3DMXEiz5/0hVaJ854DDva9Lyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	jinxiaobo <jinxiaobo@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 5.4 65/78] USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.9 101/143] nvmem: core: only change name to fram for current attribute
 Date: Tue, 16 Jul 2024 17:31:37 +0200
-Message-ID: <20240716152743.158090614@linuxfoundation.org>
+Message-ID: <20240716152759.864969637@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 3859e85de30815a20bce7db712ce3d94d40a682d upstream.
+commit 0ba424c934fd43dccf0d597e1ae8851f07cb2edf upstream.
 
-START BP-850K is a dot matrix printer that crashes when
-it receives a Set-Interface request and needs USB_QUIRK_NO_SET_INTF
-to work properly.
+bin_attr_nvmem_eeprom_compat is the template from which all future
+compat attributes are created.
+Changing it means to change all subsquent compat attributes, too.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: jinxiaobo <jinxiaobo@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/202E4B2BD0F0FEA4+20240702154408.631201-1-wangyuli@uniontech.com
+Instead only use the "fram" name for the currently registered attribute.
+
+Fixes: fd307a4ad332 ("nvmem: prepare basics for FRAM support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240628113704.13742-4-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvmem/core.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -504,6 +504,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x1b1c, 0x1b38), .driver_info = USB_QUIRK_DELAY_INIT |
- 	  USB_QUIRK_DELAY_CTRL_MSG },
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -396,10 +396,9 @@ static int nvmem_sysfs_setup_compat(stru
+ 	if (!config->base_dev)
+ 		return -EINVAL;
  
-+	/* START BP-850k Printer */
-+	{ USB_DEVICE(0x1bc3, 0x0003), .driver_info = USB_QUIRK_NO_SET_INTF },
-+
- 	/* MIDI keyboard WORLDE MINI */
- 	{ USB_DEVICE(0x1c75, 0x0204), .driver_info =
- 			USB_QUIRK_CONFIG_INTF_STRINGS },
+-	if (config->type == NVMEM_TYPE_FRAM)
+-		bin_attr_nvmem_eeprom_compat.attr.name = "fram";
+-
+ 	nvmem->eeprom = bin_attr_nvmem_eeprom_compat;
++	if (config->type == NVMEM_TYPE_FRAM)
++		nvmem->eeprom.attr.name = "fram";
+ 	nvmem->eeprom.attr.mode = nvmem_bin_attr_get_umode(nvmem);
+ 	nvmem->eeprom.size = nvmem->size;
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
 
 
 
