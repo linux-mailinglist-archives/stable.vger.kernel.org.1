@@ -1,335 +1,245 @@
-Return-Path: <stable+bounces-59391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC9D931F70
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 05:43:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C849931FB4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 06:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F44B2814A6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 03:43:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB9A21C20E2A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 04:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B123813FF9;
-	Tue, 16 Jul 2024 03:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B19F10A11;
+	Tue, 16 Jul 2024 04:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hbI332qB"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rFr9xsfD"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578BC17BAA
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 03:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721101387; cv=fail; b=f077XKTyJgus8TkSEVLzpWOSOj+CTk77Lu/derPlQDrIhYRBUbX6Nd2FPH2ab3nIPtxj6oGeRJmHuFlMd+jVSXhaevZepLdGLowCJqMh9k76dT9JGA6NeO8kVne7jn3R4I3bTfADWPY6C23+rgQ+B+iJaxR3EZmNPEQsngRWXI0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721101387; c=relaxed/simple;
-	bh=WiT8cDNJJqMjKZVXnmweBQewbIZr8V7ITMx/djD7VQ0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=alV7kzKHmKN3yJAI8DTBH9hNRVJ7PbWYLdxrG1LkcwSkC95oqwfLZ8EOAbD0mypMZEFiSo+W87NTTEfEwe3uybbSkWcF5JWDu5gKS/jwrwVajILKKhBniEXWbqqZCBhaI4/15CzlCqHBEu2zbyJUTMraFoMl7x0YFS1853jkdwA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hbI332qB; arc=fail smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721101385; x=1752637385;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=WiT8cDNJJqMjKZVXnmweBQewbIZr8V7ITMx/djD7VQ0=;
-  b=hbI332qBIJd+fP+xzxcU7D66syJS1ufxuev8QsDSuMVMRfH8VtgzukBK
-   ykN41I3srrKmL0OJxi/AYNzQtm4znvMUVUgxMmAIl22rM6275qG1JPaL3
-   uO4Ursp1QbRBq5sXPcoXxWtB14UTdCiyieZIYOl66qx6eaSOKhIkfewjW
-   OzhaFH1osUPCEK6bGDPzcDz5FzTVFxqrdgETDeeMQU5ObGgGOi87bvKzY
-   ZN4JKQetUTisRjl/YUS2WNXzpJqsFalxAO43/488sV0JwKGL3eq1dx48p
-   qgDZ8Yq61PRcX37dtBP4943i2wJX4QGxHbxWkHoOxQpWWeNRMcps+nrxg
-   g==;
-X-CSE-ConnectionGUID: J2HwraF/QFS+0QsE6HpaTg==
-X-CSE-MsgGUID: ggt978HQQHiQdUwjOz7eGg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11134"; a="29121515"
-X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
-   d="scan'208";a="29121515"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2024 20:43:04 -0700
-X-CSE-ConnectionGUID: r8sjHpreSYGkhsFk5f8jTQ==
-X-CSE-MsgGUID: UTeICMKVSLijiwEXHlthxw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
-   d="scan'208";a="54771766"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 15 Jul 2024 20:43:05 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 15 Jul 2024 20:43:03 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 15 Jul 2024 20:43:03 -0700
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.41) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 15 Jul 2024 20:43:03 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B9yEgyL8tzfwGTyKk/yUoK1DsM6EqepStRR14OTxuWLhCvbvOI6BX1l9TGh4gUOteXEoYRStqkeGNPEixkebZ+A4vGHjYLstf1LOrnF/ujG3fVZlcG551h12tcWEe/p5FemC5iRypdXzjVCoFthqEH2hbdF/okGM06Fqp9E3QCQ8cJ9lWFJzgQeHx0T0lR6+z4twlO216d7SlJ3pbLMrFoYFdLsDUdNtKWj7iRtWrRzE8XQMsedXS+cqOrEHM9zrpQ5NJzo4okz3bDWNlezg8JbTFxTXRdc2RE6x42OpgQW1PTliRj01SnQv2DYVrhfdoPWEiNVmgz/vTX5ztPAH3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vgxePO+otvljwzk/eUHG3Mi3Om3hEh9Q9TmQvJX0S+c=;
- b=XUTg3CJssYj5M7TotltF/3Uf/qggFK3pxFAkLU0YqqYUzdqfdFuF2IrEmBXWrbkKQ3ixPlwtaJhNl/smh3Ra9mtlweZpv8fEolqjs2AD3/agoD+gSvNWLVylPYzBVxrfVFJGfQhYAqNIDnFtGhkiTSu8Pqam9MOqBIJIS+be5Kvguae0Tx1aQb49yr0JUZd5+JKbSDQrSY//96/VvlHk/Djj1Kx/AZb+vscXQlZ4vJLimTJUUT3tNjS1rcBcw0RXo/DfBARs3N+fBnqHORbcvBGwhLIIgSU5oGA3Em208w7cj9HHXb7B6CvJXwpmB7LpqGT6eIP20m9VnhrzAux60Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB5867.namprd11.prod.outlook.com (2603:10b6:a03:42a::13)
- by CO1PR11MB5137.namprd11.prod.outlook.com (2603:10b6:303:92::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.28; Tue, 16 Jul
- 2024 03:43:01 +0000
-Received: from SJ0PR11MB5867.namprd11.prod.outlook.com
- ([fe80::dc4d:b84:3424:b7e0]) by SJ0PR11MB5867.namprd11.prod.outlook.com
- ([fe80::dc4d:b84:3424:b7e0%6]) with mapi id 15.20.7762.025; Tue, 16 Jul 2024
- 03:43:01 +0000
-From: "Gote, Nitin R" <nitin.r.gote@intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-CC: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>, "Cavitt, Jonathan"
-	<jonathan.cavitt@intel.com>, "Wilson, Chris P" <chris.p.wilson@intel.com>,
-	"tursulin@ursulin.net" <tursulin@ursulin.net>,
-	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "Das,
- Nirmoy" <nirmoy.das@intel.com>, "janusz.krzysztofik@linux.intel.com"
-	<janusz.krzysztofik@linux.intel.com>, Chris Wilson
-	<chris.p.wilson@linux.intel.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v3] drm/i915/gt: Do not consider preemption during
- execlists_dequeue for gen8
-Thread-Topic: [PATCH v3] drm/i915/gt: Do not consider preemption during
- execlists_dequeue for gen8
-Thread-Index: AQHa062t9b0WHNH5wkOFQB2dDekqobHxt3qAgAAcC4CAATujYIAFUiwAgABZDNA=
-Date: Tue, 16 Jul 2024 03:43:01 +0000
-Message-ID: <SJ0PR11MB58670880B554A7E041F3AD75D0A22@SJ0PR11MB5867.namprd11.prod.outlook.com>
-References: <20240711163208.1355736-1-nitin.r.gote@intel.com>
- <CH0PR11MB54443CBE8B4A052419FFFD1BE5A52@CH0PR11MB5444.namprd11.prod.outlook.com>
- <ZpAfyzKlqlMrd4nj@intel.com>
- <SJ0PR11MB586743B1AF7DABD0F131E906D0A62@SJ0PR11MB5867.namprd11.prod.outlook.com>
- <ZpWfPjVificBZgBD@ashyti-mobl2.lan>
-In-Reply-To: <ZpWfPjVificBZgBD@ashyti-mobl2.lan>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB5867:EE_|CO1PR11MB5137:EE_
-x-ms-office365-filtering-correlation-id: e83222b1-3cf2-4f94-1f73-08dca5496433
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?y1NKjDU46EHvp/M7cRNZwPH2KvaTUN+5exPEC9s6sHh8Fb5+ZvNdmdoS0P6Q?=
- =?us-ascii?Q?DfQdffHmepyojOw4r5Iy3eVa7Kn9hdiw52hcgDvD27L1dcD2vEqEFBByuOHz?=
- =?us-ascii?Q?JnaNPDWlIp6oNNKQkdBWtsdsH1P3ILG8+87jQRgxmq3/YBNoUj+OKane5qK0?=
- =?us-ascii?Q?bbPO3Q3/sUjaxeq/SrUoLHFtaZ54j1hzJh95XEonCZymr+S+3BSPeG0OAoWp?=
- =?us-ascii?Q?VEwDKgTRcbgbz7qsWobmssvDQsl0ZHNN9yDp1XEoP3rNzmfjUoIs5MGYKtAM?=
- =?us-ascii?Q?FnS5oT3A/VDZzS/Gue0OsWJFehrSIDCr+FH1EdMG+9JXsc76vNgR7gE3h1Wh?=
- =?us-ascii?Q?Bhkl18D6hnyZ5Z6ae7AOCRAYPNXmUZ0sJnnVcNiDLJQBS7JOn6TB9kMHTPLK?=
- =?us-ascii?Q?64Vx9DNJgmPr0JUY1RrOddgB0cX8eHm2ywuTSfMNGdl9eIanpPE93Z6a84sh?=
- =?us-ascii?Q?CJN2/Yvcnw0FMAXONbHCS92rGn6CuCgAeeAJm1GFAJLugwvL3ippwx1NqP4d?=
- =?us-ascii?Q?d7pRFHUnLrGQWU9DoM1Vwjmu0Cnp5mhmEPmZ58vdGNIouBRdB3i16LeMVeN0?=
- =?us-ascii?Q?8IABoCl+GMreBgmz+XbqHzKJ5YOOBRdpxpd9Y1X/96NgpO4Xklbe7OLfoBn2?=
- =?us-ascii?Q?YM6ETS4M7x4hUJvVPUJTaK87RG7hUtLTJDZRr865g9/ZS0+LAdtDCLGM7V5p?=
- =?us-ascii?Q?DGBO09E16ltJ6oJ/0/YsySbNZuwB3ryrs/ztJGUOZ9nNzVvMXl2EnW21Dcwn?=
- =?us-ascii?Q?RwBup6wzRlhJ0UIm/0TsdRhRhIUx8x2yneR4Krzwj64XaGXyPrgAIyrQedgx?=
- =?us-ascii?Q?1Nt3nZNODrM3jLLZ+RbSVrTwLovg5NTx478mwHyN1c/Fj7gmrxtBJvJKkxqU?=
- =?us-ascii?Q?FeHSla/EFO4oV9gEmAtzIAhrPCAURfGg+EXEMFhDERICETjDngJHYFWYNNO0?=
- =?us-ascii?Q?YPnekm6k6HdQblUAHY+KWR2TnDNNWpiV8k62ScY1+OAycbEHhoKVN6qMA8nH?=
- =?us-ascii?Q?00z5UJFxuf8l4n6faVS/SMWygdsQdz94zP0d+oxr9zctJ69fz4UEUw6aEfcd?=
- =?us-ascii?Q?6jwHQt0cfPZhoZKdBqYyLyid2LUZotFEcG+JyFQ0n4WQ+yQ5cMwWHG1XX1+I?=
- =?us-ascii?Q?mvwIbWuCj6mQK2b9cu2JPajIm3dv+6yFIjKTZ2HfATEg7ivilxSS/fOKyeZL?=
- =?us-ascii?Q?OP9iPKdKH+oMu7hNZjItjfI8c5VLKwm0dkYfL2+pa4l+HV0Czx1cpRopcpFN?=
- =?us-ascii?Q?iHTAVaMXWu1b32d5nqjeIcx8tETbBjnKDiCptholOkDcxafFx6lWD9CT8MOY?=
- =?us-ascii?Q?N/ZrT9j9lelPLJy1vGMUFmvOju/BYqXj14i+L7/Zq5rHsmg4M8/9eC455olb?=
- =?us-ascii?Q?jgtTFifw8r1wfe+u90uWz1OtYP6EJqvQMsjtVIv+LccUGO8J0A=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5867.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Hf+kGEcacpIEiIlRpynot585TMrqWmEpdrliydKROsQTJ6mBFpkm3L8zzucD?=
- =?us-ascii?Q?EEQoTE9GObEaIgIh6Rg3WLKun2l3zBMtLLhoAHBxEWp62dIk7uhsBzOH5wEr?=
- =?us-ascii?Q?rFK2NLsffILhz8evSClDCVgR6Ttp7OmY60L4P/a1BnNqyJrGEiz+eQ1GBy6A?=
- =?us-ascii?Q?xXFUwq88okKdu09RYNEehCGBuoYg81JuPeSltckevNWgULMJ0VgwXHNseiJq?=
- =?us-ascii?Q?mIiHQqTCc/cQJhYNbPKEp9Pbamzkg+e7wwVuGlkFpF7v8RsTvyfOG3L7Qunw?=
- =?us-ascii?Q?gWjBfvgC/9tvmTb6iT33LQnERoMYJJX9wE/XAY+9nODZTRwAFjdg34z3Jg69?=
- =?us-ascii?Q?d1wiZhSh1tVy3m8dvJUF71W9zb1giOvtbgdl4fsC4IjQbCSGpwTmkvOssj4F?=
- =?us-ascii?Q?Yc9Ga4G/yAhZGo03bgWeW5vUyYXhnZJ3b7uoqabu1pU2KzY+yHL8EV0SMZdG?=
- =?us-ascii?Q?vG61HypJD3/ShoY1smUAvrV6CyM1UJPjTFMGuTyzP/XXhnOqLe2NaqnMazZt?=
- =?us-ascii?Q?FzThzs5aJyD2B3SJn5kDmm3nPmYxoDEzfjWQjqhX6kCQ1D1dRJe57uS5snBQ?=
- =?us-ascii?Q?W2sq4zyvQWhDS4e3vZKN0bwSceGcpuRP3UAkgDBQRWncQpr1+ZxG53GfQXuZ?=
- =?us-ascii?Q?YxjkUdvGug9FxY/kSnpezj5aSweiH/ovSCF0A1WWem1HCYjpy9ftesnfT9E1?=
- =?us-ascii?Q?+hY4eGXfGZmpdRGsnBoQelW7Arw3h+IgH0cA7giX38MwWAnF/Iib3F2XOY5Q?=
- =?us-ascii?Q?GlrvKSs1PWP4dM33ZkTo2EqoMcuRRt+ehKLOluOVJYdBsHfyg8Yhx/uzRXrR?=
- =?us-ascii?Q?qqM7pg7gi17rxyPUge7K87UtY6j5PjgHhFmylyA201umBdNM/IwK/NNHTdCf?=
- =?us-ascii?Q?16ufZfBISVOZvkfqcPGbRNSOIVW2uVPYwK7Lw9gdIRZLt+kcofoVlPCANlH8?=
- =?us-ascii?Q?O4Q6knOw6KpL+zavwHdG4rU2c8IJu3V9P9YmZ56Z1IBKEoJBh2ZgdC1uPUNo?=
- =?us-ascii?Q?DxqG3+6sClCw8mxkQ6FQQGhuZNmz7gmLBpKnfbnpEmChftjMxGbz4ERkqgKq?=
- =?us-ascii?Q?Gece46YcHaayxxvLjK+e9Zitw/Tv3K2rIT2UiRCJkUz/IoNMjbUQmz1Cv6VF?=
- =?us-ascii?Q?+pZTSLNK8rpSqZdLA7WFULAe5zTuHIdh77GCLFJC+B9vCdrHY0zmYUv3XPnv?=
- =?us-ascii?Q?vRtqNhe3C62XCpPE/wbMKqWNKWPB9AbDF269bEB8cY/xaa712PkYTJT+tBOD?=
- =?us-ascii?Q?2o5QX8wcUQpITeN4ivpcPvvrKGX22Qsu0TuyWAnlu0Tmt8GutmrwFDlr05Re?=
- =?us-ascii?Q?SkD21iRjRKK/LUP/7B9UD3GdEhoygS2B8Y790X1HM5xtstAdEsXBTUAmflA8?=
- =?us-ascii?Q?C4AC+Fec/r8aibLTBfu06H/5HShBsL6UkJYB9coubcgrwRivcLEee/U1ofoU?=
- =?us-ascii?Q?KYjUIl6aqN0+IBn318UKf/MpMOdyx6l+nuw7148HrjHtT0ooHcD20a+zDCrR?=
- =?us-ascii?Q?XL75DQKM2RiK+Xq1Csd73LXkk86YxY26nfAC47EX0/CY23r3j+/n4taezGc8?=
- =?us-ascii?Q?aFKpLDItXQYmwq+/iMMgQJ4VSTj8WhFsUoQ+TBbd?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA36117556
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 04:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721104142; cv=none; b=vEBDhat4xegHivGD+S+imGao2eIvUFgTC4UsZaRBcFVxzSLFspnxDv/K6FVvA8aDjWD19U1+lMxRIOqrrmdSrUO3YnNwYgi4xFf/HFfBxGwuZLdo23gL4OFli1SVP7AEMaMghBFMgKLn4dY+zau+SQNEzJIZUHbjGNRESElxW3M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721104142; c=relaxed/simple;
+	bh=4Gi9EsuLgBZmH7h9xoX/wphIaCIqAVbRY7tbzzhbcYA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=L9txV+1ajLc73aMTip8dbLalAojFjHZCDjW3Du1wraG5/JquxHQzpjQ2Yf3pQ7vEMuIKYAaDY44d1Ox++ZxUtQYjcWJlQSuJy0u+CPZEfwqRFVGa5QUrcpjy3ivrF/8jril7tIex4VRBgorvUUhWzoFPWTZ3H4uuW4FqfGJcKTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rFr9xsfD; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-65eb8845bc6so80315077b3.3
+        for <stable@vger.kernel.org>; Mon, 15 Jul 2024 21:29:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721104140; x=1721708940; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pt2IJQldOz0JFDryR35KpZ+LDeTPQpPCV34EnsUw17k=;
+        b=rFr9xsfDWd3+jEvYiRE1RRFbKFm3Hq9uQnBfqqQxQEBKBrBbEZI/iy9bMulm/7l54C
+         GOaYq/GSwey/uFtMDzRChmlaANAbY5Ovmbqzosn4vG0XIEXQexH0V1jYG8VNxCKxIJDg
+         gi4GzyerIGXC0yI14oA8jU2OxfskPlCqhlDEnX95LP/8rwLaublfKicj0MYme7gIVZDK
+         GeUzdO+bmU6DOCTZbeasH1IFzb9TI8mIHqPgs/4l/wdN2KzyEuAI+kH1rUZcpQOLYylq
+         geoPXU6HAqLQPFj+q2vfhUjAvKb0irPxJXhi7yiZi2EEYkV9v0AlPt6tU5RhbLL7K9DU
+         /u3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721104140; x=1721708940;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pt2IJQldOz0JFDryR35KpZ+LDeTPQpPCV34EnsUw17k=;
+        b=U6JLqqgbUXqLhmsv98y08/6vUUqbmVI5CrXZWESOdiqCpCGckDYQXWwh60bS9E5Tkj
+         9eyqYdn/cITzzKkxdYPBmT4oWX7nQb+4R8AWdiNq9nZNxbLNyZbJD0wVDwN/utsQTbK6
+         a36qILmW/vxOFolvDAYB/ae+WDvrBy9h4hkdSA3Bi+/OnSO7Ma3WKa1KTM903EJujgf8
+         /G7TiFpqLIcTlhFZrHryJIEv4DCj1nq1XNdqNFk4pDPpSAPhgGiG+LxlN7Zs6CAVUbjG
+         3ew5FL9xUYn0XsIXeYdFsgcAN28omU3iDEftJ7vPPcvUlCOyYT8sTiEd7NU10ohEZLgG
+         vruQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV1L3EE1fsb7LpLOlIEgxVnTQ2ClRawnxSL5iPSjdfom3ADnOZSeY9ZCxgxQsoBJtGYISL3zbCNNDJXlsOAHF+1vDcQq6T+
+X-Gm-Message-State: AOJu0YwyNlwfNgkYQktUjsZQwuAyv8fiZoSxKV+3PqzjsIws042hckoH
+	JGhFhX3YXONFmJGhTs5Tqj/IcZCMkiZZsI9KOXlvdqA0Q829W761zaGv06ica6+dMDVTdty10Lu
+	anczGr5evlg==
+X-Google-Smtp-Source: AGHT+IEDUsoHRwY3Md2RBRvkyGLpUtH0lWc1gjEYWBrr7ZUoAYArK3I1k9Ht/aQJYwv2CfEx1ZkP97e56n6zIQ==
+X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
+ (user=cmllamas job=sendgmr) by 2002:a05:690c:fd4:b0:62d:cef:67dd with SMTP id
+ 00721157ae682-6637f1c259emr508367b3.1.1721104139877; Mon, 15 Jul 2024
+ 21:28:59 -0700 (PDT)
+Date: Tue, 16 Jul 2024 04:28:54 +0000
+In-Reply-To: <000000000000601513061d51ea72@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5867.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e83222b1-3cf2-4f94-1f73-08dca5496433
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jul 2024 03:43:01.1813
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: chFOKrOVz4B5ypzAZCbeps03Agfvm4nTtTdqaPf8RC0V+7HCiCBieVy7Er49ncbDECwRo47ZdPl2mjSYY6UBIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5137
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+References: <000000000000601513061d51ea72@google.com>
+X-Mailer: git-send-email 2.45.2.993.g49e7a77208-goog
+Message-ID: <20240716042856.871184-1-cmllamas@google.com>
+Subject: [PATCH] binder: fix descriptor lookup for context manager
+From: Carlos Llamas <cmllamas@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@android.com, 
+	syzkaller-bugs@googlegroups.com, stable@vger.kernel.org, 
+	syzbot+3dae065ca76952a67257@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+In commit 15d9da3f818c ("binder: use bitmap for faster descriptor
+lookup"), it was incorrectly assumed that references to the context
+manager node should always get descriptor zero assigned to them.
 
-> -----Original Message-----
-> From: Andi Shyti <andi.shyti@linux.intel.com>
-> Sent: Tuesday, July 16, 2024 3:44 AM
-> To: Gote, Nitin R <nitin.r.gote@intel.com>
-> Cc: Vivi, Rodrigo <rodrigo.vivi@intel.com>; Cavitt, Jonathan
-> <jonathan.cavitt@intel.com>; Wilson, Chris P <chris.p.wilson@intel.com>;
-> tursulin@ursulin.net; intel-gfx@lists.freedesktop.org; dri-
-> devel@lists.freedesktop.org; Das, Nirmoy <nirmoy.das@intel.com>;
-> janusz.krzysztofik@linux.intel.com; Chris Wilson
-> <chris.p.wilson@linux.intel.com>; stable@vger.kernel.org
-> Subject: Re: [PATCH v3] drm/i915/gt: Do not consider preemption during
-> execlists_dequeue for gen8
->=20
-> Hi,
->=20
-> On Fri, Jul 12, 2024 at 03:25:23PM +0200, Gote, Nitin R wrote:
-> > > -----Original Message-----
-> > > From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> > > Sent: Thursday, July 11, 2024 11:39 PM
-> > > To: Cavitt, Jonathan <jonathan.cavitt@intel.com>
-> > > Cc: Gote, Nitin R <nitin.r.gote@intel.com>; Wilson, Chris P
-> > > <chris.p.wilson@intel.com>; tursulin@ursulin.net; intel-
-> > > gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org; Shyti,
-> > > Andi <andi.shyti@intel.com>; Das, Nirmoy <nirmoy.das@intel.com>;
-> > > janusz.krzysztofik@linux.intel.com; Chris Wilson
-> > > <chris.p.wilson@linux.intel.com>; stable@vger.kernel.org
-> > > Subject: Re: [PATCH v3] drm/i915/gt: Do not consider preemption
-> > > during execlists_dequeue for gen8
-> > >
-> > > On Thu, Jul 11, 2024 at 04:28:53PM +0000, Cavitt, Jonathan wrote:
-> > > > -----Original Message-----
-> > > > From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On
-> > > > Behalf Of Nitin Gote
-> > > > Sent: Thursday, July 11, 2024 9:32 AM
-> > > > To: Wilson, Chris P <chris.p.wilson@intel.com>;
-> > > > tursulin@ursulin.net; intel-gfx@lists.freedesktop.org
-> > > > Cc: dri-devel@lists.freedesktop.org; Shyti, Andi
-> > > > <andi.shyti@intel.com>; Das, Nirmoy <nirmoy.das@intel.com>;
-> > > > janusz.krzysztofik@linux.intel.com; Gote, Nitin R
-> > > > <nitin.r.gote@intel.com>; Chris Wilson
-> > > > <chris.p.wilson@linux.intel.com>; stable@vger.kernel.org
-> > > > Subject: [PATCH v3] drm/i915/gt: Do not consider preemption during
-> > > > execlists_dequeue for gen8
-> > > > >
-> > > > > We're seeing a GPU HANG issue on a CHV platform, which was
-> > > > > caused by
-> > > > > bac24f59f454 ("drm/i915/execlists: Enable coarse preemption
-> > > > > boundaries
-> > > for gen8").
-> > > > >
-> > > > > Gen8 platform has only timeslice and doesn't support a
-> > > > > preemption mechanism as engines do not have a preemption timer
-> > > > > and doesn't send an irq if the preemption timeout expires.
-> > > >
-> > > > That seems to mean the original can_preempt function was
-> > > > inaccurately built, so fixing it here makes the most sense to me,
-> > > > especially if it's causing
-> > > problems.
-> > > >
-> > > > Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com> -Jonathan
-> > > > Cavitt
-> > > >
-> > > > > So, add a fix to not consider preemption during dequeuing for
-> > > > > gen8 platforms.
-> > > > >
-> > > > > v2: Simplify can_preempt() function (Tvrtko Ursulin)
-> > > > >
-> > > > > v3:
-> > > > >  - Inside need_preempt(), condition of can_preempt() is not requi=
-red
-> > > > >    as simplified can_preempt() is enough. (Chris Wilson)
-> > > > >
-> > > > > Fixes: bac24f59f454 ("drm/i915/execlists: Enable coarse
-> > > > > preemption boundaries for gen8")
-> > >
-> > > Something strange in here...
-> > >
-> > > This patch is not using directly or indirectly
-> > > (I915_ENGINE_HAS_PREEMPTION) the can_preempt()...
-> > >
-> >
-> > Thank you Rodrigo for the review comment. Seems like you are right.
-> > Fixes: bac24f59f454 is misleading as it's not using can_preempt().
-> > The bug could be from the commit bac24f59f454 as mentioned in the
-> > issue But this change fixes the original implementation of can_preempt(=
-)  in
-> below commit.
-> > Fixes: 751f82b353a6 ("drm/i915/gt: Only disable preemption on gen8
-> render engines").
-> >
-> > I will update the Fixes in the commit description and will send in v4.
->=20
-> Can I reword the commit log to something similar:
->=20
->     drm/i915/gt: Do not consider preemption during execlists_dequeue for
-> gen8
->=20
->     We're seeing a GPU hang issue on a CHV platform, which was caused by
-> commit
->     bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundarie=
-s
-> for
->     Gen8").
->=20
->     The Gen8 platform only supports timeslicing and doesn't have a
-> preemption
->     mechanism, as its engines do not have a preemption timer.
->=20
->     Commit 751f82b353a6 ("drm/i915/gt: Only disable preemption on Gen8
-> render
->     engines") addressed this issue only for render engines. This patch ex=
-tends
->     that fix by ensuring that preemption is not considered for all engine=
-s on
->     Gen8 platforms.
->=20
->     v4:
->      - Use the correct Fixes tag (Rodrigo Vivi)
->      - Reworded commit log (Andi Shyti)
->=20
->     v3:
->      - Inside need_preempt(), condition of can_preempt() is not required
->        as simplified can_preempt() is enough. (Chris Wilson)
->=20
->     v2: Simplify can_preempt() function (Tvrtko Ursulin)
->=20
-> Andi
+However, if the context manager dies and a new process takes its place,
+then assigning descriptor zero to the new context manager might lead to
+collisions, as there could still be references to the older node. This
+issue was reported by syzbot with the following trace:
 
-Sure. You can.
+  kernel BUG at drivers/android/binder.c:1173!
+  Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+  Modules linked in:
+  CPU: 1 PID: 447 Comm: binder-util Not tainted 6.10.0-rc6-00348-g31643d84b8c3 #10
+  Hardware name: linux,dummy-virt (DT)
+  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : binder_inc_ref_for_node+0x500/0x544
+  lr : binder_inc_ref_for_node+0x1e4/0x544
+  sp : ffff80008112b940
+  x29: ffff80008112b940 x28: ffff0e0e40310780 x27: 0000000000000000
+  x26: 0000000000000001 x25: ffff0e0e40310738 x24: ffff0e0e4089ba34
+  x23: ffff0e0e40310b00 x22: ffff80008112bb50 x21: ffffaf7b8f246970
+  x20: ffffaf7b8f773f08 x19: ffff0e0e4089b800 x18: 0000000000000000
+  x17: 0000000000000000 x16: 0000000000000000 x15: 000000002de4aa60
+  x14: 0000000000000000 x13: 2de4acf000000000 x12: 0000000000000020
+  x11: 0000000000000018 x10: 0000000000000020 x9 : ffffaf7b90601000
+  x8 : ffff0e0e48739140 x7 : 0000000000000000 x6 : 000000000000003f
+  x5 : ffff0e0e40310b28 x4 : 0000000000000000 x3 : ffff0e0e40310720
+  x2 : ffff0e0e40310728 x1 : 0000000000000000 x0 : ffff0e0e40310710
+  Call trace:
+   binder_inc_ref_for_node+0x500/0x544
+   binder_transaction+0xf68/0x2620
+   binder_thread_write+0x5bc/0x139c
+   binder_ioctl+0xef4/0x10c8
+  [...]
 
-Thank you
-- Nitin=20
+This patch adds back the previous behavior of assigning the next
+non-zero descriptor if references to previous context managers still
+exist. It amends both strategies, the newer dbitmap code and also the
+legacy slow_desc_lookup_olocked(), by allowing them to start looking
+for available descriptors at a given offset.
+
+Fixes: 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
+Cc: stable@vger.kernel.org
+Reported-and-tested-by: syzbot+3dae065ca76952a67257@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000c1c0a0061d1e6979@google.com/
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---
+ drivers/android/binder.c  | 15 ++++++---------
+ drivers/android/dbitmap.h | 16 ++++++----------
+ 2 files changed, 12 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index f26286e3713e..905290c98c3c 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -1044,13 +1044,13 @@ static struct binder_ref *binder_get_ref_olocked(struct binder_proc *proc,
+ }
+ 
+ /* Find the smallest unused descriptor the "slow way" */
+-static u32 slow_desc_lookup_olocked(struct binder_proc *proc)
++static u32 slow_desc_lookup_olocked(struct binder_proc *proc, u32 offset)
+ {
+ 	struct binder_ref *ref;
+ 	struct rb_node *n;
+ 	u32 desc;
+ 
+-	desc = 1;
++	desc = offset;
+ 	for (n = rb_first(&proc->refs_by_desc); n; n = rb_next(n)) {
+ 		ref = rb_entry(n, struct binder_ref, rb_node_desc);
+ 		if (ref->data.desc > desc)
+@@ -1071,21 +1071,18 @@ static int get_ref_desc_olocked(struct binder_proc *proc,
+ 				u32 *desc)
+ {
+ 	struct dbitmap *dmap = &proc->dmap;
++	unsigned int nbits, offset;
+ 	unsigned long *new, bit;
+-	unsigned int nbits;
+ 
+ 	/* 0 is reserved for the context manager */
+-	if (node == proc->context->binder_context_mgr_node) {
+-		*desc = 0;
+-		return 0;
+-	}
++	offset = (node == proc->context->binder_context_mgr_node) ? 0 : 1;
+ 
+ 	if (!dbitmap_enabled(dmap)) {
+-		*desc = slow_desc_lookup_olocked(proc);
++		*desc = slow_desc_lookup_olocked(proc, offset);
+ 		return 0;
+ 	}
+ 
+-	if (dbitmap_acquire_first_zero_bit(dmap, &bit) == 0) {
++	if (dbitmap_acquire_next_zero_bit(dmap, offset, &bit) == 0) {
+ 		*desc = bit;
+ 		return 0;
+ 	}
+diff --git a/drivers/android/dbitmap.h b/drivers/android/dbitmap.h
+index b8ac7b4764fd..1d58c2e7abd6 100644
+--- a/drivers/android/dbitmap.h
++++ b/drivers/android/dbitmap.h
+@@ -6,8 +6,7 @@
+  *
+  * Used by the binder driver to optimize the allocation of the smallest
+  * available descriptor ID. Each bit in the bitmap represents the state
+- * of an ID, with the exception of BIT(0) which is used exclusively to
+- * reference binder's context manager.
++ * of an ID.
+  *
+  * A dbitmap can grow or shrink as needed. This part has been designed
+  * considering that users might need to briefly release their locks in
+@@ -132,16 +131,17 @@ dbitmap_grow(struct dbitmap *dmap, unsigned long *new, unsigned int nbits)
+ }
+ 
+ /*
+- * Finds and sets the first zero bit in the bitmap. Upon success @bit
++ * Finds and sets the next zero bit in the bitmap. Upon success @bit
+  * is populated with the index and 0 is returned. Otherwise, -ENOSPC
+  * is returned to indicate that a dbitmap_grow() is needed.
+  */
+ static inline int
+-dbitmap_acquire_first_zero_bit(struct dbitmap *dmap, unsigned long *bit)
++dbitmap_acquire_next_zero_bit(struct dbitmap *dmap, unsigned long offset,
++			      unsigned long *bit)
+ {
+ 	unsigned long n;
+ 
+-	n = find_first_zero_bit(dmap->map, dmap->nbits);
++	n = find_next_zero_bit(dmap->map, dmap->nbits, offset);
+ 	if (n == dmap->nbits)
+ 		return -ENOSPC;
+ 
+@@ -154,9 +154,7 @@ dbitmap_acquire_first_zero_bit(struct dbitmap *dmap, unsigned long *bit)
+ static inline void
+ dbitmap_clear_bit(struct dbitmap *dmap, unsigned long bit)
+ {
+-	/* BIT(0) should always set for the context manager */
+-	if (bit)
+-		clear_bit(bit, dmap->map);
++	clear_bit(bit, dmap->map);
+ }
+ 
+ static inline int dbitmap_init(struct dbitmap *dmap)
+@@ -168,8 +166,6 @@ static inline int dbitmap_init(struct dbitmap *dmap)
+ 	}
+ 
+ 	dmap->nbits = NBITS_MIN;
+-	/* BIT(0) is reserved for the context manager */
+-	set_bit(0, dmap->map);
+ 
+ 	return 0;
+ }
+-- 
+2.45.2.993.g49e7a77208-goog
+
 
