@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-59718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0642932B6A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0BC932C6A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:55:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C7802813D4
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4D7C2847C5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF2C1448ED;
-	Tue, 16 Jul 2024 15:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4493C19B59C;
+	Tue, 16 Jul 2024 15:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R64CjFni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsKZRD1+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C066DF9E8;
-	Tue, 16 Jul 2024 15:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011201DDCE;
+	Tue, 16 Jul 2024 15:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144695; cv=none; b=SYu43k5+SUkTe6TEtOeEvorlbdtZp/gGrAoLUOivJdoxMgEzgmjVcYzJNLRnI1/SWU4Fq9CWP0bBb3b/pUqZ6phIuYnYevydltLAOqb1noVZZCmkpCjv3ZGmvvDCek/gyjbXy3URqN1Hjc8cqT/N8oTj16jWm3kAcu7dD0vujeA=
+	t=1721145304; cv=none; b=TRC/1QNW496NQQwW9tFhEBglWpzUO9DPZCZPTQrNwNmIRI//Aly4QQdrdmZq9jsw73ziGL21ztECs69vVeSlKwDMV1rCD/DP00b4ZDMvXuQqBmVNQ1a8oSI5DvAZZ0utuoPOGuJ9R8XHqjIqDEDzj/Bh4LaZ1XEM9N1OHr6q0sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144695; c=relaxed/simple;
-	bh=p/bPQJPqMR3eOtqFJ82G4kYv8Nz9KullLxAEQPoAT7U=;
+	s=arc-20240116; t=1721145304; c=relaxed/simple;
+	bh=yZQOb6ss2OGk4WJzVRdwaVloOXYIC8v+57Tzu+XuoLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNcTtxY8cOyYG5DNHkhQSjjNicz2+82GSv8Wmion/GkZymo++2hw5j8QvjKxQlYT89kz3IPK6zNy3W+nRoiBCekgBvom8kbs/godTSCDbA+S0hKg7idrK/GBQxsQnFziR2bd+3IEonzEW4y6xhO63IIaBB28B05clfVbr4lts2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R64CjFni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B8BC116B1;
-	Tue, 16 Jul 2024 15:44:55 +0000 (UTC)
+	 MIME-Version; b=t6eOvDEpC5XwLf5AbxkFiq7bF4GH5IYQVTD846HP/SdZ2Cd7za5Md3H9xirTD2wq3zstuDuSoiHdMxPXl6KEvTlV1NQzEUENTBewHoIAp+thJdmgg2YGiOnuhnuRvf34mQUe7/Gjx901+khCtW8E4Tcs+pDB8kfBMtx3SaBzMBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MsKZRD1+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB8BC116B1;
+	Tue, 16 Jul 2024 15:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144695;
-	bh=p/bPQJPqMR3eOtqFJ82G4kYv8Nz9KullLxAEQPoAT7U=;
+	s=korg; t=1721145303;
+	bh=yZQOb6ss2OGk4WJzVRdwaVloOXYIC8v+57Tzu+XuoLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R64CjFni3cnrpNueeLg9ztiCPmKuzWM6HUOeD9NUg17cP6zAUbE/aSpK6lDdEA/bI
-	 P5kAQiYyiuF8dBlCp9z0W25FKH7qmx+rc4Y08XK2tUT2enyMShdyWdOGxIlKzqtyWn
-	 3q4OL9PDaMbQmyi5SsokpUNF0imaI0GP4E6vZKR4=
+	b=MsKZRD1+Qnx5Yo6Q16ZDD1xXG5YeEzSqzlXTvn+NKmFgoxImRrlK8bVuyTG1PWtMd
+	 c9VMoy+JUJ3KfbVEL4mD6za8lYdEVLp3yKWKK7kYrbYCDwrNhnatW4s0ah/yL9VZvs
+	 lbi7QK22RLpHUeGcKKhR5nbsrBq4AbXC7FZoDojY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 077/108] USB: serial: option: add Telit FN912 rmnet compositions
+	Yafang Shao <laoar.shao@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 21/96] bpf: use bpf_map_kvcalloc in bpf_local_storage
 Date: Tue, 16 Jul 2024 17:31:32 +0200
-Message-ID: <20240716152748.938988698@linuxfoundation.org>
+Message-ID: <20240716152747.330581504@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-commit 9a590ff283421b71560deded2110dbdcbe1f7d1d upstream.
+[ Upstream commit ddef81b5fd1da4d7c3cc8785d2043b73b72f38ef ]
 
-Add the following Telit FN912 compositions:
+Introduce new helper bpf_map_kvcalloc() for the memory allocation in
+bpf_local_storage(). Then the allocation will charge the memory from the
+map instead of from current, though currently they are the same thing as
+it is only used in map creation path now. By charging map's memory into
+the memcg from the map, it will be more clear.
 
-0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3000 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3001 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Link: https://lore.kernel.org/r/20230210154734.4416-3-laoar.shao@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: af253aef183a ("bpf: fix order of args in call to bpf_map_kvcalloc")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/bpf.h            |  8 ++++++++
+ kernel/bpf/bpf_local_storage.c |  4 ++--
+ kernel/bpf/syscall.c           | 15 +++++++++++++++
+ 3 files changed, 25 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1425,6 +1425,10 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(0) | RSVD(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1901, 0xff),	/* Telit LN940 (MBIM) */
- 	  .driver_info = NCTRL(0) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3000, 0xff),	/* Telit FN912 */
-+	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3001, 0xff),	/* Telit FN912 */
-+	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7010, 0xff),	/* Telit LE910-S1 (RNDIS) */
- 	  .driver_info = NCTRL(2) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7011, 0xff),	/* Telit LE910-S1 (ECM) */
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 1ca1902af23e9..6b18b8da025f9 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1777,6 +1777,8 @@ struct bpf_prog *bpf_prog_get_curr_or_next(u32 *id);
+ void *bpf_map_kmalloc_node(const struct bpf_map *map, size_t size, gfp_t flags,
+ 			   int node);
+ void *bpf_map_kzalloc(const struct bpf_map *map, size_t size, gfp_t flags);
++void *bpf_map_kvcalloc(struct bpf_map *map, size_t n, size_t size,
++		       gfp_t flags);
+ void __percpu *bpf_map_alloc_percpu(const struct bpf_map *map, size_t size,
+ 				    size_t align, gfp_t flags);
+ #else
+@@ -1793,6 +1795,12 @@ bpf_map_kzalloc(const struct bpf_map *map, size_t size, gfp_t flags)
+ 	return kzalloc(size, flags);
+ }
+ 
++static inline void *
++bpf_map_kvcalloc(struct bpf_map *map, size_t n, size_t size, gfp_t flags)
++{
++	return kvcalloc(n, size, flags);
++}
++
+ static inline void __percpu *
+ bpf_map_alloc_percpu(const struct bpf_map *map, size_t size, size_t align,
+ 		     gfp_t flags)
+diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
+index f8dd7c516e320..8ea65973739e4 100644
+--- a/kernel/bpf/bpf_local_storage.c
++++ b/kernel/bpf/bpf_local_storage.c
+@@ -568,8 +568,8 @@ static struct bpf_local_storage_map *__bpf_local_storage_map_alloc(union bpf_att
+ 	nbuckets = max_t(u32, 2, nbuckets);
+ 	smap->bucket_log = ilog2(nbuckets);
+ 
+-	smap->buckets = kvcalloc(sizeof(*smap->buckets), nbuckets,
+-				 GFP_USER | __GFP_NOWARN | __GFP_ACCOUNT);
++	smap->buckets = bpf_map_kvcalloc(&smap->map, sizeof(*smap->buckets),
++					 nbuckets, GFP_USER | __GFP_NOWARN);
+ 	if (!smap->buckets) {
+ 		bpf_map_area_free(smap);
+ 		return ERR_PTR(-ENOMEM);
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 1e46a84694b8a..d77597daa0022 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -470,6 +470,21 @@ void *bpf_map_kzalloc(const struct bpf_map *map, size_t size, gfp_t flags)
+ 	return ptr;
+ }
+ 
++void *bpf_map_kvcalloc(struct bpf_map *map, size_t n, size_t size,
++		       gfp_t flags)
++{
++	struct mem_cgroup *memcg, *old_memcg;
++	void *ptr;
++
++	memcg = bpf_map_get_memcg(map);
++	old_memcg = set_active_memcg(memcg);
++	ptr = kvcalloc(n, size, flags | __GFP_ACCOUNT);
++	set_active_memcg(old_memcg);
++	mem_cgroup_put(memcg);
++
++	return ptr;
++}
++
+ void __percpu *bpf_map_alloc_percpu(const struct bpf_map *map, size_t size,
+ 				    size_t align, gfp_t flags)
+ {
+-- 
+2.43.0
+
 
 
 
