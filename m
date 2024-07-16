@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-59558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08665932AB1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 132C1932C21
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97ABAB2181D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2AE2B22BA4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942441DDD1;
-	Tue, 16 Jul 2024 15:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D9819DF73;
+	Tue, 16 Jul 2024 15:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="potTJM4X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19ayUo8g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C65CA40;
-	Tue, 16 Jul 2024 15:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9569C1DDCE;
+	Tue, 16 Jul 2024 15:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144215; cv=none; b=aj9myk8I6iyzfIEUSGfN6YWJF9ela0ruQiwSPIExiwYPtwa41PeJXFZXi0UHkP4p0NKGjgOxLC2DzPvnNW4YfFAwxoJT2bPs+p4/91WJA8+7d+gf90b6P2lCPpQk7ks5mipqifBUr/72Wx8A3ZLS5aJ/ZHE49gASX4OT4Dsd2EY=
+	t=1721145115; cv=none; b=qRlFgqiSbboJYIt4rui2KWJFYESA4PfaTOPbCuUVU9YUO2z8P80HhxlvVz6FHUAQ7SgD+FL/sgV9WV+Fc90Q9gtcJTslfdFcdaEGvrHUNGNKTLQ42J6SyU6vXBh+bS7PDRAcJRwPFMsLuxObPx/2ZVyU7l3m1s3cjaz307sR4sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144215; c=relaxed/simple;
-	bh=yBPOTvTnoA4NY2U03S3/15kZfCaaw4/QopruOgX/RpY=;
+	s=arc-20240116; t=1721145115; c=relaxed/simple;
+	bh=RO8J4ue8/bQ5QEh+tGJ7y3pcjiWP183L8cTKmh/7R4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KF+XFyJO/zQTMzMqgBRTka14D4KGuBCxGU8rHU500v8cA4EJmisDZiLIoGBTMR73+EaUqN4rmKydc1egGsBsfcUNW3B4Dc9TWJBkxDIBFhJSJRyZPx1ZHnmZ8i82cmZRc5U4egjWCpliUK4EY6VyBE650OjwubBBgxvdKd7g7Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=potTJM4X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3C0C116B1;
-	Tue, 16 Jul 2024 15:36:54 +0000 (UTC)
+	 MIME-Version; b=PUkos3gNTDWoDM6qG1GhnqovbneMDqqn43Q4HHneEe5U5Pep8ycbwtSanUcZ7Ib7Jw5QJNcRc28jBdH3enaHLHg/87fppZc7I92HF2h8a58skVpUkR3X64SMdfXlmykoV1XC4MLqtrqS1XeH/W3VayGRhC0uvLSMGPXYCb5fY6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19ayUo8g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC0CC4AF0D;
+	Tue, 16 Jul 2024 15:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144215;
-	bh=yBPOTvTnoA4NY2U03S3/15kZfCaaw4/QopruOgX/RpY=;
+	s=korg; t=1721145115;
+	bh=RO8J4ue8/bQ5QEh+tGJ7y3pcjiWP183L8cTKmh/7R4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=potTJM4Xjz8npRTsYZ7WNwSRlCL8CgpqEHtiOv/a6MGhaYUmU7uZan1MTw8cWp0HN
-	 ccaKUVncBSss7dohAAvuQy8bd5mmlyPepVt7IYJ7gNGoN9brJRT/fj0bm4RaDTACGy
-	 XOy1qXfRu+s6hyz+OTTkbdV3Rl+FKJLdOdNxiows=
+	b=19ayUo8g8RoZWC10ybK/wkKCPqWH5IPX2GxxZonVCq1bnMIT4Nc+CeM6KY5zt9Ktr
+	 xlZBLjesfmse+XIqyHNRWAchM8MgGqw9yepbpbklHcKC4i9R/i6wFrowtxV0ixHs0N
+	 GpM4WhQ35+Y74IbWnyPrxP4P5KWX3s5JjqhygWX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 65/66] nilfs2: fix kernel bug on rename operation of broken directory
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.9 104/143] tty: serial: ma35d1: Add a NULL check for of_node
 Date: Tue, 16 Jul 2024 17:31:40 +0200
-Message-ID: <20240716152740.648362339@linuxfoundation.org>
+Message-ID: <20240716152759.979088526@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Jacky Huang <ychuang3@nuvoton.com>
 
-commit a9e1ddc09ca55746079cc479aa3eb6411f0d99d4 upstream.
+commit acd09ac253b5de8fd79fc61a482ee19154914c7a upstream.
 
-Syzbot reported that in rename directory operation on broken directory on
-nilfs2, __block_write_begin_int() called to prepare block write may fail
-BUG_ON check for access exceeding the folio/page size.
+The pdev->dev.of_node can be NULL if the "serial" node is absent.
+Add a NULL check to return an error in such cases.
 
-This is because nilfs_dotdot(), which gets parent directory reference
-entry ("..") of the directory to be moved or renamed, does not check
-consistency enough, and may return location exceeding folio/page size for
-broken directories.
-
-Fix this issue by checking required directory entries ("." and "..") in
-the first chunk of the directory in nilfs_dotdot().
-
-Link: https://lkml.kernel.org/r/20240628165107.9006-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d3abed1ad3d367fa2627
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 930cbf92db01 ("tty: serial: Add Nuvoton ma35d1 serial driver support")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/8df7ce45-fd58-4235-88f7-43fe7cd67e8f@moroto.mountain/
+Signed-off-by: Jacky Huang <ychuang3@nuvoton.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240625064128.127-1-ychuang570808@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/dir.c |   32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ drivers/tty/serial/ma35d1_serial.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -396,11 +396,39 @@ found:
+--- a/drivers/tty/serial/ma35d1_serial.c
++++ b/drivers/tty/serial/ma35d1_serial.c
+@@ -688,12 +688,13 @@ static int ma35d1serial_probe(struct pla
+ 	struct uart_ma35d1_port *up;
+ 	int ret = 0;
  
- struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
- {
--	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
-+	struct page *page;
-+	struct nilfs_dir_entry *de, *next_de;
-+	size_t limit;
-+	char *msg;
- 
-+	de = nilfs_get_page(dir, 0, &page);
- 	if (IS_ERR(de))
- 		return NULL;
--	return nilfs_next_entry(de);
+-	if (pdev->dev.of_node) {
+-		ret = of_alias_get_id(pdev->dev.of_node, "serial");
+-		if (ret < 0) {
+-			dev_err(&pdev->dev, "failed to get alias/pdev id, errno %d\n", ret);
+-			return ret;
+-		}
++	if (!pdev->dev.of_node)
++		return -ENODEV;
 +
-+	limit = nilfs_last_byte(dir, 0);  /* is a multiple of chunk size */
-+	if (unlikely(!limit || le64_to_cpu(de->inode) != dir->i_ino ||
-+		     !nilfs_match(1, ".", de))) {
-+		msg = "missing '.'";
-+		goto fail;
-+	}
-+
-+	next_de = nilfs_next_entry(de);
-+	/*
-+	 * If "next_de" has not reached the end of the chunk, there is
-+	 * at least one more record.  Check whether it matches "..".
-+	 */
-+	if (unlikely((char *)next_de == (char *)de + nilfs_chunk_size(dir) ||
-+		     !nilfs_match(2, "..", next_de))) {
-+		msg = "missing '..'";
-+		goto fail;
-+	}
-+	*p = page;
-+	return next_de;
-+
-+fail:
-+	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
-+	nilfs_put_page(page);
-+	return NULL;
- }
- 
- ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
++	ret = of_alias_get_id(pdev->dev.of_node, "serial");
++	if (ret < 0) {
++		dev_err(&pdev->dev, "failed to get alias/pdev id, errno %d\n", ret);
++		return ret;
+ 	}
+ 	up = &ma35d1serial_ports[ret];
+ 	up->port.line = ret;
 
 
 
