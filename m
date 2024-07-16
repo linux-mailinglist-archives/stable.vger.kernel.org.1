@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-59787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA231932BC3
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:48:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0833D932ABC
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8847BB21EE6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:48:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2E5D1F22F94
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD5C19DF73;
-	Tue, 16 Jul 2024 15:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2601DFDE;
+	Tue, 16 Jul 2024 15:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4V5RG1D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJzJG/SQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE56B12B72;
-	Tue, 16 Jul 2024 15:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3A0E541;
+	Tue, 16 Jul 2024 15:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144907; cv=none; b=Lqw5qYqNQJrEERlQzQ+7Qmd940ckxOhoTLyJaKGg6dhZq0fBgiOWAArtsJZYdt0/+7hA8/6p4N/3H1h1lQEY2pQy4kiFh2IB0rOjqkjSMdqtMyVOoFbDirG8rFMqn70RL0guYzhomLJzNmgrS21ZYtFJfYKKTBVAvPAAyA9rOwM=
+	t=1721144248; cv=none; b=OC+EZMCFMzPEcvrxQhCbZwuDwuMsAHz0S1R6E87fcyWOphTW0tLdT/Kkfz7Xsre25DJ6vlEE5WvzCFlFqn7EwM8pR2DrKijnSjlKG7jo7sV1T/EcH+Ub8LZp9GkRGAAVZkLbUdOV+0gkZGma+vVVmmAdN5WXZjZTyXHwJhlvR+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144907; c=relaxed/simple;
-	bh=ycZZs3JELOt0rcJppPZ2jhx+9hp3o03sBhYiZHqDxGQ=;
+	s=arc-20240116; t=1721144248; c=relaxed/simple;
+	bh=eLtU7gArPbwEBjwiGiyLoqgOR/vFBSog1DeHonOAspY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcMrig+mx4qSQR4+JSrNRvsv9Zv27JNSjYMADouzyHawTmnLMZBdr77wuCr4m8N6fgcOLVD3I7Z2zPJXXlwxHRLBrUzHHidzUAH/xy5DmVwKKX798ee3ZlTR8H9yQx03NYTu1VN4t2knpPLFilRRuBcFyVdy8NfT0JX/UJwVmD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4V5RG1D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265FFC116B1;
-	Tue, 16 Jul 2024 15:48:26 +0000 (UTC)
+	 MIME-Version; b=BEtvBGfqJz2ax1H6KBLlojQMkVXX7bzNdBbybwp5ZngkN7yAzN0Mih2Q/bt+5yP9WJnvuEeJGGIHs0pckVN+dhnXclF2tmD8lEYMBe54zykbpc6x/oQaew9Z2fO0s3DYiAnKdSiTP9PZjWt4z+LnLLTYsBPd4/qBmB/bKqYtF78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJzJG/SQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837A9C116B1;
+	Tue, 16 Jul 2024 15:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144907;
-	bh=ycZZs3JELOt0rcJppPZ2jhx+9hp3o03sBhYiZHqDxGQ=;
+	s=korg; t=1721144247;
+	bh=eLtU7gArPbwEBjwiGiyLoqgOR/vFBSog1DeHonOAspY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4V5RG1DeAIPIJ10tRHBCQuCdVHsXfcpbKSVBGNL8VebENYvdq+YiHUa7rDSwz9O7
-	 +dDSKfchuH4pGOzwlgA3dlOprHNnAu6zQmhdp/VCeD9yYqzM/RE8ph6n1cvsj2jLK/
-	 UBXhrW2Hy2YIVvNeDl/uHS+TY7MgmHlPEhTTbBaw=
+	b=hJzJG/SQyHBAV8Inyu+3JppCHQbwp/zNUI0o7kwQU4VPL+htBfymP1llFMy0UDJG6
+	 BOmXsFy8zzlywC+TV9kraiecmIUBscZ+3k3TgI0AXd5HsDbgs0+fJeaQaYhaVALbLe
+	 MflPh37hEW6uQaJI6Ur0wd2bfNMlAkYuCRyCIn9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jon Maxwell <jmaxwell37@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Erico Nunes <nunes.erico@gmail.com>,
+	Qiang Yu <yuq825@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 036/143] tcp: avoid too many retransmit packets
-Date: Tue, 16 Jul 2024 17:30:32 +0200
-Message-ID: <20240716152757.377673529@linuxfoundation.org>
+Subject: [PATCH 5.4 01/78] drm/lima: fix shared irq handling on driver remove
+Date: Tue, 16 Jul 2024 17:30:33 +0200
+Message-ID: <20240716152740.685623220@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Erico Nunes <nunes.erico@gmail.com>
 
-[ Upstream commit 97a9063518f198ec0adb2ecb89789de342bb8283 ]
+[ Upstream commit a6683c690bbfd1f371510cb051e8fa49507f3f5e ]
 
-If a TCP socket is using TCP_USER_TIMEOUT, and the other peer
-retracted its window to zero, tcp_retransmit_timer() can
-retransmit a packet every two jiffies (2 ms for HZ=1000),
-for about 4 minutes after TCP_USER_TIMEOUT has 'expired'.
+lima uses a shared interrupt, so the interrupt handlers must be prepared
+to be called at any time. At driver removal time, the clocks are
+disabled early and the interrupts stay registered until the very end of
+the remove process due to the devm usage.
+This is potentially a bug as the interrupts access device registers
+which assumes clocks are enabled. A crash can be triggered by removing
+the driver in a kernel with CONFIG_DEBUG_SHIRQ enabled.
+This patch frees the interrupts at each lima device finishing callback
+so that the handlers are already unregistered by the time we fully
+disable clocks.
 
-The fix is to make sure tcp_rtx_probe0_timed_out() takes
-icsk->icsk_user_timeout into account.
-
-Before blamed commit, the socket would not timeout after
-icsk->icsk_user_timeout, but would use standard exponential
-backoff for the retransmits.
-
-Also worth noting that before commit e89688e3e978 ("net: tcp:
-fix unexcepted socket die when snd_wnd is 0"), the issue
-would last 2 minutes instead of 4.
-
-Fixes: b701a99e431d ("tcp: Add tcp_clamp_rto_to_user_timeout() helper to improve accuracy")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Jon Maxwell <jmaxwell37@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240710001402.2758273-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240401224329.1228468-2-nunes.erico@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_timer.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/lima/lima_gp.c  | 2 ++
+ drivers/gpu/drm/lima/lima_mmu.c | 5 +++++
+ drivers/gpu/drm/lima/lima_pp.c  | 4 ++++
+ 3 files changed, 11 insertions(+)
 
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index 22d25f63858b9..cceb4fabd4c85 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -481,15 +481,26 @@ static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
- 				     const struct sk_buff *skb,
- 				     u32 rtx_delta)
+diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
+index ccf49faedebf8..3fca560087c97 100644
+--- a/drivers/gpu/drm/lima/lima_gp.c
++++ b/drivers/gpu/drm/lima/lima_gp.c
+@@ -244,7 +244,9 @@ int lima_gp_init(struct lima_ip *ip)
+ 
+ void lima_gp_fini(struct lima_ip *ip)
  {
-+	const struct inet_connection_sock *icsk = inet_csk(sk);
-+	u32 user_timeout = READ_ONCE(icsk->icsk_user_timeout);
- 	const struct tcp_sock *tp = tcp_sk(sk);
--	const int timeout = TCP_RTO_MAX * 2;
-+	int timeout = TCP_RTO_MAX * 2;
- 	s32 rcv_delta;
++	struct lima_device *dev = ip->dev;
  
-+	if (user_timeout) {
-+		/* If user application specified a TCP_USER_TIMEOUT,
-+		 * it does not want win 0 packets to 'reset the timer'
-+		 * while retransmits are not making progress.
-+		 */
-+		if (rtx_delta > user_timeout)
-+			return true;
-+		timeout = min_t(u32, timeout, msecs_to_jiffies(user_timeout));
-+	}
- 	/* Note: timer interrupt might have been delayed by at least one jiffy,
- 	 * and tp->rcv_tstamp might very well have been written recently.
- 	 * rcv_delta can thus be negative.
- 	 */
--	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
-+	rcv_delta = icsk->icsk_timeout - tp->rcv_tstamp;
- 	if (rcv_delta <= timeout)
- 		return false;
++	devm_free_irq(dev->dev, ip->irq, ip);
+ }
  
+ int lima_gp_pipe_init(struct lima_device *dev)
+diff --git a/drivers/gpu/drm/lima/lima_mmu.c b/drivers/gpu/drm/lima/lima_mmu.c
+index 8e1651d6a61fa..04e6090cce595 100644
+--- a/drivers/gpu/drm/lima/lima_mmu.c
++++ b/drivers/gpu/drm/lima/lima_mmu.c
+@@ -97,7 +97,12 @@ int lima_mmu_init(struct lima_ip *ip)
+ 
+ void lima_mmu_fini(struct lima_ip *ip)
+ {
++	struct lima_device *dev = ip->dev;
++
++	if (ip->id == lima_ip_ppmmu_bcast)
++		return;
+ 
++	devm_free_irq(dev->dev, ip->irq, ip);
+ }
+ 
+ void lima_mmu_switch_vm(struct lima_ip *ip, struct lima_vm *vm)
+diff --git a/drivers/gpu/drm/lima/lima_pp.c b/drivers/gpu/drm/lima/lima_pp.c
+index 8fef224b93c85..1dacca8bffe1a 100644
+--- a/drivers/gpu/drm/lima/lima_pp.c
++++ b/drivers/gpu/drm/lima/lima_pp.c
+@@ -251,7 +251,9 @@ int lima_pp_init(struct lima_ip *ip)
+ 
+ void lima_pp_fini(struct lima_ip *ip)
+ {
++	struct lima_device *dev = ip->dev;
+ 
++	devm_free_irq(dev->dev, ip->irq, ip);
+ }
+ 
+ int lima_pp_bcast_init(struct lima_ip *ip)
+@@ -272,7 +274,9 @@ int lima_pp_bcast_init(struct lima_ip *ip)
+ 
+ void lima_pp_bcast_fini(struct lima_ip *ip)
+ {
++	struct lima_device *dev = ip->dev;
+ 
++	devm_free_irq(dev->dev, ip->irq, ip);
+ }
+ 
+ static int lima_pp_task_validate(struct lima_sched_pipe *pipe,
 -- 
 2.43.0
 
