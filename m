@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-59505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C54932A77
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6940E932B58
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2AF41C22539
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:34:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A2D71C222A4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3F7F9E8;
-	Tue, 16 Jul 2024 15:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A924136643;
+	Tue, 16 Jul 2024 15:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxIj47T9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZL9TMxt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A90D53B;
-	Tue, 16 Jul 2024 15:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD497F9E8;
+	Tue, 16 Jul 2024 15:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144053; cv=none; b=qMNgxR3giQmyqYiUiZbYobrYk5lp2jfoQPqvnniijZRtoMmgg8xsvJtOXJxHaG9aLgXersUvY3fFKaaI1z6TrFlaHcU61UEDT4zglooLU5w0our3g928dE2UvVgsngJi+n85XnRXUIMu+iuVXmnd6zb+AFqSrSySX06oXUR9buo=
+	t=1721144645; cv=none; b=SvZASAENNY9c9Bl8F1nLoVy0uHS4v9m4NYePWA1+1rdvdcjOopYTE9gXgmTJ331wIJ1/XWfkUN6yIGCiqBGIXEtw45xr4xkBehhH8qD2SO+gkuWb09UvEZ/sUUvITE+6NEa6H7Sv8icksWlbxd9Ks2mh/5PhEraFgB399aYt3Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144053; c=relaxed/simple;
-	bh=0uADDyyYfVTkNogd5tBz+kjhyGmeHiBV6R3iksmo4y0=;
+	s=arc-20240116; t=1721144645; c=relaxed/simple;
+	bh=NlzpLpyQPqFZwmwkVDBVQps/+8GZtXs6jlhGp20Q0u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McDyWm+CqDX2saoWQDS4xyvZ/JSrv30fNIXqK1n1cJdT6TZvITULafUACo+4rNa8Osr01YnaLFCMMXz2NPqBp/9F6+47IaT1nJs0o1gqDDoQC8fZhbSevBGTnDmlp66aQCLkvoertqWvCkXjqETuxi/HmqPod+W6dIc4iNghxsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jxIj47T9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF372C116B1;
-	Tue, 16 Jul 2024 15:34:12 +0000 (UTC)
+	 MIME-Version; b=dF08Y4LSROBNwi4+tGmMjHvnjAHgK38zPxSnetxpOw9hrdG6UsTaUtTKNpCih5r5/agHfYTH1HI/zeTU9aG1nck4IIIT4N+Gg+TN9+F4WZD3iXi6bVqsc49Eca9XkDN/vlA0viTFE6R/uHyF6oUxjuppnUdYLQS5CmKqQTeQgJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZL9TMxt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43356C116B1;
+	Tue, 16 Jul 2024 15:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144053;
-	bh=0uADDyyYfVTkNogd5tBz+kjhyGmeHiBV6R3iksmo4y0=;
+	s=korg; t=1721144645;
+	bh=NlzpLpyQPqFZwmwkVDBVQps/+8GZtXs6jlhGp20Q0u0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jxIj47T92aUUjdwoMYL8CiV145hFC/NOX7xYpL2oOOy4yvIJgSkI4oYe18XXGgNcj
-	 Ff+duDmXFXhTk+rqHFgfFDubqj+7LCxdgTjuMpWeeozeL2BdA+yzmmg8EOtjKu23UW
-	 tvGcUNUK1TS4i2ruc2H37pqKC2pKC+1p3VnqdouE=
+	b=DZL9TMxtEUlFSjiizP25Z4sBauBhi/kG4lJJ0iPAXzAacbU5NVZrbV0KpBOXaBOBj
+	 p79BZHvnOUCPKRmr0yeEsxfYoKebX4X4Lb5IB1/hTTEJaUY7o0mA4B7Dd7KwVt4M0Z
+	 H9KiHQXwEHMw6g1QA3AUQQmQx5N873eijAAafkAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Xiaochun Lu <xiaochun.lu@bytedance.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 12/66] media: dvb-frontends: tda10048: Fix integer overflow
+Subject: [PATCH 5.10 032/108] selftests: make order checking verbose in msg_zerocopy selftest
 Date: Tue, 16 Jul 2024 17:30:47 +0200
-Message-ID: <20240716152738.631802633@linuxfoundation.org>
+Message-ID: <20240716152747.231551288@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit 1aa1329a67cc214c3b7bd2a14d1301a795760b07 ]
+[ Upstream commit 7d6d8f0c8b700c9493f2839abccb6d29028b4219 ]
 
-state->xtal_hz can be up to 16M, so it can overflow a 32 bit integer
-when multiplied by pll_mfactor.
+We find that when lock debugging is on, notifications may not come in
+order. Thus, we have order checking outputs managed by cfg_verbose, to
+avoid too many outputs in this case.
 
-Create a new 64 bit variable to hold the calculations.
-
-Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-25-3c4865f5a4b0@chromium.org
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 07b65c5b31ce ("test: add msg_zerocopy test")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Signed-off-by: Xiaochun Lu <xiaochun.lu@bytedance.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240701225349.3395580-3-zijianzhang@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/tda10048.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/msg_zerocopy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/tda10048.c b/drivers/media/dvb-frontends/tda10048.c
-index 6ca1b25542c5c..888ae41b76857 100644
---- a/drivers/media/dvb-frontends/tda10048.c
-+++ b/drivers/media/dvb-frontends/tda10048.c
-@@ -422,6 +422,7 @@ static int tda10048_set_if(struct dvb_frontend *fe, u32 bw)
- 	struct tda10048_config *config = &state->config;
- 	int i;
- 	u32 if_freq_khz;
-+	u64 sample_freq;
- 
- 	dprintk(1, "%s(bw = %d)\n", __func__, bw);
- 
-@@ -463,9 +464,11 @@ static int tda10048_set_if(struct dvb_frontend *fe, u32 bw)
- 	dprintk(1, "- pll_pfactor = %d\n", state->pll_pfactor);
- 
- 	/* Calculate the sample frequency */
--	state->sample_freq = state->xtal_hz * (state->pll_mfactor + 45);
--	state->sample_freq /= (state->pll_nfactor + 1);
--	state->sample_freq /= (state->pll_pfactor + 4);
-+	sample_freq = state->xtal_hz;
-+	sample_freq *= state->pll_mfactor + 45;
-+	do_div(sample_freq, state->pll_nfactor + 1);
-+	do_div(sample_freq, state->pll_pfactor + 4);
-+	state->sample_freq = sample_freq;
- 	dprintk(1, "- sample_freq = %d\n", state->sample_freq);
- 
- 	/* Update the I/F */
+diff --git a/tools/testing/selftests/net/msg_zerocopy.c b/tools/testing/selftests/net/msg_zerocopy.c
+index 926556febc83c..7ea5fb28c93db 100644
+--- a/tools/testing/selftests/net/msg_zerocopy.c
++++ b/tools/testing/selftests/net/msg_zerocopy.c
+@@ -438,7 +438,7 @@ static bool do_recv_completion(int fd, int domain)
+ 	/* Detect notification gaps. These should not happen often, if at all.
+ 	 * Gaps can occur due to drops, reordering and retransmissions.
+ 	 */
+-	if (lo != next_completion)
++	if (cfg_verbose && lo != next_completion)
+ 		fprintf(stderr, "gap: %u..%u does not append to %u\n",
+ 			lo, hi, next_completion);
+ 	next_completion = hi + 1;
 -- 
 2.43.0
 
