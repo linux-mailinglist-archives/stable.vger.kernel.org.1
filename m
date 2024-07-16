@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-59638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 252D7932B08
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CC2932C29
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C47841F219EE
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEA921F242AD
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1271DFF0;
-	Tue, 16 Jul 2024 15:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E1F19B59C;
+	Tue, 16 Jul 2024 15:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+XQ/+G1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBTFPyMr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BE6B641;
-	Tue, 16 Jul 2024 15:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8571A19AD93;
+	Tue, 16 Jul 2024 15:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144450; cv=none; b=CdlOMslcfHkfjOVoK7ycWW6QKxESsarMZ58vwV93Yl44ENp1SCerVxT1m7xeyT01p4swHsjf9Y4yQ5Z0BElFLujifBZyrjbYgfvbxwPBExMJVAMW9iw21Oztpb7e/hjAda49qgFqUevul/M2Hvlbj+knVIi1yNvrP6/WB0iLVuY=
+	t=1721145141; cv=none; b=S6aTHQQ7/RPXBgVttVIrmvGffSsny2/9FkwOz9ERRI//s7XnMTrVZ2nn6esdbUKIb722YG6buTNC2D3Muo9n6WxeerDXCiB3GLhhCc+95v4j4QnSN1eKCTMwrj3XhGKp1agat6LqnnGSIrh1pR2pjK7WQZ3uo4Vewr2q5MqVvIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144450; c=relaxed/simple;
-	bh=5L5hG9q3k+qOgID5fqKICmXF9n5hQpBo/7LKKiOWC+I=;
+	s=arc-20240116; t=1721145141; c=relaxed/simple;
+	bh=gY+5ojZwOPZ/OEPKbiv+/8cmkeZEVaOFgUjrXo2mGGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IMlNpIqTXrW2RxBAjeLyiBpNA1piKc0cy7bW9WAyBkVtogN/btkmG3qXcB4qQFgnkPXODEDJM7/cJzT4MGdmcUYgdPGydCwq5j/8o/NSh1KiFtL16eti5Wsdg9J65cGPzXigu0s+cmdQQTN4TWly8vdOLEVqSF1tLYEaIqw/pZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+XQ/+G1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A331DC116B1;
-	Tue, 16 Jul 2024 15:40:49 +0000 (UTC)
+	 MIME-Version; b=u2dskD8cehR0BQfZM+aFXTcToUEXqq3nVQIS3P3BBG4UhjSQ1efV41GXo4mLGNdHeAMSyhOnMlyLuhfAzoKwEN4JYZCW2JhieSl0UYoF4RvDXVB0lLmO1AzAFW3pRdff6yOZfUEYcPP+FGs+YKd4u7qBmybg6Vy4Zgok8dDRCq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBTFPyMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B61C116B1;
+	Tue, 16 Jul 2024 15:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144450;
-	bh=5L5hG9q3k+qOgID5fqKICmXF9n5hQpBo/7LKKiOWC+I=;
+	s=korg; t=1721145141;
+	bh=gY+5ojZwOPZ/OEPKbiv+/8cmkeZEVaOFgUjrXo2mGGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s+XQ/+G1EMIW6hhJPsMgL2z/e14aWK1kwJI3iKGEmqwIoH/1vZ82FgZTYWk2DHbFt
-	 IGQU+qRJZz8f+YmhmEjpi1qmf0eQnxtRTIdROKTH/jCiDFd1QuMdkB0rF+dBYxBkLa
-	 /KVwClgL41OqMbri2AMYDhQOL3QgdFJwGgBzm4cY=
+	b=dBTFPyMrJxlgT39HIU/dJXIfNR+mmeotCh5g+F02TSyAg6kggOsJUcuDZvfIXmr18
+	 VnnCPengpyKSz/voI+A7BHulHntN6mvlOZ+Rc0dMKzZRvwf/1i/gQyd6Y9X3fhfPBT
+	 KGV+n9dC0ZnVqhUkDQ3z9IC50IeiYuCKSe4pDK+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jon Maxwell <jmaxwell37@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 76/78] tcp: avoid too many retransmit packets
+	Audra Mitchell <audra@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Mike Rapoport <rppt@linux.vnet.ibm.com>,
+	Peter Xu <peterx@redhat.com>,
+	Rafael Aquini <raquini@redhat.com>,
+	Shaohua Li <shli@fb.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 112/143] Fix userfaultfd_api to return EINVAL as expected
 Date: Tue, 16 Jul 2024 17:31:48 +0200
-Message-ID: <20240716152743.581264286@linuxfoundation.org>
+Message-ID: <20240716152800.287559908@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +70,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Audra Mitchell <audra@redhat.com>
 
-commit 97a9063518f198ec0adb2ecb89789de342bb8283 upstream.
+commit 1723f04caacb32cadc4e063725d836a0c4450694 upstream.
 
-If a TCP socket is using TCP_USER_TIMEOUT, and the other peer
-retracted its window to zero, tcp_retransmit_timer() can
-retransmit a packet every two jiffies (2 ms for HZ=1000),
-for about 4 minutes after TCP_USER_TIMEOUT has 'expired'.
+Currently if we request a feature that is not set in the Kernel config we
+fail silently and return all the available features.  However, the man
+page indicates we should return an EINVAL.
 
-The fix is to make sure tcp_rtx_probe0_timed_out() takes
-icsk->icsk_user_timeout into account.
+We need to fix this issue since we can end up with a Kernel warning should
+a program request the feature UFFD_FEATURE_WP_UNPOPULATED on a kernel with
+the config not set with this feature.
 
-Before blamed commit, the socket would not timeout after
-icsk->icsk_user_timeout, but would use standard exponential
-backoff for the retransmits.
+ [  200.812896] WARNING: CPU: 91 PID: 13634 at mm/memory.c:1660 zap_pte_range+0x43d/0x660
+ [  200.820738] Modules linked in:
+ [  200.869387] CPU: 91 PID: 13634 Comm: userfaultfd Kdump: loaded Not tainted 6.9.0-rc5+ #8
+ [  200.877477] Hardware name: Dell Inc. PowerEdge R6525/0N7YGH, BIOS 2.7.3 03/30/2022
+ [  200.885052] RIP: 0010:zap_pte_range+0x43d/0x660
 
-Also worth noting that before commit e89688e3e978 ("net: tcp:
-fix unexcepted socket die when snd_wnd is 0"), the issue
-would last 2 minutes instead of 4.
-
-Fixes: b701a99e431d ("tcp: Add tcp_clamp_rto_to_user_timeout() helper to improve accuracy")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Jon Maxwell <jmaxwell37@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240710001402.2758273-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/20240626130513.120193-1-audra@redhat.com
+Fixes: e06f1e1dd499 ("userfaultfd: wp: enabled write protection in userfaultfd API")
+Signed-off-by: Audra Mitchell <audra@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rafael Aquini <raquini@redhat.com>
+Cc: Shaohua Li <shli@fb.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_timer.c |   22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ fs/userfaultfd.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -437,22 +437,34 @@ static void tcp_fastopen_synack_timer(st
- static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
- 				     const struct sk_buff *skb)
- {
-+	const struct inet_connection_sock *icsk = inet_csk(sk);
-+	u32 user_timeout = READ_ONCE(icsk->icsk_user_timeout);
- 	const struct tcp_sock *tp = tcp_sk(sk);
--	const int timeout = TCP_RTO_MAX * 2;
-+	int timeout = TCP_RTO_MAX * 2;
- 	u32 rtx_delta;
- 	s32 rcv_delta;
- 
-+	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
-+			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -2053,7 +2053,7 @@ static int userfaultfd_api(struct userfa
+ 		goto out;
+ 	features = uffdio_api.features;
+ 	ret = -EINVAL;
+-	if (uffdio_api.api != UFFD_API || (features & ~UFFD_API_FEATURES))
++	if (uffdio_api.api != UFFD_API)
+ 		goto err_out;
+ 	ret = -EPERM;
+ 	if ((features & UFFD_FEATURE_EVENT_FORK) && !capable(CAP_SYS_PTRACE))
+@@ -2077,6 +2077,11 @@ static int userfaultfd_api(struct userfa
+ 	uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
+ 	uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
+ #endif
 +
-+	if (user_timeout) {
-+		/* If user application specified a TCP_USER_TIMEOUT,
-+		 * it does not want win 0 packets to 'reset the timer'
-+		 * while retransmits are not making progress.
-+		 */
-+		if (rtx_delta > user_timeout)
-+			return true;
-+		timeout = min_t(u32, timeout, msecs_to_jiffies(user_timeout));
-+	}
++	ret = -EINVAL;
++	if (features & ~uffdio_api.features)
++		goto err_out;
 +
- 	/* Note: timer interrupt might have been delayed by at least one jiffy,
- 	 * and tp->rcv_tstamp might very well have been written recently.
- 	 * rcv_delta can thus be negative.
- 	 */
--	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
-+	rcv_delta = icsk->icsk_timeout - tp->rcv_tstamp;
- 	if (rcv_delta <= timeout)
- 		return false;
- 
--	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
--			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
--
- 	return rtx_delta > timeout;
- }
- 
+ 	uffdio_api.ioctls = UFFD_API_IOCTLS;
+ 	ret = -EFAULT;
+ 	if (copy_to_user(buf, &uffdio_api, sizeof(uffdio_api)))
 
 
 
