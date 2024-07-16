@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-59853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF1A932C1D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B238932D10
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 175A3284F0F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFC13284052
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9395119F46C;
-	Tue, 16 Jul 2024 15:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27BD17A930;
+	Tue, 16 Jul 2024 16:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZgNmyVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/vCjK5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5107717A93F;
-	Tue, 16 Jul 2024 15:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE1C136643;
+	Tue, 16 Jul 2024 16:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145106; cv=none; b=gaq9HqEh42fxRTHntRxneIPUddcpST/ZQD9XSZNX4fpl2M5WADw7ynxsw0qaYUd3ePte8dnKMdYgyL3SsMHXz8xRto0d2hOJbbXGJ7u2OYzzC8GKUnjU80Ze5I5JQMSgasSfkwWkQ1lY3rm63uk5LVjVfbrzHhFBCjHR38cEx/Q=
+	t=1721145640; cv=none; b=bzR4gReaWkhxSigACa2SlOPbtr7X0ZC4LGBCWmTrxsea7R2h7Agb2G5E7z/tsf1kYONjnwhyiogHSfuDxHCPcer29dX5VlfF8/3P3rkdeiNhYIVYi4whs5KroScMIk24lmK8VpRgx1hXRzh8s/u9N9L4fCm0vKeCEjqeonnoSec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145106; c=relaxed/simple;
-	bh=FzMdAoUN0grSqFg2BedME6W4cL9Q0n/j1kU32WLWsi4=;
+	s=arc-20240116; t=1721145640; c=relaxed/simple;
+	bh=B+NAmw4U3P59hYCSt38T1zVf9YadZUbK1jS6VrKabe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c+dzZWlkJoksAbBAShGYj2RYG6ooLOigRBned4fropeS3IrkGL5KR/OSphOthEc0z7aCgJhXTLvL2vv6iIO6Dn9kG6r0jlwSVLWH+vRTFKGoTH8obSaywCHvKgcuKmEWDfvBFJFSQ7JJsB+MkJ1BF24Rn6PrFGxELEfEJNI3ZsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZgNmyVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0E9C4AF0D;
-	Tue, 16 Jul 2024 15:51:45 +0000 (UTC)
+	 MIME-Version; b=Qu6/uOMEXAxjZWYEukCpVbtnE94OlJ5jEPte1urVofQUVrflAen5m7IFBS9mRsOPBBHX7Zl8Yb7CEbFavuvFNKOefLBbZWVQeBqdCgs1iSlfBQ/12b3semaYQX4Fh1qvljqUG/gta4JUsuSkANEHsdqIBEOqtJMEwGkQ4Z4FzDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/vCjK5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C25C4AF0B;
+	Tue, 16 Jul 2024 16:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145106;
-	bh=FzMdAoUN0grSqFg2BedME6W4cL9Q0n/j1kU32WLWsi4=;
+	s=korg; t=1721145640;
+	bh=B+NAmw4U3P59hYCSt38T1zVf9YadZUbK1jS6VrKabe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZgNmyVuMPIMjbs/xF8cN7WJTZdFanB4F1VzXCC9C7w8NOm9HtC/nkyf3BN1AdM62
-	 geXPf58IXzVUOSfI3gi3sJxxe0nt8cS1XaRbwmyhcM8hAdn/08PsVu3fl5J9hUmbv9
-	 Pa0y2HbQEbtqJmS3DMXEiz5/0hVaJ854DDva9Lyo=
+	b=V/vCjK5sZQ/2ULV0BoBeYwjalE5CMJereomeaYAph+Ax7gMjR28BFirsAX1IUVA/R
+	 3iZoUioQ3S9P/98D6Jp62sn7HBUli6pJ5SGPTCmxdyKH9bVbc1FJnewqVvKTqLrfpx
+	 7G+Kwvw78KHsEzXEx4HLdMOmE1DjYtOEGqI9IKMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.9 101/143] nvmem: core: only change name to fram for current attribute
+	Lex Siegel <usiegl00@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Neil Brown <neilb@suse.de>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 035/121] net, sunrpc: Remap EPERM in case of connection failure in xs_tcp_setup_socket
 Date: Tue, 16 Jul 2024 17:31:37 +0200
-Message-ID: <20240716152759.864969637@linuxfoundation.org>
+Message-ID: <20240716152752.673761373@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +64,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 0ba424c934fd43dccf0d597e1ae8851f07cb2edf upstream.
+[ Upstream commit 626dfed5fa3bfb41e0dffd796032b555b69f9cde ]
 
-bin_attr_nvmem_eeprom_compat is the template from which all future
-compat attributes are created.
-Changing it means to change all subsquent compat attributes, too.
+When using a BPF program on kernel_connect(), the call can return -EPERM. This
+causes xs_tcp_setup_socket() to loop forever, filling up the syslog and causing
+the kernel to potentially freeze up.
 
-Instead only use the "fram" name for the currently registered attribute.
+Neil suggested:
 
-Fixes: fd307a4ad332 ("nvmem: prepare basics for FRAM support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628113704.13742-4-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  This will propagate -EPERM up into other layers which might not be ready
+  to handle it. It might be safer to map EPERM to an error we would be more
+  likely to expect from the network system - such as ECONNREFUSED or ENETDOWN.
+
+ECONNREFUSED as error seems reasonable. For programs setting a different error
+can be out of reach (see handling in 4fbac77d2d09) in particular on kernels
+which do not have f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err
+instead of allow boolean"), thus given that it is better to simply remap for
+consistent behavior. UDP does handle EPERM in xs_udp_send_request().
+
+Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
+Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
+Co-developed-by: Lex Siegel <usiegl00@gmail.com>
+Signed-off-by: Lex Siegel <usiegl00@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Neil Brown <neilb@suse.de>
+Cc: Trond Myklebust <trondmy@kernel.org>
+Cc: Anna Schumaker <anna@kernel.org>
+Link: https://github.com/cilium/cilium/issues/33395
+Link: https://lore.kernel.org/bpf/171374175513.12877.8993642908082014881@noble.neil.brown.name
+Link: https://patch.msgid.link/9069ec1d59e4b2129fc23433349fd5580ad43921.1720075070.git.daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/core.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/sunrpc/xprtsock.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -396,10 +396,9 @@ static int nvmem_sysfs_setup_compat(stru
- 	if (!config->base_dev)
- 		return -EINVAL;
- 
--	if (config->type == NVMEM_TYPE_FRAM)
--		bin_attr_nvmem_eeprom_compat.attr.name = "fram";
--
- 	nvmem->eeprom = bin_attr_nvmem_eeprom_compat;
-+	if (config->type == NVMEM_TYPE_FRAM)
-+		nvmem->eeprom.attr.name = "fram";
- 	nvmem->eeprom.attr.mode = nvmem_bin_attr_get_umode(nvmem);
- 	nvmem->eeprom.size = nvmem->size;
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index c3007f3e16f8c..c1fe2a6ea7976 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2422,6 +2422,13 @@ static void xs_tcp_setup_socket(struct work_struct *work)
+ 		transport->srcport = 0;
+ 		status = -EAGAIN;
+ 		break;
++	case -EPERM:
++		/* Happens, for instance, if a BPF program is preventing
++		 * the connect. Remap the error so upper layers can better
++		 * deal with it.
++		 */
++		status = -ECONNREFUSED;
++		fallthrough;
+ 	case -EINVAL:
+ 		/* Happens, for instance, if the user specified a link
+ 		 * local IPv6 address without a scope-id.
+-- 
+2.43.0
+
 
 
 
