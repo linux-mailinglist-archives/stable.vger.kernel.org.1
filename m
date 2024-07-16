@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-59527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E066B932A91
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:35:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78AD932BDC
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0E8728451F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32E75B20AF8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513761DA4D;
-	Tue, 16 Jul 2024 15:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072DF19DF70;
+	Tue, 16 Jul 2024 15:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1bPwCIo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFGjcmK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F264E54C;
-	Tue, 16 Jul 2024 15:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B917527733;
+	Tue, 16 Jul 2024 15:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144119; cv=none; b=dI+p7mzOtPvEg+2IFiS20zugmLoNjbORisnGUKT8qkLeITtHaLhGwM7BKhKU0bemRnswLwD/aWK+IiMEow7Uk11Zno/wS5h880SbX7Rqnzy5ekd+LAe1MOCOViNodXNBVB2LF9uO3+WuHaAthebeSFKk0E3gU3QnpvbQBtXt8o0=
+	t=1721144974; cv=none; b=rvORW8PzKx7YZkMO/BewmcEtPVoaIFtuju8lMU2uJ/mJqJno1beK0V8+hUCWDSgYVm2aZYUzV0g3sRPdHlZccI0A0HwL8a9KBSJpy/Qb4McXlIgT186jK7UHUSSpZ19UHaEN06ZfUpv1lsj7jw12ToGhBD8jvwZb8o+A42P0x5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144119; c=relaxed/simple;
-	bh=gBAaErAyb8GSdWcpjpqfpelI4AoMKvlUyk5Pl60fZTo=;
+	s=arc-20240116; t=1721144974; c=relaxed/simple;
+	bh=+k4kWY2TBsshUL3qsiZR7WbBd8HZzwin0yLWqU3qdeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dRCG2XlNpx0SGcsb2FOXiX4x455BHZPoJW+4+01lPfBGIwEmq1+kzm47nbyQUEA0tF1QKj1OHWdGz42TiCiD+zOCxM05Il6ykYXPVvlZ2W/UMBvilE8ytCcjcgxSuR+YXKDsfDkRY6wywmIWxZPbPHvryOasco8eY7EZRxox2n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1bPwCIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB73C116B1;
-	Tue, 16 Jul 2024 15:35:18 +0000 (UTC)
+	 MIME-Version; b=nqqFy9JsjIj/Q50PiQfVvNqPZwkH4RFHJa7ZrwaeMnc+PeHdjsOxx85niHCqkQTS2XQdua6vfX/nVFoQGClqHNKLSvwXegUaeqI+GsHws23L5kqBozRkZZ2ZpbMyU8ywFOZR6ElRxKx/rPEEtqmWDvrAekdIqXopxGg25jtKnmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFGjcmK6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345DEC116B1;
+	Tue, 16 Jul 2024 15:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144118;
-	bh=gBAaErAyb8GSdWcpjpqfpelI4AoMKvlUyk5Pl60fZTo=;
+	s=korg; t=1721144974;
+	bh=+k4kWY2TBsshUL3qsiZR7WbBd8HZzwin0yLWqU3qdeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1bPwCIoYDPYbcDCJkrQjOS0AeLmETBbxKn/Dl+3ajAL7U+vkgwSiCRbSCjNjl0VO
-	 CLMDHja7B53J13AcQOg38WPFl5djd880NY5RADRjkDLNoPA+1mi4EBzp7bPNRKdIiS
-	 zectr7cZZkFcjLUUoKR3zF3VCgCcnFJ7a3ZfJH0s=
+	b=FFGjcmK6X1uA6iFJUHKI1GYRCAJ99ox90fqBzcGqz7/4qpnWnXLRynOuF0W260jAS
+	 3EwhOdr3chMMAfTP3iuwCfwJifSdfBAiGP8uou9NViV0FzioWn/0rp/IZt5l4l17Mk
+	 lelRNe6mcmVxovamDagnoPPvxDlFDf/sI3Z09ev4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Greg Kurz <groug@kaod.org>,
-	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 16/66] powerpc/xmon: Check cpu id in commands "c#", "dp#" and "dx#"
+Subject: [PATCH 6.9 055/143] ASoC: SOF: Intel: hda: fix null deref on system suspend entry
 Date: Tue, 16 Jul 2024 17:30:51 +0200
-Message-ID: <20240716152738.782602270@linuxfoundation.org>
+Message-ID: <20240716152758.098751197@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kurz <groug@kaod.org>
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-[ Upstream commit 8873aab8646194a4446117bb617cc71bddda2dee ]
+[ Upstream commit 9065693dcc13f287b9e4991f43aee70cf5538fdd ]
 
-All these commands end up peeking into the PACA using the user
-originated cpu id as an index. Check the cpu id is valid in order
-to prevent xmon to crash. Instead of printing an error, this follows
-the same behavior as the "lp s #" command : ignore the buggy cpu id
-parameter and fall back to the #-less version of the command.
+When system enters suspend with an active stream, SOF core
+calls hw_params_upon_resume(). On Intel platforms with HDA DMA used
+to manage the link DMA, this leads to call chain of
 
-Signed-off-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/161531347060.252863.10490063933688958044.stgit@bahia.lan
+   hda_dsp_set_hw_params_upon_resume()
+ -> hda_dsp_dais_suspend()
+ -> hda_dai_suspend()
+ -> hda_ipc4_post_trigger()
+
+A bug is hit in hda_dai_suspend() as hda_link_dma_cleanup() is run first,
+which clears hext_stream->link_substream, and then hda_ipc4_post_trigger()
+is called with a NULL snd_pcm_substream pointer.
+
+Fixes: 2b009fa0823c ("ASoC: SOF: Intel: hda: Unify DAI drv ops for IPC3 and IPC4")
+Link: https://github.com/thesofproject/linux/issues/5080
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://patch.msgid.link/20240704085708.371414-1-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/xmon/xmon.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/sof/intel/hda-dai.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 3291e5fb94bcc..cd6df90dc6720 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -1154,7 +1154,7 @@ static int cpu_cmd(void)
- 	unsigned long cpu, first_cpu, last_cpu;
- 	int timeout;
+diff --git a/sound/soc/sof/intel/hda-dai.c b/sound/soc/sof/intel/hda-dai.c
+index 6a39ca632f55e..4a6beddb0f6c7 100644
+--- a/sound/soc/sof/intel/hda-dai.c
++++ b/sound/soc/sof/intel/hda-dai.c
+@@ -566,12 +566,6 @@ static int hda_dai_suspend(struct hdac_bus *bus)
+ 			sdai = swidget->private;
+ 			ops = sdai->platform_private;
  
--	if (!scanhex(&cpu)) {
-+	if (!scanhex(&cpu) || cpu >= num_possible_cpus()) {
- 		/* print cpus waiting or in xmon */
- 		printf("cpus stopped:");
- 		last_cpu = first_cpu = NR_CPUS;
-@@ -2485,7 +2485,7 @@ static void dump_pacas(void)
+-			ret = hda_link_dma_cleanup(hext_stream->link_substream,
+-						   hext_stream,
+-						   cpu_dai);
+-			if (ret < 0)
+-				return ret;
+-
+ 			/* for consistency with TRIGGER_SUSPEND  */
+ 			if (ops->post_trigger) {
+ 				ret = ops->post_trigger(sdev, cpu_dai,
+@@ -580,6 +574,12 @@ static int hda_dai_suspend(struct hdac_bus *bus)
+ 				if (ret < 0)
+ 					return ret;
+ 			}
++
++			ret = hda_link_dma_cleanup(hext_stream->link_substream,
++						   hext_stream,
++						   cpu_dai);
++			if (ret < 0)
++				return ret;
+ 		}
+ 	}
  
- 	termch = c;	/* Put c back, it wasn't 'a' */
- 
--	if (scanhex(&num))
-+	if (scanhex(&num) && num < num_possible_cpus())
- 		dump_one_paca(num);
- 	else
- 		dump_one_paca(xmon_owner);
-@@ -2568,7 +2568,7 @@ static void dump_xives(void)
- 
- 	termch = c;	/* Put c back, it wasn't 'a' */
- 
--	if (scanhex(&num))
-+	if (scanhex(&num) && num < num_possible_cpus())
- 		dump_one_xive(num);
- 	else
- 		dump_one_xive(xmon_owner);
 -- 
 2.43.0
 
