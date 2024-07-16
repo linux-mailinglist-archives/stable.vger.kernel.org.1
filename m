@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-59538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71FB6932A9B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:35:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF6C932B62
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04F07B23279
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 174CE282698
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1BF1DDCE;
-	Tue, 16 Jul 2024 15:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9CE19B3DD;
+	Tue, 16 Jul 2024 15:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwf+2bY9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14e2TwOe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C51CA40;
-	Tue, 16 Jul 2024 15:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE521DDF5;
+	Tue, 16 Jul 2024 15:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144151; cv=none; b=Ena8ouS3OY/g3Q9B/16quOZAJw7Ew9D9zYz+DbsYCFPDgdzy2fLrjn0gHS609b9Z6trSQ9rOBrBObMCR5cnLWJymlr+pphE1fhS8hqmUbI5QkA4QEw7CogfrmLPQq2svYSsIvc59IEEUREUjHsIR8Dp/7fpqTj+fTID8NXXvwV0=
+	t=1721144672; cv=none; b=ptx6K+pPq7mWYonNZMX6AmNfDDs5N9oFK+eRrDTCi9zsm9924VbwlaxNOezo0a8Na1tE1BtlLpi8GM6ZNXG3CrgSS3n4TgtdrxdkslTPHvQGO52wHimi6t3p6bv4iusKY+dpoX6BUOC9ZJEMIucMrcGLPYj8bbziHMWUvn6JZ9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144151; c=relaxed/simple;
-	bh=nbxuo7vE7hHZpp4EadBTl6nEmicn3Bbiobp0E4+apJw=;
+	s=arc-20240116; t=1721144672; c=relaxed/simple;
+	bh=injNBOEK7F7bArPhgoIuMpV+NFC5CFl3jP29h0mnG7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jy+xUcWkmohYDbEEzalewWp2WtUKN+3uRG/B1zSZ7nxp53s04LlCe97Rh4viFb2s21kEXQcYtNuEIr7FujK6k0QkiK8HOgOqullUszYBxvhIuGBaPEbI2ZNABamRwOCnt7uu90EZTceYz/riBvjtIs9eu0ma2s6BhTFJ1kRVQsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwf+2bY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90637C4AF0D;
-	Tue, 16 Jul 2024 15:35:50 +0000 (UTC)
+	 MIME-Version; b=BierquxVS9TY2aKXtS2GvBub66VJaHTC4tMmuhFPgLVfINU52p/+2Mma2xuPPBa7ljWtuIN6YVqbp3J2JNcCT3DRWFrv6yzn/bRp6lm+PIsYvRoN/4U3GzJWtsiyTdGMKMhwK472ytZYUVzSBtHF8FZReCy/3UPNA+yNYiOPfUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14e2TwOe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FEFC116B1;
+	Tue, 16 Jul 2024 15:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144151;
-	bh=nbxuo7vE7hHZpp4EadBTl6nEmicn3Bbiobp0E4+apJw=;
+	s=korg; t=1721144672;
+	bh=injNBOEK7F7bArPhgoIuMpV+NFC5CFl3jP29h0mnG7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwf+2bY9XZjPu44V48JUgj9mRfHuAr/Gibs16lhBAVLGSz9lMW7P/gcVzVoDC8dQD
-	 HtwwJGfSu7lwyeZfyPf6WP51bXeTibfoQmShZmoJCzfWka7Q+F8GX6Ico9IzVuS0sV
-	 5mVj33I+JUSmTIgsEm6OEVrng2hw9+x+a5oF6Uyg=
+	b=14e2TwOeFys0MMkAcLhJLo0yIowZfzIQN4lhdLPR6L66qjQXtRqvJ4TzYuH5905PN
+	 ZPME+pON0qNaX2tPhwFDDUaQAQUKa43JByJzrTiKWjzBdup/CGzT7+JAeGyYdeXlFN
+	 QdDVmtKHkS8K+lV9P1vIYHqYe5fjcMsY87mRKQSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Yong <wang.yong12@zte.com.cn>,
-	Lu Zhongjun <lu.zhongjun@zte.com.cn>,
-	Yang Tao <yang.tao172@zte.com.cn>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Yang Yang <yang.yang29@zte.com.cn>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 17/66] jffs2: Fix potential illegal address access in jffs2_free_inode
+	Jan Kara <jack@suse.cz>,
+	Zach OKeefe <zokeefe@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 037/108] mm: avoid overflows in dirty throttling logic
 Date: Tue, 16 Jul 2024 17:30:52 +0200
-Message-ID: <20240716152738.819212295@linuxfoundation.org>
+Message-ID: <20240716152747.422699475@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,99 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Yong <wang.yong12@zte.com.cn>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit af9a8730ddb6a4b2edd779ccc0aceb994d616830 ]
+commit 385d838df280eba6c8680f9777bfa0d0bfe7e8b2 upstream.
 
-During the stress testing of the jffs2 file system,the following
-abnormal printouts were found:
-[ 2430.649000] Unable to handle kernel paging request at virtual address 0069696969696948
-[ 2430.649622] Mem abort info:
-[ 2430.649829]   ESR = 0x96000004
-[ 2430.650115]   EC = 0x25: DABT (current EL), IL = 32 bits
-[ 2430.650564]   SET = 0, FnV = 0
-[ 2430.650795]   EA = 0, S1PTW = 0
-[ 2430.651032]   FSC = 0x04: level 0 translation fault
-[ 2430.651446] Data abort info:
-[ 2430.651683]   ISV = 0, ISS = 0x00000004
-[ 2430.652001]   CM = 0, WnR = 0
-[ 2430.652558] [0069696969696948] address between user and kernel address ranges
-[ 2430.653265] Internal error: Oops: 96000004 [#1] PREEMPT SMP
-[ 2430.654512] CPU: 2 PID: 20919 Comm: cat Not tainted 5.15.25-g512f31242bf6 #33
-[ 2430.655008] Hardware name: linux,dummy-virt (DT)
-[ 2430.655517] pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[ 2430.656142] pc : kfree+0x78/0x348
-[ 2430.656630] lr : jffs2_free_inode+0x24/0x48
-[ 2430.657051] sp : ffff800009eebd10
-[ 2430.657355] x29: ffff800009eebd10 x28: 0000000000000001 x27: 0000000000000000
-[ 2430.658327] x26: ffff000038f09d80 x25: 0080000000000000 x24: ffff800009d38000
-[ 2430.658919] x23: 5a5a5a5a5a5a5a5a x22: ffff000038f09d80 x21: ffff8000084f0d14
-[ 2430.659434] x20: ffff0000bf9a6ac0 x19: 0169696969696940 x18: 0000000000000000
-[ 2430.659969] x17: ffff8000b6506000 x16: ffff800009eec000 x15: 0000000000004000
-[ 2430.660637] x14: 0000000000000000 x13: 00000001000820a1 x12: 00000000000d1b19
-[ 2430.661345] x11: 0004000800000000 x10: 0000000000000001 x9 : ffff8000084f0d14
-[ 2430.662025] x8 : ffff0000bf9a6b40 x7 : ffff0000bf9a6b48 x6 : 0000000003470302
-[ 2430.662695] x5 : ffff00002e41dcc0 x4 : ffff0000bf9aa3b0 x3 : 0000000003470342
-[ 2430.663486] x2 : 0000000000000000 x1 : ffff8000084f0d14 x0 : fffffc0000000000
-[ 2430.664217] Call trace:
-[ 2430.664528]  kfree+0x78/0x348
-[ 2430.664855]  jffs2_free_inode+0x24/0x48
-[ 2430.665233]  i_callback+0x24/0x50
-[ 2430.665528]  rcu_do_batch+0x1ac/0x448
-[ 2430.665892]  rcu_core+0x28c/0x3c8
-[ 2430.666151]  rcu_core_si+0x18/0x28
-[ 2430.666473]  __do_softirq+0x138/0x3cc
-[ 2430.666781]  irq_exit+0xf0/0x110
-[ 2430.667065]  handle_domain_irq+0x6c/0x98
-[ 2430.667447]  gic_handle_irq+0xac/0xe8
-[ 2430.667739]  call_on_irq_stack+0x28/0x54
-The parameter passed to kfree was 5a5a5a5a, which corresponds to the target field of
-the jffs_inode_info structure. It was found that all variables in the jffs_inode_info
-structure were 5a5a5a5a, except for the first member sem. It is suspected that these
-variables are not initialized because they were set to 5a5a5a5a during memory testing,
-which is meant to detect uninitialized memory.The sem variable is initialized in the
-function jffs2_i_init_once, while other members are initialized in
-the function jffs2_init_inode_info.
+The dirty throttling logic is interspersed with assumptions that dirty
+limits in PAGE_SIZE units fit into 32-bit (so that various multiplications
+fit into 64-bits).  If limits end up being larger, we will hit overflows,
+possible divisions by 0 etc.  Fix these problems by never allowing so
+large dirty limits as they have dubious practical value anyway.  For
+dirty_bytes / dirty_background_bytes interfaces we can just refuse to set
+so large limits.  For dirty_ratio / dirty_background_ratio it isn't so
+simple as the dirty limit is computed from the amount of available memory
+which can change due to memory hotplug etc.  So when converting dirty
+limits from ratios to numbers of pages, we just don't allow the result to
+exceed UINT_MAX.
 
-The function jffs2_init_inode_info is called after iget_locked,
-but in the iget_locked function, the destroy_inode process is triggered,
-which releases the inode and consequently, the target member of the inode
-is not initialized.In concurrent high pressure scenarios, iget_locked
-may enter the destroy_inode branch as described in the code.
+This is root-only triggerable problem which occurs when the operator
+sets dirty limits to >16 TB.
 
-Since the destroy_inode functionality of jffs2 only releases the target,
-the fix method is to set target to NULL in jffs2_i_init_once.
-
-Signed-off-by: Wang Yong <wang.yong12@zte.com.cn>
-Reviewed-by: Lu Zhongjun <lu.zhongjun@zte.com.cn>
-Reviewed-by: Yang Tao <yang.tao172@zte.com.cn>
-Cc: Xu Xin <xu.xin16@zte.com.cn>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240621144246.11148-2-jack@suse.cz
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reported-by: Zach O'Keefe <zokeefe@google.com>
+Reviewed-By: Zach O'Keefe <zokeefe@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jffs2/super.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/page-writeback.c |   30 ++++++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/fs/jffs2/super.c b/fs/jffs2/super.c
-index 05d892c79339f..12cd7682e4c9b 100644
---- a/fs/jffs2/super.c
-+++ b/fs/jffs2/super.c
-@@ -63,6 +63,7 @@ static void jffs2_i_init_once(void *foo)
- 	struct jffs2_inode_info *f = foo;
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -432,13 +432,20 @@ static void domain_dirty_limits(struct d
+ 	else
+ 		bg_thresh = (bg_ratio * available_memory) / PAGE_SIZE;
  
- 	mutex_init(&f->sem);
-+	f->target = NULL;
- 	inode_init_once(&f->vfs_inode);
+-	if (bg_thresh >= thresh)
+-		bg_thresh = thresh / 2;
+ 	tsk = current;
+ 	if (rt_task(tsk)) {
+ 		bg_thresh += bg_thresh / 4 + global_wb_domain.dirty_limit / 32;
+ 		thresh += thresh / 4 + global_wb_domain.dirty_limit / 32;
+ 	}
++	/*
++	 * Dirty throttling logic assumes the limits in page units fit into
++	 * 32-bits. This gives 16TB dirty limits max which is hopefully enough.
++	 */
++	if (thresh > UINT_MAX)
++		thresh = UINT_MAX;
++	/* This makes sure bg_thresh is within 32-bits as well */
++	if (bg_thresh >= thresh)
++		bg_thresh = thresh / 2;
+ 	dtc->thresh = thresh;
+ 	dtc->bg_thresh = bg_thresh;
+ 
+@@ -488,7 +495,11 @@ static unsigned long node_dirty_limit(st
+ 	if (rt_task(tsk))
+ 		dirty += dirty / 4;
+ 
+-	return dirty;
++	/*
++	 * Dirty throttling logic assumes the limits in page units fit into
++	 * 32-bits. This gives 16TB dirty limits max which is hopefully enough.
++	 */
++	return min_t(unsigned long, dirty, UINT_MAX);
  }
  
--- 
-2.43.0
-
+ /**
+@@ -524,10 +535,17 @@ int dirty_background_bytes_handler(struc
+ 		void *buffer, size_t *lenp, loff_t *ppos)
+ {
+ 	int ret;
++	unsigned long old_bytes = dirty_background_bytes;
+ 
+ 	ret = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
+-	if (ret == 0 && write)
++	if (ret == 0 && write) {
++		if (DIV_ROUND_UP(dirty_background_bytes, PAGE_SIZE) >
++								UINT_MAX) {
++			dirty_background_bytes = old_bytes;
++			return -ERANGE;
++		}
+ 		dirty_background_ratio = 0;
++	}
+ 	return ret;
+ }
+ 
+@@ -553,6 +571,10 @@ int dirty_bytes_handler(struct ctl_table
+ 
+ 	ret = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
+ 	if (ret == 0 && write && vm_dirty_bytes != old_bytes) {
++		if (DIV_ROUND_UP(vm_dirty_bytes, PAGE_SIZE) > UINT_MAX) {
++			vm_dirty_bytes = old_bytes;
++			return -ERANGE;
++		}
+ 		writeback_set_ratelimit();
+ 		vm_dirty_ratio = 0;
+ 	}
 
 
 
