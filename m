@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-59959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B099F932CB3
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C088932C48
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E19F31C2095A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD84C1C231CC
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF3A19E7EB;
-	Tue, 16 Jul 2024 15:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2DF19E7E5;
+	Tue, 16 Jul 2024 15:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2XKGdU7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfxXtKWA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D3E1DDCE;
-	Tue, 16 Jul 2024 15:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC3919F489;
+	Tue, 16 Jul 2024 15:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145431; cv=none; b=XaHEOiev8Me5hYdDW+Ki2UOMa0qMbj+nBNquUdP0rHNkc5Rj+1cvvog59bvQp+oJFxNowSifgploXUeau8N1Jag4v+O24HJ2wlNK0YpRhjV0Wz9SUbJnMjhyL2Xq7LLBwANe89nez+1g1clhy6qJuSamJ0ugRHq9It7QCJRCfz4=
+	t=1721145215; cv=none; b=oNCC8GnX09OAeQggqj07N954r24d0thx8s7uIFVmrBBcj20uskS40ZLYUSuQf3qFQrUM1EecuPQxcE4iy/MDxQnH2oIQpFnAfn+kzcR7czi57DzQLAAovejZBv0nRXMN2vxCKYCjjMRWhvlad2UN7VHEYZUbE3K3mfmhJmGnOCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145431; c=relaxed/simple;
-	bh=jtslgVwOjrUfkJmgTvSbKt1ydb6EPZovkNR4yjaCCv0=;
+	s=arc-20240116; t=1721145215; c=relaxed/simple;
+	bh=8gI9R9y71E7afqG1AoGD6bo6lj8v0OOJhqGPtVn/mYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p4tuDrc4py5tOstaTD1ve33Q0nrKDkwTEuutpbcRcOw4lcynYgI4guvQAtRG0vUlUhvbpr268RwIlmtPtYKc1P8McZLTbeRwOijLeWrL9bwv0QBN0d7Mi7M4/bK8j5tigolZ4O85ban11sxHD/ey3PKBx4sPimw4BZFqdvaivsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2XKGdU7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10B5C116B1;
-	Tue, 16 Jul 2024 15:57:10 +0000 (UTC)
+	 MIME-Version; b=eTgiZGWNlpUDcugJkbO422eH4TKn15RnMypYPO7b9CQaKZ2S/eTKJbQVdaT6i8pauJXsVCMU1sBHYIOuyl46L6FSV5YfnrDMmASV5AfHKMLlmfN3JRfktuBXJds2fLHFYcfNgLgYXqtD25Esh133x0kUYvvLZWxn70lzUoKyIJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfxXtKWA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCFBC4AF0D;
+	Tue, 16 Jul 2024 15:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145431;
-	bh=jtslgVwOjrUfkJmgTvSbKt1ydb6EPZovkNR4yjaCCv0=;
+	s=korg; t=1721145214;
+	bh=8gI9R9y71E7afqG1AoGD6bo6lj8v0OOJhqGPtVn/mYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y2XKGdU75gjN8nAPZBxIEnlaZmE9f/jIxUoeLJyqHYhzfcjRVpATD6PS0Ak/L48m3
-	 MsX6HwsMKZao3zz2+7GS9R1cRaKvQJeiJ9p4jay9XpczglOrOmsERKTgqLR5DteDAO
-	 98N2AAk9sw8+MeCAHBbuHXT0T5LbdDWFr50aG+7w=
+	b=ZfxXtKWA4YFHgFkBhIdvZ8WleTHO+OBFxOlB3TFd/OXHBBcOLKZrLW2aSET/Rk0CH
+	 JIvojpQsaNPSuzDYu+HC/2d3lFsQWs052BkiaWfOd4tQd+72aFWhDRn5NkTyK0Dwvo
+	 B2mA403ih6MCwfmHJv9iu0w0OYvugxOkeMHYcHDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.1 61/96] xhci: always resume roothubs if xHC was reset during resume
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 136/143] i2c: rcar: clear NO_RXDMA flag after resetting
 Date: Tue, 16 Jul 2024 17:32:12 +0200
-Message-ID: <20240716152748.853638124@linuxfoundation.org>
+Message-ID: <20240716152801.228105439@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 79989bd4ab86404743953fa382af0a22900050cf upstream.
+[ Upstream commit fea6b5ebb71a2830b042e42de7ae255017ac3ce8 ]
 
-Usb device connect may not be detected after runtime resume if
-xHC is reset during resume.
+We should allow RXDMA only if the reset was really successful, so clear
+the flag after the reset call.
 
-In runtime resume cases xhci_resume() will only resume roothubs if there
-are pending port events. If the xHC host is reset during runtime resume
-due to a Save/Restore Error (SRE) then these pending port events won't be
-detected as PORTSC change bits are not immediately set by host after reset.
-
-Unconditionally resume roothubs if xHC is reset during resume to ensure
-device connections are detected.
-
-Also return early with error code if starting xHC fails after reset.
-
-Issue was debugged and a similar solution suggested by Remi Pommarel.
-Using this instead as it simplifies future refactoring.
-
-Reported-by: Remi Pommarel <repk@triplefau.lt>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218987
-Suggested-by: Remi Pommarel <repk@triplefau.lt>
-Tested-by: Remi Pommarel <repk@triplefau.lt>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240627145523.1453155-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0e864b552b23 ("i2c: rcar: reset controller is mandatory for Gen3+")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-rcar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -1247,10 +1247,20 @@ int xhci_resume(struct xhci_hcd *xhci, b
- 			xhci_dbg(xhci, "Start the secondary HCD\n");
- 			retval = xhci_run(xhci->shared_hcd);
- 		}
--
-+		if (retval)
-+			return retval;
-+		/*
-+		 * Resume roothubs unconditionally as PORTSC change bits are not
-+		 * immediately visible after xHC reset
-+		 */
- 		hcd->state = HC_STATE_SUSPENDED;
--		if (xhci->shared_hcd)
-+
-+		if (xhci->shared_hcd) {
- 			xhci->shared_hcd->state = HC_STATE_SUSPENDED;
-+			usb_hcd_resume_root_hub(xhci->shared_hcd);
-+		}
-+		usb_hcd_resume_root_hub(hcd);
-+
- 		goto done;
+diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
+index ec73463ea9b5e..f0724c8e4b219 100644
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -911,10 +911,10 @@ static int rcar_i2c_master_xfer(struct i2c_adapter *adap,
+ 
+ 	/* Gen3+ needs a reset. That also allows RXDMA once */
+ 	if (priv->devtype >= I2C_RCAR_GEN3) {
+-		priv->flags &= ~ID_P_NO_RXDMA;
+ 		ret = rcar_i2c_do_reset(priv);
+ 		if (ret)
+ 			goto out;
++		priv->flags &= ~ID_P_NO_RXDMA;
  	}
  
-@@ -1274,7 +1284,6 @@ int xhci_resume(struct xhci_hcd *xhci, b
- 
- 	xhci_dbc_resume(xhci);
- 
-- done:
- 	if (retval == 0) {
- 		/*
- 		 * Resume roothubs only if there are pending events.
-@@ -1293,6 +1302,7 @@ int xhci_resume(struct xhci_hcd *xhci, b
- 			usb_hcd_resume_root_hub(hcd);
- 		}
- 	}
-+done:
- 	/*
- 	 * If system is subject to the Quirk, Compliance Mode Timer needs to
- 	 * be re-initialized Always after a system resume. Ports are subject
+ 	rcar_i2c_init(priv);
+-- 
+2.43.0
+
 
 
 
