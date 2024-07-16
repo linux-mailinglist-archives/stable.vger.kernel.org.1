@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-59975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B3E932CC7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E1F2932D5E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0C161F2465A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00526B2330F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222D719E7C6;
-	Tue, 16 Jul 2024 15:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8717A19AD59;
+	Tue, 16 Jul 2024 16:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bIgRpZ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhMzaH7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25F31DDCE;
-	Tue, 16 Jul 2024 15:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F231DDCE;
+	Tue, 16 Jul 2024 16:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145478; cv=none; b=Bcxbvfp0kN9PqeBljn6jQySBL9K1eVZjly9WukyfHVH/UvMSJvOzNMxNCRGddob/bMhhgFSTXz3oRKRI1wsMknuhnZDgz/0De8A8WblinD9AKZjr07kEOgVUna2bd0oHlu6Eot4MnNeqoEleQv+s90uDvocxep3unDfLzNaoG9I=
+	t=1721145866; cv=none; b=IAuEb2QAJ/GhRiof0lRnmN4aVcna3eTw/VI6p2oCocLjjDI62TIfA9SImsStSM7rsjKycMpeUQkMz+3AlKs1Kka3IurkGP1mqz/PC7wDRhD3mXSu5yrKdFQYp1oU/Yy8o7ESoE3dze+kPvPRgzj8zjS1IlTTrGqOZGYtkyBQFAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145478; c=relaxed/simple;
-	bh=bZlItLHhCmbpaEhx0R0geBZh6v7pSnGoQSlEj2UxELI=;
+	s=arc-20240116; t=1721145866; c=relaxed/simple;
+	bh=zV7t0evD25CEDuClJkNYC9MtYcNqXVG3rNzM5mHdCbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oobWEE9caE4bhCNbcWO3Ej95TblpoaTVoy1JyEeXDMDPRhWhus/Rb2sK3BdpQa1eXQptLQseKbDVgDMaKuhNwt7dpqhFhLVVGoLlEr/huOPkCGmCh5qg0wS47spZxrKOLoQCDAPAV+1fConYkJ1rshvaOJZvxH8+yVqgyeXi7dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bIgRpZ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EBFC116B1;
-	Tue, 16 Jul 2024 15:57:57 +0000 (UTC)
+	 MIME-Version; b=qr93Q4dyvqoN0jflKGxzIfRBjS7on4DZyINaebSMJFBJ+uYsSY++MZ9NbbkyCtgaK1g9U5/KeSMDpXl4khf8FbFwnMmRbiKxa9riQtd877byTTbP6tKYWUYd/essA5O6yLlb8f/aYAj2yyqGmCx0CkXsGIwtYT0Jht3qcIFa7cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhMzaH7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1881C116B1;
+	Tue, 16 Jul 2024 16:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145478;
-	bh=bZlItLHhCmbpaEhx0R0geBZh6v7pSnGoQSlEj2UxELI=;
+	s=korg; t=1721145866;
+	bh=zV7t0evD25CEDuClJkNYC9MtYcNqXVG3rNzM5mHdCbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1bIgRpZ9JyNA9dwOm9iB4kTFUL4NdXWgOzFcE7pt+m4qmBbAP4fatQF6BJlw4MTTX
-	 3APgLKzsmgx10k6nKqT9s896bL2aHFr2QzHkaqIPa3DDKRqqsEaLzxct7tgcjHpKu9
-	 KLOKS87L5M/YP2CNslFuLkpKIFV2Sij5GObsU2l4=
+	b=DhMzaH7wRf+0APHOUHnzJiDMrdtWdcyyL8YkH0F8zWOQFB8HS+ufFMSaeErGHKJbC
+	 0NP4Hz2MlfdbZZF2lri1ndieQn6DMu2gfkTNB+16/Rv8cAqMPMc+CrPZEYRSJzA5Jv
+	 aeNBoll2lQ9ZLUbXMY5HU+GN/bSoENPlpi+Owmik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.1 79/96] misc: fastrpc: Copy the complete capability structure to user
+	Bjorn Andersson <andersson@kernel.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 088/121] pmdomain: qcom: rpmhpd: Skip retention level for Power Domains
 Date: Tue, 16 Jul 2024 17:32:30 +0200
-Message-ID: <20240716152749.550944790@linuxfoundation.org>
+Message-ID: <20240716152754.712375816@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-commit e7f0be3f09c6e955dc8009129862b562d8b64513 upstream.
+commit ddab91f4b2de5c5b46e312a90107d9353087d8ea upstream.
 
-User is passing capability ioctl structure(argp) to get DSP
-capabilities. This argp is copied to a local structure to get domain
-and attribute_id information. After getting the capability, only
-capability value is getting copied to user argp which will not be
-useful if the use is trying to get the capability by checking the
-capability member of fastrpc_ioctl_capability structure. Copy the
-complete capability structure so that user can get the capability
-value from the expected member of the structure.
+In the cases where the power domain connected to logics is allowed to
+transition from a level(L)-->power collapse(0)-->retention(1) or
+vice versa retention(1)-->power collapse(0)-->level(L)  will cause the
+logic to lose the configurations. The ARC does not support retention
+to collapse transition on MxC rails.
 
-Fixes: 6c16fd8bdd40 ("misc: fastrpc: Add support to get DSP capabilities")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628114501.14310-3-srinivas.kandagatla@linaro.org
+The targets from SM8450 onwards the PLL logics of clock controllers are
+connected to MxC rails and the recommended configurations are carried
+out during the clock controller probes. The MxC transition as mentioned
+above should be skipped to ensure the PLL settings are intact across
+clock controller power on & off.
+
+On older targets that do not split MX into MxA and MxC does not collapse
+the logic and it is parked always at RETENTION, thus this issue is never
+observed on those targets.
+
+Cc: stable@vger.kernel.org # v5.17
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20240625-avoid_mxc_retention-v2-1-af9c2f549a5f@quicinc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pmdomain/qcom/rpmhpd.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1603,7 +1603,7 @@ static int fastrpc_get_dsp_info(struct f
- 	if (err)
- 		return err;
+--- a/drivers/pmdomain/qcom/rpmhpd.c
++++ b/drivers/pmdomain/qcom/rpmhpd.c
+@@ -40,6 +40,7 @@
+  * @addr:		Resource address as looped up using resource name from
+  *			cmd-db
+  * @state_synced:	Indicator that sync_state has been invoked for the rpmhpd resource
++ * @skip_retention_level: Indicate that retention level should not be used for the power domain
+  */
+ struct rpmhpd {
+ 	struct device	*dev;
+@@ -56,6 +57,7 @@ struct rpmhpd {
+ 	const char	*res_name;
+ 	u32		addr;
+ 	bool		state_synced;
++	bool            skip_retention_level;
+ };
  
--	if (copy_to_user(argp, &cap.capability, sizeof(cap.capability)))
-+	if (copy_to_user(argp, &cap, sizeof(cap)))
- 		return -EFAULT;
+ struct rpmhpd_desc {
+@@ -173,6 +175,7 @@ static struct rpmhpd mxc = {
+ 	.pd = { .name = "mxc", },
+ 	.peer = &mxc_ao,
+ 	.res_name = "mxc.lvl",
++	.skip_retention_level = true,
+ };
  
- 	return 0;
+ static struct rpmhpd mxc_ao = {
+@@ -180,6 +183,7 @@ static struct rpmhpd mxc_ao = {
+ 	.active_only = true,
+ 	.peer = &mxc,
+ 	.res_name = "mxc.lvl",
++	.skip_retention_level = true,
+ };
+ 
+ static struct rpmhpd nsp = {
+@@ -749,6 +753,9 @@ static int rpmhpd_update_level_mapping(s
+ 		return -EINVAL;
+ 
+ 	for (i = 0; i < rpmhpd->level_count; i++) {
++		if (rpmhpd->skip_retention_level && buf[i] == RPMH_REGULATOR_LEVEL_RETENTION)
++			continue;
++
+ 		rpmhpd->level[i] = buf[i];
+ 
+ 		/* Remember the first corner with non-zero level */
 
 
 
