@@ -1,98 +1,70 @@
-Return-Path: <stable+bounces-59408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941F8932709
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:01:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 282FD932721
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C58131C233F6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 13:01:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C96191F23CD2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 13:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C98E19AA6C;
-	Tue, 16 Jul 2024 13:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958D319AA7B;
+	Tue, 16 Jul 2024 13:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MoR9Lpb4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCNClZF3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D1A1420B6;
-	Tue, 16 Jul 2024 13:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CEE13D8A0
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 13:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721134893; cv=none; b=Ogn0a7kuqOWU/T3ciYNoViu+YbqS31pV8VN61kesnvLbjZNs5UY0ZpSsnikTsdT/S04J35TvsBQa4JB0ksMJdQ0djcZJEZDHAvNWQjsGCnbUBn930kYFyxRck3M16jEK9+ZAnQnEB6s0/Fmsmp3HX9YexmWYZdC7H8Elsj5uJHg=
+	t=1721135316; cv=none; b=murYuCBb8iJ0nqW+wI3zmJMqPcfHVip7qfbFzClF20IYUWtgdV24P4h/X5RMTUeqTcBlGxWmWwZYHSw1OAZf5Hg9d+9sEdP3sYuzLGZEkO8wmpDuaDfffiW7Fm+slcJJxiQmZ8s29lz0pJLELiPve5rd8I+eUoi5TlrUKk1s0ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721134893; c=relaxed/simple;
-	bh=AsXL27TneBmebro039qrVN87ml4QBwhP4OAoCLWsKQA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=terKh7AHN0cDYbZcDOpKR4JTQnB502mECMP3zojqr7Z2bYOq4lPxkmOAAgBFygju9SOKD9DKGDE4JwYy4VpxVNLEDZA29R1+0RhpRANWHfgPXHcuph9Os+9zHs4Hw6avrFUXgYTkJrFiq0kPwHAqcNk0jjA2KUNDnpUrCR9Jpuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MoR9Lpb4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89890C116B1;
-	Tue, 16 Jul 2024 13:01:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721134892;
-	bh=AsXL27TneBmebro039qrVN87ml4QBwhP4OAoCLWsKQA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MoR9Lpb4aFyXtK+Fc3Ox+UwxaF+q+3GCj6dg5wJcLLe0Hz2EK/oduZ48ONT9ez0j3
-	 H7gqe8qb1nLnrNFNqX9A26BvAW4XUMZq5PxzosI8XDNbuY/opqbHWgEJCpJ3jCfrHx
-	 7mJ6AGzwiUCyyyf4zau3SMQ51CyuhgbtDf6f/GazEUay7g8iP0ZIWWp0WHi9IrWpt7
-	 Ld5c4ZJkIAUhsj3G88q0UkkTTrg/Ft6SHhkukUAif5YQB9dib2qQ1Np8Wq0cCKYMJV
-	 MOqAGIxyp7Rm0+2ZJ7M8yAiru5PYzcrQDfUyzjZSaCO7sSvFBfugGe7W2mLXkLt0vP
-	 EmM4itbW8tkYA==
-From: Puranjay Mohan <puranjay@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Russell King <russell.king@oracle.com>, Alan Maguire
- <alan.maguire@oracle.com>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- stable@vger.kernel.org
-Subject: Re: [PATCH 5.10] arm64/bpf: Remove 128MB limit for BPF JIT programs
-In-Reply-To: <2024071656-valid-unpleased-d29a@gregkh>
-References: <20240701114659.39539-1-pjy@amazon.com>
- <mb61py1617bua.fsf@kernel.org> <2024071656-valid-unpleased-d29a@gregkh>
-Date: Tue, 16 Jul 2024 13:01:26 +0000
-Message-ID: <mb61pbk2xpk2h.fsf@kernel.org>
+	s=arc-20240116; t=1721135316; c=relaxed/simple;
+	bh=mdZKTuRQ5niA/K7B/Mekk+SN4pW4t+hBGeayDahQP8U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d52hQBMaLn+O6cJoaVAxCxOVB9Z/J5pfTj7ahwRAwO6ZALFc2Uu9qwHYwKY9NxuUamNLD0ttuxMGETwKfli9W3hJKvbOduPlhB03rgoE6w//HcURgF2zvbpcBa+sx+sJUxRJJdtZhvBnTH35WMeomzgPbZox2Vk4dD4PrsRMLRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCNClZF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5C0C116B1;
+	Tue, 16 Jul 2024 13:08:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1721135315;
+	bh=mdZKTuRQ5niA/K7B/Mekk+SN4pW4t+hBGeayDahQP8U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pCNClZF3Qa55NVn1/MIAmF0T3X34VgqwRBTZCoKnNpR1hrgg227VKlZrHP3nqpged
+	 0ljjj7ruOeY3WUcvxSYZvpxfdmvBGMuFP4ahiBlKmjlUyVdRpusthpUSvFNzib5jAL
+	 fRf0aN4H3UDNobb8bACiTHLwB2ltJJBcPPeNPVio=
+Date: Tue, 16 Jul 2024 15:08:33 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Hagar Hemdan <hagarhem@amazon.com>
+Cc: stable@vger.kernel.org, felix <fuzhen5@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: Re: [PATCH 4.14] SUNRPC: Fix RPC client cleaned up the freed pipefs
+ dentries
+Message-ID: <2024071616-unsliced-tactics-fb0b@gregkh>
+References: <20240715131257.22428-1-hagarhem@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha512; protocol="application/pgp-signature"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240715131257.22428-1-hagarhem@amazon.com>
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+On Mon, Jul 15, 2024 at 01:12:57PM +0000, Hagar Hemdan wrote:
+> From: felix <fuzhen5@huawei.com>
+> 
+> [ Upstream commit bfca5fb4e97c46503ddfc582335917b0cc228264 ]
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+You mean 4.19, not 4.14, right?  4.14 is long-end-of-life.
 
-> On Tue, Jul 16, 2024 at 12:36:29PM +0000, Puranjay Mohan wrote:
->>=20
->> +CC Greg
->
-> Why?
+thanks,
 
-I forgot to add you to the cc-list when sending this patch for stable.
-
-> confused,
->
-> greg k-h
-
-Thanks,
-Puranjay
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iIoEARYKADIWIQQ3wHGvVs/5bdl78BKwwPkjG3B2nQUCZpZvJxQccHVyYW5qYXlA
-a2VybmVsLm9yZwAKCRCwwPkjG3B2nTyVAQD8peHpkDOrALZFFIVKoUFSPn9O5scx
-QFc7PxxJrEXLkQD6AiAoWCPOX5x6ZosBtXmvP7zrAkEPHgNHrao4teC8+AI=
-=faJI
------END PGP SIGNATURE-----
---=-=-=--
+greg k-h
 
