@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-60278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F61932F6A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 19:52:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F64F932F6C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 19:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0363E281276
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E4691C21B30
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914F719FA99;
-	Tue, 16 Jul 2024 17:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D471A01A7;
+	Tue, 16 Jul 2024 17:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WZFuk6Fd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f9Vv6KTD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4751654BD4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7F91A00F7;
 	Tue, 16 Jul 2024 17:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721152335; cv=none; b=T1UQ7IL7crSldL06jQNGMofaGcU17SXUnW5j+LikznkyiZhJ/JCI9RhlWgd2IMr4WG499DezcYMfbbV3kfYc7+6IJw1qTnFszmVDDf4Zd468uuycA8eh2PMJ2mzz5FVoejwwJcflddzgIzJGvNmjSuHO2YL3dzZHaofTLX9qXmE=
+	t=1721152336; cv=none; b=hqj5oyY0euBzbp344MEjoQ8bokZTvuFEn4iVJ8qoN89Uy76ZkVbhx1F8rfxJ3rD4/0z2ny89QXMMOMzjGSsgA6CPIRxGMRZzuFE+Mm/lxGwGC+oEvCSvBIYYZp4sfYnrULnbNoMb/5wRIuoeqKM0L7sayY1fJrwukKhzwKV5Lrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721152335; c=relaxed/simple;
-	bh=3INfJTBuIGPGIxdF53Rc/9nUYk4n6kQ4mowWADu56tE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gh9xTmL/K5g2ZkoTMAkZEB2XPY8jGxlnvo4n4PYV5de9NhluKVXUF9Oas7/fc5rK0r9DyA+WvrSAB3sRDu++e1705a3g2v7MUyKkhjaPT1+oXpWPR/USsx+7fnr2tGOabnsMWZCZ8VA3eTrhdYuh/PYklfJo1JftZkiun1Yx9yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WZFuk6Fd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615F9C116B1;
-	Tue, 16 Jul 2024 17:52:14 +0000 (UTC)
+	s=arc-20240116; t=1721152336; c=relaxed/simple;
+	bh=p3+cbQrtzD34rlMr4M+1CIjAqE6/GqsWTPXFKfSsxdw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AmLrLJsN/rZP1vTvfwK8p0+NuMcsQiePj8rtGGFcpSEoMSnRnqEAVfeXfP9nAPsE/Xqf6s+gBkAsnKIgXcSXkHZIh4Kbfbzuo2mAGVVekTAb5sfVG+vKF3Bk4iDbjdsKSHuX3RLdbv4nUurkHHbxecvvXihLiwY7rJoL8kMsxVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f9Vv6KTD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C51C4AF0E;
+	Tue, 16 Jul 2024 17:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721152334;
-	bh=3INfJTBuIGPGIxdF53Rc/9nUYk4n6kQ4mowWADu56tE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WZFuk6FdDQEkzsYkBlCgHKnPQIDagWQ30YEHBH9MGPXMIThAsPRpBYakiokDLaL/X
-	 rMmGRVFhlHwxwyWqc30cgxF1im+jcBG0ffTxe+LhZ6hSypzt9fJHPfiknvWV5MGkSh
-	 iBX5251Xad6ujunkUiT7E7sEs1YSixB1Rn3qHVVOxi2PmhJCH/tkoBYmXAhMtfr6oM
-	 EQ6oGvtG1NjLnWKT8OaLzZl2dAAJBJuDqwMqhKn7upOvLZCrwLjYj9d4qRnU4Oi6eI
-	 5vyq+iK9hUGJnIXrtVcFiyjxqjIt/+hh9qDEwfwaqxDWuEF+wx6KUgI4j4D/fqfefv
-	 ji60aKb1P/itA==
+	s=k20201202; t=1721152335;
+	bh=p3+cbQrtzD34rlMr4M+1CIjAqE6/GqsWTPXFKfSsxdw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=f9Vv6KTDxu3pDLw4K2EcYpGjkhIiBszgq2OH3QC80jHrVIJEUMwUlvaF2nkbTXAu6
+	 mrO3qaKhy80SadeBCLzPl7/Eqm/stbRfEsTP872cBCQST9bwU5pctzX5K7S6wzB45d
+	 TRCDZ2nVHz7KOl/mN7rFeedAhY8PP4rt3WXYVXfY/4/Zj6RB9u1wo2X4OCzbVG+U1B
+	 YjMEumNQzOjYRPpV5WrS5q7MLA8K0RsoFf4TbFaRWVGk1f46DctrzIHzqpPA+4jvfh
+	 OwZTbAg5YjvrRryyvbZaLZzOaxnffIjDviWzqcW3JDUuUunSpXeTrIumbP4BAVporC
+	 e2DieOl2H6ytQ==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: SeongJae Park <sj@kernel.org>,
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	linux-kernel@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Kees Cook <keescook@chromium.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.1.y 0/7] Backport patches for DAMON merge regions fix
-Date: Tue, 16 Jul 2024 10:51:58 -0700
-Message-Id: <20240716175205.51280-1-sj@kernel.org>
+	SeongJae Park <sj@kernel.org>
+Subject: [PATCH 6.1.y 1/7] minmax: sanity check constant bounds when clamping
+Date: Tue, 16 Jul 2024 10:51:59 -0700
+Message-Id: <20240716175205.51280-2-sj@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240716175205.51280-1-sj@kernel.org>
+References: <20240716175205.51280-1-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,43 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit 310d6c15e910 ("mm/damon/core: merge regions aggressively when
-max_nr_regions") causes a build warning [1] on 6.1.y.  That was due to
-unnecessarily strict type check from max().
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 
-Fix the warning by backporting a minmax.h upstream commit that made the
-type check less strict for unnecessary case, and upstream commits that
-it depends on.
+commit 5efcecd9a3b18078d3398b359a84c83f549e22cf upstream.
 
-Note that all patches except the third one ("minmax: fix header
-inclusions") are clean cherry-picks of upstream commit.  For the third
-one, a minor conflict fix was needed.
+The clamp family of functions only makes sense if hi>=lo.  If hi and lo
+are compile-time constants, then raise a build error.  Doing so has
+already caught buggy code.  This also introduces the infrastructure to
+improve the clamping function in subsequent commits.
 
-[1] https://lore.kernel.org/2024071519-janitor-robe-779f@gregkh
+[akpm@linux-foundation.org: coding-style cleanups]
+[akpm@linux-foundation.org: s@&&\@&& \@]
+Link: https://lkml.kernel.org/r/20220926133435.1333846-1-Jason@zx2c4.com
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 5efcecd9a3b18078d3398b359a84c83f549e22cf)
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ include/linux/minmax.h | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-Andy Shevchenko (1):
-  minmax: fix header inclusions
-
-David Laight (3):
-  minmax: allow min()/max()/clamp() if the arguments have the same
-    signedness.
-  minmax: allow comparisons of 'int' against 'unsigned char/short'
-  minmax: relax check to allow comparison between unsigned arguments and
-    signed constants
-
-Jason A. Donenfeld (2):
-  minmax: sanity check constant bounds when clamping
-  minmax: clamp more efficiently by avoiding extra comparison
-
-SeongJae Park (1):
-  mm/damon/core: merge regions aggressively when max_nr_regions is unmet
-
- include/linux/minmax.h | 89 ++++++++++++++++++++++++++++++------------
- mm/damon/core.c        | 21 +++++++++-
- 2 files changed, 83 insertions(+), 27 deletions(-)
-
-
-base-commit: 291e563ecab1ea89c70172ecf0d6bff7b725d3cb
+diff --git a/include/linux/minmax.h b/include/linux/minmax.h
+index 1aea34b8f19b..8b092c66c5aa 100644
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -37,6 +37,28 @@
+ 		__cmp(x, y, op), \
+ 		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
+ 
++#define __clamp(val, lo, hi)	\
++	__cmp(__cmp(val, lo, >), hi, <)
++
++#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
++		typeof(val) unique_val = (val);				\
++		typeof(lo) unique_lo = (lo);				\
++		typeof(hi) unique_hi = (hi);				\
++		__clamp(unique_val, unique_lo, unique_hi); })
++
++#define __clamp_input_check(lo, hi)					\
++        (BUILD_BUG_ON_ZERO(__builtin_choose_expr(			\
++                __is_constexpr((lo) > (hi)), (lo) > (hi), false)))
++
++#define __careful_clamp(val, lo, hi) ({					\
++	__clamp_input_check(lo, hi) +					\
++	__builtin_choose_expr(__typecheck(val, lo) && __typecheck(val, hi) && \
++			      __typecheck(hi, lo) && __is_constexpr(val) && \
++			      __is_constexpr(lo) && __is_constexpr(hi),	\
++		__clamp(val, lo, hi),					\
++		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
++			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
++
+ /**
+  * min - return minimum of two values of the same or compatible types
+  * @x: first value
+@@ -103,7 +125,7 @@
+  * This macro does strict typechecking of @lo/@hi to make sure they are of the
+  * same type as @val.  See the unnecessary pointer comparisons.
+  */
+-#define clamp(val, lo, hi) min((typeof(val))max(val, lo), hi)
++#define clamp(val, lo, hi) __careful_clamp(val, lo, hi)
+ 
+ /*
+  * ..and if you can't take the strict
+@@ -138,7 +160,7 @@
+  * This macro does no typechecking and uses temporary variables of type
+  * @type to make all the comparisons.
+  */
+-#define clamp_t(type, val, lo, hi) min_t(type, max_t(type, val, lo), hi)
++#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
+ 
+ /**
+  * clamp_val - return a value clamped to a given range using val's type
 -- 
 2.39.2
 
