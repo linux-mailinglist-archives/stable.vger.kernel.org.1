@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-59950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26085932CA6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79067932C54
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56E341C21B41
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D2628477E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A341B19DF88;
-	Tue, 16 Jul 2024 15:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A189217C9E9;
+	Tue, 16 Jul 2024 15:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGAdAj6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxblnWI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6019917A93F;
-	Tue, 16 Jul 2024 15:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEC119DF53;
+	Tue, 16 Jul 2024 15:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145399; cv=none; b=kclNZogG5Vj3XsqMBdN6lYv8XWdKdteOSsd5hQtBqUO83KcSDkNne2ofzcMWTBCMgS7lPzwXv6UWNjn1+mbtsh1Mub1XswK2dszxWL3jWu+8VpNJjBEFXIhih8Xz8PvlcrJ1CUyEu/QCJwCzmwtWbrGXx0B9rGV84S++9XcrVc8=
+	t=1721145248; cv=none; b=ZoVOOSTzqYmr5rSb5gU/69WBPjXpz8yvdNiS5bVZB4bdgbcqE8bZa7ONKO7qTZ7cUCdwNLCo+YrYv/qP00U9ivj1M/1CAu4T7Y+NGhkhxFeiy2Iod+2VsWtqfFQeOUq0eHkc/oNz2jGu7koYQHHDEt7HA5QiSP3jmjgVIkYzd0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145399; c=relaxed/simple;
-	bh=gjBF2Hcp2CUjGLDTdCnSBnd0CME+VTJu+dsw715XaPY=;
+	s=arc-20240116; t=1721145248; c=relaxed/simple;
+	bh=Q/C2zExKg/jhjkN1NfCN8MLtTQvqwErYGz6c2dcGW1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eA/UMkHiUy347bWHCC0+fMVfDj0Vxf7qPwjWRpS06fbXAvH0bzW9bYiWZH59pHAxKM8t3gp1m+l1Ya/OkA/nQa2r5a5dlND5odrn0LEjHxO8MmUlrPhOnuT+WykulDf/piK3itPFrrc/0NkhgfIYecbSnanuSyeP6BRR1heAkjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGAdAj6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6590C4AF0B;
-	Tue, 16 Jul 2024 15:56:38 +0000 (UTC)
+	 MIME-Version; b=hJfMxBXboUBeKTok7V4ZH6ByvFtVVyeg0df5sQrg+nAm4ryFjwvrmwa9LyDE6vIYlLDQDeoYi5Bcxpfm0eJlnbW2oVMaj7+6bLyZfDOzC5Zs1qBO5wEpo7yowRas9zLrUGu6i/1TgJbkreA+CDNS5e+NQmabkwyy/UceZq32jMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxblnWI3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B5AC116B1;
+	Tue, 16 Jul 2024 15:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145399;
-	bh=gjBF2Hcp2CUjGLDTdCnSBnd0CME+VTJu+dsw715XaPY=;
+	s=korg; t=1721145247;
+	bh=Q/C2zExKg/jhjkN1NfCN8MLtTQvqwErYGz6c2dcGW1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGAdAj6wN0caM0/XUV1CJ6f4Xj8i06+2f5DAhKWZzrIAqvyKCRsloqTbokY0ofrvI
-	 3APfX6mzL66EQ3ULbc1/fow9mrySLBIH/xMQhXhVMqd9QhlxFHCOqoLTGPyQCNa/Kl
-	 El+3S680y/lr/OUlZDlzfEi5GRVeDZrHsjd1iowk=
+	b=WxblnWI3ZVGedMn8vMyTtTP2Il6gcf91EGR/sUP7ff3GZFhJelDhxPrjTZ4A+YSvC
+	 veLksFhvejmdI86qDimJjzamY9v0oeqdwtWX9Fhtf3liX1T9MPAsrP3ZctSG9sX5jX
+	 7EHUn2uImVtqEEpZfVAwLxujErw4XwUSx0L5ttYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 53/96] USB: serial: option: add support for Foxconn T99W651
-Date: Tue, 16 Jul 2024 17:32:04 +0200
-Message-ID: <20240716152748.545319028@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ekansh Gupta <quic_ekangupt@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.9 129/143] misc: fastrpc: Restrict untrusted app to attach to privileged PD
+Date: Tue, 16 Jul 2024 17:32:05 +0200
+Message-ID: <20240716152800.948199863@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-commit 3c841d54b63e4446383de3238399a3910e47d8e2 upstream.
+commit bab2f5e8fd5d2f759db26b78d9db57412888f187 upstream.
 
-T99W651 is a RNDIS based modem device. There are 3 serial ports
-need to be enumerated: Diag, NMEA and AT.
+Untrusted application with access to only non-secure fastrpc device
+node can attach to root_pd or static PDs if it can make the respective
+init request. This can cause problems as the untrusted application
+can send bad requests to root_pd or static PDs. Add changes to reject
+attach to privileged PDs if the request is being made using non-secure
+fastrpc device node.
 
-Test evidence as below:
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e145 Rev=05.15
-S:  Manufacturer=QCOM
-S:  Product=SDXPINN-IDP _SN:93B562B2
-S:  SerialNumber=82e6fe26
-C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
-I:  If#=0x1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-I:  If#=0x5 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-I:  If#=0x6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-
-0&1: RNDIS, 2:AT, 3:NMEA, 4:DIAG, 5:QDSS, 6:ADB
-QDSS is not a serial port.
-
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 0871561055e6 ("misc: fastrpc: Add support for audiopd")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240628114501.14310-7-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/misc/fastrpc.c      |   22 +++++++++++++++++++---
+ include/uapi/misc/fastrpc.h |    3 +++
+ 2 files changed, 22 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2294,6 +2294,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
- 	  .driver_info = RSVD(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
-+	  .driver_info = RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
- 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -2087,6 +2087,16 @@ err_invoke:
+ 	return err;
+ }
+ 
++static int is_attach_rejected(struct fastrpc_user *fl)
++{
++	/* Check if the device node is non-secure */
++	if (!fl->is_secure_dev) {
++		dev_dbg(&fl->cctx->rpdev->dev, "untrusted app trying to attach to privileged DSP PD\n");
++		return -EACCES;
++	}
++	return 0;
++}
++
+ static long fastrpc_device_ioctl(struct file *file, unsigned int cmd,
+ 				 unsigned long arg)
+ {
+@@ -2099,13 +2109,19 @@ static long fastrpc_device_ioctl(struct
+ 		err = fastrpc_invoke(fl, argp);
+ 		break;
+ 	case FASTRPC_IOCTL_INIT_ATTACH:
+-		err = fastrpc_init_attach(fl, ROOT_PD);
++		err = is_attach_rejected(fl);
++		if (!err)
++			err = fastrpc_init_attach(fl, ROOT_PD);
+ 		break;
+ 	case FASTRPC_IOCTL_INIT_ATTACH_SNS:
+-		err = fastrpc_init_attach(fl, SENSORS_PD);
++		err = is_attach_rejected(fl);
++		if (!err)
++			err = fastrpc_init_attach(fl, SENSORS_PD);
+ 		break;
+ 	case FASTRPC_IOCTL_INIT_CREATE_STATIC:
+-		err = fastrpc_init_create_static_process(fl, argp);
++		err = is_attach_rejected(fl);
++		if (!err)
++			err = fastrpc_init_create_static_process(fl, argp);
+ 		break;
+ 	case FASTRPC_IOCTL_INIT_CREATE:
+ 		err = fastrpc_init_create_process(fl, argp);
+--- a/include/uapi/misc/fastrpc.h
++++ b/include/uapi/misc/fastrpc.h
+@@ -8,11 +8,14 @@
+ #define FASTRPC_IOCTL_ALLOC_DMA_BUFF	_IOWR('R', 1, struct fastrpc_alloc_dma_buf)
+ #define FASTRPC_IOCTL_FREE_DMA_BUFF	_IOWR('R', 2, __u32)
+ #define FASTRPC_IOCTL_INVOKE		_IOWR('R', 3, struct fastrpc_invoke)
++/* This ioctl is only supported with secure device nodes */
+ #define FASTRPC_IOCTL_INIT_ATTACH	_IO('R', 4)
+ #define FASTRPC_IOCTL_INIT_CREATE	_IOWR('R', 5, struct fastrpc_init_create)
+ #define FASTRPC_IOCTL_MMAP		_IOWR('R', 6, struct fastrpc_req_mmap)
+ #define FASTRPC_IOCTL_MUNMAP		_IOWR('R', 7, struct fastrpc_req_munmap)
++/* This ioctl is only supported with secure device nodes */
+ #define FASTRPC_IOCTL_INIT_ATTACH_SNS	_IO('R', 8)
++/* This ioctl is only supported with secure device nodes */
+ #define FASTRPC_IOCTL_INIT_CREATE_STATIC _IOWR('R', 9, struct fastrpc_init_create_static)
+ #define FASTRPC_IOCTL_MEM_MAP		_IOWR('R', 10, struct fastrpc_mem_map)
+ #define FASTRPC_IOCTL_MEM_UNMAP		_IOWR('R', 11, struct fastrpc_mem_unmap)
 
 
 
