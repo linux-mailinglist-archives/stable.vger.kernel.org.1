@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-59732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850FB932B7D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 800BF932C25
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D0EB281093
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36A261F2436E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEA819B3DD;
-	Tue, 16 Jul 2024 15:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1471019E7F7;
+	Tue, 16 Jul 2024 15:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLONveOZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMuDgd85"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B33C1EA73;
-	Tue, 16 Jul 2024 15:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C474219DFB3;
+	Tue, 16 Jul 2024 15:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144742; cv=none; b=aBIoYWybcPhe7VFxqwsFXPQNQpQ/gjzpa7QQenZeLtBEFs4id+W40y9QiJZkLp6HnWI/W8d47bYd/CIOdyWTszBR74HNE4CeoGAKg+y5/KtGcl1QsxCXs9hPI/H2BB56PdEZrAJSd4sLEQOdentW3kMCB/FfzJDDdZEpasBj7zo=
+	t=1721145129; cv=none; b=s+u370TWJHF0OG2HJG0hVMoBG2miBm1XQxFAdEVDUMbEDAA+qk3/PgDrse8ApK+r/1bgrdjlPdQXq00hF2NfTIvxZ44JWX68VLFhQBgH7cPyYhsWqDA1rDOL9bVheXakbhbtSeRc5kYznGRVrn2QxXmfsJOv7CEX4kLBcRJazlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144742; c=relaxed/simple;
-	bh=RwmVDr6ENg2F+8JhsaAjZAI4tybL9xrrnhtK7ZXnJJY=;
+	s=arc-20240116; t=1721145129; c=relaxed/simple;
+	bh=Vtv4IHljGmjVtlqyIfJaXsR55DQnr2fokV5UC0jJpoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFeEt7H8zvb8qYrkRI8KQ1RdoSpRdozWWyePrVouOhkOq8BqiHO4dyKl+evM/Vfe7X+0Yk/qgZUlVEQ89zoyOBDaLzB0Mbz/xWJ/OdbzI5kFt9sLorVhsKoNp21507MYhMYWnTTP9O++siWgii8asIrXEiw6gHrDjlljOYbzcOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLONveOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6306C116B1;
-	Tue, 16 Jul 2024 15:45:41 +0000 (UTC)
+	 MIME-Version; b=Oz3rJ8/rDy9FG++7z5QwsYYVey5SGhfullg3coMgJf9ArSgbmn/CEeqZ1aRGOJp2Y+5YvexgyDWhgwFgAJO2K6QrpMCJQSa6g658cFeUOqlnPfKM6FbHjb4E/yNe6CmmYGhWdlDwbEocvv4NK/SCGrSeUuq4JcUWDIv6fkKC8YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMuDgd85; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49120C116B1;
+	Tue, 16 Jul 2024 15:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144742;
-	bh=RwmVDr6ENg2F+8JhsaAjZAI4tybL9xrrnhtK7ZXnJJY=;
+	s=korg; t=1721145129;
+	bh=Vtv4IHljGmjVtlqyIfJaXsR55DQnr2fokV5UC0jJpoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLONveOZAoYBqHA2sJCXscTeFTuTZrD6Sx2RgQmxqC8/A4tX+RbJF3VP6vsOwF7zb
-	 UMpm+nlEt8dkzJfiWJq4Fm7+X38AIFZs2tBA5oOdB2uipVbcSWcFgkIyFip3JsOvFD
-	 P6pmBDqgDOhyyvcZwxnwkkvOO5T2d9mpcLMlsjWw=
+	b=hMuDgd85qaC9XjYVd9wfJaxQruflQhmijBuzEo30j0Jp6yoF1LyEMS/74GwmdmZjz
+	 91xBN17rSG/FpTLydMOXTgAZ0pG2eJYoB3Zhuylm4qK88YqCx4qAED17CH1uC+4k9J
+	 AKsiwlI0D00UOUJlXwiMewgnXRXDsCcC+whcF34Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>
-Subject: [PATCH 5.10 090/108] libceph: fix race between delayed_work() and ceph_monc_stop()
+	Wentong Wu <wentong.wu@intel.com>,
+	Jason Chen <jason.z.chen@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.9 109/143] mei: vsc: Enhance IVSC chipset stability during warm reboot
 Date: Tue, 16 Jul 2024 17:31:45 +0200
-Message-ID: <20240716152749.444061714@linuxfoundation.org>
+Message-ID: <20240716152800.169491115@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Wentong Wu <wentong.wu@intel.com>
 
-commit 69c7b2fe4c9cc1d3b1186d1c5606627ecf0de883 upstream.
+commit 07de60a46ae9c0583df1c644bae6d3b22d1d903d upstream.
 
-The way the delayed work is handled in ceph_monc_stop() is prone to
-races with mon_fault() and possibly also finish_hunting().  Both of
-these can requeue the delayed work which wouldn't be canceled by any of
-the following code in case that happens after cancel_delayed_work_sync()
-runs -- __close_session() doesn't mess with the delayed work in order
-to avoid interfering with the hunting interval logic.  This part was
-missed in commit b5d91704f53e ("libceph: behave in mon_fault() if
-cur_mon < 0") and use-after-free can still ensue on monc and objects
-that hang off of it, with monc->auth and monc->monmap being
-particularly susceptible to quickly being reused.
+During system shutdown, incorporate reset logic to ensure the IVSC
+chipset remains in a valid state. This adjustment guarantees that
+the IVSC chipset operates in a known state following a warm reboot.
 
-To fix this:
-
-- clear monc->cur_mon and monc->hunting as part of closing the session
-  in ceph_monc_stop()
-- bail from delayed_work() if monc->cur_mon is cleared, similar to how
-  it's done in mon_fault() and finish_hunting() (based on monc->hunting)
-- call cancel_delayed_work_sync() after the session is closed
-
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/66857
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
+Cc: stable@vger.kernel.org # for 6.8+
+Signed-off-by: Wentong Wu <wentong.wu@intel.com>
+Tested-by: Jason Chen <jason.z.chen@intel.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240625081047.4178494-2-wentong.wu@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/mon_client.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/misc/mei/vsc-tp.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/net/ceph/mon_client.c
-+++ b/net/ceph/mon_client.c
-@@ -1014,13 +1014,19 @@ static void delayed_work(struct work_str
- 	struct ceph_mon_client *monc =
- 		container_of(work, struct ceph_mon_client, delayed_work.work);
- 
--	dout("monc delayed_work\n");
- 	mutex_lock(&monc->mutex);
-+	dout("%s mon%d\n", __func__, monc->cur_mon);
-+	if (monc->cur_mon < 0) {
-+		goto out;
-+	}
-+
- 	if (monc->hunting) {
- 		dout("%s continuing hunt\n", __func__);
- 		reopen_session(monc);
- 	} else {
- 		int is_auth = ceph_auth_is_authenticated(monc->auth);
-+
-+		dout("%s is_authed %d\n", __func__, is_auth);
- 		if (ceph_con_keepalive_expired(&monc->con,
- 					       CEPH_MONC_PING_TIMEOUT)) {
- 			dout("monc keepalive timeout\n");
-@@ -1045,6 +1051,8 @@ static void delayed_work(struct work_str
- 		}
- 	}
- 	__schedule_delayed(monc);
-+
-+out:
- 	mutex_unlock(&monc->mutex);
+diff --git a/drivers/misc/mei/vsc-tp.c b/drivers/misc/mei/vsc-tp.c
+index e6a98dba8a73..5f3195636e53 100644
+--- a/drivers/misc/mei/vsc-tp.c
++++ b/drivers/misc/mei/vsc-tp.c
+@@ -568,6 +568,19 @@ static void vsc_tp_remove(struct spi_device *spi)
+ 	free_irq(spi->irq, tp);
  }
  
-@@ -1157,13 +1165,15 @@ EXPORT_SYMBOL(ceph_monc_init);
- void ceph_monc_stop(struct ceph_mon_client *monc)
- {
- 	dout("stop\n");
--	cancel_delayed_work_sync(&monc->delayed_work);
- 
- 	mutex_lock(&monc->mutex);
- 	__close_session(monc);
-+	monc->hunting = false;
- 	monc->cur_mon = -1;
- 	mutex_unlock(&monc->mutex);
- 
-+	cancel_delayed_work_sync(&monc->delayed_work);
++static void vsc_tp_shutdown(struct spi_device *spi)
++{
++	struct vsc_tp *tp = spi_get_drvdata(spi);
 +
- 	/*
- 	 * flush msgr queue before we destroy ourselves to ensure that:
- 	 *  - any work that references our embedded con is finished.
++	platform_device_unregister(tp->pdev);
++
++	mutex_destroy(&tp->mutex);
++
++	vsc_tp_reset(tp);
++
++	free_irq(spi->irq, tp);
++}
++
+ static const struct acpi_device_id vsc_tp_acpi_ids[] = {
+ 	{ "INTC1009" }, /* Raptor Lake */
+ 	{ "INTC1058" }, /* Tiger Lake */
+@@ -580,6 +593,7 @@ MODULE_DEVICE_TABLE(acpi, vsc_tp_acpi_ids);
+ static struct spi_driver vsc_tp_driver = {
+ 	.probe = vsc_tp_probe,
+ 	.remove = vsc_tp_remove,
++	.shutdown = vsc_tp_shutdown,
+ 	.driver = {
+ 		.name = "vsc-tp",
+ 		.acpi_match_table = vsc_tp_acpi_ids,
+-- 
+2.45.2
+
 
 
 
