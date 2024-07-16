@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-59813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2645932BE0
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DEDA932B1A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2301281CE6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7CFF1F219DE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CB719B3D3;
-	Tue, 16 Jul 2024 15:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4611448ED;
+	Tue, 16 Jul 2024 15:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRplEUok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpesJ1n0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D641DA4D;
-	Tue, 16 Jul 2024 15:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B418F9E8;
+	Tue, 16 Jul 2024 15:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144989; cv=none; b=PGCzPYPsB7onE7I6f6e3jqwq6BaasptYxASFzOfA9naj86Ww/X0uk7v+irSnmfuCeOQFd6/cGaQNK/hBvCSo+9AfREIM+XNBYh3o6GGuy0AxXETLlfn8zFQZXHAiePp0uLetL1KRg02qgXp1KtpcP9TVPd1M6RtUCYi99f1oWXo=
+	t=1721144494; cv=none; b=gzlxoRRYx2xQPf87tHk5zZ0z96obUNRrsNtswF0XgVcqOYTZOHynLel7COGgBdr9cjQ4zxXF45xP3zdBWfMKXFtiZJEoRqnx1M9VwUkeNyGeQefwjfk1wVZDQgiLwDTnvUHBuCvTrz9HGpWweTUV30w20Gw7+WyuiZ2aSZ5dDEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144989; c=relaxed/simple;
-	bh=U7nVy2GH5cnxzosTboZo7Dg3hT1wTjlKnvHbeMCq0ks=;
+	s=arc-20240116; t=1721144494; c=relaxed/simple;
+	bh=c9vinyLREDDORXd/8yvh7nasKt2mLmr3Nnj9LJzV8bM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpWU+Is4CN1YzRo4wHlBBKNyy8rvWtEsLjUfyzO6b7d/2cURmgBij7vNsv+D11A6CuHExpKNCIUGo+urMQWLcczcPHQnwy6J+SonQK2ZgbYcSUDqP1PjlpbygBaABMLdDnMGo5wndKbe47B9itWQBFsCMAXZaGQ/Z/O9AfLdgOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRplEUok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8E2C116B1;
-	Tue, 16 Jul 2024 15:49:48 +0000 (UTC)
+	 MIME-Version; b=bfuH75wt4+dt3uzuOZHgMIYzM2uKHMYPwSD2y4XSUvP/auOfhV5vySFAxqfbELn1sDd+ZAwkbE6XjtkvcPEQ95C3NYz6Ta0z2mqEHNfVncQK+y7gQazYll4yQ9NQmhP+YvyvxHpyTTAeHggZvAtvwFy86EThlmfvYxEGyGzOK7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpesJ1n0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2632C116B1;
+	Tue, 16 Jul 2024 15:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144989;
-	bh=U7nVy2GH5cnxzosTboZo7Dg3hT1wTjlKnvHbeMCq0ks=;
+	s=korg; t=1721144494;
+	bh=c9vinyLREDDORXd/8yvh7nasKt2mLmr3Nnj9LJzV8bM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bRplEUok69SCkWdITrvX7xJskAhJNzx91IEWeKmLYf9ZHPI6kd2FE+7IKziHFqrDP
-	 bklSaC4nVGgViksKiZgHMJjrb/d+z92dLhjaIOjt2K1esWsHcGB9yI+bwTJrbHdQRh
-	 N8d9axgzbeOv7w9rxzrr7kYxmc7aA6aC3BQW8/lk=
+	b=tpesJ1n00OJRCsLvvxw7ngBmIziPFxuy3tTA1N3Gp/sOSwWfCkmKTAd0lIEfaNJBv
+	 LF8zMJcErRejPkzlXZcejL8GanGNzpMwNyaXhVfXfRJbtbBacE6Hq2MU+/ichwkbXb
+	 dDgo68PV9+p+su2pKBBr8J8Rth0kxI8St8+1Dr5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Christian Kujau <lists@nerdbynature.de>,
-	Mohammad Shehar Yaar Tausif <sheharyaar48@gmail.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Erick Archer <erick.archer@outlook.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 031/143] bpf: fix order of args in call to bpf_map_kvcalloc
+Subject: [PATCH 5.10 012/108] sctp: prefer struct_size over open coded arithmetic
 Date: Tue, 16 Jul 2024 17:30:27 +0200
-Message-ID: <20240716152757.189946972@linuxfoundation.org>
+Message-ID: <20240716152746.470524369@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Shehar Yaar Tausif <sheharyaar48@gmail.com>
+From: Erick Archer <erick.archer@outlook.com>
 
-[ Upstream commit af253aef183a31ce62d2e39fc520b0ebfb562bb9 ]
+[ Upstream commit e5c5f3596de224422561d48eba6ece5210d967b3 ]
 
-The original function call passed size of smap->bucket before the number of
-buckets which raises the error 'calloc-transposed-args' on compilation.
+This is an effort to get rid of all multiplications from allocation
+functions in order to prevent integer overflows [1][2].
 
-Vlastimil Babka added:
+As the "ids" variable is a pointer to "struct sctp_assoc_ids" and this
+structure ends in a flexible array:
 
-The order of parameters can be traced back all the way to 6ac99e8f23d4
-("bpf: Introduce bpf sk local storage") accross several refactorings,
-and that's why the commit is used as a Fixes: tag.
+struct sctp_assoc_ids {
+	[...]
+	sctp_assoc_t	gaids_assoc_id[];
+};
 
-In v6.10-rc1, a different commit 2c321f3f70bc ("mm: change inlined
-allocation helpers to account at the call site") however exposed the
-order of args in a way that gcc-14 has enough visibility to start
-warning about it, because (in !CONFIG_MEMCG case) bpf_map_kvcalloc is
-then a macro alias for kvcalloc instead of a static inline wrapper.
+the preferred way in the kernel is to use the struct_size() helper to
+do the arithmetic instead of the calculation "size + size * count" in
+the kmalloc() function.
 
-To sum up the warning happens when the following conditions are all met:
+Also, refactor the code adding the "ids_size" variable to avoid sizing
+twice.
 
-- gcc-14 is used (didn't see it with gcc-13)
-- commit 2c321f3f70bc is present
-- CONFIG_MEMCG is not enabled in .config
-- CONFIG_WERROR turns this from a compiler warning to error
+This way, the code is more readable and safer.
 
-Fixes: 6ac99e8f23d4 ("bpf: Introduce bpf sk local storage")
-Reviewed-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Christian Kujau <lists@nerdbynature.de>
-Signed-off-by: Mohammad Shehar Yaar Tausif <sheharyaar48@gmail.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Link: https://lore.kernel.org/r/20240710100521.15061-2-vbabka@suse.cz
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+This code was detected with the help of Coccinelle, and audited and
+modified manually.
+
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
+Link: https://github.com/KSPP/linux/issues/160 [2]
+Signed-off-by: Erick Archer <erick.archer@outlook.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/PAXPR02MB724871DB78375AB06B5171C88B152@PAXPR02MB7248.eurprd02.prod.outlook.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/bpf_local_storage.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sctp/socket.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index bdea1a459153c..bea5873d96d15 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -782,8 +782,8 @@ bpf_local_storage_map_alloc(union bpf_attr *attr,
- 	nbuckets = max_t(u32, 2, nbuckets);
- 	smap->bucket_log = ilog2(nbuckets);
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index bc4fe944ef858..79cf4cda2cf6d 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -6994,6 +6994,7 @@ static int sctp_getsockopt_assoc_ids(struct sock *sk, int len,
+ 	struct sctp_sock *sp = sctp_sk(sk);
+ 	struct sctp_association *asoc;
+ 	struct sctp_assoc_ids *ids;
++	size_t ids_size;
+ 	u32 num = 0;
  
--	smap->buckets = bpf_map_kvcalloc(&smap->map, sizeof(*smap->buckets),
--					 nbuckets, GFP_USER | __GFP_NOWARN);
-+	smap->buckets = bpf_map_kvcalloc(&smap->map, nbuckets,
-+					 sizeof(*smap->buckets), GFP_USER | __GFP_NOWARN);
- 	if (!smap->buckets) {
- 		err = -ENOMEM;
- 		goto free_smap;
+ 	if (sctp_style(sk, TCP))
+@@ -7006,11 +7007,11 @@ static int sctp_getsockopt_assoc_ids(struct sock *sk, int len,
+ 		num++;
+ 	}
+ 
+-	if (len < sizeof(struct sctp_assoc_ids) + sizeof(sctp_assoc_t) * num)
++	ids_size = struct_size(ids, gaids_assoc_id, num);
++	if (len < ids_size)
+ 		return -EINVAL;
+ 
+-	len = sizeof(struct sctp_assoc_ids) + sizeof(sctp_assoc_t) * num;
+-
++	len = ids_size;
+ 	ids = kmalloc(len, GFP_USER | __GFP_NOWARN);
+ 	if (unlikely(!ids))
+ 		return -ENOMEM;
 -- 
 2.43.0
 
