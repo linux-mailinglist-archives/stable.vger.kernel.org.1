@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-59823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669F7932BF6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F150B932D03
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 101241F2151D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A75B11F21041
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA6019DF53;
-	Tue, 16 Jul 2024 15:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D09B19E822;
+	Tue, 16 Jul 2024 16:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiiKJQ+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rd8rYRxF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14B01DA4D;
-	Tue, 16 Jul 2024 15:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2AD19E7D8;
+	Tue, 16 Jul 2024 16:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145019; cv=none; b=n4jG/avdZAdBOM+yg21+wCnPn/5iESs+jg1kU4FboMQ5SV5oVioihw3T2poWSL0yoSTjqzVSMyONyKwWSLMTPIJjiuFMzbjtTpjnWCsXaqMJQTJHsRnEJxqb7xMY8xvEMQAtGp/y/e047pcrgCFgIXcT5Mt1SRcqgTGJ6yChUKU=
+	t=1721145602; cv=none; b=U2u1s/CZ6fDRhV6p5KyWOGjlm9a/YcF2DBwdKaWNSfInP3+fzb3gnur2QlLMcZIC/rp/rf9mmzps70lCBiC20d3E9/NpPvWyXMUstajEx9YGfABNpNQeRRaLVZUB7UnbzXMwFnS+XV+dro+xeZOuN1mhzGusN9pImHtqNMdVTIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145019; c=relaxed/simple;
-	bh=fV8aoi2DHEkUOflzk8En5YGWI9Y5ABP/SqzTyJfH5gY=;
+	s=arc-20240116; t=1721145602; c=relaxed/simple;
+	bh=6JpjjLy3fA579K8RDrmDvpgOVTIB+FLQy+QBYx3RpuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bV5b9A3K9XTzjYmxxn2CWU7aABxf2JvQ+jlPDA5pjzTM9VsxUGGgxXLzkD4HEhaKRV7HI3f4ytek1zR0H76Y9AICKuqnN2KOutKv6VTMXgZeESDlclj0BoQILt95+Yyrzq/Q/davGSGWXP5AZ7lojbuHQuZxVf39GgD9P+BYd98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiiKJQ+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E079C116B1;
-	Tue, 16 Jul 2024 15:50:18 +0000 (UTC)
+	 MIME-Version; b=iVkkB+KBtT/PYQ8LjV+qBbVgHp84dJGuG7dpAM8Gca9jeMkwUdopKIkKe46w+KL8kKbV4rQEOWdMnZXEcV+WDQ0IuCxzxIEWEsgDKrj09JUCtdqH7nKWoOVQA68BfjWVbaoOBClfywA1Ijl+vJQWQ+/ENmmM1Eg9I2E0Z3XIX9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rd8rYRxF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60092C116B1;
+	Tue, 16 Jul 2024 16:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145018;
-	bh=fV8aoi2DHEkUOflzk8En5YGWI9Y5ABP/SqzTyJfH5gY=;
+	s=korg; t=1721145602;
+	bh=6JpjjLy3fA579K8RDrmDvpgOVTIB+FLQy+QBYx3RpuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiiKJQ+2DONFIV24NlpWLWBiLss1l14sjRoD5vt7nvcAmJhJ106Jatcb7uClRIIsH
-	 0kNnRHBk1ngyjmLPcSXdwx0HsLUbe9CyXJlPmwhzg4Y9pRrcSz6UP5kORQtAr0+JOz
-	 LhxswRF9pLuB8fjO5BP8g7iSyL8PUk5U9RyFIIms=
+	b=Rd8rYRxF27wOzjCb6z2Ac6DevNV6LlHJ//ow6KGbLz9lTN/ykj1ihPwN7nDlnWXx4
+	 BeS2Y+oRecxS6i0I/zLEjOkPca/L+6llGdLIzf44DgQ7zPnw8Nrv+2faeHKVfv3T8J
+	 RCZXS+f5GLqTOK+S6lqcTc1ZQ9GyzONCa+vXQFUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.9 072/143] USB: serial: option: add support for Foxconn T99W651
+	Xin Yin <yinxin.x@bytedance.com>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 006/121] cachefiles: narrow the scope of triggering EPOLLIN events in ondemand mode
 Date: Tue, 16 Jul 2024 17:31:08 +0200
-Message-ID: <20240716152758.746841663@linuxfoundation.org>
+Message-ID: <20240716152751.563239355@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Jia Zhu <zhujia.zj@bytedance.com>
 
-commit 3c841d54b63e4446383de3238399a3910e47d8e2 upstream.
+[ Upstream commit b817e22b2e91257ace32a6768c3c003faeaa1c5c ]
 
-T99W651 is a RNDIS based modem device. There are 3 serial ports
-need to be enumerated: Diag, NMEA and AT.
+Don't trigger EPOLLIN when there are only reopening read requests in
+xarray.
 
-Test evidence as below:
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e145 Rev=05.15
-S:  Manufacturer=QCOM
-S:  Product=SDXPINN-IDP _SN:93B562B2
-S:  SerialNumber=82e6fe26
-C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
-I:  If#=0x1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-I:  If#=0x5 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-I:  If#=0x6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-
-0&1: RNDIS, 2:AT, 3:NMEA, 4:DIAG, 5:QDSS, 6:ADB
-QDSS is not a serial port.
-
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Xin Yin <yinxin.x@bytedance.com>
+Signed-off-by: Jia Zhu <zhujia.zj@bytedance.com>
+Link: https://lore.kernel.org/r/20231120041422.75170-5-zhujia.zj@bytedance.com
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 12e009d60852 ("cachefiles: wait for ondemand_object_worker to finish when dropping object")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/cachefiles/daemon.c   | 14 ++++++++++++--
+ fs/cachefiles/internal.h | 12 ++++++++++++
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2294,6 +2294,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
- 	  .driver_info = RSVD(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
-+	  .driver_info = RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
- 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index b9945e4f697be..06cdf1a8a16f6 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -357,14 +357,24 @@ static __poll_t cachefiles_daemon_poll(struct file *file,
+ 					   struct poll_table_struct *poll)
+ {
+ 	struct cachefiles_cache *cache = file->private_data;
++	XA_STATE(xas, &cache->reqs, 0);
++	struct cachefiles_req *req;
+ 	__poll_t mask;
+ 
+ 	poll_wait(file, &cache->daemon_pollwq, poll);
+ 	mask = 0;
+ 
+ 	if (cachefiles_in_ondemand_mode(cache)) {
+-		if (!xa_empty(&cache->reqs))
+-			mask |= EPOLLIN;
++		if (!xa_empty(&cache->reqs)) {
++			rcu_read_lock();
++			xas_for_each_marked(&xas, req, ULONG_MAX, CACHEFILES_REQ_NEW) {
++				if (!cachefiles_ondemand_is_reopening_read(req)) {
++					mask |= EPOLLIN;
++					break;
++				}
++			}
++			rcu_read_unlock();
++		}
+ 	} else {
+ 		if (test_bit(CACHEFILES_STATE_CHANGED, &cache->flags))
+ 			mask |= EPOLLIN;
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index 3eea52462fc87..e0eac16e4741c 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -335,6 +335,13 @@ cachefiles_ondemand_set_object_##_state(struct cachefiles_object *object) \
+ CACHEFILES_OBJECT_STATE_FUNCS(open, OPEN);
+ CACHEFILES_OBJECT_STATE_FUNCS(close, CLOSE);
+ CACHEFILES_OBJECT_STATE_FUNCS(reopening, REOPENING);
++
++static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
++{
++	return cachefiles_ondemand_object_is_reopening(req->object) &&
++			req->msg.opcode == CACHEFILES_OP_READ;
++}
++
+ #else
+ static inline ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 					char __user *_buffer, size_t buflen)
+@@ -365,6 +372,11 @@ static inline int cachefiles_ondemand_init_obj_info(struct cachefiles_object *ob
+ static inline void cachefiles_ondemand_deinit_obj_info(struct cachefiles_object *obj)
+ {
+ }
++
++static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
++{
++	return false;
++}
+ #endif
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
