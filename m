@@ -1,54 +1,93 @@
-Return-Path: <stable+bounces-59415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FE893282F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:22:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D009932840
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DBE0B2294E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:22:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CD8F284556
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661B819B58A;
-	Tue, 16 Jul 2024 14:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D10019CD01;
+	Tue, 16 Jul 2024 14:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t98P7e/F"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="EU6uZLLL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="X6KPMa7i"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout1-smtp.messagingengine.com (fout1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F281DFD0
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 14:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD6B19B595;
+	Tue, 16 Jul 2024 14:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721139713; cv=none; b=o8DVEZ+m8syTPhNr2KEfC33KWmsRh5tvmkPBF7XY0Hi2T9tWYfWwUs6I/C0fx5GVSr/H3TerEeZl0+fMUf51PvJ2r6yBVSV2W4Yl9tHaLpromiWeyjdpPVF4UUPhv9GFgnw/8CQMAlewNCxhl1AwTCRyexhSuJpSrmd0Pf176xI=
+	t=1721139800; cv=none; b=YpdHBgjUU9sx6n6j9U5vnUPZfGKwFtjCnoAEayzW6IOrtKEfohJ7X2Yhk6HEpMnJydlvEphjI+XPsHwNQpjpuUnvleKnN7WUA4J1Sxs1mXz+WqlWQHxjMhsipVx5AP0EsOMgiA/L1vjCjqcCtdgEygtWUMFhWXO4e4DL5UbKu3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721139713; c=relaxed/simple;
-	bh=xM6L05LshKjCJ+cYhVRNXmRPQC4beYkyAVZjqbNyQw8=;
+	s=arc-20240116; t=1721139800; c=relaxed/simple;
+	bh=3j7UmV5Osm9gGYW64tfdXxw90byedZUmsDtrYUOjV80=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NBH5SA7r6hlEHDVrD+xRqZ7JBXV2ss/PaoL/hryzSKHVAEFcTlkMgcfKqmhJQmtYbQYnsdGbtFtNPoNd7qSfmF1UHh6tpEKd+uyvAEQGgJxQaSDpoYih0X/CDkDIeJ0zoWpEG4HhZTC4CXsj2pnYt+o6TQQL9r1duouQ62QjecE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t98P7e/F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C21BC4AF0D;
-	Tue, 16 Jul 2024 14:21:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721139712;
-	bh=xM6L05LshKjCJ+cYhVRNXmRPQC4beYkyAVZjqbNyQw8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t98P7e/FcQ5OII2WTg5ARM4gNgOLGnA0Zt9xqmbZqAvIwdA60NKlbX4lcVzGqP7cv
-	 ugQeEySUxAz1lLZSUykJ6vMXINNoPMOdD0OCljZu1DNqWvJQjLhrG4Iet9evCXoQf9
-	 FSrDSIHGJIaRf/6OjAEAgThb2rLNY3PoL2Z+pg20=
-Date: Tue, 16 Jul 2024 16:21:50 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: John Stultz <jstultz@google.com>
-Cc: stable@vger.kernel.org, Jimmy Shiu <jimmyshiu@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Qais Yousef <qyousef@layalina.io>
-Subject: Re: [PATCH 6.1] sched: Move psi_account_irqtime() out of
- update_rq_clock_task() hotpath
-Message-ID: <2024071639-huff-outcast-21b0@gregkh>
-References: <20240716004050.515306-1-jstultz@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZyZpK40EbztMKjcjpYHuJrrH/Y+T8gEGv+0ZXmb/YZH7+VZSOu7Nn+D0yw8Y3yiJaasX+gSR7XzcvKLTt4Zfla5kV0GVXpMDRCa9fH6XaWdoHeLYZp6nTdCOVa/7+av05PTTG8MaawwpYE5tg1X1goYISUlPJi61mAkKxxx7hP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=EU6uZLLL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=X6KPMa7i; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 1F21C1388B5B;
+	Tue, 16 Jul 2024 10:23:16 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Tue, 16 Jul 2024 10:23:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1721139796; x=1721226196; bh=D1EqHmNIMe
+	5lNyHhuTa/bOsnQk18KfRt8q3WMidg1Mo=; b=EU6uZLLLHni0SF9+UIRQx/jcwv
+	aWexbLviX7O44UuNJpCif7tJmkP/pBlWgSZqSxQxmOJKIk7FwmwiNj4l7gpTmd0E
+	TnklrywKMNINl219ZbNwX99p8luiDZPPHZMZvgJESgxv1EPTzVdiHEtB/3YRcoRH
+	P0HrYfKKLh5w1KDywUZrCVgt7Nq5P+2IKIS6rk/eT4hGNdB1btT0oE90V4bB7un4
+	MiWZ1GLpULYn0/j6vuDUgwswronnlYWWFlM02YtWGusZk5PBZi6Toj9t/SDKx0Rj
+	RVslwe5MAmoEvJLRvS2SuGOJQsLn1IDV+BNBQIsR16rgblSnICuPZ3CGjp7A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1721139796; x=1721226196; bh=D1EqHmNIMe5lNyHhuTa/bOsnQk18
+	KfRt8q3WMidg1Mo=; b=X6KPMa7ip5dftf01GzT3ngOrLVf9jgqJ72bMwNfW+20s
+	pN52QbZJIMyVsFArcwk9BRneMt7c8wDqfmN+/6lOMKSu+nGApcqjqNEFL86HP3zM
+	UDZtLT9JHtJcNjIi/L7nUHLc7CBFQ/z4LqjsiiXyRCOlsBrPLywfKvQ5Q5J+zglo
+	Zo8y7CK9LMFz7eryy9Eth1GxmhfJ0F1+ZO5NZtRDkO8+YGmCs8e1sm1RwoxRsDIe
+	J4DzSs3d5HDtpnXgEOYBm4dfw2wLWbgWqXn6Bo0hm6ATUIpHm8XJaPMTY8sfGdUg
+	zNoorUxi4Z884zwxl6HNYsdBfiNZESjly4+ojCTAMA==
+X-ME-Sender: <xms:U4KWZgUuruuvdbeYaT05yQKtkfmUMZCQoSlUXFnUf0qpoQ2T3KaG5w>
+    <xme:U4KWZkkyFOHmD7t4warUQDwEm6_X5czLVurl5vBSVahq3jXbyZ0H1_rmpzWsfHtlg
+    w2wlbQn3cp1OA>
+X-ME-Received: <xmr:U4KWZkZXc5sLTvAUls1tAuRdX6Dac_tmjLjTyw4OCAd5LprbNVQsbc9jrXkd_B2OBF4REmRSGC4qtg3-CRfSrLPzb2x7bt7mImWOdw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrgeeggdejgecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpedvjefhve
+    fhjeejfeefleejteegtedvgeeghfeuveevgfffueelhffhhedugffhkeenucffohhmrghi
+    nhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:U4KWZvV48D0e_yiW9kclqTjWGp4mza3mSxdeRV6MOVkGByMp8wpuzg>
+    <xmx:U4KWZqliL6AjQliqURiSrE8HGVkT-JmfER_EkuGngV8Snz8mYfCwdA>
+    <xmx:U4KWZkd0g8mPY9ZMWMJBYxlbKcF4sGsbKAoAmxVG93tDyEV85FbUAQ>
+    <xmx:U4KWZsHdgR0KBJKI78cLfYIEv5DZLA6sRIZeoSpqwraZAJmIvgjd9A>
+    <xmx:VIKWZjfxx6-9qHniPKQ5zOxwOybc5_eOiYOy8EPB1W9DZxjqimtjbx0t>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 16 Jul 2024 10:23:15 -0400 (EDT)
+Date: Tue, 16 Jul 2024 16:23:13 +0200
+From: Greg KH <greg@kroah.com>
+To: Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org,
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>
+Subject: Re: [PATCH 6.6] btrfs: tree-checker: add type and sequence check for
+ inline backrefs
+Message-ID: <2024071606-countdown-tactful-e647@gregkh>
+References: <63189f5d922db2bc525f5251be46fe857e00a2d6.1721120987.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,69 +96,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240716004050.515306-1-jstultz@google.com>
+In-Reply-To: <63189f5d922db2bc525f5251be46fe857e00a2d6.1721120987.git.wqu@suse.com>
 
-On Mon, Jul 15, 2024 at 05:40:39PM -0700, John Stultz wrote:
-> commit ddae0ca2a8fe12d0e24ab10ba759c3fbd755ada8 upstream.
+On Tue, Jul 16, 2024 at 06:45:49PM +0930, Qu Wenruo wrote:
+> commit 1645c283a87c61f84b2bffd81f50724df959b11a upstream.
 > 
-> It was reported that in moving to 6.1, a larger then 10%
-> regression was seen in the performance of
-> clock_gettime(CLOCK_THREAD_CPUTIME_ID,...).
+> [BUG]
+> There is a bug report that ntfs2btrfs had a bug that it can lead to
+> transaction abort and the filesystem flips to read-only.
 > 
-> Using a simple reproducer, I found:
-> 5.10:
-> 100000000 calls in 24345994193 ns => 243.460 ns per call
-> 100000000 calls in 24288172050 ns => 242.882 ns per call
-> 100000000 calls in 24289135225 ns => 242.891 ns per call
+> [CAUSE]
+> For inline backref items, kernel has a strict requirement for their
+> ordered, they must follow the following rules:
 > 
-> 6.1:
-> 100000000 calls in 28248646742 ns => 282.486 ns per call
-> 100000000 calls in 28227055067 ns => 282.271 ns per call
-> 100000000 calls in 28177471287 ns => 281.775 ns per call
+> - All btrfs_extent_inline_ref::type should be in an ascending order
 > 
-> The cause of this was finally narrowed down to the addition of
-> psi_account_irqtime() in update_rq_clock_task(), in commit
-> 52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ
-> pressure").
+> - Within the same type, the items should follow a descending order by
+>   their sequence number
 > 
-> In my initial attempt to resolve this, I leaned towards moving
-> all accounting work out of the clock_gettime() call path, but it
-> wasn't very pretty, so it will have to wait for a later deeper
-> rework. Instead, Peter shared this approach:
+>   For EXTENT_DATA_REF type, the sequence number is result from
+>   hash_extent_data_ref().
+>   For other types, their sequence numbers are
+>   btrfs_extent_inline_ref::offset.
 > 
-> Rework psi_account_irqtime() to use its own psi_irq_time base
-> for accounting, and move it out of the hotpath, calling it
-> instead from sched_tick() and __schedule().
+> Thus if there is any code not following above rules, the resulted
+> inline backrefs can prevent the kernel to locate the needed inline
+> backref and lead to transaction abort.
 > 
-> In testing this, we found the importance of ensuring
-> psi_account_irqtime() is run under the rq_lock, which Johannes
-> Weiner helpfully explained, so also add some lockdep annotations
-> to make that requirement clear.
+> [FIX]
+> Ntrfs2btrfs has already fixed the problem, and btrfs-progs has added the
+> ability to detect such problems.
 > 
-> With this change the performance is back in-line with 5.10:
-> 6.1+fix:
-> 100000000 calls in 24297324597 ns => 242.973 ns per call
-> 100000000 calls in 24318869234 ns => 243.189 ns per call
-> 100000000 calls in 24291564588 ns => 242.916 ns per call
+> For kernel, let's be more noisy and be more specific about the order, so
+> that the next time kernel hits such problem we would reject it in the
+> first place, without leading to transaction abort.
 > 
-> Reported-by: Jimmy Shiu <jimmyshiu@google.com>
-> Originally-by: Peter Zijlstra <peterz@infradead.org>
-> Signed-off-by: John Stultz <jstultz@google.com>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-> Reviewed-by: Qais Yousef <qyousef@layalina.io>
-> Link: https://lore.kernel.org/r/20240618215909.4099720-1-jstultz@google.com
-> Fixes: 52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ pressure")
-> [jstultz: Fixed up minor collisions w/ 6.1-stable]
-> Signed-off-by: John Stultz <jstultz@google.com>
+> Cc: stable@vger.kernel.org # 6.6
+> Link: https://github.com/kdave/btrfs-progs/pull/622
+> Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+> [ Fix a conflict due to header cleanup. ]
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> Signed-off-by: David Sterba <dsterba@suse.com>
 > ---
->  kernel/sched/core.c  |  7 +++++--
->  kernel/sched/psi.c   | 21 ++++++++++++++++-----
->  kernel/sched/sched.h |  1 +
->  kernel/sched/stats.h | 11 ++++++++---
->  4 files changed, 30 insertions(+), 10 deletions(-)
+>  fs/btrfs/tree-checker.c | 39 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
 
-Both backports now queued up, thanks.
+Now queued up, thanks.
 
 greg k-h
 
