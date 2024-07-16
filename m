@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-59712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC5E932B64
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1893B932A81
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34BE81F210B4
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCAB52844E2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C627195B27;
-	Tue, 16 Jul 2024 15:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645CE1DFDE;
+	Tue, 16 Jul 2024 15:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VB4Iyy8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5qevYTb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9A3F9E8;
-	Tue, 16 Jul 2024 15:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220C0CA40;
+	Tue, 16 Jul 2024 15:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144678; cv=none; b=W5DVn4IFCR6vHxosbAxqxUtfIz5kfXAU0y8sN6XvBERiMdRCV23WD4ZHtr/QNsA0Fr5P98TImh9OPvhZUVacOemqMmLknqLYXxlsQpf5KVCnwGCVPH0OxVZToVPmPGYTj8ye5f1VE38y7nIXPT2ftNeTqK0kmD2eEOm8iK3MJfs=
+	t=1721144080; cv=none; b=AN39uSaCAUz/Pr/shdBFTrHZGumxKfoHbuhxY1pyEGJLLIhxSHTBQLY7oypMx0uZhj3zXBLJxgdSb/B1+XRUB16xNmWyUts6jwbS17HboCjd7EY2l+3MxX1jE6/c9bBo8LbDLgnZRRPmAcIqTS8qIY27tefJ4XQy/KRVPX1WF4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144678; c=relaxed/simple;
-	bh=vtK1dVywseekplm/5yzQDfowVWc+eQEhcfCCzvzB5Ac=;
+	s=arc-20240116; t=1721144080; c=relaxed/simple;
+	bh=3HPWZQ/tIdDSX1k5/v37JYFYEo87uagCqAAmpLTgiMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uOOHgrHsk/5InXbUfxY4g21ibMjlTzipjY8Hw5+yk8rK3Ze8feTW46JKlaBFhc2fndSz5bPeOWHcn9yM2B+UHwFpjvPp3gAPe0Yog8KSwZAIAbZBJZBR6xmiOvtvh8832uhTW82TexdbulUBFql1FpYp892ylpBd6qY/9hmcjaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VB4Iyy8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEBDC4AF0D;
-	Tue, 16 Jul 2024 15:44:37 +0000 (UTC)
+	 MIME-Version; b=YO9GOI1VNiEyg8XOs7wj8Wl9haYLmD18oXWBbGVQ+kSs8RutMYMLQeeNNOgjEiwX+q5YJrSBfuSiQFkm7BL4Kzs1B7/zLkR8G/EJjH6MZ+CcYKGBPlr8prj9ZHVOitkJiRYCCaIfpMapcl5lgrhZ3rGdOacFEh3EyE7qjrZ1Q9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5qevYTb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91216C116B1;
+	Tue, 16 Jul 2024 15:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144678;
-	bh=vtK1dVywseekplm/5yzQDfowVWc+eQEhcfCCzvzB5Ac=;
+	s=korg; t=1721144080;
+	bh=3HPWZQ/tIdDSX1k5/v37JYFYEo87uagCqAAmpLTgiMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VB4Iyy8FIO4X3qJi/0i2TJZQfb7hGtGhKi1bVxP5ZbiKWFctSolbFX7c9yeXGcFCE
-	 ogd2s8m4PsfacnUwo9mGCVFrmK12GCrEAfV+nyKgdjoqMxtybLyxjXyJSu65o2NK8O
-	 eEexakTjMky4hPDPZnI/XaID7nX4sqJ7eF5+zXEk=
+	b=h5qevYTbiIhoDKn+MjkYHSaaJFsUxgfr5jUopKu5Uaa/SHdrbEySSxgBVVAXrfkrw
+	 swmX7sgYLYSliDTT2Q8P2QeX0kRojmcjUvMjQVLI/RAFArgsep8JWw+cXp1MCfcC+/
+	 dw3vDKzXF+LDu0uc3tC8HkckbghXudU2wZnm6I4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jozef Hopko <jozef.hopko@altana.com>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Ajay Singh <ajay.kathat@microchip.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 029/108] wifi: wilc1000: fix ies_len type in connect path
+Subject: [PATCH 4.19 09/66] net: dsa: mv88e6xxx: Correct check for empty list
 Date: Tue, 16 Jul 2024 17:30:44 +0200
-Message-ID: <20240716152747.118825509@linuxfoundation.org>
+Message-ID: <20240716152738.521764527@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozef Hopko <jozef.hopko@altana.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 39ab8fff623053a50951b659e5f6b72343d7d78c ]
+[ Upstream commit 4c7f3950a9fd53a62b156c0fe7c3a2c43b0ba19b ]
 
-Commit 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
-made sure that the IEs data was manipulated under the relevant RCU section.
-Unfortunately, while doing so, the commit brought a faulty implicit cast
-from int to u8 on the ies_len variable, making the parsing fail to be
-performed correctly if the IEs block is larger than 255 bytes. This failure
-can be observed with Access Points appending a lot of IEs TLVs in their
-beacon frames (reproduced with a Pixel phone acting as an Access Point,
-which brough 273 bytes of IE data in my testing environment).
+Since commit a3c53be55c95 ("net: dsa: mv88e6xxx: Support multiple MDIO
+busses") mv88e6xxx_default_mdio_bus() has checked that the
+return value of list_first_entry() is non-NULL.
 
-Fix IEs parsing by removing this undesired implicit cast.
+This appears to be intended to guard against the list chip->mdios being
+empty.  However, it is not the correct check as the implementation of
+list_first_entry is not designed to return NULL for empty lists.
 
-Fixes: 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
-Signed-off-by: Jozef Hopko <jozef.hopko@altana.com>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Acked-by: Ajay Singh <ajay.kathat@microchip.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240701-wilc_fix_ies_data-v1-1-7486cbacf98a@bootlin.com
+Instead, use list_first_entry_or_null() which does return NULL if the
+list is empty.
+
+Flagged by Smatch.
+Compile tested only.
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240430-mv88e6xx-list_empty-v3-1-c35c69d88d2e@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/microchip/wilc1000/hif.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
-index 457386f9de990..3f167bf4eef35 100644
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -364,7 +364,8 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
- 	struct ieee80211_p2p_noa_attr noa_attr;
- 	const struct cfg80211_bss_ies *ies;
- 	struct wilc_join_bss_param *param;
--	u8 rates_len = 0, ies_len;
-+	u8 rates_len = 0;
-+	int ies_len;
- 	int ret;
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index c401ee34159ad..e57d7bd6e58d6 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -231,8 +231,8 @@ struct mii_bus *mv88e6xxx_default_mdio_bus(struct mv88e6xxx_chip *chip)
+ {
+ 	struct mv88e6xxx_mdio_bus *mdio_bus;
  
- 	param = kzalloc(sizeof(*param), GFP_KERNEL);
+-	mdio_bus = list_first_entry(&chip->mdios, struct mv88e6xxx_mdio_bus,
+-				    list);
++	mdio_bus = list_first_entry_or_null(&chip->mdios,
++					    struct mv88e6xxx_mdio_bus, list);
+ 	if (!mdio_bus)
+ 		return NULL;
+ 
 -- 
 2.43.0
 
