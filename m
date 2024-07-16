@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-60328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45273933065
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB48933067
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6927E1C2092B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:40:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1A431C22543
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79CD1AAE2A;
-	Tue, 16 Jul 2024 18:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95B61A08C5;
+	Tue, 16 Jul 2024 18:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JwfI7Evt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GzHGuZwm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EA71A08C3;
-	Tue, 16 Jul 2024 18:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954991AB509;
+	Tue, 16 Jul 2024 18:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154891; cv=none; b=TenOl+0dyrPe1/zldEJLtqUjbAKzJCce2nCy5YB93Qo1EiV545weOCd7DqQfSnOrBx6J2Fw+dFWg/WUJY4E4Uq/Sp4oohY7kR2ye/pWFfeuE0RqmG9ZdzqpKEH1yvenGp9wWigvinCXCH8wkxgwMl2xXQ54xeqQmZDxUnZch+uY=
+	t=1721154893; cv=none; b=FKjQgL6Of1jvhzmllDA7w9JefbSRT1r4VZT1pnbM0MJKHtU1jatYAEz46ucPgmnKkU1bWpGMmH13Pt66dOKibGd/mD2n3MVXsll+FSAJD6f071IQJQth1YE1aw422iZVrn7kF5xtA4GVOCk9BhbmUNZfp/j6URxzE+/bwlBLOnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154891; c=relaxed/simple;
-	bh=2K0g1t7SFFmyFpHBYCQZgT7kd2mByMFkUCTErHVQcs8=;
+	s=arc-20240116; t=1721154893; c=relaxed/simple;
+	bh=HL7KMBOMviRezCQsJgprPPAWt0XN7JR8kqiaHBw7blU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rA/u8IOCNMJ5ou73t5rK4sGxtfd06suBYUdxijO7+iiKl2nKxbr7tHt8nsX8lHaWI0zWLp0W1+yOBr6LrMX4OMzTNq4ChSBQXKe4UqGm696u8rGuM3XnPAwsvg6gZYPQdaQwF7Mo7hV5ubwBGJKEhEqDk6qtWgibrDKlKzXL9JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JwfI7Evt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B81C4AF0D;
-	Tue, 16 Jul 2024 18:34:48 +0000 (UTC)
+	 MIME-Version; b=I/9Cf3SHyBmx4bCHXJNsWmE8UT6jx9dcAkzXPaVEiOOmZhZi0dkD5q5BN+dOZHMWOmTQ8u3oRPRtLZNyVOoao9E1kuX8bw2L/RVfI+I+BbGLFPBC5/KdaJlWjdNAKYVDHKgOSbjKLo3bV7NtxZWrFARZ2twNR6CY7nCAmX+/VyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GzHGuZwm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1C6C4AF0F;
+	Tue, 16 Jul 2024 18:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154890;
-	bh=2K0g1t7SFFmyFpHBYCQZgT7kd2mByMFkUCTErHVQcs8=;
+	s=k20201202; t=1721154893;
+	bh=HL7KMBOMviRezCQsJgprPPAWt0XN7JR8kqiaHBw7blU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwfI7EvtbenLuH1S4pOkktFg/uL6rlc6QkJKJ0/KLYJt2HbDFMZFJv4MYoDpSqND2
-	 aZ7YUI0qE2U7u2fW5XqsBeka82g5SPJ5VoOJEHMczhdauWDnQOblqyf2MjF+GotJy4
-	 CwoDdcsC6VY8FILb4Z4dvGUBiaettBfUZhz0VMKP1IVwNX1OcPzzMoGvv/sSuZXr9H
-	 HsSiGyR+zxwFhcNDAxjr3SMLdXOfPr+7S9eZb+nizJW9Thmq1IU8IB4O0ZLrYNyCME
-	 HcSnuRkvWSFsuvU/j43T7YStCmgh1ovz7pZhLocZLCF1jHLiYkoRrZFQKGlMFjhEfT
-	 3SMh6kYi1hjqQ==
+	b=GzHGuZwmez6IebvMEAW09sqQbvf++shdDWch0GL/1w7TQ/IN2TYZid++is9skXCHD
+	 OV4dXNmm3uhwopdbl1ItmWmH+sCvXUKdNP91M/9M/9OOdChYp5REbqqUA0pMwhXdXb
+	 n82oXRdpaBlgUjlk97uQVDgSDh/3tcLCoRcU4MKzQzWbAoDAHKaLvNqxBYmmUoUCN8
+	 azVtn1WKErF7THnRcNz/NyBKpJ/E286kOF8cH4DUSwWBWkBvtxbCEmQjF+y8R3SkPv
+	 onc/sGFa4yFTVd3eRyQU9Yn/RtwYpiMC1j8WlB4f1YJdgmuxvzHA0XzPFt09NgGDjc
+	 75qPp+5morelQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: John Hubbard <jhubbard@nvidia.com>,
-	Carlos Llamas <cmllamas@google.com>,
-	Edward Liaw <edliaw@google.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+Cc: Edward Adam Davis <eadavis@qq.com>,
+	syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com,
+	syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shuah@kernel.org,
-	nathan@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.10 2/4] selftests/vDSO: fix clang build errors and warnings
-Date: Tue, 16 Jul 2024 14:34:37 -0400
-Message-ID: <20240716183443.2814769-2-sashal@kernel.org>
+	walmeida@microsoft.com,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 3/4] hfsplus: fix uninit-value in copy_name
+Date: Tue, 16 Jul 2024 14:34:38 -0400
+Message-ID: <20240716183443.2814769-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716183443.2814769-1-sashal@kernel.org>
 References: <20240716183443.2814769-1-sashal@kernel.org>
@@ -71,121 +68,68 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.221
 Content-Transfer-Encoding: 8bit
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 73810cd45b99c6c418e1c6a487b52c1e74edb20d ]
+[ Upstream commit 0570730c16307a72f8241df12363f76600baf57d ]
 
-When building with clang, via:
+[syzbot reported]
+BUG: KMSAN: uninit-value in sized_strscpy+0xc4/0x160
+ sized_strscpy+0xc4/0x160
+ copy_name+0x2af/0x320 fs/hfsplus/xattr.c:411
+ hfsplus_listxattr+0x11e9/0x1a50 fs/hfsplus/xattr.c:750
+ vfs_listxattr fs/xattr.c:493 [inline]
+ listxattr+0x1f3/0x6b0 fs/xattr.c:840
+ path_listxattr fs/xattr.c:864 [inline]
+ __do_sys_listxattr fs/xattr.c:876 [inline]
+ __se_sys_listxattr fs/xattr.c:873 [inline]
+ __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
+ x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-    make LLVM=1 -C tools/testing/selftests
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:3877 [inline]
+ slab_alloc_node mm/slub.c:3918 [inline]
+ kmalloc_trace+0x57b/0xbe0 mm/slub.c:4065
+ kmalloc include/linux/slab.h:628 [inline]
+ hfsplus_listxattr+0x4cc/0x1a50 fs/hfsplus/xattr.c:699
+ vfs_listxattr fs/xattr.c:493 [inline]
+ listxattr+0x1f3/0x6b0 fs/xattr.c:840
+ path_listxattr fs/xattr.c:864 [inline]
+ __do_sys_listxattr fs/xattr.c:876 [inline]
+ __se_sys_listxattr fs/xattr.c:873 [inline]
+ __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
+ x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[Fix]
+When allocating memory to strbuf, initialize memory to 0.
 
-...there are several warnings, and an error. This fixes all of those and
-allows these tests to run and pass.
-
-1. Fix linker error (undefined reference to memcpy) by providing a local
-   version of memcpy.
-
-2. clang complains about using this form:
-
-    if (g = h & 0xf0000000)
-
-...so factor out the assignment into a separate step.
-
-3. The code is passing a signed const char* to elf_hash(), which expects
-   a const unsigned char *. There are several callers, so fix this at
-   the source by allowing the function to accept a signed argument, and
-   then converting to unsigned operations, once inside the function.
-
-4. clang doesn't have __attribute__((externally_visible)) and generates
-   a warning to that effect. Fortunately, gcc 12 and gcc 13 do not seem
-   to require that attribute in order to build, run and pass tests here,
-   so remove it.
-
-Reviewed-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Edward Liaw <edliaw@google.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Reported-and-tested-by: syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://lore.kernel.org/r/tencent_8BBB6433BC9E1C1B7B4BDF1BF52574BA8808@qq.com
+Reported-and-tested-by: syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/parse_vdso.c      | 16 +++++++++++-----
- .../selftests/vDSO/vdso_standalone_test_x86.c  | 18 ++++++++++++++++--
- 2 files changed, 27 insertions(+), 7 deletions(-)
+ fs/hfsplus/xattr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
-index 413f75620a35b..4ae417372e9eb 100644
---- a/tools/testing/selftests/vDSO/parse_vdso.c
-+++ b/tools/testing/selftests/vDSO/parse_vdso.c
-@@ -55,14 +55,20 @@ static struct vdso_info
- 	ELF(Verdef) *verdef;
- } vdso_info;
- 
--/* Straight from the ELF specification. */
--static unsigned long elf_hash(const unsigned char *name)
-+/*
-+ * Straight from the ELF specification...and then tweaked slightly, in order to
-+ * avoid a few clang warnings.
-+ */
-+static unsigned long elf_hash(const char *name)
- {
- 	unsigned long h = 0, g;
--	while (*name)
-+	const unsigned char *uch_name = (const unsigned char *)name;
-+
-+	while (*uch_name)
- 	{
--		h = (h << 4) + *name++;
--		if (g = h & 0xf0000000)
-+		h = (h << 4) + *uch_name++;
-+		g = h & 0xf0000000;
-+		if (g)
- 			h ^= g >> 24;
- 		h &= ~g;
+diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
+index bb0b27d88e502..d91f76ef18d9b 100644
+--- a/fs/hfsplus/xattr.c
++++ b/fs/hfsplus/xattr.c
+@@ -700,7 +700,7 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
+ 		return err;
  	}
-diff --git a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
-index 8a44ff973ee17..27f6fdf119691 100644
---- a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
-+++ b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
-@@ -18,7 +18,7 @@
  
- #include "parse_vdso.h"
- 
--/* We need a libc functions... */
-+/* We need some libc functions... */
- int strcmp(const char *a, const char *b)
- {
- 	/* This implementation is buggy: it never returns -1. */
-@@ -34,6 +34,20 @@ int strcmp(const char *a, const char *b)
- 	return 0;
- }
- 
-+/*
-+ * The clang build needs this, although gcc does not.
-+ * Stolen from lib/string.c.
-+ */
-+void *memcpy(void *dest, const void *src, size_t count)
-+{
-+	char *tmp = dest;
-+	const char *s = src;
-+
-+	while (count--)
-+		*tmp++ = *s++;
-+	return dest;
-+}
-+
- /* ...and two syscalls.  This is x86-specific. */
- static inline long x86_syscall3(long nr, long a0, long a1, long a2)
- {
-@@ -70,7 +84,7 @@ void to_base10(char *lastdig, time_t n)
- 	}
- }
- 
--__attribute__((externally_visible)) void c_main(void **stack)
-+void c_main(void **stack)
- {
- 	/* Parse the stack */
- 	long argc = (long)*stack;
+-	strbuf = kmalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
++	strbuf = kzalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
+ 			XATTR_MAC_OSX_PREFIX_LEN + 1, GFP_KERNEL);
+ 	if (!strbuf) {
+ 		res = -ENOMEM;
 -- 
 2.43.0
 
