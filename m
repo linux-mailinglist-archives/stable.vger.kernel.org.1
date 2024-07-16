@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-59903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542D8932C57
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 853DD932D30
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAD181F244C4
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4050528477F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1487319AD72;
-	Tue, 16 Jul 2024 15:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D7217623C;
+	Tue, 16 Jul 2024 16:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6ohuJTm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHg2JxI+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C812F1DDCE;
-	Tue, 16 Jul 2024 15:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A368C1DDCE;
+	Tue, 16 Jul 2024 16:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145259; cv=none; b=NmAqBeGYBQeYPspfRUV0LySC1IVhE5XPxrHtnjSDSJjlPnSWvMj6pcXcbIyNCMXaYbSBxkk4VHgtdmyouF2HzMBC2yY5o5+/35m9Wxa3TBTgLDYjRZfbsveYthrDvLN20lwgwGt46c8V6G5t32mCFheokGPnlKHNYLkKJkFlfDk=
+	t=1721145734; cv=none; b=hugvf1hvnqcLVDyzoKU1685SQ+pUVxXuFSC5MZSPABlAGbluoZicvv7gutUuxXq4bZjAoBId5avEjzAmfZtOy92E61KYpKSTqqakSZdzKqWxhfqIX4q2dSheZjmfjTvW5HSQioXwwaXAwbKdFR4TrqNzXFOrwDYDoaaeRwBgzjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145259; c=relaxed/simple;
-	bh=TuNS8Frcuw6KV79fdNjs9r9Mp0z22Ueg4ZoDmvrcBy4=;
+	s=arc-20240116; t=1721145734; c=relaxed/simple;
+	bh=FWDVg8CzZb3w4araFBPA4H11hWCuklzWjWDDGjAZzvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W50E94pvISUtQcGmu+SJOpM9ua2p2P8knmpVWAB4n/BkKqUM0oW4wt6Ev1j7dEkTiW1hWmh5k/RG6Rm5CI6tNt+Uwk9PuIXkuSQm1x9Z5HTOMOPaq0SbPMj4Ura49bz/87z+YMtc49Qw9VemZipyzKaeqbqwhEdO0+7NaGYujCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6ohuJTm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAFBC116B1;
-	Tue, 16 Jul 2024 15:54:19 +0000 (UTC)
+	 MIME-Version; b=YFVwHPVnShFU8sDDJytxD6eIuqONQv+al9WqG2JX1kyXWHE/lSLIRCtrHB/ObfPzFP8baGv/3lL32PAft8jg/Uy0M7RsW/rI+ZTf0twoMv9cInVFHDU+VeA90DBe8a8Um4zENwYnKhMGnoVC5vCKqfN4bT2/j1Eric9WG5xDY3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHg2JxI+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4BEC116B1;
+	Tue, 16 Jul 2024 16:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145259;
-	bh=TuNS8Frcuw6KV79fdNjs9r9Mp0z22Ueg4ZoDmvrcBy4=;
+	s=korg; t=1721145734;
+	bh=FWDVg8CzZb3w4araFBPA4H11hWCuklzWjWDDGjAZzvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6ohuJTmCP+SlYfQ0pgo7xzWYmaNiGEhR+pECi6kFl9s6XmCWcoMpnevn5HEnN4A7
-	 KTJyp53WqBotSg/bR6DAvBG3UksOrMzBFEJdLSI5sVnC86lqIxfAxTc1P36DcpLf7W
-	 xAgGeCAnUhlEnMzxXuUxWS2oF8NkAuoKwtjEp2ng=
+	b=DHg2JxI+vfqufbGU9IVg2ea6aNk8Xjw23wA5hWf+HTG4ygllXQ6w2S+f132VJJirh
+	 aAAlHV2v/3HkcHY0v7n4nA3PGZG2fnNxSQPt/4TAMBt8S3BcZNyU5UgMpOWhtBChZq
+	 3KzCg3pve8cyCm81tvdi+FMp2KqecgFcV5KLQrN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Komal Bajaj <quic_kbajaj@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.9 133/143] Revert "dt-bindings: cache: qcom,llcc: correct QDU1000 reg entries"
+	Alan Stern <stern@rowland.harvard.edu>,
+	Oliver Neukum <oneukum@suse.com>,
+	syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 067/121] USB: core: Fix duplicate endpoint bug by clearing reserved bits in the descriptor
 Date: Tue, 16 Jul 2024 17:32:09 +0200
-Message-ID: <20240716152801.109108201@linuxfoundation.org>
+Message-ID: <20240716152753.905161346@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Komal Bajaj <quic_kbajaj@quicinc.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit e227c11179dfb6970360c95a8d7b007eb3b223d6 upstream.
+commit a368ecde8a5055b627749b09c6218ef793043e47 upstream.
 
-This reverts commit f0f99f371822c48847e02e56d6e7de507e18f186.
+Syzbot has identified a bug in usbcore (see the Closes: tag below)
+caused by our assumption that the reserved bits in an endpoint
+descriptor's bEndpointAddress field will always be 0.  As a result of
+the bug, the endpoint_is_duplicate() routine in config.c (and possibly
+other routines as well) may believe that two descriptors are for
+distinct endpoints, even though they have the same direction and
+endpoint number.  This can lead to confusion, including the bug
+identified by syzbot (two descriptors with matching endpoint numbers
+and directions, where one was interrupt and the other was bulk).
 
-QDU1000 has 7 register regions. The earlier commit 8e2506d01231
-("dt-bindings: cache: qcom,llcc: Add LLCC compatible for QDU1000/QRU1000")
-to add llcc compatible was reflecting the same, but dtsi change for
-QDU1000 was not aligning with its binding. Later, commit f0f99f371822
-("dt-bindings: cache: qcom,llcc: correct QDU1000 reg entries") was merged
-intended to fix this misalignment.
+To fix the bug, we will clear the reserved bits in bEndpointAddress
+when we parse the descriptor.  (Note that both the USB-2.0 and USB-3.1
+specs say these bits are "Reserved, reset to zero".)  This requires us
+to make a copy of the descriptor earlier in usb_parse_endpoint() and
+use the copy instead of the original when checking for duplicates.
 
-After the LLCC driver refactor, each LLCC bank/channel need to be
-represented as one register space to avoid mapping to the region where
-access is not there. Hence, revert the commit f0f99f371822 ("dt-bindings:
-cache: qcom,llcc: correct QDU1000 reg entries") to align QDU1000 llcc
-binding with its dtsi node.
-
-Signed-off-by: Komal Bajaj <quic_kbajaj@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240619061641.5261-3-quic_kbajaj@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-and-tested-by: syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/0000000000003d868e061bc0f554@google.com/
+Fixes: 0a8fd1346254 ("USB: fix problems with duplicate endpoint addresses")
+CC: Oliver Neukum <oneukum@suse.com>
+CC: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/205a5edc-7fef-4159-b64a-80374b6b101a@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/cache/qcom,llcc.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/config.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/cache/qcom,llcc.yaml b/Documentation/devicetree/bindings/cache/qcom,llcc.yaml
-index 07ccbda4a0ab..b9a9f2cf32a1 100644
---- a/Documentation/devicetree/bindings/cache/qcom,llcc.yaml
-+++ b/Documentation/devicetree/bindings/cache/qcom,llcc.yaml
-@@ -66,7 +66,6 @@ allOf:
-         compatible:
-           contains:
-             enum:
--              - qcom,qdu1000-llcc
-               - qcom,sc7180-llcc
-               - qcom,sm6350-llcc
-     then:
-@@ -104,6 +103,7 @@ allOf:
-         compatible:
-           contains:
-             enum:
-+              - qcom,qdu1000-llcc
-               - qcom,sc8180x-llcc
-               - qcom,sc8280xp-llcc
-               - qcom,x1e80100-llcc
--- 
-2.45.2
-
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -291,6 +291,20 @@ static int usb_parse_endpoint(struct dev
+ 	if (ifp->desc.bNumEndpoints >= num_ep)
+ 		goto skip_to_next_endpoint_or_interface_descriptor;
+ 
++	/* Save a copy of the descriptor and use it instead of the original */
++	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
++	memcpy(&endpoint->desc, d, n);
++	d = &endpoint->desc;
++
++	/* Clear the reserved bits in bEndpointAddress */
++	i = d->bEndpointAddress &
++			(USB_ENDPOINT_DIR_MASK | USB_ENDPOINT_NUMBER_MASK);
++	if (i != d->bEndpointAddress) {
++		dev_notice(ddev, "config %d interface %d altsetting %d has an endpoint descriptor with address 0x%X, changing to 0x%X\n",
++		    cfgno, inum, asnum, d->bEndpointAddress, i);
++		endpoint->desc.bEndpointAddress = i;
++	}
++
+ 	/* Check for duplicate endpoint addresses */
+ 	if (config_endpoint_is_duplicate(config, inum, asnum, d)) {
+ 		dev_notice(ddev, "config %d interface %d altsetting %d has a duplicate endpoint with address 0x%X, skipping\n",
+@@ -308,10 +322,8 @@ static int usb_parse_endpoint(struct dev
+ 		}
+ 	}
+ 
+-	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
++	/* Accept this endpoint */
+ 	++ifp->desc.bNumEndpoints;
+-
+-	memcpy(&endpoint->desc, d, n);
+ 	INIT_LIST_HEAD(&endpoint->urb_list);
+ 
+ 	/*
 
 
 
