@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-59620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BDE932AF5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B9F932B85
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D661F22411
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A57B31C23146
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B41AB641;
-	Tue, 16 Jul 2024 15:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19EA9195B27;
+	Tue, 16 Jul 2024 15:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzOJk3cK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMBV3KLa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57328CA40;
-	Tue, 16 Jul 2024 15:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0E41DA4D;
+	Tue, 16 Jul 2024 15:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144396; cv=none; b=Sxj8MZA9MyrU4M4+k3Ar8WPzR8ZsRRanlp8vamQUq2plaUo5M2nPBQki9x9l3vU3umQlkYqYaoEcDDlIOE+KR4Ae3NiYBpoYYmvhRLxzZhC7xyMyp+6BkdGMtXu8hQ0pvZUml8QGWuFYhKnpAmAitCEbac2aVdqbTokkNv/AAIc=
+	t=1721144765; cv=none; b=gX64K+6hbrO92GOOEAol7YsnCuXtMCo7OnwAj2keUobVUj9973Agv3wIciGDTv2iu6Z7kPgOmp99RXY0TCb2z1CSjexF/+0Vy3BD60NXw7YhJAWiO5+V0q4Y3vSFuyOUkZxYQqKjajpja9hFCEyac+sZKNAUY57SCzeR8SYQ4BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144396; c=relaxed/simple;
-	bh=depshuhPIRKg4x2nlyUIDX1S1SlH9/lC25FtY4j0ZT4=;
+	s=arc-20240116; t=1721144765; c=relaxed/simple;
+	bh=IuXNq6F4LDIPB0McbdqGNzi4KbXxjJJAfgqsWcihC8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zsav0T4s7mHZbW/O8ZjtorMF0OEOIBbew5VO9BhFwnhn0/RlMgcBSrfwGwhDlQJGVmnh4/zjWLxnA5trVeJ9n+iCSS1T8HzhJrUc6nSF83m1T0yh0IWaUfq+5jha+HiWHJ9DE8UbNGysXebaUYAT0NZcdP0fYEscu1+C6H2dsI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzOJk3cK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0978C116B1;
-	Tue, 16 Jul 2024 15:39:55 +0000 (UTC)
+	 MIME-Version; b=BAXg960VIKVsrFatFcGyabWaa2U3dXgRUUEPXlRALkp3R/PCuSkkTBZ+hC3mxSt4AxvKnjDBedxEpyizqCAB9iVvUDDWFkQ2W0lbV42KO7Gn6Dz9GY+Q3nPuW4iWtq8WJ8fu4M6m9aOKJB7RRTohiKz69eWSq9gc5HP2SJjLHG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMBV3KLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D30C116B1;
+	Tue, 16 Jul 2024 15:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144396;
-	bh=depshuhPIRKg4x2nlyUIDX1S1SlH9/lC25FtY4j0ZT4=;
+	s=korg; t=1721144765;
+	bh=IuXNq6F4LDIPB0McbdqGNzi4KbXxjJJAfgqsWcihC8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzOJk3cKJ5tovWJRzn3hxopHHwoZpsgnYX0qRQjJYQpkUrUKHRC74m7YAGcRFGwbH
-	 gFrXr/cnE1CK6MKUlYMDtYwY0SHsBk/FEOGSKDGnfMQc4tOn71Ku6pp1mq+HGMODME
-	 6yB7WuTrRcFc6HUeCUTTa2wnfGnZ6NLjUoGzkq1k=
+	b=UMBV3KLa49sXmLyIhoQX+N3xbOfLyT4tm5bEEWJVEt34S6rqJavp7chQVjH6yL0XT
+	 Rtatu5Ar2XXtgO7NCDBJI5WkGp4z2K525UV7j8POiC7mbgniRzAwbU4dWkbU4aZ5PA
+	 jBeBP+pMIoh4di8aQRqEl7HEFm+jOcstwwhWmQY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Simon Horman <horms@kernel.org>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 51/78] octeontx2-af: Fix incorrect value output on error path in rvu_check_rsrc_availability()
+Subject: [PATCH 5.10 068/108] udp: Set SOCK_RCU_FREE earlier in udp_lib_get_port().
 Date: Tue, 16 Jul 2024 17:31:23 +0200
-Message-ID: <20240716152742.614197654@linuxfoundation.org>
+Message-ID: <20240716152748.592466977@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 442e26af9aa8115c96541026cbfeaaa76c85d178 ]
+[ Upstream commit 5c0b485a8c6116516f33925b9ce5b6104a6eadfd ]
 
-In rvu_check_rsrc_availability() in case of invalid SSOW req, an incorrect
-data is printed to error log. 'req->sso' value is printed instead of
-'req->ssow'. Looks like "copy-paste" mistake.
+syzkaller triggered the warning [0] in udp_v4_early_demux().
 
-Fix this mistake by replacing 'req->sso' with 'req->ssow'.
+In udp_v[46]_early_demux() and sk_lookup(), we do not touch the refcount
+of the looked-up sk and use sock_pfree() as skb->destructor, so we check
+SOCK_RCU_FREE to ensure that the sk is safe to access during the RCU grace
+period.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Currently, SOCK_RCU_FREE is flagged for a bound socket after being put
+into the hash table.  Moreover, the SOCK_RCU_FREE check is done too early
+in udp_v[46]_early_demux() and sk_lookup(), so there could be a small race
+window:
 
-Fixes: 746ea74241fa ("octeontx2-af: Add RVU block LF provisioning support")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240705095317.12640-1-amishin@t-argos.ru
+  CPU1                                 CPU2
+  ----                                 ----
+  udp_v4_early_demux()                 udp_lib_get_port()
+  |                                    |- hlist_add_head_rcu()
+  |- sk = __udp4_lib_demux_lookup()    |
+  |- DEBUG_NET_WARN_ON_ONCE(sk_is_refcounted(sk));
+                                       `- sock_set_flag(sk, SOCK_RCU_FREE)
+
+We had the same bug in TCP and fixed it in commit 871019b22d1b ("net:
+set SOCK_RCU_FREE before inserting socket into hashtable").
+
+Let's apply the same fix for UDP.
+
+[0]:
+WARNING: CPU: 0 PID: 11198 at net/ipv4/udp.c:2599 udp_v4_early_demux+0x481/0xb70 net/ipv4/udp.c:2599
+Modules linked in:
+CPU: 0 PID: 11198 Comm: syz-executor.1 Not tainted 6.9.0-g93bda33046e7 #13
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:udp_v4_early_demux+0x481/0xb70 net/ipv4/udp.c:2599
+Code: c5 7a 15 fe bb 01 00 00 00 44 89 e9 31 ff d3 e3 81 e3 bf ef ff ff 89 de e8 2c 74 15 fe 85 db 0f 85 02 06 00 00 e8 9f 7a 15 fe <0f> 0b e8 98 7a 15 fe 49 8d 7e 60 e8 4f 39 2f fe 49 c7 46 60 20 52
+RSP: 0018:ffffc9000ce3fa58 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8318c92c
+RDX: ffff888036ccde00 RSI: ffffffff8318c2f1 RDI: 0000000000000001
+RBP: ffff88805a2dd6e0 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0001ffffffffffff R12: ffff88805a2dd680
+R13: 0000000000000007 R14: ffff88800923f900 R15: ffff88805456004e
+FS:  00007fc449127640(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fc449126e38 CR3: 000000003de4b002 CR4: 0000000000770ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000600
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ip_rcv_finish_core.constprop.0+0xbdd/0xd20 net/ipv4/ip_input.c:349
+ ip_rcv_finish+0xda/0x150 net/ipv4/ip_input.c:447
+ NF_HOOK include/linux/netfilter.h:314 [inline]
+ NF_HOOK include/linux/netfilter.h:308 [inline]
+ ip_rcv+0x16c/0x180 net/ipv4/ip_input.c:569
+ __netif_receive_skb_one_core+0xb3/0xe0 net/core/dev.c:5624
+ __netif_receive_skb+0x21/0xd0 net/core/dev.c:5738
+ netif_receive_skb_internal net/core/dev.c:5824 [inline]
+ netif_receive_skb+0x271/0x300 net/core/dev.c:5884
+ tun_rx_batched drivers/net/tun.c:1549 [inline]
+ tun_get_user+0x24db/0x2c50 drivers/net/tun.c:2002
+ tun_chr_write_iter+0x107/0x1a0 drivers/net/tun.c:2048
+ new_sync_write fs/read_write.c:497 [inline]
+ vfs_write+0x76f/0x8d0 fs/read_write.c:590
+ ksys_write+0xbf/0x190 fs/read_write.c:643
+ __do_sys_write fs/read_write.c:655 [inline]
+ __se_sys_write fs/read_write.c:652 [inline]
+ __x64_sys_write+0x41/0x50 fs/read_write.c:652
+ x64_sys_call+0xe66/0x1990 arch/x86/include/generated/asm/syscalls_64.h:2
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x4b/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+RIP: 0033:0x7fc44a68bc1f
+Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 e9 cf f5 ff 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 3c d0 f5 ff 48
+RSP: 002b:00007fc449126c90 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00000000004bc050 RCX: 00007fc44a68bc1f
+RDX: 0000000000000032 RSI: 00000000200000c0 RDI: 00000000000000c8
+RBP: 00000000004bc050 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000032 R11: 0000000000000293 R12: 0000000000000000
+R13: 000000000000000b R14: 00007fc44a5ec530 R15: 0000000000000000
+ </TASK>
+
+Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240709191356.24010-1-kuniyu@amazon.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/udp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 9c6307186505a..f569a98e35a02 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -1124,7 +1124,7 @@ static int rvu_check_rsrc_availability(struct rvu *rvu,
- 		if (req->ssow > block->lf.max) {
- 			dev_err(&rvu->pdev->dev,
- 				"Func 0x%x: Invalid SSOW req, %d > max %d\n",
--				 pcifunc, req->sso, block->lf.max);
-+				 pcifunc, req->ssow, block->lf.max);
- 			return -EINVAL;
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index da9015efb45e4..6ad25dc9710c1 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -317,6 +317,8 @@ int udp_lib_get_port(struct sock *sk, unsigned short snum,
+ 			goto fail_unlock;
  		}
- 		mappedlfs = rvu_get_rsrc_mapcount(pfvf, block->type);
+ 
++		sock_set_flag(sk, SOCK_RCU_FREE);
++
+ 		sk_add_node_rcu(sk, &hslot->head);
+ 		hslot->count++;
+ 		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
+@@ -333,7 +335,7 @@ int udp_lib_get_port(struct sock *sk, unsigned short snum,
+ 		hslot2->count++;
+ 		spin_unlock(&hslot2->lock);
+ 	}
+-	sock_set_flag(sk, SOCK_RCU_FREE);
++
+ 	error = 0;
+ fail_unlock:
+ 	spin_unlock_bh(&hslot->lock);
 -- 
 2.43.0
 
