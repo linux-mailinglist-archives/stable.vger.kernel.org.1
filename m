@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-59867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BEF932C2A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C99D932CBC
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 741E51C22D6C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 172411F2462C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9631119E83C;
-	Tue, 16 Jul 2024 15:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEA819E82C;
+	Tue, 16 Jul 2024 15:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2r6gfFyO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7z5oCwZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526B619E7FE;
-	Tue, 16 Jul 2024 15:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA031DDCE;
+	Tue, 16 Jul 2024 15:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145147; cv=none; b=jyl5A1WFpx9b7tdkoyDsiUfoWSFavirTNhixAaf2B1dvxdHS7SftmSS1bXzO43oDW9JZ+kPXeIJdd2Jvj4j+ui/DtaC8785f7lYDWJ4iXl9VCndrxW14PAw316uMB7ankawLMKmoy4jJpss2kOfMpoEZfSLAT/m7H8mJ04DnKkk=
+	t=1721145455; cv=none; b=UJIE5G/kWpXxuD/Grq0bkmVoXVU1xpDh3HosUiPDxxxJhptfEUfOom6LBeBWii+mgnl/vn09k6LVyDrT3wzUm2ZYrAMFhuFGfQ9kEdUfbuUW/RJ/4CJWWxLqc/96RUn1/fovkDgZW9U40k5Lic80bFvnSQfC65k0WmErGpxd82o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145147; c=relaxed/simple;
-	bh=ZlMlOePAREFVrODLeoaax3yEt7lQh4Di8vyo/IVSaKE=;
+	s=arc-20240116; t=1721145455; c=relaxed/simple;
+	bh=D/jYbPi/FR5kGUfH699jg/TP0Kmikh3KUaCzeHYt1bA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATS7U1iuljG1yTIMmCMtxNFIfUKxerLeR1JIVcepxgR5cKukKXBVjC8Y5lTv1K5InZWEBXLxo0QY1430NGWjrjP3ly6bemYMVIOpcUKxfzR5YW/f/8e+BYr9kFoab7MU9oQSV2uM5+tB1Qh71wo88/Dp6Vyg5NYirABWtqLe95U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2r6gfFyO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD084C4AF0B;
-	Tue, 16 Jul 2024 15:52:26 +0000 (UTC)
+	 MIME-Version; b=uPHTcJv0vCjxDN+mGqB257jLae++/RiLDAINCjVcnXYy+zr4FQlX2olqCtJHqiyaiTlPHz3QUrIHAOQeqkgKvHfUiGdeq24od9S/pRsUjeEOQTvvk2QRP195h3TDdK1zJx4HBX2f04ICM6FxV4PeX1WdLKQ56AD7M4usrP4J80Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7z5oCwZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F04C4AF0F;
+	Tue, 16 Jul 2024 15:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145147;
-	bh=ZlMlOePAREFVrODLeoaax3yEt7lQh4Di8vyo/IVSaKE=;
+	s=korg; t=1721145455;
+	bh=D/jYbPi/FR5kGUfH699jg/TP0Kmikh3KUaCzeHYt1bA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2r6gfFyODPcFhPeVzTs4pneg9o05wdkQZQojFjusHYP1xLT0R3USJNhwDKdEbTtbK
-	 6VKqYjykrC4T1j0mx1MwUFL5a8y6DEyXdLGDubJxSALTlxOSRReyGfnjRBUAcS/j1y
-	 aFV2RIQRU/Dw33+mC14ISMX/SonH+Yw6dNH25Txo=
+	b=b7z5oCwZksb9icgadKFGvePb2KoJeWes0WCiOKptsl2Bs0y53n4FbG4r7L5vl1cwu
+	 Epp4P+ZFe/luXKC5+84UTW9LJDOCCX+MS1iB14qOezyHc2lXNbJKd4bb+J80jc2mZ+
+	 S1gvZ3sNG3D2gct7Dqf5c5FWWiziBU5fRfgdFLl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bastien Curutchet <bastien.curutchet@bootlin.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.9 114/143] mmc: davinci_mmc: Prevent transmitted data size from exceeding sgms length
+	Srujana Challa <schalla@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 39/96] octeontx2-af: fix a issue with cpt_lf_alloc mailbox
 Date: Tue, 16 Jul 2024 17:31:50 +0200
-Message-ID: <20240716152800.362672407@linuxfoundation.org>
+Message-ID: <20240716152748.012495829@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+From: Srujana Challa <schalla@marvell.com>
 
-commit 16198eef11c1929374381d7f6271b4bf6aa44615 upstream.
+[ Upstream commit 845fe19139ab5a1ee303a3bee327e3191c3938af ]
 
-No check is done on the size of the data to be transmiited. This causes
-a kernel panic when this size exceeds the sg_miter's length.
+This patch fixes CPT_LF_ALLOC mailbox error due to
+incompatible mailbox message format. Specifically, it
+corrects the `blkaddr` field type from `int` to `u8`.
 
-Limit the number of transmitted bytes to sgm->length.
-
-Cc: stable@vger.kernel.org
-Fixes: ed01d210fd91 ("mmc: davinci_mmc: Use sg_miter for PIO")
-Signed-off-by: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Link: https://lore.kernel.org/r/20240711081838.47256-2-bastien.curutchet@bootlin.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: de2854c87c64 ("octeontx2-af: Mailbox changes for 98xx CPT block")
+Signed-off-by: Srujana Challa <schalla@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/davinci_mmc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/mbox.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/davinci_mmc.c b/drivers/mmc/host/davinci_mmc.c
-index d7427894e0bc..c302eb380e42 100644
---- a/drivers/mmc/host/davinci_mmc.c
-+++ b/drivers/mmc/host/davinci_mmc.c
-@@ -224,6 +224,9 @@ static void davinci_fifo_data_trans(struct mmc_davinci_host *host,
- 	}
- 	p = sgm->addr;
- 
-+	if (n > sgm->length)
-+		n = sgm->length;
-+
- 	/* NOTE:  we never transfer more than rw_threshold bytes
- 	 * to/from the fifo here; there's no I/O overlap.
- 	 * This also assumes that access width( i.e. ACCWD) is 4 bytes
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index 7c3d7e61afeb3..e76d3bc8edea1 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -1627,7 +1627,7 @@ struct cpt_lf_alloc_req_msg {
+ 	u16 nix_pf_func;
+ 	u16 sso_pf_func;
+ 	u16 eng_grpmsk;
+-	int blkaddr;
++	u8 blkaddr;
+ 	u8 ctx_ilen_valid : 1;
+ 	u8 ctx_ilen : 7;
+ };
 -- 
-2.45.2
+2.43.0
 
 
 
