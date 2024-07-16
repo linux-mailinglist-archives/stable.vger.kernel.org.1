@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-60018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F00932D04
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E654932B53
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 977E0283DC7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03E451F23FE7
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6847419E830;
-	Tue, 16 Jul 2024 16:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4498819DF7B;
+	Tue, 16 Jul 2024 15:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYM6HkeQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0PUeAyX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259F1178370;
-	Tue, 16 Jul 2024 16:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DE419AA40;
+	Tue, 16 Jul 2024 15:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145606; cv=none; b=MQ8n3z1IcP5Hr5d42si318jGRqlcRfXU03YxBM5XwhIyL5/n1frCCUlF+EG+Pme+js6XQUx02AMyeKzli8RTCDiiw++Bo7CcqnmfBteGNfCBDGy7IL7JyMfobISWkGs2kSScE0rE1TAiychgL1GjEcUIpDXxIt4lt1ap66+YbSE=
+	t=1721144631; cv=none; b=YU58XqQ0oMq7IyiCuBPse0WNM2M10+sUWpWykDWfgyKi17c4uNrX/sXIRgj4A5RrT5X90YuRxMMkwDrJbyfHl66WT6QGvVmxA2xkhteUFb3CsDzOc9ZpxpUvIJ7lqhMh9o0Ixkig6wRzWgxyZymCyJjviBlvvKAO5CRe3DXQXMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145606; c=relaxed/simple;
-	bh=udRa9EocTiWXO89hQw73ADikCZ14uOijS12MLi239XQ=;
+	s=arc-20240116; t=1721144631; c=relaxed/simple;
+	bh=pDcYJXfRt8tcCEsMtGiXkjqfSbr/xiALyXPnI9zGWqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmrLXlQEdpaaj3DAPCpdzRbNIcnH7diNIsMBj8NX+ic0jRcZRt3+NnMix2LURVunpFsuYGrPK3aS9CIiav5c6qQJFm3VphM2XqiGEfSPFchN77bBu5iB1PVR1/kedIsc4QSsnDMIODO5Gk1Wy/Swk6qsZqFP6IjfywJxjaXY8X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYM6HkeQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C7AC116B1;
-	Tue, 16 Jul 2024 16:00:05 +0000 (UTC)
+	 MIME-Version; b=nrwBa2kJ4wW/hdLK/mh5Lmw5A/shIVu99Ea8aBqZZUBMueiSTkFDBbzwdJ1gPMvswPPzg4TprvbBl9R+dYUzpVBNSPZ2y64ah8urn+F7ZXvzQf/6L5lmGdebguhHxXwPGf2dyY1KgS9VKbkHJrzOQcxvBIGU77zjF/x0JrK9xY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0PUeAyX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A397C116B1;
+	Tue, 16 Jul 2024 15:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145605;
-	bh=udRa9EocTiWXO89hQw73ADikCZ14uOijS12MLi239XQ=;
+	s=korg; t=1721144630;
+	bh=pDcYJXfRt8tcCEsMtGiXkjqfSbr/xiALyXPnI9zGWqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYM6HkeQRWmUDww/2GRDzeW2eIRiknVdFg0BTCIIIFWwnIx3Vu/o463MK+7UgACKG
-	 jnCzH1Oj8sTdzonRGC/+6CyqZzZ9ZDpwR/soBk4+PAChRmsKYcBexTBUNOJwVQ1q2A
-	 /ytKFjjTi+8ruwM3ZkqH9SOo6BeCXXPYWYIscPJo=
+	b=P0PUeAyXni0LpOw4NxbslzI0L+9VGuZOyn0skRg8wUUerg5cXiMm1Xs+8fsVB5UfL
+	 6XLHfpg4T92GEpYN8t4HsMjdBi0MKWB4D+oyFlIjRl2MFk+kPzz6aMFi/DPpgjimcn
+	 rruvvZFTYKfVIjhuKvbqx/AANa6+b3HmOhahULo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Christian Brauner <brauner@kernel.org>,
+	hmtheboy154 <buingoc67@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/121] cachefiles: stop sending new request when dropping object
+Subject: [PATCH 5.10 054/108] platform/x86: touchscreen_dmi: Add info for the EZpad 6s Pro
 Date: Tue, 16 Jul 2024 17:31:09 +0200
-Message-ID: <20240716152751.600824774@linuxfoundation.org>
+Message-ID: <20240716152748.061440306@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: hmtheboy154 <buingoc67@gmail.com>
 
-[ Upstream commit b2415d1f4566b6939acacc69637eaa57815829c1 ]
+[ Upstream commit 3050052613790e75b5e4a8536930426b0a8b0774 ]
 
-Added CACHEFILES_ONDEMAND_OBJSTATE_DROPPING indicates that the cachefiles
-object is being dropped, and is set after the close request for the dropped
-object completes, and no new requests are allowed to be sent after this
-state.
+The "EZpad 6s Pro" uses the same touchscreen as the "EZpad 6 Pro B",
+unlike the "Ezpad 6 Pro" which has its own touchscreen.
 
-This prepares for the later addition of cancel_work_sync(). It prevents
-leftover reopen requests from being sent, to avoid processing unnecessary
-requests and to avoid cancel_work_sync() blocking by waiting for daemon to
-complete the reopen requests.
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240628062930.2467993-6-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 12e009d60852 ("cachefiles: wait for ondemand_object_worker to finish when dropping object")
+Signed-off-by: hmtheboy154 <buingoc67@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240527091447.248849-3-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/internal.h |  2 ++
- fs/cachefiles/ondemand.c | 10 ++++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/platform/x86/touchscreen_dmi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index e0eac16e4741c..94f59123726ca 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -48,6 +48,7 @@ enum cachefiles_object_state {
- 	CACHEFILES_ONDEMAND_OBJSTATE_CLOSE, /* Anonymous fd closed by daemon or initial state */
- 	CACHEFILES_ONDEMAND_OBJSTATE_OPEN, /* Anonymous fd associated with object is available */
- 	CACHEFILES_ONDEMAND_OBJSTATE_REOPENING, /* Object that was closed and is being reopened. */
-+	CACHEFILES_ONDEMAND_OBJSTATE_DROPPING, /* Object is being dropped. */
- };
- 
- struct cachefiles_ondemand_info {
-@@ -335,6 +336,7 @@ cachefiles_ondemand_set_object_##_state(struct cachefiles_object *object) \
- CACHEFILES_OBJECT_STATE_FUNCS(open, OPEN);
- CACHEFILES_OBJECT_STATE_FUNCS(close, CLOSE);
- CACHEFILES_OBJECT_STATE_FUNCS(reopening, REOPENING);
-+CACHEFILES_OBJECT_STATE_FUNCS(dropping, DROPPING);
- 
- static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
- {
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 4b39f0422e590..cc2de0e3ee60f 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -494,7 +494,8 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
- 		 */
- 		xas_lock(&xas);
- 
--		if (test_bit(CACHEFILES_DEAD, &cache->flags)) {
-+		if (test_bit(CACHEFILES_DEAD, &cache->flags) ||
-+		    cachefiles_ondemand_object_is_dropping(object)) {
- 			xas_unlock(&xas);
- 			ret = -EIO;
- 			goto out;
-@@ -535,7 +536,8 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
- 	 * If error occurs after creating the anonymous fd,
- 	 * cachefiles_ondemand_fd_release() will set object to close.
- 	 */
--	if (opcode == CACHEFILES_OP_OPEN)
-+	if (opcode == CACHEFILES_OP_OPEN &&
-+	    !cachefiles_ondemand_object_is_dropping(object))
- 		cachefiles_ondemand_set_object_close(object);
- 	kfree(req);
- 	return ret;
-@@ -634,8 +636,12 @@ int cachefiles_ondemand_init_object(struct cachefiles_object *object)
- 
- void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
- {
-+	if (!object->ondemand)
-+		return;
-+
- 	cachefiles_ondemand_send_req(object, CACHEFILES_OP_CLOSE, 0,
- 			cachefiles_ondemand_init_close_req, NULL);
-+	cachefiles_ondemand_set_object_dropping(object);
- }
- 
- int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index 8cb07f0166c26..dce2d26b1d0fc 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -1277,6 +1277,17 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_BIOS_DATE, "04/24/2018"),
+ 		},
+ 	},
++	{
++		/* Jumper EZpad 6s Pro */
++		.driver_data = (void *)&jumper_ezpad_6_pro_b_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Jumper"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Ezpad"),
++			/* Above matches are too generic, add bios match */
++			DMI_MATCH(DMI_BIOS_VERSION, "E.WSA116_8.E1.042.bin"),
++			DMI_MATCH(DMI_BIOS_DATE, "01/08/2020"),
++		},
++	},
+ 	{
+ 		/* Jumper EZpad 6 m4 */
+ 		.driver_data = (void *)&jumper_ezpad_6_m4_data,
 -- 
 2.43.0
 
