@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-59809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF35E932BDB
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 060D3932AE9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B795282067
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15471F22F4A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C1517C9E9;
-	Tue, 16 Jul 2024 15:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034F319AA40;
+	Tue, 16 Jul 2024 15:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcNGNaTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WuF+lYC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFEC627733;
-	Tue, 16 Jul 2024 15:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B441F1DA4D;
+	Tue, 16 Jul 2024 15:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144977; cv=none; b=nOVg1XMsClasLpwt6zpicWKrg8t1Q9aXs+Cy6XFjUHnkcvmLslXkfbp11wN80fJuihjMbE9CPDyB8b7eLB6l9vx5cp4x/mnpDAp3YUZmYQSElMyUOpYGqVWy1kYnjSI6uOz9mQE//SZZExrcRiwoGvD2VfvPu3xNqrRkBBNj5+o=
+	t=1721144363; cv=none; b=p6tPi8bCUAGv7TF2j295cG3Xe+43jaqIxw07d6iZSGLypKkzuZsghmTeoWXisnGEDNVq10hsr9RO1zhJIUo7ZuhLKsHdom8duGsRE1rbUyy/27UVxtfnf0wkFdrsDFevZnfhN8Wnce6OCvHZOMVrJ7Tq3sxnH0829lTY4YkLJ4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144977; c=relaxed/simple;
-	bh=meBLojAhZjL9aASUgQNC0g3BgRU+WPjazSb+kg1K2kE=;
+	s=arc-20240116; t=1721144363; c=relaxed/simple;
+	bh=u65eCG/XtwQGQv4sZGpvFfqnhrZBA3qrx10FDnYX7fM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxIOFwy+CdNEBG7Fjnkd+rPs6H1F2Te6+NfUlTRNxtVraj4lUd5qiejRiS6hQBKNDdBOGw/YMMxNUXiuK8wc1XmGarSLncyWEXCVYXZab6C4Ak545Wl7prpgGcOEsI1Z9vUhjTsUwtCscg4XwYuM7KTne+VKv1mUULHAEj+DNO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcNGNaTU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2F3C116B1;
-	Tue, 16 Jul 2024 15:49:36 +0000 (UTC)
+	 MIME-Version; b=R64TFuiHw0L8ewsr1DkNq+QmMfTkugDkeEr2PPt99fhDf+LJy3iC07M/BghBpbHMaKnEVLIGVjYepgj20HzJytDSxuiRsE+DDX//Y+6hEC4cYKoQnV28DWoS3pABoYoRLoI0YCo+zNls4YYc37SUewveCMi9bRejjlMAP2emaK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WuF+lYC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E2EC116B1;
+	Tue, 16 Jul 2024 15:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144977;
-	bh=meBLojAhZjL9aASUgQNC0g3BgRU+WPjazSb+kg1K2kE=;
+	s=korg; t=1721144363;
+	bh=u65eCG/XtwQGQv4sZGpvFfqnhrZBA3qrx10FDnYX7fM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcNGNaTUGvIwTkhv7aAT1smLqGhft8Em+LwMrA/5WYFcTJ+4U74lB9pHCNq1dZ1LY
-	 hoNjqz8zkBS/AJcVGhyzbTlViV2zEQ91JdgUnXaFzpsbH2NuYcAsqtb3zvZf1TEICH
-	 aPwaR1clG1Vbx0K8O7g81ZxnVABFprp0ElJM+M+0=
+	b=WuF+lYC7IRvdgvYsJ9BMrj2zegZBYJBJGz0SMIbuENhC0I2hmVp/YrYygKVq4mqjd
+	 lKkDtzLNEUhS4a2+WoMvNT4yHayIf74sj9B4fP4bDdP/oct265DcU5r1gGUkig7Bud
+	 ezRL/6/6BGyVo7GQD+4tTmTnisr3+S6J+WQIi6RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Wang Yong <wang.yong12@zte.com.cn>,
+	Lu Zhongjun <lu.zhongjun@zte.com.cn>,
+	Yang Tao <yang.tao172@zte.com.cn>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Yang Yang <yang.yang29@zte.com.cn>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 056/143] firmware: cs_dsp: Use strnlen() on name fields in V1 wmfw files
+Subject: [PATCH 5.4 20/78] jffs2: Fix potential illegal address access in jffs2_free_inode
 Date: Tue, 16 Jul 2024 17:30:52 +0200
-Message-ID: <20240716152758.135750740@linuxfoundation.org>
+Message-ID: <20240716152741.412381631@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +66,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Wang Yong <wang.yong12@zte.com.cn>
 
-[ Upstream commit 680e126ec0400f6daecf0510c5bb97a55779ff03 ]
+[ Upstream commit af9a8730ddb6a4b2edd779ccc0aceb994d616830 ]
 
-Use strnlen() instead of strlen() on the algorithm and coefficient name
-string arrays in V1 wmfw files.
+During the stress testing of the jffs2 file system,the following
+abnormal printouts were found:
+[ 2430.649000] Unable to handle kernel paging request at virtual address 0069696969696948
+[ 2430.649622] Mem abort info:
+[ 2430.649829]   ESR = 0x96000004
+[ 2430.650115]   EC = 0x25: DABT (current EL), IL = 32 bits
+[ 2430.650564]   SET = 0, FnV = 0
+[ 2430.650795]   EA = 0, S1PTW = 0
+[ 2430.651032]   FSC = 0x04: level 0 translation fault
+[ 2430.651446] Data abort info:
+[ 2430.651683]   ISV = 0, ISS = 0x00000004
+[ 2430.652001]   CM = 0, WnR = 0
+[ 2430.652558] [0069696969696948] address between user and kernel address ranges
+[ 2430.653265] Internal error: Oops: 96000004 [#1] PREEMPT SMP
+[ 2430.654512] CPU: 2 PID: 20919 Comm: cat Not tainted 5.15.25-g512f31242bf6 #33
+[ 2430.655008] Hardware name: linux,dummy-virt (DT)
+[ 2430.655517] pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 2430.656142] pc : kfree+0x78/0x348
+[ 2430.656630] lr : jffs2_free_inode+0x24/0x48
+[ 2430.657051] sp : ffff800009eebd10
+[ 2430.657355] x29: ffff800009eebd10 x28: 0000000000000001 x27: 0000000000000000
+[ 2430.658327] x26: ffff000038f09d80 x25: 0080000000000000 x24: ffff800009d38000
+[ 2430.658919] x23: 5a5a5a5a5a5a5a5a x22: ffff000038f09d80 x21: ffff8000084f0d14
+[ 2430.659434] x20: ffff0000bf9a6ac0 x19: 0169696969696940 x18: 0000000000000000
+[ 2430.659969] x17: ffff8000b6506000 x16: ffff800009eec000 x15: 0000000000004000
+[ 2430.660637] x14: 0000000000000000 x13: 00000001000820a1 x12: 00000000000d1b19
+[ 2430.661345] x11: 0004000800000000 x10: 0000000000000001 x9 : ffff8000084f0d14
+[ 2430.662025] x8 : ffff0000bf9a6b40 x7 : ffff0000bf9a6b48 x6 : 0000000003470302
+[ 2430.662695] x5 : ffff00002e41dcc0 x4 : ffff0000bf9aa3b0 x3 : 0000000003470342
+[ 2430.663486] x2 : 0000000000000000 x1 : ffff8000084f0d14 x0 : fffffc0000000000
+[ 2430.664217] Call trace:
+[ 2430.664528]  kfree+0x78/0x348
+[ 2430.664855]  jffs2_free_inode+0x24/0x48
+[ 2430.665233]  i_callback+0x24/0x50
+[ 2430.665528]  rcu_do_batch+0x1ac/0x448
+[ 2430.665892]  rcu_core+0x28c/0x3c8
+[ 2430.666151]  rcu_core_si+0x18/0x28
+[ 2430.666473]  __do_softirq+0x138/0x3cc
+[ 2430.666781]  irq_exit+0xf0/0x110
+[ 2430.667065]  handle_domain_irq+0x6c/0x98
+[ 2430.667447]  gic_handle_irq+0xac/0xe8
+[ 2430.667739]  call_on_irq_stack+0x28/0x54
+The parameter passed to kfree was 5a5a5a5a, which corresponds to the target field of
+the jffs_inode_info structure. It was found that all variables in the jffs_inode_info
+structure were 5a5a5a5a, except for the first member sem. It is suspected that these
+variables are not initialized because they were set to 5a5a5a5a during memory testing,
+which is meant to detect uninitialized memory.The sem variable is initialized in the
+function jffs2_i_init_once, while other members are initialized in
+the function jffs2_init_inode_info.
 
-In V1 wmfw files the name is a NUL-terminated string in a fixed-size
-array. cs_dsp should protect against overrunning the array if the NUL
-terminator is missing.
+The function jffs2_init_inode_info is called after iget_locked,
+but in the iget_locked function, the destroy_inode process is triggered,
+which releases the inode and consequently, the target member of the inode
+is not initialized.In concurrent high pressure scenarios, iget_locked
+may enter the destroy_inode branch as described in the code.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f6bc909e7673 ("firmware: cs_dsp: add driver to support firmware loading on Cirrus Logic DSPs")
-Link: https://patch.msgid.link/20240708144855.385332-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Since the destroy_inode functionality of jffs2 only releases the target,
+the fix method is to set target to NULL in jffs2_i_init_once.
+
+Signed-off-by: Wang Yong <wang.yong12@zte.com.cn>
+Reviewed-by: Lu Zhongjun <lu.zhongjun@zte.com.cn>
+Reviewed-by: Yang Tao <yang.tao172@zte.com.cn>
+Cc: Xu Xin <xu.xin16@zte.com.cn>
+Cc: Yang Yang <yang.yang29@zte.com.cn>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/jffs2/super.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index b6fd2ea1ce643..a1da7581adb03 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1128,7 +1128,7 @@ static int cs_dsp_coeff_parse_alg(struct cs_dsp *dsp,
+diff --git a/fs/jffs2/super.c b/fs/jffs2/super.c
+index 6839a61e8ff1e..3602e368cee07 100644
+--- a/fs/jffs2/super.c
++++ b/fs/jffs2/super.c
+@@ -58,6 +58,7 @@ static void jffs2_i_init_once(void *foo)
+ 	struct jffs2_inode_info *f = foo;
  
- 		blk->id = le32_to_cpu(raw->id);
- 		blk->name = raw->name;
--		blk->name_len = strlen(raw->name);
-+		blk->name_len = strnlen(raw->name, ARRAY_SIZE(raw->name));
- 		blk->ncoeff = le32_to_cpu(raw->ncoeff);
+ 	mutex_init(&f->sem);
++	f->target = NULL;
+ 	inode_init_once(&f->vfs_inode);
+ }
  
- 		pos = sizeof(*raw);
-@@ -1204,7 +1204,7 @@ static int cs_dsp_coeff_parse_coeff(struct cs_dsp *dsp,
- 			return -EOVERFLOW;
- 
- 		blk->name = raw->name;
--		blk->name_len = strlen(raw->name);
-+		blk->name_len = strnlen(raw->name, ARRAY_SIZE(raw->name));
- 		blk->ctl_type = le16_to_cpu(raw->ctl_type);
- 		blk->flags = le16_to_cpu(raw->flags);
- 		blk->len = le32_to_cpu(raw->len);
 -- 
 2.43.0
 
