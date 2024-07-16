@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-59548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73862932AA7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5BD932B5E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0C6AB22EAB
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08815281997
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61166F9E8;
-	Tue, 16 Jul 2024 15:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2BF19A86F;
+	Tue, 16 Jul 2024 15:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9lgxqc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0WnTVN5c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206A8D53B;
-	Tue, 16 Jul 2024 15:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4A5F9E8;
+	Tue, 16 Jul 2024 15:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144181; cv=none; b=uuUlQln0OVB6N8kpucbNi76jAifR6WVJA9M9kyGFk2ylAb2Kw2NdXXF5b93k+007j/H4bfHq48+kF1aFVTjyer+mMkYGh+TmwI4NWkawwxIrFi1VLzFoAXo5sq8GziSwRmPW9faTfm2WwpdMfiThEPYtrI1cpvql3RWK+zYFAfI=
+	t=1721144663; cv=none; b=c1cqEuWVMCHExWh2c8I6nDc5lpPzBNsViu0ClW7zpPk6h4mZhs32GEItLmv28gVQxo5+Fg3TM79PUnNF+OcFYn034N/+29aLIPCg71euXCUx4WLKG3tNS/7paVo/2QvweZxyeO8WRNmfP58bHVNA4SmH2eAVo6kNq77B4yoZWsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144181; c=relaxed/simple;
-	bh=Wh3xpT/jl5jIz631IcPTXyRW2QSptmb+URpnSyDjEdc=;
+	s=arc-20240116; t=1721144663; c=relaxed/simple;
+	bh=wyqES2wZKGzO1F5tTFviC6UOObjqfSviQ8sv3GF1654=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuTzXgLBVDdQKj0uXWqntOQWL3VNN41n6AcrnVfzruy7/Htpezv3k38Drv6JfEP1rdAWCDSq0jkKycS0P+3ifYS0Tl4TrPstv29YuAAw3MrKU5wKYRGjdYc+nhy3EIZhsG6hIYiwcEMsNnUMzG392WJo4jxoHKzG1eRpnzhC/yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9lgxqc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46672C116B1;
-	Tue, 16 Jul 2024 15:36:20 +0000 (UTC)
+	 MIME-Version; b=A2ptxIQ66ME4rc02y02Abq0uiS/q+ANh/35ew3zNzkE75k50Dlw0IuItajGZhpjOb8uoxGP2JVTw5x1G0Vs8BNlivZL1IlddcISxwsofSHB+6p7eOuJi3LFqG9rVJBWShRoM17oFIe+zKOgivKuCAFJnrF2LMaDzfSvwlI/xw0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0WnTVN5c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E084DC116B1;
+	Tue, 16 Jul 2024 15:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144180;
-	bh=Wh3xpT/jl5jIz631IcPTXyRW2QSptmb+URpnSyDjEdc=;
+	s=korg; t=1721144663;
+	bh=wyqES2wZKGzO1F5tTFviC6UOObjqfSviQ8sv3GF1654=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9lgxqc57iVY03iD+u9A/Y5OXD2GcvPLXN8IDd2rk1XUzVUi37RV+njvpCVCkOC1a
-	 tOK+SYXLKghrYv3oZikHlxPpC7BLvDrwJNKA1Z7uNm/qUFtKWEFRi1pHsaRu/5lKjX
-	 e9PX/Aez6zDYjLGkbpLXdmXVNasMJx8gVr5NPcC4=
+	b=0WnTVN5cjyC8cVo3KHkAxstVQDlvgQDBsE+484FQdLHE8RpXYnBO4P1uShE5vORpk
+	 eTcOAOVWtn7cdn995arFA/KhP17DTAmfk0FH/idHWp9qzE66X56ijJv4Zqlt32sLfS
+	 D2rwiXHJaAiOeD6YE6LgJmrNy+jnF2JEOyb7FzPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 14/66] powerpc/64: Set _IO_BASE to POISON_POINTER_DELTA not 0 for CONFIG_PCI=n
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Jan Kara <jack@suse.cz>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 034/108] nilfs2: fix inode number range checks
 Date: Tue, 16 Jul 2024 17:30:49 +0200
-Message-ID: <20240716152738.707156052@linuxfoundation.org>
+Message-ID: <20240716152747.307408562@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit be140f1732b523947425aaafbe2e37b41b622d96 ]
+commit e2fec219a36e0993642844be0f345513507031f4 upstream.
 
-There is code that builds with calls to IO accessors even when
-CONFIG_PCI=n, but the actual calls are guarded by runtime checks.
+Patch series "nilfs2: fix potential issues related to reserved inodes".
 
-If not those calls would be faulting, because the page at virtual
-address zero is (usually) not mapped into the kernel. As Arnd pointed
-out, it is possible a large port value could cause the address to be
-above mmap_min_addr which would then access userspace, which would be
-a bug.
+This series fixes one use-after-free issue reported by syzbot, caused by
+nilfs2's internal inode being exposed in the namespace on a corrupted
+filesystem, and a couple of flaws that cause problems if the starting
+number of non-reserved inodes written in the on-disk super block is
+intentionally (or corruptly) changed from its default value.
 
-To avoid any such issues, set _IO_BASE to POISON_POINTER_DELTA. That
-is a value chosen to point into unmapped space between the kernel and
-userspace, so any access will always fault.
 
-Note that on 32-bit POISON_POINTER_DELTA is 0, so the patch only has an
-effect on 64-bit.
+This patch (of 3):
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240503075619.394467-2-mpe@ellerman.id.au
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the current implementation of nilfs2, "nilfs->ns_first_ino", which
+gives the first non-reserved inode number, is read from the superblock,
+but its lower limit is not checked.
+
+As a result, if a number that overlaps with the inode number range of
+reserved inodes such as the root directory or metadata files is set in the
+super block parameter, the inode number test macros (NILFS_MDT_INODE and
+NILFS_VALID_INODE) will not function properly.
+
+In addition, these test macros use left bit-shift calculations using with
+the inode number as the shift count via the BIT macro, but the result of a
+shift calculation that exceeds the bit width of an integer is undefined in
+the C specification, so if "ns_first_ino" is set to a large value other
+than the default value NILFS_USER_INO (=11), the macros may potentially
+malfunction depending on the environment.
+
+Fix these issues by checking the lower bound of "nilfs->ns_first_ino" and
+by preventing bit shifts equal to or greater than the NILFS_USER_INO
+constant in the inode number test macros.
+
+Also, change the type of "ns_first_ino" from signed integer to unsigned
+integer to avoid the need for type casting in comparisons such as the
+lower bound check introduced this time.
+
+Link: https://lkml.kernel.org/r/20240623051135.4180-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240623051135.4180-2-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/io.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/nilfs.h     |    5 +++--
+ fs/nilfs2/the_nilfs.c |    6 ++++++
+ fs/nilfs2/the_nilfs.h |    2 +-
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index 5ff8ab12f56c7..c90ece28a0199 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -47,7 +47,7 @@ extern struct pci_dev *isa_bridge_pcidev;
-  * define properly based on the platform
-  */
- #ifndef CONFIG_PCI
--#define _IO_BASE	0
-+#define _IO_BASE	POISON_POINTER_DELTA
- #define _ISA_MEM_BASE	0
- #define PCI_DRAM_OFFSET 0
- #elif defined(CONFIG_PPC32)
--- 
-2.43.0
-
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -116,9 +116,10 @@ enum {
+ #define NILFS_FIRST_INO(sb) (((struct the_nilfs *)sb->s_fs_info)->ns_first_ino)
+ 
+ #define NILFS_MDT_INODE(sb, ino) \
+-	((ino) < NILFS_FIRST_INO(sb) && (NILFS_MDT_INO_BITS & BIT(ino)))
++	((ino) < NILFS_USER_INO && (NILFS_MDT_INO_BITS & BIT(ino)))
+ #define NILFS_VALID_INODE(sb, ino) \
+-	((ino) >= NILFS_FIRST_INO(sb) || (NILFS_SYS_INO_BITS & BIT(ino)))
++	((ino) >= NILFS_FIRST_INO(sb) ||				\
++	 ((ino) < NILFS_USER_INO && (NILFS_SYS_INO_BITS & BIT(ino))))
+ 
+ /**
+  * struct nilfs_transaction_info: context information for synchronization
+--- a/fs/nilfs2/the_nilfs.c
++++ b/fs/nilfs2/the_nilfs.c
+@@ -452,6 +452,12 @@ static int nilfs_store_disk_layout(struc
+ 	}
+ 
+ 	nilfs->ns_first_ino = le32_to_cpu(sbp->s_first_ino);
++	if (nilfs->ns_first_ino < NILFS_USER_INO) {
++		nilfs_err(nilfs->ns_sb,
++			  "too small lower limit for non-reserved inode numbers: %u",
++			  nilfs->ns_first_ino);
++		return -EINVAL;
++	}
+ 
+ 	nilfs->ns_blocks_per_segment = le32_to_cpu(sbp->s_blocks_per_segment);
+ 	if (nilfs->ns_blocks_per_segment < NILFS_SEG_MIN_BLOCKS) {
+--- a/fs/nilfs2/the_nilfs.h
++++ b/fs/nilfs2/the_nilfs.h
+@@ -182,7 +182,7 @@ struct the_nilfs {
+ 	unsigned long		ns_nrsvsegs;
+ 	unsigned long		ns_first_data_block;
+ 	int			ns_inode_size;
+-	int			ns_first_ino;
++	unsigned int		ns_first_ino;
+ 	u32			ns_crc_seed;
+ 
+ 	/* /sys/fs/<nilfs>/<device> */
 
 
 
