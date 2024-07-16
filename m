@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-59644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DDD932B13
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E18D932B66
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DFBD28196E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCF9F1F21170
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF501448ED;
-	Tue, 16 Jul 2024 15:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56621195B27;
+	Tue, 16 Jul 2024 15:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLqvMqY7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxoX4jxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0667F9E8;
-	Tue, 16 Jul 2024 15:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A4FF9E8;
+	Tue, 16 Jul 2024 15:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144470; cv=none; b=I7zcLNOnCueXelXtDqZ82hXG4BvHFQOxMlsW2nLBx4IasbHBv1VgEFJvTZJ7Nranpkc8dT0prGwkxpFklwrPoCLGc+TgQJsHMkziES8jIhrNVBOt9KfU+TKExhEpeJg+1jScQyu7JtIuS9WFMBsfA24v7YBoAxvcn3X3GCyROug=
+	t=1721144684; cv=none; b=BOuo7cdb5uBO/KYQlkUQNk8//hZchHfLhe0jyObaMO/tScZMgc68e/Si9whhezgHvvTn2qN8789hKWDz3ZcsMr2O/oro2ujwjyh1Dj5OPu7gf7QwjzJZd4OKnhtcRP7YbeJqFwAYvA0KSaUoYKGVxJgWYcsamsuyH0P/thQpJCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144470; c=relaxed/simple;
-	bh=WGA0dQVzNTnpNyiCi/9Ch3JKbwGIdIDMbC4iKW9GSbA=;
+	s=arc-20240116; t=1721144684; c=relaxed/simple;
+	bh=nPzp8PL+BJ+lwlIqJbRueOhL3HMOnVbnXtupuOOVroA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3Y/lhMJ/Wk7W6n4wTlv5sF576El6nQxy5PL+/3BIf3NopBZn3KEQCiKJt4KNGLI6f3/X8lOyyrbZs5E4PGr1Mf/FtU7ogghlbNppPV0+zM/NyHRyIjX2yRtxN3QRYF1b/mb26jgoDhuZsEOdPk6hqFhux+cXXA9RvmdWEMCQDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLqvMqY7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B7FC116B1;
-	Tue, 16 Jul 2024 15:41:09 +0000 (UTC)
+	 MIME-Version; b=T3gM5LmfWmzepzmjIEYRW6XHqc7BhjJDpicHW6uOx7+5c6uJawRm+KWMAY2F+2A4HgW7nQT2XtGG7R8+BLmLVhJldERXC7jj4iPdIsimnuqrJj2jtr2XdP5pmZ4VDIse3APVbsX9cH+W/0YE8eTLew4KaINFEGfhqR0aD6gt5ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxoX4jxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA7FC4AF0B;
+	Tue, 16 Jul 2024 15:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144470;
-	bh=WGA0dQVzNTnpNyiCi/9Ch3JKbwGIdIDMbC4iKW9GSbA=;
+	s=korg; t=1721144684;
+	bh=nPzp8PL+BJ+lwlIqJbRueOhL3HMOnVbnXtupuOOVroA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VLqvMqY7xofHGnXeSzPjbROq9q6VC80VQPic4D6O1rnSRf9JOPMejoRHvMd2ZvEhj
-	 FQ7WOrEXRzXNgRdYzJ0nSLU1zHCh3ij2o/hrKvgf6ERF8dtASHLWOo1M/RRO3KoD9Q
-	 /V2qfKqgwkkAz26yDaAgr9dkI9PHxoE2w8+6qC0U=
+	b=TxoX4jxLNAbQGRVVdF1bDbsAA1CqYR02JIrNP9F60hw7F/BQ7bKDD2oeXVngwH6P8
+	 oCkRP8qn6XAiFlfMrIyLZqVXCryD9uM+CwvjytnJi11TtHpVQgS3l86tfyVnfsdAgm
+	 GXKSgrd3XXgL8cIN4oIXs8JmBzigT9+9ZbHXDQk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 56/78] s390: Mark psw in __load_psw_mask() as __unitialized
+	Eric Dumazet <edumazet@google.com>,
+	Menglong Dong <imagedong@tencent.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 073/108] tcp: use signed arithmetic in tcp_rtx_probe0_timed_out()
 Date: Tue, 16 Jul 2024 17:31:28 +0200
-Message-ID: <20240716152742.809875902@linuxfoundation.org>
+Message-ID: <20240716152748.784336228@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 7278a8fb8d032dfdc03d9b5d17e0bc451cdc1492 ]
+commit 36534d3c54537bf098224a32dc31397793d4594d upstream.
 
-Without __unitialized, the following code is generated when
-INIT_STACK_ALL_ZERO is enabled:
+Due to timer wheel implementation, a timer will usually fire
+after its schedule.
 
-86: d7 0f f0 a0 f0 a0     xc      160(16,%r15), 160(%r15)
-8c: e3 40 f0 a0 00 24     stg     %r4, 160(%r15)
-92: c0 10 00 00 00 08     larl    %r1, 0xa2
-98: e3 10 f0 a8 00 24     stg     %r1, 168(%r15)
-9e: b2 b2 f0 a0           lpswe   160(%r15)
+For instance, for HZ=1000, a timeout between 512ms and 4s
+has a granularity of 64ms.
+For this range of values, the extra delay could be up to 63ms.
 
-The xc is not adding any security because psw is fully initialized
-with the following instructions. Add __unitialized to the psw
-definitiation to avoid the superfluous clearing of psw.
+For TCP, this means that tp->rcv_tstamp may be after
+inet_csk(sk)->icsk_timeout whenever the timer interrupt
+finally triggers, if one packet came during the extra delay.
 
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We need to make sure tcp_rtx_probe0_timed_out() handles this case.
+
+Fixes: e89688e3e978 ("net: tcp: fix unexcepted socket die when snd_wnd is 0")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Menglong Dong <imagedong@tencent.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Link: https://lore.kernel.org/r/20240607125652.1472540-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/processor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_timer.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
-index 48d6ccdef5f77..00bb2d287f740 100644
---- a/arch/s390/include/asm/processor.h
-+++ b/arch/s390/include/asm/processor.h
-@@ -256,8 +256,8 @@ static inline void __load_psw(psw_t psw)
-  */
- static __always_inline void __load_psw_mask(unsigned long mask)
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -459,8 +459,13 @@ static bool tcp_rtx_probe0_timed_out(con
  {
-+	psw_t psw __uninitialized;
- 	unsigned long addr;
--	psw_t psw;
+ 	const struct tcp_sock *tp = tcp_sk(sk);
+ 	const int timeout = TCP_RTO_MAX * 2;
+-	u32 rcv_delta, rtx_delta;
++	u32 rtx_delta;
++	s32 rcv_delta;
  
- 	psw.mask = mask;
- 
--- 
-2.43.0
-
++	/* Note: timer interrupt might have been delayed by at least one jiffy,
++	 * and tp->rcv_tstamp might very well have been written recently.
++	 * rcv_delta can thus be negative.
++	 */
+ 	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
+ 	if (rcv_delta <= timeout)
+ 		return false;
 
 
 
