@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-60026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C8A932D0E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81645932B6E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A93E281C5A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F4B0281051
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C49F199EA3;
-	Tue, 16 Jul 2024 16:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC70619DFB3;
+	Tue, 16 Jul 2024 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hjf2Hd/9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vv67A1T8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58531136643;
-	Tue, 16 Jul 2024 16:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A949019DF7D;
+	Tue, 16 Jul 2024 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145634; cv=none; b=Pm2LlB+y17aOaeXE8YJJ0nCK9UeyytEgGU/UwlSj/6xeBzIKN4F5IWUryv1r4pQIg0BxBWn5sBUIxWLkv3jmYXNDumSRT9J2ItICRFEakLbi2VAwdwEtDA2j9ybdXTcBOulQaNy/vCy3zuP7HFE8XfDYsxIBeTUeHkdOpq+87RQ=
+	t=1721144704; cv=none; b=k+uR6Pi7Y4zTJSj9/nTXDHV4Zw6F+AFejR7+Ep1ImtfnZrO55c5QbGsHIHed3Ro/NDqpBeG4jY6eQf92QIg8XyN8oNXq9O9pGF+JqgGHM+6mwEPFYnxzC1nradmHFlPcTrQHJ13FzWCxJLtcDe4ONlRZersxf0AS6hsMiJz/NH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145634; c=relaxed/simple;
-	bh=inOGOjOt31Ab3Z9/hF2TRfEyramXV5SdAGmcCQov29k=;
+	s=arc-20240116; t=1721144704; c=relaxed/simple;
+	bh=sG30QV+hiOA1g//9dTGDwVswvkicihWPo4Mv8wuEc9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h8qUWyOEneNFaHhI89mK88fHK4jwVPUogY+aU1CGb50PsWgxqPRUVEraxFslg11n4f1dBPnICyE69d9z3CMsS7LM10dzDvMBbn9M4eywRyJmzTnCADYh88lVolMMrl44ILRFYKoYD8fFIBzcI+B1z+gk+riS4yjFBS3CF3Kh86g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hjf2Hd/9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D220DC116B1;
-	Tue, 16 Jul 2024 16:00:33 +0000 (UTC)
+	 MIME-Version; b=DKnItGgUiT3ch3aYTo8De9feaST3f6ABw7DCz3/P7KAskzER63vbyNJ+yHBh+zlmmuwCf8FS1Sht/X+yy70S5P0Muq53tB4zUzVqXEjbrzzVw0/ofFera3aQrAEmJf0RAjgxmTrDMkCgT24JgVuxuEB7rpja2oXSse0p7/R56DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vv67A1T8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC37C116B1;
+	Tue, 16 Jul 2024 15:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145634;
-	bh=inOGOjOt31Ab3Z9/hF2TRfEyramXV5SdAGmcCQov29k=;
+	s=korg; t=1721144704;
+	bh=sG30QV+hiOA1g//9dTGDwVswvkicihWPo4Mv8wuEc9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hjf2Hd/9bEswwhIyVG1OYC6+Fi2wLuaB5JNJBeXb4t23apr0HF9Tsd2l65VrccYpX
-	 QIlexJ/HfV5O/9HSQlDkf7CjzSwe4FRpeS5/o196SwLTArQUBamGiC8NM7jHhsU5pw
-	 6hsmvuvejBRQxjx+nZBrAveCJLosD/XUFolYKAYc=
+	b=vv67A1T8s1XT6EJWTa5R/1xqoyAHWtPWVr9QVsNN9FvoNNQKPYWV7DMYTT6ScE7Sd
+	 x5wxDwz1ndLqkNYntY/BnuhTXDPvwA97QdCzKO2B8b409ZSJ37pisZk7Azvfo5E6gY
+	 hHpX8yeM3JQooe/aNXoL66AWm1sId79OtjG6C1Xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/121] udp: Set SOCK_RCU_FREE earlier in udp_lib_get_port().
+	Mank Wang <mank.wang@netprisma.us>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 080/108] USB: serial: option: add Netprisma LCUK54 series modules
 Date: Tue, 16 Jul 2024 17:31:35 +0200
-Message-ID: <20240716152752.597597541@linuxfoundation.org>
+Message-ID: <20240716152749.054141461@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Mank Wang <mank.wang@netprisma.us>
 
-[ Upstream commit 5c0b485a8c6116516f33925b9ce5b6104a6eadfd ]
+commit dc6dbe3ed28795b01c712ad8f567728f9c14b01d upstream.
 
-syzkaller triggered the warning [0] in udp_v4_early_demux().
+Add support for Netprisma LCUK54 series modules.
 
-In udp_v[46]_early_demux() and sk_lookup(), we do not touch the refcount
-of the looked-up sk and use sock_pfree() as skb->destructor, so we check
-SOCK_RCU_FREE to ensure that the sk is safe to access during the RCU grace
-period.
+LCUK54-WRD-LWW(0x3731/0x0100): NetPrisma LCUK54-WWD for Global
+LCUK54-WRD-LWW(0x3731/0x0101): NetPrisma LCUK54-WRD for Global SKU
+LCUK54-WRD-LCN(0x3731/0x0106): NetPrisma LCUK54-WRD for China SKU
+LCUK54-WRD-LWW(0x3731/0x0111): NetPrisma LCUK54-WWD for SA
+LCUK54-WRD-LWW(0x3731/0x0112): NetPrisma LCUK54-WWD for EU
+LCUK54-WRD-LWW(0x3731/0x0113): NetPrisma LCUK54-WWD for NA
+LCUK54-WWD-LCN(0x3731/0x0115): NetPrisma LCUK54-WWD for China EDU
+LCUK54-WWD-LWW(0x3731/0x0116): NetPrisma LCUK54-WWD for Golbal EDU
 
-Currently, SOCK_RCU_FREE is flagged for a bound socket after being put
-into the hash table.  Moreover, the SOCK_RCU_FREE check is done too early
-in udp_v[46]_early_demux() and sk_lookup(), so there could be a small race
-window:
+Above products use the exact same interface layout and option
+driver:
+MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
 
-  CPU1                                 CPU2
-  ----                                 ----
-  udp_v4_early_demux()                 udp_lib_get_port()
-  |                                    |- hlist_add_head_rcu()
-  |- sk = __udp4_lib_demux_lookup()    |
-  |- DEBUG_NET_WARN_ON_ONCE(sk_is_refcounted(sk));
-                                       `- sock_set_flag(sk, SOCK_RCU_FREE)
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  5 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=3731 ProdID=0101 Rev= 5.04
+S:  Manufacturer=NetPrisma
+S:  Product=LCUK54-WRD
+S:  SerialNumber=b6250c36
+C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-We had the same bug in TCP and fixed it in commit 871019b22d1b ("net:
-set SOCK_RCU_FREE before inserting socket into hashtable").
-
-Let's apply the same fix for UDP.
-
-[0]:
-WARNING: CPU: 0 PID: 11198 at net/ipv4/udp.c:2599 udp_v4_early_demux+0x481/0xb70 net/ipv4/udp.c:2599
-Modules linked in:
-CPU: 0 PID: 11198 Comm: syz-executor.1 Not tainted 6.9.0-g93bda33046e7 #13
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:udp_v4_early_demux+0x481/0xb70 net/ipv4/udp.c:2599
-Code: c5 7a 15 fe bb 01 00 00 00 44 89 e9 31 ff d3 e3 81 e3 bf ef ff ff 89 de e8 2c 74 15 fe 85 db 0f 85 02 06 00 00 e8 9f 7a 15 fe <0f> 0b e8 98 7a 15 fe 49 8d 7e 60 e8 4f 39 2f fe 49 c7 46 60 20 52
-RSP: 0018:ffffc9000ce3fa58 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8318c92c
-RDX: ffff888036ccde00 RSI: ffffffff8318c2f1 RDI: 0000000000000001
-RBP: ffff88805a2dd6e0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0001ffffffffffff R12: ffff88805a2dd680
-R13: 0000000000000007 R14: ffff88800923f900 R15: ffff88805456004e
-FS:  00007fc449127640(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fc449126e38 CR3: 000000003de4b002 CR4: 0000000000770ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000600
-PKRU: 55555554
-Call Trace:
- <TASK>
- ip_rcv_finish_core.constprop.0+0xbdd/0xd20 net/ipv4/ip_input.c:349
- ip_rcv_finish+0xda/0x150 net/ipv4/ip_input.c:447
- NF_HOOK include/linux/netfilter.h:314 [inline]
- NF_HOOK include/linux/netfilter.h:308 [inline]
- ip_rcv+0x16c/0x180 net/ipv4/ip_input.c:569
- __netif_receive_skb_one_core+0xb3/0xe0 net/core/dev.c:5624
- __netif_receive_skb+0x21/0xd0 net/core/dev.c:5738
- netif_receive_skb_internal net/core/dev.c:5824 [inline]
- netif_receive_skb+0x271/0x300 net/core/dev.c:5884
- tun_rx_batched drivers/net/tun.c:1549 [inline]
- tun_get_user+0x24db/0x2c50 drivers/net/tun.c:2002
- tun_chr_write_iter+0x107/0x1a0 drivers/net/tun.c:2048
- new_sync_write fs/read_write.c:497 [inline]
- vfs_write+0x76f/0x8d0 fs/read_write.c:590
- ksys_write+0xbf/0x190 fs/read_write.c:643
- __do_sys_write fs/read_write.c:655 [inline]
- __se_sys_write fs/read_write.c:652 [inline]
- __x64_sys_write+0x41/0x50 fs/read_write.c:652
- x64_sys_call+0xe66/0x1990 arch/x86/include/generated/asm/syscalls_64.h:2
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x4b/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x7fc44a68bc1f
-Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 e9 cf f5 ff 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 3c d0 f5 ff 48
-RSP: 002b:00007fc449126c90 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00000000004bc050 RCX: 00007fc44a68bc1f
-RDX: 0000000000000032 RSI: 00000000200000c0 RDI: 00000000000000c8
-RBP: 00000000004bc050 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000032 R11: 0000000000000293 R12: 0000000000000000
-R13: 000000000000000b R14: 00007fc44a5ec530 R15: 0000000000000000
- </TASK>
-
-Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240709191356.24010-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mank Wang <mank.wang@netprisma.us>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |   24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 16ca211c8619d..73fb814460b6b 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -326,6 +326,8 @@ int udp_lib_get_port(struct sock *sk, unsigned short snum,
- 			goto fail_unlock;
- 		}
- 
-+		sock_set_flag(sk, SOCK_RCU_FREE);
-+
- 		sk_add_node_rcu(sk, &hslot->head);
- 		hslot->count++;
- 		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
-@@ -342,7 +344,7 @@ int udp_lib_get_port(struct sock *sk, unsigned short snum,
- 		hslot2->count++;
- 		spin_unlock(&hslot2->lock);
- 	}
--	sock_set_flag(sk, SOCK_RCU_FREE);
-+
- 	error = 0;
- fail_unlock:
- 	spin_unlock_bh(&hslot->lock);
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2333,6 +2333,30 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0101, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for Global SKU */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0101, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0101, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0106, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for China SKU */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0106, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0106, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0111, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for SA */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0111, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0111, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0112, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for EU */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0112, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0112, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0113, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for NA */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0113, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0113, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0115, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for China EDU */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0115, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0115, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Golbal EDU */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
 
 
 
