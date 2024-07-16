@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-59713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5263F932B65
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94582932D7C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09BC61F20595
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FA6A280D02
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F514136643;
-	Tue, 16 Jul 2024 15:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F5D19B3E3;
+	Tue, 16 Jul 2024 16:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEXWRrm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5dMJdTT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D144F9E8;
-	Tue, 16 Jul 2024 15:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E4B199EA3;
+	Tue, 16 Jul 2024 16:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144681; cv=none; b=ZwzXmAMMBRKlJmwx9yenb12ie7J5bUr+PiCwmdl70dygptrSj2lBy0BTCEGT3kzTPo5+00H27LymG6TMnqIlAvs+/n7Xl+X0WW/3Cz9XbBre1eG3RvYwmqSTE4x92u/o3H7EPU85CxEYM0JRZQ7qvrWLGsQmI1PFW438IVBXGKg=
+	t=1721145947; cv=none; b=NA46OWQ+SQiuUTn7SZZlLRmIIHUf9hHHrrgUvF/uDR9Z8z606nZhvE0YIx9Qmx+Z9zcd4S7mFJjVG3pLc5CmEJ6KhwDbQpUVMDqqZTn/S7aEgc7OFpesOaj0ApJr/h9pfEgyxd3vrMfehlait9exGkZvRfIAjL3DP31H8FC35V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144681; c=relaxed/simple;
-	bh=toIeQT6h9U/g3dxCpV0ZDPVjoOnRbxfjDXLu3GetbJw=;
+	s=arc-20240116; t=1721145947; c=relaxed/simple;
+	bh=GLWsoqS9G8L5M4y6BJ5KEErMBCq66lhqEL448T1jo7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iq5vKjxp7C30n+5AYuh2SZYn375TEg/4A/5oZETFrQnDD9o8evU9ck0jGDuhNbPMrYacjZPN0GUH6KByXnEg1+D0YN41k2HvMuIsBVA9/LXr/3yXRpy3FmLPdtsCbG+lq7Cl/a+y47S3B8W0vUhNgR0XJfqhWC28Q6dUoQsDdJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEXWRrm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF68C4AF0E;
-	Tue, 16 Jul 2024 15:44:40 +0000 (UTC)
+	 MIME-Version; b=nuDhrLAI/9WjWiyLtSE1aVbnmxZUSKFvEPOLOR8Cj6pTxyjFVdVThzyzDbyz4HbNqN809CQlmjnbYDGSaaFjf0MQRYEdO97wPlAXEgdz+MTbBY3BhcoVMCJTY3Ix0JInNYKcSettN3LY4Nlx3PteRZ92cgNSd0pRirlIYvjignw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5dMJdTT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDEAC116B1;
+	Tue, 16 Jul 2024 16:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144681;
-	bh=toIeQT6h9U/g3dxCpV0ZDPVjoOnRbxfjDXLu3GetbJw=;
+	s=korg; t=1721145947;
+	bh=GLWsoqS9G8L5M4y6BJ5KEErMBCq66lhqEL448T1jo7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EEXWRrm0RaOWfAYIoi2RaQtsF8AhzKee+1GHe4TTndrz3xFIIUHwrrDROkrSlLUSq
-	 vBcx4aQcRr2UdLxeqiEsG2SidZXl9T6wSbprV1IYq7MGSyVtJo7jPV9ViuhmE3S/Y2
-	 28nPxRj4r/e8eIakYd2tY5uByTCNqEU8/t9Z2YIU=
+	b=t5dMJdTTS0PN3fUt3NVCXlaFvystpewmdrwGNh0N+I/wh88LT0MUJ9QL8TDIxr9Gq
+	 Zuzs/4Zh9n4OFV5Wghot/ZpFhgLffQuk63IF+36oDwhZiUSOUFWno5cm2dLR8JDDBu
+	 9zRJ2Hkt0ZNFREeRnafHnK6eIsIMtcSbebsFIZJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 064/108] net: lantiq_etop: add blank line after declaration
+Subject: [PATCH 5.15 010/144] drm/amd/display: Check pipe offset before setting vblank
 Date: Tue, 16 Jul 2024 17:31:19 +0200
-Message-ID: <20240716152748.439709014@linuxfoundation.org>
+Message-ID: <20240716152752.928121864@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
+References: <20240716152752.524497140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 4c46625bb586a741b8d0e6bdbddbcb2549fa1d36 ]
+[ Upstream commit 5396a70e8cf462ec5ccf2dc8de103c79de9489e6 ]
 
-This patch adds a missing line after the declaration and
-fixes the checkpatch warning:
+pipe_ctx has a size of MAX_PIPES so checking its index before accessing
+the array.
 
-WARNING: Missing a blank line after declarations
-+		int desc;
-+		for (desc = 0; desc < LTQ_DESC_NUM; desc++)
+This fixes an OVERRUN issue reported by Coverity.
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Link: https://lore.kernel.org/r/20211228220031.71576-1-olek2@wp.pl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: e1533b6319ab ("net: ethernet: lantiq_etop: fix double free in detach")
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/lantiq_etop.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../drm/amd/display/dc/irq/dce110/irq_service_dce110.c    | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index 5ea626b1e5783..62300d46d9186 100644
---- a/drivers/net/ethernet/lantiq_etop.c
-+++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -214,6 +214,7 @@ ltq_etop_free_channel(struct net_device *dev, struct ltq_etop_chan *ch)
- 		free_irq(ch->dma.irq, priv);
- 	if (IS_RX(ch->idx)) {
- 		int desc;
+diff --git a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
+index 378cc11aa0476..3d8b2b127f3f5 100644
+--- a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
++++ b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
+@@ -211,8 +211,12 @@ bool dce110_vblank_set(struct irq_service *irq_service,
+ 						   info->ext_id);
+ 	uint8_t pipe_offset = dal_irq_src - IRQ_TYPE_VBLANK;
+ 
+-	struct timing_generator *tg =
+-			dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
++	struct timing_generator *tg;
 +
- 		for (desc = 0; desc < LTQ_DESC_NUM; desc++)
- 			dev_kfree_skb_any(ch->skb[ch->dma.desc]);
- 	}
++	if (pipe_offset >= MAX_PIPES)
++		return false;
++
++	tg = dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
+ 
+ 	if (enable) {
+ 		if (!tg || !tg->funcs->arm_vert_intr(tg, 2)) {
 -- 
 2.43.0
 
