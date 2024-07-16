@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-60096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51FB0932D5A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:04:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D436932CE4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81CC51C21D83
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:04:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADBC01F213DE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B048019AD93;
-	Tue, 16 Jul 2024 16:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9337F19DFBF;
+	Tue, 16 Jul 2024 15:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2QYOVqI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKAI0/lF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5FF1DDCE;
-	Tue, 16 Jul 2024 16:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512A91DDCE;
+	Tue, 16 Jul 2024 15:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145842; cv=none; b=fDl1poidBKwjioy0dJkWMRR1Cd37ONZ/3wk3+7QJYSxng3OLAW/pcCdDzWCXxvJ9TUubkvjqEumFv2vXknLiASKQ6J/U3Q9dP9C605CjysqdOSIXjcRoyo/oLZrXeFshYOGEA/fQZcVULRNsvzIfQYFZwo0Ujgv2phAA8Lx6RP8=
+	t=1721145526; cv=none; b=Q7+uzzjb+XwZGwdBJrGWi35xAnnpi6UKAPaNAPP8STggjwNgbpyzv+7Fmn4HWntZLvyb6PcPZ8+n7kIeIWu4+KVNIbcbwUM1u/nKT0Xu0DEBIi6+t2yO/jQeu1CsG1WpKP/qp2Pnrx+ahZRtXrFZ4p4TmMuePFGPIdD++J5vQN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145842; c=relaxed/simple;
-	bh=FmpM72BOJ1EXDRrBVxvyyNCnRcXqSjf/nUwjmOf9RPM=;
+	s=arc-20240116; t=1721145526; c=relaxed/simple;
+	bh=WJw5+9pe7T/jv2vkEWaOt3VAat3y8S4B0oMJUG4vaxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcps+FW3gkbLGvHzWbaNBnfpkufdSkQ6CUMcZDXQm7BlaKIe6VdBm14r2WVkPbRQRgag0Im7v951jTQBY3UV2dEumCqnMGI5LlI7Zp2ag8PBS9ZuuLoPS5PKRc7Ig6ROPk1d1NOjXLhFL4euTuGYRDPaGPbUT7s3A+zUxpegGDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2QYOVqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1BCC116B1;
-	Tue, 16 Jul 2024 16:04:01 +0000 (UTC)
+	 MIME-Version; b=mQUF8czgpjYROlj6bTZKcu4rQY4RRrtzRfHSEY2cK014v4A7robdNXfEAWGo/YwMiJXOg6N2Op10M1Zjcrv//hoi2aqVAbgbv9vC6PEUaqOVhYXIruXxqHoHOTc/OCNufEpR6LIfSjgFGa2t8DSCf28rurROweeFQDpqj+2rW1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKAI0/lF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF19C4AF0D;
+	Tue, 16 Jul 2024 15:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145842;
-	bh=FmpM72BOJ1EXDRrBVxvyyNCnRcXqSjf/nUwjmOf9RPM=;
+	s=korg; t=1721145526;
+	bh=WJw5+9pe7T/jv2vkEWaOt3VAat3y8S4B0oMJUG4vaxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2QYOVqItOhDM69PbQJkwH5OcSiKPH7YDkc7ijHuJ4/UYnB0La2WFWIctNETYU8ZH
-	 18gt1I4UhprITKc2qmvFwPk7jlNrEH14ECUoSsBFHLtuqADPKgW4mB03Wl2h3blstq
-	 GSlFcQgRmPvBx2fhkkdkabjMgC+3Yc0vhXyzeWos=
+	b=GKAI0/lFDtmQpoEvmZ/kOvalEkKHBt95/Eit+PaVAxBpAXBdFUFQM2cEk+ffZ/vl3
+	 Fc9jcMi5/QWcjTTm0ud4rver+xwmHWVhRrJM9eXU4MmyQPEdtxF5XpXTPieurNBje1
+	 /Htln+3xoBpx8KZ3wlCl5mYbumpWC3v5pryBysZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gavin Shan <gshan@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Don Dutile <ddutile@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	William Kucharski <william.kucharski@oracle.com>,
-	Zhenyu Zhang <zhenyzha@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 103/121] mm/shmem: disable PMD-sized page cache if needed
+	Suman Maity <suman.m.maity@oracle.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 94/96] x86/bhi: Avoid warning in #DB handler due to BHI mitigation
 Date: Tue, 16 Jul 2024 17:32:45 +0200
-Message-ID: <20240716152755.290943818@linuxfoundation.org>
+Message-ID: <20240716152750.127823857@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,113 +66,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Shan <gshan@redhat.com>
+From: Alexandre Chartre <alexandre.chartre@oracle.com>
 
-commit 9fd154ba926b34c833b7bfc4c14ee2e931b3d743 upstream.
+[ Upstream commit ac8b270b61d48fcc61f052097777e3b5e11591e0 ]
 
-For shmem files, it's possible that PMD-sized page cache can't be
-supported by xarray.  For example, 512MB page cache on ARM64 when the base
-page size is 64KB can't be supported by xarray.  It leads to errors as the
-following messages indicate when this sort of xarray entry is split.
+When BHI mitigation is enabled, if SYSENTER is invoked with the TF flag set
+then entry_SYSENTER_compat() uses CLEAR_BRANCH_HISTORY and calls the
+clear_bhb_loop() before the TF flag is cleared. This causes the #DB handler
+(exc_debug_kernel()) to issue a warning because single-step is used outside the
+entry_SYSENTER_compat() function.
 
-WARNING: CPU: 34 PID: 7578 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
-Modules linked in: binfmt_misc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6   \
-nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject        \
-nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4  \
-ip_set rfkill nf_tables nfnetlink vfat fat virtio_balloon drm fuse xfs  \
-libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64 sha1_ce virtio_net \
-net_failover virtio_console virtio_blk failover dimlib virtio_mmio
-CPU: 34 PID: 7578 Comm: test Kdump: loaded Tainted: G W 6.10.0-rc5-gavin+ #9
-Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : xas_split_alloc+0xf8/0x128
-lr : split_huge_page_to_list_to_order+0x1c4/0x720
-sp : ffff8000882af5f0
-x29: ffff8000882af5f0 x28: ffff8000882af650 x27: ffff8000882af768
-x26: 0000000000000cc0 x25: 000000000000000d x24: ffff00010625b858
-x23: ffff8000882af650 x22: ffffffdfc0900000 x21: 0000000000000000
-x20: 0000000000000000 x19: ffffffdfc0900000 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000018000000000 x15: 52f8004000000000
-x14: 0000e00000000000 x13: 0000000000002000 x12: 0000000000000020
-x11: 52f8000000000000 x10: 52f8e1c0ffff6000 x9 : ffffbeb9619a681c
-x8 : 0000000000000003 x7 : 0000000000000000 x6 : ffff00010b02ddb0
-x5 : ffffbeb96395e378 x4 : 0000000000000000 x3 : 0000000000000cc0
-x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
-Call trace:
- xas_split_alloc+0xf8/0x128
- split_huge_page_to_list_to_order+0x1c4/0x720
- truncate_inode_partial_folio+0xdc/0x160
- shmem_undo_range+0x2bc/0x6a8
- shmem_fallocate+0x134/0x430
- vfs_fallocate+0x124/0x2e8
- ksys_fallocate+0x4c/0xa0
- __arm64_sys_fallocate+0x24/0x38
- invoke_syscall.constprop.0+0x7c/0xd8
- do_el0_svc+0xb4/0xd0
- el0_svc+0x44/0x1d8
- el0t_64_sync_handler+0x134/0x150
- el0t_64_sync+0x17c/0x180
+To address this issue, entry_SYSENTER_compat() should use CLEAR_BRANCH_HISTORY
+after making sure the TF flag is cleared.
 
-Fix it by disabling PMD-sized page cache when HPAGE_PMD_ORDER is larger
-than MAX_PAGECACHE_ORDER.  As Matthew Wilcox pointed, the page cache in a
-shmem file isn't represented by a multi-index entry and doesn't have this
-limitation when the xarry entry is split until commit 6b24ca4a1a8d ("mm:
-Use multi-index entries in the page cache").
+The problem can be reproduced with the following sequence:
 
-Link: https://lkml.kernel.org/r/20240627003953.1262512-5-gshan@redhat.com
-Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Darrick J. Wong <djwong@kernel.org>
-Cc: Don Dutile <ddutile@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: William Kucharski <william.kucharski@oracle.com>
-Cc: Zhenyu Zhang <zhenyzha@redhat.com>
-Cc: <stable@vger.kernel.org>	[5.17+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ cat sysenter_step.c
+  int main()
+  { asm("pushf; pop %ax; bts $8,%ax; push %ax; popf; sysenter"); }
+
+  $ gcc -o sysenter_step sysenter_step.c
+
+  $ ./sysenter_step
+  Segmentation fault (core dumped)
+
+The program is expected to crash, and the #DB handler will issue a warning.
+
+Kernel log:
+
+  WARNING: CPU: 27 PID: 7000 at arch/x86/kernel/traps.c:1009 exc_debug_kernel+0xd2/0x160
+  ...
+  RIP: 0010:exc_debug_kernel+0xd2/0x160
+  ...
+  Call Trace:
+  <#DB>
+   ? show_regs+0x68/0x80
+   ? __warn+0x8c/0x140
+   ? exc_debug_kernel+0xd2/0x160
+   ? report_bug+0x175/0x1a0
+   ? handle_bug+0x44/0x90
+   ? exc_invalid_op+0x1c/0x70
+   ? asm_exc_invalid_op+0x1f/0x30
+   ? exc_debug_kernel+0xd2/0x160
+   exc_debug+0x43/0x50
+   asm_exc_debug+0x1e/0x40
+  RIP: 0010:clear_bhb_loop+0x0/0xb0
+  ...
+  </#DB>
+  <TASK>
+   ? entry_SYSENTER_compat_after_hwframe+0x6e/0x8d
+  </TASK>
+
+  [ bp: Massage commit message. ]
+
+Fixes: 7390db8aea0d ("x86/bhi: Add support for clearing branch history at syscall entry")
+Reported-by: Suman Maity <suman.m.maity@oracle.com>
+Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20240524070459.3674025-1-alexandre.chartre@oracle.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/shmem.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ arch/x86/entry/entry_64_compat.S | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -535,8 +535,9 @@ static bool shmem_confirm_swap(struct ad
+diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
+index b14b8cd85eb23..74a2f418e6745 100644
+--- a/arch/x86/entry/entry_64_compat.S
++++ b/arch/x86/entry/entry_64_compat.S
+@@ -90,10 +90,6 @@ SYM_INNER_LABEL(entry_SYSENTER_compat_after_hwframe, SYM_L_GLOBAL)
  
- static int shmem_huge __read_mostly = SHMEM_HUGE_NEVER;
+ 	cld
  
--bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
--		   struct mm_struct *mm, unsigned long vm_flags)
-+static bool __shmem_is_huge(struct inode *inode, pgoff_t index,
-+			    bool shmem_huge_force, struct mm_struct *mm,
-+			    unsigned long vm_flags)
- {
- 	loff_t i_size;
+-	IBRS_ENTER
+-	UNTRAIN_RET
+-	CLEAR_BRANCH_HISTORY
+-
+ 	/*
+ 	 * SYSENTER doesn't filter flags, so we need to clear NT and AC
+ 	 * ourselves.  To save a few cycles, we can check whether
+@@ -117,6 +113,16 @@ SYM_INNER_LABEL(entry_SYSENTER_compat_after_hwframe, SYM_L_GLOBAL)
+ 	jnz	.Lsysenter_fix_flags
+ .Lsysenter_flags_fixed:
  
-@@ -567,6 +568,16 @@ bool shmem_is_huge(struct inode *inode,
- 	}
- }
- 
-+bool shmem_is_huge(struct inode *inode, pgoff_t index,
-+		   bool shmem_huge_force, struct mm_struct *mm,
-+		   unsigned long vm_flags)
-+{
-+	if (HPAGE_PMD_ORDER > MAX_PAGECACHE_ORDER)
-+		return false;
++	/*
++	 * CPU bugs mitigations mechanisms can call other functions. They
++	 * should be invoked after making sure TF is cleared because
++	 * single-step is ignored only for instructions inside the
++	 * entry_SYSENTER_compat function.
++	 */
++	IBRS_ENTER
++	UNTRAIN_RET
++	CLEAR_BRANCH_HISTORY
 +
-+	return __shmem_is_huge(inode, index, shmem_huge_force, mm, vm_flags);
-+}
-+
- #if defined(CONFIG_SYSFS)
- static int shmem_parse_huge(const char *str)
- {
+ 	movq	%rsp, %rdi
+ 	call	do_SYSENTER_32
+ 	/* XEN PV guests always use IRET path */
+-- 
+2.43.0
+
 
 
 
