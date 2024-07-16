@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-59965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF4E932CBA
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 252D7932B08
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B400B23AF0
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C47841F219EE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EEA61A00C2;
-	Tue, 16 Jul 2024 15:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1271DFF0;
+	Tue, 16 Jul 2024 15:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7qXAY1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+XQ/+G1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD951DDCE;
-	Tue, 16 Jul 2024 15:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BE6B641;
+	Tue, 16 Jul 2024 15:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145449; cv=none; b=R5B8+pPeN2bNCrIwBHg2Z4s9OwuTjx9cbB5deim+nWFRt2VFGUWiZyuEnFYBJO6Fnf00VrUKSEzW4pJhe3FWfUUr0mt29x9GFoyPI89eMQud7KlJ72idpQwnNpLOhmlguFAkNYfJE2zPdx6qU834lKnwHWQhoi4K1hymC7TB/KY=
+	t=1721144450; cv=none; b=CdlOMslcfHkfjOVoK7ycWW6QKxESsarMZ58vwV93Yl44ENp1SCerVxT1m7xeyT01p4swHsjf9Y4yQ5Z0BElFLujifBZyrjbYgfvbxwPBExMJVAMW9iw21Oztpb7e/hjAda49qgFqUevul/M2Hvlbj+knVIi1yNvrP6/WB0iLVuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145449; c=relaxed/simple;
-	bh=GX2Xojg1ps3FTIR1Pwi4glw4HE9XeB37V2qXxYcZYIs=;
+	s=arc-20240116; t=1721144450; c=relaxed/simple;
+	bh=5L5hG9q3k+qOgID5fqKICmXF9n5hQpBo/7LKKiOWC+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IQTd9tdklhaHBZU28YIiFiyZTxewahCgUgttLtWeqjnttIAc2nWkQRZvoYV/SZTulGsoA2xYQCJvxaazfHj5xAWvT05GWZfh5EXLbLYCECPIm37ddExOQmhPAPjS2fKAVyJnmM2SJPQf+snnPk3P8C0/VPYvbw+5fbEY4+T/GlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7qXAY1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B5CC116B1;
-	Tue, 16 Jul 2024 15:57:28 +0000 (UTC)
+	 MIME-Version; b=IMlNpIqTXrW2RxBAjeLyiBpNA1piKc0cy7bW9WAyBkVtogN/btkmG3qXcB4qQFgnkPXODEDJM7/cJzT4MGdmcUYgdPGydCwq5j/8o/NSh1KiFtL16eti5Wsdg9J65cGPzXigu0s+cmdQQTN4TWly8vdOLEVqSF1tLYEaIqw/pZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+XQ/+G1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A331DC116B1;
+	Tue, 16 Jul 2024 15:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145449;
-	bh=GX2Xojg1ps3FTIR1Pwi4glw4HE9XeB37V2qXxYcZYIs=;
+	s=korg; t=1721144450;
+	bh=5L5hG9q3k+qOgID5fqKICmXF9n5hQpBo/7LKKiOWC+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n7qXAY1qcGtzKuwEoe2116VWJZYZ7VMM0+tPdRDEEbCWPqmjnMYOMQxohtg1RY9T5
-	 lPqwTkgEHEn6AyUGBnCHlu+/02lILpSCVjZMWnK13HLnMU1VWmRSVkrefLebHGp/d4
-	 g3pbJjxbJH5u1OYARJfjbGIgAE2sVjRdXrUeAlfk=
+	b=s+XQ/+G1EMIW6hhJPsMgL2z/e14aWK1kwJI3iKGEmqwIoH/1vZ82FgZTYWk2DHbFt
+	 IGQU+qRJZz8f+YmhmEjpi1qmf0eQnxtRTIdROKTH/jCiDFd1QuMdkB0rF+dBYxBkLa
+	 /KVwClgL41OqMbri2AMYDhQOL3QgdFJwGgBzm4cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nithin Dabilpuram <ndabilpuram@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 37/96] octeontx2-af: replace cpt slot with lf id on reg write
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jon Maxwell <jmaxwell37@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 76/78] tcp: avoid too many retransmit packets
 Date: Tue, 16 Jul 2024 17:31:48 +0200
-Message-ID: <20240716152747.937812518@linuxfoundation.org>
+Message-ID: <20240716152743.581264286@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nithin Dabilpuram <ndabilpuram@marvell.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit bc35e28af7890085dcbe5cc32373647dfb4d9af9 ]
+commit 97a9063518f198ec0adb2ecb89789de342bb8283 upstream.
 
-Replace slot id with global CPT lf id on reg read/write as
-CPTPF/VF driver would send slot number instead of global
-lf id in the reg offset. And also update the mailbox response
-with the global lf's register offset.
+If a TCP socket is using TCP_USER_TIMEOUT, and the other peer
+retracted its window to zero, tcp_retransmit_timer() can
+retransmit a packet every two jiffies (2 ms for HZ=1000),
+for about 4 minutes after TCP_USER_TIMEOUT has 'expired'.
 
-Fixes: ae454086e3c2 ("octeontx2-af: add mailbox interface for CPT")
-Signed-off-by: Nithin Dabilpuram <ndabilpuram@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The fix is to make sure tcp_rtx_probe0_timed_out() takes
+icsk->icsk_user_timeout into account.
+
+Before blamed commit, the socket would not timeout after
+icsk->icsk_user_timeout, but would use standard exponential
+backoff for the retransmits.
+
+Also worth noting that before commit e89688e3e978 ("net: tcp:
+fix unexcepted socket die when snd_wnd is 0"), the issue
+would last 2 minutes instead of 4.
+
+Fixes: b701a99e431d ("tcp: Add tcp_clamp_rto_to_user_timeout() helper to improve accuracy")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Jon Maxwell <jmaxwell37@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240710001402.2758273-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeontx2/af/rvu_cpt.c   | 23 +++++++++++++------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ net/ipv4/tcp_timer.c |   22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-index 6fb02b93c1718..63a52cc8592a0 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-@@ -692,7 +692,8 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
- 					struct cpt_rd_wr_reg_msg *req,
- 					struct cpt_rd_wr_reg_msg *rsp)
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -437,22 +437,34 @@ static void tcp_fastopen_synack_timer(st
+ static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
+ 				     const struct sk_buff *skb)
  {
--	int blkaddr;
-+	u64 offset = req->reg_offset;
-+	int blkaddr, lf;
++	const struct inet_connection_sock *icsk = inet_csk(sk);
++	u32 user_timeout = READ_ONCE(icsk->icsk_user_timeout);
+ 	const struct tcp_sock *tp = tcp_sk(sk);
+-	const int timeout = TCP_RTO_MAX * 2;
++	int timeout = TCP_RTO_MAX * 2;
+ 	u32 rtx_delta;
+ 	s32 rcv_delta;
  
- 	blkaddr = validate_and_get_cpt_blkaddr(req->blkaddr);
- 	if (blkaddr < 0)
-@@ -703,17 +704,25 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
- 	    !is_cpt_vf(rvu, req->hdr.pcifunc))
- 		return CPT_AF_ERR_ACCESS_DENIED;
++	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
++			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
++
++	if (user_timeout) {
++		/* If user application specified a TCP_USER_TIMEOUT,
++		 * it does not want win 0 packets to 'reset the timer'
++		 * while retransmits are not making progress.
++		 */
++		if (rtx_delta > user_timeout)
++			return true;
++		timeout = min_t(u32, timeout, msecs_to_jiffies(user_timeout));
++	}
++
+ 	/* Note: timer interrupt might have been delayed by at least one jiffy,
+ 	 * and tp->rcv_tstamp might very well have been written recently.
+ 	 * rcv_delta can thus be negative.
+ 	 */
+-	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
++	rcv_delta = icsk->icsk_timeout - tp->rcv_tstamp;
+ 	if (rcv_delta <= timeout)
+ 		return false;
  
--	rsp->reg_offset = req->reg_offset;
--	rsp->ret_val = req->ret_val;
--	rsp->is_write = req->is_write;
+-	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
+-			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
 -
- 	if (!is_valid_offset(rvu, req))
- 		return CPT_AF_ERR_ACCESS_DENIED;
- 
-+	/* Translate local LF used by VFs to global CPT LF */
-+	lf = rvu_get_lf(rvu, &rvu->hw->block[blkaddr], req->hdr.pcifunc,
-+			(offset & 0xFFF) >> 3);
-+
-+	/* Translate local LF's offset to global CPT LF's offset */
-+	offset &= 0xFF000;
-+	offset += lf << 3;
-+
-+	rsp->reg_offset = offset;
-+	rsp->ret_val = req->ret_val;
-+	rsp->is_write = req->is_write;
-+
- 	if (req->is_write)
--		rvu_write64(rvu, blkaddr, req->reg_offset, req->val);
-+		rvu_write64(rvu, blkaddr, offset, req->val);
- 	else
--		rsp->val = rvu_read64(rvu, blkaddr, req->reg_offset);
-+		rsp->val = rvu_read64(rvu, blkaddr, offset);
- 
- 	return 0;
+ 	return rtx_delta > timeout;
  }
--- 
-2.43.0
-
+ 
 
 
 
