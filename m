@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EDD932B21
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC720932BC2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:48:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A87881F2117A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECD481C21991
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BB1136643;
-	Tue, 16 Jul 2024 15:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BE619AD93;
+	Tue, 16 Jul 2024 15:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEBJSm6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKqbBbUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C960EF9E8;
-	Tue, 16 Jul 2024 15:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F92319B59C;
+	Tue, 16 Jul 2024 15:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144514; cv=none; b=dMnhn4PEqopON3Ktc6bmid856Gri2+lT+wse78AfiPTji8Xerj+JDZScC38SBqL3ivzcnOCu2fCor0ZUFtq6eQ+GlXLBXyHfKrixwA0FWPxZ2CbiqSyLAVMvCftxtsdmWbeTvRxWfzQPFLvvbyihp6VvPDBQvaWRkvy5iXwMLYA=
+	t=1721144913; cv=none; b=J/YZIRxh5+IFSpfPNbMb2DuJPK7CurYG7UMNVGPEaqoMzfdUuSimu7UZIqAKQwXUUYQCIvnWkc6Os1s9eeqIvtMfnvLWYK6nAFUDui20YD/Zgf+c18d/60F3Sae1ylyOGXJB3rJTek0iCoE7bLo1cyc0IOO/DFgmW/pcYqN5T+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144514; c=relaxed/simple;
-	bh=G29gRp0zivNKzhYROAEZq9M+17dlc6bTfUu5qXYX7+E=;
+	s=arc-20240116; t=1721144913; c=relaxed/simple;
+	bh=7K61HglfsTfW6EOSN68GEYtIuxU39UbmA/+gnic0KBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNedVJADQ06EVrhxgJ7JRq0zNyxyrtt7/7R5elKjq2M+4PywdgejGCQg4Th4dMgV0NdWeD4nAuqcfil/fi1oj6olGUIiPP/+9aZFMEVRQgu9dpGJKt3dH1bPVmJFNGAzbKdPFiYbCABu2sPos1VGHSEK9qp0exc3XzhFf4oc15U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEBJSm6E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA74C116B1;
-	Tue, 16 Jul 2024 15:41:54 +0000 (UTC)
+	 MIME-Version; b=abd6P/Cxf/rinRCH73ccWmWSt28KMGUvww9TFZpUn1ZKVGUniqFrqsAn/cKRo3etCC4K9w5WyhSC6wVbrbF51PnaWooBk3AMKmVF/n+cfyXwZz1p+h+qD6gAiiC98/GZnMSVIXCwF05CTzwZqDvOShHmlkkmkUjHA0cifJGt+tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKqbBbUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A9AC116B1;
+	Tue, 16 Jul 2024 15:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144514;
-	bh=G29gRp0zivNKzhYROAEZq9M+17dlc6bTfUu5qXYX7+E=;
+	s=korg; t=1721144913;
+	bh=7K61HglfsTfW6EOSN68GEYtIuxU39UbmA/+gnic0KBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEBJSm6Edfb/TP0UB6oNOD+F6L1oKY6I2o6ubC/sTQRvvo+GHbIzEScnivnb0azcI
-	 hTD/pjBWX5Q30MILQ4xHeevVGSof3F9cj6V4DsYx3EIdDlrionGcpz9opkW/jwLeKv
-	 vDjE26G87C+EEM7BwjhiDoG/sIaBCACv7mNsvCKQ=
+	b=HKqbBbUvpCIKMY7ckdJkxr6q1WzptrEW00xcS+g9hLcSmkb6rh8kFfBlttXRMAtvC
+	 ntRZs29sVT0LuaBuGWvBFO0ayRlpJRIJ9hCglD/PHpVUZCQ4J+MpCA+Nw4JBDSUo68
+	 xTQXWdW9el3PLEY6qmzxn8+JvYJzdvdgj42pe7c0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 019/108] i2c: i801: Annotate apanel_addr as __ro_after_init
+Subject: [PATCH 6.9 038/143] ppp: reject claimed-as-LCP but actually malformed packets
 Date: Tue, 16 Jul 2024 17:30:34 +0200
-Message-ID: <20240716152746.738610562@linuxfoundation.org>
+Message-ID: <20240716152757.452863167@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 355b1513b1e97b6cef84b786c6480325dfd3753d ]
+[ Upstream commit f2aeb7306a898e1cbd03963d376f4b6656ca2b55 ]
 
-Annotate this variable as __ro_after_init to protect it from being
-overwritten later.
+Since 'ppp_async_encode()' assumes valid LCP packets (with code
+from 1 to 7 inclusive), add 'ppp_check_packet()' to ensure that
+LCP packet has an actual body beyond PPP_LCP header bytes, and
+reject claimed-as-LCP but actually malformed data otherwise.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Reported-by: syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ec0723ba9605678b14bf
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-i801.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ppp/ppp_generic.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-index d6b945f5b8872..4baa9bce02b67 100644
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -1078,7 +1078,7 @@ static const struct pci_device_id i801_ids[] = {
- MODULE_DEVICE_TABLE(pci, i801_ids);
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index fe380fe196e7b..996dee54d751d 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -70,6 +70,7 @@
+ #define MPHDRLEN_SSN	4	/* ditto with short sequence numbers */
  
- #if defined CONFIG_X86 && defined CONFIG_DMI
--static unsigned char apanel_addr;
-+static unsigned char apanel_addr __ro_after_init;
+ #define PPP_PROTO_LEN	2
++#define PPP_LCP_HDRLEN	4
  
- /* Scan the system ROM for the signature "FJKEYINF" */
- static __init const void __iomem *bios_signature(const void __iomem *bios)
+ /*
+  * An instance of /dev/ppp can be associated with either a ppp
+@@ -493,6 +494,15 @@ static ssize_t ppp_read(struct file *file, char __user *buf,
+ 	return ret;
+ }
+ 
++static bool ppp_check_packet(struct sk_buff *skb, size_t count)
++{
++	/* LCP packets must include LCP header which 4 bytes long:
++	 * 1-byte code, 1-byte identifier, and 2-byte length.
++	 */
++	return get_unaligned_be16(skb->data) != PPP_LCP ||
++		count >= PPP_PROTO_LEN + PPP_LCP_HDRLEN;
++}
++
+ static ssize_t ppp_write(struct file *file, const char __user *buf,
+ 			 size_t count, loff_t *ppos)
+ {
+@@ -515,6 +525,11 @@ static ssize_t ppp_write(struct file *file, const char __user *buf,
+ 		kfree_skb(skb);
+ 		goto out;
+ 	}
++	ret = -EINVAL;
++	if (unlikely(!ppp_check_packet(skb, count))) {
++		kfree_skb(skb);
++		goto out;
++	}
+ 
+ 	switch (pf->kind) {
+ 	case INTERFACE:
 -- 
 2.43.0
 
