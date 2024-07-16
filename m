@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F24932D72
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:05:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E985932CC9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EAC8B23BBC
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8EFC280DA1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA9C19E822;
-	Tue, 16 Jul 2024 16:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AD01DDCE;
+	Tue, 16 Jul 2024 15:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlGmWNCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1XFpwep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6870A19E7FE;
-	Tue, 16 Jul 2024 16:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9181B19AD72;
+	Tue, 16 Jul 2024 15:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145915; cv=none; b=s4s5xIeaOA0/82u2+O4vxESVxv8gZ8WIQptsimdf1sQLvBSewO5yn61NqhXrnV1oy7MRjRCUf0Q2qLu4pp2SPsv99vLPJHqO9u7KcgG86ME0BIFkdC7HhUQaJwL81uWNoeuzYP9JYJny4kS5kaLz5y+U6pgCjZbno8pB/WH+xsg=
+	t=1721145484; cv=none; b=N1+7yPbLL4WXNatnxn3/NfQOAhqeSpqxr9vXAVLMPENpHnXZunlLvH2qQK/jRLS+hoCVwd4tO9b908JwFflYECMsi9FiirQRB33ljC5RbRsTmE1V7OhZox14G/BH/fMAEb8kUEZiZstjtGZRNQ5R7OlioaK5ICqV05Z0A6Xa1u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145915; c=relaxed/simple;
-	bh=VJVVmyOPp5m9WNs+rJcAutCuSM99tIsedMqIZ3xWd8Q=;
+	s=arc-20240116; t=1721145484; c=relaxed/simple;
+	bh=7eFwqu1QrNCsSNGFZruFPkLBdKk4voiSyBhGIAuqJzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u2uXNgYCLkRAnPwWnlztyNNetFm9OMKCYDO3NSNaVVINvINEeFQDNF94K1wON9PM6gmgssTqF6y46wUfkFQ1hWE1XKVLGKvqO7yJjcC+KRpRZKYg8DcksiBNw9ar8VvL/UcFCQYNdifGIVutV4LVzGvgKTrDyc571TJcwqIkSIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlGmWNCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD549C116B1;
-	Tue, 16 Jul 2024 16:05:14 +0000 (UTC)
+	 MIME-Version; b=EO6GY1TdBWZEUAEh76gQFKqPEsqtGFb71Fp5tY7GKcepq7Bf//zhQhXSpw5Tko+RjBlEwwTiVd0NfKRFr+oG8yGK9SNP6ogf+ODCknk+ttKxysb9I37nGaLuic6u3TFpkdSbhLg2uhOcn5yOwmlIHG/2gL6SVoShtmt6cPLULoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1XFpwep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BB2C116B1;
+	Tue, 16 Jul 2024 15:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145915;
-	bh=VJVVmyOPp5m9WNs+rJcAutCuSM99tIsedMqIZ3xWd8Q=;
+	s=korg; t=1721145484;
+	bh=7eFwqu1QrNCsSNGFZruFPkLBdKk4voiSyBhGIAuqJzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JlGmWNCMKHJg6zvyTfUq/h/SHdDNrD0n/BEnP9Mc+KDWSy6SWTejqNwtEFI+e2Crh
-	 vNB5jmVTKBDcuMUyiNtlkHhvkSugIWpFWq52wHUtrMC7poFNVoLGdS/3NxChzbwJYi
-	 Cf61HGMHB2dKQ2/WybS32eX6wO4l57vJUiEJ2Fv8=
+	b=n1XFpwepT40vCKe9tPVPCTp5fd8YDizJ1LU9P2zRvRFy9siT7yeBbu5fE6PagO6qA
+	 s1cL+MbtWW+UAW1UW+S1oK8g4pF8c6f9FL9rEZcbWy9QELlV57I2Z4ynWA/ew6XaAF
+	 ofGCiwpHeQL6QOwidczBdG1YRLG2ene9ura4S7aI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Sikorski <belegdol@gmail.com>,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 090/121] ACPI: processor_idle: Fix invalid comparison with insertion sort for latency
+	"Paulo Alcantara (SUSE)" <pc@cjr.nz>,
+	Steve French <stfrench@microsoft.com>,
+	Andrew Paniakin <apanyaki@amazon.com>
+Subject: [PATCH 6.1 81/96] cifs: use origin fullpath for automounts
 Date: Tue, 16 Jul 2024 17:32:32 +0200
-Message-ID: <20240716152754.790455445@linuxfoundation.org>
+Message-ID: <20240716152749.630108183@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Paulo Alcantara <pc@cjr.nz>
 
-commit 233323f9b9f828cd7cd5145ad811c1990b692542 upstream.
+commit 7ad54b98fc1f141cfb70cfe2a3d6def5a85169ff upstream.
 
-The acpi_cst_latency_cmp() comparison function currently used for
-sorting C-state latencies does not satisfy transitivity, causing
-incorrect sorting results.
+Use TCP_Server_Info::origin_fullpath instead of cifs_tcon::tree_name
+when building source paths for automounts as it will be useful for
+domain-based DFS referrals where the connections and referrals would
+get either re-used from the cache or re-created when chasing the dfs
+link.
 
-Specifically, if there are two valid acpi_processor_cx elements A and B
-and one invalid element C, it may occur that A < B, A = C, and B = C.
-Sorting algorithms assume that if A < B and A = C, then C < B, leading
-to incorrect ordering.
-
-Given the small size of the array (<=8), we replace the library sort
-function with a simple insertion sort that properly ignores invalid
-elements and sorts valid ones based on latency. This change ensures
-correct ordering of the C-state latencies.
-
-Fixes: 65ea8f2c6e23 ("ACPI: processor idle: Fix up C-state latency if not ordered")
-Reported-by: Julian Sikorski <belegdol@gmail.com>
-Closes: https://lore.kernel.org/lkml/70674dc7-5586-4183-8953-8095567e73df@gmail.com
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Tested-by: Julian Sikorski <belegdol@gmail.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240701205639.117194-1-visitorckw@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[apanyaki: backport to v6.1-stable]
+Signed-off-by: Andrew Paniakin <apanyaki@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_idle.c |   37 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
+ fs/smb/client/cifs_dfs_ref.c |   34 ++++++++++++++++++++++++++++++++--
+ fs/smb/client/cifsproto.h    |   18 ++++++++++++++++++
+ fs/smb/client/dir.c          |   21 +++++++++++++++------
+ 3 files changed, 65 insertions(+), 8 deletions(-)
 
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -16,7 +16,6 @@
- #include <linux/acpi.h>
- #include <linux/dmi.h>
- #include <linux/sched.h>       /* need_resched() */
--#include <linux/sort.h>
- #include <linux/tick.h>
- #include <linux/cpuidle.h>
- #include <linux/cpu.h>
-@@ -386,25 +385,24 @@ static void acpi_processor_power_verify_
- 	acpi_write_bit_register(ACPI_BITREG_BUS_MASTER_RLD, 1);
+--- a/fs/smb/client/cifs_dfs_ref.c
++++ b/fs/smb/client/cifs_dfs_ref.c
+@@ -258,6 +258,31 @@ compose_mount_options_err:
+ 	goto compose_mount_options_out;
  }
  
--static int acpi_cst_latency_cmp(const void *a, const void *b)
-+static void acpi_cst_latency_sort(struct acpi_processor_cx *states, size_t length)
- {
--	const struct acpi_processor_cx *x = a, *y = b;
-+	int i, j, k;
- 
--	if (!(x->valid && y->valid))
--		return 0;
--	if (x->latency > y->latency)
--		return 1;
--	if (x->latency < y->latency)
--		return -1;
--	return 0;
--}
--static void acpi_cst_latency_swap(void *a, void *b, int n)
--{
--	struct acpi_processor_cx *x = a, *y = b;
-+	for (i = 1; i < length; i++) {
-+		if (!states[i].valid)
-+			continue;
- 
--	if (!(x->valid && y->valid))
--		return;
--	swap(x->latency, y->latency);
-+		for (j = i - 1, k = i; j >= 0; j--) {
-+			if (!states[j].valid)
-+				continue;
++static int set_dest_addr(struct smb3_fs_context *ctx, const char *full_path)
++{
++	struct sockaddr *addr = (struct sockaddr *)&ctx->dstaddr;
++	char *str_addr = NULL;
++	int rc;
 +
-+			if (states[j].latency > states[k].latency)
-+				swap(states[j].latency, states[k].latency);
++	rc = dns_resolve_server_name_to_ip(full_path, &str_addr, NULL);
++	if (rc < 0)
++		goto out;
 +
-+			k = j;
-+		}
++	rc = cifs_convert_address(addr, str_addr, strlen(str_addr));
++	if (!rc) {
++		cifs_dbg(FYI, "%s: failed to convert ip address\n", __func__);
++		rc = -EINVAL;
++		goto out;
 +	}
- }
++
++	cifs_set_port(addr, ctx->port);
++	rc = 0;
++
++out:
++	kfree(str_addr);
++	return rc;
++}
++
+ /*
+  * Create a vfsmount that we can automount
+  */
+@@ -295,8 +320,7 @@ static struct vfsmount *cifs_dfs_do_auto
+ 	ctx = smb3_fc2context(fc);
  
- static int acpi_processor_power_verify(struct acpi_processor *pr)
-@@ -449,10 +447,7 @@ static int acpi_processor_power_verify(s
- 
- 	if (buggy_latency) {
- 		pr_notice("FW issue: working around C-state latencies out of order\n");
--		sort(&pr->power.states[1], max_cstate,
--		     sizeof(struct acpi_processor_cx),
--		     acpi_cst_latency_cmp,
--		     acpi_cst_latency_swap);
-+		acpi_cst_latency_sort(&pr->power.states[1], max_cstate);
+ 	page = alloc_dentry_path();
+-	/* always use tree name prefix */
+-	full_path = build_path_from_dentry_optional_prefix(mntpt, page, true);
++	full_path = dfs_get_automount_devname(mntpt, page);
+ 	if (IS_ERR(full_path)) {
+ 		mnt = ERR_CAST(full_path);
+ 		goto out;
+@@ -313,6 +337,12 @@ static struct vfsmount *cifs_dfs_do_auto
+ 	if (rc) {
+ 		mnt = ERR_PTR(rc);
+ 		goto out;
++	}
++
++	rc = set_dest_addr(ctx, full_path);
++	if (rc) {
++		mnt = ERR_PTR(rc);
++		goto out;
  	}
  
- 	lapic_timer_propagate_broadcast(pr);
+ 	rc = smb3_parse_devname(full_path, ctx);
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -57,8 +57,26 @@ extern void exit_cifs_idmap(void);
+ extern int init_cifs_spnego(void);
+ extern void exit_cifs_spnego(void);
+ extern const char *build_path_from_dentry(struct dentry *, void *);
++char *__build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
++					       const char *tree, int tree_len,
++					       bool prefix);
+ extern char *build_path_from_dentry_optional_prefix(struct dentry *direntry,
+ 						    void *page, bool prefix);
++static inline char *dfs_get_automount_devname(struct dentry *dentry, void *page)
++{
++	struct cifs_sb_info *cifs_sb = CIFS_SB(dentry->d_sb);
++	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
++	struct TCP_Server_Info *server = tcon->ses->server;
++
++	if (unlikely(!server->origin_fullpath))
++		return ERR_PTR(-EREMOTE);
++
++	return __build_path_from_dentry_optional_prefix(dentry, page,
++							server->origin_fullpath,
++							strlen(server->origin_fullpath),
++							true);
++}
++
+ static inline void *alloc_dentry_path(void)
+ {
+ 	return __getname();
+--- a/fs/smb/client/dir.c
++++ b/fs/smb/client/dir.c
+@@ -78,14 +78,13 @@ build_path_from_dentry(struct dentry *di
+ 						      prefix);
+ }
+ 
+-char *
+-build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
+-				       bool prefix)
++char *__build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
++					       const char *tree, int tree_len,
++					       bool prefix)
+ {
+ 	int dfsplen;
+ 	int pplen = 0;
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(direntry->d_sb);
+-	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
+ 	char dirsep = CIFS_DIR_SEP(cifs_sb);
+ 	char *s;
+ 
+@@ -93,7 +92,7 @@ build_path_from_dentry_optional_prefix(s
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	if (prefix)
+-		dfsplen = strnlen(tcon->tree_name, MAX_TREE_SIZE + 1);
++		dfsplen = strnlen(tree, tree_len + 1);
+ 	else
+ 		dfsplen = 0;
+ 
+@@ -123,7 +122,7 @@ build_path_from_dentry_optional_prefix(s
+ 	}
+ 	if (dfsplen) {
+ 		s -= dfsplen;
+-		memcpy(s, tcon->tree_name, dfsplen);
++		memcpy(s, tree, dfsplen);
+ 		if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_POSIX_PATHS) {
+ 			int i;
+ 			for (i = 0; i < dfsplen; i++) {
+@@ -135,6 +134,16 @@ build_path_from_dentry_optional_prefix(s
+ 	return s;
+ }
+ 
++char *build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
++					     bool prefix)
++{
++	struct cifs_sb_info *cifs_sb = CIFS_SB(direntry->d_sb);
++	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
++
++	return __build_path_from_dentry_optional_prefix(direntry, page, tcon->tree_name,
++							MAX_TREE_SIZE, prefix);
++}
++
+ /*
+  * Don't allow path components longer than the server max.
+  * Don't allow the separator character in a path component.
 
 
 
