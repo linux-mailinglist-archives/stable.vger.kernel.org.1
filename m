@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-60135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3F3932D85
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:06:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB118932D90
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:06:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 403031C21252
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:06:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5142AB20E25
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF7919B3E3;
-	Tue, 16 Jul 2024 16:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A24019DF9D;
+	Tue, 16 Jul 2024 16:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xsonmLZE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAhUxvWH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CAE1DDCE;
-	Tue, 16 Jul 2024 16:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1388E19E838;
+	Tue, 16 Jul 2024 16:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145977; cv=none; b=gniFBCZ6MDor/7bEkzvch+ugnV7Z+mJqbToGzUORIWmKuce5dS8CE1CDldpHi5PEnAcwo/McjvQSVXei2W+Vjy2AHuG7D82U69L69VpE/30D4fealUSNaf+mXbUyxO2JZxdjhUBjn8g4p+/C/iJMHcUEKqx7YTJjpPH8yo92/Io=
+	t=1721145997; cv=none; b=kRwUe2HklDYNnQH3mt7Go0e/xnBA8Jlq17ELPi8iSQuYjB9gIrTmeXQ8zj04DebvbAPhxsu5ljoK4FYQohPB9V0Lhc1MqpM0vblIbLQ+qtwsATmn6UwrjSrhDUV3Jzcw6HLL/fS6680GjDc0ifDJR4z6zhGQgqBWjugV1gW4VC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145977; c=relaxed/simple;
-	bh=LKm23UAJQhPHrFGqqx7R0NSXx0IrF5dC3u9Zk/0Q6gc=;
+	s=arc-20240116; t=1721145997; c=relaxed/simple;
+	bh=3q+IbUlSeFL0LlCDnWEyKyT+V884tMkrXXGk1q4qkRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=miJbqRam5STq2l6Aq8jikCmDcOa3TKAK1t13MGbM0hJoxxvdPd0UtRS3fXY1fRw+O01S9gPB1CTe8m5MIrMOCb7HZNLwxm750KwTWL5Rflw7QhFjovn3nt18utkL8jTTZ6HErnXJCpKUvDqwg0p7pvekMHCYc/Y5U6ysrK9Qt54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xsonmLZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3577C116B1;
-	Tue, 16 Jul 2024 16:06:16 +0000 (UTC)
+	 MIME-Version; b=cuIMmI8aJli9womMcwdl1qlgH+4dFB6DXxM8M/7c8TdXfMV68XvDfOn90sOU7paUa/Bm0/ztJonC9dsvMwkTMzLBUFh6owCcUwafR7SQ2EE9zMI7kjRtO7sLDyU25sXNFDu4X1iJ7LGeh7UrDi+zvHlxfQmisXMKSHqE8jEsgxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAhUxvWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A7EC4AF0B;
+	Tue, 16 Jul 2024 16:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145977;
-	bh=LKm23UAJQhPHrFGqqx7R0NSXx0IrF5dC3u9Zk/0Q6gc=;
+	s=korg; t=1721145996;
+	bh=3q+IbUlSeFL0LlCDnWEyKyT+V884tMkrXXGk1q4qkRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xsonmLZERtwJJCTDZh7cAxjvNd0eQ/UBQixoXUuvWUgkBNZXx+ZVdom8UzLjLaAZh
-	 Gy7n0mYU2GGm0bAbmP//pFbq+pIf+SO4zFmqgwiYL/AE3IVTy4P8jJYnTbjQOx5s20
-	 LUAjCokm4cRvaVpBy7m6YaeYDDDyUpUZCyIISDe4=
+	b=zAhUxvWHkIW86F1WNQ7zx9vOGVQhIrPjanqJ10Jr60DPjdoyVUtMObhNWcgAsrkno
+	 JF9zdRgKXC2juvVfmEo8FJaQqzMcr/k9Mb+XR7lQ8clt2ZnuwoHXLsK8cdMPGl1CDd
+	 Rp1cZ9PtX+byuOJrBS/RQZlFZc5oBSKteRDtxs8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erico Nunes <nunes.erico@gmail.com>,
-	Qiang Yu <yuq825@gmail.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 002/144] drm/lima: fix shared irq handling on driver remove
-Date: Tue, 16 Jul 2024 17:31:11 +0200
-Message-ID: <20240716152752.621296510@linuxfoundation.org>
+Subject: [PATCH 5.15 003/144] media: dvb: as102-fe: Fix as10x_register_addr packing
+Date: Tue, 16 Jul 2024 17:31:12 +0200
+Message-ID: <20240716152752.659453795@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -66,86 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Erico Nunes <nunes.erico@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit a6683c690bbfd1f371510cb051e8fa49507f3f5e ]
+[ Upstream commit 309422d280748c74f57f471559980268ac27732a ]
 
-lima uses a shared interrupt, so the interrupt handlers must be prepared
-to be called at any time. At driver removal time, the clocks are
-disabled early and the interrupts stay registered until the very end of
-the remove process due to the devm usage.
-This is potentially a bug as the interrupts access device registers
-which assumes clocks are enabled. A crash can be triggered by removing
-the driver in a kernel with CONFIG_DEBUG_SHIRQ enabled.
-This patch frees the interrupts at each lima device finishing callback
-so that the handlers are already unregistered by the time we fully
-disable clocks.
+This structure is embedded in multiple other structures that are packed,
+which conflicts with it being aligned.
 
-Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
-Signed-off-by: Qiang Yu <yuq825@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240401224329.1228468-2-nunes.erico@gmail.com
+drivers/media/usb/as102/as10x_cmd.h:379:30: warning: field reg_addr within 'struct as10x_dump_memory::(unnamed at drivers/media/usb/as102/as10x_cmd.h:373:2)' is less aligned than 'struct as10x_register_addr' and is usually due to 'struct as10x_dump_memory::(unnamed at drivers/media/usb/as102/as10x_cmd.h:373:2)' being packed, which can lead to unaligned accesses [-Wunaligned-access]
+
+Mark it as being packed.
+
+Marking the inner struct as 'packed' does not change the layout, since the
+whole struct is already packed, it just silences the clang warning. See
+also this llvm discussion:
+
+https://github.com/llvm/llvm-project/issues/55520
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/lima/lima_gp.c  | 2 ++
- drivers/gpu/drm/lima/lima_mmu.c | 5 +++++
- drivers/gpu/drm/lima/lima_pp.c  | 4 ++++
- 3 files changed, 11 insertions(+)
+ drivers/media/dvb-frontends/as102_fe_types.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
-index 6cf46b653e810..ca3842f719842 100644
---- a/drivers/gpu/drm/lima/lima_gp.c
-+++ b/drivers/gpu/drm/lima/lima_gp.c
-@@ -324,7 +324,9 @@ int lima_gp_init(struct lima_ip *ip)
+diff --git a/drivers/media/dvb-frontends/as102_fe_types.h b/drivers/media/dvb-frontends/as102_fe_types.h
+index 297f9520ebf9d..8a4e392c88965 100644
+--- a/drivers/media/dvb-frontends/as102_fe_types.h
++++ b/drivers/media/dvb-frontends/as102_fe_types.h
+@@ -174,6 +174,6 @@ struct as10x_register_addr {
+ 	uint32_t addr;
+ 	/* register mode access */
+ 	uint8_t mode;
+-};
++} __packed;
  
- void lima_gp_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
- 
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
- 
- int lima_gp_pipe_init(struct lima_device *dev)
-diff --git a/drivers/gpu/drm/lima/lima_mmu.c b/drivers/gpu/drm/lima/lima_mmu.c
-index a1ae6c252dc2b..8ca7047adbaca 100644
---- a/drivers/gpu/drm/lima/lima_mmu.c
-+++ b/drivers/gpu/drm/lima/lima_mmu.c
-@@ -118,7 +118,12 @@ int lima_mmu_init(struct lima_ip *ip)
- 
- void lima_mmu_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
-+
-+	if (ip->id == lima_ip_ppmmu_bcast)
-+		return;
- 
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
- 
- void lima_mmu_flush_tlb(struct lima_ip *ip)
-diff --git a/drivers/gpu/drm/lima/lima_pp.c b/drivers/gpu/drm/lima/lima_pp.c
-index 54b208a4a768e..d34c9e8840f45 100644
---- a/drivers/gpu/drm/lima/lima_pp.c
-+++ b/drivers/gpu/drm/lima/lima_pp.c
-@@ -266,7 +266,9 @@ int lima_pp_init(struct lima_ip *ip)
- 
- void lima_pp_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
- 
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
- 
- int lima_pp_bcast_resume(struct lima_ip *ip)
-@@ -299,7 +301,9 @@ int lima_pp_bcast_init(struct lima_ip *ip)
- 
- void lima_pp_bcast_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
- 
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
- 
- static int lima_pp_task_validate(struct lima_sched_pipe *pipe,
+ #endif
 -- 
 2.43.0
 
