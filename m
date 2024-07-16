@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C838932C3A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:53:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9A9932D0B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32F621C231C1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:53:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56D5D1F21675
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB9019DF53;
-	Tue, 16 Jul 2024 15:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE7F19E7FF;
+	Tue, 16 Jul 2024 16:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVksQQPb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOvaqVLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE4419AD93;
-	Tue, 16 Jul 2024 15:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B50C19E7F7;
+	Tue, 16 Jul 2024 16:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145191; cv=none; b=EdgU9MzBbnMAzMV2ZThFsVQzSEbWJkHVGW5RpVV3OasGfdPjapf6vonMjIUPwkF41jcvurpmxDPG49CeWSx+iOCbfenLO2VwLIHkpMrkynf3FG+AZPjIMghUOEVpfCgayW+yCE+xPVg9xgo8cU7+l0YHyrSIDwqlZhseKqGFnH8=
+	t=1721145625; cv=none; b=k+klSeTwXTD2FJAVKWJL+p7qv8qvjS5QJl8irkQGG9TjnKg3/o7oaxTz24dBPssLN/dP/SezSzMf12SCT9OsRnTGI/3fIBDCYufG1UDx7plT+2T0kktJSySk7nujiD6WqCAlAybj5exLytizVI+f8RU29GPfbA6Sk56+m3mE1iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145191; c=relaxed/simple;
-	bh=2VM1wC7aIlehK0RgB8UnKAFUcegy0g56UN8lLtXFbkE=;
+	s=arc-20240116; t=1721145625; c=relaxed/simple;
+	bh=MXOx57TR/ZqNLeRPdrwIYO9uuvjXnegjUzDB1E5hvnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sv11AiyHskztCayhWjVKABhZo2ydvkznG/CeUckn3n80E86Xu8sWfjriSX2XBmt/xciRb8NU0KLE3fJH6R5d/NUDCh21VP7JeECPyAlzi2eRTBNpKjPSuw1VLnRJE9T0v58ttG7m8MmgpLji3Uk4S5/iLD6TrgyE0JsmweptRlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVksQQPb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B50C116B1;
-	Tue, 16 Jul 2024 15:53:10 +0000 (UTC)
+	 MIME-Version; b=MYltktbmQx3nb1CWVaw6verwlgXhSwNffj/Ko9fStbwAixMil5J7NvpY1FojRyvcuYoVsCRma7SH5HdnyWgJibXFgZ6RlSSZHL9chIcL9+Hufz0Wkh2TD7LQAWuMIjnLzq5nDkTdMmhT5hvKjqgGAZo0RiPnlSVY3GD6jSRFx4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOvaqVLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF71C4AF0E;
+	Tue, 16 Jul 2024 16:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145191;
-	bh=2VM1wC7aIlehK0RgB8UnKAFUcegy0g56UN8lLtXFbkE=;
+	s=korg; t=1721145625;
+	bh=MXOx57TR/ZqNLeRPdrwIYO9uuvjXnegjUzDB1E5hvnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EVksQQPb09n8mJtSIi8GzkENAkkMsOnT9+88JkUHvM0crIOszeA8JrU8UUMi/ZIZo
-	 OunoJ5BbQ/ph7Lxv+ENckGXY57XUz8FqhpGJ98hzwYKl5vyddj1Qj52PZMFnKADna3
-	 lXLcetPaSRFBrFIb8Cp2xCBGHnUjPIP/EEICT4gk=
+	b=eOvaqVLxX5gklseGprOY1Vo/iX/Rd1yDfGwcdAryYSb1L6Vna6iuTH8HJ3kvaJ8wa
+	 QfRl0/gbDPK7KASWHxI3QXZEkfo2zx+D9Re42QaArYjSqDRa061nUM0UeQlFJLS+eK
+	 EpQI1PjcZSI2FIG5InbHFrCHHZbF3JMzNYN5MCX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steev Klimaszewski <steev@kali.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.9 096/143] arm64: dts: qcom: sc8280xp-x13s: fix touchscreen power on
+	Jian Hui Lee <jianhui.lee@canonical.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 030/121] net: ethernet: mtk-star-emac: set mac_managed_pm when probing
 Date: Tue, 16 Jul 2024 17:31:32 +0200
-Message-ID: <20240716152759.669211812@linuxfoundation.org>
+Message-ID: <20240716152752.483485832@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Jian Hui Lee <jianhui.lee@canonical.com>
 
-commit 7bfb6a4289b0a63d67ec7d4ce3018cb4a7442f6a upstream.
+[ Upstream commit 8c6790b5c25dfac11b589cc37346bcf9e23ad468 ]
 
-The Elan eKTH5015M touch controller on the X13s requires a 300 ms delay
-before sending commands after having deasserted reset during power on.
+The below commit introduced a warning message when phy state is not in
+the states: PHY_HALTED, PHY_READY, and PHY_UP.
+commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
 
-Switch to the Elan specific binding so that the OS can determine the
-required power-on sequence and make sure that the controller is always
-detected during boot.
+mtk-star-emac doesn't need mdiobus suspend/resume. To fix the warning
+message during resume, indicate the phy resume/suspend is managed by the
+mac when probing.
 
-Note that the always-on 1.8 V supply (s10b) is not used by the
-controller directly and should not be described.
-
-Fixes: 32c231385ed4 ("arm64: dts: qcom: sc8280xp: add Lenovo Thinkpad X13s devicetree")
-Cc: stable@vger.kernel.org	# 6.0
-Tested-by: Steev Klimaszewski <steev@kali.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240507144821.12275-6-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+Signed-off-by: Jian Hui Lee <jianhui.lee@canonical.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20240708065210.4178980-1-jianhui.lee@canonical.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts |   15 ++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_star_emac.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-@@ -618,15 +618,16 @@
+diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+index 31aebeb2e2858..25989c79c92e6 100644
+--- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
++++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+@@ -1524,6 +1524,7 @@ static int mtk_star_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *of_node;
+ 	struct mtk_star_priv *priv;
++	struct phy_device *phydev;
+ 	struct net_device *ndev;
+ 	struct device *dev;
+ 	void __iomem *base;
+@@ -1649,6 +1650,12 @@ static int mtk_star_probe(struct platform_device *pdev)
+ 	netif_napi_add(ndev, &priv->rx_napi, mtk_star_rx_poll);
+ 	netif_napi_add_tx(ndev, &priv->tx_napi, mtk_star_tx_poll);
  
- 	status = "okay";
- 
--	/* FIXME: verify */
- 	touchscreen@10 {
--		compatible = "hid-over-i2c";
-+		compatible = "elan,ekth5015m", "elan,ekth6915";
- 		reg = <0x10>;
- 
--		hid-descr-addr = <0x1>;
- 		interrupts-extended = <&tlmm 175 IRQ_TYPE_LEVEL_LOW>;
--		vdd-supply = <&vreg_misc_3p3>;
--		vddl-supply = <&vreg_s10b>;
-+		reset-gpios = <&tlmm 99 (GPIO_ACTIVE_LOW | GPIO_OPEN_DRAIN)>;
-+		no-reset-on-power-off;
++	phydev = of_phy_find_device(priv->phy_node);
++	if (phydev) {
++		phydev->mac_managed_pm = true;
++		put_device(&phydev->mdio.dev);
++	}
 +
-+		vcc33-supply = <&vreg_misc_3p3>;
-+		vccio-supply = <&vreg_misc_3p3>;
+ 	return devm_register_netdev(dev, ndev);
+ }
  
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&ts0_default>;
-@@ -1417,8 +1418,8 @@
- 		reset-n-pins {
- 			pins = "gpio99";
- 			function = "gpio";
--			output-high;
--			drive-strength = <16>;
-+			drive-strength = <2>;
-+			bias-disable;
- 		};
- 	};
- 
+-- 
+2.43.0
+
 
 
 
