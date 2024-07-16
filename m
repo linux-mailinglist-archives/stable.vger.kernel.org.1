@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-60134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96504932D84
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:06:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7117A932D87
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:06:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31F66B241CD
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:06:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A01D1F2121D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E3B19B59C;
-	Tue, 16 Jul 2024 16:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D97F19D8A8;
+	Tue, 16 Jul 2024 16:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4raPy1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/2ZZ5Qc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED7E1DDCE;
-	Tue, 16 Jul 2024 16:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC1B1DDCE;
+	Tue, 16 Jul 2024 16:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145974; cv=none; b=AzfNCpSQKoDonw+2eCLG4LKTDbOHys9TnZGZcSj06mJ9iooHB+ZmFNJZttsvLKHlz83wilTy0M1taay+84N/e3nuqNPLkIcCfvq9/2t7i3oG1qgAPkY5ixuIRYOQXbtUovgwBqN78Hm4VHIpvQxShZ7+UjlK8VsHHeXKEjy1uJA=
+	t=1721145980; cv=none; b=Tt4m3tbUamMyxuTT6Xl1xq2iKqdStT0lN24SUgzd8CiMF+4yc40Ix62K85VdW14FkWQv3ZgnCc1KuPo+vN4o1beParfKD4yaeXkAYOuV3rOaWYTE7N7jjya0iRhVT2OTKsYKa4gEd9c2kq4RawMjOp9VZQvgLE3Qxy54SRXRnFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145974; c=relaxed/simple;
-	bh=divymtBzc5R7TkWpv6k10EGJ9OW0kG9x5Fa2XmENvrQ=;
+	s=arc-20240116; t=1721145980; c=relaxed/simple;
+	bh=I79kvoe+YHnRmH4PZ9ppVQHYjDNnopNjEJHtZ0bsu78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pUWzrvMHynlxlGzsM0ZqIq/0Zrr6NFc5KyCTlu/ORVPlZLJKnxudCM6OVOf9TmXjsluatnkgmfGUJn+Ygn2f3tkpYuYAoPrFsX+e/7sjfG5ZS1+FCEWQj/1KMeyDN8QgrRubxrJvJez8HYpW+e9IAaSoxxlEhfVI/FF4RyEWilE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4raPy1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB4AC116B1;
-	Tue, 16 Jul 2024 16:06:13 +0000 (UTC)
+	 MIME-Version; b=sJaKmnlsYF3P8xu4Bu6gGk8GjGu2BqUr2zJQVsoxO7Un6J9ENlR+mmRvzm7ex1rZTclamnZ771MumJHGYse6n30OQsY4zOGJ7R6ngFy4RaN+O3wVLN5IgHBPZ5AF4NxG97nx9X+kVnjCm1v4/djIQAg8j5OztLIr0UWQ4Yd/274=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/2ZZ5Qc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D80AC116B1;
+	Tue, 16 Jul 2024 16:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145974;
-	bh=divymtBzc5R7TkWpv6k10EGJ9OW0kG9x5Fa2XmENvrQ=;
+	s=korg; t=1721145980;
+	bh=I79kvoe+YHnRmH4PZ9ppVQHYjDNnopNjEJHtZ0bsu78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h4raPy1MfgfYWub1WwjlKm7OqcI01Np31NuJ6Ina1qMeW7yQskGMzs1lP4qKYOcVa
-	 1sYYZ8bMOlFsM8sJSrSzZZzrap/qDhIp3NYxggEYSH/zKYCdjuJNVCsRr8Fw0n8O2E
-	 rNJdVMC2m+imekc+Kk/30nF8T9R4nnbgzM+yz/9M=
+	b=F/2ZZ5Qc0srrT10VlxbntXsHqziWkx11m15fUQ/JxfK2+FWPPGv5nTykzSmEdPJm2
+	 XybrZbCVxIZ0m8+75kwBwUjIa5NDVtxTktEt4g1Ycg93cxy9DRTDqHyLQ22Gf7d+F2
+	 r97L5S55Gwb8g3GruTghgT+xh6PO3AnxwJUNMoeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Ricardo Ribalda <ribalda@chromium.org>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 019/144] media: s2255: Use refcount_t instead of atomic_t for num_channels
-Date: Tue, 16 Jul 2024 17:31:28 +0200
-Message-ID: <20240716152753.273289913@linuxfoundation.org>
+Subject: [PATCH 5.15 020/144] media: dvb-frontends: tda10048: Fix integer overflow
+Date: Tue, 16 Jul 2024 17:31:29 +0200
+Message-ID: <20240716152753.310819713@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -68,105 +69,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 6cff72f6bcee89228a662435b7c47e21a391c8d0 ]
+[ Upstream commit 1aa1329a67cc214c3b7bd2a14d1301a795760b07 ]
 
-Use an API that resembles more the actual use of num_channels.
+state->xtal_hz can be up to 16M, so it can overflow a 32 bit integer
+when multiplied by pll_mfactor.
 
-Found by cocci:
-drivers/media/usb/s2255/s2255drv.c:2362:5-24: WARNING: atomic_dec_and_test variation before object free at line 2363.
-drivers/media/usb/s2255/s2255drv.c:1557:5-24: WARNING: atomic_dec_and_test variation before object free at line 1558.
+Create a new 64 bit variable to hold the calculations.
 
-Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-11-3c4865f5a4b0@chromium.org
+Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-25-3c4865f5a4b0@chromium.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/s2255/s2255drv.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/media/dvb-frontends/tda10048.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/usb/s2255/s2255drv.c b/drivers/media/usb/s2255/s2255drv.c
-index acf18e2251a52..6c9870541c53d 100644
---- a/drivers/media/usb/s2255/s2255drv.c
-+++ b/drivers/media/usb/s2255/s2255drv.c
-@@ -247,7 +247,7 @@ struct s2255_vc {
- struct s2255_dev {
- 	struct s2255_vc         vc[MAX_CHANNELS];
- 	struct v4l2_device      v4l2_dev;
--	atomic_t                num_channels;
-+	refcount_t		num_channels;
- 	int			frames;
- 	struct mutex		lock;	/* channels[].vdev.lock */
- 	struct mutex		cmdlock; /* protects cmdbuf */
-@@ -1550,11 +1550,11 @@ static void s2255_video_device_release(struct video_device *vdev)
- 		container_of(vdev, struct s2255_vc, vdev);
- 
- 	dprintk(dev, 4, "%s, chnls: %d\n", __func__,
--		atomic_read(&dev->num_channels));
-+		refcount_read(&dev->num_channels));
- 
- 	v4l2_ctrl_handler_free(&vc->hdl);
- 
--	if (atomic_dec_and_test(&dev->num_channels))
-+	if (refcount_dec_and_test(&dev->num_channels))
- 		s2255_destroy(dev);
- 	return;
- }
-@@ -1659,7 +1659,7 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
- 				"failed to register video device!\n");
- 			break;
- 		}
--		atomic_inc(&dev->num_channels);
-+		refcount_inc(&dev->num_channels);
- 		v4l2_info(&dev->v4l2_dev, "V4L2 device registered as %s\n",
- 			  video_device_node_name(&vc->vdev));
- 
-@@ -1667,11 +1667,11 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
- 	pr_info("Sensoray 2255 V4L driver Revision: %s\n",
- 		S2255_VERSION);
- 	/* if no channels registered, return error and probe will fail*/
--	if (atomic_read(&dev->num_channels) == 0) {
-+	if (refcount_read(&dev->num_channels) == 0) {
- 		v4l2_device_unregister(&dev->v4l2_dev);
- 		return ret;
- 	}
--	if (atomic_read(&dev->num_channels) != MAX_CHANNELS)
-+	if (refcount_read(&dev->num_channels) != MAX_CHANNELS)
- 		pr_warn("s2255: Not all channels available.\n");
- 	return 0;
- }
-@@ -2220,7 +2220,7 @@ static int s2255_probe(struct usb_interface *interface,
- 		goto errorFWDATA1;
- 	}
- 
--	atomic_set(&dev->num_channels, 0);
-+	refcount_set(&dev->num_channels, 0);
- 	dev->pid = id->idProduct;
- 	dev->fw_data = kzalloc(sizeof(struct s2255_fw), GFP_KERNEL);
- 	if (!dev->fw_data)
-@@ -2340,12 +2340,12 @@ static void s2255_disconnect(struct usb_interface *interface)
- {
- 	struct s2255_dev *dev = to_s2255_dev(usb_get_intfdata(interface));
+diff --git a/drivers/media/dvb-frontends/tda10048.c b/drivers/media/dvb-frontends/tda10048.c
+index f1d5e77d5dcce..db829754f1359 100644
+--- a/drivers/media/dvb-frontends/tda10048.c
++++ b/drivers/media/dvb-frontends/tda10048.c
+@@ -410,6 +410,7 @@ static int tda10048_set_if(struct dvb_frontend *fe, u32 bw)
+ 	struct tda10048_config *config = &state->config;
  	int i;
--	int channels = atomic_read(&dev->num_channels);
-+	int channels = refcount_read(&dev->num_channels);
- 	mutex_lock(&dev->lock);
- 	v4l2_device_disconnect(&dev->v4l2_dev);
- 	mutex_unlock(&dev->lock);
- 	/*see comments in the uvc_driver.c usb disconnect function */
--	atomic_inc(&dev->num_channels);
-+	refcount_inc(&dev->num_channels);
- 	/* unregister each video device. */
- 	for (i = 0; i < channels; i++)
- 		video_unregister_device(&dev->vc[i].vdev);
-@@ -2358,7 +2358,7 @@ static void s2255_disconnect(struct usb_interface *interface)
- 		dev->vc[i].vidstatus_ready = 1;
- 		wake_up(&dev->vc[i].wait_vidstatus);
- 	}
--	if (atomic_dec_and_test(&dev->num_channels))
-+	if (refcount_dec_and_test(&dev->num_channels))
- 		s2255_destroy(dev);
- 	dev_info(&interface->dev, "%s\n", __func__);
- }
+ 	u32 if_freq_khz;
++	u64 sample_freq;
+ 
+ 	dprintk(1, "%s(bw = %d)\n", __func__, bw);
+ 
+@@ -451,9 +452,11 @@ static int tda10048_set_if(struct dvb_frontend *fe, u32 bw)
+ 	dprintk(1, "- pll_pfactor = %d\n", state->pll_pfactor);
+ 
+ 	/* Calculate the sample frequency */
+-	state->sample_freq = state->xtal_hz * (state->pll_mfactor + 45);
+-	state->sample_freq /= (state->pll_nfactor + 1);
+-	state->sample_freq /= (state->pll_pfactor + 4);
++	sample_freq = state->xtal_hz;
++	sample_freq *= state->pll_mfactor + 45;
++	do_div(sample_freq, state->pll_nfactor + 1);
++	do_div(sample_freq, state->pll_pfactor + 4);
++	state->sample_freq = sample_freq;
+ 	dprintk(1, "- sample_freq = %d\n", state->sample_freq);
+ 
+ 	/* Update the I/F */
 -- 
 2.43.0
 
