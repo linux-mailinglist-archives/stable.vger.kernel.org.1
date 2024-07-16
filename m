@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-59752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50608932B92
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E55B6932C95
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06D95281C48
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BE54B22A6A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEFC17A93F;
-	Tue, 16 Jul 2024 15:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8974419F487;
+	Tue, 16 Jul 2024 15:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fiwy5TBt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvqKDxnR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689C412B72;
-	Tue, 16 Jul 2024 15:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C4B19E7C8;
+	Tue, 16 Jul 2024 15:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144806; cv=none; b=gQ0U2VXlPLLGx62EFAitMfab7WAnUaCf0VxQCOk94iBCWPS/8r6bg+AXX65BiCa9IVZEzHi/yHNZkP0TETYoKsjonU1rpBlBBKpvqnNnYiy7YqG4CMS6qlWMXNgVXUMitqdVbw73m2TASFw60EaJ18DssWGjoz10VOfM/fZIGac=
+	t=1721145369; cv=none; b=j/FYc7PCCYLiV3nFYxrS/oi66p1FCE7EItK+d3fq/XSpC/kDENM42BPIbN6+cz790W/wIJQTeKY3P2YTTAd2SHzy9Kyz6oX5WVdvAyL8DfcCUl3NbJ09DCQt7sZbihR36tCJt3ZK30OgoPzvECCCUY11K11BrMzQE2NqH50jpfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144806; c=relaxed/simple;
-	bh=tsFrQN7rwfn7fqv7qapKsIXr3AFRyXGHeA2pQC8wI2g=;
+	s=arc-20240116; t=1721145369; c=relaxed/simple;
+	bh=Py+56Xlzbq39nIF/7nyvEgdcN3tScaq6i1UXq+ol9Vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r3HeiNRiwCDaulT+YBg15qm3QTvf41Ev6EW2Ovhobn4+BhHyY67PjCevMh0lTWPLg8PtE6Xwg8Eqzrji0ZfevtD3CkOC/O8QOupAAmJfzYDar1fbe+p1pGGzxLx0cwfYz85wJGpiA6GU3pBYqi8UWrpSAdSElfE03ULhNHL1uzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fiwy5TBt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E386FC116B1;
-	Tue, 16 Jul 2024 15:46:45 +0000 (UTC)
+	 MIME-Version; b=sbJYMg4hgo03iG7998xY+yeBahlByCnDgF7dzaplWSZ6UdAQ66IG/IVcK+yIJkM5wGTluIsP/gcoi3rHi52DIEPQGNVC8AWA+kzZYMzQUT6omM/tXqdbLrRh6Ig2GCyo46aTOMm8GcmcBMX7ab1fG6rG8KDCp3Iw8IthylwCrpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvqKDxnR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8F2C4AF0D;
+	Tue, 16 Jul 2024 15:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144806;
-	bh=tsFrQN7rwfn7fqv7qapKsIXr3AFRyXGHeA2pQC8wI2g=;
+	s=korg; t=1721145369;
+	bh=Py+56Xlzbq39nIF/7nyvEgdcN3tScaq6i1UXq+ol9Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fiwy5TBtrJtqX5tkiHhjOJt8sbyg480t8sjW/J0sAFo9pO6AHjwLVmITY0xQQGTQH
-	 U1vxHmmiFC0MapfrrkEosdcTyl5UNHkUNQD9uWXOfEpBCkjyR81cxUdRgYQ+agp3Vu
-	 4+s4cI5uLNwiG35+E3SaLaCNvHPiY9WvFwtF/ZdQ=
+	b=TvqKDxnRaIgboMa8sHRx2Mr3X6FAwl7VW9jVhE3lGN3XdOPeLlsvU7NcXoAXxq/s+
+	 JQSFw0T15cZsbRyAl3+CxUVxtL/vbSCXeMXOhhmxbSSBTar9CIcfuUjr75aZibyX6Q
+	 bBYyKSslC/2Akv0EezCV7OCu+YrIhm02gAOxn+qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-	Russell King <russell.king@oracle.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Puranjay Mohan <pjy@amazon.com>
-Subject: [PATCH 5.10 100/108] arm64/bpf: Remove 128MB limit for BPF JIT programs
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 44/96] cifs: fix setting SecurityFlags to true
 Date: Tue, 16 Jul 2024 17:31:55 +0200
-Message-ID: <20240716152749.834677594@linuxfoundation.org>
+Message-ID: <20240716152748.202145545@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,142 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King <russell.king@oracle.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit b89ddf4cca43f1269093942cf5c4e457fd45c335 upstream.
+commit d2346e2836318a227057ed41061114cbebee5d2a upstream.
 
-Commit 91fc957c9b1d ("arm64/bpf: don't allocate BPF JIT programs in module
-memory") restricts BPF JIT program allocation to a 128MB region to ensure
-BPF programs are still in branching range of each other. However this
-restriction should not apply to the aarch64 JIT, since BPF_JMP | BPF_CALL
-are implemented as a 64-bit move into a register and then a BLR instruction -
-which has the effect of being able to call anything without proximity
-limitation.
+If you try to set /proc/fs/cifs/SecurityFlags to 1 it
+will set them to CIFSSEC_MUST_NTLMV2 which no longer is
+relevant (the less secure ones like lanman have been removed
+from cifs.ko) and is also missing some flags (like for
+signing and encryption) and can even cause mount to fail,
+so change this to set it to Kerberos in this case.
 
-The practical reason to relax this restriction on JIT memory is that 128MB of
-JIT memory can be quickly exhausted, especially where PAGE_SIZE is 64KB - one
-page is needed per program. In cases where seccomp filters are applied to
-multiple VMs on VM launch - such filters are classic BPF but converted to
-BPF - this can severely limit the number of VMs that can be launched. In a
-world where we support BPF JIT always on, turning off the JIT isn't always an
-option either.
+Also change the description of the SecurityFlags to remove mention
+of flags which are no longer supported.
 
-Fixes: 91fc957c9b1d ("arm64/bpf: don't allocate BPF JIT programs in module memory")
-Suggested-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Signed-off-by: Russell King <russell.king@oracle.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Alan Maguire <alan.maguire@oracle.com>
-Link: https://lore.kernel.org/bpf/1636131046-5982-2-git-send-email-alan.maguire@oracle.com
-[Replace usage of in_bpf_jit() with is_bpf_text_address()]
-Signed-off-by: Puranjay Mohan <pjy@amazon.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/extable.h |    9 ---------
- arch/arm64/include/asm/memory.h  |    5 +----
- arch/arm64/kernel/traps.c        |    2 +-
- arch/arm64/mm/extable.c          |    3 ++-
- arch/arm64/mm/ptdump.c           |    2 --
- arch/arm64/net/bpf_jit_comp.c    |    7 ++-----
- 6 files changed, 6 insertions(+), 22 deletions(-)
+ Documentation/admin-guide/cifs/usage.rst |   34 +++++++++----------------------
+ fs/smb/client/cifsglob.h                 |    4 +--
+ 2 files changed, 12 insertions(+), 26 deletions(-)
 
---- a/arch/arm64/include/asm/extable.h
-+++ b/arch/arm64/include/asm/extable.h
-@@ -22,15 +22,6 @@ struct exception_table_entry
+--- a/Documentation/admin-guide/cifs/usage.rst
++++ b/Documentation/admin-guide/cifs/usage.rst
+@@ -722,40 +722,26 @@ Configuration pseudo-files:
+ ======================= =======================================================
+ SecurityFlags		Flags which control security negotiation and
+ 			also packet signing. Authentication (may/must)
+-			flags (e.g. for NTLM and/or NTLMv2) may be combined with
++			flags (e.g. for NTLMv2) may be combined with
+ 			the signing flags.  Specifying two different password
+ 			hashing mechanisms (as "must use") on the other hand
+ 			does not make much sense. Default flags are::
  
- #define ARCH_HAS_RELATIVE_EXTABLE
+-				0x07007
++				0x00C5
  
--static inline bool in_bpf_jit(struct pt_regs *regs)
--{
--	if (!IS_ENABLED(CONFIG_BPF_JIT))
--		return false;
--
--	return regs->pc >= BPF_JIT_REGION_START &&
--	       regs->pc < BPF_JIT_REGION_END;
--}
--
- #ifdef CONFIG_BPF_JIT
- int arm64_bpf_fixup_exception(const struct exception_table_entry *ex,
- 			      struct pt_regs *regs);
---- a/arch/arm64/include/asm/memory.h
-+++ b/arch/arm64/include/asm/memory.h
-@@ -44,11 +44,8 @@
- #define _PAGE_OFFSET(va)	(-(UL(1) << (va)))
- #define PAGE_OFFSET		(_PAGE_OFFSET(VA_BITS))
- #define KIMAGE_VADDR		(MODULES_END)
--#define BPF_JIT_REGION_START	(KASAN_SHADOW_END)
--#define BPF_JIT_REGION_SIZE	(SZ_128M)
--#define BPF_JIT_REGION_END	(BPF_JIT_REGION_START + BPF_JIT_REGION_SIZE)
- #define MODULES_END		(MODULES_VADDR + MODULES_VSIZE)
--#define MODULES_VADDR		(BPF_JIT_REGION_END)
-+#define MODULES_VADDR		(_PAGE_END(VA_BITS_MIN))
- #define MODULES_VSIZE		(SZ_128M)
- #define VMEMMAP_START		(-VMEMMAP_SIZE - SZ_2M)
- #define VMEMMAP_END		(VMEMMAP_START + VMEMMAP_SIZE)
---- a/arch/arm64/kernel/traps.c
-+++ b/arch/arm64/kernel/traps.c
-@@ -912,7 +912,7 @@ static struct break_hook bug_break_hook
- static int reserved_fault_handler(struct pt_regs *regs, unsigned int esr)
- {
- 	pr_err("%s generated an invalid instruction at %pS!\n",
--		in_bpf_jit(regs) ? "BPF JIT" : "Kernel text patching",
-+		"Kernel text patching",
- 		(void *)instruction_pointer(regs));
+-			(NTLM, NTLMv2 and packet signing allowed).  The maximum
+-			allowable flags if you want to allow mounts to servers
+-			using weaker password hashes is 0x37037 (lanman,
+-			plaintext, ntlm, ntlmv2, signing allowed).  Some
+-			SecurityFlags require the corresponding menuconfig
+-			options to be enabled.  Enabling plaintext
+-			authentication currently requires also enabling
+-			lanman authentication in the security flags
+-			because the cifs module only supports sending
+-			laintext passwords using the older lanman dialect
+-			form of the session setup SMB.  (e.g. for authentication
+-			using plain text passwords, set the SecurityFlags
+-			to 0x30030)::
++			(NTLMv2 and packet signing allowed).  Some SecurityFlags
++			may require enabling a corresponding menuconfig option.
  
- 	/* We cannot handle this */
---- a/arch/arm64/mm/extable.c
-+++ b/arch/arm64/mm/extable.c
-@@ -5,6 +5,7 @@
+ 			  may use packet signing			0x00001
+ 			  must use packet signing			0x01001
+-			  may use NTLM (most common password hash)	0x00002
+-			  must use NTLM					0x02002
+ 			  may use NTLMv2				0x00004
+ 			  must use NTLMv2				0x04004
+-			  may use Kerberos security			0x00008
+-			  must use Kerberos				0x08008
+-			  may use lanman (weak) password hash		0x00010
+-			  must use lanman password hash			0x10010
+-			  may use plaintext passwords			0x00020
+-			  must use plaintext passwords			0x20020
+-			  (reserved for future packet encryption)	0x00040
++			  may use Kerberos security (krb5)		0x00008
++			  must use Kerberos                             0x08008
++			  may use NTLMSSP               		0x00080
++			  must use NTLMSSP           			0x80080
++			  seal (packet encryption)			0x00040
++			  must seal (not implemented yet)               0x40040
  
- #include <linux/extable.h>
- #include <linux/uaccess.h>
-+#include <linux/filter.h>
+ cifsFYI			If set to non-zero value, additional debug information
+ 			will be logged to the system error log.  This field
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1837,8 +1837,8 @@ require use of the stronger protocol */
+ #define   CIFSSEC_MUST_SEAL	0x40040 /* not supported yet */
+ #define   CIFSSEC_MUST_NTLMSSP	0x80080 /* raw ntlmssp with ntlmv2 */
  
- int fixup_exception(struct pt_regs *regs)
- {
-@@ -14,7 +15,7 @@ int fixup_exception(struct pt_regs *regs
- 	if (!fixup)
- 		return 0;
- 
--	if (in_bpf_jit(regs))
-+	if (is_bpf_text_address(regs->pc))
- 		return arm64_bpf_fixup_exception(fixup, regs);
- 
- 	regs->pc = (unsigned long)&fixup->fixup + fixup->fixup;
---- a/arch/arm64/mm/ptdump.c
-+++ b/arch/arm64/mm/ptdump.c
-@@ -41,8 +41,6 @@ static struct addr_marker address_marker
- 	{ 0 /* KASAN_SHADOW_START */,	"Kasan shadow start" },
- 	{ KASAN_SHADOW_END,		"Kasan shadow end" },
- #endif
--	{ BPF_JIT_REGION_START,		"BPF start" },
--	{ BPF_JIT_REGION_END,		"BPF end" },
- 	{ MODULES_VADDR,		"Modules start" },
- 	{ MODULES_END,			"Modules end" },
- 	{ VMALLOC_START,		"vmalloc() area" },
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -1145,15 +1145,12 @@ out:
- 
- u64 bpf_jit_alloc_exec_limit(void)
- {
--	return BPF_JIT_REGION_SIZE;
-+	return VMALLOC_END - VMALLOC_START;
- }
- 
- void *bpf_jit_alloc_exec(unsigned long size)
- {
--	return __vmalloc_node_range(size, PAGE_SIZE, BPF_JIT_REGION_START,
--				    BPF_JIT_REGION_END, GFP_KERNEL,
--				    PAGE_KERNEL, 0, NUMA_NO_NODE,
--				    __builtin_return_address(0));
-+	return vmalloc(size);
- }
- 
- void bpf_jit_free_exec(void *addr)
+-#define   CIFSSEC_DEF (CIFSSEC_MAY_SIGN | CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_NTLMSSP)
+-#define   CIFSSEC_MAX (CIFSSEC_MUST_NTLMV2)
++#define   CIFSSEC_DEF (CIFSSEC_MAY_SIGN | CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_NTLMSSP | CIFSSEC_MAY_SEAL)
++#define   CIFSSEC_MAX (CIFSSEC_MAY_SIGN | CIFSSEC_MUST_KRB5 | CIFSSEC_MAY_SEAL)
+ #define   CIFSSEC_AUTH_MASK (CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_KRB5 | CIFSSEC_MAY_NTLMSSP)
+ /*
+  *****************************************************************
 
 
 
