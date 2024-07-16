@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-59560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6CF932AB3
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845F3932D15
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 487381F222B2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15208B24B1D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3361DDCE;
-	Tue, 16 Jul 2024 15:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4621199EA3;
+	Tue, 16 Jul 2024 16:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05tRYE3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zV0fCeON"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEE6D53B;
-	Tue, 16 Jul 2024 15:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7245B1DDCE;
+	Tue, 16 Jul 2024 16:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144221; cv=none; b=ON92fJKL53SyrKPziNb2D/jcTJmme7YkrDHTO5/mBbs9lIppk2Mde5/FBqCFds8JYLcXO4/fZ/QSKodDA5kPO5ukA0qVCkY0LfGXS+QiBEYxHSxkNpq3u2LHz82ek6avyhR7kq8gcxjxQPvRFetbMJ/EcnKR13zzMfrTWUHRIcQ=
+	t=1721145655; cv=none; b=evxBi5y4856iAp+U7Hz/cj6ZgOcdRa7pvoP1+T/IyzEUg8sTCJnIQ3FUwpX06SJTqUFxlAhfFtM2G9eaqtTHY76WRXgUC4ul/0R0Fi/If5aMOO8U89Fo9AeHceiqmwDR6PDv8G14xnUpiWgwdff4xUPwZ727q2a88o8KH78JO9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144221; c=relaxed/simple;
-	bh=yLK0qy/EikpCQ01tw5nnqaBvc9XoQiaizFcRveelWAk=;
+	s=arc-20240116; t=1721145655; c=relaxed/simple;
+	bh=L2Uv/cFnNsgJdTmvbo1RSadnUGYuSErbO0S2Zo9Syj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vEKyExNH75URgOWAzqdmjbp6mQY+mdFq0QomUO+s1sRojp+Y+44qTPHmCYRm2b6caJ9PLpc5+dARitHdA0gzrO52D8EpsAzdPWOR4iNq2HRKErdnjy+QKhy5FDDgoZkORpaYFCp4IlGNQ3xiwdqpdmL3avNQUABru86LMNIvNRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05tRYE3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F28C116B1;
-	Tue, 16 Jul 2024 15:37:00 +0000 (UTC)
+	 MIME-Version; b=WOZUtvchQ/1BtpGmzV1M6OtAwXmd2Y2ZHdkvIn819aRTQfJC2lgcYNR3Do3bH9A7mkHEyG4SXo4MR/Mvst98UInsaaJv1Be4zwtBvk2s+0LZ/OOVCn52MgdV3EdO2ibeznZMt0vlP7CeeLpFlJYLJI35ITXaQ1egAjnRZpzSzfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zV0fCeON; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9E9C116B1;
+	Tue, 16 Jul 2024 16:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144221;
-	bh=yLK0qy/EikpCQ01tw5nnqaBvc9XoQiaizFcRveelWAk=;
+	s=korg; t=1721145655;
+	bh=L2Uv/cFnNsgJdTmvbo1RSadnUGYuSErbO0S2Zo9Syj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=05tRYE3TdU2WkxwDLy1jCQrOqQYcPNMKxB5ZRgtEfYxYGYNAnKxZBGcYwmIiX1UVv
-	 jj7JcQlT2TURubsaj3Y6auybnwXiIMe9723Ccamyb2/2m9i6s+u8mmE903m7HXc0in
-	 /blmzrCxQhgoqxgBrKuMhyMIoMBNoz3wkVfuCayc=
+	b=zV0fCeON15N9zZln3Lv2DxDZNIrPf7G1zd8W5cRpksHdLa0+hXgGFW9BBkwuQIOWG
+	 W2c38GV9yfDmAc8794kMCIQ+Z0LeUF8YPfQcw1N4kPAkEXs0jHjM+YvE6j2/Asx/fP
+	 wYtYUmJ2OnMjIpD9Hhrfl1OUUlsZL6TRwfwPGI0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.19 49/66] USB: serial: option: add Telit generic core-dump composition
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 022/121] octeontx2-af: Fix incorrect value output on error path in rvu_check_rsrc_availability()
 Date: Tue, 16 Jul 2024 17:31:24 +0200
-Message-ID: <20240716152740.038049792@linuxfoundation.org>
+Message-ID: <20240716152752.176086310@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit 4298e400dbdbf259549d69c349e060652ad53611 upstream.
+[ Upstream commit 442e26af9aa8115c96541026cbfeaaa76c85d178 ]
 
-Add the following core-dump composition, used in different Telit modems:
+In rvu_check_rsrc_availability() in case of invalid SSOW req, an incorrect
+data is printed to error log. 'req->sso' value is printed instead of
+'req->ssow'. Looks like "copy-paste" mistake.
 
-0x9000: tty (sahara)
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#= 41 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=9000 Rev=00.00
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN990-dump
-S:  SerialNumber=e815bdde
-C:  #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=2mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=10 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Fix this mistake by replacing 'req->sso' with 'req->ssow'.
 
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 746ea74241fa ("octeontx2-af: Add RVU block LF provisioning support")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240705095317.12640-1-amishin@t-argos.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1433,6 +1433,8 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x701b, 0xff),	/* Telit LE910R1 (ECM) */
- 	  .driver_info = NCTRL(2) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x9000, 0xff),	/* Telit generic core-dump device */
-+	  .driver_info = NCTRL(0) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x9010),				/* Telit SBL FN980 flashing device */
- 	  .driver_info = NCTRL(0) | ZLP },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x9200),				/* Telit LE910S1 flashing device */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index 32645aefd5934..5906f5f8d1904 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -1638,7 +1638,7 @@ static int rvu_check_rsrc_availability(struct rvu *rvu,
+ 		if (req->ssow > block->lf.max) {
+ 			dev_err(&rvu->pdev->dev,
+ 				"Func 0x%x: Invalid SSOW req, %d > max %d\n",
+-				 pcifunc, req->sso, block->lf.max);
++				 pcifunc, req->ssow, block->lf.max);
+ 			return -EINVAL;
+ 		}
+ 		mappedlfs = rvu_get_rsrc_mapcount(pfvf, block->addr);
+-- 
+2.43.0
+
 
 
 
