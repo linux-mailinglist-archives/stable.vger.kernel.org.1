@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-59742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06322932B87
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FC8932D20
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A2021F21945
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B3882816A9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10ACD195B27;
-	Tue, 16 Jul 2024 15:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23AE17623C;
+	Tue, 16 Jul 2024 16:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bA4Aj9dJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqKv1+fJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C248D1DA4D;
-	Tue, 16 Jul 2024 15:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F401DDCE;
+	Tue, 16 Jul 2024 16:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144771; cv=none; b=B8O6+i81JmcpQsC2b7ZSJ7HOMVYJZFM2pxe3yqwKDaPeATmWPnfhf0vOEj+39Wa1ZgVM+ZNa0+uapA6rn4oVlAWv/Rzb8zN/qyPgR4z62TNZWTntxQSyV8cdpEOBTW3i6nH34fSUlhSyUjUFczst1hRMadvN+Ov4bUXm5t+cs24=
+	t=1721145687; cv=none; b=tIoPle0pnWCgnh9WnZ3AT+UQUIPtXcRbthOPI/JDobnWGaPVxfedCkgvP9T8MdQyr07Nemd3muvrmNiUSFI8IIv23ohrlGVQVajazqzkSvgnk5a5xsTdoLzQlKDBX7YCL80/50lHlAoOd20z0WCTMRufAI6EfFEnf0T15wcOTGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144771; c=relaxed/simple;
-	bh=aQj+Zyg1JBcHBpLWK9QoO4EWwQCWDndVgVM/RESOU64=;
+	s=arc-20240116; t=1721145687; c=relaxed/simple;
+	bh=dbltCaQKgTysJQDe1/JGNiNh2Wfzn7aZaGxE6ln0VzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQMn6EQJxEQmcnQC81etc2c0n1/NvSkt+sV6l22U3scDrGMpTlrwWRrUWAAs89cYVPAXIf0tte5obg/sq0/sblAUsq+qdH6my/ubItJgj4FyEvHPqXn/fLal6ogJ0ujq/M8fUWee3XqYeqhj9deuUsFdzZoCpuPh3KDJBfa8+qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bA4Aj9dJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4975FC116B1;
-	Tue, 16 Jul 2024 15:46:11 +0000 (UTC)
+	 MIME-Version; b=efAiYc5FcfwIzE/HADhKyvZA4iIIuVIXS2V7rR4M7/XKAmL/3QUtCgOpCSnl23zAMjZTVDLaVesRpLT4uaUXiF733lJ/ogURJjizDDe571/gaTnwAeo7CGcvr3J1leJI43p5uD8S1t8/pmxEKC0KHsDuGHa7EaIQq6tixe8D7QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqKv1+fJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341CBC116B1;
+	Tue, 16 Jul 2024 16:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144771;
-	bh=aQj+Zyg1JBcHBpLWK9QoO4EWwQCWDndVgVM/RESOU64=;
+	s=korg; t=1721145687;
+	bh=dbltCaQKgTysJQDe1/JGNiNh2Wfzn7aZaGxE6ln0VzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bA4Aj9dJbXQjnfmZ67u9TeRKfrXfzwB/oWe+CrICWlCBp3Qfy3+wLQoeKYpBevWxV
-	 GCist0E5miKNz2hxL+0fsQMZMVGjPFZKbXh2D9jTZBjo1qXxZwfpihFOEADw7QA5Xq
-	 7RQeDm7eaJ/AjRlAVklrVgrUs66+MMEZZ/SfP1Co=
+	b=yqKv1+fJMXUfJgFDcvt1UaeGFqN/xjo0OTlTa6DeruOvy9G75zPPKdd5iEGH8Cz5c
+	 4KtL+wQL8fw4NFJRh940035BWTGcoPiM43FnYATorzsMUbxD0+f/aE2ZQDqnelLidU
+	 /57LRDQpp9d/tXp0/5pRzpnZIsrtHJUDrlgng4j0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 070/108] s390: Mark psw in __load_psw_mask() as __unitialized
+Subject: [PATCH 6.6 023/121] net: fix rc7s __skb_datagram_iter()
 Date: Tue, 16 Jul 2024 17:31:25 +0200
-Message-ID: <20240716152748.670825915@linuxfoundation.org>
+Message-ID: <20240716152752.214473024@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Hugh Dickins <hughd@google.com>
 
-[ Upstream commit 7278a8fb8d032dfdc03d9b5d17e0bc451cdc1492 ]
+[ Upstream commit f153831097b4435f963e385304cc0f1acba1c657 ]
 
-Without __unitialized, the following code is generated when
-INIT_STACK_ALL_ZERO is enabled:
+X would not start in my old 32-bit partition (and the "n"-handling looks
+just as wrong on 64-bit, but for whatever reason did not show up there):
+"n" must be accumulated over all pages before it's added to "offset" and
+compared with "copy", immediately after the skb_frag_foreach_page() loop.
 
-86: d7 0f f0 a0 f0 a0     xc      160(16,%r15), 160(%r15)
-8c: e3 40 f0 a0 00 24     stg     %r4, 160(%r15)
-92: c0 10 00 00 00 08     larl    %r1, 0xa2
-98: e3 10 f0 a8 00 24     stg     %r1, 168(%r15)
-9e: b2 b2 f0 a0           lpswe   160(%r15)
-
-The xc is not adding any security because psw is fully initialized
-with the following instructions. Add __unitialized to the psw
-definitiation to avoid the superfluous clearing of psw.
-
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: d2d30a376d9c ("net: allow skb_datagram_iter to be called from any context")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Link: https://patch.msgid.link/fef352e8-b89a-da51-f8ce-04bc39ee6481@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/processor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/datagram.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
-index 0987c3fc45f58..95ed01a3536c6 100644
---- a/arch/s390/include/asm/processor.h
-+++ b/arch/s390/include/asm/processor.h
-@@ -252,8 +252,8 @@ static inline void __load_psw(psw_t psw)
-  */
- static __always_inline void __load_psw_mask(unsigned long mask)
- {
-+	psw_t psw __uninitialized;
- 	unsigned long addr;
--	psw_t psw;
+diff --git a/net/core/datagram.c b/net/core/datagram.c
+index e49aaf2d48b80..ef4e9e423d393 100644
+--- a/net/core/datagram.c
++++ b/net/core/datagram.c
+@@ -441,11 +441,12 @@ static int __skb_datagram_iter(const struct sk_buff *skb, int offset,
+ 			if (copy > len)
+ 				copy = len;
  
- 	psw.mask = mask;
- 
++			n = 0;
+ 			skb_frag_foreach_page(frag,
+ 					      skb_frag_off(frag) + offset - start,
+ 					      copy, p, p_off, p_len, copied) {
+ 				vaddr = kmap_local_page(p);
+-				n = INDIRECT_CALL_1(cb, simple_copy_to_iter,
++				n += INDIRECT_CALL_1(cb, simple_copy_to_iter,
+ 					vaddr + p_off, p_len, data, to);
+ 				kunmap_local(vaddr);
+ 			}
 -- 
 2.43.0
 
