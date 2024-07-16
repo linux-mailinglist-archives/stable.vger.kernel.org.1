@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED124932ADD
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF714932BF8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5B20281F21
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AE131F21915
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828371DA4D;
-	Tue, 16 Jul 2024 15:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD4019B3EC;
+	Tue, 16 Jul 2024 15:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDJ9jRCl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncRS46Ow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5D1CA40;
-	Tue, 16 Jul 2024 15:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A66F1DA4D;
+	Tue, 16 Jul 2024 15:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144334; cv=none; b=lfXmAGFdpdLsot+zXqBzMwrtlkipgZNwFRwNTMy49lsQxsoqT1xdf9KoUGDOEpQiEMQknHmMMzx5aIpUYyRdF721HLmOD5DkawMPDFkR/MehqCMez3Q3hMVwAnPRrcGbG9FbslqIcv09NDBsvBkANOlNuQxl6iQAjoKSB+vlpHA=
+	t=1721145025; cv=none; b=oEk/MTtu6fANaHHMdwPmGfn/N6ASCKJglqPq+L+UXJl6TLuiYOvLp3nNTIpVlTQZJZTyOvn4jDX5iYQac3Hwoowa1S4u7k19iRFD/tH+xpb8+ITl+K6vRp4SyiwipWeGJxfNuSxBX2QhRc7Tjd55VH0lIWqSjCvqVmRYdtj934w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144334; c=relaxed/simple;
-	bh=qMptx+6qkrahFzaH6aoiD3gCEThxVchg9+m8uGHCr+I=;
+	s=arc-20240116; t=1721145025; c=relaxed/simple;
+	bh=kgS5HLOFECUsBWjkAB8begdtzm+SCy3f7rU6ZnBvuXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ywe9NY/S1yzvm44WZ3SOINvuelBxFvgWSTneCjHkGPvItsaAAbHnaOtRhvGOmG+PfIIn+bK11rAp1QI5/YH6uY0f8vRkQjaEPijGW+Ve1PWQvEuquDrnjYIAP7Ttx2k+0/miSC+cXQ+Aaf0f26BwSDowt8slr7tg8cU8oeVFwTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDJ9jRCl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66203C116B1;
-	Tue, 16 Jul 2024 15:38:53 +0000 (UTC)
+	 MIME-Version; b=GN7dYb3CtrenRCas3RN60B9DZbRlM9lE7V/FfLC2iIOGCLBDaTiD7A9Xmxtipbt9pE4iDptt/wN073lN0WCA+9UHEnkA59A9NUELeTmEhGjdQ5iygi8lIsNJ65vflpiCfwcxUYVuXzS5Vvy1ZPOQ5jHBvr/rh0w6OwildRgH7Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncRS46Ow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36749C116B1;
+	Tue, 16 Jul 2024 15:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144333;
-	bh=qMptx+6qkrahFzaH6aoiD3gCEThxVchg9+m8uGHCr+I=;
+	s=korg; t=1721145024;
+	bh=kgS5HLOFECUsBWjkAB8begdtzm+SCy3f7rU6ZnBvuXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDJ9jRCldj3+hGsT6HdOqtHumfbc5fAHrq0dBc3TSvsKgeL7P+FkgIQ0/QTgfj/gY
-	 lMWuZPj/kT6zSSOaLV0G5Vb7dVgDA+4CMAMdHNAgz9W+dgNXHG9gvoYWnHhw5FOSJl
-	 /EYxZU5vkQD52YCYMxhaSk3OnpYHFy90usPB1LOs=
+	b=ncRS46Ow6Xia4bQSkucoJ9amt1zcvJdUIjTHDL0CBrsyuJthqdGCQVEkP/RSXBX+x
+	 XdabU6XHyc/e0ORkEnWrA9bWiu48zPd+1d2eyVY3ztHTZW233+LCuMIGxZ22j0jf/u
+	 tHyqtdtGfozwtMVUMxj26xvzwiAyN/O0as9N1wIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zach OKeefe <zokeefe@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 37/78] Revert "mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again"
-Date: Tue, 16 Jul 2024 17:31:09 +0200
-Message-ID: <20240716152742.073597362@linuxfoundation.org>
+	Vanillan Wang <vanillanwang@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.9 074/143] USB: serial: option: add Rolling RW350-GL variants
+Date: Tue, 16 Jul 2024 17:31:10 +0200
+Message-ID: <20240716152758.824222967@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Vanillan Wang <vanillanwang@163.com>
 
-commit 30139c702048f1097342a31302cbd3d478f50c63 upstream.
+commit ae420771551bd9f04347c59744dd062332bdec3e upstream.
 
-Patch series "mm: Avoid possible overflows in dirty throttling".
+Update the USB serial option driver support for the Rolling
+RW350-GL
+- VID:PID 33f8:0802, RW350-GL are laptop M.2 cards (with
+MBIM interfaces for /Linux/Chrome OS)
 
-Dirty throttling logic assumes dirty limits in page units fit into
-32-bits.  This patch series makes sure this is true (see patch 2/2 for
-more details).
+Here are the outputs of usb-devices:
 
+usbmode=63: mbim, pipe
 
-This patch (of 2):
+T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0802 Rev=00.01
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=USB DATA CARD
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-This reverts commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78.
+usbmode=64: mbim, others at (If#= 5 adb)
 
-The commit is broken in several ways.  Firstly, the removed (u64) cast
-from the multiplication will introduce a multiplication overflow on 32-bit
-archs if wb_thresh * bg_thresh >= 1<<32 (which is actually common - the
-default settings with 4GB of RAM will trigger this).  Secondly, the
-div64_u64() is unnecessarily expensive on 32-bit archs.  We have
-div64_ul() in case we want to be safe & cheap.  Thirdly, if dirty
-thresholds are larger than 1<<32 pages, then dirty balancing is going to
-blow up in many other spectacular ways anyway so trying to fix one
-possible overflow is just moot.
+MBIM(MI0) + GNSS(MI2) + AP log(MI3) + AP META(MI4) + ADB(MI5) +
+MD AT(MI6) + MD META(MI7) + NPT(MI8) + Debug(MI9)
 
-Link: https://lkml.kernel.org/r/20240621144017.30993-1-jack@suse.cz
-Link: https://lkml.kernel.org/r/20240621144246.11148-1-jack@suse.cz
-Fixes: 9319b647902c ("mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-By: Zach O'Keefe <zokeefe@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  5 Spd=5000 MxCh= 0
+D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0802 Rev=00.01
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=USB DATA CARD
+C:  #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=07(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=08(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=09(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8a(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page-writeback.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -1530,7 +1530,7 @@ static inline void wb_dirty_limits(struc
- 	 */
- 	dtc->wb_thresh = __wb_calc_thresh(dtc);
- 	dtc->wb_bg_thresh = dtc->thresh ?
--		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
-+		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
- 
- 	/*
- 	 * In order to avoid the stacked BDI deadlock we need
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2333,6 +2333,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
 
 
 
