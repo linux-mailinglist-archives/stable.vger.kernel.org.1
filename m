@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-60215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14FF932DE8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:10:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDDB932DC0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60524B22DE4
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:10:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1698B2521F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87E919AD72;
-	Tue, 16 Jul 2024 16:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F003219B59C;
+	Tue, 16 Jul 2024 16:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fS6oVxzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPsiwxaJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D9A1DDCE;
-	Tue, 16 Jul 2024 16:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5B21DDCE;
+	Tue, 16 Jul 2024 16:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721146229; cv=none; b=gIQkxtzhvTmhsgmp4bsuf+eEdFF7pSpZvgKTB0fp90dzQ0iuFBCXEne7bZobadxhaDgtOwy06wfxrgQvdPsdhL+rBvzmabSpt2wX01LE1mJvDSR1qqBjMnNqDsvmV9GR7FZggeYY/axX1WG7Tk166DSTMkiwVDOMOrZmD1Bn394=
+	t=1721146127; cv=none; b=Io5aKlJW13uYODCiIBrtz5jLtANkLy39oWrDm2e/4GjvAqGUZD4J9h81W8JSG5VOUwKB5Ws80xmrIS6olJqULUdmfqTNDt0RedPXDWaLiGfoJNHqetyPYdNFFIexwUBDQyOpDKzaQdmpIaHVABNnD8R1oq6LC5OPzxqYXZ2ZAa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721146229; c=relaxed/simple;
-	bh=93MZEOUDlXLcZdH3azQfIUya8gyQ0ICePQEXCYWAcJI=;
+	s=arc-20240116; t=1721146127; c=relaxed/simple;
+	bh=clm4OnFkBGTW7qhWQVF8TI4oKRnyyrpO4UE4YnrOpWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNki9+Gota6dD1zoQ0MUrb8nqpVAcO+KtW/QXTn+06eNeNND7BbBM52nEGsWB1uJ8pSldi6IfUsOkPea1nuGW2l0IVa4czsk8YK5+qY14jUYV2GbTS8kj9ZFB2DT5zTkEGpcZI2AsjtgFOeNnNjb9N54IAhA8IXeDmNSVybGv8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fS6oVxzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA72C116B1;
-	Tue, 16 Jul 2024 16:10:28 +0000 (UTC)
+	 MIME-Version; b=BrKzemxo6uA88ieRH1QEXeNB9+TXcr1oJDAH+37/9zWX9EPshbrGkp/f2R8t8HVp5g1toB5NtkC7EinAop4S+1Zl41PkGz4H4788cT51bVcdhvX3HiWlS+NIXMat/Ds19x4aSerTZWWwapOpJaTJAtNl9iJmKb7Be3ymgV5LCAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPsiwxaJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32ADFC116B1;
+	Tue, 16 Jul 2024 16:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721146229;
-	bh=93MZEOUDlXLcZdH3azQfIUya8gyQ0ICePQEXCYWAcJI=;
+	s=korg; t=1721146127;
+	bh=clm4OnFkBGTW7qhWQVF8TI4oKRnyyrpO4UE4YnrOpWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fS6oVxzQrt9RPiBi00BWzKo2GBhSiN+92qt+kbKq7GIi0QseMb33mw8TJ3uXsOyLa
-	 vQlKSlUEq8SPUpfFQQzOs/D5mN/jVGE9jV/yA6ca8l7RjdyXpMiBTUCa6vYhbTpK3w
-	 SzTdKrIWLdwGNDG8FhdzuSV5NX2Z8iwthGV6lRjE=
+	b=tPsiwxaJAmcGE9nUenc1+wq+XHVtknk5o8rgbzF2CFv0h+niy6WlU3XNk8JuE1efC
+	 lbUqTvk9/enCSj8r69BCQHpF5nt/+KF4WxdUPoLhlECGDHbl6V9Tx2SFKZTe3lnaKY
+	 /s/yupwmJz9mJil+3+tOPnQYP8cz0LIeYp+TjEAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 057/144] drm/amdgpu/atomfirmware: silence UBSAN warning
-Date: Tue, 16 Jul 2024 17:32:06 +0200
-Message-ID: <20240716152754.739460061@linuxfoundation.org>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 058/144] mtd: rawnand: Ensure ECC configuration is propagated to upper layers
+Date: Tue, 16 Jul 2024 17:32:07 +0200
+Message-ID: <20240716152754.777918135@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -65,32 +65,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit d0417264437a8fa05f894cabba5a26715b32d78e upstream.
+commit 3a1b777eb9fb75d09c45ae5dd1d007eddcbebf1f upstream.
 
-This is a variable sized array.
+Until recently the "upper layer" was MTD. But following incremental
+reworks to bring spi-nand support and more recently generic ECC support,
+there is now an intermediate "generic NAND" layer that also needs to get
+access to some values. When using "converted" ECC engines, like the
+software ones, these values are already propagated correctly. But
+otherwise when using good old raw NAND controller drivers, we need to
+manually set these values ourselves at the end of the "scan" operation,
+once these values have been negotiated.
 
-Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/110420.html
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Without this propagation, later (generic) checks like the one warning
+users that the ECC strength is not high enough might simply no longer
+work.
+
+Fixes: 8c126720fe10 ("mtd: rawnand: Use the ECC framework nand_ecc_is_strong_enough() helper")
 Cc: stable@vger.kernel.org
+Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
+Closes: https://lore.kernel.org/all/Zhe2JtvvN1M4Ompw@pengutronix.de/
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.kernel.org/linux-mtd/20240507085842.108844-1-miquel.raynal@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/include/atomfirmware.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/nand_base.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/include/atomfirmware.h
-+++ b/drivers/gpu/drm/amd/include/atomfirmware.h
-@@ -701,7 +701,7 @@ struct atom_gpio_pin_lut_v2_1
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -6050,6 +6050,7 @@ static const struct nand_ops rawnand_ops
+ static int nand_scan_tail(struct nand_chip *chip)
  {
-   struct  atom_common_table_header  table_header;
-   /*the real number of this included in the structure is calcualted by using the (whole structure size - the header size)/size of atom_gpio_pin_lut  */
--  struct  atom_gpio_pin_assignment  gpio_pin[8];
-+  struct  atom_gpio_pin_assignment  gpio_pin[];
- };
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
++	struct nand_device *base = &chip->base;
+ 	struct nand_ecc_ctrl *ecc = &chip->ecc;
+ 	int ret, i;
  
+@@ -6194,9 +6195,13 @@ static int nand_scan_tail(struct nand_ch
+ 	if (!ecc->write_oob_raw)
+ 		ecc->write_oob_raw = ecc->write_oob;
  
+-	/* propagate ecc info to mtd_info */
++	/* Propagate ECC info to the generic NAND and MTD layers */
+ 	mtd->ecc_strength = ecc->strength;
++	if (!base->ecc.ctx.conf.strength)
++		base->ecc.ctx.conf.strength = ecc->strength;
+ 	mtd->ecc_step_size = ecc->size;
++	if (!base->ecc.ctx.conf.step_size)
++		base->ecc.ctx.conf.step_size = ecc->size;
+ 
+ 	/*
+ 	 * Set the number of read / write steps for one page depending on ECC
+@@ -6204,6 +6209,8 @@ static int nand_scan_tail(struct nand_ch
+ 	 */
+ 	if (!ecc->steps)
+ 		ecc->steps = mtd->writesize / ecc->size;
++	if (!base->ecc.ctx.nsteps)
++		base->ecc.ctx.nsteps = ecc->steps;
+ 	if (ecc->steps * ecc->size != mtd->writesize) {
+ 		WARN(1, "Invalid ECC parameters\n");
+ 		ret = -EINVAL;
 
 
 
