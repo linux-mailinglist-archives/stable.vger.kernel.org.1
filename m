@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-59887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A5F932C45
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:53:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA1C932D32
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 804EE1C2316A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:53:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AC401C20C64
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B9F19DFB3;
-	Tue, 16 Jul 2024 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C414E199EA3;
+	Tue, 16 Jul 2024 16:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="op9t6ozI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRNsjml1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1454217A93F;
-	Tue, 16 Jul 2024 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B4F1DDCE;
+	Tue, 16 Jul 2024 16:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145212; cv=none; b=M0D/8+y0CMIkGOoAZOCMJDQ9B6fy7XBbC6zCTZiI6vYFB3HSOZ3OZYzV4N47UI1f5blpC5j9u/V0Jz9Q9nLBk1AkrvPqDCpn+gvFqXi/dm51i2FielRey7SPdkLnQ81U6aZf0l4l9eeb4d67liNxUf+W4SuktWnkizZditjvU/w=
+	t=1721145740; cv=none; b=eve6lFqBXHr3jDhjkkJwQ6Ji/0g8pAExxadl6PapMManOticF3X77SLMGiGqgWxDwgVukrDqUfaTEgJHmdfW5yR5GQh8aCl+gGImngF6k5nv9jv8RbEKD7YRzgH/B4VUwM6piHhlIblmk5WrjgzpTGJDUg/mmToAD680KybQqJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145212; c=relaxed/simple;
-	bh=IiWJyf/9/uDPgV5Oe3Bx2xBH1pd53qqPrTXmT4Dri4c=;
+	s=arc-20240116; t=1721145740; c=relaxed/simple;
+	bh=whvW0/rsX8GyQaxHwDXGBhpe3RAoBOJvdEwe/LIeOkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+FBEkP7MSv3W8FQaQVBDeKzjpulq1W7JhGEY4eSv1CQUw9g9GcWDYUinjLN5Zk40PvCO9QVmbRJWhen4x2wvcpD+F5zmWEhK+YGiH2czoZXFqUz2GMyyvBmlRkp8eajOwgF/kcmcrlj53YnkG8NjPxUtAQE6qf/pm4gOGnvnEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=op9t6ozI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E27DC116B1;
-	Tue, 16 Jul 2024 15:53:31 +0000 (UTC)
+	 MIME-Version; b=NcVf0Z/RbYFLS/mZEX00QoVQweQz6y5Jh42kWd8VkFH6S1/AL/IyYRpUij27cl6CyRZ4o87VrN4r32890DBajB/coqJQjU++bbvc/fHobPlMBXPYi7Mn2KBdiZiCOBzl0r27kNm1pa9wcK86qbZ85z+nTauzzr9FqoHk4aZFVuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRNsjml1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EAAC116B1;
+	Tue, 16 Jul 2024 16:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145212;
-	bh=IiWJyf/9/uDPgV5Oe3Bx2xBH1pd53qqPrTXmT4Dri4c=;
+	s=korg; t=1721145740;
+	bh=whvW0/rsX8GyQaxHwDXGBhpe3RAoBOJvdEwe/LIeOkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=op9t6ozIzQLBWz70bu8Tcfvg4dsQX7CrE898NTyXWK/S8lBXvzPWXvc8px8q9d/GK
-	 pvSam29tHbXV13DtK8cF/mNzEr4ivDHqwvuRtRecTdBBjsIg9474jBkbM4rULvIUra
-	 TTR7WmLtaCqJnAZYI3mjxDcgDKF+FDyzszn73ik4=
+	b=KRNsjml1BDdZks3Ou3galJVjyAPZoLPCnOQQZ5l+tRoOMXSds2OfnwiqBTeF966ZE
+	 UL6n25TA4folT6zfJcydvWhDgUIqDpXXNX/0289jFlbD5AdAzlr+GQU0v0ozxmA37W
+	 WJDwMChGqRAASlROJiLbS/FexVf+RdVgNAQTHaZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 135/143] i2c: rcar: bring hardware to known state when probing
+	He Zhe <zhe.he@windriver.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.6 069/121] hpet: Support 32-bit userspace
 Date: Tue, 16 Jul 2024 17:32:11 +0200
-Message-ID: <20240716152801.189186289@linuxfoundation.org>
+Message-ID: <20240716152753.982203932@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +61,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: He Zhe <zhe.he@windriver.com>
 
-[ Upstream commit 4e36c0f20cb1c74c7bd7ea31ba432c1c4a989031 ]
+commit 4e60131d0d36af65ab9c9144f4f163fe97ae36e8 upstream.
 
-When probing, the hardware is not brought into a known state. This may
-be a problem when a hypervisor restarts Linux without resetting the
-hardware, leaving an old state running. Make sure the hardware gets
-initialized, especially interrupts should be cleared and disabled.
+hpet_compat_ioctl and read file operations failed to handle parameters from
+32-bit userspace and thus samples/timers/hpet_example.c fails as below.
 
-Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Closes: https://lore.kernel.org/r/20240702045535.2000393-1-dirk.behme@de.bosch.com
-Fixes: 6ccbe607132b ("i2c: add Renesas R-Car I2C driver")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+root@intel-x86-64:~# ./hpet_example-32.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: HPET_IRQFREQ failed
+
+This patch fixes cmd and arg handling in hpet_compat_ioctl and adds compat
+handling for 32-bit userspace in hpet_read.
+
+hpet_example now shows that it works for both 64-bit and 32-bit.
+
+root@intel-x86-64:~# ./hpet_example-32.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: info.hi_flags 0x0
+hpet_poll: expired time = 0xf4298
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+hpet_poll: expired time = 0xf4235
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+root@intel-x86-64:~# ./hpet_example-64.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: info.hi_flags 0x0
+hpet_poll: expired time = 0xf42a1
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+hpet_poll: expired time = 0xf4232
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+
+Cc: stable@vger.kernel.org
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: 54066a57c584 ("hpet: kill BKL, add compat_ioctl")
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240606123908.738733-1-zhe.he@windriver.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/char/hpet.c |   34 +++++++++++++++++++++++++++++-----
+ 1 file changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index 828aa2ea0fe4c..ec73463ea9b5e 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -257,6 +257,14 @@ static void rcar_i2c_init(struct rcar_i2c_priv *priv)
- 	}
- }
+--- a/drivers/char/hpet.c
++++ b/drivers/char/hpet.c
+@@ -289,8 +289,13 @@ hpet_read(struct file *file, char __user
+ 	if (!devp->hd_ireqfreq)
+ 		return -EIO;
  
-+static void rcar_i2c_reset_slave(struct rcar_i2c_priv *priv)
-+{
-+	rcar_i2c_write(priv, ICSIER, 0);
-+	rcar_i2c_write(priv, ICSSR, 0);
-+	rcar_i2c_write(priv, ICSCR, SDBS);
-+	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
-+}
+-	if (count < sizeof(unsigned long))
+-		return -EINVAL;
++	if (in_compat_syscall()) {
++		if (count < sizeof(compat_ulong_t))
++			return -EINVAL;
++	} else {
++		if (count < sizeof(unsigned long))
++			return -EINVAL;
++	}
+ 
+ 	add_wait_queue(&devp->hd_waitqueue, &wait);
+ 
+@@ -314,9 +319,16 @@ hpet_read(struct file *file, char __user
+ 		schedule();
+ 	}
+ 
+-	retval = put_user(data, (unsigned long __user *)buf);
+-	if (!retval)
+-		retval = sizeof(unsigned long);
++	if (in_compat_syscall()) {
++		retval = put_user(data, (compat_ulong_t __user *)buf);
++		if (!retval)
++			retval = sizeof(compat_ulong_t);
++	} else {
++		retval = put_user(data, (unsigned long __user *)buf);
++		if (!retval)
++			retval = sizeof(unsigned long);
++	}
 +
- static int rcar_i2c_bus_barrier(struct rcar_i2c_priv *priv)
+ out:
+ 	__set_current_state(TASK_RUNNING);
+ 	remove_wait_queue(&devp->hd_waitqueue, &wait);
+@@ -671,12 +683,24 @@ struct compat_hpet_info {
+ 	unsigned short hi_timer;
+ };
+ 
++/* 32-bit types would lead to different command codes which should be
++ * translated into 64-bit ones before passed to hpet_ioctl_common
++ */
++#define COMPAT_HPET_INFO       _IOR('h', 0x03, struct compat_hpet_info)
++#define COMPAT_HPET_IRQFREQ    _IOW('h', 0x6, compat_ulong_t)
++
+ static long
+ hpet_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
  {
- 	int ret;
-@@ -1033,11 +1041,8 @@ static int rcar_unreg_slave(struct i2c_client *slave)
+ 	struct hpet_info info;
+ 	int err;
  
- 	/* ensure no irq is running before clearing ptr */
- 	disable_irq(priv->irq);
--	rcar_i2c_write(priv, ICSIER, 0);
--	rcar_i2c_write(priv, ICSSR, 0);
-+	rcar_i2c_reset_slave(priv);
- 	enable_irq(priv->irq);
--	rcar_i2c_write(priv, ICSCR, SDBS);
--	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
- 
- 	priv->slave = NULL;
- 
-@@ -1152,7 +1157,9 @@ static int rcar_i2c_probe(struct platform_device *pdev)
- 		goto out_pm_disable;
- 	}
- 
--	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
-+	/* Bring hardware to known state */
-+	rcar_i2c_init(priv);
-+	rcar_i2c_reset_slave(priv);
- 
- 	if (priv->devtype < I2C_RCAR_GEN3) {
- 		irqflags |= IRQF_NO_THREAD;
--- 
-2.43.0
-
++	if (cmd == COMPAT_HPET_INFO)
++		cmd = HPET_INFO;
++
++	if (cmd == COMPAT_HPET_IRQFREQ)
++		cmd = HPET_IRQFREQ;
++
+ 	mutex_lock(&hpet_mutex);
+ 	err = hpet_ioctl_common(file->private_data, cmd, arg, &info);
+ 	mutex_unlock(&hpet_mutex);
 
 
 
