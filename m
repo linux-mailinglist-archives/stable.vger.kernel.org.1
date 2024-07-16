@@ -1,111 +1,112 @@
-Return-Path: <stable+bounces-59399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB11F9322E2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 11:32:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7143393236C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 11:55:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC7051C2229B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 09:32:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E5492848B3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 09:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A439197A81;
-	Tue, 16 Jul 2024 09:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D845C197A61;
+	Tue, 16 Jul 2024 09:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lvlxd0wm"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F152C197A61
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 09:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4FE2E832
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 09:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721122324; cv=none; b=kv/sWzwT0Mukho66dLcTqmK83wExpgyzmg60cGOQLk95DVFCw1HJI/7/+AdgVZVwqGKCnQt9cBpxOZt/yw1NJogUv9dv3XjrTJDHtlPNeLJr+qNYMUBfproNKtFZSmBldod8me6I3C8619XosrvworTdGVElQDVTEtD6RDu+5to=
+	t=1721123705; cv=none; b=YDBj5mB5VT80L4jgKSdSlhkh1m1hDEJzkPS3aj2fMUz6AookdpLHPSwxpr7+AqRO5QklIfQui0DiAzp8nj7v18861+s9Y/xZc2sGf+SP5L3zdHgWQPDa0MwSlX4pdMRZP0tJxZco3mkogmjlJ96BFpNJth479UD6LUSH/6KVFjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721122324; c=relaxed/simple;
-	bh=YBZKfkIG/m5I6OPSrvhiArMqjbfjmW8QWVeuKuzfRMs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LriPtSVYfkqO53MH5Owg0LpZ/jTWOFAtyd57maL73uGHBZJcubWFxz/keUubhruPgH7BjAgnTGQ3ndsXSEmTfDF+InidlFdL3AX+ZfFN4jen1AfgvV9uA4CT1NBDl3vPGHFCSQoTmW574ym4Dp3OvfvqSjCeIcKjueIeZlW23NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4WNYjv2jdgz4f3jY5
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 17:31:47 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 590F11A0181
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 17:31:59 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP4 (Coremail) with SMTP id gCh0CgC3mjgNPpZmcQsjAQ--.11716S4;
-	Tue, 16 Jul 2024 17:31:59 +0800 (CST)
-From: libaokun@huaweicloud.com
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: sashal@kernel.org,
-	tytso@mit.edu,
-	jack@suse.cz,
-	patches@lists.linux.dev,
-	yi.zhang@huawei.com,
-	yangerkun@huawei.com,
-	libaokun@huaweicloud.com,
-	Baokun Li <libaokun1@huawei.com>
-Subject: [PATCH 6.6/6.9] ext4: avoid ptr null pointer dereference
-Date: Tue, 16 Jul 2024 17:29:29 +0800
-Message-Id: <20240716092929.864207-1-libaokun@huaweicloud.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1721123705; c=relaxed/simple;
+	bh=ds1biXbXIWkTSsdB0y9iUmwLmE9tUaNFwkZkwt+FOGU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pUM310PMIr1O1NKMT2nmQ8ES+e6MTRwBk5M41dh3y2DNOR2r0hIOaAtSNqLlNKPNF0UcmQ/7/sWmegjHqTi7Ofw0KgamQUZ4uu9Xp+UfoZR76XswBgtAcfPyOaB7DGts9qoILPbCm9BS8T8cH9fjiv170Q0qaZUrrjh1xuxaHuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lvlxd0wm; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721123704; x=1752659704;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ds1biXbXIWkTSsdB0y9iUmwLmE9tUaNFwkZkwt+FOGU=;
+  b=lvlxd0wmwrcBJipf6HvSEKm46aI53JfBhsrrCIiIHeJRnLeCW9g8PKTQ
+   fgM366QBM8eesRhLopksluSriv3L8LWwNhOVhxrpGaaqKeurywdnyd8j9
+   EGHbwE49bAgNC10p4sZLwf9nq91buTE4h9WjIdtVAHivRJaII7+aFlZSk
+   mExlMeiUx29i0jTH0q7mLApZGqyCNvB1dQk0ww1tqWFHGk/IYn26xDLY+
+   OxTt8G08m0Own1pAwEVQMwQ8q2qkkRtID+40q5ASU3VSOp39F36J6K1K4
+   S34aUb8jdwyAukls2wPEKolCVWpscvZRtxxK6/bp+RVvE8ZInsZ+/+mrU
+   Q==;
+X-CSE-ConnectionGUID: 1uZ326ttSQeaE7PiAom46g==
+X-CSE-MsgGUID: WGrq95htQEqUhZYsjPP4qw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11134"; a="41075126"
+X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
+   d="scan'208";a="41075126"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2024 02:55:03 -0700
+X-CSE-ConnectionGUID: 4jR0Id70RXCZxcFhe+VTUA==
+X-CSE-MsgGUID: UoH08PBHT4Gu1d5QT37C0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
+   d="scan'208";a="80637535"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO intel.com) ([10.245.246.212])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2024 02:55:01 -0700
+Date: Tue, 16 Jul 2024 11:54:56 +0200
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Nitin Gote <nitin.r.gote@intel.com>
+Cc: chris.p.wilson@intel.com, tursulin@ursulin.net,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	nirmoy.das@intel.com, janusz.krzysztofik@linux.intel.com,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] drm/i915/gt: Do not consider preemption during
+ execlists_dequeue for gen8
+Message-ID: <ZpZDcGxmwSQ3ze8t@ashyti-mobl2.lan>
+References: <20240711163208.1355736-1-nitin.r.gote@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgC3mjgNPpZmcQsjAQ--.11716S4
-X-Coremail-Antispam: 1UD129KBjvdXoW7GFy7uFWxXw1UXF1kWF4kWFg_yoWfKrb_G3
-	s5Xr48Crs5Gw1Ik34fCr1YqryrKan5Zr15GFZaqr4a9F4rtr95Ja4qv397Ar48urWxWF9x
-	C3Z7CrW3WFyIgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbTAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwAKzVCY07xG64k0F24lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr4
-	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
-	67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
-	8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAv
-	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14
-	v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUO73vUUUUU
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgAGBWaWL5QGDAAAsA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240711163208.1355736-1-nitin.r.gote@intel.com>
 
-From: Baokun Li <libaokun1@huawei.com>
+Hi Nitin,
 
-When commit 13df4d44a3aa ("ext4: fix slab-out-of-bounds in
-ext4_mb_find_good_group_avg_frag_lists()") was backported to stable, the
-commit f536808adcc3 ("ext4: refactor out ext4_generic_attr_store()") that
-uniformly determines if the ptr is null is not merged in, so it needs to
-be judged whether ptr is null or not in each case of the switch, otherwise
-null pointer dereferencing may occur.
+On Thu, Jul 11, 2024 at 10:02:08PM +0530, Nitin Gote wrote:
+> We're seeing a GPU HANG issue on a CHV platform, which was caused by
+> bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8").
+> 
+> Gen8 platform has only timeslice and doesn't support a preemption mechanism
+> as engines do not have a preemption timer and doesn't send an irq if the
+> preemption timeout expires. So, add a fix to not consider preemption
+> during dequeuing for gen8 platforms.
+> 
+> v2: Simplify can_preempt() function (Tvrtko Ursulin)
+> 
+> v3:
+>  - Inside need_preempt(), condition of can_preempt() is not required
+>    as simplified can_preempt() is enough. (Chris Wilson)
+> 
+> Fixes: bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8")
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11396
+> Suggested-by: Andi Shyti <andi.shyti@intel.com>
+> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> CC: <stable@vger.kernel.org> # v5.2+
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
----
- fs/ext4/sysfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+with the commit message fixed and the checkpatch as well, merged
+to drm-intel-gt-next.
 
-diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
-index 63cbda3700ea..d65dccb44ed5 100644
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -473,6 +473,8 @@ static ssize_t ext4_attr_store(struct kobject *kobj,
- 			*((unsigned int *) ptr) = t;
- 		return len;
- 	case attr_clusters_in_group:
-+		if (!ptr)
-+			return 0;
- 		ret = kstrtouint(skip_spaces(buf), 0, &t);
- 		if (ret)
- 			return ret;
--- 
-2.39.2
-
+Thank you,
+Andi
 
