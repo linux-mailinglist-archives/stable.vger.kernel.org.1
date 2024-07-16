@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-59680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30FC6932B42
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3DA932AEE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C80AB1F24453
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 094561F209A3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C86B19FA6F;
-	Tue, 16 Jul 2024 15:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF08D1E895;
+	Tue, 16 Jul 2024 15:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUY8p5db"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lG9c7m1w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2B119FA6A;
-	Tue, 16 Jul 2024 15:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6E71DDCE;
+	Tue, 16 Jul 2024 15:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144579; cv=none; b=HabAj3xodRKkVAKlsMNaS6wEqbwqn5REVRejf6JW6f0f6RBTS0Zc/Onmzr2mNUMGfWRM4bAAaeaBb0uN5eTCx1s1fH9MzrbgAczVpZnbPmOFoKduWADleAKZLsbMAZ5+02OQw2M6IH/LytroSn4YSdwmOLrGVERLG2rRLuCWf8Q=
+	t=1721144378; cv=none; b=RaHsB6d8pgrH4Xc7E22cB5pmJg5gmjvSMiD3XeqRT4JGknl/SMC/n2trutLblKVpftwNDEIWHLo24A3OvfJbv3Vl7ecqJ3i4x2TGcoOrbgVl/o9fFuENutJXUxsjAvvGgptl8HhuJKWEBH9gqXybWYlh6feDiVehQvuLxTuwFL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144579; c=relaxed/simple;
-	bh=jJzleNTJY38zCS6V9r+lKKex1WbyR5ZLkcVZENOW7yY=;
+	s=arc-20240116; t=1721144378; c=relaxed/simple;
+	bh=QlxaqzFIjPsInRBx59DM6bGk2jCmRMoRSpgL13BnEgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZoDXy5cj0ciCeYA55ZCXT+FpiW+HOCaY2Hm+eh9llci8q+NWPzxjFHkm7Fu2qGDbZ05teY67aX6oc5iYu9/eFxNcwxwM9dfECB805pupRrRybgoOctGq+HqY1VF83HrD5Liq1GoEJnVj54ZEWmqBq/PH+vmZiDRlf0H6FNizB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUY8p5db; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37651C4AF0F;
-	Tue, 16 Jul 2024 15:42:58 +0000 (UTC)
+	 MIME-Version; b=i0MNUPC2bOtNuAczl/LElXVDRYeYPSHAjyMuHXxwJQEC/pdg+KQO66CE/ZmMi/PqzJy+TOyVonicuHJx8wmmrEmd73bIZequGVoQ1T/lIUSD9YPLfD89DKgVq99/r98sDEIgMYlpgl2YsiyUlMtJujLdR6M0caqCKQ4GiULDnUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lG9c7m1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CAAC4AF0D;
+	Tue, 16 Jul 2024 15:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144578;
-	bh=jJzleNTJY38zCS6V9r+lKKex1WbyR5ZLkcVZENOW7yY=;
+	s=korg; t=1721144378;
+	bh=QlxaqzFIjPsInRBx59DM6bGk2jCmRMoRSpgL13BnEgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wUY8p5db4DnXg3zcCW+/fWYn/G/4AB6gLpuUUiCevpINESt/kG5muByKtKHToyfwH
-	 yGWmQW2OvuSyykAxaKj8Ll6ovn1mEQKu+9zOUUx6ubWujhl50/iWSuL0DSk+tOezLr
-	 ApIcka7wzu/XXgHUNK2bwTC8PcL3FnjRUXI3Uwo4=
+	b=lG9c7m1wXum30O8l8ZX8kn/77ttKruGDFLbLSmgQsv8Zs8WLwODftvVC9NQBMpKps
+	 eotm1cViat7fZQjh9N1BF5CgDIv6sgNsspuS96Zyz5+CoOB6ZatjF5ZXjMAPUcGL1T
+	 fmUO4HAsOwNZFclmYTzF1jEVMPYt4By4sOva8AUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jimmy Assarsson <extja@kvaser.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 039/108] can: kvaser_usb: Explicitly initialize family in leafimx driver_info struct
+	zhang kai <zhangkaiheb@126.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 22/78] tcp: tcp_mark_head_lost is only valid for sack-tcp
 Date: Tue, 16 Jul 2024 17:30:54 +0200
-Message-ID: <20240716152747.496869070@linuxfoundation.org>
+Message-ID: <20240716152741.492980326@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: zhang kai <zhangkaiheb@126.com>
 
-commit 19d5b2698c35b2132a355c67b4d429053804f8cc upstream.
+[ Upstream commit 636ef28d6e4d174e424102466caf572b0406fb0e ]
 
-Explicitly set the 'family' driver_info struct member for leafimx.
-Previously, the correct operation relied on KVASER_LEAF being the first
-defined value in enum kvaser_usb_leaf_family.
+so tcp_is_sack/reno checks are removed from tcp_mark_head_lost.
 
-Fixes: e6c80e601053 ("can: kvaser_usb: kvaser_usb_leaf: fix CAN clock frequency regression")
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://lore.kernel.org/all/20240628194529.312968-1-extja@kvaser.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: zhang kai <zhangkaiheb@126.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: a6458ab7fd4f ("UPSTREAM: tcp: fix DSACK undo in fast recovery to call tcp_try_to_open()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp_input.c | 32 +++++++-------------------------
+ 1 file changed, 7 insertions(+), 25 deletions(-)
 
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -114,6 +114,7 @@ static const struct kvaser_usb_driver_in
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 87a10bb11eb0b..dc446d7c9e0f2 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2202,8 +2202,7 @@ static bool tcp_time_to_recover(struct sock *sk, int flag)
+ }
  
- static const struct kvaser_usb_driver_info kvaser_usb_driver_info_leafimx = {
- 	.quirks = 0,
-+	.family = KVASER_LEAF,
- 	.ops = &kvaser_usb_leaf_dev_ops,
- };
+ /* Detect loss in event "A" above by marking head of queue up as lost.
+- * For non-SACK(Reno) senders, the first "packets" number of segments
+- * are considered lost. For RFC3517 SACK, a segment is considered lost if it
++ * For RFC3517 SACK, a segment is considered lost if it
+  * has at least tp->reordering SACKed seqments above it; "packets" refers to
+  * the maximum SACKed segments to pass before reaching this limit.
+  */
+@@ -2211,10 +2210,9 @@ static void tcp_mark_head_lost(struct sock *sk, int packets, int mark_head)
+ {
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	struct sk_buff *skb;
+-	int cnt, oldcnt, lost;
+-	unsigned int mss;
++	int cnt;
+ 	/* Use SACK to deduce losses of new sequences sent during recovery */
+-	const u32 loss_high = tcp_is_sack(tp) ?  tp->snd_nxt : tp->high_seq;
++	const u32 loss_high = tp->snd_nxt;
  
+ 	WARN_ON(packets > tp->packets_out);
+ 	skb = tp->lost_skb_hint;
+@@ -2237,26 +2235,11 @@ static void tcp_mark_head_lost(struct sock *sk, int packets, int mark_head)
+ 		if (after(TCP_SKB_CB(skb)->end_seq, loss_high))
+ 			break;
+ 
+-		oldcnt = cnt;
+-		if (tcp_is_reno(tp) ||
+-		    (TCP_SKB_CB(skb)->sacked & TCPCB_SACKED_ACKED))
++		if (TCP_SKB_CB(skb)->sacked & TCPCB_SACKED_ACKED)
+ 			cnt += tcp_skb_pcount(skb);
+ 
+-		if (cnt > packets) {
+-			if (tcp_is_sack(tp) ||
+-			    (TCP_SKB_CB(skb)->sacked & TCPCB_SACKED_ACKED) ||
+-			    (oldcnt >= packets))
+-				break;
+-
+-			mss = tcp_skb_mss(skb);
+-			/* If needed, chop off the prefix to mark as lost. */
+-			lost = (packets - oldcnt) * mss;
+-			if (lost < skb->len &&
+-			    tcp_fragment(sk, TCP_FRAG_IN_RTX_QUEUE, skb,
+-					 lost, mss, GFP_ATOMIC) < 0)
+-				break;
+-			cnt = packets;
+-		}
++		if (cnt > packets)
++			break;
+ 
+ 		tcp_skb_mark_lost(tp, skb);
+ 
+@@ -2883,8 +2866,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
+ 			if (tcp_try_undo_partial(sk, prior_snd_una))
+ 				return;
+ 			/* Partial ACK arrived. Force fast retransmit. */
+-			do_lost = tcp_is_reno(tp) ||
+-				  tcp_force_fast_retransmit(sk);
++			do_lost = tcp_force_fast_retransmit(sk);
+ 		}
+ 		if (tcp_try_undo_dsack(sk)) {
+ 			tcp_try_keep_open(sk);
+-- 
+2.43.0
+
 
 
 
