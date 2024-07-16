@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-60028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B238932D10
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE769932B70
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFC13284052
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95DBF1F21318
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27BD17A930;
-	Tue, 16 Jul 2024 16:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FEE419AD59;
+	Tue, 16 Jul 2024 15:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/vCjK5s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sS6J4V8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE1C136643;
-	Tue, 16 Jul 2024 16:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10AA27733;
+	Tue, 16 Jul 2024 15:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145640; cv=none; b=bzR4gReaWkhxSigACa2SlOPbtr7X0ZC4LGBCWmTrxsea7R2h7Agb2G5E7z/tsf1kYONjnwhyiogHSfuDxHCPcer29dX5VlfF8/3P3rkdeiNhYIVYi4whs5KroScMIk24lmK8VpRgx1hXRzh8s/u9N9L4fCm0vKeCEjqeonnoSec=
+	t=1721144710; cv=none; b=hwsKh1D5PgApZn1AyCkInZTpqqfcuxUDwws3FLZi6OH5xnQn7VK/XJLzTG+LVl/VlwbWHqia3/1BHC2/EtIf4fkZzTWvBwZvCHD0SlgZMKo+E+suRzcHAp+SvuWuo7Q/15FWDNlRDrEj3Cm8lPCgZ0tx/J+Zh1QXdK123RRAy5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145640; c=relaxed/simple;
-	bh=B+NAmw4U3P59hYCSt38T1zVf9YadZUbK1jS6VrKabe4=;
+	s=arc-20240116; t=1721144710; c=relaxed/simple;
+	bh=J31nHd20/MHfGyOkfMpcgBG/ifqNNdcOae13ip5AyCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qu6/uOMEXAxjZWYEukCpVbtnE94OlJ5jEPte1urVofQUVrflAen5m7IFBS9mRsOPBBHX7Zl8Yb7CEbFavuvFNKOefLBbZWVQeBqdCgs1iSlfBQ/12b3semaYQX4Fh1qvljqUG/gta4JUsuSkANEHsdqIBEOqtJMEwGkQ4Z4FzDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/vCjK5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C25C4AF0B;
-	Tue, 16 Jul 2024 16:00:39 +0000 (UTC)
+	 MIME-Version; b=eqoF5ypFxjRLkJJVC27DEU7Hry3pq4iKCD+20Z7d39Y00FVnyr8sv6WTD4nMN1qrQ52U/9NHkpPU+ybKHBemr4R44VedyiSobyjJCMUbpOoHLlaxm+3id2nSaOFHhK1gWJEouyix9EH2DnGgaY3Ktpd82gDN4swskonDselK7ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sS6J4V8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164E6C116B1;
+	Tue, 16 Jul 2024 15:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145640;
-	bh=B+NAmw4U3P59hYCSt38T1zVf9YadZUbK1jS6VrKabe4=;
+	s=korg; t=1721144710;
+	bh=J31nHd20/MHfGyOkfMpcgBG/ifqNNdcOae13ip5AyCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/vCjK5sZQ/2ULV0BoBeYwjalE5CMJereomeaYAph+Ax7gMjR28BFirsAX1IUVA/R
-	 3iZoUioQ3S9P/98D6Jp62sn7HBUli6pJ5SGPTCmxdyKH9bVbc1FJnewqVvKTqLrfpx
-	 7G+Kwvw78KHsEzXEx4HLdMOmE1DjYtOEGqI9IKMM=
+	b=sS6J4V8G5jgnrorXqLTgLu3yICsnsvd4H3YL3ne7ezK+JiisVPWz8KCIl+RYs/EA6
+	 2ndV+Tc0+wjvVqYLzW0ZXTpFMKe+SQzvzwRWipf/gzy1aVxLTBNd/3pvvoSS6MF9zx
+	 satNVGwxl+y6WP7EWohmRjvOb0OnznARRTar6ZhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lex Siegel <usiegl00@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Neil Brown <neilb@suse.de>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/121] net, sunrpc: Remap EPERM in case of connection failure in xs_tcp_setup_socket
+	Dmitry Smirnov <d.smirnov@inbox.lv>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 082/108] USB: serial: mos7840: fix crash on resume
 Date: Tue, 16 Jul 2024 17:31:37 +0200
-Message-ID: <20240716152752.673761373@linuxfoundation.org>
+Message-ID: <20240716152749.130838500@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,68 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Dmitry Smirnov <d.smirnov@inbox.lv>
 
-[ Upstream commit 626dfed5fa3bfb41e0dffd796032b555b69f9cde ]
+commit c15a688e49987385baa8804bf65d570e362f8576 upstream.
 
-When using a BPF program on kernel_connect(), the call can return -EPERM. This
-causes xs_tcp_setup_socket() to loop forever, filling up the syslog and causing
-the kernel to potentially freeze up.
+Since commit c49cfa917025 ("USB: serial: use generic method if no
+alternative is provided in usb serial layer"), USB serial core calls the
+generic resume implementation when the driver has not provided one.
 
-Neil suggested:
+This can trigger a crash on resume with mos7840 since support for
+multiple read URBs was added back in 2011. Specifically, both port read
+URBs are now submitted on resume for open ports, but the context pointer
+of the second URB is left set to the core rather than mos7840 port
+structure.
 
-  This will propagate -EPERM up into other layers which might not be ready
-  to handle it. It might be safer to map EPERM to an error we would be more
-  likely to expect from the network system - such as ECONNREFUSED or ENETDOWN.
+Fix this by implementing dedicated suspend and resume functions for
+mos7840.
 
-ECONNREFUSED as error seems reasonable. For programs setting a different error
-can be out of reach (see handling in 4fbac77d2d09) in particular on kernels
-which do not have f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err
-instead of allow boolean"), thus given that it is better to simply remap for
-consistent behavior. UDP does handle EPERM in xs_udp_send_request().
+Tested with Delock 87414 USB 2.0 to 4x serial adapter.
 
-Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
-Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
-Co-developed-by: Lex Siegel <usiegl00@gmail.com>
-Signed-off-by: Lex Siegel <usiegl00@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Neil Brown <neilb@suse.de>
-Cc: Trond Myklebust <trondmy@kernel.org>
-Cc: Anna Schumaker <anna@kernel.org>
-Link: https://github.com/cilium/cilium/issues/33395
-Link: https://lore.kernel.org/bpf/171374175513.12877.8993642908082014881@noble.neil.brown.name
-Link: https://patch.msgid.link/9069ec1d59e4b2129fc23433349fd5580ad43921.1720075070.git.daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dmitry Smirnov <d.smirnov@inbox.lv>
+[ johan: analyse crash and rewrite commit message; set busy flag on
+         resume; drop bulk-in check; drop unnecessary usb_kill_urb() ]
+Fixes: d83b405383c9 ("USB: serial: add support for multiple read urbs")
+Cc: stable@vger.kernel.org	# 3.3
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/xprtsock.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/serial/mos7840.c |   45 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index c3007f3e16f8c..c1fe2a6ea7976 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -2422,6 +2422,13 @@ static void xs_tcp_setup_socket(struct work_struct *work)
- 		transport->srcport = 0;
- 		status = -EAGAIN;
- 		break;
-+	case -EPERM:
-+		/* Happens, for instance, if a BPF program is preventing
-+		 * the connect. Remap the error so upper layers can better
-+		 * deal with it.
-+		 */
-+		status = -ECONNREFUSED;
-+		fallthrough;
- 	case -EINVAL:
- 		/* Happens, for instance, if the user specified a link
- 		 * local IPv6 address without a scope-id.
--- 
-2.43.0
-
+--- a/drivers/usb/serial/mos7840.c
++++ b/drivers/usb/serial/mos7840.c
+@@ -1764,6 +1764,49 @@ static int mos7840_port_remove(struct us
+ 	return 0;
+ }
+ 
++static int mos7840_suspend(struct usb_serial *serial, pm_message_t message)
++{
++	struct moschip_port *mos7840_port;
++	struct usb_serial_port *port;
++	int i;
++
++	for (i = 0; i < serial->num_ports; ++i) {
++		port = serial->port[i];
++		if (!tty_port_initialized(&port->port))
++			continue;
++
++		mos7840_port = usb_get_serial_port_data(port);
++
++		usb_kill_urb(mos7840_port->read_urb);
++		mos7840_port->read_urb_busy = false;
++	}
++
++	return 0;
++}
++
++static int mos7840_resume(struct usb_serial *serial)
++{
++	struct moschip_port *mos7840_port;
++	struct usb_serial_port *port;
++	int res;
++	int i;
++
++	for (i = 0; i < serial->num_ports; ++i) {
++		port = serial->port[i];
++		if (!tty_port_initialized(&port->port))
++			continue;
++
++		mos7840_port = usb_get_serial_port_data(port);
++
++		mos7840_port->read_urb_busy = true;
++		res = usb_submit_urb(mos7840_port->read_urb, GFP_NOIO);
++		if (res)
++			mos7840_port->read_urb_busy = false;
++	}
++
++	return 0;
++}
++
+ static struct usb_serial_driver moschip7840_4port_device = {
+ 	.driver = {
+ 		   .owner = THIS_MODULE,
+@@ -1792,6 +1835,8 @@ static struct usb_serial_driver moschip7
+ 	.port_probe = mos7840_port_probe,
+ 	.port_remove = mos7840_port_remove,
+ 	.read_bulk_callback = mos7840_bulk_in_callback,
++	.suspend = mos7840_suspend,
++	.resume = mos7840_resume,
+ };
+ 
+ static struct usb_serial_driver * const serial_drivers[] = {
 
 
 
