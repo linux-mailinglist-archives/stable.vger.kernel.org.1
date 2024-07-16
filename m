@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-59906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE922932C5B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654A2932C05
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D9F3B23BBC
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2670428111F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F1319B59C;
-	Tue, 16 Jul 2024 15:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C5319AD93;
+	Tue, 16 Jul 2024 15:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDxwjLHB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVC0lPyR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E84D1DDCE;
-	Tue, 16 Jul 2024 15:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF771DDCE;
+	Tue, 16 Jul 2024 15:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145268; cv=none; b=SU9npe6eDYecs6SyMdfn/kzDKw6n8/YYyQ+WaOrpHE2kwPQUhIKJA8tzoSZ8yKTq4FvgchdEoQBgboD/5gJzvzw71jTgP0el/2sQx9v8XU1le0+KOC7xaNg7mP63+pcRjoOyBRJH7B5nAzqcPdAbAhsrP3lNyPHJndttZPdqrX0=
+	t=1721145062; cv=none; b=nVt37Do09LmBcCRJxmWmD5Tp/RCJqVhhW7Dzp6jAKtC41q9WSR7dZ9ZFBOzezAY1d+AmHeWVgIUC5W8O1H89WJGCE9QYUcq+HVdsD1H9R8cu4FOu0OoQogQV7uhc7KtbTc55+izcqGCkD+4QouSLCT8c3xGp+SVaYw8D14yZkvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145268; c=relaxed/simple;
-	bh=hWoawiR62yJjf563mWI2fa+meGV0NXLDQZaBlO4lfN0=;
+	s=arc-20240116; t=1721145062; c=relaxed/simple;
+	bh=HK6afoSxeumJXzTj/M/OeM+0UmV2W0OdEfpjSy0g5CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qIIeP5717spwM0Om2HQiKmQ2JKkT5Oo52hH7FqFAY+aZOEgHhmzZx9l+Qd7fK9KOzxr2a9FwlRfNWRyU8j8vorKUR/OqLoGsMuq2qurHG9IrEQcGAEL7r2r6BSJAy8SQRPD1LyrXBRgA/pDk6ptHZ44kBncMwBFmgFZu/mkff10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDxwjLHB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DBEC116B1;
-	Tue, 16 Jul 2024 15:54:27 +0000 (UTC)
+	 MIME-Version; b=aQCa4Faz94WZkr+OsGgHeGI4+vxfvD5XVN3K0NKlahT6vDV5wkuGTzTpH1OtR3EkWJYHFGtWbU6EW+pW7UhlkWfZuL8nCJiEk5cVWd5FetkkMDf/YeGllCW5NVpAOeu/z+zZVH4mYie2V4TfeQXcfmysZJ6sW2YvDK8O3VA2sXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVC0lPyR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75B9C116B1;
+	Tue, 16 Jul 2024 15:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145268;
-	bh=hWoawiR62yJjf563mWI2fa+meGV0NXLDQZaBlO4lfN0=;
+	s=korg; t=1721145062;
+	bh=HK6afoSxeumJXzTj/M/OeM+0UmV2W0OdEfpjSy0g5CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDxwjLHBmE/IcsmIGsW6LgkOGHpfJ/Vwx/Jj0T5v/TVDSMvduCGmq8eY4aJbHmefo
-	 hMyEpehFWdJRBsAVzi/q4qD9fBd/71m64NswzeaB0ls0uR+JzzNdnJLwx8FC3yHeKE
-	 JVPwLsFZ8GvceRvhH60jfsLr/Rf4BIgGzHM22vmY=
+	b=GVC0lPyRJOSjllcbmM2DMSzkjZJUdp2lZXDE3NxFxNWoNiy3zLWd+I4Wqs3vBBqEO
+	 NFBDF+V5io+/uTp86ZfytBZrbY0uUpFtgeZEpVKtCC38sg1o+wGkpMJj/5IBSQiklF
+	 N/53ynugoVZhQnqbarZlEYneGHk+1ZsG4wgSlP0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linke li <lilinke99@qq.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 10/96] fs/dcache: Re-use value stored to dentry->d_flags instead of re-reading
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 085/143] nilfs2: fix kernel bug on rename operation of broken directory
 Date: Tue, 16 Jul 2024 17:31:21 +0200
-Message-ID: <20240716152746.914191349@linuxfoundation.org>
+Message-ID: <20240716152759.244223676@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: linke li <lilinke99@qq.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 8bfb40be31ddea0cb4664b352e1797cfe6c91976 ]
+commit a9e1ddc09ca55746079cc479aa3eb6411f0d99d4 upstream.
 
-Currently, the __d_clear_type_and_inode() writes the value flags to
-dentry->d_flags, then immediately re-reads it in order to use it in a if
-statement. This re-read is useless because no other update to
-dentry->d_flags can occur at this point.
+Syzbot reported that in rename directory operation on broken directory on
+nilfs2, __block_write_begin_int() called to prepare block write may fail
+BUG_ON check for access exceeding the folio/page size.
 
-This commit therefore re-use flags in the if statement instead of
-re-reading dentry->d_flags.
+This is because nilfs_dotdot(), which gets parent directory reference
+entry ("..") of the directory to be moved or renamed, does not check
+consistency enough, and may return location exceeding folio/page size for
+broken directories.
 
-Signed-off-by: linke li <lilinke99@qq.com>
-Link: https://lore.kernel.org/r/tencent_5E187BD0A61BA28605E85405F15228254D0A@qq.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: aabfe57ebaa7 ("vfs: don't mod negative dentry count when on shrinker list")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this issue by checking required directory entries ("." and "..") in
+the first chunk of the directory in nilfs_dotdot().
+
+Link: https://lkml.kernel.org/r/20240628165107.9006-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d3abed1ad3d367fa2627
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dcache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/dir.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index b09bc88dbbec7..9b10f1872f6c9 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -356,7 +356,7 @@ static inline void __d_clear_type_and_inode(struct dentry *dentry)
- 	flags &= ~(DCACHE_ENTRY_TYPE | DCACHE_FALLTHRU);
- 	WRITE_ONCE(dentry->d_flags, flags);
- 	dentry->d_inode = NULL;
--	if (dentry->d_flags & DCACHE_LRU_LIST)
-+	if (flags & DCACHE_LRU_LIST)
- 		this_cpu_inc(nr_dentry_negative);
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -384,11 +384,39 @@ found:
+ 
+ struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct folio **foliop)
+ {
+-	struct nilfs_dir_entry *de = nilfs_get_folio(dir, 0, foliop);
++	struct folio *folio;
++	struct nilfs_dir_entry *de, *next_de;
++	size_t limit;
++	char *msg;
+ 
++	de = nilfs_get_folio(dir, 0, &folio);
+ 	if (IS_ERR(de))
+ 		return NULL;
+-	return nilfs_next_entry(de);
++
++	limit = nilfs_last_byte(dir, 0);  /* is a multiple of chunk size */
++	if (unlikely(!limit || le64_to_cpu(de->inode) != dir->i_ino ||
++		     !nilfs_match(1, ".", de))) {
++		msg = "missing '.'";
++		goto fail;
++	}
++
++	next_de = nilfs_next_entry(de);
++	/*
++	 * If "next_de" has not reached the end of the chunk, there is
++	 * at least one more record.  Check whether it matches "..".
++	 */
++	if (unlikely((char *)next_de == (char *)de + nilfs_chunk_size(dir) ||
++		     !nilfs_match(2, "..", next_de))) {
++		msg = "missing '..'";
++		goto fail;
++	}
++	*foliop = folio;
++	return next_de;
++
++fail:
++	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
++	folio_release_kmap(folio, de);
++	return NULL;
  }
  
--- 
-2.43.0
-
+ ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
 
 
 
