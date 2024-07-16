@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-60109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC85932D6B
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7D9932D6C
 	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6C86B23908
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68D001F21466
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154E119AD5A;
-	Tue, 16 Jul 2024 16:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0C9199EA3;
+	Tue, 16 Jul 2024 16:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZI/weMIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPiuGF6J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC7D1DDCE;
-	Tue, 16 Jul 2024 16:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A45619AD93;
+	Tue, 16 Jul 2024 16:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145900; cv=none; b=Q3WL05hh5k0UZFkwm4hbU3O6y8ZUq+19V3Xz9p85s48aYqtu8Kn5fmH0AvoStMMCV1IIY3H5Tbse0DOV/Gx2mBd5uCa0Mng4Ffvk1JENG+dvc1j8LLTQcd5bSa548N5IODGylqVMpwOIjS2EDMLWHtfXGnrgEPi4EY3i1jnL17g=
+	t=1721145906; cv=none; b=VdqRgmuaxc1ppEIMiO37Kl7aGW6/K0vC/YVHjowGoUaYqxuOt6JgqM2xMKxTCMzU+ZDKJ26exdn6dhkZhR2ASvYhh1YkNHTafiYKOl2sRZDz9ftl3AHZ+XA4gWCT+qsHWmagLDxDZDWMw1c0m2EzmVn9T3U4fB9NOE9ebwaKVVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145900; c=relaxed/simple;
-	bh=FRSx/BDVO9ehbAZTTZvugveg46WYjxlJC3cDRlqpqD8=;
+	s=arc-20240116; t=1721145906; c=relaxed/simple;
+	bh=Dh91e3V+CQrJ6ZHOqaoQNTHKcCoOtVf9zS8jILJ9HjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfCKXhmo6HWChjmQx5lI9a1TmKfFbX69sxfWxkPjjCuBiTayYwUSz5+dNpftPGaVy2/O+gtUACj55cDOOa5j+HkpG+yW6BT9FQUg4Qd7XuB40Gjl+5t3Yn3HW+W4kmXSm5r8/WUua/ODWg/v7DZSbdTAAiw9rU0oV3KFZzLczWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZI/weMIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A09C116B1;
-	Tue, 16 Jul 2024 16:05:00 +0000 (UTC)
+	 MIME-Version; b=pOnwC2ddmEqLnDhFbwKjqMIt03vpCEOtPTAJ1HlwdUTbVoftijthfS+HFHKwQUg/ldM5qZJ00h0qg+dZkC/Lc+V8bp2K3dIADEjjyzQ5vYJe2Il4r9K30vKvaK2+bpdWoXfoiv8ycSyMBcX8bIrUCOvMCPr7wjrwjBrdY9Qr32E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPiuGF6J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21590C116B1;
+	Tue, 16 Jul 2024 16:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145900;
-	bh=FRSx/BDVO9ehbAZTTZvugveg46WYjxlJC3cDRlqpqD8=;
+	s=korg; t=1721145906;
+	bh=Dh91e3V+CQrJ6ZHOqaoQNTHKcCoOtVf9zS8jILJ9HjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZI/weMIuLvxUUdK5DJopNS/fF0bLYdzCdpCLri3stkSdqm8HOR/JztQZMQssX5fOO
-	 vANhghccluDlMkSsoWLkt5E9oZLUdpbDcPmsu87RkuX4/IEbl1WBmXClyzpI40gYmW
-	 BPIWsQhF9+EYVWcPkLtT4QSkxxnNR6oeGPBz1jCw=
+	b=ZPiuGF6J1zQQFaUSX8S9KhuqozK4kPkK3Izz88K9ZmWfIf30rs2i0BT8OqY5wLRkF
+	 OgbXepTGdU+nx6/v+Fn0AM4r6Q5qR9tj3hqg816xjcHBI9OYwIG/syXl4OSrfO82sR
+	 TAp0XhS8TnUw1MaEQ2XeNqaMJ6exKY+ZghvQA8Nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/121] i2c: testunit: avoid re-issued work after read message
-Date: Tue, 16 Jul 2024 17:32:57 +0200
-Message-ID: <20240716152755.752047444@linuxfoundation.org>
+Subject: [PATCH 6.6 116/121] i2c: rcar: clear NO_RXDMA flag after resetting
+Date: Tue, 16 Jul 2024 17:32:58 +0200
+Message-ID: <20240716152755.790188040@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
 References: <20240716152751.312512071@linuxfoundation.org>
@@ -68,40 +68,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 119736c7af442ab398dbb806865988c98ef60d46 ]
+[ Upstream commit fea6b5ebb71a2830b042e42de7ae255017ac3ce8 ]
 
-The to-be-fixed commit rightfully prevented that the registers will be
-cleared. However, the index must be cleared. Otherwise a read message
-will re-issue the last work. Fix it and add a comment describing the
-situation.
+We should allow RXDMA only if the reset was really successful, so clear
+the flag after the reset call.
 
-Fixes: c422b6a63024 ("i2c: testunit: don't erase registers after STOP")
+Fixes: 0e864b552b23 ("i2c: rcar: reset controller is mandatory for Gen3+")
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-slave-testunit.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/i2c/busses/i2c-rcar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c-slave-testunit.c b/drivers/i2c/i2c-slave-testunit.c
-index ca43e98cae1b2..23a11e4e92567 100644
---- a/drivers/i2c/i2c-slave-testunit.c
-+++ b/drivers/i2c/i2c-slave-testunit.c
-@@ -118,6 +118,13 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
- 			queue_delayed_work(system_long_wq, &tu->worker,
- 					   msecs_to_jiffies(10 * tu->regs[TU_REG_DELAY]));
- 		}
-+
-+		/*
-+		 * Reset reg_idx to avoid that work gets queued again in case of
-+		 * STOP after a following read message. But do not clear TU regs
-+		 * here because we still need them in the workqueue!
-+		 */
-+		tu->reg_idx = 0;
- 		break;
+diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
+index 0ba88d44a7dbe..1d341bd2b4b96 100644
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -856,10 +856,10 @@ static int rcar_i2c_master_xfer(struct i2c_adapter *adap,
  
- 	case I2C_SLAVE_WRITE_REQUESTED:
+ 	/* Gen3+ needs a reset. That also allows RXDMA once */
+ 	if (priv->devtype >= I2C_RCAR_GEN3) {
+-		priv->flags &= ~ID_P_NO_RXDMA;
+ 		ret = rcar_i2c_do_reset(priv);
+ 		if (ret)
+ 			goto out;
++		priv->flags &= ~ID_P_NO_RXDMA;
+ 	}
+ 
+ 	rcar_i2c_init(priv);
 -- 
 2.43.0
 
