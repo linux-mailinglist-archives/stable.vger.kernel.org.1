@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-59609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060D3932AE9
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC71932A9F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15471F22F4A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88872280F25
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034F319AA40;
-	Tue, 16 Jul 2024 15:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3407FF9E8;
+	Tue, 16 Jul 2024 15:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WuF+lYC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izOYOz8W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B441F1DA4D;
-	Tue, 16 Jul 2024 15:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44D1CA40;
+	Tue, 16 Jul 2024 15:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144363; cv=none; b=p6tPi8bCUAGv7TF2j295cG3Xe+43jaqIxw07d6iZSGLypKkzuZsghmTeoWXisnGEDNVq10hsr9RO1zhJIUo7ZuhLKsHdom8duGsRE1rbUyy/27UVxtfnf0wkFdrsDFevZnfhN8Wnce6OCvHZOMVrJ7Tq3sxnH0829lTY4YkLJ4w=
+	t=1721144163; cv=none; b=YCnlc5DS1e5FTQN84f/jMarA6h4IPkW0iOcqaYyyJvdkGF/fyn6gixVsh5tSg2DNiDxSjKSDTK+HcWdNGmm3LLwiVV4VyCCXTkgm9Gzni4GwN3OFNxxynKmAr1o877gPvnopiRKzLQCHQs3hUW3NaGMEUp3B9vFkpCCZHFeVuJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144363; c=relaxed/simple;
-	bh=u65eCG/XtwQGQv4sZGpvFfqnhrZBA3qrx10FDnYX7fM=;
+	s=arc-20240116; t=1721144163; c=relaxed/simple;
+	bh=yCTYfc8U5WwmOgxju+mh3I5dNhV9X05KGh/OpjLQmao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R64TFuiHw0L8ewsr1DkNq+QmMfTkugDkeEr2PPt99fhDf+LJy3iC07M/BghBpbHMaKnEVLIGVjYepgj20HzJytDSxuiRsE+DDX//Y+6hEC4cYKoQnV28DWoS3pABoYoRLoI0YCo+zNls4YYc37SUewveCMi9bRejjlMAP2emaK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WuF+lYC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E2EC116B1;
-	Tue, 16 Jul 2024 15:39:23 +0000 (UTC)
+	 MIME-Version; b=Acpgl4kmgselVrCI6rWv+Pazs3reSyvcAt3pTvb7AwlSpJvaT5R/4OBTrVYXIqLxtvnob1cuxBkKlK3nL8CNZc2D6bNBWiG0ccOLG1e38nTdGLYp8fuWfm8TMbaoKlzbcJDuVs6AMR5YfeuF3T4nxYsbYBLqzF1i5NvXwoHZsrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izOYOz8W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689D2C116B1;
+	Tue, 16 Jul 2024 15:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144363;
-	bh=u65eCG/XtwQGQv4sZGpvFfqnhrZBA3qrx10FDnYX7fM=;
+	s=korg; t=1721144162;
+	bh=yCTYfc8U5WwmOgxju+mh3I5dNhV9X05KGh/OpjLQmao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WuF+lYC7IRvdgvYsJ9BMrj2zegZBYJBJGz0SMIbuENhC0I2hmVp/YrYygKVq4mqjd
-	 lKkDtzLNEUhS4a2+WoMvNT4yHayIf74sj9B4fP4bDdP/oct265DcU5r1gGUkig7Bud
-	 ezRL/6/6BGyVo7GQD+4tTmTnisr3+S6J+WQIi6RE=
+	b=izOYOz8W1otjH/HOXvIZ8q6m2Oua95LpHrlzHBg/o8eAhqmvKpJr3G0baRFFM2E/m
+	 1koNn2FGYIrvGnWki2Kqw1Mt8n6b8C/D8s8pKoZ5Pvo4fdskREyxuTTcNbT4Z8zNSi
+	 1yEhkcdA/KJW7QvNRVVmPST70JGkH2Huvv5PRB9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Yong <wang.yong12@zte.com.cn>,
-	Lu Zhongjun <lu.zhongjun@zte.com.cn>,
-	Yang Tao <yang.tao172@zte.com.cn>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Yang Yang <yang.yang29@zte.com.cn>,
-	Richard Weinberger <richard@nod.at>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Ingo Franzki <ifranzki@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 20/78] jffs2: Fix potential illegal address access in jffs2_free_inode
-Date: Tue, 16 Jul 2024 17:30:52 +0200
-Message-ID: <20240716152741.412381631@linuxfoundation.org>
+Subject: [PATCH 4.19 18/66] s390/pkey: Wipe sensitive data on failure
+Date: Tue, 16 Jul 2024 17:30:53 +0200
+Message-ID: <20240716152738.857835019@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,96 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Yong <wang.yong12@zte.com.cn>
+From: Holger Dengler <dengler@linux.ibm.com>
 
-[ Upstream commit af9a8730ddb6a4b2edd779ccc0aceb994d616830 ]
+[ Upstream commit 1d8c270de5eb74245d72325d285894a577a945d9 ]
 
-During the stress testing of the jffs2 file system,the following
-abnormal printouts were found:
-[ 2430.649000] Unable to handle kernel paging request at virtual address 0069696969696948
-[ 2430.649622] Mem abort info:
-[ 2430.649829]   ESR = 0x96000004
-[ 2430.650115]   EC = 0x25: DABT (current EL), IL = 32 bits
-[ 2430.650564]   SET = 0, FnV = 0
-[ 2430.650795]   EA = 0, S1PTW = 0
-[ 2430.651032]   FSC = 0x04: level 0 translation fault
-[ 2430.651446] Data abort info:
-[ 2430.651683]   ISV = 0, ISS = 0x00000004
-[ 2430.652001]   CM = 0, WnR = 0
-[ 2430.652558] [0069696969696948] address between user and kernel address ranges
-[ 2430.653265] Internal error: Oops: 96000004 [#1] PREEMPT SMP
-[ 2430.654512] CPU: 2 PID: 20919 Comm: cat Not tainted 5.15.25-g512f31242bf6 #33
-[ 2430.655008] Hardware name: linux,dummy-virt (DT)
-[ 2430.655517] pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[ 2430.656142] pc : kfree+0x78/0x348
-[ 2430.656630] lr : jffs2_free_inode+0x24/0x48
-[ 2430.657051] sp : ffff800009eebd10
-[ 2430.657355] x29: ffff800009eebd10 x28: 0000000000000001 x27: 0000000000000000
-[ 2430.658327] x26: ffff000038f09d80 x25: 0080000000000000 x24: ffff800009d38000
-[ 2430.658919] x23: 5a5a5a5a5a5a5a5a x22: ffff000038f09d80 x21: ffff8000084f0d14
-[ 2430.659434] x20: ffff0000bf9a6ac0 x19: 0169696969696940 x18: 0000000000000000
-[ 2430.659969] x17: ffff8000b6506000 x16: ffff800009eec000 x15: 0000000000004000
-[ 2430.660637] x14: 0000000000000000 x13: 00000001000820a1 x12: 00000000000d1b19
-[ 2430.661345] x11: 0004000800000000 x10: 0000000000000001 x9 : ffff8000084f0d14
-[ 2430.662025] x8 : ffff0000bf9a6b40 x7 : ffff0000bf9a6b48 x6 : 0000000003470302
-[ 2430.662695] x5 : ffff00002e41dcc0 x4 : ffff0000bf9aa3b0 x3 : 0000000003470342
-[ 2430.663486] x2 : 0000000000000000 x1 : ffff8000084f0d14 x0 : fffffc0000000000
-[ 2430.664217] Call trace:
-[ 2430.664528]  kfree+0x78/0x348
-[ 2430.664855]  jffs2_free_inode+0x24/0x48
-[ 2430.665233]  i_callback+0x24/0x50
-[ 2430.665528]  rcu_do_batch+0x1ac/0x448
-[ 2430.665892]  rcu_core+0x28c/0x3c8
-[ 2430.666151]  rcu_core_si+0x18/0x28
-[ 2430.666473]  __do_softirq+0x138/0x3cc
-[ 2430.666781]  irq_exit+0xf0/0x110
-[ 2430.667065]  handle_domain_irq+0x6c/0x98
-[ 2430.667447]  gic_handle_irq+0xac/0xe8
-[ 2430.667739]  call_on_irq_stack+0x28/0x54
-The parameter passed to kfree was 5a5a5a5a, which corresponds to the target field of
-the jffs_inode_info structure. It was found that all variables in the jffs_inode_info
-structure were 5a5a5a5a, except for the first member sem. It is suspected that these
-variables are not initialized because they were set to 5a5a5a5a during memory testing,
-which is meant to detect uninitialized memory.The sem variable is initialized in the
-function jffs2_i_init_once, while other members are initialized in
-the function jffs2_init_inode_info.
+Wipe sensitive data from stack also if the copy_to_user() fails.
 
-The function jffs2_init_inode_info is called after iget_locked,
-but in the iget_locked function, the destroy_inode process is triggered,
-which releases the inode and consequently, the target member of the inode
-is not initialized.In concurrent high pressure scenarios, iget_locked
-may enter the destroy_inode branch as described in the code.
-
-Since the destroy_inode functionality of jffs2 only releases the target,
-the fix method is to set target to NULL in jffs2_i_init_once.
-
-Signed-off-by: Wang Yong <wang.yong12@zte.com.cn>
-Reviewed-by: Lu Zhongjun <lu.zhongjun@zte.com.cn>
-Reviewed-by: Yang Tao <yang.tao172@zte.com.cn>
-Cc: Xu Xin <xu.xin16@zte.com.cn>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Suggested-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jffs2/super.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/s390/crypto/pkey_api.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/jffs2/super.c b/fs/jffs2/super.c
-index 6839a61e8ff1e..3602e368cee07 100644
---- a/fs/jffs2/super.c
-+++ b/fs/jffs2/super.c
-@@ -58,6 +58,7 @@ static void jffs2_i_init_once(void *foo)
- 	struct jffs2_inode_info *f = foo;
- 
- 	mutex_init(&f->sem);
-+	f->target = NULL;
- 	inode_init_once(&f->vfs_inode);
- }
- 
+diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
+index b16344479959b..fa97e666f19e6 100644
+--- a/drivers/s390/crypto/pkey_api.c
++++ b/drivers/s390/crypto/pkey_api.c
+@@ -1089,7 +1089,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 		if (rc)
+ 			break;
+ 		if (copy_to_user(ucs, &kcs, sizeof(kcs)))
+-			return -EFAULT;
++			rc = -EFAULT;
+ 		memzero_explicit(&kcs, sizeof(kcs));
+ 		break;
+ 	}
+@@ -1120,7 +1120,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 		if (rc)
+ 			break;
+ 		if (copy_to_user(ucp, &kcp, sizeof(kcp)))
+-			return -EFAULT;
++			rc = -EFAULT;
+ 		memzero_explicit(&kcp, sizeof(kcp));
+ 		break;
+ 	}
 -- 
 2.43.0
 
