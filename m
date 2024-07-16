@@ -1,66 +1,63 @@
-Return-Path: <stable+bounces-59438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F94D9328B2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:30:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F24BF9328B6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B12651C22291
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:30:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49D6B285AF8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A97A1A2C23;
-	Tue, 16 Jul 2024 14:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B4419F48B;
+	Tue, 16 Jul 2024 14:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0fOx72v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MMdimC7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165F519EEB0;
-	Tue, 16 Jul 2024 14:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB54C19D087;
+	Tue, 16 Jul 2024 14:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721140012; cv=none; b=kFBwC98xYE4zm6CK82zOycZ8JgGqjp4aVnG/4TBFW4EPP61ytQjg2mMqTLgWYLGy+57MNl+dX7ZTZIZqip6bP5gIRYoPPfJjKHUpUN5jJWHBGYmy8g1Ii5PQNbZWfdeVMo+/GBcMoBbm5RP29acusWko//ZzXjGcAScqZdBwPrM=
+	t=1721140036; cv=none; b=X5rkQfYNdmS5py+ozDXdyfn1+HMNPjBdLP6ARh8CryRDHc1KDc8sWY1H3zp+EcVrFLx2yGmg0Uh6x/JCEks9fs7oswvwFIGgsKxfSJoS13xjSWN4hx12u+IZ6t+OerAbyl6MG2iUnXcA1IVWXekuTgQFN5OKENavn4seYV5z/QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721140012; c=relaxed/simple;
-	bh=GvxcA8wr20XF4fdAl9dv1Gnq+YAu/czSgSdTv7mKfqU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ILpNr69YQcga2LRzSkVMiERyu9pNziu7W7pQb0YYU88iNO5wIl83+lX2dDeMeG6myCY3wj6/5X1WIaMkEGAjyAIBJprvcAJHKYVwQ+g+WkMmu7+Ajtc9EMLLnziqJ7Y/rxrqH4oIcv/5GGjJbSWkmI9rrz7Td2I5Bs/GKNi4Jpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0fOx72v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BA5C116B1;
-	Tue, 16 Jul 2024 14:26:49 +0000 (UTC)
+	s=arc-20240116; t=1721140036; c=relaxed/simple;
+	bh=IwPgkvY2m+q5f9imFvwGMMVKPQwpfkYkVnnvHiRV964=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K/UNfvcJd6l2NpA2ymcXfFW2f+JebIuAEQ1OBtvFDoayF2VYvLrF2i12nWmyLxME8P5sb0GSziHOK2pUPRYpkQPdj/se7VQVtAEPMuapiQ99mEUyRmIYNx5uHh/+fM/MkBiG/4LtEx8tldf4Ecb6TkNZBVxYReJJTf18KcCJqwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MMdimC7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED561C4AF09;
+	Tue, 16 Jul 2024 14:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721140011;
-	bh=GvxcA8wr20XF4fdAl9dv1Gnq+YAu/czSgSdTv7mKfqU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0fOx72vFZ8ep20tFlAdPuHW/ceqJpO3KI/4L6UPERt4tUvCsFH6o1HlchTCRvQZ2
-	 YigmvrCL+V3yMLEzyAiEeNcq5jPc0dnE0kLDJH8U7//pNSphXwlo/W4KBMWzVD5fTW
-	 kh3ZhG6cczWqs00Cz+8h6scage9uu+sdMGPY/DdzPwI8DrrwHJTWNi/wEJpDIagMoj
-	 tQW7mQ6vENEapgX94ajR20iOq+TWEaNwjaoG9md7aW3S9wiXihM1MnIZUROJ7w0a5g
-	 FqcxYFEFB42URz+scF1z6eL2aLLMrRSfx+vSZwJmHYzrFDv7aYe7wAjK54mxxY6S/Q
-	 JocpLgejHmKZw==
+	s=k20201202; t=1721140036;
+	bh=IwPgkvY2m+q5f9imFvwGMMVKPQwpfkYkVnnvHiRV964=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MMdimC7nrX5MDThdyDS8V2FbxJbKHEn52pJjWWXnvBcS3lShw8qyyxYDrv48mNfKx
+	 bxfGAWT+1oM1uYLr4L0crZop6EHDjipmyKTIkVsr2KVTZEwSwbW1zSXkNu2aRoFDO/
+	 vUV17R0LdzryF8QZHvhh2BAu0+CZszVZaPX78f3EjlHWPS7yjXf2TVIPMdQrIyMMeP
+	 DM5SKXZWBCshzYSLgVx9ck/77m9jrdX3TgnXBmy4veBjY7Tspu01Yu3+COnDHGUsI9
+	 3VvjdEgWvkdudRYAzIQKRgd6PObv6fCV58TtC76tTZ76imPy6li49XbTRX8fZTJtM4
+	 Go3iIIqsxyTWg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Puranjay Mohan <puranjay@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+Cc: Yunshui Jiang <jiangyunshui@kylinos.cn>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alexghiti@rivosinc.com,
-	dev.mbstr@gmail.com,
-	andy.chiu@sifive.com,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.9 22/22] riscv: stacktrace: fix usage of ftrace_graph_ret_addr()
-Date: Tue, 16 Jul 2024 10:24:29 -0400
-Message-ID: <20240716142519.2712487-22-sashal@kernel.org>
+	alex.aring@gmail.com,
+	miquel.raynal@bootlin.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/18] net: mac802154: Fix racy device stats updates by DEV_STATS_INC() and DEV_STATS_ADD()
+Date: Tue, 16 Jul 2024 10:26:36 -0400
+Message-ID: <20240716142713.2712998-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240716142519.2712487-1-sashal@kernel.org>
-References: <20240716142519.2712487-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,50 +66,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.9
+X-stable-base: Linux 6.6.40
 Content-Transfer-Encoding: 8bit
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Yunshui Jiang <jiangyunshui@kylinos.cn>
 
-[ Upstream commit 393da6cbb2ff89aadc47683a85269f913aa1c139 ]
+[ Upstream commit b8ec0dc3845f6c9089573cb5c2c4b05f7fc10728 ]
 
-ftrace_graph_ret_addr() takes an `idx` integer pointer that is used to
-optimize the stack unwinding. Pass it a valid pointer to utilize the
-optimizations that might be available in the future.
+mac802154 devices update their dev->stats fields locklessly. Therefore
+these counters should be updated atomically. Adopt SMP safe DEV_STATS_INC()
+and DEV_STATS_ADD() to achieve this.
 
-The commit is making riscv's usage of ftrace_graph_ret_addr() match
-x86_64.
-
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/r/20240618145820.62112-1-puranjay@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Yunshui Jiang <jiangyunshui@kylinos.cn>
+Message-ID: <20240531080739.2608969-1-jiangyunshui@kylinos.cn>
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/stacktrace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac802154/tx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
-index 0d3f00eb0baee..10e311b2759d3 100644
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -32,6 +32,7 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			     bool (*fn)(void *, unsigned long), void *arg)
- {
- 	unsigned long fp, sp, pc;
-+	int graph_idx = 0;
- 	int level = 0;
+diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
+index 2a6f1ed763c9b..6fbed5bb5c3e0 100644
+--- a/net/mac802154/tx.c
++++ b/net/mac802154/tx.c
+@@ -34,8 +34,8 @@ void ieee802154_xmit_sync_worker(struct work_struct *work)
+ 	if (res)
+ 		goto err_tx;
  
- 	if (regs) {
-@@ -68,7 +69,7 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			pc = regs->ra;
- 		} else {
- 			fp = frame->fp;
--			pc = ftrace_graph_ret_addr(current, NULL, frame->ra,
-+			pc = ftrace_graph_ret_addr(current, &graph_idx, frame->ra,
- 						   &frame->ra);
- 			if (pc == (unsigned long)ret_from_exception) {
- 				if (unlikely(!__kernel_text_address(pc) || !fn(arg, pc)))
+-	dev->stats.tx_packets++;
+-	dev->stats.tx_bytes += skb->len;
++	DEV_STATS_INC(dev, tx_packets);
++	DEV_STATS_ADD(dev, tx_bytes, skb->len);
+ 
+ 	ieee802154_xmit_complete(&local->hw, skb, false);
+ 
+@@ -90,8 +90,8 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
+ 		if (ret)
+ 			goto err_wake_netif_queue;
+ 
+-		dev->stats.tx_packets++;
+-		dev->stats.tx_bytes += len;
++		DEV_STATS_INC(dev, tx_packets);
++		DEV_STATS_ADD(dev, tx_bytes, len);
+ 	} else {
+ 		local->tx_skb = skb;
+ 		queue_work(local->workqueue, &local->sync_tx_work);
 -- 
 2.43.0
 
