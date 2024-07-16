@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-59801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E3E932BD4
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A84932A74
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 104741F21649
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793811C22359
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C20319E7D3;
-	Tue, 16 Jul 2024 15:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18771DDCE;
+	Tue, 16 Jul 2024 15:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLW0YjeV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZYXzVOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1904117A93F;
-	Tue, 16 Jul 2024 15:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEA5CA40;
+	Tue, 16 Jul 2024 15:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144949; cv=none; b=WU+tL8yqTuBNO01U4vpPQ4sktdKhgwjTIIoVVXPDUzd0gWzQwyY9psdeElo8LtBpHYUIcrZsaOGRfacY9J8FT+0GvjgseNMuLz0bYy/mQu5f9aOSi/yf2gYjoYoRtuOoFbOTcsxQqBAb9HudHA2s88dLf2Z+o9+Lz2fRDHWSCE0=
+	t=1721144047; cv=none; b=FkPcuj4ZNojTx6yB1QDWck4M5DhKSGm+SwYEF9qYDI099mjkLLqnbw1Fqp4O0LxpzS/Gi3rxnTvIX0Tu+ka2iLducQF0xJs8YEIcqBDRoaJnoC+h/0YTEUIijAludZ8Dcfjl6Q9Yxh/aec/VwQFQ2XSsHVwcedjoVN8lzhNNdmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144949; c=relaxed/simple;
-	bh=fJ1KWpDBOKFDnDv++7pqIwTTk1TB/dy4vR3jZnJqt1E=;
+	s=arc-20240116; t=1721144047; c=relaxed/simple;
+	bh=MVm8RJbDgJFoEbcbO03zviJLDq1JusZe44rKOiuOgw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Py64oneveHVCiif84gOAHN5q8L2lBoH3mnW1XiJ/2eOhQJPLjpouOasLjocybPm+T4KKKfy17uvyrwpeC/gbYU/Xewn3VfkQVEJt5h7gef/qDYV3kxyFCwrrvuNEdaJUt6bs8zdCvD7LnOSOOG1l0gP98DDwFMdfV86qaUAKskM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLW0YjeV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932CFC4AF0B;
-	Tue, 16 Jul 2024 15:49:08 +0000 (UTC)
+	 MIME-Version; b=SIWs58Z2odgnlhjwFlAdwJZLIWSinuEXGG6asaIb8lJd7WZ4pReLe8MT5IeXTsYCxjO4Mu6UwcGhhVllqyPhRHkhfp+SLTG9dHHDpzuE59z0AvYZEH1wPuB5MaSz04wpZ4bAjfmVjUCgNRLMO3rctu1laYt0ALvqH0CD99eQPqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZYXzVOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7859C4AF0B;
+	Tue, 16 Jul 2024 15:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144949;
-	bh=fJ1KWpDBOKFDnDv++7pqIwTTk1TB/dy4vR3jZnJqt1E=;
+	s=korg; t=1721144047;
+	bh=MVm8RJbDgJFoEbcbO03zviJLDq1JusZe44rKOiuOgw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VLW0YjeVt2MRQ0dKkdkclNosisA8G+qeAxGbqydl+6BhYhfS2cn8DPse1aj96CbyU
-	 KQQNML24W5KSccvPoejziOBdEchi8Z9BqDeiJlFv3A+k+jJI2UZHWcLWdo5H30BtfZ
-	 9jUi+SS24U3gQkpphqVnxBY9cxsvZypUaOXF/mpQ=
+	b=mZYXzVOqmuEh26bDL/OseDSJDS14pfxSQMfyW8fxo2FvQwV9N9mldwww+OGP33OPX
+	 KxZwAxtqIwNsIM9aos0F3p/4K6gUGeL2c7Brle3pnZQIQkx0HStztTOxp1j94yq/YB
+	 TyzxZLTneNQ5HWNdE/8qXmuAnW6MkDABGa1qq/8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 049/143] arm64: dts: qcom: sm6115: add iommu for sdhc_1
+Subject: [PATCH 4.19 10/66] media: dvb-frontends: tda18271c2dd: Remove casting during div
 Date: Tue, 16 Jul 2024 17:30:45 +0200
-Message-ID: <20240716152757.872905904@linuxfoundation.org>
+Message-ID: <20240716152738.559333938@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Connolly <caleb.connolly@linaro.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 94ea124aeefe1ef271263f176634034e22c49311 ]
+[ Upstream commit e9a844632630e18ed0671a7e3467431bd719952e ]
 
-The first SDHC can do DMA like most other peripherals, add the missing
-iommus entry which is required to set this up.
+do_div() divides 64 bits by 32. We were adding a casting to the divider
+to 64 bits, for a number that fits perfectly in 32 bits. Remove it.
 
-This may have been working on Linux before since the bootloader
-configures it and it may not be full torn down. But other software like
-U-Boot needs this to initialize the eMMC properly.
+Found by cocci:
+drivers/media/dvb-frontends/tda18271c2dd.c:355:1-7: WARNING: do_div() does a 64-by-32 division, please consider using div64_u64 instead.
+drivers/media/dvb-frontends/tda18271c2dd.c:331:1-7: WARNING: do_div() does a 64-by-32 division, please consider using div64_u64 instead.
 
-Fixes: 97e563bf5ba1 ("arm64: dts: qcom: sm6115: Add basic soc dtsi")
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240619-rb2-fixes-v1-1-1d2b1d711969@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-8-3c4865f5a4b0@chromium.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm6115.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/dvb-frontends/tda18271c2dd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6115.dtsi b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-index aca0a87092e45..9ed062150aaf2 100644
---- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-@@ -1090,6 +1090,7 @@
+diff --git a/drivers/media/dvb-frontends/tda18271c2dd.c b/drivers/media/dvb-frontends/tda18271c2dd.c
+index 5ce58612315da..c399338908d0a 100644
+--- a/drivers/media/dvb-frontends/tda18271c2dd.c
++++ b/drivers/media/dvb-frontends/tda18271c2dd.c
+@@ -345,7 +345,7 @@ static int CalcMainPLL(struct tda_state *state, u32 freq)
  
- 			power-domains = <&rpmpd SM6115_VDDCX>;
- 			operating-points-v2 = <&sdhc1_opp_table>;
-+			iommus = <&apps_smmu 0x00c0 0x0>;
- 			interconnects = <&system_noc MASTER_SDCC_1 RPM_ALWAYS_TAG
- 					 &bimc SLAVE_EBI_CH0 RPM_ALWAYS_TAG>,
- 					<&bimc MASTER_AMPSS_M0 RPM_ALWAYS_TAG
+ 	OscFreq = (u64) freq * (u64) Div;
+ 	OscFreq *= (u64) 16384;
+-	do_div(OscFreq, (u64)16000000);
++	do_div(OscFreq, 16000000);
+ 	MainDiv = OscFreq;
+ 
+ 	state->m_Regs[MPD] = PostDiv & 0x77;
+@@ -369,7 +369,7 @@ static int CalcCalPLL(struct tda_state *state, u32 freq)
+ 	OscFreq = (u64)freq * (u64)Div;
+ 	/* CalDiv = u32( OscFreq * 16384 / 16000000 ); */
+ 	OscFreq *= (u64)16384;
+-	do_div(OscFreq, (u64)16000000);
++	do_div(OscFreq, 16000000);
+ 	CalDiv = OscFreq;
+ 
+ 	state->m_Regs[CPD] = PostDiv;
 -- 
 2.43.0
 
