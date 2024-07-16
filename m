@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-60064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 687B4932D34
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 730A3932C49
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2227E284CEF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 330D928483D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CBB199EA3;
-	Tue, 16 Jul 2024 16:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3857319E7FE;
+	Tue, 16 Jul 2024 15:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAO30HjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEct9Hq2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670D51DDCE;
-	Tue, 16 Jul 2024 16:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB61F19DF71;
+	Tue, 16 Jul 2024 15:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145746; cv=none; b=Ogs7905NnPsZXnn7C64lVKLpDM+dlCRiV4BI5sOyh+PxDZ32O4bMizhbke3IsWDPtdvKUn4OTtdYsxiniX/la+Mb77f3Z1R7zNyHAU409+ZwL5yc3iWGI5N4pMp865aU3Hwhg2E+iqQCaTH/sCGuTf7tx0n/zyJ235ZcbY2uRkA=
+	t=1721145218; cv=none; b=CapssOhdM7m50Prr3Se+9aGHlj+LA3bBZrg5jtBWs514ad3BWZKXsRK0Mr+ljhsB+szqoYHp/NjALS9YYp7zKBRYj1eyToYWYGuu3o3NGatEHBpuE5Tgfu3Q9xkmBKSn4tnLH1TTKubTjkMLvUrrs95x8MRzQjnmHm9NrtzU8oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145746; c=relaxed/simple;
-	bh=2el+USjeO3Xnl2rpNQCG/krI1QfrK3DC1SpCnpT5CJg=;
+	s=arc-20240116; t=1721145218; c=relaxed/simple;
+	bh=gDm01j+4s7qrN7mNsqhSK78FjHnhhvezKFC2BrLKGgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACek3eSy438p+l3AK4X/dBiQ9Yw6Ak0TokUP4AmWsbT2BA8/tqyNGAIhZ9R1VlvjBXM7uX1+Bse9ADvhWsw6wPwkXTjwm7jLwgU1Teav1G6KsIDKCHEB9uXGflvBPjuqHBLg9kVlp5iZOyV2td8Qp72A3EQ5u2Def1+GBJV9Q+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAO30HjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E090AC116B1;
-	Tue, 16 Jul 2024 16:02:25 +0000 (UTC)
+	 MIME-Version; b=P6HRdVQ8EORHmvSMeKvay1rpGSFxl5nm1yqGyopjoLCraOeLnfViSK4jufQWuRuP7FMtQjBxxCRz7mTCoY1hf1RoY2Lio9g1pAg7PQIkabqX1AzX7H6aQCRt2V7ZO+e4rhoiXi6Gs1oHulqteL2fFfoVwVveMw8TYqSQK9s8X8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEct9Hq2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F9AC116B1;
+	Tue, 16 Jul 2024 15:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145746;
-	bh=2el+USjeO3Xnl2rpNQCG/krI1QfrK3DC1SpCnpT5CJg=;
+	s=korg; t=1721145217;
+	bh=gDm01j+4s7qrN7mNsqhSK78FjHnhhvezKFC2BrLKGgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAO30HjMByBApOaDzJALFbTFglXEn9FLs9Ow1xgLUQ4i5cyj7Fpc0HbrcxVxskKfh
-	 0UfndzXT70ZRKGakCwtU/uPRi0vqexFXXAsoxM454ucGKifAAjvtX3UqnPYZvMQ0rL
-	 +nPT39gkYwayk2iB6Aqhjq8CMMlUDJTSCnUk3pc8=
+	b=pEct9Hq20jxJT64EBn5HEnVOgTcCziHoPxzNDThpc1kAXkv9HClf72/ozFI4PI6zy
+	 mhIhbit57VxgwgzK5gP9ob3tXE3n2JiI8v+5TrtLxPPyci7oEyKEWUBYyAkyYI2DpI
+	 UXJkN4StHg5Nh7rtrW7iMhpS+xviHf2m6QnaWEwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunseong Kim <yskelg@gmail.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	stable@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 071/121] s390/mm: Add NULL pointer check to crst_table_free() base_crst_free()
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 137/143] i2c: mark HostNotify target address as used
 Date: Tue, 16 Jul 2024 17:32:13 +0200
-Message-ID: <20240716152754.059927114@linuxfoundation.org>
+Message-ID: <20240716152801.265658998@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit b5efb63acf7bddaf20eacfcac654c25c446eabe8 upstream.
+[ Upstream commit bd9f5348089b65612e5ca976e2ae22f005340331 ]
 
-crst_table_free() used to work with NULL pointers before the conversion
-to ptdescs.  Since crst_table_free() can be called with a NULL pointer
-(error handling in crst_table_upgrade() add an explicit check.
+I2C core handles the local target for receiving HostNotify alerts. There
+is no separate driver bound to that address. That means userspace can
+access it if desired, leading to further complications if controllers
+are not capable of reading their own local target. Bind the local target
+to the dummy driver so it will be marked as "handled by the kernel" if
+the HostNotify feature is used. That protects aginst userspace access
+and prevents other drivers binding to it.
 
-Also add the same check to base_crst_free() for consistency reasons.
-
-In real life this should not happen, since order two GFP_KERNEL
-allocations will not fail, unless FAIL_PAGE_ALLOC is enabled and used.
-
-Reported-by: Yunseong Kim <yskelg@gmail.com>
-Fixes: 6326c26c1514 ("s390: convert various pgalloc functions to use ptdescs")
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: stable@kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2a71593da34d ("i2c: smbus: add core function handling SMBus host-notify")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/pgalloc.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/i2c-core-base.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/s390/mm/pgalloc.c
-+++ b/arch/s390/mm/pgalloc.c
-@@ -53,6 +53,8 @@ unsigned long *crst_table_alloc(struct m
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index db0d1ac82910e..7e7b15440832b 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1067,6 +1067,7 @@ EXPORT_SYMBOL(i2c_find_device_by_fwnode);
  
- void crst_table_free(struct mm_struct *mm, unsigned long *table)
- {
-+	if (!table)
-+		return;
- 	pagetable_free(virt_to_ptdesc(table));
- }
+ static const struct i2c_device_id dummy_id[] = {
+ 	{ "dummy", 0 },
++	{ "smbus_host_notify", 0 },
+ 	{ },
+ };
  
-@@ -500,6 +502,8 @@ static unsigned long *base_crst_alloc(un
- 
- static void base_crst_free(unsigned long *table)
- {
-+	if (!table)
-+		return;
- 	pagetable_free(virt_to_ptdesc(table));
- }
- 
+-- 
+2.43.0
+
 
 
 
