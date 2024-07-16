@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE9D932D13
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8988932C20
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2681F21B35
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D44921C23198
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E4B19AD5A;
-	Tue, 16 Jul 2024 16:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF1619E7C6;
+	Tue, 16 Jul 2024 15:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeYMmFbl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMa3eKqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319EB1DDCE;
-	Tue, 16 Jul 2024 16:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3E727733;
+	Tue, 16 Jul 2024 15:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145649; cv=none; b=JR9eZ/pcgbW6JAUzsNitYl8iCezbIf7l4iiIJHM0WYTTpoP7tl8ZL/m/+Czwsd+XVbQ5ICzpzxreaEx9dZTeaM3nX36/j0rmpc4XIrhYuW2umAfGT04SzhTfFrAfE1qrWwXTLrRrvmjMcBSwy855weEt//8qA46pWK+oWRN+qPY=
+	t=1721145118; cv=none; b=D3wsPXingpbBCQNAlSZ3AhhvnmggIhB4SYX5ICUWaO11uVNVgchhgO45lPr6oONjZxMsw7aSblM+1KYhHZjcbBuEGxUxFbcTdmDmqnfcXnIpTftpX/zmz5VUtFsSNNf1BzFU8xWgEhOKuv90uuOS+TaqurRkm6gy8sLJgaOBBas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145649; c=relaxed/simple;
-	bh=MEKViTN4DuistIxIwh74W5z01fIGKyXdqXgC4U+nn4Q=;
+	s=arc-20240116; t=1721145118; c=relaxed/simple;
+	bh=vBBD4WEsgEe8G4uB4Xuhd77u2hZVEN+u0+BgnAB4dp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfUSszYXvcMiniPOOtdYgD/XipbVH86/1PdKlmPs4+B39l5TTi9MMCuz8DovswxSmHjRkafLGd30SUc7YSLymFXvzMIVC0e1WcR2UqYuBpRbqjsvuxGZohr1oJ/9Kzr7DQ0vQZ1ltj4dUSKWUEkdyeyZS3Wuyo6JRxD1WAuFS1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeYMmFbl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A900EC116B1;
-	Tue, 16 Jul 2024 16:00:48 +0000 (UTC)
+	 MIME-Version; b=e+VtqzBQOjCrI0IVsaL4qyl/YRl5qBL1pr+ssDe3GrzdowkvAMrrHXE93VcgywLQhxX8RL2lr3rC+pM6AsF8n7cCohv/hacM3XA+dYgEKNYFRg03WDWFmX+oRtcc+6Rvb+HagvsINzT1VEAeG3kZZyGlTL0+pLRna9gw9K+DooM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMa3eKqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A9AC4AF0B;
+	Tue, 16 Jul 2024 15:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145649;
-	bh=MEKViTN4DuistIxIwh74W5z01fIGKyXdqXgC4U+nn4Q=;
+	s=korg; t=1721145117;
+	bh=vBBD4WEsgEe8G4uB4Xuhd77u2hZVEN+u0+BgnAB4dp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeYMmFblVLV9/BKm2Dzj+0JT2qCVUOzGP/gnlUXacCYgK8+lMfJmYFlQPeysUU5f4
-	 jH6rszWLUEH3mr8ka2EPmKQd3cdXdTbRu4gEFkILYnbXCaLZdL/Q7IK41kXWUoG4Dh
-	 mNqRdOMjOQ9iIBkF853hYeBHR6yJ1SsaOxAe0z4I=
+	b=iMa3eKqzJD1O55HU7Jz+rQGGpQquro+PgOCYL7vNxWf9H3P0sacbYD5FI39aNJnGj
+	 HGQIO8JQYtjlFZ1p9z9vFHzq0jIzXxX1GjNNDjpTOEk3bCiUFxId20yHGt8nObFlYi
+	 EnZwUHS89VT2qmBtTd5hXqgdiWg9QFZ7lYmuGfps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/121] firmware: cs_dsp: Fix overflow checking of wmfw header
-Date: Tue, 16 Jul 2024 17:31:40 +0200
-Message-ID: <20240716152752.789185314@linuxfoundation.org>
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	stable <stable@kernel.org>,
+	Marek Vasut <marex@denx.de>
+Subject: [PATCH 6.9 105/143] serial: imx: ensure RTS signal is not left active after shutdown
+Date: Tue, 16 Jul 2024 17:31:41 +0200
+Message-ID: <20240716152800.016969563@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
-[ Upstream commit 3019b86bce16fbb5bc1964f3544d0ce7d0137278 ]
+commit 1af2156e58f3af1216ce2f0456b3b8949faa5c7e upstream.
 
-Fix the checking that firmware file buffer is large enough for the
-wmfw header, to prevent overrunning the buffer.
+If a process is killed while writing to a /dev/ttymxc* device in RS485
+mode, we observe that the RTS signal is left high, thus making it
+impossible for other devices to transmit anything.
 
-The original code tested that the firmware data buffer contained
-enough bytes for the sums of the size of the structs
+Moreover, the ->tx_state variable is left in state SEND, which means
+that when one next opens the device and configures baud rate etc., the
+initialization code in imx_uart_set_termios dutifully ensures the RTS
+pin is pulled down, but since ->tx_state is already SEND, the logic in
+imx_uart_start_tx() does not in fact pull the pin high before
+transmitting, so nothing actually gets on the wire on the other side
+of the transceiver. Only when that transmission is allowed to complete
+is the state machine then back in a consistent state.
 
-	wmfw_header + wmfw_adsp1_sizes + wmfw_footer
+This is completely reproducible by doing something as simple as
 
-But wmfw_adsp1_sizes is only used on ADSP1 firmware. For ADSP2 and
-Halo Core the equivalent struct is wmfw_adsp2_sizes, which is
-4 bytes longer. So the length check didn't guarantee that there
-are enough bytes in the firmware buffer for a header with
-wmfw_adsp2_sizes.
+  seq 10000 > /dev/ttymxc0
 
-This patch splits the length check into three separate parts. Each
-of the wmfw_header, wmfw_adsp?_sizes and wmfw_footer are checked
-separately before they are used.
+and hitting ctrl-C, and watching with a logic analyzer.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f6bc909e7673 ("firmware: cs_dsp: add driver to support firmware loading on Cirrus Logic DSPs")
-Link: https://patch.msgid.link/20240627141432.93056-2-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Link: https://lore.kernel.org/r/20240625184206.508837-1-linux@rasmusvillemoes.dk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/tty/serial/imx.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index 79d4254d1f9bc..f0c3c4011411d 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1267,6 +1267,10 @@ static unsigned int cs_dsp_adsp1_parse_sizes(struct cs_dsp *dsp,
- 	const struct wmfw_adsp1_sizes *adsp1_sizes;
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1560,6 +1560,7 @@ static void imx_uart_shutdown(struct uar
+ 	struct imx_port *sport = (struct imx_port *)port;
+ 	unsigned long flags;
+ 	u32 ucr1, ucr2, ucr4, uts;
++	int loops;
  
- 	adsp1_sizes = (void *)&firmware->data[pos];
-+	if (sizeof(*adsp1_sizes) > firmware->size - pos) {
-+		cs_dsp_err(dsp, "%s: file truncated\n", file);
-+		return 0;
-+	}
+ 	if (sport->dma_is_enabled) {
+ 		dmaengine_terminate_sync(sport->dma_chan_tx);
+@@ -1622,6 +1623,56 @@ static void imx_uart_shutdown(struct uar
+ 	ucr4 &= ~UCR4_TCEN;
+ 	imx_uart_writel(sport, ucr4, UCR4);
  
- 	cs_dsp_dbg(dsp, "%s: %d DM, %d PM, %d ZM\n", file,
- 		   le32_to_cpu(adsp1_sizes->dm), le32_to_cpu(adsp1_sizes->pm),
-@@ -1283,6 +1287,10 @@ static unsigned int cs_dsp_adsp2_parse_sizes(struct cs_dsp *dsp,
- 	const struct wmfw_adsp2_sizes *adsp2_sizes;
- 
- 	adsp2_sizes = (void *)&firmware->data[pos];
-+	if (sizeof(*adsp2_sizes) > firmware->size - pos) {
-+		cs_dsp_err(dsp, "%s: file truncated\n", file);
-+		return 0;
-+	}
- 
- 	cs_dsp_dbg(dsp, "%s: %d XM, %d YM %d PM, %d ZM\n", file,
- 		   le32_to_cpu(adsp2_sizes->xm), le32_to_cpu(adsp2_sizes->ym),
-@@ -1322,7 +1330,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 	struct regmap *regmap = dsp->regmap;
- 	unsigned int pos = 0;
- 	const struct wmfw_header *header;
--	const struct wmfw_adsp1_sizes *adsp1_sizes;
- 	const struct wmfw_footer *footer;
- 	const struct wmfw_region *region;
- 	const struct cs_dsp_region *mem;
-@@ -1338,10 +1345,8 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 
- 	ret = -EINVAL;
- 
--	pos = sizeof(*header) + sizeof(*adsp1_sizes) + sizeof(*footer);
--	if (pos >= firmware->size) {
--		cs_dsp_err(dsp, "%s: file too short, %zu bytes\n",
--			   file, firmware->size);
-+	if (sizeof(*header) >= firmware->size) {
-+		ret = -EOVERFLOW;
- 		goto out_fw;
- 	}
- 
-@@ -1369,13 +1374,16 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 
- 	pos = sizeof(*header);
- 	pos = dsp->ops->parse_sizes(dsp, file, pos, firmware);
-+	if ((pos == 0) || (sizeof(*footer) > firmware->size - pos)) {
-+		ret = -EOVERFLOW;
-+		goto out_fw;
-+	}
- 
- 	footer = (void *)&firmware->data[pos];
- 	pos += sizeof(*footer);
- 
- 	if (le32_to_cpu(header->len) != pos) {
--		cs_dsp_err(dsp, "%s: unexpected header length %d\n",
--			   file, le32_to_cpu(header->len));
-+		ret = -EOVERFLOW;
- 		goto out_fw;
- 	}
- 
-@@ -1501,6 +1509,9 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 	cs_dsp_buf_free(&buf_list);
- 	kfree(text);
- 
-+	if (ret == -EOVERFLOW)
-+		cs_dsp_err(dsp, "%s: file content overflows file data\n", file);
++	/*
++	 * We have to ensure the tx state machine ends up in OFF. This
++	 * is especially important for rs485 where we must not leave
++	 * the RTS signal high, blocking the bus indefinitely.
++	 *
++	 * All interrupts are now disabled, so imx_uart_stop_tx() will
++	 * no longer be called from imx_uart_transmit_buffer(). It may
++	 * still be called via the hrtimers, and if those are in play,
++	 * we have to honour the delays.
++	 */
++	if (sport->tx_state == WAIT_AFTER_RTS || sport->tx_state == SEND)
++		imx_uart_stop_tx(port);
 +
- 	return ret;
- }
++	/*
++	 * In many cases (rs232 mode, or if tx_state was
++	 * WAIT_AFTER_RTS, or if tx_state was SEND and there is no
++	 * delay_rts_after_send), this will have moved directly to
++	 * OFF. In rs485 mode, tx_state might already have been
++	 * WAIT_AFTER_SEND and the hrtimer thus already started, or
++	 * the above imx_uart_stop_tx() call could have started it. In
++	 * those cases, we have to wait for the hrtimer to fire and
++	 * complete the transition to OFF.
++	 */
++	loops = port->rs485.flags & SER_RS485_ENABLED ?
++		port->rs485.delay_rts_after_send : 0;
++	while (sport->tx_state != OFF && loops--) {
++		uart_port_unlock_irqrestore(&sport->port, flags);
++		msleep(1);
++		uart_port_lock_irqsave(&sport->port, &flags);
++	}
++
++	if (sport->tx_state != OFF) {
++		dev_warn(sport->port.dev, "unexpected tx_state %d\n",
++			 sport->tx_state);
++		/*
++		 * This machine may be busted, but ensure the RTS
++		 * signal is inactive in order not to block other
++		 * devices.
++		 */
++		if (port->rs485.flags & SER_RS485_ENABLED) {
++			ucr2 = imx_uart_readl(sport, UCR2);
++			if (port->rs485.flags & SER_RS485_RTS_AFTER_SEND)
++				imx_uart_rts_active(sport, &ucr2);
++			else
++				imx_uart_rts_inactive(sport, &ucr2);
++			imx_uart_writel(sport, ucr2, UCR2);
++		}
++		sport->tx_state = OFF;
++	}
++
+ 	uart_port_unlock_irqrestore(&sport->port, flags);
  
--- 
-2.43.0
-
+ 	clk_disable_unprepare(sport->clk_per);
 
 
 
