@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-59835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BB1932C02
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74195932AE8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00C61281C53
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A537A1C207BF
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCCA19AD93;
-	Tue, 16 Jul 2024 15:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACBA195B27;
+	Tue, 16 Jul 2024 15:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJ/zzD4X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gADA3E4c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACAE1DDCE;
-	Tue, 16 Jul 2024 15:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0D01E895;
+	Tue, 16 Jul 2024 15:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145053; cv=none; b=sk6RFdNqXjaAa5Q5R1+970wWGgVEexGXOIS1iNCcjtrGrnxO8kNaY6AXQCarm2CvP2w1uBLBb1oofSyCQdKvUCdJXyhJFXpgrhsAbo1jLJqr0k0pOE2nhduX0jpR2rQOJEha07XZR1RbbTwAQTpUrJTRSG7gx0qafFkWC6Yd4y8=
+	t=1721144360; cv=none; b=i5uLmNMmSbgb2LNL1WPAM3IMTtiw7KCec4fJM9uEx04wUSepcHbSwc5Pw+7FV4NRSnKrKu8JdWbZ/A/XSRXk56D6lduQXiVF20Z4NIiACbRZD3dBp0u/tGt3LHA3wHxyhTD60kNe/yKHkyDpDX/KjAEKBC4U1KLGesH8KjkB7QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145053; c=relaxed/simple;
-	bh=p+pTTUcQSBoqC/cFd/XQI2lO3A778cV22j2cYCgVn8U=;
+	s=arc-20240116; t=1721144360; c=relaxed/simple;
+	bh=cEZL3PRM0qDih/caPrSbXAi91FmdKSJPhLgat8R1VBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jelOct6EsgAD9pMpTpAqkC/eb+Nugl8e9B5qEH7BM1P3yx3QJHeTIpx2LJd2+SyorGGGfeLSqWOy2kTAWvJd6neZt3dNNDzpUB0CwfuxrGVvg2RumYbdEls4H9YjDmYVSZtu7pik5jQyVAZoZDQR2zSiSxUUDi7dWCNettDEvI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJ/zzD4X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B26C116B1;
-	Tue, 16 Jul 2024 15:50:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WQlcaVetBZGMzjgiiawDM8jLQF7Guu8UaxyUfoigi66k8HRogKVsD1xWSMfdwcXDXA2gtuMjyNJzaPy5qKnMVxFFoFg7PzQf11vb99khOXaoN/TfDUTvb3Jh+lTobakBPYRSTDs+LAAqKSGer1aY9kwK+HHqyj20prob6JTuQU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gADA3E4c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42638C116B1;
+	Tue, 16 Jul 2024 15:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145053;
-	bh=p+pTTUcQSBoqC/cFd/XQI2lO3A778cV22j2cYCgVn8U=;
+	s=korg; t=1721144360;
+	bh=cEZL3PRM0qDih/caPrSbXAi91FmdKSJPhLgat8R1VBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJ/zzD4XoxKpiwp/hhkZAllvhHBr6OoqV1RsAfo3i67kLkSr9/+Z2iiP92wwlph8M
-	 lV03EFENLXC2apUYy6iZ5SfRy+h9B2HCbVImbWcqVqkTFpkUCFFyvcWIvF04FS1Ou8
-	 8ziESrgawzlxRYnmVOHgnXrVzCg5vvFF94tNxR1E=
+	b=gADA3E4cSFFpBpP1lIbTE1DfYGZkKhXAql3VvVHF/IUEi+K35TikQ8kOerr1xDg9y
+	 faK19xO5kwWgRN1o1RcvtWJavX6g2huFssbLIlbLVu755W6TE+5jbW6xCjUfIUVcvB
+	 p5XV8zJN++9D4rHbkedjEDWTteE/O1yjEs/p4ikE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	He Zhe <zhe.he@windriver.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.9 082/143] hpet: Support 32-bit userspace
+	=?UTF-8?q?Light=20Hsieh=20 ?= <Light.Hsieh@mediatek.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Alexander Aring <aahringo@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 46/78] filelock: fix potential use-after-free in posix_lock_inode
 Date: Tue, 16 Jul 2024 17:31:18 +0200
-Message-ID: <20240716152759.131114111@linuxfoundation.org>
+Message-ID: <20240716152742.421396308@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,120 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: He Zhe <zhe.he@windriver.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 4e60131d0d36af65ab9c9144f4f163fe97ae36e8 upstream.
+[ Upstream commit 1b3ec4f7c03d4b07bad70697d7e2f4088d2cfe92 ]
 
-hpet_compat_ioctl and read file operations failed to handle parameters from
-32-bit userspace and thus samples/timers/hpet_example.c fails as below.
+Light Hsieh reported a KASAN UAF warning in trace_posix_lock_inode().
+The request pointer had been changed earlier to point to a lock entry
+that was added to the inode's list. However, before the tracepoint could
+fire, another task raced in and freed that lock.
 
-root@intel-x86-64:~# ./hpet_example-32.out poll /dev/hpet 1 2
--hpet: executing poll
-hpet_poll: HPET_IRQFREQ failed
+Fix this by moving the tracepoint inside the spinlock, which should
+ensure that this doesn't happen.
 
-This patch fixes cmd and arg handling in hpet_compat_ioctl and adds compat
-handling for 32-bit userspace in hpet_read.
-
-hpet_example now shows that it works for both 64-bit and 32-bit.
-
-root@intel-x86-64:~# ./hpet_example-32.out poll /dev/hpet 1 2
--hpet: executing poll
-hpet_poll: info.hi_flags 0x0
-hpet_poll: expired time = 0xf4298
-hpet_poll: revents = 0x1
-hpet_poll: data 0x1
-hpet_poll: expired time = 0xf4235
-hpet_poll: revents = 0x1
-hpet_poll: data 0x1
-root@intel-x86-64:~# ./hpet_example-64.out poll /dev/hpet 1 2
--hpet: executing poll
-hpet_poll: info.hi_flags 0x0
-hpet_poll: expired time = 0xf42a1
-hpet_poll: revents = 0x1
-hpet_poll: data 0x1
-hpet_poll: expired time = 0xf4232
-hpet_poll: revents = 0x1
-hpet_poll: data 0x1
-
-Cc: stable@vger.kernel.org
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Fixes: 54066a57c584 ("hpet: kill BKL, add compat_ioctl")
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240606123908.738733-1-zhe.he@windriver.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 74f6f5912693 ("locks: fix KASAN: use-after-free in trace_event_raw_event_filelock_lock")
+Link: https://lore.kernel.org/linux-fsdevel/724ffb0a2962e912ea62bb0515deadf39c325112.camel@kernel.org/
+Reported-by: Light Hsieh (謝明燈) <Light.Hsieh@mediatek.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/20240702-filelock-6-10-v1-1-96e766aadc98@kernel.org
+Reviewed-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hpet.c |   34 +++++++++++++++++++++++++++++-----
- 1 file changed, 29 insertions(+), 5 deletions(-)
+ fs/locks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/hpet.c
-+++ b/drivers/char/hpet.c
-@@ -269,8 +269,13 @@ hpet_read(struct file *file, char __user
- 	if (!devp->hd_ireqfreq)
- 		return -EIO;
- 
--	if (count < sizeof(unsigned long))
--		return -EINVAL;
-+	if (in_compat_syscall()) {
-+		if (count < sizeof(compat_ulong_t))
-+			return -EINVAL;
-+	} else {
-+		if (count < sizeof(unsigned long))
-+			return -EINVAL;
-+	}
- 
- 	add_wait_queue(&devp->hd_waitqueue, &wait);
- 
-@@ -294,9 +299,16 @@ hpet_read(struct file *file, char __user
- 		schedule();
+diff --git a/fs/locks.c b/fs/locks.c
+index 90f92784aa554..bafe11deea56b 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -1336,9 +1336,9 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
+ 		locks_wake_up_blocks(left);
  	}
- 
--	retval = put_user(data, (unsigned long __user *)buf);
--	if (!retval)
--		retval = sizeof(unsigned long);
-+	if (in_compat_syscall()) {
-+		retval = put_user(data, (compat_ulong_t __user *)buf);
-+		if (!retval)
-+			retval = sizeof(compat_ulong_t);
-+	} else {
-+		retval = put_user(data, (unsigned long __user *)buf);
-+		if (!retval)
-+			retval = sizeof(unsigned long);
-+	}
-+
- out:
- 	__set_current_state(TASK_RUNNING);
- 	remove_wait_queue(&devp->hd_waitqueue, &wait);
-@@ -651,12 +663,24 @@ struct compat_hpet_info {
- 	unsigned short hi_timer;
- };
- 
-+/* 32-bit types would lead to different command codes which should be
-+ * translated into 64-bit ones before passed to hpet_ioctl_common
-+ */
-+#define COMPAT_HPET_INFO       _IOR('h', 0x03, struct compat_hpet_info)
-+#define COMPAT_HPET_IRQFREQ    _IOW('h', 0x6, compat_ulong_t)
-+
- static long
- hpet_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- {
- 	struct hpet_info info;
- 	int err;
- 
-+	if (cmd == COMPAT_HPET_INFO)
-+		cmd = HPET_INFO;
-+
-+	if (cmd == COMPAT_HPET_IRQFREQ)
-+		cmd = HPET_IRQFREQ;
-+
- 	mutex_lock(&hpet_mutex);
- 	err = hpet_ioctl_common(file->private_data, cmd, arg, &info);
- 	mutex_unlock(&hpet_mutex);
+  out:
++	trace_posix_lock_inode(inode, request, error);
+ 	spin_unlock(&ctx->flc_lock);
+ 	percpu_up_read(&file_rwsem);
+-	trace_posix_lock_inode(inode, request, error);
+ 	/*
+ 	 * Free any unused locks.
+ 	 */
+-- 
+2.43.0
+
 
 
 
