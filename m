@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-59682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23263932B44
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E311D932C07
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D394A282CD7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E9F01C21015
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC14319DF63;
-	Tue, 16 Jul 2024 15:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F6819DF71;
+	Tue, 16 Jul 2024 15:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8nMvIyG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9kp5Ijx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFB5195B27;
-	Tue, 16 Jul 2024 15:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA7E19B3EC;
+	Tue, 16 Jul 2024 15:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144584; cv=none; b=cs61N8gHMBoD1ZgaGwhPFE42wQE9cViackzD84LzN+knCX5SghAYYqTzj5jOh7P16scugreAiYB1BTduSwteo5fzFuNIhhr0ayFGTfILM9YJ5NGoGJ3/oemqqAZLPVtFz3HPQfJ8vRti80hiSCJKHL+DXgGWKkKluQmfLwByokI=
+	t=1721145068; cv=none; b=dbwXNzJQjwymfm25tMRfD30UekWSPYTaUS70QQt3Gshpn1P+2EsJs5UkumYqicNY4m8cd/35RKuIwq7uBU3H2xSSD2jMMXGbDB90hwgi85sZc2r+7o2lWgjkW9mDP3BB9uBCqSoEbJkZDZwF2mCS9piVxGLMofy67lb6or2L1EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144584; c=relaxed/simple;
-	bh=Jz1BtFCZdV0+h/+XKjcD6HgVOPE1cuX6SuEhvYeKcqQ=;
+	s=arc-20240116; t=1721145068; c=relaxed/simple;
+	bh=Inq+bGdkJPUTdRlFj4x0aHcsHvqz+4w4NgnTMVpxXpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VdgM+R8vFwHbJChM6MnK42kCcNWW2FS4jwlR6XPp4NqRmTNtY/LoH+PPRZdE4AggV6km657++O1Q1XA/7RakLHE8v+Mmk2Xm5R/a2RVn1/RHfCI37cmoCRObBaax/dMktjY/34gVTr9PJ3886xpaBwBfBLXq1KO+wO5LmNJxP4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8nMvIyG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F34BC4AF0B;
-	Tue, 16 Jul 2024 15:43:03 +0000 (UTC)
+	 MIME-Version; b=iSC2ajj2dt06Ok5SsP5RuNeOaZ5C3C82KCDKE983gXawUEtSVMZqdafp01PRYvFMC+y+vZU2Wi6QbXSOYWw5cTNV/hu2CjAFcq/QLq6NjllxEG/flzxvKhFLbt2AEUHqgoe49i+f9o/bfOluJm5zz0ZTgUXoKNUXbSa5w2OlvbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9kp5Ijx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977D7C4AF0B;
+	Tue, 16 Jul 2024 15:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144584;
-	bh=Jz1BtFCZdV0+h/+XKjcD6HgVOPE1cuX6SuEhvYeKcqQ=;
+	s=korg; t=1721145068;
+	bh=Inq+bGdkJPUTdRlFj4x0aHcsHvqz+4w4NgnTMVpxXpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8nMvIyGmEcUlRSEtT4Z1P02L7sVqvHmwVUiR48bqaxBnykQN2605qLgFVvNhQ4XB
-	 83kXZqSfHw+6XrefySNoZZWWk2h2hU1bA3i49sNNNYLZqZb0rGB/E+bhfWvDN4HNra
-	 1WGdQLGXL64XOGM+VZRd0veuMCvLEfaCqzBhPyrg=
+	b=H9kp5IjxyT4loj/irsmhkIN+9tJ51wfRprKrCkY3GoySCwK+tmxhXP8cXXx0B5UEj
+	 74MpcMAQm46Pg0tBW98yQpElDD7PtIsD+/uODtH5QB3voeL521is3hfQDcZWWdsNl8
+	 2qsVotthG4n161+7iBH2YzZ8cvNvC8YP6mm7wc9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zach OKeefe <zokeefe@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 041/108] Revert "mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again"
+	Nithin Dabilpuram <ndabilpuram@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 060/143] octeontx2-af: replace cpt slot with lf id on reg write
 Date: Tue, 16 Jul 2024 17:30:56 +0200
-Message-ID: <20240716152747.572424146@linuxfoundation.org>
+Message-ID: <20240716152758.287982964@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Nithin Dabilpuram <ndabilpuram@marvell.com>
 
-commit 30139c702048f1097342a31302cbd3d478f50c63 upstream.
+[ Upstream commit bc35e28af7890085dcbe5cc32373647dfb4d9af9 ]
 
-Patch series "mm: Avoid possible overflows in dirty throttling".
+Replace slot id with global CPT lf id on reg read/write as
+CPTPF/VF driver would send slot number instead of global
+lf id in the reg offset. And also update the mailbox response
+with the global lf's register offset.
 
-Dirty throttling logic assumes dirty limits in page units fit into
-32-bits.  This patch series makes sure this is true (see patch 2/2 for
-more details).
-
-
-This patch (of 2):
-
-This reverts commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78.
-
-The commit is broken in several ways.  Firstly, the removed (u64) cast
-from the multiplication will introduce a multiplication overflow on 32-bit
-archs if wb_thresh * bg_thresh >= 1<<32 (which is actually common - the
-default settings with 4GB of RAM will trigger this).  Secondly, the
-div64_u64() is unnecessarily expensive on 32-bit archs.  We have
-div64_ul() in case we want to be safe & cheap.  Thirdly, if dirty
-thresholds are larger than 1<<32 pages, then dirty balancing is going to
-blow up in many other spectacular ways anyway so trying to fix one
-possible overflow is just moot.
-
-Link: https://lkml.kernel.org/r/20240621144017.30993-1-jack@suse.cz
-Link: https://lkml.kernel.org/r/20240621144246.11148-1-jack@suse.cz
-Fixes: 9319b647902c ("mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-By: Zach O'Keefe <zokeefe@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ae454086e3c2 ("octeontx2-af: add mailbox interface for CPT")
+Signed-off-by: Nithin Dabilpuram <ndabilpuram@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page-writeback.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/marvell/octeontx2/af/rvu_cpt.c   | 23 +++++++++++++------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -1546,7 +1546,7 @@ static inline void wb_dirty_limits(struc
- 	 */
- 	dtc->wb_thresh = __wb_calc_thresh(dtc);
- 	dtc->wb_bg_thresh = dtc->thresh ?
--		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
-+		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
+index f047185f38e0f..3e09d22858147 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
+@@ -696,7 +696,8 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
+ 					struct cpt_rd_wr_reg_msg *req,
+ 					struct cpt_rd_wr_reg_msg *rsp)
+ {
+-	int blkaddr;
++	u64 offset = req->reg_offset;
++	int blkaddr, lf;
  
- 	/*
- 	 * In order to avoid the stacked BDI deadlock we need
+ 	blkaddr = validate_and_get_cpt_blkaddr(req->blkaddr);
+ 	if (blkaddr < 0)
+@@ -707,17 +708,25 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
+ 	    !is_cpt_vf(rvu, req->hdr.pcifunc))
+ 		return CPT_AF_ERR_ACCESS_DENIED;
+ 
+-	rsp->reg_offset = req->reg_offset;
+-	rsp->ret_val = req->ret_val;
+-	rsp->is_write = req->is_write;
+-
+ 	if (!is_valid_offset(rvu, req))
+ 		return CPT_AF_ERR_ACCESS_DENIED;
+ 
++	/* Translate local LF used by VFs to global CPT LF */
++	lf = rvu_get_lf(rvu, &rvu->hw->block[blkaddr], req->hdr.pcifunc,
++			(offset & 0xFFF) >> 3);
++
++	/* Translate local LF's offset to global CPT LF's offset */
++	offset &= 0xFF000;
++	offset += lf << 3;
++
++	rsp->reg_offset = offset;
++	rsp->ret_val = req->ret_val;
++	rsp->is_write = req->is_write;
++
+ 	if (req->is_write)
+-		rvu_write64(rvu, blkaddr, req->reg_offset, req->val);
++		rvu_write64(rvu, blkaddr, offset, req->val);
+ 	else
+-		rsp->val = rvu_read64(rvu, blkaddr, req->reg_offset);
++		rsp->val = rvu_read64(rvu, blkaddr, offset);
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
