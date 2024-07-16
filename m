@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-60214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51D4932DE7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:10:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 645BA932DC1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6488628100D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:10:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 945BA1C21790
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3C519B3EE;
-	Tue, 16 Jul 2024 16:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D3C19B3EE;
+	Tue, 16 Jul 2024 16:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="to+/Iydl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uq8d+EZf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97581DDCE;
-	Tue, 16 Jul 2024 16:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08DB2B9BC;
+	Tue, 16 Jul 2024 16:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721146226; cv=none; b=MDAwx4WqQT61o/p9e0EF6943eP5ZIuY+QOGmgyH7pawFmqRAq5Cvx1jNLT8E70Qk95/Mz0p0URWKHx9CuVj2hxKOBzV8/0R2hbrUe1DrfjdfqtdJqesa6fahNDx3x6kFzkT361ELmzrVMyLbJsrnUcUg9lTU42vQ6mg3RE2Ibrs=
+	t=1721146130; cv=none; b=j/kztczPhzsrdqYBGf6KSM3uxgZtQPShNAdiUxV6c2LWb7I8M1GrlvlmcJjYFNRZ5/1a99Oq2R4uu3+TI/5rWgRON0K16I+yGtBu/2QFCi7uajTS7Rl3aPWb28HHqsVoOuWLY0qYsv2OVio87aHk+HK1qXXeB2dUGS3w/WzXnJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721146226; c=relaxed/simple;
-	bh=7Akd0BTzE7bseINOzphtCMbCGBfx4Aa2pCbAPKum7pw=;
+	s=arc-20240116; t=1721146130; c=relaxed/simple;
+	bh=9rBkiVpUbuZ6A3Vk5mpte4b7L2db7+s1qQ7XHV5GdJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tK7T9cYMBATL0qSNSykeEQiFU4jRDKgPh2Ongup5vODl/dmZETOme0s3GG4/PjqAV3qVu1+neo3G6V6TkwpiDfiXUKqUkVDBtCueeH32AqI9+LYBr+OQ3u97URwJKpUI+oIOpSNUz6afZzwKlCFtlPkE3uqkO/h0uMvCD4LRmbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=to+/Iydl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33085C116B1;
-	Tue, 16 Jul 2024 16:10:26 +0000 (UTC)
+	 MIME-Version; b=Zu5dS9npTURYgRNbHnj6t2A/nsijOmCMOCgrbVhK68Fb4ydLPcZCObXFH3bm7wA8f5fhfFm+P7YMNIFGk+BMXeWhvpLdBXnb8OST8w51UEDSV2tDmGkOFowzceTao1XfArDDDsWxVLwKckKByl6oNB0x9ByfMjqfIVY9pLxYezA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uq8d+EZf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A2BC4AF0D;
+	Tue, 16 Jul 2024 16:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721146226;
-	bh=7Akd0BTzE7bseINOzphtCMbCGBfx4Aa2pCbAPKum7pw=;
+	s=korg; t=1721146130;
+	bh=9rBkiVpUbuZ6A3Vk5mpte4b7L2db7+s1qQ7XHV5GdJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=to+/IydlFjSTiesE5UefYMjEl3YjWiNpYOf1BfGVErFH3yzEvX23+F+9XjbgpavIG
-	 XZcaapff+KDmleiGU/MYNz90xEQ9wT6VlLYQevvLJjTaprcfI3qB9g03XhAx8w5eD+
-	 Oo9Lba2D8GJT5lXVNNYZQ8gTsLtbT70zucxTtwB4=
+	b=uq8d+EZfv17MsCA2eH15gA/MYvd/AnG3SC8PBPKrc5MhZossxWesBSyaX0vhHW98g
+	 xbij33SL33Q55UP3K7wwpNvh+wbog1o1vPKWkVy0tl/NFFwx/r0H+ih2O5OfWyRdDJ
+	 gj0Tc1UjqrJbdhJqnOLmHwqeHTfG/jVGH1R4RORw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Jian-Hong Pan <jhp@endlessos.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 066/144] fs/ntfs3: Mark volume as dirty if xattr is broken
-Date: Tue, 16 Jul 2024 17:32:15 +0200
-Message-ID: <20240716152755.085376405@linuxfoundation.org>
+Subject: [PATCH 5.15 067/144] ALSA: hda/realtek: Enable headset mic of JP-IK LEAP W502 with ALC897
+Date: Tue, 16 Jul 2024 17:32:16 +0200
+Message-ID: <20240716152755.123234573@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -65,36 +66,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Jian-Hong Pan <jhp@endlessos.org>
 
-[ Upstream commit 24f6f5020b0b2c89c2cba5ec224547be95f753ee ]
+[ Upstream commit 45e37f9ce28d248470bab4376df2687a215d1b22 ]
 
-Mark a volume as corrupted if the name length exceeds the space
-occupied by ea.
+JP-IK LEAP W502 laptop's headset mic is not enabled until
+ALC897_FIXUP_HEADSET_MIC_PIN3 quirk is applied.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Here is the original pin node values:
+
+0x11 0x40000000
+0x12 0xb7a60130
+0x14 0x90170110
+0x15 0x411111f0
+0x16 0x411111f0
+0x17 0x411111f0
+0x18 0x411111f0
+0x19 0x411111f0
+0x1a 0x411111f0
+0x1b 0x03211020
+0x1c 0x411111f0
+0x1d 0x4026892d
+0x1e 0x411111f0
+0x1f 0x411111f0
+
+Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
+Link: https://lore.kernel.org/r/20240520055008.7083-2-jhp@endlessos.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/xattr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/ntfs3/xattr.c b/fs/ntfs3/xattr.c
-index d0b75d7f58a7b..4a7753384b0e9 100644
---- a/fs/ntfs3/xattr.c
-+++ b/fs/ntfs3/xattr.c
-@@ -217,8 +217,11 @@ static ssize_t ntfs_list_ea(struct ntfs_inode *ni, char *buffer,
- 		if (!ea->name_len)
- 			break;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index ae59b208f12ac..fa504f319d43e 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10898,6 +10898,7 @@ enum {
+ 	ALC897_FIXUP_LENOVO_HEADSET_MODE,
+ 	ALC897_FIXUP_HEADSET_MIC_PIN2,
+ 	ALC897_FIXUP_UNIS_H3C_X500S,
++	ALC897_FIXUP_HEADSET_MIC_PIN3,
+ };
  
--		if (ea->name_len > ea_size)
-+		if (ea->name_len > ea_size) {
-+			ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
-+			err = -EINVAL; /* corrupted fs */
- 			break;
-+		}
+ static const struct hda_fixup alc662_fixups[] = {
+@@ -11344,10 +11345,18 @@ static const struct hda_fixup alc662_fixups[] = {
+ 			{}
+ 		},
+ 	},
++	[ALC897_FIXUP_HEADSET_MIC_PIN3] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x19, 0x03a11050 }, /* use as headset mic */
++			{ }
++		},
++	},
+ };
  
- 		if (buffer) {
- 			/* Check if we can use field ea->name */
+ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1019, 0x9087, "ECS", ALC662_FIXUP_ASUS_MODE2),
++	SND_PCI_QUIRK(0x1019, 0x9859, "JP-IK LEAP W502", ALC897_FIXUP_HEADSET_MIC_PIN3),
+ 	SND_PCI_QUIRK(0x1025, 0x022f, "Acer Aspire One", ALC662_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x0241, "Packard Bell DOTS", ALC662_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x0308, "Acer Aspire 8942G", ALC662_FIXUP_ASPIRE),
 -- 
 2.43.0
 
