@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 117BD932BD2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA125932ABF
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42AAE1C22911
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B1751C228E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6519919E7C4;
-	Tue, 16 Jul 2024 15:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349731DDF5;
+	Tue, 16 Jul 2024 15:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEwcdQFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7q685OH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2330619DFB9;
-	Tue, 16 Jul 2024 15:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8167CA40;
+	Tue, 16 Jul 2024 15:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144943; cv=none; b=swscR7vh0ZZLAtUIsDmpedFgGGbn2BXRrfGhmN9+/g/amKDiWWftnBa2ybW9D0apfVhBvOH1mVw9p3uSSELR6ZbF9BqWk7ObXvj52TqcqZIBzmu28Tv9MbUwsX6PRu6qVwQoPoPvjEFakGEu5WOtTPm+qf7GfsG/g8nm2IOInUM=
+	t=1721144254; cv=none; b=r2ZT/ROpE79KzyRkkJjOuZArxSvxdrYlbj1wIQ/F4jroas+lWfMRcDrlbP+rs7fQQwu5TceTQtRYxPHok/rN2orQvWT9sMOok1vrsRx19l2D50Eb0Iu61aTa2KOFIQzWNnh5sNyI5epvAp2HWfgM6Bvv2DbocZE38IQzOgebD10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144943; c=relaxed/simple;
-	bh=SVbAu19sQ0gmDo5VyEEKK5OO7W/boYX0ulK+rodl1ms=;
+	s=arc-20240116; t=1721144254; c=relaxed/simple;
+	bh=bYURrXaxF15XGDxoFtxQE1VvuD6f2pB7u0jNl5fgf7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwR9joWjCYlDb2fxZsGQIazD3bTjt2WMwX4J9DjmuvnNZUx2Nb4xL/VA3xYOgW4/m8nfaR4bO0JzHk+Rnr+DRuvY5D+owdJtWvvMDAFWOsa/le5OMIndz6anuTk3PTRaB0M6tW+obFg9wTQrJsNwfqpdWLphQgeIXITlmeqY6M4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEwcdQFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1826C116B1;
-	Tue, 16 Jul 2024 15:49:02 +0000 (UTC)
+	 MIME-Version; b=SwwK6qo1J3fBfkh2qqJuHRd8zbkRlXZoMP6kG5aYxYf20x+dRcfFjArUTS6+kzPknf2I73VFWdTFIO+j5zwBroT1atGUQ4yGATfR9XKVk203rMIR0FXqUROA2PoyxqdgU3umUxYVuuNzw8iqfnGAW98xaNC+CSbU5kMt1dtD/Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7q685OH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CA7C116B1;
+	Tue, 16 Jul 2024 15:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144943;
-	bh=SVbAu19sQ0gmDo5VyEEKK5OO7W/boYX0ulK+rodl1ms=;
+	s=korg; t=1721144253;
+	bh=bYURrXaxF15XGDxoFtxQE1VvuD6f2pB7u0jNl5fgf7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jEwcdQFBrEl6YWqD4xtbztVUszT9F+82pmECH72sHbJxH3cKPTnqb++uq7QXIWP/r
-	 t22Z5nROh0oXhISSuIZyw9ryyLtXlo+3E/SmkmVerhZIgG+thXxAbYkP2nsojyYmqg
-	 xQ1jJFtzinvSzfM3YA8ngzSmvg1Tb+NxmrY2CyzY=
+	b=E7q685OHUmP7zFwYTXLu8a3AQ+dDITrA05lUC52Oxbcc+mlyDXNRKYtlBqTKlTk60
+	 KgV3wJVbMLAJnV6hDelBwRz8wnePHMAX9mYOK+HF05wN3Dfkk+MYsvrsMWQ7TV0dh8
+	 li1bEfh3p6AwbZrsN38qrSdTooQzMuzGVOta28os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Erick Archer <erick.archer@outlook.com>,
+	Kees Cook <keescook@chromium.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 047/143] arm64: dts: allwinner: Fix PMIC interrupt number
+Subject: [PATCH 5.4 11/78] Input: ff-core - prefer struct_size over open coded arithmetic
 Date: Tue, 16 Jul 2024 17:30:43 +0200
-Message-ID: <20240716152757.797480918@linuxfoundation.org>
+Message-ID: <20240716152741.063442553@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Erick Archer <erick.archer@outlook.com>
 
-[ Upstream commit 5b36166e599b5c1332a1147271d2130cece4bb24 ]
+[ Upstream commit a08b8f8557ad88ffdff8905e5da972afe52e3307 ]
 
-The "r_intc" interrupt controller on the A64 uses a mapping scheme, so
-the first (and only) NMI interrupt #0 appears as interrupt number 32
-(cf. the top comment in drivers/irqchip/irq-sun6i-r.c).
+This is an effort to get rid of all multiplications from allocation
+functions in order to prevent integer overflows [1][2].
 
-Fix that number in the interrupts property to properly forward PMIC
-interrupts to the CPU.
+As the "ff" variable is a pointer to "struct ff_device" and this
+structure ends in a flexible array:
 
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Fixes: 4d39a8eb07eb ("arm64: dts: allwinner: Add Jide Remix Mini PC support")
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20240515234852.26929-1-andre.przywara@arm.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+struct ff_device {
+	[...]
+	struct file *effect_owners[] __counted_by(max_effects);
+};
+
+the preferred way in the kernel is to use the struct_size() helper to
+do the arithmetic instead of the calculation "size + count * size" in
+the kzalloc() function.
+
+The struct_size() helper returns SIZE_MAX on overflow. So, refactor
+the comparison to take advantage of this.
+
+This way, the code is more readable and safer.
+
+This code was detected with the help of Coccinelle, and audited and
+modified manually.
+
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
+Link: https://github.com/KSPP/linux/issues/160 [2]
+Signed-off-by: Erick Archer <erick.archer@outlook.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/AS8PR02MB72371E646714BAE2E51A6A378B152@AS8PR02MB7237.eurprd02.prod.outlook.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/allwinner/sun50i-h64-remix-mini-pc.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/ff-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h64-remix-mini-pc.dts b/arch/arm64/boot/dts/allwinner/sun50i-h64-remix-mini-pc.dts
-index b6e3c169797f0..0dba413963776 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h64-remix-mini-pc.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h64-remix-mini-pc.dts
-@@ -191,7 +191,7 @@
- 		compatible = "x-powers,axp803";
- 		reg = <0x3a3>;
- 		interrupt-parent = <&r_intc>;
--		interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_LOW>;
-+		interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_LOW>;
- 		x-powers,drive-vbus-en;
+diff --git a/drivers/input/ff-core.c b/drivers/input/ff-core.c
+index 1cf5deda06e19..a765e185c7a12 100644
+--- a/drivers/input/ff-core.c
++++ b/drivers/input/ff-core.c
+@@ -12,8 +12,10 @@
+ /* #define DEBUG */
  
- 		vin1-supply = <&reg_vcc5v>;
+ #include <linux/input.h>
++#include <linux/limits.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
++#include <linux/overflow.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ 
+@@ -318,9 +320,8 @@ int input_ff_create(struct input_dev *dev, unsigned int max_effects)
+ 		return -EINVAL;
+ 	}
+ 
+-	ff_dev_size = sizeof(struct ff_device) +
+-				max_effects * sizeof(struct file *);
+-	if (ff_dev_size < max_effects) /* overflow */
++	ff_dev_size = struct_size(ff, effect_owners, max_effects);
++	if (ff_dev_size == SIZE_MAX) /* overflow */
+ 		return -EINVAL;
+ 
+ 	ff = kzalloc(ff_dev_size, GFP_KERNEL);
 -- 
 2.43.0
 
