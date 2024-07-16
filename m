@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAAE4932BD7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC28932AF6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 757CB281614
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9C4BB24558
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2E219E7C4;
-	Tue, 16 Jul 2024 15:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E7B19AA78;
+	Tue, 16 Jul 2024 15:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWK0XGDF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zg7B+Za/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB84C17C9E9;
-	Tue, 16 Jul 2024 15:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A5BB641;
+	Tue, 16 Jul 2024 15:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144966; cv=none; b=Vy23PX4tywinVEw0QrsOx7Qbyrj8C2+0MxOYTP3rKHVsvfeWSl46qFKURF0A/BaVjfrycmrVrOjYUVjVB9idTMUtQIbM0juVlpsZMgFnlheQJOiQbuczYq91Mc4wVixdXGG5K2878XkDhhJl/rKf9EP1QsWsFbc/678VlwX+58M=
+	t=1721144393; cv=none; b=HokyOJvEzK4+GMzuL+OeHPjAnVJ9LZeLy99ZuY6zn+tYHt/xC5bxykZY/khjVKaliNLTiNnU4AmW1nLyRnUpJHKHOHMYc9C2BsVTTp0U2u/HdlwpYU82wDzBgwnnVTNtbIDiHNGjXYMIvycdFBjuBEzkqI3f8ldcUv+lGcPjIqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144966; c=relaxed/simple;
-	bh=cmwqBhnInU2Vrc1RtmIJKvGefP+klf+vLOYCSjlBGAo=;
+	s=arc-20240116; t=1721144393; c=relaxed/simple;
+	bh=B82YaMOnWn1IdYKXqA+yNi9ocdOzCIh0IBtEfsqw0XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h6zgXTJtHfowboSdcJsy+15Zce0HEWV/vm03dFhOj31Mbd+WJQWwvg5cm1D3lbJLYZMU8hw2+V9KmH/6pG449YwWbtnU068l5bhaUtj8PUxvTCtTlmPhPgZdlsx2vpwys1iBKxFFTMCeC3is77H8NgrrtzKxvCuLwokcYZpo/po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWK0XGDF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C57C116B1;
-	Tue, 16 Jul 2024 15:49:25 +0000 (UTC)
+	 MIME-Version; b=XC2B/mBxaTtedGpP7sdRrbTNsNqGAsHhZX0ihZ0sI8j0ZFEDtxRoLdBjVSGKjxA1a7X8voFC9vgwHhDQwDMgv0mgygdSEzK2gNSZLKpuwQd+oRuNaIPu4KYnQ+7Aqnzlt7tHgWGp5srwtumicWGe4FoSpen4WLUUGnw52AhH81o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zg7B+Za/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB11DC116B1;
+	Tue, 16 Jul 2024 15:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144965;
-	bh=cmwqBhnInU2Vrc1RtmIJKvGefP+klf+vLOYCSjlBGAo=;
+	s=korg; t=1721144393;
+	bh=B82YaMOnWn1IdYKXqA+yNi9ocdOzCIh0IBtEfsqw0XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWK0XGDFrOt+eZwtGs5je+unx0pf8pA9EidhIBFfxayF09Wmdjz7S+G2/9DlokJBC
-	 ocpLW9XDS3Kly28PO5KH7Tpho43s7TGMe8GqD0saS6EghyqPEwdgvkenIuvjk29cWm
-	 mVSiq4SIvfhV35HEjHuD7spxHxCScExtkulZm6JY=
+	b=zg7B+Za/aFmcUS7G7RmIvJrXojex+xOhAo8dI7U1A2iM0UI8tfFGUhPH0V69JnfQY
+	 e6aj9Szlog3AiQiB6F8VEQTwwSUPkpM71wFBCANaqa3TO7uTlRNXqYOwA5hL3lAmjC
+	 ASAYRqvQRUpUFX4/3BCFI89qfsVPca6nx57FSYtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 053/143] firmware: cs_dsp: Validate payload length before processing block
+Subject: [PATCH 5.4 17/78] powerpc/64: Set _IO_BASE to POISON_POINTER_DELTA not 0 for CONFIG_PCI=n
 Date: Tue, 16 Jul 2024 17:30:49 +0200
-Message-ID: <20240716152758.023702338@linuxfoundation.org>
+Message-ID: <20240716152741.297452016@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 6598afa9320b6ab13041616950ca5f8f938c0cf1 ]
+[ Upstream commit be140f1732b523947425aaafbe2e37b41b622d96 ]
 
-Move the payload length check in cs_dsp_load() and cs_dsp_coeff_load()
-to be done before the block is processed.
+There is code that builds with calls to IO accessors even when
+CONFIG_PCI=n, but the actual calls are guarded by runtime checks.
 
-The check that the length of a block payload does not exceed the number
-of remaining bytes in the firwmware file buffer was being done near the
-end of the loop iteration. However, some code before that check used the
-length field without validating it.
+If not those calls would be faulting, because the page at virtual
+address zero is (usually) not mapped into the kernel. As Arnd pointed
+out, it is possible a large port value could cause the address to be
+above mmap_min_addr which would then access userspace, which would be
+a bug.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f6bc909e7673 ("firmware: cs_dsp: add driver to support firmware loading on Cirrus Logic DSPs")
-Link: https://patch.msgid.link/20240627141432.93056-4-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To avoid any such issues, set _IO_BASE to POISON_POINTER_DELTA. That
+is a value chosen to point into unmapped space between the kernel and
+userspace, so any access will always fault.
+
+Note that on 32-bit POISON_POINTER_DELTA is 0, so the patch only has an
+effect on 64-bit.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240503075619.394467-2-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 36 +++++++++++++-------------------
- 1 file changed, 15 insertions(+), 21 deletions(-)
+ arch/powerpc/include/asm/io.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index 27eb0b0fc9ad2..68dbbcd55b34c 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1398,6 +1398,12 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 		}
- 
- 		region = (void *)&(firmware->data[pos]);
-+
-+		if (le32_to_cpu(region->len) > firmware->size - pos - sizeof(*region)) {
-+			ret = -EOVERFLOW;
-+			goto out_fw;
-+		}
-+
- 		region_name = "Unknown";
- 		reg = 0;
- 		text = NULL;
-@@ -1454,16 +1460,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 			   regions, le32_to_cpu(region->len), offset,
- 			   region_name);
- 
--		if (le32_to_cpu(region->len) >
--		    firmware->size - pos - sizeof(*region)) {
--			cs_dsp_err(dsp,
--				   "%s.%d: %s region len %d bytes exceeds file length %zu\n",
--				   file, regions, region_name,
--				   le32_to_cpu(region->len), firmware->size);
--			ret = -EINVAL;
--			goto out_fw;
--		}
--
- 		if (text) {
- 			memcpy(text, region->data, le32_to_cpu(region->len));
- 			cs_dsp_info(dsp, "%s: %s\n", file, text);
-@@ -2093,6 +2089,11 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 
- 		blk = (void *)(&firmware->data[pos]);
- 
-+		if (le32_to_cpu(blk->len) > firmware->size - pos - sizeof(*blk)) {
-+			ret = -EOVERFLOW;
-+			goto out_fw;
-+		}
-+
- 		type = le16_to_cpu(blk->type);
- 		offset = le16_to_cpu(blk->offset);
- 		version = le32_to_cpu(blk->ver) >> 8;
-@@ -2189,17 +2190,6 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 		}
- 
- 		if (reg) {
--			if (le32_to_cpu(blk->len) >
--			    firmware->size - pos - sizeof(*blk)) {
--				cs_dsp_err(dsp,
--					   "%s.%d: %s region len %d bytes exceeds file length %zu\n",
--					   file, blocks, region_name,
--					   le32_to_cpu(blk->len),
--					   firmware->size);
--				ret = -EINVAL;
--				goto out_fw;
--			}
--
- 			buf = cs_dsp_buf_alloc(blk->data,
- 					       le32_to_cpu(blk->len),
- 					       &buf_list);
-@@ -2239,6 +2229,10 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 	regmap_async_complete(regmap);
- 	cs_dsp_buf_free(&buf_list);
- 	kfree(text);
-+
-+	if (ret == -EOVERFLOW)
-+		cs_dsp_err(dsp, "%s: file content overflows file data\n", file);
-+
- 	return ret;
- }
- 
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index e86516ff8f4b3..f5c9504f6071d 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -46,7 +46,7 @@ extern struct pci_dev *isa_bridge_pcidev;
+  * define properly based on the platform
+  */
+ #ifndef CONFIG_PCI
+-#define _IO_BASE	0
++#define _IO_BASE	POISON_POINTER_DELTA
+ #define _ISA_MEM_BASE	0
+ #define PCI_DRAM_OFFSET 0
+ #elif defined(CONFIG_PPC32)
 -- 
 2.43.0
 
