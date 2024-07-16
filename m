@@ -1,136 +1,143 @@
-Return-Path: <stable+bounces-60336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED001933081
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:43:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F51E933084
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A6991C20A29
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:43:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90EAC1C21CC6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302CE1AC22C;
-	Tue, 16 Jul 2024 18:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480C81A0B1A;
+	Tue, 16 Jul 2024 18:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+pk7f2Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETHwRA+m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6231AC225;
-	Tue, 16 Jul 2024 18:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28ED1A01D8;
+	Tue, 16 Jul 2024 18:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154923; cv=none; b=F8ImewblImZbmC6rMMAe10HJ/3A2TSK/WH5rPbkI32Rr0XnLukKCi4uhH+WxvmSHXeppjToyTB/nKNkEg8XJsUFD4DwK22iteoLMDxSnxbZ/7gnyHtINP9fikycimIugnsk+YcdYeLyYkgoyiQ18UppsZyc2NpgB8uOXER5bWt4=
+	t=1721154997; cv=none; b=d/qFweHqad7q5EJx1XXiRYZ7aDDPoZ2fsu4C44Cv+mqwbfnwuMHV024klQcfRss/fy9kk/to54hZUFJxJ4dvhS/HOizaD1eLBblwYmJyfRdxxYwU/9n0P+aLJot2KXwl/G/l7+yaQ60+kEPp62rFGrwGTeBXf7BT2GFFHKmWuPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154923; c=relaxed/simple;
-	bh=UQ+pROdsszdPY7gMG8lq46WxWPu/jbbHpZmRK5WsxDg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R67Sk6oNBuD74f31ebbBM5k3xRWD6xzMAWqgD/yWZHSrwPUHY64ismgRsaUrXjtDBO16f9UYx4MTM72UbKa2vRRcA00039Zka81lHHgRhHRi5fVsPrmoytfLcAqqtInyY0890VC6Z3RzzYA2zM0nSVuWfb0/dhH4eza78AaQuNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+pk7f2Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527D5C4AF0E;
-	Tue, 16 Jul 2024 18:35:21 +0000 (UTC)
+	s=arc-20240116; t=1721154997; c=relaxed/simple;
+	bh=PEgX+s2wCIQwmugnXsdYi8h7r0p2U6wPhH5bHLJ+V8s=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=K68YhT2eZ7ojkMlVFncjF1LjxcIDVclMbTTXKcwPRzOBhdFoeXuEukLA+a3hhjnR0z2JMqxd1IGwdUL0zAxUmZwiejEND6vXE94z9HRIKTOf5DP/wIO5r8STwwIhS56QmCvipFpqYqBA57YSYeib7JqShzxdRyTlSYGC2Dsg1OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETHwRA+m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F20FC4AF0B;
+	Tue, 16 Jul 2024 18:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154922;
-	bh=UQ+pROdsszdPY7gMG8lq46WxWPu/jbbHpZmRK5WsxDg=;
+	s=k20201202; t=1721154996;
+	bh=PEgX+s2wCIQwmugnXsdYi8h7r0p2U6wPhH5bHLJ+V8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+pk7f2Q68F0j1vPdVG7sknqj3ELSCGjpUnNd/AFReYqkpJ8H9YgReLIDYz5oRlcS
-	 bo32URyV75cWrxWobPg96CW0PkZjTmheXDCqxCPM71qmjqxrSS53LZlvTPHmofAQ0A
-	 cNJGgtsEU4O44ZBdz78xeVe4Khz3LN4wfpnucnxWQ2mnDovH+AmcbT9DEvM3W+RM7j
-	 FR2f6x5kp09z6DKlrZok2v5ORuFtuzrT9QLej5nY0QFBYOUwzf6ujTDpHkzgT3Aiem
-	 ud/y0d+Md1JFBXz+umJpVUY7mPOGbvLEj6E3r2XhaA8ZomlXjK8JzfjqSZ1cEQ+vu6
-	 yAG139uKCoonw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com,
-	syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	walmeida@microsoft.com,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 3/3] hfsplus: fix uninit-value in copy_name
-Date: Tue, 16 Jul 2024 14:35:09 -0400
-Message-ID: <20240716183513.2814965-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240716183513.2814965-1-sashal@kernel.org>
-References: <20240716183513.2814965-1-sashal@kernel.org>
+	b=ETHwRA+mIes3EuoLLE804w4SdoouIxVWLRJa9APnZEaGvYVAuO1nrcvu3ikPlzxjG
+	 2cr1Dd3yUc6dWDvQVcm2N9vtpvZjJqc6SOBWp+I9ntHoSxvbLi1vdgjFqtJz0rk8g7
+	 nCl4NutLkPbXiuvyNCccz9rV21PrF3hZPvEZa0uCrbP/jeOedL5Mz48Jm8060DH2/g
+	 rotH6NS3BzIODOTwIruH7IlBXs4aa+y23mY+FEnKld/w2CEgal3xZh+P7JKrrdTlIw
+	 1LFvlC9Qrj4QB0hZyp0CXxABq1PDTW8e++m6YKOEDuZWYzxIn1OVeipZeZz8gYRGod
+	 bIJ5QrrKk0YQA==
+From: SeongJae Park <sj@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org,
+	damon@lists.linux.dev
+Subject: Re: [PATCH 6.9 000/143] 6.9.10-rc1 review
+Date: Tue, 16 Jul 2024 11:36:32 -0700
+Message-Id: <20240716183632.138572-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.317
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+Hello,
 
-[ Upstream commit 0570730c16307a72f8241df12363f76600baf57d ]
+On Tue, 16 Jul 2024 17:29:56 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-[syzbot reported]
-BUG: KMSAN: uninit-value in sized_strscpy+0xc4/0x160
- sized_strscpy+0xc4/0x160
- copy_name+0x2af/0x320 fs/hfsplus/xattr.c:411
- hfsplus_listxattr+0x11e9/0x1a50 fs/hfsplus/xattr.c:750
- vfs_listxattr fs/xattr.c:493 [inline]
- listxattr+0x1f3/0x6b0 fs/xattr.c:840
- path_listxattr fs/xattr.c:864 [inline]
- __do_sys_listxattr fs/xattr.c:876 [inline]
- __se_sys_listxattr fs/xattr.c:873 [inline]
- __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
- x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> This is the start of the stable review cycle for the 6.9.10 release.
+> There are 143 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 18 Jul 2024 15:27:21 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.10-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+> and the diffstat can be found below.
 
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:3877 [inline]
- slab_alloc_node mm/slub.c:3918 [inline]
- kmalloc_trace+0x57b/0xbe0 mm/slub.c:4065
- kmalloc include/linux/slab.h:628 [inline]
- hfsplus_listxattr+0x4cc/0x1a50 fs/hfsplus/xattr.c:699
- vfs_listxattr fs/xattr.c:493 [inline]
- listxattr+0x1f3/0x6b0 fs/xattr.c:840
- path_listxattr fs/xattr.c:864 [inline]
- __do_sys_listxattr fs/xattr.c:876 [inline]
- __se_sys_listxattr fs/xattr.c:873 [inline]
- __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
- x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[Fix]
-When allocating memory to strbuf, initialize memory to 0.
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
 
-Reported-and-tested-by: syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://lore.kernel.org/r/tencent_8BBB6433BC9E1C1B7B4BDF1BF52574BA8808@qq.com
-Reported-and-tested-by: syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] 52a42d4138a1 ("Linux 6.9.10-rc1")
+
+Thanks,
+SJ
+
+[...]
+
 ---
- fs/hfsplus/xattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
-index d5403b4004c97..cf8647a4c35bd 100644
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -700,7 +700,7 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
- 		return err;
- 	}
- 
--	strbuf = kmalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
-+	strbuf = kzalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
- 			XATTR_MAC_OSX_PREFIX_LEN + 1, GFP_KERNEL);
- 	if (!strbuf) {
- 		res = -ENOMEM;
--- 
-2.43.0
-
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: debugfs_rm_non_contexts.sh
+ok 8 selftests: damon: debugfs_target_ids_read_before_terminate_race.sh
+ok 9 selftests: damon: debugfs_target_ids_pid_leak.sh
+ok 10 selftests: damon: sysfs.sh
+ok 11 selftests: damon: sysfs_update_removed_scheme_dir.sh
+ok 12 selftests: damon: sysfs_update_schemes_tried_regions_hang.py
+ok 13 selftests: damon: sysfs_update_schemes_tried_regions_wss_estimation.py
+ok 14 selftests: damon: damos_quota.py
+ok 15 selftests: damon: damos_apply_interval.py
+ok 16 selftests: damon: reclaim.sh
+ok 17 selftests: damon: lru_sort.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh
+ok 12 selftests: damon-tests: build_m68k.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
 
