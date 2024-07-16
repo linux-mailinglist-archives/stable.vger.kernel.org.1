@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-59820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91532932BF3
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A93D932B4D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1EFA1C230AE
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BBAC1C20C63
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E5019E7C4;
-	Tue, 16 Jul 2024 15:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF4319E7FF;
+	Tue, 16 Jul 2024 15:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgRA6V2S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRl950qC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B4627733;
-	Tue, 16 Jul 2024 15:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1F119DFAE;
+	Tue, 16 Jul 2024 15:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145010; cv=none; b=lq1VSqxD1FQhaR3OdztKvncyjJW537BNqVxzPRuE+aJBf5I7PsZNflbHENPeCZr+KBg1Cl5RyFIfcbcXtk0tiFITH4p1US1GMQ7Gb84mLUHtaP8sAh7ALPcSe+zs8RDxFzhvhffA6mOcGRU16I0hUE4suJhPRwts8hGaNFLLNIM=
+	t=1721144619; cv=none; b=t96oI6h5XgRDb9Zu//PWtq/xVUsIDdqxS3RgPY7monA2W/MJiR2kFAOYeW23USlqfmMpz7ScmEidNuEHG3ZXa+pE/B/flh1dyus6uut9ApiKeMHa5d+A4hoJb4NpqKNfGSp3rYCdwApc8SeRYdaZ36gU8hw/Q1SpTnwy9GfUvDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145010; c=relaxed/simple;
-	bh=h75ehIqoW2aWoQ4pq0SXyaGw8dgivVcY9sUIF/FB4t8=;
+	s=arc-20240116; t=1721144619; c=relaxed/simple;
+	bh=8IqieS+DxuBgIS/cLdqfwFdjFe4jG2Fnu+zqJOi2ZKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRhoBYahVU8JCi7p2l+ikaNpGYUPWkhS4ZWS239Cwe5zuvjPmGChxw4DOHu+6/rsRSrp/B135vl7rJ341WJNji7Ld49K38Z/vJ8JkZSN1SyFkHTI967UUIJu3FwH3/f0Tf0YI29e+nwliSwkowO5ntgJUo9ae69eVH1ZLuUQqlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgRA6V2S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9232BC116B1;
-	Tue, 16 Jul 2024 15:50:09 +0000 (UTC)
+	 MIME-Version; b=XnIOYW5A3C+kER9yL6kVjKlrztv0Rhss9gknXRGfZ7DZpfgPp4Yo9hQWkvKrCsakEXP6r9Ka5UYjQew0xHrderkH9FSPeZ3RBniQzIhnwP7kPj1Yq+S/njXgfp9QEivziYUTopyXL71/Sy7PFI6HvWlzcXMjFHidi3EmQMF1XGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRl950qC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04CCC4AF0D;
+	Tue, 16 Jul 2024 15:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145010;
-	bh=h75ehIqoW2aWoQ4pq0SXyaGw8dgivVcY9sUIF/FB4t8=;
+	s=korg; t=1721144619;
+	bh=8IqieS+DxuBgIS/cLdqfwFdjFe4jG2Fnu+zqJOi2ZKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgRA6V2SAv0GMx8PvrJ5D6dPMgGlrmoKP37p7VPoGnAXogHkEbWF5XR5CKYvRXm+B
-	 2CIBZp32EhpcS7aJSlFsvD1lczsZUIhIyC75m++im3dT4gDJOuRQT+q2Q1QrbEvU3m
-	 KSnWoJgamTiY7K0sGpDBoz99+/lJO+4rGs9DCZOE=
+	b=vRl950qCUvH6kapPj62x4NwL2sGfuE+EmoU3Wtnh+xER5CndsQTg9VajePSlu3Rol
+	 PTcmMz52Q8w8Tg3taKXkSxaebbbhH81vYx5UU3nZiEZ7oyQfUm8LTaX28R5qMHzoA1
+	 /gggSEOh2UStZZ2ZOgz0qdwlMh6mNYVC9V67qp94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.9 069/143] USB: serial: option: add Telit generic core-dump composition
+	Jian-Hong Pan <jhp@endlessos.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 050/108] ALSA: hda/realtek: Enable headset mic of JP-IK LEAP W502 with ALC897
 Date: Tue, 16 Jul 2024 17:31:05 +0200
-Message-ID: <20240716152758.633162033@linuxfoundation.org>
+Message-ID: <20240716152747.910689111@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Jian-Hong Pan <jhp@endlessos.org>
 
-commit 4298e400dbdbf259549d69c349e060652ad53611 upstream.
+[ Upstream commit 45e37f9ce28d248470bab4376df2687a215d1b22 ]
 
-Add the following core-dump composition, used in different Telit modems:
+JP-IK LEAP W502 laptop's headset mic is not enabled until
+ALC897_FIXUP_HEADSET_MIC_PIN3 quirk is applied.
 
-0x9000: tty (sahara)
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#= 41 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=9000 Rev=00.00
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN990-dump
-S:  SerialNumber=e815bdde
-C:  #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=2mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=10 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Here is the original pin node values:
 
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+0x11 0x40000000
+0x12 0xb7a60130
+0x14 0x90170110
+0x15 0x411111f0
+0x16 0x411111f0
+0x17 0x411111f0
+0x18 0x411111f0
+0x19 0x411111f0
+0x1a 0x411111f0
+0x1b 0x03211020
+0x1c 0x411111f0
+0x1d 0x4026892d
+0x1e 0x411111f0
+0x1f 0x411111f0
+
+Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
+Link: https://lore.kernel.org/r/20240520055008.7083-2-jhp@endlessos.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1433,6 +1433,8 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x701b, 0xff),	/* Telit LE910R1 (ECM) */
- 	  .driver_info = NCTRL(2) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x9000, 0xff),	/* Telit generic core-dump device */
-+	  .driver_info = NCTRL(0) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x9010),				/* Telit SBL FN980 flashing device */
- 	  .driver_info = NCTRL(0) | ZLP },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x9200),				/* Telit LE910S1 flashing device */
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 5c5a144e707f0..c2374556c17e6 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10807,6 +10807,7 @@ enum {
+ 	ALC897_FIXUP_LENOVO_HEADSET_MODE,
+ 	ALC897_FIXUP_HEADSET_MIC_PIN2,
+ 	ALC897_FIXUP_UNIS_H3C_X500S,
++	ALC897_FIXUP_HEADSET_MIC_PIN3,
+ };
+ 
+ static const struct hda_fixup alc662_fixups[] = {
+@@ -11253,10 +11254,18 @@ static const struct hda_fixup alc662_fixups[] = {
+ 			{}
+ 		},
+ 	},
++	[ALC897_FIXUP_HEADSET_MIC_PIN3] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x19, 0x03a11050 }, /* use as headset mic */
++			{ }
++		},
++	},
+ };
+ 
+ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1019, 0x9087, "ECS", ALC662_FIXUP_ASUS_MODE2),
++	SND_PCI_QUIRK(0x1019, 0x9859, "JP-IK LEAP W502", ALC897_FIXUP_HEADSET_MIC_PIN3),
+ 	SND_PCI_QUIRK(0x1025, 0x022f, "Acer Aspire One", ALC662_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x0241, "Packard Bell DOTS", ALC662_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x0308, "Acer Aspire 8942G", ALC662_FIXUP_ASPIRE),
+-- 
+2.43.0
+
 
 
 
