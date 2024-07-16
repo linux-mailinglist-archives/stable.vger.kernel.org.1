@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-60078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E69FC932D48
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1A5932CC3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 221701C21E66
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 410721C22005
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA3819DF9D;
-	Tue, 16 Jul 2024 16:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1066A19F46C;
+	Tue, 16 Jul 2024 15:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNMEdJW8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Os0lo2IE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D46419F498;
-	Tue, 16 Jul 2024 16:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43DA1A00DF;
+	Tue, 16 Jul 2024 15:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145788; cv=none; b=PDW4JHPEwDxy/X7D/s62/lUjEs72P7spd3Fy7axzBLlrb3Ah9QTh3OaCFKPpqsfVGfLYe7ZLFZs+lYBTQRoPMslqgYZrnxTdJX6e7jCHbOLPgfWybs7DT+kuxZoXo/4p5Ue7ghsjX229tGycV5WP78CWGzf3JEvXkQuEJpjZOl4=
+	t=1721145466; cv=none; b=kInHLZN7Dqk4S28Ve0/D98Y3ssPiXw1nHkfZmAJdAXnffH7EkegYuRhYYKt+RARRgTpfC1IbguuVL8h1gKDrZRgo8hGkU0xtdivKQ8YQd+67DM6sr3oRc7IVMtKzhptSw+7yx/46PvK68/dTxUXdGmwMbEv/GzCWl+K+oOMGHIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145788; c=relaxed/simple;
-	bh=FmNAgN9w1XoAc+DZi5bgUJt23EOlWEvkeRlpOZE/rSg=;
+	s=arc-20240116; t=1721145466; c=relaxed/simple;
+	bh=x/0ZVa94lZEZXxb5aqK16O+QMzqiTsLeqKH7vJkJeNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c6y0FZL+ngsKtkigQhkd4ihfje66opYb7ERzVMuw5VBVg3Orecl4/H3OsXaWZjoGZmQCVZeycdjslpjAo2XKX0+2/2MfSH2+H+aqOlNAxoetp2AYdE6O+K5qP1R77UHuUfKLs69UmxKyWEsiYre3PG5brxlbgN4xE2yrjxELbsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNMEdJW8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87951C4AF0B;
-	Tue, 16 Jul 2024 16:03:07 +0000 (UTC)
+	 MIME-Version; b=QBitt1mJEmfACb85DokfRuKaH5PB/Z8/typxustkZAoeSwDizA/cc5rt2OW85wf6iqQ0rE7rNrkyVC7yUFyB0BA9txxUihD/Ip27BTsUKYV9X4ryuX4aDjyoORqerJK3GxP39sKGxW1OVLkousv9oYmOVAEvsCr+9bR0QUcVL68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Os0lo2IE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEE1C4AF0E;
+	Tue, 16 Jul 2024 15:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145787;
-	bh=FmNAgN9w1XoAc+DZi5bgUJt23EOlWEvkeRlpOZE/rSg=;
+	s=korg; t=1721145466;
+	bh=x/0ZVa94lZEZXxb5aqK16O+QMzqiTsLeqKH7vJkJeNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kNMEdJW8DhHzodys2Ch4OmGYbC/U15LG7CNUFJJcn3ezEbkUBqRCHbNVDCleii29F
-	 U+k8bu1nR80plqLfRo0aYofYrevDcqQT4rjgL5+CZ4a1VDw1LnB+WBh6vPi/kuOwku
-	 IaNpCjYRzuy6hvVtRhb3OKH4XdDWp/SW1WHH10KU=
+	b=Os0lo2IE28Q9bOdeWWFZkdIR6TJ+FREVKtOo4gqaCRuMFxk4G7EoXrGz7mxFgtU2y
+	 cX/sMuo+RlE/mIG6tByep34D9AIl1CtlJSJIhYaileghJX8ZWfpUrFGjO7RgiL9zmU
+	 fs1dU/IXiecfOuNcN4kMN0brGD5fwlCjUY8ScrI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 083/121] tty: serial: ma35d1: Add a NULL check for of_node
-Date: Tue, 16 Jul 2024 17:32:25 +0200
-Message-ID: <20240716152754.521430138@linuxfoundation.org>
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 75/96] wireguard: queueing: annotate intentional data race in cpu round robin
+Date: Tue, 16 Jul 2024 17:32:26 +0200
+Message-ID: <20240716152749.395943003@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Huang <ychuang3@nuvoton.com>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-commit acd09ac253b5de8fd79fc61a482ee19154914c7a upstream.
+commit 2fe3d6d2053c57f2eae5e85ca1656d185ebbe4e8 upstream.
 
-The pdev->dev.of_node can be NULL if the "serial" node is absent.
-Add a NULL check to return an error in such cases.
+KCSAN reports a race in the CPU round robin function, which, as the
+comment points out, is intentional:
 
-Fixes: 930cbf92db01 ("tty: serial: Add Nuvoton ma35d1 serial driver support")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/8df7ce45-fd58-4235-88f7-43fe7cd67e8f@moroto.mountain/
-Signed-off-by: Jacky Huang <ychuang3@nuvoton.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240625064128.127-1-ychuang570808@gmail.com
+    BUG: KCSAN: data-race in wg_packet_send_staged_packets / wg_packet_send_staged_packets
+
+    read to 0xffff88811254eb28 of 4 bytes by task 3160 on cpu 1:
+     wg_cpumask_next_online drivers/net/wireguard/queueing.h:127 [inline]
+     wg_queue_enqueue_per_device_and_peer drivers/net/wireguard/queueing.h:173 [inline]
+     wg_packet_create_data drivers/net/wireguard/send.c:320 [inline]
+     wg_packet_send_staged_packets+0x60e/0xac0 drivers/net/wireguard/send.c:388
+     wg_packet_send_keepalive+0xe2/0x100 drivers/net/wireguard/send.c:239
+     wg_receive_handshake_packet drivers/net/wireguard/receive.c:186 [inline]
+     wg_packet_handshake_receive_worker+0x449/0x5f0 drivers/net/wireguard/receive.c:213
+     process_one_work kernel/workqueue.c:3248 [inline]
+     process_scheduled_works+0x483/0x9a0 kernel/workqueue.c:3329
+     worker_thread+0x526/0x720 kernel/workqueue.c:3409
+     kthread+0x1d1/0x210 kernel/kthread.c:389
+     ret_from_fork+0x4b/0x60 arch/x86/kernel/process.c:147
+     ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+    write to 0xffff88811254eb28 of 4 bytes by task 3158 on cpu 0:
+     wg_cpumask_next_online drivers/net/wireguard/queueing.h:130 [inline]
+     wg_queue_enqueue_per_device_and_peer drivers/net/wireguard/queueing.h:173 [inline]
+     wg_packet_create_data drivers/net/wireguard/send.c:320 [inline]
+     wg_packet_send_staged_packets+0x6e5/0xac0 drivers/net/wireguard/send.c:388
+     wg_packet_send_keepalive+0xe2/0x100 drivers/net/wireguard/send.c:239
+     wg_receive_handshake_packet drivers/net/wireguard/receive.c:186 [inline]
+     wg_packet_handshake_receive_worker+0x449/0x5f0 drivers/net/wireguard/receive.c:213
+     process_one_work kernel/workqueue.c:3248 [inline]
+     process_scheduled_works+0x483/0x9a0 kernel/workqueue.c:3329
+     worker_thread+0x526/0x720 kernel/workqueue.c:3409
+     kthread+0x1d1/0x210 kernel/kthread.c:389
+     ret_from_fork+0x4b/0x60 arch/x86/kernel/process.c:147
+     ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+    value changed: 0xffffffff -> 0x00000000
+
+Mark this race as intentional by using READ/WRITE_ONCE().
+
+Cc: stable@vger.kernel.org
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20240704154517.1572127-4-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/ma35d1_serial.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/wireguard/queueing.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/ma35d1_serial.c b/drivers/tty/serial/ma35d1_serial.c
-index 19f0a305cc43..3b4206e815fe 100644
---- a/drivers/tty/serial/ma35d1_serial.c
-+++ b/drivers/tty/serial/ma35d1_serial.c
-@@ -688,12 +688,13 @@ static int ma35d1serial_probe(struct platform_device *pdev)
- 	struct uart_ma35d1_port *up;
- 	int ret = 0;
+--- a/drivers/net/wireguard/queueing.h
++++ b/drivers/net/wireguard/queueing.h
+@@ -124,10 +124,10 @@ static inline int wg_cpumask_choose_onli
+  */
+ static inline int wg_cpumask_next_online(int *last_cpu)
+ {
+-	int cpu = cpumask_next(*last_cpu, cpu_online_mask);
++	int cpu = cpumask_next(READ_ONCE(*last_cpu), cpu_online_mask);
+ 	if (cpu >= nr_cpu_ids)
+ 		cpu = cpumask_first(cpu_online_mask);
+-	*last_cpu = cpu;
++	WRITE_ONCE(*last_cpu, cpu);
+ 	return cpu;
+ }
  
--	if (pdev->dev.of_node) {
--		ret = of_alias_get_id(pdev->dev.of_node, "serial");
--		if (ret < 0) {
--			dev_err(&pdev->dev, "failed to get alias/pdev id, errno %d\n", ret);
--			return ret;
--		}
-+	if (!pdev->dev.of_node)
-+		return -ENODEV;
-+
-+	ret = of_alias_get_id(pdev->dev.of_node, "serial");
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "failed to get alias/pdev id, errno %d\n", ret);
-+		return ret;
- 	}
- 	up = &ma35d1serial_ports[ret];
- 	up->port.line = ret;
--- 
-2.45.2
-
 
 
 
