@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E539932D58
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 636ED932CE2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FF2E1C2146B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93ECE1C21DFE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D174419B3EE;
-	Tue, 16 Jul 2024 16:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A4E19DF75;
+	Tue, 16 Jul 2024 15:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bFM8+oT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrCniTlv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909EA1DDCE;
-	Tue, 16 Jul 2024 16:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FAB19B59C;
+	Tue, 16 Jul 2024 15:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145836; cv=none; b=b8dVXYWZVEVAk8LhkqLDM8KY7VyMCY403BgcKX+Fs/3phqz9YmNw9yiUMdLkwLUYGB4BfkY44ESWeS6zHOEFRWDkx6rcYbP0nTV75ak1kJZCKr3r4QwQEJ5clHR+55B8lhXcvGT34zSNimiyF3P3fje306QFHPvhDKEIzaQSJ6g=
+	t=1721145520; cv=none; b=FjmcL21+QjOK88uHdCNv8NMMMIjwBX9P+p+RuKZe3pV6x+VQDo5msyWRZAavc6IOaTnZskhas/rPoWMKogokr8vx01lQntcaJvrdU7UoUOgzCUBaAdHgJMt77Y0TcVEMTv5Bx+gtw5e7/TsC1kC0MZJl7OZpkO6XrqsHKxrcAyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145836; c=relaxed/simple;
-	bh=XIY7IRiuWQ7SePMyAg0Jpvjtpz7Hky0ejcYiehF6Byk=;
+	s=arc-20240116; t=1721145520; c=relaxed/simple;
+	bh=H/yR3sN67Yoww1uw+gpxaCzL0JFOzc4vun0jHNWnUIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rf1cgConFURTxZyYG7Nj4v5NY6+lwH1c/nTHAk1OQAhWUowqP94OIRmiN60MgQ9tbzpr2Eqk2vmaGdrUzr4IcR0TVgA4P+Zut/UMPbtbcfjNMwNnG26T2kLifdz8qyFbgNKyRnrGlo28j9CZeuRpriz+DEPtXPoOAYE5vD3M31A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bFM8+oT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DDAC116B1;
-	Tue, 16 Jul 2024 16:03:55 +0000 (UTC)
+	 MIME-Version; b=Zg+pquZtqPKWJep83ub+qIKfmX5eSjQivV/W1abYxl2wn41isWvxUk4EjOIwwivq8ZLLtIxgTF3u3ab4TEMnGjajLD7EjPSGDOAAme9QK+OEmMST4m9TVJW3AFfNW7ZMFU3EsziWzaWp57Q6/Fv2xgFnLQGPdiw3NvGvoECR384=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrCniTlv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED51C116B1;
+	Tue, 16 Jul 2024 15:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145836;
-	bh=XIY7IRiuWQ7SePMyAg0Jpvjtpz7Hky0ejcYiehF6Byk=;
+	s=korg; t=1721145519;
+	bh=H/yR3sN67Yoww1uw+gpxaCzL0JFOzc4vun0jHNWnUIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bFM8+oTfCg2/SdsndVcCEfBMl2ZzrZk+fiTYirK5RTFbdbQW8KFN/rkR7FkB8mH6
-	 KrmTUBullg4lnz7C7cfIQN0fJM5zjhVBsDkZS7y4F4XdMn1bhKLvsrm0KLyJyoGSYL
-	 O/rr9HlBXtgj9kfb1XJeteUdZ3gPpCvJ9scDYkUQ=
+	b=lrCniTlvcAjpRu/NSlxg5bdA0PL2s32O6fQSWZXzhS9VsTs54tmZJWKJqeQlkzS/z
+	 HmkwPbGh3EEau++4Z7NzSIUrbX1CczJCnTY1qEv40TxVw9TarVKfxJOVp9hVD6LSbZ
+	 D33NQkNBZKq6jnOU8nLBLICJL54aauIkhz4oA8aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.6 101/121] misc: fastrpc: Fix ownership reassignment of remote heap
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 92/96] i2c: rcar: clear NO_RXDMA flag after resetting
 Date: Tue, 16 Jul 2024 17:32:43 +0200
-Message-ID: <20240716152755.214197950@linuxfoundation.org>
+Message-ID: <20240716152750.050838229@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit a6f2f158f1ac4893a4967993105712bf3dad32d9 upstream.
+[ Upstream commit fea6b5ebb71a2830b042e42de7ae255017ac3ce8 ]
 
-Audio PD daemon will allocate memory for audio PD dynamic loading
-usage when it is attaching for the first time to audio PD. As
-part of this, the memory ownership is moved to the VM where
-audio PD can use it. In case daemon process is killed without any
-impact to DSP audio PD, the daemon process will retry to attach to
-audio PD and in this case memory won't be reallocated. If the invoke
-fails due to any reason, as part of err_invoke, the memory ownership
-is getting reassigned to HLOS even when the memory was not allocated.
-At this time the audio PD might still be using the memory and an
-attemp of ownership reassignment would result in memory issue.
+We should allow RXDMA only if the reset was really successful, so clear
+the flag after the reset call.
 
-Fixes: 0871561055e6 ("misc: fastrpc: Add support for audiopd")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628114501.14310-6-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0e864b552b23 ("i2c: rcar: reset controller is mandatory for Gen3+")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-rcar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1238,6 +1238,7 @@ static int fastrpc_init_create_static_pr
- 	struct fastrpc_phy_page pages[1];
- 	char *name;
- 	int err;
-+	bool scm_done = false;
- 	struct {
- 		int pgid;
- 		u32 namelen;
-@@ -1289,6 +1290,7 @@ static int fastrpc_init_create_static_pr
- 					fl->cctx->remote_heap->phys, fl->cctx->remote_heap->size, err);
- 				goto err_map;
- 			}
-+			scm_done = true;
- 		}
+diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
+index c7a51e0876cf5..a006fef1d34b0 100644
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -856,10 +856,10 @@ static int rcar_i2c_master_xfer(struct i2c_adapter *adap,
+ 
+ 	/* Gen3+ needs a reset. That also allows RXDMA once */
+ 	if (priv->devtype >= I2C_RCAR_GEN3) {
+-		priv->flags &= ~ID_P_NO_RXDMA;
+ 		ret = rcar_i2c_do_reset(priv);
+ 		if (ret)
+ 			goto out;
++		priv->flags &= ~ID_P_NO_RXDMA;
  	}
  
-@@ -1324,7 +1326,7 @@ static int fastrpc_init_create_static_pr
- 
- 	return 0;
- err_invoke:
--	if (fl->cctx->vmcount) {
-+	if (fl->cctx->vmcount && scm_done) {
- 		u64 src_perms = 0;
- 		struct qcom_scm_vmperm dst_perms;
- 		u32 i;
+ 	rcar_i2c_init(priv);
+-- 
+2.43.0
+
 
 
 
