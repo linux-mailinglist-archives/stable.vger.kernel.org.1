@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-59878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F92932C38
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:53:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD320932AB9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9178284D14
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:53:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1726F1C22A0C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E224219E81D;
-	Tue, 16 Jul 2024 15:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6616F1DDCE;
+	Tue, 16 Jul 2024 15:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAsaqAFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/HeS0v7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A084919E7FF;
-	Tue, 16 Jul 2024 15:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257D1CA40;
+	Tue, 16 Jul 2024 15:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145180; cv=none; b=WDWrC1eXrIdtpeJBj+GVaonwZujEe9chmYZXYcKg2/yuJNA6hn7YRH6f++LgwAU6s4Vito5HLjqawBt91Ky6oYf+aJsyLq/dF7q27D0GqCfnw3NZmBRcgYvzLKA6yC/dPMGY94h9yR5Hw9S1y+EFeRLA3/EPiyJho4+TYCgvGyY=
+	t=1721144239; cv=none; b=IBljFveTPJ0D06br/Ufk2LQdqeKZS82cqv5z9DkIJpgWgYxxk2MLoVCJ8cI8zei50mrE4PK61juv1YhUPHxymBzlAAuTlmgTKRN2mhDGCdXtWfhRrtJy/mMFkxWcsXxuHl8xY6kkOxoXyVZOZ8JlMvEelDnzQfSs+5U2a8fFmDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145180; c=relaxed/simple;
-	bh=A3HF26ZgYFOSyYd5MCPHZ1EyNbDQL66viDv8ZAOZc3M=;
+	s=arc-20240116; t=1721144239; c=relaxed/simple;
+	bh=fgYgwtZznaUyV12Bjxnux7aNBS4I9AkcZreXp37XOC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SKb4eMZuLXnl0NEJ47eEKDGbAUnltHWbI//lYMXWpjl3BKrXOCaPQSinyjijPPjVY5T9rez5v64CGK6hQQyPJqfLw+t6Uz1NLQLfodqR1+QjZtB1xdwhyHqpw2XsKJa+0HgMwkzwrNIGo8roDkonE3oF+sj4b8FSmTfhz9zygds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAsaqAFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265A8C116B1;
-	Tue, 16 Jul 2024 15:52:59 +0000 (UTC)
+	 MIME-Version; b=TxxcQwAcjaCzz+XOt24RsadfFzuaIRlGCorZZLY2y5Iowh59WjEQkB2ti14yxsTp34kahb1YmJFUmQCgGMe3xVvu3z5nPwTzOINyg9Y9msOaTeUVMxeK7DngumWGpsjCBdDs9OG5T5i+FXEdKj85cBtB3M8MnXpPpmBTIXNrcgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/HeS0v7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A010BC116B1;
+	Tue, 16 Jul 2024 15:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145180;
-	bh=A3HF26ZgYFOSyYd5MCPHZ1EyNbDQL66viDv8ZAOZc3M=;
+	s=korg; t=1721144239;
+	bh=fgYgwtZznaUyV12Bjxnux7aNBS4I9AkcZreXp37XOC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RAsaqAFvNTSMgavQ573BoY4tptsw8mwRzOVtQBymZmC1C3WDImzH85mT8WxXe7iu1
-	 Zw+SVSYFP40PFIfQYcR4elQK5O+fQGTIMSTFPjO+Sxfv4RfgnQ/mbUCG28EIqKTDOo
-	 dwSpaA1jUO5PPR4aDvBxcrKywj6V1HyE5pUpqyds=
+	b=q/HeS0v7BRctNpDdSlzSNhV8zc57bRHNvoIDb59QUS3ro5wNHA+Hxz554cBJ7z2QJ
+	 jRsXn1mvJasz0kAp0dtzGaL9KLiaguQiAA67+TvwSFvRnshSuMq844lzyBK4MR2oWK
+	 vaJJe134JKLsvbeUIULeaZhXEzGMRnVzsx9lZ9bI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.9 094/143] iio: trigger: Fix condition for own trigger
+	stable <stable@kernel.org>,
+	jinxiaobo <jinxiaobo@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 4.19 55/66] USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
 Date: Tue, 16 Jul 2024 17:31:30 +0200
-Message-ID: <20240716152759.592395554@linuxfoundation.org>
+Message-ID: <20240716152740.263585829@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 74cb21576ea5247efbbb7d92f71cafee12159cd9 upstream.
+commit 3859e85de30815a20bce7db712ce3d94d40a682d upstream.
 
-The condition for checking if triggers belong to the same IIO device to
-set attached_own_device is currently inverted, causing
-iio_trigger_using_own() to return an incorrect value. Fix it by testing
-for the correct return value of iio_validate_own_trigger().
+START BP-850K is a dot matrix printer that crashes when
+it receives a Set-Interface request and needs USB_QUIRK_NO_SET_INTF
+to work properly.
 
-Cc: stable@vger.kernel.org
-Fixes: 517985ebc531 ("iio: trigger: Add simple trigger_validation helper")
-Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://lore.kernel.org/r/20240614143658.3531097-1-jpaulo.silvagoncalves@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: jinxiaobo <jinxiaobo@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/202E4B2BD0F0FEA4+20240702154408.631201-1-wangyuli@uniontech.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/industrialio-trigger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -322,7 +322,7 @@ int iio_trigger_attach_poll_func(struct
- 	 * this is the case if the IIO device and the trigger device share the
- 	 * same parent device.
- 	 */
--	if (iio_validate_own_trigger(pf->indio_dev, trig))
-+	if (!iio_validate_own_trigger(pf->indio_dev, trig))
- 		trig->attached_own_device = true;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -504,6 +504,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x1b1c, 0x1b38), .driver_info = USB_QUIRK_DELAY_INIT |
+ 	  USB_QUIRK_DELAY_CTRL_MSG },
  
- 	return ret;
++	/* START BP-850k Printer */
++	{ USB_DEVICE(0x1bc3, 0x0003), .driver_info = USB_QUIRK_NO_SET_INTF },
++
+ 	/* MIDI keyboard WORLDE MINI */
+ 	{ USB_DEVICE(0x1c75, 0x0204), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
 
 
 
