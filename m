@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-59798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FC3932BD0
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0A1932ABD
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 156FF281CBF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA82CB216F6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794D119DF71;
-	Tue, 16 Jul 2024 15:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB2CF9E8;
+	Tue, 16 Jul 2024 15:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpj1BFYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYJhIdku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388551DA4D;
-	Tue, 16 Jul 2024 15:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8BECA40;
+	Tue, 16 Jul 2024 15:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144940; cv=none; b=WJWL76yEmQI9H8mR9YGE6NS6OR94fOZgkfX3F2ai4eNEYorMf+sjzk+Qy5Ny9uSkIictNQYJfCk4oV6SzKVJztVyaLeo7nzm8JtNE78uuHQcGACAZ9RA0O5ofO7J3FNc9qpXYmzUyGnJe3g2bQBRGCbqo21rDcurxujjjnxs464=
+	t=1721144251; cv=none; b=CfH3p2Nh7Gutg+XkiRJEF6yUcGrZWJFs3a6bniNpUp2R6x7LSP4SmCqDTCIemSQM2WNxvdZVjssW6i0lhVvCyqOtWlkITsOZxnUabIEVC/+TSH5E/A0LxtgvpTZ3gC6jLTeqU6GkfDjqznEWLozyUj5Xf3yXUkzbZ0yWeXzXpeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144940; c=relaxed/simple;
-	bh=DYKM5vQLlSJhaQ7mX32GPq1fjehk/2popHhEgM/Ki34=;
+	s=arc-20240116; t=1721144251; c=relaxed/simple;
+	bh=Qlcqy8uMCuay0AuwUCJ/WRwM6tFcIwNXPToXJDUkcBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGISKSwueAaNbYgWZ030n9IAWNzfOkkC2e8JOrWaPwOyGKvB7XsWToWM0Ua1z40xcrxbhM/vVB6tWmAEYIQ7ZxIAGiuhi5VC/m/nqs2EPQU6jPerMCUdFEZFefI5ltZzFOI99neCmnm0lisPOu1MnWvpAG8QUFYd49WaWm2rMgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpj1BFYA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1614C116B1;
-	Tue, 16 Jul 2024 15:48:59 +0000 (UTC)
+	 MIME-Version; b=r091jFRcwUV0T7/TuHgHBXoqAtnnOVDR8aI5+wx/55MmRGtI2oPXd4jcybdgwM023ylO6VamGtxRc6KzIhqslSk1C4GdzgILTQwtIzGgTVNHGTsqS/H+pXFVXt/LxjRO5hDqOnb6FQ6bOXu3T5qqH18mNNVSt+bjmTqATcjAtTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYJhIdku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D653C116B1;
+	Tue, 16 Jul 2024 15:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144940;
-	bh=DYKM5vQLlSJhaQ7mX32GPq1fjehk/2popHhEgM/Ki34=;
+	s=korg; t=1721144250;
+	bh=Qlcqy8uMCuay0AuwUCJ/WRwM6tFcIwNXPToXJDUkcBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qpj1BFYAxAzXAYn/hmQszP6FC+hpIXt1DyJvVhBdg1v7kHvjIcB/PXjPUcnSbRlFk
-	 uk+kQmCizkSUetPym5r/fDgXot/vcVJqy0PEyFd/rkU3aJc4ndl3ybFLEDoWyOK3Cd
-	 weJJ2yFnrWtMTQuJt3716DlDJY9zW06Ob5etpChE=
+	b=zYJhIdkuum5fHNFVVNPVziV0J7+TubqsXhqvaG/xfQSeOJoOWYAmRziFPo6s2s0fE
+	 A7Aw/U0Pj4kTBiKy7YtaocV9Pb5WtdoXz2/bVU92KeQL6SsVC9nSF34mbXsPBaTZcb
+	 R2kOH0SoC7euJFg7ujhOnLol+tC9dxqMS4Iy23Jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jean Delvare <jdelvare@suse.de>,
+	Michael Kelley <mhklinux@outlook.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 046/143] arm64: dts: qcom: x1e80100-*: Allocate some CMA buffers
+Subject: [PATCH 5.4 10/78] firmware: dmi: Stop decoding on broken entry
 Date: Tue, 16 Jul 2024 17:30:42 +0200
-Message-ID: <20240716152757.759305232@linuxfoundation.org>
+Message-ID: <20240716152741.025105779@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Jean Delvare <jdelvare@suse.de>
 
-[ Upstream commit 50b0516030fd549c9fd4498c9ac1f3a665521b2e ]
+[ Upstream commit 0ef11f604503b1862a21597436283f158114d77e ]
 
-In a fashion identical to commit 5f84c7c35d49 ("arm64: dts: qcom:
-sc8280xp: Define CMA region for CRD and X13s"), there exists a need for
-more than the default 32 MiB of CMA, namely for the ath12k_pci device.
+If a DMI table entry is shorter than 4 bytes, it is invalid. Due to
+how DMI table parsing works, it is impossible to safely recover from
+such an error, so we have to stop decoding the table.
 
-Reserve a 128MiB chunk to make boot-time failures like:
- cma: cma_alloc: reserved: alloc failed, req-size: 128 pages, ret: -12
-go away.
-
-Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
-Fixes: bd50b1f5b6f3 ("arm64: dts: qcom: x1e80100: Add Compute Reference Device")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240522-topic-x1e_cma-v1-1-b69e3b467452@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Link: https://lore.kernel.org/linux-kernel/Zh2K3-HLXOesT_vZ@liuwe-devbox-debian-v2/T/
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-crd.dts | 9 +++++++++
- arch/arm64/boot/dts/qcom/x1e80100-qcp.dts | 9 +++++++++
- 2 files changed, 18 insertions(+)
+ drivers/firmware/dmi_scan.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-index 6a0a54532e5fe..5cc627c11b13a 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-@@ -48,6 +48,15 @@
- 		stdout-path = "serial0:115200n8";
- 	};
+diff --git a/drivers/firmware/dmi_scan.c b/drivers/firmware/dmi_scan.c
+index 1e21fc3e9851a..537c104652f71 100644
+--- a/drivers/firmware/dmi_scan.c
++++ b/drivers/firmware/dmi_scan.c
+@@ -96,6 +96,17 @@ static void dmi_decode_table(u8 *buf,
+ 	       (data - buf + sizeof(struct dmi_header)) <= dmi_len) {
+ 		const struct dmi_header *dm = (const struct dmi_header *)data;
  
-+	reserved-memory {
-+		linux,cma {
-+			compatible = "shared-dma-pool";
-+			size = <0x0 0x8000000>;
-+			reusable;
-+			linux,cma-default;
-+		};
-+	};
++		/*
++		 * If a short entry is found (less than 4 bytes), not only it
++		 * is invalid, but we cannot reliably locate the next entry.
++		 */
++		if (dm->length < sizeof(struct dmi_header)) {
++			pr_warn(FW_BUG
++				"Corrupted DMI table, offset %zd (only %d entries processed)\n",
++				data - buf, i);
++			break;
++		}
 +
- 	sound {
- 		compatible = "qcom,x1e80100-sndcard";
- 		model = "X1E80100-CRD";
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-index e76d29053d79b..49e19a64455b8 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-@@ -22,6 +22,15 @@
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-+	reserved-memory {
-+		linux,cma {
-+			compatible = "shared-dma-pool";
-+			size = <0x0 0x8000000>;
-+			reusable;
-+			linux,cma-default;
-+		};
-+	};
-+
- 	vph_pwr: vph-pwr-regulator {
- 		compatible = "regulator-fixed";
- 
+ 		/*
+ 		 *  We want to know the total length (formatted area and
+ 		 *  strings) before decoding to make sure we won't run off the
 -- 
 2.43.0
 
