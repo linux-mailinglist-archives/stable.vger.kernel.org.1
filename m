@@ -1,223 +1,234 @@
-Return-Path: <stable+bounces-59394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E64093217C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 09:50:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B61CB932197
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 10:01:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1D121F21DB6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 07:50:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C4AB2817A8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 08:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1062BB02;
-	Tue, 16 Jul 2024 07:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B05956B7C;
+	Tue, 16 Jul 2024 08:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHT5CYEA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QB3jIYFJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709E9224DD
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 07:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268BA4D8DF
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 08:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721116202; cv=none; b=VvQhhmEscyIRd5eHCDBHNMZFIlWtlWvg+G3i4ZsrOIJjjEa976NqJlnPFsxLXvGEQRuf5xreZIsAuN33vQavpF/XnR7lEv+mItbHy+2Y2ptMkjlSbti7FanuORl5UExYGnx11T61ZMOMWxIyCih8S/Nm4qrvdG+NjU25KAZpb6M=
+	t=1721116846; cv=none; b=bWIR+/JG4QWsJJw49f0YmKg5RIEZ4W+dbiXFl4rJGhzmtkLBEeA60Tr6t7PL7Mw9GYJoDQ7yRlcXkPdxLI5ekQw1v5hWend9rX+44Ofq0EtJf5lUWjhFFl25TG361GYWUOUO7Hcxoxw4/vriJw/Db9PVYkdV5Ilq4GTFU3eR6Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721116202; c=relaxed/simple;
-	bh=9WEOPNxxZLiUQpUPT3lCFVhiBuJN/xAzOgIHuyhfUZE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L/mzHOQzd2Lee9sfAsYy2GuYESy0w4WnB+ZRBhY8+9fOAjgPaf4Cz47yNrsFFkTdCeLuEnm0UquvGQu4zFf6zdlrKcSBZFiQ3AQ7xYJOOEl2FSynbH3TJcnP8LZlZjMmTlbPu+bFPXLlVEmzQMhOr4dSiQKoKNkYa49HJPRSopE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHT5CYEA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C75CC116B1;
-	Tue, 16 Jul 2024 07:50:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721116202;
-	bh=9WEOPNxxZLiUQpUPT3lCFVhiBuJN/xAzOgIHuyhfUZE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CHT5CYEAU6cu2uA+9GvMmzbQ/1Bi9sCm5k4Ayvw2+TH8Dby0iCQxZAvyHx1fWfEyi
-	 5jqQ/4Su3h4tNycH6xPNey/Vu+excW5zUkPrfANRdaRxTxsQEnKxms+b+K7IbOnQ4j
-	 fFDj1nuvkfeTVtKp0t7r8R5Ih0cbc9hxBdqQcDm8=
-Date: Tue, 16 Jul 2024 09:49:59 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Baokun Li <libaokun@huaweicloud.com>
-Cc: sashal@kernel.org, yangerkun@huawei.com, Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Ts'o <tytso@mit.edu>, stable@vger.kernel.org
-Subject: Re: [PATCH 6.6/6.9 v2 2/2] ext4: fix slab-out-of-bounds in
- ext4_mb_find_good_group_avg_frag_lists()
-Message-ID: <2024071615-alienable-flirt-4ba6@gregkh>
-References: <20240619121952.3508695-1-libaokun@huaweicloud.com>
- <20240619121952.3508695-2-libaokun@huaweicloud.com>
- <c8784653-bd67-4839-b2a4-bbbfbfa3ba14@huaweicloud.com>
+	s=arc-20240116; t=1721116846; c=relaxed/simple;
+	bh=gbtJMdeZ8Nfx54fmCANpGtvgsT4lgrcHSQhoavBiUHE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s0C0KgibBt8ZbPs7Sc9aXH1NCfgyXLZ6Mt2Zab0Ftvm9q9bAmx8q/6nbxMj8oAvk4aPigPFdIkEqWnyL4yXRUJQuo6bSG/AATRU8w7NlBgHE5Th2DVwO6oCT8aOb+KiYkevEE/9du4jjA8AppDytdJKt+twfN8r389f79aJe0yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QB3jIYFJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721116842;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HUKCoMTwNi+VNgsVFGaBvWqN5i93bmmgokcO8dazSYM=;
+	b=QB3jIYFJSa5Sz38o5JEIXHUVqdIK8bHr9Bjb5oa4jfYCqyHqRex4r+icLIZmSJSLgwrJzA
+	P/kfXGmbxTI42RTF9q1YI/uxSKf07aGjpwMqTxxuJPUAIdRPSEEMJDV+O7FsvbqJNncchQ
+	4ND3UN8bEyoxQfrpDVIxG+c9C4Q5Ek0=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-636-jtMK8UpeO5S2QqJDazy_2w-1; Tue, 16 Jul 2024 04:00:39 -0400
+X-MC-Unique: jtMK8UpeO5S2QqJDazy_2w-1
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-59aeea3d7e2so1805593a12.0
+        for <stable@vger.kernel.org>; Tue, 16 Jul 2024 01:00:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721116838; x=1721721638;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HUKCoMTwNi+VNgsVFGaBvWqN5i93bmmgokcO8dazSYM=;
+        b=CEXNNWMdIiyn0DrlnJ/wMq95bQu7RjPX31zUE6XVvQoDMti5CF/9rw9aGzd5f59rFO
+         4xYvsiYiQVjdSOkt3BW/P30XPrP9pvCxUrI4hl/ezNydsMxFCO9Rc60Ewvix3XZ6/U9i
+         Zh729UVvZc2/IGu7eYOa99CLXsBRwlxN+LCGNKkCjxj+25L6J9bo3OGGukFU2MBRagi9
+         4XrSjQJayDtBQN1R9UPML3G8jMyfNcWDRVMHvRPwjb1Du1oTykqroD9ketNOka4CQBkR
+         2t529DtwFqJEIcEK+Dk4CVkY1RuohjZ3LLD2X48mjjlKqHs8p5DjQdSCHHVw79okgIIw
+         kanQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCF6cqhMaPHi82pU/doXlJAf5X3QwGvg7xva3Qld2Vaj6loJcW5H8za+4NnURykxQaZR6sN2DL0GKqImi2xJjKG40ea2mT
+X-Gm-Message-State: AOJu0YyGRtsYsojz1RCF7UVv9OoPl2UY2HrqMB3rVIxdd3I0QaH6VCJ/
+	1MPN/kmh/Mso3MwzqBuWsIKjjiai5wkNRB+dXzlZkBUf8SY5Bugdjf8xkjp6sIrCMRaMh9+JXx6
+	t4jC8GkxJmwO65eo3XUseZTDvH2ay1AmgAzvYaBO5/Ozj8VvH1ODZd3EYFGpsmnpk5pD0s3oIyu
+	OKsW5Qx1mDEfTauoUQ2NhJaUk6zqz4
+X-Received: by 2002:a17:906:2bc4:b0:a77:c199:9d01 with SMTP id a640c23a62f3a-a79ea4012camr81467866b.22.1721116838535;
+        Tue, 16 Jul 2024 01:00:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFC62+BXN+qunBS2TGIIyi63ugKcbTFuUvvZBkfnv7ODtmsNygpVNN7Ki1TVNlLehJwPGXc5xZH+/kBCDC8zCA=
+X-Received: by 2002:a17:906:2bc4:b0:a77:c199:9d01 with SMTP id
+ a640c23a62f3a-a79ea4012camr81466266b.22.1721116838113; Tue, 16 Jul 2024
+ 01:00:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c8784653-bd67-4839-b2a4-bbbfbfa3ba14@huaweicloud.com>
+References: <20240711104019.987090-1-xiubli@redhat.com>
+In-Reply-To: <20240711104019.987090-1-xiubli@redhat.com>
+From: Venky Shankar <vshankar@redhat.com>
+Date: Tue, 16 Jul 2024 13:30:01 +0530
+Message-ID: <CACPzV1kjU5KYynz4KX9=z6LB6KELUqCZOBc126bpgpyrzRaWsQ@mail.gmail.com>
+Subject: Re: [PATCH] ceph: force sending a cap update msg back to MDS for
+ revoke op
+To: xiubli@redhat.com
+Cc: ceph-devel@vger.kernel.org, jlayton@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 16, 2024 at 10:11:55AM +0800, Baokun Li wrote:
-> On 2024/6/19 20:19, libaokun@huaweicloud.com wrote:
-> > From: Baokun Li <libaokun1@huawei.com>
-> > 
-> > [ Upstream commit 13df4d44a3aaabe61cd01d277b6ee23ead2a5206 ]
-> > 
-> > We can trigger a slab-out-of-bounds with the following commands:
-> > 
-> >      mkfs.ext4 -F /dev/$disk 10G
-> >      mount /dev/$disk /tmp/test
-> >      echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
-> >      echo test > /tmp/test/file && sync
-> > 
-> > ==================================================================
-> > BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
-> > Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
-> > CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
-> > Call Trace:
-> >   dump_stack_lvl+0x2c/0x50
-> >   kasan_report+0xb6/0xf0
-> >   ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
-> >   ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
-> >   ext4_mb_new_blocks+0x88a/0x1370 [ext4]
-> >   ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
-> >   ext4_map_blocks+0x569/0xea0 [ext4]
-> >   ext4_do_writepages+0x10f6/0x1bc0 [ext4]
-> > [...]
-> > ==================================================================
-> > 
-> > The flow of issue triggering is as follows:
-> > 
-> > // Set s_mb_group_prealloc to 2147483647 via sysfs
-> > ext4_mb_new_blocks
-> >    ext4_mb_normalize_request
-> >      ext4_mb_normalize_group_request
-> >        ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
-> >    ext4_mb_regular_allocator
-> >      ext4_mb_choose_next_group
-> >        ext4_mb_choose_next_group_best_avail
-> >          mb_avg_fragment_size_order
-> >            order = fls(len) - 2 = 29
-> >          ext4_mb_find_good_group_avg_frag_lists
-> >            frag_list = &sbi->s_mb_avg_fragment_size[order]
-> >            if (list_empty(frag_list)) // Trigger SOOB!
-> > 
-> > At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
-> > but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
-> > to be triggered by an attempt to access an element at index 29.
-> > 
-> > Add a new attr_id attr_clusters_in_group with values in the range
-> > [0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
-> > that type to fix the issue. In addition avoid returning an order
-> > from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
-> > and reduce some useless loops.
-> > 
-> > Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
-> > CC: stable@vger.kernel.org
-> > Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> > Reviewed-by: Jan Kara <jack@suse.cz>
-> > Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-> > Link: https://lore.kernel.org/r/20240319113325.3110393-5-libaokun1@huawei.com
-> > Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> > ---
-> >   fs/ext4/mballoc.c |  4 ++++
-> >   fs/ext4/sysfs.c   | 15 ++++++++++++++-
-> >   2 files changed, 18 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-> > index 714f83632e3f..66b5a68b0254 100644
-> > --- a/fs/ext4/mballoc.c
-> > +++ b/fs/ext4/mballoc.c
-> > @@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
-> >   		return 0;
-> >   	if (order == MB_NUM_ORDERS(sb))
-> >   		order--;
-> > +	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
-> > +		order = MB_NUM_ORDERS(sb) - 1;
-> >   	return order;
-> >   }
-> > @@ -1008,6 +1010,8 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
-> >   	 * goal length.
-> >   	 */
-> >   	order = fls(ac->ac_g_ex.fe_len) - 1;
-> > +	if (WARN_ON_ONCE(order - 1 > MB_NUM_ORDERS(ac->ac_sb)))
-> > +		order = MB_NUM_ORDERS(ac->ac_sb);
-> >   	min_order = order - sbi->s_mb_best_avail_max_trim_order;
-> >   	if (min_order < 0)
-> >   		min_order = 0;
-> > diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
-> > index ca820620b974..d65dccb44ed5 100644
-> > --- a/fs/ext4/sysfs.c
-> > +++ b/fs/ext4/sysfs.c
-> > @@ -29,6 +29,7 @@ typedef enum {
-> >   	attr_trigger_test_error,
-> >   	attr_first_error_time,
-> >   	attr_last_error_time,
-> > +	attr_clusters_in_group,
-> >   	attr_feature,
-> >   	attr_pointer_ui,
-> >   	attr_pointer_ul,
-> > @@ -207,13 +208,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit, 0444);
-> >   EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
-> >   		 ext4_sb_info, s_inode_readahead_blks);
-> > +EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, clusters_in_group,
-> > +		 ext4_sb_info, s_mb_group_prealloc);
-> >   EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
-> >   EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
-> >   EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
-> >   EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
-> >   EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
-> >   EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
-> > -EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
-> >   EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
-> >   EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
-> >   EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
-> > @@ -392,6 +394,7 @@ static ssize_t ext4_attr_show(struct kobject *kobj,
-> >   				(unsigned long long)
-> >   			percpu_counter_sum(&sbi->s_sra_exceeded_retry_limit));
-> >   	case attr_inode_readahead:
-> > +	case attr_clusters_in_group:
-> >   	case attr_pointer_ui:
-> >   		if (!ptr)
-> >   			return 0;
-> > @@ -469,6 +472,16 @@ static ssize_t ext4_attr_store(struct kobject *kobj,
-> >   		else
-> >   			*((unsigned int *) ptr) = t;
-> >   		return len;
-> > +	case attr_clusters_in_group:
-> 
-> Hi Greg,
-> 
-> > +		if (!ptr)
-> > +			return 0;
-> 
-> I've found that the commit that eventually gets merged in doesn't have this
-> judgment.
-> 
-> 6.6: 677ff4589f15 ("ext4: fix slab-out-of-bounds in
-> ext4_mb_find_good_group_avg_frag_lists()")
-> 6.9: b829687ae122 ("ext4: fix slab-out-of-bounds in
-> ext4_mb_find_good_group_avg_frag_lists()")
-> 
-> This may result in a null pointer dereference.
-> 
-> 
-> History:
-> https://lore.kernel.org/all/0d620010-c6b4-4f80-a835-451813f957e3@huawei.com/
-> https://lore.kernel.org/all/20240619121952.3508695-2-libaokun@huaweicloud.com/
-> https://lore.kernel.org/all/20240625085542.189183696@linuxfoundation.org/
+Hi Xiubo,
 
-I don't understand, can you send a patch that fixes this?
+On Thu, Jul 11, 2024 at 4:10=E2=80=AFPM <xiubli@redhat.com> wrote:
+>
+> From: Xiubo Li <xiubli@redhat.com>
+>
+> If a client sends out a cap update dropping caps with the prior 'seq'
+> just before an incoming cap revoke request, then the client may drop
+> the revoke because it believes it's already released the requested
+> capabilities.
+>
+> This causes the MDS to wait indefinitely for the client to respond
+> to the revoke. It's therefore always a good idea to ack the cap
+> revoke request with the bumped up 'seq'.
+>
+> Currently if the cap->issued equals to the newcaps the check_caps()
+> will do nothing, we should force flush the caps.
+>
+> Cc: stable@vger.kernel.org
+> Link: https://tracker.ceph.com/issues/61782
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> ---
+>  fs/ceph/caps.c  | 16 ++++++++++++----
+>  fs/ceph/super.h |  7 ++++---
+>  2 files changed, 16 insertions(+), 7 deletions(-)
+>
+> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+> index 24c31f795938..ba5809cf8f02 100644
+> --- a/fs/ceph/caps.c
+> +++ b/fs/ceph/caps.c
+> @@ -2024,6 +2024,8 @@ bool __ceph_should_report_size(struct ceph_inode_in=
+fo *ci)
+>   *  CHECK_CAPS_AUTHONLY - we should only check the auth cap
+>   *  CHECK_CAPS_FLUSH - we should flush any dirty caps immediately, witho=
+ut
+>   *    further delay.
+> + *  CHECK_CAPS_FLUSH_FORCE - we should flush any caps immediately, witho=
+ut
+> + *    further delay.
+>   */
+>  void ceph_check_caps(struct ceph_inode_info *ci, int flags)
+>  {
+> @@ -2105,7 +2107,7 @@ void ceph_check_caps(struct ceph_inode_info *ci, in=
+t flags)
+>         }
+>
+>         doutc(cl, "%p %llx.%llx file_want %s used %s dirty %s "
+> -             "flushing %s issued %s revoking %s retain %s %s%s%s\n",
+> +             "flushing %s issued %s revoking %s retain %s %s%s%s%s\n",
+>              inode, ceph_vinop(inode), ceph_cap_string(file_wanted),
+>              ceph_cap_string(used), ceph_cap_string(ci->i_dirty_caps),
+>              ceph_cap_string(ci->i_flushing_caps),
+> @@ -2113,7 +2115,8 @@ void ceph_check_caps(struct ceph_inode_info *ci, in=
+t flags)
+>              ceph_cap_string(retain),
+>              (flags & CHECK_CAPS_AUTHONLY) ? " AUTHONLY" : "",
+>              (flags & CHECK_CAPS_FLUSH) ? " FLUSH" : "",
+> -            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "");
+> +            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "",
+> +            (flags & CHECK_CAPS_FLUSH_FORCE) ? " FLUSH_FORCE" : "");
+>
+>         /*
+>          * If we no longer need to hold onto old our caps, and we may
+> @@ -2223,6 +2226,9 @@ void ceph_check_caps(struct ceph_inode_info *ci, in=
+t flags)
+>                                 goto ack;
+>                 }
+>
+> +               if (flags & CHECK_CAPS_FLUSH_FORCE)
+> +                       goto ack;
 
-Or should we just revert the original commits?  If so, what commit ids
-need to be reverted?
+Maybe check this early on inside the
 
-thanks,
+        for (p =3D rb_first(&ci->i_caps); p; p =3D rb_next(p)) {
 
-greg k-h
+
+        }
+
+loop?
+
+> +
+>                 /* things we might delay */
+>                 if ((cap->issued & ~retain) =3D=3D 0)
+>                         continue;     /* nope, all good */
+> @@ -3518,6 +3524,7 @@ static void handle_cap_grant(struct inode *inode,
+>         bool queue_invalidate =3D false;
+>         bool deleted_inode =3D false;
+>         bool fill_inline =3D false;
+> +       int flags =3D 0;
+>
+>         /*
+>          * If there is at least one crypto block then we'll trust
+> @@ -3751,6 +3758,7 @@ static void handle_cap_grant(struct inode *inode,
+>         /* don't let check_caps skip sending a response to MDS for revoke=
+ msgs */
+>         if (le32_to_cpu(grant->op) =3D=3D CEPH_CAP_OP_REVOKE) {
+>                 cap->mds_wanted =3D 0;
+> +               flags |=3D CHECK_CAPS_FLUSH_FORCE;
+>                 if (cap =3D=3D ci->i_auth_cap)
+>                         check_caps =3D 1; /* check auth cap only */
+>                 else
+> @@ -3806,9 +3814,9 @@ static void handle_cap_grant(struct inode *inode,
+>
+>         mutex_unlock(&session->s_mutex);
+>         if (check_caps =3D=3D 1)
+> -               ceph_check_caps(ci, CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOIN=
+VAL);
+> +               ceph_check_caps(ci, flags | CHECK_CAPS_AUTHONLY | CHECK_C=
+APS_NOINVAL);
+>         else if (check_caps =3D=3D 2)
+> -               ceph_check_caps(ci, CHECK_CAPS_NOINVAL);
+> +               ceph_check_caps(ci, flags | CHECK_CAPS_NOINVAL);
+>  }
+>
+>  /*
+> diff --git a/fs/ceph/super.h b/fs/ceph/super.h
+> index b0b368ed3018..831e8ec4d5da 100644
+> --- a/fs/ceph/super.h
+> +++ b/fs/ceph/super.h
+> @@ -200,9 +200,10 @@ struct ceph_cap {
+>         struct list_head caps_item;
+>  };
+>
+> -#define CHECK_CAPS_AUTHONLY   1  /* only check auth cap */
+> -#define CHECK_CAPS_FLUSH      2  /* flush any dirty caps */
+> -#define CHECK_CAPS_NOINVAL    4  /* don't invalidate pagecache */
+> +#define CHECK_CAPS_AUTHONLY     1  /* only check auth cap */
+> +#define CHECK_CAPS_FLUSH        2  /* flush any dirty caps */
+> +#define CHECK_CAPS_NOINVAL      4  /* don't invalidate pagecache */
+> +#define CHECK_CAPS_FLUSH_FORCE  8  /* force flush any caps */
+>
+>  struct ceph_cap_flush {
+>         u64 tid;
+> --
+> 2.45.1
+>
+
+
+--=20
+Cheers,
+Venky
+
 
