@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-59942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E53932C94
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514B3932D36
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6200F1F245CB
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0716F1F22AA6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6944B19E7D8;
-	Tue, 16 Jul 2024 15:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9070619AD72;
+	Tue, 16 Jul 2024 16:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ry1SlNOl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHJ7YqpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2894F1DDCE;
-	Tue, 16 Jul 2024 15:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C70A1DDCE;
+	Tue, 16 Jul 2024 16:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145375; cv=none; b=HmE8AU0y3tmmpiauKgvkxLThHF/77PauRyvfPFRghEMr0xHd4aSkundN4KPPQ8gdMxooXormQAjetmMK5R/fntqp2rIUXZXIIMLFdnFo8R/hhJnY8P6J5rTR8uxQlfVfPyqeTwum+qa4Wevi/JOXXy2QBKSOBMJB7NXhSPsOnIs=
+	t=1721145752; cv=none; b=nSn5UVAUT5TbCo21Z9b6jH3lFnil7eMF1DPWLMgUit6CFlKcuk0nnneM0LJvHFkAxJWWMmFBHfuJKKD022uGgoHuzqk17BaB6PVQT+UQGBDGPqn/5/NOFH4zbZSNK68nmT6Go0aGk0o4SOna1J1M2i3UtNK0waP7zvAPY2k74cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145375; c=relaxed/simple;
-	bh=5uhX+owR3fgVD/3L9P4Aj96r1Ntg8sEMt8HLgNBGzGQ=;
+	s=arc-20240116; t=1721145752; c=relaxed/simple;
+	bh=whA5mQS/SHpyIAmH2+hitP/l+uYAK+m3QaGL7HaBtZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTVYZQYbGECsb+45LgA1Ppu0fAEdVndFXQCfalVaSayTW1xX3JH4nV5FUPeFoFyGcEzGq87XGoawWn3By9TuK8VhR5l3iNxUIvO79PRlJHnsuRHWpH4WBODlvTEeNoF77vo7kwAf/0d8E1EjtJNJE7FyvHBKFbdLNZhnU/e6tjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry1SlNOl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3A0C116B1;
-	Tue, 16 Jul 2024 15:56:14 +0000 (UTC)
+	 MIME-Version; b=NiNMKZSSQmqmq0/jdBaNwolA3cc/rN4Ot6A/380PV21le31gFU/e9+Jx6agH7uRG+EIf0V2aKVV0/dcgeArjQSPiOX7HfLrcLyn0HmhN2vxgNlR5ZEmHtVPt1x9cCxm4h8FsjwzP9UFqB6c49rln4/VvbMbdKtHUO+GH4SGq/V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHJ7YqpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5146C116B1;
+	Tue, 16 Jul 2024 16:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145375;
-	bh=5uhX+owR3fgVD/3L9P4Aj96r1Ntg8sEMt8HLgNBGzGQ=;
+	s=korg; t=1721145752;
+	bh=whA5mQS/SHpyIAmH2+hitP/l+uYAK+m3QaGL7HaBtZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ry1SlNOltz66Otzq23cC/17u7ZosE56wquHaRcn8FA063jEFUy/KR0tTbCc+oRIz2
-	 U1deovClNegK9iy5vUA04EI41y0JrfAMAJMtVRrn4S7h+GP0XKk2a1SkbwBi1Ggm2n
-	 rtRabZ1BUkguk+DxBqWtIr+l5wek9LdFE/25OkZ0=
+	b=vHJ7YqpXhG7YyNj0cMY+BId6PcZ/SaLsXG2HuEdsW3kYcdJp1Rqkr4H+9Af6GAMPK
+	 4reCOlcRnIWt7Yy8VNMgyuOo0hImFbu8NzXbMi9bbptt5ljwBizSPrN4Fi+nnS0PV6
+	 1uMddWk51WcoQLfUm1INwL2P+WqmAwSfnRyTgHqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Menglong Dong <imagedong@tencent.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 46/96] tcp: use signed arithmetic in tcp_rtx_probe0_timed_out()
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Ronald Wahl <ronald.wahl@raritan.com>
+Subject: [PATCH 6.6 055/121] net: ks8851: Fix deadlock with the SPI chip variant
 Date: Tue, 16 Jul 2024 17:31:57 +0200
-Message-ID: <20240716152748.277641581@linuxfoundation.org>
+Message-ID: <20240716152753.439385530@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +66,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-commit 36534d3c54537bf098224a32dc31397793d4594d upstream.
+commit 0913ec336a6c0c4a2b296bd9f74f8e41c4c83c8c upstream.
 
-Due to timer wheel implementation, a timer will usually fire
-after its schedule.
+When SMP is enabled and spinlocks are actually functional then there is
+a deadlock with the 'statelock' spinlock between ks8851_start_xmit_spi
+and ks8851_irq:
 
-For instance, for HZ=1000, a timeout between 512ms and 4s
-has a granularity of 64ms.
-For this range of values, the extra delay could be up to 63ms.
+    watchdog: BUG: soft lockup - CPU#0 stuck for 27s!
+    call trace:
+      queued_spin_lock_slowpath+0x100/0x284
+      do_raw_spin_lock+0x34/0x44
+      ks8851_start_xmit_spi+0x30/0xb8
+      ks8851_start_xmit+0x14/0x20
+      netdev_start_xmit+0x40/0x6c
+      dev_hard_start_xmit+0x6c/0xbc
+      sch_direct_xmit+0xa4/0x22c
+      __qdisc_run+0x138/0x3fc
+      qdisc_run+0x24/0x3c
+      net_tx_action+0xf8/0x130
+      handle_softirqs+0x1ac/0x1f0
+      __do_softirq+0x14/0x20
+      ____do_softirq+0x10/0x1c
+      call_on_irq_stack+0x3c/0x58
+      do_softirq_own_stack+0x1c/0x28
+      __irq_exit_rcu+0x54/0x9c
+      irq_exit_rcu+0x10/0x1c
+      el1_interrupt+0x38/0x50
+      el1h_64_irq_handler+0x18/0x24
+      el1h_64_irq+0x64/0x68
+      __netif_schedule+0x6c/0x80
+      netif_tx_wake_queue+0x38/0x48
+      ks8851_irq+0xb8/0x2c8
+      irq_thread_fn+0x2c/0x74
+      irq_thread+0x10c/0x1b0
+      kthread+0xc8/0xd8
+      ret_from_fork+0x10/0x20
 
-For TCP, this means that tp->rcv_tstamp may be after
-inet_csk(sk)->icsk_timeout whenever the timer interrupt
-finally triggers, if one packet came during the extra delay.
+This issue has not been identified earlier because tests were done on
+a device with SMP disabled and so spinlocks were actually NOPs.
 
-We need to make sure tcp_rtx_probe0_timed_out() handles this case.
+Now use spin_(un)lock_bh for TX queue related locking to avoid execution
+of softirq work synchronously that would lead to a deadlock.
 
-Fixes: e89688e3e978 ("net: tcp: fix unexcepted socket die when snd_wnd is 0")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Menglong Dong <imagedong@tencent.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Link: https://lore.kernel.org/r/20240607125652.1472540-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240706101337.854474-1-rwahl@gmx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_timer.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/micrel/ks8851_common.c |    8 ++++----
+ drivers/net/ethernet/micrel/ks8851_spi.c    |    4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -446,8 +446,13 @@ static bool tcp_rtx_probe0_timed_out(con
- {
- 	const struct tcp_sock *tp = tcp_sk(sk);
- 	const int timeout = TCP_RTO_MAX * 2;
--	u32 rcv_delta, rtx_delta;
-+	u32 rtx_delta;
-+	s32 rcv_delta;
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -352,11 +352,11 @@ static irqreturn_t ks8851_irq(int irq, v
+ 		netif_dbg(ks, intr, ks->netdev,
+ 			  "%s: txspace %d\n", __func__, tx_space);
  
-+	/* Note: timer interrupt might have been delayed by at least one jiffy,
-+	 * and tp->rcv_tstamp might very well have been written recently.
-+	 * rcv_delta can thus be negative.
-+	 */
- 	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
- 	if (rcv_delta <= timeout)
- 		return false;
+-		spin_lock(&ks->statelock);
++		spin_lock_bh(&ks->statelock);
+ 		ks->tx_space = tx_space;
+ 		if (netif_queue_stopped(ks->netdev))
+ 			netif_wake_queue(ks->netdev);
+-		spin_unlock(&ks->statelock);
++		spin_unlock_bh(&ks->statelock);
+ 	}
+ 
+ 	if (status & IRQ_SPIBEI) {
+@@ -635,14 +635,14 @@ static void ks8851_set_rx_mode(struct ne
+ 
+ 	/* schedule work to do the actual set of the data if needed */
+ 
+-	spin_lock(&ks->statelock);
++	spin_lock_bh(&ks->statelock);
+ 
+ 	if (memcmp(&rxctrl, &ks->rxctrl, sizeof(rxctrl)) != 0) {
+ 		memcpy(&ks->rxctrl, &rxctrl, sizeof(ks->rxctrl));
+ 		schedule_work(&ks->rxctrl_work);
+ 	}
+ 
+-	spin_unlock(&ks->statelock);
++	spin_unlock_bh(&ks->statelock);
+ }
+ 
+ static int ks8851_set_mac_address(struct net_device *dev, void *addr)
+--- a/drivers/net/ethernet/micrel/ks8851_spi.c
++++ b/drivers/net/ethernet/micrel/ks8851_spi.c
+@@ -340,10 +340,10 @@ static void ks8851_tx_work(struct work_s
+ 
+ 	tx_space = ks8851_rdreg16_spi(ks, KS_TXMIR);
+ 
+-	spin_lock(&ks->statelock);
++	spin_lock_bh(&ks->statelock);
+ 	ks->queued_len -= dequeued_len;
+ 	ks->tx_space = tx_space;
+-	spin_unlock(&ks->statelock);
++	spin_unlock_bh(&ks->statelock);
+ 
+ 	ks8851_unlock_spi(ks, &flags);
+ }
 
 
 
