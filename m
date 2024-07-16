@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-59632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C28932B02
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE8C932C22
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01AE5282457
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C655C1F24312
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944801DFF0;
-	Tue, 16 Jul 2024 15:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772AB19E7D8;
+	Tue, 16 Jul 2024 15:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWIWs7NE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1ZvNgll"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CF6B641;
-	Tue, 16 Jul 2024 15:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351D919DF53;
+	Tue, 16 Jul 2024 15:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144432; cv=none; b=MNH2Zm5EZLJAIT41lViwt/jTxG5HH0O2BzxX2b8kQtQPQdgCbdrv2dHpXu4vQuMRKsPdoFkE+kDkxzLrCkPH+e13Jmd+ixUWYQUx4RtVfh0pCi6TdQetv6qsiUMUiGXiP8S8PNnDuCUWqFcVYk8AN7qX342VXp7rdPXXj655Vro=
+	t=1721145121; cv=none; b=hm+HFoFVX0hSW7NmtI33kDClYcxeVmqvWp6XD7ePrt4M/LITp2elHTLAOKqcEuPDKB5MLfJn85HoNaAYvZoMacSOZ5QRjujE7LO3yoZLWaZFiGnXWcMgyCIoE0oq5hxPAWfXczWkqWoNPJFokqz8dOS5u+PoQyWPBRctyH3tWzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144432; c=relaxed/simple;
-	bh=N1NA2LlHvCG9kxeD31w/NqEpjg19FFfcPw6r6ppqRnc=;
+	s=arc-20240116; t=1721145121; c=relaxed/simple;
+	bh=mhhfe//jTpXMtGQnYu4FdZOHCII073u/GmSJakhFOxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkln/fpIyv4cuviL5pHigvFKKAuUSfsk2K4t6JWbnJ4u8vYYHVxKnILWjThKc7TSh4vDsFEmdzpd8ToUmLtSJ/6vah9Id2Tv2YK2orBaftU14lMbREthnJ8SewZbTMWWX8AEp9bfM9C/FUsnQdUxVXy42x8FQmdyqnwoRVWT6kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWIWs7NE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC450C116B1;
-	Tue, 16 Jul 2024 15:40:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GqYld2T7BmBhZy/khhOIuPnR4kfh1EvLx9h5HUPmu+GmgzBNFQBYXYdbC20J7EoGqnjCBK/rcLIj3uD3HmIVeIftr7eypjwzP2daGvWUj5xHS30xE9eWFv2GMj2+6wY90e7JLj6zPurza59c1i7U34llWlrRe7GKbIePEIYteR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1ZvNgll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79800C116B1;
+	Tue, 16 Jul 2024 15:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144432;
-	bh=N1NA2LlHvCG9kxeD31w/NqEpjg19FFfcPw6r6ppqRnc=;
+	s=korg; t=1721145120;
+	bh=mhhfe//jTpXMtGQnYu4FdZOHCII073u/GmSJakhFOxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWIWs7NExBmgx50Xxlb1sQKsGF7icpaax80ut13v/nTojtIatDVCx6I6hS7feq7ZN
-	 J9kgFoJuX6DCR/OGnXsJ5V9IC7AOz1H4bAuQI14ObwEB7Ap6ulBucv0JsBoVJkxU/b
-	 GcenF+FXAjdQDAmg7iZ2i22Ku1uNOGhfyyhmNOxY=
+	b=O1ZvNgll++S0GhBpwwlee4ZeQdtmLiHlQmtgYxKvMI5Soz6n6Fnrchree8ZX+gSG1
+	 jT3FE+kJKwX4ml7+Xd8OcIzdFXj1yqIeYRz1qO6lwmdLaNN7nihXaNQLkk6BDR+Gn5
+	 Ogl9Lfj7NVgG1DYfqHnR6U9q/XuJe8iHYTAEo0js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal.kopec@3mdeb.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 70/78] ALSA: hda/realtek: Limit mic boost on VAIO PRO PX
+Subject: [PATCH 6.9 106/143] ALSA: hda/realtek: add quirk for Clevo V5[46]0TU
 Date: Tue, 16 Jul 2024 17:31:42 +0200
-Message-ID: <20240716152743.350270745@linuxfoundation.org>
+Message-ID: <20240716152800.054745201@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Michał Kopeć <michal.kopec@3mdeb.com>
 
-commit 6db03b1929e207d2c6e84e75a9cd78124b3d6c6d upstream.
+commit e1c6db864599be341cd3bcc041540383215ce05e upstream.
 
-The internal mic boost on the VAIO models VJFE-CL and VJFE-IL is too high.
-Fix this by applying the ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine
-to limit the gain.
+Apply quirk to fix combo jack detection on a new Clevo model: V5[46]0TU
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Signed-off-by: Michał Kopeć <michal.kopec@3mdeb.com>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240705141012.5368-1-edson.drosdeck@gmail.com
+Link: https://patch.msgid.link/20240701111010.1496569-1-michal.kopec@3mdeb.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -8331,6 +8331,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
- 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
- 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x1252, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
-@@ -8494,6 +8495,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+@@ -10424,6 +10424,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1558, 0xa600, "Clevo NL50NU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xa650, "Clevo NP[567]0SN[CD]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xa671, "Clevo NP70SN[CDE]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0xa763, "Clevo V54x_6x_TU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xb018, "Clevo NP50D[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xb019, "Clevo NH77D[BE]Q", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xb022, "Clevo NH77D[DC][QW]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
 
 
 
