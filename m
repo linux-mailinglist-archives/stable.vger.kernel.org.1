@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-59990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5464932CE3
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51FB0932D5A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D63A1F21169
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81CC51C21D83
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BF919B59C;
-	Tue, 16 Jul 2024 15:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B048019AD93;
+	Tue, 16 Jul 2024 16:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWDKb8Ox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2QYOVqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E071DDCE;
-	Tue, 16 Jul 2024 15:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5FF1DDCE;
+	Tue, 16 Jul 2024 16:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145523; cv=none; b=kIhHw+epicz6vuUvawIvpZCJVvT8iomD6zCcRtwtHJu0LVwK8aQi0NXZv+1dYU84LSaHqacfrqY1HQAy/uccRLMrY3phHueXqz+Lf3qFZYMFya3xYSf1tW5YWGY7545yykwyVN1fRqOVxWaT7evLNi5G65lUhzzvhsxA4xxdVDg=
+	t=1721145842; cv=none; b=fDl1poidBKwjioy0dJkWMRR1Cd37ONZ/3wk3+7QJYSxng3OLAW/pcCdDzWCXxvJ9TUubkvjqEumFv2vXknLiASKQ6J/U3Q9dP9C605CjysqdOSIXjcRoyo/oLZrXeFshYOGEA/fQZcVULRNsvzIfQYFZwo0Ujgv2phAA8Lx6RP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145523; c=relaxed/simple;
-	bh=VsLa18oOnfuRA32tiorX5SxxOzm2WvcGlQ79t5CteCs=;
+	s=arc-20240116; t=1721145842; c=relaxed/simple;
+	bh=FmpM72BOJ1EXDRrBVxvyyNCnRcXqSjf/nUwjmOf9RPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hffu/Os2fFKFzZk573y+WuUV+X3+FqCLQVb0nFWGkCGh66Ak4uF/eu8s+bpXiW7/7i0/8AEZSC7XcR6N4358wBxSQqeP4uMDyl8cwAnRHJLE5peYtCCHt8rm6JyR2FBQFz1uarf0zo1224pWOjTNE49S0nsk7lY9VqOqWrJU6gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWDKb8Ox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F69C116B1;
-	Tue, 16 Jul 2024 15:58:42 +0000 (UTC)
+	 MIME-Version; b=gcps+FW3gkbLGvHzWbaNBnfpkufdSkQ6CUMcZDXQm7BlaKIe6VdBm14r2WVkPbRQRgag0Im7v951jTQBY3UV2dEumCqnMGI5LlI7Zp2ag8PBS9ZuuLoPS5PKRc7Ig6ROPk1d1NOjXLhFL4euTuGYRDPaGPbUT7s3A+zUxpegGDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2QYOVqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1BCC116B1;
+	Tue, 16 Jul 2024 16:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145523;
-	bh=VsLa18oOnfuRA32tiorX5SxxOzm2WvcGlQ79t5CteCs=;
+	s=korg; t=1721145842;
+	bh=FmpM72BOJ1EXDRrBVxvyyNCnRcXqSjf/nUwjmOf9RPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YWDKb8Ox0ynLeoJrBQo2lSjqn5Ql/qjvp3KuSWvPl6Sa1jv8SjDHI1FfWzdhGbnTB
-	 fu71iLhBqkGrRt6UNtoRaAyIzoRd0mcs4rLoEfAs9J8Zbrk5ekZv4N5XdEuABSyih/
-	 sYxlzwbhsaJV+636Prj3YHFPdQo0uqgL5eu/kIGo=
+	b=U2QYOVqItOhDM69PbQJkwH5OcSiKPH7YDkc7ijHuJ4/UYnB0La2WFWIctNETYU8ZH
+	 18gt1I4UhprITKc2qmvFwPk7jlNrEH14ECUoSsBFHLtuqADPKgW4mB03Wl2h3blstq
+	 GSlFcQgRmPvBx2fhkkdkabjMgC+3Yc0vhXyzeWos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Gerst <brgerst@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Denys Vlasenko <dvlasenk@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
+	Gavin Shan <gshan@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Don Dutile <ddutile@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 93/96] x86/entry/64: Remove obsolete comment on tracing vs. SYSRET
-Date: Tue, 16 Jul 2024 17:32:44 +0200
-Message-ID: <20240716152750.089620362@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	William Kucharski <william.kucharski@oracle.com>,
+	Zhenyu Zhang <zhenyzha@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 103/121] mm/shmem: disable PMD-sized page cache if needed
+Date: Tue, 16 Jul 2024 17:32:45 +0200
+Message-ID: <20240716152755.290943818@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +70,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Gerst <brgerst@gmail.com>
+From: Gavin Shan <gshan@redhat.com>
 
-[ Upstream commit eb43c9b1517b48e2ff0d3a584aca197338987d7b ]
+commit 9fd154ba926b34c833b7bfc4c14ee2e931b3d743 upstream.
 
-This comment comes from a time when the kernel attempted to use SYSRET
-on all returns to userspace, including interrupts and exceptions.  Ever
-since commit fffbb5dc ("Move opportunistic sysret code to syscall code
-path"), SYSRET is only used for returning from system calls. The
-specific tracing issue listed in this comment is not possible anymore.
+For shmem files, it's possible that PMD-sized page cache can't be
+supported by xarray.  For example, 512MB page cache on ARM64 when the base
+page size is 64KB can't be supported by xarray.  It leads to errors as the
+following messages indicate when this sort of xarray entry is split.
 
-Signed-off-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Denys Vlasenko <dvlasenk@redhat.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
+WARNING: CPU: 34 PID: 7578 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
+Modules linked in: binfmt_misc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6   \
+nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject        \
+nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4  \
+ip_set rfkill nf_tables nfnetlink vfat fat virtio_balloon drm fuse xfs  \
+libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64 sha1_ce virtio_net \
+net_failover virtio_console virtio_blk failover dimlib virtio_mmio
+CPU: 34 PID: 7578 Comm: test Kdump: loaded Tainted: G W 6.10.0-rc5-gavin+ #9
+Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
+pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+pc : xas_split_alloc+0xf8/0x128
+lr : split_huge_page_to_list_to_order+0x1c4/0x720
+sp : ffff8000882af5f0
+x29: ffff8000882af5f0 x28: ffff8000882af650 x27: ffff8000882af768
+x26: 0000000000000cc0 x25: 000000000000000d x24: ffff00010625b858
+x23: ffff8000882af650 x22: ffffffdfc0900000 x21: 0000000000000000
+x20: 0000000000000000 x19: ffffffdfc0900000 x18: 0000000000000000
+x17: 0000000000000000 x16: 0000018000000000 x15: 52f8004000000000
+x14: 0000e00000000000 x13: 0000000000002000 x12: 0000000000000020
+x11: 52f8000000000000 x10: 52f8e1c0ffff6000 x9 : ffffbeb9619a681c
+x8 : 0000000000000003 x7 : 0000000000000000 x6 : ffff00010b02ddb0
+x5 : ffffbeb96395e378 x4 : 0000000000000000 x3 : 0000000000000cc0
+x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
+Call trace:
+ xas_split_alloc+0xf8/0x128
+ split_huge_page_to_list_to_order+0x1c4/0x720
+ truncate_inode_partial_folio+0xdc/0x160
+ shmem_undo_range+0x2bc/0x6a8
+ shmem_fallocate+0x134/0x430
+ vfs_fallocate+0x124/0x2e8
+ ksys_fallocate+0x4c/0xa0
+ __arm64_sys_fallocate+0x24/0x38
+ invoke_syscall.constprop.0+0x7c/0xd8
+ do_el0_svc+0xb4/0xd0
+ el0_svc+0x44/0x1d8
+ el0t_64_sync_handler+0x134/0x150
+ el0t_64_sync+0x17c/0x180
+
+Fix it by disabling PMD-sized page cache when HPAGE_PMD_ORDER is larger
+than MAX_PAGECACHE_ORDER.  As Matthew Wilcox pointed, the page cache in a
+shmem file isn't represented by a multi-index entry and doesn't have this
+limitation when the xarry entry is split until commit 6b24ca4a1a8d ("mm:
+Use multi-index entries in the page cache").
+
+Link: https://lkml.kernel.org/r/20240627003953.1262512-5-gshan@redhat.com
+Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Darrick J. Wong <djwong@kernel.org>
+Cc: Don Dutile <ddutile@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20230721161018.50214-2-brgerst@gmail.com
-Stable-dep-of: ac8b270b61d4 ("x86/bhi: Avoid warning in #DB handler due to BHI mitigation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: William Kucharski <william.kucharski@oracle.com>
+Cc: Zhenyu Zhang <zhenyzha@redhat.com>
+Cc: <stable@vger.kernel.org>	[5.17+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/entry/entry_64.S | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ mm/shmem.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 6624806e6904b..a114338380a6f 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -167,22 +167,9 @@ SYM_INNER_LABEL(entry_SYSCALL_64_after_hwframe, SYM_L_GLOBAL)
- 	jne	swapgs_restore_regs_and_return_to_usermode
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -535,8 +535,9 @@ static bool shmem_confirm_swap(struct ad
  
- 	/*
--	 * SYSCALL clears RF when it saves RFLAGS in R11 and SYSRET cannot
--	 * restore RF properly. If the slowpath sets it for whatever reason, we
--	 * need to restore it correctly.
--	 *
--	 * SYSRET can restore TF, but unlike IRET, restoring TF results in a
--	 * trap from userspace immediately after SYSRET.  This would cause an
--	 * infinite loop whenever #DB happens with register state that satisfies
--	 * the opportunistic SYSRET conditions.  For example, single-stepping
--	 * this user code:
--	 *
--	 *           movq	$stuck_here, %rcx
--	 *           pushfq
--	 *           popq %r11
--	 *   stuck_here:
--	 *
--	 * would never get past 'stuck_here'.
-+	 * SYSRET cannot restore RF.  It can restore TF, but unlike IRET,
-+	 * restoring TF results in a trap from userspace immediately after
-+	 * SYSRET.
- 	 */
- 	testq	$(X86_EFLAGS_RF|X86_EFLAGS_TF), %r11
- 	jnz	swapgs_restore_regs_and_return_to_usermode
--- 
-2.43.0
-
+ static int shmem_huge __read_mostly = SHMEM_HUGE_NEVER;
+ 
+-bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
+-		   struct mm_struct *mm, unsigned long vm_flags)
++static bool __shmem_is_huge(struct inode *inode, pgoff_t index,
++			    bool shmem_huge_force, struct mm_struct *mm,
++			    unsigned long vm_flags)
+ {
+ 	loff_t i_size;
+ 
+@@ -567,6 +568,16 @@ bool shmem_is_huge(struct inode *inode,
+ 	}
+ }
+ 
++bool shmem_is_huge(struct inode *inode, pgoff_t index,
++		   bool shmem_huge_force, struct mm_struct *mm,
++		   unsigned long vm_flags)
++{
++	if (HPAGE_PMD_ORDER > MAX_PAGECACHE_ORDER)
++		return false;
++
++	return __shmem_is_huge(inode, index, shmem_huge_force, mm, vm_flags);
++}
++
+ #if defined(CONFIG_SYSFS)
+ static int shmem_parse_huge(const char *str)
+ {
 
 
 
