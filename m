@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-60082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D674D932D4C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4E6932C9E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 139541C20B2B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA2641F24562
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AB219E7FF;
-	Tue, 16 Jul 2024 16:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9771A00E7;
+	Tue, 16 Jul 2024 15:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOrS7bhK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vg+roO45"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D543E19AD5A;
-	Tue, 16 Jul 2024 16:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B6219AD59;
+	Tue, 16 Jul 2024 15:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145799; cv=none; b=QWILtNgWOCWRQu2glRTX/7v1XeHrpBU8uReVqhUYPU9J0RQdlmjr4wZhLUWTyCH9MbL4AFXg6+LpKpDVO3kbze8qQVQMtDhyLVWVfWAAMxMrDNOp7/jxJYw7QiT6a0/wQKyQrMcSB0cb722SETENpFuxKHK+O3sIYQPFGfQBMpo=
+	t=1721145386; cv=none; b=jzfok2iy2C76sUx+VNag8G6nxczEImAwRQ9Tz3j3JXL8eGcG9N5DDIeBKoUd4DpDRbQvCOk2JT9Vf/oL+md+ptbzPfJ6S6m5330naZblh6qQeSFjWuMylrvlHGDOotCPEPRY3+a23qv8YK3PujBK2Eigmi7ikNjDKR/oq7DMt48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145799; c=relaxed/simple;
-	bh=yo9Y8InFcacS8cSkSDKF7L6uPEqc1xCqK0M8VM/bqMw=;
+	s=arc-20240116; t=1721145386; c=relaxed/simple;
+	bh=gAN4rPO1rDlM4Jgl9KFPBLbS35m5zXKZv76hC6c4Uvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kODWcVh5Qjo2bry+9S86XVdqPSSPfbOZjkCfxnV8Aj+InBZh2hx2q9HlB+nIO7gXU/iw/NFQMTZlj5raWxgnTyENJra17UixLBofgJcFUxaRD1/sHqAXPSfLkee8wst3eHCCyJiLINVgh0c2Uclvw4ACay+PROxI21RrJL2U4W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOrS7bhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532DCC116B1;
-	Tue, 16 Jul 2024 16:03:19 +0000 (UTC)
+	 MIME-Version; b=Frpw6Vqe5hOhqFZzSi2zzS3aSN9ejXSrmD+ZJuinTD8batDyvYoszBFzgqE8Y5ibVfoNxBwBs2i6rykA+okSYbpn8YpK+AcveN0eGe5sA3wu9mrdiEIcgvsuxQCfMy0Iy9AFbxirb2+wXF2HuEJEIwudaj4F8lTdZ+krQpc9+is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vg+roO45; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA50DC4AF10;
+	Tue, 16 Jul 2024 15:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145799;
-	bh=yo9Y8InFcacS8cSkSDKF7L6uPEqc1xCqK0M8VM/bqMw=;
+	s=korg; t=1721145384;
+	bh=gAN4rPO1rDlM4Jgl9KFPBLbS35m5zXKZv76hC6c4Uvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gOrS7bhK2Xb6wfXj2pg98ns5j9orXWEmJdQxN3Djx8cUO8hlcLDFJBUVKCoq5Md5s
-	 lkx7FTsn9K2kWLmNElNukzpvvIqHLwy3XJUnh5sGqr78qQtbWsJybpTla+cDdJBFDM
-	 D9PqWlluze/JMm6T0IFQF4A/9/7jhigLyz3uVSQA=
+	b=Vg+roO45cPAmJiyUAbHkthL8oKVUf1TXryFWEG2SKoeV4ChX4lxW+VVe3s5OaN2AH
+	 vOJJSGGUDlZpr3gAHajBNb60gWkUlTpT7aH7pglB6Ic0zindR0Iwtdk7do1X3OGWcf
+	 lXWLB/H2NbcuAfypA39v/P4il6ocjiUdzoxCEoUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 058/121] USB: serial: option: add Telit FN912 rmnet compositions
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Jacob Keller <jacob.e.keller@intel.com>
+Subject: [PATCH 6.1 49/96] net: ks8851: Fix potential TX stall after interface reopen
 Date: Tue, 16 Jul 2024 17:32:00 +0200
-Message-ID: <20240716152753.559942298@linuxfoundation.org>
+Message-ID: <20240716152748.392942744@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +67,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-commit 9a590ff283421b71560deded2110dbdcbe1f7d1d upstream.
+commit 7a99afef17af66c276c1d6e6f4dbcac223eaf6ac upstream.
 
-Add the following Telit FN912 compositions:
+The amount of TX space in the hardware buffer is tracked in the tx_space
+variable. The initial value is currently only set during driver probing.
 
-0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3000 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+After closing the interface and reopening it the tx_space variable has
+the last value it had before close. If it is smaller than the size of
+the first send packet after reopeing the interface the queue will be
+stopped. The queue is woken up after receiving a TX interrupt but this
+will never happen since we did not send anything.
 
-0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3001 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+This commit moves the initialization of the tx_space variable to the
+ks8851_net_open function right before starting the TX queue. Also query
+the value from the hardware instead of using a hard coded value.
 
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Only the SPI chip variant is affected by this issue because only this
+driver variant actually depends on the tx_space variable in the xmit
+function.
+
+Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20240709195845.9089-1-rwahl@gmx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/micrel/ks8851_common.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1425,6 +1425,10 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(0) | RSVD(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1901, 0xff),	/* Telit LN940 (MBIM) */
- 	  .driver_info = NCTRL(0) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3000, 0xff),	/* Telit FN912 */
-+	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3001, 0xff),	/* Telit FN912 */
-+	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7010, 0xff),	/* Telit LE910-S1 (RNDIS) */
- 	  .driver_info = NCTRL(2) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7011, 0xff),	/* Telit LE910-S1 (ECM) */
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -482,6 +482,7 @@ static int ks8851_net_open(struct net_de
+ 	ks8851_wrreg16(ks, KS_IER, ks->rc_ier);
+ 
+ 	ks->queued_len = 0;
++	ks->tx_space = ks8851_rdreg16(ks, KS_TXMIR);
+ 	netif_start_queue(ks->netdev);
+ 
+ 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
+@@ -1101,7 +1102,6 @@ int ks8851_probe_common(struct net_devic
+ 	int ret;
+ 
+ 	ks->netdev = netdev;
+-	ks->tx_space = 6144;
+ 
+ 	ks->gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+ 	ret = PTR_ERR_OR_ZERO(ks->gpio);
 
 
 
