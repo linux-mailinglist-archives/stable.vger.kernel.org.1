@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-59845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C35B932C12
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB24932AA4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A161C21E5D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AAAFB23176
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EE719E809;
-	Tue, 16 Jul 2024 15:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150CA1DA4D;
+	Tue, 16 Jul 2024 15:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhu4IeQT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DCOJjJS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE06E19E7D0;
-	Tue, 16 Jul 2024 15:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80D0CA40;
+	Tue, 16 Jul 2024 15:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145082; cv=none; b=p59iBwS+rLhg4w8mbppJpwf0+Vg/DRHun8pWOP9pmCqVG92pRi7kdDRXlXUdRZpo2buEEDeaTx7K4FSHmhbKQldrlAoOYJ1yuIkMLVgW/8cTqJd9/FWtjYzJYq3p3dDxZVFyo9Gvf6N4FvnnlrjvwjCsENDNRP/XYIbz/HmQMSw=
+	t=1721144177; cv=none; b=awrqyT8VLgQq+H4wvoahC4xQzxfCct/AGBNVdwuyHgcjapJ+O3acTd4vAsrAqIFE03rqSQKnTLziLxbXoVkpGK0Qdx5bin2m+lEDvKM6/IKUDvq0/ie3BDfN63aVR2L5eXjAVCbYqv1FYltaRo5qQ2gG7KbMHUlBOUTZkk2q9Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145082; c=relaxed/simple;
-	bh=V81mbv92dVm1SJNPswVMypbql+0qTAw+0iJsPwb8W3s=;
+	s=arc-20240116; t=1721144177; c=relaxed/simple;
+	bh=p1djJ5jqbvwnyjcKRhnZbDq6aypOrZLWquoHhItXp7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ksxjJyLwkgtgOYERWWWzO97X6PYhHkjyMHUztA6BCpE3MXGwZ7/ZSz4C5W3n7zQG0lcZ1nH421MsSDXG3hO4dxTI9mgQ+uSuNHgXqqNfphmncMuUsJDYzBb27RAv8m/KF6PFfeZdjdmdTCMHHfFRaUmhxRwRykJ8TWC3/9SV+qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhu4IeQT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523A4C116B1;
-	Tue, 16 Jul 2024 15:51:22 +0000 (UTC)
+	 MIME-Version; b=CzUxKAvnPU/L0GocMbMPhI3DQQT1tvqJdSXjPVkryweRuP879xkhCavPFImA8PkZaY2LU5x5s/7QwK9veq04rocfiuKTiaJXSkYPvZkOcjbFiTimBCMfFvxptXNEGqzlIxUEzL8tCObe82bykdsnyuS9cmfcOgmC91+LoUELRVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DCOJjJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECD5C116B1;
+	Tue, 16 Jul 2024 15:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145082;
-	bh=V81mbv92dVm1SJNPswVMypbql+0qTAw+0iJsPwb8W3s=;
+	s=korg; t=1721144177;
+	bh=p1djJ5jqbvwnyjcKRhnZbDq6aypOrZLWquoHhItXp7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jhu4IeQThyXDs+RfcmJ9Djf3j3aNdK8IjL4YvlnveIbfTiPEeHU7TjqG3yEN0Sctx
-	 oBbY0KVy4rSqNQBgKc3w3xN5jCn5/k7hLAGfVKlG7L+VWFyeGAGAok8HH+lNCNAqc2
-	 e60V8R3dcb5PgSqkS35OuqSJ/dP18vMebhlRv5cA=
+	b=0DCOJjJSiQv5xLAvmiEvszae3fYkn6nCALhZdGXOuFZaDdDYdL3pycxEOP+e/7H6l
+	 /BIspoCa4wej0eZEK+Nb2C6Z9RvOZ2OnE+QbciKcpKEm1KjsU6MMjrYgWsbw7xpUI1
+	 oPp8rbtLhbJG9Crs5pgJWm5jxQchUm/7YyPXX/HI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Mazur <mmazur2@marvell.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 062/143] octeontx2-af: fix detection of IP layer
+Subject: [PATCH 4.19 23/66] UPSTREAM: tcp: fix DSACK undo in fast recovery to call tcp_try_to_open()
 Date: Tue, 16 Jul 2024 17:30:58 +0200
-Message-ID: <20240716152758.364262905@linuxfoundation.org>
+Message-ID: <20240716152739.048790657@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Mazur <mmazur2@marvell.com>
+From: Neal Cardwell <ncardwell@google.com>
 
-[ Upstream commit 404dc0fd6fb0bb942b18008c6f8c0320b80aca20 ]
+[ Upstream commit a6458ab7fd4f427d4f6f54380453ad255b7fde83 ]
 
-Checksum and length checks are not enabled for IPv4 header with
-options and IPv6 with extension headers.
-To fix this a change in enum npc_kpu_lc_ltype is required which will
-allow adjustment of LTYPE_MASK to detect all types of IP headers.
+In some production workloads we noticed that connections could
+sometimes close extremely prematurely with ETIMEDOUT after
+transmitting only 1 TLP and RTO retransmission (when we would normally
+expect roughly tcp_retries2 = TCP_RETR2 = 15 RTOs before a connection
+closes with ETIMEDOUT).
 
-Fixes: 21e6699e5cd6 ("octeontx2-af: Add NPC KPU profile")
-Signed-off-by: Michal Mazur <mmazur2@marvell.com>
+>From tracing we determined that these workloads can suffer from a
+scenario where in fast recovery, after some retransmits, a DSACK undo
+can happen at a point where the scoreboard is totally clear (we have
+retrans_out == sacked_out == lost_out == 0). In such cases, calling
+tcp_try_keep_open() means that we do not execute any code path that
+clears tp->retrans_stamp to 0. That means that tp->retrans_stamp can
+remain erroneously set to the start time of the undone fast recovery,
+even after the fast recovery is undone. If minutes or hours elapse,
+and then a TLP/RTO/RTO sequence occurs, then the start_ts value in
+retransmits_timed_out() (which is from tp->retrans_stamp) will be
+erroneously ancient (left over from the fast recovery undone via
+DSACKs). Thus this ancient tp->retrans_stamp value can cause the
+connection to die very prematurely with ETIMEDOUT via
+tcp_write_err().
+
+The fix: we change DSACK undo in fast recovery (TCP_CA_Recovery) to
+call tcp_try_to_open() instead of tcp_try_keep_open(). This ensures
+that if no retransmits are in flight at the time of DSACK undo in fast
+recovery then we properly zero retrans_stamp. Note that calling
+tcp_try_to_open() is more consistent with other loss recovery
+behavior, since normal fast recovery (CA_Recovery) and RTO recovery
+(CA_Loss) both normally end when tp->snd_una meets or exceeds
+tp->high_seq and then in tcp_fastretrans_alert() the "default" switch
+case executes tcp_try_to_open(). Also note that by inspection this
+change to call tcp_try_to_open() implies at least one other nice bug
+fix, where now an ECE-marked DSACK that causes an undo will properly
+invoke tcp_enter_cwr() rather than ignoring the ECE mark.
+
+Fixes: c7d9d6a185a7 ("tcp: undo on DSACK during recovery")
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/npc.h | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_input.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-index d883157393ea0..6c3aca6f278db 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-@@ -63,8 +63,13 @@ enum npc_kpu_lb_ltype {
- 	NPC_LT_LB_CUSTOM1 = 0xF,
- };
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 5503f130cc6dd..9a66c37958451 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2861,7 +2861,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
+ 			return;
  
-+/* Don't modify ltypes up to IP6_EXT, otherwise length and checksum of IP
-+ * headers may not be checked correctly. IPv4 ltypes and IPv6 ltypes must
-+ * differ only at bit 0 so mask 0xE can be used to detect extended headers.
-+ */
- enum npc_kpu_lc_ltype {
--	NPC_LT_LC_IP = 1,
-+	NPC_LT_LC_PTP = 1,
-+	NPC_LT_LC_IP,
- 	NPC_LT_LC_IP_OPT,
- 	NPC_LT_LC_IP6,
- 	NPC_LT_LC_IP6_EXT,
-@@ -72,7 +77,6 @@ enum npc_kpu_lc_ltype {
- 	NPC_LT_LC_RARP,
- 	NPC_LT_LC_MPLS,
- 	NPC_LT_LC_NSH,
--	NPC_LT_LC_PTP,
- 	NPC_LT_LC_FCOE,
- 	NPC_LT_LC_NGIO,
- 	NPC_LT_LC_CUSTOM0 = 0xE,
+ 		if (tcp_try_undo_dsack(sk))
+-			tcp_try_keep_open(sk);
++			tcp_try_to_open(sk, flag);
+ 
+ 		tcp_identify_packet_loss(sk, ack_flag);
+ 		if (icsk->icsk_ca_state != TCP_CA_Recovery) {
 -- 
 2.43.0
 
