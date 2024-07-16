@@ -1,170 +1,95 @@
-Return-Path: <stable+bounces-60357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F45933292
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 22:01:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70BDB9332A9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 22:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FDCF1F233D6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:01:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CA63B2193B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3228057323;
-	Tue, 16 Jul 2024 20:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="a/uZbCVu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F061F1A08AD;
+	Tue, 16 Jul 2024 20:11:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABB423A8
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 20:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B061A08B0;
+	Tue, 16 Jul 2024 20:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721160075; cv=none; b=gD8oTTkrlWK3EPch4vORZiJrF3UJlI55sVjufNUnJbucUUByp8jEp6xBdJIh1GkIH8u/QnVhurR+usCU9by7y07by0YzJumzfJuk8pMvV00m7XsBnkch9k/igiSkSl8sIkzqhhA4zcBldqoCik77EYQax+xZKrhPJ488KZFxPqM=
+	t=1721160666; cv=none; b=nV2w5U5saz8LYJzgXDuNeuTWK1FrVXcvrlRJuHJ8KtArELJbzQbhVh9AJVq1pP2TX0xnTHPXONoKhJYIJFvaseWjerpd4j7i82QCRanyBRBlVhpIrkNTnIFHYE45p2CQu9FNMh/q9n9QLT9BoTfSWTfohnQg3X/6g2tuRrHrS2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721160075; c=relaxed/simple;
-	bh=whvliUinTfvpRULhiqxTc3170YH5GGakjEVEdN9JnaA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ffJ5V3EN95v4+sSc14EGIvYHJqZR1B2bAcI1Nma+r0S+36c9QZNOqALypBmw/aqdzrB9Mv1/Y0v7IZD4y49TfUSU055cSfNgbuJxchV617j2d/pF2iP2vo+4GozRUcHM2xfT6ok2Mhe4aSHsbucc0R6Wx+zdFxe35NDV9U3jGio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=a/uZbCVu; arc=none smtp.client-ip=209.85.221.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4f2fad3fb8eso268222e0c.0
-        for <stable@vger.kernel.org>; Tue, 16 Jul 2024 13:01:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721160072; x=1721764872; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=OoruTelNDegikEEcrJjnoc1yMF1fBFSJP2+Q2GOdqdM=;
-        b=a/uZbCVuFllnVgHpBaKGGDKU37K3smBP+tUA3RevArzqlDfbkCO6qbh59sb2dSOgDu
-         YVPdSDlNOGQ09ZHnGHvmX7WXrWup0ZF2o5EFkiu3aPpz71sWp0Lg4Gem9TicsbOvM7l8
-         N/VmRAZFs3Em/ng8J/YsJxD4D8SoSIH+BwIGFMXaGOyzrsIfdIJEUtg9IbO8wzAq6Jey
-         e+z8gUJ4bCXSPeBO9yK+JHN0opVXMQYwvTLQsp9sqGTWNiJZkx9awNWCcPp3pv5w/mQj
-         hA7BttMYmrFTZHqtgDkJ5GwR1ZmVRxKDQcPJWTovClQoS1o9aOIlWcJiaER/4USLQsGu
-         Wang==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721160072; x=1721764872;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OoruTelNDegikEEcrJjnoc1yMF1fBFSJP2+Q2GOdqdM=;
-        b=sid/c+2ALyfeGRRu82vHRZGMjymarMyHu3CC0mztPLUZ6ocjspPK873h6PaYKTFmfT
-         31N5ghNA1OkkKJnRtdrBV4THL2vnCAq5iw2BjhJe19wL2B57oFci2367/8zEIeB+Fv+G
-         CFGV+TMuQOZUOLQwDwi+vUxX42P6wsIiV1TcsJ0Jnn3g1O/jS1kdOj7nbECQgxt2HQye
-         X0TMxQvYUnqN5EufS5WJ4I2YxlcnR4uPCe22gCGg2xOfOOmRlHGIkEnNeNuaJrnNbdWa
-         MtkJhRvxxFBJMW1sdDLKrXrpXxLasAvHHtal9hYT9GGkOx6lG6bU32iC/9v2jwuIKYg8
-         6XbA==
-X-Gm-Message-State: AOJu0YzpCIUhTFutusAld5PmOIaNiXNtjSbnyBxloDz7e50lXaGzyV6B
-	dxhwbnIQrS+OWqNyCmLnJjMGhAwu2Db+YdfEmfge5q07UX4D+Lzqm4vEkG72g80tJSPSdZDNe12
-	J+6AR+AfTjvkLEDauyxr12+gaNt/RjQHjIH5tRg==
-X-Google-Smtp-Source: AGHT+IF68HCygtFqq/rcGOKVvFd5SgfZ2cxp60pGpeacplZON7Ei2UAeaMsu+za8s0vvKbAzkBV4Bdcaj2sB6pKofbs=
-X-Received: by 2002:a05:6122:4685:b0:4ef:3a26:6eb5 with SMTP id
- 71dfb90a1353d-4f4d6d4821dmr2237072e0c.0.1721160071957; Tue, 16 Jul 2024
- 13:01:11 -0700 (PDT)
+	s=arc-20240116; t=1721160666; c=relaxed/simple;
+	bh=9AJN4PgJDFD6rXPl8hdNI4KFCO6auql45+lt7HZHXiY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tgN83Brg7NMNPGTBM6udfP3VQG6eWbrtEgDQITvQmspGRFfFVXPv/XR6Y1eN5kVS9aJQC2AbvJNQOmLyKMwheOMQJV7EQMVndCdE+d1sAa2ALRzirbF5AHIXogoJ40XxOkDMz81qKjgOo6iimG5upox/Mt0g0KyNgiJd5+0snpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 6D0511C009C; Tue, 16 Jul 2024 22:11:01 +0200 (CEST)
+Date: Tue, 16 Jul 2024 22:11:00 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/108] 5.10.222-rc1 review
+Message-ID: <ZpbT1OjS+E0G89b3@duo.ucw.cz>
+References: <20240716152745.988603303@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240716152751.312512071@linuxfoundation.org>
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 17 Jul 2024 01:30:59 +0530
-Message-ID: <CA+G9fYspx-bBGD6A7Z7BL8+ZxZson5os6=gVSWSry1dQE4yZVg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/121] 6.6.41-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="QV+03voLkCmUNdnV"
+Content-Disposition: inline
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
 
-On Tue, 16 Jul 2024 at 21:30, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.41 release.
-> There are 121 patches in this series, all will be posted as a response
+
+--QV+03voLkCmUNdnV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> This is the start of the stable review cycle for the 5.10.222 release.
+> There are 108 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->
-> Responses should be made by Thu, 18 Jul 2024 15:27:21 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.41-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
+CIP testing did not find any problems here:
 
-The s390 builds failed on stable-rc 6.6 branch due to following build
-warnings / errors.
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+5.10.y
 
-This is not a new regression, this has been reported on last round of stable-rc
-6.6.39-rc1 review.
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
-* s390, build
-  - clang-18-allnoconfig
-  - clang-18-defconfig
-  - clang-18-tinyconfig
-  - clang-nightly-allnoconfig
-  - clang-nightly-defconfig
-  - clang-nightly-tinyconfig
-  - gcc-13-allnoconfig
-  - gcc-13-defconfig
-  - gcc-13-tinyconfig
-  - gcc-8-allnoconfig
-  - gcc-8-defconfig-fe40093d
-  - gcc-8-tinyconfig
+Best regards,
+                                                                Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+--QV+03voLkCmUNdnV
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Build log:
-----------
-arch/s390/include/asm/processor.h: In function '__load_psw_mask':
-arch/s390/include/asm/processor.h:311:19: error: expected '=', ',',
-';', 'asm' or '__attribute__' before '__uninitialized'
-  311 |         psw_t psw __uninitialized;
-      |                   ^~~~~~~~~~~~~~~
-arch/s390/include/asm/processor.h:311:19: error: '__uninitialized'
-undeclared (first use in this function)
-arch/s390/include/asm/processor.h:311:19: note: each undeclared
-identifier is reported only once for each function it appears in
-arch/s390/include/asm/processor.h:314:9: error: 'psw' undeclared
-(first use in this function); did you mean 'psw_t'?
-  314 |         psw.mask = mask;
-      |         ^~~
-      |         psw_t
+-----BEGIN PGP SIGNATURE-----
 
+iFwEABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZpbT1AAKCRAw5/Bqldv6
+8qJMAJUZ1HCs7M9ltxBPM6NVBdudqa1yAKCoqQZlKZER5SA6h+c1cuY/DnRvwQ==
+=tfuF
+-----END PGP SIGNATURE-----
 
-metadata:
----------
-  config: https://storage.tuxsuite.com/public/linaro/lkft/builds/2jKrJxxJX8PC3B3Py92l53Th4Vf/config
-  download_url:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2jKrJxxJX8PC3B3Py92l53Th4Vf/
-  git_describe: v6.6.38-260-gfb57426efe05
-  git_repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-  git_sha: fb57426efe05b3f2f49a914e3da34e3c9d61c69a
-  git_short_log: fb57426efe05 ("Linux 6.6.41-rc1")
-
-
-Steps to reproduce:
------
-# tuxmake --runtime podman --target-arch s390 --toolchain gcc-13
---kconfig tinyconfig
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
+--QV+03voLkCmUNdnV--
 
