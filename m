@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-59879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC63E932C39
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:53:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37374932B15
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8770284E78
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:53:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 692881C20D5E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5F617C9E9;
-	Tue, 16 Jul 2024 15:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE651E894;
+	Tue, 16 Jul 2024 15:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TB6JN5sA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUu3nRI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A98327733;
-	Tue, 16 Jul 2024 15:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A20CF9E8;
+	Tue, 16 Jul 2024 15:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145188; cv=none; b=XLHrYObiPOAFyLNMuX7pjXoG9j0IO9rG538xHriJVmuDXK3nbKHljZvzUoRNqwmHG8boFzkLaaULFr1wSGzXOi9jlj0eSQTT+nmOjhmfTb2b3Amw8eSfh68Pz3mB2KFutMv8GQuVvbzVq7h4FBjwl3NH71vr+S9ccJEHz2TW+hQ=
+	t=1721144479; cv=none; b=rF+ol4VBff0ZopebswfmvAOntAE2HMhkHqU7BozBN2tI1gmDotPGzBq671xy+lK3hJE075VE5GmiPEUmjxcAIBMQymuaqwqBC4DggCJiiqNHwcjpWfBFLWdPpEV0z9oZLcLR5olKd5V/PbFrULTTtSkeVNF3JD4ZuYBOPGDZZq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145188; c=relaxed/simple;
-	bh=uMpyrHGx9gmJ2u+zvaATIstTBrGPYDDDwf9ZEyBfWfU=;
+	s=arc-20240116; t=1721144479; c=relaxed/simple;
+	bh=YTi/IUXhZfUlz59bj+AtzplOzi5yRKXc40nssl7LnUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=meqrZ7yfpYu8Z7APsld8ATGI6qmzP8uGMxMJNQSNgh3T/0rxvwnRoXYnZb5184/wFm5zuAib8Q2ov1ZAogxXtXPWyrRAub06SsPTCTpBwXY/kGEt759CRrit7P6MV6mlketcXvrzXnvss1j/ccnNgSl5BgoU0PCLLFYrXk//8D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TB6JN5sA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1200EC116B1;
-	Tue, 16 Jul 2024 15:53:07 +0000 (UTC)
+	 MIME-Version; b=tXVAGkBngaEWMynOmP+aCYDcD2aS2lW8Pb2fz1hFBjMM/U0FuzLhNKWNspmbKUjF/pTFZ79Kh/Gxd+JYILtHfS9qSHY5hfP48Jy0LpS67HwJnoRzzIOZOEcWqvHwm1Ds7b/TzoEwYlLViCV+gsqZYFk1p/Y/1N2dYlrbTMXvo9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUu3nRI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CDFC116B1;
+	Tue, 16 Jul 2024 15:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145188;
-	bh=uMpyrHGx9gmJ2u+zvaATIstTBrGPYDDDwf9ZEyBfWfU=;
+	s=korg; t=1721144479;
+	bh=YTi/IUXhZfUlz59bj+AtzplOzi5yRKXc40nssl7LnUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TB6JN5sA8RPTkZlo1+Uka6Lb+4Jlyo7EjpbGbihsrysniyVlVATqnj+g8tYCGM7P8
-	 Fd5Eun45MljKi65tGjC4jFiZoXUUKzQ8XsJyE0bRIdgUixA86YIs2p+j6OqL4g9VJw
-	 1/bg/tgFffVHv5o2rEm+CTr7Z5E45mfojreBcjjg=
+	b=mUu3nRI92wGDvqmuexhpV7+QdYjer0YP1ltwZZexXMTaLa2niApFP6DBXHl8T/ptL
+	 4LLbc3mLE8aJhunKzQXVxa+XxvEMqI+D04akFyh40HIPLZCyKKo4uGDGhjNigEy3Ic
+	 akuE8csT8C53kc4AGs2xxdq2+bWIFQa/2diha0H0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Zhang <quic_congzhan@quicinc.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.9 095/143] arm64: dts: qcom: sa8775p: Correct IRQ number of EL2 non-secure physical timer
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 59/78] USB: serial: option: add Telit generic core-dump composition
 Date: Tue, 16 Jul 2024 17:31:31 +0200
-Message-ID: <20240716152759.631085026@linuxfoundation.org>
+Message-ID: <20240716152742.926565135@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Zhang <quic_congzhan@quicinc.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-commit 41fca5930afb36453cc90d4002841edd9990d0ad upstream.
+commit 4298e400dbdbf259549d69c349e060652ad53611 upstream.
 
-The INTID of EL2 non-secure physical timer is 26. In linux, the IRQ
-number has a fixed 16 offset for PPIs. Therefore, the linux IRQ number
-of EL2 non-secure physical timer should be 10 (26 - 16).
+Add the following core-dump composition, used in different Telit modems:
 
-Fixes: 603f96d4c9d0 ("arm64: dts: qcom: add initial support for qcom sa8775p-ride")
-Signed-off-by: Cong Zhang <quic_congzhan@quicinc.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240604085929.49227-1-quic_congzhan@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+0x9000: tty (sahara)
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#= 41 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=9000 Rev=00.00
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990-dump
+S:  SerialNumber=e815bdde
+C:  #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=2mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=10 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-@@ -3605,7 +3605,7 @@
- 		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
--			     <GIC_PPI 12 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>;
-+			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>;
- 	};
- 
- 	pcie0: pcie@1c00000 {
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1433,6 +1433,8 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(2) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x701b, 0xff),	/* Telit LE910R1 (ECM) */
+ 	  .driver_info = NCTRL(2) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x9000, 0xff),	/* Telit generic core-dump device */
++	  .driver_info = NCTRL(0) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x9010),				/* Telit SBL FN980 flashing device */
+ 	  .driver_info = NCTRL(0) | ZLP },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x9200),				/* Telit LE910S1 flashing device */
 
 
 
