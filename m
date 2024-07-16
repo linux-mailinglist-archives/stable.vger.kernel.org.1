@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-59705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620BE932B5C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90AD9932C01
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CCE7280F59
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DFC41F20FC9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39FD1448ED;
-	Tue, 16 Jul 2024 15:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29EF17C9E9;
+	Tue, 16 Jul 2024 15:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZLdL95z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fm1sTRgA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826291DDF5;
-	Tue, 16 Jul 2024 15:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0F31DDCE;
+	Tue, 16 Jul 2024 15:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144657; cv=none; b=hCYeTWSibR+WGiLJ27dxwgF7CMd7SVGcY2y9A0uggyNmT1gWUkVxkRDscItXXR/02jTPa4L0EAh9ax63qcaqL/JMZFqHKfM+8ukq9TmLNrZKMbLCvB0gcuEg6GnVfdaO/l2t4IOIpQHTHiQ3je7IjFf6kTH14094YBnz0ESKbyk=
+	t=1721145050; cv=none; b=bgLMTx2gBUK9C1CtR5RjpMqbQ9tGYFKRNd92INQwqGd9emW2XFCD93Uux0aLcFgyPZRWAXgzBoGRX4TefzXYcsEaLTcdGpKlMA1LZJAcEteKAyo2udJyFDQCmENuh92nEqJbQCPIK9RMRMCsT9aL+i880emRT+k5cvNYryY5tLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144657; c=relaxed/simple;
-	bh=MkEA8Qg1lEJgiyky0kkIQdICw6wXPsRFe4cQplGd7xo=;
+	s=arc-20240116; t=1721145050; c=relaxed/simple;
+	bh=OgxTHOGAzB/xc7Mzf0HZRTolpVHRtB0yGjpSwmtgwF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JaX4UQYxGCQNj4+hqKJP2dL1YKcfhDR6K2KvLRp9AqI8iEWOe3G3QPmoygMuYciGGP3fus2mvpWYx5HCU6Yv4fTS88f9ayFpIZmQKl12Wow1/dbfsrAUbxVyAtNUx9UhT2+A2crmAP2QhHwyWyhD023I7OzFEo+sepUxs7IuWog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZLdL95z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C66C116B1;
-	Tue, 16 Jul 2024 15:44:16 +0000 (UTC)
+	 MIME-Version; b=kvYY+V/BbXCcWk92NMasmWWwdU4rPaipmP8X2pMU1qq0f3uM0UvmaogoY8CHu1qUgQ2Dv/UsOYd2331tsLnS5C1yOxwfUYYvaHij2ZpffcNG1UPlcj9O0Sy6Z4B7Dbt5+MYGfRMHSW9SUqBr0UB9kflYKCGFor7p0a0Q/vrMcaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fm1sTRgA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5600C116B1;
+	Tue, 16 Jul 2024 15:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144657;
-	bh=MkEA8Qg1lEJgiyky0kkIQdICw6wXPsRFe4cQplGd7xo=;
+	s=korg; t=1721145050;
+	bh=OgxTHOGAzB/xc7Mzf0HZRTolpVHRtB0yGjpSwmtgwF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZLdL95zkV3pIx4mRDcxoVZYNtFFaE684SHe3F0c+KaN4emzT1a1w6B3V6F8rwJ+o
-	 iXZLgspHf8IesJKwJSeEKzUlaX8btlSqOdgKZCBjUzvedvQq4h+65vH40wlBnySBQv
-	 8oUVRpEOtJOU08ZDMZdSKYgZ91xNXLASQxzyA5u4=
+	b=Fm1sTRgAPoWZhpEaf4zD8pMEwqEsQEG5kumfhDrRKmSsleIHaMdRTsFbijxbe2Qd5
+	 Aqmb5YBrWc5m1QlGuFNDo6ILz0O9W3D35bOJPtbc3Mg7CRn+rr94GTSwOtqts2Iclu
+	 NTUypHs37heOGOGShWYKfZKNG6NkgsWo689SsNtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Kevin Yang <yyd@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 062/108] tcp: fix incorrect undo caused by DSACK of TLP retransmit
+	Joy Chakraborty <joychakr@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 6.9 081/143] misc: microchip: pci1xxxx: Fix return value of nvmem callbacks
 Date: Tue, 16 Jul 2024 17:31:17 +0200
-Message-ID: <20240716152748.363715021@linuxfoundation.org>
+Message-ID: <20240716152759.092448029@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,112 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Joy Chakraborty <joychakr@google.com>
 
-[ Upstream commit 0ec986ed7bab6801faed1440e8839dcc710331ff ]
+commit a6a0f04e7d28378c181f76d32e4f965aa6a8b0a5 upstream.
 
-Loss recovery undo_retrans bookkeeping had a long-standing bug where a
-DSACK from a spurious TLP retransmit packet could cause an erroneous
-undo of a fast recovery or RTO recovery that repaired a single
-really-lost packet (in a sequence range outside that of the TLP
-retransmit). Basically, because the loss recovery state machine didn't
-account for the fact that it sent a TLP retransmit, the DSACK for the
-TLP retransmit could erroneously be implicitly be interpreted as
-corresponding to the normal fast recovery or RTO recovery retransmit
-that plugged a real hole, thus resulting in an improper undo.
+Read/write callbacks registered with nvmem core expect 0 to be returned
+on success and a negative value to be returned on failure.
 
-For example, consider the following buggy scenario where there is a
-real packet loss but the congestion control response is improperly
-undone because of this bug:
+Currently pci1xxxx_otp_read()/pci1xxxx_otp_write() and
+pci1xxxx_eeprom_read()/pci1xxxx_eeprom_write() return the number of
+bytes read/written on success.
+Fix to return 0 on success.
 
-+ send packets P1, P2, P3, P4
-+ P1 is really lost
-+ send TLP retransmit of P4
-+ receive SACK for original P2, P3, P4
-+ enter fast recovery, fast-retransmit P1, increment undo_retrans to 1
-+ receive DSACK for TLP P4, decrement undo_retrans to 0, undo (bug!)
-+ receive cumulative ACK for P1-P4 (fast retransmit plugged real hole)
-
-The fix: when we initialize undo machinery in tcp_init_undo(), if
-there is a TLP retransmit in flight, then increment tp->undo_retrans
-so that we make sure that we receive a DSACK corresponding to the TLP
-retransmit, as well as DSACKs for all later normal retransmits, before
-triggering a loss recovery undo. Note that we also have to move the
-line that clears tp->tlp_high_seq for RTO recovery, so that upon RTO
-we remember the tp->tlp_high_seq value until tcp_init_undo() and clear
-it only afterward.
-
-Also note that the bug dates back to the original 2013 TLP
-implementation, commit 6ba8a3b19e76 ("tcp: Tail loss probe (TLP)").
-
-However, this patch will only compile and work correctly with kernels
-that have tp->tlp_retrans, which was added only in v5.8 in 2020 in
-commit 76be93fc0702 ("tcp: allow at most one TLP probe per flight").
-So we associate this fix with that later commit.
-
-Fixes: 76be93fc0702 ("tcp: allow at most one TLP probe per flight")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Cc: Yuchung Cheng <ycheng@google.com>
-Cc: Kevin Yang <yyd@google.com>
-Link: https://patch.msgid.link/20240703171246.1739561-1-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9ab5465349c0 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX EEPROM via NVMEM sysfs")
+Fixes: 0969001569e4 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX OTP via NVMEM sysfs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joy Chakraborty <joychakr@google.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240612070031.1215558-1-joychakr@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 11 ++++++++++-
- net/ipv4/tcp_timer.c |  2 --
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 604ff1b04c3ef..06c03b21500fb 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2084,8 +2084,16 @@ void tcp_clear_retrans(struct tcp_sock *tp)
- static inline void tcp_init_undo(struct tcp_sock *tp)
- {
- 	tp->undo_marker = tp->snd_una;
-+
- 	/* Retransmission still in flight may cause DSACKs later. */
--	tp->undo_retrans = tp->retrans_out ? : -1;
-+	/* First, account for regular retransmits in flight: */
-+	tp->undo_retrans = tp->retrans_out;
-+	/* Next, account for TLP retransmits in flight: */
-+	if (tp->tlp_high_seq && tp->tlp_retrans)
-+		tp->undo_retrans++;
-+	/* Finally, avoid 0, because undo_retrans==0 means "can undo now": */
-+	if (!tp->undo_retrans)
-+		tp->undo_retrans = -1;
- }
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
+@@ -153,7 +153,6 @@ static int pci1xxxx_eeprom_read(void *pr
  
- static bool tcp_is_rack(const struct sock *sk)
-@@ -2164,6 +2172,7 @@ void tcp_enter_loss(struct sock *sk)
+ 		buf[byte] = readl(rb + MMAP_EEPROM_OFFSET(EEPROM_DATA_REG));
+ 	}
+-	ret = byte;
+ error:
+ 	release_sys_lock(priv);
+ 	return ret;
+@@ -197,7 +196,6 @@ static int pci1xxxx_eeprom_write(void *p
+ 			goto error;
+ 		}
+ 	}
+-	ret = byte;
+ error:
+ 	release_sys_lock(priv);
+ 	return ret;
+@@ -258,7 +256,6 @@ static int pci1xxxx_otp_read(void *priv_
  
- 	tcp_set_ca_state(sk, TCP_CA_Loss);
- 	tp->high_seq = tp->snd_nxt;
-+	tp->tlp_high_seq = 0;
- 	tcp_ecn_queue_cwr(tp);
- 
- 	/* F-RTO RFC5682 sec 3.1 step 1: retransmit SND.UNA if no previous
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index 5c7e10939dd90..2925b985e11cb 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -492,8 +492,6 @@ void tcp_retransmit_timer(struct sock *sk)
- 	if (WARN_ON_ONCE(!skb))
- 		return;
- 
--	tp->tlp_high_seq = 0;
--
- 	if (!tp->snd_wnd && !sock_flag(sk, SOCK_DEAD) &&
- 	    !((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV))) {
- 		/* Receiver dastardly shrinks window. Our retransmits
--- 
-2.43.0
-
+ 		buf[byte] = readl(rb + MMAP_OTP_OFFSET(OTP_RD_DATA_OFFSET));
+ 	}
+-	ret = byte;
+ error:
+ 	release_sys_lock(priv);
+ 	return ret;
+@@ -315,7 +312,6 @@ static int pci1xxxx_otp_write(void *priv
+ 			goto error;
+ 		}
+ 	}
+-	ret = byte;
+ error:
+ 	release_sys_lock(priv);
+ 	return ret;
 
 
 
