@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-59833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A828B932BFF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A32DC932A98
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B71D1F21A11
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23D571F23978
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83B819DF70;
-	Tue, 16 Jul 2024 15:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2B91DDF5;
+	Tue, 16 Jul 2024 15:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSwmlkUY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsbqSl07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862DD17C9E9;
-	Tue, 16 Jul 2024 15:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A59CA40;
+	Tue, 16 Jul 2024 15:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145047; cv=none; b=NtwcvmWDIvhnba/Zf1B6aYYz8slzQ7rgmgFzY0qe933bEJO2EWxrSU4YQfiNWUXHKSLb/UIk6RX3UtDiprzD15eBbtRYo/z3RYedyCLWrZ7Z9RRjUyPcPCm435FwqUwzvV4RJV5KPN6RrIY4FZ4COJsZO56D+OYa1WEMOf9vjT0=
+	t=1721144142; cv=none; b=LfkdhDPE93Tu/fKkBH5HrsNVTczOqz4JHfVn13ZMTEMgYTFQ/M0e1abC+AZpZR9uvnHqZFFQasrfIxRtjf9osCtTLsYZGzAPqSHfwcsPB5Ua3zbSm2Ct8oYV9YncrPEaY+GPi9iUtM/qeGwxQvNE2RD3Wq2PYxDMKI8XKhqoluM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145047; c=relaxed/simple;
-	bh=4XvRf2z2b94d2m7slpDPt7NzkcDxZPy/svXWUYyp5aM=;
+	s=arc-20240116; t=1721144142; c=relaxed/simple;
+	bh=Q56/X0z++qOcVsURtDeK57WUW3T1PVMR21JZqNsJpBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tpY9otmeWz+dqLKVj/v2HYKAwQF5FKaX2UAAYccCi5LpHrkIJ+WIOtIaknMb6dTLOLuRTA5UcJU4YTNspE1ILyaMgpevOXNMtOdAbSyNvhBPgvD9WYsdz4/c6OtV13yVMVeMI1FhlQxF4bodOcqyiRMHGVPXD93FkYiitnN1tzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSwmlkUY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8EAC116B1;
-	Tue, 16 Jul 2024 15:50:46 +0000 (UTC)
+	 MIME-Version; b=PjDxXWJ0Zx9AIRzxHGmeLqqUD+iQ7+tJDYKYoksTyfh93Y6iqS2hnommnDjFMJ7jY8HZNp6S5zBIin38b2fv9bHsrdEgzLJ1PSREvNMWrJS3ylRuUgL7L5ioaUofAxO0Ssxi20QC3yF2FIWevP2At1mtEPcPq+yvGisCEBHstNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsbqSl07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C082CC116B1;
+	Tue, 16 Jul 2024 15:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145047;
-	bh=4XvRf2z2b94d2m7slpDPt7NzkcDxZPy/svXWUYyp5aM=;
+	s=korg; t=1721144142;
+	bh=Q56/X0z++qOcVsURtDeK57WUW3T1PVMR21JZqNsJpBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSwmlkUYXgi3FmTRQJZi097adCTvIjI5454tYDswoR2JWWD0p/uaKK6SyRxttai+f
-	 +mdudGCBSVcaguckQW3JfZdkBWlgKrPIRGn4U1UORQ2BdKZouAC8rmuk69MUE/w6Me
-	 3DUAB7WdVksw3hd/nqkxe8GuG2mOvvNmg3Fy0jG8=
+	b=NsbqSl07wqqOerBWosr4YkVA45avBZV0t9FXfqCwrUYr1rSBvSE0wJgUy1NPu1n7B
+	 NCn4e+hftvkltBaLe2w33JDUvaIPBAxMhS0kucZnDFz2PaHDq6Gqwp007SEBCjFKOx
+	 bKqRmwHiYOzCqxRNbCXb5Nc0pUGKKYRjtmDZUZJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Oliver Neukum <oneukum@suse.com>,
-	syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
-Subject: [PATCH 6.9 080/143] USB: core: Fix duplicate endpoint bug by clearing reserved bits in the descriptor
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Jan Kara <jack@suse.cz>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 41/66] nilfs2: fix incorrect inode allocation from reserved inodes
 Date: Tue, 16 Jul 2024 17:31:16 +0200
-Message-ID: <20240716152759.054677511@linuxfoundation.org>
+Message-ID: <20240716152739.735173828@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +64,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit a368ecde8a5055b627749b09c6218ef793043e47 upstream.
+commit 93aef9eda1cea9e84ab2453fcceb8addad0e46f1 upstream.
 
-Syzbot has identified a bug in usbcore (see the Closes: tag below)
-caused by our assumption that the reserved bits in an endpoint
-descriptor's bEndpointAddress field will always be 0.  As a result of
-the bug, the endpoint_is_duplicate() routine in config.c (and possibly
-other routines as well) may believe that two descriptors are for
-distinct endpoints, even though they have the same direction and
-endpoint number.  This can lead to confusion, including the bug
-identified by syzbot (two descriptors with matching endpoint numbers
-and directions, where one was interrupt and the other was bulk).
+If the bitmap block that manages the inode allocation status is corrupted,
+nilfs_ifile_create_inode() may allocate a new inode from the reserved
+inode area where it should not be allocated.
 
-To fix the bug, we will clear the reserved bits in bEndpointAddress
-when we parse the descriptor.  (Note that both the USB-2.0 and USB-3.1
-specs say these bits are "Reserved, reset to zero".)  This requires us
-to make a copy of the descriptor earlier in usb_parse_endpoint() and
-use the copy instead of the original when checking for duplicates.
+Previous fix commit d325dc6eb763 ("nilfs2: fix use-after-free bug of
+struct nilfs_root"), fixed the problem that reserved inodes with inode
+numbers less than NILFS_USER_INO (=11) were incorrectly reallocated due to
+bitmap corruption, but since the start number of non-reserved inodes is
+read from the super block and may change, in which case inode allocation
+may occur from the extended reserved inode area.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-and-tested-by: syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/0000000000003d868e061bc0f554@google.com/
-Fixes: 0a8fd1346254 ("USB: fix problems with duplicate endpoint addresses")
-CC: Oliver Neukum <oneukum@suse.com>
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/205a5edc-7fef-4159-b64a-80374b6b101a@rowland.harvard.edu
+If that happens, access to that inode will cause an IO error, causing the
+file system to degrade to an error state.
+
+Fix this potential issue by adding a wraparound option to the common
+metadata object allocation routine and by modifying
+nilfs_ifile_create_inode() to disable the option so that it only allocates
+inodes with inode numbers greater than or equal to the inode number read
+in "nilfs->ns_first_ino", regardless of the bitmap status of reserved
+inodes.
+
+Link: https://lkml.kernel.org/r/20240623051135.4180-4-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/config.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ fs/nilfs2/alloc.c |   18 ++++++++++++++----
+ fs/nilfs2/alloc.h |    4 ++--
+ fs/nilfs2/dat.c   |    2 +-
+ fs/nilfs2/ifile.c |    7 ++-----
+ 4 files changed, 19 insertions(+), 12 deletions(-)
 
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -291,6 +291,20 @@ static int usb_parse_endpoint(struct dev
- 	if (ifp->desc.bNumEndpoints >= num_ep)
- 		goto skip_to_next_endpoint_or_interface_descriptor;
+--- a/fs/nilfs2/alloc.c
++++ b/fs/nilfs2/alloc.c
+@@ -377,11 +377,12 @@ void *nilfs_palloc_block_get_entry(const
+  * @target: offset number of an entry in the group (start point)
+  * @bsize: size in bits
+  * @lock: spin lock protecting @bitmap
++ * @wrap: whether to wrap around
+  */
+ static int nilfs_palloc_find_available_slot(unsigned char *bitmap,
+ 					    unsigned long target,
+ 					    unsigned int bsize,
+-					    spinlock_t *lock)
++					    spinlock_t *lock, bool wrap)
+ {
+ 	int pos, end = bsize;
  
-+	/* Save a copy of the descriptor and use it instead of the original */
-+	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
-+	memcpy(&endpoint->desc, d, n);
-+	d = &endpoint->desc;
-+
-+	/* Clear the reserved bits in bEndpointAddress */
-+	i = d->bEndpointAddress &
-+			(USB_ENDPOINT_DIR_MASK | USB_ENDPOINT_NUMBER_MASK);
-+	if (i != d->bEndpointAddress) {
-+		dev_notice(ddev, "config %d interface %d altsetting %d has an endpoint descriptor with address 0x%X, changing to 0x%X\n",
-+		    cfgno, inum, asnum, d->bEndpointAddress, i);
-+		endpoint->desc.bEndpointAddress = i;
-+	}
-+
- 	/* Check for duplicate endpoint addresses */
- 	if (config_endpoint_is_duplicate(config, inum, asnum, d)) {
- 		dev_notice(ddev, "config %d interface %d altsetting %d has a duplicate endpoint with address 0x%X, skipping\n",
-@@ -308,10 +322,8 @@ static int usb_parse_endpoint(struct dev
- 		}
+@@ -397,6 +398,8 @@ static int nilfs_palloc_find_available_s
+ 
+ 		end = target;
  	}
++	if (!wrap)
++		return -ENOSPC;
  
--	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
-+	/* Accept this endpoint */
- 	++ifp->desc.bNumEndpoints;
--
--	memcpy(&endpoint->desc, d, n);
- 	INIT_LIST_HEAD(&endpoint->urb_list);
+ 	/* wrap around */
+ 	for (pos = 0; pos < end; pos++) {
+@@ -495,9 +498,10 @@ int nilfs_palloc_count_max_entries(struc
+  * nilfs_palloc_prepare_alloc_entry - prepare to allocate a persistent object
+  * @inode: inode of metadata file using this allocator
+  * @req: nilfs_palloc_req structure exchanged for the allocation
++ * @wrap: whether to wrap around
+  */
+ int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
+-				     struct nilfs_palloc_req *req)
++				     struct nilfs_palloc_req *req, bool wrap)
+ {
+ 	struct buffer_head *desc_bh, *bitmap_bh;
+ 	struct nilfs_palloc_group_desc *desc;
+@@ -516,7 +520,7 @@ int nilfs_palloc_prepare_alloc_entry(str
+ 	entries_per_group = nilfs_palloc_entries_per_group(inode);
  
- 	/*
+ 	for (i = 0; i < ngroups; i += n) {
+-		if (group >= ngroups) {
++		if (group >= ngroups && wrap) {
+ 			/* wrap around */
+ 			group = 0;
+ 			maxgroup = nilfs_palloc_group(inode, req->pr_entry_nr,
+@@ -541,7 +545,13 @@ int nilfs_palloc_prepare_alloc_entry(str
+ 				bitmap = bitmap_kaddr + bh_offset(bitmap_bh);
+ 				pos = nilfs_palloc_find_available_slot(
+ 					bitmap, group_offset,
+-					entries_per_group, lock);
++					entries_per_group, lock, wrap);
++				/*
++				 * Since the search for a free slot in the
++				 * second and subsequent bitmap blocks always
++				 * starts from the beginning, the wrap flag
++				 * only has an effect on the first search.
++				 */
+ 				if (pos >= 0) {
+ 					/* found a free entry */
+ 					nilfs_palloc_group_desc_add_entries(
+--- a/fs/nilfs2/alloc.h
++++ b/fs/nilfs2/alloc.h
+@@ -50,8 +50,8 @@ struct nilfs_palloc_req {
+ 	struct buffer_head *pr_entry_bh;
+ };
+ 
+-int nilfs_palloc_prepare_alloc_entry(struct inode *,
+-				     struct nilfs_palloc_req *);
++int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
++				     struct nilfs_palloc_req *req, bool wrap);
+ void nilfs_palloc_commit_alloc_entry(struct inode *,
+ 				     struct nilfs_palloc_req *);
+ void nilfs_palloc_abort_alloc_entry(struct inode *, struct nilfs_palloc_req *);
+--- a/fs/nilfs2/dat.c
++++ b/fs/nilfs2/dat.c
+@@ -75,7 +75,7 @@ int nilfs_dat_prepare_alloc(struct inode
+ {
+ 	int ret;
+ 
+-	ret = nilfs_palloc_prepare_alloc_entry(dat, req);
++	ret = nilfs_palloc_prepare_alloc_entry(dat, req, true);
+ 	if (ret < 0)
+ 		return ret;
+ 
+--- a/fs/nilfs2/ifile.c
++++ b/fs/nilfs2/ifile.c
+@@ -55,13 +55,10 @@ int nilfs_ifile_create_inode(struct inod
+ 	struct nilfs_palloc_req req;
+ 	int ret;
+ 
+-	req.pr_entry_nr = 0;  /*
+-			       * 0 says find free inode from beginning
+-			       * of a group. dull code!!
+-			       */
++	req.pr_entry_nr = NILFS_FIRST_INO(ifile->i_sb);
+ 	req.pr_entry_bh = NULL;
+ 
+-	ret = nilfs_palloc_prepare_alloc_entry(ifile, &req);
++	ret = nilfs_palloc_prepare_alloc_entry(ifile, &req, false);
+ 	if (!ret) {
+ 		ret = nilfs_palloc_get_entry_block(ifile, req.pr_entry_nr, 1,
+ 						   &req.pr_entry_bh);
 
 
 
