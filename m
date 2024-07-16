@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-59893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D13F932C4E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47013932CCD
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A40791F21F6F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 781271C220BB
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6666C19DFB9;
-	Tue, 16 Jul 2024 15:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9971B19E7CF;
+	Tue, 16 Jul 2024 15:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3N9qv6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dl8w1cg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251AF19AD46;
-	Tue, 16 Jul 2024 15:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5792A195B27;
+	Tue, 16 Jul 2024 15:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145230; cv=none; b=P5952JTa8PleLQA5lqwkIsEyjapDIJGOk1Ur+eh7VPdCXF1ns1uhDY9JcFTWOSUCn6GF7R7jXEkTmrkpo8OxuwQIQPyC4Obpv0Pm3Vb5jjMkKgGMjKkKNLdY1G4MfDc8qQNoTFW9Dauru/D6g2qlrnRqMOKu843mBA99g8+moQI=
+	t=1721145496; cv=none; b=ugLIt4VPT0XvG+Qki7REUZngJF4mB8Hr9TLoI6pvglHjG5wi+ZKFuDhuETvzUe+3i/tI+te4AxIKeipV75P6x/JPO8sEbzC+aHj5tXf6ayWZuF+9PhaMKqKqenrxAB5wAZkE0iK2qX2jicN6U4ytNQXj6Stua/biHPtj6kaajPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145230; c=relaxed/simple;
-	bh=XQc5vX/JkZ0kZQITdrW5e1Ol6dYayfE20NOfU63QFY0=;
+	s=arc-20240116; t=1721145496; c=relaxed/simple;
+	bh=pC3nyRZgobTDlTtCQSSpvpUcT+TUzInE9Vqz0Eu59c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j7xayLRHP/FDzwFc2E57CAdtW3Jc2h+WJzT2RxjQEiDB/dv2vZHg1EZ3zAsyKw97xqk+I0hO7KrzJHz/DZC9uDdc5EHTUaVQ0y56f/w2+r0fYNYH/0OLchnBJiaIMhIeKUo30mRcs8B15AaqF6eIzMf8pBSUD5pm79v96e8vcUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3N9qv6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A92C116B1;
-	Tue, 16 Jul 2024 15:53:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mn3BYud9XKXmmN5cOtT7uxJbioE/Zu9Sg8Xyvv+tehbsZ6lfCHSMctYq/ID0kmnFeFNBRUf79UxrXLQGTXhMP72Nuu04+5Fipx32IbYBiB6lDt77LhvvTZHw8lfbI2Tzxxv2/fItVCDxPE0dqq7Zv+uwgGJpzgQjLnXg7fQW/hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dl8w1cg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D49C116B1;
+	Tue, 16 Jul 2024 15:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145230;
-	bh=XQc5vX/JkZ0kZQITdrW5e1Ol6dYayfE20NOfU63QFY0=;
+	s=korg; t=1721145496;
+	bh=pC3nyRZgobTDlTtCQSSpvpUcT+TUzInE9Vqz0Eu59c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H3N9qv6RgwSIm73/7FUxEYyKKRd8M5PViEfAii7yKCQfA52FV9uJXxXxipYF+9WYM
-	 kqZzTzLI09Mb1ckViSQk20St1XIHpo1lUXjQbttc5Q7gxSQn5GBCp48u5DIXYynyn5
-	 xoRdL7K3Mo8qEcomgBjGVgonBC4NAWbUWVElIAx0=
+	b=Dl8w1cg/DtmyCBMSCHIebtou36wm3samvJD6kUzi9qK40utE6NGNPWXKM469yStxS
+	 5Cws+t+AuPN0bv63VND1aHMkzSeIgd9IxdyrUkdXOkfoy01OTsQJVZ9uaiURNz5m9C
+	 yd86Yxv8WtgqEouqyprR7TgcP0IO7HJPtdRS7QUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Maity <suman.m.maity@oracle.com>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 141/143] x86/bhi: Avoid warning in #DB handler due to BHI mitigation
-Date: Tue, 16 Jul 2024 17:32:17 +0200
-Message-ID: <20240716152801.419703320@linuxfoundation.org>
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal.kopec@3mdeb.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 67/96] ALSA: hda/realtek: add quirk for Clevo V5[46]0TU
+Date: Tue, 16 Jul 2024 17:32:18 +0200
+Message-ID: <20240716152749.086064977@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Chartre <alexandre.chartre@oracle.com>
+From: Michał Kopeć <michal.kopec@3mdeb.com>
 
-[ Upstream commit ac8b270b61d48fcc61f052097777e3b5e11591e0 ]
+commit e1c6db864599be341cd3bcc041540383215ce05e upstream.
 
-When BHI mitigation is enabled, if SYSENTER is invoked with the TF flag set
-then entry_SYSENTER_compat() uses CLEAR_BRANCH_HISTORY and calls the
-clear_bhb_loop() before the TF flag is cleared. This causes the #DB handler
-(exc_debug_kernel()) to issue a warning because single-step is used outside the
-entry_SYSENTER_compat() function.
+Apply quirk to fix combo jack detection on a new Clevo model: V5[46]0TU
 
-To address this issue, entry_SYSENTER_compat() should use CLEAR_BRANCH_HISTORY
-after making sure the TF flag is cleared.
-
-The problem can be reproduced with the following sequence:
-
-  $ cat sysenter_step.c
-  int main()
-  { asm("pushf; pop %ax; bts $8,%ax; push %ax; popf; sysenter"); }
-
-  $ gcc -o sysenter_step sysenter_step.c
-
-  $ ./sysenter_step
-  Segmentation fault (core dumped)
-
-The program is expected to crash, and the #DB handler will issue a warning.
-
-Kernel log:
-
-  WARNING: CPU: 27 PID: 7000 at arch/x86/kernel/traps.c:1009 exc_debug_kernel+0xd2/0x160
-  ...
-  RIP: 0010:exc_debug_kernel+0xd2/0x160
-  ...
-  Call Trace:
-  <#DB>
-   ? show_regs+0x68/0x80
-   ? __warn+0x8c/0x140
-   ? exc_debug_kernel+0xd2/0x160
-   ? report_bug+0x175/0x1a0
-   ? handle_bug+0x44/0x90
-   ? exc_invalid_op+0x1c/0x70
-   ? asm_exc_invalid_op+0x1f/0x30
-   ? exc_debug_kernel+0xd2/0x160
-   exc_debug+0x43/0x50
-   asm_exc_debug+0x1e/0x40
-  RIP: 0010:clear_bhb_loop+0x0/0xb0
-  ...
-  </#DB>
-  <TASK>
-   ? entry_SYSENTER_compat_after_hwframe+0x6e/0x8d
-  </TASK>
-
-  [ bp: Massage commit message. ]
-
-Fixes: 7390db8aea0d ("x86/bhi: Add support for clearing branch history at syscall entry")
-Reported-by: Suman Maity <suman.m.maity@oracle.com>
-Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20240524070459.3674025-1-alexandre.chartre@oracle.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Michał Kopeć <michal.kopec@3mdeb.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240701111010.1496569-1-michal.kopec@3mdeb.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/entry/entry_64_compat.S | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
-index c779046cc3fe7..2e8ead6090393 100644
---- a/arch/x86/entry/entry_64_compat.S
-+++ b/arch/x86/entry/entry_64_compat.S
-@@ -90,10 +90,6 @@ SYM_INNER_LABEL(entry_SYSENTER_compat_after_hwframe, SYM_L_GLOBAL)
- 
- 	cld
- 
--	IBRS_ENTER
--	UNTRAIN_RET
--	CLEAR_BRANCH_HISTORY
--
- 	/*
- 	 * SYSENTER doesn't filter flags, so we need to clear NT and AC
- 	 * ourselves.  To save a few cycles, we can check whether
-@@ -117,6 +113,16 @@ SYM_INNER_LABEL(entry_SYSENTER_compat_after_hwframe, SYM_L_GLOBAL)
- 	jnz	.Lsysenter_fix_flags
- .Lsysenter_flags_fixed:
- 
-+	/*
-+	 * CPU bugs mitigations mechanisms can call other functions. They
-+	 * should be invoked after making sure TF is cleared because
-+	 * single-step is ignored only for instructions inside the
-+	 * entry_SYSENTER_compat function.
-+	 */
-+	IBRS_ENTER
-+	UNTRAIN_RET
-+	CLEAR_BRANCH_HISTORY
-+
- 	movq	%rsp, %rdi
- 	call	do_SYSENTER_32
- 	jmp	sysret32_from_system_call
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10015,6 +10015,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1558, 0xa600, "Clevo NL50NU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xa650, "Clevo NP[567]0SN[CD]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xa671, "Clevo NP70SN[CDE]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0xa763, "Clevo V54x_6x_TU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xb018, "Clevo NP50D[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xb019, "Clevo NH77D[BE]Q", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xb022, "Clevo NH77D[DC][QW]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
 
 
 
