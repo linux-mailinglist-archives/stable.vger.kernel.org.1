@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-60092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003F8932D56
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935E1932CE0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 985A31F24617
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3D251C21FF2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3273219AD59;
-	Tue, 16 Jul 2024 16:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2D31A00E5;
+	Tue, 16 Jul 2024 15:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEbgfr7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+8rtrFh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35211DDCE;
-	Tue, 16 Jul 2024 16:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AF51A00D0;
+	Tue, 16 Jul 2024 15:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145831; cv=none; b=GbYdOtmwzw/U1oodRO36FVnqYwVbOyq1Lrw/L9JEfqybOfaiLzTW3wTXVDTsGjRDZx7lr1BOCpZD0DZoUsbbTISsA+6HSNq5y3fBt5eTMCRD4B0xUDRTv2YkIf97xEV8cMBf1wFPUwa/+Y5WM1IUvqR0lauXDSB8dIMmgWsFKRY=
+	t=1721145514; cv=none; b=hP/lzMvctw22QDHHg6BSFZORFpaKO7D1z5CjxeuY2fhWdHRvhPYngn+Unn/4Rnx0+qB32pWQ0O+JaLxoDR7JXaz/8NgtUh+HLDvR3o6O11lK3zfkQWjJCebCfNNnvxS7Wuw/VsJdamRJ9Hamk+YcoFuEWwYBwMMQ4uYFtimdFI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145831; c=relaxed/simple;
-	bh=iageEyg/vPBnzuPXtYGwXbsH64XButkdQIcJ8SsR7DQ=;
+	s=arc-20240116; t=1721145514; c=relaxed/simple;
+	bh=krllarJqHcVddqFrqpmegJfglR4I1PRxKj5hU4xR8l0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOwc+VU4elFw8Syj+MDxI30VhlAkj27sigb0HQnN4FkaeLJzSWBOVZa7IMRyr+vqGV3Hww00WF42zhh0kibwz5VZnMpbI3fT3mFjSHV5gYrcp91EM1LVzqLT+MDNVY34JL8H3y3PX+1ocmMjYJ0wHCQsEnKC7i2ouyAdno2uOQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEbgfr7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B95DC4AF0D;
-	Tue, 16 Jul 2024 16:03:49 +0000 (UTC)
+	 MIME-Version; b=tj9rbYcccdr9Vf/i/H4BlF5TnWfj7+EEcXE2eRJYo2RC9lDDiMm3UEmWLt2TPoLef/7P4ZPecEpmtKJUH1D02wHYg4l5J8r++sRvpSxTDzVOGQXzzO6Uc18O9/HMaSQAfdl6jYfozQeFSgubqyB0RVjEAxI59pxiQ3qsxNj1xj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+8rtrFh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5BEC4AF0D;
+	Tue, 16 Jul 2024 15:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145830;
-	bh=iageEyg/vPBnzuPXtYGwXbsH64XButkdQIcJ8SsR7DQ=;
+	s=korg; t=1721145514;
+	bh=krllarJqHcVddqFrqpmegJfglR4I1PRxKj5hU4xR8l0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEbgfr7YmAu8GRkeKKFIaE5VN1Hfm13temBBrxKXg+Z2Ca0skOPAskvRarlmpW/jN
-	 lUOceLuQxvf734Xj5Ox3yT/2jHYE5r8x1ZJIjl0988fuOfPFlPBDMs3oRU2+9C6jCK
-	 +Bd7hKaC7tqzahtQDpwoGpAjKjjyylJb7f+Bziog=
+	b=p+8rtrFhOYcpWkhekBBAEtG48LIigoGPSUpSPr6t1UcOgH5x60P/iHNVg7nSSXLAA
+	 2vxscS6kex87AQayeetsIgYMCU6IASeAyOWkP4HXGX0frln5BP6E1oyyTpBW/WeQ1N
+	 pGAvXrT07PCXX4/c0pWH30GkMfi0Yx9iqB+0bUEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.6 099/121] misc: fastrpc: Copy the complete capability structure to user
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 90/96] i2c: rcar: ensure Gen3+ reset does not disturb local targets
 Date: Tue, 16 Jul 2024 17:32:41 +0200
-Message-ID: <20240716152755.138290886@linuxfoundation.org>
+Message-ID: <20240716152749.974786156@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit e7f0be3f09c6e955dc8009129862b562d8b64513 upstream.
+[ Upstream commit ea5ea84c9d3570dc06e8fc5ee2273eaa584aa3ac ]
 
-User is passing capability ioctl structure(argp) to get DSP
-capabilities. This argp is copied to a local structure to get domain
-and attribute_id information. After getting the capability, only
-capability value is getting copied to user argp which will not be
-useful if the use is trying to get the capability by checking the
-capability member of fastrpc_ioctl_capability structure. Copy the
-complete capability structure so that user can get the capability
-value from the expected member of the structure.
+R-Car Gen3+ needs a reset before every controller transfer. That erases
+configuration of a potentially in parallel running local target
+instance. To avoid this disruption, avoid controller transfers if a
+local target is running. Also, disable SMBusHostNotify because it
+requires being a controller and local target at the same time.
 
-Fixes: 6c16fd8bdd40 ("misc: fastrpc: Add support to get DSP capabilities")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628114501.14310-3-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3b770017b03a ("i2c: rcar: handle RXDMA HW behaviour on Gen3")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-rcar.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1787,7 +1787,7 @@ static int fastrpc_get_dsp_info(struct f
- 	if (err)
- 		return err;
+diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
+index 975bba5e4a344..c7a51e0876cf5 100644
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -824,6 +824,10 @@ static int rcar_i2c_do_reset(struct rcar_i2c_priv *priv)
+ {
+ 	int ret;
  
--	if (copy_to_user(argp, &cap.capability, sizeof(cap.capability)))
-+	if (copy_to_user(argp, &cap, sizeof(cap)))
- 		return -EFAULT;
++	/* Don't reset if a slave instance is currently running */
++	if (priv->slave)
++		return -EISCONN;
++
+ 	ret = reset_control_reset(priv->rstc);
+ 	if (ret)
+ 		return ret;
+@@ -1114,6 +1118,7 @@ static int rcar_i2c_probe(struct platform_device *pdev)
+ 	if (of_property_read_bool(dev->of_node, "smbus"))
+ 		priv->flags |= ID_P_HOST_NOTIFY;
  
- 	return 0;
++	/* R-Car Gen3+ needs a reset before every transfer */
+ 	if (priv->devtype >= I2C_RCAR_GEN3) {
+ 		priv->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+ 		if (IS_ERR(priv->rstc))
+@@ -1122,6 +1127,9 @@ static int rcar_i2c_probe(struct platform_device *pdev)
+ 		ret = reset_control_status(priv->rstc);
+ 		if (ret < 0)
+ 			goto out_pm_put;
++
++		/* hard reset disturbs HostNotify local target, so disable it */
++		priv->flags &= ~ID_P_HOST_NOTIFY;
+ 	}
+ 
+ 	ret = platform_get_irq(pdev, 0);
+-- 
+2.43.0
+
 
 
 
