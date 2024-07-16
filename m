@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-60146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87035932D97
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:07:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE95932D7D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FF5E280D7B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:07:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6606B1F21413
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D3A19E83D;
-	Tue, 16 Jul 2024 16:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D1319B3EE;
+	Tue, 16 Jul 2024 16:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CBluLYd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXWyYUan"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C7419E801;
-	Tue, 16 Jul 2024 16:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865F51DDCE;
+	Tue, 16 Jul 2024 16:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721146020; cv=none; b=gqlbFfc09ICHhA/5VZFnDEVgfyAX864dPJgLavhMUryWoSD7gzw7/StlIkooULdoG6y8JBG9BJcwfKW0qgOv9bZZ89u47BYcb8J4HsWmG9VzakOVj/ay6szeMBdv6a1thhT7X0j6wrHUUoUSgs95/q8diVsv67s6EVNUYJIbRhc=
+	t=1721145953; cv=none; b=sUV3BDpR6r8fNpqnKwFxLf1j8qeqBsG1FnuuLeWMaCInq9r+9b8NsOVjHGWBYZ/hCgSfIxqHEBa6Hiepk5Q3kVulrone6YHVDPJxtJGhGF1Uv2HIJWI3Hh5MnEwB+TJAOFqK9c78dR6a7y8cwArgmsSv7nicGtapua45Hgc/nx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721146020; c=relaxed/simple;
-	bh=W4gtafuhgB4MSsyNPXJ3tiqRukYEubhZgQKBgwrd03M=;
+	s=arc-20240116; t=1721145953; c=relaxed/simple;
+	bh=/qGX8CdEVGxRL3joDoH3IbAGsh+xug3ZafAQneiDgU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CqVzH23Bo0zZBjc0EACy/UaKEX3cuUHNmNcQbtkPRIFENyrwb7EpBjtRIAQtA2Pwcg8u8dxy80nP5aIImNJXWAEJHMRpEJO49VydMd37n7exJbMZJJmYRycn7jpU7JEfsGkfDZ1YHaMPOOhxslbDQSNlFEHggSGTAiGn7YjxCN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CBluLYd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE46C116B1;
-	Tue, 16 Jul 2024 16:06:58 +0000 (UTC)
+	 MIME-Version; b=ceDBJNnkQ9ZZN2Wyxi6Fj0EhutnEyVYeBcsFZZLtC+MA5wV5mCQy3WT34VBOpX0qJnnB9ooZhCpm2RKqRwkW62rIvsOf4Xf6eyueudMQcFGGaVL1D6TT0eMXKjGZoEk3zdJgwtqUonrAk4DB9ZU2rhszDUW8Ci97LoFSRJ/zpM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXWyYUan; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF6BC116B1;
+	Tue, 16 Jul 2024 16:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721146019;
-	bh=W4gtafuhgB4MSsyNPXJ3tiqRukYEubhZgQKBgwrd03M=;
+	s=korg; t=1721145953;
+	bh=/qGX8CdEVGxRL3joDoH3IbAGsh+xug3ZafAQneiDgU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1CBluLYdYW3I5CUQz4izrk7wvVP1wlk/9I+TTO7A0STzsAGIyPYAVWtjIh6l5B4NT
-	 0oOhSKWiGy418UhKQoMsYb++NhgCYB8az6eakYoN7gBogMkPZw8F7Iz+eRs4x7Fke0
-	 IrNLnRIvQHPQKXgz4hnAADGg7eSQAR/PrWwmwVXg=
+	b=mXWyYUanhDjXcv4AG00sQVbDbHhoDJEMpKAvmDWgNt1jBBVT4zfxK4Hp89oIeDTFs
+	 ZjRXm1wHa9Z2s+vog3rR26oAQUnilAQQfvNd7PQQ2qhDs3E8hCbNyl3V+D5Z1UvIPq
+	 kdGmMAKjY1Nn6F2+0HlaaPI4FgEhPKQCh8MVkKqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Michael Bunk <micha@freedict.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 009/144] drm/amd/display: Check index msg_id before read or write
-Date: Tue, 16 Jul 2024 17:31:18 +0200
-Message-ID: <20240716152752.889798310@linuxfoundation.org>
+Subject: [PATCH 5.15 012/144] media: dw2102: Dont translate i2c read into write
+Date: Tue, 16 Jul 2024 17:31:21 +0200
+Message-ID: <20240716152753.004664304@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -68,54 +66,195 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Michael Bunk <micha@freedict.org>
 
-[ Upstream commit 59d99deb330af206a4541db0c4da8f73880fba03 ]
+[ Upstream commit 0e148a522b8453115038193e19ec7bea71403e4a ]
 
-[WHAT]
-msg_id is used as an array index and it cannot be a negative value, and
-therefore cannot be equal to MOD_HDCP_MESSAGE_ID_INVALID (-1).
+The code ignored the I2C_M_RD flag on I2C messages.  Instead it assumed
+an i2c transaction with a single message must be a write operation and a
+transaction with two messages would be a read operation.
 
-[HOW]
-Check whether msg_id is valid before reading and setting.
+Though this works for the driver code, it leads to problems once the i2c
+device is exposed to code not knowing this convention.  For example,
+I did "insmod i2c-dev" and issued read requests from userspace, which
+were translated into write requests and destroyed the EEPROM of my
+device.
 
-This fixes 4 OVERRUN issues reported by Coverity.
+So, just check and respect the I2C_M_READ flag, which indicates a read
+when set on a message.  If it is absent, it is a write message.
 
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Incidentally, changing from the case statement to a while loop allows
+the code to lift the limitation to two i2c messages per transaction.
+
+There are 4 more *_i2c_transfer functions affected by the same behaviour
+and limitation that should be fixed in the same way.
+
+Link: https://lore.kernel.org/linux-media/20220116112238.74171-2-micha@freedict.org
+Signed-off-by: Michael Bunk <micha@freedict.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/media/usb/dvb-usb/dw2102.c | 120 ++++++++++++++++++-----------
+ 1 file changed, 73 insertions(+), 47 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-index f7b5583ee609a..8e9caae7c9559 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-@@ -156,6 +156,10 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
+diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
+index 253d13bdb63e5..ec4247f49bf69 100644
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -716,6 +716,7 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ {
+ 	struct dvb_usb_device *d = i2c_get_adapdata(adap);
+ 	struct dw2102_state *state;
++	int j;
  
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+		return MOD_HDCP_STATUS_DDC_FAILURE;
-+	}
-+
- 	if (is_dp_hdcp(hdcp)) {
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
-@@ -215,6 +219,10 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
+ 	if (!d)
+ 		return -ENODEV;
+@@ -729,11 +730,11 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 		return -EAGAIN;
+ 	}
  
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+		return MOD_HDCP_STATUS_DDC_FAILURE;
-+	}
+-	switch (num) {
+-	case 1:
+-		switch (msg[0].addr) {
++	j = 0;
++	while (j < num) {
++		switch (msg[j].addr) {
+ 		case SU3000_STREAM_CTRL:
+-			state->data[0] = msg[0].buf[0] + 0x36;
++			state->data[0] = msg[j].buf[0] + 0x36;
+ 			state->data[1] = 3;
+ 			state->data[2] = 0;
+ 			if (dvb_usb_generic_rw(d, state->data, 3,
+@@ -745,61 +746,86 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			if (dvb_usb_generic_rw(d, state->data, 1,
+ 					state->data, 2, 0) < 0)
+ 				err("i2c transfer failed.");
+-			msg[0].buf[1] = state->data[0];
+-			msg[0].buf[0] = state->data[1];
++			msg[j].buf[1] = state->data[0];
++			msg[j].buf[0] = state->data[1];
+ 			break;
+ 		default:
+-			if (3 + msg[0].len > sizeof(state->data)) {
+-				warn("i2c wr: len=%d is too big!\n",
+-				     msg[0].len);
++			/* if the current write msg is followed by a another
++			 * read msg to/from the same address
++			 */
++			if ((j+1 < num) && (msg[j+1].flags & I2C_M_RD) &&
++			    (msg[j].addr == msg[j+1].addr)) {
++				/* join both i2c msgs to one usb read command */
++				if (4 + msg[j].len > sizeof(state->data)) {
++					warn("i2c combined wr/rd: write len=%d is too big!\n",
++					    msg[j].len);
++					num = -EOPNOTSUPP;
++					break;
++				}
++				if (1 + msg[j+1].len > sizeof(state->data)) {
++					warn("i2c combined wr/rd: read len=%d is too big!\n",
++					    msg[j+1].len);
++					num = -EOPNOTSUPP;
++					break;
++				}
 +
- 	if (is_dp_hdcp(hdcp)) {
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
++				state->data[0] = 0x09;
++				state->data[1] = msg[j].len;
++				state->data[2] = msg[j+1].len;
++				state->data[3] = msg[j].addr;
++				memcpy(&state->data[4], msg[j].buf, msg[j].len);
++
++				if (dvb_usb_generic_rw(d, state->data, msg[j].len + 4,
++					state->data, msg[j+1].len + 1, 0) < 0)
++					err("i2c transfer failed.");
++
++				memcpy(msg[j+1].buf, &state->data[1], msg[j+1].len);
++				j++;
++				break;
++			}
++
++			if (msg[j].flags & I2C_M_RD) {
++				/* single read */
++				if (1 + msg[j].len > sizeof(state->data)) {
++					warn("i2c rd: len=%d is too big!\n", msg[j].len);
++					num = -EOPNOTSUPP;
++					break;
++				}
++
++				state->data[0] = 0x09;
++				state->data[1] = 0;
++				state->data[2] = msg[j].len;
++				state->data[3] = msg[j].addr;
++				memcpy(&state->data[4], msg[j].buf, msg[j].len);
++
++				if (dvb_usb_generic_rw(d, state->data, 4,
++					state->data, msg[j].len + 1, 0) < 0)
++					err("i2c transfer failed.");
++
++				memcpy(msg[j].buf, &state->data[1], msg[j].len);
++				break;
++			}
++
++			/* single write */
++			if (3 + msg[j].len > sizeof(state->data)) {
++				warn("i2c wr: len=%d is too big!\n", msg[j].len);
+ 				num = -EOPNOTSUPP;
+ 				break;
+ 			}
+ 
+-			/* always i2c write*/
+ 			state->data[0] = 0x08;
+-			state->data[1] = msg[0].addr;
+-			state->data[2] = msg[0].len;
++			state->data[1] = msg[j].addr;
++			state->data[2] = msg[j].len;
+ 
+-			memcpy(&state->data[3], msg[0].buf, msg[0].len);
++			memcpy(&state->data[3], msg[j].buf, msg[j].len);
+ 
+-			if (dvb_usb_generic_rw(d, state->data, msg[0].len + 3,
++			if (dvb_usb_generic_rw(d, state->data, msg[j].len + 3,
+ 						state->data, 1, 0) < 0)
+ 				err("i2c transfer failed.");
++		} // switch
++		j++;
+ 
+-		}
+-		break;
+-	case 2:
+-		/* always i2c read */
+-		if (4 + msg[0].len > sizeof(state->data)) {
+-			warn("i2c rd: len=%d is too big!\n",
+-			     msg[0].len);
+-			num = -EOPNOTSUPP;
+-			break;
+-		}
+-		if (1 + msg[1].len > sizeof(state->data)) {
+-			warn("i2c rd: len=%d is too big!\n",
+-			     msg[1].len);
+-			num = -EOPNOTSUPP;
+-			break;
+-		}
+-
+-		state->data[0] = 0x09;
+-		state->data[1] = msg[0].len;
+-		state->data[2] = msg[1].len;
+-		state->data[3] = msg[0].addr;
+-		memcpy(&state->data[4], msg[0].buf, msg[0].len);
+-
+-		if (dvb_usb_generic_rw(d, state->data, msg[0].len + 4,
+-					state->data, msg[1].len + 1, 0) < 0)
+-			err("i2c transfer failed.");
+-
+-		memcpy(msg[1].buf, &state->data[1], msg[1].len);
+-		break;
+-	default:
+-		warn("more than 2 i2c messages at a time is not handled yet.");
+-		break;
+-	}
++	} // while
+ 	mutex_unlock(&d->data_mutex);
+ 	mutex_unlock(&d->i2c_mutex);
+ 	return num;
 -- 
 2.43.0
 
