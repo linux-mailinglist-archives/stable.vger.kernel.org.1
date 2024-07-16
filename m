@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-59575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052CA932AC2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F34932BD6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A265C1F242A1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BD65B20D38
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EBD1DDCE;
-	Tue, 16 Jul 2024 15:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5022419AD93;
+	Tue, 16 Jul 2024 15:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PhPGnla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2twzC5AJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AC1CA40;
-	Tue, 16 Jul 2024 15:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2F017C9E9;
+	Tue, 16 Jul 2024 15:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144263; cv=none; b=rZdak/9iz0AcRIKLtx0FJJJLukIVPP2AwykJb3lu+JbYBmaDgWfd7PuZa0lp4ikOydgsSRErsU+bgwDPPLrLW4Yge1BQfIMX1iZ4ZbbaygWJMBtKcM4FuVqwfyF45F4hP3DIQoYQxVPkJoP7AqHjJ/4Eaa8KYfChseltvyiKAgc=
+	t=1721144957; cv=none; b=NIZRK7vLgcuT6xwmYEdeHpEcVBqnYs9+GPZyQekr+i9+KH+yAYVG6phItRDpgDGWDhmCDwN0KK+JWDmZIB1QalAiVnZoU6hVAHjhaY8roK8IgpHegeIyaZKMawOohEN1JNgd7gsVeliYAPPL/xB67A43ltipHvqgw94xh2rypUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144263; c=relaxed/simple;
-	bh=+o0Rtpb4k+eQzq1TclkVHuMa+5+h+4SCragjU1nUdGk=;
+	s=arc-20240116; t=1721144957; c=relaxed/simple;
+	bh=d25bFW1HqRPIsrILpxoTcsG+Z0s8JAUkkPYsr2MVrkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QzStyD6mqL9sRW5zoH9R5afsvuPDVlFCxFcHyObtHz9opimAAMlQUbAiqrKuaP90kFMADPc6udU5gZTqTiS+SeHa74XdkyyTxo2H9R5E/sBo9RHW8JFEtrJVgAzWmgFGen819ZoZOHoU6EUTrUBzAcUHlk6T2vBP8s5MxBdCRAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PhPGnla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6895EC4AF0B;
-	Tue, 16 Jul 2024 15:37:42 +0000 (UTC)
+	 MIME-Version; b=mWtOqsqoGS0RgFUtbiAXtPZ0eAQWU0C9wfnkMyuGFkGXUxBgwfK8lWPg9QqGDYSQj9ppC4TsQmObLpQiWguyTiUU8QSU44+LNotEYEhkZZN1Xn3+X50pmZ33w43DOu0Os7hCufVeK5hLtMRfXqXkgwzYYN93v4r1COMTREN75qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2twzC5AJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891D7C116B1;
+	Tue, 16 Jul 2024 15:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144262;
-	bh=+o0Rtpb4k+eQzq1TclkVHuMa+5+h+4SCragjU1nUdGk=;
+	s=korg; t=1721144956;
+	bh=d25bFW1HqRPIsrILpxoTcsG+Z0s8JAUkkPYsr2MVrkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2PhPGnlaNVVQ+Ddl3qiphjHVY/4KSfmSAw0FS8Bkg2xCq/1tzNrhjD2MHlxWSEKXD
-	 LQCuxKe6+J0iYGSk/pS6O3gJgRNy9PVq9SV2gWdUypxqQi9OgwRoX8b6DuPvzbhjE8
-	 lYEOopjTerkwFpVEa/aHoU45oaxoesfzP6ZMb4BU=
+	b=2twzC5AJX93Ws6rIr0eDyhCKDIko1qVuofUpUdqn9coEU/PgVIrfArrKcehmJKSfx
+	 Epz/YRIu1uM9E62FtuWP8aoQlMie08Y4I+sLAW2vUKgAC8LZBO6ysG0WxuvuznVU2V
+	 DotvmmEC91a4uQ+R+m448T+vj3Rt4nL8zm1phgQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Komal Bajaj <quic_kbajaj@quicinc.com>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 14/78] media: s2255: Use refcount_t instead of atomic_t for num_channels
+Subject: [PATCH 6.9 050/143] arm64: dts: qcom: qdu1000: Fix LLCC reg property
 Date: Tue, 16 Jul 2024 17:30:46 +0200
-Message-ID: <20240716152741.180285636@linuxfoundation.org>
+Message-ID: <20240716152757.910543353@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Komal Bajaj <quic_kbajaj@quicinc.com>
 
-[ Upstream commit 6cff72f6bcee89228a662435b7c47e21a391c8d0 ]
+[ Upstream commit af355e799b3dc3dd0ed8bf2143641af05d8cd3d4 ]
 
-Use an API that resembles more the actual use of num_channels.
+The LLCC binding and driver was corrected to handle the stride
+varying between platforms. Switch to the new format to ensure
+accesses are done in the right place.
 
-Found by cocci:
-drivers/media/usb/s2255/s2255drv.c:2362:5-24: WARNING: atomic_dec_and_test variation before object free at line 2363.
-drivers/media/usb/s2255/s2255drv.c:1557:5-24: WARNING: atomic_dec_and_test variation before object free at line 1558.
-
-Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-11-3c4865f5a4b0@chromium.org
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: b0e0290bc47d ("arm64: dts: qcom: qdu1000: correct LLCC reg entries")
+Signed-off-by: Komal Bajaj <quic_kbajaj@quicinc.com>
+Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240619061641.5261-2-quic_kbajaj@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/s2255/s2255drv.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/qcom/qdu1000.dtsi | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/s2255/s2255drv.c b/drivers/media/usb/s2255/s2255drv.c
-index 7ed526306816a..845869240abee 100644
---- a/drivers/media/usb/s2255/s2255drv.c
-+++ b/drivers/media/usb/s2255/s2255drv.c
-@@ -247,7 +247,7 @@ struct s2255_vc {
- struct s2255_dev {
- 	struct s2255_vc         vc[MAX_CHANNELS];
- 	struct v4l2_device      v4l2_dev;
--	atomic_t                num_channels;
-+	refcount_t		num_channels;
- 	int			frames;
- 	struct mutex		lock;	/* channels[].vdev.lock */
- 	struct mutex		cmdlock; /* protects cmdbuf */
-@@ -1552,11 +1552,11 @@ static void s2255_video_device_release(struct video_device *vdev)
- 		container_of(vdev, struct s2255_vc, vdev);
+diff --git a/arch/arm64/boot/dts/qcom/qdu1000.dtsi b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
+index 832f472c4b7a5..ceed9c4e8fcd6 100644
+--- a/arch/arm64/boot/dts/qcom/qdu1000.dtsi
++++ b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
+@@ -1459,9 +1459,23 @@
  
- 	dprintk(dev, 4, "%s, chnls: %d\n", __func__,
--		atomic_read(&dev->num_channels));
-+		refcount_read(&dev->num_channels));
- 
- 	v4l2_ctrl_handler_free(&vc->hdl);
- 
--	if (atomic_dec_and_test(&dev->num_channels))
-+	if (refcount_dec_and_test(&dev->num_channels))
- 		s2255_destroy(dev);
- 	return;
- }
-@@ -1661,7 +1661,7 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
- 				"failed to register video device!\n");
- 			break;
- 		}
--		atomic_inc(&dev->num_channels);
-+		refcount_inc(&dev->num_channels);
- 		v4l2_info(&dev->v4l2_dev, "V4L2 device registered as %s\n",
- 			  video_device_node_name(&vc->vdev));
- 
-@@ -1669,11 +1669,11 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
- 	pr_info("Sensoray 2255 V4L driver Revision: %s\n",
- 		S2255_VERSION);
- 	/* if no channels registered, return error and probe will fail*/
--	if (atomic_read(&dev->num_channels) == 0) {
-+	if (refcount_read(&dev->num_channels) == 0) {
- 		v4l2_device_unregister(&dev->v4l2_dev);
- 		return ret;
- 	}
--	if (atomic_read(&dev->num_channels) != MAX_CHANNELS)
-+	if (refcount_read(&dev->num_channels) != MAX_CHANNELS)
- 		pr_warn("s2255: Not all channels available.\n");
- 	return 0;
- }
-@@ -2222,7 +2222,7 @@ static int s2255_probe(struct usb_interface *interface,
- 		goto errorFWDATA1;
- 	}
- 
--	atomic_set(&dev->num_channels, 0);
-+	refcount_set(&dev->num_channels, 0);
- 	dev->pid = id->idProduct;
- 	dev->fw_data = kzalloc(sizeof(struct s2255_fw), GFP_KERNEL);
- 	if (!dev->fw_data)
-@@ -2342,12 +2342,12 @@ static void s2255_disconnect(struct usb_interface *interface)
- {
- 	struct s2255_dev *dev = to_s2255_dev(usb_get_intfdata(interface));
- 	int i;
--	int channels = atomic_read(&dev->num_channels);
-+	int channels = refcount_read(&dev->num_channels);
- 	mutex_lock(&dev->lock);
- 	v4l2_device_disconnect(&dev->v4l2_dev);
- 	mutex_unlock(&dev->lock);
- 	/*see comments in the uvc_driver.c usb disconnect function */
--	atomic_inc(&dev->num_channels);
-+	refcount_inc(&dev->num_channels);
- 	/* unregister each video device. */
- 	for (i = 0; i < channels; i++)
- 		video_unregister_device(&dev->vc[i].vdev);
-@@ -2360,7 +2360,7 @@ static void s2255_disconnect(struct usb_interface *interface)
- 		dev->vc[i].vidstatus_ready = 1;
- 		wake_up(&dev->vc[i].wait_vidstatus);
- 	}
--	if (atomic_dec_and_test(&dev->num_channels))
-+	if (refcount_dec_and_test(&dev->num_channels))
- 		s2255_destroy(dev);
- 	dev_info(&interface->dev, "%s\n", __func__);
- }
+ 		system-cache-controller@19200000 {
+ 			compatible = "qcom,qdu1000-llcc";
+-			reg = <0 0x19200000 0 0xd80000>,
++			reg = <0 0x19200000 0 0x80000>,
++			      <0 0x19300000 0 0x80000>,
++			      <0 0x19600000 0 0x80000>,
++			      <0 0x19700000 0 0x80000>,
++			      <0 0x19a00000 0 0x80000>,
++			      <0 0x19b00000 0 0x80000>,
++			      <0 0x19e00000 0 0x80000>,
++			      <0 0x19f00000 0 0x80000>,
+ 			      <0 0x1a200000 0 0x80000>;
+ 			reg-names = "llcc0_base",
++				    "llcc1_base",
++				    "llcc2_base",
++				    "llcc3_base",
++				    "llcc4_base",
++				    "llcc5_base",
++				    "llcc6_base",
++				    "llcc7_base",
+ 				    "llcc_broadcast_base";
+ 			interrupts = <GIC_SPI 266 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
 -- 
 2.43.0
 
