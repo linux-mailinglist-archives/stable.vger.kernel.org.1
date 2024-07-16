@@ -1,110 +1,191 @@
-Return-Path: <stable+bounces-60331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D187D93306F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:41:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96161933072
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AFA41C21DF8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:41:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C779B1C2092B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EC91A08CC;
-	Tue, 16 Jul 2024 18:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E407C1AB902;
+	Tue, 16 Jul 2024 18:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bB9NkVkw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWIw/dCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7AE19E801;
-	Tue, 16 Jul 2024 18:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987B01A0AE1;
+	Tue, 16 Jul 2024 18:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154902; cv=none; b=D4UYaWHd8H84mUw+4Od1RC++yoG7qRGo5MT1og+0LS7IP4h0uCqdt6jLP1MxC2voCn6Hi/hItxu6Og1qSotTTvdJD+vdnJbOEr0gVuAJ3l3gYAXNZ73/a3fdYwmJsmHLKzbimDFjl07AsSHnwTJc/0tGliHTu2e1kAZZu0JSVKI=
+	t=1721154906; cv=none; b=EOV4cdoVcJqoKT8/6jUUx3oWtiW5BPW1bGnx2zSMOE63DIIh0KL8beJX8Zpe+Aa+v3Ns2Ig5qOQmeG3dXbrL8FWl+t68Hp8OEfmfk//zMeCP6QYk2Fq4xTyZyhyEs8CJ1Mms9mOX1BKdp2c4BWRrXO8jthbqPus0iuv6KpuSXT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154902; c=relaxed/simple;
-	bh=BHDDvUfmbb9ThQ0yKCEaRd2tBZuGP36V8LN93uq6l2I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QSpK+wI4TJ6nvVURFeF4+lp+Sp9fl2IuD/srkXoXEHSxMXA/VPZNYbdHCVGE7D3Jje9i1fI3yUHTrrM9phRONP2O7y0D+BG1xH3JngMmOQmHZ/YnyVbIP9z7OiHmXl7q2ASg6RpDeqJXuUkoKosxEDCAFSJc8rUBbM7eJTnkNJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bB9NkVkw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB31CC116B1;
-	Tue, 16 Jul 2024 18:35:00 +0000 (UTC)
+	s=arc-20240116; t=1721154906; c=relaxed/simple;
+	bh=8Q2j5GBudZ/uD8o/x/kgZDTzHrDZoU+b4cjGypcYX48=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qsbFpeL3GwXJLrt+74eOiJbbRepNga8eNBL1akASEuv6pdeuqqi2JD7N4rd3SemZLbKYVbBg24vcM5LJyvoPfxGvLSGEI1J9GZ7tig4cYVMPQaYpKi3YYh9gcKIH/oB5ApLoxmbXaSXfZ7PCAXGddRs1vdyM/MD+fTFqQz09M04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWIw/dCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF63EC4AF0D;
+	Tue, 16 Jul 2024 18:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154902;
-	bh=BHDDvUfmbb9ThQ0yKCEaRd2tBZuGP36V8LN93uq6l2I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bB9NkVkwC6J30ZEm0835l9M4uHZ//1E0wNCOlsqHnt/kV6T7DoHwe4Wim4c8wFP0R
-	 3waXxh1vRAgLYdk2QqDqS5/nwrOdP1m0etxkz78OEAu4TOW6WVInp9Z4OZqW9scddT
-	 3QsqzWU0+F1PwmzEI75Wo85xSQJ6D+SzLBxf/2vDLjiwYArD3UfJs48Wk7HEsgd+F4
-	 9ZHG0XmIjyN6uW3T+2xRWqmEA34KzdqRsyY+c3S8Y0/2YzQn0dOLScTlYsa1HxgQDw
-	 dy5xNMIX8LAcfl9+4u9WBreKQ+nD/7yPqLx6xponzxdcc1Yv38AcGAX9tggQLDXHpG
-	 Fi2JsbWDAl95Q==
+	s=k20201202; t=1721154906;
+	bh=8Q2j5GBudZ/uD8o/x/kgZDTzHrDZoU+b4cjGypcYX48=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZWIw/dCkEJ+9wW0379G/p1RAWX9aNrqMbuvXd+JL4/S7TrIGGnP7OzulcYNgCoQyp
+	 VKFgBbufoOJ9KErcicQ0PyAhl2JCRQZu77KWGuZsXptTVpXiYPm6iTyPDHkN/Tox6v
+	 qe8f40zPiY6tg36/QrBx/bxWatqfyVTWNK/CAJIzF/suYjUZrgaZNVj3t0P6PUsKbW
+	 wNtPq14ONCdGEtGOSl4XlDyyYgWVfpfmDqmsOf7nfqEhFe2hGYTcUritpkyrHFILr4
+	 p8Qyqdjgutu/CkA3AJMzL6TRo/oufxsspqOI8GXSPmoYcWSL9MIRqiN6UabZVymL4v
+	 hGWw7X5lePz7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+Cc: John Hubbard <jhubbard@nvidia.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	Edward Liaw <edliaw@google.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shawnguo@kernel.org,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 1/3] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi devices
-Date: Tue, 16 Jul 2024 14:34:53 -0400
-Message-ID: <20240716183459.2814875-1-sashal@kernel.org>
+	shuah@kernel.org,
+	nathan@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.4 2/3] selftests/vDSO: fix clang build errors and warnings
+Date: Tue, 16 Jul 2024 14:34:54 -0400
+Message-ID: <20240716183459.2814875-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240716183459.2814875-1-sashal@kernel.org>
+References: <20240716183459.2814875-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.279
 Content-Transfer-Encoding: 8bit
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit ce1dac560a74220f2e53845ec0723b562288aed4 ]
+[ Upstream commit 73810cd45b99c6c418e1c6a487b52c1e74edb20d ]
 
-While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
-claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
-device trees don't add DMA channels. The Reference manuals of i.MX31 and
-i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
-check the others.)
+When building with clang, via:
 
-Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
-DMA channel requests") this results in an error message
+    make LLVM=1 -C tools/testing/selftests
 
-	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
+...there are several warnings, and an error. This fixes all of those and
+allows these tests to run and pass.
 
-during boot. However that isn't fatal and the driver gets loaded just
-fine, just without using DMA.
+1. Fix linker error (undefined reference to memcpy) by providing a local
+   version of memcpy.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://patch.msgid.link/20240508095610.2146640-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+2. clang complains about using this form:
+
+    if (g = h & 0xf0000000)
+
+...so factor out the assignment into a separate step.
+
+3. The code is passing a signed const char* to elf_hash(), which expects
+   a const unsigned char *. There are several callers, so fix this at
+   the source by allowing the function to accept a signed argument, and
+   then converting to unsigned operations, once inside the function.
+
+4. clang doesn't have __attribute__((externally_visible)) and generates
+   a warning to that effect. Fortunately, gcc 12 and gcc 13 do not seem
+   to require that attribute in order to build, run and pass tests here,
+   so remove it.
+
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/vDSO/parse_vdso.c      | 16 +++++++++++-----
+ .../selftests/vDSO/vdso_standalone_test_x86.c  | 18 ++++++++++++++++--
+ 2 files changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 67f31183c1180..8c9bafee58f9f 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -993,7 +993,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
- 	.rx_available = mx31_rx_available,
- 	.reset = mx31_reset,
- 	.fifo_size = 8,
--	.has_dmamode = true,
-+	.has_dmamode = false,
- 	.dynamic_burst = false,
- 	.has_slavemode = false,
- 	.devtype = IMX35_CSPI,
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index 1dbb4b87268fa..9ef3ad3789c17 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -77,14 +77,20 @@ static struct vdso_info
+ 	ELF(Verdef) *verdef;
+ } vdso_info;
+ 
+-/* Straight from the ELF specification. */
+-static unsigned long elf_hash(const unsigned char *name)
++/*
++ * Straight from the ELF specification...and then tweaked slightly, in order to
++ * avoid a few clang warnings.
++ */
++static unsigned long elf_hash(const char *name)
+ {
+ 	unsigned long h = 0, g;
+-	while (*name)
++	const unsigned char *uch_name = (const unsigned char *)name;
++
++	while (*uch_name)
+ 	{
+-		h = (h << 4) + *name++;
+-		if (g = h & 0xf0000000)
++		h = (h << 4) + *uch_name++;
++		g = h & 0xf0000000;
++		if (g)
+ 			h ^= g >> 24;
+ 		h &= ~g;
+ 	}
+diff --git a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
+index 5ac4b00acfbcd..64c369fa43893 100644
+--- a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
++++ b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
+@@ -20,7 +20,7 @@ extern void *vdso_sym(const char *version, const char *name);
+ extern void vdso_init_from_sysinfo_ehdr(uintptr_t base);
+ extern void vdso_init_from_auxv(void *auxv);
+ 
+-/* We need a libc functions... */
++/* We need some libc functions... */
+ int strcmp(const char *a, const char *b)
+ {
+ 	/* This implementation is buggy: it never returns -1. */
+@@ -36,6 +36,20 @@ int strcmp(const char *a, const char *b)
+ 	return 0;
+ }
+ 
++/*
++ * The clang build needs this, although gcc does not.
++ * Stolen from lib/string.c.
++ */
++void *memcpy(void *dest, const void *src, size_t count)
++{
++	char *tmp = dest;
++	const char *s = src;
++
++	while (count--)
++		*tmp++ = *s++;
++	return dest;
++}
++
+ /* ...and two syscalls.  This is x86-specific. */
+ static inline long x86_syscall3(long nr, long a0, long a1, long a2)
+ {
+@@ -72,7 +86,7 @@ void to_base10(char *lastdig, time_t n)
+ 	}
+ }
+ 
+-__attribute__((externally_visible)) void c_main(void **stack)
++void c_main(void **stack)
+ {
+ 	/* Parse the stack */
+ 	long argc = (long)*stack;
 -- 
 2.43.0
 
