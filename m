@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-60074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC4A932D3F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9795F932CEA
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95A4E1F216A0
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C0CB1F21F3B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4F219AD93;
-	Tue, 16 Jul 2024 16:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD5519EEA9;
+	Tue, 16 Jul 2024 15:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXtTKhyH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7kQDT02"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0291DDE9;
-	Tue, 16 Jul 2024 16:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE75E19AD93;
+	Tue, 16 Jul 2024 15:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145776; cv=none; b=E2RwFffRd/6j8SnEH+0ReWR7gyDFGtWHEj2S+pwjtf/c/lELCzZ1vLb+vCuy4hl94g0xvz4jaRB3rzJGfkMqr3HHcnk7LfWIPJekxkxn81jP+IxGk/Z7bkvAjaRMHDdQmWYAXVYma9aVDjQEKQnP796modKqL4ee/Jo1aQaY5sk=
+	t=1721145544; cv=none; b=ahQwBZB3n50zatndoBQeSR3dTJlmxym+lrvK9KrJE2Lyo94WCjDy2fmNuSW3mnxZz5lPAkk9f3n8krlq5uTmpjyW7FpGQYo3D2Yw4wvQT9q8y7SnxUP19W/ZFp/2EHQOnRnqFz64iuFiBy1XozL0GObPU5754d8nYCPazagWyLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145776; c=relaxed/simple;
-	bh=Nd3lNedpHq8RP7aHZLS5fapR55IHVWhtnZM8v3KwhNY=;
+	s=arc-20240116; t=1721145544; c=relaxed/simple;
+	bh=MBWrmQlftKxNkSqhe0VJOOIIaT6MKdU56lRTQLt0O/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YlF3jmjT0R5ki7MNFkbn/vHXDJwY09UfnwvjVPPRy5LIRl0PmCJZu6wJNY7VtJMtDhHTrzEmFqwjCzs1MBSXYeIv7uATATJyqdVV90KmPSv0xSwCNRQNVD8co3/Kp37OVpiugiOFCmNIbmFmBABVZVEeSg+aHTf1AwmpEmvJlgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXtTKhyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65424C116B1;
-	Tue, 16 Jul 2024 16:02:55 +0000 (UTC)
+	 MIME-Version; b=oWrQwhas/7oG7USBjMmr7aFD8bcTDwAUC4lCUXimvsKH0GSBjoh0ZStMmYgTWLdIz4AUEs+QhRo9jyn1q9GddPCRhb/s4Z2EuaCo3zhGgARl9l7ADuDHf8Rjuolbl0K5MK/JnZEFSkCd28RrtpyPnwTveSq+Nw8F5SllGd8L7Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7kQDT02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C7FC116B1;
+	Tue, 16 Jul 2024 15:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145775;
-	bh=Nd3lNedpHq8RP7aHZLS5fapR55IHVWhtnZM8v3KwhNY=;
+	s=korg; t=1721145543;
+	bh=MBWrmQlftKxNkSqhe0VJOOIIaT6MKdU56lRTQLt0O/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXtTKhyHayXbMFkyUgEUQakQqSnzNzI4415M/ChPGQiMmuqb2Es+xAL+nURhMmaJN
-	 l4F64ytjHbjC8n4qfnfpbQyhFWYvFakIcH6eM0TwU9CJGKZO1x48OS/j8EE84NO68P
-	 uw13XweXtQiaw5yV0sbkamDR8V8op3Q0IOp8S49w=
+	b=x7kQDT02S2dWfidSmYJSieiOPngOZHPOWcSZHcqJ695f4xicm94FCNVYaUZC/JiCe
+	 G7YK8rD9Mi10Xe0xgqK2wtOISgrYZB682Q/1CnPzn2+N90tMrIY5KVZ4YEt0NN3Bii
+	 x97idmU4Ndk6Ulo4XtM7SmeqUl+b2o60R6pSDI30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Chakraborty <joychakr@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.6 080/121] nvmem: meson-efuse: Fix return value of nvmem callbacks
+	Ilya Dryomov <idryomov@gmail.com>,
+	Xiubo Li <xiubli@redhat.com>
+Subject: [PATCH 6.1 71/96] libceph: fix race between delayed_work() and ceph_monc_stop()
 Date: Tue, 16 Jul 2024 17:32:22 +0200
-Message-ID: <20240716152754.406217896@linuxfoundation.org>
+Message-ID: <20240716152749.242132107@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Chakraborty <joychakr@google.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 7a0a6d0a7c805f9380381f4deedffdf87b93f408 upstream.
+commit 69c7b2fe4c9cc1d3b1186d1c5606627ecf0de883 upstream.
 
-Read/write callbacks registered with nvmem core expect 0 to be returned
-on success and a negative value to be returned on failure.
+The way the delayed work is handled in ceph_monc_stop() is prone to
+races with mon_fault() and possibly also finish_hunting().  Both of
+these can requeue the delayed work which wouldn't be canceled by any of
+the following code in case that happens after cancel_delayed_work_sync()
+runs -- __close_session() doesn't mess with the delayed work in order
+to avoid interfering with the hunting interval logic.  This part was
+missed in commit b5d91704f53e ("libceph: behave in mon_fault() if
+cur_mon < 0") and use-after-free can still ensue on monc and objects
+that hang off of it, with monc->auth and monc->monmap being
+particularly susceptible to quickly being reused.
 
-meson_efuse_read() and meson_efuse_write() call into
-meson_sm_call_read() and meson_sm_call_write() respectively which return
-the number of bytes read or written on success as per their api
-description.
+To fix this:
 
-Fix to return error if meson_sm_call_read()/meson_sm_call_write()
-returns an error else return 0.
+- clear monc->cur_mon and monc->hunting as part of closing the session
+  in ceph_monc_stop()
+- bail from delayed_work() if monc->cur_mon is cleared, similar to how
+  it's done in mon_fault() and finish_hunting() (based on monc->hunting)
+- call cancel_delayed_work_sync() after the session is closed
 
-Fixes: a29a63bdaf6f ("nvmem: meson-efuse: simplify read callback")
 Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628113704.13742-3-srinivas.kandagatla@linaro.org
+Link: https://tracker.ceph.com/issues/66857
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/meson-efuse.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ net/ceph/mon_client.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/nvmem/meson-efuse.c
-+++ b/drivers/nvmem/meson-efuse.c
-@@ -18,18 +18,24 @@ static int meson_efuse_read(void *contex
- 			    void *val, size_t bytes)
- {
- 	struct meson_sm_firmware *fw = context;
-+	int ret;
+--- a/net/ceph/mon_client.c
++++ b/net/ceph/mon_client.c
+@@ -1085,13 +1085,19 @@ static void delayed_work(struct work_str
+ 	struct ceph_mon_client *monc =
+ 		container_of(work, struct ceph_mon_client, delayed_work.work);
  
--	return meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
--				  bytes, 0, 0, 0);
-+	ret = meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
-+				 bytes, 0, 0, 0);
+-	dout("monc delayed_work\n");
+ 	mutex_lock(&monc->mutex);
++	dout("%s mon%d\n", __func__, monc->cur_mon);
++	if (monc->cur_mon < 0) {
++		goto out;
++	}
 +
-+	return ret < 0 ? ret : 0;
+ 	if (monc->hunting) {
+ 		dout("%s continuing hunt\n", __func__);
+ 		reopen_session(monc);
+ 	} else {
+ 		int is_auth = ceph_auth_is_authenticated(monc->auth);
++
++		dout("%s is_authed %d\n", __func__, is_auth);
+ 		if (ceph_con_keepalive_expired(&monc->con,
+ 					       CEPH_MONC_PING_TIMEOUT)) {
+ 			dout("monc keepalive timeout\n");
+@@ -1116,6 +1122,8 @@ static void delayed_work(struct work_str
+ 		}
+ 	}
+ 	__schedule_delayed(monc);
++
++out:
+ 	mutex_unlock(&monc->mutex);
  }
  
- static int meson_efuse_write(void *context, unsigned int offset,
- 			     void *val, size_t bytes)
+@@ -1232,13 +1240,15 @@ EXPORT_SYMBOL(ceph_monc_init);
+ void ceph_monc_stop(struct ceph_mon_client *monc)
  {
- 	struct meson_sm_firmware *fw = context;
-+	int ret;
+ 	dout("stop\n");
+-	cancel_delayed_work_sync(&monc->delayed_work);
+ 
+ 	mutex_lock(&monc->mutex);
+ 	__close_session(monc);
++	monc->hunting = false;
+ 	monc->cur_mon = -1;
+ 	mutex_unlock(&monc->mutex);
+ 
++	cancel_delayed_work_sync(&monc->delayed_work);
 +
-+	ret = meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
-+				  bytes, 0, 0, 0);
- 
--	return meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
--				   bytes, 0, 0, 0);
-+	return ret < 0 ? ret : 0;
- }
- 
- static const struct of_device_id meson_efuse_match[] = {
+ 	/*
+ 	 * flush msgr queue before we destroy ourselves to ensure that:
+ 	 *  - any work that references our embedded con is finished.
 
 
 
