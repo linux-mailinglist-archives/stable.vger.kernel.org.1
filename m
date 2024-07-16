@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-59727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6877932B74
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08665932AB1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6092CB215C8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97ABAB2181D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D129A17A93F;
-	Tue, 16 Jul 2024 15:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942441DDD1;
+	Tue, 16 Jul 2024 15:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nmku4QJk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="potTJM4X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9010912B72;
-	Tue, 16 Jul 2024 15:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C65CA40;
+	Tue, 16 Jul 2024 15:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144727; cv=none; b=mpE9FKnvsl86nJEMikwEq1KMHYx2iVFEzYkaZM0s07q4LrjqnhUDL9KqLAUZsSo+Utn7PoCqi3xCC/GQ/IvYrnPlsgjBsbo0jPU0Yd/AFiYE4QOzXFWTO/nV8fNymmteVn+QgypX0SNb4oSjZ/D7zL8ihHVApiIRSc89Etn7ZVk=
+	t=1721144215; cv=none; b=aj9myk8I6iyzfIEUSGfN6YWJF9ela0ruQiwSPIExiwYPtwa41PeJXFZXi0UHkP4p0NKGjgOxLC2DzPvnNW4YfFAwxoJT2bPs+p4/91WJA8+7d+gf90b6P2lCPpQk7ks5mipqifBUr/72Wx8A3ZLS5aJ/ZHE49gASX4OT4Dsd2EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144727; c=relaxed/simple;
-	bh=tv0PrKNXXh3NqNi76u69dYAG74T5kQlWPgD+G0zjpsI=;
+	s=arc-20240116; t=1721144215; c=relaxed/simple;
+	bh=yBPOTvTnoA4NY2U03S3/15kZfCaaw4/QopruOgX/RpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMR3mTpBMKvE2MjLd4j5N7SU4iXz0TweWX8D5jWAxL+C+83JLW/ZFJqYo9HWkA8je5fw8Fi3Fer3DBX0km3FeOXDZbcoTRn9Tlnz+zqJI7WNOL/qwvXBPRCjA2c51R2vU4Jm8V02ezH/n8HXzXbxrRjve8JPncX9SJs6ZCT+NMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nmku4QJk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF496C116B1;
-	Tue, 16 Jul 2024 15:45:26 +0000 (UTC)
+	 MIME-Version; b=KF+XFyJO/zQTMzMqgBRTka14D4KGuBCxGU8rHU500v8cA4EJmisDZiLIoGBTMR73+EaUqN4rmKydc1egGsBsfcUNW3B4Dc9TWJBkxDIBFhJSJRyZPx1ZHnmZ8i82cmZRc5U4egjWCpliUK4EY6VyBE650OjwubBBgxvdKd7g7Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=potTJM4X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3C0C116B1;
+	Tue, 16 Jul 2024 15:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144727;
-	bh=tv0PrKNXXh3NqNi76u69dYAG74T5kQlWPgD+G0zjpsI=;
+	s=korg; t=1721144215;
+	bh=yBPOTvTnoA4NY2U03S3/15kZfCaaw4/QopruOgX/RpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nmku4QJkkeou8G/rdAG6Qg4ktgv1p7AWnxudfAUIFRAr7Ob6hVB8kPzvwyNMCL3eO
-	 97NmArZpsm7ZLeIblMH8Si1NehBVeZIONd/RSTQ3wP53jmnmUsX/xuCZ9KX80Z1KlP
-	 zhW/nK7tqTi8mt6+GW4o4Xt/G5snrWitO8jAkfMI=
+	b=potTJM4Xjz8npRTsYZ7WNwSRlCL8CgpqEHtiOv/a6MGhaYUmU7uZan1MTw8cWp0HN
+	 ccaKUVncBSss7dohAAvuQy8bd5mmlyPepVt7IYJ7gNGoN9brJRT/fj0bm4RaDTACGy
+	 XOy1qXfRu+s6hyz+OTTkbdV3Rl+FKJLdOdNxiows=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Oliver Neukum <oneukum@suse.com>,
-	syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 085/108] USB: core: Fix duplicate endpoint bug by clearing reserved bits in the descriptor
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 65/66] nilfs2: fix kernel bug on rename operation of broken directory
 Date: Tue, 16 Jul 2024 17:31:40 +0200
-Message-ID: <20240716152749.248697606@linuxfoundation.org>
+Message-ID: <20240716152740.648362339@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit a368ecde8a5055b627749b09c6218ef793043e47 upstream.
+commit a9e1ddc09ca55746079cc479aa3eb6411f0d99d4 upstream.
 
-Syzbot has identified a bug in usbcore (see the Closes: tag below)
-caused by our assumption that the reserved bits in an endpoint
-descriptor's bEndpointAddress field will always be 0.  As a result of
-the bug, the endpoint_is_duplicate() routine in config.c (and possibly
-other routines as well) may believe that two descriptors are for
-distinct endpoints, even though they have the same direction and
-endpoint number.  This can lead to confusion, including the bug
-identified by syzbot (two descriptors with matching endpoint numbers
-and directions, where one was interrupt and the other was bulk).
+Syzbot reported that in rename directory operation on broken directory on
+nilfs2, __block_write_begin_int() called to prepare block write may fail
+BUG_ON check for access exceeding the folio/page size.
 
-To fix the bug, we will clear the reserved bits in bEndpointAddress
-when we parse the descriptor.  (Note that both the USB-2.0 and USB-3.1
-specs say these bits are "Reserved, reset to zero".)  This requires us
-to make a copy of the descriptor earlier in usb_parse_endpoint() and
-use the copy instead of the original when checking for duplicates.
+This is because nilfs_dotdot(), which gets parent directory reference
+entry ("..") of the directory to be moved or renamed, does not check
+consistency enough, and may return location exceeding folio/page size for
+broken directories.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-and-tested-by: syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/0000000000003d868e061bc0f554@google.com/
-Fixes: 0a8fd1346254 ("USB: fix problems with duplicate endpoint addresses")
-CC: Oliver Neukum <oneukum@suse.com>
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/205a5edc-7fef-4159-b64a-80374b6b101a@rowland.harvard.edu
+Fix this issue by checking required directory entries ("." and "..") in
+the first chunk of the directory in nilfs_dotdot().
+
+Link: https://lkml.kernel.org/r/20240628165107.9006-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d3abed1ad3d367fa2627
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/config.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ fs/nilfs2/dir.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -291,6 +291,20 @@ static int usb_parse_endpoint(struct dev
- 	if (ifp->desc.bNumEndpoints >= num_ep)
- 		goto skip_to_next_endpoint_or_interface_descriptor;
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -396,11 +396,39 @@ found:
  
-+	/* Save a copy of the descriptor and use it instead of the original */
-+	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
-+	memcpy(&endpoint->desc, d, n);
-+	d = &endpoint->desc;
+ struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
+ {
+-	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
++	struct page *page;
++	struct nilfs_dir_entry *de, *next_de;
++	size_t limit;
++	char *msg;
+ 
++	de = nilfs_get_page(dir, 0, &page);
+ 	if (IS_ERR(de))
+ 		return NULL;
+-	return nilfs_next_entry(de);
 +
-+	/* Clear the reserved bits in bEndpointAddress */
-+	i = d->bEndpointAddress &
-+			(USB_ENDPOINT_DIR_MASK | USB_ENDPOINT_NUMBER_MASK);
-+	if (i != d->bEndpointAddress) {
-+		dev_notice(ddev, "config %d interface %d altsetting %d has an endpoint descriptor with address 0x%X, changing to 0x%X\n",
-+		    cfgno, inum, asnum, d->bEndpointAddress, i);
-+		endpoint->desc.bEndpointAddress = i;
++	limit = nilfs_last_byte(dir, 0);  /* is a multiple of chunk size */
++	if (unlikely(!limit || le64_to_cpu(de->inode) != dir->i_ino ||
++		     !nilfs_match(1, ".", de))) {
++		msg = "missing '.'";
++		goto fail;
 +	}
 +
- 	/* Check for duplicate endpoint addresses */
- 	if (config_endpoint_is_duplicate(config, inum, asnum, d)) {
- 		dev_notice(ddev, "config %d interface %d altsetting %d has a duplicate endpoint with address 0x%X, skipping\n",
-@@ -308,10 +322,8 @@ static int usb_parse_endpoint(struct dev
- 		}
- 	}
++	next_de = nilfs_next_entry(de);
++	/*
++	 * If "next_de" has not reached the end of the chunk, there is
++	 * at least one more record.  Check whether it matches "..".
++	 */
++	if (unlikely((char *)next_de == (char *)de + nilfs_chunk_size(dir) ||
++		     !nilfs_match(2, "..", next_de))) {
++		msg = "missing '..'";
++		goto fail;
++	}
++	*p = page;
++	return next_de;
++
++fail:
++	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
++	nilfs_put_page(page);
++	return NULL;
+ }
  
--	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
-+	/* Accept this endpoint */
- 	++ifp->desc.bNumEndpoints;
--
--	memcpy(&endpoint->desc, d, n);
- 	INIT_LIST_HEAD(&endpoint->urb_list);
- 
- 	/*
+ ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
 
 
 
