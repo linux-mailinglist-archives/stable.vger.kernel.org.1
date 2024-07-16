@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE252932B43
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CDC8932AA1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F2DF1C22E96
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD6ACB231E8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DA91448ED;
-	Tue, 16 Jul 2024 15:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEF81DDD1;
+	Tue, 16 Jul 2024 15:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjnFDt6m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLGWhiHl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E074F9E8;
-	Tue, 16 Jul 2024 15:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B528CA40;
+	Tue, 16 Jul 2024 15:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144581; cv=none; b=cz/BzPwpQwDxK2XBcOscA8luvfpJ/V8pOullJ4H6PPranut+g+VEXKEunjFWFqp+ZTslFMtyzGkSKoIljJBzxyyjkXKcSzuFaeolNSlXOidr3zdzCkIZjvdd1IhskyNUnhhZyU9XBkYYcLhTUI201fiNVsGkgA4dvCV7qvnnn1s=
+	t=1721144169; cv=none; b=Lb7xdnCvzv5xpTJ9vnOn9ucAXiedTtdc6Ydrqx0jogck7QLccT3Ee5Qn+WdoXbM9ScoEvwU/dFaTHRc1XPhPNVJCD48QrXAHsfSQv0bMzd0AjCIo+FlS/No+jwk3SdBxJNLfPuVeo/mBShicq0/6lDBG7oke5E7braLCca8XmAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144581; c=relaxed/simple;
-	bh=DnELbNB/We1pvCQLLAyYuPZJl5zAFrq/IUsmh/9lvLE=;
+	s=arc-20240116; t=1721144169; c=relaxed/simple;
+	bh=gxenMoD18sY1G+EVCiqTKDvdsJJl3+4IZK4tnvIvmuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPdcY5Dl1Z4CZkSI8w0junmHDO/HY3Cf5UZWBwsrdj2nBQOcczGYShjoKLkec1E8r3+EDS5H+d0S+EL8+M9cgyX6wkzcs+5ByrbdTKD1DVxPX5eNUcM5EUQqcFu0uHZXzKKmakzetKTxyg5S8eje3aY9wjLn1ZBHZspihsflnWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjnFDt6m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2723BC116B1;
-	Tue, 16 Jul 2024 15:43:00 +0000 (UTC)
+	 MIME-Version; b=NAiZEN5mcvN1YZ5M3tYdRiH6BNBXAD1N6Msc3af8aYDgzWNyVAueTHPBfGJtXnN/afdXcnLHheUsimPuYp87NZ8/Ea90UOEI1NT5kPCTprCxTdk8jgCh4XtvL0EmRiRwEDwsQUaAvLEHkhNukJyAqNZJRJmIJebQF0twvF9yNJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLGWhiHl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3E2C116B1;
+	Tue, 16 Jul 2024 15:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144581;
-	bh=DnELbNB/We1pvCQLLAyYuPZJl5zAFrq/IUsmh/9lvLE=;
+	s=korg; t=1721144168;
+	bh=gxenMoD18sY1G+EVCiqTKDvdsJJl3+4IZK4tnvIvmuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fjnFDt6msxKxRcHWAd8FuG8Ce42eUbPoIjIUN/csCkqg4kdb43+C87w8t92iu9MBH
-	 4ZX1jmjA6HbFnqVj9qH/dve0JU3MuhduBg5i7hftb/ka7B1wxVmTL8cC7EFDY15kBY
-	 epqg7dLbwFXxatj9jUn2deSuxIQsUNk1ypkhAF2M=
+	b=FLGWhiHl7wbqp28Urc+0gLcdMkMH/0B4wstvPsB8XYfdgEYmLpOeazUNOtB7CYxev
+	 fybP6X+rZTMC6+1dqUx5lliBmkuSH/BRrEd7L3yiWxOjNocwQCFyP31HsbDHsFLIbd
+	 Tgh3Z8YcNrUb+8hAwlK75R3czGoMHLAymb7lwKXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 040/108] fsnotify: Do not generate events for O_PATH file descriptors
+	zhang kai <zhangkaiheb@126.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 20/66] tcp: tcp_mark_head_lost is only valid for sack-tcp
 Date: Tue, 16 Jul 2024 17:30:55 +0200
-Message-ID: <20240716152747.534434839@linuxfoundation.org>
+Message-ID: <20240716152738.933935321@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: zhang kai <zhangkaiheb@126.com>
 
-commit 702eb71fd6501b3566283f8c96d7ccc6ddd662e9 upstream.
+[ Upstream commit 636ef28d6e4d174e424102466caf572b0406fb0e ]
 
-Currently we will not generate FS_OPEN events for O_PATH file
-descriptors but we will generate FS_CLOSE events for them. This is
-asymmetry is confusing. Arguably no fsnotify events should be generated
-for O_PATH file descriptors as they cannot be used to access or modify
-file content, they are just convenient handles to file objects like
-paths. So fix the asymmetry by stopping to generate FS_CLOSE for O_PATH
-file descriptors.
+so tcp_is_sack/reno checks are removed from tcp_mark_head_lost.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240617162303.1596-1-jack@suse.cz
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: zhang kai <zhangkaiheb@126.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: a6458ab7fd4f ("UPSTREAM: tcp: fix DSACK undo in fast recovery to call tcp_try_to_open()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fsnotify.h |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_input.c | 32 +++++++-------------------------
+ 1 file changed, 7 insertions(+), 25 deletions(-)
 
---- a/include/linux/fsnotify.h
-+++ b/include/linux/fsnotify.h
-@@ -93,7 +93,13 @@ static inline int fsnotify_file(struct f
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 022d75c67096a..e51aa5a149c0f 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2193,8 +2193,7 @@ static bool tcp_time_to_recover(struct sock *sk, int flag)
+ }
+ 
+ /* Detect loss in event "A" above by marking head of queue up as lost.
+- * For non-SACK(Reno) senders, the first "packets" number of segments
+- * are considered lost. For RFC3517 SACK, a segment is considered lost if it
++ * For RFC3517 SACK, a segment is considered lost if it
+  * has at least tp->reordering SACKed seqments above it; "packets" refers to
+  * the maximum SACKed segments to pass before reaching this limit.
+  */
+@@ -2202,10 +2201,9 @@ static void tcp_mark_head_lost(struct sock *sk, int packets, int mark_head)
  {
- 	const struct path *path = &file->f_path;
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	struct sk_buff *skb;
+-	int cnt, oldcnt, lost;
+-	unsigned int mss;
++	int cnt;
+ 	/* Use SACK to deduce losses of new sequences sent during recovery */
+-	const u32 loss_high = tcp_is_sack(tp) ?  tp->snd_nxt : tp->high_seq;
++	const u32 loss_high = tp->snd_nxt;
  
--	if (file->f_mode & FMODE_NONOTIFY)
-+	/*
-+	 * FMODE_NONOTIFY are fds generated by fanotify itself which should not
-+	 * generate new events. We also don't want to generate events for
-+	 * FMODE_PATH fds (involves open & close events) as they are just
-+	 * handle creation / destruction events and not "real" file events.
-+	 */
-+	if (file->f_mode & (FMODE_NONOTIFY | FMODE_PATH))
- 		return 0;
+ 	WARN_ON(packets > tp->packets_out);
+ 	skb = tp->lost_skb_hint;
+@@ -2228,26 +2226,11 @@ static void tcp_mark_head_lost(struct sock *sk, int packets, int mark_head)
+ 		if (after(TCP_SKB_CB(skb)->end_seq, loss_high))
+ 			break;
  
- 	return fsnotify_parent(path->dentry, mask, path, FSNOTIFY_EVENT_PATH);
+-		oldcnt = cnt;
+-		if (tcp_is_reno(tp) ||
+-		    (TCP_SKB_CB(skb)->sacked & TCPCB_SACKED_ACKED))
++		if (TCP_SKB_CB(skb)->sacked & TCPCB_SACKED_ACKED)
+ 			cnt += tcp_skb_pcount(skb);
+ 
+-		if (cnt > packets) {
+-			if (tcp_is_sack(tp) ||
+-			    (TCP_SKB_CB(skb)->sacked & TCPCB_SACKED_ACKED) ||
+-			    (oldcnt >= packets))
+-				break;
+-
+-			mss = tcp_skb_mss(skb);
+-			/* If needed, chop off the prefix to mark as lost. */
+-			lost = (packets - oldcnt) * mss;
+-			if (lost < skb->len &&
+-			    tcp_fragment(sk, TCP_FRAG_IN_RTX_QUEUE, skb,
+-					 lost, mss, GFP_ATOMIC) < 0)
+-				break;
+-			cnt = packets;
+-		}
++		if (cnt > packets)
++			break;
+ 
+ 		tcp_skb_mark_lost(tp, skb);
+ 
+@@ -2874,8 +2857,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
+ 			if (tcp_try_undo_partial(sk, prior_snd_una))
+ 				return;
+ 			/* Partial ACK arrived. Force fast retransmit. */
+-			do_lost = tcp_is_reno(tp) ||
+-				  tcp_force_fast_retransmit(sk);
++			do_lost = tcp_force_fast_retransmit(sk);
+ 		}
+ 		if (tcp_try_undo_dsack(sk)) {
+ 			tcp_try_keep_open(sk);
+-- 
+2.43.0
+
 
 
 
