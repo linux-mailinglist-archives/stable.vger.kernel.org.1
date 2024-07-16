@@ -1,63 +1,69 @@
-Return-Path: <stable+bounces-59488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A65932943
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:41:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F290932945
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:41:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 013642853E5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:41:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ED171C208D1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D7D1A2C19;
-	Tue, 16 Jul 2024 14:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59431AD9F4;
+	Tue, 16 Jul 2024 14:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CR9YO/bT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rh7SPLVV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3A619F469;
-	Tue, 16 Jul 2024 14:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CD51A2C24;
+	Tue, 16 Jul 2024 14:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721140227; cv=none; b=aY6ZgKWe0z3h0awQRoFplAfM30GFR75NR3BD9SEL40JOmqEnbZS+53wiafN3pSeAOZk2B+Lkl4ubMUQSoszm24R0A2q9aCixUfNIlP7t9HYsOb9hrocsLYUgZJ50h0yz2ENkM1EpxfJqMIavkWNuAxfpce559M7JhuDzu8r/45Y=
+	t=1721140228; cv=none; b=TITvMsCfO90mk4fqT1lnXFsHMyBGPCxWjfU7JvZH2Rso1WUGHrgCNsyUGCvEhB6c96TBpxiX07E6GFWNtMa+i2bzC7ZlSplAn9xAwxAcJ0S6/nbX5WVPg6aKoIlnBeDKWjz1IPH4ICIjxORDGTjnNM6gJYzc6N0lmKPmPW1Ij2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721140227; c=relaxed/simple;
-	bh=u3eDL3m89BqR3aZoF5Fzrc9E8G8z3esOlf2CP5TfC2s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XsdWTkXwIOd4hEBcLXhkaROZv8DdcP+zxTnKQ0kJprzamOagBsXayk9uLyRApxjHgdh2CllII2rlGMXuXO5VJF/s2X2HzWdRZzzM7iQEs9WOSJ/hkWl8F3J49UWWSmSTWEDgfmrjgdJbvpLg/3RDE3Mj5T5bwnppBONwx7nmmAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CR9YO/bT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134C7C4AF0E;
-	Tue, 16 Jul 2024 14:30:22 +0000 (UTC)
+	s=arc-20240116; t=1721140228; c=relaxed/simple;
+	bh=jyWYB67o19VLcwMYfZlKi8pc6TxN8bVl/Jq5LoXZXHk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Wop8QyuTy0/EKuZaUEaCTwnqWE9e6/N1wYTZAnpG3R6oV2MQKHu3MyS1xWYwameb06IKLhvbAIWOcMpTnrM1Nxn7Juo6LLVD9hGafYelM1RPDSGZZ26LOVmOnFuTWUJfjDCEkXigbGg7WuSrttM341jXgINLB3cNYWhNJfYY7GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rh7SPLVV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645D5C116B1;
+	Tue, 16 Jul 2024 14:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721140224;
-	bh=u3eDL3m89BqR3aZoF5Fzrc9E8G8z3esOlf2CP5TfC2s=;
-	h=From:To:Cc:Subject:Date:From;
-	b=CR9YO/bTdVrhB6dRmW2zE/NlnerYb/D7dOgI8x5le58g7Ja1W1LJtyH/cpXShOpds
-	 o+AH0sNk+3cEMYC6/pQ6ysdOM69/MP9xUequKRpDdTBSlIx353d6Ii3j2KSIMsTD+n
-	 SVTegg6/rGfYEq3ECW+LUs4VwKUqm6xwklbFLdsp4ftG8TyLbrTOfBmMY6YF3pfrva
-	 +sNlLu9czSn1Dn7KEPYi4bKNBbcHcLNn2hbZpF0X+5hxunH7t36PLvxZGL5HclF6ox
-	 J1R1hBsCv4ZYjOVZnd0QhA2gJVwJwePl2asRVUv05sIgoHkWe8qeB9udlLE9JOT5BX
-	 +DrCQPbunFbLg==
+	s=k20201202; t=1721140228;
+	bh=jyWYB67o19VLcwMYfZlKi8pc6TxN8bVl/Jq5LoXZXHk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Rh7SPLVV2K2rd84LG5rz4s5gydhi3GHBQDnw72jVs18jfBGmf+luwhU/U1HRAVFPI
+	 XUXsy7lnVgej/aG9vppsWsnZ/bLHkiTWjOZUbCtZLNH4WtuLm7+i7XJM9U1mgpf796
+	 O4PffnZXN+Z98A7ZaKpZCmPhdkkhtbVjaMe5Zd6cALBkClNZekqgGIVJb/F2xn8YtH
+	 90m1DDwb1MJWwwpRqJZ22anJZz1JJWBqgCLsCrApj/vKaw6lBeOjUR4zKxbBDNZRQa
+	 wsnkSfgbgTP2rTojeK15Ob2Adw3LmYY0BZuvDE5T2cvr0pCSt1s7DePdTgMVjDmjEM
+	 XS8dK9cXdo0TQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yunshui Jiang <jiangyunshui@kylinos.cn>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
+Cc: Anjali K <anjalik@linux.ibm.com>,
+	Vishal Chourasia <vishalc@linux.ibm.com>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>,
-	alex.aring@gmail.com,
-	miquel.raynal@bootlin.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 1/7] net: mac802154: Fix racy device stats updates by DEV_STATS_INC() and DEV_STATS_ADD()
-Date: Tue, 16 Jul 2024 10:30:09 -0400
-Message-ID: <20240716143021.2714348-1-sashal@kernel.org>
+	kees@kernel.org,
+	arbab@linux.ibm.com,
+	robh@kernel.org,
+	christophe.leroy@csgroup.eu,
+	aneesh.kumar@linux.ibm.com,
+	ruscur@russell.cc,
+	npiggin@gmail.com,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 2/7] powerpc/pseries: Whitelist dtl slub object for copying to userspace
+Date: Tue, 16 Jul 2024 10:30:10 -0400
+Message-ID: <20240716143021.2714348-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240716143021.2714348-1-sashal@kernel.org>
+References: <20240716143021.2714348-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,48 +75,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.279
 Content-Transfer-Encoding: 8bit
 
-From: Yunshui Jiang <jiangyunshui@kylinos.cn>
+From: Anjali K <anjalik@linux.ibm.com>
 
-[ Upstream commit b8ec0dc3845f6c9089573cb5c2c4b05f7fc10728 ]
+[ Upstream commit 1a14150e1656f7a332a943154fc486504db4d586 ]
 
-mac802154 devices update their dev->stats fields locklessly. Therefore
-these counters should be updated atomically. Adopt SMP safe DEV_STATS_INC()
-and DEV_STATS_ADD() to achieve this.
+Reading the dispatch trace log from /sys/kernel/debug/powerpc/dtl/cpu-*
+results in a BUG() when the config CONFIG_HARDENED_USERCOPY is enabled as
+shown below.
 
-Signed-off-by: Yunshui Jiang <jiangyunshui@kylinos.cn>
-Message-ID: <20240531080739.2608969-1-jiangyunshui@kylinos.cn>
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+    kernel BUG at mm/usercopy.c:102!
+    Oops: Exception in kernel mode, sig: 5 [#1]
+    LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+    Modules linked in: xfs libcrc32c dm_service_time sd_mod t10_pi sg ibmvfc
+    scsi_transport_fc ibmveth pseries_wdt dm_multipath dm_mirror dm_region_hash dm_log dm_mod fuse
+    CPU: 27 PID: 1815 Comm: python3 Not tainted 6.10.0-rc3 #85
+    Hardware name: IBM,9040-MRX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NM1060_042) hv:phyp pSeries
+    NIP:  c0000000005d23d4 LR: c0000000005d23d0 CTR: 00000000006ee6f8
+    REGS: c000000120c078c0 TRAP: 0700   Not tainted  (6.10.0-rc3)
+    MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2828220f  XER: 0000000e
+    CFAR: c0000000001fdc80 IRQMASK: 0
+    [ ... GPRs omitted ... ]
+    NIP [c0000000005d23d4] usercopy_abort+0x78/0xb0
+    LR [c0000000005d23d0] usercopy_abort+0x74/0xb0
+    Call Trace:
+     usercopy_abort+0x74/0xb0 (unreliable)
+     __check_heap_object+0xf8/0x120
+     check_heap_object+0x218/0x240
+     __check_object_size+0x84/0x1a4
+     dtl_file_read+0x17c/0x2c4
+     full_proxy_read+0x8c/0x110
+     vfs_read+0xdc/0x3a0
+     ksys_read+0x84/0x144
+     system_call_exception+0x124/0x330
+     system_call_vectored_common+0x15c/0x2ec
+    --- interrupt: 3000 at 0x7fff81f3ab34
+
+Commit 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
+requires that only whitelisted areas in slab/slub objects can be copied to
+userspace when usercopy hardening is enabled using CONFIG_HARDENED_USERCOPY.
+Dtl contains hypervisor dispatch events which are expected to be read by
+privileged users. Hence mark this safe for user access.
+Specify useroffset=0 and usersize=DISPATCH_LOG_BYTES to whitelist the
+entire object.
+
+Co-developed-by: Vishal Chourasia <vishalc@linux.ibm.com>
+Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
+Signed-off-by: Anjali K <anjalik@linux.ibm.com>
+Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240614173844.746818-1-anjalik@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac802154/tx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/pseries/setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
-index c829e4a753256..7cea95d0b78f9 100644
---- a/net/mac802154/tx.c
-+++ b/net/mac802154/tx.c
-@@ -34,8 +34,8 @@ void ieee802154_xmit_worker(struct work_struct *work)
- 	if (res)
- 		goto err_tx;
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index d5abb25865e36..bc1a4e024529b 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -305,8 +305,8 @@ static int alloc_dispatch_log_kmem_cache(void)
+ {
+ 	void (*ctor)(void *) = get_dtl_cache_ctor();
  
--	dev->stats.tx_packets++;
--	dev->stats.tx_bytes += skb->len;
-+	DEV_STATS_INC(dev, tx_packets);
-+	DEV_STATS_ADD(dev, tx_bytes, skb->len);
- 
- 	ieee802154_xmit_complete(&local->hw, skb, false);
- 
-@@ -86,8 +86,8 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
- 			goto err_tx;
- 		}
- 
--		dev->stats.tx_packets++;
--		dev->stats.tx_bytes += len;
-+		DEV_STATS_INC(dev, tx_packets);
-+		DEV_STATS_ADD(dev, tx_bytes, len);
- 	} else {
- 		local->tx_skb = skb;
- 		queue_work(local->workqueue, &local->tx_work);
+-	dtl_cache = kmem_cache_create("dtl", DISPATCH_LOG_BYTES,
+-						DISPATCH_LOG_BYTES, 0, ctor);
++	dtl_cache = kmem_cache_create_usercopy("dtl", DISPATCH_LOG_BYTES,
++						DISPATCH_LOG_BYTES, 0, 0, DISPATCH_LOG_BYTES, ctor);
+ 	if (!dtl_cache) {
+ 		pr_warn("Failed to create dispatch trace log buffer cache\n");
+ 		pr_warn("Stolen time statistics will be unreliable\n");
 -- 
 2.43.0
 
