@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-59785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807CE932BBF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEAE8932B1D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 359D82818F7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:48:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AEA428289C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF6B19E7CF;
-	Tue, 16 Jul 2024 15:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505C5195B27;
+	Tue, 16 Jul 2024 15:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5KMVsFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAtGjq4W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21D719E7C4;
-	Tue, 16 Jul 2024 15:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2FFF9E8;
+	Tue, 16 Jul 2024 15:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144901; cv=none; b=WMlpjR/f2lGxKsUogUdyO6DYvs7Jf8pI9wO3DXqEiSOBzYu3SqTxKSVLZInC1nbPxK4Ip/lSEhu7LmS5qUyP6szq4GQeHKbObCUfcEuLcWpWqPAfyffg8MAVGgI7ekYuvEQULzZfJci+1S+kXb8GENJ018Acbj5T+4Ovk/d5VwY=
+	t=1721144503; cv=none; b=DSICfgAIPLCN8ECtw3a30rQ1XdYsYdeLq+Y7k3VJit9H6chZSqqQchICLsvngLqLIq2srWobVrqV/kU5PIViGKuwHOi/4I0zDGVNaPPGLs1ovMdlMv9yY4gryRbWFzxDYNMjbeAia+f80umSYFZ22ItpYuU6J9nCdPVpTuwto5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144901; c=relaxed/simple;
-	bh=jKSJM/3w0+j0xPzFqB0993O2JON246GHQJo6O9JyPEg=;
+	s=arc-20240116; t=1721144503; c=relaxed/simple;
+	bh=QxgcANK7RkpvpZj25iVuROq5/CNwqAL0zbEWQOtujKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rvh9voy1Ke5VWdPkdVPrfFh4aZQS4hrpV1ffvXuOi7+gveDqqxzDlbbZNNQigyiKsgDqzjsx/l3qDgQr3QMXwbQ++AkgJJSCnVbph+02gfFnmb1lPCM2jq9fEjKhIdsia7IEOkmpjyyejyVoIZLZMWih4fihEjwpsCDx+Mny35k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5KMVsFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4340DC4AF0B;
-	Tue, 16 Jul 2024 15:48:21 +0000 (UTC)
+	 MIME-Version; b=fYHF4VY4t8NFyFAfj2T3yQhwZ/nt5uXD4khjqVHXBELyCNHv7ufy6a8yu4T1lvENhnMvFVPDsP2dyvc+yqQHJvQmNsSpJIVSTnT+twLdmOyt9Y9GvE9GtvgZvHS+IlfEvItppmAv1jG78HEgBUQUT0cWbf8NUpUb2ymR1+92aB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAtGjq4W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7FFC116B1;
+	Tue, 16 Jul 2024 15:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144901;
-	bh=jKSJM/3w0+j0xPzFqB0993O2JON246GHQJo6O9JyPEg=;
+	s=korg; t=1721144502;
+	bh=QxgcANK7RkpvpZj25iVuROq5/CNwqAL0zbEWQOtujKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k5KMVsFawdcLYLpnj027/eXzJUUHc6PYlWQHnCo0m5xNJqZwU9QyyfpaHL7hHgOWK
-	 V26Q7hQzL4JwpddhrpCdhVUmvlx5oAZ+mxWA9cGkBwKyZEQyHESWXuswfvRt52aqMo
-	 wvnDIZzPeyASH1v4c3GNrqHm1f3++ox0d5l+Ymaw=
+	b=PAtGjq4Wff8dGgVmWmjs893B+VqGpa7vsEb6pR2utS+gYEWMInM+mNGzZMpSSUu9w
+	 9R9iRxgfACwmymfikVq5tYDDunEEAKCs9dAeCWPkS91JxA6pQ44mT3vYoru+exZWFO
+	 Mom2KbMiu8Crj9JYtR1G3EsieVxKItLzw7PaPFkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dohyun Kim <dohyunkim@google.com>,
-	Neel Natu <neelnatu@google.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 034/143] bpf: Fail bpf_timer_cancel when callback is being cancelled
+Subject: [PATCH 5.10 015/108] net: dsa: mv88e6xxx: Correct check for empty list
 Date: Tue, 16 Jul 2024 17:30:30 +0200
-Message-ID: <20240716152757.302420421@linuxfoundation.org>
+Message-ID: <20240716152746.584714878@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,164 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit d4523831f07a267a943f0dde844bf8ead7495f13 ]
+[ Upstream commit 4c7f3950a9fd53a62b156c0fe7c3a2c43b0ba19b ]
 
-Given a schedule:
+Since commit a3c53be55c95 ("net: dsa: mv88e6xxx: Support multiple MDIO
+busses") mv88e6xxx_default_mdio_bus() has checked that the
+return value of list_first_entry() is non-NULL.
 
-timer1 cb			timer2 cb
+This appears to be intended to guard against the list chip->mdios being
+empty.  However, it is not the correct check as the implementation of
+list_first_entry is not designed to return NULL for empty lists.
 
-bpf_timer_cancel(timer2);	bpf_timer_cancel(timer1);
+Instead, use list_first_entry_or_null() which does return NULL if the
+list is empty.
 
-Both bpf_timer_cancel calls would wait for the other callback to finish
-executing, introducing a lockup.
+Flagged by Smatch.
+Compile tested only.
 
-Add an atomic_t count named 'cancelling' in bpf_hrtimer. This keeps
-track of all in-flight cancellation requests for a given BPF timer.
-Whenever cancelling a BPF timer, we must check if we have outstanding
-cancellation requests, and if so, we must fail the operation with an
-error (-EDEADLK) since cancellation is synchronous and waits for the
-callback to finish executing. This implies that we can enter a deadlock
-situation involving two or more timer callbacks executing in parallel
-and attempting to cancel one another.
-
-Note that we avoid incrementing the cancelling counter for the target
-timer (the one being cancelled) if bpf_timer_cancel is not invoked from
-a callback, to avoid spurious errors. The whole point of detecting
-cur->cancelling and returning -EDEADLK is to not enter a busy wait loop
-(which may or may not lead to a lockup). This does not apply in case the
-caller is in a non-callback context, the other side can continue to
-cancel as it sees fit without running into errors.
-
-Background on prior attempts:
-
-Earlier versions of this patch used a bool 'cancelling' bit and used the
-following pattern under timer->lock to publish cancellation status.
-
-lock(t->lock);
-t->cancelling = true;
-mb();
-if (cur->cancelling)
-	return -EDEADLK;
-unlock(t->lock);
-hrtimer_cancel(t->timer);
-t->cancelling = false;
-
-The store outside the critical section could overwrite a parallel
-requests t->cancelling assignment to true, to ensure the parallely
-executing callback observes its cancellation status.
-
-It would be necessary to clear this cancelling bit once hrtimer_cancel
-is done, but lack of serialization introduced races. Another option was
-explored where bpf_timer_start would clear the bit when (re)starting the
-timer under timer->lock. This would ensure serialized access to the
-cancelling bit, but may allow it to be cleared before in-flight
-hrtimer_cancel has finished executing, such that lockups can occur
-again.
-
-Thus, we choose an atomic counter to keep track of all outstanding
-cancellation requests and use it to prevent lockups in case callbacks
-attempt to cancel each other while executing in parallel.
-
-Reported-by: Dohyun Kim <dohyunkim@google.com>
-Reported-by: Neel Natu <neelnatu@google.com>
-Fixes: b00628b1c7d5 ("bpf: Introduce bpf timers.")
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20240709185440.1104957-2-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240430-mv88e6xx-list_empty-v3-1-c35c69d88d2e@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 38 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 35 insertions(+), 3 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index ff18b467d7d75..79cb5681cf136 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -1107,6 +1107,7 @@ struct bpf_async_cb {
- struct bpf_hrtimer {
- 	struct bpf_async_cb cb;
- 	struct hrtimer timer;
-+	atomic_t cancelling;
- };
- 
- /* the actual struct hidden inside uapi struct bpf_timer */
-@@ -1205,6 +1206,7 @@ static int __bpf_async_init(struct bpf_async_kern *async, struct bpf_map *map, u
- 		clockid = flags & (MAX_CLOCKS - 1);
- 		t = (struct bpf_hrtimer *)cb;
- 
-+		atomic_set(&t->cancelling, 0);
- 		hrtimer_init(&t->timer, clockid, HRTIMER_MODE_REL_SOFT);
- 		t->timer.function = bpf_timer_cb;
- 		cb->value = (void *)async - map->record->timer_off;
-@@ -1368,7 +1370,8 @@ static void drop_prog_refcnt(struct bpf_async_cb *async)
- 
- BPF_CALL_1(bpf_timer_cancel, struct bpf_async_kern *, timer)
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index ac56bc175b51b..6a1ae774cfe99 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -116,8 +116,8 @@ struct mii_bus *mv88e6xxx_default_mdio_bus(struct mv88e6xxx_chip *chip)
  {
--	struct bpf_hrtimer *t;
-+	struct bpf_hrtimer *t, *cur_t;
-+	bool inc = false;
- 	int ret = 0;
+ 	struct mv88e6xxx_mdio_bus *mdio_bus;
  
- 	if (in_nmi())
-@@ -1380,14 +1383,41 @@ BPF_CALL_1(bpf_timer_cancel, struct bpf_async_kern *, timer)
- 		ret = -EINVAL;
- 		goto out;
- 	}
--	if (this_cpu_read(hrtimer_running) == t) {
-+
-+	cur_t = this_cpu_read(hrtimer_running);
-+	if (cur_t == t) {
- 		/* If bpf callback_fn is trying to bpf_timer_cancel()
- 		 * its own timer the hrtimer_cancel() will deadlock
--		 * since it waits for callback_fn to finish
-+		 * since it waits for callback_fn to finish.
-+		 */
-+		ret = -EDEADLK;
-+		goto out;
-+	}
-+
-+	/* Only account in-flight cancellations when invoked from a timer
-+	 * callback, since we want to avoid waiting only if other _callbacks_
-+	 * are waiting on us, to avoid introducing lockups. Non-callback paths
-+	 * are ok, since nobody would synchronously wait for their completion.
-+	 */
-+	if (!cur_t)
-+		goto drop;
-+	atomic_inc(&t->cancelling);
-+	/* Need full barrier after relaxed atomic_inc */
-+	smp_mb__after_atomic();
-+	inc = true;
-+	if (atomic_read(&cur_t->cancelling)) {
-+		/* We're cancelling timer t, while some other timer callback is
-+		 * attempting to cancel us. In such a case, it might be possible
-+		 * that timer t belongs to the other callback, or some other
-+		 * callback waiting upon it (creating transitive dependencies
-+		 * upon us), and we will enter a deadlock if we continue
-+		 * cancelling and waiting for it synchronously, since it might
-+		 * do the same. Bail!
- 		 */
- 		ret = -EDEADLK;
- 		goto out;
- 	}
-+drop:
- 	drop_prog_refcnt(&t->cb);
- out:
- 	__bpf_spin_unlock_irqrestore(&timer->lock);
-@@ -1395,6 +1425,8 @@ BPF_CALL_1(bpf_timer_cancel, struct bpf_async_kern *, timer)
- 	 * if it was running.
- 	 */
- 	ret = ret ?: hrtimer_cancel(&t->timer);
-+	if (inc)
-+		atomic_dec(&t->cancelling);
- 	rcu_read_unlock();
- 	return ret;
- }
+-	mdio_bus = list_first_entry(&chip->mdios, struct mv88e6xxx_mdio_bus,
+-				    list);
++	mdio_bus = list_first_entry_or_null(&chip->mdios,
++					    struct mv88e6xxx_mdio_bus, list);
+ 	if (!mdio_bus)
+ 		return NULL;
+ 
 -- 
 2.43.0
 
