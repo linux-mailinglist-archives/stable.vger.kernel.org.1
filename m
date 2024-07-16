@@ -1,86 +1,174 @@
-Return-Path: <stable+bounces-60368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70BB39333C5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 23:45:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26BF293341D
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 00:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274D21F2300E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 21:45:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEA31282B73
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 22:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1AE13F42D;
-	Tue, 16 Jul 2024 21:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172BA1422D1;
+	Tue, 16 Jul 2024 22:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="s//2ibG3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="slATpH1q"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7842F13E3EA;
-	Tue, 16 Jul 2024 21:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054CA13B5A2
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 22:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721166261; cv=none; b=B/KuDSss+F5fHXcmDJjSuzBfhlxnEEX2dLPb/xZ+RIEeiDQi/ypHeKdErRcFQVeRozk/iY4l8ZalRCpBv6ZrR/L4nzvIGn25Zy9bL97zYxrXdxxAlXsO6XUKiVx5L1h9A0JK9TGv7tIdri2QBNTWAu4yXWTAadzJ1CVkvzfZ23s=
+	t=1721167988; cv=none; b=RXv1kD7rBbvneShHhXXknNU7/V32jepK++5hdMZbQ1NDEV52pdBa692lPXH3eD8MTPzpK4GiFjQgsgxtjj6FEwfvefwpY3Lxee0RJnWP8/coTGJ58ziPjOz4d0M7ClCUPaVUSE/mCwmr4bQ0j9MpdnZMubSfrgmGT4HhMdMSe/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721166261; c=relaxed/simple;
-	bh=qwihffuM8/DrrQ9zeFgfLv/otk8t9ehBE7KDdulwOxw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VRBt5mk78y3bGjbAyKpU/OJ5BHCukKcau4abEaxbqrIT4lnRwVn8tWc9U7zdqbHbO8g/QnmIcogI1c691m7sNwb0hLTxmNWHcx1/uz5nMFoAjJTIFD4C/cHY2XtxZCN3Gc8AhWMGmAf6I8uiQmEzdfma/fgSU8aCOeRrzaQCdOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=s//2ibG3; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WNsz65xChz6CmM6V;
-	Tue, 16 Jul 2024 21:44:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1721166256; x=1723758257; bh=qwihffuM8/DrrQ9zeFgfLv/o
-	tk8t9ehBE7KDdulwOxw=; b=s//2ibG3Px+7SDNsL0V3hOECRUEv9SnWMqi6k9yt
-	Bwf968YbhEteUCvyIJkNZ2eer0kPms81pqfZus46lXfNI4n/BKKPOODjsAoR5uMm
-	d72T3eoLyu/SgEErPkaIhv2+BArkLrLQLOGhSKdN0LQ4phFW5esPzkdwA5Pe5kJl
-	ipoMpD00+m5V6A+iydveZteMBQ+wY+RivAV3JuMrCoin3gdztvD2Jouj4kqo5/PY
-	GpPX8mq3G2aNPI/w65UeSHKOVWosDqAUwZ0ZkEcevOqYIt6y+FHm3T7ft9hygwmf
-	naLQITb5soQ9HtNi5erPo4IeLwqurIBQOaJMSItYrMEd1Q==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id E0RecbNBRlSp; Tue, 16 Jul 2024 21:44:16 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WNsz30Kg2z6CmM6T;
-	Tue, 16 Jul 2024 21:44:14 +0000 (UTC)
-Message-ID: <fcdc2791-1fca-4ff6-8684-f4522ef6eddc@acm.org>
-Date: Tue, 16 Jul 2024 14:44:12 -0700
+	s=arc-20240116; t=1721167988; c=relaxed/simple;
+	bh=UfxoPitMaKS4uL2fg6YY7BkFuaoC1Yyd1kVsVIG0HX0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VLkoqvQG2oG8tfoPlNVgVv8wYczDBpInMxY6/odPrEvOjxpO4okg2WKrZVutSMtcAJ5NB4THOxFlRmTiMtNnRbF2N7P98EZ/z+9xsnGr+WqWK81+45doae1jqQMZ1G38Mrscd8F+2FrPBL9R6r5TpHch/jjW51/z4ZCGD0PgSn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=slATpH1q; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-59f9f59b827so1287756a12.1
+        for <stable@vger.kernel.org>; Tue, 16 Jul 2024 15:13:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721167985; x=1721772785; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OWKj2Qy9GB1PksJ0/OQajfy4XSpvSn3p+KH1EsPaTSE=;
+        b=slATpH1qRFdYM5U9W5IjbrMKSJRBUwUoh/8DV5CT3t0y7qK8w9qbZWT5boCDA8NAwE
+         MiwvsX2fcyW3GMbjnFV+HsO6F+l/NNIq8S2ijE7kDI19gVfBn7KWtylbPXVouQ03X2ZW
+         7nlRQck5/WNeED5nzzgjzKFqBFn418mYcUnOUKwZbG2qf6/PIW2vbJthZkfGjTG7rJWW
+         gXnHStM50JsjQIHflvECbcooPQnhbRtgnGNaSik1Y93YQpDKPGaVtOQhRV5Ru5s7vRQ0
+         UccUfAvEz65kLkoXlr1b4OXxw2od3xUfPIjvXNS6FGXVeCAsIl+5Y9FbqB7o83M04Zod
+         8TFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721167985; x=1721772785;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OWKj2Qy9GB1PksJ0/OQajfy4XSpvSn3p+KH1EsPaTSE=;
+        b=La4LIE4DPSxRUvakEc2DQ/Ggzh1fh25bt4+M8ObQRlAmIDJqbJu3f+0OEKUKUTEovB
+         Dm68cF6rkE7+I+lXkRfggRZx8sGEsid3PQeQ3v21d9yEIW+nuT71j5sl023HTxGxUP50
+         qwNhc/EkELh3sdFk0WAdJF57/QSBM+CqsQMPF2yrsKcOGL7zJNWWw6OnasoXPGHbXS08
+         gxBl6O43mXJI4vQc4dTMAIY3lfVNLe68J/icyVzdkuhvyuRGNO1V2fAnv/hb8V0OjJxp
+         VnVtNFFYTfJmbTDfvprJV+k8Otrx/F7N2AgIHUwEpxbmyCVi4XhxK0ZIm5Qw91ZCxX5a
+         oAHA==
+X-Forwarded-Encrypted: i=1; AJvYcCUaUtowOC+pqSJQZSMrzAOv+XCNc1f9LqJj2NUopJIg+uw4teoDU9uATpDnMz0lJ38NbK8bpfFfxVTTnC1zWgxbYh10jB+3
+X-Gm-Message-State: AOJu0YyUw15J6HDSW/3ly/nT+b+PMvXcZOXGCTZPzYKnlniUrY99NYC2
+	ftcKm7x9LNynDxz5xGyl0bSreeHMNC7Ga/o6y/NmFfOjR7d65OMz7f9aUOuiLpUP/3kFxei/OPx
+	SR0Q=
+X-Google-Smtp-Source: AGHT+IFO/llIMhBjWdvoGGbmOFXa5izdfPmyddf1gqBXhtYJN/T4CsPdhiUXJkJvkOuxOQx6a9RoCA==
+X-Received: by 2002:a05:6402:388b:b0:58b:abc6:9cec with SMTP id 4fb4d7f45d1cf-59ef0ed3199mr2010850a12.40.1721167985082;
+        Tue, 16 Jul 2024 15:13:05 -0700 (PDT)
+Received: from [127.0.1.1] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-59b268a28ddsm5582997a12.71.2024.07.16.15.13.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jul 2024 15:13:04 -0700 (PDT)
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH v2 0/2] media: qcom: camss: Fix two CAMSS bugs found by
+ dogfooding with SoftISP
+Date: Tue, 16 Jul 2024 23:13:23 +0100
+Message-Id: <20240716-linux-next-24-07-13-camss-fixes-v2-0-e60c9f6742f2@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "scsi: sd: Do not repeat the starting disk
- message"
-To: Johan Hovold <johan+linaro@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, linux-scsi@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240716161101.30692-1-johan+linaro@kernel.org>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240716161101.30692-1-johan+linaro@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIPwlmYC/4WNQQ6CMBBFr0Jm7ZhSWymuvIdhUcsATbQlLRIM4
+ e6OJK7d/OT9yby/QqbkKcOlWCHR7LOPgUEeCnCDDT2hb5lBCqlEVZ7w4cNrwUDLhFKhqJA7Z58
+ 5Y+cX4rS1caI+a6tbYMuYaD+w5NYwDz5PMb33wbn8tj+3+uueSxRoOlNrdXfGGX3lD5viMaYem
+ m3bPqFtrWjPAAAA
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hansverk@cisco.com>, Hans Verkuil <hverkuil-cisco@xs4all.nl>, 
+ Milen Mitkov <quic_mmitkov@quicinc.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, 
+ Johan Hovold <johan+linaro@kernel.org>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-13183
 
-On 7/16/24 9:11 AM, Johan Hovold wrote:
-> This reverts commit 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4.
+v2:
+- Updates commits with Johan's Review/Reported tags
+- Adds Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com
+- Cc's stable
+- Adds in suggested kernel log to allow others to more easily match kernel
+  log to fixes
+- Link to v1: https://lore.kernel.org/r/20240714-linux-next-24-07-13-camss-fixes-v1-0-8f8954bc8c85@linaro.org
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+V1:
+Dogfooding with SoftISP has uncovered two bugs in this series which I'm
+posting fixes for.
+
+- The first error:
+  A simple race condition which to be honest I'm surprised I haven't found
+  earlier nor has anybody else. Simply stated the order we typically
+  end up loading CAMSS on boot has masked out the pm_runtime_enable() race
+  condition that has been present in CAMSS for a long time.
+
+  If you blacklist qcom-camss in modules.d and then modprobe after boot,
+  the race condition shows up easily.
+
+  Moving the pm_runtime_enable prior to subdevice registration fixes the
+  problem.
+
+The second error:
+  Nomenclature:
+    - CSIPHY: CSI Physical layer analogue to digital domain serialiser
+    - CSID: CSI Decoder
+    - VFE: Video Front End
+    - RDI: Raw Data Interface
+    - VC: Virtual Channel
+
+  In order to support streaming multiple virtual-channels on the same RDI a
+  V4L2 provided use_count variable is used to decide whether or not to actually
+  terminate streaming and release buffers for 'msm_vfe_rdiX'.
+
+  Unfortunately use_count indicates the number of times msm_vfe_rdiX has
+  been opened by user-space not the number of concurrent streams on
+  msm_vfe_rdiX.
+
+  Simply stated use_count and stream_count are two different things.
+
+  The silicon enabling code to select between VCs is valid but, a different
+  solution needs to be found to support _concurrent_ VC streams.
+
+  Right now the upstream use_count as-is is breaking the non concurrent VC
+  case and I don't believe there are upstream users of concurrent VCs on
+  CAMSS.
+
+  This series implements a revert for the invalid use_count check,
+  retaining the ability to select which VC is active on the RDI.
+
+  Dogfooding with libcamera's SoftISP in Hangouts, Zoom and multiple runs
+  of libcamera's "qcam" application is a very different test-case to the
+  simple capture of frames we previously did when validating the
+  'use_count' change.
+
+  A partial revert in expectation of a renewed push to fixup that
+  concurrent VC issue is included.
+
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+---
+Bryan O'Donoghue (2):
+      media: qcom: camss: Remove use_count guard in stop_streaming
+      media: qcom: camss: Fix ordering of pm_runtime_enable
+
+ drivers/media/platform/qcom/camss/camss-video.c | 6 ------
+ drivers/media/platform/qcom/camss/camss.c       | 5 +++--
+ 2 files changed, 3 insertions(+), 8 deletions(-)
+---
+base-commit: c6ce8f9ab92edc9726996a0130bfc1c408132d47
+change-id: 20240713-linux-next-24-07-13-camss-fixes-fa98c0965a5d
+
+Best regards,
+-- 
+Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+
 
