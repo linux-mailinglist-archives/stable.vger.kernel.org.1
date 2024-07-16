@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-59619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC28932AF6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73862932AA7
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9C4BB24558
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0C6AB22EAB
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E7B19AA78;
-	Tue, 16 Jul 2024 15:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61166F9E8;
+	Tue, 16 Jul 2024 15:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zg7B+Za/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9lgxqc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A5BB641;
-	Tue, 16 Jul 2024 15:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206A8D53B;
+	Tue, 16 Jul 2024 15:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144393; cv=none; b=HokyOJvEzK4+GMzuL+OeHPjAnVJ9LZeLy99ZuY6zn+tYHt/xC5bxykZY/khjVKaliNLTiNnU4AmW1nLyRnUpJHKHOHMYc9C2BsVTTp0U2u/HdlwpYU82wDzBgwnnVTNtbIDiHNGjXYMIvycdFBjuBEzkqI3f8ldcUv+lGcPjIqg=
+	t=1721144181; cv=none; b=uuUlQln0OVB6N8kpucbNi76jAifR6WVJA9M9kyGFk2ylAb2Kw2NdXXF5b93k+007j/H4bfHq48+kF1aFVTjyer+mMkYGh+TmwI4NWkawwxIrFi1VLzFoAXo5sq8GziSwRmPW9faTfm2WwpdMfiThEPYtrI1cpvql3RWK+zYFAfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144393; c=relaxed/simple;
-	bh=B82YaMOnWn1IdYKXqA+yNi9ocdOzCIh0IBtEfsqw0XQ=;
+	s=arc-20240116; t=1721144181; c=relaxed/simple;
+	bh=Wh3xpT/jl5jIz631IcPTXyRW2QSptmb+URpnSyDjEdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XC2B/mBxaTtedGpP7sdRrbTNsNqGAsHhZX0ihZ0sI8j0ZFEDtxRoLdBjVSGKjxA1a7X8voFC9vgwHhDQwDMgv0mgygdSEzK2gNSZLKpuwQd+oRuNaIPu4KYnQ+7Aqnzlt7tHgWGp5srwtumicWGe4FoSpen4WLUUGnw52AhH81o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zg7B+Za/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB11DC116B1;
-	Tue, 16 Jul 2024 15:39:52 +0000 (UTC)
+	 MIME-Version; b=BuTzXgLBVDdQKj0uXWqntOQWL3VNN41n6AcrnVfzruy7/Htpezv3k38Drv6JfEP1rdAWCDSq0jkKycS0P+3ifYS0Tl4TrPstv29YuAAw3MrKU5wKYRGjdYc+nhy3EIZhsG6hIYiwcEMsNnUMzG392WJo4jxoHKzG1eRpnzhC/yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9lgxqc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46672C116B1;
+	Tue, 16 Jul 2024 15:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144393;
-	bh=B82YaMOnWn1IdYKXqA+yNi9ocdOzCIh0IBtEfsqw0XQ=;
+	s=korg; t=1721144180;
+	bh=Wh3xpT/jl5jIz631IcPTXyRW2QSptmb+URpnSyDjEdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zg7B+Za/aFmcUS7G7RmIvJrXojex+xOhAo8dI7U1A2iM0UI8tfFGUhPH0V69JnfQY
-	 e6aj9Szlog3AiQiB6F8VEQTwwSUPkpM71wFBCANaqa3TO7uTlRNXqYOwA5hL3lAmjC
-	 ASAYRqvQRUpUFX4/3BCFI89qfsVPca6nx57FSYtI=
+	b=Z9lgxqc57iVY03iD+u9A/Y5OXD2GcvPLXN8IDd2rk1XUzVUi37RV+njvpCVCkOC1a
+	 tOK+SYXLKghrYv3oZikHlxPpC7BLvDrwJNKA1Z7uNm/qUFtKWEFRi1pHsaRu/5lKjX
+	 e9PX/Aez6zDYjLGkbpLXdmXVNasMJx8gVr5NPcC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 17/78] powerpc/64: Set _IO_BASE to POISON_POINTER_DELTA not 0 for CONFIG_PCI=n
+Subject: [PATCH 4.19 14/66] powerpc/64: Set _IO_BASE to POISON_POINTER_DELTA not 0 for CONFIG_PCI=n
 Date: Tue, 16 Jul 2024 17:30:49 +0200
-Message-ID: <20240716152741.297452016@linuxfoundation.org>
+Message-ID: <20240716152738.707156052@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -93,10 +93,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index e86516ff8f4b3..f5c9504f6071d 100644
+index 5ff8ab12f56c7..c90ece28a0199 100644
 --- a/arch/powerpc/include/asm/io.h
 +++ b/arch/powerpc/include/asm/io.h
-@@ -46,7 +46,7 @@ extern struct pci_dev *isa_bridge_pcidev;
+@@ -47,7 +47,7 @@ extern struct pci_dev *isa_bridge_pcidev;
   * define properly based on the platform
   */
  #ifndef CONFIG_PCI
