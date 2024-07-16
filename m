@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-59692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A93D932B4D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A492932A8C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:35:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BBAC1C20C63
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD49DB2318A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF4319E7FF;
-	Tue, 16 Jul 2024 15:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB431DFDE;
+	Tue, 16 Jul 2024 15:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRl950qC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiIIgDyc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1F119DFAE;
-	Tue, 16 Jul 2024 15:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE57CE54C;
+	Tue, 16 Jul 2024 15:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144619; cv=none; b=t96oI6h5XgRDb9Zu//PWtq/xVUsIDdqxS3RgPY7monA2W/MJiR2kFAOYeW23USlqfmMpz7ScmEidNuEHG3ZXa+pE/B/flh1dyus6uut9ApiKeMHa5d+A4hoJb4NpqKNfGSp3rYCdwApc8SeRYdaZ36gU8hw/Q1SpTnwy9GfUvDY=
+	t=1721144107; cv=none; b=kWRNpcqKtV9VS0psA1+T1AHAY8PGG7PnSVKKV1X5pEl4BHJ57MGw8A7ynKMqzpmbSpZq4j24mqxQMAubIL/BEjt25WZEBErCivOnZU+JFjy9cv3i9PEevVl5t81fCAgSAU/heZSFIhTX/Dtp37a5ctamm6kJGC6PE+eX5UjxoQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144619; c=relaxed/simple;
-	bh=8IqieS+DxuBgIS/cLdqfwFdjFe4jG2Fnu+zqJOi2ZKc=;
+	s=arc-20240116; t=1721144107; c=relaxed/simple;
+	bh=7Pg6iOKEZSthUnnBWo8UJsTXNNJPApk6hfnx/B0F5Vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnIOYW5A3C+kER9yL6kVjKlrztv0Rhss9gknXRGfZ7DZpfgPp4Yo9hQWkvKrCsakEXP6r9Ka5UYjQew0xHrderkH9FSPeZ3RBniQzIhnwP7kPj1Yq+S/njXgfp9QEivziYUTopyXL71/Sy7PFI6HvWlzcXMjFHidi3EmQMF1XGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRl950qC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04CCC4AF0D;
-	Tue, 16 Jul 2024 15:43:38 +0000 (UTC)
+	 MIME-Version; b=Ci2maUPHcrFLSGnB1g6jAdXUX86VhYaPGBMr4G99nHZkslnGK6LWDZ3pKbubjGX5738VhWFUpDLWuiB/HIZfDZOnByrjZfUxG6/smGj0HfNLK6l+V0C2CeaRCH7a3luN6Q/k7gniSdDoJqKZoxMQ0GyaMU5eZRepikeizJsTAr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiIIgDyc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9FAC116B1;
+	Tue, 16 Jul 2024 15:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144619;
-	bh=8IqieS+DxuBgIS/cLdqfwFdjFe4jG2Fnu+zqJOi2ZKc=;
+	s=korg; t=1721144106;
+	bh=7Pg6iOKEZSthUnnBWo8UJsTXNNJPApk6hfnx/B0F5Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRl950qCUvH6kapPj62x4NwL2sGfuE+EmoU3Wtnh+xER5CndsQTg9VajePSlu3Rol
-	 PTcmMz52Q8w8Tg3taKXkSxaebbbhH81vYx5UU3nZiEZ7oyQfUm8LTaX28R5qMHzoA1
-	 /gggSEOh2UStZZ2ZOgz0qdwlMh6mNYVC9V67qp94=
+	b=LiIIgDyc9TtWrkkVLRFdULUsJyQAMBrHDDZbttRE6zMbhHimbfuaZP2AWg3is1fkE
+	 kXrk5eRBSjkrAYW8t98dA+KTuIZVjsMQC7keSr6vJdMulx7uDKoPZ1mR6VGtILpkhq
+	 AFVGCFTJYO1Cnwwz4z1LyTkDomUUTan3TbfyEiYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 050/108] ALSA: hda/realtek: Enable headset mic of JP-IK LEAP W502 with ALC897
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Hillf Danton <hdanton@sina.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 30/66] nilfs2: add missing check for inode numbers on directory entries
 Date: Tue, 16 Jul 2024 17:31:05 +0200
-Message-ID: <20240716152747.910689111@linuxfoundation.org>
+Message-ID: <20240716152739.315573822@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian-Hong Pan <jhp@endlessos.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 45e37f9ce28d248470bab4376df2687a215d1b22 ]
+commit bb76c6c274683c8570ad788f79d4b875bde0e458 upstream.
 
-JP-IK LEAP W502 laptop's headset mic is not enabled until
-ALC897_FIXUP_HEADSET_MIC_PIN3 quirk is applied.
+Syzbot reported that mounting and unmounting a specific pattern of
+corrupted nilfs2 filesystem images causes a use-after-free of metadata
+file inodes, which triggers a kernel bug in lru_add_fn().
 
-Here is the original pin node values:
+As Jan Kara pointed out, this is because the link count of a metadata file
+gets corrupted to 0, and nilfs_evict_inode(), which is called from iput(),
+tries to delete that inode (ifile inode in this case).
 
-0x11 0x40000000
-0x12 0xb7a60130
-0x14 0x90170110
-0x15 0x411111f0
-0x16 0x411111f0
-0x17 0x411111f0
-0x18 0x411111f0
-0x19 0x411111f0
-0x1a 0x411111f0
-0x1b 0x03211020
-0x1c 0x411111f0
-0x1d 0x4026892d
-0x1e 0x411111f0
-0x1f 0x411111f0
+The inconsistency occurs because directories containing the inode numbers
+of these metadata files that should not be visible in the namespace are
+read without checking.
 
-Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
-Link: https://lore.kernel.org/r/20240520055008.7083-2-jhp@endlessos.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this issue by treating the inode numbers of these internal files as
+errors in the sanity check helper when reading directory folios/pages.
+
+Also thanks to Hillf Danton and Matthew Wilcox for their initial mm-layer
+analysis.
+
+Link: https://lkml.kernel.org/r/20240623051135.4180-3-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d79afb004be235636ee8
+Reported-by: Jan Kara <jack@suse.cz>
+Closes: https://lkml.kernel.org/r/20240617075758.wewhukbrjod5fp5o@quack3
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/nilfs2/dir.c   |    6 ++++++
+ fs/nilfs2/nilfs.h |    5 +++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 5c5a144e707f0..c2374556c17e6 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10807,6 +10807,7 @@ enum {
- 	ALC897_FIXUP_LENOVO_HEADSET_MODE,
- 	ALC897_FIXUP_HEADSET_MIC_PIN2,
- 	ALC897_FIXUP_UNIS_H3C_X500S,
-+	ALC897_FIXUP_HEADSET_MIC_PIN3,
- };
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -143,6 +143,9 @@ static bool nilfs_check_page(struct page
+ 			goto Enamelen;
+ 		if (((offs + rec_len - 1) ^ offs) & ~(chunk_size-1))
+ 			goto Espan;
++		if (unlikely(p->inode &&
++			     NILFS_PRIVATE_INODE(le64_to_cpu(p->inode))))
++			goto Einumber;
+ 	}
+ 	if (offs != limit)
+ 		goto Eend;
+@@ -168,6 +171,9 @@ Enamelen:
+ 	goto bad_entry;
+ Espan:
+ 	error = "directory entry across blocks";
++	goto bad_entry;
++Einumber:
++	error = "disallowed inode number";
+ bad_entry:
+ 	nilfs_error(sb,
+ 		    "bad entry in directory #%lu: %s - offset=%lu, inode=%lu, rec_len=%d, name_len=%d",
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -121,6 +121,11 @@ enum {
+ 	((ino) >= NILFS_FIRST_INO(sb) ||				\
+ 	 ((ino) < NILFS_USER_INO && (NILFS_SYS_INO_BITS & BIT(ino))))
  
- static const struct hda_fixup alc662_fixups[] = {
-@@ -11253,10 +11254,18 @@ static const struct hda_fixup alc662_fixups[] = {
- 			{}
- 		},
- 	},
-+	[ALC897_FIXUP_HEADSET_MIC_PIN3] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x19, 0x03a11050 }, /* use as headset mic */
-+			{ }
-+		},
-+	},
- };
- 
- static const struct snd_pci_quirk alc662_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1019, 0x9087, "ECS", ALC662_FIXUP_ASUS_MODE2),
-+	SND_PCI_QUIRK(0x1019, 0x9859, "JP-IK LEAP W502", ALC897_FIXUP_HEADSET_MIC_PIN3),
- 	SND_PCI_QUIRK(0x1025, 0x022f, "Acer Aspire One", ALC662_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x0241, "Packard Bell DOTS", ALC662_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x0308, "Acer Aspire 8942G", ALC662_FIXUP_ASPIRE),
--- 
-2.43.0
-
++#define NILFS_PRIVATE_INODE(ino) ({					\
++	ino_t __ino = (ino);						\
++	((__ino) < NILFS_USER_INO && (__ino) != NILFS_ROOT_INO &&	\
++	 (__ino) != NILFS_SKETCH_INO); })
++
+ /**
+  * struct nilfs_transaction_info: context information for synchronization
+  * @ti_magic: Magic number
 
 
 
