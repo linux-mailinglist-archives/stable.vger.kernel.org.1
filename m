@@ -1,79 +1,111 @@
-Return-Path: <stable+bounces-60289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8993F932FE2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61DC8932FFC
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46A58282281
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:23:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DCF8282D60
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E33619E7FE;
-	Tue, 16 Jul 2024 18:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA2271B52;
+	Tue, 16 Jul 2024 18:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sScQPm+b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3CUcyJc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EAC54BD4;
-	Tue, 16 Jul 2024 18:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD171643A;
+	Tue, 16 Jul 2024 18:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154230; cv=none; b=scMbA6iuUanm0q6fnKHEXrTVekldvlPZg1Vvgr7LatCbXR5qITf+rlLRqIRegaz+Id/eLel98iQJcgYTUF3xMnCAmGeRv45W9TU2ei2DUipPUwt/Pq6LI4s1GIqK/S9YerWi7Qm7Yz6psEK2i70xLEd/jV2DtpQSw1LlTEwvuVM=
+	t=1721154746; cv=none; b=cCH9lsamekDjwmSfA5P6/cAeVx6samGWqLbiIa4sZBnK4sPkwnbLh00zPFxChIBsVlRvC8EQUYGP+fp8XwcULKc+lBzY3YCvv8h/SaJhQZq/k8lSog9HoVTvH9CeSWqktVFXNyfZaQ3P3671gmIcL3YF2M52qqJDF1FNFTszza4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154230; c=relaxed/simple;
-	bh=z5yTdBXbmrMVIksJABLAp8nR3U28hpuOwDGdNX8jAWc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KLYSsvb7CIjGJ7LTaDU89BJFKPn/zvJ5ZPRsdMcEaqVp1eBz78YGxivdjM8JEEHxi3PcqSAeM1KuaO6IbOBcrWnWuGOMFhD15mU/iBoFOJTuYp5/Am8QB7QAr0dsR4nyre6SASV3hbXpMSsK0FC3KpM426d6c+dGQ6WISe4VflE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sScQPm+b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7832C116B1;
-	Tue, 16 Jul 2024 18:23:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721154230;
-	bh=z5yTdBXbmrMVIksJABLAp8nR3U28hpuOwDGdNX8jAWc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sScQPm+bxV6RPHIQdQPUJ9LyeWwGPcuCOO/uBdtHabJv0sB1PVQjeoGSOafTCk67A
-	 1pNvASiVdhDM88B2yT5WDhciJ2yOpD2nuAuwIJ6K6/cxbNQIm7goa1pHCMkgPOYb9w
-	 eUCRwMmLnc+5RMtg0XOyG2MfAE3uZ3vjUaUNQerY=
-Date: Tue, 16 Jul 2024 20:23:46 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.1.y 0/7] Backport patches for DAMON merge regions fix
-Message-ID: <2024071624-mustiness-quarterly-f34e@gregkh>
-References: <20240716175205.51280-1-sj@kernel.org>
+	s=arc-20240116; t=1721154746; c=relaxed/simple;
+	bh=GCyw3wZavAMC99QfaxVM5H72XYf2IXkOHKGfTxLKjDw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UkeS6ElSIydo0gbHKeNnFfiRjE0iq3IRHNALVBbO9PY96/PDLaaBuavyUSSwgWxzLzOGQIXkDR9hL82HobCr9n3LyZZx5LYfXSbAZGgDF8U0+NZQBFc4uWjY081z/eJ271UhffuQ+/7Mu7AFBgZCDpfnCYyzx/mPKmxRY/6AOk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3CUcyJc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8324EC116B1;
+	Tue, 16 Jul 2024 18:32:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721154745;
+	bh=GCyw3wZavAMC99QfaxVM5H72XYf2IXkOHKGfTxLKjDw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=b3CUcyJcRgnmsLwZyI6oQxHUVztGAgrD79TQzlX9xayt1o7WFanNNxaR3zQw56R3N
+	 +R/JMuG9vb9y88Wy7iuUYDm0FjEjfj2QGbcQnjNnSopaMFeXMl8bZTwwjWx4N/KFSl
+	 phweh2r/FZBOUbUIB+yQhffQUetxJcFCM4R9sNs79jdzAQR5vC/iQC66Imokzi9D9e
+	 +F+p6XYkkYTgdGQ03Sqj1qXOuh0XzyIAXcGEkY6Q7eVXfSTAvoOEQC+dYCTQy6Quvt
+	 heuyl1q/36x7sq/ep5Lo1JKqmBUCFBvqjH3BMoiL6a9ZR4vAJUyobtwdjnhr7kMbIP
+	 Hpz+jRYZ5IbaQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	shawnguo@kernel.org,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.9 01/11] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi devices
+Date: Tue, 16 Jul 2024 14:31:45 -0400
+Message-ID: <20240716183222.2813968-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240716175205.51280-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.9
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 16, 2024 at 10:51:58AM -0700, SeongJae Park wrote:
-> Commit 310d6c15e910 ("mm/damon/core: merge regions aggressively when
-> max_nr_regions") causes a build warning [1] on 6.1.y.  That was due to
-> unnecessarily strict type check from max().
-> 
-> Fix the warning by backporting a minmax.h upstream commit that made the
-> type check less strict for unnecessary case, and upstream commits that
-> it depends on.
-> 
-> Note that all patches except the third one ("minmax: fix header
-> inclusions") are clean cherry-picks of upstream commit.  For the third
-> one, a minor conflict fix was needed.
-> 
-> [1] https://lore.kernel.org/2024071519-janitor-robe-779f@gregkh
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-Thanks for these, I'll queue them up after this round of -rc releases go
-out in a few days.
+[ Upstream commit ce1dac560a74220f2e53845ec0723b562288aed4 ]
 
-greg k-h
+While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
+claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
+device trees don't add DMA channels. The Reference manuals of i.MX31 and
+i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
+check the others.)
+
+Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
+DMA channel requests") this results in an error message
+
+	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
+
+during boot. However that isn't fatal and the driver gets loaded just
+fine, just without using DMA.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://patch.msgid.link/20240508095610.2146640-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 09b6c1b45f1a1..09c676e50fe0e 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1050,7 +1050,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
+ 	.rx_available = mx31_rx_available,
+ 	.reset = mx31_reset,
+ 	.fifo_size = 8,
+-	.has_dmamode = true,
++	.has_dmamode = false,
+ 	.dynamic_burst = false,
+ 	.has_targetmode = false,
+ 	.devtype = IMX35_CSPI,
+-- 
+2.43.0
+
 
