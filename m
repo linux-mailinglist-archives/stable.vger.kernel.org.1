@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-59756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654B3932B9F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:47:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7EF932C59
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EDAF281EC7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:47:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDCBDB23A93
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE0619DFA7;
-	Tue, 16 Jul 2024 15:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D34119AD72;
+	Tue, 16 Jul 2024 15:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyfVbCY2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bWE4bed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04C019DF88;
-	Tue, 16 Jul 2024 15:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C033F1DDCE;
+	Tue, 16 Jul 2024 15:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144818; cv=none; b=EMcJMntdrNwPxmvJ+6KgjhPx/GuuvluuAabnxOh9zX+hUehyCn8NLO05+GTwa2KIbaBPyCka3GeiVyaFQlG79L6KCVLSKWT9pe4HWyc1UDTXS/DyeDJxZSWp6GyT9zAq1sasCuhhg3wv1Qm+AIWYpp/RUA6ZIFEgNwVzICLvsV8=
+	t=1721145262; cv=none; b=QD+HbJZIqXlYACvR4YbwZfE5VEovBPK9N/WamU0dV7uqNepZq7AqZJwAo+m2bzN9Ho0TMjbO+GczMO5tXSiXlu5hyBD3XHau9l8CTcpn9wLdrAe4qP1yYN3P+3OKy4CtErXNG6H4se9CfQd7AKAF5hhJwSKBtXerWUp2nJ5BX7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144818; c=relaxed/simple;
-	bh=BTZOg4KdGwhKUt4xufC/unAO8TA3lrIr9Ho/5o0u7GQ=;
+	s=arc-20240116; t=1721145262; c=relaxed/simple;
+	bh=hEeTJeHBrxRY72J9PP3tUrETWBiWXimA9josrpCYSAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kN0pXFsjPlFE0CJxSwQ1tNyt9QRGF9vbnqH92Qxp0eItFlphugjb3RsCo87fnyQKtWNG0AI4DebLfxxFfZiD0BFnPqZY4Z76yCGfjxChkmRkvyYgoiu3Pzra+tzDq9HADg49Y4z1xkqFRLj2wmKaMhD6Bbov7tc2BNnZHauvS5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyfVbCY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2A8C4AF11;
-	Tue, 16 Jul 2024 15:46:58 +0000 (UTC)
+	 MIME-Version; b=uTKsgNukYxZj6uOrsFRHL0JRBCnXTnK908yyDsP/+9qOBvDYK+0TTl51FzZq5nsoqkhateIa9u9Ys4R1/d5P9wxEMxItqyqg75CEtaBJaiaynT9T7pnkEj8Zj97iqItLawneiFfl2BVbkGiTnwipzUUhb5PDNgMWc8fx6Zzo8HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bWE4bed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FA8C4AF0B;
+	Tue, 16 Jul 2024 15:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144818;
-	bh=BTZOg4KdGwhKUt4xufC/unAO8TA3lrIr9Ho/5o0u7GQ=;
+	s=korg; t=1721145262;
+	bh=hEeTJeHBrxRY72J9PP3tUrETWBiWXimA9josrpCYSAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cyfVbCY2moT3uYPAm4nMteMQx10Uvb313Vj0lA7qViBzYSN+Mcfl3pxm0nTwwmsfa
-	 4ccOR9J58WYVKorMakWFvVAwqPZw9ElQjPS/jE9qMtJiwuXvW8GPFC4tpabZ6I6O2d
-	 hz8wXr45BvkAe+pqz5CwRirgt1CaY9O52agFq6gc=
+	b=2bWE4bedx9k8pc2LPo9uQusCwT2DwqmfyotqrD+UwCJ474RkTpq6o5l/OW7bPGZNB
+	 bIiGNxNWZ8EPIkGGWsoaVRhzS5WXo6bLYWdNHHo90bVbpkS03CmydeYmUHeZ8EVPNR
+	 qv5Ykf1NpnEmt/pd5u86uge7m2piMQgIP/5ZARiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 104/108] i2c: rcar: reset controller is mandatory for Gen3+
-Date: Tue, 16 Jul 2024 17:31:59 +0200
-Message-ID: <20240716152749.990740694@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ekansh Gupta <quic_ekangupt@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.9 124/143] misc: fastrpc: Fix DSP capabilities request
+Date: Tue, 16 Jul 2024 17:32:00 +0200
+Message-ID: <20240716152800.756513562@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-[ Upstream commit 0e864b552b2302e40b2277629ebac79544a5c433 ]
+commit 4cb7915f0a35e2fcc4be60b912c4be35cd830957 upstream.
 
-Initially, we only needed a reset controller to make sure RXDMA works at
-least once per transfer. Meanwhile, documentation has been updated. It
-now says that a reset has to be performed prior every transaction, even
-if it is non-DMA. So, make the reset controller a requirement instead of
-being optional. And bail out if resetting fails.
+The DSP capability request call expects 2 arguments. First is the
+information about the total number of attributes to be copied from
+DSP and second is the information about the buffer where the DSP
+needs to copy the information. The current design is passing the
+information about the size to be copied from DSP which would be
+considered as a bad argument to the call by DSP causing a failure
+suggesting the same. The second argument carries the information
+about the buffer where the DSP needs to copy the capability
+information and the size to be copied. As the first entry of
+capability attribute is getting skipped, same should also be
+considered while sending the information to DSP. Add changes to
+pass proper arguments to DSP.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: ea5ea84c9d35 ("i2c: rcar: ensure Gen3+ reset does not disturb local targets")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6c16fd8bdd40 ("misc: fastrpc: Add support to get DSP capabilities")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240628114501.14310-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ drivers/misc/fastrpc.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index 720c3fd757ef2..4b0222e5f584c 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -821,12 +821,10 @@ static int rcar_i2c_master_xfer(struct i2c_adapter *adap,
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1693,14 +1693,19 @@ static int fastrpc_get_info_from_dsp(str
+ {
+ 	struct fastrpc_invoke_args args[2] = { 0 };
  
- 	/* Gen3 needs a reset before allowing RXDMA once */
- 	if (priv->devtype == I2C_RCAR_GEN3) {
--		priv->flags |= ID_P_NO_RXDMA;
--		if (!IS_ERR(priv->rstc)) {
--			ret = rcar_i2c_do_reset(priv);
--			if (ret == 0)
--				priv->flags &= ~ID_P_NO_RXDMA;
--		}
-+		priv->flags &= ~ID_P_NO_RXDMA;
-+		ret = rcar_i2c_do_reset(priv);
-+		if (ret)
-+			goto out;
- 	}
+-	/* Capability filled in userspace */
++	/*
++	 * Capability filled in userspace. This carries the information
++	 * about the remoteproc support which is fetched from the remoteproc
++	 * sysfs node by userspace.
++	 */
+ 	dsp_attr_buf[0] = 0;
++	dsp_attr_buf_len -= 1;
  
- 	rcar_i2c_init(priv);
-@@ -1019,15 +1017,6 @@ static int rcar_i2c_probe(struct platform_device *pdev)
- 		irqhandler = rcar_i2c_gen2_irq;
- 	}
+ 	args[0].ptr = (u64)(uintptr_t)&dsp_attr_buf_len;
+ 	args[0].length = sizeof(dsp_attr_buf_len);
+ 	args[0].fd = -1;
+ 	args[1].ptr = (u64)(uintptr_t)&dsp_attr_buf[1];
+-	args[1].length = dsp_attr_buf_len;
++	args[1].length = dsp_attr_buf_len * sizeof(u32);
+ 	args[1].fd = -1;
+ 	fl->pd = USER_PD;
  
--	if (priv->devtype == I2C_RCAR_GEN3) {
--		priv->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
--		if (!IS_ERR(priv->rstc)) {
--			ret = reset_control_status(priv->rstc);
--			if (ret < 0)
--				priv->rstc = ERR_PTR(-ENOTSUPP);
--		}
--	}
--
- 	/* Stay always active when multi-master to keep arbitration working */
- 	if (of_property_read_bool(dev->of_node, "multi-master"))
- 		priv->flags |= ID_P_PM_BLOCKED;
-@@ -1037,6 +1026,16 @@ static int rcar_i2c_probe(struct platform_device *pdev)
- 	if (of_property_read_bool(dev->of_node, "smbus"))
- 		priv->flags |= ID_P_HOST_NOTIFY;
+@@ -1730,7 +1735,7 @@ static int fastrpc_get_info_from_kernel(
+ 	if (!dsp_attributes)
+ 		return -ENOMEM;
  
-+	if (priv->devtype == I2C_RCAR_GEN3) {
-+		priv->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
-+		if (IS_ERR(priv->rstc))
-+			goto out_pm_put;
-+
-+		ret = reset_control_status(priv->rstc);
-+		if (ret < 0)
-+			goto out_pm_put;
-+	}
-+
- 	ret = platform_get_irq(pdev, 0);
- 	if (ret < 0)
- 		goto out_pm_put;
--- 
-2.43.0
-
+-	err = fastrpc_get_info_from_dsp(fl, dsp_attributes, FASTRPC_MAX_DSP_ATTRIBUTES_LEN);
++	err = fastrpc_get_info_from_dsp(fl, dsp_attributes, FASTRPC_MAX_DSP_ATTRIBUTES);
+ 	if (err == DSP_UNSUPPORTED_API) {
+ 		dev_info(&cctx->rpdev->dev,
+ 			 "Warning: DSP capabilities not supported on domain: %d\n", domain);
 
 
 
