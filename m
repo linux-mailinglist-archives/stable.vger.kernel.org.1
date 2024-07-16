@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-59902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8978E932C56
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A6F932CAE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA8F51C20B45
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F33E284A66
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0F219DF71;
-	Tue, 16 Jul 2024 15:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E827319FA85;
+	Tue, 16 Jul 2024 15:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTJoO+qE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CMrLN6x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10371DDCE;
-	Tue, 16 Jul 2024 15:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61A719AD93;
+	Tue, 16 Jul 2024 15:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145256; cv=none; b=KM6EUZy3bRNNIQZkhWKP+3BSmxGX9Brb+bNdDZYyRGBBiSawN38dlBJRetk1vg6L/RABmAqdxKLhdbM39lgIXmK9XhaM2HnjynH7DwpQLdsAEFR0I0o+n+ifovLkFxn7lhxa8gEOnjE5UsOe6xfd7XUdI1tj5A7bpgwfEeQyg0Q=
+	t=1721145416; cv=none; b=Ow8VgRwwFem2MU3tnp7plPLIxfTdN7ZBpp5K2YzjgugZUPiDQtUqNXoYsDic1LtaXLsLlicStnqDc8N9jyY+ILn5tFg6om4+8wibfr7nDW+tmDP2FMixuBOrE8FUTb2vZ2x344Yh2vxjkaERj5HgYCKB9cf+aOzYUHlQTeKUaGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145256; c=relaxed/simple;
-	bh=jcecMMV2KSOUelF/ZAlgOk9RczeeosVnn2TjQyHtPOA=;
+	s=arc-20240116; t=1721145416; c=relaxed/simple;
+	bh=9Nl2eSB/KPw5vWnwMqWyYvlPJqSRP14DJq5RXp0OM+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFSzaCwpJJTBxpyPOYBCF6mmsn/hZQVcK0qQmB0Zn36W7NSWeMZmBLmxtzGdH6KOR3vsBM7NQdJmJgsc0UX4UeiabtIu+cTxFWciXEjqu9yaWWeUeHeA2JLfrztJ/O9OaRh7W13bd4zbKLzg7IAjQJkooUHnYz1XQW5GpHwVfb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTJoO+qE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5977EC116B1;
-	Tue, 16 Jul 2024 15:54:16 +0000 (UTC)
+	 MIME-Version; b=PTQfzoGnIdp05v41/Uyl50/TXfosBsydwmFIXeqVqD3P/7da4533T3y97IihFWTDzq3mL8Rwc51o51W3L1z0Ppie48lRMR4/KO7IF52AdKeoqF2RwbwqVRq7tAS7taxzgIOy7KM3LyYSNq0Ie1QxjR1imy77eC2DM2YU6kLsLTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CMrLN6x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D1BC116B1;
+	Tue, 16 Jul 2024 15:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145256;
-	bh=jcecMMV2KSOUelF/ZAlgOk9RczeeosVnn2TjQyHtPOA=;
+	s=korg; t=1721145416;
+	bh=9Nl2eSB/KPw5vWnwMqWyYvlPJqSRP14DJq5RXp0OM+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CTJoO+qEJUDdshuLiVGMx0Efbd73e8WYfbu8Q7GLowVQDMA0iPh0pC+cbzlUAe/vd
-	 CAjANoSSpbtmbPeCGvDJDQ2OsegeAdEWV4/TUyOfgwdzo2YothROiLwC2iJG2oNYJq
-	 rz+7ld0iEomnh6jdZwILHEOB4m//+sP3sst+rzXw=
+	b=1CMrLN6xnHJiNFHFa39AI49u/ehuVPuOtr91EjIpxDZGOXgkMj0j7KMAtWMbQ7jHu
+	 4rscYJ4G7OYIGqYbTXoZ5vFq8SDaNwivKjLozec/o3wxtBkgmN8cKyh6UGiMnStI6M
+	 Z6ywNEd0C/5ELliAxl2pIDucY8ifXsD97cX4889s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 132/143] mm/damon/core: merge regions aggressively when max_nr_regions is unmet
+	stable <stable@kernel.org>,
+	jinxiaobo <jinxiaobo@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.1 57/96] USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
 Date: Tue, 16 Jul 2024 17:32:08 +0200
-Message-ID: <20240716152801.068704820@linuxfoundation.org>
+Message-ID: <20240716152748.698184290@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6 upstream.
+commit 3859e85de30815a20bce7db712ce3d94d40a682d upstream.
 
-DAMON keeps the number of regions under max_nr_regions by skipping regions
-split operations when doing so can make the number higher than the limit.
-It works well for preventing violation of the limit.  But, if somehow the
-violation happens, it cannot recovery well depending on the situation.  In
-detail, if the real number of regions having different access pattern is
-higher than the limit, the mechanism cannot reduce the number below the
-limit.  In such a case, the system could suffer from high monitoring
-overhead of DAMON.
+START BP-850K is a dot matrix printer that crashes when
+it receives a Set-Interface request and needs USB_QUIRK_NO_SET_INTF
+to work properly.
 
-The violation can actually happen.  For an example, the user could reduce
-max_nr_regions while DAMON is running, to be lower than the current number
-of regions.  Fix the problem by repeating the merge operations with
-increasing aggressiveness in kdamond_merge_regions() for the case, until
-the limit is met.
-
-[sj@kernel.org: increase regions merge aggressiveness while respecting min_nr_regions]
-  Link: https://lkml.kernel.org/r/20240626164753.46270-1-sj@kernel.org
-[sj@kernel.org: ensure max threshold attempt for max_nr_regions violation]
-  Link: https://lkml.kernel.org/r/20240627163153.75969-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20240624175814.89611-1-sj@kernel.org
-Fixes: b9a6ac4e4ede ("mm/damon: adaptively adjust regions")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: jinxiaobo <jinxiaobo@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/202E4B2BD0F0FEA4+20240702154408.631201-1-wangyuli@uniontech.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1357,14 +1357,31 @@ static void damon_merge_regions_of(struc
-  * access frequencies are similar.  This is for minimizing the monitoring
-  * overhead under the dynamically changeable access pattern.  If a merge was
-  * unnecessarily made, later 'kdamond_split_regions()' will revert it.
-+ *
-+ * The total number of regions could be higher than the user-defined limit,
-+ * max_nr_regions for some cases.  For example, the user can update
-+ * max_nr_regions to a number that lower than the current number of regions
-+ * while DAMON is running.  For such a case, repeat merging until the limit is
-+ * met while increasing @threshold up to possible maximum level.
-  */
- static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 				  unsigned long sz_limit)
- {
- 	struct damon_target *t;
-+	unsigned int nr_regions;
-+	unsigned int max_thres;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -506,6 +506,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x1b1c, 0x1b38), .driver_info = USB_QUIRK_DELAY_INIT |
+ 	  USB_QUIRK_DELAY_CTRL_MSG },
  
--	damon_for_each_target(t, c)
--		damon_merge_regions_of(t, threshold, sz_limit);
-+	max_thres = c->attrs.aggr_interval /
-+		(c->attrs.sample_interval ?  c->attrs.sample_interval : 1);
-+	do {
-+		nr_regions = 0;
-+		damon_for_each_target(t, c) {
-+			damon_merge_regions_of(t, threshold, sz_limit);
-+			nr_regions += damon_nr_regions(t);
-+		}
-+		threshold = max(1, threshold * 2);
-+	} while (nr_regions > c->attrs.max_nr_regions &&
-+			threshold / 2 < max_thres);
- }
- 
- /*
++	/* START BP-850k Printer */
++	{ USB_DEVICE(0x1bc3, 0x0003), .driver_info = USB_QUIRK_NO_SET_INTF },
++
+ 	/* MIDI keyboard WORLDE MINI */
+ 	{ USB_DEVICE(0x1c75, 0x0204), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
 
 
 
