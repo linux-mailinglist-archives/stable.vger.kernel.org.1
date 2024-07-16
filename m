@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FCA932C93
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95966932C32
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50D3C1F2166D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 510A2284C41
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4DA19E7E2;
-	Tue, 16 Jul 2024 15:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD57319DF53;
+	Tue, 16 Jul 2024 15:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evg3lCWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ror1fgM7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788CC19E7C6;
-	Tue, 16 Jul 2024 15:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE5217A93F;
+	Tue, 16 Jul 2024 15:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145372; cv=none; b=aMieUINt/bpsmGq14nwpBsgIY1qPS155TSRC2bi8xmOHChw0jFATuAf211OLKwqKiWpru0KnsXLWiFAhTEe2emBJ8P4edwn9rWKbd5yT+jnsTlGuyqi/VI0AQ+wEIS2C7BDt0Jw9wzsIxTHJooIPQSkI9YHAJcTp7pxwwwv/0IQ=
+	t=1721145168; cv=none; b=BuUVTfd11ttJK+j+vEQ8NekIT1hehn7Z/jlRM3qh7PZ9jcOE38Z13mvr4JSlslPdYyAru2QCZ/jxKntbBKFwUZFWke1TZw4t+ayKGCjjcwiHRPNv28g4GwBtlW+C6NnrxMyALnbK5lMCRcBjxX+uAdlx1st2tAyYqHdQgkLzc/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145372; c=relaxed/simple;
-	bh=cXtLRPhx8sCq5l477J3p6gInTLoROaLTovYSsxchIdc=;
+	s=arc-20240116; t=1721145168; c=relaxed/simple;
+	bh=jSs8+24+wsWiog2gy3u9O/QYrRA2WEahyy48Ry3/bzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dKf33ZQLKY5zqgpDMNFNTFduwCtLe/RxdXEwJoGbcXIu9x9DjHC/wav7SEIV3Wr8aD+/d0/pfEMm70ipWKR23rgGZnE9sRf5kdaiX+feuOjNOciOAGzuhS+M27JsipPvUfS+WlAHSv+fzRS1dmWICp7x0rYskoFFleunZHF2yDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evg3lCWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE52FC116B1;
-	Tue, 16 Jul 2024 15:56:11 +0000 (UTC)
+	 MIME-Version; b=lba6913PwtaFy2CDtyZkBg3TJX0mn/amN9OuAN9uWl8gLiT941wSd4hl58qaaVLk/nOXylt1QEchVfjE7SM5XJlyBfg+VI+zFvcTYqcdP2eSelCB6z6Kh9A9bXcoyWQJNBoGg7l0fCEJVegUyCLkWBWHKSz+rM2xZ6wFBY7h8a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ror1fgM7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E07C116B1;
+	Tue, 16 Jul 2024 15:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145372;
-	bh=cXtLRPhx8sCq5l477J3p6gInTLoROaLTovYSsxchIdc=;
+	s=korg; t=1721145168;
+	bh=jSs8+24+wsWiog2gy3u9O/QYrRA2WEahyy48Ry3/bzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=evg3lCWwksvq5Bkas+vAi7+fpIUQJgsteIL0QN+VU5AneqTq/IQJAzwfsUVCFckJt
-	 Fu6Ecy62FZ8Fb723EmZYTznHyJd1XtKlstNMZPlex04lEcEC418iy/1NXy1FXw5Gx6
-	 ql9avzBw5i1wr7XPhhLF+l457Pr6FREaC4nXMTlU=
+	b=ror1fgM7YPSfThHvx6UsqfZUYY2t6JUwMMtlRD9Dfpi9SNmGtRNjgay7tMEVsotMR
+	 J5l/GM1qe6i4ctxbPEyUqHzXdtGTjOsdhL6JDUd/PUASV1xNryfMyFLB6n8+951Dv+
+	 gjP50/VijsgG5K7ddjBBvcsxmrlZbIvBZJcAtVF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Don <joshdon@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH 6.1 45/96] Revert "sched/fair: Make sure to try to detach at least one movable task"
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.9 120/143] wireguard: selftests: use acpi=off instead of -no-acpi for recent QEMU
 Date: Tue, 16 Jul 2024 17:31:56 +0200
-Message-ID: <20240716152748.240166082@linuxfoundation.org>
+Message-ID: <20240716152800.597048864@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Don <joshdon@google.com>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-commit 2feab2492deb2f14f9675dd6388e9e2bf669c27a upstream.
+commit 2cb489eb8dfc291060516df313ff31f4f9f3d794 upstream.
 
-This reverts commit b0defa7ae03ecf91b8bfd10ede430cff12fcbd06.
+QEMU 9.0 removed -no-acpi, in favor of machine properties, so update the
+Makefile to use the correct QEMU invocation.
 
-b0defa7ae03ec changed the load balancing logic to ignore env.max_loop if
-all tasks examined to that point were pinned. The goal of the patch was
-to make it more likely to be able to detach a task buried in a long list
-of pinned tasks. However, this has the unfortunate side effect of
-creating an O(n) iteration in detach_tasks(), as we now must fully
-iterate every task on a cpu if all or most are pinned. Since this load
-balance code is done with rq lock held, and often in softirq context, it
-is very easy to trigger hard lockups. We observed such hard lockups with
-a user who affined O(10k) threads to a single cpu.
-
-When I discussed this with Vincent he initially suggested that we keep
-the limit on the number of tasks to detach, but increase the number of
-tasks we can search. However, after some back and forth on the mailing
-list, he recommended we instead revert the original patch, as it seems
-likely no one was actually getting hit by the original issue.
-
-Fixes: b0defa7ae03e ("sched/fair: Make sure to try to detach at least one movable task")
-Signed-off-by: Josh Don <joshdon@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20240620214450.316280-1-joshdon@google.com
+Cc: stable@vger.kernel.org
+Fixes: b83fdcd9fb8a ("wireguard: selftests: use microvm on x86")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20240704154517.1572127-2-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ tools/testing/selftests/wireguard/qemu/Makefile |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8479,12 +8479,8 @@ static int detach_tasks(struct lb_env *e
- 			break;
- 
- 		env->loop++;
--		/*
--		 * We've more or less seen every task there is, call it quits
--		 * unless we haven't found any movable task yet.
--		 */
--		if (env->loop > env->loop_max &&
--		    !(env->flags & LBF_ALL_PINNED))
-+		/* We've more or less seen every task there is, call it quits */
-+		if (env->loop > env->loop_max)
- 			break;
- 
- 		/* take a breather every nr_migrate tasks */
-@@ -10623,9 +10619,7 @@ more_balance:
- 
- 		if (env.flags & LBF_NEED_BREAK) {
- 			env.flags &= ~LBF_NEED_BREAK;
--			/* Stop if we tried all running tasks */
--			if (env.loop < busiest->nr_running)
--				goto more_balance;
-+			goto more_balance;
- 		}
- 
- 		/*
+--- a/tools/testing/selftests/wireguard/qemu/Makefile
++++ b/tools/testing/selftests/wireguard/qemu/Makefile
+@@ -109,9 +109,9 @@ KERNEL_ARCH := x86_64
+ KERNEL_BZIMAGE := $(KERNEL_BUILD_PATH)/arch/x86/boot/bzImage
+ QEMU_VPORT_RESULT := virtio-serial-device
+ ifeq ($(HOST_ARCH),$(ARCH))
+-QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off -no-acpi
++QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off,acpi=off
+ else
+-QEMU_MACHINE := -cpu max -machine microvm -no-acpi
++QEMU_MACHINE := -cpu max -machine microvm,acpi=off
+ endif
+ else ifeq ($(ARCH),i686)
+ CHOST := i686-linux-musl
+@@ -120,9 +120,9 @@ KERNEL_ARCH := x86
+ KERNEL_BZIMAGE := $(KERNEL_BUILD_PATH)/arch/x86/boot/bzImage
+ QEMU_VPORT_RESULT := virtio-serial-device
+ ifeq ($(subst x86_64,i686,$(HOST_ARCH)),$(ARCH))
+-QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off -no-acpi
++QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off,acpi=off
+ else
+-QEMU_MACHINE := -cpu coreduo -machine microvm -no-acpi
++QEMU_MACHINE := -cpu coreduo -machine microvm,acpi=off
+ endif
+ else ifeq ($(ARCH),mips64)
+ CHOST := mips64-linux-musl
 
 
 
