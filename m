@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-60027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD778932D0F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8181D932AFB
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19D141C23307
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B37611C229FE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F1919AD93;
-	Tue, 16 Jul 2024 16:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FEFF9E8;
+	Tue, 16 Jul 2024 15:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLEZVEOL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgBSKG24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4430B136643;
-	Tue, 16 Jul 2024 16:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD05B641;
+	Tue, 16 Jul 2024 15:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145637; cv=none; b=os5TCfVoFM41uh+z8d6LRV8ySjecXaVGkSpQ4lWfvbDWzDX3ArbL5WlFQTSwo8IyN85ofQI7Nwoiw4bU5s/BHk3lWiuNpERe4ECf/F7Z8PqKAGm1K7vkjIVjEEUuHK1SCs3MfkZcV1OUU3GJkPLLuJayO5yuAFCESmasghTAvwg=
+	t=1721144411; cv=none; b=TrvUUXKXjnjbhQ/HiZBZ1s4/XnsPB+SZNXE7dgDQePO8tlXfBy+crhXNigrjlOh1ggcR9ViW2DoOKm7jXL45/tALjE1yhAZb3GpGUVLWjsLdo5juQl+q+dW/IwBSMxV3P8KU2iChwGSiJxakNdvYIoJDi+uTnmVunAr1DDeA23E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145637; c=relaxed/simple;
-	bh=ZTqTV4C3hZ2i8CjQmAkemmzK4CX4JkutVYmWQp+j95E=;
+	s=arc-20240116; t=1721144411; c=relaxed/simple;
+	bh=j+tK44bswoPDgb8BSTNWM2k0huOSvMivPH8Ok+4veN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRE0ZsLxMCaqO7Ss+MDb9rduGpJKWloWe2LhVibSBLNIMR7gl6C+s2bfCxfBm3t718Ah3MulYzYmD3Ao54UYRwXematfT37HxWcNCXiVoBX6ph98o3zBnshnDQt2BM3RxNe2wH6CYl0oEDtWlbiHy/nEoO0WlRi+XVeNz8cXbBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLEZVEOL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEEAC116B1;
-	Tue, 16 Jul 2024 16:00:36 +0000 (UTC)
+	 MIME-Version; b=CQ1YX8DwggJX8nJbAiOIrQWtxLBXxp1BiIiNyo1OZgW3fNoSQGfJq11u6egergGQnDQXVk9ah+ARtpKIlTnR5sc4FTVnUcAwjRXCldZTCcxOYT3AtkrToGty751HBTpu3LGzkCHUgdKwhtvFz69CQGlCeFNJB7uBXhFHaU1XWkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgBSKG24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122B3C116B1;
+	Tue, 16 Jul 2024 15:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145637;
-	bh=ZTqTV4C3hZ2i8CjQmAkemmzK4CX4JkutVYmWQp+j95E=;
+	s=korg; t=1721144411;
+	bh=j+tK44bswoPDgb8BSTNWM2k0huOSvMivPH8Ok+4veN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLEZVEOLeMgocZ+GWKOt4Cfk1b8mo0/aA0pEFrhy9Batuo151qDYiKNzNP24swZnS
-	 BcmQReQhBGEVFmfN3zu3biQ4SgBMfAOQUB5nLnRrOH61n7WEN9OyX7d6puzhIGqmZF
-	 2iOoaoii+J55uz9n7HIFqsVuvanak+unKvTBDp78=
+	b=MgBSKG24IK7xocGvX1nyQ2+SPbFuHd1SVK1MLW5EjhfOmn8g7olGxca1JnODGP/lK
+	 6GJnGu1xE4XEIogM4qFGCTarkE7P+Ek53moz4SQpQiIn71+nxLJUhAtkzliuvolN4l
+	 xZ/PN9+a7iTF5Tr6XxYxwBuHcLNxoQp2d9f+GpXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerald Yang <gerald.yang@canonical.com>,
-	Chengen Du <chengen.du@canonical.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/121] net/sched: Fix UAF when resolving a clash
+	Vanillan Wang <vanillanwang@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 64/78] USB: serial: option: add Rolling RW350-GL variants
 Date: Tue, 16 Jul 2024 17:31:36 +0200
-Message-ID: <20240716152752.635784117@linuxfoundation.org>
+Message-ID: <20240716152743.116211342@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,136 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengen Du <chengen.du@canonical.com>
+From: Vanillan Wang <vanillanwang@163.com>
 
-[ Upstream commit 26488172b0292bed837b95a006a3f3431d1898c3 ]
+commit ae420771551bd9f04347c59744dd062332bdec3e upstream.
 
-KASAN reports the following UAF:
+Update the USB serial option driver support for the Rolling
+RW350-GL
+- VID:PID 33f8:0802, RW350-GL are laptop M.2 cards (with
+MBIM interfaces for /Linux/Chrome OS)
 
- BUG: KASAN: slab-use-after-free in tcf_ct_flow_table_process_conn+0x12b/0x380 [act_ct]
- Read of size 1 at addr ffff888c07603600 by task handler130/6469
+Here are the outputs of usb-devices:
 
- Call Trace:
-  <IRQ>
-  dump_stack_lvl+0x48/0x70
-  print_address_description.constprop.0+0x33/0x3d0
-  print_report+0xc0/0x2b0
-  kasan_report+0xd0/0x120
-  __asan_load1+0x6c/0x80
-  tcf_ct_flow_table_process_conn+0x12b/0x380 [act_ct]
-  tcf_ct_act+0x886/0x1350 [act_ct]
-  tcf_action_exec+0xf8/0x1f0
-  fl_classify+0x355/0x360 [cls_flower]
-  __tcf_classify+0x1fd/0x330
-  tcf_classify+0x21c/0x3c0
-  sch_handle_ingress.constprop.0+0x2c5/0x500
-  __netif_receive_skb_core.constprop.0+0xb25/0x1510
-  __netif_receive_skb_list_core+0x220/0x4c0
-  netif_receive_skb_list_internal+0x446/0x620
-  napi_complete_done+0x157/0x3d0
-  gro_cell_poll+0xcf/0x100
-  __napi_poll+0x65/0x310
-  net_rx_action+0x30c/0x5c0
-  __do_softirq+0x14f/0x491
-  __irq_exit_rcu+0x82/0xc0
-  irq_exit_rcu+0xe/0x20
-  common_interrupt+0xa1/0xb0
-  </IRQ>
-  <TASK>
-  asm_common_interrupt+0x27/0x40
+usbmode=63: mbim, pipe
 
- Allocated by task 6469:
-  kasan_save_stack+0x38/0x70
-  kasan_set_track+0x25/0x40
-  kasan_save_alloc_info+0x1e/0x40
-  __kasan_krealloc+0x133/0x190
-  krealloc+0xaa/0x130
-  nf_ct_ext_add+0xed/0x230 [nf_conntrack]
-  tcf_ct_act+0x1095/0x1350 [act_ct]
-  tcf_action_exec+0xf8/0x1f0
-  fl_classify+0x355/0x360 [cls_flower]
-  __tcf_classify+0x1fd/0x330
-  tcf_classify+0x21c/0x3c0
-  sch_handle_ingress.constprop.0+0x2c5/0x500
-  __netif_receive_skb_core.constprop.0+0xb25/0x1510
-  __netif_receive_skb_list_core+0x220/0x4c0
-  netif_receive_skb_list_internal+0x446/0x620
-  napi_complete_done+0x157/0x3d0
-  gro_cell_poll+0xcf/0x100
-  __napi_poll+0x65/0x310
-  net_rx_action+0x30c/0x5c0
-  __do_softirq+0x14f/0x491
+T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0802 Rev=00.01
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=USB DATA CARD
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
- Freed by task 6469:
-  kasan_save_stack+0x38/0x70
-  kasan_set_track+0x25/0x40
-  kasan_save_free_info+0x2b/0x60
-  ____kasan_slab_free+0x180/0x1f0
-  __kasan_slab_free+0x12/0x30
-  slab_free_freelist_hook+0xd2/0x1a0
-  __kmem_cache_free+0x1a2/0x2f0
-  kfree+0x78/0x120
-  nf_conntrack_free+0x74/0x130 [nf_conntrack]
-  nf_ct_destroy+0xb2/0x140 [nf_conntrack]
-  __nf_ct_resolve_clash+0x529/0x5d0 [nf_conntrack]
-  nf_ct_resolve_clash+0xf6/0x490 [nf_conntrack]
-  __nf_conntrack_confirm+0x2c6/0x770 [nf_conntrack]
-  tcf_ct_act+0x12ad/0x1350 [act_ct]
-  tcf_action_exec+0xf8/0x1f0
-  fl_classify+0x355/0x360 [cls_flower]
-  __tcf_classify+0x1fd/0x330
-  tcf_classify+0x21c/0x3c0
-  sch_handle_ingress.constprop.0+0x2c5/0x500
-  __netif_receive_skb_core.constprop.0+0xb25/0x1510
-  __netif_receive_skb_list_core+0x220/0x4c0
-  netif_receive_skb_list_internal+0x446/0x620
-  napi_complete_done+0x157/0x3d0
-  gro_cell_poll+0xcf/0x100
-  __napi_poll+0x65/0x310
-  net_rx_action+0x30c/0x5c0
-  __do_softirq+0x14f/0x491
+usbmode=64: mbim, others at (If#= 5 adb)
 
-The ct may be dropped if a clash has been resolved but is still passed to
-the tcf_ct_flow_table_process_conn function for further usage. This issue
-can be fixed by retrieving ct from skb again after confirming conntrack.
+MBIM(MI0) + GNSS(MI2) + AP log(MI3) + AP META(MI4) + ADB(MI5) +
+MD AT(MI6) + MD META(MI7) + NPT(MI8) + Debug(MI9)
 
-Fixes: 0cc254e5aa37 ("net/sched: act_ct: Offload connections with commit action")
-Co-developed-by: Gerald Yang <gerald.yang@canonical.com>
-Signed-off-by: Gerald Yang <gerald.yang@canonical.com>
-Signed-off-by: Chengen Du <chengen.du@canonical.com>
-Link: https://patch.msgid.link/20240710053747.13223-1-chengen.du@canonical.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  5 Spd=5000 MxCh= 0
+D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0802 Rev=00.01
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=USB DATA CARD
+C:  #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=07(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=08(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=09(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8a(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ct.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index 1bd86868726bf..3ac19516ed803 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -1073,6 +1073,14 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
- 		 */
- 		if (nf_conntrack_confirm(skb) != NF_ACCEPT)
- 			goto drop;
-+
-+		/* The ct may be dropped if a clash has been resolved,
-+		 * so it's necessary to retrieve it from skb again to
-+		 * prevent UAF.
-+		 */
-+		ct = nf_ct_get(skb, &ctinfo);
-+		if (!ct)
-+			skip_add = true;
- 	}
- 
- 	if (!skip_add)
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2333,6 +2333,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
 
 
 
