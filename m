@@ -1,57 +1,73 @@
-Return-Path: <stable+bounces-59426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4A393287A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:27:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE59E932880
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73E87285B1A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:27:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B0381C2283C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBF81A0701;
-	Tue, 16 Jul 2024 14:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03B419DF58;
+	Tue, 16 Jul 2024 14:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mdfRkfKL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmnxSbAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5591A01D8;
-	Tue, 16 Jul 2024 14:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6FB19D8B0;
+	Tue, 16 Jul 2024 14:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721139943; cv=none; b=bkiQnbfYCs85bngw55vtc4+RaI/kGWY/OdQKUxNsdzEASC+qmTnusCZw2LkkiS96j0fNapwr3cE0NIcQIv1Y9eiFeos+0XGbpvyZWG+H01B2oI6+J1VwV5800xVq1w/djvi/DqB1iMQncVdX2RI4VWjIN+6+cau8aPvdCWmmi60=
+	t=1721139950; cv=none; b=KANLfjlls+VSLEatlYHvWkt599rmXIu51xNe9BIstjaYrzrJaS9PiF3uVD+IEpYYibE/WIqHoZr9/KWMYyrpO3zcMKciRsQPzLrOILsZvpGlXTaidZ+m5fMqSJ8AIRdqC8f7QgUBXy8MnclHw5pYxa2AFEkJ0GZiNdwlQye52jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721139943; c=relaxed/simple;
-	bh=uTOKARrI0amTe1Gt8kLzCi//Pwc6qVnGSFYkz8442p0=;
+	s=arc-20240116; t=1721139950; c=relaxed/simple;
+	bh=Xn+6qUzEpTK6qfPzPjy3rGiaLoMBOtgvKgPsCnJsxrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTjbsivcwyViYD4xWZLjnQ3r0iHZYEmUSZqyiV4X/kfLLuAoFRpJrVMq6vgrSoKeGWR1nUbd84ZJ0ZYrIFduxOjYyoZt5XOKishY1cLDzsNCEEdlEV/I94D5jbEcwpvRcU7Lcg0riLTX2au8iqXCOjO05UKYmZ9hqtb0okJyUxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mdfRkfKL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843BFC4AF09;
-	Tue, 16 Jul 2024 14:25:42 +0000 (UTC)
+	 MIME-Version; b=pnExe9NsbunHDFWhxelOQ5uJN8WhcV/ydE1WfT2mTIhiyfwuIQnHRGtIL1ijL5RpLIVkluewXvXcxErvMVHZYqR57ry4SbVVaDIfrJKgqkHQOTPKeuAh++baOCpfuUHy6iqx6GUXboNAogO9TzsIpQKQzdNmCD8QI/ZBduC2/kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmnxSbAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2148BC116B1;
+	Tue, 16 Jul 2024 14:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721139943;
-	bh=uTOKARrI0amTe1Gt8kLzCi//Pwc6qVnGSFYkz8442p0=;
+	s=k20201202; t=1721139950;
+	bh=Xn+6qUzEpTK6qfPzPjy3rGiaLoMBOtgvKgPsCnJsxrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdfRkfKLE57Rl+/oSnU+wjJUkoAL8U4neZ8REm/ZOga1hOpPnAKxRI96YGSD/Dbp1
-	 Y7JGV5FqY/cUB45EueKn5LkmcsHhaAvvk6QqBQqHcf57hXuIZxyrU2VtXjcl500bS5
-	 KN5Jf7c6WD7elJ1oZ/kyRUwOR0DBa8fH5W0RcHRY6a+LGAaojTnlN9Qw2V0SJc1uAf
-	 0Tw88zFNAIM9OSuHjx+FuFlNPXmmIUuvb0H3YS4wo4znd/FdjZlQtpd9xXwf8yBiA3
-	 nrWPvlpy2r6+XUcklpjNQ/1LpQVk239Fbds+yj+rfjV/Px/7ZSEri2UdsR0SoYNKTD
-	 vkFZuXFLaVSvQ==
+	b=FmnxSbAsnQkWj/lqjVx7qGHXsOObpICYIPisn2JHYdlvpGUbF++S/ahnSQiaXlkoe
+	 1Ia6b77eiZA9SWz+kxSXNo2mra5JlKz0w6vpr1nznrsbyDLXxdUy3/JmkZTLghL/T4
+	 JHziIraQIMIv8mXmBUQ/uUoOR+6QJq9/XpJfcnwx9Ap3pReFJTRqPGxuommu0Luqia
+	 i7ZJADI5EpVuXUCbk9RpHUgK/B1saR8XtgnJuI+cbnycbMjEbESDJMrxhFjWhZcW1m
+	 s0UiBlgoCs8iPsX/4mottu7ov1YADDXLLLiEgAuZITv7KpJznACVjJvvPCWmEp6WL0
+	 8pqWmXlV+1GUw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gao Xiang <hsiangkao@linux.alibaba.com>,
+Cc: Tom Chung <chiahsuan.chung@amd.com>,
+	Sun peng Li <sunpeng.li@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	xiang@kernel.org,
-	chao@kernel.org,
-	linux-erofs@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.9 10/22] erofs: ensure m_llen is reset to 0 if metadata is invalid
-Date: Tue, 16 Jul 2024 10:24:17 -0400
-Message-ID: <20240716142519.2712487-10-sashal@kernel.org>
+	harry.wentland@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	alex.hung@amd.com,
+	hamza.mahfooz@amd.com,
+	roman.li@amd.com,
+	mario.limonciello@amd.com,
+	joshua@froggi.es,
+	wayne.lin@amd.com,
+	srinivasan.shanmugam@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.9 11/22] drm/amd/display: Reset freesync config before update new state
+Date: Tue, 16 Jul 2024 10:24:18 -0400
+Message-ID: <20240716142519.2712487-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716142519.2712487-1-sashal@kernel.org>
 References: <20240716142519.2712487-1-sashal@kernel.org>
@@ -66,42 +82,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.9
 Content-Transfer-Encoding: 8bit
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit 9b32b063be1001e322c5f6e01f2a649636947851 ]
+[ Upstream commit 6b8487cdf9fc7bae707519ac5b5daeca18d1e85b ]
 
-Sometimes, the on-disk metadata might be invalid due to user
-interrupts, storage failures, or other unknown causes.
+[Why]
+Sometimes the new_crtc_state->vrr_infopacket did not sync up with the
+current state.
+It will affect the update_freesync_state_on_stream() does not update
+the state correctly.
 
-In that case, z_erofs_map_blocks_iter() may still return a valid
-m_llen while other fields remain invalid (e.g., m_plen can be 0).
+[How]
+Reset the freesync config before get_freesync_config_for_crtc() to
+make sure we have the correct new_crtc_state for VRR.
 
-Due to the return value of z_erofs_scan_folio() in some path will
-be ignored on purpose, the following z_erofs_scan_folio() could
-then use the invalid value by accident.
-
-Let's reset m_llen to 0 to prevent this.
-
-Link: https://lore.kernel.org/r/20240629185743.2819229-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zmap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index e313c936351d5..6bd435a565f61 100644
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -723,6 +723,8 @@ int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index f866a02f4f489..53a55270998cc 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10028,6 +10028,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
+ 	}
  
- 	err = z_erofs_do_map_blocks(inode, map, flags);
- out:
-+	if (err)
-+		map->m_llen = 0;
- 	trace_z_erofs_map_blocks_iter_exit(inode, map, flags, err);
- 	return err;
- }
+ 	/* Update Freesync settings. */
++	reset_freesync_config_for_crtc(dm_new_crtc_state);
+ 	get_freesync_config_for_crtc(dm_new_crtc_state,
+ 				     dm_new_conn_state);
+ 
 -- 
 2.43.0
 
