@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-59895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77E7932C50
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 066ED932CE6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7ED4284BC8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 378841C21321
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95CA19E7CF;
-	Tue, 16 Jul 2024 15:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5CA19E83D;
+	Tue, 16 Jul 2024 15:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAvYXubZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqe1kwjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793AA17C9E9;
-	Tue, 16 Jul 2024 15:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C73219E7DB;
+	Tue, 16 Jul 2024 15:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145236; cv=none; b=RbRLswOkLItTSXB70ZYgj8zo2FQeM89kxRmvCZvNN4DXcPB6c4tVlgoNBch02lhF8N1/DWznZeAhWfuD7MbbEuKKX8H4mbr8EscCuppIjRBhYk8CS8lfikgEZHwYNQZqVCisux2GI/YsOANEPgUY+YCE3jGR3MdMh6dto6i9xUk=
+	t=1721145538; cv=none; b=mMcgdw2VryHP7GnIcbeyynWnd2OaT80UU3Huu86m/EzUiQ7/4J5TL9eTS+7gGDxwlOr63iS4vsaG3vTiRO8L9fTpreT4jv/aO8kC1EjwkxmhGZ0LlrckOfOn15PeJ9mY8S2kaXB/8wjEju5skM/1JRFZ7sVOhiQhHTrCok2jmY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145236; c=relaxed/simple;
-	bh=6JRBxBD8jeWBl3MKTdY74Vg7vEhxqgpxYByMqeMyFuY=;
+	s=arc-20240116; t=1721145538; c=relaxed/simple;
+	bh=SqELmr4t8HBs+be16NFhaohH2arkkQFBnMgrwCx3Ed0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4yucm4/o1mTbT/VCiOi7j/kDxrvA73b+upYodNAHCypm0iwDR+W74B9SuVmsLic4cfeTnPn5Ln5VfMbId9z2Jbb1/SfJ/RZXF/aHMVMawUIzhCfA6Nz0mFefjRRXXo0izyx2oI05C6K6lMnQCfP2lIQRS9XD4Ump0qmLbiFV9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAvYXubZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5234C4AF0E;
-	Tue, 16 Jul 2024 15:53:55 +0000 (UTC)
+	 MIME-Version; b=LggVgqyDNR4YombwF3uLoNcnzxQSBfCnzkJObLZAVCIZJQV07/Jp2yqkUL6RwgMBPo0G9HpfQJZLYyrmd8rPSqeLoSKfajs6FMDSKSyLqhQgnCb7yvmvVD+W1h6WZSYY7aAyZy8u+CaE+OOKmpwkTEBALTkQroHFqpE/q0BO8sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqe1kwjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F388C116B1;
+	Tue, 16 Jul 2024 15:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145236;
-	bh=6JRBxBD8jeWBl3MKTdY74Vg7vEhxqgpxYByMqeMyFuY=;
+	s=korg; t=1721145538;
+	bh=SqELmr4t8HBs+be16NFhaohH2arkkQFBnMgrwCx3Ed0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aAvYXubZnJNbk5kvdwaWf6PIQ5xFdq4UWl26PHdv3QVSEnPF5lMzGmFwU6HRV1zeu
-	 uSlU8FyR/uqw3EACH9+cLDXDqa4YsMTmBD/e3uG3SPO33UFITDA46cFHxXhSImKquF
-	 t/5rLCUqqAMn23+f8VGV+YxA7TIX8mlKVyovAyvM=
+	b=uqe1kwjWNJFTChgUai5TmEvdfnBfXJlX6KzCUloYsI+HAyuRdEQcErF1CcmFR2WOD
+	 1jbcWVyBM3Id/eKqd0dRu2oXf7t/+w97wLDiBJsH6dDkjQK3sAU8i+LQ+zxfKp0zF0
+	 n2JD2y2cbUXOkmx3xXcTXMW742jJmkaancCl1MlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 143/143] kbuild: rpm-pkg: avoid the warnings with dtbs listed twice
-Date: Tue, 16 Jul 2024 17:32:19 +0200
-Message-ID: <20240716152801.496893506@linuxfoundation.org>
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 69/96] ALSA: hda/realtek: Limit mic boost on VAIO PRO PX
+Date: Tue, 16 Jul 2024 17:32:20 +0200
+Message-ID: <20240716152749.164671223@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit e3286434d220efb9a8b78f7241a5667974d2ec80 ]
+commit 6db03b1929e207d2c6e84e75a9cd78124b3d6c6d upstream.
 
-After 8d1001f7bdd0 (kbuild: rpm-pkg: fix build error with CONFIG_MODULES=n),
-the following warning "warning: File listed twice: *.dtb" is appearing for
-every dtb file that is included.
-The reason is that the commented commit already adds the folder
-/lib/modules/%{KERNELRELEASE} in kernel.list file so the folder
-/lib/modules/%{KERNELRELEASE}/dtb is no longer necessary, just remove it.
+The internal mic boost on the VAIO models VJFE-CL and VJFE-IL is too high.
+Fix this by applying the ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine
+to limit the gain.
 
-Fixes: 8d1001f7bdd0 ("kbuild: rpm-pkg: fix build error with CONFIG_MODULES=n")
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240705141012.5368-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/package/kernel.spec | 1 -
- 1 file changed, 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index fffc8af8deb17..c52d517b93647 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -83,7 +83,6 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEA
- 	done
- 
- 	if [ -d "%{buildroot}/lib/modules/%{KERNELRELEASE}/dtb" ];then
--		echo "/lib/modules/%{KERNELRELEASE}/dtb"
- 		find "%{buildroot}/lib/modules/%{KERNELRELEASE}/dtb" -printf "%%%ghost /boot/dtb-%{KERNELRELEASE}/%%P\n"
- 	fi
- 
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9923,6 +9923,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
+ 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
+ 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
++	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x1252, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+@@ -10155,6 +10156,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
++	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+ 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
 
 
 
