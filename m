@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-59478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3037932925
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:39:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B568932928
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D869283F7A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:39:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00D351F216B6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027DC1AC431;
-	Tue, 16 Jul 2024 14:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8F81AC449;
+	Tue, 16 Jul 2024 14:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZYF4n5l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F4QyU72G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D921AC42B;
-	Tue, 16 Jul 2024 14:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184C41AC442;
+	Tue, 16 Jul 2024 14:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721140181; cv=none; b=PnheKwOyTLE393VZMq3Twy4Q+hNptS8V3fLQUdIIc0LyEpiNaQye/udxeIz4vTdSA4BBCa+ATWNff+X1JuFkS45gRNKnTFzA5A7sFYgBExY2g7cTN2PG3M1ta75V2NoT0CVaHFbASjtE5OvIMoUz4NU5j614tZfxIsb2wflif5M=
+	t=1721140183; cv=none; b=UqSkFudeo/e1sSeAzO9S2bVZcjRav8l7AEAj8n2Av0NR2mSF2MTrmddYfUJhMZZSfGr8uSpdLnx1fXYAiLU8ZW5NHdu/766ybLdC4DdLqPTks368J0/qY92m4HFf/GT8y3ToRRjSD5TiuFpLsKzuC6boTyp21wYu8F6JWdRL+XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721140181; c=relaxed/simple;
-	bh=AKf2/St0vql7ngfPNNpPADDQZGaecaGuzCCmRFBcmqI=;
+	s=arc-20240116; t=1721140183; c=relaxed/simple;
+	bh=3FXE5Ok1csVYIeTMkjs77bGKjWGS+bJQTjJSpmx8bgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lnwf22oJuo8oX9riS8x9TELnbGsXOAxpU/asYukGSgPdsHqQXeukgLNqVs/mDTzL3VWgSpnbKvrm8D2de2NmgH7/HQaSiptPVSLenKFlXtt69PrPxUlfDLpRF/v2uGU9ohjyBsklv27J9Wqt8uTOk8wN7Aqci6StOmXU2LM4t7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZYF4n5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A6CC4AF0F;
-	Tue, 16 Jul 2024 14:29:39 +0000 (UTC)
+	 MIME-Version; b=E1Ox+blofczc7BIgfoRoUP+zeUEJGVwot9RRMhCmvRlzvYnAh7RZCoHSqvy5HSfdFgZKNdLKTaayDQQajvzbmw66nFErreETkEAUt89MFQrKFC0qikPLig1ldqd2TvHP/B32heZvmW2NTljLE7mGoQtxbrjclPVzvFh6wI30gqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F4QyU72G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDEEC116B1;
+	Tue, 16 Jul 2024 14:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721140181;
-	bh=AKf2/St0vql7ngfPNNpPADDQZGaecaGuzCCmRFBcmqI=;
+	s=k20201202; t=1721140183;
+	bh=3FXE5Ok1csVYIeTMkjs77bGKjWGS+bJQTjJSpmx8bgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZYF4n5lg348eFUS85pvNhrp0I0VYogPe54kGzomr0XB5E4ytk1rNHtYmX6yBCU32
-	 3a9NO7JXeaZsayWvnFuGXice45m1SXzaTA88CBwAFB6jlQk257rbTMyEaRL+PAle/A
-	 B/aFREH55nHC9Acf8FxolT1wOn0C31DJkT2ZojqaG2QPyjfTLIVbdzK+SPRzX1DHny
-	 1jc9srQWTrpswQtRN89OnIhMB7aLJAPp8F9JHj8E2xB8cjYgroiUduwZNS/zoNJTEQ
-	 OyfRzJRqoeEZSwBo+U9ndSEHGeq+C3DtcyEdOgw7rMbCuQvQAHeM7AJ1M3CfENQuhn
-	 gZpEQSSbvvLpA==
+	b=F4QyU72GSBIfQnqa9imkzXE9M2cy4EP+M6NkkUPNpWKSbAz8BWR5bqjXMIgXmQg+5
+	 F1lmu/SZpaZ6Q4V3e0detd0NlKOPN2jtMWc3TvWPpKkiqy6f+JCONa+qDPT5KCi7Gx
+	 MHlOXHj5aoxB+pZrCjEVHrxKQD0iqrf3zUMjgWuOslC/ok26RNEDGYj9ZiJr28Rupr
+	 oQYwmdaEs7r2cnsuYkq6mA/0sE4sScmQrTUjgntERW3/6kO+JunZndj/c2qg8C/lb1
+	 R0gSNld5V9Thtb6salLcChFXGpLOPEpRkL1oy+8XTtZIBcD1Na3SU36gtEjj7QunWG
+	 HXbDTDa07bDOQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 7/9] drm/radeon: check bo_va->bo is non-NULL before using it
-Date: Tue, 16 Jul 2024 10:29:09 -0400
-Message-ID: <20240716142920.2713829-7-sashal@kernel.org>
+	viro@zeniv.linux.org.uk,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 8/9] fs: better handle deep ancestor chains in is_subdir()
+Date: Tue, 16 Jul 2024 10:29:10 -0400
+Message-ID: <20240716142920.2713829-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716142920.2713829-1-sashal@kernel.org>
 References: <20240716142920.2713829-1-sashal@kernel.org>
@@ -70,34 +67,78 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.162
 Content-Transfer-Encoding: 8bit
 
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 6fb15dcbcf4f212930350eaee174bb60ed40a536 ]
+[ Upstream commit 391b59b045004d5b985d033263ccba3e941a7740 ]
 
-The call to radeon_vm_clear_freed might clear bo_va->bo, so
-we have to check it before dereferencing it.
+Jan reported that 'cd ..' may take a long time in deep directory
+hierarchies under a bind-mount. If concurrent renames happen it is
+possible to livelock in is_subdir() because it will keep retrying.
 
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Change is_subdir() from simply retrying over and over to retry once and
+then acquire the rename lock to handle deep ancestor chains better. The
+list of alternatives to this approach were less then pleasant. Change
+the scope of rcu lock to cover the whole walk while at it.
+
+A big thanks to Jan and Linus. Both Jan and Linus had proposed
+effectively the same thing just that one version ended up being slightly
+more elegant.
+
+Reported-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_gem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/dcache.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_gem.c b/drivers/gpu/drm/radeon/radeon_gem.c
-index 57218263ef3b1..277a313432b28 100644
---- a/drivers/gpu/drm/radeon/radeon_gem.c
-+++ b/drivers/gpu/drm/radeon/radeon_gem.c
-@@ -653,7 +653,7 @@ static void radeon_gem_va_update_vm(struct radeon_device *rdev,
- 	if (r)
- 		goto error_unlock;
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 422c440b492a5..72ac6a03d7bea 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -3121,28 +3121,25 @@ EXPORT_SYMBOL(d_splice_alias);
+   
+ bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
+ {
+-	bool result;
++	bool subdir;
+ 	unsigned seq;
  
--	if (bo_va->it.start)
-+	if (bo_va->it.start && bo_va->bo)
- 		r = radeon_vm_bo_update(rdev, bo_va, bo_va->bo->tbo.resource);
+ 	if (new_dentry == old_dentry)
+ 		return true;
  
- error_unlock:
+-	do {
+-		/* for restarting inner loop in case of seq retry */
+-		seq = read_seqbegin(&rename_lock);
+-		/*
+-		 * Need rcu_readlock to protect against the d_parent trashing
+-		 * due to d_move
+-		 */
+-		rcu_read_lock();
+-		if (d_ancestor(old_dentry, new_dentry))
+-			result = true;
+-		else
+-			result = false;
+-		rcu_read_unlock();
+-	} while (read_seqretry(&rename_lock, seq));
+-
+-	return result;
++	/* Access d_parent under rcu as d_move() may change it. */
++	rcu_read_lock();
++	seq = read_seqbegin(&rename_lock);
++	subdir = d_ancestor(old_dentry, new_dentry);
++	 /* Try lockless once... */
++	if (read_seqretry(&rename_lock, seq)) {
++		/* ...else acquire lock for progress even on deep chains. */
++		read_seqlock_excl(&rename_lock);
++		subdir = d_ancestor(old_dentry, new_dentry);
++		read_sequnlock_excl(&rename_lock);
++	}
++	rcu_read_unlock();
++	return subdir;
+ }
+ EXPORT_SYMBOL(is_subdir);
+ 
 -- 
 2.43.0
 
