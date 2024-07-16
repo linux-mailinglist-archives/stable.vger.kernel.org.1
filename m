@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-59716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07FD932B69
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEC4932ABA
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DAAF1C220AF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0E0EB22881
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1FD19A86F;
-	Tue, 16 Jul 2024 15:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6192EF9E8;
+	Tue, 16 Jul 2024 15:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py/hJmzx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWDJtj4S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF83F9E8;
-	Tue, 16 Jul 2024 15:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206F6CA40;
+	Tue, 16 Jul 2024 15:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144690; cv=none; b=ZXf+dA2hUl2uGzlSSoD7H06ip97FVO0dAv4jbYAls9npPMjsBZXHtCQ23i87T+L3I2dj68NiMlBA7TXvX5sr/dknarO4jwEp9qPnU8T4wpxFgjx35xuBVu2WzPc7oRyPLq1Fc/mSot2SPZj8lUKCnuHLDGt6P2c/ILGvFt7mDXo=
+	t=1721144242; cv=none; b=SUaJs7cofRy8ayXKtLLZYIiT2gBGtaKxp4prSB/kOcJ5EsEhUoBGOnU2PV32eLRrRyFbd60BViWYnQXap/OHVhNNV6RrmOigZ7ioXikMYswnqfDxoZEsA1kSai2MDzK+yI4sNjA3ibTeo7lK2NYyfc59maoK+sesvXxLyvK/LEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144690; c=relaxed/simple;
-	bh=jdsI6Wdo5+l5A3yBROlrF7lIwXr7xBl3rVT4xeaUn8A=;
+	s=arc-20240116; t=1721144242; c=relaxed/simple;
+	bh=yUf4dKOAOERMPOO6oUAjQbPYjATNIMhVlShgRYXixXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=As1gYGg6Ribm5juNI8YsesWLqwLb5vno6bbpg/+JW6OySKEyNLITnu2no+XBh1feP3G6iLBBew+iV17gYAQRKKoeQaLYc/bzbkpdUKxhv/5F3E3MshMdOc0mIr1BBs2ZVNqOXvAlEBdfMBZE26Do0/zlTeq2v/q9/bWlbN+19+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py/hJmzx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7295FC116B1;
-	Tue, 16 Jul 2024 15:44:49 +0000 (UTC)
+	 MIME-Version; b=WBHzC+3BPceBaD1JzjQRVusJyVfG3eASIx7haiJgAEWTRTnmsWZwd0T3KOgOFGk1daS3tql50DBMYWGn8DhPGh7ITCuYeGnO1DmcOHw1f7DzhvbYZHMU9kZW+20+K8hkEFPGo7ETPZMYHtQ9tLC7DT2nrs5tqAqCiZqljvaHVKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWDJtj4S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EE6C116B1;
+	Tue, 16 Jul 2024 15:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144689;
-	bh=jdsI6Wdo5+l5A3yBROlrF7lIwXr7xBl3rVT4xeaUn8A=;
+	s=korg; t=1721144242;
+	bh=yUf4dKOAOERMPOO6oUAjQbPYjATNIMhVlShgRYXixXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=py/hJmzxJ7uyr91bU1gtE+TNEmJYgFT0G9OQoyJLIHS8FcTIZK9FWaoW/1Dxa2rvX
-	 vO2anjZT4QvJW82j2x2KnijB973Se1hL/mRoVwaFjVcqxKSL2ZoM3xnVz801yFkwwy
-	 y3WAbbYvXc2FcOG0IsFNyplu2VnQ9jCCdAmy2d0o=
+	b=iWDJtj4SBEy9LFMnDB0YSdNp/HSjj7ySq7u8MLxHT4xiut3gmOEyJDrgUbCmDQY0N
+	 OjV13FbIPXolYNAfzT3HDHudejpCMX/8H9dR5DJEOOH87ja2b4hRugvMxzkBexl0pa
+	 myWcOWW0dWQOSE7cDMeV5U7IIHY3C/7zZ96wl7Ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH 5.10 075/108] net: ks8851: Fix potential TX stall after interface reopen
-Date: Tue, 16 Jul 2024 17:31:30 +0200
-Message-ID: <20240716152748.861230746@linuxfoundation.org>
+	Lee Jones <lee@kernel.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 4.19 56/66] usb: gadget: configfs: Prevent OOB read/write in usb_string_copy()
+Date: Tue, 16 Jul 2024 17:31:31 +0200
+Message-ID: <20240716152740.301483416@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: Lee Jones <lee@kernel.org>
 
-commit 7a99afef17af66c276c1d6e6f4dbcac223eaf6ac upstream.
+commit 6d3c721e686ea6c59e18289b400cc95c76e927e0 upstream.
 
-The amount of TX space in the hardware buffer is tracked in the tx_space
-variable. The initial value is currently only set during driver probing.
+Userspace provided string 's' could trivially have the length zero. Left
+unchecked this will firstly result in an OOB read in the form
+`if (str[0 - 1] == '\n') followed closely by an OOB write in the form
+`str[0 - 1] = '\0'`.
 
-After closing the interface and reopening it the tx_space variable has
-the last value it had before close. If it is smaller than the size of
-the first send packet after reopeing the interface the queue will be
-stopped. The queue is woken up after receiving a TX interrupt but this
-will never happen since we did not send anything.
+There is already a validating check to catch strings that are too long.
+Let's supply an additional check for invalid strings that are too short.
 
-This commit moves the initialization of the tx_space variable to the
-ks8851_net_open function right before starting the TX queue. Also query
-the value from the hardware instead of using a hard coded value.
-
-Only the SPI chip variant is affected by this issue because only this
-driver variant actually depends on the tx_space variable in the xmit
-function.
-
-Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org # 5.10+
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20240709195845.9089-1-rwahl@gmx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240705074339.633717-1-lee@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/micrel/ks8851_common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/configfs.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -501,6 +501,7 @@ static int ks8851_net_open(struct net_de
- 	ks8851_wrreg16(ks, KS_IER, ks->rc_ier);
- 
- 	ks->queued_len = 0;
-+	ks->tx_space = ks8851_rdreg16(ks, KS_TXMIR);
- 	netif_start_queue(ks->netdev);
- 
- 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
-@@ -1057,7 +1058,6 @@ int ks8851_probe_common(struct net_devic
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -116,9 +116,12 @@ static int usb_string_copy(const char *s
  	int ret;
+ 	char *str;
+ 	char *copy = *s_copy;
++
+ 	ret = strlen(s);
+ 	if (ret > USB_MAX_STRING_LEN)
+ 		return -EOVERFLOW;
++	if (ret < 1)
++		return -EINVAL;
  
- 	ks->netdev = netdev;
--	ks->tx_space = 6144;
- 
- 	gpio = of_get_named_gpio_flags(dev->of_node, "reset-gpios", 0, NULL);
- 	if (gpio == -EPROBE_DEFER)
+ 	if (copy) {
+ 		str = copy;
 
 
 
