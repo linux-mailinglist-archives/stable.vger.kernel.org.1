@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-59831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC63932BFE
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DF3932CF5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B53BB1F2238B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3746328199B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E441F19B3EC;
-	Tue, 16 Jul 2024 15:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C520C19AD72;
+	Tue, 16 Jul 2024 15:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbtbatEH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oTz+iqC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16601DDCE;
-	Tue, 16 Jul 2024 15:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8331A1DA4D;
+	Tue, 16 Jul 2024 15:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145044; cv=none; b=YSOXLKUkPBrhErAZJJ8aHKWw1XVQ5S29rQvq1PuwGwtJF32UXJOve3mbQuC2liz2G0Rd1yUWxOySBHYcMShosbnqSu2JXV1nNLXWqPJJhHt7aAPR60dql86kHXk5Fc2eLNNGVRAEu4F5XWAqLaD62s1CAi6BKQOX1IU7rpG6CJk=
+	t=1721145573; cv=none; b=HeEGBBor8gLgoeeL3pMC5XrrHYj+p8U+oBdhNAJ1W2Upbh2S8h30uSeqXiaisWrWsmdTuHNKp6sqJsdJ5FbsbzdbBjd0sGo3FCyOSe9IelTMsrq/W7xFMaICFLIqkSMYa4phSzIWnHVMY7VpSXuzCOaFrA6fcq93S6uMIeQmwdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145044; c=relaxed/simple;
-	bh=e/jgzl4wh4qgHhhtCkbXLW3TOQY07Bl3IlHn5vgeGgE=;
+	s=arc-20240116; t=1721145573; c=relaxed/simple;
+	bh=8qDH4wPRuGoIIFEYT1f+Yx5buClCyUGPaCeTaYbIWlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSkaqmL30H/6edbO9OA+IEsbHtPLlsAz4Yd/0ZS5FMXzsgXGQuX1dkzzCHy7nYcnQOZZ6tvorFoK+c6AaRuRdlyRHzwHxnXg+fN9zoJ8AHw5R7erAzSPvAHKv+iHhXbUiWwvScdxe9+SG6ndxXKlnynO6Xy9/ZRDX/shu5qQEo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbtbatEH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252B9C116B1;
-	Tue, 16 Jul 2024 15:50:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tMhCgxHNPCqPcm3Fl5SuQps5bI+lh0xMhLLEmJ6Z2qS3VK4QJm5XFhIuLFt2xuyxFqzCyp20A0+C9EobuZUWEGib6xbOoKTK2xQDzqsGDUQyNUReVOd/D29HrzIphg+haB5SuxGMuOoauvI5Z0lQ2gqaLlSy6d5JbkbeQUI2/eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oTz+iqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E2FC116B1;
+	Tue, 16 Jul 2024 15:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145044;
-	bh=e/jgzl4wh4qgHhhtCkbXLW3TOQY07Bl3IlHn5vgeGgE=;
+	s=korg; t=1721145573;
+	bh=8qDH4wPRuGoIIFEYT1f+Yx5buClCyUGPaCeTaYbIWlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbtbatEHhSK5EhuBwAjBgslGv6Mp8eoPwM3caLyYgVn+bW2vsQcX6sB2kTA3iGkNy
-	 UzrPbksULyOeRSp8nZAKO1qOUCQ7OQbMD8Oiyj0BjMh+XsPSjecuNfjum5m2Cd0Qbs
-	 pyNIx7+70mV4AfHgkgvWDXkFbTm0Rx2PdZi1Kki0=
+	b=2oTz+iqCIrNQzqhy/KdQG19x7Sf3rYBO4KHRrsZ3T4LVL6pFXUuNEwZHirAGTXqyL
+	 7AgHaSV6FbltO2SrL3LEliGazDPsUFnlobNMx1rXgCMVXeAkidTM6jb/7oOFiqOLrI
+	 J7+gn7OzBlQG9WtWmo4gDw5bqyXMx444SddhLZUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.9 079/143] usb: gadget: configfs: Prevent OOB read/write in usb_string_copy()
-Date: Tue, 16 Jul 2024 17:31:15 +0200
-Message-ID: <20240716152759.016663794@linuxfoundation.org>
+	=?UTF-8?q?Light=20Hsieh=20 ?= <Light.Hsieh@mediatek.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Alexander Aring <aahringo@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 014/121] filelock: fix potential use-after-free in posix_lock_inode
+Date: Tue, 16 Jul 2024 17:31:16 +0200
+Message-ID: <20240716152751.869808523@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 6d3c721e686ea6c59e18289b400cc95c76e927e0 upstream.
+[ Upstream commit 1b3ec4f7c03d4b07bad70697d7e2f4088d2cfe92 ]
 
-Userspace provided string 's' could trivially have the length zero. Left
-unchecked this will firstly result in an OOB read in the form
-`if (str[0 - 1] == '\n') followed closely by an OOB write in the form
-`str[0 - 1] = '\0'`.
+Light Hsieh reported a KASAN UAF warning in trace_posix_lock_inode().
+The request pointer had been changed earlier to point to a lock entry
+that was added to the inode's list. However, before the tracepoint could
+fire, another task raced in and freed that lock.
 
-There is already a validating check to catch strings that are too long.
-Let's supply an additional check for invalid strings that are too short.
+Fix this by moving the tracepoint inside the spinlock, which should
+ensure that this doesn't happen.
 
-Signed-off-by: Lee Jones <lee@kernel.org>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240705074339.633717-1-lee@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 74f6f5912693 ("locks: fix KASAN: use-after-free in trace_event_raw_event_filelock_lock")
+Link: https://lore.kernel.org/linux-fsdevel/724ffb0a2962e912ea62bb0515deadf39c325112.camel@kernel.org/
+Reported-by: Light Hsieh (謝明燈) <Light.Hsieh@mediatek.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/20240702-filelock-6-10-v1-1-96e766aadc98@kernel.org
+Reviewed-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/configfs.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/locks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -115,9 +115,12 @@ static int usb_string_copy(const char *s
- 	int ret;
- 	char *str;
- 	char *copy = *s_copy;
-+
- 	ret = strlen(s);
- 	if (ret > USB_MAX_STRING_LEN)
- 		return -EOVERFLOW;
-+	if (ret < 1)
-+		return -EINVAL;
- 
- 	if (copy) {
- 		str = copy;
+diff --git a/fs/locks.c b/fs/locks.c
+index 76ad05f8070ad..fb717dae90297 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -1314,9 +1314,9 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
+ 		locks_wake_up_blocks(left);
+ 	}
+  out:
++	trace_posix_lock_inode(inode, request, error);
+ 	spin_unlock(&ctx->flc_lock);
+ 	percpu_up_read(&file_rwsem);
+-	trace_posix_lock_inode(inode, request, error);
+ 	/*
+ 	 * Free any unused locks.
+ 	 */
+-- 
+2.43.0
+
 
 
 
