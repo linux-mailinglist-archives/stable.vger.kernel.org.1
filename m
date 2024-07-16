@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-60098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAFBC932D5C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:04:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B49D2932D60
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:04:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90BB81F20F3C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:04:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AD86B233B9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9347219AD59;
-	Tue, 16 Jul 2024 16:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B639D19AD93;
+	Tue, 16 Jul 2024 16:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AiimV7XG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wap43cdQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524021DDCE;
-	Tue, 16 Jul 2024 16:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EFE1DDCE;
+	Tue, 16 Jul 2024 16:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145858; cv=none; b=G43r0aHUpLJLTTlbrk8ZAqfrrpaSiGzs+AlNTrMein8hdmfcBjA1oWMXBk0uvstHi8b18JZhcC2HKZ45XACvopF794I/xnel2knDLVrC9XKsiVUniIsW7huq+SIuJgoBPb/gfC1fo2uUB18IhjgMYzwAJMy4ncoNtqUqMPTELvM=
+	t=1721145869; cv=none; b=uom63veU/PdEeZ2s7tQqd2P117/ShKpYzREzIGiiHpBJJwxV70Fgg8peS405b+wpSO/MWJThvV8crG9/tx0C53XzcjF4AvJtdE/RKZFpqhx8xAu6rO7rvkTjs+5sEOmtL8IvgZ0WShnk0Fp1krknvYpSKQgCTEXwC9g09PLb/VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145858; c=relaxed/simple;
-	bh=8+1HwU6TBHtGHtEZa67CP78u+hTUm4IyMwQiCspDj9k=;
+	s=arc-20240116; t=1721145869; c=relaxed/simple;
+	bh=HqunnTlxpl4FVsCLt6qosG42QhRaXPx9t2wX7zRs4gE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YrIWjLygAeHylwaBvNOeWSK+A7LuFR8jvCnfzcXAqAMcbiqY4FDi7jglTW29DpG0sFEGIys0x+eGcb0aTS+uiApzZKObXWvX2nDg2RwSsAULrBcDIn4qxT6ooAtbvScwV1yJkqFPQAoA5NmBWiz2CaJ8lxUp5sNjRWKng6s2jlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AiimV7XG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE670C116B1;
-	Tue, 16 Jul 2024 16:04:17 +0000 (UTC)
+	 MIME-Version; b=PtAWJB+FjGI8VIGiuxiuJMxh2JvTiJwt05vo2OINzx1ca0+BsSQcUrQ+r5a8kG+hNzHPLOAYY15ZK38hVmvyXI3jSSJhEWq71qo/6ZX2vslON036TQt+pjlmrVIhmGaCjgW+ab8C+bH2If7i46iJ5+W0EARCp66WYbwkH7VBhws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wap43cdQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7ADC116B1;
+	Tue, 16 Jul 2024 16:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145858;
-	bh=8+1HwU6TBHtGHtEZa67CP78u+hTUm4IyMwQiCspDj9k=;
+	s=korg; t=1721145869;
+	bh=HqunnTlxpl4FVsCLt6qosG42QhRaXPx9t2wX7zRs4gE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AiimV7XGaj0pIOCSuDFeDjcF7J1BatnJTbGx0syiW7C4iRd7Txig5OsMATvns5BLC
-	 k+4btgQoi9JiAuLgbeBhebC4Uh6qhwCeJ/Vc9WoRXy2G6YqKaD127Fc7V6btPoBHTS
-	 T7jkl4m0X+h2vIxQ/hdNUhWPzEA243kjSKI/q0K8=
+	b=wap43cdQzMXPbTrALBoK9CdZtva8Wk0wyQJj5i3u4uU0zoDNGj134h5GTF98sVHUr
+	 vzTs4KpceXZSF4Sbdq5l7FUX4778vlLGVuqUwYY7QNJeCp5pWbzNEQtzruZJO5LO62
+	 fiAm3Zne9N8s/zuumgVYsNgODSLQNISAngJsxq+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH 6.6 105/121] [PATCH] selftests/net: fix gro.c compilation failure due to non-existent opt_ipproto_off
-Date: Tue, 16 Jul 2024 17:32:47 +0200
-Message-ID: <20240716152755.369817923@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 106/121] nilfs2: fix kernel bug on rename operation of broken directory
+Date: Tue, 16 Jul 2024 17:32:48 +0200
+Message-ID: <20240716152755.409372039@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
 References: <20240716152751.312512071@linuxfoundation.org>
@@ -65,34 +66,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-Linux 6.6 does not have an opt_ipproto_off variable in gro.c at all (it
-was added in later kernel versions), so attempting to initialize one
-breaks the build.
+commit a9e1ddc09ca55746079cc479aa3eb6411f0d99d4 upstream.
 
-Fixes: c80d53c484e8 ("selftests/net: fix uninitialized variables")
-Cc: <stable@vger.kernel.org> # 6.6
-Reported-by: Ignat Korchagin <ignat@cloudflare.com>
-Closes: https://lore.kernel.org/all/8B1717DB-8C4A-47EE-B28C-170B630C4639@cloudflare.com/#t
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Syzbot reported that in rename directory operation on broken directory on
+nilfs2, __block_write_begin_int() called to prepare block write may fail
+BUG_ON check for access exceeding the folio/page size.
+
+This is because nilfs_dotdot(), which gets parent directory reference
+entry ("..") of the directory to be moved or renamed, does not check
+consistency enough, and may return location exceeding folio/page size for
+broken directories.
+
+Fix this issue by checking required directory entries ("." and "..") in
+the first chunk of the directory in nilfs_dotdot().
+
+Link: https://lkml.kernel.org/r/20240628165107.9006-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d3abed1ad3d367fa2627
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/gro.c |    3 ---
- 1 file changed, 3 deletions(-)
+ fs/nilfs2/dir.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/gro.c
-+++ b/tools/testing/selftests/net/gro.c
-@@ -113,9 +113,6 @@ static void setup_sock_filter(int fd)
- 		next_off = offsetof(struct ipv6hdr, nexthdr);
- 	ipproto_off = ETH_HLEN + next_off;
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -396,11 +396,39 @@ found:
  
--	/* Overridden later if exthdrs are used: */
--	opt_ipproto_off = ipproto_off;
--
- 	if (strcmp(testname, "ip") == 0) {
- 		if (proto == PF_INET)
- 			optlen = sizeof(struct ip_timestamp);
+ struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
+ {
+-	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
++	struct page *page;
++	struct nilfs_dir_entry *de, *next_de;
++	size_t limit;
++	char *msg;
+ 
++	de = nilfs_get_page(dir, 0, &page);
+ 	if (IS_ERR(de))
+ 		return NULL;
+-	return nilfs_next_entry(de);
++
++	limit = nilfs_last_byte(dir, 0);  /* is a multiple of chunk size */
++	if (unlikely(!limit || le64_to_cpu(de->inode) != dir->i_ino ||
++		     !nilfs_match(1, ".", de))) {
++		msg = "missing '.'";
++		goto fail;
++	}
++
++	next_de = nilfs_next_entry(de);
++	/*
++	 * If "next_de" has not reached the end of the chunk, there is
++	 * at least one more record.  Check whether it matches "..".
++	 */
++	if (unlikely((char *)next_de == (char *)de + nilfs_chunk_size(dir) ||
++		     !nilfs_match(2, "..", next_de))) {
++		msg = "missing '..'";
++		goto fail;
++	}
++	*p = page;
++	return next_de;
++
++fail:
++	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
++	nilfs_put_page(page);
++	return NULL;
+ }
+ 
+ ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
 
 
 
