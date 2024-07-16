@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-59951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411F9932CA7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC72932D2C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63DD01C21D31
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA0A7284313
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957C219E7FF;
-	Tue, 16 Jul 2024 15:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB8417623C;
+	Tue, 16 Jul 2024 16:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6t1+ZTG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVW/U4A/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5276517A93F;
-	Tue, 16 Jul 2024 15:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182C61DDCE;
+	Tue, 16 Jul 2024 16:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145402; cv=none; b=a0tSvhMsG3dYDxR1oOmfrOJwVBMGQysAzVxoUsw49Q2XsjnbvySPhcYEicjbY1TfsoKiYP/Z9g9PNGiZrnIrNNDKD58DefWdY58cWASpaOcfnwpfilDG2PrLbPW/q7ubVlMDBj28riV7bMWsY8xjufLv5G8gIAR+NPUJUGN3PBo=
+	t=1721145723; cv=none; b=BjYiYSUY87EkX5y3nVFI3UzclS1pYeJ7PDhk+4AXlb6XhKI8FnZO18n2A9ooyLM4F5BZleOJkHQzwE4eWh43a3ltgvMacOxVlqJlkl+rf5wy94zvcF7r+N6vztWCQVSx8kdzST7a8vyhFgj8c75h1TIf/Jp6mYyxI7BMwUreaKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145402; c=relaxed/simple;
-	bh=RAb/9HRHllPkQ0VEiHkN+KxWMXQjijoy6XQIaSpd0TE=;
+	s=arc-20240116; t=1721145723; c=relaxed/simple;
+	bh=/nHaGSlSXQEzquDxW+a2xbIJf6l9+HGvfBhA/33GfJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PxbjL63ZuQlDLSowfxe+i/O0OoxCgxV7ZvwWKnbg7Hc83k8Au4nBm/vMRtthseIMqbmwfncT0NJW7/JKrkdaRhLX0b9vJJr90Rypk4TpWQRfcyoKNpP0l0T3PdXEyajEG5lCAKUyM9yEgluRtO2ZOZAI8hvKEP1VTm7UUo23aA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6t1+ZTG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C44C116B1;
-	Tue, 16 Jul 2024 15:56:41 +0000 (UTC)
+	 MIME-Version; b=ibhFTaa+CnvFavQg+T/PgSsB1MIYgNfRnOW85W2veIoX8ow1D134/8M0CBDscWNkZnvKbuTq452FFLtOwt9ME/2a9BgQx8/yDwTtCt/Kx8oAC8RXNV/ep2kWGxc+zDUpq0+PTeIwV7vd37YKgBM1MdaSNVJ25wRmYSdEBl13K/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVW/U4A/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864E3C116B1;
+	Tue, 16 Jul 2024 16:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145402;
-	bh=RAb/9HRHllPkQ0VEiHkN+KxWMXQjijoy6XQIaSpd0TE=;
+	s=korg; t=1721145722;
+	bh=/nHaGSlSXQEzquDxW+a2xbIJf6l9+HGvfBhA/33GfJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6t1+ZTGZmUN/zH0/ZgDQHGguNxpkb/w9wS5vBcZA/dowHDyPq3ecJ1xuJax/El4M
-	 HmZtTkS7hY0/EORYEE/yCppyA2qjlr+ytdAHxlcc0oC1DuehC17BpCgg1dEn4kZKaR
-	 oMk/Q8EdslZgVZxoNOwyHb5i5n/qzPgrTDSCuJ7U=
+	b=BVW/U4A/Px2ISSQ6YMTjEjhJmvCTnPTpSC2BWwmDiqbm1hDbO0v7AheNCd7pvhRT4
+	 nTZ1HEggiPQ60f7dbOM6BN7LtMXdaBcbIwhFk6kmOez+nb47/mcrNGhYgSn+nfR+KY
+	 0FiiOII+px0arJb+X3hP8ysn+i0BlDSENXSB4Ej0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mank Wang <mank.wang@netprisma.us>,
+	Dmitry Smirnov <d.smirnov@inbox.lv>,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 54/96] USB: serial: option: add Netprisma LCUK54 series modules
+Subject: [PATCH 6.6 063/121] USB: serial: mos7840: fix crash on resume
 Date: Tue, 16 Jul 2024 17:32:05 +0200
-Message-ID: <20240716152748.583163695@linuxfoundation.org>
+Message-ID: <20240716152753.752117676@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mank Wang <mank.wang@netprisma.us>
+From: Dmitry Smirnov <d.smirnov@inbox.lv>
 
-commit dc6dbe3ed28795b01c712ad8f567728f9c14b01d upstream.
+commit c15a688e49987385baa8804bf65d570e362f8576 upstream.
 
-Add support for Netprisma LCUK54 series modules.
+Since commit c49cfa917025 ("USB: serial: use generic method if no
+alternative is provided in usb serial layer"), USB serial core calls the
+generic resume implementation when the driver has not provided one.
 
-LCUK54-WRD-LWW(0x3731/0x0100): NetPrisma LCUK54-WWD for Global
-LCUK54-WRD-LWW(0x3731/0x0101): NetPrisma LCUK54-WRD for Global SKU
-LCUK54-WRD-LCN(0x3731/0x0106): NetPrisma LCUK54-WRD for China SKU
-LCUK54-WRD-LWW(0x3731/0x0111): NetPrisma LCUK54-WWD for SA
-LCUK54-WRD-LWW(0x3731/0x0112): NetPrisma LCUK54-WWD for EU
-LCUK54-WRD-LWW(0x3731/0x0113): NetPrisma LCUK54-WWD for NA
-LCUK54-WWD-LCN(0x3731/0x0115): NetPrisma LCUK54-WWD for China EDU
-LCUK54-WWD-LWW(0x3731/0x0116): NetPrisma LCUK54-WWD for Golbal EDU
+This can trigger a crash on resume with mos7840 since support for
+multiple read URBs was added back in 2011. Specifically, both port read
+URBs are now submitted on resume for open ports, but the context pointer
+of the second URB is left set to the core rather than mos7840 port
+structure.
 
-Above products use the exact same interface layout and option
-driver:
-MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
+Fix this by implementing dedicated suspend and resume functions for
+mos7840.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  5 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=3731 ProdID=0101 Rev= 5.04
-S:  Manufacturer=NetPrisma
-S:  Product=LCUK54-WRD
-S:  SerialNumber=b6250c36
-C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Tested with Delock 87414 USB 2.0 to 4x serial adapter.
 
-Signed-off-by: Mank Wang <mank.wang@netprisma.us>
-Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Smirnov <d.smirnov@inbox.lv>
+[ johan: analyse crash and rewrite commit message; set busy flag on
+         resume; drop bulk-in check; drop unnecessary usb_kill_urb() ]
+Fixes: d83b405383c9 ("USB: serial: add support for multiple read urbs")
+Cc: stable@vger.kernel.org	# 3.3
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |   24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/usb/serial/mos7840.c |   45 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2333,6 +2333,30 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
- 	  .driver_info = RSVD(5) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0101, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for Global SKU */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0101, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0101, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0106, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for China SKU */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0106, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0106, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0111, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for SA */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0111, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0111, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0112, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for EU */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0112, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0112, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0113, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for NA */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0113, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0113, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0115, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for China EDU */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0115, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0115, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Golbal EDU */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+--- a/drivers/usb/serial/mos7840.c
++++ b/drivers/usb/serial/mos7840.c
+@@ -1737,6 +1737,49 @@ static void mos7840_port_remove(struct u
+ 	kfree(mos7840_port);
+ }
+ 
++static int mos7840_suspend(struct usb_serial *serial, pm_message_t message)
++{
++	struct moschip_port *mos7840_port;
++	struct usb_serial_port *port;
++	int i;
++
++	for (i = 0; i < serial->num_ports; ++i) {
++		port = serial->port[i];
++		if (!tty_port_initialized(&port->port))
++			continue;
++
++		mos7840_port = usb_get_serial_port_data(port);
++
++		usb_kill_urb(mos7840_port->read_urb);
++		mos7840_port->read_urb_busy = false;
++	}
++
++	return 0;
++}
++
++static int mos7840_resume(struct usb_serial *serial)
++{
++	struct moschip_port *mos7840_port;
++	struct usb_serial_port *port;
++	int res;
++	int i;
++
++	for (i = 0; i < serial->num_ports; ++i) {
++		port = serial->port[i];
++		if (!tty_port_initialized(&port->port))
++			continue;
++
++		mos7840_port = usb_get_serial_port_data(port);
++
++		mos7840_port->read_urb_busy = true;
++		res = usb_submit_urb(mos7840_port->read_urb, GFP_NOIO);
++		if (res)
++			mos7840_port->read_urb_busy = false;
++	}
++
++	return 0;
++}
++
+ static struct usb_serial_driver moschip7840_4port_device = {
+ 	.driver = {
+ 		   .owner = THIS_MODULE,
+@@ -1764,6 +1807,8 @@ static struct usb_serial_driver moschip7
+ 	.port_probe = mos7840_port_probe,
+ 	.port_remove = mos7840_port_remove,
+ 	.read_bulk_callback = mos7840_bulk_in_callback,
++	.suspend = mos7840_suspend,
++	.resume = mos7840_resume,
+ };
+ 
+ static struct usb_serial_driver * const serial_drivers[] = {
 
 
 
