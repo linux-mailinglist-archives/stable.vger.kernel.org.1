@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-60298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11D5933010
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:34:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EECF933014
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C96E1F21F84
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:34:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 806A61C20A98
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695881A2C0B;
-	Tue, 16 Jul 2024 18:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742D61A08AC;
+	Tue, 16 Jul 2024 18:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YnIM68fS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dQk/U7l4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215E71A2C02;
-	Tue, 16 Jul 2024 18:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A341A08A1;
+	Tue, 16 Jul 2024 18:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154770; cv=none; b=bJ0BWF7RW3NxHuOzscyA21glj86Cy3znapdLk3LNwnzP/2JqRSz2nMUWHv4QonQcvJHBCTCxIfi4XxyQjFV6Tc2ZfA9qG9X+cGlLDaseWdmFC6NpnlvP2nry+6QFbSZDDL8vAxAbHCk83JUD475KVLhykqLHOoV6tAuFxxwjiH0=
+	t=1721154782; cv=none; b=ATrwkxMH+mb4QX0nVInxaHTOfTSx/Sqw2gyFSo8/+4lBnuCoWqdFpc4/dNYWQRr3e0isNc5cjBWn+9h09/zShVINmLKX5geTFXA8tcTHIJ2CWe0/1UVaX7IgJpcv1BH5cO9N9GbFRGXlqCKUkoa6/ti15FHvqWsnEmUtNxSJ2rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154770; c=relaxed/simple;
-	bh=SgsqvSRWv/cVCapErroqYDYdF/RZ/HQ/zNCRppw7efg=;
+	s=arc-20240116; t=1721154782; c=relaxed/simple;
+	bh=+svFXP1A49Vx6pvrKt2c6eFpqNlACgVtNw7SiimkAs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkTsxfsZj04hwro5SWQtoLAu9ZJNXaRMqmCAYQgeMBC1vuIQpem3QoMvh55QF9IatJAjLc1c7Ukm/koVDNz3H0KxbXMwj+9gNiqn5SWh6su7CB0sRmu1ZwZz29WyO3RIGXFkeWNawC9s2lOz7pWnbEbwtWbNLIla0gjS9+wUawU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YnIM68fS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A93C4AF0B;
-	Tue, 16 Jul 2024 18:32:48 +0000 (UTC)
+	 MIME-Version; b=oJTw1WdN77PYjGgUzXI3dotg6zUfarleWj/nK42Wekhb+I2HchOyVZhEc/sDDgvNXJTnjpO8t+fEDgcJOiLhQfk8BvBUBWx3ijUIDM4l4c++IoTUI5MapPokdNk8hIBYMJcLv9EJ/cSu2JyhnQjYOQlTBxQAXVoXRQ+T7hmktdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dQk/U7l4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FEEC116B1;
+	Tue, 16 Jul 2024 18:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154770;
-	bh=SgsqvSRWv/cVCapErroqYDYdF/RZ/HQ/zNCRppw7efg=;
+	s=k20201202; t=1721154781;
+	bh=+svFXP1A49Vx6pvrKt2c6eFpqNlACgVtNw7SiimkAs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YnIM68fSASQbGuZQnDJ2TL2nsqeLH98VzqO2bI13F92jgpeTqgDNL4lFt40RfqVZR
-	 f/fjklKZfKpaQLSf5JiaYVaGFnlTIEFw//vN/+qT7QaAdpKZ+CZL+mcoABY2ZaMLvd
-	 5Mxfxo9oot6t5yl0knJijitq1KZveDw5jvD7AHeGzP1NpcfVK0l6/3RGmXyDFbXA4p
-	 N4kZInPEzGPHjyPgsdJ40oxN//HhZJDn/NgsD2Oc81mQkao0jiq9z45HPOiE0ScvmG
-	 JZAGqkCCUa9zeizMBC1pkk9xhzkw+h5jDOe+n9/c+u2Cf5lfuNZOxDPLMjim3UInSi
-	 ew5nW7mUHkdyw==
+	b=dQk/U7l46ZkjaH5iWzM+DnK2pF8LdIn6JPguBUj3ssBu+U98Wl9RdrYToxiI+FO2Y
+	 y7GgzU4qcCPtnW9gC5EdrA5pkmr/mOIAn4CmOGgbliiesCNukljYD3JjUKgLvSA149
+	 KI82cC5Ti4JmrZvTVqQUvL6axsiQfo9pPs66max7Bu9qQt5VUUBUC41HUkprM9XG8y
+	 0f4jhS7ituHJo1MHqQ6C2mP8JKT2I4rckSYravVYmvkcB6ztDTp71JPOeawiPHWZMI
+	 mj/lvUJNdrCqIbjptN4X0q49JzE/3+F+4J6aFCPX7w6HbCZ88rCHRX5Qug2oP9QxJ+
+	 xQPf2Gi2VCyUA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com,
-	syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	walmeida@microsoft.com,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 09/11] hfsplus: fix uninit-value in copy_name
-Date: Tue, 16 Jul 2024 14:31:53 -0400
-Message-ID: <20240716183222.2813968-9-sashal@kernel.org>
+	ast@kernel.org,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	shuah@kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 10/11] selftests/bpf: Extend tcx tests to cover late tcx_entry release
+Date: Tue, 16 Jul 2024 14:31:54 -0400
+Message-ID: <20240716183222.2813968-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716183222.2813968-1-sashal@kernel.org>
 References: <20240716183222.2813968-1-sashal@kernel.org>
@@ -68,68 +70,140 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.9
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 0570730c16307a72f8241df12363f76600baf57d ]
+[ Upstream commit 5f1d18de79180deac2822c93e431bbe547f7d3ce ]
 
-[syzbot reported]
-BUG: KMSAN: uninit-value in sized_strscpy+0xc4/0x160
- sized_strscpy+0xc4/0x160
- copy_name+0x2af/0x320 fs/hfsplus/xattr.c:411
- hfsplus_listxattr+0x11e9/0x1a50 fs/hfsplus/xattr.c:750
- vfs_listxattr fs/xattr.c:493 [inline]
- listxattr+0x1f3/0x6b0 fs/xattr.c:840
- path_listxattr fs/xattr.c:864 [inline]
- __do_sys_listxattr fs/xattr.c:876 [inline]
- __se_sys_listxattr fs/xattr.c:873 [inline]
- __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
- x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Add a test case which replaces an active ingress qdisc while keeping the
+miniq in-tact during the transition period to the new clsact qdisc.
 
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:3877 [inline]
- slab_alloc_node mm/slub.c:3918 [inline]
- kmalloc_trace+0x57b/0xbe0 mm/slub.c:4065
- kmalloc include/linux/slab.h:628 [inline]
- hfsplus_listxattr+0x4cc/0x1a50 fs/hfsplus/xattr.c:699
- vfs_listxattr fs/xattr.c:493 [inline]
- listxattr+0x1f3/0x6b0 fs/xattr.c:840
- path_listxattr fs/xattr.c:864 [inline]
- __do_sys_listxattr fs/xattr.c:876 [inline]
- __se_sys_listxattr fs/xattr.c:873 [inline]
- __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
- x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[Fix]
-When allocating memory to strbuf, initialize memory to 0.
+  # ./vmtest.sh -- ./test_progs -t tc_link
+  [...]
+  ./test_progs -t tc_link
+  [    3.412871] bpf_testmod: loading out-of-tree module taints kernel.
+  [    3.413343] bpf_testmod: module verification failed: signature and/or required key missing - tainting kernel
+  #332     tc_links_after:OK
+  #333     tc_links_append:OK
+  #334     tc_links_basic:OK
+  #335     tc_links_before:OK
+  #336     tc_links_chain_classic:OK
+  #337     tc_links_chain_mixed:OK
+  #338     tc_links_dev_chain0:OK
+  #339     tc_links_dev_cleanup:OK
+  #340     tc_links_dev_mixed:OK
+  #341     tc_links_ingress:OK
+  #342     tc_links_invalid:OK
+  #343     tc_links_prepend:OK
+  #344     tc_links_replace:OK
+  #345     tc_links_revision:OK
+  Summary: 14/0 PASSED, 0 SKIPPED, 0 FAILED
 
-Reported-and-tested-by: syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://lore.kernel.org/r/tencent_8BBB6433BC9E1C1B7B4BDF1BF52574BA8808@qq.com
-Reported-and-tested-by: syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20240708133130.11609-2-daniel@iogearbox.net
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/xattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/config            |  3 +
+ .../selftests/bpf/prog_tests/tc_links.c       | 61 +++++++++++++++++++
+ 2 files changed, 64 insertions(+)
 
-diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
-index 9c9ff6b8c6f7e..858029b1c1735 100644
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -698,7 +698,7 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
- 		return err;
- 	}
+diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
+index 01f241ea2c67b..dec9fd7ebba7f 100644
+--- a/tools/testing/selftests/bpf/config
++++ b/tools/testing/selftests/bpf/config
+@@ -53,9 +53,12 @@ CONFIG_MPLS=y
+ CONFIG_MPLS_IPTUNNEL=y
+ CONFIG_MPLS_ROUTING=y
+ CONFIG_MPTCP=y
++CONFIG_NET_ACT_SKBMOD=y
++CONFIG_NET_CLS=y
+ CONFIG_NET_CLS_ACT=y
+ CONFIG_NET_CLS_BPF=y
+ CONFIG_NET_CLS_FLOWER=y
++CONFIG_NET_CLS_MATCHALL=y
+ CONFIG_NET_FOU=y
+ CONFIG_NET_FOU_IP_TUNNELS=y
+ CONFIG_NET_IPGRE=y
+diff --git a/tools/testing/selftests/bpf/prog_tests/tc_links.c b/tools/testing/selftests/bpf/prog_tests/tc_links.c
+index bc98411446855..1af9ec1149aab 100644
+--- a/tools/testing/selftests/bpf/prog_tests/tc_links.c
++++ b/tools/testing/selftests/bpf/prog_tests/tc_links.c
+@@ -9,6 +9,8 @@
+ #define ping_cmd "ping -q -c1 -w1 127.0.0.1 > /dev/null"
  
--	strbuf = kmalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
-+	strbuf = kzalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
- 			XATTR_MAC_OSX_PREFIX_LEN + 1, GFP_KERNEL);
- 	if (!strbuf) {
- 		res = -ENOMEM;
+ #include "test_tc_link.skel.h"
++
++#include "netlink_helpers.h"
+ #include "tc_helpers.h"
+ 
+ void serial_test_tc_links_basic(void)
+@@ -1787,6 +1789,65 @@ void serial_test_tc_links_ingress(void)
+ 	test_tc_links_ingress(BPF_TCX_INGRESS, false, false);
+ }
+ 
++struct qdisc_req {
++	struct nlmsghdr  n;
++	struct tcmsg     t;
++	char             buf[1024];
++};
++
++static int qdisc_replace(int ifindex, const char *kind, bool block)
++{
++	struct rtnl_handle rth = { .fd = -1 };
++	struct qdisc_req req;
++	int err;
++
++	err = rtnl_open(&rth, 0);
++	if (!ASSERT_OK(err, "open_rtnetlink"))
++		return err;
++
++	memset(&req, 0, sizeof(req));
++	req.n.nlmsg_len = NLMSG_LENGTH(sizeof(struct tcmsg));
++	req.n.nlmsg_flags = NLM_F_CREATE | NLM_F_REPLACE | NLM_F_REQUEST;
++	req.n.nlmsg_type = RTM_NEWQDISC;
++	req.t.tcm_family = AF_UNSPEC;
++	req.t.tcm_ifindex = ifindex;
++	req.t.tcm_parent = 0xfffffff1;
++
++	addattr_l(&req.n, sizeof(req), TCA_KIND, kind, strlen(kind) + 1);
++	if (block)
++		addattr32(&req.n, sizeof(req), TCA_INGRESS_BLOCK, 1);
++
++	err = rtnl_talk(&rth, &req.n, NULL);
++	ASSERT_OK(err, "talk_rtnetlink");
++	rtnl_close(&rth);
++	return err;
++}
++
++void serial_test_tc_links_dev_chain0(void)
++{
++	int err, ifindex;
++
++	ASSERT_OK(system("ip link add dev foo type veth peer name bar"), "add veth");
++	ifindex = if_nametoindex("foo");
++	ASSERT_NEQ(ifindex, 0, "non_zero_ifindex");
++	err = qdisc_replace(ifindex, "ingress", true);
++	if (!ASSERT_OK(err, "attaching ingress"))
++		goto cleanup;
++	ASSERT_OK(system("tc filter add block 1 matchall action skbmod swap mac"), "add block");
++	err = qdisc_replace(ifindex, "clsact", false);
++	if (!ASSERT_OK(err, "attaching clsact"))
++		goto cleanup;
++	/* Heuristic: kern_sync_rcu() alone does not work; a wait-time of ~5s
++	 * triggered the issue without the fix reliably 100% of the time.
++	 */
++	sleep(5);
++	ASSERT_OK(system("tc filter add dev foo ingress matchall action skbmod swap mac"), "add filter");
++cleanup:
++	ASSERT_OK(system("ip link del dev foo"), "del veth");
++	ASSERT_EQ(if_nametoindex("foo"), 0, "foo removed");
++	ASSERT_EQ(if_nametoindex("bar"), 0, "bar removed");
++}
++
+ static void test_tc_links_dev_mixed(int target)
+ {
+ 	LIBBPF_OPTS(bpf_tc_opts, tc_opts, .handle = 1, .priority = 1);
 -- 
 2.43.0
 
