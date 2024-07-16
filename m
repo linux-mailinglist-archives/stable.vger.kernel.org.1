@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-59584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08D4932ACB
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:38:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E611A932BCB
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F54F1F242AD
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:38:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 216BF1C225A8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7F41DA4D;
-	Tue, 16 Jul 2024 15:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864B019B3D3;
+	Tue, 16 Jul 2024 15:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdOIIsYy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M50hpMgj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDAEB641;
-	Tue, 16 Jul 2024 15:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4496C12B72;
+	Tue, 16 Jul 2024 15:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144289; cv=none; b=Gj1b/dwCSHTJzPcwa6R9m5tdvKOht5ZOapoC+/nAtX5isWLDZlcqyuWYxX+5GWhGLjCtE2WrcI4oZZI5DNEI87fqGe2t4oexpq4M+eXiv+B2VpbSE8PJQaL9NR70gR+31sg2cG4c7m8tfG74Yl9EW1mS1yKZjhOfJVQDF8ibQsY=
+	t=1721144934; cv=none; b=mH3tonIEPyGuUnQnQ81/rEq62tdVggzRLiQ832WR9Y3NDf+bI+MmduitjH0HmyYlxYJjQIdxsFSnTHtatXOPpEOKwrvStBoLin9dktcCHbdjtYhewPctRxubTvnXyFuN/GTmFZF0ghhK90jCUBglkI+F07FygBHPmIPgAEh8jHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144289; c=relaxed/simple;
-	bh=sw/ADidbGpcAS9m5mlXUuRtoKd6JhUZq0zkcHkYKTzI=;
+	s=arc-20240116; t=1721144934; c=relaxed/simple;
+	bh=NrEYfEupjXHaPgmQUZMuECp6gCiv2kmWERNtaIgTLsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjrQ8jGemlTkPEuagx/1Hm7Mlswmwc21wi4/MAzvufApCeGHsEIZoBvYoeqDGxhjfYoFIchq8BiQpJk+e89tcN6I8wbk+uK4yPx/8jk55vmxqx+6eN/ivqxfYJwWP2ZsCqbzlkKkuvkpSE1/+9+AmJ08MbRRq8kfeR6mcPLVpbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdOIIsYy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC25C116B1;
-	Tue, 16 Jul 2024 15:38:08 +0000 (UTC)
+	 MIME-Version; b=Ft+9DWp3eueRZokGWiF/d5IMCi7tZJxMt4FBxFoW9llDbzULZ5oOKqkc+mXN59Mu6viepLiu80r7Oz3BCg2IyHYJzElFULt1C+86YPlJJDjxHXsO1TXhEm82V2+IgRrFDQl2uJHe/qshnVnccVvQD4baaPAlTRHgL8V7ZHrLzaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M50hpMgj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC0FC4AF0B;
+	Tue, 16 Jul 2024 15:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144289;
-	bh=sw/ADidbGpcAS9m5mlXUuRtoKd6JhUZq0zkcHkYKTzI=;
+	s=korg; t=1721144934;
+	bh=NrEYfEupjXHaPgmQUZMuECp6gCiv2kmWERNtaIgTLsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DdOIIsYyNXRFYZLN5LN20kc5mHYmMOQMGOWxBcNPZQ+ikBkkQUgPn+tw2DS1MBmoD
-	 FBFutLUts8so1fbbacdy3+5xvOSmOhHvHMM+NChdvRUFuJvOsRdYX9q/MM6hGEG66F
-	 Vue+CPxOffS2FxbHXjJGYT4h3X4KZps7owYXy//Y=
+	b=M50hpMgj5b8ZzM+WU+C3+OmPUTrZs6o8qMe41rdMLFWs1MeJEcI7y8JABIkG5Bj95
+	 NuK4qGgmv/QTSNn6SgcO04+rCDOMOtdV4m4TBQnD2cWbj+T3ILt5Cefs5o4bQAwj3Y
+	 7cLWYzGGjL/A7vmduftL8E+CioWKSn603RiZnceo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bunk <micha@freedict.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Lex Siegel <usiegl00@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Neil Brown <neilb@suse.de>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 08/78] media: dw2102: Dont translate i2c read into write
+Subject: [PATCH 6.9 044/143] net, sunrpc: Remap EPERM in case of connection failure in xs_tcp_setup_socket
 Date: Tue, 16 Jul 2024 17:30:40 +0200
-Message-ID: <20240716152740.950452496@linuxfoundation.org>
+Message-ID: <20240716152757.683335839@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,199 +66,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bunk <micha@freedict.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 0e148a522b8453115038193e19ec7bea71403e4a ]
+[ Upstream commit 626dfed5fa3bfb41e0dffd796032b555b69f9cde ]
 
-The code ignored the I2C_M_RD flag on I2C messages.  Instead it assumed
-an i2c transaction with a single message must be a write operation and a
-transaction with two messages would be a read operation.
+When using a BPF program on kernel_connect(), the call can return -EPERM. This
+causes xs_tcp_setup_socket() to loop forever, filling up the syslog and causing
+the kernel to potentially freeze up.
 
-Though this works for the driver code, it leads to problems once the i2c
-device is exposed to code not knowing this convention.  For example,
-I did "insmod i2c-dev" and issued read requests from userspace, which
-were translated into write requests and destroyed the EEPROM of my
-device.
+Neil suggested:
 
-So, just check and respect the I2C_M_READ flag, which indicates a read
-when set on a message.  If it is absent, it is a write message.
+  This will propagate -EPERM up into other layers which might not be ready
+  to handle it. It might be safer to map EPERM to an error we would be more
+  likely to expect from the network system - such as ECONNREFUSED or ENETDOWN.
 
-Incidentally, changing from the case statement to a while loop allows
-the code to lift the limitation to two i2c messages per transaction.
+ECONNREFUSED as error seems reasonable. For programs setting a different error
+can be out of reach (see handling in 4fbac77d2d09) in particular on kernels
+which do not have f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err
+instead of allow boolean"), thus given that it is better to simply remap for
+consistent behavior. UDP does handle EPERM in xs_udp_send_request().
 
-There are 4 more *_i2c_transfer functions affected by the same behaviour
-and limitation that should be fixed in the same way.
-
-Link: https://lore.kernel.org/linux-media/20220116112238.74171-2-micha@freedict.org
-Signed-off-by: Michael Bunk <micha@freedict.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
+Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
+Co-developed-by: Lex Siegel <usiegl00@gmail.com>
+Signed-off-by: Lex Siegel <usiegl00@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Neil Brown <neilb@suse.de>
+Cc: Trond Myklebust <trondmy@kernel.org>
+Cc: Anna Schumaker <anna@kernel.org>
+Link: https://github.com/cilium/cilium/issues/33395
+Link: https://lore.kernel.org/bpf/171374175513.12877.8993642908082014881@noble.neil.brown.name
+Link: https://patch.msgid.link/9069ec1d59e4b2129fc23433349fd5580ad43921.1720075070.git.daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb/dw2102.c | 120 ++++++++++++++++++-----------
- 1 file changed, 73 insertions(+), 47 deletions(-)
+ net/sunrpc/xprtsock.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
-index 924a6478007a8..ff5b007e2d99d 100644
---- a/drivers/media/usb/dvb-usb/dw2102.c
-+++ b/drivers/media/usb/dvb-usb/dw2102.c
-@@ -716,6 +716,7 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- {
- 	struct dvb_usb_device *d = i2c_get_adapdata(adap);
- 	struct dw2102_state *state;
-+	int j;
- 
- 	if (!d)
- 		return -ENODEV;
-@@ -729,11 +730,11 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 		return -EAGAIN;
- 	}
- 
--	switch (num) {
--	case 1:
--		switch (msg[0].addr) {
-+	j = 0;
-+	while (j < num) {
-+		switch (msg[j].addr) {
- 		case SU3000_STREAM_CTRL:
--			state->data[0] = msg[0].buf[0] + 0x36;
-+			state->data[0] = msg[j].buf[0] + 0x36;
- 			state->data[1] = 3;
- 			state->data[2] = 0;
- 			if (dvb_usb_generic_rw(d, state->data, 3,
-@@ -745,61 +746,86 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			if (dvb_usb_generic_rw(d, state->data, 1,
- 					state->data, 2, 0) < 0)
- 				err("i2c transfer failed.");
--			msg[0].buf[1] = state->data[0];
--			msg[0].buf[0] = state->data[1];
-+			msg[j].buf[1] = state->data[0];
-+			msg[j].buf[0] = state->data[1];
- 			break;
- 		default:
--			if (3 + msg[0].len > sizeof(state->data)) {
--				warn("i2c wr: len=%d is too big!\n",
--				     msg[0].len);
-+			/* if the current write msg is followed by a another
-+			 * read msg to/from the same address
-+			 */
-+			if ((j+1 < num) && (msg[j+1].flags & I2C_M_RD) &&
-+			    (msg[j].addr == msg[j+1].addr)) {
-+				/* join both i2c msgs to one usb read command */
-+				if (4 + msg[j].len > sizeof(state->data)) {
-+					warn("i2c combined wr/rd: write len=%d is too big!\n",
-+					    msg[j].len);
-+					num = -EOPNOTSUPP;
-+					break;
-+				}
-+				if (1 + msg[j+1].len > sizeof(state->data)) {
-+					warn("i2c combined wr/rd: read len=%d is too big!\n",
-+					    msg[j+1].len);
-+					num = -EOPNOTSUPP;
-+					break;
-+				}
-+
-+				state->data[0] = 0x09;
-+				state->data[1] = msg[j].len;
-+				state->data[2] = msg[j+1].len;
-+				state->data[3] = msg[j].addr;
-+				memcpy(&state->data[4], msg[j].buf, msg[j].len);
-+
-+				if (dvb_usb_generic_rw(d, state->data, msg[j].len + 4,
-+					state->data, msg[j+1].len + 1, 0) < 0)
-+					err("i2c transfer failed.");
-+
-+				memcpy(msg[j+1].buf, &state->data[1], msg[j+1].len);
-+				j++;
-+				break;
-+			}
-+
-+			if (msg[j].flags & I2C_M_RD) {
-+				/* single read */
-+				if (1 + msg[j].len > sizeof(state->data)) {
-+					warn("i2c rd: len=%d is too big!\n", msg[j].len);
-+					num = -EOPNOTSUPP;
-+					break;
-+				}
-+
-+				state->data[0] = 0x09;
-+				state->data[1] = 0;
-+				state->data[2] = msg[j].len;
-+				state->data[3] = msg[j].addr;
-+				memcpy(&state->data[4], msg[j].buf, msg[j].len);
-+
-+				if (dvb_usb_generic_rw(d, state->data, 4,
-+					state->data, msg[j].len + 1, 0) < 0)
-+					err("i2c transfer failed.");
-+
-+				memcpy(msg[j].buf, &state->data[1], msg[j].len);
-+				break;
-+			}
-+
-+			/* single write */
-+			if (3 + msg[j].len > sizeof(state->data)) {
-+				warn("i2c wr: len=%d is too big!\n", msg[j].len);
- 				num = -EOPNOTSUPP;
- 				break;
- 			}
- 
--			/* always i2c write*/
- 			state->data[0] = 0x08;
--			state->data[1] = msg[0].addr;
--			state->data[2] = msg[0].len;
-+			state->data[1] = msg[j].addr;
-+			state->data[2] = msg[j].len;
- 
--			memcpy(&state->data[3], msg[0].buf, msg[0].len);
-+			memcpy(&state->data[3], msg[j].buf, msg[j].len);
- 
--			if (dvb_usb_generic_rw(d, state->data, msg[0].len + 3,
-+			if (dvb_usb_generic_rw(d, state->data, msg[j].len + 3,
- 						state->data, 1, 0) < 0)
- 				err("i2c transfer failed.");
-+		} // switch
-+		j++;
- 
--		}
--		break;
--	case 2:
--		/* always i2c read */
--		if (4 + msg[0].len > sizeof(state->data)) {
--			warn("i2c rd: len=%d is too big!\n",
--			     msg[0].len);
--			num = -EOPNOTSUPP;
--			break;
--		}
--		if (1 + msg[1].len > sizeof(state->data)) {
--			warn("i2c rd: len=%d is too big!\n",
--			     msg[1].len);
--			num = -EOPNOTSUPP;
--			break;
--		}
--
--		state->data[0] = 0x09;
--		state->data[1] = msg[0].len;
--		state->data[2] = msg[1].len;
--		state->data[3] = msg[0].addr;
--		memcpy(&state->data[4], msg[0].buf, msg[0].len);
--
--		if (dvb_usb_generic_rw(d, state->data, msg[0].len + 4,
--					state->data, msg[1].len + 1, 0) < 0)
--			err("i2c transfer failed.");
--
--		memcpy(msg[1].buf, &state->data[1], msg[1].len);
--		break;
--	default:
--		warn("more than 2 i2c messages at a time is not handled yet.");
--		break;
--	}
-+	} // while
- 	mutex_unlock(&d->data_mutex);
- 	mutex_unlock(&d->i2c_mutex);
- 	return num;
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index ce18716491c8f..b9121adef8b76 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2442,6 +2442,13 @@ static void xs_tcp_setup_socket(struct work_struct *work)
+ 		transport->srcport = 0;
+ 		status = -EAGAIN;
+ 		break;
++	case -EPERM:
++		/* Happens, for instance, if a BPF program is preventing
++		 * the connect. Remap the error so upper layers can better
++		 * deal with it.
++		 */
++		status = -ECONNREFUSED;
++		fallthrough;
+ 	case -EINVAL:
+ 		/* Happens, for instance, if the user specified a link
+ 		 * local IPv6 address without a scope-id.
 -- 
 2.43.0
 
