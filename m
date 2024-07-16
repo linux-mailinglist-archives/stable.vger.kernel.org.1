@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-59523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A492932A8C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:35:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B3F932BF4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD49DB2318A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4A8F1C22C6F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB431DFDE;
-	Tue, 16 Jul 2024 15:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491D719E7C8;
+	Tue, 16 Jul 2024 15:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiIIgDyc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMKB5K9C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE57CE54C;
-	Tue, 16 Jul 2024 15:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0656617C9E9;
+	Tue, 16 Jul 2024 15:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144107; cv=none; b=kWRNpcqKtV9VS0psA1+T1AHAY8PGG7PnSVKKV1X5pEl4BHJ57MGw8A7ynKMqzpmbSpZq4j24mqxQMAubIL/BEjt25WZEBErCivOnZU+JFjy9cv3i9PEevVl5t81fCAgSAU/heZSFIhTX/Dtp37a5ctamm6kJGC6PE+eX5UjxoQY=
+	t=1721145013; cv=none; b=rVLN3bRCLYwtwh7s81d3DGDMO/QQAMp6TzCesPHFTToev2K1xKA7+a4j+sedWzELveAKjrSwoTaVeKCkN8VG0HSSKPtrSiK5XaSzRn5ZTFTsk+QvohItsUd/oXc4xqGbxHZkkfCHqBu163NXI8XmKeoHzh+vspcinii5EBkoZa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144107; c=relaxed/simple;
-	bh=7Pg6iOKEZSthUnnBWo8UJsTXNNJPApk6hfnx/B0F5Vc=;
+	s=arc-20240116; t=1721145013; c=relaxed/simple;
+	bh=SGU2Eq0r+8jvOm0cdKXLw7X0U0tX7zwNCCDS4YF2VRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ci2maUPHcrFLSGnB1g6jAdXUX86VhYaPGBMr4G99nHZkslnGK6LWDZ3pKbubjGX5738VhWFUpDLWuiB/HIZfDZOnByrjZfUxG6/smGj0HfNLK6l+V0C2CeaRCH7a3luN6Q/k7gniSdDoJqKZoxMQ0GyaMU5eZRepikeizJsTAr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiIIgDyc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9FAC116B1;
-	Tue, 16 Jul 2024 15:35:06 +0000 (UTC)
+	 MIME-Version; b=OtTAyVSqg42YHg29e9o0ji3v3cyrSjWoPr3czWBFWoZ65pedpN3VBzOQMlCAkyHHj8xGK8wIAr7XJv1BOkX4d3fA7IV8eqM742NalQO8qGLytwdALU2bR4aCy0fSZmd3j/kHoEH2ZsICrmiU+jfgJxcWmLdtFv7VH/lHVS/1MwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMKB5K9C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809A5C116B1;
+	Tue, 16 Jul 2024 15:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144106;
-	bh=7Pg6iOKEZSthUnnBWo8UJsTXNNJPApk6hfnx/B0F5Vc=;
+	s=korg; t=1721145012;
+	bh=SGU2Eq0r+8jvOm0cdKXLw7X0U0tX7zwNCCDS4YF2VRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiIIgDyc9TtWrkkVLRFdULUsJyQAMBrHDDZbttRE6zMbhHimbfuaZP2AWg3is1fkE
-	 kXrk5eRBSjkrAYW8t98dA+KTuIZVjsMQC7keSr6vJdMulx7uDKoPZ1mR6VGtILpkhq
-	 AFVGCFTJYO1Cnwwz4z1LyTkDomUUTan3TbfyEiYY=
+	b=vMKB5K9Cg7YA8I8DOFcYLNbEA4oiDUBSjFRHc09C8AiYEBL+Me0pyTzcSRzQl7bel
+	 ohfdKy7Z3el8/jS/IaKkJDSrL9bicEyQjHxPkf/5UrOP/YADLnKbmrehwfqGwF3LKH
+	 +3l4CTxs7mtLU+YP0b7xvtJTRnNQMhS0hbkPfLLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Hillf Danton <hdanton@sina.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 30/66] nilfs2: add missing check for inode numbers on directory entries
-Date: Tue, 16 Jul 2024 17:31:05 +0200
-Message-ID: <20240716152739.315573822@linuxfoundation.org>
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.9 070/143] USB: serial: option: add Telit FN912 rmnet compositions
+Date: Tue, 16 Jul 2024 17:31:06 +0200
+Message-ID: <20240716152758.670917551@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-commit bb76c6c274683c8570ad788f79d4b875bde0e458 upstream.
+commit 9a590ff283421b71560deded2110dbdcbe1f7d1d upstream.
 
-Syzbot reported that mounting and unmounting a specific pattern of
-corrupted nilfs2 filesystem images causes a use-after-free of metadata
-file inodes, which triggers a kernel bug in lru_add_fn().
+Add the following Telit FN912 compositions:
 
-As Jan Kara pointed out, this is because the link count of a metadata file
-gets corrupted to 0, and nilfs_evict_inode(), which is called from iput(),
-tries to delete that inode (ifile inode in this case).
+0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3000 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-The inconsistency occurs because directories containing the inode numbers
-of these metadata files that should not be visible in the namespace are
-read without checking.
+0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3001 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fix this issue by treating the inode numbers of these internal files as
-errors in the sanity check helper when reading directory folios/pages.
-
-Also thanks to Hillf Danton and Matthew Wilcox for their initial mm-layer
-analysis.
-
-Link: https://lkml.kernel.org/r/20240623051135.4180-3-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d79afb004be235636ee8
-Reported-by: Jan Kara <jack@suse.cz>
-Closes: https://lkml.kernel.org/r/20240617075758.wewhukbrjod5fp5o@quack3
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/dir.c   |    6 ++++++
- fs/nilfs2/nilfs.h |    5 +++++
- 2 files changed, 11 insertions(+)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -143,6 +143,9 @@ static bool nilfs_check_page(struct page
- 			goto Enamelen;
- 		if (((offs + rec_len - 1) ^ offs) & ~(chunk_size-1))
- 			goto Espan;
-+		if (unlikely(p->inode &&
-+			     NILFS_PRIVATE_INODE(le64_to_cpu(p->inode))))
-+			goto Einumber;
- 	}
- 	if (offs != limit)
- 		goto Eend;
-@@ -168,6 +171,9 @@ Enamelen:
- 	goto bad_entry;
- Espan:
- 	error = "directory entry across blocks";
-+	goto bad_entry;
-+Einumber:
-+	error = "disallowed inode number";
- bad_entry:
- 	nilfs_error(sb,
- 		    "bad entry in directory #%lu: %s - offset=%lu, inode=%lu, rec_len=%d, name_len=%d",
---- a/fs/nilfs2/nilfs.h
-+++ b/fs/nilfs2/nilfs.h
-@@ -121,6 +121,11 @@ enum {
- 	((ino) >= NILFS_FIRST_INO(sb) ||				\
- 	 ((ino) < NILFS_USER_INO && (NILFS_SYS_INO_BITS & BIT(ino))))
- 
-+#define NILFS_PRIVATE_INODE(ino) ({					\
-+	ino_t __ino = (ino);						\
-+	((__ino) < NILFS_USER_INO && (__ino) != NILFS_ROOT_INO &&	\
-+	 (__ino) != NILFS_SKETCH_INO); })
-+
- /**
-  * struct nilfs_transaction_info: context information for synchronization
-  * @ti_magic: Magic number
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1425,6 +1425,10 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1901, 0xff),	/* Telit LN940 (MBIM) */
+ 	  .driver_info = NCTRL(0) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3000, 0xff),	/* Telit FN912 */
++	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3001, 0xff),	/* Telit FN912 */
++	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7010, 0xff),	/* Telit LE910-S1 (RNDIS) */
+ 	  .driver_info = NCTRL(2) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7011, 0xff),	/* Telit LE910-S1 (ECM) */
 
 
 
