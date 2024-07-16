@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-59428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC124932887
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:28:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F79E932889
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29BA01C20B28
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:28:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 614451C2233D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741B619DF6B;
-	Tue, 16 Jul 2024 14:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AC31A08BE;
+	Tue, 16 Jul 2024 14:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Du9dcPuq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q7cAaT24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F9919CD01;
-	Tue, 16 Jul 2024 14:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA3B19D881;
+	Tue, 16 Jul 2024 14:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721139957; cv=none; b=Ke8opdXDjA+h+zsdPBQWwX1c63jwvy5wZyX1cdl9dCMIyRhmEk1k+oTxa2yyviQqxqlZRdCtMvY59wPeCoIO7cClOPIy4dr15m/faFt7RONuLzelRxoM2DWbGwIRLty+pt2jwX9JAkOZhCF5iS145ZqjZOcIlT7BoZd7WFPHf20=
+	t=1721139961; cv=none; b=Lq9ZfDt+WnbohmQOLRtJHPgA5oub/XfL7zm16y2woBXdnrQqK2Sm6stne4z5BmGUXwUwss+PE5IpMntBmuzwIc3alOOjVi0fRYSykc84dgIYMLMQw15Q2C9YgbCYsCP+D8KQ9VjL/qTsNY6d3C5phvMlAArWM/HpNFbY/fmCOhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721139957; c=relaxed/simple;
-	bh=L9vw0SOo7zsmSC9f3Fyo4092LaNKWbBAXxFqQ2talOE=;
+	s=arc-20240116; t=1721139961; c=relaxed/simple;
+	bh=lFfeEuGvPTnaQ/p4RIp+RBEGX2XyChwT1+a3MqZRhf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aoPYZFgtGnlBB4vaT1igBbVqri5tgiN4PLT2K8Plh7UT2xsdegMPF/nrCzfWktflNLzFz/d1Lh++nINIk7cowblGteMn3uYAm+gjpNwG7kewD+OYya4O0e2yYWRvjPW1TBZvyrA5rSne9rxeS7M27G9D7zYe/0DmBgAlFzHE0wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Du9dcPuq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236E1C116B1;
-	Tue, 16 Jul 2024 14:25:54 +0000 (UTC)
+	 MIME-Version; b=FSmH1ACF4zTog31YkxP46+ObflyF+T9c+E9+rY2vJggdJG7fClV6tk3iUfv09ZD9zTP4CvdFZmO8xX9+G9Hnc3IxXVV/KkWj3tsoVnxQhHMgLI8MW1gcccJZUx63Mn3+Yi9lGpYhET4btqJmPLeHfcZKDBPwezh84NvLWeSaaJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q7cAaT24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D4FC4AF09;
+	Tue, 16 Jul 2024 14:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721139957;
-	bh=L9vw0SOo7zsmSC9f3Fyo4092LaNKWbBAXxFqQ2talOE=;
+	s=k20201202; t=1721139961;
+	bh=lFfeEuGvPTnaQ/p4RIp+RBEGX2XyChwT1+a3MqZRhf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Du9dcPuqBnXxf+wpWZuhcBsKdFkLhJb905h5Dqs4qXH2FSNOAWwIZRR2d6itWA2bE
-	 5B67JVKGp3IaGltTYsHQIXuS3H0cJ5ZV9pkCQ6Ksd5oxDDndLzIL+nKsg6TPV++MrW
-	 upOhQV0Ptcw2JJNLBcW+SzUtwueJkOHh3a7ipoFD5v3homhWiO11zsHwXS45OyoSsi
-	 aIHgLJPsndAvCb3m/EVpR5BCHQIptHYP2p/PPMjMapuMHYkth4q8HVhn2uZ5zF1Oz9
-	 0gaE9a9nNgdP2INHZWCfB5qch39ufckUiNA8FOx95JLut5KjJS7PCxVuzFxPqMJvT/
-	 DXi2EsWcMDu/w==
+	b=q7cAaT24nLVTkdM59UL6A3s9h2JtWdBHoUHwXctvImwMYQwNrOB6W+zUxGraGk5K+
+	 MWy86RTKtTLjXFQMSnk2ITtyf7rLcH19J2AaGvHoYJEe1AiaTiJgJNDStjPFiM2qdc
+	 9bOc8F6gf46IABiFpKeEyo7scNNxgRIqJZwHqlYQ51iyM40rd32eVh8cITDbxso5M8
+	 mtIK/xZSkpkZt+XFUN2SuNOgqgv4Hl7phftAbnIcz0YPYX7mwZfd6HOzqWoHuLtKut
+	 KMQK6t5TRnfsWmNUF1NnuxX533oJFY8ri8yIu9wqYzkr9HX3d0nwWJrq+g6nH+7gyN
+	 g6LiALY9yLAmg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tom Chung <chiahsuan.chung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+Cc: Alvin Lee <alvin.lee2@amd.com>,
+	Chaitanya Dhere <chaitanya.dhere@amd.com>,
+	Nevenko Stupar <nevenko.stupar@amd.com>,
 	Jerry Zuo <jerry.zuo@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
@@ -58,17 +58,12 @@ Cc: Tom Chung <chiahsuan.chung@amd.com>,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	alex.hung@amd.com,
-	hamza.mahfooz@amd.com,
-	roman.li@amd.com,
-	joshua@froggi.es,
-	wayne.lin@amd.com,
-	srinivasan.shanmugam@amd.com,
+	jun.lei@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.9 12/22] drm/amd/display: Add refresh rate range check
-Date: Tue, 16 Jul 2024 10:24:19 -0400
-Message-ID: <20240716142519.2712487-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 13/22] drm/amd/display: Account for cursor prefetch BW in DML1 mode support
+Date: Tue, 16 Jul 2024 10:24:20 -0400
+Message-ID: <20240716142519.2712487-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716142519.2712487-1-sashal@kernel.org>
 References: <20240716142519.2712487-1-sashal@kernel.org>
@@ -83,48 +78,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.9
 Content-Transfer-Encoding: 8bit
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Alvin Lee <alvin.lee2@amd.com>
 
-[ Upstream commit 74ad26b36d303ac233eccadc5c3a8d7ee4709f31 ]
+[ Upstream commit 074b3a886713f69d98d30bb348b1e4cb3ce52b22 ]
 
-[Why]
-We only enable the VRR while monitor usable refresh rate range
-is greater than 10 Hz.
-But we did not check the range in DRM_EDID_FEATURE_CONTINUOUS_FREQ
-case.
+[Description]
+We need to ensure to take into account cursor prefetch BW in
+mode support or we may pass ModeQuery but fail an actual flip
+which will cause a hang. Flip may fail because the cursor_pre_bw
+is populated during mode programming (and mode programming is
+never called prior to ModeQuery).
 
-[How]
-Add a refresh rate range check before set the freesync_capable flag
-in DRM_EDID_FEATURE_CONTINUOUS_FREQ case.
-
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
+Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
 Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 53a55270998cc..6f43797e1c060 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -11290,9 +11290,11 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
- 		if (is_dp_capable_without_timing_msa(adev->dm.dc,
- 						     amdgpu_dm_connector)) {
- 			if (edid->features & DRM_EDID_FEATURE_CONTINUOUS_FREQ) {
--				freesync_capable = true;
- 				amdgpu_dm_connector->min_vfreq = connector->display_info.monitor_range.min_vfreq;
- 				amdgpu_dm_connector->max_vfreq = connector->display_info.monitor_range.max_vfreq;
-+				if (amdgpu_dm_connector->max_vfreq -
-+				    amdgpu_dm_connector->min_vfreq > 10)
-+					freesync_capable = true;
- 			} else {
- 				edid_check_required = edid->version > 1 ||
- 						      (edid->version == 1 &&
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+index 6c84b0fa40f44..0782a34689a00 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+@@ -3364,6 +3364,9 @@ void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
+ 							&mode_lib->vba.UrgentBurstFactorLumaPre[k],
+ 							&mode_lib->vba.UrgentBurstFactorChromaPre[k],
+ 							&mode_lib->vba.NotUrgentLatencyHidingPre[k]);
++
++					v->cursor_bw_pre[k] = mode_lib->vba.NumberOfCursors[k] * mode_lib->vba.CursorWidth[k][0] * mode_lib->vba.CursorBPP[k][0] /
++							8.0 / (mode_lib->vba.HTotal[k] / mode_lib->vba.PixelClock[k]) * v->VRatioPreY[i][j][k];
+ 				}
+ 
+ 				{
 -- 
 2.43.0
 
