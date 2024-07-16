@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-59691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4896932B4E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3432932BF2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E78AB230B0
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FB841C22F46
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7249C19DFB3;
-	Tue, 16 Jul 2024 15:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4ED19E827;
+	Tue, 16 Jul 2024 15:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9pWOzKr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BECP8C33"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E19B19DFA6;
-	Tue, 16 Jul 2024 15:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DD527733;
+	Tue, 16 Jul 2024 15:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144616; cv=none; b=Ml/uvRQb9LmTq2Opz6qhWO3iDmFlWyvNV59gKnP3fNaQU6uJNjfI93lsiEbacYcxL0QtBm+dIdeyVFgNfbBMK5TIHv+EZpqo+YeIN+jJES01TK5dOl7tz5tMZYQxTWz8cY0V6DM2oEOMKUmk42lPDA57vfWqq+x2CN3j7to0t6Y=
+	t=1721145007; cv=none; b=FizQajWXDeZovJyKvte8Lyg1uSrHytqt13dhIzNJf5oaw2oRmLoX8Wc7ZlO343AejOn0eqWtHtsKDwJ5R/FEnoQHPaO6vUi9SfGua4bJxqHTiI1EIA/hoz5QU+vroEtdG7gl9rrkilGWcKisP8bN1NNm3xiyb1dgoUrwiLT7Mug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144616; c=relaxed/simple;
-	bh=I70+nfGmtsLvQsTsuJocZIkHeYwjS8Y/whg5o/B6RP8=;
+	s=arc-20240116; t=1721145007; c=relaxed/simple;
+	bh=njuW7f0YnixF7X0+N2TvmOmUd7VHAjjlw2aw7RYGRcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWHhObeaYmfKFZlMLcYd6VZi14vpgh1Q18PSsGbs1c1eTbcLzgauoVZ77oIgdOZh7SLJSAuOy/7C3Bhu8h4s+uzvCSiVHAQ8Jb3yq1sr9+jp8CO15CCWjK8HpW4D1iPVH8doiDJMsHU3SdLH0RX3SecCgaMtor1tdpi6ZA7H2FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9pWOzKr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA561C116B1;
-	Tue, 16 Jul 2024 15:43:35 +0000 (UTC)
+	 MIME-Version; b=bt0yextngFV4Oe955S/cvmSbnIly5lgACOaDt14+ZDHvJ1KpkNr6kL5lCmUjkUhzOf7PHxmU/5JPuswF7+7OOdajKHQJ/2JMaA7MYdUgy0lBM0JJUhjz1JnWoqrRfkhelArBSYHiRwA7zXsmITXQpMP/lXlMacITKOAkG/xLJv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BECP8C33; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E76C116B1;
+	Tue, 16 Jul 2024 15:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144616;
-	bh=I70+nfGmtsLvQsTsuJocZIkHeYwjS8Y/whg5o/B6RP8=;
+	s=korg; t=1721145007;
+	bh=njuW7f0YnixF7X0+N2TvmOmUd7VHAjjlw2aw7RYGRcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s9pWOzKrTv6p+rOrivqN+ewMzwNAT16+Qx53IiEtSBtmsTMtdYJpgk/x60LiAmTyl
-	 KBwvq9Odq558qW6woWfNig+l3WldNfsID9v+7N2JMVWx0dpo2KmKyQ/jzxdBJmH2+f
-	 QuB7nn1vig0mOd0sHEjuTicLan2H7v3QfxdCpEb8=
+	b=BECP8C33F5uhwK56MA0M3/raXk1sMAMrBEP2aKaHgxR3BuNVPRqbY5Uzebp4eY4OH
+	 nbR8P0uMVCU3NIiu/5SWqpNRX/PYXzz99g2teVn7dCxdOd+EGJNAK6ADeZ8n0vf/el
+	 gJ8j/pihV5U73EKfxQ57IuMmdu14AjWgT121chjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 049/108] i2c: pnx: Fix potential deadlock warning from del_timer_sync() call in isr
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Jacob Keller <jacob.e.keller@intel.com>
+Subject: [PATCH 6.9 068/143] net: ks8851: Fix potential TX stall after interface reopen
 Date: Tue, 16 Jul 2024 17:31:04 +0200
-Message-ID: <20240716152747.873164401@linuxfoundation.org>
+Message-ID: <20240716152758.594309082@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,189 +67,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-[ Upstream commit f63b94be6942ba82c55343e196bd09b53227618e ]
+commit 7a99afef17af66c276c1d6e6f4dbcac223eaf6ac upstream.
 
-When del_timer_sync() is called in an interrupt context it throws a warning
-because of potential deadlock. The timer is used only to exit from
-wait_for_completion() after a timeout so replacing the call with
-wait_for_completion_timeout() allows to remove the problematic timer and
-its related functions altogether.
+The amount of TX space in the hardware buffer is tracked in the tx_space
+variable. The initial value is currently only set during driver probing.
 
-Fixes: 41561f28e76a ("i2c: New Philips PNX bus driver")
-Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After closing the interface and reopening it the tx_space variable has
+the last value it had before close. If it is smaller than the size of
+the first send packet after reopeing the interface the queue will be
+stopped. The queue is woken up after receiving a TX interrupt but this
+will never happen since we did not send anything.
+
+This commit moves the initialization of the tx_space variable to the
+ks8851_net_open function right before starting the TX queue. Also query
+the value from the hardware instead of using a hard coded value.
+
+Only the SPI chip variant is affected by this issue because only this
+driver variant actually depends on the tx_space variable in the xmit
+function.
+
+Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20240709195845.9089-1-rwahl@gmx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-pnx.c | 48 ++++++++----------------------------
- 1 file changed, 10 insertions(+), 38 deletions(-)
+ drivers/net/ethernet/micrel/ks8851_common.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-pnx.c b/drivers/i2c/busses/i2c-pnx.c
-index 8c4ec7f13f5ab..b6b5a65efcbbc 100644
---- a/drivers/i2c/busses/i2c-pnx.c
-+++ b/drivers/i2c/busses/i2c-pnx.c
-@@ -15,7 +15,6 @@
- #include <linux/ioport.h>
- #include <linux/delay.h>
- #include <linux/i2c.h>
--#include <linux/timer.h>
- #include <linux/completion.h>
- #include <linux/platform_device.h>
- #include <linux/io.h>
-@@ -32,7 +31,6 @@ struct i2c_pnx_mif {
- 	int			ret;		/* Return value */
- 	int			mode;		/* Interface mode */
- 	struct completion	complete;	/* I/O completion */
--	struct timer_list	timer;		/* Timeout */
- 	u8 *			buf;		/* Data buffer */
- 	int			len;		/* Length of data buffer */
- 	int			order;		/* RX Bytes to order via TX */
-@@ -117,24 +115,6 @@ static inline int wait_reset(struct i2c_pnx_algo_data *data)
- 	return (timeout <= 0);
- }
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -482,6 +482,7 @@ static int ks8851_net_open(struct net_de
+ 	ks8851_wrreg16(ks, KS_IER, ks->rc_ier);
  
--static inline void i2c_pnx_arm_timer(struct i2c_pnx_algo_data *alg_data)
--{
--	struct timer_list *timer = &alg_data->mif.timer;
--	unsigned long expires = msecs_to_jiffies(alg_data->timeout);
--
--	if (expires <= 1)
--		expires = 2;
--
--	del_timer_sync(timer);
--
--	dev_dbg(&alg_data->adapter.dev, "Timer armed at %lu plus %lu jiffies.\n",
--		jiffies, expires);
--
--	timer->expires = jiffies + expires;
--
--	add_timer(timer);
--}
--
- /**
-  * i2c_pnx_start - start a device
-  * @slave_addr:		slave address
-@@ -259,8 +239,6 @@ static int i2c_pnx_master_xmit(struct i2c_pnx_algo_data *alg_data)
- 				~(mcntrl_afie | mcntrl_naie | mcntrl_drmie),
- 				  I2C_REG_CTL(alg_data));
+ 	ks->queued_len = 0;
++	ks->tx_space = ks8851_rdreg16(ks, KS_TXMIR);
+ 	netif_start_queue(ks->netdev);
  
--			del_timer_sync(&alg_data->mif.timer);
--
- 			dev_dbg(&alg_data->adapter.dev,
- 				"%s(): Waking up xfer routine.\n",
- 				__func__);
-@@ -276,8 +254,6 @@ static int i2c_pnx_master_xmit(struct i2c_pnx_algo_data *alg_data)
- 			~(mcntrl_afie | mcntrl_naie | mcntrl_drmie),
- 			  I2C_REG_CTL(alg_data));
+ 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
+@@ -1101,7 +1102,6 @@ int ks8851_probe_common(struct net_devic
+ 	int ret;
  
--		/* Stop timer. */
--		del_timer_sync(&alg_data->mif.timer);
- 		dev_dbg(&alg_data->adapter.dev,
- 			"%s(): Waking up xfer routine after zero-xfer.\n",
- 			__func__);
-@@ -364,8 +340,6 @@ static int i2c_pnx_master_rcv(struct i2c_pnx_algo_data *alg_data)
- 				 mcntrl_drmie | mcntrl_daie);
- 			iowrite32(ctl, I2C_REG_CTL(alg_data));
+ 	ks->netdev = netdev;
+-	ks->tx_space = 6144;
  
--			/* Kill timer. */
--			del_timer_sync(&alg_data->mif.timer);
- 			complete(&alg_data->mif.complete);
- 		}
- 	}
-@@ -400,8 +374,6 @@ static irqreturn_t i2c_pnx_interrupt(int irq, void *dev_id)
- 			 mcntrl_drmie);
- 		iowrite32(ctl, I2C_REG_CTL(alg_data));
- 
--		/* Stop timer, to prevent timeout. */
--		del_timer_sync(&alg_data->mif.timer);
- 		complete(&alg_data->mif.complete);
- 	} else if (stat & mstatus_nai) {
- 		/* Slave did not acknowledge, generate a STOP */
-@@ -419,8 +391,6 @@ static irqreturn_t i2c_pnx_interrupt(int irq, void *dev_id)
- 		/* Our return value. */
- 		alg_data->mif.ret = -EIO;
- 
--		/* Stop timer, to prevent timeout. */
--		del_timer_sync(&alg_data->mif.timer);
- 		complete(&alg_data->mif.complete);
- 	} else {
- 		/*
-@@ -453,9 +423,8 @@ static irqreturn_t i2c_pnx_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--static void i2c_pnx_timeout(struct timer_list *t)
-+static void i2c_pnx_timeout(struct i2c_pnx_algo_data *alg_data)
- {
--	struct i2c_pnx_algo_data *alg_data = from_timer(alg_data, t, mif.timer);
- 	u32 ctl;
- 
- 	dev_err(&alg_data->adapter.dev,
-@@ -472,7 +441,6 @@ static void i2c_pnx_timeout(struct timer_list *t)
- 	iowrite32(ctl, I2C_REG_CTL(alg_data));
- 	wait_reset(alg_data);
- 	alg_data->mif.ret = -EIO;
--	complete(&alg_data->mif.complete);
- }
- 
- static inline void bus_reset_if_active(struct i2c_pnx_algo_data *alg_data)
-@@ -514,6 +482,7 @@ i2c_pnx_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
- 	struct i2c_msg *pmsg;
- 	int rc = 0, completed = 0, i;
- 	struct i2c_pnx_algo_data *alg_data = adap->algo_data;
-+	unsigned long time_left;
- 	u32 stat;
- 
- 	dev_dbg(&alg_data->adapter.dev,
-@@ -548,7 +517,6 @@ i2c_pnx_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
- 		dev_dbg(&alg_data->adapter.dev, "%s(): mode %d, %d bytes\n",
- 			__func__, alg_data->mif.mode, alg_data->mif.len);
- 
--		i2c_pnx_arm_timer(alg_data);
- 
- 		/* initialize the completion var */
- 		init_completion(&alg_data->mif.complete);
-@@ -564,7 +532,10 @@ i2c_pnx_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
- 			break;
- 
- 		/* Wait for completion */
--		wait_for_completion(&alg_data->mif.complete);
-+		time_left = wait_for_completion_timeout(&alg_data->mif.complete,
-+							alg_data->timeout);
-+		if (time_left == 0)
-+			i2c_pnx_timeout(alg_data);
- 
- 		if (!(rc = alg_data->mif.ret))
- 			completed++;
-@@ -657,7 +628,10 @@ static int i2c_pnx_probe(struct platform_device *pdev)
- 	alg_data->adapter.algo_data = alg_data;
- 	alg_data->adapter.nr = pdev->id;
- 
--	alg_data->timeout = I2C_PNX_TIMEOUT_DEFAULT;
-+	alg_data->timeout = msecs_to_jiffies(I2C_PNX_TIMEOUT_DEFAULT);
-+	if (alg_data->timeout <= 1)
-+		alg_data->timeout = 2;
-+
- #ifdef CONFIG_OF
- 	alg_data->adapter.dev.of_node = of_node_get(pdev->dev.of_node);
- 	if (pdev->dev.of_node) {
-@@ -677,8 +651,6 @@ static int i2c_pnx_probe(struct platform_device *pdev)
- 	if (IS_ERR(alg_data->clk))
- 		return PTR_ERR(alg_data->clk);
- 
--	timer_setup(&alg_data->mif.timer, i2c_pnx_timeout, 0);
--
- 	snprintf(alg_data->adapter.name, sizeof(alg_data->adapter.name),
- 		 "%s", pdev->name);
- 
--- 
-2.43.0
-
+ 	ks->gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+ 	ret = PTR_ERR_OR_ZERO(ks->gpio);
 
 
 
