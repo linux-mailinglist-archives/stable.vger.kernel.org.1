@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-60024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F92932D0C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C36EB932AA8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A92441C22452
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A0591F2385C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FEFE19DF71;
-	Tue, 16 Jul 2024 16:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D954E1DDCE;
+	Tue, 16 Jul 2024 15:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNyHeKOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPWe4Y3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30FC17623C;
-	Tue, 16 Jul 2024 16:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AB1CA40;
+	Tue, 16 Jul 2024 15:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145628; cv=none; b=hS41gHBOgrtnidn/gI6NVL7zUKUegaQezbhWCExxkj+SieTNKyjd1WtpuGt96zf4LmHBrJbAbB3u/eDwg4vof5Fn0bGnvPXXnJaUUKzAp/2hqvTVf2Kc6ts68WgML1IiWgaB+ql39Rd5kj5UaT/jKncfQNLBEwmNNVXTvOtoG48=
+	t=1721144189; cv=none; b=ZYCVhGFUokXvF1bXt2dEacGTKQdJuKXEUqwZe8D1cy9EsrFIvAbcwfLNpcT5H2vA2WjDHtlmSe9QW078Df+rH0MZtakgOKrRof3kV6FpOcXyceINlduvHNC3ACKb8VVg43m5uehJle1tXeUnE82bigk1BKqyIm/Xa+cZ8G0dS0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145628; c=relaxed/simple;
-	bh=+ddMzR7yvZMI41QgOKRcM8PVTgs8RGJ3ijtsGLA2J+E=;
+	s=arc-20240116; t=1721144189; c=relaxed/simple;
+	bh=1dYEk+xXiNHgtfKnotAlvOozz/8sLdOyQCrt+LpQLNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OClKLC6N73NCGIIfBl/B64q7NkimZhOIkVe85yojv/5anOQdEE+0dY/QC69AzPxNNxm8ax5AU/EeAuGX3E2S1xgyevAS3xzq6xQiHTnwKoACZqJZRIPb+fnVmFEGpS1OQavQpLkTnIlNq9ACfLq6hKL66PQR/sXMHEXlVXPHNhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNyHeKOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16D1C116B1;
-	Tue, 16 Jul 2024 16:00:27 +0000 (UTC)
+	 MIME-Version; b=UUCE0fAOPIY9p04lfQC9xngNL1qeOx913+zG31Lxd4l/Z1teyaehocC56O4d4132EwZE5qtYumAHb8YOueu/h3pvYnyKq3GhBPUasXvTCGjuMGotXMy7PeQY3p7Mpv+rtAHp8WaTcL0FrPyY+FWuGH+mxykYoCGC6e+bJrYzKrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPWe4Y3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4DBC116B1;
+	Tue, 16 Jul 2024 15:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145628;
-	bh=+ddMzR7yvZMI41QgOKRcM8PVTgs8RGJ3ijtsGLA2J+E=;
+	s=korg; t=1721144189;
+	bh=1dYEk+xXiNHgtfKnotAlvOozz/8sLdOyQCrt+LpQLNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNyHeKOwSYQNMW2wrOrzyEv6C0GoK74RW5dWA0eQP/hZifUQbxLVI4EyyzUPxyFjS
-	 zzfU6Il9M+jJvEPweXTf1M12Uv4GtcEKHTzKY7js+OnXQgDP8uu6im+ZEghvCTX39M
-	 H6O8yQetLFobBYT73GL7Wmb5UoDmkp3U5fM3A/i4=
+	b=aPWe4Y3SQLmkOhZb3oLwVHbf0N7vw3aSzpXEWcH9pZ5Rhx+WzVq8IJCx3OES8QIeb
+	 Rex5x4FQE9wlwC8mGrtvZ+T+IWW6BGzR4BPea4iLzOStohRiV61LlGtWDwPpLCOL6k
+	 v53FU5s53+dBNuL4geV7zXKCpAewkOcLFRH0zCCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/121] ppp: reject claimed-as-LCP but actually malformed packets
+	He Zhe <zhe.he@windriver.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 4.19 58/66] hpet: Support 32-bit userspace
 Date: Tue, 16 Jul 2024 17:31:33 +0200
-Message-ID: <20240716152752.521788997@linuxfoundation.org>
+Message-ID: <20240716152740.376723496@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: He Zhe <zhe.he@windriver.com>
 
-[ Upstream commit f2aeb7306a898e1cbd03963d376f4b6656ca2b55 ]
+commit 4e60131d0d36af65ab9c9144f4f163fe97ae36e8 upstream.
 
-Since 'ppp_async_encode()' assumes valid LCP packets (with code
-from 1 to 7 inclusive), add 'ppp_check_packet()' to ensure that
-LCP packet has an actual body beyond PPP_LCP header bytes, and
-reject claimed-as-LCP but actually malformed data otherwise.
+hpet_compat_ioctl and read file operations failed to handle parameters from
+32-bit userspace and thus samples/timers/hpet_example.c fails as below.
 
-Reported-by: syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ec0723ba9605678b14bf
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+root@intel-x86-64:~# ./hpet_example-32.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: HPET_IRQFREQ failed
+
+This patch fixes cmd and arg handling in hpet_compat_ioctl and adds compat
+handling for 32-bit userspace in hpet_read.
+
+hpet_example now shows that it works for both 64-bit and 32-bit.
+
+root@intel-x86-64:~# ./hpet_example-32.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: info.hi_flags 0x0
+hpet_poll: expired time = 0xf4298
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+hpet_poll: expired time = 0xf4235
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+root@intel-x86-64:~# ./hpet_example-64.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: info.hi_flags 0x0
+hpet_poll: expired time = 0xf42a1
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+hpet_poll: expired time = 0xf4232
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+
+Cc: stable@vger.kernel.org
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: 54066a57c584 ("hpet: kill BKL, add compat_ioctl")
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240606123908.738733-1-zhe.he@windriver.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ppp/ppp_generic.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/char/hpet.c |   34 +++++++++++++++++++++++++++++-----
+ 1 file changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index a9beacd552cf8..370c84f393759 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -70,6 +70,7 @@
- #define MPHDRLEN_SSN	4	/* ditto with short sequence numbers */
+--- a/drivers/char/hpet.c
++++ b/drivers/char/hpet.c
+@@ -307,8 +307,13 @@ hpet_read(struct file *file, char __user
+ 	if (!devp->hd_ireqfreq)
+ 		return -EIO;
  
- #define PPP_PROTO_LEN	2
-+#define PPP_LCP_HDRLEN	4
- 
- /*
-  * An instance of /dev/ppp can be associated with either a ppp
-@@ -491,6 +492,15 @@ static ssize_t ppp_read(struct file *file, char __user *buf,
- 	return ret;
- }
- 
-+static bool ppp_check_packet(struct sk_buff *skb, size_t count)
-+{
-+	/* LCP packets must include LCP header which 4 bytes long:
-+	 * 1-byte code, 1-byte identifier, and 2-byte length.
-+	 */
-+	return get_unaligned_be16(skb->data) != PPP_LCP ||
-+		count >= PPP_PROTO_LEN + PPP_LCP_HDRLEN;
-+}
-+
- static ssize_t ppp_write(struct file *file, const char __user *buf,
- 			 size_t count, loff_t *ppos)
- {
-@@ -513,6 +523,11 @@ static ssize_t ppp_write(struct file *file, const char __user *buf,
- 		kfree_skb(skb);
- 		goto out;
- 	}
-+	ret = -EINVAL;
-+	if (unlikely(!ppp_check_packet(skb, count))) {
-+		kfree_skb(skb);
-+		goto out;
+-	if (count < sizeof(unsigned long))
+-		return -EINVAL;
++	if (in_compat_syscall()) {
++		if (count < sizeof(compat_ulong_t))
++			return -EINVAL;
++	} else {
++		if (count < sizeof(unsigned long))
++			return -EINVAL;
 +	}
  
- 	switch (pf->kind) {
- 	case INTERFACE:
--- 
-2.43.0
-
+ 	add_wait_queue(&devp->hd_waitqueue, &wait);
+ 
+@@ -332,9 +337,16 @@ hpet_read(struct file *file, char __user
+ 		schedule();
+ 	}
+ 
+-	retval = put_user(data, (unsigned long __user *)buf);
+-	if (!retval)
+-		retval = sizeof(unsigned long);
++	if (in_compat_syscall()) {
++		retval = put_user(data, (compat_ulong_t __user *)buf);
++		if (!retval)
++			retval = sizeof(compat_ulong_t);
++	} else {
++		retval = put_user(data, (unsigned long __user *)buf);
++		if (!retval)
++			retval = sizeof(unsigned long);
++	}
++
+ out:
+ 	__set_current_state(TASK_RUNNING);
+ 	remove_wait_queue(&devp->hd_waitqueue, &wait);
+@@ -689,12 +701,24 @@ struct compat_hpet_info {
+ 	unsigned short hi_timer;
+ };
+ 
++/* 32-bit types would lead to different command codes which should be
++ * translated into 64-bit ones before passed to hpet_ioctl_common
++ */
++#define COMPAT_HPET_INFO       _IOR('h', 0x03, struct compat_hpet_info)
++#define COMPAT_HPET_IRQFREQ    _IOW('h', 0x6, compat_ulong_t)
++
+ static long
+ hpet_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	struct hpet_info info;
+ 	int err;
+ 
++	if (cmd == COMPAT_HPET_INFO)
++		cmd = HPET_INFO;
++
++	if (cmd == COMPAT_HPET_IRQFREQ)
++		cmd = HPET_IRQFREQ;
++
+ 	mutex_lock(&hpet_mutex);
+ 	err = hpet_ioctl_common(file->private_data, cmd, arg, &info);
+ 	mutex_unlock(&hpet_mutex);
 
 
 
