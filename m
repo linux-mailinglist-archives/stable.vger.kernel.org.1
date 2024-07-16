@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-59697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95FBC932B56
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E42D932D7A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31DC3B239FF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA86A1C22BEB
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE6219AA40;
-	Tue, 16 Jul 2024 15:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39C71DDCE;
+	Tue, 16 Jul 2024 16:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cukTmU51"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rN817ONt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDD81DDF5;
-	Tue, 16 Jul 2024 15:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA5419B59C;
+	Tue, 16 Jul 2024 16:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144634; cv=none; b=kP0/dWpqd8p4TfeVdi07s2tR0jIDEHsq+i6McAQQptxlHQu6jLIGg92CHJXyddFILhgyPt+O1SiX8QRgGcTudO3GQgGUhDte9CMGLI8FfSmlLwy55IdbutBiV+vfZDffuXJCtuekDYQMrIjkZivUH0GldGEqmidYrhPoJxp79/Q=
+	t=1721145944; cv=none; b=DclWEedXN5u3Z2rTgC1VwJpVIfcYHB0Kycb6YErlNAxDTdXjjNa5MtUB3M5yM3Rz9Hcv0fgjmO7mPbmorEpS3jI7ePpvYpBtlRN1hanr1wm3T1//F3kEtSdnWSoIRJhQJKV9mYNICn1hXIKXeDKNJec91OvPmTEGl+w2rYVxSWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144634; c=relaxed/simple;
-	bh=mXpQibZxJOknLLvPrLIEsMBSgz5r5x/3hghzg/wmujo=;
+	s=arc-20240116; t=1721145944; c=relaxed/simple;
+	bh=CExSc/qwkYlvlm4XQup32LNl6JZzBCz0u7crYzy4uBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfValYKdDIRKNqE9PI8EbeWt5ybPqYsN2QNVz75owdLNxaq5OCdPp35H8hl1x6L2KwGyQ0TbaCp8IN66I6jUwUAuTOfGKpy9+0pqGAxUZvCrecl1hffesSuHw+P7CB72j+QJHYlV/c9LQYBqHL4l57LrPOs2XKT+age+XaPufgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cukTmU51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732EBC116B1;
-	Tue, 16 Jul 2024 15:43:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aRf6+bURuhpfb9xBR6dRJTVKiAQQts+WCV+TmS0FYTg2z2Qh6eiKCmY60QuUkdlKYSD/DcCDczHSw7H1D0f+l/hssjqLw1oDauH8IcCFZ3tdcDobQaY3a/Fr2QlAdJKVQJ3qd6+7tFZDNHyyfqAUyFclaj65/8NUypCryewx5Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rN817ONt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3358CC116B1;
+	Tue, 16 Jul 2024 16:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144633;
-	bh=mXpQibZxJOknLLvPrLIEsMBSgz5r5x/3hghzg/wmujo=;
+	s=korg; t=1721145944;
+	bh=CExSc/qwkYlvlm4XQup32LNl6JZzBCz0u7crYzy4uBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cukTmU51pTqGsSUHO4xiUSZUjLKh9V2ONQAA0wmOqByZheeM+OkZxFhCnqVUfBbfS
-	 9PWe8fPzk6dCgjJAKW6Jr9vkVzOdyv1alL/SmqpIl61jSw3kCoGWElLhdMfnmh0AfN
-	 8k/zsbSbq2CreC2t+7HgjQrH/88FQN7mQdZ8bwLA=
+	b=rN817ONt+0Fz3tmLJ86+T1fvgZ4luoMLsvALoiLqpp3NMX4QGl8jtf9oXsvQmqpHa
+	 kJYs1wjUIwvint3CSBhi9ZcTud10x630DsjUcqpkhq7inF1ayhZaNFuN4b1qYUI66A
+	 emYrp9IlfJd/qulK+2UlMm7QzEEcHMYHt3PoY7sU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Turin <alex@vastdata.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	George Stark <gnstark@salutedevices.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 055/108] nvmet: fix a possible leak when destroy a ctrl during qp establishment
+Subject: [PATCH 5.15 001/144] locking/mutex: Introduce devm_mutex_init()
 Date: Tue, 16 Jul 2024 17:31:10 +0200
-Message-ID: <20240716152748.099135515@linuxfoundation.org>
+Message-ID: <20240716152752.583490101@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
+References: <20240716152752.524497140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +64,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: George Stark <gnstark@salutedevices.com>
 
-[ Upstream commit c758b77d4a0a0ed3a1292b3fd7a2aeccd1a169a4 ]
+[ Upstream commit 4cd47222e435dec8e3787614924174f53fcfb5ae ]
 
-In nvmet_sq_destroy we capture sq->ctrl early and if it is non-NULL we
-know that a ctrl was allocated (in the admin connect request handler)
-and we need to release pending AERs, clear ctrl->sqs and sq->ctrl
-(for nvme-loop primarily), and drop the final reference on the ctrl.
+Using of devm API leads to a certain order of releasing resources.
+So all dependent resources which are not devm-wrapped should be deleted
+with respect to devm-release order. Mutex is one of such objects that
+often is bound to other resources and has no own devm wrapping.
+Since mutex_destroy() actually does nothing in non-debug builds
+frequently calling mutex_destroy() is just ignored which is safe for now
+but wrong formally and can lead to a problem if mutex_destroy() will be
+extended so introduce devm_mutex_init().
 
-However, a small window is possible where nvmet_sq_destroy starts (as
-a result of the client giving up and disconnecting) concurrently with
-the nvme admin connect cmd (which may be in an early stage). But *before*
-kill_and_confirm of sq->ref (i.e. the admin connect managed to get an sq
-live reference). In this case, sq->ctrl was allocated however after it was
-captured in a local variable in nvmet_sq_destroy.
-This prevented the final reference drop on the ctrl.
-
-Solve this by re-capturing the sq->ctrl after all inflight request has
-completed, where for sure sq->ctrl reference is final, and move forward
-based on that.
-
-This issue was observed in an environment with many hosts connecting
-multiple ctrls simoutanuosly, creating a delay in allocating a ctrl
-leading up to this race window.
-
-Reported-by: Alex Turin <alex@vastdata.com>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: George Stark <gnstark@salutedevices.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Marek Behún <kabel@kernel.org>
+Acked-by: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/r/20240411161032.609544-2-gnstark@salutedevices.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/core.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/linux/mutex.h        | 27 +++++++++++++++++++++++++++
+ kernel/locking/mutex-debug.c | 12 ++++++++++++
+ 2 files changed, 39 insertions(+)
 
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index 59109eb8e8e46..a04bb02c1251b 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -795,6 +795,15 @@ void nvmet_sq_destroy(struct nvmet_sq *sq)
- 	wait_for_completion(&sq->free_done);
- 	percpu_ref_exit(&sq->ref);
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index 8f226d460f51c..9ef01b9d24563 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -20,6 +20,8 @@
+ #include <linux/osq_lock.h>
+ #include <linux/debug_locks.h>
  
-+	/*
-+	 * we must reference the ctrl again after waiting for inflight IO
-+	 * to complete. Because admin connect may have sneaked in after we
-+	 * store sq->ctrl locally, but before we killed the percpu_ref. the
-+	 * admin connect allocates and assigns sq->ctrl, which now needs a
-+	 * final ref put, as this ctrl is going away.
-+	 */
-+	ctrl = sq->ctrl;
++struct device;
 +
- 	if (ctrl) {
- 		/*
- 		 * The teardown flow may take some time, and the host may not
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ # define __DEP_MAP_MUTEX_INITIALIZER(lockname)			\
+ 		, .dep_map = {					\
+@@ -170,6 +172,31 @@ do {							\
+ } while (0)
+ #endif /* CONFIG_PREEMPT_RT */
+ 
++#ifdef CONFIG_DEBUG_MUTEXES
++
++int __devm_mutex_init(struct device *dev, struct mutex *lock);
++
++#else
++
++static inline int __devm_mutex_init(struct device *dev, struct mutex *lock)
++{
++	/*
++	 * When CONFIG_DEBUG_MUTEXES is off mutex_destroy() is just a nop so
++	 * no really need to register it in the devm subsystem.
++	 */
++	return 0;
++}
++
++#endif
++
++#define devm_mutex_init(dev, mutex)			\
++({							\
++	typeof(mutex) mutex_ = (mutex);			\
++							\
++	mutex_init(mutex_);				\
++	__devm_mutex_init(dev, mutex_);			\
++})
++
+ /*
+  * See kernel/locking/mutex.c for detailed documentation of these APIs.
+  * Also see Documentation/locking/mutex-design.rst.
+diff --git a/kernel/locking/mutex-debug.c b/kernel/locking/mutex-debug.c
+index bc8abb8549d20..6e6f6071cfa27 100644
+--- a/kernel/locking/mutex-debug.c
++++ b/kernel/locking/mutex-debug.c
+@@ -12,6 +12,7 @@
+  */
+ #include <linux/mutex.h>
+ #include <linux/delay.h>
++#include <linux/device.h>
+ #include <linux/export.h>
+ #include <linux/poison.h>
+ #include <linux/sched.h>
+@@ -89,6 +90,17 @@ void debug_mutex_init(struct mutex *lock, const char *name,
+ 	lock->magic = lock;
+ }
+ 
++static void devm_mutex_release(void *res)
++{
++	mutex_destroy(res);
++}
++
++int __devm_mutex_init(struct device *dev, struct mutex *lock)
++{
++	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
++}
++EXPORT_SYMBOL_GPL(__devm_mutex_init);
++
+ /***
+  * mutex_destroy - mark a mutex unusable
+  * @lock: the mutex to be destroyed
 -- 
 2.43.0
 
