@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8988932C20
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E676932C81
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D44921C23198
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 075F6285518
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF1619E7C6;
-	Tue, 16 Jul 2024 15:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0483C19DF73;
+	Tue, 16 Jul 2024 15:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMa3eKqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJfqJiFp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3E727733;
-	Tue, 16 Jul 2024 15:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A6819EEA1;
+	Tue, 16 Jul 2024 15:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145118; cv=none; b=D3wsPXingpbBCQNAlSZ3AhhvnmggIhB4SYX5ICUWaO11uVNVgchhgO45lPr6oONjZxMsw7aSblM+1KYhHZjcbBuEGxUxFbcTdmDmqnfcXnIpTftpX/zmz5VUtFsSNNf1BzFU8xWgEhOKuv90uuOS+TaqurRkm6gy8sLJgaOBBas=
+	t=1721145333; cv=none; b=iJv5BJcac5gpGlTxBCLrtwDCkXAN+mnLfPqLrUSSRPIHiaFVKt49g+G87ZGTL+ARiUmNq14H73KWqzfkYKB4D8v+DnZHUR6oU+NM+tyR2f4x+AQEhwe2/++owObIgbnykw8DLhT2sho2gXyIKTWnPWEXZko0NrBFdPdxe8bK1lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145118; c=relaxed/simple;
-	bh=vBBD4WEsgEe8G4uB4Xuhd77u2hZVEN+u0+BgnAB4dp0=;
+	s=arc-20240116; t=1721145333; c=relaxed/simple;
+	bh=5pK/tMVTcYSg84XVui0HoXD1gkCHb7FvcWh59nWHyJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+VtqzBQOjCrI0IVsaL4qyl/YRl5qBL1pr+ssDe3GrzdowkvAMrrHXE93VcgywLQhxX8RL2lr3rC+pM6AsF8n7cCohv/hacM3XA+dYgEKNYFRg03WDWFmX+oRtcc+6Rvb+HagvsINzT1VEAeG3kZZyGlTL0+pLRna9gw9K+DooM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMa3eKqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A9AC4AF0B;
-	Tue, 16 Jul 2024 15:51:57 +0000 (UTC)
+	 MIME-Version; b=A2+0GTrtgw+hM5Ts75/KPsoHQLM/993ura4Czbd86FMEDqLahpP2S4y+6Gi7jije+55bh8Ii1ry/RlaViIhPimyhIaj6pGHr2qXxW/TIrqJj5HBoAljO69056RDiVqNVv/IeA4coptlDra20c8O4N6d9gwumJN+keGOQf4Fmyi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJfqJiFp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE00C116B1;
+	Tue, 16 Jul 2024 15:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145117;
-	bh=vBBD4WEsgEe8G4uB4Xuhd77u2hZVEN+u0+BgnAB4dp0=;
+	s=korg; t=1721145333;
+	bh=5pK/tMVTcYSg84XVui0HoXD1gkCHb7FvcWh59nWHyJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMa3eKqzJD1O55HU7Jz+rQGGpQquro+PgOCYL7vNxWf9H3P0sacbYD5FI39aNJnGj
-	 HGQIO8JQYtjlFZ1p9z9vFHzq0jIzXxX1GjNNDjpTOEk3bCiUFxId20yHGt8nObFlYi
-	 EnZwUHS89VT2qmBtTd5hXqgdiWg9QFZ7lYmuGfps=
+	b=nJfqJiFpuXsarGAeMQbF1SLI04MRgodHRaVPlx3O3Vbgeq2jTg1z5qIcpBQGu/Wav
+	 wK0a5AyHhzwmcWi/6uA2ZrK9momSToEYR76ovVbX10AvvrpRn8TDlbK4p34cHlhn6g
+	 2QvBrgnZFlMYqHzwYFRqtixo69UfZxnKALMVEJQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	stable <stable@kernel.org>,
-	Marek Vasut <marex@denx.de>
-Subject: [PATCH 6.9 105/143] serial: imx: ensure RTS signal is not left active after shutdown
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 30/96] s390: Mark psw in __load_psw_mask() as __unitialized
 Date: Tue, 16 Jul 2024 17:31:41 +0200
-Message-ID: <20240716152800.016969563@linuxfoundation.org>
+Message-ID: <20240716152747.672325176@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit 1af2156e58f3af1216ce2f0456b3b8949faa5c7e upstream.
+[ Upstream commit 7278a8fb8d032dfdc03d9b5d17e0bc451cdc1492 ]
 
-If a process is killed while writing to a /dev/ttymxc* device in RS485
-mode, we observe that the RTS signal is left high, thus making it
-impossible for other devices to transmit anything.
+Without __unitialized, the following code is generated when
+INIT_STACK_ALL_ZERO is enabled:
 
-Moreover, the ->tx_state variable is left in state SEND, which means
-that when one next opens the device and configures baud rate etc., the
-initialization code in imx_uart_set_termios dutifully ensures the RTS
-pin is pulled down, but since ->tx_state is already SEND, the logic in
-imx_uart_start_tx() does not in fact pull the pin high before
-transmitting, so nothing actually gets on the wire on the other side
-of the transceiver. Only when that transmission is allowed to complete
-is the state machine then back in a consistent state.
+86: d7 0f f0 a0 f0 a0     xc      160(16,%r15), 160(%r15)
+8c: e3 40 f0 a0 00 24     stg     %r4, 160(%r15)
+92: c0 10 00 00 00 08     larl    %r1, 0xa2
+98: e3 10 f0 a8 00 24     stg     %r1, 168(%r15)
+9e: b2 b2 f0 a0           lpswe   160(%r15)
 
-This is completely reproducible by doing something as simple as
+The xc is not adding any security because psw is fully initialized
+with the following instructions. Add __unitialized to the psw
+definitiation to avoid the superfluous clearing of psw.
 
-  seq 10000 > /dev/ttymxc0
-
-and hitting ctrl-C, and watching with a logic analyzer.
-
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20240625184206.508837-1-linux@rasmusvillemoes.dk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ arch/s390/include/asm/processor.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -1560,6 +1560,7 @@ static void imx_uart_shutdown(struct uar
- 	struct imx_port *sport = (struct imx_port *)port;
- 	unsigned long flags;
- 	u32 ucr1, ucr2, ucr4, uts;
-+	int loops;
+diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
+index c907f747d2a04..26861b09293f1 100644
+--- a/arch/s390/include/asm/processor.h
++++ b/arch/s390/include/asm/processor.h
+@@ -250,8 +250,8 @@ static inline void __load_psw(psw_t psw)
+  */
+ static __always_inline void __load_psw_mask(unsigned long mask)
+ {
++	psw_t psw __uninitialized;
+ 	unsigned long addr;
+-	psw_t psw;
  
- 	if (sport->dma_is_enabled) {
- 		dmaengine_terminate_sync(sport->dma_chan_tx);
-@@ -1622,6 +1623,56 @@ static void imx_uart_shutdown(struct uar
- 	ucr4 &= ~UCR4_TCEN;
- 	imx_uart_writel(sport, ucr4, UCR4);
+ 	psw.mask = mask;
  
-+	/*
-+	 * We have to ensure the tx state machine ends up in OFF. This
-+	 * is especially important for rs485 where we must not leave
-+	 * the RTS signal high, blocking the bus indefinitely.
-+	 *
-+	 * All interrupts are now disabled, so imx_uart_stop_tx() will
-+	 * no longer be called from imx_uart_transmit_buffer(). It may
-+	 * still be called via the hrtimers, and if those are in play,
-+	 * we have to honour the delays.
-+	 */
-+	if (sport->tx_state == WAIT_AFTER_RTS || sport->tx_state == SEND)
-+		imx_uart_stop_tx(port);
-+
-+	/*
-+	 * In many cases (rs232 mode, or if tx_state was
-+	 * WAIT_AFTER_RTS, or if tx_state was SEND and there is no
-+	 * delay_rts_after_send), this will have moved directly to
-+	 * OFF. In rs485 mode, tx_state might already have been
-+	 * WAIT_AFTER_SEND and the hrtimer thus already started, or
-+	 * the above imx_uart_stop_tx() call could have started it. In
-+	 * those cases, we have to wait for the hrtimer to fire and
-+	 * complete the transition to OFF.
-+	 */
-+	loops = port->rs485.flags & SER_RS485_ENABLED ?
-+		port->rs485.delay_rts_after_send : 0;
-+	while (sport->tx_state != OFF && loops--) {
-+		uart_port_unlock_irqrestore(&sport->port, flags);
-+		msleep(1);
-+		uart_port_lock_irqsave(&sport->port, &flags);
-+	}
-+
-+	if (sport->tx_state != OFF) {
-+		dev_warn(sport->port.dev, "unexpected tx_state %d\n",
-+			 sport->tx_state);
-+		/*
-+		 * This machine may be busted, but ensure the RTS
-+		 * signal is inactive in order not to block other
-+		 * devices.
-+		 */
-+		if (port->rs485.flags & SER_RS485_ENABLED) {
-+			ucr2 = imx_uart_readl(sport, UCR2);
-+			if (port->rs485.flags & SER_RS485_RTS_AFTER_SEND)
-+				imx_uart_rts_active(sport, &ucr2);
-+			else
-+				imx_uart_rts_inactive(sport, &ucr2);
-+			imx_uart_writel(sport, ucr2, UCR2);
-+		}
-+		sport->tx_state = OFF;
-+	}
-+
- 	uart_port_unlock_irqrestore(&sport->port, flags);
- 
- 	clk_disable_unprepare(sport->clk_per);
+-- 
+2.43.0
+
 
 
 
