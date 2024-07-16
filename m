@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-59917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B81932C69
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:55:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED5C932B6C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A5D28423D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:55:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C76BB224F5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC19A19AD72;
-	Tue, 16 Jul 2024 15:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B42419DF7B;
+	Tue, 16 Jul 2024 15:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyH/a+tj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6wmSqaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0491DDCE;
-	Tue, 16 Jul 2024 15:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF60F9E8;
+	Tue, 16 Jul 2024 15:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145301; cv=none; b=o4F5BfDkwkX/9SoijFmXxrVKKt9ewmiAKMZLj1kMJEzD01R+TsfH1CgxvltdandIcBIOl8SujagjcU6PaElsZrY9rYVdc/O8HPn1kN4sh3JoF8hmf4tTLl1OK2k2BEizQdgV/qpT1BMAA4fzzVMNBFo83bj3cxmO7RVrU6nTJ/U=
+	t=1721144692; cv=none; b=hvDDgVzABYqWJ5LZZiaJVJagqrOnho438F78ewr4RNtvRcEMW1+v02Xx4vI0xN+posiIsN8DjCxKvvJJYR85dOWhh9DjccUxd7EJXY5UTELcyu3ss6bEVYTzJq/d8V05LUxwqwTf1a3+uJIjnU6po0Bg04kVihjPUGwAk/7PehE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145301; c=relaxed/simple;
-	bh=B/EExZtQCbl7s2eGdBrSgzhN+PPJJEdzqdW3eiGHL4Y=;
+	s=arc-20240116; t=1721144692; c=relaxed/simple;
+	bh=O78VCrgkd+jVmcQUPCa769lB6U2ZdTCudV/yuitDnBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YvWX85b1hTAodBxavA8zqx4/qUS3eCCONHNYe61PiRRg1RMwJiNgfWR/hRap1arpT1vPCbrdWHfZxIx/JE3sm7C8u4Aq4BSIe0wMRakM0IQALuzA82UC3p7IOp2ySH73mNTWd3ZAQH+NOYjlpX+5UcN/8bZt8YQp/8MI8bLKOAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyH/a+tj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BA3C116B1;
-	Tue, 16 Jul 2024 15:55:00 +0000 (UTC)
+	 MIME-Version; b=j5nZAQUGRKa0XNmUBdh4LCAVabPJn10cJ+s3lRCq2A14RUdVExSY8NCt2v5w78UkRff/hxP+hgsUIAFneCaB8B+TK46NiQow7vOiydgK9tcuB55Wh5eE+gTdtBRGwHEVdnhaiX0FHRXxAsYF/h04y7ucAbLeHLm6OQ6JmbMkzQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6wmSqaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55684C116B1;
+	Tue, 16 Jul 2024 15:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145301;
-	bh=B/EExZtQCbl7s2eGdBrSgzhN+PPJJEdzqdW3eiGHL4Y=;
+	s=korg; t=1721144692;
+	bh=O78VCrgkd+jVmcQUPCa769lB6U2ZdTCudV/yuitDnBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KyH/a+tj/LgwhKEcaj7T9pJC841D9gIYdP1Eu5vMMtNbEtbAyWGlUAu+sPI0a7QD4
-	 oS+1hRkUSR49JkMGM7FFR571z7FUAwNUhbySZXR9zQqOim++XdEwLOA46aOH8T5ycB
-	 dnsMirdXErX0+dxLDG/B/QxSyrb6cKDwEsUqxln8=
+	b=E6wmSqaH7xtZNuBvxsvD8nLSEPsgpgboOofKYrmBBqnIF1gkERZ/CH2QK6Ls7KCnm
+	 stctPVTi8T24sOP4FMmHHGlcVDuuB6wFEfSADi68bAuEbdq5EvQedy5AsSZ7ZNJX0d
+	 +y8STbK4/ImkOTQ5AdMgOF8BaRyhYS+ClCWeLFEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Yonghong Song <yhs@fb.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 20/96] bpf: Reduce smap->elem_size
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 076/108] USB: serial: option: add Telit generic core-dump composition
 Date: Tue, 16 Jul 2024 17:31:31 +0200
-Message-ID: <20240716152747.293221643@linuxfoundation.org>
+Message-ID: <20240716152748.900656224@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit 552d42a356ebf78df9d2f4b73e077d2459966fac ]
+commit 4298e400dbdbf259549d69c349e060652ad53611 upstream.
 
-'struct bpf_local_storage_elem' has an unused 56 byte padding at the
-end due to struct's cache-line alignment requirement. This padding
-space is overlapped by storage value contents, so if we use sizeof()
-to calculate the total size, we overinflate it by 56 bytes. Use
-offsetof() instead to calculate more exact memory use.
+Add the following core-dump composition, used in different Telit modems:
 
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Yonghong Song <yhs@fb.com>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20221221013036.3427431-1-martin.lau@linux.dev
-Stable-dep-of: af253aef183a ("bpf: fix order of args in call to bpf_map_kvcalloc")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x9000: tty (sahara)
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#= 41 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=9000 Rev=00.00
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990-dump
+S:  SerialNumber=e815bdde
+C:  #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=2mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=10 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/bpf_local_storage.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index b1090a2b02b34..f8dd7c516e320 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -580,8 +580,8 @@ static struct bpf_local_storage_map *__bpf_local_storage_map_alloc(union bpf_att
- 		raw_spin_lock_init(&smap->buckets[i].lock);
- 	}
- 
--	smap->elem_size =
--		sizeof(struct bpf_local_storage_elem) + attr->value_size;
-+	smap->elem_size = offsetof(struct bpf_local_storage_elem,
-+				   sdata.data[attr->value_size]);
- 
- 	return smap;
- }
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1433,6 +1433,8 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(2) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x701b, 0xff),	/* Telit LE910R1 (ECM) */
+ 	  .driver_info = NCTRL(2) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x9000, 0xff),	/* Telit generic core-dump device */
++	  .driver_info = NCTRL(0) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x9010),				/* Telit SBL FN980 flashing device */
+ 	  .driver_info = NCTRL(0) | ZLP },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x9200),				/* Telit LE910S1 flashing device */
 
 
 
