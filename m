@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-59635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5A1932B05
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C94EF932B7E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4F3DB225B5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3801F21C5E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6365C1E894;
-	Tue, 16 Jul 2024 15:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B9219DF88;
+	Tue, 16 Jul 2024 15:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/yGHjfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UI83XV5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D9FB641;
-	Tue, 16 Jul 2024 15:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281BE1EA73;
+	Tue, 16 Jul 2024 15:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144441; cv=none; b=annsN/KhmHOXnpRi400s1V8bRLfSVVc7tv+/fIizh12oJW/kPIaxRsAb56IURuRdzYLS3WdeU9z7DL0V7f4I62YrTIUPB7seHpf05Wp1y9zd1NOsvEPtJxwAJxd2BdsuuSEWq5g5FvoQDN//yWemYq8VIEfDkusEY2pVQkky4Qg=
+	t=1721144745; cv=none; b=QMCwX6E0wYbig1W4lN8V73hR479p6tDETAsMxeCeUoKSCUrvVUm3417/QvyW4H6q8onS80I3y87xm8iXYRDk1fYreIvHfrREdUPNLy9i1hgnn7qTgauSb5QMGV8moeuQQ3nEL8gC2vYjagbVcz2pY9pqs9zxvQUespkv2ySkMU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144441; c=relaxed/simple;
-	bh=9tXbk/NT760stJ68JuYgmfH8KRcdc6HTw/NaG0Y8Z3c=;
+	s=arc-20240116; t=1721144745; c=relaxed/simple;
+	bh=wC5y0Meiq4i+V1iWacAnbCi3vAHN1Ka5uniCFeqF+eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAitNettseXFUW4FUvB6QScW67OHXOpwzbULus1xZYY7JprEq7tOyLpTl99XTzRyoOPadsQ7ryaVVY5lxzOH2nhQJZe2nawih/LHgLU1VF4oALaU5mqytRy4byY1ztYDd/+nDhRWrQrh3G5HI7PEkYU0ajvlbauxuQOnG3FjV7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/yGHjfd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D59C116B1;
-	Tue, 16 Jul 2024 15:40:40 +0000 (UTC)
+	 MIME-Version; b=ga/EeLlLrTkOwwk8v6twdc8klTUASLG5vvaePnmErkxw2YJjPT9xYXrQ1huXBJYycaP7W+1Xd/Il8jCL75aUf2aJSxAmbnE3idSIT4xkzXIt0UUDzfG1Cx01X3L40GvYaKVfaPokSUoLG3jzmyl9wiEkpH7Oy1/gdPPCGS06J3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UI83XV5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE46C4AF0D;
+	Tue, 16 Jul 2024 15:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144441;
-	bh=9tXbk/NT760stJ68JuYgmfH8KRcdc6HTw/NaG0Y8Z3c=;
+	s=korg; t=1721144745;
+	bh=wC5y0Meiq4i+V1iWacAnbCi3vAHN1Ka5uniCFeqF+eM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/yGHjfdYsw1EQMBkqHcHafzI/ZGhbQu89eqkuGVvb0M6JnzTb9lopqNzgMxm6ZpF
-	 CCTghipOAb4+4qjqYPkcGGQSbTNlG6emBmIdsCId/EDBVf+1WBmbtjAuuVelHffa/m
-	 sdCW4R+nMg1DD9D+wzireIxwrxl8WBtmI0vyXtzY=
+	b=UI83XV5y+Xue3Uhku+zPbm3MreeWvVQH5qNlUBBOlzAq5WmV2b+MXGsi6FVm0q/lI
+	 dGj7bNx9OtlXN4cA9qSHmDehXxOVZjY9jmypYCb/CONIpmPUElIJl6YCU5mcRB9/CB
+	 SpiT9eRacTxsxPx84YK6EfnoNijlxWhINr65T1ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Soheil Hassas Yeganeh <soheil@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 73/78] tcp: refactor tcp_retransmit_timer()
-Date: Tue, 16 Jul 2024 17:31:45 +0200
-Message-ID: <20240716152743.462711905@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 091/108] wireguard: allowedips: avoid unaligned 64-bit memory accesses
+Date: Tue, 16 Jul 2024 17:31:46 +0200
+Message-ID: <20240716152749.483525901@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Helge Deller <deller@kernel.org>
 
-commit 0d580fbd2db084a5c96ee9c00492236a279d5e0f upstream.
+commit 948f991c62a4018fb81d85804eeab3029c6209f8 upstream.
 
-It appears linux-4.14 stable needs a backport of commit
-88f8598d0a30 ("tcp: exit if nothing to retransmit on RTO timeout")
+On the parisc platform, the kernel issues kernel warnings because
+swap_endian() tries to load a 128-bit IPv6 address from an unaligned
+memory location:
 
-Since tcp_rtx_queue_empty() is not in pre 4.15 kernels,
-let's refactor tcp_retransmit_timer() to only use tcp_rtx_queue_head()
+ Kernel: unaligned access to 0x55f4688c in wg_allowedips_insert_v6+0x2c/0x80 [wireguard] (iir 0xf3010df)
+ Kernel: unaligned access to 0x55f46884 in wg_allowedips_insert_v6+0x38/0x80 [wireguard] (iir 0xf2010dc)
 
-I will provide to stable teams the squashed patches.
+Avoid such unaligned memory accesses by instead using the
+get_unaligned_be64() helper macro.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+[Jason: replace src[8] in original patch with src+8]
+Cc: stable@vger.kernel.org
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20240704154517.1572127-3-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_timer.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/wireguard/allowedips.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -452,6 +452,7 @@ void tcp_retransmit_timer(struct sock *s
- 	struct net *net = sock_net(sk);
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	struct request_sock *req;
-+	struct sk_buff *skb;
- 
- 	req = rcu_dereference_protected(tp->fastopen_rsk,
- 					lockdep_sock_is_held(sk));
-@@ -464,7 +465,12 @@ void tcp_retransmit_timer(struct sock *s
- 		 */
- 		return;
+--- a/drivers/net/wireguard/allowedips.c
++++ b/drivers/net/wireguard/allowedips.c
+@@ -15,8 +15,8 @@ static void swap_endian(u8 *dst, const u
+ 	if (bits == 32) {
+ 		*(u32 *)dst = be32_to_cpu(*(const __be32 *)src);
+ 	} else if (bits == 128) {
+-		((u64 *)dst)[0] = be64_to_cpu(((const __be64 *)src)[0]);
+-		((u64 *)dst)[1] = be64_to_cpu(((const __be64 *)src)[1]);
++		((u64 *)dst)[0] = get_unaligned_be64(src);
++		((u64 *)dst)[1] = get_unaligned_be64(src + 8);
  	}
--	if (!tp->packets_out || WARN_ON_ONCE(tcp_rtx_queue_empty(sk)))
-+
-+	if (!tp->packets_out)
-+		return;
-+
-+	skb = tcp_rtx_queue_head(sk);
-+	if (WARN_ON_ONCE(!skb))
- 		return;
+ }
  
- 	if (!tp->snd_wnd && !sock_flag(sk, SOCK_DEAD) &&
-@@ -496,7 +502,7 @@ void tcp_retransmit_timer(struct sock *s
- 			goto out;
- 		}
- 		tcp_enter_loss(sk);
--		tcp_retransmit_skb(sk, tcp_rtx_queue_head(sk), 1);
-+		tcp_retransmit_skb(sk, skb, 1);
- 		__sk_dst_reset(sk);
- 		goto out_reset_timer;
- 	}
 
 
 
