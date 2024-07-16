@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-59899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79067932C54
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 411F9932CA7
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D2628477E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63DD01C21D31
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A189217C9E9;
-	Tue, 16 Jul 2024 15:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957C219E7FF;
+	Tue, 16 Jul 2024 15:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxblnWI3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6t1+ZTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEC119DF53;
-	Tue, 16 Jul 2024 15:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5276517A93F;
+	Tue, 16 Jul 2024 15:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145248; cv=none; b=ZoVOOSTzqYmr5rSb5gU/69WBPjXpz8yvdNiS5bVZB4bdgbcqE8bZa7ONKO7qTZ7cUCdwNLCo+YrYv/qP00U9ivj1M/1CAu4T7Y+NGhkhxFeiy2Iod+2VsWtqfFQeOUq0eHkc/oNz2jGu7koYQHHDEt7HA5QiSP3jmjgVIkYzd0s=
+	t=1721145402; cv=none; b=a0tSvhMsG3dYDxR1oOmfrOJwVBMGQysAzVxoUsw49Q2XsjnbvySPhcYEicjbY1TfsoKiYP/Z9g9PNGiZrnIrNNDKD58DefWdY58cWASpaOcfnwpfilDG2PrLbPW/q7ubVlMDBj28riV7bMWsY8xjufLv5G8gIAR+NPUJUGN3PBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145248; c=relaxed/simple;
-	bh=Q/C2zExKg/jhjkN1NfCN8MLtTQvqwErYGz6c2dcGW1Y=;
+	s=arc-20240116; t=1721145402; c=relaxed/simple;
+	bh=RAb/9HRHllPkQ0VEiHkN+KxWMXQjijoy6XQIaSpd0TE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJfMxBXboUBeKTok7V4ZH6ByvFtVVyeg0df5sQrg+nAm4ryFjwvrmwa9LyDE6vIYlLDQDeoYi5Bcxpfm0eJlnbW2oVMaj7+6bLyZfDOzC5Zs1qBO5wEpo7yowRas9zLrUGu6i/1TgJbkreA+CDNS5e+NQmabkwyy/UceZq32jMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxblnWI3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B5AC116B1;
-	Tue, 16 Jul 2024 15:54:07 +0000 (UTC)
+	 MIME-Version; b=PxbjL63ZuQlDLSowfxe+i/O0OoxCgxV7ZvwWKnbg7Hc83k8Au4nBm/vMRtthseIMqbmwfncT0NJW7/JKrkdaRhLX0b9vJJr90Rypk4TpWQRfcyoKNpP0l0T3PdXEyajEG5lCAKUyM9yEgluRtO2ZOZAI8hvKEP1VTm7UUo23aA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6t1+ZTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C44C116B1;
+	Tue, 16 Jul 2024 15:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145247;
-	bh=Q/C2zExKg/jhjkN1NfCN8MLtTQvqwErYGz6c2dcGW1Y=;
+	s=korg; t=1721145402;
+	bh=RAb/9HRHllPkQ0VEiHkN+KxWMXQjijoy6XQIaSpd0TE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WxblnWI3ZVGedMn8vMyTtTP2Il6gcf91EGR/sUP7ff3GZFhJelDhxPrjTZ4A+YSvC
-	 veLksFhvejmdI86qDimJjzamY9v0oeqdwtWX9Fhtf3liX1T9MPAsrP3ZctSG9sX5jX
-	 7EHUn2uImVtqEEpZfVAwLxujErw4XwUSx0L5ttYY=
+	b=R6t1+ZTGZmUN/zH0/ZgDQHGguNxpkb/w9wS5vBcZA/dowHDyPq3ecJ1xuJax/El4M
+	 HmZtTkS7hY0/EORYEE/yCppyA2qjlr+ytdAHxlcc0oC1DuehC17BpCgg1dEn4kZKaR
+	 oMk/Q8EdslZgVZxoNOwyHb5i5n/qzPgrTDSCuJ7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.9 129/143] misc: fastrpc: Restrict untrusted app to attach to privileged PD
+	Mank Wang <mank.wang@netprisma.us>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 54/96] USB: serial: option: add Netprisma LCUK54 series modules
 Date: Tue, 16 Jul 2024 17:32:05 +0200
-Message-ID: <20240716152800.948199863@linuxfoundation.org>
+Message-ID: <20240716152748.583163695@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Mank Wang <mank.wang@netprisma.us>
 
-commit bab2f5e8fd5d2f759db26b78d9db57412888f187 upstream.
+commit dc6dbe3ed28795b01c712ad8f567728f9c14b01d upstream.
 
-Untrusted application with access to only non-secure fastrpc device
-node can attach to root_pd or static PDs if it can make the respective
-init request. This can cause problems as the untrusted application
-can send bad requests to root_pd or static PDs. Add changes to reject
-attach to privileged PDs if the request is being made using non-secure
-fastrpc device node.
+Add support for Netprisma LCUK54 series modules.
 
-Fixes: 0871561055e6 ("misc: fastrpc: Add support for audiopd")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628114501.14310-7-srinivas.kandagatla@linaro.org
+LCUK54-WRD-LWW(0x3731/0x0100): NetPrisma LCUK54-WWD for Global
+LCUK54-WRD-LWW(0x3731/0x0101): NetPrisma LCUK54-WRD for Global SKU
+LCUK54-WRD-LCN(0x3731/0x0106): NetPrisma LCUK54-WRD for China SKU
+LCUK54-WRD-LWW(0x3731/0x0111): NetPrisma LCUK54-WWD for SA
+LCUK54-WRD-LWW(0x3731/0x0112): NetPrisma LCUK54-WWD for EU
+LCUK54-WRD-LWW(0x3731/0x0113): NetPrisma LCUK54-WWD for NA
+LCUK54-WWD-LCN(0x3731/0x0115): NetPrisma LCUK54-WWD for China EDU
+LCUK54-WWD-LWW(0x3731/0x0116): NetPrisma LCUK54-WWD for Golbal EDU
+
+Above products use the exact same interface layout and option
+driver:
+MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
+
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  5 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=3731 ProdID=0101 Rev= 5.04
+S:  Manufacturer=NetPrisma
+S:  Product=LCUK54-WRD
+S:  SerialNumber=b6250c36
+C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Mank Wang <mank.wang@netprisma.us>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c      |   22 +++++++++++++++++++---
- include/uapi/misc/fastrpc.h |    3 +++
- 2 files changed, 22 insertions(+), 3 deletions(-)
+ drivers/usb/serial/option.c |   24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2087,6 +2087,16 @@ err_invoke:
- 	return err;
- }
- 
-+static int is_attach_rejected(struct fastrpc_user *fl)
-+{
-+	/* Check if the device node is non-secure */
-+	if (!fl->is_secure_dev) {
-+		dev_dbg(&fl->cctx->rpdev->dev, "untrusted app trying to attach to privileged DSP PD\n");
-+		return -EACCES;
-+	}
-+	return 0;
-+}
-+
- static long fastrpc_device_ioctl(struct file *file, unsigned int cmd,
- 				 unsigned long arg)
- {
-@@ -2099,13 +2109,19 @@ static long fastrpc_device_ioctl(struct
- 		err = fastrpc_invoke(fl, argp);
- 		break;
- 	case FASTRPC_IOCTL_INIT_ATTACH:
--		err = fastrpc_init_attach(fl, ROOT_PD);
-+		err = is_attach_rejected(fl);
-+		if (!err)
-+			err = fastrpc_init_attach(fl, ROOT_PD);
- 		break;
- 	case FASTRPC_IOCTL_INIT_ATTACH_SNS:
--		err = fastrpc_init_attach(fl, SENSORS_PD);
-+		err = is_attach_rejected(fl);
-+		if (!err)
-+			err = fastrpc_init_attach(fl, SENSORS_PD);
- 		break;
- 	case FASTRPC_IOCTL_INIT_CREATE_STATIC:
--		err = fastrpc_init_create_static_process(fl, argp);
-+		err = is_attach_rejected(fl);
-+		if (!err)
-+			err = fastrpc_init_create_static_process(fl, argp);
- 		break;
- 	case FASTRPC_IOCTL_INIT_CREATE:
- 		err = fastrpc_init_create_process(fl, argp);
---- a/include/uapi/misc/fastrpc.h
-+++ b/include/uapi/misc/fastrpc.h
-@@ -8,11 +8,14 @@
- #define FASTRPC_IOCTL_ALLOC_DMA_BUFF	_IOWR('R', 1, struct fastrpc_alloc_dma_buf)
- #define FASTRPC_IOCTL_FREE_DMA_BUFF	_IOWR('R', 2, __u32)
- #define FASTRPC_IOCTL_INVOKE		_IOWR('R', 3, struct fastrpc_invoke)
-+/* This ioctl is only supported with secure device nodes */
- #define FASTRPC_IOCTL_INIT_ATTACH	_IO('R', 4)
- #define FASTRPC_IOCTL_INIT_CREATE	_IOWR('R', 5, struct fastrpc_init_create)
- #define FASTRPC_IOCTL_MMAP		_IOWR('R', 6, struct fastrpc_req_mmap)
- #define FASTRPC_IOCTL_MUNMAP		_IOWR('R', 7, struct fastrpc_req_munmap)
-+/* This ioctl is only supported with secure device nodes */
- #define FASTRPC_IOCTL_INIT_ATTACH_SNS	_IO('R', 8)
-+/* This ioctl is only supported with secure device nodes */
- #define FASTRPC_IOCTL_INIT_CREATE_STATIC _IOWR('R', 9, struct fastrpc_init_create_static)
- #define FASTRPC_IOCTL_MEM_MAP		_IOWR('R', 10, struct fastrpc_mem_map)
- #define FASTRPC_IOCTL_MEM_UNMAP		_IOWR('R', 11, struct fastrpc_mem_unmap)
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2333,6 +2333,30 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0101, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for Global SKU */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0101, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0101, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0106, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for China SKU */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0106, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0106, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0111, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for SA */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0111, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0111, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0112, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for EU */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0112, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0112, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0113, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for NA */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0113, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0113, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0115, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for China EDU */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0115, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0115, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Golbal EDU */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
 
 
 
