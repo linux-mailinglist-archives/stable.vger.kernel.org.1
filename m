@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-60169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49635932DB1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:08:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AD4932DB3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:08:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 047DE281ACB
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:08:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9C881C20C3E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22BE19E801;
-	Tue, 16 Jul 2024 16:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BD019B3EE;
+	Tue, 16 Jul 2024 16:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owI12RF6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPoeL9Ph"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F06519AD51;
-	Tue, 16 Jul 2024 16:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D8D1DDCE;
+	Tue, 16 Jul 2024 16:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721146087; cv=none; b=PTVcNSBxwGfPzGzAkRL3nK9eaIY705tBISxbLfq1xF5FxId98Axew/PWPvC3ljv7ivQ7MfO0zyGxzx/GAVatgq2g3OoSUx9b1eD7AchIfiNVZd40yzjvpDgzU15N+DPau4ynsQbkodzhDgm2SqbAvKMvME5zRWRJnaQqQUUzkkc=
+	t=1721146098; cv=none; b=qJBulj6aOzV+SYOIEuu1YXSCByonTuHUHY8Vcf3JSjJcG+xaYoh3v/mv8d22xyVlLP1C8sR+2RrqTDS2hQUjsbuGNd3ag3zXUGnQbQvOP/Y7XyfJU/pH+o0URKcS1LWxluyOePZV2gLBV2tPl2ytWLU8Hcf7mjk7cGY6hSCFkE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721146087; c=relaxed/simple;
-	bh=uTRx3+1Od3DBB5wM2S3OaoRJSC20AxlkBTa8KGGKcP4=;
+	s=arc-20240116; t=1721146098; c=relaxed/simple;
+	bh=Nkc46YFb6uoiBU2Q/iJEnwEp0Ya+RvXjMzvg9I4rJg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NqBdlvRX3qgx0+dL9YuSFprpHXnIpe3/WIK5Vo545hjRz3ZDwqMDmFqEtdgL8ZJcMJHuZ6KbjD+lWOebs7ymewcgH+w8vVbjyrdPg2aWCasXqFo9R0EpaiCRLRb3tsBDGzhO8Za8OKCMEdrmYj8EPWgd6PJwYRORNV727lINVZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owI12RF6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AB3C116B1;
-	Tue, 16 Jul 2024 16:08:06 +0000 (UTC)
+	 MIME-Version; b=Oyg/YabgHF+1FJQYD6MDGV+2WwpE3GFKgATaqTaJ+X1i+7i2qQHEX9UbL786jBw6uc6akxclMCkVw+jNfEser/IXfVVP+bDoFPTHR5/gIK5tFkhhjS3OqHwvV43wI1M9owVvdg0EMSxtZrj1sKOdKGj/um77VKQYP3KcOTty4v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPoeL9Ph; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF46C116B1;
+	Tue, 16 Jul 2024 16:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721146087;
-	bh=uTRx3+1Od3DBB5wM2S3OaoRJSC20AxlkBTa8KGGKcP4=;
+	s=korg; t=1721146098;
+	bh=Nkc46YFb6uoiBU2Q/iJEnwEp0Ya+RvXjMzvg9I4rJg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=owI12RF6OGVehFxZcHMpHZtzFWbj2jBJnMLpv05pIR/nTKWlFNznJYPrsPgwk2AHs
-	 vFW6LCPqbMPi4tlo90x761bFNQKNhPGhG4k/3Q9UvF0nn31CY8067qGAS8gDXLqj9U
-	 E7ABCr0xgx+4jaYUFsqtn4hgZgELioNF2F6bGmpU=
+	b=tPoeL9Phn4JQ0F5VW3qa2i6HyOg2CzgnaLlC0pwQ3cGrx2OC0BGV9mAlVYiEpErb5
+	 g5wRfrjYkx6k5WgJgsSwxKuEZ9I9j72eBEDB52VX1JKRt5VCWSc9rjBR7uLlawNLb8
+	 4ExEXj94xxYMdm8Ze2yz6VO471zTJRKrFcbxjKgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jimmy Assarsson <extja@kvaser.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.15 053/144] can: kvaser_usb: Explicitly initialize family in leafimx driver_info struct
-Date: Tue, 16 Jul 2024 17:32:02 +0200
-Message-ID: <20240716152754.586867929@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 054/144] fsnotify: Do not generate events for O_PATH file descriptors
+Date: Tue, 16 Jul 2024 17:32:03 +0200
+Message-ID: <20240716152754.625090294@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -65,34 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 19d5b2698c35b2132a355c67b4d429053804f8cc upstream.
+commit 702eb71fd6501b3566283f8c96d7ccc6ddd662e9 upstream.
 
-Explicitly set the 'family' driver_info struct member for leafimx.
-Previously, the correct operation relied on KVASER_LEAF being the first
-defined value in enum kvaser_usb_leaf_family.
+Currently we will not generate FS_OPEN events for O_PATH file
+descriptors but we will generate FS_CLOSE events for them. This is
+asymmetry is confusing. Arguably no fsnotify events should be generated
+for O_PATH file descriptors as they cannot be used to access or modify
+file content, they are just convenient handles to file objects like
+paths. So fix the asymmetry by stopping to generate FS_CLOSE for O_PATH
+file descriptors.
 
-Fixes: e6c80e601053 ("can: kvaser_usb: kvaser_usb_leaf: fix CAN clock frequency regression")
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://lore.kernel.org/all/20240628194529.312968-1-extja@kvaser.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240617162303.1596-1-jack@suse.cz
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/fsnotify.h |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -123,6 +123,7 @@ static const struct kvaser_usb_driver_in
+--- a/include/linux/fsnotify.h
++++ b/include/linux/fsnotify.h
+@@ -93,7 +93,13 @@ static inline int fsnotify_file(struct f
+ {
+ 	const struct path *path = &file->f_path;
  
- static const struct kvaser_usb_driver_info kvaser_usb_driver_info_leafimx = {
- 	.quirks = 0,
-+	.family = KVASER_LEAF,
- 	.ops = &kvaser_usb_leaf_dev_ops,
- };
+-	if (file->f_mode & FMODE_NONOTIFY)
++	/*
++	 * FMODE_NONOTIFY are fds generated by fanotify itself which should not
++	 * generate new events. We also don't want to generate events for
++	 * FMODE_PATH fds (involves open & close events) as they are just
++	 * handle creation / destruction events and not "real" file events.
++	 */
++	if (file->f_mode & (FMODE_NONOTIFY | FMODE_PATH))
+ 		return 0;
  
+ 	return fsnotify_parent(path->dentry, mask, path, FSNOTIFY_EVENT_PATH);
 
 
 
