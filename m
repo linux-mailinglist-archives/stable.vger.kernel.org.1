@@ -1,120 +1,250 @@
-Return-Path: <stable+bounces-60347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40E69330C3
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:55:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 752119331A2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 21:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0B021C22D33
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:55:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B598AB225A9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 19:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC1A19E7F7;
-	Tue, 16 Jul 2024 18:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8DF1A00FF;
+	Tue, 16 Jul 2024 19:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UAm7CrZ7"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="piSMjnJl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B191643A;
-	Tue, 16 Jul 2024 18:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721156134; cv=none; b=H16ZOWvZ8UeFiZopq1lkAYcD68iLVwMQ1z9K/a61UnPgCR4ca0DxygSObps0gA4mPscl0qJCOnkEFUJUqkBeqJko8pc664LFVnZosJaJPdB5b4TMhuGqTWg+qts11MCpNCt9j4DipPf8wZmOne2lmtAAYytC3hd/T22DSGmyc6k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721156134; c=relaxed/simple;
-	bh=LErKYFC2hR7Vmj8YbOE9TRx2x0fegmkk1AQHDXh0PLw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G7AyEMqye2tB1I23Mo3/HbWz3so7sgfWmpwWUEWtKHzHtI2k5ZMSW7msJs7Y7p4NzRCfTi5lpXD+KYxB4ydnFiowCQbBWkVsX1kdqU5cyqXzjl1gh3XELhJRCFX/HimECayb7D4OX7hyuHk80uw9sTtybwpcXWahy9E7BaBUcYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UAm7CrZ7; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1fb4a807708so52662115ad.2;
-        Tue, 16 Jul 2024 11:55:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721156132; x=1721760932; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p3Xxw7BDEuKyJmTDIMc9lI8Wfvk7nIJjN6wyfUy+yy0=;
-        b=UAm7CrZ7zZBTMO9dNLVHu5DIi/2dOsZiehf+ILVTM5g/UJ/lUpf37Q28B9rPCJSbdd
-         otWKqRHlTL8bRHEowjGFMw8l3Z4K6U9AXIyQqFYzviDD3wA6cugjdDOq0W/OFDUlrGD/
-         RPtxP5HRNS7hVCxl6xR+Dj4HtSUbJbmKPo9x6bfLOr579+rNc8M/si20GDZ9O0bEL4NN
-         yZ4kJFGn2X8svkWQRKsK1xmSilNij5vRaJF5Vd6yHiyeorqKfzn+AG8FbpfaCPGTVk4U
-         3HU1qrJx8YhphtSIx7ENAjxvza/esYf3PWyRUUp/ACymZYLmVOGrH6kr7J+64oE2PnfM
-         VtlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721156132; x=1721760932;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p3Xxw7BDEuKyJmTDIMc9lI8Wfvk7nIJjN6wyfUy+yy0=;
-        b=OFA98WWFdXpOiSKJwks2p5Wx8skIj7mQGTpt9GJAvkYOsBCDyUzWlqOg4HCMYxG2fp
-         GQ7odPXl4TXA6iif+rtYet8Cy9G19zgPc2ivn5l9eyb9Cebf51Hk+w43V+Leo7yKoqES
-         pB/LHZiVWHt+Q6K5AVi8FIbb2EjdeOhRqBT/KoLmLYCdNg6m4FKm2nRw637URKUcJgim
-         Dh5ZJ2JrWPFLLXIfgpiDHXIuPAjxQ3QasCjw7B5z9QUNMpHLF9LgNApoX/xUV5vHso3h
-         Li7pgZSuPN/+W/dfgDZRslxOsFWgPNnz6x5tggoBR6Ke9ll3dotu2e/GQzNXoM5pZG9G
-         Et8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWEFYnExez2dFTmCcwJ3xPCP/w/GeRQ3jUd8vkjxRChGf47TIOSGZpzDhByl4zgvw9+tzN9Cd16t2cs+59q6kkivKG1ofYhZ+g/5jkkZGAECVeTgViZALZuerDtTEJVhrrg+M9n
-X-Gm-Message-State: AOJu0Ywa8RJmr+TsjY7XTWF1RE68lD0AiDDYSSrFq8okCn8LuDDHZA/x
-	rD1XikrEdAfxWhfvb6E3apWwtaoKRA1GaDxDcqyleDoJkU2hkwh8
-X-Google-Smtp-Source: AGHT+IFnjnaa0UTdqD4xiKsAh4o5FvvGWp4g3Zm+rHPDutZFCM82EBdc1F0virkcSrS/hgz2K5/Yiw==
-X-Received: by 2002:a17:90a:46cf:b0:2ca:8577:bc87 with SMTP id 98e67ed59e1d1-2cb374921afmr2361057a91.34.1721156132037;
-        Tue, 16 Jul 2024 11:55:32 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-2caedc92c3esm6643327a91.42.2024.07.16.11.55.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jul 2024 11:55:31 -0700 (PDT)
-Message-ID: <caaf5079-11e9-4dcc-a62b-132acbc2c6ec@gmail.com>
-Date: Tue, 16 Jul 2024 11:55:29 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8688E1A01C6;
+	Tue, 16 Jul 2024 19:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721156412; cv=pass; b=C/qNwQJTElkhg0p5ZDdTZQYXLpr3fudALQCVx8ihjGVb46Uvs6fQYkR05WIu8/Ns1q7hSK+6+ffSdHBXjrMer39nlf2Sq0BFL68j5DaIhAO5f8mKSC4hX/koxeMdkQu2yOxY7dZ+Fj1mEGDqP5bIDeQim62B40soegyVNYJkcx4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721156412; c=relaxed/simple;
+	bh=/71gqA1ez3HMmSv3NBhfFDajpC8x32XIB8KTYzgA0Mk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iw0pDvooneVPHls1uqy/v15xqeUSeK6vz+bhSTJNvM2tiPnYxFoe4KHZu3haXGEoDzocbB2wHCW3cy2gQMV8qpLgjrtIIB9Wr01cheLdFfgeCTjvcroCwUwTAPCwtAOBGkoZx9jo831tU3JHreabRHYlqoJNwoyj4u2SiraNXUc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=piSMjnJl; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from monolith.lan (unknown [IPv6:2a0c:f040:0:2790::a03d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pav@iki.fi)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4WNpKY3BHhz49PsT;
+	Tue, 16 Jul 2024 22:00:00 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1721156402;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=x0uaStvGP7aRuGHvuQ/trIdZNovO7pQhTrTx+VbNAxc=;
+	b=piSMjnJlAOSYLP9Ck0QAUCGtqyCnWpEnXskzKtW0TTcgjExy9QoddgaJpTWM+LGZtYVRnq
+	6defQ4508bjHw111gHPq2w269hFOax0vaeylnbXc9DzGdPwDKzyN9prsrrgODmtJ6aBnL8
+	wobgGDK1Yc4WVy1gaj5vtJo+bJQ6sCnHnnNOBJCKRygW6aGKXRmnVE4yB9aKa8zh7if3cz
+	WL6/iyObNTtrDhvbNmwAvreLoWMno9Qbv/J2eSUJPx0KygDEEwnPNmk7JxPMhgBxtsBSRE
+	kAPFFidQl/C/RiHlYyJeq3fAGK5gjncxBU4H3C4VNMavFZIc8UYwgabL8bVbuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1721156402;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=x0uaStvGP7aRuGHvuQ/trIdZNovO7pQhTrTx+VbNAxc=;
+	b=lNRvPrM0QQXXeUhFv1FrXkHxIOD9lIh5I/pi8FuOf/CfO09W7kMoQhGZrEOjd5Dy5fVJaq
+	ZFVgOXyHJIcwSYJnTUUR9tqyGfEPGycAQ1tLM+J5xgrDs5jfXM3qbYFkVN1a52EMpF40RD
+	2ZWhp2u//faNg/7f57DI87owNZ3A9sndVvYxi1fcYXRx4OSkiSTT5YRGAfezkfGM+uj/5g
+	3iVVNNdl3pfvxh2d1yIT76GSTn2goAl6mcBR69+RVZi9DPkW5B4rKUHLkNwH0/Dtsi+HQe
+	5dm4XD7Rzm1zn5lsaz4wJ841e6I5BtzsJ4n3YwxFLoHSGHtFlFXGq0OXmEs0XA==
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1721156402; a=rsa-sha256;
+	cv=none;
+	b=Kmx1KzvsJwcppEjYx9ycb0s4v4Kuw8AHil1lhDnU/eG2drzUrW/6RCxRfrsoz0GayodWC8
+	wfkafvs6gm6X192Huoki+yywIO0W/8VvY3oUBLdQC+qYUr43WnS66bT2Aa5VgxFtq6IYx2
+	/lkEAgOt6Vy2uUmSlyyRlEnHTq2sWYTwT3mTcJHQ4qtDY9NWbv/qJcUPpPcIuAgB+UjLjh
+	ruwU/FNJiNQAHSUgv2uPncw14PxomkQhpJo2k8UAgIO7CTfRKXdrqvYkmmrAG6Bb69CZR7
+	JpbxtNvSwUb/MkMG936r7IBMHgkGeSc/2hLCzZ30GZc238aiMgGDAzZtGq0m3g==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=pav@iki.fi smtp.mailfrom=pav@iki.fi
+Message-ID: <0d437a3825d2f714b24c032066b43d7b9e73b0e9.camel@iki.fi>
+Subject: Re: [PATCH AUTOSEL 6.9 09/22] bluetooth/l2cap: sync sock recv cb
+ and release
+From: Pauli Virtanen <pav@iki.fi>
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Cc: Edward Adam Davis <eadavis@qq.com>, 
+ syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com, Luiz Augusto von
+ Dentz <luiz.von.dentz@intel.com>, marcel@holtmann.org,
+ johan.hedberg@gmail.com,  luiz.dentz@gmail.com,
+ linux-bluetooth@vger.kernel.org
+Date: Tue, 16 Jul 2024 21:59:59 +0300
+In-Reply-To: <20240716142519.2712487-9-sashal@kernel.org>
+References: <20240716142519.2712487-1-sashal@kernel.org>
+	 <20240716142519.2712487-9-sashal@kernel.org>
+Autocrypt: addr=pav@iki.fi; prefer-encrypt=mutual;
+ keydata=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
+ bzyGkKh2h8XdrYhtDjw9LmrprPQ==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/121] 6.6.41-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240716152751.312512071@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 7/16/24 08:31, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.41 release.
-> There are 121 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 18 Jul 2024 15:27:21 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.41-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Hi,
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+ti, 2024-07-16 kello 10:24 -0400, Sasha Levin kirjoitti:
+> From: Edward Adam Davis <eadavis@qq.com>
+>=20
+> [ Upstream commit 89e856e124f9ae548572c56b1b70c2255705f8fe ]
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+This one needed an additional fixup that I don't see AUTOSEL picked up,
+otherwise it results to a worse regression:
 
+https://lore.kernel.org/linux-bluetooth/20240624134637.3790278-1-luiz.dentz=
+@gmail.com/
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3Df1a8f402f13f94263cf349216c257b2985100927
+
+
+Looks like f1a8f402f13f94263cf349216c257b2985100927 also contains other
+changes not related to this patch, seems like=20
+https://lore.kernel.org/linux-bluetooth/20240624144911.3817479-1-luiz.dentz=
+@gmail.com/
+was squashed.
+
+> The problem occurs between the system call to close the sock and hci_rx_w=
+ork,
+> where the former releases the sock and the latter accesses it without loc=
+k protection.
+>=20
+>            CPU0                       CPU1
+>            ----                       ----
+>            sock_close                 hci_rx_work
+> 	   l2cap_sock_release         hci_acldata_packet
+> 	   l2cap_sock_kill            l2cap_recv_frame
+> 	   sk_free                    l2cap_conless_channel
+> 	                              l2cap_sock_recv_cb
+>=20
+> If hci_rx_work processes the data that needs to be received before the so=
+ck is
+> closed, then everything is normal; Otherwise, the work thread may access =
+the
+> released sock when receiving data.
+>=20
+> Add a chan mutex in the rx callback of the sock to achieve synchronizatio=
+n between
+> the sock release and recv cb.
+>=20
+> Sock is dead, so set chan data to NULL, avoid others use invalid sock poi=
+nter.
+>=20
+> Reported-and-tested-by: syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail=
+.com
+> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+> Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  net/bluetooth/l2cap_sock.c | 25 ++++++++++++++++++++++---
+>  1 file changed, 22 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+> index 8645461d45e81..64827e553d638 100644
+> --- a/net/bluetooth/l2cap_sock.c
+> +++ b/net/bluetooth/l2cap_sock.c
+> @@ -1239,6 +1239,10 @@ static void l2cap_sock_kill(struct sock *sk)
+> =20
+>  	BT_DBG("sk %p state %s", sk, state_to_string(sk->sk_state));
+> =20
+> +	/* Sock is dead, so set chan data to NULL, avoid other task use invalid
+> +	 * sock pointer.
+> +	 */
+> +	l2cap_pi(sk)->chan->data =3D NULL;
+>  	/* Kill poor orphan */
+> =20
+>  	l2cap_chan_put(l2cap_pi(sk)->chan);
+> @@ -1481,12 +1485,25 @@ static struct l2cap_chan *l2cap_sock_new_connecti=
+on_cb(struct l2cap_chan *chan)
+> =20
+>  static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *s=
+kb)
+>  {
+> -	struct sock *sk =3D chan->data;
+> -	struct l2cap_pinfo *pi =3D l2cap_pi(sk);
+> +	struct sock *sk;
+> +	struct l2cap_pinfo *pi;
+>  	int err;
+> =20
+> -	lock_sock(sk);
+> +	/* To avoid race with sock_release, a chan lock needs to be added here
+> +	 * to synchronize the sock.
+> +	 */
+> +	l2cap_chan_hold(chan);
+> +	l2cap_chan_lock(chan);
+> +	sk =3D chan->data;
+> =20
+> +	if (!sk) {
+> +		l2cap_chan_unlock(chan);
+> +		l2cap_chan_put(chan);
+> +		return -ENXIO;
+> +	}
+> +
+> +	pi =3D l2cap_pi(sk);
+> +	lock_sock(sk);
+>  	if (chan->mode =3D=3D L2CAP_MODE_ERTM && !list_empty(&pi->rx_busy)) {
+>  		err =3D -ENOMEM;
+>  		goto done;
+> @@ -1535,6 +1552,8 @@ static int l2cap_sock_recv_cb(struct l2cap_chan *ch=
+an, struct sk_buff *skb)
+> =20
+>  done:
+>  	release_sock(sk);
+> +	l2cap_chan_unlock(chan);
+> +	l2cap_chan_put(chan);
+> =20
+>  	return err;
+>  }
+
+--=20
+Pauli Virtanen
 
