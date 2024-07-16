@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA25932AFE
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B37A0932C7D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADF801C214EF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E461C1C209ED
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069E21E895;
-	Tue, 16 Jul 2024 15:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389A519E83C;
+	Tue, 16 Jul 2024 15:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucBVMUuD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vw4UcmOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7813CA40;
-	Tue, 16 Jul 2024 15:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F7619E7F7;
+	Tue, 16 Jul 2024 15:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144420; cv=none; b=V0lzct310Soqo/kQDRUo4Ou8z4kxp2IieqdO7v066QLvAelpsBiuHbvJ8088s/aGzmgo2/Sjstzc/WfZ0SVNuqaSu5nHZpX3oLWSsk4Jf8Is85o8tPDt2irTM2hIdS0u1DFKGE9akg4lD5sfHHvl6KvKdMnMinEurq1MDVA+N5Q=
+	t=1721145327; cv=none; b=VmEhrvUeSKhljnmhzHnzqoGM46CXKfcLkD1kVI29aAyZB14gi2ipq/8of5c20+A2Nm5l+uesVE0y2a4Pos/Pg+O7kzq/FG318FyeFHUIXv1hhS7rHBIAscexCZvsLjzc1jbhdpo9JI9TPpPQFl9epD9tHfpajBJFG4Sy/3XADj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144420; c=relaxed/simple;
-	bh=N22958QECvKcEZ84Ow8x3+FJ75iQwvG1k1R8/A0Np18=;
+	s=arc-20240116; t=1721145327; c=relaxed/simple;
+	bh=cx6oXSOVMuqd7dsrOZrbsJJ/buPynm31nWzExJ6ofl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=psRQLw06wBeJw8EjU/bntot1UQnKTCeVLudecVJ6a+HbqovO1dkDpAcrtUUxLMZJIVCxoXqdw5u+TAD863oWMT1IDN/O9tcHjL9o9QvhQ3ulNZ/v+FMH2/UdDvldl3+jE+N7zKdwCZ8PsNRk45YG3SGGc96C1c7sbpa70evzcU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucBVMUuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA85CC116B1;
-	Tue, 16 Jul 2024 15:40:19 +0000 (UTC)
+	 MIME-Version; b=MlvBwufoJQGy0ik+AFkiqdXxIDKj58+MNCdY8JlhIywNI91/bOQlSnmY1fo+LJUPITev4lMW6He7iImIFrAXFpKpTt/CABKAsIncVT9hzVAc48Ucce8zD+4BoFD5HWZBBdzPV/eri30QxqPhpw7CSxgqy9ztRfnXnkslHt1cWm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vw4UcmOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A48C116B1;
+	Tue, 16 Jul 2024 15:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144420;
-	bh=N22958QECvKcEZ84Ow8x3+FJ75iQwvG1k1R8/A0Np18=;
+	s=korg; t=1721145324;
+	bh=cx6oXSOVMuqd7dsrOZrbsJJ/buPynm31nWzExJ6ofl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ucBVMUuDRM2cZoyrTuo/n+VhemTxqvcMLsrvdCOPUjHFtnwbMTtU05ZMhNizqMaJg
-	 z+1a7nWkh83vbij0e+bTj8A3WGgXijW82QTYUmlzDylY0APjX2/xY7TSHLxGGR3ZIy
-	 FRyBRu0CDSzlrnA3xbr3Uox0r8B32NwWWg5uyrTs=
+	b=vw4UcmOrnG3my8iTYNe9Oia30ILk/apyVX9fhHYvPrDFNUcJP97nFiVQiXmM9URtd
+	 WNsb4EpSGOKr7xOMnX93K9QaWDDKgWn+TdiLSvgPfztGUSf3GA+Rq1UfIyF34khXbB
+	 sOMch9fwZ2GaZabor/H+2gkjEOo4A3/7PLhDIboE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Oliver Neukum <oneukum@suse.com>,
-	syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 67/78] USB: core: Fix duplicate endpoint bug by clearing reserved bits in the descriptor
+	Gerald Yang <gerald.yang@canonical.com>,
+	Chengen Du <chengen.du@canonical.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 28/96] net/sched: Fix UAF when resolving a clash
 Date: Tue, 16 Jul 2024 17:31:39 +0200
-Message-ID: <20240716152743.234704714@linuxfoundation.org>
+Message-ID: <20240716152747.597179347@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Chengen Du <chengen.du@canonical.com>
 
-commit a368ecde8a5055b627749b09c6218ef793043e47 upstream.
+[ Upstream commit 26488172b0292bed837b95a006a3f3431d1898c3 ]
 
-Syzbot has identified a bug in usbcore (see the Closes: tag below)
-caused by our assumption that the reserved bits in an endpoint
-descriptor's bEndpointAddress field will always be 0.  As a result of
-the bug, the endpoint_is_duplicate() routine in config.c (and possibly
-other routines as well) may believe that two descriptors are for
-distinct endpoints, even though they have the same direction and
-endpoint number.  This can lead to confusion, including the bug
-identified by syzbot (two descriptors with matching endpoint numbers
-and directions, where one was interrupt and the other was bulk).
+KASAN reports the following UAF:
 
-To fix the bug, we will clear the reserved bits in bEndpointAddress
-when we parse the descriptor.  (Note that both the USB-2.0 and USB-3.1
-specs say these bits are "Reserved, reset to zero".)  This requires us
-to make a copy of the descriptor earlier in usb_parse_endpoint() and
-use the copy instead of the original when checking for duplicates.
+ BUG: KASAN: slab-use-after-free in tcf_ct_flow_table_process_conn+0x12b/0x380 [act_ct]
+ Read of size 1 at addr ffff888c07603600 by task handler130/6469
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-and-tested-by: syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/0000000000003d868e061bc0f554@google.com/
-Fixes: 0a8fd1346254 ("USB: fix problems with duplicate endpoint addresses")
-CC: Oliver Neukum <oneukum@suse.com>
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/205a5edc-7fef-4159-b64a-80374b6b101a@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ Call Trace:
+  <IRQ>
+  dump_stack_lvl+0x48/0x70
+  print_address_description.constprop.0+0x33/0x3d0
+  print_report+0xc0/0x2b0
+  kasan_report+0xd0/0x120
+  __asan_load1+0x6c/0x80
+  tcf_ct_flow_table_process_conn+0x12b/0x380 [act_ct]
+  tcf_ct_act+0x886/0x1350 [act_ct]
+  tcf_action_exec+0xf8/0x1f0
+  fl_classify+0x355/0x360 [cls_flower]
+  __tcf_classify+0x1fd/0x330
+  tcf_classify+0x21c/0x3c0
+  sch_handle_ingress.constprop.0+0x2c5/0x500
+  __netif_receive_skb_core.constprop.0+0xb25/0x1510
+  __netif_receive_skb_list_core+0x220/0x4c0
+  netif_receive_skb_list_internal+0x446/0x620
+  napi_complete_done+0x157/0x3d0
+  gro_cell_poll+0xcf/0x100
+  __napi_poll+0x65/0x310
+  net_rx_action+0x30c/0x5c0
+  __do_softirq+0x14f/0x491
+  __irq_exit_rcu+0x82/0xc0
+  irq_exit_rcu+0xe/0x20
+  common_interrupt+0xa1/0xb0
+  </IRQ>
+  <TASK>
+  asm_common_interrupt+0x27/0x40
+
+ Allocated by task 6469:
+  kasan_save_stack+0x38/0x70
+  kasan_set_track+0x25/0x40
+  kasan_save_alloc_info+0x1e/0x40
+  __kasan_krealloc+0x133/0x190
+  krealloc+0xaa/0x130
+  nf_ct_ext_add+0xed/0x230 [nf_conntrack]
+  tcf_ct_act+0x1095/0x1350 [act_ct]
+  tcf_action_exec+0xf8/0x1f0
+  fl_classify+0x355/0x360 [cls_flower]
+  __tcf_classify+0x1fd/0x330
+  tcf_classify+0x21c/0x3c0
+  sch_handle_ingress.constprop.0+0x2c5/0x500
+  __netif_receive_skb_core.constprop.0+0xb25/0x1510
+  __netif_receive_skb_list_core+0x220/0x4c0
+  netif_receive_skb_list_internal+0x446/0x620
+  napi_complete_done+0x157/0x3d0
+  gro_cell_poll+0xcf/0x100
+  __napi_poll+0x65/0x310
+  net_rx_action+0x30c/0x5c0
+  __do_softirq+0x14f/0x491
+
+ Freed by task 6469:
+  kasan_save_stack+0x38/0x70
+  kasan_set_track+0x25/0x40
+  kasan_save_free_info+0x2b/0x60
+  ____kasan_slab_free+0x180/0x1f0
+  __kasan_slab_free+0x12/0x30
+  slab_free_freelist_hook+0xd2/0x1a0
+  __kmem_cache_free+0x1a2/0x2f0
+  kfree+0x78/0x120
+  nf_conntrack_free+0x74/0x130 [nf_conntrack]
+  nf_ct_destroy+0xb2/0x140 [nf_conntrack]
+  __nf_ct_resolve_clash+0x529/0x5d0 [nf_conntrack]
+  nf_ct_resolve_clash+0xf6/0x490 [nf_conntrack]
+  __nf_conntrack_confirm+0x2c6/0x770 [nf_conntrack]
+  tcf_ct_act+0x12ad/0x1350 [act_ct]
+  tcf_action_exec+0xf8/0x1f0
+  fl_classify+0x355/0x360 [cls_flower]
+  __tcf_classify+0x1fd/0x330
+  tcf_classify+0x21c/0x3c0
+  sch_handle_ingress.constprop.0+0x2c5/0x500
+  __netif_receive_skb_core.constprop.0+0xb25/0x1510
+  __netif_receive_skb_list_core+0x220/0x4c0
+  netif_receive_skb_list_internal+0x446/0x620
+  napi_complete_done+0x157/0x3d0
+  gro_cell_poll+0xcf/0x100
+  __napi_poll+0x65/0x310
+  net_rx_action+0x30c/0x5c0
+  __do_softirq+0x14f/0x491
+
+The ct may be dropped if a clash has been resolved but is still passed to
+the tcf_ct_flow_table_process_conn function for further usage. This issue
+can be fixed by retrieving ct from skb again after confirming conntrack.
+
+Fixes: 0cc254e5aa37 ("net/sched: act_ct: Offload connections with commit action")
+Co-developed-by: Gerald Yang <gerald.yang@canonical.com>
+Signed-off-by: Gerald Yang <gerald.yang@canonical.com>
+Signed-off-by: Chengen Du <chengen.du@canonical.com>
+Link: https://patch.msgid.link/20240710053747.13223-1-chengen.du@canonical.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/config.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ net/sched/act_ct.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -291,6 +291,20 @@ static int usb_parse_endpoint(struct dev
- 	if (ifp->desc.bNumEndpoints >= num_ep)
- 		goto skip_to_next_endpoint_or_interface_descriptor;
- 
-+	/* Save a copy of the descriptor and use it instead of the original */
-+	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
-+	memcpy(&endpoint->desc, d, n);
-+	d = &endpoint->desc;
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index cd95a315fde82..44ff7f356ec15 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -1212,6 +1212,14 @@ static int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
+ 		 */
+ 		if (nf_conntrack_confirm(skb) != NF_ACCEPT)
+ 			goto drop;
 +
-+	/* Clear the reserved bits in bEndpointAddress */
-+	i = d->bEndpointAddress &
-+			(USB_ENDPOINT_DIR_MASK | USB_ENDPOINT_NUMBER_MASK);
-+	if (i != d->bEndpointAddress) {
-+		dev_notice(ddev, "config %d interface %d altsetting %d has an endpoint descriptor with address 0x%X, changing to 0x%X\n",
-+		    cfgno, inum, asnum, d->bEndpointAddress, i);
-+		endpoint->desc.bEndpointAddress = i;
-+	}
-+
- 	/* Check for duplicate endpoint addresses */
- 	if (config_endpoint_is_duplicate(config, inum, asnum, d)) {
- 		dev_warn(ddev, "config %d interface %d altsetting %d has a duplicate endpoint with address 0x%X, skipping\n",
-@@ -308,10 +322,8 @@ static int usb_parse_endpoint(struct dev
- 		}
++		/* The ct may be dropped if a clash has been resolved,
++		 * so it's necessary to retrieve it from skb again to
++		 * prevent UAF.
++		 */
++		ct = nf_ct_get(skb, &ctinfo);
++		if (!ct)
++			skip_add = true;
  	}
  
--	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
-+	/* Accept this endpoint */
- 	++ifp->desc.bNumEndpoints;
--
--	memcpy(&endpoint->desc, d, n);
- 	INIT_LIST_HEAD(&endpoint->urb_list);
- 
- 	/*
+ 	if (!skip_add)
+-- 
+2.43.0
+
 
 
 
