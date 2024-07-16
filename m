@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-59495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42B0B93295A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:43:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B3A93295D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:43:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED42F1F21452
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:43:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 537B6283ED1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0949F1AED48;
-	Tue, 16 Jul 2024 14:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FD11B010E;
+	Tue, 16 Jul 2024 14:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bfxUVsWK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LMpEdInU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B593319F49D;
-	Tue, 16 Jul 2024 14:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7D11B0103;
+	Tue, 16 Jul 2024 14:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721140246; cv=none; b=XzdgbNhSovKu6243SDDKhCNL/1NSqQKQHUU1lnU9+yRe1EISuZHKTUuS1TKqLlKiaH4HzyQodOyI5wNwlJaz6ad4lwB6LzY7WCcqEo5ZBdtIHI9u3KVvzO5HYw+ZHYuAbHSbcn5fD3SDfXz1JcK9ePpwJ13jH/tjC2Wq+r9jnmQ=
+	t=1721140248; cv=none; b=P80ziTT+V7d8yvkxx4x6NtBSZXo9EIiX1bEzcnuoRt6Rpmg9XUsuY1BpUpEE71GIWu53rsWVMjI8IOxQMP9EHvo9bSe9AD3mSrqmnEtxbycnRTQyercoGkJGOnNzXvN/TRXfpMyM+MZbJEGGBZNJDwEvxD65WqQN9SRUwIhWi+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721140246; c=relaxed/simple;
-	bh=infPNRYxoLPc5eWpdtLidjjuX1l7hIz+KV93qOtV7KE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C3bPhUw+SWvLyQO/omxyDm6t5rEw0aVhj9SqTwTr3i0Qrim7ydK0pCiXAqcU8cgflcVAO1qpAFu0blGY8VUzCcp+Sh0hoxB2GWGKvZyKII5C1Fah4b6Jx/3b03S7ldbpeDuhQhLvwrGhRzQv7LbkRUQvRYtOiXlXkXI/HBZ+uWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bfxUVsWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB04C4AF09;
-	Tue, 16 Jul 2024 14:30:44 +0000 (UTC)
+	s=arc-20240116; t=1721140248; c=relaxed/simple;
+	bh=rpt6V8R5x61DJSB/3S3GK2NF0QY8Ptd/pvj4btpY0Rw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TcHdtOeDRVZv29QlqDLIRERSqfXiZQ0yOsez/lRWKfkrEdIvW4KUmARBh0u2rkyL/A6gANRJFfEFth1qOtDqThSgsqIxmFMJrQsacxuCw4fThBWuRhec3+DGy0xuTDbmj23cqXCxl21GQT+MK8cgtahX0cNJWz9tTLjCyBO/SzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LMpEdInU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB1AC4AF0D;
+	Tue, 16 Jul 2024 14:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721140246;
-	bh=infPNRYxoLPc5eWpdtLidjjuX1l7hIz+KV93qOtV7KE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bfxUVsWKzf+zUEwe4hOYe2QsGni1al7htISLwPu4Wc9eFUGMw1Q4gT1182r0RbSVV
-	 lSRXp6Ud7jpTO8h7E+YYCgJ9DLKJDShNDGMnmEHCYopqQLS4GoJPOxCFmmwZYjkV/D
-	 BaQ54L6N/KMopHr6D3UR1K8EZnuani6Ipk2XU/eM0wl7IMC2rfhjL25bhVVYG7g9YC
-	 aKPk/bAKkBDrE1wY56vvrlZhMGNfsPJfDh1WeWhRJYwi0/F82Jsh+h4nUP3mbl1qWD
-	 wY6q3+lwK/OiX0HnWfRpAiu9ft+z4mqg1XNOSEpa/Vn87uz3ZojpOVS2vIfzL0sR4H
-	 I/JKG1BYJI5Fw==
+	s=k20201202; t=1721140248;
+	bh=rpt6V8R5x61DJSB/3S3GK2NF0QY8Ptd/pvj4btpY0Rw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LMpEdInUazRO9PSVgW+8JJxTjTLipthdkNWquKHjSaw6xfY26pYQIVSEBX9DDW718
+	 0b747CaKchzP0gnyN562iYenmEZ2gZ9iZwpOzzGGphemnEbiYp0sJZISBTDsCTsZG2
+	 tp9ypOOS6epXr5taIemlXOIBn1oybD0fuqxSWIhvfCmPIcGNyfXxqsoLEb17vM0pq6
+	 nkN6LcgFxq5bqdaMtfk/HEUZAslTiJdvFfsiVJE9O1wWcFKC2wXbmTS8YT1B7KFhUT
+	 dUZOHA+5sKRClWoeHMitACto71lUNV4FU/rWCPymwNzYDwxraq0wNzW18cYE1rYaiZ
+	 tLHVP9n85KWPQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yunshui Jiang <jiangyunshui@kylinos.cn>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	alex.aring@gmail.com,
-	miquel.raynal@bootlin.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 1/3] net: mac802154: Fix racy device stats updates by DEV_STATS_INC() and DEV_STATS_ADD()
-Date: Tue, 16 Jul 2024 10:30:40 -0400
-Message-ID: <20240716143043.2714553-1-sashal@kernel.org>
+	marcel@holtmann.org,
+	johan.hedberg@gmail.com,
+	luiz.dentz@gmail.com,
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 2/3] Bluetooth: hci_core: cancel all works upon hci_unregister_dev()
+Date: Tue, 16 Jul 2024 10:30:41 -0400
+Message-ID: <20240716143043.2714553-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240716143043.2714553-1-sashal@kernel.org>
+References: <20240716143043.2714553-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,48 +69,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.317
 Content-Transfer-Encoding: 8bit
 
-From: Yunshui Jiang <jiangyunshui@kylinos.cn>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit b8ec0dc3845f6c9089573cb5c2c4b05f7fc10728 ]
+[ Upstream commit 0d151a103775dd9645c78c97f77d6e2a5298d913 ]
 
-mac802154 devices update their dev->stats fields locklessly. Therefore
-these counters should be updated atomically. Adopt SMP safe DEV_STATS_INC()
-and DEV_STATS_ADD() to achieve this.
+syzbot is reporting that calling hci_release_dev() from hci_error_reset()
+due to hci_dev_put() from hci_error_reset() can cause deadlock at
+destroy_workqueue(), for hci_error_reset() is called from
+hdev->req_workqueue which destroy_workqueue() needs to flush.
 
-Signed-off-by: Yunshui Jiang <jiangyunshui@kylinos.cn>
-Message-ID: <20240531080739.2608969-1-jiangyunshui@kylinos.cn>
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+We need to make sure that hdev->{rx_work,cmd_work,tx_work} which are
+queued into hdev->workqueue and hdev->{power_on,error_reset} which are
+queued into hdev->req_workqueue are no longer running by the moment
+
+       destroy_workqueue(hdev->workqueue);
+       destroy_workqueue(hdev->req_workqueue);
+
+are called from hci_release_dev().
+
+Call cancel_work_sync() on these work items from hci_unregister_dev()
+as soon as hdev->list is removed from hci_dev_list.
+
+Reported-by: syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=da0a9c9721e36db712e8
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac802154/tx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/bluetooth/hci_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
-index 2f873a0dc5836..0f192174a5693 100644
---- a/net/mac802154/tx.c
-+++ b/net/mac802154/tx.c
-@@ -42,8 +42,8 @@ void ieee802154_xmit_worker(struct work_struct *work)
- 	if (res)
- 		goto err_tx;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 47f1eec0eb35f..504f6aa4e95db 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -3288,7 +3288,11 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	list_del(&hdev->list);
+ 	write_unlock(&hci_dev_list_lock);
  
--	dev->stats.tx_packets++;
--	dev->stats.tx_bytes += skb->len;
-+	DEV_STATS_INC(dev, tx_packets);
-+	DEV_STATS_ADD(dev, tx_bytes, skb->len);
++	cancel_work_sync(&hdev->rx_work);
++	cancel_work_sync(&hdev->cmd_work);
++	cancel_work_sync(&hdev->tx_work);
+ 	cancel_work_sync(&hdev->power_on);
++	cancel_work_sync(&hdev->error_reset);
  
- 	ieee802154_xmit_complete(&local->hw, skb, false);
+ 	hci_dev_do_close(hdev);
  
-@@ -94,8 +94,8 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
- 			goto err_tx;
- 		}
- 
--		dev->stats.tx_packets++;
--		dev->stats.tx_bytes += len;
-+		DEV_STATS_INC(dev, tx_packets);
-+		DEV_STATS_ADD(dev, tx_bytes, len);
- 	} else {
- 		local->tx_skb = skb;
- 		queue_work(local->workqueue, &local->tx_work);
 -- 
 2.43.0
 
