@@ -1,141 +1,111 @@
-Return-Path: <stable+bounces-60314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0700933039
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:37:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF31933047
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C09CD1C20CB9
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:37:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B93ED280F78
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCA81A652F;
-	Tue, 16 Jul 2024 18:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240661A0726;
+	Tue, 16 Jul 2024 18:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gjw3rELS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2FUi6qo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844211A6522;
-	Tue, 16 Jul 2024 18:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04101A2569;
+	Tue, 16 Jul 2024 18:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154826; cv=none; b=Rn9+N+oCUnH2prOAKm6LNSzs7pUUPsCM4tXXhwRtup3wRTujs1NT1Ro8Y7wkFHcF6tKqJSyi6Ad87o2RP2SQiAiYiPomh1MyLJzMq6yzrFCx/zFPgdgzo7SZERVpaPvpOmKwz0VnigF527Y5xBx2x4Oa+Ebdv5WZhyG/Ww5ktKc=
+	t=1721154853; cv=none; b=t2+CtZhgseteiq2XdppoiiZ7AJKd4bf13WIbOxr2cbpYD6fwEn+IGGxbQcEb6NAh8HthIzGq9WpnEHc3mIJincFxkCHQW3Je0rR6PYWNUs/OT69+kzW9UhOfPpc69a19V8KjxV/+YWsg382vK5qEfEbYHNkIHEATArfBmYUWwkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154826; c=relaxed/simple;
-	bh=B154PBKiYl5EWcFNNPsQO6OKsGY+pG6XCthbORAZL/o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cwqEjc/L6sm47S1WE14iEv439diWqiLqsYkNwpME+uLpyvJEjbEn0IyS8yZyhGNuaCyKJ+d6lZz7vK3E5OeSf2fexwoK35r4ZvIfr/51dJhsaBM5OIMCFeAJSvf3gF/KX3cgy2B3dziyQ8ph5r3xcslHKzeuSmEtqnF+M2lR+pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gjw3rELS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32FFC4AF0F;
-	Tue, 16 Jul 2024 18:33:45 +0000 (UTC)
+	s=arc-20240116; t=1721154853; c=relaxed/simple;
+	bh=3Tf1x5+YEUrva0pfI8d/8TUvqHPptl6saPq8nrj86AY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TrXKrGpBpKQkR6gEKoBVkye/MuSv3pvrNWLTV23wyBtuvvFVu4pqXvxifS4lM7x/5QR1k5Q/1sSOSAWkmI20iSlMPHJE7BjClTZ1XonXH3Y0d79YnYnxdKr/J4r0QlpqsIaxQR0Q04Da6fDaf3Di1gKn+TaG5R5PKfwhDThvqD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2FUi6qo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9829C116B1;
+	Tue, 16 Jul 2024 18:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154826;
-	bh=B154PBKiYl5EWcFNNPsQO6OKsGY+pG6XCthbORAZL/o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gjw3rELSz2/fCMGSuNWZ10azZwg3mYDgyAqtfvlP832tU+6N3FLJn+IuvProFtFYT
-	 IweLKEc4JMCkzpyvgFIM4lRGbSxCr/8M9xpnnTKG6bqihzxFrWThfu1sWZ8rA7RMie
-	 p+0bphGvjbJaKeKZ1K4C8H50AAmXXG1yhe6jn7E3M3HTbhvPJedzf+LUxDykAf+wB8
-	 M6zJhR7S58Eu7CLgS3HlmcQXYRjw8FVOP5HttxscCQTAOfJiekydgXZlquULnWgylv
-	 1hnSyuhuXjz1TKXE6gdW4tu/Jzm9mzWPmhYoTja8YCC0rXb+MZfOG8aLlr3av03LuF
-	 R5tdHbMUyfYvg==
-From: SeongJae Park <sj@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y 8/8] mm/damon/core: merge regions aggressively when max_nr_regions is unmet
-Date: Tue, 16 Jul 2024 11:33:33 -0700
-Message-Id: <20240716183333.138498-9-sj@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240716183333.138498-1-sj@kernel.org>
-References: <20240716183333.138498-1-sj@kernel.org>
+	s=k20201202; t=1721154853;
+	bh=3Tf1x5+YEUrva0pfI8d/8TUvqHPptl6saPq8nrj86AY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=N2FUi6qo8mm6J8LwCYMBv/by6CaoH1Ig2o657OUeIkCVLm3a8ZqFhrVYCiL/+KQHv
+	 4vZOaBu2az333hVXJQ5VmFTXSLPQJ1ByhrEYtaoyjDUYyVRS7wV6LG7qRfOi6Nj9ku
+	 wcDsi/HC2QhOzcpAlMA08uvMw5Phj577uyWvrZ0OelU6VvJJIffP7Uw1frh2CaU1D/
+	 YoG7mmPJmospE654GOusMzAUtpgpuNPA682l3tCGG5Nne4p4fd76OMcBprdVgMDUxK
+	 3HUJ+EWEbM3qe8912x8T+ykWfPuZNI3xWvIcLBcpp5aXpHdnXMEaKWf4L8HXWcc97p
+	 vzZdoi5xQg5aA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	shawnguo@kernel.org,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 1/5] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi devices
+Date: Tue, 16 Jul 2024 14:33:58 -0400
+Message-ID: <20240716183409.2814531-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.99
 Content-Transfer-Encoding: 8bit
 
-commit 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6 upstream.
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-DAMON keeps the number of regions under max_nr_regions by skipping regions
-split operations when doing so can make the number higher than the limit.
-It works well for preventing violation of the limit.  But, if somehow the
-violation happens, it cannot recovery well depending on the situation.  In
-detail, if the real number of regions having different access pattern is
-higher than the limit, the mechanism cannot reduce the number below the
-limit.  In such a case, the system could suffer from high monitoring
-overhead of DAMON.
+[ Upstream commit ce1dac560a74220f2e53845ec0723b562288aed4 ]
 
-The violation can actually happen.  For an example, the user could reduce
-max_nr_regions while DAMON is running, to be lower than the current number
-of regions.  Fix the problem by repeating the merge operations with
-increasing aggressiveness in kdamond_merge_regions() for the case, until
-the limit is met.
+While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
+claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
+device trees don't add DMA channels. The Reference manuals of i.MX31 and
+i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
+check the others.)
 
-[sj@kernel.org: increase regions merge aggressiveness while respecting min_nr_regions]
-  Link: https://lkml.kernel.org/r/20240626164753.46270-1-sj@kernel.org
-[sj@kernel.org: ensure max threshold attempt for max_nr_regions violation]
-  Link: https://lkml.kernel.org/r/20240627163153.75969-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20240624175814.89611-1-sj@kernel.org
-Fixes: b9a6ac4e4ede ("mm/damon: adaptively adjust regions")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6)
-Signed-off-by: SeongJae Park <sj@kernel.org>
-[Remove use of unexisting damon_ctx->attrs field]
+Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
+DMA channel requests") this results in an error message
+
+	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
+
+during boot. However that isn't fatal and the driver gets loaded just
+fine, just without using DMA.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://patch.msgid.link/20240508095610.2146640-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/core.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 7a4912d6e65f..4f031412f65c 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -507,14 +507,31 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
-  * access frequencies are similar.  This is for minimizing the monitoring
-  * overhead under the dynamically changeable access pattern.  If a merge was
-  * unnecessarily made, later 'kdamond_split_regions()' will revert it.
-+ *
-+ * The total number of regions could be higher than the user-defined limit,
-+ * max_nr_regions for some cases.  For example, the user can update
-+ * max_nr_regions to a number that lower than the current number of regions
-+ * while DAMON is running.  For such a case, repeat merging until the limit is
-+ * met while increasing @threshold up to possible maximum level.
-  */
- static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 				  unsigned long sz_limit)
- {
- 	struct damon_target *t;
--
--	damon_for_each_target(t, c)
--		damon_merge_regions_of(t, threshold, sz_limit);
-+	unsigned int nr_regions;
-+	unsigned int max_thres;
-+
-+	max_thres = c->aggr_interval /
-+		(c->sample_interval ?  c->sample_interval : 1);
-+	do {
-+		nr_regions = 0;
-+		damon_for_each_target(t, c) {
-+			damon_merge_regions_of(t, threshold, sz_limit);
-+			nr_regions += damon_nr_regions(t);
-+		}
-+		threshold = max(1, threshold * 2);
-+	} while (nr_regions > c->max_nr_regions &&
-+			threshold / 2 < max_thres);
- }
- 
- /*
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 2c660a95c17e7..93e83fbc3403f 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1040,7 +1040,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
+ 	.rx_available = mx31_rx_available,
+ 	.reset = mx31_reset,
+ 	.fifo_size = 8,
+-	.has_dmamode = true,
++	.has_dmamode = false,
+ 	.dynamic_burst = false,
+ 	.has_slavemode = false,
+ 	.devtype = IMX35_CSPI,
 -- 
-2.39.2
+2.43.0
 
 
