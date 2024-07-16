@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-59897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0928A932C52
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D59932D51
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BC621C224F1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAFF6B24CAA
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E6519E7E2;
-	Tue, 16 Jul 2024 15:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C453019E832;
+	Tue, 16 Jul 2024 16:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzVhD4b7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBdtZhRS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119E219DF53;
-	Tue, 16 Jul 2024 15:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807FB1DDCE;
+	Tue, 16 Jul 2024 16:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145242; cv=none; b=FG6mbeFt+A47/dgeBnNtcteWDzVFUrrFJj+nTVU4LYzfkCMotjnaZS5rDAmQu1nekLSJYjB07g7S385o6dhey4UzbUZe5iZp06aSCLPmS0/IQ1UATGu6IpT5wiFT7hrNAQTMY1CR6vyu9SJ6YxTnR2IJuhmrfoo8dWkXYMXSX24=
+	t=1721145811; cv=none; b=kHLwJ2VJbh+EQqoKxbteID0WV7hLBPUwsrNY5K4iFCiBFtaRri/QQGMzsLelfJKcfXIWYRtpq0mcrzUJsdx7Blnis4zdZgXmQ0HoyeYbCtFKiMiBfbKYDKRWSlZBJ5JNmcmWXEdIne/vqsAfxyLxJndndLFwhb3wOCqjTpH+VJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145242; c=relaxed/simple;
-	bh=f50AAW8lo9EK7f5MDU89hrn6DFhj4DmK/RfmRqNWh+8=;
+	s=arc-20240116; t=1721145811; c=relaxed/simple;
+	bh=dOxglk60HiI818zaWBJhsYoIHB0b2MQbGAnIbNX/R+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COb4glVl4pEI4/QJOawECGlyVxQxLoyyACr6RZDaaUOegbwbiyIvoLiL8AZNJUwoOncgTKhsElbSr1W1QnJ9EjjtvrYV1PhQ9HZ6PORBcJ3ZQrlmzOtQUMCtxaLtqD9wW521iLsyZBulVweJoKtYFFBhNiPaq974B+fr5PnZsGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzVhD4b7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0C7C4AF11;
-	Tue, 16 Jul 2024 15:54:01 +0000 (UTC)
+	 MIME-Version; b=ZoFiBmGFqec7W2948BfVtF5KajNwcFDAXeyjSEtx1iS01sGmIgsrO/IFmyh/b8YSOIz2DhzjMb/72JNTnyjLijsfWV42pwecMhxUmrviwxmaTZm8KAVcWauHl/RWgrNuS9FbRCxAD+HmfzdPZhtsunWG9ub11JnQ4yOzHloODqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBdtZhRS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045F3C116B1;
+	Tue, 16 Jul 2024 16:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145241;
-	bh=f50AAW8lo9EK7f5MDU89hrn6DFhj4DmK/RfmRqNWh+8=;
+	s=korg; t=1721145811;
+	bh=dOxglk60HiI818zaWBJhsYoIHB0b2MQbGAnIbNX/R+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzVhD4b71sSrrH05ZTxcuX5uvd6TqvfbWQ2KEPH2v8pgI7LKRTSTWv5eqPJavmzu/
-	 EJYA1Gjn1yOnhtNPjZ9JWf/MR2u5z+aaBV4Gcni+gWDsquL9373k8qJl94w/9c+3hQ
-	 4v6EwY1w3IFkS2NkgerNxygW6O7oQ/9i/8IvDnZA=
+	b=aBdtZhRS7deZ7KHxK6HaxXtq0yvaDdzI5FuiLp/Wj30DprNr0U2hZDRSVjfd8svhs
+	 H7GJXLSTCkkaTTeO6NvwC6uEO1cO9jgwxQmUw46eUEQne41mR3eUIUicbW7CMb28fX
+	 llPuRmr1h6mRDdDfdX4hrimGVGIDFF2E67x2Lom8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.9 127/143] misc: fastrpc: Fix memory leak in audio daemon attach operation
-Date: Tue, 16 Jul 2024 17:32:03 +0200
-Message-ID: <20240716152800.872729057@linuxfoundation.org>
+	Vanillan Wang <vanillanwang@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 062/121] USB: serial: option: add Rolling RW350-GL variants
+Date: Tue, 16 Jul 2024 17:32:04 +0200
+Message-ID: <20240716152753.713675473@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Vanillan Wang <vanillanwang@163.com>
 
-commit ad0bd973a033003ca578c42a760d1dc77aeea15e upstream.
+commit ae420771551bd9f04347c59744dd062332bdec3e upstream.
 
-Audio PD daemon send the name as part of the init IOCTL call. This
-name needs to be copied to kernel for which memory is allocated.
-This memory is never freed which might result in memory leak. Free
-the memory when it is not needed.
+Update the USB serial option driver support for the Rolling
+RW350-GL
+- VID:PID 33f8:0802, RW350-GL are laptop M.2 cards (with
+MBIM interfaces for /Linux/Chrome OS)
 
-Fixes: 0871561055e6 ("misc: fastrpc: Add support for audiopd")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628114501.14310-5-srinivas.kandagatla@linaro.org
+Here are the outputs of usb-devices:
+
+usbmode=63: mbim, pipe
+
+T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0802 Rev=00.01
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=USB DATA CARD
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+usbmode=64: mbim, others at (If#= 5 adb)
+
+MBIM(MI0) + GNSS(MI2) + AP log(MI3) + AP META(MI4) + ADB(MI5) +
+MD AT(MI6) + MD META(MI7) + NPT(MI8) + Debug(MI9)
+
+T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  5 Spd=5000 MxCh= 0
+D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0802 Rev=00.01
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=USB DATA CARD
+C:  #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=07(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=08(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=09(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8a(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1320,6 +1320,7 @@ static int fastrpc_init_create_static_pr
- 		goto err_invoke;
- 
- 	kfree(args);
-+	kfree(name);
- 
- 	return 0;
- err_invoke:
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2333,6 +2333,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
 
 
 
