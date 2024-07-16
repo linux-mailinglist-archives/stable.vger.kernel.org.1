@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653AE932D11
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE79932B72
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 967721C23375
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1856B28124C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C9117A930;
-	Tue, 16 Jul 2024 16:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B2B27733;
+	Tue, 16 Jul 2024 15:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5tUuINq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpZF2MTC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E601178370;
-	Tue, 16 Jul 2024 16:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E97212B72;
+	Tue, 16 Jul 2024 15:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145643; cv=none; b=b7VzFt/N3GTlxn0NTqdm7B5mIQ2VJVOwIgaLZYwIbdKEGWjdnWX7W997apaPtTDUw8Fb28nJD0HplZZrnbnJJV3g6tRLkaUHg6WqyutahsrDGcjFsIcSpKKZN9ZfSsqX5/+NveElS9eByIPW9kd6RGIet+JcvyKQYHR3EB04IHw=
+	t=1721144721; cv=none; b=UIjY0/ur9p1zMAvDEwwY/IQyfxLrj+8NbT4cThzR9Ggtvq20ENr76jikCggxm0tfQfNvofeVkGZBSSb3FqgDkaQVgiWdZl2wgNcgBkr06rT/KE0tHWC8NMLWLydAcm7oUgSKmFgL8i8szk71rXT+Y7Wo3PGOfNPa1nDi0h3E6k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145643; c=relaxed/simple;
-	bh=jS9Hd6Zloh0rwzp4Qlbr6WV3KqDmmMCR8Ll6UDiUIqo=;
+	s=arc-20240116; t=1721144721; c=relaxed/simple;
+	bh=lf0OntD+UyICgjcdcBlDBgWEnSG+1wCdaTAquyRngwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1FGaTVeR7Q6S4/tzGHYePMKjjb2f19GKu1UmmJkwM9hZTHputgu3kYcmyW/+NmJg9t4+1QPT8cW9977isFYpgcgZoF1tlqwV+jnvft7w4+wN2By8/0bLqmuAMqkU7pBBC+hmcYfEZoeBRPANqdt/FMam5CLAwws2TUFDektqfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5tUuINq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA071C116B1;
-	Tue, 16 Jul 2024 16:00:42 +0000 (UTC)
+	 MIME-Version; b=ZNwuWNM4pPboucYqybo1dcX9qcUNOlPA7GRx84VJnP6DdkhidXBTwKqiTBXxUFODPB/M+XlyZRCts1bgex7LRDcZ8GdcG0D2xUfCdRzqgf9Ki2w/On8BTVropr7UDYGRBD7kB9nXVm7ogGCXitt3LOmBP81dDe8pWTVtyS/fEnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpZF2MTC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F419FC116B1;
+	Tue, 16 Jul 2024 15:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145643;
-	bh=jS9Hd6Zloh0rwzp4Qlbr6WV3KqDmmMCR8Ll6UDiUIqo=;
+	s=korg; t=1721144721;
+	bh=lf0OntD+UyICgjcdcBlDBgWEnSG+1wCdaTAquyRngwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K5tUuINq9BAWaSoQ587y3iBbJkasnZ77C+JNul+zKemzYC903knqCvk0/QMpEuL0e
-	 3j2YcpbR6sphmNeIXFrsMwyQPti6DhZYpOWro6bQD2mh1MyEsCT+oy1OcjAqKYxkD2
-	 edIu7rELd2jyFJOg3VtJ8/i7up7n57cIev/qyavs=
+	b=dpZF2MTC2bU+Q0AqnPdUKlpFGRduh84ci15BLA5Fp0zebdggouyp0a7tCRgc0y8jP
+	 mrkb6qJghG+0AECpsTtAnPpVIoiTLcy2/pmno9sqVsLg/Gnc0kX/dW7N0tcQX8ZnOh
+	 aZxWihB/bliOtTFdSTrLGlPhzTbeS+fBnJMT9064=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/121] s390: Mark psw in __load_psw_mask() as __unitialized
+	stable <stable@kernel.org>,
+	jinxiaobo <jinxiaobo@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 5.10 083/108] USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
 Date: Tue, 16 Jul 2024 17:31:38 +0200
-Message-ID: <20240716152752.712646284@linuxfoundation.org>
+Message-ID: <20240716152749.170106799@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 7278a8fb8d032dfdc03d9b5d17e0bc451cdc1492 ]
+commit 3859e85de30815a20bce7db712ce3d94d40a682d upstream.
 
-Without __unitialized, the following code is generated when
-INIT_STACK_ALL_ZERO is enabled:
+START BP-850K is a dot matrix printer that crashes when
+it receives a Set-Interface request and needs USB_QUIRK_NO_SET_INTF
+to work properly.
 
-86: d7 0f f0 a0 f0 a0     xc      160(16,%r15), 160(%r15)
-8c: e3 40 f0 a0 00 24     stg     %r4, 160(%r15)
-92: c0 10 00 00 00 08     larl    %r1, 0xa2
-98: e3 10 f0 a8 00 24     stg     %r1, 168(%r15)
-9e: b2 b2 f0 a0           lpswe   160(%r15)
-
-The xc is not adding any security because psw is fully initialized
-with the following instructions. Add __unitialized to the psw
-definitiation to avoid the superfluous clearing of psw.
-
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: jinxiaobo <jinxiaobo@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/202E4B2BD0F0FEA4+20240702154408.631201-1-wangyuli@uniontech.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/processor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
-index dc17896a001a9..e7338ed540d8f 100644
---- a/arch/s390/include/asm/processor.h
-+++ b/arch/s390/include/asm/processor.h
-@@ -308,8 +308,8 @@ static inline void __load_psw(psw_t psw)
-  */
- static __always_inline void __load_psw_mask(unsigned long mask)
- {
-+	psw_t psw __uninitialized;
- 	unsigned long addr;
--	psw_t psw;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -504,6 +504,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x1b1c, 0x1b38), .driver_info = USB_QUIRK_DELAY_INIT |
+ 	  USB_QUIRK_DELAY_CTRL_MSG },
  
- 	psw.mask = mask;
- 
--- 
-2.43.0
-
++	/* START BP-850k Printer */
++	{ USB_DEVICE(0x1bc3, 0x0003), .driver_info = USB_QUIRK_NO_SET_INTF },
++
+ 	/* MIDI keyboard WORLDE MINI */
+ 	{ USB_DEVICE(0x1c75, 0x0204), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
 
 
 
