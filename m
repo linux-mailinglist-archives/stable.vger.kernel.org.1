@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-59753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D18932B93
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F78A932D2B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42FDC1F2099A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2BACB224A2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1935195B27;
-	Tue, 16 Jul 2024 15:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C6E19AD72;
+	Tue, 16 Jul 2024 16:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nId1gjLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sz/O76YN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F16312B72;
-	Tue, 16 Jul 2024 15:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BA01DDE9;
+	Tue, 16 Jul 2024 16:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144809; cv=none; b=kPSAbTFoIy4DVSHsuBAPcKgBafFefcZcjcln+MvMnOD2W87X0VSXNHJ4pXHj4c/ie+U70jumtJQyDM26uKIqAELYz/Z2YVyy1fnKsBf2lbzWZEyWWfZto1GXHXiUNhmLrbUCFfga4g47hKNC6CDOnkfR1mlyDNsqURMITPF2hak=
+	t=1721145720; cv=none; b=pSxL11bxVdLW07FeOgYlnTOUzOjgixUrOaj+oCuc3XKYoBh3KANw9tCRLUL76AKpb9iWsLdHZWkselieaS9AmCqINl49E6o6ceygHIh7MnTohYVjZYwjirOBRL6PJ6DpLTaCbABu+l+ECte84JxsYyb+U8icvOXwED3Iu35JUPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144809; c=relaxed/simple;
-	bh=EcHLPFSBcaSPyd8e0BxFBWInHwVfGakeG/iaO4l/Jp4=;
+	s=arc-20240116; t=1721145720; c=relaxed/simple;
+	bh=HEaboSN6WhaiHJalP2205s/P2ozEw4Wfw5vEJTske/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3wDHfQwuPnuX6qNOJbFfTFip7qUUKMfo/l+jMbw1UrHTq8EOhHK1AbbmUBW7hl1PLRNWGJecqupxI0Xwa9znqui8iNgJ4lR/U42epK8k+lfoK5bIJ30f8LPSIZjjIxpR/TLqicsrs6EsBISI8FjNsxAXhWUqaJRWxJZ+FVyOjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nId1gjLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF220C4AF0B;
-	Tue, 16 Jul 2024 15:46:48 +0000 (UTC)
+	 MIME-Version; b=VFCV3LyKwafC9Ge69+/k0nT7anmOoigFRSp5+aT5yDMckzvtTdF/6hmDLq5imZ+slfBL/tPozrDBSXRaanEm6NwyyHYalofdF0X7KKRsf5KglqdYgGdQHlGGXzYSDBOyVijYuoBqtOnic2hNw/MzYLmYx38L8/LXDnbfCEb1HQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sz/O76YN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EBC0C116B1;
+	Tue, 16 Jul 2024 16:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144809;
-	bh=EcHLPFSBcaSPyd8e0BxFBWInHwVfGakeG/iaO4l/Jp4=;
+	s=korg; t=1721145720;
+	bh=HEaboSN6WhaiHJalP2205s/P2ozEw4Wfw5vEJTske/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nId1gjLS8nkA5vIbkvycgWncMZ2ju2YdJasw3nGkJd/+EP+MF+jAsiX7mz6H1Nc4a
-	 8WcCOsR5nXdJ8eZBDPFwGb3nPiLdmANeInL/TOcpgZwCEmHg75Ve7G5M1s8lp7CDZ8
-	 w5i7/Ax0K9UUUSEG1BMcHErdtHTmJAdI+KqlaTGA=
+	b=Sz/O76YNzYXZ1/jzF3v8vlerBveGMKR9ag1iMsKUrx0NHLw3ovHWExB6ZTeoEqenv
+	 kqCYqjCuDJ+o1eRW5PB2yyYKfuOWrg5WRModIjRSOL4DI1ygkUXxlE7xVvp/30J+Cl
+	 JfaHqGFY0lXYikqPtDwTIPIcVoILZNh55Lno07u8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 101/108] i2c: rcar: bring hardware to known state when probing
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jon Maxwell <jmaxwell37@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 054/121] tcp: avoid too many retransmit packets
 Date: Tue, 16 Jul 2024 17:31:56 +0200
-Message-ID: <20240716152749.873831353@linuxfoundation.org>
+Message-ID: <20240716152753.400521568@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 4e36c0f20cb1c74c7bd7ea31ba432c1c4a989031 ]
+commit 97a9063518f198ec0adb2ecb89789de342bb8283 upstream.
 
-When probing, the hardware is not brought into a known state. This may
-be a problem when a hypervisor restarts Linux without resetting the
-hardware, leaving an old state running. Make sure the hardware gets
-initialized, especially interrupts should be cleared and disabled.
+If a TCP socket is using TCP_USER_TIMEOUT, and the other peer
+retracted its window to zero, tcp_retransmit_timer() can
+retransmit a packet every two jiffies (2 ms for HZ=1000),
+for about 4 minutes after TCP_USER_TIMEOUT has 'expired'.
 
-Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Closes: https://lore.kernel.org/r/20240702045535.2000393-1-dirk.behme@de.bosch.com
-Fixes: 6ccbe607132b ("i2c: add Renesas R-Car I2C driver")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The fix is to make sure tcp_rtx_probe0_timed_out() takes
+icsk->icsk_user_timeout into account.
+
+Before blamed commit, the socket would not timeout after
+icsk->icsk_user_timeout, but would use standard exponential
+backoff for the retransmits.
+
+Also worth noting that before commit e89688e3e978 ("net: tcp:
+fix unexcepted socket die when snd_wnd is 0"), the issue
+would last 2 minutes instead of 4.
+
+Fixes: b701a99e431d ("tcp: Add tcp_clamp_rto_to_user_timeout() helper to improve accuracy")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Jon Maxwell <jmaxwell37@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240710001402.2758273-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ net/ipv4/tcp_timer.c |   22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index 6a7a7a074a975..029d999708261 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -220,6 +220,14 @@ static void rcar_i2c_init(struct rcar_i2c_priv *priv)
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -457,22 +457,34 @@ static void tcp_fastopen_synack_timer(st
+ static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
+ 				     const struct sk_buff *skb)
+ {
++	const struct inet_connection_sock *icsk = inet_csk(sk);
++	u32 user_timeout = READ_ONCE(icsk->icsk_user_timeout);
+ 	const struct tcp_sock *tp = tcp_sk(sk);
+-	const int timeout = TCP_RTO_MAX * 2;
++	int timeout = TCP_RTO_MAX * 2;
+ 	u32 rtx_delta;
+ 	s32 rcv_delta;
  
++	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
++			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
++
++	if (user_timeout) {
++		/* If user application specified a TCP_USER_TIMEOUT,
++		 * it does not want win 0 packets to 'reset the timer'
++		 * while retransmits are not making progress.
++		 */
++		if (rtx_delta > user_timeout)
++			return true;
++		timeout = min_t(u32, timeout, msecs_to_jiffies(user_timeout));
++	}
++
+ 	/* Note: timer interrupt might have been delayed by at least one jiffy,
+ 	 * and tp->rcv_tstamp might very well have been written recently.
+ 	 * rcv_delta can thus be negative.
+ 	 */
+-	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
++	rcv_delta = icsk->icsk_timeout - tp->rcv_tstamp;
+ 	if (rcv_delta <= timeout)
+ 		return false;
+ 
+-	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
+-			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
+-
+ 	return rtx_delta > timeout;
  }
  
-+static void rcar_i2c_reset_slave(struct rcar_i2c_priv *priv)
-+{
-+	rcar_i2c_write(priv, ICSIER, 0);
-+	rcar_i2c_write(priv, ICSSR, 0);
-+	rcar_i2c_write(priv, ICSCR, SDBS);
-+	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
-+}
-+
- static int rcar_i2c_bus_barrier(struct rcar_i2c_priv *priv)
- {
- 	int ret;
-@@ -888,11 +896,8 @@ static int rcar_unreg_slave(struct i2c_client *slave)
- 
- 	/* ensure no irq is running before clearing ptr */
- 	disable_irq(priv->irq);
--	rcar_i2c_write(priv, ICSIER, 0);
--	rcar_i2c_write(priv, ICSSR, 0);
-+	rcar_i2c_reset_slave(priv);
- 	enable_irq(priv->irq);
--	rcar_i2c_write(priv, ICSCR, SDBS);
--	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
- 
- 	priv->slave = NULL;
- 
-@@ -1004,7 +1009,9 @@ static int rcar_i2c_probe(struct platform_device *pdev)
- 		goto out_pm_disable;
- 	}
- 
--	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
-+	/* Bring hardware to known state */
-+	rcar_i2c_init(priv);
-+	rcar_i2c_reset_slave(priv);
- 
- 	if (priv->devtype < I2C_RCAR_GEN3) {
- 		irqflags |= IRQF_NO_THREAD;
--- 
-2.43.0
-
 
 
 
