@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-59431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E71932891
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:28:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D24932897
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13B09282FA9
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:28:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21EE4284C34
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395A919D881;
-	Tue, 16 Jul 2024 14:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A4B19DFAE;
+	Tue, 16 Jul 2024 14:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdWzXq5D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmDnPGrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF99B19CD1B;
-	Tue, 16 Jul 2024 14:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D632819CD1B;
+	Tue, 16 Jul 2024 14:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721139981; cv=none; b=PAgQfyO/ZWVj+sdfgw+J8pQJqPBXtj8MW1l6enFyerBQni6HpzPC32+6/x6Ap8pXyScqOhSZMayapZFFmj+o4pc6JIZtPUS8xjoz0Q4eV4Vn4Q8wOQC8gNVUtcLmtIKPo/v2TP+4hw4mPJo57oyqjvV04LQurR+Xc69vp/EXpsw=
+	t=1721139994; cv=none; b=DQ/1SA459LxIRKK8raXeBenubstfcJLCTLW983IzTcp20Fzsy/DTgKdoSJa2S2TqTN7u5ryOQYmsN1XgFqTPzgHzyfrOZO9zNohvLPYvBtDqm/92XORKLPD/h5T1Aef0pxyqZi2ySDr9ew81apWDRhowAH+089woTSpJnASt8OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721139981; c=relaxed/simple;
-	bh=t7Wz9HROynNdxtMwYgCw79VXqZmMaUv6AhN+H0/OzYQ=;
+	s=arc-20240116; t=1721139994; c=relaxed/simple;
+	bh=homoOp5PggDAdsEv+cYcAgFaZRjiXh8bu10ArfAvvGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sXOAkaEfBbx7NBc2xkFUFdHAIQZRm0YWtxkE9Xgq0MIkv2t2nsrCLHKTC17sDREfGIUT0PNQT0yM+m7j2FOWHBKpzGJoGI8SiNZEKZhD4HkiF1vf9UK4bpPYDzczNeRROsDYIwaoo0SGBuZhqI+/fqzLVGBYK7/6K73JcPoiI9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdWzXq5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033A5C4AF09;
-	Tue, 16 Jul 2024 14:26:17 +0000 (UTC)
+	 MIME-Version; b=VyIM64YE1/x1SRm0UZ8T14SFHU4HptwfAXFv1dvOjP8XCdsqpg8EDq6Bg/ficrycCKcpjhnby2A71zPWmS/Hr5n69bdenLQ2b7dLlUijKm1L0Ii3L0wh120Aeba+Q7fE8O+CuUtwCcXHZJOeUX0G35C0yia6XPCZ7MxK1If32f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmDnPGrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B14C116B1;
+	Tue, 16 Jul 2024 14:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721139980;
-	bh=t7Wz9HROynNdxtMwYgCw79VXqZmMaUv6AhN+H0/OzYQ=;
+	s=k20201202; t=1721139994;
+	bh=homoOp5PggDAdsEv+cYcAgFaZRjiXh8bu10ArfAvvGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdWzXq5DYYn4IaQl+xeXM3qnsRI6Uj5dqXhO1Ic9s1gxIRpqTXnYGF9obDPQFARmN
-	 7r3waqUxEJYIE05VM2YAwpSEPeeqCj5nF9fgPWwuKdSNREJV95/fPZ/RZyWySpaBPL
-	 WWLJMdJK/+tbTFH2IuuFkMogiUcYtlcUxwzsbIlDBiPWQSdHkRbu9IhDGFNi4MOssG
-	 IsV/EuypHCXkEUW6ODA0yw2dCYJpdMgLpbd+MpCbwodnNdndHbRGNESdZQFP2EgIy5
-	 YLfjDFdqtJrlojWoP2NBnMahnrAfLOYSz5BZVMKMzZQLvQ8nicSC9FLvhwrmG1cxyq
-	 uN7G81Ew1YD2Q==
+	b=QmDnPGrS/Cf7TaPZJPYnlz9yH8I/3j3Stry17YImigREbkiH3bccPv3/52fZQgGtE
+	 suCsMB/LaEcR+mlx4xLiJI3qhfoDPqAUOjaHtYvR4Qt9LPqEDravBTKI8EjeybC952
+	 mLe6EQ5hOYE96TOL875OgckPzbJpap40ztCWg+no3t6z5REz5VtTFpVXzOC0BeMmn7
+	 hjF7k7TBrTV+UbHaZI3IaWf0LxS7owAuM82u5/KFCAqHX/tElmwI0gs586enI8zuKq
+	 XkefvdDf05ypTmYrbyrWWTaLrBtefuygL69JFXkvmqGuI8RUWJr4RAD839x+GNUhrH
+	 T/hXZ2DkNxyDw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Fangzhi Zuo <Jerry.Zuo@amd.com>,
+Cc: Roman Li <Roman.Li@amd.com>,
 	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
@@ -57,17 +58,18 @@ Cc: Fangzhi Zuo <Jerry.Zuo@amd.com>,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
 	charlene.liu@amd.com,
-	hamza.mahfooz@amd.com,
-	nicholas.kazlauskas@amd.com,
-	sungkim@amd.com,
-	syed.hassan@amd.com,
-	xi.liu@amd.com,
 	Qingqing.Zhuo@amd.com,
+	sungkim@amd.com,
+	michael.strauss@amd.com,
+	wenjing.liu@amd.com,
+	jiapeng.chong@linux.alibaba.com,
+	gabe.teeger@amd.com,
+	dillon.varone@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.9 15/22] drm/amd/display: Update efficiency bandwidth for dcn351
-Date: Tue, 16 Jul 2024 10:24:22 -0400
-Message-ID: <20240716142519.2712487-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 16/22] drm/amd/display: Fix array-index-out-of-bounds in dml2/FCLKChangeSupport
+Date: Tue, 16 Jul 2024 10:24:23 -0400
+Message-ID: <20240716142519.2712487-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716142519.2712487-1-sashal@kernel.org>
 References: <20240716142519.2712487-1-sashal@kernel.org>
@@ -82,33 +84,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.9
 Content-Transfer-Encoding: 8bit
 
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
+From: Roman Li <Roman.Li@amd.com>
 
-[ Upstream commit 7ae37db29a8bc4d3d116a409308dd98fc3a0b1b3 ]
+[ Upstream commit 0ad4b4a2f6357c45fbe444ead1a929a0b4017d03 ]
 
-Fix 4k240 underflow on dcn351
+[Why]
+Potential out of bounds access in dml2_calculate_rq_and_dlg_params()
+because the value of out_lowest_state_idx used as an index for FCLKChangeSupport
+array can be greater than 1.
+
+[How]
+Currently dml2 core specifies identical values for all FCLKChangeSupport
+elements. Always use index 0 in the condition to avoid out of bounds access.
 
 Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Roman Li <Roman.Li@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-index a20f28a5d2e7b..3af759dca6ebf 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -233,6 +233,7 @@ void dml2_init_socbb_params(struct dml2_context *dml2, const struct dc *in_dc, s
- 		out->round_trip_ping_latency_dcfclk_cycles = 106;
- 		out->smn_latency_us = 2;
- 		out->dispclk_dppclk_vco_speed_mhz = 3600;
-+		out->pct_ideal_dram_bw_after_urgent_pixel_only = 65.0;
- 		break;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_utils.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_utils.c
+index b72ed3e78df05..bb4e812248aec 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_utils.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_utils.c
+@@ -294,7 +294,7 @@ void dml2_calculate_rq_and_dlg_params(const struct dc *dc, struct dc_state *cont
+ 	context->bw_ctx.bw.dcn.clk.dcfclk_deep_sleep_khz = (unsigned int)in_ctx->v20.dml_core_ctx.mp.DCFCLKDeepSleep * 1000;
+ 	context->bw_ctx.bw.dcn.clk.dppclk_khz = 0;
  
- 	}
+-	if (in_ctx->v20.dml_core_ctx.ms.support.FCLKChangeSupport[in_ctx->v20.scratch.mode_support_params.out_lowest_state_idx] == dml_fclock_change_unsupported)
++	if (in_ctx->v20.dml_core_ctx.ms.support.FCLKChangeSupport[0] == dml_fclock_change_unsupported)
+ 		context->bw_ctx.bw.dcn.clk.fclk_p_state_change_support = false;
+ 	else
+ 		context->bw_ctx.bw.dcn.clk.fclk_p_state_change_support = true;
 -- 
 2.43.0
 
