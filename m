@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-60075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B5D932D40
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A3C932CED
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 005C2B228F1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1BD01C22123
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606B919AD72;
-	Tue, 16 Jul 2024 16:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB4519EEC4;
+	Tue, 16 Jul 2024 15:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j548hI5Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uj6VoG/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD4D1DDE9;
-	Tue, 16 Jul 2024 16:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD053195B27;
+	Tue, 16 Jul 2024 15:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145779; cv=none; b=Lk/09DZMQKaF/PkDD9C4Zw1oSMR1VIzGu4FHbhdhc085O7cEeImDs0FGSrT9ujZ9n1NfN6Om2k7qsLKZIl+CxPmkvLwhBCk7Kmmkz23wf4NgUq0osAAm3jEBwh7dXpK1+mteNh86osDNwE+c+Cp0igygUo1K8Xp8QbLui0xDQhI=
+	t=1721145549; cv=none; b=majj1Q5i66hMxVeLONvUlY5xN6jvWtGjkpRNxAszA2sK8bEPbKO2DCC5/XMv+4nEDgTvud8HTW5+ZgymeYSKEXQZmudPp33OG8R2yHSeAC5veMdvew//X8aZmNZRrs2U3B++SFpXFaXn7m5nxueJ1vI33jsGkUYIFFq/CB9qTCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145779; c=relaxed/simple;
-	bh=fKSnmWJlpe7mbwr2fwrc2EOQVJlX0TvAheh9EFwt8+Q=;
+	s=arc-20240116; t=1721145549; c=relaxed/simple;
+	bh=1auSytn9+oVK/SgWmqmKdsWxcsAH8uD4jMy8gC9MHCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gtfkdkoJNm+eBsY9SrWe1zZc+ZPixTDVJQSFwKF2Qo3NHGMNtrs44X+e/BSgCzng562XpJ9c59ZBGlDPhsOBoFdPyETNa7qQz/qTWGCjGpujZBfovMUyReEzBvvHsAYOGkVnLkUrgjlYB5iGKO87mq3kXYhDoeQ2mo975GUtZCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j548hI5Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E00EC116B1;
-	Tue, 16 Jul 2024 16:02:58 +0000 (UTC)
+	 MIME-Version; b=E7RgeIP8LLzquVIFuEflGWkSA27CvIwla6j9wAnbqXAs1DYUN6d1yIPaRGvHPjIM0XFOYJc4qwPddT/M2K6V/NuDTYgV3ebrB46rzmSOI7F5MHntnlj4BwsJAjdlp0Ez8BH3nRtChfQ3s5JDguV337KdpZ5qy2rLdAbLGe6LWLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uj6VoG/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522C6C116B1;
+	Tue, 16 Jul 2024 15:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145778;
-	bh=fKSnmWJlpe7mbwr2fwrc2EOQVJlX0TvAheh9EFwt8+Q=;
+	s=korg; t=1721145549;
+	bh=1auSytn9+oVK/SgWmqmKdsWxcsAH8uD4jMy8gC9MHCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j548hI5ZEJZE8sAT0v73JFelHzVZDmym/lMHjK/V3cED4iJHzpXCBeiX60BeOE4G5
-	 kEl9HmoTTPRkDaBzQelSJlWv/81mg0QTmo2a6JVT1i7NaB7v77ioQP6ovhKIBcK6PQ
-	 hep5uRj7tauVS5D+WcsYBd3LCnR7UtkDjhYIU9X4=
+	b=uj6VoG/5VMnVKsfdEjfsOLnbr6rfKqqF4FSI69KO6WcXPKGJ9+7Dh9VmUQSzhvX42
+	 owAI7dXT8HwW03IwcyQ8SayRaZk78FMj2XK+0N8rcagDsbe0SP4sc3ItPTMjDeew2I
+	 UtsZMbFmgccamH5xywOKg5Co3gpe3HffGmiI8HrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.6 081/121] nvmem: core: only change name to fram for current attribute
-Date: Tue, 16 Jul 2024 17:32:23 +0200
-Message-ID: <20240716152754.444933708@linuxfoundation.org>
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 73/96] wireguard: selftests: use acpi=off instead of -no-acpi for recent QEMU
+Date: Tue, 16 Jul 2024 17:32:24 +0200
+Message-ID: <20240716152749.318831016@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-commit 0ba424c934fd43dccf0d597e1ae8851f07cb2edf upstream.
+commit 2cb489eb8dfc291060516df313ff31f4f9f3d794 upstream.
 
-bin_attr_nvmem_eeprom_compat is the template from which all future
-compat attributes are created.
-Changing it means to change all subsquent compat attributes, too.
+QEMU 9.0 removed -no-acpi, in favor of machine properties, so update the
+Makefile to use the correct QEMU invocation.
 
-Instead only use the "fram" name for the currently registered attribute.
-
-Fixes: fd307a4ad332 ("nvmem: prepare basics for FRAM support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628113704.13742-4-srinivas.kandagatla@linaro.org
+Fixes: b83fdcd9fb8a ("wireguard: selftests: use microvm on x86")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20240704154517.1572127-2-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/core.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/testing/selftests/wireguard/qemu/Makefile | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -374,10 +374,9 @@ static int nvmem_sysfs_setup_compat(stru
- 	if (!config->base_dev)
- 		return -EINVAL;
- 
--	if (config->type == NVMEM_TYPE_FRAM)
--		bin_attr_nvmem_eeprom_compat.attr.name = "fram";
--
- 	nvmem->eeprom = bin_attr_nvmem_eeprom_compat;
-+	if (config->type == NVMEM_TYPE_FRAM)
-+		nvmem->eeprom.attr.name = "fram";
- 	nvmem->eeprom.attr.mode = nvmem_bin_attr_get_umode(nvmem);
- 	nvmem->eeprom.size = nvmem->size;
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
+diff --git a/tools/testing/selftests/wireguard/qemu/Makefile b/tools/testing/selftests/wireguard/qemu/Makefile
+index e95bd56b332f..35856b11c143 100644
+--- a/tools/testing/selftests/wireguard/qemu/Makefile
++++ b/tools/testing/selftests/wireguard/qemu/Makefile
+@@ -109,9 +109,9 @@ KERNEL_ARCH := x86_64
+ KERNEL_BZIMAGE := $(KERNEL_BUILD_PATH)/arch/x86/boot/bzImage
+ QEMU_VPORT_RESULT := virtio-serial-device
+ ifeq ($(HOST_ARCH),$(ARCH))
+-QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off -no-acpi
++QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off,acpi=off
+ else
+-QEMU_MACHINE := -cpu max -machine microvm -no-acpi
++QEMU_MACHINE := -cpu max -machine microvm,acpi=off
+ endif
+ else ifeq ($(ARCH),i686)
+ CHOST := i686-linux-musl
+@@ -120,9 +120,9 @@ KERNEL_ARCH := x86
+ KERNEL_BZIMAGE := $(KERNEL_BUILD_PATH)/arch/x86/boot/bzImage
+ QEMU_VPORT_RESULT := virtio-serial-device
+ ifeq ($(subst x86_64,i686,$(HOST_ARCH)),$(ARCH))
+-QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off -no-acpi
++QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off,acpi=off
+ else
+-QEMU_MACHINE := -cpu coreduo -machine microvm -no-acpi
++QEMU_MACHINE := -cpu coreduo -machine microvm,acpi=off
+ endif
+ else ifeq ($(ARCH),mips64)
+ CHOST := mips64-linux-musl
+-- 
+2.45.2
+
 
 
 
