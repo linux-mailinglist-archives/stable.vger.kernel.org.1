@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D77932C3D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:53:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F52932AAB
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91E701F21534
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:53:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 331031F2429C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2741DDCE;
-	Tue, 16 Jul 2024 15:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7301DDD1;
+	Tue, 16 Jul 2024 15:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/dpUIMF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBguoPeO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75BA17A93F;
-	Tue, 16 Jul 2024 15:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8FCCA40;
+	Tue, 16 Jul 2024 15:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145200; cv=none; b=hqOE4DIU+s4RPtR8UT5gIoJ3lR5nIlNV+y6iRLEN1u1g8iZuesXQzIAVhXDBd31bk38J4kkTbIM4EqxxkaCuiAQSL4DnTHkznLmdLYyYcqER6zPi9LBY0RJwZ/8lN2wElqPn4g/swAQT+eCCHvNsFe+w32I153S0HLsxYSOqtnw=
+	t=1721144195; cv=none; b=TPHJQrVgr8PMC26HQgqzCz/x65RWcW4yxBs3POJaDxJICbPq2BTuxe7naf2ZeNrp9Sd4fWohhh7XbCOlV13QF9w/oU+6yu490aslM8K88898IhEdtXjKzykataPQ5ZLUi1uPMqb9OdbtgeH03XjXUpOnUpw/IB8NutJQqLjfVk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145200; c=relaxed/simple;
-	bh=bQLndeYued1xskF7RURbiVo0SRWXA9UMXUpAjXVSO6c=;
+	s=arc-20240116; t=1721144195; c=relaxed/simple;
+	bh=SrDPNaoU0aQYiWy5UJbwj19a5kNUGoPeSiKEyguVSE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4neoCGiLySSrtOYeULwnbRaNMm1Zq+pJ+PdF5W3eZlEU2MsZGtYJ8iskVlYGFYrPRK995w+I5wGU3Q4+eKIKn2lABIfyWUhH0Uipe+rwImjsWQwvh6TpOb/HM4Bn77a+S+OwnudBoa6s4cGUFnLvXwcMrO7JTdfUCMMOeIWcNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/dpUIMF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE721C116B1;
-	Tue, 16 Jul 2024 15:53:19 +0000 (UTC)
+	 MIME-Version; b=cqPxeCiQysrzC3PF/J1DUysqFuzy9uGYKBBvKbUZjacc5MhsVAVW8y0hguu16NMVYZknKQgoaS3/Ny5NIq2MAfW5RkT9GnlmCtXBWP90DMCzxYitIFBAx4p1wyyBTT3fxbN/LguMo9RUe6B7M3MzzOsUQrx2/TzLmGzqQXbar8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBguoPeO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034E5C116B1;
+	Tue, 16 Jul 2024 15:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145200;
-	bh=bQLndeYued1xskF7RURbiVo0SRWXA9UMXUpAjXVSO6c=;
+	s=korg; t=1721144195;
+	bh=SrDPNaoU0aQYiWy5UJbwj19a5kNUGoPeSiKEyguVSE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/dpUIMFt7nG3M96bBfGpSRzMKjUU/l7G4L0XLaUUJnuWn1BKMphryZh/oYk5LZ+M
-	 UYtvTZ7/bcteFMANmoPQ5p2jsQRVPaQrui+oRm/Y4NCnAORDg2pUJDXx/AdVkf9tZ5
-	 UyKKcKTa7bFrCkSqpQSZ8J8KfqAsuN6+TWha65bo=
+	b=PBguoPeOOPRhXpdu4/ZeEGlJJl8wvaR8YMhW1klTVz2s/g0w1eJ3MjLgpvQ72c4J4
+	 48aW1SKmJSsUdTtt8aaa5/ZPF8XK+cJwOeLrEyOZuhEf0XHB1IghIpdw9qxuqcIvW3
+	 ozZ6cjHD7itGdpEpTQB3rTadqYcbFUn/G2nqgQUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Chakraborty <joychakr@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.9 099/143] nvmem: rmem: Fix return value of rmem_read()
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Soheil Hassas Yeganeh <soheil@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 60/66] tcp: refactor tcp_retransmit_timer()
 Date: Tue, 16 Jul 2024 17:31:35 +0200
-Message-ID: <20240716152759.787024666@linuxfoundation.org>
+Message-ID: <20240716152740.450356174@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Chakraborty <joychakr@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 28b008751aa295612318a0fbb2f22dd4f6a83139 upstream.
+commit 0d580fbd2db084a5c96ee9c00492236a279d5e0f upstream.
 
-reg_read() callback registered with nvmem core expects 0 on success and
-a negative value on error but rmem_read() returns the number of bytes
-read which is treated as an error at the nvmem core.
+It appears linux-4.14 stable needs a backport of commit
+88f8598d0a30 ("tcp: exit if nothing to retransmit on RTO timeout")
 
-This does not break when rmem is accessed using sysfs via
-bin_attr_nvmem_read()/write() but causes an error when accessed from
-places like nvmem_access_with_keepouts(), etc.
+Since tcp_rtx_queue_empty() is not in pre 4.15 kernels,
+let's refactor tcp_retransmit_timer() to only use tcp_rtx_queue_head()
 
-Change to return 0 on success and error in case
-memory_read_from_buffer() returns an error or -EIO if bytes read do not
-match what was requested.
+I will provide to stable teams the squashed patches.
 
-Fixes: 5a3fa75a4d9c ("nvmem: Add driver to expose reserved memory as nvmem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628113704.13742-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/rmem.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_timer.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/nvmem/rmem.c
-+++ b/drivers/nvmem/rmem.c
-@@ -46,7 +46,10 @@ static int rmem_read(void *context, unsi
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -428,6 +428,7 @@ void tcp_retransmit_timer(struct sock *s
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	struct net *net = sock_net(sk);
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
++	struct sk_buff *skb;
  
- 	memunmap(addr);
- 
--	return count;
-+	if (count < 0)
-+		return count;
+ 	if (tp->fastopen_rsk) {
+ 		WARN_ON_ONCE(sk->sk_state != TCP_SYN_RECV &&
+@@ -438,7 +439,12 @@ void tcp_retransmit_timer(struct sock *s
+ 		 */
+ 		return;
+ 	}
+-	if (!tp->packets_out || WARN_ON_ONCE(tcp_rtx_queue_empty(sk)))
 +
-+	return count == bytes ? 0 : -EIO;
- }
++	if (!tp->packets_out)
++		return;
++
++	skb = tcp_rtx_queue_head(sk);
++	if (WARN_ON_ONCE(!skb))
+ 		return;
  
- static int rmem_probe(struct platform_device *pdev)
+ 	if (!tp->snd_wnd && !sock_flag(sk, SOCK_DEAD) &&
+@@ -470,7 +476,7 @@ void tcp_retransmit_timer(struct sock *s
+ 			goto out;
+ 		}
+ 		tcp_enter_loss(sk);
+-		tcp_retransmit_skb(sk, tcp_rtx_queue_head(sk), 1);
++		tcp_retransmit_skb(sk, skb, 1);
+ 		__sk_dst_reset(sk);
+ 		goto out_reset_timer;
+ 	}
 
 
 
