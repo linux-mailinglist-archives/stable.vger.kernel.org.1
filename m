@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-59839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3E2932C06
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:51:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B418932B16
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 283241F20ED2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:51:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0769B281F3A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB4A19DF53;
-	Tue, 16 Jul 2024 15:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E309136643;
+	Tue, 16 Jul 2024 15:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LV3ayjDY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cK2ib4zO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4B417A93F;
-	Tue, 16 Jul 2024 15:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3DB1DDF5;
+	Tue, 16 Jul 2024 15:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145065; cv=none; b=qQXmtq2gAl+LGXBXhfshYEPZdHG8T9an6Dq0mznn4ZsMSRllHIKF9mcWVz4EDvP00OrLTEeLFqBnIoPvxW2xPwSd2HaNnI951B4YYA9QPlmd73jDpbKQRS384Ke9vXHGxxHo837iLaGuhG6MmqPlkBGFmxqWN0MjnxCrSuk0+kI=
+	t=1721144482; cv=none; b=Gpz71XaNhtMgji5nR9mjc+kEQl7Pu/ZyRHVf0kItQfa22TKUXx3a0mfQJHzdWEvySxJ5TTbr9y1d/NgRnB28uGUOuC8g0VIshq/UnHNqZ+f+7s4BAiGgcqTL7iTcu8MslKlS1Cb57VuXTTojHzXlMrBYkPOiWSMxFyxQl8Wllsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145065; c=relaxed/simple;
-	bh=dPGYHwRyTV075muJGCkO2C6LngU86bwdWlRSx5JzmiE=;
+	s=arc-20240116; t=1721144482; c=relaxed/simple;
+	bh=84ZPYt59GO6iKQxoeEa04oQekm8LIN4VxZIDVYytl/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qks2SBWVKnY4LFxiCfyXUQReNQO9nIcAt8arj+YcPgWj7ypzusHQ8jeJpbhtzrbpFIJ5ve6eH6MX1uthi3kwb1wLMeFMG/zzubGie1DJ8114dpJiYCpWCyDfpWt4v4UixPMz3q6faiGQ6jhiwnWS0ZR9/7CrD38M5b0iwRQdy2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LV3ayjDY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A874C116B1;
-	Tue, 16 Jul 2024 15:51:04 +0000 (UTC)
+	 MIME-Version; b=kX9rj88OY1A1m0We0fnTOAzVyQLJ//kQslZ7/4Mc2LVv77zS2d2GS6Fzpc5Zm6ilwVHcGFcHkz/KvamdHhcK8cPPKAtR7HmYI0tLyeh7kr2YTIkaZuPhfpM1ZIXbODEuut4ROexE0lgL/jzYOOkWRhnsML5AKT6F0TnrqGoM0p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cK2ib4zO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B673AC116B1;
+	Tue, 16 Jul 2024 15:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145065;
-	bh=dPGYHwRyTV075muJGCkO2C6LngU86bwdWlRSx5JzmiE=;
+	s=korg; t=1721144482;
+	bh=84ZPYt59GO6iKQxoeEa04oQekm8LIN4VxZIDVYytl/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LV3ayjDYNw/SbozYr64KqWdtJUpqQuAAgRgBznyMby124lPAjnChU+eqcyoUyxrl7
-	 oPIyHqbphOREbXCyTRkuk3GFVThP7sBqgxV0C+l01wqpvxf/O72VLPW1COlRdrinsh
-	 XsuQHOaqrxEmCAlylwtSkWnF+0qKiMlay/joYe7w=
+	b=cK2ib4zOV2BNf7AMpLPRSeHIYEDZTJlHIKF6tzRj38UvYisJv02TCewLllpkEXJNg
+	 R6AKKME0GOlSg8NjL7qNMTCgvQsZfCHEXrX7VgkZhq2d2aSocuAJL0KU1JCrnIoA7A
+	 2RN32Ao5LZNUOthjOFMbB3lMglyi0Es1s/oabhDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nhat Pham <nphamcs@gmail.com>,
-	syzbot+b7f13b2d0cc156edf61a@syzkaller.appspotmail.com,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	David Hildenbrand <david@redhat.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Kairui Song <kasong@tencent.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 086/143] cachestat: do not flush stats in recency check
+	Neal Cardwell <ncardwell@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Kevin Yang <yyd@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 50/78] tcp: fix incorrect undo caused by DSACK of TLP retransmit
 Date: Tue, 16 Jul 2024 17:31:22 +0200
-Message-ID: <20240716152759.281987724@linuxfoundation.org>
+Message-ID: <20240716152742.576387126@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,124 +65,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nhat Pham <nphamcs@gmail.com>
+From: Neal Cardwell <ncardwell@google.com>
 
-commit 5a4d8944d6b1e1aaaa83ea42c116b520b4ed0394 upstream.
+[ Upstream commit 0ec986ed7bab6801faed1440e8839dcc710331ff ]
 
-syzbot detects that cachestat() is flushing stats, which can sleep, in its
-RCU read section (see [1]).  This is done in the workingset_test_recent()
-step (which checks if the folio's eviction is recent).
+Loss recovery undo_retrans bookkeeping had a long-standing bug where a
+DSACK from a spurious TLP retransmit packet could cause an erroneous
+undo of a fast recovery or RTO recovery that repaired a single
+really-lost packet (in a sequence range outside that of the TLP
+retransmit). Basically, because the loss recovery state machine didn't
+account for the fact that it sent a TLP retransmit, the DSACK for the
+TLP retransmit could erroneously be implicitly be interpreted as
+corresponding to the normal fast recovery or RTO recovery retransmit
+that plugged a real hole, thus resulting in an improper undo.
 
-Move the stat flushing step to before the RCU read section of cachestat,
-and skip stat flushing during the recency check.
+For example, consider the following buggy scenario where there is a
+real packet loss but the congestion control response is improperly
+undone because of this bug:
 
-[1]: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
++ send packets P1, P2, P3, P4
++ P1 is really lost
++ send TLP retransmit of P4
++ receive SACK for original P2, P3, P4
++ enter fast recovery, fast-retransmit P1, increment undo_retrans to 1
++ receive DSACK for TLP P4, decrement undo_retrans to 0, undo (bug!)
++ receive cumulative ACK for P1-P4 (fast retransmit plugged real hole)
 
-Link: https://lkml.kernel.org/r/20240627201737.3506959-1-nphamcs@gmail.com
-Fixes: b00684722262 ("mm: workingset: move the stats flush into workingset_test_recent()")
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-Reported-by: syzbot+b7f13b2d0cc156edf61a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
-Debugged-by: Johannes Weiner <hannes@cmpxchg.org>
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Yosry Ahmed <yosryahmed@google.com>
-Cc: <stable@vger.kernel.org>	[6.8+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fix: when we initialize undo machinery in tcp_init_undo(), if
+there is a TLP retransmit in flight, then increment tp->undo_retrans
+so that we make sure that we receive a DSACK corresponding to the TLP
+retransmit, as well as DSACKs for all later normal retransmits, before
+triggering a loss recovery undo. Note that we also have to move the
+line that clears tp->tlp_high_seq for RTO recovery, so that upon RTO
+we remember the tp->tlp_high_seq value until tcp_init_undo() and clear
+it only afterward.
+
+Also note that the bug dates back to the original 2013 TLP
+implementation, commit 6ba8a3b19e76 ("tcp: Tail loss probe (TLP)").
+
+However, this patch will only compile and work correctly with kernels
+that have tp->tlp_retrans, which was added only in v5.8 in 2020 in
+commit 76be93fc0702 ("tcp: allow at most one TLP probe per flight").
+So we associate this fix with that later commit.
+
+Fixes: 76be93fc0702 ("tcp: allow at most one TLP probe per flight")
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Cc: Yuchung Cheng <ycheng@google.com>
+Cc: Kevin Yang <yyd@google.com>
+Link: https://patch.msgid.link/20240703171246.1739561-1-ncardwell.sw@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/swap.h |    3 ++-
- mm/filemap.c         |    5 ++++-
- mm/workingset.c      |   14 +++++++++++---
- 3 files changed, 17 insertions(+), 5 deletions(-)
+ net/ipv4/tcp_input.c | 11 ++++++++++-
+ net/ipv4/tcp_timer.c |  2 --
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -344,7 +344,8 @@ static inline swp_entry_t page_swap_entr
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 57907fe94b238..cf6221e9fda50 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -1956,8 +1956,16 @@ void tcp_clear_retrans(struct tcp_sock *tp)
+ static inline void tcp_init_undo(struct tcp_sock *tp)
+ {
+ 	tp->undo_marker = tp->snd_una;
++
+ 	/* Retransmission still in flight may cause DSACKs later. */
+-	tp->undo_retrans = tp->retrans_out ? : -1;
++	/* First, account for regular retransmits in flight: */
++	tp->undo_retrans = tp->retrans_out;
++	/* Next, account for TLP retransmits in flight: */
++	if (tp->tlp_high_seq && tp->tlp_retrans)
++		tp->undo_retrans++;
++	/* Finally, avoid 0, because undo_retrans==0 means "can undo now": */
++	if (!tp->undo_retrans)
++		tp->undo_retrans = -1;
  }
  
- /* linux/mm/workingset.c */
--bool workingset_test_recent(void *shadow, bool file, bool *workingset);
-+bool workingset_test_recent(void *shadow, bool file, bool *workingset,
-+				bool flush);
- void workingset_age_nonresident(struct lruvec *lruvec, unsigned long nr_pages);
- void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg);
- void workingset_refault(struct folio *folio, void *shadow);
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -4153,6 +4153,9 @@ static void filemap_cachestat(struct add
- 	XA_STATE(xas, &mapping->i_pages, first_index);
- 	struct folio *folio;
+ static bool tcp_is_rack(const struct sock *sk)
+@@ -2036,6 +2044,7 @@ void tcp_enter_loss(struct sock *sk)
  
-+	/* Flush stats (and potentially sleep) outside the RCU read section. */
-+	mem_cgroup_flush_stats_ratelimited(NULL);
-+
- 	rcu_read_lock();
- 	xas_for_each(&xas, folio, last_index) {
- 		int order;
-@@ -4216,7 +4219,7 @@ static void filemap_cachestat(struct add
- 					goto resched;
- 			}
- #endif
--			if (workingset_test_recent(shadow, true, &workingset))
-+			if (workingset_test_recent(shadow, true, &workingset, false))
- 				cs->nr_recently_evicted += nr_pages;
+ 	tcp_set_ca_state(sk, TCP_CA_Loss);
+ 	tp->high_seq = tp->snd_nxt;
++	tp->tlp_high_seq = 0;
+ 	tcp_ecn_queue_cwr(tp);
  
- 			goto resched;
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -412,10 +412,12 @@ void *workingset_eviction(struct folio *
-  * @file: whether the corresponding folio is from the file lru.
-  * @workingset: where the workingset value unpacked from shadow should
-  * be stored.
-+ * @flush: whether to flush cgroup rstat.
-  *
-  * Return: true if the shadow is for a recently evicted folio; false otherwise.
-  */
--bool workingset_test_recent(void *shadow, bool file, bool *workingset)
-+bool workingset_test_recent(void *shadow, bool file, bool *workingset,
-+				bool flush)
- {
- 	struct mem_cgroup *eviction_memcg;
- 	struct lruvec *eviction_lruvec;
-@@ -467,10 +469,16 @@ bool workingset_test_recent(void *shadow
- 
- 	/*
- 	 * Flush stats (and potentially sleep) outside the RCU read section.
-+	 *
-+	 * Note that workingset_test_recent() itself might be called in RCU read
-+	 * section (for e.g, in cachestat) - these callers need to skip flushing
-+	 * stats (via the flush argument).
-+	 *
- 	 * XXX: With per-memcg flushing and thresholding, is ratelimiting
- 	 * still needed here?
- 	 */
--	mem_cgroup_flush_stats_ratelimited(eviction_memcg);
-+	if (flush)
-+		mem_cgroup_flush_stats_ratelimited(eviction_memcg);
- 
- 	eviction_lruvec = mem_cgroup_lruvec(eviction_memcg, pgdat);
- 	refault = atomic_long_read(&eviction_lruvec->nonresident_age);
-@@ -558,7 +566,7 @@ void workingset_refault(struct folio *fo
- 
- 	mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + file, nr);
- 
--	if (!workingset_test_recent(shadow, file, &workingset))
-+	if (!workingset_test_recent(shadow, file, &workingset, true))
+ 	/* F-RTO RFC5682 sec 3.1 step 1: retransmit SND.UNA if no previous
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index 551c4a78f68d4..e20fced3c9cf6 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -467,8 +467,6 @@ void tcp_retransmit_timer(struct sock *sk)
+ 	if (!tp->packets_out || WARN_ON_ONCE(tcp_rtx_queue_empty(sk)))
  		return;
  
- 	folio_set_active(folio);
+-	tp->tlp_high_seq = 0;
+-
+ 	if (!tp->snd_wnd && !sock_flag(sk, SOCK_DEAD) &&
+ 	    !((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV))) {
+ 		/* Receiver dastardly shrinks window. Our retransmits
+-- 
+2.43.0
+
 
 
 
