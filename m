@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CE79932B72
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE21932C1E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1856B28124C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A45F285072
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B2B27733;
-	Tue, 16 Jul 2024 15:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8031519DF70;
+	Tue, 16 Jul 2024 15:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpZF2MTC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2MoVbymU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E97212B72;
-	Tue, 16 Jul 2024 15:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB3517A93F;
+	Tue, 16 Jul 2024 15:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144721; cv=none; b=UIjY0/ur9p1zMAvDEwwY/IQyfxLrj+8NbT4cThzR9Ggtvq20ENr76jikCggxm0tfQfNvofeVkGZBSSb3FqgDkaQVgiWdZl2wgNcgBkr06rT/KE0tHWC8NMLWLydAcm7oUgSKmFgL8i8szk71rXT+Y7Wo3PGOfNPa1nDi0h3E6k4=
+	t=1721145109; cv=none; b=XWQonMM7g++V104nKACUPBZ2TuhC0WKO6lKrXdhf3yb5JOjnbLGjKhhBLJmktFHU3Y0BxzumxHNh5QfJgbt6j79D59p2FugGuKV4s8ouyEeDPPY/UFBGDwMJVHBbiNwIKMiT+7n4LKSSwvjnzuarS9PCqPoh2CKx4rn+71mCeKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144721; c=relaxed/simple;
-	bh=lf0OntD+UyICgjcdcBlDBgWEnSG+1wCdaTAquyRngwg=;
+	s=arc-20240116; t=1721145109; c=relaxed/simple;
+	bh=v6QHiDWQl86+a3lWqOuKi1mG6k9c5v2JPXaRsZfxLLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZNwuWNM4pPboucYqybo1dcX9qcUNOlPA7GRx84VJnP6DdkhidXBTwKqiTBXxUFODPB/M+XlyZRCts1bgex7LRDcZ8GdcG0D2xUfCdRzqgf9Ki2w/On8BTVropr7UDYGRBD7kB9nXVm7ogGCXitt3LOmBP81dDe8pWTVtyS/fEnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpZF2MTC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F419FC116B1;
-	Tue, 16 Jul 2024 15:45:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YzmMjhJuNRuDwaoJYP4rm2CTDU4h6MaCTAzmgXnDW3dszbSb4pLb8r7FPyqLdW0FayR0sIyGbE/ZHXMYlVsIqwcFJx0LCVaMTy5KxXUC9NPhldOMHi7sro9MeWwmQ05+ND5jpkKjxMH0LtD18TpioZBcu2+U7vOygMmbobPkWzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2MoVbymU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B981DC116B1;
+	Tue, 16 Jul 2024 15:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144721;
-	bh=lf0OntD+UyICgjcdcBlDBgWEnSG+1wCdaTAquyRngwg=;
+	s=korg; t=1721145109;
+	bh=v6QHiDWQl86+a3lWqOuKi1mG6k9c5v2JPXaRsZfxLLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dpZF2MTC2bU+Q0AqnPdUKlpFGRduh84ci15BLA5Fp0zebdggouyp0a7tCRgc0y8jP
-	 mrkb6qJghG+0AECpsTtAnPpVIoiTLcy2/pmno9sqVsLg/Gnc0kX/dW7N0tcQX8ZnOh
-	 aZxWihB/bliOtTFdSTrLGlPhzTbeS+fBnJMT9064=
+	b=2MoVbymUQY1qkfJAOJTI0sAdqHklH+T+O/acsDvZKC+hrNAOokCu0O6t9zIX3CyTB
+	 7eA5yYhKfnYiXee7L5AlGxHIlkkzN4bgDSziworlt5kMlU25SPYKXMZP2xTeVew8xk
+	 uDRd04/6d5dj86bDj7pp9BbVOUgHNudaoOzcebKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	jinxiaobo <jinxiaobo@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 5.10 083/108] USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.9 102/143] nvmem: core: limit cell sysfs permissions to main attribute ones
 Date: Tue, 16 Jul 2024 17:31:38 +0200
-Message-ID: <20240716152749.170106799@linuxfoundation.org>
+Message-ID: <20240716152759.903475840@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 3859e85de30815a20bce7db712ce3d94d40a682d upstream.
+commit 6bef98bafd82903a8d461463f9594f19f1fd6a85 upstream.
 
-START BP-850K is a dot matrix printer that crashes when
-it receives a Set-Interface request and needs USB_QUIRK_NO_SET_INTF
-to work properly.
+The cell sysfs attribute should not provide more access to the nvmem
+data than the main attribute itself.
+For example if nvme_config::root_only was set, the cell attribute
+would still provide read access to everybody.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: jinxiaobo <jinxiaobo@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/202E4B2BD0F0FEA4+20240702154408.631201-1-wangyuli@uniontech.com
+Mask out permissions not available on the main attribute.
+
+Fixes: 0331c611949f ("nvmem: core: Expose cells through sysfs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240628113704.13742-5-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvmem/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -504,6 +504,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x1b1c, 0x1b38), .driver_info = USB_QUIRK_DELAY_INIT |
- 	  USB_QUIRK_DELAY_CTRL_MSG },
- 
-+	/* START BP-850k Printer */
-+	{ USB_DEVICE(0x1bc3, 0x0003), .driver_info = USB_QUIRK_NO_SET_INTF },
-+
- 	/* MIDI keyboard WORLDE MINI */
- 	{ USB_DEVICE(0x1c75, 0x0204), .driver_info =
- 			USB_QUIRK_CONFIG_INTF_STRINGS },
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -462,7 +462,7 @@ static int nvmem_populate_sysfs_cells(st
+ 						    "%s@%x,%x", entry->name,
+ 						    entry->offset,
+ 						    entry->bit_offset);
+-		attrs[i].attr.mode = 0444;
++		attrs[i].attr.mode = 0444 & nvmem_bin_attr_get_umode(nvmem);
+ 		attrs[i].size = entry->bytes;
+ 		attrs[i].read = &nvmem_cell_attr_read;
+ 		attrs[i].private = entry;
 
 
 
