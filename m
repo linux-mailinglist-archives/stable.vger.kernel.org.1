@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9367932BFA
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BABB932C68
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88D062827A3
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D69C1C231D4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2B719DFB3;
-	Tue, 16 Jul 2024 15:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790CC19DF73;
+	Tue, 16 Jul 2024 15:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTglqeY5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Na9Cgjtz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898201DDCE;
-	Tue, 16 Jul 2024 15:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3601117A93F;
+	Tue, 16 Jul 2024 15:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145031; cv=none; b=jAPUNEIQnGBXVGvl+sbtS70Z5/AoO8cCpBdwzfPPPoqY1aqXmzUSZUtsAymaxZfO8ELGJFQB8lUkO+lGpI4jvhi9GN41NM/dI68YiGh0se05qXEntgDeXF6YR/S4UzWpYO4GFzcISIuyGANNrGrMSJkyvuHBBWZonrpRaOW1Qmc=
+	t=1721145298; cv=none; b=PE+lGN6nSab5gi9jmPxA2NTh6BixkeMqhKrI/tpggOI8K+ibbXaN1kMOGPOVJmiE1PEYH3R5hsvJymyDn2We1KEKhVO4d/XU7CbNamGQjZ9zWL7N2/MP/UkGvRE9jpNhEycnSR/eyxni4gWC1Fcm80+xVKlE0GvEvzdFOWD5+s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145031; c=relaxed/simple;
-	bh=sN+5AqOCbAEV8VRTc6V/2nPMZXxEVW0fwf74xU/NKEQ=;
+	s=arc-20240116; t=1721145298; c=relaxed/simple;
+	bh=x6w91sC4lEfC4CW+MWQCrMGSO5ZZDxzAlBLBUs5SU8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WuitesKovh8WnZqKes2I05thj1KWWU/IanbsrkAbnbj1snO5XjwShpmXENten9IZFY19r+5jQJdSsDFxvPZ2nPz5onGnKF+jFxR8oBnBFx+9qH5FVffyrM46q1ltKieugbEMwhG/hMLbw2XzKFVF6463lESDfYNHlQTncyhyZo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTglqeY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9550BC116B1;
-	Tue, 16 Jul 2024 15:50:30 +0000 (UTC)
+	 MIME-Version; b=uErOq/xOaM2nTeFQkMaGRzBABkXxkAkrr5s1o/TBbJ0gw7yQycToouvr6boEfUwsb1fMGWhFrMiaxMoFrAmGgsEteQosEL9DQv1vk7sYOJuL+6QwoJKzHYSOG4YhcoO6DZkCs+6CkEjbOjzkF1U4Z8od3oFN36foTCi1p1S7CgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Na9Cgjtz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2EAC116B1;
+	Tue, 16 Jul 2024 15:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145031;
-	bh=sN+5AqOCbAEV8VRTc6V/2nPMZXxEVW0fwf74xU/NKEQ=;
+	s=korg; t=1721145298;
+	bh=x6w91sC4lEfC4CW+MWQCrMGSO5ZZDxzAlBLBUs5SU8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TTglqeY5kv1ycH5Ce5chPCEEJ+DXNLU9n2Jruo7HW2lx/gP4pZcGJpKPyMEXdRPb2
-	 oHYMJ2aD1uzNyKWOJpu+7PZN/LWquym9S+2VeI5PtgnI1M3OdUwFDj7SkwqmvjvjVR
-	 URNeq3EBEs33Snp1moYghKKTDpJh56YVMB5pQt4c=
+	b=Na9Cgjtzx69hMMNWFLsTop6DJmrrMh/cYt2Otgz9ENpR2esXcsBBFuPCP13HoaMzp
+	 zRhuZ1ftaAG0xD9XbaFDs7ymPnHt6DKjnXkxamPsc+fUskR9/Ftw2xzemsypGnjkkm
+	 fO6+Ctpf+Z8Yb8gKOQ9jdN43+rtiheLg6W0yPAv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	jinxiaobo <jinxiaobo@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 6.9 076/143] USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
-Date: Tue, 16 Jul 2024 17:31:12 +0200
-Message-ID: <20240716152758.901914509@linuxfoundation.org>
+	Baokun Li <libaokun1@huawei.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 02/96] cachefiles: propagate errors from vfs_getxattr() to avoid infinite loop
+Date: Tue, 16 Jul 2024 17:31:13 +0200
+Message-ID: <20240716152746.612752318@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 3859e85de30815a20bce7db712ce3d94d40a682d upstream.
+[ Upstream commit 0ece614a52bc9d219b839a6a29282b30d10e0c48 ]
 
-START BP-850K is a dot matrix printer that crashes when
-it receives a Set-Interface request and needs USB_QUIRK_NO_SET_INTF
-to work properly.
+In cachefiles_check_volume_xattr(), the error returned by vfs_getxattr()
+is not passed to ret, so it ends up returning -ESTALE, which leads to an
+endless loop as follows:
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: jinxiaobo <jinxiaobo@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/202E4B2BD0F0FEA4+20240702154408.631201-1-wangyuli@uniontech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+cachefiles_acquire_volume
+retry:
+  ret = cachefiles_check_volume_xattr
+    ret = -ESTALE
+    xlen = vfs_getxattr // return -EIO
+    // The ret is not updated when xlen < 0, so -ESTALE is returned.
+    return ret
+  // Supposed to jump out of the loop at this judgement.
+  if (ret != -ESTALE)
+      goto error_dir;
+  cachefiles_bury_object
+    //  EIO causes rename failure
+  goto retry;
+
+Hence propagate the error returned by vfs_getxattr() to avoid the above
+issue. Do the same in cachefiles_check_auxdata().
+
+Fixes: 32e150037dce ("fscache, cachefiles: Store the volume coherency data")
+Fixes: 72b957856b0c ("cachefiles: Implement metadata/coherency data storage in xattrs")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240628062930.2467993-5-libaokun@huaweicloud.com
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/cachefiles/xattr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -506,6 +506,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x1b1c, 0x1b38), .driver_info = USB_QUIRK_DELAY_INIT |
- 	  USB_QUIRK_DELAY_CTRL_MSG },
- 
-+	/* START BP-850k Printer */
-+	{ USB_DEVICE(0x1bc3, 0x0003), .driver_info = USB_QUIRK_NO_SET_INTF },
-+
- 	/* MIDI keyboard WORLDE MINI */
- 	{ USB_DEVICE(0x1c75, 0x0204), .driver_info =
- 			USB_QUIRK_CONFIG_INTF_STRINGS },
+diff --git a/fs/cachefiles/xattr.c b/fs/cachefiles/xattr.c
+index 00b087c14995a..0ecfc9065047c 100644
+--- a/fs/cachefiles/xattr.c
++++ b/fs/cachefiles/xattr.c
+@@ -110,9 +110,11 @@ int cachefiles_check_auxdata(struct cachefiles_object *object, struct file *file
+ 	if (xlen == 0)
+ 		xlen = vfs_getxattr(&init_user_ns, dentry, cachefiles_xattr_cache, buf, tlen);
+ 	if (xlen != tlen) {
+-		if (xlen < 0)
++		if (xlen < 0) {
++			ret = xlen;
+ 			trace_cachefiles_vfs_error(object, file_inode(file), xlen,
+ 						   cachefiles_trace_getxattr_error);
++		}
+ 		if (xlen == -EIO)
+ 			cachefiles_io_error_obj(
+ 				object,
+@@ -252,6 +254,7 @@ int cachefiles_check_volume_xattr(struct cachefiles_volume *volume)
+ 		xlen = vfs_getxattr(&init_user_ns, dentry, cachefiles_xattr_cache, buf, len);
+ 	if (xlen != len) {
+ 		if (xlen < 0) {
++			ret = xlen;
+ 			trace_cachefiles_vfs_error(NULL, d_inode(dentry), xlen,
+ 						   cachefiles_trace_getxattr_error);
+ 			if (xlen == -EIO)
+-- 
+2.43.0
+
 
 
 
