@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-59996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AD7932CE8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC4A932D3F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44EDC1C21321
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95A4E1F216A0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4822A19EEA5;
-	Tue, 16 Jul 2024 15:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4F219AD93;
+	Tue, 16 Jul 2024 16:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUE1JKLb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXtTKhyH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0687219E7F7;
-	Tue, 16 Jul 2024 15:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0291DDE9;
+	Tue, 16 Jul 2024 16:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145541; cv=none; b=FL3c2dvcVtThkRBOVM7PaJbY4ovClg+e65IIHRj2fXnL43UTjR24YVEBfeBNMVaJpx9YVCI4oMJ4w6r5BUrFOVvAkw+sNY+rJbJYHuNis9vAWL4mbzs79OLGR/ubo6ye6YheQ0Pbmc5/Pq3Wdgy/h/7v2r6Eq0XkhSwSMUyIQ50=
+	t=1721145776; cv=none; b=E2RwFffRd/6j8SnEH+0ReWR7gyDFGtWHEj2S+pwjtf/c/lELCzZ1vLb+vCuy4hl94g0xvz4jaRB3rzJGfkMqr3HHcnk7LfWIPJekxkxn81jP+IxGk/Z7bkvAjaRMHDdQmWYAXVYma9aVDjQEKQnP796modKqL4ee/Jo1aQaY5sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145541; c=relaxed/simple;
-	bh=AchLjkH3AjXhb1/OLsdnbY6EInidjnH9uq8j8lkYp1k=;
+	s=arc-20240116; t=1721145776; c=relaxed/simple;
+	bh=Nd3lNedpHq8RP7aHZLS5fapR55IHVWhtnZM8v3KwhNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owRD7LhxhCEFwmD+IYGoP8MQGORgBYkaUsaD4cKB5VGSyw3o2wKlN9zGrFt4YowRqxrMKShwP/0O1fbbRG4ibSjlkgs8LN3kJSOZJFqY6wSguEH9DMELR6YDe9NbKKOyXJ8XKUrCyHoq/Fq1Di4rJUpGJ2JFaw83Lo0i9GaIqHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUE1JKLb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53009C116B1;
-	Tue, 16 Jul 2024 15:59:00 +0000 (UTC)
+	 MIME-Version; b=YlF3jmjT0R5ki7MNFkbn/vHXDJwY09UfnwvjVPPRy5LIRl0PmCJZu6wJNY7VtJMtDhHTrzEmFqwjCzs1MBSXYeIv7uATATJyqdVV90KmPSv0xSwCNRQNVD8co3/Kp37OVpiugiOFCmNIbmFmBABVZVEeSg+aHTf1AwmpEmvJlgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXtTKhyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65424C116B1;
+	Tue, 16 Jul 2024 16:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145540;
-	bh=AchLjkH3AjXhb1/OLsdnbY6EInidjnH9uq8j8lkYp1k=;
+	s=korg; t=1721145775;
+	bh=Nd3lNedpHq8RP7aHZLS5fapR55IHVWhtnZM8v3KwhNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUE1JKLbVnBS7PHqcvGdyInq71X3zb3EffTrjBomAeBVb22v4a+qPgtZRg+/CSp+V
-	 NN7C9fwOpRa+F7n7r6Udv+tTqryKmD+cxvAiWU+0mhehAxhOJqLQeKxslUfvJl8P/n
-	 0IF3SawwrC8uZnK4Sya0tcOlmb9YH69K8jB40xb8=
+	b=UXtTKhyHayXbMFkyUgEUQakQqSnzNzI4415M/ChPGQiMmuqb2Es+xAL+nURhMmaJN
+	 l4F64ytjHbjC8n4qfnfpbQyhFWYvFakIcH6eM0TwU9CJGKZO1x48OS/j8EE84NO68P
+	 uw13XweXtQiaw5yV0sbkamDR8V8op3Q0IOp8S49w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Audra Mitchell <audra@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Mike Rapoport <rppt@linux.vnet.ibm.com>,
-	Peter Xu <peterx@redhat.com>,
-	Rafael Aquini <raquini@redhat.com>,
-	Shaohua Li <shli@fb.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 70/96] Fix userfaultfd_api to return EINVAL as expected
-Date: Tue, 16 Jul 2024 17:32:21 +0200
-Message-ID: <20240716152749.203115887@linuxfoundation.org>
+	Joy Chakraborty <joychakr@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.6 080/121] nvmem: meson-efuse: Fix return value of nvmem callbacks
+Date: Tue, 16 Jul 2024 17:32:22 +0200
+Message-ID: <20240716152754.406217896@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,70 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Audra Mitchell <audra@redhat.com>
+From: Joy Chakraborty <joychakr@google.com>
 
-commit 1723f04caacb32cadc4e063725d836a0c4450694 upstream.
+commit 7a0a6d0a7c805f9380381f4deedffdf87b93f408 upstream.
 
-Currently if we request a feature that is not set in the Kernel config we
-fail silently and return all the available features.  However, the man
-page indicates we should return an EINVAL.
+Read/write callbacks registered with nvmem core expect 0 to be returned
+on success and a negative value to be returned on failure.
 
-We need to fix this issue since we can end up with a Kernel warning should
-a program request the feature UFFD_FEATURE_WP_UNPOPULATED on a kernel with
-the config not set with this feature.
+meson_efuse_read() and meson_efuse_write() call into
+meson_sm_call_read() and meson_sm_call_write() respectively which return
+the number of bytes read or written on success as per their api
+description.
 
- [  200.812896] WARNING: CPU: 91 PID: 13634 at mm/memory.c:1660 zap_pte_range+0x43d/0x660
- [  200.820738] Modules linked in:
- [  200.869387] CPU: 91 PID: 13634 Comm: userfaultfd Kdump: loaded Not tainted 6.9.0-rc5+ #8
- [  200.877477] Hardware name: Dell Inc. PowerEdge R6525/0N7YGH, BIOS 2.7.3 03/30/2022
- [  200.885052] RIP: 0010:zap_pte_range+0x43d/0x660
+Fix to return error if meson_sm_call_read()/meson_sm_call_write()
+returns an error else return 0.
 
-Link: https://lkml.kernel.org/r/20240626130513.120193-1-audra@redhat.com
-Fixes: e06f1e1dd499 ("userfaultfd: wp: enabled write protection in userfaultfd API")
-Signed-off-by: Audra Mitchell <audra@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rafael Aquini <raquini@redhat.com>
-Cc: Shaohua Li <shli@fb.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a29a63bdaf6f ("nvmem: meson-efuse: simplify read callback")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joy Chakraborty <joychakr@google.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240628113704.13742-3-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/userfaultfd.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/nvmem/meson-efuse.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -1968,7 +1968,7 @@ static int userfaultfd_api(struct userfa
- 		goto out;
- 	features = uffdio_api.features;
- 	ret = -EINVAL;
--	if (uffdio_api.api != UFFD_API || (features & ~UFFD_API_FEATURES))
-+	if (uffdio_api.api != UFFD_API)
- 		goto err_out;
- 	ret = -EPERM;
- 	if ((features & UFFD_FEATURE_EVENT_FORK) && !capable(CAP_SYS_PTRACE))
-@@ -1985,6 +1985,11 @@ static int userfaultfd_api(struct userfa
- #ifndef CONFIG_PTE_MARKER_UFFD_WP
- 	uffdio_api.features &= ~UFFD_FEATURE_WP_HUGETLBFS_SHMEM;
- #endif
+--- a/drivers/nvmem/meson-efuse.c
++++ b/drivers/nvmem/meson-efuse.c
+@@ -18,18 +18,24 @@ static int meson_efuse_read(void *contex
+ 			    void *val, size_t bytes)
+ {
+ 	struct meson_sm_firmware *fw = context;
++	int ret;
+ 
+-	return meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
+-				  bytes, 0, 0, 0);
++	ret = meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
++				 bytes, 0, 0, 0);
 +
-+	ret = -EINVAL;
-+	if (features & ~uffdio_api.features)
-+		goto err_out;
++	return ret < 0 ? ret : 0;
+ }
+ 
+ static int meson_efuse_write(void *context, unsigned int offset,
+ 			     void *val, size_t bytes)
+ {
+ 	struct meson_sm_firmware *fw = context;
++	int ret;
 +
- 	uffdio_api.ioctls = UFFD_API_IOCTLS;
- 	ret = -EFAULT;
- 	if (copy_to_user(buf, &uffdio_api, sizeof(uffdio_api)))
++	ret = meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
++				  bytes, 0, 0, 0);
+ 
+-	return meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
+-				   bytes, 0, 0, 0);
++	return ret < 0 ? ret : 0;
+ }
+ 
+ static const struct of_device_id meson_efuse_match[] = {
 
 
 
