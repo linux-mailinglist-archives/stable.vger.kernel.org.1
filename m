@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-59939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103E6932C90
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D297D932D23
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 411D61C20C03
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D3C7B24CA4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E44319FA94;
-	Tue, 16 Jul 2024 15:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C614D17A930;
+	Tue, 16 Jul 2024 16:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsZCGWyr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0dpA6Lv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C80119E7C8;
-	Tue, 16 Jul 2024 15:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FF61DDCE;
+	Tue, 16 Jul 2024 16:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145366; cv=none; b=nxfWGITE4/imrmmbTJ8lTQSa+xjbeoevCj6PUWb9T00lZqZXPIOHyZeEDuJ8Mm20DX1tuPxlYDQFT8H9EEhqpL1z5FOsL8dIYu2yI0bxTR4tmRqpjFwCj8YWt7aRFBEo8qAogwCASdBcB05/oTpgxbl20K4wdmQwAtA2uVYfrjE=
+	t=1721145696; cv=none; b=BtQBtq0+9PTYEKnEYuh8ouaRYpXGtv0G7SCvRzUZPwvBDH/Lt4AEVodHOpKHMZPOWPXlirHd1oQ5pNSypGHClhypgW+qYIiLeraOINgyDX8UxVpWCXRzzrsSh+QYFwt+n0pZhG1EAV19RzwqSu6tJOTbr7Nk53d1S7ghg7kAmc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145366; c=relaxed/simple;
-	bh=NqbJx1NA4NSwmSKeXCnsmaxWFooRlOSp8ifSEbQueEM=;
+	s=arc-20240116; t=1721145696; c=relaxed/simple;
+	bh=p7n0YZUXawntrAWYgqm+xjwUJeu2NfOP43IBDKV6oxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckBEJX5RALNghl9QsZ52jnxWVVhlcsENjlgMCPdC3UbeqRUSxHtknkSTeyWKKUrOv0nBCPQAA+XHSjf7fPBWbLneerEVWRViw75QrKx4sRjiJk0QLKxxSjeqnzO7Rh+otGHOkNPlluEZEZKv0pm5L0uUA0axo5ziaG8nkplLjrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsZCGWyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47F0C116B1;
-	Tue, 16 Jul 2024 15:56:05 +0000 (UTC)
+	 MIME-Version; b=jqLoLoDj17cSvzr9WlXGXt7scvkTed6/m8Ud0g3cx2Eqmq36hiEuR0/XexE+JoAH5XqajRbYJoQuSbOpML4ura28DVAPIAT4o2tLbwSe2iAi7/hi2mNny5f8/Nm43t/86TVBnYx2l+di9PRKE0VQ16jsV4h/OEi1tfiJi3LVFcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0dpA6Lv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BCAC116B1;
+	Tue, 16 Jul 2024 16:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145366;
-	bh=NqbJx1NA4NSwmSKeXCnsmaxWFooRlOSp8ifSEbQueEM=;
+	s=korg; t=1721145696;
+	bh=p7n0YZUXawntrAWYgqm+xjwUJeu2NfOP43IBDKV6oxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CsZCGWyrMcfgoGjUmfHEhUir9hb074a1iZYJgJoo/lyhShVhhm2wNxm9EKOE+av8a
-	 8IDNLzVx2gEFK1sEOiD/U2KlILWXr1H8UcWWNGWHq2/NE5XYP6awesyxKMzyU7F6yt
-	 r8khOW+dQauOa1FSs/MS2OwtMG9+pq+X6ngolr6w=
+	b=k0dpA6LvP8kbxvFPX0CBHdv6admFa2n0YIhcOk2xNUpqd1MSfJKp/e+imR4wUz6nB
+	 Qjnuo9UY40XVkSzta1+4izcEDm0wGDkJ9Vq4oliy2Zxtaw2yYvOi1EuEpf9V8kjyuc
+	 jcZQ1N8/YsYJfP0vmucwcbFJWLpSfS4G0Tp+6m/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satheesh Paul <psatheesh@marvell.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 43/96] octeontx2-af: fix issue with IPv4 match for RSS
+	Josh Don <joshdon@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: [PATCH 6.6 052/121] Revert "sched/fair: Make sure to try to detach at least one movable task"
 Date: Tue, 16 Jul 2024 17:31:54 +0200
-Message-ID: <20240716152748.164394897@linuxfoundation.org>
+Message-ID: <20240716152753.324089708@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satheesh Paul <psatheesh@marvell.com>
+From: Josh Don <joshdon@google.com>
 
-[ Upstream commit 60795bbf047654c9f8ae88d34483233a56033578 ]
+commit 2feab2492deb2f14f9675dd6388e9e2bf669c27a upstream.
 
-While performing RSS based on IPv4, packets with
-IPv4 options are not being considered. Adding changes
-to match both plain IPv4 and IPv4 with option header.
+This reverts commit b0defa7ae03ecf91b8bfd10ede430cff12fcbd06.
 
-Fixes: 41a7aa7b800d ("octeontx2-af: NIX Rx flowkey configuration for RSS")
-Signed-off-by: Satheesh Paul <psatheesh@marvell.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+b0defa7ae03ec changed the load balancing logic to ignore env.max_loop if
+all tasks examined to that point were pinned. The goal of the patch was
+to make it more likely to be able to detach a task buried in a long list
+of pinned tasks. However, this has the unfortunate side effect of
+creating an O(n) iteration in detach_tasks(), as we now must fully
+iterate every task on a cpu if all or most are pinned. Since this load
+balance code is done with rq lock held, and often in softirq context, it
+is very easy to trigger hard lockups. We observed such hard lockups with
+a user who affined O(10k) threads to a single cpu.
+
+When I discussed this with Vincent he initially suggested that we keep
+the limit on the number of tasks to detach, but increase the number of
+tasks we can search. However, after some back and forth on the mailing
+list, he recommended we instead revert the original patch, as it seems
+likely no one was actually getting hit by the original issue.
+
+Fixes: b0defa7ae03e ("sched/fair: Make sure to try to detach at least one movable task")
+Signed-off-by: Josh Don <joshdon@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lore.kernel.org/r/20240620214450.316280-1-joshdon@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c |   12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 8be809aa72a95..ef526408b0bd2 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -3356,6 +3356,8 @@ static int get_flowkey_alg_idx(struct nix_hw *nix_hw, u32 flow_cfg)
- 
- /* Mask to match ipv6(NPC_LT_LC_IP6) and ipv6 ext(NPC_LT_LC_IP6_EXT) */
- #define NPC_LT_LC_IP6_MATCH_MSK ((~(NPC_LT_LC_IP6 ^ NPC_LT_LC_IP6_EXT)) & 0xf)
-+/* Mask to match both ipv4(NPC_LT_LC_IP) and ipv4 ext(NPC_LT_LC_IP_OPT) */
-+#define NPC_LT_LC_IP_MATCH_MSK  ((~(NPC_LT_LC_IP ^ NPC_LT_LC_IP_OPT)) & 0xf)
- 
- static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- {
-@@ -3426,7 +3428,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 			field->hdr_offset = 9; /* offset */
- 			field->bytesm1 = 0; /* 1 byte */
- 			field->ltype_match = NPC_LT_LC_IP;
--			field->ltype_mask = 0xF;
-+			field->ltype_mask = NPC_LT_LC_IP_MATCH_MSK;
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8977,12 +8977,8 @@ static int detach_tasks(struct lb_env *e
  			break;
- 		case NIX_FLOW_KEY_TYPE_IPV4:
- 		case NIX_FLOW_KEY_TYPE_INNR_IPV4:
-@@ -3453,8 +3455,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 					field->bytesm1 = 3; /* DIP, 4 bytes */
- 				}
- 			}
--
--			field->ltype_mask = 0xF; /* Match only IPv4 */
-+			field->ltype_mask = NPC_LT_LC_IP_MATCH_MSK;
- 			keyoff_marker = false;
+ 
+ 		env->loop++;
+-		/*
+-		 * We've more or less seen every task there is, call it quits
+-		 * unless we haven't found any movable task yet.
+-		 */
+-		if (env->loop > env->loop_max &&
+-		    !(env->flags & LBF_ALL_PINNED))
++		/* We've more or less seen every task there is, call it quits */
++		if (env->loop > env->loop_max)
  			break;
- 		case NIX_FLOW_KEY_TYPE_IPV6:
--- 
-2.43.0
-
+ 
+ 		/* take a breather every nr_migrate tasks */
+@@ -11259,9 +11255,7 @@ more_balance:
+ 
+ 		if (env.flags & LBF_NEED_BREAK) {
+ 			env.flags &= ~LBF_NEED_BREAK;
+-			/* Stop if we tried all running tasks */
+-			if (env.loop < busiest->nr_running)
+-				goto more_balance;
++			goto more_balance;
+ 		}
+ 
+ 		/*
 
 
 
