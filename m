@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-59938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0481D932C8F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 641A0932D22
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35E241C21B41
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 959E71C217FD
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6EB19FA89;
-	Tue, 16 Jul 2024 15:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C919A199EA3;
+	Tue, 16 Jul 2024 16:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdYeRW+A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GF2VaKoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA1719FA6C;
-	Tue, 16 Jul 2024 15:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864C01DDCE;
+	Tue, 16 Jul 2024 16:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145363; cv=none; b=IeO43dKyCN1WRFpwe26JJqsdD5FlymSVtnlak4evnVXV1FZLVVVJiQqdymr4FZVDaSae5w0Zcr6UsJ7dh3e4SSeWlCMVaMfeGM8/3MHf9McjrCRreZ1p/cgiVqlY8//DFHgtAp99XyCjZ/nqKChSVyubnz29kzMqHKXj6G2hTyQ=
+	t=1721145693; cv=none; b=Se/PaO0VAYjIXZzAfdo03k+KFvd3zNNFNOw6VGjzKrs68Af22YhYit5jbbAWanESn/9TEUcoy4I9NLyNaO9udIMjoPPCLSHnreaIzfbrGJ6Tq3FPETBm0p/y5elU6CaLb+lljuzRgQ5arkko0faGgjpvtujKCcnbJqECxWywojw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145363; c=relaxed/simple;
-	bh=jVWyJJqT2Wdm4LGYL9QJYb5/8h0UjRoHSr7kaCDq54I=;
+	s=arc-20240116; t=1721145693; c=relaxed/simple;
+	bh=VgPxu01POcFVJqisWnpZZYIHxDDyCiz4WaU735IM8ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c31vWZTAggeb4gxH9ucbd1mHvaOYDKRjQ3InNXZq93OFy1Nryttn6cKz4j8aj/W+nNqmwDyTG/kM42omfUj8LZyYZaOxpv1drf3E+oFErVBaTwtSyAioCRJBNaJFYzc1l1tZpmUgxIt2yPOaVCrvw+megieu7EPen7+OgTTC6aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdYeRW+A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7793C4AF0F;
-	Tue, 16 Jul 2024 15:56:02 +0000 (UTC)
+	 MIME-Version; b=rmkk97DAKrQe4XYnkUFFQKrqzYh8jC+md4eLkJR3CXb8+PKnHmlbYU8YWhu+vt6m40J0WJQ9pZ8eN+RH4mcNE87xgkMzbKH383TVBOBDmyTivWsRLay/MfNYPbG6XyXLHGG2Xlnr3BIGhS1UC1hs1+tzsxj2b/DJKMHSRY84kwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GF2VaKoK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2ECC4AF0D;
+	Tue, 16 Jul 2024 16:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145363;
-	bh=jVWyJJqT2Wdm4LGYL9QJYb5/8h0UjRoHSr7kaCDq54I=;
+	s=korg; t=1721145693;
+	bh=VgPxu01POcFVJqisWnpZZYIHxDDyCiz4WaU735IM8ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bdYeRW+Apjidg7CpaNBWJKE05B9JS2pnRSJmRIubHhGSLcGY5wGjGSwSGN1r3EB1c
-	 CPXPgEykIDIjVqYmONl2DPmrfJv3NpfdDraCqWb5RqvA1GdRQ78Jc1wfQtLccsqQFO
-	 2UzDOdUuG8bZdZMeqhdjRA1U3gc0kCyEtalMz0U8=
+	b=GF2VaKoKwW14hInFvYd0l1nfntuS5IEdU6P0x/Zl41gA8dLo4IcR6xNPBZ80BcojZ
+	 ltSoVqOG1KvlFECxiuHTRb0SWL58u9OD+40PXJ80DVUjuM3+vqeFNKch4G/2KIeeqn
+	 Z2C56YF5GO7kQjv3Ty8rdJkDiNu30zISp6nQlyhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiran Kumar K <kirankumark@marvell.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 42/96] octeontx2-af: fix issue with IPv6 ext match for RSS
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 051/121] cifs: fix setting SecurityFlags to true
 Date: Tue, 16 Jul 2024 17:31:53 +0200
-Message-ID: <20240716152748.126240241@linuxfoundation.org>
+Message-ID: <20240716152753.286883957@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran Kumar K <kirankumark@marvell.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit e23ac1095b9eb8ac48f98c398d81d6ba062c9b5d ]
+commit d2346e2836318a227057ed41061114cbebee5d2a upstream.
 
-While performing RSS based on IPv6, extension ltype
-is not being considered. This will be problem for
-fragmented packets or packets with extension header.
-Adding changes to match IPv6 ext header along with IPv6
-ltype.
+If you try to set /proc/fs/cifs/SecurityFlags to 1 it
+will set them to CIFSSEC_MUST_NTLMV2 which no longer is
+relevant (the less secure ones like lanman have been removed
+from cifs.ko) and is also missing some flags (like for
+signing and encryption) and can even cause mount to fail,
+so change this to set it to Kerberos in this case.
 
-Fixes: 41a7aa7b800d ("octeontx2-af: NIX Rx flowkey configuration for RSS")
-Signed-off-by: Kiran Kumar K <kirankumark@marvell.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also change the description of the SecurityFlags to remove mention
+of flags which are no longer supported.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/cifs/usage.rst |   34 +++++++++----------------------
+ fs/smb/client/cifsglob.h                 |    4 +--
+ 2 files changed, 12 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 8a18497ad1a03..8be809aa72a95 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -3354,6 +3354,9 @@ static int get_flowkey_alg_idx(struct nix_hw *nix_hw, u32 flow_cfg)
- 	return -ERANGE;
- }
+--- a/Documentation/admin-guide/cifs/usage.rst
++++ b/Documentation/admin-guide/cifs/usage.rst
+@@ -722,40 +722,26 @@ Configuration pseudo-files:
+ ======================= =======================================================
+ SecurityFlags		Flags which control security negotiation and
+ 			also packet signing. Authentication (may/must)
+-			flags (e.g. for NTLM and/or NTLMv2) may be combined with
++			flags (e.g. for NTLMv2) may be combined with
+ 			the signing flags.  Specifying two different password
+ 			hashing mechanisms (as "must use") on the other hand
+ 			does not make much sense. Default flags are::
  
-+/* Mask to match ipv6(NPC_LT_LC_IP6) and ipv6 ext(NPC_LT_LC_IP6_EXT) */
-+#define NPC_LT_LC_IP6_MATCH_MSK ((~(NPC_LT_LC_IP6 ^ NPC_LT_LC_IP6_EXT)) & 0xf)
-+
- static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- {
- 	int idx, nr_field, key_off, field_marker, keyoff_marker;
-@@ -3480,7 +3483,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 					field->bytesm1 = 15; /* DIP,16 bytes */
- 				}
- 			}
--			field->ltype_mask = 0xF; /* Match only IPv6 */
-+			field->ltype_mask = NPC_LT_LC_IP6_MATCH_MSK;
- 			break;
- 		case NIX_FLOW_KEY_TYPE_TCP:
- 		case NIX_FLOW_KEY_TYPE_UDP:
--- 
-2.43.0
-
+-				0x07007
++				0x00C5
+ 
+-			(NTLM, NTLMv2 and packet signing allowed).  The maximum
+-			allowable flags if you want to allow mounts to servers
+-			using weaker password hashes is 0x37037 (lanman,
+-			plaintext, ntlm, ntlmv2, signing allowed).  Some
+-			SecurityFlags require the corresponding menuconfig
+-			options to be enabled.  Enabling plaintext
+-			authentication currently requires also enabling
+-			lanman authentication in the security flags
+-			because the cifs module only supports sending
+-			laintext passwords using the older lanman dialect
+-			form of the session setup SMB.  (e.g. for authentication
+-			using plain text passwords, set the SecurityFlags
+-			to 0x30030)::
++			(NTLMv2 and packet signing allowed).  Some SecurityFlags
++			may require enabling a corresponding menuconfig option.
+ 
+ 			  may use packet signing			0x00001
+ 			  must use packet signing			0x01001
+-			  may use NTLM (most common password hash)	0x00002
+-			  must use NTLM					0x02002
+ 			  may use NTLMv2				0x00004
+ 			  must use NTLMv2				0x04004
+-			  may use Kerberos security			0x00008
+-			  must use Kerberos				0x08008
+-			  may use lanman (weak) password hash		0x00010
+-			  must use lanman password hash			0x10010
+-			  may use plaintext passwords			0x00020
+-			  must use plaintext passwords			0x20020
+-			  (reserved for future packet encryption)	0x00040
++			  may use Kerberos security (krb5)		0x00008
++			  must use Kerberos                             0x08008
++			  may use NTLMSSP               		0x00080
++			  must use NTLMSSP           			0x80080
++			  seal (packet encryption)			0x00040
++			  must seal (not implemented yet)               0x40040
+ 
+ cifsFYI			If set to non-zero value, additional debug information
+ 			will be logged to the system error log.  This field
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1939,8 +1939,8 @@ require use of the stronger protocol */
+ #define   CIFSSEC_MUST_SEAL	0x40040 /* not supported yet */
+ #define   CIFSSEC_MUST_NTLMSSP	0x80080 /* raw ntlmssp with ntlmv2 */
+ 
+-#define   CIFSSEC_DEF (CIFSSEC_MAY_SIGN | CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_NTLMSSP)
+-#define   CIFSSEC_MAX (CIFSSEC_MUST_NTLMV2)
++#define   CIFSSEC_DEF (CIFSSEC_MAY_SIGN | CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_NTLMSSP | CIFSSEC_MAY_SEAL)
++#define   CIFSSEC_MAX (CIFSSEC_MAY_SIGN | CIFSSEC_MUST_KRB5 | CIFSSEC_MAY_SEAL)
+ #define   CIFSSEC_AUTH_MASK (CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_KRB5 | CIFSSEC_MAY_NTLMSSP)
+ /*
+  *****************************************************************
 
 
 
