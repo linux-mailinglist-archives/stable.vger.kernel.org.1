@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-59817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B4A932BEE
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30FC6932B42
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DD2C1F2116F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C80AB1F24453
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C7919E7E2;
-	Tue, 16 Jul 2024 15:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C86B19FA6F;
+	Tue, 16 Jul 2024 15:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K47Eoh3I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUY8p5db"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452C219E7CF;
-	Tue, 16 Jul 2024 15:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2B119FA6A;
+	Tue, 16 Jul 2024 15:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145001; cv=none; b=cpCyb5g5o7lBee05taMqfmJpat51xKuIXUl2fUx4fqRgGzZQU53xj1ToWGKosxTJtNVVNoFC3MUAlBrsOHEEi65WLAUORiXSenbwYMJU3mSUx8lR9sTv3EH9MZ8uAHrTB64tanYOCgFe1NM79oZ8KBNeM6ZH7ai3R2porYU/j3k=
+	t=1721144579; cv=none; b=HabAj3xodRKkVAKlsMNaS6wEqbwqn5REVRejf6JW6f0f6RBTS0Zc/Onmzr2mNUMGfWRM4bAAaeaBb0uN5eTCx1s1fH9MzrbgAczVpZnbPmOFoKduWADleAKZLsbMAZ5+02OQw2M6IH/LytroSn4YSdwmOLrGVERLG2rRLuCWf8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145001; c=relaxed/simple;
-	bh=idtORb1cdWbMpllf6Sb/z3RYg+3q5YiIdorbZW/ImxQ=;
+	s=arc-20240116; t=1721144579; c=relaxed/simple;
+	bh=jJzleNTJY38zCS6V9r+lKKex1WbyR5ZLkcVZENOW7yY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tpyDZeni27xZodmzvttGBCwZyW/k1glGdGYjt08HRk1AJ67Gm/pE9aSMqSvu7ODEco9XyPQSKumpAJZFk8TMQz7rgI7uIizWULvuV6iUZ2+pBXFxOI9wTBVbFBzdEa5whb7JvCKRc1vDullm90tPjwLPCpMpnVkEtoTHtl/4Xkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K47Eoh3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6BCC4AF0B;
-	Tue, 16 Jul 2024 15:50:00 +0000 (UTC)
+	 MIME-Version; b=HZoDXy5cj0ciCeYA55ZCXT+FpiW+HOCaY2Hm+eh9llci8q+NWPzxjFHkm7Fu2qGDbZ05teY67aX6oc5iYu9/eFxNcwxwM9dfECB805pupRrRybgoOctGq+HqY1VF83HrD5Liq1GoEJnVj54ZEWmqBq/PH+vmZiDRlf0H6FNizB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUY8p5db; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37651C4AF0F;
+	Tue, 16 Jul 2024 15:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145001;
-	bh=idtORb1cdWbMpllf6Sb/z3RYg+3q5YiIdorbZW/ImxQ=;
+	s=korg; t=1721144578;
+	bh=jJzleNTJY38zCS6V9r+lKKex1WbyR5ZLkcVZENOW7yY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K47Eoh3IjPtLhIYDFMtUVqvyy2sMz3P1cgngaHzykN+JvbT5vr0w1nw9iHrgVJi42
-	 HihLMlfyXvMjUPSGTaiBJ5Qm3airX5gkDEQZAGcKqh2OauMqU6UH79GMBuKdGLN2mH
-	 9xcfxF1owamTMGF2VxwItusTkXmNgWZZyDXIsDiI=
+	b=wUY8p5db4DnXg3zcCW+/fWYn/G/4AB6gLpuUUiCevpINESt/kG5muByKtKHToyfwH
+	 yGWmQW2OvuSyykAxaKj8Ll6ovn1mEQKu+9zOUUx6ubWujhl50/iWSuL0DSk+tOezLr
+	 ApIcka7wzu/XXgHUNK2bwTC8PcL3FnjRUXI3Uwo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Ahmed Zaki <ahmed.zaki@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 058/143] net: ethtool: Fix RSS setting
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 039/108] can: kvaser_usb: Explicitly initialize family in leafimx driver_info struct
 Date: Tue, 16 Jul 2024 17:30:54 +0200
-Message-ID: <20240716152758.211489124@linuxfoundation.org>
+Message-ID: <20240716152747.496869070@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-[ Upstream commit 503757c809281a24d50ac2538401d3b1302b301c ]
+commit 19d5b2698c35b2132a355c67b4d429053804f8cc upstream.
 
-When user submits a rxfh set command without touching XFRM_SYM_XOR,
-rxfh.input_xfrm is set to RXH_XFRM_NO_CHANGE, which is equal to 0xff.
+Explicitly set the 'family' driver_info struct member for leafimx.
+Previously, the correct operation relied on KVASER_LEAF being the first
+defined value in enum kvaser_usb_leaf_family.
 
-Testing if (rxfh.input_xfrm & RXH_XFRM_SYM_XOR &&
-	    !ops->cap_rss_sym_xor_supported)
-		return -EOPNOTSUPP;
-
-Will always be true on devices that don't set cap_rss_sym_xor_supported,
-since rxfh.input_xfrm & RXH_XFRM_SYM_XOR is always true, if input_xfrm
-was not set, i.e RXH_XFRM_NO_CHANGE=0xff, which will result in failure
-of any command that doesn't require any change of XFRM, e.g RSS context
-or hash function changes.
-
-To avoid this breakage, test if rxfh.input_xfrm != RXH_XFRM_NO_CHANGE
-before testing other conditions. Note that the problem will only trigger
-with XFRM-aware userspace, old ethtool CLI would continue to work.
-
-Fixes: 0dd415d15505 ("net: ethtool: add a NO_CHANGE uAPI for new RXFH's input_xfrm")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Link: https://patch.msgid.link/20240710225538.43368-1-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e6c80e601053 ("can: kvaser_usb: kvaser_usb_leaf: fix CAN clock frequency regression")
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://lore.kernel.org/all/20240628194529.312968-1-extja@kvaser.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ethtool/ioctl.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index e645d751a5e89..223dcd25d88a2 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -1306,7 +1306,8 @@ static noinline_for_stack int ethtool_set_rxfh(struct net_device *dev,
- 	if (rxfh.input_xfrm && rxfh.input_xfrm != RXH_XFRM_SYM_XOR &&
- 	    rxfh.input_xfrm != RXH_XFRM_NO_CHANGE)
- 		return -EINVAL;
--	if ((rxfh.input_xfrm & RXH_XFRM_SYM_XOR) &&
-+	if (rxfh.input_xfrm != RXH_XFRM_NO_CHANGE &&
-+	    (rxfh.input_xfrm & RXH_XFRM_SYM_XOR) &&
- 	    !ops->cap_rss_sym_xor_supported)
- 		return -EOPNOTSUPP;
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -114,6 +114,7 @@ static const struct kvaser_usb_driver_in
  
--- 
-2.43.0
-
+ static const struct kvaser_usb_driver_info kvaser_usb_driver_info_leafimx = {
+ 	.quirks = 0,
++	.family = KVASER_LEAF,
+ 	.ops = &kvaser_usb_leaf_dev_ops,
+ };
+ 
 
 
 
