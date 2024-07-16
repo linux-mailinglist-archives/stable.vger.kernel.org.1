@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-59602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79036932ADF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A847C932C5A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30ACD282772
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 619B4284B60
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F96C1DDF5;
-	Tue, 16 Jul 2024 15:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C0A19AD93;
+	Tue, 16 Jul 2024 15:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8k9lRK6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YU2Ms/Z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC82F9E8;
-	Tue, 16 Jul 2024 15:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE6A1DDCE;
+	Tue, 16 Jul 2024 15:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144342; cv=none; b=jDv7EiHDUmD3YDSTqC5LdDWoSKXuNs0ZhImGH79UO9ViW2+ilc9mmyQjDPd2IR+IzHJz6m1CbTe78wQVpqYcKNCzL0+3DMKTsUCl3XD2mAPxSQncN3Xx71ADwFbfF6uP1iUUNlx6h8wttSZWeuy710DD+8rvWVX+DFEgtMUdnbo=
+	t=1721145265; cv=none; b=nifJykmF+ZtMzLJI7lJ4eEpKuZoLIFS2BhIQTB0/fUHLLf8cqoTFmSpslByXr5aVoFLlSj/Y9LKd5gjxZELwhIdolCCSMPoC9tk5OENq5Qmv96sJ39AvuIFh75URVYpxgaeYncGBOGGLajquxXK5JSevsW4yXOKDyN/8Bv4COEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144342; c=relaxed/simple;
-	bh=ioBcCHKiVJJsRwQEoedqkAjGl+fqAEyn9zkhhis2Y9g=;
+	s=arc-20240116; t=1721145265; c=relaxed/simple;
+	bh=lrphtrK5ShGVTBvisC+AUhTOlWRhsCwAi95vHchpWw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqZ38/U2pUqW/MkoTEYXbcu9OClnys4uOIUb42xX20ZOtHATq0JSxik+b8a2/Pp03f7jIBLPKrW5mRbhruJaF0LN/3l++VhYfx2mXH0PHmus8X3S7pGMARi3tWHnKFMNitDBh39m7UBSI9m/N1xdMyeUgukUg5fMJ5zWyyHjXwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8k9lRK6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59531C116B1;
-	Tue, 16 Jul 2024 15:39:02 +0000 (UTC)
+	 MIME-Version; b=WdEqpZhidk+2JzeLpWuef60joJm4LD2V6fjDfJ+tZBeUvsvB2TPZ7XFExOnHy40iJknYkCQBKaAhTOHWrRWMt61QW5DA4KJvr0ySNjguKUd6PBgfed1uF25mVy/6NkHkeSjOjE83cpPL/oJXm7ABA5wswb7S2PCHVLKk9YvUnSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YU2Ms/Z1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D0AC116B1;
+	Tue, 16 Jul 2024 15:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144342;
-	bh=ioBcCHKiVJJsRwQEoedqkAjGl+fqAEyn9zkhhis2Y9g=;
+	s=korg; t=1721145265;
+	bh=lrphtrK5ShGVTBvisC+AUhTOlWRhsCwAi95vHchpWw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o8k9lRK6GYikaVP8Krb+tWkmcd3P1zIfwB8XivNoj5RXsueJmZHD5IUQ5T3shNrN6
-	 8gkDZtdvoEtelba1F2FmL3rHw04cKU8ssk4WkuA+0UUFwRzmrGtozPSm4qi0MYD/Xb
-	 hI0V10uFLPwSuMxDhcNkadtS/g6TSV579MEp04uE=
+	b=YU2Ms/Z1URtbvEBMWbKo4jsnnMrmYRE9s5xofuQPQwsE/7Vfp38TBI0cSYC4iWz+P
+	 Y1OeAfafBDJ9WiBG3+3LDttzYyib9vlW/YIwC7Cg2j1boaOAW9V8Zab7iwJNo65Uvd
+	 dUnFDu+CLVd7uknZxxQ06IlSPPg1oMiSB16PAwqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ghadi Elie Rahme <ghadi.rahme@canonical.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 40/78] bnx2x: Fix multiple UBSAN array-index-out-of-bounds
+	Waiman Long <longman@redhat.com>,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 01/96] mm: prevent derefencing NULL ptr in pfn_section_valid()
 Date: Tue, 16 Jul 2024 17:31:12 +0200
-Message-ID: <20240716152742.186812277@linuxfoundation.org>
+Message-ID: <20240716152746.574857271@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,190 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
+From: Waiman Long <longman@redhat.com>
 
-commit 134061163ee5ca4759de5c24ca3bd71608891ba7 upstream.
+[ Upstream commit 82f0b6f041fad768c28b4ad05a683065412c226e ]
 
-Fix UBSAN warnings that occur when using a system with 32 physical
-cpu cores or more, or when the user defines a number of Ethernet
-queues greater than or equal to FP_SB_MAX_E1x using the num_queues
-module parameter.
+Commit 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing
+memory_section->usage") changed pfn_section_valid() to add a READ_ONCE()
+call around "ms->usage" to fix a race with section_deactivate() where
+ms->usage can be cleared.  The READ_ONCE() call, by itself, is not enough
+to prevent NULL pointer dereference.  We need to check its value before
+dereferencing it.
 
-Currently there is a read/write out of bounds that occurs on the array
-"struct stats_query_entry query" present inside the "bnx2x_fw_stats_req"
-struct in "drivers/net/ethernet/broadcom/bnx2x/bnx2x.h".
-Looking at the definition of the "struct stats_query_entry query" array:
-
-struct stats_query_entry query[FP_SB_MAX_E1x+
-         BNX2X_FIRST_QUEUE_QUERY_IDX];
-
-FP_SB_MAX_E1x is defined as the maximum number of fast path interrupts and
-has a value of 16, while BNX2X_FIRST_QUEUE_QUERY_IDX has a value of 3
-meaning the array has a total size of 19.
-Since accesses to "struct stats_query_entry query" are offset-ted by
-BNX2X_FIRST_QUEUE_QUERY_IDX, that means that the total number of Ethernet
-queues should not exceed FP_SB_MAX_E1x (16). However one of these queues
-is reserved for FCOE and thus the number of Ethernet queues should be set
-to [FP_SB_MAX_E1x -1] (15) if FCOE is enabled or [FP_SB_MAX_E1x] (16) if
-it is not.
-
-This is also described in a comment in the source code in
-drivers/net/ethernet/broadcom/bnx2x/bnx2x.h just above the Macro definition
-of FP_SB_MAX_E1x. Below is the part of this explanation that it important
-for this patch
-
-/*
-  * The total number of L2 queues, MSIX vectors and HW contexts (CIDs) is
-  * control by the number of fast-path status blocks supported by the
-  * device (HW/FW). Each fast-path status block (FP-SB) aka non-default
-  * status block represents an independent interrupts context that can
-  * serve a regular L2 networking queue. However special L2 queues such
-  * as the FCoE queue do not require a FP-SB and other components like
-  * the CNIC may consume FP-SB reducing the number of possible L2 queues
-  *
-  * If the maximum number of FP-SB available is X then:
-  * a. If CNIC is supported it consumes 1 FP-SB thus the max number of
-  *    regular L2 queues is Y=X-1
-  * b. In MF mode the actual number of L2 queues is Y= (X-1/MF_factor)
-  * c. If the FCoE L2 queue is supported the actual number of L2 queues
-  *    is Y+1
-  * d. The number of irqs (MSIX vectors) is either Y+1 (one extra for
-  *    slow-path interrupts) or Y+2 if CNIC is supported (one additional
-  *    FP interrupt context for the CNIC).
-  * e. The number of HW context (CID count) is always X or X+1 if FCoE
-  *    L2 queue is supported. The cid for the FCoE L2 queue is always X.
-  */
-
-However this driver also supports NICs that use the E2 controller which can
-handle more queues due to having more FP-SB represented by FP_SB_MAX_E2.
-Looking at the commits when the E2 support was added, it was originally
-using the E1x parameters: commit f2e0899f0f27 ("bnx2x: Add 57712 support").
-Back then FP_SB_MAX_E2 was set to 16 the same as E1x. However the driver
-was later updated to take full advantage of the E2 instead of having it be
-limited to the capabilities of the E1x. But as far as we can tell, the
-array "stats_query_entry query" was still limited to using the FP-SB
-available to the E1x cards as part of an oversignt when the driver was
-updated to take full advantage of the E2, and now with the driver being
-aware of the greater queue size supported by E2 NICs, it causes the UBSAN
-warnings seen in the stack traces below.
-
-This patch increases the size of the "stats_query_entry query" array by
-replacing FP_SB_MAX_E1x with FP_SB_MAX_E2 to be large enough to handle
-both types of NICs.
-
-Stack traces:
-
-UBSAN: array-index-out-of-bounds in
-       drivers/net/ethernet/broadcom/bnx2x/bnx2x_stats.c:1529:11
-index 20 is out of range for type 'stats_query_entry [19]'
-CPU: 12 PID: 858 Comm: systemd-network Not tainted 6.9.0-060900rc7-generic
-	     #202405052133
-Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
-	       BIOS P89 10/21/2019
-Call Trace:
- <TASK>
- dump_stack_lvl+0x76/0xa0
- dump_stack+0x10/0x20
- __ubsan_handle_out_of_bounds+0xcb/0x110
- bnx2x_prep_fw_stats_req+0x2e1/0x310 [bnx2x]
- bnx2x_stats_init+0x156/0x320 [bnx2x]
- bnx2x_post_irq_nic_init+0x81/0x1a0 [bnx2x]
- bnx2x_nic_load+0x8e8/0x19e0 [bnx2x]
- bnx2x_open+0x16b/0x290 [bnx2x]
- __dev_open+0x10e/0x1d0
-RIP: 0033:0x736223927a0a
-Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca
-      64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00
-      f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
-RSP: 002b:00007ffc0bb2ada8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 0000583df50f9c78 RCX: 0000736223927a0a
-RDX: 0000000000000020 RSI: 0000583df50ee510 RDI: 0000000000000003
-RBP: 0000583df50d4940 R08: 00007ffc0bb2adb0 R09: 0000000000000080
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000583df5103ae0
-R13: 000000000000035a R14: 0000583df50f9c30 R15: 0000583ddddddf00
-</TASK>
----[ end trace ]---
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in
-       drivers/net/ethernet/broadcom/bnx2x/bnx2x_stats.c:1546:11
-index 28 is out of range for type 'stats_query_entry [19]'
-CPU: 12 PID: 858 Comm: systemd-network Not tainted 6.9.0-060900rc7-generic
-	     #202405052133
-Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
-	       BIOS P89 10/21/2019
-Call Trace:
-<TASK>
-dump_stack_lvl+0x76/0xa0
-dump_stack+0x10/0x20
-__ubsan_handle_out_of_bounds+0xcb/0x110
-bnx2x_prep_fw_stats_req+0x2fd/0x310 [bnx2x]
-bnx2x_stats_init+0x156/0x320 [bnx2x]
-bnx2x_post_irq_nic_init+0x81/0x1a0 [bnx2x]
-bnx2x_nic_load+0x8e8/0x19e0 [bnx2x]
-bnx2x_open+0x16b/0x290 [bnx2x]
-__dev_open+0x10e/0x1d0
-RIP: 0033:0x736223927a0a
-Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca
-      64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00
-      f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
-RSP: 002b:00007ffc0bb2ada8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 0000583df50f9c78 RCX: 0000736223927a0a
-RDX: 0000000000000020 RSI: 0000583df50ee510 RDI: 0000000000000003
-RBP: 0000583df50d4940 R08: 00007ffc0bb2adb0 R09: 0000000000000080
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000583df5103ae0
-R13: 000000000000035a R14: 0000583df50f9c30 R15: 0000583ddddddf00
- </TASK>
----[ end trace ]---
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in
-       drivers/net/ethernet/broadcom/bnx2x/bnx2x_sriov.c:1895:8
-index 29 is out of range for type 'stats_query_entry [19]'
-CPU: 13 PID: 163 Comm: kworker/u96:1 Not tainted 6.9.0-060900rc7-generic
-	     #202405052133
-Hardware name: HP ProLiant DL360 Gen9/ProLiant DL360 Gen9,
-	       BIOS P89 10/21/2019
-Workqueue: bnx2x bnx2x_sp_task [bnx2x]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x76/0xa0
- dump_stack+0x10/0x20
- __ubsan_handle_out_of_bounds+0xcb/0x110
- bnx2x_iov_adjust_stats_req+0x3c4/0x3d0 [bnx2x]
- bnx2x_storm_stats_post.part.0+0x4a/0x330 [bnx2x]
- ? bnx2x_hw_stats_post+0x231/0x250 [bnx2x]
- bnx2x_stats_start+0x44/0x70 [bnx2x]
- bnx2x_stats_handle+0x149/0x350 [bnx2x]
- bnx2x_attn_int_asserted+0x998/0x9b0 [bnx2x]
- bnx2x_sp_task+0x491/0x5c0 [bnx2x]
- process_one_work+0x18d/0x3f0
- </TASK>
----[ end trace ]---
-
-Fixes: 50f0a562f8cc ("bnx2x: add fcoe statistics")
-Signed-off-by: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20240627111405.1037812-1-ghadi.rahme@canonical.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240626001639.1350646-1-longman@redhat.com
+Fixes: 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing memory_section->usage")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Cc: Charan Teja Kalla <quic_charante@quicinc.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnx2x/bnx2x.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/mmzone.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x.h
-+++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x.h
-@@ -1256,7 +1256,7 @@ enum {
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 93d2003091222..61906244c14d6 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1814,8 +1814,9 @@ static inline int subsection_map_index(unsigned long pfn)
+ static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
+ {
+ 	int idx = subsection_map_index(pfn);
++	struct mem_section_usage *usage = READ_ONCE(ms->usage);
  
- struct bnx2x_fw_stats_req {
- 	struct stats_query_header hdr;
--	struct stats_query_entry query[FP_SB_MAX_E1x+
-+	struct stats_query_entry query[FP_SB_MAX_E2 +
- 		BNX2X_FIRST_QUEUE_QUERY_IDX];
- };
- 
+-	return test_bit(idx, READ_ONCE(ms->usage)->subsection_map);
++	return usage ? test_bit(idx, usage->subsection_map) : 0;
+ }
+ #else
+ static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
+-- 
+2.43.0
+
 
 
 
