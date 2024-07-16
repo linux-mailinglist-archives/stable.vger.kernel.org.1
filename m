@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-59892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FFF932C4B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C58932D38
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66498284873
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C7071F22F84
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465A219DF75;
-	Tue, 16 Jul 2024 15:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D48199EA3;
+	Tue, 16 Jul 2024 16:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vA6rdc18"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzyttq5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BF119AD46;
-	Tue, 16 Jul 2024 15:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F1F1DDCE;
+	Tue, 16 Jul 2024 16:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145227; cv=none; b=iwMxGUA/ITYWmLLRlLEulJRrN5pSYmxaD+Fa2G0UOE/z8/e41XAAJ8GmvIpFGLE3+TADoFlU/wuYtLc2qyuQgZhEVTdOBi0uWZ8y+xBIKOikYvaIGY/7WXAGqU+90xeR/dY83Ifeu8GVa4nRLMnatAPGsQZNtLt6EBAAPciVSS8=
+	t=1721145758; cv=none; b=AwzMFh3kzSx/kkXtPR/grd+ZkSnFECycVpQEmTmFxPYISi4pwVZieGl27p1FglPpFH2Erzy65jbpTfknGnVfjtsLhcKEZb6tMzI0EHKa3XC9RMIZDgP1MrIsrG3FLFuvmtmnNLMeA7e6aGMNd+DWqIBAcBf9Bus8fuQc7YKwKuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145227; c=relaxed/simple;
-	bh=YFYU7IdAo+0WOEw8UvVDAhJPdbOYjB8yIdhm5jX/yRg=;
+	s=arc-20240116; t=1721145758; c=relaxed/simple;
+	bh=ioZUTmD+ZbIPfSvTYGRNjwhIBR2Ra0WBiGxRJeiL3z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W2nkqfHpg35xeQy5qjJ5c6fsQAm9MU01w5osrcITsG+2S3YTrGf1nnKZ5FYh9hpRJ7EpakD1605tt4ZUMT8Hc9W9D43aHmNHmh7FEMSiAZN/zC2aKGTmMv0M20LaQJpnnMmgag4AgHTPpYyZpNVGBLnjC2nzbvlM5x+9CaeWaTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vA6rdc18; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 814D7C116B1;
-	Tue, 16 Jul 2024 15:53:46 +0000 (UTC)
+	 MIME-Version; b=jVDBhqGiyHjRPMls3AkypIQErHHrR4ZPIXtJx0CWRGdQD3cvrhNgQXaSM6boCYVUiBMzCqouqHJhZYL4qk1zAqpuKpT8FZqrW+1ciwNEfhALlYjLGVawM6vK9pq8Es1+crtP/DmlEqC01CnHgh3BI4l6BXGwYuUbQyhA92nhyGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzyttq5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F742C116B1;
+	Tue, 16 Jul 2024 16:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145226;
-	bh=YFYU7IdAo+0WOEw8UvVDAhJPdbOYjB8yIdhm5jX/yRg=;
+	s=korg; t=1721145758;
+	bh=ioZUTmD+ZbIPfSvTYGRNjwhIBR2Ra0WBiGxRJeiL3z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vA6rdc18/F8RGt0Yh1qREZgLMIWk1mUT/Fa4H/EjqjPmWd2N+INhzYcUC6ZLzLg+Q
-	 665+aOkTU3KmmE8o0sBiOJB+I4/ClbHyljIkX/dZA3A7RqKHB6MOj07e1ag1SYhvof
-	 2KKgVmmnWADadEkg1Hsr1BFTU+FvtigXFA4u44mk=
+	b=hzyttq5tqDEKjRBTBnanFfMKgxQV7VJrVFYUsZgdzOGG8Ksj0/Xx4npTFoIJGoQrb
+	 ykeTyQ2bNYKDYxdqQJVQ/afjxtp1CcuRbr4xiV1JvN1Em0echte9b5VPKdkmKGu/O6
+	 Mg6JYjtoPrK60zFScR5JKQp3Ip8uGuDo+Y9ixD1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 140/143] sched/deadline: Fix task_struct reference leak
+	Gavin Shan <gshan@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Don Dutile <ddutile@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	William Kucharski <william.kucharski@oracle.com>,
+	Zhenyu Zhang <zhenyzha@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 074/121] mm/filemap: make MAX_PAGECACHE_ORDER acceptable to xarray
 Date: Tue, 16 Jul 2024 17:32:16 +0200
-Message-ID: <20240716152801.381029278@linuxfoundation.org>
+Message-ID: <20240716152754.175653443@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +70,266 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Gavin Shan <gshan@redhat.com>
 
-[ Upstream commit b58652db66c910c2245f5bee7deca41c12d707b9 ]
+commit 099d90642a711caae377f53309abfe27e8724a8b upstream.
 
-During the execution of the following stress test with linux-rt:
+Patch series "mm/filemap: Limit page cache size to that supported by
+xarray", v2.
 
-stress-ng --cyclic 30 --timeout 30 --minimize --quiet
+Currently, xarray can't support arbitrary page cache size.  More details
+can be found from the WARN_ON() statement in xas_split_alloc().  In our
+test whose code is attached below, we hit the WARN_ON() on ARM64 system
+where the base page size is 64KB and huge page size is 512MB.  The issue
+was reported long time ago and some discussions on it can be found here
+[1].
 
-kmemleak frequently reported a memory leak concerning the task_struct:
+[1] https://www.spinics.net/lists/linux-xfs/msg75404.html
 
-unreferenced object 0xffff8881305b8000 (size 16136):
-  comm "stress-ng", pid 614, jiffies 4294883961 (age 286.412s)
-  object hex dump (first 32 bytes):
-    02 40 00 00 00 00 00 00 00 00 00 00 00 00 00 00  .@..............
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  debug hex dump (first 16 bytes):
-    53 09 00 00 00 00 00 00 00 00 00 00 00 00 00 00  S...............
-  backtrace:
-    [<00000000046b6790>] dup_task_struct+0x30/0x540
-    [<00000000c5ca0f0b>] copy_process+0x3d9/0x50e0
-    [<00000000ced59777>] kernel_clone+0xb0/0x770
-    [<00000000a50befdc>] __do_sys_clone+0xb6/0xf0
-    [<000000001dbf2008>] do_syscall_64+0x5d/0xf0
-    [<00000000552900ff>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+In order to fix the issue, we need to adjust MAX_PAGECACHE_ORDER to one
+supported by xarray and avoid PMD-sized page cache if needed.  The code
+changes are suggested by David Hildenbrand.
 
-The issue occurs in start_dl_timer(), which increments the task_struct
-reference count and sets a timer. The timer callback, dl_task_timer,
-is supposed to decrement the reference count upon expiration. However,
-if enqueue_task_dl() is called before the timer expires and cancels it,
-the reference count is not decremented, leading to the leak.
+PATCH[1] adjusts MAX_PAGECACHE_ORDER to that supported by xarray
+PATCH[2-3] avoids PMD-sized page cache in the synchronous readahead path
+PATCH[4] avoids PMD-sized page cache for shmem files if needed
 
-This patch fixes the reference leak by ensuring the task_struct
-reference count is properly decremented when the timer is canceled.
+Test program
+============
+# cat test.c
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <sys/syscall.h>
+#include <sys/mman.h>
 
-Fixes: feff2e65efd8 ("sched/deadline: Unthrottle PI boosted threads while enqueuing")
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lore.kernel.org/r/20240620125618.11419-1-wander@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+#define TEST_XFS_FILENAME	"/tmp/data"
+#define TEST_SHMEM_FILENAME	"/dev/shm/data"
+#define TEST_MEM_SIZE		0x20000000
+
+int main(int argc, char **argv)
+{
+	const char *filename;
+	int fd = 0;
+	void *buf = (void *)-1, *p;
+	int pgsize = getpagesize();
+	int ret;
+
+	if (pgsize != 0x10000) {
+		fprintf(stderr, "64KB base page size is required\n");
+		return -EPERM;
+	}
+
+	system("echo force > /sys/kernel/mm/transparent_hugepage/shmem_enabled");
+	system("rm -fr /tmp/data");
+	system("rm -fr /dev/shm/data");
+	system("echo 1 > /proc/sys/vm/drop_caches");
+
+	/* Open xfs or shmem file */
+	filename = TEST_XFS_FILENAME;
+	if (argc > 1 && !strcmp(argv[1], "shmem"))
+		filename = TEST_SHMEM_FILENAME;
+
+	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC);
+	if (fd < 0) {
+		fprintf(stderr, "Unable to open <%s>\n", filename);
+		return -EIO;
+	}
+
+	/* Extend file size */
+	ret = ftruncate(fd, TEST_MEM_SIZE);
+	if (ret) {
+		fprintf(stderr, "Error %d to ftruncate()\n", ret);
+		goto cleanup;
+	}
+
+	/* Create VMA */
+	buf = mmap(NULL, TEST_MEM_SIZE,
+		   PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+	if (buf == (void *)-1) {
+		fprintf(stderr, "Unable to mmap <%s>\n", filename);
+		goto cleanup;
+	}
+
+	fprintf(stdout, "mapped buffer at 0x%p\n", buf);
+	ret = madvise(buf, TEST_MEM_SIZE, MADV_HUGEPAGE);
+        if (ret) {
+		fprintf(stderr, "Unable to madvise(MADV_HUGEPAGE)\n");
+		goto cleanup;
+	}
+
+	/* Populate VMA */
+	ret = madvise(buf, TEST_MEM_SIZE, MADV_POPULATE_WRITE);
+	if (ret) {
+		fprintf(stderr, "Error %d to madvise(MADV_POPULATE_WRITE)\n", ret);
+		goto cleanup;
+	}
+
+	/* Punch the file to enforce xarray split */
+	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
+        		TEST_MEM_SIZE - pgsize, pgsize);
+	if (ret)
+		fprintf(stderr, "Error %d to fallocate()\n", ret);
+
+cleanup:
+	if (buf != (void *)-1)
+		munmap(buf, TEST_MEM_SIZE);
+	if (fd > 0)
+		close(fd);
+
+	return 0;
+}
+
+# gcc test.c -o test
+# cat /proc/1/smaps | grep KernelPageSize | head -n 1
+KernelPageSize:       64 kB
+# ./test shmem
+   :
+------------[ cut here ]------------
+WARNING: CPU: 17 PID: 5253 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
+Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib  \
+nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct    \
+nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4    \
+ip_set nf_tables rfkill nfnetlink vfat fat virtio_balloon          \
+drm fuse xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64  \
+virtio_net sha1_ce net_failover failover virtio_console virtio_blk \
+dimlib virtio_mmio
+CPU: 17 PID: 5253 Comm: test Kdump: loaded Tainted: G W 6.10.0-rc5-gavin+ #12
+Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
+pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+pc : xas_split_alloc+0xf8/0x128
+lr : split_huge_page_to_list_to_order+0x1c4/0x720
+sp : ffff80008a92f5b0
+x29: ffff80008a92f5b0 x28: ffff80008a92f610 x27: ffff80008a92f728
+x26: 0000000000000cc0 x25: 000000000000000d x24: ffff0000cf00c858
+x23: ffff80008a92f610 x22: ffffffdfc0600000 x21: 0000000000000000
+x20: 0000000000000000 x19: ffffffdfc0600000 x18: 0000000000000000
+x17: 0000000000000000 x16: 0000018000000000 x15: 3374004000000000
+x14: 0000e00000000000 x13: 0000000000002000 x12: 0000000000000020
+x11: 3374000000000000 x10: 3374e1c0ffff6000 x9 : ffffb463a84c681c
+x8 : 0000000000000003 x7 : 0000000000000000 x6 : ffff00011c976ce0
+x5 : ffffb463aa47e378 x4 : 0000000000000000 x3 : 0000000000000cc0
+x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
+Call trace:
+ xas_split_alloc+0xf8/0x128
+ split_huge_page_to_list_to_order+0x1c4/0x720
+ truncate_inode_partial_folio+0xdc/0x160
+ shmem_undo_range+0x2bc/0x6a8
+ shmem_fallocate+0x134/0x430
+ vfs_fallocate+0x124/0x2e8
+ ksys_fallocate+0x4c/0xa0
+ __arm64_sys_fallocate+0x24/0x38
+ invoke_syscall.constprop.0+0x7c/0xd8
+ do_el0_svc+0xb4/0xd0
+ el0_svc+0x44/0x1d8
+ el0t_64_sync_handler+0x134/0x150
+ el0t_64_sync+0x17c/0x180
+
+
+This patch (of 4):
+
+The largest page cache order can be HPAGE_PMD_ORDER (13) on ARM64 with
+64KB base page size.  The xarray entry with this order can't be split as
+the following error messages indicate.
+
+------------[ cut here ]------------
+WARNING: CPU: 35 PID: 7484 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
+Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib  \
+nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct    \
+nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4    \
+ip_set rfkill nf_tables nfnetlink vfat fat virtio_balloon drm      \
+fuse xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64      \
+sha1_ce virtio_net net_failover virtio_console virtio_blk failover \
+dimlib virtio_mmio
+CPU: 35 PID: 7484 Comm: test Kdump: loaded Tainted: G W 6.10.0-rc5-gavin+ #9
+Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
+pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+pc : xas_split_alloc+0xf8/0x128
+lr : split_huge_page_to_list_to_order+0x1c4/0x720
+sp : ffff800087a4f6c0
+x29: ffff800087a4f6c0 x28: ffff800087a4f720 x27: 000000001fffffff
+x26: 0000000000000c40 x25: 000000000000000d x24: ffff00010625b858
+x23: ffff800087a4f720 x22: ffffffdfc0780000 x21: 0000000000000000
+x20: 0000000000000000 x19: ffffffdfc0780000 x18: 000000001ff40000
+x17: 00000000ffffffff x16: 0000018000000000 x15: 51ec004000000000
+x14: 0000e00000000000 x13: 0000000000002000 x12: 0000000000000020
+x11: 51ec000000000000 x10: 51ece1c0ffff8000 x9 : ffffbeb961a44d28
+x8 : 0000000000000003 x7 : ffffffdfc0456420 x6 : ffff0000e1aa6eb8
+x5 : 20bf08b4fe778fca x4 : ffffffdfc0456420 x3 : 0000000000000c40
+x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
+Call trace:
+ xas_split_alloc+0xf8/0x128
+ split_huge_page_to_list_to_order+0x1c4/0x720
+ truncate_inode_partial_folio+0xdc/0x160
+ truncate_inode_pages_range+0x1b4/0x4a8
+ truncate_pagecache_range+0x84/0xa0
+ xfs_flush_unmap_range+0x70/0x90 [xfs]
+ xfs_file_fallocate+0xfc/0x4d8 [xfs]
+ vfs_fallocate+0x124/0x2e8
+ ksys_fallocate+0x4c/0xa0
+ __arm64_sys_fallocate+0x24/0x38
+ invoke_syscall.constprop.0+0x7c/0xd8
+ do_el0_svc+0xb4/0xd0
+ el0_svc+0x44/0x1d8
+ el0t_64_sync_handler+0x134/0x150
+ el0t_64_sync+0x17c/0x180
+
+Fix it by decreasing MAX_PAGECACHE_ORDER to the largest supported order
+by xarray. For this specific case, MAX_PAGECACHE_ORDER is dropped from
+13 to 11 when CONFIG_BASE_SMALL is disabled.
+
+Link: https://lkml.kernel.org/r/20240627003953.1262512-1-gshan@redhat.com
+Link: https://lkml.kernel.org/r/20240627003953.1262512-2-gshan@redhat.com
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Darrick J. Wong <djwong@kernel.org>
+Cc: Don Dutile <ddutile@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: William Kucharski <william.kucharski@oracle.com>
+Cc: Zhenyu Zhang <zhenyzha@redhat.com>
+Cc: <stable@vger.kernel.org>	[5.18+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/deadline.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/pagemap.h |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index a04a436af8cc4..dce51bf2d3229 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1805,8 +1805,13 @@ static void enqueue_task_dl(struct rq *rq, struct task_struct *p, int flags)
- 			 * The replenish timer needs to be canceled. No
- 			 * problem if it fires concurrently: boosted threads
- 			 * are ignored in dl_task_timer().
-+			 *
-+			 * If the timer callback was running (hrtimer_try_to_cancel == -1),
-+			 * it will eventually call put_task_struct().
- 			 */
--			hrtimer_try_to_cancel(&p->dl.dl_timer);
-+			if (hrtimer_try_to_cancel(&p->dl.dl_timer) == 1 &&
-+			    !dl_server(&p->dl))
-+				put_task_struct(p);
- 			p->dl.dl_throttled = 0;
- 		}
- 	} else if (!dl_prio(p->normal_prio)) {
--- 
-2.43.0
-
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -335,11 +335,18 @@ static inline void mapping_set_gfp_mask(
+  * a good order (that's 1MB if you're using 4kB pages)
+  */
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-#define MAX_PAGECACHE_ORDER	HPAGE_PMD_ORDER
++#define PREFERRED_MAX_PAGECACHE_ORDER	HPAGE_PMD_ORDER
+ #else
+-#define MAX_PAGECACHE_ORDER	8
++#define PREFERRED_MAX_PAGECACHE_ORDER	8
+ #endif
+ 
++/*
++ * xas_split_alloc() does not support arbitrary orders. This implies no
++ * 512MB THP on ARM64 with 64KB base page size.
++ */
++#define MAX_XAS_ORDER		(XA_CHUNK_SHIFT * 2 - 1)
++#define MAX_PAGECACHE_ORDER	min(MAX_XAS_ORDER, PREFERRED_MAX_PAGECACHE_ORDER)
++
+ /**
+  * mapping_set_large_folios() - Indicate the file supports large folios.
+  * @mapping: The file.
 
 
 
