@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-59925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37A0932C7D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F96F932AFF
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E461C1C209ED
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80E231C222C8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389A519E83C;
-	Tue, 16 Jul 2024 15:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30031E894;
+	Tue, 16 Jul 2024 15:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vw4UcmOr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOA/xeWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F7619E7F7;
-	Tue, 16 Jul 2024 15:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703F9B641;
+	Tue, 16 Jul 2024 15:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145327; cv=none; b=VmEhrvUeSKhljnmhzHnzqoGM46CXKfcLkD1kVI29aAyZB14gi2ipq/8of5c20+A2Nm5l+uesVE0y2a4Pos/Pg+O7kzq/FG318FyeFHUIXv1hhS7rHBIAscexCZvsLjzc1jbhdpo9JI9TPpPQFl9epD9tHfpajBJFG4Sy/3XADj4=
+	t=1721144423; cv=none; b=ER73Sp/zWC+/yGosXBYi/9heiaBQR8R1j/zGSlcqx5W3iPp5rcJApwrb2EYbfMGklnP2JO2CM1Bh+GrSEO11CIwbjJPirJKcgy7QdKVzmP5WCfyJY3c22+Tqrz4hXPWhxX00BMN3XwXOsDruZzI0VuFJG9OnyIdL5ffCaXSA9xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145327; c=relaxed/simple;
-	bh=cx6oXSOVMuqd7dsrOZrbsJJ/buPynm31nWzExJ6ofl0=;
+	s=arc-20240116; t=1721144423; c=relaxed/simple;
+	bh=UcvNnFjyGzXgF2uKCXaKjx+X21WIgRrQ2pAMi4neOM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MlvBwufoJQGy0ik+AFkiqdXxIDKj58+MNCdY8JlhIywNI91/bOQlSnmY1fo+LJUPITev4lMW6He7iImIFrAXFpKpTt/CABKAsIncVT9hzVAc48Ucce8zD+4BoFD5HWZBBdzPV/eri30QxqPhpw7CSxgqy9ztRfnXnkslHt1cWm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vw4UcmOr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A48C116B1;
-	Tue, 16 Jul 2024 15:55:23 +0000 (UTC)
+	 MIME-Version; b=Y+z4192YuXa4tvcRYVuazQVu5f70J4j39qIx29CL7tm4W6wBWSfUYr/TqIvFRznilTW8z5ET6PaaX4Kw8HsUshGbpxTE5BCHMn/Mccc5ggy+GG8HyUSayP8xh8bSGkOw2LuW346gImGFpSP7TORr3ACUNnmjDkJVUf7pwSO6Cjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOA/xeWs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77F9C116B1;
+	Tue, 16 Jul 2024 15:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145324;
-	bh=cx6oXSOVMuqd7dsrOZrbsJJ/buPynm31nWzExJ6ofl0=;
+	s=korg; t=1721144423;
+	bh=UcvNnFjyGzXgF2uKCXaKjx+X21WIgRrQ2pAMi4neOM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vw4UcmOrnG3my8iTYNe9Oia30ILk/apyVX9fhHYvPrDFNUcJP97nFiVQiXmM9URtd
-	 WNsb4EpSGOKr7xOMnX93K9QaWDDKgWn+TdiLSvgPfztGUSf3GA+Rq1UfIyF34khXbB
-	 sOMch9fwZ2GaZabor/H+2gkjEOo4A3/7PLhDIboE=
+	b=kOA/xeWsPRS5+eUUcA93sd0uTbdt3ggb+rSN5wZ7kwia/YsA6XtTauda6xu8dk1og
+	 X3HRHjBEYUfrPMO8U9p5PsGjIq1p5nDC+Dcr8lb1LHiP3N9ZEXzAQsHUa3390b8aev
+	 k50ppm2JKhbyrj0CH78VYWlID7R5/obESmZ+EEx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerald Yang <gerald.yang@canonical.com>,
-	Chengen Du <chengen.du@canonical.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 28/96] net/sched: Fix UAF when resolving a clash
-Date: Tue, 16 Jul 2024 17:31:39 +0200
-Message-ID: <20240716152747.597179347@linuxfoundation.org>
+	He Zhe <zhe.he@windriver.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.4 68/78] hpet: Support 32-bit userspace
+Date: Tue, 16 Jul 2024 17:31:40 +0200
+Message-ID: <20240716152743.272246314@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,136 +61,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengen Du <chengen.du@canonical.com>
+From: He Zhe <zhe.he@windriver.com>
 
-[ Upstream commit 26488172b0292bed837b95a006a3f3431d1898c3 ]
+commit 4e60131d0d36af65ab9c9144f4f163fe97ae36e8 upstream.
 
-KASAN reports the following UAF:
+hpet_compat_ioctl and read file operations failed to handle parameters from
+32-bit userspace and thus samples/timers/hpet_example.c fails as below.
 
- BUG: KASAN: slab-use-after-free in tcf_ct_flow_table_process_conn+0x12b/0x380 [act_ct]
- Read of size 1 at addr ffff888c07603600 by task handler130/6469
+root@intel-x86-64:~# ./hpet_example-32.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: HPET_IRQFREQ failed
 
- Call Trace:
-  <IRQ>
-  dump_stack_lvl+0x48/0x70
-  print_address_description.constprop.0+0x33/0x3d0
-  print_report+0xc0/0x2b0
-  kasan_report+0xd0/0x120
-  __asan_load1+0x6c/0x80
-  tcf_ct_flow_table_process_conn+0x12b/0x380 [act_ct]
-  tcf_ct_act+0x886/0x1350 [act_ct]
-  tcf_action_exec+0xf8/0x1f0
-  fl_classify+0x355/0x360 [cls_flower]
-  __tcf_classify+0x1fd/0x330
-  tcf_classify+0x21c/0x3c0
-  sch_handle_ingress.constprop.0+0x2c5/0x500
-  __netif_receive_skb_core.constprop.0+0xb25/0x1510
-  __netif_receive_skb_list_core+0x220/0x4c0
-  netif_receive_skb_list_internal+0x446/0x620
-  napi_complete_done+0x157/0x3d0
-  gro_cell_poll+0xcf/0x100
-  __napi_poll+0x65/0x310
-  net_rx_action+0x30c/0x5c0
-  __do_softirq+0x14f/0x491
-  __irq_exit_rcu+0x82/0xc0
-  irq_exit_rcu+0xe/0x20
-  common_interrupt+0xa1/0xb0
-  </IRQ>
-  <TASK>
-  asm_common_interrupt+0x27/0x40
+This patch fixes cmd and arg handling in hpet_compat_ioctl and adds compat
+handling for 32-bit userspace in hpet_read.
 
- Allocated by task 6469:
-  kasan_save_stack+0x38/0x70
-  kasan_set_track+0x25/0x40
-  kasan_save_alloc_info+0x1e/0x40
-  __kasan_krealloc+0x133/0x190
-  krealloc+0xaa/0x130
-  nf_ct_ext_add+0xed/0x230 [nf_conntrack]
-  tcf_ct_act+0x1095/0x1350 [act_ct]
-  tcf_action_exec+0xf8/0x1f0
-  fl_classify+0x355/0x360 [cls_flower]
-  __tcf_classify+0x1fd/0x330
-  tcf_classify+0x21c/0x3c0
-  sch_handle_ingress.constprop.0+0x2c5/0x500
-  __netif_receive_skb_core.constprop.0+0xb25/0x1510
-  __netif_receive_skb_list_core+0x220/0x4c0
-  netif_receive_skb_list_internal+0x446/0x620
-  napi_complete_done+0x157/0x3d0
-  gro_cell_poll+0xcf/0x100
-  __napi_poll+0x65/0x310
-  net_rx_action+0x30c/0x5c0
-  __do_softirq+0x14f/0x491
+hpet_example now shows that it works for both 64-bit and 32-bit.
 
- Freed by task 6469:
-  kasan_save_stack+0x38/0x70
-  kasan_set_track+0x25/0x40
-  kasan_save_free_info+0x2b/0x60
-  ____kasan_slab_free+0x180/0x1f0
-  __kasan_slab_free+0x12/0x30
-  slab_free_freelist_hook+0xd2/0x1a0
-  __kmem_cache_free+0x1a2/0x2f0
-  kfree+0x78/0x120
-  nf_conntrack_free+0x74/0x130 [nf_conntrack]
-  nf_ct_destroy+0xb2/0x140 [nf_conntrack]
-  __nf_ct_resolve_clash+0x529/0x5d0 [nf_conntrack]
-  nf_ct_resolve_clash+0xf6/0x490 [nf_conntrack]
-  __nf_conntrack_confirm+0x2c6/0x770 [nf_conntrack]
-  tcf_ct_act+0x12ad/0x1350 [act_ct]
-  tcf_action_exec+0xf8/0x1f0
-  fl_classify+0x355/0x360 [cls_flower]
-  __tcf_classify+0x1fd/0x330
-  tcf_classify+0x21c/0x3c0
-  sch_handle_ingress.constprop.0+0x2c5/0x500
-  __netif_receive_skb_core.constprop.0+0xb25/0x1510
-  __netif_receive_skb_list_core+0x220/0x4c0
-  netif_receive_skb_list_internal+0x446/0x620
-  napi_complete_done+0x157/0x3d0
-  gro_cell_poll+0xcf/0x100
-  __napi_poll+0x65/0x310
-  net_rx_action+0x30c/0x5c0
-  __do_softirq+0x14f/0x491
+root@intel-x86-64:~# ./hpet_example-32.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: info.hi_flags 0x0
+hpet_poll: expired time = 0xf4298
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+hpet_poll: expired time = 0xf4235
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+root@intel-x86-64:~# ./hpet_example-64.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: info.hi_flags 0x0
+hpet_poll: expired time = 0xf42a1
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+hpet_poll: expired time = 0xf4232
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
 
-The ct may be dropped if a clash has been resolved but is still passed to
-the tcf_ct_flow_table_process_conn function for further usage. This issue
-can be fixed by retrieving ct from skb again after confirming conntrack.
-
-Fixes: 0cc254e5aa37 ("net/sched: act_ct: Offload connections with commit action")
-Co-developed-by: Gerald Yang <gerald.yang@canonical.com>
-Signed-off-by: Gerald Yang <gerald.yang@canonical.com>
-Signed-off-by: Chengen Du <chengen.du@canonical.com>
-Link: https://patch.msgid.link/20240710053747.13223-1-chengen.du@canonical.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: 54066a57c584 ("hpet: kill BKL, add compat_ioctl")
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240606123908.738733-1-zhe.he@windriver.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ct.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/char/hpet.c |   34 +++++++++++++++++++++++++++++-----
+ 1 file changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index cd95a315fde82..44ff7f356ec15 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -1212,6 +1212,14 @@ static int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
- 		 */
- 		if (nf_conntrack_confirm(skb) != NF_ACCEPT)
- 			goto drop;
-+
-+		/* The ct may be dropped if a clash has been resolved,
-+		 * so it's necessary to retrieve it from skb again to
-+		 * prevent UAF.
-+		 */
-+		ct = nf_ct_get(skb, &ctinfo);
-+		if (!ct)
-+			skip_add = true;
+--- a/drivers/char/hpet.c
++++ b/drivers/char/hpet.c
+@@ -304,8 +304,13 @@ hpet_read(struct file *file, char __user
+ 	if (!devp->hd_ireqfreq)
+ 		return -EIO;
+ 
+-	if (count < sizeof(unsigned long))
+-		return -EINVAL;
++	if (in_compat_syscall()) {
++		if (count < sizeof(compat_ulong_t))
++			return -EINVAL;
++	} else {
++		if (count < sizeof(unsigned long))
++			return -EINVAL;
++	}
+ 
+ 	add_wait_queue(&devp->hd_waitqueue, &wait);
+ 
+@@ -329,9 +334,16 @@ hpet_read(struct file *file, char __user
+ 		schedule();
  	}
  
- 	if (!skip_add)
--- 
-2.43.0
-
+-	retval = put_user(data, (unsigned long __user *)buf);
+-	if (!retval)
+-		retval = sizeof(unsigned long);
++	if (in_compat_syscall()) {
++		retval = put_user(data, (compat_ulong_t __user *)buf);
++		if (!retval)
++			retval = sizeof(compat_ulong_t);
++	} else {
++		retval = put_user(data, (unsigned long __user *)buf);
++		if (!retval)
++			retval = sizeof(unsigned long);
++	}
++
+ out:
+ 	__set_current_state(TASK_RUNNING);
+ 	remove_wait_queue(&devp->hd_waitqueue, &wait);
+@@ -686,12 +698,24 @@ struct compat_hpet_info {
+ 	unsigned short hi_timer;
+ };
+ 
++/* 32-bit types would lead to different command codes which should be
++ * translated into 64-bit ones before passed to hpet_ioctl_common
++ */
++#define COMPAT_HPET_INFO       _IOR('h', 0x03, struct compat_hpet_info)
++#define COMPAT_HPET_IRQFREQ    _IOW('h', 0x6, compat_ulong_t)
++
+ static long
+ hpet_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	struct hpet_info info;
+ 	int err;
+ 
++	if (cmd == COMPAT_HPET_INFO)
++		cmd = HPET_INFO;
++
++	if (cmd == COMPAT_HPET_IRQFREQ)
++		cmd = HPET_IRQFREQ;
++
+ 	mutex_lock(&hpet_mutex);
+ 	err = hpet_ioctl_common(file->private_data, cmd, arg, &info);
+ 	mutex_unlock(&hpet_mutex);
 
 
 
