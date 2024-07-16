@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-59625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8181D932AFB
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B443932C75
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:55:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B37611C229FE
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36E38283A7C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FEFF9E8;
-	Tue, 16 Jul 2024 15:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8D619FA87;
+	Tue, 16 Jul 2024 15:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgBSKG24"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFiiSDuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD05B641;
-	Tue, 16 Jul 2024 15:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC9B19FA72;
+	Tue, 16 Jul 2024 15:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144411; cv=none; b=TrvUUXKXjnjbhQ/HiZBZ1s4/XnsPB+SZNXE7dgDQePO8tlXfBy+crhXNigrjlOh1ggcR9ViW2DoOKm7jXL45/tALjE1yhAZb3GpGUVLWjsLdo5juQl+q+dW/IwBSMxV3P8KU2iChwGSiJxakNdvYIoJDi+uTnmVunAr1DDeA23E=
+	t=1721145315; cv=none; b=UiAqaLRZrQWuMq7C0TLZHmMN//r9uy+5/5v/16G4bgi6dKxYNrTjmsGrRZR0XvJkeGNcWPbCvh5kHMhSF8DxSBApWZFOpaBeWTygGcYT/4KDjuIBgOihYmV72JJa1kykGO7I3neAwoqnAVKlswHKlIrbwUpSNJjK6wl+xtpFuV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144411; c=relaxed/simple;
-	bh=j+tK44bswoPDgb8BSTNWM2k0huOSvMivPH8Ok+4veN4=;
+	s=arc-20240116; t=1721145315; c=relaxed/simple;
+	bh=THcpGiaRv6ktTvH/+mDoqlrRqSlkajQu1wJUV2qpvZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQ1YX8DwggJX8nJbAiOIrQWtxLBXxp1BiIiNyo1OZgW3fNoSQGfJq11u6egergGQnDQXVk9ah+ARtpKIlTnR5sc4FTVnUcAwjRXCldZTCcxOYT3AtkrToGty751HBTpu3LGzkCHUgdKwhtvFz69CQGlCeFNJB7uBXhFHaU1XWkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgBSKG24; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122B3C116B1;
-	Tue, 16 Jul 2024 15:40:10 +0000 (UTC)
+	 MIME-Version; b=BalmeQTJomAE+YpoTqFJ32nkSKtOrkA/OgJv1WFljt8Qn+X3qtRvfymcl53DjQmFlQkB6nhyyfaVcJ970WXnIkQkhg8Qs2ci5xbSn99ZFnr+7zN47wPYbhsXb7LH6/iPgf4KwW0I/MwZsLpAoKgTYS6mr0RNtGEn+CVyxyGzD4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFiiSDuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3A9C4AF0B;
+	Tue, 16 Jul 2024 15:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144411;
-	bh=j+tK44bswoPDgb8BSTNWM2k0huOSvMivPH8Ok+4veN4=;
+	s=korg; t=1721145315;
+	bh=THcpGiaRv6ktTvH/+mDoqlrRqSlkajQu1wJUV2qpvZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgBSKG24IK7xocGvX1nyQ2+SPbFuHd1SVK1MLW5EjhfOmn8g7olGxca1JnODGP/lK
-	 6GJnGu1xE4XEIogM4qFGCTarkE7P+Ek53moz4SQpQiIn71+nxLJUhAtkzliuvolN4l
-	 xZ/PN9+a7iTF5Tr6XxYxwBuHcLNxoQp2d9f+GpXE=
+	b=WFiiSDuQj+2nAG4HLJbgHpMdCcCe7uBmLeLH9kONIm8aFa7IjZuVvFakP+Nd0GGEQ
+	 JoVR5bz56Pk0j7KY+2lS8p/mps7KdpAHT6rg1noQpsTMoK2vZ7zxHj1CcexhRoH06T
+	 1V+2Kf/YjKdFHr3AzgtcV/i2/awCXqfeTvKUOoTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vanillan Wang <vanillanwang@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 64/78] USB: serial: option: add Rolling RW350-GL variants
+	syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 25/96] ppp: reject claimed-as-LCP but actually malformed packets
 Date: Tue, 16 Jul 2024 17:31:36 +0200
-Message-ID: <20240716152743.116211342@linuxfoundation.org>
+Message-ID: <20240716152747.484010221@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vanillan Wang <vanillanwang@163.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit ae420771551bd9f04347c59744dd062332bdec3e upstream.
+[ Upstream commit f2aeb7306a898e1cbd03963d376f4b6656ca2b55 ]
 
-Update the USB serial option driver support for the Rolling
-RW350-GL
-- VID:PID 33f8:0802, RW350-GL are laptop M.2 cards (with
-MBIM interfaces for /Linux/Chrome OS)
+Since 'ppp_async_encode()' assumes valid LCP packets (with code
+from 1 to 7 inclusive), add 'ppp_check_packet()' to ensure that
+LCP packet has an actual body beyond PPP_LCP header bytes, and
+reject claimed-as-LCP but actually malformed data otherwise.
 
-Here are the outputs of usb-devices:
-
-usbmode=63: mbim, pipe
-
-T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0802 Rev=00.01
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=USB DATA CARD
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-usbmode=64: mbim, others at (If#= 5 adb)
-
-MBIM(MI0) + GNSS(MI2) + AP log(MI3) + AP META(MI4) + ADB(MI5) +
-MD AT(MI6) + MD META(MI7) + NPT(MI8) + Debug(MI9)
-
-T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  5 Spd=5000 MxCh= 0
-D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0802 Rev=00.01
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=USB DATA CARD
-C:  #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=06(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=07(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=08(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=09(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8a(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Signed-off-by: Vanillan Wang <vanillanwang@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ec0723ba9605678b14bf
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ppp/ppp_generic.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2333,6 +2333,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
- 	  .driver_info = RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 1d71f5276241c..5a6fa566e722f 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -70,6 +70,7 @@
+ #define MPHDRLEN_SSN	4	/* ditto with short sequence numbers */
+ 
+ #define PPP_PROTO_LEN	2
++#define PPP_LCP_HDRLEN	4
+ 
+ /*
+  * An instance of /dev/ppp can be associated with either a ppp
+@@ -491,6 +492,15 @@ static ssize_t ppp_read(struct file *file, char __user *buf,
+ 	return ret;
+ }
+ 
++static bool ppp_check_packet(struct sk_buff *skb, size_t count)
++{
++	/* LCP packets must include LCP header which 4 bytes long:
++	 * 1-byte code, 1-byte identifier, and 2-byte length.
++	 */
++	return get_unaligned_be16(skb->data) != PPP_LCP ||
++		count >= PPP_PROTO_LEN + PPP_LCP_HDRLEN;
++}
++
+ static ssize_t ppp_write(struct file *file, const char __user *buf,
+ 			 size_t count, loff_t *ppos)
+ {
+@@ -513,6 +523,11 @@ static ssize_t ppp_write(struct file *file, const char __user *buf,
+ 		kfree_skb(skb);
+ 		goto out;
+ 	}
++	ret = -EINVAL;
++	if (unlikely(!ppp_check_packet(skb, count))) {
++		kfree_skb(skb);
++		goto out;
++	}
+ 
+ 	switch (pf->kind) {
+ 	case INTERFACE:
+-- 
+2.43.0
+
 
 
 
