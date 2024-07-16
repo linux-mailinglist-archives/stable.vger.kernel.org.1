@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-59719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBFFA932B6B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F92932D0C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1ABE91C22D3C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A92441C22452
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E90919AA78;
-	Tue, 16 Jul 2024 15:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FEFE19DF71;
+	Tue, 16 Jul 2024 16:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwdZJQG2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNyHeKOw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBF6F9E8;
-	Tue, 16 Jul 2024 15:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30FC17623C;
+	Tue, 16 Jul 2024 16:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144698; cv=none; b=EZ3XrselD0vxndO1yEWiPWgEZWq/3rpNEM7fhrb815buQYYUpEA8KK0c19TzmF9R0ogewfFgwnSzAVySrGclQZeep3BW4LUr2yqkCfFzHDt/XuMIjX75hQtsO/i8Raved3Uadk7wsqyuf9Nfyl5nM+ThSTJcWuOsAV+xst94XoI=
+	t=1721145628; cv=none; b=hS41gHBOgrtnidn/gI6NVL7zUKUegaQezbhWCExxkj+SieTNKyjd1WtpuGt96zf4LmHBrJbAbB3u/eDwg4vof5Fn0bGnvPXXnJaUUKzAp/2hqvTVf2Kc6ts68WgML1IiWgaB+ql39Rd5kj5UaT/jKncfQNLBEwmNNVXTvOtoG48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144698; c=relaxed/simple;
-	bh=y3KW8QgfLawdS3kceEGifJG/MHXGSln7/E+cUciPHOE=;
+	s=arc-20240116; t=1721145628; c=relaxed/simple;
+	bh=+ddMzR7yvZMI41QgOKRcM8PVTgs8RGJ3ijtsGLA2J+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VbXzxCDXbEraVv+EWvI6FtDg162w6VYtGuIl39K7xx74zg8Q2QUrkkkiwyngeQCI2RIfCtj/W0IR29SVntN2OdpAycCMcKALaH9pwQ36AbesjK++gJdTQMdHMcU14Tw2Dsnwr55FW3d3UgnUskwjaXj+1uji7lBxPpJ2ShQLl+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwdZJQG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCD1C116B1;
-	Tue, 16 Jul 2024 15:44:58 +0000 (UTC)
+	 MIME-Version; b=OClKLC6N73NCGIIfBl/B64q7NkimZhOIkVe85yojv/5anOQdEE+0dY/QC69AzPxNNxm8ax5AU/EeAuGX3E2S1xgyevAS3xzq6xQiHTnwKoACZqJZRIPb+fnVmFEGpS1OQavQpLkTnIlNq9ACfLq6hKL66PQR/sXMHEXlVXPHNhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNyHeKOw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16D1C116B1;
+	Tue, 16 Jul 2024 16:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144698;
-	bh=y3KW8QgfLawdS3kceEGifJG/MHXGSln7/E+cUciPHOE=;
+	s=korg; t=1721145628;
+	bh=+ddMzR7yvZMI41QgOKRcM8PVTgs8RGJ3ijtsGLA2J+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwdZJQG2/DRmlM6cFleEDOD05eVXFeiToNmNYYuWyWbiIGLBOdgg6gnXnuXlCBuNI
-	 BFlPq823aYlkHLXZxSOfz+hR6xMVU7GOp18Ez5zBT7qhMVupYMw8ENLWUwS1xFSg3G
-	 IouUmJutDqpsP1mX5lMmQj55dk50ZWBYsSNXwu6U=
+	b=NNyHeKOwSYQNMW2wrOrzyEv6C0GoK74RW5dWA0eQP/hZifUQbxLVI4EyyzUPxyFjS
+	 zzfU6Il9M+jJvEPweXTf1M12Uv4GtcEKHTzKY7js+OnXQgDP8uu6im+ZEghvCTX39M
+	 H6O8yQetLFobBYT73GL7Wmb5UoDmkp3U5fM3A/i4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 078/108] USB: serial: option: add Fibocom FM350-GL
+	syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 031/121] ppp: reject claimed-as-LCP but actually malformed packets
 Date: Tue, 16 Jul 2024 17:31:33 +0200
-Message-ID: <20240716152748.977355402@linuxfoundation.org>
+Message-ID: <20240716152752.521788997@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,126 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjørn Mork <bjorn@mork.no>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 2604e08ff251dba330e16b65e80074c9c540aad7 upstream.
+[ Upstream commit f2aeb7306a898e1cbd03963d376f4b6656ca2b55 ]
 
-FM350-GL is 5G Sub-6 WWAN module which uses M.2 form factor interface.
-It is based on Mediatek's MTK T700 CPU. The module supports PCIe Gen3
-x1 and USB 2.0 and 3.0 interfaces.
+Since 'ppp_async_encode()' assumes valid LCP packets (with code
+from 1 to 7 inclusive), add 'ppp_check_packet()' to ensure that
+LCP packet has an actual body beyond PPP_LCP header bytes, and
+reject claimed-as-LCP but actually malformed data otherwise.
 
-The manufacturer states that USB is "for debug" but it has been
-confirmed to be fully functional, except for modem-control requests on
-some of the interfaces.
-
-USB device composition is controlled by AT+GTUSBMODE=<mode> command.
-Two values are currently supported for the <mode>:
-
-40: RNDIS+AT+AP(GNSS)+META+DEBUG+NPT+ADB
-41: RNDIS+AT+AP(GNSS)+META+DEBUG+NPT+ADB+AP(LOG)+AP(META) (default value)
-
-[ Note that the functions above are not ordered by interface number. ]
-
-Mode 40 corresponds to:
-
-T:  Bus=03 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#= 22 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0e8d ProdID=7126 Rev= 0.01
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FM350-GL
-C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=02 Prot=ff Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Mode 41 corresponds to:
-
-T:  Bus=03 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0e8d ProdID=7127 Rev= 0.01
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FM350-GL
-C:* #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=02 Prot=ff Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+ec0723ba9605678b14bf@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ec0723ba9605678b14bf
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ppp/ppp_generic.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2230,6 +2230,10 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, MEDIATEK_PRODUCT_7106_2COM, 0x02, 0x02, 0x01) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, MEDIATEK_PRODUCT_DC_4COM2, 0xff, 0x02, 0x01) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, MEDIATEK_PRODUCT_DC_4COM2, 0xff, 0x00, 0x00) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7126, 0xff, 0x00, 0x00),
-+	  .driver_info = NCTRL(2) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7127, 0xff, 0x00, 0x00),
-+	  .driver_info = NCTRL(2) | NCTRL(3) | NCTRL(4) },
- 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MEN200) },
- 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MPL200),
- 	  .driver_info = RSVD(1) | RSVD(4) },
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index a9beacd552cf8..370c84f393759 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -70,6 +70,7 @@
+ #define MPHDRLEN_SSN	4	/* ditto with short sequence numbers */
+ 
+ #define PPP_PROTO_LEN	2
++#define PPP_LCP_HDRLEN	4
+ 
+ /*
+  * An instance of /dev/ppp can be associated with either a ppp
+@@ -491,6 +492,15 @@ static ssize_t ppp_read(struct file *file, char __user *buf,
+ 	return ret;
+ }
+ 
++static bool ppp_check_packet(struct sk_buff *skb, size_t count)
++{
++	/* LCP packets must include LCP header which 4 bytes long:
++	 * 1-byte code, 1-byte identifier, and 2-byte length.
++	 */
++	return get_unaligned_be16(skb->data) != PPP_LCP ||
++		count >= PPP_PROTO_LEN + PPP_LCP_HDRLEN;
++}
++
+ static ssize_t ppp_write(struct file *file, const char __user *buf,
+ 			 size_t count, loff_t *ppos)
+ {
+@@ -513,6 +523,11 @@ static ssize_t ppp_write(struct file *file, const char __user *buf,
+ 		kfree_skb(skb);
+ 		goto out;
+ 	}
++	ret = -EINVAL;
++	if (unlikely(!ppp_check_packet(skb, count))) {
++		kfree_skb(skb);
++		goto out;
++	}
+ 
+ 	switch (pf->kind) {
+ 	case INTERFACE:
+-- 
+2.43.0
+
 
 
 
