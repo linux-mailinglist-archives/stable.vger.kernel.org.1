@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-59726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72600932B73
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009E8932D12
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 297FE1F211D2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31FFE1C23398
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA79195B27;
-	Tue, 16 Jul 2024 15:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822D1199EA3;
+	Tue, 16 Jul 2024 16:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmoERGN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7Nn1dq3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699A017A93F;
-	Tue, 16 Jul 2024 15:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E571DDCE;
+	Tue, 16 Jul 2024 16:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144724; cv=none; b=rtsWRO/H0LcDCpURBbnZjH5q4r4088QHSHTsaxAXXLd5CJKwSO5MbVx35ORrog41GPLL5h0t03XcawWWNgdnLRuP/eOQAAaleOpxrQiCoBFTe6ybG7LfHElnHWmLJqFTUbSZltIiddP7y5LcIuE68OHsd/XjAf8OwVeBqBczAV0=
+	t=1721145646; cv=none; b=oOzKAdVVgO2zwo8TlsqWi/Lf1curl4xaJzNBufr1a9iQBNbLg7KVjlNfjLHf8Nq93zb+9JDEMIeAD2TdJDeMXTRBCd9skCa2yA1UONLfd6akBZhJg+o9bQHInjHSX4ai69Wz/+C2c6nq5/NOlc7wb9imhiamdV3oNwTjIC0JB3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144724; c=relaxed/simple;
-	bh=b+NDRqboVOUNr8KOKq8et6BJp+ruLBtPAS/jy5wJmCA=;
+	s=arc-20240116; t=1721145646; c=relaxed/simple;
+	bh=S87oRf6/Jm2mQr7rXW1dNEoc8U2v+zRDpZ8IuZ4XOZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XwUm37y8csQ7j7DPg2rL6l28uL8sD4NIvnh5xGcSUYm0Z1rzCLvSETK6hDuvKpVbHQQj9Uvkh5nJIKT6AC6dlq3wY/ilrT3+ZNRVUKWF5xkdhU3pSjs/RCNm51qo0R75niNMrTzowpNXzljh8bGU5QVV6VdN3bMz5dOON8zpqw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmoERGN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35F0C4AF0D;
-	Tue, 16 Jul 2024 15:45:23 +0000 (UTC)
+	 MIME-Version; b=NbbkFigKUVRXG/stYc71LOKZoN/w/eNoFA7l03y3XvYA+bt3+0XEm/iZboHJHBe0S6NJAtSeAipoXRvYvzh1jUy8q3pO/Nf3/VawNwwq16e2svdOs7XMtzX0Ko/PkWk+f/b4v1BEtReCT/gGcboIOouAD92lDhYzioN76AXrHW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7Nn1dq3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA30EC116B1;
+	Tue, 16 Jul 2024 16:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144724;
-	bh=b+NDRqboVOUNr8KOKq8et6BJp+ruLBtPAS/jy5wJmCA=;
+	s=korg; t=1721145646;
+	bh=S87oRf6/Jm2mQr7rXW1dNEoc8U2v+zRDpZ8IuZ4XOZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AmoERGN0YzvQ7peT/jl8+M9aPa3/50wR0usP3NTWB6qvBSRUH7sKkMGndPDNL+ciL
-	 U7PMRsHVDmu0qi7OGEjroG7ezA4eNlOtDZTO6mNgewkTnx8YAMeJxo/K5xPjj4X4kx
-	 yDwNcKAI8cPERAGAQlcQLvSbbEwCrbw4/qV94o0I=
+	b=r7Nn1dq3gvB4xXIXScvplnbmE37aiMiRet/w6++INfOEkbJKKLDtlrWUriT7jr6Cm
+	 PUonoDfLJpe5TjU4EB7ojLI20YMSd/v5dblU1PI0cjEQNbAYZo45W7IWhr19Q+clg8
+	 gCJ2f+ME7zXWuIJwjITv00Q5HRPGmsntwYKaeGlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 084/108] usb: gadget: configfs: Prevent OOB read/write in usb_string_copy()
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 037/121] arm64: dts: qcom: sc8180x: Fix LLCC reg property again
 Date: Tue, 16 Jul 2024 17:31:39 +0200
-Message-ID: <20240716152749.209238268@linuxfoundation.org>
+Message-ID: <20240716152752.750553041@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-commit 6d3c721e686ea6c59e18289b400cc95c76e927e0 upstream.
+[ Upstream commit 3df1627d8370a9c420b49743976b3eeba32afbbc ]
 
-Userspace provided string 's' could trivially have the length zero. Left
-unchecked this will firstly result in an OOB read in the form
-`if (str[0 - 1] == '\n') followed closely by an OOB write in the form
-`str[0 - 1] = '\0'`.
+Commit '74cf6675c35e ("arm64: dts: qcom: sc8180x: Fix LLCC reg
+property")' transitioned the SC8180X LLCC node to describe each memory
+region individually, but did not include all the regions.
 
-There is already a validating check to catch strings that are too long.
-Let's supply an additional check for invalid strings that are too short.
+The result is that Linux fails to find the last regions, so extend the
+definition to cover all the blocks.
 
-Signed-off-by: Lee Jones <lee@kernel.org>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240705074339.633717-1-lee@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This also corrects the related DeviceTree validation error.
+
+Fixes: 74cf6675c35e ("arm64: dts: qcom: sc8180x: Fix LLCC reg property")
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240525-sc8180x-llcc-reg-fixup-v1-1-0c13d4ea94f2@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/configfs.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/sc8180x.dtsi | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -104,9 +104,12 @@ static int usb_string_copy(const char *s
- 	int ret;
- 	char *str;
- 	char *copy = *s_copy;
-+
- 	ret = strlen(s);
- 	if (ret > USB_MAX_STRING_LEN)
- 		return -EOVERFLOW;
-+	if (ret < 1)
-+		return -EINVAL;
+diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+index fbb9bf09078a0..dd207eb81360a 100644
+--- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+@@ -2551,11 +2551,14 @@
  
- 	if (copy) {
- 		str = copy;
+ 		system-cache-controller@9200000 {
+ 			compatible = "qcom,sc8180x-llcc";
+-			reg = <0 0x09200000 0 0x50000>, <0 0x09280000 0 0x50000>,
+-			      <0 0x09300000 0 0x50000>, <0 0x09380000 0 0x50000>,
+-			      <0 0x09600000 0 0x50000>;
++			reg = <0 0x09200000 0 0x58000>, <0 0x09280000 0 0x58000>,
++			      <0 0x09300000 0 0x58000>, <0 0x09380000 0 0x58000>,
++			      <0 0x09400000 0 0x58000>, <0 0x09480000 0 0x58000>,
++			      <0 0x09500000 0 0x58000>, <0 0x09580000 0 0x58000>,
++			      <0 0x09600000 0 0x58000>;
+ 			reg-names = "llcc0_base", "llcc1_base", "llcc2_base",
+-				    "llcc3_base", "llcc_broadcast_base";
++				    "llcc3_base", "llcc4_base", "llcc5_base",
++				    "llcc6_base", "llcc7_base",  "llcc_broadcast_base";
+ 			interrupts = <GIC_SPI 582 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
+ 
+-- 
+2.43.0
+
 
 
 
