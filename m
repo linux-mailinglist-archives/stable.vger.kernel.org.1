@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-59746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20BB932B8B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B55932C91
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86B821F210A7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5743B227AF
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC49019AD59;
-	Tue, 16 Jul 2024 15:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29D319FA91;
+	Tue, 16 Jul 2024 15:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXD9NEI7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntmVmuzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B301DA4D;
-	Tue, 16 Jul 2024 15:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFAD19FA85;
+	Tue, 16 Jul 2024 15:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144783; cv=none; b=YQRU8e+yNX2jpcTV5a0ccJSsMul+NhdPuAxflSjexIzsPwK4vB9Tz2j9y5kJgRqv3qi66EV1546tEQYqcseNJwe6zhWkMtqFUNjflo5sUqxmPgRo4cDlPxCPjJcKECXr9BA0q6QGCRb5rwkaDQwBb52qgVVS1bODBUDp1V57nTI=
+	t=1721145360; cv=none; b=f8dK2jkMVMNt0RHFnwJ4EGtdPCsxOK+CMatBN5WbhWDyeVmMZueQSGsZeESyoxzR6yLsvLXJzgfCr+qlyssBWnNawrSDbuLlnmHiG58YqPzGRJk+osAjH4aEyIZ8uiUvl+uV631D2UEX+53O9dWHNH5zAJE9x2UmDVdyaf4ZiBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144783; c=relaxed/simple;
-	bh=hFGe03lJKn54YUm+wGXDaTrOrhNHDn8sZdk6x8cCDks=;
+	s=arc-20240116; t=1721145360; c=relaxed/simple;
+	bh=vZMgNb37vZIYLQv8LM41yCum4EkUY6o+kqOUgGDZve0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2ajrT3Qt1+AcbseYj+ZWHFCQ8N7nQDgD+jYnhL1b01h/UJoFvsORD1ajhKqiXx/uVRz97sn7kMErfJJ77p4svuNzNDnJ2v1sV+yK0SZyT6sWehfejZoJtXuchC6xYTsLnX8UBRiI0UMbf/PWIpOHp/txk6L6zwd6nigeJoHt4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXD9NEI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100B1C116B1;
-	Tue, 16 Jul 2024 15:46:22 +0000 (UTC)
+	 MIME-Version; b=dWyRTBzTQvFslj30QElqsP9OJDgKXXOSpz8HL5aKLLlEwemv5i2S2p2tXjzsKLevb2cmC1UsGrReVrMGPlqW1cC/Y1JvidTObyIqQBpJVVXvo4ZR6bW8pVBQau/Q8Nac7u2rXNm2yak5l/VGq3cXPKUpbjcRQhBfAMvJ6W5YlbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntmVmuzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CC6C116B1;
+	Tue, 16 Jul 2024 15:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144783;
-	bh=hFGe03lJKn54YUm+wGXDaTrOrhNHDn8sZdk6x8cCDks=;
+	s=korg; t=1721145360;
+	bh=vZMgNb37vZIYLQv8LM41yCum4EkUY6o+kqOUgGDZve0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OXD9NEI7ozdLWXXUNg5TMf3AcGAc+fV+6xXu7r8I1oP2Y06RUtS2LuCwbOeskXDyW
-	 KNs8a29jc/V9xMGlZTYq9fz8M/62yPiZpU6nGiWDzTpfY6Br096s4hbuBKIu9d6utV
-	 Eaol1GdtCmMVfg2t89FarXgyonNflR934BF+Kmsw=
+	b=ntmVmuzZl2B2fVJ65s5tOkQNvyiBCkd5IShy05XMiMxpz4XKl5yeq17MWu0wHYtOc
+	 lLvME3QsKyV9nGra2kA8K5CbX0BDBP42VqSg6FoXRK0ihjtSuuPvvBgEhhFCSoVPpC
+	 ipzwd0QmrZv9Kl+6vuxFik9NezuWHKMW1ys4BjSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-Subject: [PATCH 5.10 097/108] ipv6: prevent NULL dereference in ip6_output()
+	Kiran Kumar K <kirankumark@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Naveen Mamindlapalli <naveenm@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 41/96] octeontx2-af: extend RSS supported offload types
 Date: Tue, 16 Jul 2024 17:31:52 +0200
-Message-ID: <20240716152749.716198902@linuxfoundation.org>
+Message-ID: <20240716152748.087947116@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +64,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kiran Kumar K <kirankumark@marvell.com>
 
-commit 4db783d68b9b39a411a96096c10828ff5dfada7a upstream.
+[ Upstream commit 79bc788c038c9c87224d41ba6bbab20b6bf1a141 ]
 
-According to syzbot, there is a chance that ip6_dst_idev()
-returns NULL in ip6_output(). Most places in IPv6 stack
-deal with a NULL idev just fine, but not here.
+Add support to select L3 SRC or DST only, L4 SRC or DST only for RSS
+calculation.
 
-syzbot reported:
+AF consumer may have requirement as we can select only SRC or DST data for
+RSS calculation in L3, L4 layers. With this requirement there will be
+following combinations, IPV[4,6]_SRC_ONLY, IPV[4,6]_DST_ONLY,
+[TCP,UDP,SCTP]_SRC_ONLY, [TCP,UDP,SCTP]_DST_ONLY. So, instead of creating
+a bit for each combination, we are using upper 4 bits (31:28) in the
+flow_key_cfg to represent the SRC, DST selection. 31 => L3_SRC,
+30 => L3_DST, 29 => L4_SRC, 28 => L4_DST. These won't be part of flow_cfg,
+so that we don't need to change the existing ABI.
 
-general protection fault, probably for non-canonical address 0xdffffc00000000bc: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x00000000000005e0-0x00000000000005e7]
-CPU: 0 PID: 9775 Comm: syz-executor.4 Not tainted 6.9.0-rc5-syzkaller-00157-g6a30653b604a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
- RIP: 0010:ip6_output+0x231/0x3f0 net/ipv6/ip6_output.c:237
-Code: 3c 1e 00 49 89 df 74 08 4c 89 ef e8 19 58 db f7 48 8b 44 24 20 49 89 45 00 49 89 c5 48 8d 9d e0 05 00 00 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 4c 8b 74 24 28 0f 85 61 01 00 00 8b 1b 31 ff
-RSP: 0018:ffffc9000927f0d8 EFLAGS: 00010202
-RAX: 00000000000000bc RBX: 00000000000005e0 RCX: 0000000000040000
-RDX: ffffc900131f9000 RSI: 0000000000004f47 RDI: 0000000000004f48
-RBP: 0000000000000000 R08: ffffffff8a1f0b9a R09: 1ffffffff1f51fad
-R10: dffffc0000000000 R11: fffffbfff1f51fae R12: ffff8880293ec8c0
-R13: ffff88805d7fc000 R14: 1ffff1100527d91a R15: dffffc0000000000
-FS:  00007f135c6856c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020000080 CR3: 0000000064096000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ip6_xmit+0xefe/0x17f0 net/ipv6/ip6_output.c:358
-  sctp_v6_xmit+0x9f2/0x13f0 net/sctp/ipv6.c:248
-  sctp_packet_transmit+0x26ad/0x2ca0 net/sctp/output.c:653
-  sctp_packet_singleton+0x22c/0x320 net/sctp/outqueue.c:783
-  sctp_outq_flush_ctrl net/sctp/outqueue.c:914 [inline]
-  sctp_outq_flush+0x6d5/0x3e20 net/sctp/outqueue.c:1212
-  sctp_side_effects net/sctp/sm_sideeffect.c:1198 [inline]
-  sctp_do_sm+0x59cc/0x60c0 net/sctp/sm_sideeffect.c:1169
-  sctp_primitive_ASSOCIATE+0x95/0xc0 net/sctp/primitive.c:73
-  __sctp_connect+0x9cd/0xe30 net/sctp/socket.c:1234
-  sctp_connect net/sctp/socket.c:4819 [inline]
-  sctp_inet_connect+0x149/0x1f0 net/sctp/socket.c:4834
-  __sys_connect_file net/socket.c:2048 [inline]
-  __sys_connect+0x2df/0x310 net/socket.c:2065
-  __do_sys_connect net/socket.c:2075 [inline]
-  __se_sys_connect net/socket.c:2072 [inline]
-  __x64_sys_connect+0x7a/0x90 net/socket.c:2072
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 778d80be5269 ("ipv6: Add disable_ipv6 sysctl to disable IPv6 operaion on specific interface.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Link: https://lore.kernel.org/r/20240507161842.773961-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Ashwin: Regenerated the Patch for v5.10]
-Signed-off-by: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kiran Kumar K <kirankumark@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e23ac1095b9e ("octeontx2-af: fix issue with IPv6 ext match for RSS")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |  6 ++
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 57 +++++++++++++++++++
+ 2 files changed, 63 insertions(+)
 
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -240,7 +240,7 @@ int ip6_output(struct net *net, struct s
- 	skb->protocol = htons(ETH_P_IPV6);
- 	skb->dev = dev;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index e76d3bc8edea1..c288589446935 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -1084,6 +1084,8 @@ struct nix_vtag_config_rsp {
+ 	 */
+ };
  
--	if (unlikely(READ_ONCE(idev->cnf.disable_ipv6))) {
-+	if (unlikely(!idev || READ_ONCE(idev->cnf.disable_ipv6))) {
- 		IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
- 		kfree_skb(skb);
- 		return 0;
++#define NIX_FLOW_KEY_TYPE_L3_L4_MASK (~(0xf << 28))
++
+ struct nix_rss_flowkey_cfg {
+ 	struct mbox_msghdr hdr;
+ 	int	mcam_index;  /* MCAM entry index to modify */
+@@ -1109,6 +1111,10 @@ struct nix_rss_flowkey_cfg {
+ #define NIX_FLOW_KEY_TYPE_IPV4_PROTO	BIT(21)
+ #define NIX_FLOW_KEY_TYPE_AH		BIT(22)
+ #define NIX_FLOW_KEY_TYPE_ESP		BIT(23)
++#define NIX_FLOW_KEY_TYPE_L4_DST_ONLY BIT(28)
++#define NIX_FLOW_KEY_TYPE_L4_SRC_ONLY BIT(29)
++#define NIX_FLOW_KEY_TYPE_L3_DST_ONLY BIT(30)
++#define NIX_FLOW_KEY_TYPE_L3_SRC_ONLY BIT(31)
+ 	u32	flowkey_cfg; /* Flowkey types selected */
+ 	u8	group;       /* RSS context or group */
+ };
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 67080d5053e07..8a18497ad1a03 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -3361,6 +3361,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
+ 	struct nix_rx_flowkey_alg *field;
+ 	struct nix_rx_flowkey_alg tmp;
+ 	u32 key_type, valid_key;
++	u32 l3_l4_src_dst;
+ 	int l4_key_offset = 0;
+ 
+ 	if (!alg)
+@@ -3388,6 +3389,15 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
+ 	 * group_member - Enabled when protocol is part of a group.
+ 	 */
+ 
++	/* Last 4 bits (31:28) are reserved to specify SRC, DST
++	 * selection for L3, L4 i.e IPV[4,6]_SRC, IPV[4,6]_DST,
++	 * [TCP,UDP,SCTP]_SRC, [TCP,UDP,SCTP]_DST
++	 * 31 => L3_SRC, 30 => L3_DST, 29 => L4_SRC, 28 => L4_DST
++	 */
++	l3_l4_src_dst = flow_cfg;
++	/* Reset these 4 bits, so that these won't be part of key */
++	flow_cfg &= NIX_FLOW_KEY_TYPE_L3_L4_MASK;
++
+ 	keyoff_marker = 0; max_key_off = 0; group_member = 0;
+ 	nr_field = 0; key_off = 0; field_marker = 1;
+ 	field = &tmp; max_bit_pos = fls(flow_cfg);
+@@ -3425,6 +3435,22 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
+ 			}
+ 			field->hdr_offset = 12; /* SIP offset */
+ 			field->bytesm1 = 7; /* SIP + DIP, 8 bytes */
++
++			/* Only SIP */
++			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L3_SRC_ONLY)
++				field->bytesm1 = 3; /* SIP, 4 bytes */
++
++			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L3_DST_ONLY) {
++				/* Both SIP + DIP */
++				if (field->bytesm1 == 3) {
++					field->bytesm1 = 7; /* SIP + DIP, 8B */
++				} else {
++					/* Only DIP */
++					field->hdr_offset = 16; /* DIP off */
++					field->bytesm1 = 3; /* DIP, 4 bytes */
++				}
++			}
++
+ 			field->ltype_mask = 0xF; /* Match only IPv4 */
+ 			keyoff_marker = false;
+ 			break;
+@@ -3438,6 +3464,22 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
+ 			}
+ 			field->hdr_offset = 8; /* SIP offset */
+ 			field->bytesm1 = 31; /* SIP + DIP, 32 bytes */
++
++			/* Only SIP */
++			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L3_SRC_ONLY)
++				field->bytesm1 = 15; /* SIP, 16 bytes */
++
++			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L3_DST_ONLY) {
++				/* Both SIP + DIP */
++				if (field->bytesm1 == 15) {
++					/* SIP + DIP, 32 bytes */
++					field->bytesm1 = 31;
++				} else {
++					/* Only DIP */
++					field->hdr_offset = 24; /* DIP off */
++					field->bytesm1 = 15; /* DIP,16 bytes */
++				}
++			}
+ 			field->ltype_mask = 0xF; /* Match only IPv6 */
+ 			break;
+ 		case NIX_FLOW_KEY_TYPE_TCP:
+@@ -3453,6 +3495,21 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
+ 				field->lid = NPC_LID_LH;
+ 			field->bytesm1 = 3; /* Sport + Dport, 4 bytes */
+ 
++			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L4_SRC_ONLY)
++				field->bytesm1 = 1; /* SRC, 2 bytes */
++
++			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L4_DST_ONLY) {
++				/* Both SRC + DST */
++				if (field->bytesm1 == 1) {
++					/* SRC + DST, 4 bytes */
++					field->bytesm1 = 3;
++				} else {
++					/* Only DIP */
++					field->hdr_offset = 2; /* DST off */
++					field->bytesm1 = 1; /* DST, 2 bytes */
++				}
++			}
++
+ 			/* Enum values for NPC_LID_LD and NPC_LID_LG are same,
+ 			 * so no need to change the ltype_match, just change
+ 			 * the lid for inner protocols
+-- 
+2.43.0
+
 
 
 
