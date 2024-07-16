@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-59425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D6F932875
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:27:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4A393287A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E7881F237AE
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:27:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73E87285B1A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48FE1A01C8;
-	Tue, 16 Jul 2024 14:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBF81A0701;
+	Tue, 16 Jul 2024 14:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHj4BRsM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mdfRkfKL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7E41A01BF;
-	Tue, 16 Jul 2024 14:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5591A01D8;
+	Tue, 16 Jul 2024 14:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721139942; cv=none; b=IdmoHgrtGJbuQL74bb/5hsl50Y228Zm8ko3JKoS2aThAUisabSpe5i8TeZdLdj4FoLgOvCK2CSAHDnmsYIQERpzw4AcSrC8gsXvK5x3WizXdvbMHL/21kTmuWuQ4HsL0p12iqn4mFh57X9eicCx8x5dJGOtky/WHARiTQWSAOQo=
+	t=1721139943; cv=none; b=bkiQnbfYCs85bngw55vtc4+RaI/kGWY/OdQKUxNsdzEASC+qmTnusCZw2LkkiS96j0fNapwr3cE0NIcQIv1Y9eiFeos+0XGbpvyZWG+H01B2oI6+J1VwV5800xVq1w/djvi/DqB1iMQncVdX2RI4VWjIN+6+cau8aPvdCWmmi60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721139942; c=relaxed/simple;
-	bh=blrVXDEK7quFM1ljWZZCF+v5P3B1qo7c70vCTCo6/y8=;
+	s=arc-20240116; t=1721139943; c=relaxed/simple;
+	bh=uTOKARrI0amTe1Gt8kLzCi//Pwc6qVnGSFYkz8442p0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9ZKSstPWD48JB6pbcmma1gRxpXHZEVreYiVfVMxKEmuaTbmRQ8oymXj0J7HqY1oh2gXNF5k3teEjK2NqopgevylDY8+dbjMUKWh44mwUEEjd6Tgu3HzaQw5hkBm/ghoONq5y0NSPhyYwuzGxhTk9DoB36ofK2ysSXpanuryV9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHj4BRsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6831CC4AF0D;
-	Tue, 16 Jul 2024 14:25:40 +0000 (UTC)
+	 MIME-Version; b=UTjbsivcwyViYD4xWZLjnQ3r0iHZYEmUSZqyiV4X/kfLLuAoFRpJrVMq6vgrSoKeGWR1nUbd84ZJ0ZYrIFduxOjYyoZt5XOKishY1cLDzsNCEEdlEV/I94D5jbEcwpvRcU7Lcg0riLTX2au8iqXCOjO05UKYmZ9hqtb0okJyUxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mdfRkfKL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843BFC4AF09;
+	Tue, 16 Jul 2024 14:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721139942;
-	bh=blrVXDEK7quFM1ljWZZCF+v5P3B1qo7c70vCTCo6/y8=;
+	s=k20201202; t=1721139943;
+	bh=uTOKARrI0amTe1Gt8kLzCi//Pwc6qVnGSFYkz8442p0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHj4BRsMK3L5ORGnYyzNiBUST01ueo2qjeIeT4g6ZkWqAcmLy2JDNpgRf8WBrhf8d
-	 /HjwRXUXqxnW4aYBCNB2k+LlosytZMdULfc46Sju7N7t2Nik+iOIKZXOygK6NseBdZ
-	 qy4suq8ndsqM9ESN9eco3RzkOPvACl7NpuGwVCeBsAZPN2Ifwdk/TPLs25lBWJbp7B
-	 T1+d9Ic9FbEx5O50iNYvdY314SL983sn1nqueKv6qYrA3B+NptfblK0q3y5ATMfQKn
-	 k1A0WBg7T/o+MZAZZVQwOhCdyGcYe6kaw5anwHRs9avTpx+yI1ufbHZvqLojvjDUPP
-	 qjYvVPoZ6p6JQ==
+	b=mdfRkfKLE57Rl+/oSnU+wjJUkoAL8U4neZ8REm/ZOga1hOpPnAKxRI96YGSD/Dbp1
+	 Y7JGV5FqY/cUB45EueKn5LkmcsHhaAvvk6QqBQqHcf57hXuIZxyrU2VtXjcl500bS5
+	 KN5Jf7c6WD7elJ1oZ/kyRUwOR0DBa8fH5W0RcHRY6a+LGAaojTnlN9Qw2V0SJc1uAf
+	 0Tw88zFNAIM9OSuHjx+FuFlNPXmmIUuvb0H3YS4wo4znd/FdjZlQtpd9xXwf8yBiA3
+	 nrWPvlpy2r6+XUcklpjNQ/1LpQVk239Fbds+yj+rfjV/Px/7ZSEri2UdsR0SoYNKTD
+	 vkFZuXFLaVSvQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+Cc: Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 09/22] bluetooth/l2cap: sync sock recv cb and release
-Date: Tue, 16 Jul 2024 10:24:16 -0400
-Message-ID: <20240716142519.2712487-9-sashal@kernel.org>
+	xiang@kernel.org,
+	chao@kernel.org,
+	linux-erofs@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.9 10/22] erofs: ensure m_llen is reset to 0 if metadata is invalid
+Date: Tue, 16 Jul 2024 10:24:17 -0400
+Message-ID: <20240716142519.2712487-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716142519.2712487-1-sashal@kernel.org>
 References: <20240716142519.2712487-1-sashal@kernel.org>
@@ -69,89 +66,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.9
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 89e856e124f9ae548572c56b1b70c2255705f8fe ]
+[ Upstream commit 9b32b063be1001e322c5f6e01f2a649636947851 ]
 
-The problem occurs between the system call to close the sock and hci_rx_work,
-where the former releases the sock and the latter accesses it without lock protection.
+Sometimes, the on-disk metadata might be invalid due to user
+interrupts, storage failures, or other unknown causes.
 
-           CPU0                       CPU1
-           ----                       ----
-           sock_close                 hci_rx_work
-	   l2cap_sock_release         hci_acldata_packet
-	   l2cap_sock_kill            l2cap_recv_frame
-	   sk_free                    l2cap_conless_channel
-	                              l2cap_sock_recv_cb
+In that case, z_erofs_map_blocks_iter() may still return a valid
+m_llen while other fields remain invalid (e.g., m_plen can be 0).
 
-If hci_rx_work processes the data that needs to be received before the sock is
-closed, then everything is normal; Otherwise, the work thread may access the
-released sock when receiving data.
+Due to the return value of z_erofs_scan_folio() in some path will
+be ignored on purpose, the following z_erofs_scan_folio() could
+then use the invalid value by accident.
 
-Add a chan mutex in the rx callback of the sock to achieve synchronization between
-the sock release and recv cb.
+Let's reset m_llen to 0 to prevent this.
 
-Sock is dead, so set chan data to NULL, avoid others use invalid sock pointer.
-
-Reported-and-tested-by: syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://lore.kernel.org/r/20240629185743.2819229-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ fs/erofs/zmap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 8645461d45e81..64827e553d638 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1239,6 +1239,10 @@ static void l2cap_sock_kill(struct sock *sk)
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index e313c936351d5..6bd435a565f61 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -723,6 +723,8 @@ int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
  
- 	BT_DBG("sk %p state %s", sk, state_to_string(sk->sk_state));
- 
-+	/* Sock is dead, so set chan data to NULL, avoid other task use invalid
-+	 * sock pointer.
-+	 */
-+	l2cap_pi(sk)->chan->data = NULL;
- 	/* Kill poor orphan */
- 
- 	l2cap_chan_put(l2cap_pi(sk)->chan);
-@@ -1481,12 +1485,25 @@ static struct l2cap_chan *l2cap_sock_new_connection_cb(struct l2cap_chan *chan)
- 
- static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
- {
--	struct sock *sk = chan->data;
--	struct l2cap_pinfo *pi = l2cap_pi(sk);
-+	struct sock *sk;
-+	struct l2cap_pinfo *pi;
- 	int err;
- 
--	lock_sock(sk);
-+	/* To avoid race with sock_release, a chan lock needs to be added here
-+	 * to synchronize the sock.
-+	 */
-+	l2cap_chan_hold(chan);
-+	l2cap_chan_lock(chan);
-+	sk = chan->data;
- 
-+	if (!sk) {
-+		l2cap_chan_unlock(chan);
-+		l2cap_chan_put(chan);
-+		return -ENXIO;
-+	}
-+
-+	pi = l2cap_pi(sk);
-+	lock_sock(sk);
- 	if (chan->mode == L2CAP_MODE_ERTM && !list_empty(&pi->rx_busy)) {
- 		err = -ENOMEM;
- 		goto done;
-@@ -1535,6 +1552,8 @@ static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
- 
- done:
- 	release_sock(sk);
-+	l2cap_chan_unlock(chan);
-+	l2cap_chan_put(chan);
- 
+ 	err = z_erofs_do_map_blocks(inode, map, flags);
+ out:
++	if (err)
++		map->m_llen = 0;
+ 	trace_z_erofs_map_blocks_iter_exit(inode, map, flags, err);
  	return err;
  }
 -- 
