@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-59588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B8F932AD0
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B2A932A85
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBB1F1F242B7
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47C261F2330A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5751D53B;
-	Tue, 16 Jul 2024 15:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA8A1DDD1;
+	Tue, 16 Jul 2024 15:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bevRMyaH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYDrINVU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A5AB641;
-	Tue, 16 Jul 2024 15:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCE8CA40;
+	Tue, 16 Jul 2024 15:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144301; cv=none; b=aEKtpPBajsgBYt9gxPP0rH9u6p8XwVOs+2WOJzNk+JeEjfv5Cb2V6fHTyOyFMLA1kLcPYU0zwSVXxsDBei+lj5ZU5xOUEbj7HXeiPTCi4JHRMRN1IU6LmLiixulJn0VDp9wLoABPPXg3+7prfe0/IjcoRaB9f4SzbYHFCdh7ukI=
+	t=1721144089; cv=none; b=lG6FI824r/4iVE/wXWhB13AXGCxXViOTZ6ffsZgezWI+eNInXLvErAPUjgrWtgZqF6dXAvdIudSUrhTaFp+isUq6DERMEmeIchmoTXVwxjRiQ8e8iPI/Ap7y0ne9XJ4lgrZsmS0Gjb0ocNJkElcZXhBtTfXsRK/KyiKeCx3tEmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144301; c=relaxed/simple;
-	bh=KaPWowwe3v742xyx6tyEx3x3RwxGFLSc1t5bJK9c3/4=;
+	s=arc-20240116; t=1721144089; c=relaxed/simple;
+	bh=m8OjAEK6M4LMpp0ajU74RrPHHmFstYAdgOjVYbuzoTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aHCtzDRsWlj9OvMGdkzWlVQlOAIQ/zYJme6xDh1z96F4oNoRytXtlE/B6oP1DLV0hhFQG1ab1Lf9fq4O3N4GlFEs8UmsmnPvopTBCkH96NpnUzKOmOh1r6fAf4wjZ1mMcACf1Q4x2IQHsgsYUWP191yhFd4XFoQEjZVGzYWK1+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bevRMyaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2242C116B1;
-	Tue, 16 Jul 2024 15:38:20 +0000 (UTC)
+	 MIME-Version; b=PM5PVQn7V2iK20IPp2ApblEQaHrAi/cTY+rpDYqBrIfI56IUDyhfRxnwxww+KDP3JAXijksB4K/hZueFm92vuvqlQ4eYUR4NEbEeG6MuXTHlX4UqHdGSpuYv+xZxdaBtT3SY3KC3NhJYyW7bfRxHA2jSzZxDosd2t3V4HxvSZVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYDrINVU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B88AC116B1;
+	Tue, 16 Jul 2024 15:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144301;
-	bh=KaPWowwe3v742xyx6tyEx3x3RwxGFLSc1t5bJK9c3/4=;
+	s=korg; t=1721144089;
+	bh=m8OjAEK6M4LMpp0ajU74RrPHHmFstYAdgOjVYbuzoTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bevRMyaHWFAZYIPC8DZOWj9VJIjj9EwuT11c+DnrjIbUdA26VNTsKuvhtHbWt6lBm
-	 ChuHmeMBKsyMOYrIFbxGViuDkvPxAwdYW+yFvTWkkS6Bf7tldx5TYMOTiPguvUphEz
-	 eyG1HVFPbVMKOnmhQY60Ts/kF6L4/RJMPqajETB8=
+	b=bYDrINVU0zugJtTBipldYTXpllSflxHuWNuoSV79CgicRNQgdrvR1PH6GIduDRpOh
+	 D3hGyKG1UTPtaclTHEKMGX6vyyFNEqaktew98K2hioisHuL/8pLJA/fXlPii0zu2F9
+	 8XyyDoaredBx1Fhc1CAMojE8A5At9rP8STfJNldU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jozef Hopko <jozef.hopko@altana.com>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Ajay Singh <ajay.kathat@microchip.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 27/78] wifi: wilc1000: fix ies_len type in connect path
+Subject: [PATCH 4.19 24/66] tcp_metrics: validate source addr length
 Date: Tue, 16 Jul 2024 17:30:59 +0200
-Message-ID: <20240716152741.688355566@linuxfoundation.org>
+Message-ID: <20240716152739.086766985@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozef Hopko <jozef.hopko@altana.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 39ab8fff623053a50951b659e5f6b72343d7d78c ]
+[ Upstream commit 66be40e622e177316ae81717aa30057ba9e61dff ]
 
-Commit 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
-made sure that the IEs data was manipulated under the relevant RCU section.
-Unfortunately, while doing so, the commit brought a faulty implicit cast
-from int to u8 on the ies_len variable, making the parsing fail to be
-performed correctly if the IEs block is larger than 255 bytes. This failure
-can be observed with Access Points appending a lot of IEs TLVs in their
-beacon frames (reproduced with a Pixel phone acting as an Access Point,
-which brough 273 bytes of IE data in my testing environment).
+I don't see anything checking that TCP_METRICS_ATTR_SADDR_IPV4
+is at least 4 bytes long, and the policy doesn't have an entry
+for this attribute at all (neither does it for IPv6 but v6 is
+manually validated).
 
-Fix IEs parsing by removing this undesired implicit cast.
-
-Fixes: 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
-Signed-off-by: Jozef Hopko <jozef.hopko@altana.com>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Acked-by: Ajay Singh <ajay.kathat@microchip.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240701-wilc_fix_ies_data-v1-1-7486cbacf98a@bootlin.com
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Fixes: 3e7013ddf55a ("tcp: metrics: Allow selective get/del of tcp-metrics based on src IP")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/wilc1000/wilc_hif.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_metrics.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/staging/wilc1000/wilc_hif.c b/drivers/staging/wilc1000/wilc_hif.c
-index 22e02fd068b4d..7f54665c0a0f6 100644
---- a/drivers/staging/wilc1000/wilc_hif.c
-+++ b/drivers/staging/wilc1000/wilc_hif.c
-@@ -446,7 +446,8 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
- 	struct ieee80211_p2p_noa_attr noa_attr;
- 	const struct cfg80211_bss_ies *ies;
- 	struct wilc_join_bss_param *param;
--	u8 rates_len = 0, ies_len;
-+	u8 rates_len = 0;
-+	int ies_len;
- 	int ret;
- 
- 	param = kzalloc(sizeof(*param), GFP_KERNEL);
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 60619b1f4acdc..1bfbb8f8e0b7c 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -624,6 +624,7 @@ static const struct nla_policy tcp_metrics_nl_policy[TCP_METRICS_ATTR_MAX + 1] =
+ 	[TCP_METRICS_ATTR_ADDR_IPV4]	= { .type = NLA_U32, },
+ 	[TCP_METRICS_ATTR_ADDR_IPV6]	= { .type = NLA_BINARY,
+ 					    .len = sizeof(struct in6_addr), },
++	[TCP_METRICS_ATTR_SADDR_IPV4]	= { .type = NLA_U32, },
+ 	/* Following attributes are not received for GET/DEL,
+ 	 * we keep them for reference
+ 	 */
 -- 
 2.43.0
 
