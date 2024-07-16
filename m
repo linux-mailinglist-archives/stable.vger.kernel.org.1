@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-59524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D370932A8B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:35:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CC7932D00
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F6F51C22A2D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FB6C1F21785
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9171DDCE;
-	Tue, 16 Jul 2024 15:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AC419DF71;
+	Tue, 16 Jul 2024 15:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwLaZtTs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="af7mABvn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB45E541;
-	Tue, 16 Jul 2024 15:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07366199EA3;
+	Tue, 16 Jul 2024 15:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144109; cv=none; b=LD/viCf5UIDAjkSNKbXc3eVmz6XBahmktb60SDr0HtNAk6B59jZhn0z/WW+4XPDLuFESTqtXmsf00rxVXyXviFjYsL/lnPnpnzGDnjOT3VEc5MSoCm2+jSVS6fh6emcEb5WJW2dkcRBBfeFcYdqnyCVTSeu1KXlA/QfjaCYkp1w=
+	t=1721145597; cv=none; b=grtd64aP16zbkn52h53Xnbi3tVfJwSlwhRjvPQ+RjAcj674q96P9T2ffgzX4T8mI5JBVvAowofvLdYWAE3QyKN+77M/v3j5+8XLaqCckt9rrQkEeAvXLuAPXJBLgkNLBWTJfgvCJWPpSzYU89yQOO0G/Bm5BebGPRXuCcfTnt6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144109; c=relaxed/simple;
-	bh=pPc3dH9FY5stg+c2E7CeFzWCCiGwC2Y5S/x0aeSjAsc=;
+	s=arc-20240116; t=1721145597; c=relaxed/simple;
+	bh=8j6mowoEtZ79Jh1GvYSdcRZYjTpd7o3yvPrD3EydE/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SWNdLPRriaKYBHBZFvkFsxpWjtxLE9TJU89kkRDBJDpSlqsnB8BqfgHbUdaLbJULy4NWtGJPvIS5Jk2RypXGoIx6Rmr+qLBBRPtyUYOnAPfyfiW0AQu5v+5q7EGqlYYF/vjiULlBjG+QtGMIx4Q4cZuV8US3z7J7Kw+TjvI5Czk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwLaZtTs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE69C116B1;
-	Tue, 16 Jul 2024 15:35:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GlfDkYTMe3xF4GK3u65Tg/uF8JpGmEEGSi3ToMvSvyOVZDlxNaJHDjTJ1ChAFQuTme1n2Zt2hxkOC5aewWg8f579CUyKEPPfM4IY0MX4pNLKPITYadP+tIUiO3a20NejSwE9l1hC+DhylU9Rkxw/cPbilUSt7JhjR9bmdepgFsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=af7mABvn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD7BC4AF0D;
+	Tue, 16 Jul 2024 15:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144109;
-	bh=pPc3dH9FY5stg+c2E7CeFzWCCiGwC2Y5S/x0aeSjAsc=;
+	s=korg; t=1721145596;
+	bh=8j6mowoEtZ79Jh1GvYSdcRZYjTpd7o3yvPrD3EydE/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwLaZtTszVa/W4qNJ+dme2TTrLWbN/Yr9zlArqwGbNFRkZ1B1BUlWKO9oe3lcw+Gr
-	 qcG3aFlgoopRl4tbpGsJ4KGfV3HHKP25BTAKF5A4KJhz/XOTRL/8XMMWl+pUZzOb+f
-	 1WmZN1Tr+MbKgeHAsumZT4f1onbbZnSYSwyV28y4=
+	b=af7mABvnPp9S2GymLCH1b8/5Dh9TDGAqYfqgTMzNE9kDvoyWuHceAz+xdREsRsXzO
+	 QYM0UDuDSoJ1Hir520LMndg8M2C2lVy1056D/8eRXR+828NUG8M9bpYINbi3QGY9zE
+	 +/7UcabM7RopAZhrbxyqZSDfnoPgIEdf2VZ65LtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinliang Zheng <alexjlzheng@tencent.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Tycho Andersen <tandersen@netflix.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 31/66] mm: optimize the redundant loop of mm_update_owner_next()
+	=?UTF-8?q?=C5=BDilvinas=20=C5=BDaltiena?= <zaltys@natrix.lt>,
+	Beld Zhang <beldzhang@gmail.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 004/121] vfio/pci: Init the count variable in collecting hot-reset devices
 Date: Tue, 16 Jul 2024 17:31:06 +0200
-Message-ID: <20240716152739.354389283@linuxfoundation.org>
+Message-ID: <20240716152751.486707566@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,54 +64,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinliang Zheng <alexjlzheng@tencent.com>
+From: Yi Liu <yi.l.liu@intel.com>
 
-commit cf3f9a593dab87a032d2b6a6fb205e7f3de4f0a1 upstream.
+[ Upstream commit 5a88a3f67e37e39f933b38ebb4985ba5822e9eca ]
 
-When mm_update_owner_next() is racing with swapoff (try_to_unuse()) or
-/proc or ptrace or page migration (get_task_mm()), it is impossible to
-find an appropriate task_struct in the loop whose mm_struct is the same as
-the target mm_struct.
+The count variable is used without initialization, it results in mistakes
+in the device counting and crashes the userspace if the get hot reset info
+path is triggered.
 
-If the above race condition is combined with the stress-ng-zombie and
-stress-ng-dup tests, such a long loop can easily cause a Hard Lockup in
-write_lock_irq() for tasklist_lock.
-
-Recognize this situation in advance and exit early.
-
-Link: https://lkml.kernel.org/r/20240620122123.3877432-1-alexjlzheng@tencent.com
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Tycho Andersen <tandersen@netflix.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f6944d4a0b87 ("vfio/pci: Collect hot-reset devices to local buffer")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219010
+Reported-by: Žilvinas Žaltiena <zaltys@natrix.lt>
+Cc: Beld Zhang <beldzhang@gmail.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20240710004150.319105-1-yi.l.liu@intel.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/exit.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/vfio/pci/vfio_pci_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -494,6 +494,8 @@ retry:
- 	 * Search through everything else, we should not get here often.
- 	 */
- 	for_each_process(g) {
-+		if (atomic_read(&mm->mm_users) <= 1)
-+			break;
- 		if (g->flags & PF_KTHREAD)
- 			continue;
- 		for_each_thread(g, c) {
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index a3c545dd174ee..a8f259bc2f4d0 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1260,7 +1260,7 @@ static int vfio_pci_ioctl_get_pci_hot_reset_info(
+ 	struct vfio_pci_hot_reset_info hdr;
+ 	struct vfio_pci_fill_info fill = {};
+ 	bool slot = false;
+-	int ret, count;
++	int ret, count = 0;
+ 
+ 	if (copy_from_user(&hdr, arg, minsz))
+ 		return -EFAULT;
+-- 
+2.43.0
+
 
 
 
