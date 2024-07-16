@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-59552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C23C932AAA
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC14932C3C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3760F2845CD
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B829284B06
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABB51DDF5;
-	Tue, 16 Jul 2024 15:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE66617A93F;
+	Tue, 16 Jul 2024 15:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxwCprZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYyPF5DN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D71CA40;
-	Tue, 16 Jul 2024 15:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6D927733;
+	Tue, 16 Jul 2024 15:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144192; cv=none; b=miYjX97IUjzjzLUN4AqB9gdlKsvDP2zhnk2llmAGgQs27hiuHw15vBzCCI1LCo3AuUVKa4Rvi9hY6XVVWIGwciUmbRL1j6Gi9XMd/w+al1fWLJPO4Y3QNQ9TGurDLtKJK8dbAdRw+Js41CiYH3Pmz7b/nJeOUQnaGQVEJs7f1bI=
+	t=1721145197; cv=none; b=BwkX0MXmQ3qVtJUKITs+AzyCL0r3JKrMesyhsw74JK/yhilIAm/o7ql+Lz2pyvLfHVUKbRVQn7UjWv+siSVwcCOMYkp5ZlJv+VBX8s32MTGjPmfl1l9+VCO1rxzfnNrHrRNFZRbEHnHd7Pu6lkxOx6KqdsgviI1HzLS3BznsigA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144192; c=relaxed/simple;
-	bh=UpTmUxMEfSm21Xh64MtpgM3EDnLpQwaRiBEOl3QQYGY=;
+	s=arc-20240116; t=1721145197; c=relaxed/simple;
+	bh=1GCyO49mTsCTPDrBfnddHFkyYKpDSn3RYzEbywqr6i0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcVUJczVmSojSIvSU2TRTqnC2AbsbBbww4+0uCWdivi2pZrq2PpGfsSvupd3NdeYdGzjxihaQ8a55mXzgrQE1QsLZbRANUCiZoJSr/B8FkM6Y0xgKD082oId8bNADHyq3Z7zodeFTGshEsKP6hKYB//lQxtxoYvDCL2b0fUbMgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxwCprZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1250EC116B1;
-	Tue, 16 Jul 2024 15:36:31 +0000 (UTC)
+	 MIME-Version; b=T/yDtZXfGrGzFfRpgSovq+si1zVkp9cjCLG6NzXyqduCx+rj459qDPfIIMW6j0Xnu8LwNrPDmmdDv+lRYeLbXp+CI//qAOFbvS/8X+j11tidRwFd5hzroDteUH4MsmKYeLLJY4jLN+pyRl5pxkJ0L2m+X0L2dMCrPuyyghXViqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYyPF5DN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E016BC4AF0E;
+	Tue, 16 Jul 2024 15:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144192;
-	bh=UpTmUxMEfSm21Xh64MtpgM3EDnLpQwaRiBEOl3QQYGY=;
+	s=korg; t=1721145197;
+	bh=1GCyO49mTsCTPDrBfnddHFkyYKpDSn3RYzEbywqr6i0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GxwCprZc8W/Oli8jXrVrCY1eeoVgP1c5JJw5ZHDyKgXYVA0kNrlrRizNiygUmKqbh
-	 St/+SqmuR7oYEu7/xPqrkCXNWBl79m3H17tCyMWU453CTG8s+d+vJboGdSsV2mlwiw
-	 7DlbizayFkrakqAXHPNnuAb+pQRgfZR3E0qMB5BY=
+	b=XYyPF5DNR8OvXfKGUDc6828uuLfTgmdLTXzx6gSY9qxAozQnJpGigLwUro635Y5mu
+	 TqhLy+VWQjCmkhF7cEFn9j6w82IHf5Pn8gWx1HUWxN8RqA3ggJC16bCJJMVDz2Bc0x
+	 fyMaPfYucQWJqNRUsUD32UHxUym5u+Nlu0XULStM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>
-Subject: [PATCH 4.19 59/66] libceph: fix race between delayed_work() and ceph_monc_stop()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.9 098/143] arm64: dts: qcom: x1e80100-crd: fix DAI used for headset recording
 Date: Tue, 16 Jul 2024 17:31:34 +0200
-Message-ID: <20240716152740.413405471@linuxfoundation.org>
+Message-ID: <20240716152759.748627242@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 69c7b2fe4c9cc1d3b1186d1c5606627ecf0de883 upstream.
+commit 74de2ecf1c418c96d2bffa7770953b8991425dd2 upstream.
 
-The way the delayed work is handled in ceph_monc_stop() is prone to
-races with mon_fault() and possibly also finish_hunting().  Both of
-these can requeue the delayed work which wouldn't be canceled by any of
-the following code in case that happens after cancel_delayed_work_sync()
-runs -- __close_session() doesn't mess with the delayed work in order
-to avoid interfering with the hunting interval logic.  This part was
-missed in commit b5d91704f53e ("libceph: behave in mon_fault() if
-cur_mon < 0") and use-after-free can still ensue on monc and objects
-that hang off of it, with monc->auth and monc->monmap being
-particularly susceptible to quickly being reused.
+The SWR2 Soundwire instance has 1 output and 4 input ports, so for the
+headset recording (via the WCD9385 codec and the TX macro codec) we want
+to use the next DAI, not the first one (see qcom,dout-ports and
+qcom,din-ports for soundwire@6d30000 node).
 
-To fix this:
+Original code was copied from other devices like SM8450 and SM8550.  On
+the SM8450 this was a correct setting, however on the SM8550 this worked
+probably only by coincidence, because the DTS defined no output ports on
+SWR2 Soundwire.
 
-- clear monc->cur_mon and monc->hunting as part of closing the session
-  in ceph_monc_stop()
-- bail from delayed_work() if monc->cur_mon is cleared, similar to how
-  it's done in mon_fault() and finish_hunting() (based on monc->hunting)
-- call cancel_delayed_work_sync() after the session is closed
+This is a necessary fix for proper audio recording via analogue
+microphones connected to WCD9385 codec (e.g. headset AMIC2).
 
+Fixes: 4442a67eedc1 ("arm64: dts: qcom: x1e80100-crd: add sound card")
 Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/66857
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240611142555.994675-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/mon_client.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100-crd.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ceph/mon_client.c
-+++ b/net/ceph/mon_client.c
-@@ -963,13 +963,19 @@ static void delayed_work(struct work_str
- 	struct ceph_mon_client *monc =
- 		container_of(work, struct ceph_mon_client, delayed_work.work);
+--- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
+@@ -101,7 +101,7 @@
+ 			};
  
--	dout("monc delayed_work\n");
- 	mutex_lock(&monc->mutex);
-+	dout("%s mon%d\n", __func__, monc->cur_mon);
-+	if (monc->cur_mon < 0) {
-+		goto out;
-+	}
-+
- 	if (monc->hunting) {
- 		dout("%s continuing hunt\n", __func__);
- 		reopen_session(monc);
- 	} else {
- 		int is_auth = ceph_auth_is_authenticated(monc->auth);
-+
-+		dout("%s is_authed %d\n", __func__, is_auth);
- 		if (ceph_con_keepalive_expired(&monc->con,
- 					       CEPH_MONC_PING_TIMEOUT)) {
- 			dout("monc keepalive timeout\n");
-@@ -994,6 +1000,8 @@ static void delayed_work(struct work_str
- 		}
- 	}
- 	__schedule_delayed(monc);
-+
-+out:
- 	mutex_unlock(&monc->mutex);
- }
+ 			codec {
+-				sound-dai = <&wcd938x 1>, <&swr2 0>, <&lpass_txmacro 0>;
++				sound-dai = <&wcd938x 1>, <&swr2 1>, <&lpass_txmacro 0>;
+ 			};
  
-@@ -1106,13 +1114,15 @@ EXPORT_SYMBOL(ceph_monc_init);
- void ceph_monc_stop(struct ceph_mon_client *monc)
- {
- 	dout("stop\n");
--	cancel_delayed_work_sync(&monc->delayed_work);
- 
- 	mutex_lock(&monc->mutex);
- 	__close_session(monc);
-+	monc->hunting = false;
- 	monc->cur_mon = -1;
- 	mutex_unlock(&monc->mutex);
- 
-+	cancel_delayed_work_sync(&monc->delayed_work);
-+
- 	/*
- 	 * flush msgr queue before we destroy ourselves to ensure that:
- 	 *  - any work that references our embedded con is finished.
+ 			platform {
 
 
 
