@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-60062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AA1C932D32
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75B7932CB1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AC401C20C64
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BE321F24551
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C414E199EA3;
-	Tue, 16 Jul 2024 16:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1ABA19F477;
+	Tue, 16 Jul 2024 15:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRNsjml1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRvHgEKP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B4F1DDCE;
-	Tue, 16 Jul 2024 16:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F10A19E7E3;
+	Tue, 16 Jul 2024 15:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145740; cv=none; b=eve6lFqBXHr3jDhjkkJwQ6Ji/0g8pAExxadl6PapMManOticF3X77SLMGiGqgWxDwgVukrDqUfaTEgJHmdfW5yR5GQh8aCl+gGImngF6k5nv9jv8RbEKD7YRzgH/B4VUwM6piHhlIblmk5WrjgzpTGJDUg/mmToAD680KybQqJs=
+	t=1721145425; cv=none; b=X/lgnUFWVcPKC7ULKY0wxmylvhGIZrq1c2ITvSA9QPDepnNtIBCFD15fTMTq11igH0tz+hAy86bkMDgKJ+Ju1DQpZGkRfSbXLoUcwpRn9cdQnuxCwSm6hLv8leMTfg2QDrJhUonVPMyD7t7cZUlsX8EfkqquV/MTyghwE7OiTQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145740; c=relaxed/simple;
-	bh=whvW0/rsX8GyQaxHwDXGBhpe3RAoBOJvdEwe/LIeOkY=;
+	s=arc-20240116; t=1721145425; c=relaxed/simple;
+	bh=u2egr0Y59qKoGhneddsu++ZIHdbvLSgq+ln3XJgJLhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcVf0Z/RbYFLS/mZEX00QoVQweQz6y5Jh42kWd8VkFH6S1/AL/IyYRpUij27cl6CyRZ4o87VrN4r32890DBajB/coqJQjU++bbvc/fHobPlMBXPYi7Mn2KBdiZiCOBzl0r27kNm1pa9wcK86qbZ85z+nTauzzr9FqoHk4aZFVuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRNsjml1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EAAC116B1;
-	Tue, 16 Jul 2024 16:02:19 +0000 (UTC)
+	 MIME-Version; b=P2EwJnlmK6Y5/iDWj5qNg1FuptkLE/KnkzGdpx4q7QFBKY3G8mlvmCm8nszU7rktUgMUNuenjrJvL9KzXlH+UAmYBm/k0eYUMivYF1Xx3d3vg4bTfJ/7bD9qhrR0PUN0vjvqypJO8C0M20qdghaj/ZUdlJZO/LxKnaZh46Si018=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRvHgEKP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8D2C116B1;
+	Tue, 16 Jul 2024 15:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145740;
-	bh=whvW0/rsX8GyQaxHwDXGBhpe3RAoBOJvdEwe/LIeOkY=;
+	s=korg; t=1721145425;
+	bh=u2egr0Y59qKoGhneddsu++ZIHdbvLSgq+ln3XJgJLhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KRNsjml1BDdZks3Ou3galJVjyAPZoLPCnOQQZ5l+tRoOMXSds2OfnwiqBTeF966ZE
-	 UL6n25TA4folT6zfJcydvWhDgUIqDpXXNX/0289jFlbD5AdAzlr+GQU0v0ozxmA37W
-	 WJDwMChGqRAASlROJiLbS/FexVf+RdVgNAQTHaZQ=
+	b=bRvHgEKPT+w2zYDeJQOeCOEcCgHc4aNnyyP+65PdDMMn+qjWwgUF/El6ZjTbrDcNY
+	 uKHfLc4oMGeTyDdRvazi+MaJ1KcTOcRj4ryJblRs0QAAvwMrO+Ai+YjKti8xe+X6if
+	 7dZj2DKCuQY6EHKwMEwE4T4uC2ogg+FgyaTlMFsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	He Zhe <zhe.he@windriver.com>,
 	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.6 069/121] hpet: Support 32-bit userspace
+Subject: [PATCH 6.1 60/96] hpet: Support 32-bit userspace
 Date: Tue, 16 Jul 2024 17:32:11 +0200
-Message-ID: <20240716152753.982203932@linuxfoundation.org>
+Message-ID: <20240716152748.814786413@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
