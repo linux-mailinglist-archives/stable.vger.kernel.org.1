@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-59539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2ABC932A9C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:35:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F82932CF9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E173284485
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E291F2175D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517A71DDF5;
-	Tue, 16 Jul 2024 15:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8A1199EA3;
+	Tue, 16 Jul 2024 15:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyVSMW+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnpiAi+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9ECCA40;
-	Tue, 16 Jul 2024 15:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDF61DA4D;
+	Tue, 16 Jul 2024 15:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144154; cv=none; b=ZCxwxYI8/JfbtULkaIcD32afT8dTrwnS0zpuxu4GTuay2dtTjFN7EOU04RDvh86oVeD1EMpBod9Xq2/ShHMLWknstaPLPDh8hPYBJzjs+wZkEiW72L0wFtikykAIYU/2QGTh701lCHDhIHstiyCkt8CHc2dKUgCImxMasIBYdMI=
+	t=1721145582; cv=none; b=U3XNEAQOA60ISbuDBF3sp6yTpWYP+5qxAgUaOfii4QjdQtWZFdBEFlVE63hw4BqtlyOKV6z70AQ24jpRz0p41qJpCABbOqjMblF6WNJPoXUhFMsfEb3gU0N3cahDkRQz8LWw0UNwYVaLZtw9eWG+4Adta2/JA/RTk0MclO+Y+/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144154; c=relaxed/simple;
-	bh=N5FfzCPU0qJ9tcUHrQk/VgfrGCXlp7yNfON3cN9NyjI=;
+	s=arc-20240116; t=1721145582; c=relaxed/simple;
+	bh=2gAf7rzH+OycaytKLM/t1e0Kp6rOppWFvfR+n95FHMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+maIVNgO8EDl9BU/RxX8MhhFBsx4nNGDcrZaVtQQy38pCSpxAPF3X190M4qI/aMxYji9T8eauJJ2wkEYLfYsN2u102EkkdEGUs5J4LmVeaEonwwgOWWoMDHV9wx1AYx7JKFBjFH4n76jA8yP4BmRfnUCfQadbbZJXVNw8l8XTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyVSMW+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889D7C116B1;
-	Tue, 16 Jul 2024 15:35:53 +0000 (UTC)
+	 MIME-Version; b=Qjm9n4fymf/yA7zyn3yZSi4cMxORdN0DmSMku6fRfZhTIT828XQC9CffmfWkMsLV2SMJAQZNO4CqFJJnMFNPvaKDFZJj5m8sJieCzOX5JqweG1QUWyPmdOW+W7McUdFWlzHfp2lQ6zsLkPzU4RH5VXf4qLzC4vimUYLdbOazSj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnpiAi+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E35C116B1;
+	Tue, 16 Jul 2024 15:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144153;
-	bh=N5FfzCPU0qJ9tcUHrQk/VgfrGCXlp7yNfON3cN9NyjI=;
+	s=korg; t=1721145582;
+	bh=2gAf7rzH+OycaytKLM/t1e0Kp6rOppWFvfR+n95FHMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lyVSMW+feKpSz9ke4hNLmENaLBVv3joB8ubRvnojxDakc99cpZ0dLa1whsFPzebuA
-	 hf9U93qdrTobiYUI1gF5BjFAcu4qNEU9Yy0Af+R7ba28OgU3TNKP8y6IDHokhA8K1T
-	 e+LNs0OkhbjxouiwtE2AQiv6b4yy2kzN0nCWTyeU=
+	b=cnpiAi+IPlCLjjMputrgkzAnqNZk5I/9joe2PW000DZ5+A+6hlu9OfrA5HqD67U8B
+	 2Bz5i5yTh7ZU1qOwDMRHOdyyB1ue8rSkl1GZrVpTcQ317oCXhDFc5FuwYz0j5o/FG8
+	 +UsEU6nTghxKaFKXmqPhzvZs9Nh+xjxpmqDcTVQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Justin Chen <justin.chen@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 44/66] net: lantiq_etop: add blank line after declaration
+Subject: [PATCH 6.6 017/121] net: bcmasp: Fix error code in probe()
 Date: Tue, 16 Jul 2024 17:31:19 +0200
-Message-ID: <20240716152739.850217342@linuxfoundation.org>
+Message-ID: <20240716152751.983844032@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 4c46625bb586a741b8d0e6bdbddbcb2549fa1d36 ]
+[ Upstream commit 0c754d9d86ffdf2f86b4272b25d759843fb62fd8 ]
 
-This patch adds a missing line after the declaration and
-fixes the checkpatch warning:
+Return an error code if bcmasp_interface_create() fails.  Don't return
+success.
 
-WARNING: Missing a blank line after declarations
-+		int desc;
-+		for (desc = 0; desc < LTQ_DESC_NUM; desc++)
-
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Link: https://lore.kernel.org/r/20211228220031.71576-1-olek2@wp.pl
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Justin Chen <justin.chen@broadcom.com>
+Link: https://patch.msgid.link/ZoWKBkHH9D1fqV4r@stanley.mountain
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: e1533b6319ab ("net: ethernet: lantiq_etop: fix double free in detach")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/lantiq_etop.c | 1 +
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index 8c58ae565073f..fd391cbd5774e 100644
---- a/drivers/net/ethernet/lantiq_etop.c
-+++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -222,6 +222,7 @@ ltq_etop_free_channel(struct net_device *dev, struct ltq_etop_chan *ch)
- 		free_irq(ch->dma.irq, priv);
- 	if (IS_RX(ch->idx)) {
- 		int desc;
-+
- 		for (desc = 0; desc < LTQ_DESC_NUM; desc++)
- 			dev_kfree_skb_any(ch->skb[ch->dma.desc]);
- 	}
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+index 4b6bf2764bef7..d9e9ec2e8945d 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+@@ -1306,6 +1306,7 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 			dev_err(dev, "Cannot create eth interface %d\n", i);
+ 			bcmasp_remove_intfs(priv);
+ 			of_node_put(intf_node);
++			ret = -ENOMEM;
+ 			goto of_put_exit;
+ 		}
+ 		list_add_tail(&intf->list, &priv->intfs);
 -- 
 2.43.0
 
