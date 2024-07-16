@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-59606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A195A932AE6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48AAC932C84
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D191A1C22369
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B1801C20E78
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2325B19DF63;
-	Tue, 16 Jul 2024 15:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA5D19E7D3;
+	Tue, 16 Jul 2024 15:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsmZwq6m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgbc1Yjd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DA619B3D3;
-	Tue, 16 Jul 2024 15:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A088E19DF88;
+	Tue, 16 Jul 2024 15:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144354; cv=none; b=jWurNN6jO7bVrTNWqjSXzuV6i0fCszuqH4uZwmNw3bBEHcvbkemieVJN+TMMUzQ2SNKHtDUhw4N5HVBBjEBHJ1WoR9zq9qkOjE8+YrSE69lIpRheCkc2vnNHo5N/b+bTPbfWMfkWhhAjQIO/RbCfX2yLkOCvY33otErULphsv30=
+	t=1721145339; cv=none; b=eCwENlgoaGgy1IhStyHoTFmjpdIasp5kQCrOuZU29JcjbyzDkoti5VMUK1EKWVnrpJu8dlg2y7WB+o3QMpBfSS9DTh9YTh0EygsaraYZ4BpPclzL9wes10ofZG6+H31hn1LX6k6HXr2sy/sxn2j6OPW3O8wj+h7r0HUazgvbh/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144354; c=relaxed/simple;
-	bh=MHxW7qHYqLWMSeYHOL9a9xqnzg+OPTzaAqb2jhE8AFk=;
+	s=arc-20240116; t=1721145339; c=relaxed/simple;
+	bh=YRFWDfLN3keGcnYz2I0/tbsbINYlfWVFGOTfzseSmgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnvhXoqpTTvC/+T0letR2Hhai85Wt/sbS4maox/75wYSxvQtBkeKlfgVpqGBoN8d5Z1lHYTm+SYScnHUZO11U1k07AUeELem8iPIvrkdAe4IKqIdK9O4RcuzHOJc0SDhGJTgtJA4uWsnVR5ydzVNxWQiLqBLr3bHLh6tss2SeTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsmZwq6m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55039C116B1;
-	Tue, 16 Jul 2024 15:39:14 +0000 (UTC)
+	 MIME-Version; b=s1UhzVh8n/sWUgTReQC89GxNrstdrAJVAl7sV6ZTxVcRGdWMzaNIV3EE6LY7ukS+X3DHah60UySUAzLic3pBdUVBmPcTw8221bjvNFgN7+0gl76wdk8356/1YwXh72eNSgF5IKje80/puf15ndC6k3FSIV8D824PF/asyHWr43M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgbc1Yjd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2668BC116B1;
+	Tue, 16 Jul 2024 15:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144354;
-	bh=MHxW7qHYqLWMSeYHOL9a9xqnzg+OPTzaAqb2jhE8AFk=;
+	s=korg; t=1721145339;
+	bh=YRFWDfLN3keGcnYz2I0/tbsbINYlfWVFGOTfzseSmgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lsmZwq6mz3aHkA3c0iK0KmRaNcai9ETS6TG5n4BjUkmAX7Su9M+SztKoJpA+Db6g/
-	 NNXknR7E3GZdolflTtzxYwiQBgIJbHk39uyAnWTMJhuODQAYuYFd8ezMhBdwvq6+Hk
-	 il4u5MrQzhq1Xr1671GV5XnDveLYZ1popdeR/fEc=
+	b=pgbc1YjdhNaVpgMh0sWZAa+syrueppg7CPt57tVNnUI+6Mjf0qc8sCPW0iLIe/aRv
+	 CvfvOt2xpO65/DtScMrrD7LjjVOe1x0xY98K7QD1qrH2uUmhvHO0qc7KPgkJYOaqmH
+	 RZCAFR9EH93YQsT2ORqUr+TiLB42B5KdzqW36Jb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 44/78] nvme-multipath: find NUMA path only for online numa-node
+Subject: [PATCH 6.1 05/96] cachefiles: cancel all requests for the object that is being dropped
 Date: Tue, 16 Jul 2024 17:31:16 +0200
-Message-ID: <20240716152742.344742857@linuxfoundation.org>
+Message-ID: <20240716152746.725783865@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit d3a043733f25d743f3aa617c7f82dbcb5ee2211a ]
+[ Upstream commit 751f524635a4f076117d714705eeddadaf6748ee ]
 
-In current native multipath design when a shared namespace is created,
-we loop through each possible numa-node, calculate the NUMA distance of
-that node from each nvme controller and then cache the optimal IO path
-for future reference while sending IO. The issue with this design is that
-we may refer to the NUMA distance table for an offline node which may not
-be populated at the time and so we may inadvertently end up finding and
-caching a non-optimal path for IO. Then latter when the corresponding
-numa-node becomes online and hence the NUMA distance table entry for that
-node is created, ideally we should re-calculate the multipath node distance
-for the newly added node however that doesn't happen unless we rescan/reset
-the controller. So essentially, we may keep using non-optimal IO path for a
-node which is made online after namespace is created.
-This patch helps fix this issue ensuring that when a shared namespace is
-created, we calculate the multipath node distance for each online numa-node
-instead of each possible numa-node. Then latter when a node becomes online
-and we receive any IO on that newly added node, we would calculate the
-multipath node distance for newly added node but this time NUMA distance
-table would have been already populated for newly added node. Hence we
-would be able to correctly calculate the multipath node distance and choose
-the optimal path for the IO.
+Because after an object is dropped, requests for that object are useless,
+cancel them to avoid causing other problems.
 
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+This prepares for the later addition of cancel_work_sync(). After the
+reopen requests is generated, cancel it to avoid cancel_work_sync()
+blocking by waiting for daemon to complete the reopen requests.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240628062930.2467993-7-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 12e009d60852 ("cachefiles: wait for ondemand_object_worker to finish when dropping object")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/multipath.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/cachefiles/ondemand.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index 4f3220aef7c47..36d63da71b2f9 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -437,7 +437,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
- 		int node, srcu_idx;
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index cc2de0e3ee60f..acaecfce8aaa9 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -636,12 +636,31 @@ int cachefiles_ondemand_init_object(struct cachefiles_object *object)
  
- 		srcu_idx = srcu_read_lock(&head->srcu);
--		for_each_node(node)
-+		for_each_online_node(node)
- 			__nvme_find_path(head, node);
- 		srcu_read_unlock(&head->srcu, srcu_idx);
- 	}
+ void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
+ {
++	unsigned long index;
++	struct cachefiles_req *req;
++	struct cachefiles_cache *cache;
++
+ 	if (!object->ondemand)
+ 		return;
+ 
+ 	cachefiles_ondemand_send_req(object, CACHEFILES_OP_CLOSE, 0,
+ 			cachefiles_ondemand_init_close_req, NULL);
++
++	if (!object->ondemand->ondemand_id)
++		return;
++
++	/* Cancel all requests for the object that is being dropped. */
++	cache = object->volume->cache;
++	xa_lock(&cache->reqs);
+ 	cachefiles_ondemand_set_object_dropping(object);
++	xa_for_each(&cache->reqs, index, req) {
++		if (req->object == object) {
++			req->error = -EIO;
++			complete(&req->done);
++			__xa_erase(&cache->reqs, index);
++		}
++	}
++	xa_unlock(&cache->reqs);
+ }
+ 
+ int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
 -- 
 2.43.0
 
