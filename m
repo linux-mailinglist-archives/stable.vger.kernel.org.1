@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D89932D39
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C407932CBF
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD4751C20C1A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DCE61C22081
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879BB19AD72;
-	Tue, 16 Jul 2024 16:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC1519E7CF;
+	Tue, 16 Jul 2024 15:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aeZLl8k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBGjOmQ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4639D1DDCE;
-	Tue, 16 Jul 2024 16:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD65D1DDCE;
+	Tue, 16 Jul 2024 15:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145761; cv=none; b=FVVWBT9GL60bllntIySSgjIUqskr+8vWQnlW+C9Icq6gw1/we9mRmmEajXBzctAUaUmpxNUv/kwT6AHgT3qw9KuENvd30VMOHQo7huxqd3BZ/h2BkbY1gwEoipxScapbX+WT2UCBoZOfUyjYmSx22+WcQzNK0tnIzzDFYTM5vhI=
+	t=1721145464; cv=none; b=sdEW/2vSEPzxVf2g08KUMDM3qvDjJvI3uOI1kgZFH+mtyUWshIqH8rLNzWi4TU6EvwWc5FhBj3usBggoWT3KflOhG+O2K+Yy0Wfr9fHVE+ttADy4gLXdC0aoS43nWlLaSf9krbNnoxfphURtQAkKUCVnwmb5wd1ieRL6wKhteSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145761; c=relaxed/simple;
-	bh=LygWz2b44bUoQ13FxDO1S+nOGopmHNEaGmzV/5H0oDA=;
+	s=arc-20240116; t=1721145464; c=relaxed/simple;
+	bh=y86DfBuR18B5TKIZ4qwhBuu2VAD2qmsbD6FMNwahIcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBKrnsWzr/TbRbAUxV1J7c64ltabaeF0m6lhYksrvlNsUStnnu6bcFpIh066mQek+VSyO8XtQj9r2hWMqei3D2Dy9cx8BbkByCu3NxgQRYMv9dncRTBr2iHxmpYfIELIjo7V58RpZ5Fj4RPvftcGbjX1UFjKoAifz3ljUzGq0e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aeZLl8k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C031DC116B1;
-	Tue, 16 Jul 2024 16:02:40 +0000 (UTC)
+	 MIME-Version; b=bnAhYM473S1LhzM79ogggfRregWo2fS5PcPD/46w2hR1x7usZiwQOmOIk6gaX3hY4J6Qa9Ydy1HB5wilDtnG6O+1C4Yu98arPBjiElAz62E8QmQkNIRPDzzOkzrV0IPz/lUjnul+71n2UE6EAo/6tKgJv3ZDwQOhCm5KGDMzMmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBGjOmQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D0DC116B1;
+	Tue, 16 Jul 2024 15:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145761;
-	bh=LygWz2b44bUoQ13FxDO1S+nOGopmHNEaGmzV/5H0oDA=;
+	s=korg; t=1721145463;
+	bh=y86DfBuR18B5TKIZ4qwhBuu2VAD2qmsbD6FMNwahIcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0aeZLl8k1t62mH2kSO6CH7hBAHXNaYYoIx6Ip54vv2QsDM5iLEGVa3Avfmb85e3r9
-	 KS0QyTWJtjI/zZ+rAOiHQQwxWsdF2GLrk7WdLDvkhyt32GHPKHdPx7mopCR+x4ERWo
-	 pvt+r80MjXjLxaecE9kGUZdpPaVRInwUASNt1wYY=
+	b=uBGjOmQ0giCwB2f9UkwYs/ZF8hqJ7iq6DFi/Tns1ZgHFzRKumKI7YTkqiDh5wEQNW
+	 UX2ZU/veRZGYoXgPXgtwXtZlMDmtDsHcLjZPCqyYBLkgs3oxhJIrjpKecsRX1PW7+C
+	 OYT8+sWOC8p8IWmY9Hv5iOi9LBbgb4RZ0yGk9Pk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoonho Shin <yoonho.shin@samsung.com>,
-	Hobin Woo <hobin.woo@samsung.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 075/121] ksmbd: discard write access to the directory open
+	kernel test robot <oliver.sang@intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.1 66/96] platform/x86: toshiba_acpi: Fix array out-of-bounds access
 Date: Tue, 16 Jul 2024 17:32:17 +0200
-Message-ID: <20240716152754.214684943@linuxfoundation.org>
+Message-ID: <20240716152749.048010671@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hobin Woo <hobin.woo@samsung.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-commit e2e33caa5dc2eae7bddf88b22ce11ec3d760e5cd upstream.
+commit b6e02c6b0377d4339986e07aeb696c632cd392aa upstream.
 
-may_open() does not allow a directory to be opened with the write access.
-However, some writing flags set by client result in adding write access
-on server, making ksmbd incompatible with FUSE file system. Simply, let's
-discard the write access when opening a directory.
+In order to use toshiba_dmi_quirks[] together with the standard DMI
+matching functions, it must be terminated by a empty entry.
 
-list_add corruption. next is NULL.
-------------[ cut here ]------------
-kernel BUG at lib/list_debug.c:26!
-pc : __list_add_valid+0x88/0xbc
-lr : __list_add_valid+0x88/0xbc
-Call trace:
-__list_add_valid+0x88/0xbc
-fuse_finish_open+0x11c/0x170
-fuse_open_common+0x284/0x5e8
-fuse_dir_open+0x14/0x24
-do_dentry_open+0x2a4/0x4e0
-dentry_open+0x50/0x80
-smb2_open+0xbe4/0x15a4
-handle_ksmbd_work+0x478/0x5ec
-process_one_work+0x1b4/0x448
-worker_thread+0x25c/0x430
-kthread+0x104/0x1d4
-ret_from_fork+0x10/0x20
+Since this entry is missing, an array out-of-bounds access occurs
+every time the quirk list is processed.
 
+Fix this by adding the terminating empty entry.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202407091536.8b116b3d-lkp@intel.com
+Fixes: 3cb1f40dfdc3 ("drivers/platform: toshiba_acpi: Call HCI_PANEL_POWER_ON on resume on some models")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yoonho Shin <yoonho.shin@samsung.com>
-Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20240709143851.10097-1-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/platform/x86/toshiba_acpi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2051,15 +2051,22 @@ out_err1:
-  * @access:		file access flags
-  * @disposition:	file disposition flags
-  * @may_flags:		set with MAY_ flags
-+ * @is_dir:		is creating open flags for directory
-  *
-  * Return:      file open flags
-  */
- static int smb2_create_open_flags(bool file_present, __le32 access,
- 				  __le32 disposition,
--				  int *may_flags)
-+				  int *may_flags,
-+				  bool is_dir)
- {
- 	int oflags = O_NONBLOCK | O_LARGEFILE;
+--- a/drivers/platform/x86/toshiba_acpi.c
++++ b/drivers/platform/x86/toshiba_acpi.c
+@@ -3305,6 +3305,7 @@ static const struct dmi_system_id toshib
+ 		},
+ 	 .driver_data = (void *)(QUIRK_TURN_ON_PANEL_ON_RESUME | QUIRK_HCI_HOTKEY_QUICKSTART),
+ 	},
++	{ }
+ };
  
-+	if (is_dir) {
-+		access &= ~FILE_WRITE_DESIRE_ACCESS_LE;
-+		ksmbd_debug(SMB, "Discard write access to a directory\n");
-+	}
-+
- 	if (access & FILE_READ_DESIRED_ACCESS_LE &&
- 	    access & FILE_WRITE_DESIRE_ACCESS_LE) {
- 		oflags |= O_RDWR;
-@@ -3167,7 +3174,9 @@ int smb2_open(struct ksmbd_work *work)
- 
- 	open_flags = smb2_create_open_flags(file_present, daccess,
- 					    req->CreateDisposition,
--					    &may_flags);
-+					    &may_flags,
-+		req->CreateOptions & FILE_DIRECTORY_FILE_LE ||
-+		(file_present && S_ISDIR(d_inode(path.dentry)->i_mode)));
- 
- 	if (!test_tree_conn_flag(tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
- 		if (open_flags & (O_CREAT | O_TRUNC)) {
+ static int toshiba_acpi_add(struct acpi_device *acpi_dev)
 
 
 
