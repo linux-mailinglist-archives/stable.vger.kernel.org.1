@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-59687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF328932B49
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E104932A87
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 695AA28354B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDB67B2313B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B9519E7E2;
-	Tue, 16 Jul 2024 15:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18CC1448ED;
+	Tue, 16 Jul 2024 15:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvKc/1tw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRnAEtN1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC8F1DDF5;
-	Tue, 16 Jul 2024 15:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F966E54C;
+	Tue, 16 Jul 2024 15:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144604; cv=none; b=a6iCfrEywzJaN75bvDpRdqo1vtxtKYllBaFU7ngM4Ck2Y7x8ZtE8OD44KXYevh/T2qTEIbI7NRt3w1L4bMfWjVIfn86YyvpQ8VjSF0I9nzePUV7/B1FmqMNysA0bKnkRszxdoerzJRSFT8OyJXuUEvE71F/tXK12JitFyBp+CzA=
+	t=1721144095; cv=none; b=cD5Gh/hjS3fKzPjDjdS0RMR0OVfAHsvnnmWmqvHvWZPJMmr8Z1YPClzJMgwgKfg/oww5m7fKWtIuBh9W68YYaGV+o86awFKJXf90SqpXeuaKlzdHYu9CTJaKsFAJ+CBB9Nn8pmtXteeaEovbkNJP2Q26wcAK7Dp2kufkUQ4WfqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144604; c=relaxed/simple;
-	bh=/t2FIKcjR/yeOHdQu2YmkdJ68f9ke2Zqgll74zA9aVc=;
+	s=arc-20240116; t=1721144095; c=relaxed/simple;
+	bh=+3cc19wrMwpLrsviZVoBVHtS7AlghJ7vivvKqyraCMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YgLaRIWIBh2AQt/p63Itu7Zy69j88QuhJT/HCESOIFM3c1SE+Ka09G9bvkTvbkVLlzmryD7pq3TwT4bXcQl0TotzVOh6P2B98PHJMoNJP9XL7oPKTEVvLhQOUNbVoMOz3YqP8dsSrtuTF8b04ZWnRlnrmOsJYbjkTTaA3p1oouk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvKc/1tw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A0FC116B1;
-	Tue, 16 Jul 2024 15:43:23 +0000 (UTC)
+	 MIME-Version; b=teRhurew0toe8F/Xpe3tY1B0WsQY9yCA0Wa5zXeG2L7Q5a1mm3dhtgzd5O0CKwv0rt7qsxxBRqckxHCsnhA/+LnSmknIk25k8ewyFJMSll4makvE8jFsywZOWkZH2rslbzLrul8ptFYnetBEFs7hsgggqqUwwAO+19onEnEPFgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRnAEtN1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E84C116B1;
+	Tue, 16 Jul 2024 15:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144604;
-	bh=/t2FIKcjR/yeOHdQu2YmkdJ68f9ke2Zqgll74zA9aVc=;
+	s=korg; t=1721144094;
+	bh=+3cc19wrMwpLrsviZVoBVHtS7AlghJ7vivvKqyraCMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rvKc/1two6wibrGfj9p5X/m/dpWObUNwd8uNR+k2KDkYwFJcASyDZZ8H4Z4MsM+sa
-	 rkdH3N7DwDpB3zOkwjVzIJ0w9K7i1xKcPdI6evip5AOAuqXwYYYCl7J5+MVSC6n5WZ
-	 q1eHMKp12yV/d/DiIzxHsOUhPXaDAOhvsQXVzBd0=
+	b=MRnAEtN1ucSIESmyjAlNKzUN7w9VbKIu1M+WVV/BpuQjD6M9+1SVfw66RkiQdUqBi
+	 XJOK3HhfjSmLSW63GSScRcrBK1ANaNTgSRy8tYk81FNPemi4yfPx0Cls411HMNQ6/x
+	 wKJB8h9HteXxjz/uGTtWsEQKwmLh3k6B6JQY55tE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Yufen <wangyufen@huawei.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Wen Gu <guwen@linux.alibaba.com>
-Subject: [PATCH 5.10 046/108] bpf, sockmap: Fix sk->sk_forward_alloc warn_on in sk_stream_kill_queues
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Xiaochun Lu <xiaochun.lu@bytedance.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 26/66] selftests: fix OOM in msg_zerocopy selftest
 Date: Tue, 16 Jul 2024 17:31:01 +0200
-Message-ID: <20240716152747.760086844@linuxfoundation.org>
+Message-ID: <20240716152739.162117242@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,129 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Yufen <wangyufen@huawei.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-commit d8616ee2affcff37c5d315310da557a694a3303d upstream.
+[ Upstream commit af2b7e5b741aaae9ffbba2c660def434e07aa241 ]
 
-During TCP sockmap redirect pressure test, the following warning is triggered:
+In selftests/net/msg_zerocopy.c, it has a while loop keeps calling sendmsg
+on a socket with MSG_ZEROCOPY flag, and it will recv the notifications
+until the socket is not writable. Typically, it will start the receiving
+process after around 30+ sendmsgs. However, as the introduction of commit
+dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale"), the sender is
+always writable and does not get any chance to run recv notifications.
+The selftest always exits with OUT_OF_MEMORY because the memory used by
+opt_skb exceeds the net.core.optmem_max. Meanwhile, it could be set to a
+different value to trigger OOM on older kernels too.
 
-WARNING: CPU: 3 PID: 2145 at net/core/stream.c:205 sk_stream_kill_queues+0xbc/0xd0
-CPU: 3 PID: 2145 Comm: iperf Kdump: loaded Tainted: G        W         5.10.0+ #9
-Call Trace:
- inet_csk_destroy_sock+0x55/0x110
- inet_csk_listen_stop+0xbb/0x380
- tcp_close+0x41b/0x480
- inet_release+0x42/0x80
- __sock_release+0x3d/0xa0
- sock_close+0x11/0x20
- __fput+0x9d/0x240
- task_work_run+0x62/0x90
- exit_to_user_mode_prepare+0x110/0x120
- syscall_exit_to_user_mode+0x27/0x190
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
+Thus, we introduce "cfg_notification_limit" to force sender to receive
+notifications after some number of sendmsgs.
 
-The reason we observed is that:
-
-When the listener is closing, a connection may have completed the three-way
-handshake but not accepted, and the client has sent some packets. The child
-sks in accept queue release by inet_child_forget()->inet_csk_destroy_sock(),
-but psocks of child sks have not released.
-
-To fix, add sock_map_destroy to release psocks.
-
-Signed-off-by: Wang Yufen <wangyufen@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jakub Sitnicki <jakub@cloudflare.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20220524075311.649153-1-wangyufen@huawei.com
-[ Conflict in include/linux/bpf.h due to function declaration position
-  and remove non-existed sk_psock_stop helper from sock_map_destroy.  ]
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 07b65c5b31ce ("test: add msg_zerocopy test")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Signed-off-by: Xiaochun Lu <xiaochun.lu@bytedance.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240701225349.3395580-2-zijianzhang@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h   |    1 +
- include/linux/skmsg.h |    1 +
- net/core/skmsg.c      |    1 +
- net/core/sock_map.c   |   22 ++++++++++++++++++++++
- net/ipv4/tcp_bpf.c    |    1 +
- 5 files changed, 26 insertions(+)
+ tools/testing/selftests/net/msg_zerocopy.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1800,6 +1800,7 @@ int sock_map_get_from_fd(const union bpf
- int sock_map_prog_detach(const union bpf_attr *attr, enum bpf_prog_type ptype);
- int sock_map_update_elem_sys(struct bpf_map *map, void *key, void *value, u64 flags);
- void sock_map_unhash(struct sock *sk);
-+void sock_map_destroy(struct sock *sk);
- void sock_map_close(struct sock *sk, long timeout);
- #else
- static inline int sock_map_prog_update(struct bpf_map *map,
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -98,6 +98,7 @@ struct sk_psock {
- 	spinlock_t			link_lock;
- 	refcount_t			refcnt;
- 	void (*saved_unhash)(struct sock *sk);
-+	void (*saved_destroy)(struct sock *sk);
- 	void (*saved_close)(struct sock *sk, long timeout);
- 	void (*saved_write_space)(struct sock *sk);
- 	struct proto			*sk_proto;
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -599,6 +599,7 @@ struct sk_psock *sk_psock_init(struct so
- 	psock->eval = __SK_NONE;
- 	psock->sk_proto = prot;
- 	psock->saved_unhash = prot->unhash;
-+	psock->saved_destroy = prot->destroy;
- 	psock->saved_close = prot->close;
- 	psock->saved_write_space = sk->sk_write_space;
+diff --git a/tools/testing/selftests/net/msg_zerocopy.c b/tools/testing/selftests/net/msg_zerocopy.c
+index c539591937a17..b7dc9f3617572 100644
+--- a/tools/testing/selftests/net/msg_zerocopy.c
++++ b/tools/testing/selftests/net/msg_zerocopy.c
+@@ -85,6 +85,7 @@ static bool cfg_rx;
+ static int  cfg_runtime_ms	= 4200;
+ static int  cfg_verbose;
+ static int  cfg_waittime_ms	= 500;
++static int  cfg_notification_limit = 32;
+ static bool cfg_zerocopy;
  
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -1566,6 +1566,28 @@ void sock_map_unhash(struct sock *sk)
- 	saved_unhash(sk);
+ static socklen_t cfg_alen;
+@@ -95,6 +96,7 @@ static char payload[IP_MAXPACKET];
+ static long packets, bytes, completions, expected_completions;
+ static int  zerocopied = -1;
+ static uint32_t next_completion;
++static uint32_t sends_since_notify;
+ 
+ static unsigned long gettimeofday_ms(void)
+ {
+@@ -208,6 +210,7 @@ static bool do_sendmsg(int fd, struct msghdr *msg, bool do_zerocopy, int domain)
+ 		error(1, errno, "send");
+ 	if (cfg_verbose && ret != len)
+ 		fprintf(stderr, "send: ret=%u != %u\n", ret, len);
++	sends_since_notify++;
+ 
+ 	if (len) {
+ 		packets++;
+@@ -460,6 +463,7 @@ static bool do_recv_completion(int fd, int domain)
+ static void do_recv_completions(int fd, int domain)
+ {
+ 	while (do_recv_completion(fd, domain)) {}
++	sends_since_notify = 0;
  }
  
-+void sock_map_destroy(struct sock *sk)
-+{
-+	void (*saved_destroy)(struct sock *sk);
-+	struct sk_psock *psock;
+ /* Wait for all remaining completions on the errqueue */
+@@ -549,6 +553,9 @@ static void do_tx(int domain, int type, int protocol)
+ 		else
+ 			do_sendmsg(fd, &msg, cfg_zerocopy, domain);
+ 
++		if (cfg_zerocopy && sends_since_notify >= cfg_notification_limit)
++			do_recv_completions(fd, domain);
 +
-+	rcu_read_lock();
-+	psock = sk_psock_get(sk);
-+	if (unlikely(!psock)) {
-+		rcu_read_unlock();
-+		if (sk->sk_prot->destroy)
-+			sk->sk_prot->destroy(sk);
-+		return;
-+	}
-+
-+	saved_destroy = psock->saved_destroy;
-+	sock_map_remove_links(sk, psock);
-+	rcu_read_unlock();
-+	sk_psock_put(sk, psock);
-+	saved_destroy(sk);
-+}
-+EXPORT_SYMBOL_GPL(sock_map_destroy);
-+
- void sock_map_close(struct sock *sk, long timeout)
- {
- 	void (*saved_close)(struct sock *sk, long timeout);
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -582,6 +582,7 @@ static void tcp_bpf_rebuild_protos(struc
- 				   struct proto *base)
- {
- 	prot[TCP_BPF_BASE]			= *base;
-+	prot[TCP_BPF_BASE].destroy		= sock_map_destroy;
- 	prot[TCP_BPF_BASE].close		= sock_map_close;
- 	prot[TCP_BPF_BASE].recvmsg		= tcp_bpf_recvmsg;
- 	prot[TCP_BPF_BASE].stream_memory_read	= tcp_bpf_stream_read;
+ 		while (!do_poll(fd, POLLOUT)) {
+ 			if (cfg_zerocopy)
+ 				do_recv_completions(fd, domain);
+@@ -707,7 +714,7 @@ static void parse_opts(int argc, char **argv)
+ 
+ 	cfg_payload_len = max_payload_len;
+ 
+-	while ((c = getopt(argc, argv, "46c:C:D:i:mp:rs:S:t:vz")) != -1) {
++	while ((c = getopt(argc, argv, "46c:C:D:i:l:mp:rs:S:t:vz")) != -1) {
+ 		switch (c) {
+ 		case '4':
+ 			if (cfg_family != PF_UNSPEC)
+@@ -735,6 +742,9 @@ static void parse_opts(int argc, char **argv)
+ 			if (cfg_ifindex == 0)
+ 				error(1, errno, "invalid iface: %s", optarg);
+ 			break;
++		case 'l':
++			cfg_notification_limit = strtoul(optarg, NULL, 0);
++			break;
+ 		case 'm':
+ 			cfg_cork_mixed = true;
+ 			break;
+-- 
+2.43.0
+
 
 
 
