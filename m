@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-60203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E711C932DDB
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:09:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C68932DDD
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2402F1C21A7B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:09:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 019831C21573
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C2119B3C4;
-	Tue, 16 Jul 2024 16:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6941219B3EE;
+	Tue, 16 Jul 2024 16:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJztWwGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNdTo7SO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B2E1DDCE;
-	Tue, 16 Jul 2024 16:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255F21DDCE;
+	Tue, 16 Jul 2024 16:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721146194; cv=none; b=r/r3qAph8nQOSmMyVXt34UALwNx2ufLn7Oq+vwwMVTviTADX+lGqJwaBEk4RwMyb5xWHPxo70LXqxbjPGZarAE1ZTOmLSKt6fDjed9VX4TZ/of99rARvT/PmXDJmsh/QpXN4ciwyMHWB4c4jYPmwEUSAmxViTcpi3kuvglY4dpw=
+	t=1721146200; cv=none; b=u8xT7Y1WmX39YQuEmJhoZCyKRbWSOKh9nuez3en1iRRZn4o1Vb40pJmj8yVP2C4hsgfrOBZQlyvcW4g3mWMxX48HPBzS2MAUAjPeXurXIfptK/M/JPR0NV2SbqBV9zS12eW+PITC6lFuK0/ULkQBuZCAu0fAci1bIwm8a9WhGvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721146194; c=relaxed/simple;
-	bh=T9WbLFWec4B0+DrG6LL+1sUfnzk6nk5DAcJoJipGfdM=;
+	s=arc-20240116; t=1721146200; c=relaxed/simple;
+	bh=RhfHCapCdwaxw2TbTNzFbqtGltD018DemtPTIwf+dEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MKi+nF89gJiV2Tt50yoh+ByF62t7xpdfP0vM4Jq6qfVXP+zQud+mgFeo8GAWhEsSGj2jhZyTWem90PlJFThI7khixW2NLiGzLsHJgnVEce7HKQHpHPG6o8EemmxkKsCW3PyOiK88md5XbLFQwf6W/YO4Q5J+TflPpkrUKJynVMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJztWwGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C3EC116B1;
-	Tue, 16 Jul 2024 16:09:53 +0000 (UTC)
+	 MIME-Version; b=mugKzJSnEi2rju2eLuCcbFnfAdfZHskbLdOVJYJJEUZ95KJqC0/hVKKwHHsHmfzHGiVGGh81bDXXYnnaq+GG/HTJ3RlmPYvsjuJdG0W7gxoG2ox2xQTHJMG0vQ1GxKHg3L/Ql4nBsz0NstvAA4HBuFX0WdpipXXvmuoBq4M5oIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNdTo7SO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0199C116B1;
+	Tue, 16 Jul 2024 16:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721146194;
-	bh=T9WbLFWec4B0+DrG6LL+1sUfnzk6nk5DAcJoJipGfdM=;
+	s=korg; t=1721146200;
+	bh=RhfHCapCdwaxw2TbTNzFbqtGltD018DemtPTIwf+dEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJztWwGdCrdO9NeIwOxaAln75R9FSVUQVGBbJGyixrYvMxzBEm5AJ3zRKxI160MGN
-	 1Hlt5Xhhd77+FDvqLxA1BYVzSCRaW/fpn4sLh9o1cEM/JS/U35U//1m1reV52ssEdo
-	 YbeT1MwbkBYCD+XfcPGRQDh/cACGktslg6/Dd02s=
+	b=BNdTo7SOZWXxHLaYT2QpnltHEqESu9ognSbkMnESI0vFtn60FeQ4lhMFPNwo0NDpX
+	 8HADR+XoKA6MSkNeiYUwtiQbA+/NuvKM536HYxN7EUf2e2PZsejOzwiIt+h1Zg6RYl
+	 vmH4uRroZp7+8wENengl9IISvInp0xswlVlFeoHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 086/144] net: fix rc7s __skb_datagram_iter()
-Date: Tue, 16 Jul 2024 17:32:35 +0200
-Message-ID: <20240716152755.847401413@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 5.15 087/144] i40e: Fix XDP program unloading while removing the driver
+Date: Tue, 16 Jul 2024 17:32:36 +0200
+Message-ID: <20240716152755.885569968@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -67,43 +69,117 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hugh Dickins <hughd@google.com>
+From: Michal Kubiak <michal.kubiak@intel.com>
 
-[ Upstream commit f153831097b4435f963e385304cc0f1acba1c657 ]
+[ Upstream commit 01fc5142ae6b06b61ed51a624f2732d6525d8ea3 ]
 
-X would not start in my old 32-bit partition (and the "n"-handling looks
-just as wrong on 64-bit, but for whatever reason did not show up there):
-"n" must be accumulated over all pages before it's added to "offset" and
-compared with "copy", immediately after the skb_frag_foreach_page() loop.
+The commit 6533e558c650 ("i40e: Fix reset path while removing
+the driver") introduced a new PF state "__I40E_IN_REMOVE" to block
+modifying the XDP program while the driver is being removed.
+Unfortunately, such a change is useful only if the ".ndo_bpf()"
+callback was called out of the rmmod context because unloading the
+existing XDP program is also a part of driver removing procedure.
+In other words, from the rmmod context the driver is expected to
+unload the XDP program without reporting any errors. Otherwise,
+the kernel warning with callstack is printed out to dmesg.
 
-Fixes: d2d30a376d9c ("net: allow skb_datagram_iter to be called from any context")
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Link: https://patch.msgid.link/fef352e8-b89a-da51-f8ce-04bc39ee6481@google.com
+Example failing scenario:
+ 1. Load the i40e driver.
+ 2. Load the XDP program.
+ 3. Unload the i40e driver (using "rmmod" command).
+
+The example kernel warning log:
+
+[  +0.004646] WARNING: CPU: 94 PID: 10395 at net/core/dev.c:9290 unregister_netdevice_many_notify+0x7a9/0x870
+[...]
+[  +0.010959] RIP: 0010:unregister_netdevice_many_notify+0x7a9/0x870
+[...]
+[  +0.002726] Call Trace:
+[  +0.002457]  <TASK>
+[  +0.002119]  ? __warn+0x80/0x120
+[  +0.003245]  ? unregister_netdevice_many_notify+0x7a9/0x870
+[  +0.005586]  ? report_bug+0x164/0x190
+[  +0.003678]  ? handle_bug+0x3c/0x80
+[  +0.003503]  ? exc_invalid_op+0x17/0x70
+[  +0.003846]  ? asm_exc_invalid_op+0x1a/0x20
+[  +0.004200]  ? unregister_netdevice_many_notify+0x7a9/0x870
+[  +0.005579]  ? unregister_netdevice_many_notify+0x3cc/0x870
+[  +0.005586]  unregister_netdevice_queue+0xf7/0x140
+[  +0.004806]  unregister_netdev+0x1c/0x30
+[  +0.003933]  i40e_vsi_release+0x87/0x2f0 [i40e]
+[  +0.004604]  i40e_remove+0x1a1/0x420 [i40e]
+[  +0.004220]  pci_device_remove+0x3f/0xb0
+[  +0.003943]  device_release_driver_internal+0x19f/0x200
+[  +0.005243]  driver_detach+0x48/0x90
+[  +0.003586]  bus_remove_driver+0x6d/0xf0
+[  +0.003939]  pci_unregister_driver+0x2e/0xb0
+[  +0.004278]  i40e_exit_module+0x10/0x5f0 [i40e]
+[  +0.004570]  __do_sys_delete_module.isra.0+0x197/0x310
+[  +0.005153]  do_syscall_64+0x85/0x170
+[  +0.003684]  ? syscall_exit_to_user_mode+0x69/0x220
+[  +0.004886]  ? do_syscall_64+0x95/0x170
+[  +0.003851]  ? exc_page_fault+0x7e/0x180
+[  +0.003932]  entry_SYSCALL_64_after_hwframe+0x71/0x79
+[  +0.005064] RIP: 0033:0x7f59dc9347cb
+[  +0.003648] Code: 73 01 c3 48 8b 0d 65 16 0c 00 f7 d8 64 89 01 48 83
+c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f
+05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 35 16 0c 00 f7 d8 64 89 01 48
+[  +0.018753] RSP: 002b:00007ffffac99048 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
+[  +0.007577] RAX: ffffffffffffffda RBX: 0000559b9bb2f6e0 RCX: 00007f59dc9347cb
+[  +0.007140] RDX: 0000000000000000 RSI: 0000000000000800 RDI: 0000559b9bb2f748
+[  +0.007146] RBP: 00007ffffac99070 R08: 1999999999999999 R09: 0000000000000000
+[  +0.007133] R10: 00007f59dc9a5ac0 R11: 0000000000000206 R12: 0000000000000000
+[  +0.007141] R13: 00007ffffac992d8 R14: 0000559b9bb2f6e0 R15: 0000000000000000
+[  +0.007151]  </TASK>
+[  +0.002204] ---[ end trace 0000000000000000 ]---
+
+Fix this by checking if the XDP program is being loaded or unloaded.
+Then, block only loading a new program while "__I40E_IN_REMOVE" is set.
+Also, move testing "__I40E_IN_REMOVE" flag to the beginning of XDP_SETUP
+callback to avoid unnecessary operations and checks.
+
+Fixes: 6533e558c650 ("i40e: Fix reset path while removing the driver")
+Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20240708230750.625986-1-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/datagram.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/datagram.c b/net/core/datagram.c
-index 6b7db06eafe68..13f4bf82b2ee8 100644
---- a/net/core/datagram.c
-+++ b/net/core/datagram.c
-@@ -447,11 +447,12 @@ static int __skb_datagram_iter(const struct sk_buff *skb, int offset,
- 			if (copy > len)
- 				copy = len;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 991321b04084a..da4022a211f62 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -13304,6 +13304,10 @@ static int i40e_xdp_setup(struct i40e_vsi *vsi, struct bpf_prog *prog,
+ 	bool need_reset;
+ 	int i;
  
-+			n = 0;
- 			skb_frag_foreach_page(frag,
- 					      skb_frag_off(frag) + offset - start,
- 					      copy, p, p_off, p_len, copied) {
- 				vaddr = kmap_local_page(p);
--				n = INDIRECT_CALL_1(cb, simple_copy_to_iter,
-+				n += INDIRECT_CALL_1(cb, simple_copy_to_iter,
- 					vaddr + p_off, p_len, data, to);
- 				kunmap_local(vaddr);
- 			}
++	/* VSI shall be deleted in a moment, block loading new programs */
++	if (prog && test_bit(__I40E_IN_REMOVE, pf->state))
++		return -EINVAL;
++
+ 	/* Don't allow frames that span over multiple buffers */
+ 	if (frame_size > i40e_calculate_vsi_rx_buf_len(vsi)) {
+ 		NL_SET_ERR_MSG_MOD(extack, "MTU too large to enable XDP");
+@@ -13312,14 +13316,9 @@ static int i40e_xdp_setup(struct i40e_vsi *vsi, struct bpf_prog *prog,
+ 
+ 	/* When turning XDP on->off/off->on we reset and rebuild the rings. */
+ 	need_reset = (i40e_enabled_xdp_vsi(vsi) != !!prog);
+-
+ 	if (need_reset)
+ 		i40e_prep_for_reset(pf);
+ 
+-	/* VSI shall be deleted in a moment, just return EINVAL */
+-	if (test_bit(__I40E_IN_REMOVE, pf->state))
+-		return -EINVAL;
+-
+ 	old_prog = xchg(&vsi->xdp_prog, prog);
+ 
+ 	if (need_reset) {
 -- 
 2.43.0
 
