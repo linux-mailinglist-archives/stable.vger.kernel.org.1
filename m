@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-60170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A565B932DB2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:08:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4806E932DB8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5030A1F2131C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:08:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A35BDB25103
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9768F19AD51;
-	Tue, 16 Jul 2024 16:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB87019AD51;
+	Tue, 16 Jul 2024 16:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFZI1FcC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5ygxzwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C611DDCE;
-	Tue, 16 Jul 2024 16:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6821A1DDCE;
+	Tue, 16 Jul 2024 16:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721146090; cv=none; b=SqZvgU98j26gnlwUv2WiCtuGnzCFd5TUI/wLrJZPC2svDNIF7Ug6bjl7+EeZuZ42oG1sbzIPQAXY0IjJrAD9Ge+6OGS6c9eIIwwN/XTRM8JzCW1LEcRH00TqdloyexiwMCqAbF9jIsX462zyl63ftr8q6x1CeAINUUJ0IH3eMIE=
+	t=1721146107; cv=none; b=DLlfHHoTl+PQzkOAdJ2CN1C1nRuxUB+HW0DSnS10gGXWb0l72wMRMFxR0JlaHvKJ+Xq6MjZ3QHPCuf8AbK3N5FFfrpnrX1YHJSNtZ9AEXTr39H1910utn+NbpG60Zmh8Doh7ZAqYauWm2H1UiMYr/MZfEVjEqpbbQensR315+aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721146090; c=relaxed/simple;
-	bh=wgk+j4U8P31Ia0nOCWu6kVu/ZbsZJDAdMZzhu0FKulM=;
+	s=arc-20240116; t=1721146107; c=relaxed/simple;
+	bh=xb87T3IlEweTOpiQiTIIXbBPWz94EMfPrqsnDqTcyEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iE3680Hhi1E7bglHlHhs9OQZjQ8lQBL+Lx9soOl2BlqE8OPdFZ3TIgsl7k1Lcg4ZeQMXys+fyPUc1fZvYyf6EurhXFaPaIIsCEA2VGFonsoQLtPz5NuRUeA6UAyKu+JuutjY3fZyxH5XrK+k5b6FxyZ5x6B19ktXLXU3YVOoAGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFZI1FcC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD60CC116B1;
-	Tue, 16 Jul 2024 16:08:09 +0000 (UTC)
+	 MIME-Version; b=TOkCPkTBpSfDLtS2gNLH9YhnaYvzCOr+tRoKyPjLQv1nBSInoR6uVPo4u2EvlWFTfzhpHPfal3y+lyfkpkyMKJ1Brys5XuJm4j/kxCuWwq0geBNDQY+OmJ5F8XqWK+SbHPU8NDsK3rcytPJpWvwW2qPIYcK8K3QpVODuzV4VmBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5ygxzwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B63C4AF10;
+	Tue, 16 Jul 2024 16:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721146090;
-	bh=wgk+j4U8P31Ia0nOCWu6kVu/ZbsZJDAdMZzhu0FKulM=;
+	s=korg; t=1721146107;
+	bh=xb87T3IlEweTOpiQiTIIXbBPWz94EMfPrqsnDqTcyEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFZI1FcC4+0prd7Ohx4e/x0R8d2Z1+rKurlqhM+4ZXvbLU5OcIb/ur4LVOz6QEfXZ
-	 6vbCio9UbQUkcc3TnFXmxwd26JmGCbYI85CQKEAvWebVmQTfn9dauQw4cGwOyCHxKn
-	 YWAtpQ696OoJljJ77+DgwUWlXMU5LCtSIPHSYG+4=
+	b=R5ygxzwVMuWrZuIN7oq4EYPAQVlAKxCmjZZyu/869wJNp/TCdy6qaBls+6NF0Gyqg
+	 FR4lSh/DErpPw2avyVE/n1xFGW+9/Sx8eIE+aD3ZiMmWgxGylGj++R0OXenF0FzMtx
+	 CK96Vwsn8uedQ3D7I4Wjc04M04nrJU6LBKrYpRHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jose E. Marchesi" <jose.marchesi@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Wang Yong <wang.yong12@zte.com.cn>,
+	Lu Zhongjun <lu.zhongjun@zte.com.cn>,
+	Yang Tao <yang.tao172@zte.com.cn>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Yang Yang <yang.yang29@zte.com.cn>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 027/144] bpf: Avoid uninitialized value in BPF_CORE_READ_BITFIELD
-Date: Tue, 16 Jul 2024 17:31:36 +0200
-Message-ID: <20240716152753.583666396@linuxfoundation.org>
+Subject: [PATCH 5.15 028/144] jffs2: Fix potential illegal address access in jffs2_free_inode
+Date: Tue, 16 Jul 2024 17:31:37 +0200
+Message-ID: <20240716152753.622040890@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -66,57 +70,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jose E. Marchesi <jose.marchesi@oracle.com>
+From: Wang Yong <wang.yong12@zte.com.cn>
 
-[ Upstream commit 009367099eb61a4fc2af44d4eb06b6b4de7de6db ]
+[ Upstream commit af9a8730ddb6a4b2edd779ccc0aceb994d616830 ]
 
-[Changes from V1:
- - Use a default branch in the switch statement to initialize `val'.]
+During the stress testing of the jffs2 file system,the following
+abnormal printouts were found:
+[ 2430.649000] Unable to handle kernel paging request at virtual address 0069696969696948
+[ 2430.649622] Mem abort info:
+[ 2430.649829]   ESR = 0x96000004
+[ 2430.650115]   EC = 0x25: DABT (current EL), IL = 32 bits
+[ 2430.650564]   SET = 0, FnV = 0
+[ 2430.650795]   EA = 0, S1PTW = 0
+[ 2430.651032]   FSC = 0x04: level 0 translation fault
+[ 2430.651446] Data abort info:
+[ 2430.651683]   ISV = 0, ISS = 0x00000004
+[ 2430.652001]   CM = 0, WnR = 0
+[ 2430.652558] [0069696969696948] address between user and kernel address ranges
+[ 2430.653265] Internal error: Oops: 96000004 [#1] PREEMPT SMP
+[ 2430.654512] CPU: 2 PID: 20919 Comm: cat Not tainted 5.15.25-g512f31242bf6 #33
+[ 2430.655008] Hardware name: linux,dummy-virt (DT)
+[ 2430.655517] pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 2430.656142] pc : kfree+0x78/0x348
+[ 2430.656630] lr : jffs2_free_inode+0x24/0x48
+[ 2430.657051] sp : ffff800009eebd10
+[ 2430.657355] x29: ffff800009eebd10 x28: 0000000000000001 x27: 0000000000000000
+[ 2430.658327] x26: ffff000038f09d80 x25: 0080000000000000 x24: ffff800009d38000
+[ 2430.658919] x23: 5a5a5a5a5a5a5a5a x22: ffff000038f09d80 x21: ffff8000084f0d14
+[ 2430.659434] x20: ffff0000bf9a6ac0 x19: 0169696969696940 x18: 0000000000000000
+[ 2430.659969] x17: ffff8000b6506000 x16: ffff800009eec000 x15: 0000000000004000
+[ 2430.660637] x14: 0000000000000000 x13: 00000001000820a1 x12: 00000000000d1b19
+[ 2430.661345] x11: 0004000800000000 x10: 0000000000000001 x9 : ffff8000084f0d14
+[ 2430.662025] x8 : ffff0000bf9a6b40 x7 : ffff0000bf9a6b48 x6 : 0000000003470302
+[ 2430.662695] x5 : ffff00002e41dcc0 x4 : ffff0000bf9aa3b0 x3 : 0000000003470342
+[ 2430.663486] x2 : 0000000000000000 x1 : ffff8000084f0d14 x0 : fffffc0000000000
+[ 2430.664217] Call trace:
+[ 2430.664528]  kfree+0x78/0x348
+[ 2430.664855]  jffs2_free_inode+0x24/0x48
+[ 2430.665233]  i_callback+0x24/0x50
+[ 2430.665528]  rcu_do_batch+0x1ac/0x448
+[ 2430.665892]  rcu_core+0x28c/0x3c8
+[ 2430.666151]  rcu_core_si+0x18/0x28
+[ 2430.666473]  __do_softirq+0x138/0x3cc
+[ 2430.666781]  irq_exit+0xf0/0x110
+[ 2430.667065]  handle_domain_irq+0x6c/0x98
+[ 2430.667447]  gic_handle_irq+0xac/0xe8
+[ 2430.667739]  call_on_irq_stack+0x28/0x54
+The parameter passed to kfree was 5a5a5a5a, which corresponds to the target field of
+the jffs_inode_info structure. It was found that all variables in the jffs_inode_info
+structure were 5a5a5a5a, except for the first member sem. It is suspected that these
+variables are not initialized because they were set to 5a5a5a5a during memory testing,
+which is meant to detect uninitialized memory.The sem variable is initialized in the
+function jffs2_i_init_once, while other members are initialized in
+the function jffs2_init_inode_info.
 
-GCC warns that `val' may be used uninitialized in the
-BPF_CRE_READ_BITFIELD macro, defined in bpf_core_read.h as:
+The function jffs2_init_inode_info is called after iget_locked,
+but in the iget_locked function, the destroy_inode process is triggered,
+which releases the inode and consequently, the target member of the inode
+is not initialized.In concurrent high pressure scenarios, iget_locked
+may enter the destroy_inode branch as described in the code.
 
-	[...]
-	unsigned long long val;						      \
-	[...]								      \
-	switch (__CORE_RELO(s, field, BYTE_SIZE)) {			      \
-	case 1: val = *(const unsigned char *)p; break;			      \
-	case 2: val = *(const unsigned short *)p; break;		      \
-	case 4: val = *(const unsigned int *)p; break;			      \
-	case 8: val = *(const unsigned long long *)p; break;		      \
-        }       							      \
-	[...]
-	val;								      \
-	}								      \
+Since the destroy_inode functionality of jffs2 only releases the target,
+the fix method is to set target to NULL in jffs2_i_init_once.
 
-This patch adds a default entry in the switch statement that sets
-`val' to zero in order to avoid the warning, and random values to be
-used in case __builtin_preserve_field_info returns unexpected values
-for BPF_FIELD_BYTE_SIZE.
-
-Tested in bpf-next master.
-No regressions.
-
-Signed-off-by: Jose E. Marchesi <jose.marchesi@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240508101313.16662-1-jose.marchesi@oracle.com
+Signed-off-by: Wang Yong <wang.yong12@zte.com.cn>
+Reviewed-by: Lu Zhongjun <lu.zhongjun@zte.com.cn>
+Reviewed-by: Yang Tao <yang.tao172@zte.com.cn>
+Cc: Xu Xin <xu.xin16@zte.com.cn>
+Cc: Yang Yang <yang.yang29@zte.com.cn>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/bpf_core_read.h | 1 +
+ fs/jffs2/super.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/lib/bpf/bpf_core_read.h b/tools/lib/bpf/bpf_core_read.h
-index e4aa9996a5501..b8e68a17f3f1b 100644
---- a/tools/lib/bpf/bpf_core_read.h
-+++ b/tools/lib/bpf/bpf_core_read.h
-@@ -101,6 +101,7 @@ enum bpf_enum_value_kind {
- 	case 2: val = *(const unsigned short *)p; break;		      \
- 	case 4: val = *(const unsigned int *)p; break;			      \
- 	case 8: val = *(const unsigned long long *)p; break;		      \
-+	default: val = 0; break;					      \
- 	}								      \
- 	val <<= __CORE_RELO(s, field, LSHIFT_U64);			      \
- 	if (__CORE_RELO(s, field, SIGNED))				      \
+diff --git a/fs/jffs2/super.c b/fs/jffs2/super.c
+index 81ca58c10b728..40cc5e62907c1 100644
+--- a/fs/jffs2/super.c
++++ b/fs/jffs2/super.c
+@@ -58,6 +58,7 @@ static void jffs2_i_init_once(void *foo)
+ 	struct jffs2_inode_info *f = foo;
+ 
+ 	mutex_init(&f->sem);
++	f->target = NULL;
+ 	inode_init_once(&f->vfs_inode);
+ }
+ 
 -- 
 2.43.0
 
