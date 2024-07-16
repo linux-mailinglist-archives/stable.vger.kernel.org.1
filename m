@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65145932C11
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:51:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF81932B45
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0407F1F22C51
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:51:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF937282657
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3336219E7E3;
-	Tue, 16 Jul 2024 15:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9760195B27;
+	Tue, 16 Jul 2024 15:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5dMNufq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWKWtIeR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62D419B59C;
-	Tue, 16 Jul 2024 15:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AB3F9E8;
+	Tue, 16 Jul 2024 15:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145080; cv=none; b=nE02EXJWUAbYjhcZjDYl430wpHU5UCklhAslmKlr1+o/wfKUfEAGO2+yiXSAjZ5E+VjJyyXjV/pt/6vJLsvVFCrEjzrGJSMAJ+h6ZrVWSmAgJhUNag00GzUJNfsMYL5LCCXA77H3o9RMp/onXVv4LfTCrK2QA/ndXJwnPTdqQ50=
+	t=1721144587; cv=none; b=JayLReJh/9TmXEhOzK+Z7KzqnXloJ+rgDdUp+/RBVOcSEAwGurR3JOHISM4BI1vquJtsc49cvnp/DwXU2gxpnsfuVeYM5TdW+w+B942do/qhJVQEMTioQJCWQYEzFygKBjeGgBc7QUaGLTuMJEaIjjp3wding/6Bv2DvotHUxNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145080; c=relaxed/simple;
-	bh=8eAltQYmoBE0ypS4/w7PxyWcDXhUMKmmpzQKqsmq/k0=;
+	s=arc-20240116; t=1721144587; c=relaxed/simple;
+	bh=sLd2hbb5d6OTw+rdHSxSyymSPSVQcR5I7bwnTde9txM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qupIbt8JFZ91AvSq5geOYFm9aphdrMfO1RCTTq5pXJJiZfV/VP/T0NJi0+eAPOR3V1FD9jii4+aW6eWQlA/eKCI+TDwMQn9fI6SBu46PDCfv37w8hi7iFqhYTYiDPdqnRQKxOl8NnOoLQiOUTnXEgMcvv1HuNiU4iEsg8ae64H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5dMNufq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4BAC116B1;
-	Tue, 16 Jul 2024 15:51:19 +0000 (UTC)
+	 MIME-Version; b=qfNFB5D/bQq58I0VVK1cfGONoKeOljXF7sYSV7NnLZss/p/I2W3cCAQrX6+MGSEl7B8jkkLtpfvVtKuUyILOY+hZKCyaZZicVDnPfzu+8hMsFWR7f71bB0F0mpnGnu7FL25nzOQZqjDJRK3uaLpRFZaa3q2sCP2wZbCq/XLzCj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWKWtIeR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD0AC4AF0D;
+	Tue, 16 Jul 2024 15:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145079;
-	bh=8eAltQYmoBE0ypS4/w7PxyWcDXhUMKmmpzQKqsmq/k0=;
+	s=korg; t=1721144587;
+	bh=sLd2hbb5d6OTw+rdHSxSyymSPSVQcR5I7bwnTde9txM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k5dMNufq7j/UqUVXl/njJAPVte2LYBgLa0tBngfnjU4TcdkevhQiNU8WpNJuwPoWP
-	 gUUe1/jRDB4TVMBZQs0FAmaCJm17Ip7q6ragzuOzEZHaTpMobu9Pq2x6wlqlX788IM
-	 UZjkCQ4Uia1Q4pGQzAld5J4PMN5xxzLH61/W4BX8=
+	b=BWKWtIeRExlre5UdE+WYqGJRLaBcOKVFWL9OseyrzZCfiBuEOuosXrR8XQhnp1VV+
+	 LOOCopxDWB+4gwZjty26cxgBtN3SuvajukHqUgVHZV6oubp3jndkgOfboQjTf6KkMX
+	 WrQ2PKChCbGTPTRpHrokGJAKjwYmvlCd+ZDXmLFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srujana Challa <schalla@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 061/143] octeontx2-af: fix a issue with cpt_lf_alloc mailbox
+	Ma Ke <make24@iscas.ac.cn>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 5.10 042/108] drm/nouveau: fix null pointer dereference in nouveau_connector_get_modes
 Date: Tue, 16 Jul 2024 17:30:57 +0200
-Message-ID: <20240716152758.326037790@linuxfoundation.org>
+Message-ID: <20240716152747.609637168@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srujana Challa <schalla@marvell.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 845fe19139ab5a1ee303a3bee327e3191c3938af ]
+commit 80bec6825b19d95ccdfd3393cf8ec15ff2a749b4 upstream.
 
-This patch fixes CPT_LF_ALLOC mailbox error due to
-incompatible mailbox message format. Specifically, it
-corrects the `blkaddr` field type from `int` to `u8`.
+In nouveau_connector_get_modes(), the return value of drm_mode_duplicate()
+is assigned to mode, which will lead to a possible NULL pointer
+dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Fixes: de2854c87c64 ("octeontx2-af: Mailbox changes for 98xx CPT block")
-Signed-off-by: Srujana Challa <schalla@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6ee738610f41 ("drm/nouveau: Add DRM driver for NVIDIA GPUs")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240627074204.3023776-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/mbox.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_connector.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index eb2a20b5a0d0c..f92dfc65a0ffc 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -1746,7 +1746,7 @@ struct cpt_lf_alloc_req_msg {
- 	u16 nix_pf_func;
- 	u16 sso_pf_func;
- 	u16 eng_grpmsk;
--	int blkaddr;
-+	u8 blkaddr;
- 	u8 ctx_ilen_valid : 1;
- 	u8 ctx_ilen : 7;
- };
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -960,6 +960,9 @@ nouveau_connector_get_modes(struct drm_c
+ 		struct drm_display_mode *mode;
+ 
+ 		mode = drm_mode_duplicate(dev, nv_connector->native_mode);
++		if (!mode)
++			return 0;
++
+ 		drm_mode_probed_add(connector, mode);
+ 		ret = 1;
+ 	}
 
 
 
