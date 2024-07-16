@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8503A932C53
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26085932CA6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AF7E1F2447A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56E341C21B41
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4563619E81D;
-	Tue, 16 Jul 2024 15:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A341B19DF88;
+	Tue, 16 Jul 2024 15:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPMl7AUz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGAdAj6w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C0E195B27;
-	Tue, 16 Jul 2024 15:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6019917A93F;
+	Tue, 16 Jul 2024 15:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145245; cv=none; b=sKa4gvw7Uge3z9zt0PuNwNpXiJXXyH/bVRQZBZkBQI5X7QGoL6K9f7AdCOXhnDVCEHfvF/eTT5hCSdUe5y/erJcVqkXNsa2Z0fQBod+a1KzO1XKq1CMigTrnp5+oNcfHXMfFrmk9HGg+Pcd8VNSeTdMFd01xlxQcJKfGmGBP/gw=
+	t=1721145399; cv=none; b=kclNZogG5Vj3XsqMBdN6lYv8XWdKdteOSsd5hQtBqUO83KcSDkNne2ofzcMWTBCMgS7lPzwXv6UWNjn1+mbtsh1Mub1XswK2dszxWL3jWu+8VpNJjBEFXIhih8Xz8PvlcrJ1CUyEu/QCJwCzmwtWbrGXx0B9rGV84S++9XcrVc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145245; c=relaxed/simple;
-	bh=Y8A2cBE5dQcqlkSuIuHdPH470KZFARDgWa3nKEh5qbs=;
+	s=arc-20240116; t=1721145399; c=relaxed/simple;
+	bh=gjBF2Hcp2CUjGLDTdCnSBnd0CME+VTJu+dsw715XaPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdyZzzQQwfxpR2QzsvIi2zdrunU7VQkuAbzEAJqcoZwiymXFXIzkndB/aLnZh7bLqeWSg9ncItbWiIDmH9sQzfQuk4zuzkd3Hax+loYyDJoOHZQZzSW/BiTuU0KlLkg4bJzVtgPR643oIsxeHJxPDRYzGDnVNGFaaFEAtfaMMHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPMl7AUz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816A4C116B1;
-	Tue, 16 Jul 2024 15:54:04 +0000 (UTC)
+	 MIME-Version; b=eA/UMkHiUy347bWHCC0+fMVfDj0Vxf7qPwjWRpS06fbXAvH0bzW9bYiWZH59pHAxKM8t3gp1m+l1Ya/OkA/nQa2r5a5dlND5odrn0LEjHxO8MmUlrPhOnuT+WykulDf/piK3itPFrrc/0NkhgfIYecbSnanuSyeP6BRR1heAkjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGAdAj6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6590C4AF0B;
+	Tue, 16 Jul 2024 15:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145244;
-	bh=Y8A2cBE5dQcqlkSuIuHdPH470KZFARDgWa3nKEh5qbs=;
+	s=korg; t=1721145399;
+	bh=gjBF2Hcp2CUjGLDTdCnSBnd0CME+VTJu+dsw715XaPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPMl7AUzjCL/F9pxHxhT4TH8O4VqSHVo7AR4D9zE5IpvOggeVuNTZPmE1TxmGybB6
-	 7AxwhhnC/rfroU8zNiB9gXdoB/hZSMUgYngavlwbGsKUQ9Ma08coAkWNbrZjgJeysf
-	 whGx6LsjLeJkN43I5Hi+bHUBmRB51QOtjRt0fz88=
+	b=JGAdAj6wN0caM0/XUV1CJ6f4Xj8i06+2f5DAhKWZzrIAqvyKCRsloqTbokY0ofrvI
+	 3APfX6mzL66EQ3ULbc1/fow9mrySLBIH/xMQhXhVMqd9QhlxFHCOqoLTGPyQCNa/Kl
+	 El+3S680y/lr/OUlZDlzfEi5GRVeDZrHsjd1iowk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.9 128/143] misc: fastrpc: Fix ownership reassignment of remote heap
+	Slark Xiao <slark_xiao@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 53/96] USB: serial: option: add support for Foxconn T99W651
 Date: Tue, 16 Jul 2024 17:32:04 +0200
-Message-ID: <20240716152800.910145487@linuxfoundation.org>
+Message-ID: <20240716152748.545319028@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-commit a6f2f158f1ac4893a4967993105712bf3dad32d9 upstream.
+commit 3c841d54b63e4446383de3238399a3910e47d8e2 upstream.
 
-Audio PD daemon will allocate memory for audio PD dynamic loading
-usage when it is attaching for the first time to audio PD. As
-part of this, the memory ownership is moved to the VM where
-audio PD can use it. In case daemon process is killed without any
-impact to DSP audio PD, the daemon process will retry to attach to
-audio PD and in this case memory won't be reallocated. If the invoke
-fails due to any reason, as part of err_invoke, the memory ownership
-is getting reassigned to HLOS even when the memory was not allocated.
-At this time the audio PD might still be using the memory and an
-attemp of ownership reassignment would result in memory issue.
+T99W651 is a RNDIS based modem device. There are 3 serial ports
+need to be enumerated: Diag, NMEA and AT.
 
-Fixes: 0871561055e6 ("misc: fastrpc: Add support for audiopd")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628114501.14310-6-srinivas.kandagatla@linaro.org
+Test evidence as below:
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e145 Rev=05.15
+S:  Manufacturer=QCOM
+S:  Product=SDXPINN-IDP _SN:93B562B2
+S:  SerialNumber=82e6fe26
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+I:  If#=0x1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+I:  If#=0x6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+
+0&1: RNDIS, 2:AT, 3:NMEA, 4:DIAG, 5:QDSS, 6:ADB
+QDSS is not a serial port.
+
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1238,6 +1238,7 @@ static int fastrpc_init_create_static_pr
- 	struct fastrpc_phy_page pages[1];
- 	char *name;
- 	int err;
-+	bool scm_done = false;
- 	struct {
- 		int pgid;
- 		u32 namelen;
-@@ -1289,6 +1290,7 @@ static int fastrpc_init_create_static_pr
- 					fl->cctx->remote_heap->phys, fl->cctx->remote_heap->size, err);
- 				goto err_map;
- 			}
-+			scm_done = true;
- 		}
- 	}
- 
-@@ -1324,7 +1326,7 @@ static int fastrpc_init_create_static_pr
- 
- 	return 0;
- err_invoke:
--	if (fl->cctx->vmcount) {
-+	if (fl->cctx->vmcount && scm_done) {
- 		u64 src_perms = 0;
- 		struct qcom_scm_vmperm dst_perms;
- 		u32 i;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2294,6 +2294,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
+ 	  .driver_info = RSVD(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
++	  .driver_info = RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
+ 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
 
 
 
