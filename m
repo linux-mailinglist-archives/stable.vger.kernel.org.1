@@ -1,110 +1,153 @@
-Return-Path: <stable+bounces-60318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF31933047
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:38:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C8793304A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:38:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B93ED280F78
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:38:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7542B21EF4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240661A0726;
-	Tue, 16 Jul 2024 18:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646E51A83DC;
+	Tue, 16 Jul 2024 18:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2FUi6qo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A1zf3erg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04101A2569;
-	Tue, 16 Jul 2024 18:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1451A2C04;
+	Tue, 16 Jul 2024 18:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154853; cv=none; b=t2+CtZhgseteiq2XdppoiiZ7AJKd4bf13WIbOxr2cbpYD6fwEn+IGGxbQcEb6NAh8HthIzGq9WpnEHc3mIJincFxkCHQW3Je0rR6PYWNUs/OT69+kzW9UhOfPpc69a19V8KjxV/+YWsg382vK5qEfEbYHNkIHEATArfBmYUWwkA=
+	t=1721154855; cv=none; b=OWG+hPjdS2NObfrtpdmV4RX+9RuHJBa8I89lsm5mF0Ij/86ZzNRuRvH9XxIikMitnAEMCAKvWTCcngt9n3XRkSLL7x5uSwL0OkUJDuj8R7zv3ul/PLQ8W3+fgNktkVoiYYVq49EzZyKvJ2pOLACps1kwIeFnF3HCqIlnjR713vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154853; c=relaxed/simple;
-	bh=3Tf1x5+YEUrva0pfI8d/8TUvqHPptl6saPq8nrj86AY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TrXKrGpBpKQkR6gEKoBVkye/MuSv3pvrNWLTV23wyBtuvvFVu4pqXvxifS4lM7x/5QR1k5Q/1sSOSAWkmI20iSlMPHJE7BjClTZ1XonXH3Y0d79YnYnxdKr/J4r0QlpqsIaxQR0Q04Da6fDaf3Di1gKn+TaG5R5PKfwhDThvqD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2FUi6qo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9829C116B1;
-	Tue, 16 Jul 2024 18:34:11 +0000 (UTC)
+	s=arc-20240116; t=1721154855; c=relaxed/simple;
+	bh=4Pu9TiE6lBXR/e/lfKvIC9SzjKkhyM5s7/+Yl0k5q3w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HY4iKuidMYgIOjKd4ZeIdVfz1XtNF/vMGzTFaVgbz9AsawVxkE//vQDDrORUBFN2Hn6ZmnPpbR5Vbtj7mY+UWg6XMT1s95LdafFq/hRZUiUY4z4SRw7fawVAudBuOEv5ltURUxDxYxKKHIHepc/2fXBPA7VPJ9AxxJ/pFw/lj2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A1zf3erg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32F3C4AF0B;
+	Tue, 16 Jul 2024 18:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154853;
-	bh=3Tf1x5+YEUrva0pfI8d/8TUvqHPptl6saPq8nrj86AY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=N2FUi6qo8mm6J8LwCYMBv/by6CaoH1Ig2o657OUeIkCVLm3a8ZqFhrVYCiL/+KQHv
-	 4vZOaBu2az333hVXJQ5VmFTXSLPQJ1ByhrEYtaoyjDUYyVRS7wV6LG7qRfOi6Nj9ku
-	 wcDsi/HC2QhOzcpAlMA08uvMw5Phj577uyWvrZ0OelU6VvJJIffP7Uw1frh2CaU1D/
-	 YoG7mmPJmospE654GOusMzAUtpgpuNPA682l3tCGG5Nne4p4fd76OMcBprdVgMDUxK
-	 3HUJ+EWEbM3qe8912x8T+ykWfPuZNI3xWvIcLBcpp5aXpHdnXMEaKWf4L8HXWcc97p
-	 vzZdoi5xQg5aA==
+	s=k20201202; t=1721154854;
+	bh=4Pu9TiE6lBXR/e/lfKvIC9SzjKkhyM5s7/+Yl0k5q3w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A1zf3erghwqv5litjYY3AxFBmwZ9QXXT2K0YURBALMKTItOGHuqZxVE0otdmqQiEA
+	 ws8fWvwTv62DB6DaE+U/lGnkduKDL/AqfDRsbyKz649PCcIH8gohr5PxdTnfImOCKu
+	 wRgm3LY9xzBRO6yISoCTGqrg92q4R4ardydM2cNwncsIDcJ0o4JZFlglQsQdlJwtiv
+	 32pqrH0uRKOIQ3Vur5Z0VhzG3cXxmHUiBUYkc2PRX60Bb2F3F4fntuTUBo+KJAo6c8
+	 o8q4SgFLCoDyKySAhCuyeqzgk1eizPiDITilOs35ODt1QqEILZLtdazBABylAsRHCV
+	 qtfmnCmSsnXtw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	shawnguo@kernel.org,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 1/5] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi devices
-Date: Tue, 16 Jul 2024 14:33:58 -0400
-Message-ID: <20240716183409.2814531-1-sashal@kernel.org>
+	sfrench@samba.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: [PATCH AUTOSEL 6.1 2/5] ksmbd: return FILE_DEVICE_DISK instead of super magic
+Date: Tue, 16 Jul 2024 14:33:59 -0400
+Message-ID: <20240716183409.2814531-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240716183409.2814531-1-sashal@kernel.org>
+References: <20240716183409.2814531-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.99
 Content-Transfer-Encoding: 8bit
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit ce1dac560a74220f2e53845ec0723b562288aed4 ]
+[ Upstream commit 25a6e135569b3901452e4863c94560df7c11c492 ]
 
-While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
-claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
-device trees don't add DMA channels. The Reference manuals of i.MX31 and
-i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
-check the others.)
+MS-SMB2 specification describes setting ->DeviceType to FILE_DEVICE_DISK
+or FILE_DEVICE_CD_ROM. Set FILE_DEVICE_DISK instead of super magic in
+FS_DEVICE_INFORMATION. And Set FILE_READ_ONLY_DEVICE for read-only share.
 
-Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
-DMA channel requests") this results in an error message
-
-	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
-
-during boot. However that isn't fatal and the driver gets loaded just
-fine, just without using DMA.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://patch.msgid.link/20240508095610.2146640-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/common/smb2pdu.h | 34 ++++++++++++++++++++++++++++++++++
+ fs/smb/server/smb2pdu.c |  9 +++++++--
+ 2 files changed, 41 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 2c660a95c17e7..93e83fbc3403f 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1040,7 +1040,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
- 	.rx_available = mx31_rx_available,
- 	.reset = mx31_reset,
- 	.fifo_size = 8,
--	.has_dmamode = true,
-+	.has_dmamode = false,
- 	.dynamic_burst = false,
- 	.has_slavemode = false,
- 	.devtype = IMX35_CSPI,
+diff --git a/fs/smb/common/smb2pdu.h b/fs/smb/common/smb2pdu.h
+index 25383b11d01b9..7d69a2a1d3ba4 100644
+--- a/fs/smb/common/smb2pdu.h
++++ b/fs/smb/common/smb2pdu.h
+@@ -905,6 +905,40 @@ struct smb2_query_directory_rsp {
+ 	__u8   Buffer[];
+ } __packed;
+ 
++/* DeviceType Flags */
++#define FILE_DEVICE_CD_ROM              0x00000002
++#define FILE_DEVICE_CD_ROM_FILE_SYSTEM  0x00000003
++#define FILE_DEVICE_DFS                 0x00000006
++#define FILE_DEVICE_DISK                0x00000007
++#define FILE_DEVICE_DISK_FILE_SYSTEM    0x00000008
++#define FILE_DEVICE_FILE_SYSTEM         0x00000009
++#define FILE_DEVICE_NAMED_PIPE          0x00000011
++#define FILE_DEVICE_NETWORK             0x00000012
++#define FILE_DEVICE_NETWORK_FILE_SYSTEM 0x00000014
++#define FILE_DEVICE_NULL                0x00000015
++#define FILE_DEVICE_PARALLEL_PORT       0x00000016
++#define FILE_DEVICE_PRINTER             0x00000018
++#define FILE_DEVICE_SERIAL_PORT         0x0000001b
++#define FILE_DEVICE_STREAMS             0x0000001e
++#define FILE_DEVICE_TAPE                0x0000001f
++#define FILE_DEVICE_TAPE_FILE_SYSTEM    0x00000020
++#define FILE_DEVICE_VIRTUAL_DISK        0x00000024
++#define FILE_DEVICE_NETWORK_REDIRECTOR  0x00000028
++
++/* Device Characteristics */
++#define FILE_REMOVABLE_MEDIA			0x00000001
++#define FILE_READ_ONLY_DEVICE			0x00000002
++#define FILE_FLOPPY_DISKETTE			0x00000004
++#define FILE_WRITE_ONCE_MEDIA			0x00000008
++#define FILE_REMOTE_DEVICE			0x00000010
++#define FILE_DEVICE_IS_MOUNTED			0x00000020
++#define FILE_VIRTUAL_VOLUME			0x00000040
++#define FILE_DEVICE_SECURE_OPEN			0x00000100
++#define FILE_CHARACTERISTIC_TS_DEVICE		0x00001000
++#define FILE_CHARACTERISTIC_WEBDAV_DEVICE	0x00002000
++#define FILE_PORTABLE_DEVICE			0x00004000
++#define FILE_DEVICE_ALLOW_APPCONTAINER_TRAVERSAL 0x00020000
++
+ /*
+  * Maximum number of iovs we need for a set-info request.
+  * The largest one is rename/hardlink
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 34d88425434ab..bd422e98231fb 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -5039,8 +5039,13 @@ static int smb2_get_info_filesystem(struct ksmbd_work *work,
+ 
+ 		info = (struct filesystem_device_info *)rsp->Buffer;
+ 
+-		info->DeviceType = cpu_to_le32(stfs.f_type);
+-		info->DeviceCharacteristics = cpu_to_le32(0x00000020);
++		info->DeviceType = cpu_to_le32(FILE_DEVICE_DISK);
++		info->DeviceCharacteristics =
++			cpu_to_le32(FILE_DEVICE_IS_MOUNTED);
++		if (!test_tree_conn_flag(work->tcon,
++					 KSMBD_TREE_CONN_FLAG_WRITABLE))
++			info->DeviceCharacteristics |=
++				cpu_to_le32(FILE_READ_ONLY_DEVICE);
+ 		rsp->OutputBufferLength = cpu_to_le32(8);
+ 		break;
+ 	}
 -- 
 2.43.0
 
