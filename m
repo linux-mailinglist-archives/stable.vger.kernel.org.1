@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-59511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4023932A7F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:34:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D26E932BCF
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:49:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F0BBB23291
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:34:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEEBC1C229AE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861D11DDD1;
-	Tue, 16 Jul 2024 15:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C24C19E7FF;
+	Tue, 16 Jul 2024 15:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWIBOsh7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVNrP1zU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429F5E541;
-	Tue, 16 Jul 2024 15:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39ADB19B59C;
+	Tue, 16 Jul 2024 15:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144071; cv=none; b=cKM7ip50NEdvSZeqRUgFVUWqk7TG4tiRuEOKhK32KSUpcienF7F9cREzQuEEAYfaegzS4hvxKJWWM18M2XedTtkUqp1bDMhf0A+GRNeSTL+Pmva+7cUq+hh2JigtjnZsFijH+G1CNos05kYMI+gOeqAeNSEiAJ4668ppf9RQAp8=
+	t=1721144937; cv=none; b=LhUAwKN4TRXPM8vV9EBWR8zGQUCqSHl6noIM9uZ4WKFT+HsNb1V3rBpUc3wCpuJiDg8qqnA/KhkfL6lZuSuVxZB/bnjt/2swzJ5cvNxy9Fl//oAWuWhUPThgiV/3oRTJhJOr1CeTcvB1wzjPI6ngnlf9AgCHbUMI6ACINYNvBuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144071; c=relaxed/simple;
-	bh=n47Se4qgNdZDTjenWrtSSWoJLJlVrw8DqlhSUe59TbI=;
+	s=arc-20240116; t=1721144937; c=relaxed/simple;
+	bh=ljNyt4AEDAkX7GW9SIrE7eTQpv0CYk33ibptlsaUcOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ieZ27igURAT9JNRSDt0Jk/uU6inZufCdZDJb0Tqk+jnPmgwtf4aPoKjVqAprB0BMgcq6ESE3BSE1O+4Q+fkq0mhk/nvBngW14X4AiPVCV1eYysQ6w7p+SoopNRCDllDWT6bRe3UrFATKi38MXlro5QZFiO0P3LNO56Ow75RYQKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWIBOsh7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC19AC116B1;
-	Tue, 16 Jul 2024 15:34:30 +0000 (UTC)
+	 MIME-Version; b=iCN0B498VDvGIwbMlLF+HI9DcTWM1KWAypdLZD0YIyE8+LAVmRDjHa1hUfx3k5TC6ALwZGlMFv3XUxbbCfccBWWNABQk5YZblonYmTWNffmMY9DzDI8cOVXIPcAIpl4QV6Y9+qtzPq+UwDQhStt70BRGWw+0w3SykWepVMj2XhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVNrP1zU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CDBC116B1;
+	Tue, 16 Jul 2024 15:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144071;
-	bh=n47Se4qgNdZDTjenWrtSSWoJLJlVrw8DqlhSUe59TbI=;
+	s=korg; t=1721144937;
+	bh=ljNyt4AEDAkX7GW9SIrE7eTQpv0CYk33ibptlsaUcOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XWIBOsh73AsJiNiLAOI9mVVWdayIyo1H6/IzTWSZAQbwDZZUq+t0bncAWBmdVxUF7
-	 v+fIwTttFmsSF2cCInNty/oxwSW/HzITclnTkxy9LzQWSY8fnOPmOKFHshErl++daC
-	 5rNCSCWximWjq/QhWkzWW0c6OkW9LVBTkboRRX6s=
+	b=PVNrP1zUabtTpRBY3kOXDd+x+MBytE4IWWrYRUGyQTulhPGEpqU/P5n+ok5wCMvsX
+	 JRZQFee6dDZLvJoy1f+DpvLWPSXL+mNIqX3S6K5Sl8H4Bky0QqxVRdEa/9qtW9c1xp
+	 CalLSYLBKZfxJrzYP8p3dKoSzBeNLF1kHumHf6bU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Archer <erick.archer@outlook.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 06/66] sctp: prefer struct_size over open coded arithmetic
+Subject: [PATCH 6.9 045/143] arm64: dts: qcom: sc8180x: Fix LLCC reg property again
 Date: Tue, 16 Jul 2024 17:30:41 +0200
-Message-ID: <20240716152738.410985425@linuxfoundation.org>
+Message-ID: <20240716152757.721091047@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Archer <erick.archer@outlook.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit e5c5f3596de224422561d48eba6ece5210d967b3 ]
+[ Upstream commit 3df1627d8370a9c420b49743976b3eeba32afbbc ]
 
-This is an effort to get rid of all multiplications from allocation
-functions in order to prevent integer overflows [1][2].
+Commit '74cf6675c35e ("arm64: dts: qcom: sc8180x: Fix LLCC reg
+property")' transitioned the SC8180X LLCC node to describe each memory
+region individually, but did not include all the regions.
 
-As the "ids" variable is a pointer to "struct sctp_assoc_ids" and this
-structure ends in a flexible array:
+The result is that Linux fails to find the last regions, so extend the
+definition to cover all the blocks.
 
-struct sctp_assoc_ids {
-	[...]
-	sctp_assoc_t	gaids_assoc_id[];
-};
+This also corrects the related DeviceTree validation error.
 
-the preferred way in the kernel is to use the struct_size() helper to
-do the arithmetic instead of the calculation "size + size * count" in
-the kmalloc() function.
-
-Also, refactor the code adding the "ids_size" variable to avoid sizing
-twice.
-
-This way, the code is more readable and safer.
-
-This code was detected with the help of Coccinelle, and audited and
-modified manually.
-
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
-Link: https://github.com/KSPP/linux/issues/160 [2]
-Signed-off-by: Erick Archer <erick.archer@outlook.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/PAXPR02MB724871DB78375AB06B5171C88B152@PAXPR02MB7248.eurprd02.prod.outlook.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 74cf6675c35e ("arm64: dts: qcom: sc8180x: Fix LLCC reg property")
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240525-sc8180x-llcc-reg-fixup-v1-1-0c13d4ea94f2@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8180x.dtsi | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index f954d3c8876db..c429a1a2bfe23 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -6801,6 +6801,7 @@ static int sctp_getsockopt_assoc_ids(struct sock *sk, int len,
- 	struct sctp_sock *sp = sctp_sk(sk);
- 	struct sctp_association *asoc;
- 	struct sctp_assoc_ids *ids;
-+	size_t ids_size;
- 	u32 num = 0;
+diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+index 053f7861c3cec..b594938c757bf 100644
+--- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+@@ -2608,11 +2608,14 @@
  
- 	if (sctp_style(sk, TCP))
-@@ -6813,11 +6814,11 @@ static int sctp_getsockopt_assoc_ids(struct sock *sk, int len,
- 		num++;
- 	}
+ 		system-cache-controller@9200000 {
+ 			compatible = "qcom,sc8180x-llcc";
+-			reg = <0 0x09200000 0 0x50000>, <0 0x09280000 0 0x50000>,
+-			      <0 0x09300000 0 0x50000>, <0 0x09380000 0 0x50000>,
+-			      <0 0x09600000 0 0x50000>;
++			reg = <0 0x09200000 0 0x58000>, <0 0x09280000 0 0x58000>,
++			      <0 0x09300000 0 0x58000>, <0 0x09380000 0 0x58000>,
++			      <0 0x09400000 0 0x58000>, <0 0x09480000 0 0x58000>,
++			      <0 0x09500000 0 0x58000>, <0 0x09580000 0 0x58000>,
++			      <0 0x09600000 0 0x58000>;
+ 			reg-names = "llcc0_base", "llcc1_base", "llcc2_base",
+-				    "llcc3_base", "llcc_broadcast_base";
++				    "llcc3_base", "llcc4_base", "llcc5_base",
++				    "llcc6_base", "llcc7_base",  "llcc_broadcast_base";
+ 			interrupts = <GIC_SPI 582 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
  
--	if (len < sizeof(struct sctp_assoc_ids) + sizeof(sctp_assoc_t) * num)
-+	ids_size = struct_size(ids, gaids_assoc_id, num);
-+	if (len < ids_size)
- 		return -EINVAL;
- 
--	len = sizeof(struct sctp_assoc_ids) + sizeof(sctp_assoc_t) * num;
--
-+	len = ids_size;
- 	ids = kmalloc(len, GFP_USER | __GFP_NOWARN);
- 	if (unlikely(!ids))
- 		return -ENOMEM;
 -- 
 2.43.0
 
