@@ -1,124 +1,125 @@
-Return-Path: <stable+bounces-59414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B1193281B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FE893282F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:22:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C15C7B23200
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:18:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DBE0B2294E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A762919B3CC;
-	Tue, 16 Jul 2024 14:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661B819B58A;
+	Tue, 16 Jul 2024 14:21:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t98P7e/F"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F26713CA99
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 14:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F281DFD0
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 14:21:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721139504; cv=none; b=I6IOlHuOwt9brdlea8IgjTlyGGF3vwYbqJM5pzAAiTz6rsHrx/l0NCQQciRYUpfhrkLDu6qsY6i31d1EFMOtOP7makRnd4sz18QhvJu1vMxTdy80b8R0opN8SvpPZZa9UgH7O717cOCo1qFVH3jA0NUdAneExY74n1+v3ktfOp8=
+	t=1721139713; cv=none; b=o8DVEZ+m8syTPhNr2KEfC33KWmsRh5tvmkPBF7XY0Hi2T9tWYfWwUs6I/C0fx5GVSr/H3TerEeZl0+fMUf51PvJ2r6yBVSV2W4Yl9tHaLpromiWeyjdpPVF4UUPhv9GFgnw/8CQMAlewNCxhl1AwTCRyexhSuJpSrmd0Pf176xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721139504; c=relaxed/simple;
-	bh=jHWE6lELf4qGZSfLPtb1St+tDNSLRSoCxShdDSww7Zs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=smtnFpA8hVHjH0oHcAHyz9rw8wDLibKIOtn2gT+F1zm0p/+oBVN0OzM7sky8R42NwZtrfcx/unr5wQELQPpFTyBy4EXcOKmBSenY2cEOEGlpK0v5Jk2IS75Jw+TExO62F8ddd7Sh/09J73Xbk8/BOa/+fHDtV+NgoTDVAnREA6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4WNh4H5Jqhz4f3kpj
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 22:18:07 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id B108F1A0189
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 22:18:15 +0800 (CST)
-Received: from [10.174.177.174] (unknown [10.174.177.174])
-	by APP4 (Coremail) with SMTP id gCh0CgCHazkjgZZmglo1AQ--.18240S3;
-	Tue, 16 Jul 2024 22:18:15 +0800 (CST)
-Message-ID: <312e8f11-9f2f-4bab-86e8-f0d7fc38ffcc@huaweicloud.com>
-Date: Tue, 16 Jul 2024 22:18:11 +0800
+	s=arc-20240116; t=1721139713; c=relaxed/simple;
+	bh=xM6L05LshKjCJ+cYhVRNXmRPQC4beYkyAVZjqbNyQw8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NBH5SA7r6hlEHDVrD+xRqZ7JBXV2ss/PaoL/hryzSKHVAEFcTlkMgcfKqmhJQmtYbQYnsdGbtFtNPoNd7qSfmF1UHh6tpEKd+uyvAEQGgJxQaSDpoYih0X/CDkDIeJ0zoWpEG4HhZTC4CXsj2pnYt+o6TQQL9r1duouQ62QjecE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t98P7e/F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C21BC4AF0D;
+	Tue, 16 Jul 2024 14:21:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1721139712;
+	bh=xM6L05LshKjCJ+cYhVRNXmRPQC4beYkyAVZjqbNyQw8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t98P7e/FcQ5OII2WTg5ARM4gNgOLGnA0Zt9xqmbZqAvIwdA60NKlbX4lcVzGqP7cv
+	 ugQeEySUxAz1lLZSUykJ6vMXINNoPMOdD0OCljZu1DNqWvJQjLhrG4Iet9evCXoQf9
+	 FSrDSIHGJIaRf/6OjAEAgThb2rLNY3PoL2Z+pg20=
+Date: Tue, 16 Jul 2024 16:21:50 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: John Stultz <jstultz@google.com>
+Cc: stable@vger.kernel.org, Jimmy Shiu <jimmyshiu@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Qais Yousef <qyousef@layalina.io>
+Subject: Re: [PATCH 6.1] sched: Move psi_account_irqtime() out of
+ update_rq_clock_task() hotpath
+Message-ID: <2024071639-huff-outcast-21b0@gregkh>
+References: <20240716004050.515306-1-jstultz@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6/6.9] ext4: avoid ptr null pointer dereference
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, sashal@kernel.org, tytso@mit.edu, jack@suse.cz,
- patches@lists.linux.dev, yi.zhang@huawei.com, yangerkun@huawei.com,
- Baokun Li <libaokun1@huawei.com>, Baokun Li <libaokun@huaweicloud.com>
-References: <20240716092929.864207-1-libaokun@huaweicloud.com>
- <2024071624-ascent-breeding-7fb1@gregkh>
-Content-Language: en-US
-From: Baokun Li <libaokun@huaweicloud.com>
-In-Reply-To: <2024071624-ascent-breeding-7fb1@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCHazkjgZZmglo1AQ--.18240S3
-X-Coremail-Antispam: 1UD129KBjvJXoWruw13uFykJry3tFWxJryDAwb_yoW8JF15pr
-	s5KF1UCF4jqr4qka1DuF15X34Yqw4fKF1UXr4SyF18Ca9rWr1SgrnrK3Z09F1kGFZ3Cr1S
-	vFsFgFyfZrW3CaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-	AIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
-	evJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAGBWaWLvseagAAsT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240716004050.515306-1-jstultz@google.com>
 
-On 2024/7/16 22:07, Greg KH wrote:
-> On Tue, Jul 16, 2024 at 05:29:29PM +0800, libaokun@huaweicloud.com wrote:
->> From: Baokun Li <libaokun1@huawei.com>
->>
->> When commit 13df4d44a3aa ("ext4: fix slab-out-of-bounds in
->> ext4_mb_find_good_group_avg_frag_lists()") was backported to stable, the
->> commit f536808adcc3 ("ext4: refactor out ext4_generic_attr_store()") that
->> uniformly determines if the ptr is null is not merged in, so it needs to
->> be judged whether ptr is null or not in each case of the switch, otherwise
->> null pointer dereferencing may occur.
->>
->> Signed-off-by: Baokun Li <libaokun1@huawei.com>
->> ---
->>   fs/ext4/sysfs.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
->> index 63cbda3700ea..d65dccb44ed5 100644
->> --- a/fs/ext4/sysfs.c
->> +++ b/fs/ext4/sysfs.c
->> @@ -473,6 +473,8 @@ static ssize_t ext4_attr_store(struct kobject *kobj,
->>   			*((unsigned int *) ptr) = t;
->>   		return len;
->>   	case attr_clusters_in_group:
->> +		if (!ptr)
->> +			return 0;
->>   		ret = kstrtouint(skip_spaces(buf), 0, &t);
->>   		if (ret)
->>   			return ret;
->> -- 
->> 2.39.2
->>
->>
-> Now queued up, thanks for the fix!
->
-> greg k-h
+On Mon, Jul 15, 2024 at 05:40:39PM -0700, John Stultz wrote:
+> commit ddae0ca2a8fe12d0e24ab10ba759c3fbd755ada8 upstream.
+> 
+> It was reported that in moving to 6.1, a larger then 10%
+> regression was seen in the performance of
+> clock_gettime(CLOCK_THREAD_CPUTIME_ID,...).
+> 
+> Using a simple reproducer, I found:
+> 5.10:
+> 100000000 calls in 24345994193 ns => 243.460 ns per call
+> 100000000 calls in 24288172050 ns => 242.882 ns per call
+> 100000000 calls in 24289135225 ns => 242.891 ns per call
+> 
+> 6.1:
+> 100000000 calls in 28248646742 ns => 282.486 ns per call
+> 100000000 calls in 28227055067 ns => 282.271 ns per call
+> 100000000 calls in 28177471287 ns => 281.775 ns per call
+> 
+> The cause of this was finally narrowed down to the addition of
+> psi_account_irqtime() in update_rq_clock_task(), in commit
+> 52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ
+> pressure").
+> 
+> In my initial attempt to resolve this, I leaned towards moving
+> all accounting work out of the clock_gettime() call path, but it
+> wasn't very pretty, so it will have to wait for a later deeper
+> rework. Instead, Peter shared this approach:
+> 
+> Rework psi_account_irqtime() to use its own psi_irq_time base
+> for accounting, and move it out of the hotpath, calling it
+> instead from sched_tick() and __schedule().
+> 
+> In testing this, we found the importance of ensuring
+> psi_account_irqtime() is run under the rq_lock, which Johannes
+> Weiner helpfully explained, so also add some lockdep annotations
+> to make that requirement clear.
+> 
+> With this change the performance is back in-line with 5.10:
+> 6.1+fix:
+> 100000000 calls in 24297324597 ns => 242.973 ns per call
+> 100000000 calls in 24318869234 ns => 243.189 ns per call
+> 100000000 calls in 24291564588 ns => 242.916 ns per call
+> 
+> Reported-by: Jimmy Shiu <jimmyshiu@google.com>
+> Originally-by: Peter Zijlstra <peterz@infradead.org>
+> Signed-off-by: John Stultz <jstultz@google.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+> Reviewed-by: Qais Yousef <qyousef@layalina.io>
+> Link: https://lore.kernel.org/r/20240618215909.4099720-1-jstultz@google.com
+> Fixes: 52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ pressure")
+> [jstultz: Fixed up minor collisions w/ 6.1-stable]
+> Signed-off-by: John Stultz <jstultz@google.com>
+> ---
+>  kernel/sched/core.c  |  7 +++++--
+>  kernel/sched/psi.c   | 21 ++++++++++++++++-----
+>  kernel/sched/sched.h |  1 +
+>  kernel/sched/stats.h | 11 ++++++++---
+>  4 files changed, 30 insertions(+), 10 deletions(-)
 
-Thanks for your consistent work. 😄
+Both backports now queued up, thanks.
 
--- 
-With Best Regards,
-Baokun Li
-
+greg k-h
 
