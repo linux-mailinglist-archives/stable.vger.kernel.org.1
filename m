@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC68932C2B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C062F932D1F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53B0E2856DF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FD172812E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6B219DF70;
-	Tue, 16 Jul 2024 15:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03CB417A930;
+	Tue, 16 Jul 2024 16:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuBuu+zU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuyS+srp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF3317A93F;
-	Tue, 16 Jul 2024 15:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49041DDCE;
+	Tue, 16 Jul 2024 16:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145151; cv=none; b=Org/AGoPUsh19q1zKLjfAyeGgBLI0pYMF63ehpubnQ7jwlIFAlfKodpVQhyH180cBg8FfEVyacAQFNGSLI8is624txNxSmpsP8i3mfqyJj1Bw0FpRKJUzFfrWOiX45JwPCQ6x+t8HLImr81fCmLEwedImzVQFCdPAcqBzCWsC08=
+	t=1721145684; cv=none; b=tIMAehkk/VQh9hOBnII4ibuua5vg7kYR3cgx8/VSo8/E0meGl2hv2MembYQR+1D63Z2n+X681U1yofDCgo+IZAzgVcSjb2ibcbPfZY6NlqdJBqo2oT1s3P1X7t04ZS79ES8JVBgCx/gmqmip6KveW+fL0kDEqzeiX9krsfgYHZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145151; c=relaxed/simple;
-	bh=QTe64/+/HuPCuDrBD8TWI1zbnoc/jf6tYcdWkgZ+ayw=;
+	s=arc-20240116; t=1721145684; c=relaxed/simple;
+	bh=zbUq7AyNHpsVZ28p3NRWDYt2x/A8zevK36QxKiohzqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+dAhy+uDB6yeozlFhKLUGgAbHgFYfUb1GbxygVVswyOEy+zG2cHL7oE3cLpOBSd+s4KeE+zRAZTn78TWVlFSvJMdYsMvETpZopk2XVIO6taS9A3EtWW3I3NA58+BehtMhHJ5t5xEXesE6xvSjXEm0KiplgNOmMZfl6XqHGHu9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuBuu+zU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED36C116B1;
-	Tue, 16 Jul 2024 15:52:29 +0000 (UTC)
+	 MIME-Version; b=tcVbCOknGn2Cwkbr/NBJHT+rrJW08M0CYF2oC/PFh4N9e+4Cc8GPPA1G4jyRx+KtDJYszf/ptwkoRTrfPcCe+nwnnXDrHgxIKbyVaRKjeOJLoKXccxK5S0WMSsNLBC3tEwxhEBjGZY9POVDAWCkASz+Ndig1fS+Bza5xM40pPVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuyS+srp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38287C4AF0D;
+	Tue, 16 Jul 2024 16:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145150;
-	bh=QTe64/+/HuPCuDrBD8TWI1zbnoc/jf6tYcdWkgZ+ayw=;
+	s=korg; t=1721145684;
+	bh=zbUq7AyNHpsVZ28p3NRWDYt2x/A8zevK36QxKiohzqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kuBuu+zUibDAKv2ibCbxR7Ha5RiiOOZzQau+VPHrSSnEcjMfLDVJehLUrqeZL3nZ6
-	 tNJYlqxENwapkIkIEvWfLfql7zPVWQk2UxC0i4rGkXaONIptKCu7IV6nGSgNC2MMYD
-	 pTNUx0h/NDv2vYunIS969vBImv6SS1T0mgLI2z9k=
+	b=JuyS+srppE5Of1WwrMPHcIbfd6HFZFEboow0UAE/KBd6dCnqFFhONTciP5lG0l6N4
+	 jWX/NN4XPq57F0J3PHpv0tMMwqLViRLb4XKtnLo5UqKcN7EYPMhnAb4bW5Xf2vX0LX
+	 ri6OORD4Cs6FE/t2i4IHaz3wOwLn9BbDBRQEjxqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.9 115/143] pmdomain: qcom: rpmhpd: Skip retention level for Power Domains
+	Kiran Kumar K <kirankumark@marvell.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 049/121] octeontx2-af: fix issue with IPv6 ext match for RSS
 Date: Tue, 16 Jul 2024 17:31:51 +0200
-Message-ID: <20240716152800.402050494@linuxfoundation.org>
+Message-ID: <20240716152753.211288081@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Kiran Kumar K <kirankumark@marvell.com>
 
-commit ddab91f4b2de5c5b46e312a90107d9353087d8ea upstream.
+[ Upstream commit e23ac1095b9eb8ac48f98c398d81d6ba062c9b5d ]
 
-In the cases where the power domain connected to logics is allowed to
-transition from a level(L)-->power collapse(0)-->retention(1) or
-vice versa retention(1)-->power collapse(0)-->level(L)  will cause the
-logic to lose the configurations. The ARC does not support retention
-to collapse transition on MxC rails.
+While performing RSS based on IPv6, extension ltype
+is not being considered. This will be problem for
+fragmented packets or packets with extension header.
+Adding changes to match IPv6 ext header along with IPv6
+ltype.
 
-The targets from SM8450 onwards the PLL logics of clock controllers are
-connected to MxC rails and the recommended configurations are carried
-out during the clock controller probes. The MxC transition as mentioned
-above should be skipped to ensure the PLL settings are intact across
-clock controller power on & off.
-
-On older targets that do not split MX into MxA and MxC does not collapse
-the logic and it is parked always at RETENTION, thus this issue is never
-observed on those targets.
-
-Cc: stable@vger.kernel.org # v5.17
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Link: https://lore.kernel.org/r/20240625-avoid_mxc_retention-v2-1-af9c2f549a5f@quicinc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 41a7aa7b800d ("octeontx2-af: NIX Rx flowkey configuration for RSS")
+Signed-off-by: Kiran Kumar K <kirankumark@marvell.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/qcom/rpmhpd.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/pmdomain/qcom/rpmhpd.c
-+++ b/drivers/pmdomain/qcom/rpmhpd.c
-@@ -40,6 +40,7 @@
-  * @addr:		Resource address as looped up using resource name from
-  *			cmd-db
-  * @state_synced:	Indicator that sync_state has been invoked for the rpmhpd resource
-+ * @skip_retention_level: Indicate that retention level should not be used for the power domain
-  */
- struct rpmhpd {
- 	struct device	*dev;
-@@ -56,6 +57,7 @@ struct rpmhpd {
- 	const char	*res_name;
- 	u32		addr;
- 	bool		state_synced;
-+	bool            skip_retention_level;
- };
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index f6f6d7c04e8bf..e7ef07f1f0bb9 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -3517,6 +3517,9 @@ static int get_flowkey_alg_idx(struct nix_hw *nix_hw, u32 flow_cfg)
+ 	return -ERANGE;
+ }
  
- struct rpmhpd_desc {
-@@ -173,6 +175,7 @@ static struct rpmhpd mxc = {
- 	.pd = { .name = "mxc", },
- 	.peer = &mxc_ao,
- 	.res_name = "mxc.lvl",
-+	.skip_retention_level = true,
- };
- 
- static struct rpmhpd mxc_ao = {
-@@ -180,6 +183,7 @@ static struct rpmhpd mxc_ao = {
- 	.active_only = true,
- 	.peer = &mxc,
- 	.res_name = "mxc.lvl",
-+	.skip_retention_level = true,
- };
- 
- static struct rpmhpd nsp = {
-@@ -819,6 +823,9 @@ static int rpmhpd_update_level_mapping(s
- 		return -EINVAL;
- 
- 	for (i = 0; i < rpmhpd->level_count; i++) {
-+		if (rpmhpd->skip_retention_level && buf[i] == RPMH_REGULATOR_LEVEL_RETENTION)
-+			continue;
++/* Mask to match ipv6(NPC_LT_LC_IP6) and ipv6 ext(NPC_LT_LC_IP6_EXT) */
++#define NPC_LT_LC_IP6_MATCH_MSK ((~(NPC_LT_LC_IP6 ^ NPC_LT_LC_IP6_EXT)) & 0xf)
 +
- 		rpmhpd->level[i] = buf[i];
- 
- 		/* Remember the first corner with non-zero level */
+ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
+ {
+ 	int idx, nr_field, key_off, field_marker, keyoff_marker;
+@@ -3643,7 +3646,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
+ 					field->bytesm1 = 15; /* DIP,16 bytes */
+ 				}
+ 			}
+-			field->ltype_mask = 0xF; /* Match only IPv6 */
++			field->ltype_mask = NPC_LT_LC_IP6_MATCH_MSK;
+ 			break;
+ 		case NIX_FLOW_KEY_TYPE_TCP:
+ 		case NIX_FLOW_KEY_TYPE_UDP:
+-- 
+2.43.0
+
 
 
 
