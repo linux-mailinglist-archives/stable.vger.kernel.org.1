@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-59673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B175932B38
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E99932BBE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C6211C2086A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA9CF281668
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E2E1DDF5;
-	Tue, 16 Jul 2024 15:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1702C19DFB9;
+	Tue, 16 Jul 2024 15:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhfgYg+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXtKpcmc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027AD19A86F;
-	Tue, 16 Jul 2024 15:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C937C19DF88;
+	Tue, 16 Jul 2024 15:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144561; cv=none; b=beekVdlFDvV6e4olir5SDcfL6UXs8/0BaN0soeN1FDMh2PwU3eN0cAkgY+soqWaGxJ5pqpXE6u7dKHCALV9Yw2tZ6rbIJ/ZrN5ISufM7T838GvrvbF893EUlnYDOkdxp91oNo/AJlnBpu16l7AndQ1zf3ZsIFaRDlAlmGXZ/rj4=
+	t=1721144898; cv=none; b=LtIbZGqF/1ETV6Cfe02H3CXcE4xQ0GdLtMHog/8t3kA7Qt/QOKf9qQR7mgvnw2etwYReSgBBg025nf3QWfdux5Q131Kk5K7WSeeHyl5AmWWEs1n/XNOHhS3Np8ky3hw8Qq3LolNh8OMlBbz6BP1Ov4nUzL1HmbOoePEkZ65JqEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144561; c=relaxed/simple;
-	bh=6V42mseGbtkhSCD3/KF4i+NUjAFT8jVL2Nes9KyYUBA=;
+	s=arc-20240116; t=1721144898; c=relaxed/simple;
+	bh=F4QWM/Ub1UKNvqEJZP8G7PEbh0wi1wxMNm98vBztfUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNDF52vA5JgoHkBQg0qmoRZtjWfpLW/VBKiIq8lYhC+GKXCK1xtEadNB5uFrtVAyMm9y8kEpbZWLSTa1GJcfz25XDOwcsgs8IT7YpzY/unzdt9YGSRXND6h3+C0AChJEmKiR9SY6gzd7laOB6yq12vfRFroSXaopEJv+L5+CBd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhfgYg+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70096C116B1;
-	Tue, 16 Jul 2024 15:42:40 +0000 (UTC)
+	 MIME-Version; b=EuY05YGKMec8RCYaiQH6tX8gIbSlg+JhcSFr8GzDzGsEQ+Ryh5sw4LcDomcapnydyDlIPVDd6YQpLUx1yhaUgZbz9AjIEvfm5ojAA6LLaUs1rPAGTvtmPNVsPLqmGQF7l7etPAVvv9buLEITEiwBQWiBhpDzxpqBGHqD8tA4z+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXtKpcmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5017BC116B1;
+	Tue, 16 Jul 2024 15:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144560;
-	bh=6V42mseGbtkhSCD3/KF4i+NUjAFT8jVL2Nes9KyYUBA=;
+	s=korg; t=1721144898;
+	bh=F4QWM/Ub1UKNvqEJZP8G7PEbh0wi1wxMNm98vBztfUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mhfgYg+NLzKuVrYfLc10gYyDz7ghQTv/lEnLB9Ud/53hzx63Inh3UDrr0DY1TTq4q
-	 9ovYlIG0YbdT/LnfmhyiCaMbkS2+MxEAW3xG2lDLVkG+aOhf5RxCoy+Uu5+e3bB9cJ
-	 OEO0qu/DbjGyH6Hb9XTk1fE8bNOv9+w1axOtw++0=
+	b=uXtKpcmcHMkqXqagY+v2fd+AhhouUvqD7D1+3kn+4O6Hg0E1cD8fudoPZYtHVRzPA
+	 HeFwX4TijS72lwbb9Vq1Td0dDRyHcnoLHBhVRB4M+ADYvTGLO4H49hJdiNGeXSRRf7
+	 9vNKXafCTuK/CgEvyws/q9C0z2vr+dq+0NnbidFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hailey Mothershead <hailmo@amazon.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	David Lechner <dlechner@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 006/108] crypto: aead,cipher - zeroize key buffer after use
+Subject: [PATCH 6.9 025/143] spi: dont unoptimize message in spi_async()
 Date: Tue, 16 Jul 2024 17:30:21 +0200
-Message-ID: <20240716152746.240710039@linuxfoundation.org>
+Message-ID: <20240716152756.956606946@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hailey Mothershead <hailmo@amazon.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 23e4099bdc3c8381992f9eb975c79196d6755210 ]
+[ Upstream commit c86a918b1bdba78fb155184f8d88dfba1e63335d ]
 
-I.G 9.7.B for FIPS 140-3 specifies that variables temporarily holding
-cryptographic information should be zeroized once they are no longer
-needed. Accomplish this by using kfree_sensitive for buffers that
-previously held the private key.
+Calling spi_maybe_unoptimize_message() in spi_async() is wrong because
+the message is likely to be in the queue and not transferred yet. This
+can corrupt the message while it is being used by the controller driver.
 
-Signed-off-by: Hailey Mothershead <hailmo@amazon.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+spi_maybe_unoptimize_message() is already called in the correct place
+in spi_finalize_current_message() to balance the call to
+spi_maybe_optimize_message() in spi_async().
+
+Fixes: 7b1d87af14d9 ("spi: add spi_optimize_message() APIs")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20240708-spi-mux-fix-v1-1-6c8845193128@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/aead.c   | 3 +--
- crypto/cipher.c | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/crypto/aead.c b/crypto/aead.c
-index 16991095270d2..c4ece86c45bc4 100644
---- a/crypto/aead.c
-+++ b/crypto/aead.c
-@@ -35,8 +35,7 @@ static int setkey_unaligned(struct crypto_aead *tfm, const u8 *key,
- 	alignbuffer = (u8 *)ALIGN((unsigned long)buffer, alignmask + 1);
- 	memcpy(alignbuffer, key, keylen);
- 	ret = crypto_aead_alg(tfm)->setkey(tfm, alignbuffer, keylen);
--	memset(alignbuffer, 0, keylen);
--	kfree(buffer);
-+	kfree_sensitive(buffer);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index c349d6012625a..a1958e86f75c8 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -4423,8 +4423,6 @@ int spi_async(struct spi_device *spi, struct spi_message *message)
+ 
+ 	spin_unlock_irqrestore(&ctlr->bus_lock_spinlock, flags);
+ 
+-	spi_maybe_unoptimize_message(message);
+-
  	return ret;
  }
- 
-diff --git a/crypto/cipher.c b/crypto/cipher.c
-index fd78150deb1c1..72c5606cc7f81 100644
---- a/crypto/cipher.c
-+++ b/crypto/cipher.c
-@@ -33,8 +33,7 @@ static int setkey_unaligned(struct crypto_cipher *tfm, const u8 *key,
- 	alignbuffer = (u8 *)ALIGN((unsigned long)buffer, alignmask + 1);
- 	memcpy(alignbuffer, key, keylen);
- 	ret = cia->cia_setkey(crypto_cipher_tfm(tfm), alignbuffer, keylen);
--	memset(alignbuffer, 0, keylen);
--	kfree(buffer);
-+	kfree_sensitive(buffer);
- 	return ret;
- 
- }
+ EXPORT_SYMBOL_GPL(spi_async);
 -- 
 2.43.0
 
