@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-60120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B4C932D76
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:05:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A28932CC5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16132B23B77
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEA461F246A1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A14719B59C;
-	Tue, 16 Jul 2024 16:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2CF19F49E;
+	Tue, 16 Jul 2024 15:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFZMcB/Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spIYpR80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD871DDCE;
-	Tue, 16 Jul 2024 16:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1CD1DDCE;
+	Tue, 16 Jul 2024 15:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145933; cv=none; b=QZtF8IFk9XyJ5D5WblZFgShr+QNzo4vdoVeCrnd/lkgiEhs0ulvSmKGrPxVtAu8oj1cGjwBLL6Z4fIBa52xCuM5vyHWZGnS/IFRSW2yDAEnV3b5tL+5Up1o+DT7b7sQ6pZT6l6/XwY8Cseqz59IOYjELS+T4YVPjsqsfpAjFWms=
+	t=1721145475; cv=none; b=O4ypssB8Ls3QSDwGaU4+Mes0CsAUGp7+ScXrvrDuxRpTl+8j7daqxAQTTWPy0fgnXZ7A/UsXx4yvhfD5fog4/dJO1MXkR5Yst7m+vErOJzzaiQ5UEv2d/B+pu76o7/Ae1hZCZyqFUUfWCooqrlgtcfQGi5/EENgA/EjpcpgYvdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145933; c=relaxed/simple;
-	bh=xFxjtpsvD1th8UMLY69wYKYUhqAEBVcOKaBM2fjdjnY=;
+	s=arc-20240116; t=1721145475; c=relaxed/simple;
+	bh=r4FSGGKzwq2CGoF+sD5KETeyLdAsMukBd83wy0GaYXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cudd37GEjgB+sWaPC6ZsHOhurPIIxjTpcYjQRpmgd3WcBFLgsCa+AVs2zNhx9tkNUeC+Qme4TuY/vm6qPHNdk1tiEfAV4gQo02dZt3ZUAOJaaEyRRX+mUXpxkesADrqOsTIlexXfvc7+5fwheMy/IIiv9c+bvWQfIZ4Lxktr0po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFZMcB/Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E891C116B1;
-	Tue, 16 Jul 2024 16:05:32 +0000 (UTC)
+	 MIME-Version; b=knv2JMhcsRqWaTvCZT/uAaWh5XnKwvFB8tW0HObuTgStSC+QJ7A0SE/K0n2r1NAkl95q5kQYAmB9uZHhL9MvG9RSTPAAOz2WMx79k72QMeiCl5eJRm8sIZKhc/wdKrf7WsjS2TLI9yPpcLwQsuu/1xShvxKJotF4+JukfDaGkss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spIYpR80; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2333DC116B1;
+	Tue, 16 Jul 2024 15:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145932;
-	bh=xFxjtpsvD1th8UMLY69wYKYUhqAEBVcOKaBM2fjdjnY=;
+	s=korg; t=1721145475;
+	bh=r4FSGGKzwq2CGoF+sD5KETeyLdAsMukBd83wy0GaYXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yFZMcB/Yb8uHMJCw3cA9UFPzjByTQehf747+7uyE6xR/xh9GuK8auXqG4whj+fOH9
-	 U3+mWwWZVCGbY9ze6j8tH8OXlS0peKLQgFSkO8SMGbJG5GPCPaRCpKNKgIUW1aT4yr
-	 cGitRdx5DFGFACnA4nT8RAIE/FAjCrI9maIGGjes=
+	b=spIYpR80wdaHAFQYwrjKtgtX1ieCWavpCtE7oC+3moBmgXIpFQmWquqJhv7pgZVXb
+	 nPWEU4+iV5Mvyw7Ul/zxvB0e4d6doYyu72gkvw58W2gFUArsYJXkjq8/eMSjJ7LJzh
+	 O+y1TrFeDEJvDR74/YuAooFTfFNGDFCC/3x8+ZHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 086/121] ALSA: hda/realtek: Limit mic boost on VAIO PRO PX
-Date: Tue, 16 Jul 2024 17:32:28 +0200
-Message-ID: <20240716152754.636343032@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ekansh Gupta <quic_ekangupt@quicinc.com>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.1 78/96] misc: fastrpc: Avoid updating PD type for capability request
+Date: Tue, 16 Jul 2024 17:32:29 +0200
+Message-ID: <20240716152749.511248994@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-commit 6db03b1929e207d2c6e84e75a9cd78124b3d6c6d upstream.
+commit bfb6b07d2a30ffe98864d8cfc31fc00470063025 upstream.
 
-The internal mic boost on the VAIO models VJFE-CL and VJFE-IL is too high.
-Fix this by applying the ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine
-to limit the gain.
+When user is requesting for DSP capability, the process pd type is
+getting updated to USER_PD which is incorrect as DSP will assume the
+process which is making the request is a user PD and this will never
+get updated back to the original value. The actual PD type should not
+be updated for capability request and it should be serviced by the
+respective PD on DSP side. Don't change process's PD type for DSP
+capability request.
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240705141012.5368-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 6c16fd8bdd40 ("misc: fastrpc: Add support to get DSP capabilities")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240628114501.14310-4-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/misc/fastrpc.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10087,6 +10087,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
- 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
- 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x1252, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
-@@ -10340,6 +10341,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1523,7 +1523,6 @@ static int fastrpc_get_info_from_dsp(str
+ 	args[1].ptr = (u64)(uintptr_t)&dsp_attr_buf[1];
+ 	args[1].length = dsp_attr_buf_len * sizeof(u32);
+ 	args[1].fd = -1;
+-	fl->pd = USER_PD;
+ 
+ 	return fastrpc_internal_invoke(fl, true, FASTRPC_DSP_UTILITIES_HANDLE,
+ 				       FASTRPC_SCALARS(0, 1, 1), args);
 
 
 
