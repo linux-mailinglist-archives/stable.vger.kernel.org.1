@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-60125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94582932D7C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:05:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CDA6932AEA
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FA6A280D02
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E74E01F22DF0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F5D19B3E3;
-	Tue, 16 Jul 2024 16:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC59A1DFF7;
+	Tue, 16 Jul 2024 15:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5dMJdTT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9kxOYJq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E4B199EA3;
-	Tue, 16 Jul 2024 16:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2099B641;
+	Tue, 16 Jul 2024 15:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145947; cv=none; b=NA46OWQ+SQiuUTn7SZZlLRmIIHUf9hHHrrgUvF/uDR9Z8z606nZhvE0YIx9Qmx+Z9zcd4S7mFJjVG3pLc5CmEJ6KhwDbQpUVMDqqZTn/S7aEgc7OFpesOaj0ApJr/h9pfEgyxd3vrMfehlait9exGkZvRfIAjL3DP31H8FC35V4=
+	t=1721144366; cv=none; b=JyY0sYyA/ZK+9SjlWphNMg4PRqoEDr2vrPpsmkd1vcXLy/b1djuAmb+ncGO/GOiHPMIBHYNl+DxggchMV573WiyomN2Pa+5O199AblSyNlqC9DlewepIXqiJUS/lUZrMvAkMk/CB3fE0XzAQ1t1eTCOOm4zhOE9yxRAnfwBPnYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145947; c=relaxed/simple;
-	bh=GLWsoqS9G8L5M4y6BJ5KEErMBCq66lhqEL448T1jo7s=;
+	s=arc-20240116; t=1721144366; c=relaxed/simple;
+	bh=0408nMAZnSQpR5yeNXjzB5HrWqZ6IHq0Ftl8sKTa55M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuDhrLAI/9WjWiyLtSE1aVbnmxZUSKFvEPOLOR8Cj6pTxyjFVdVThzyzDbyz4HbNqN809CQlmjnbYDGSaaFjf0MQRYEdO97wPlAXEgdz+MTbBY3BhcoVMCJTY3Ix0JInNYKcSettN3LY4Nlx3PteRZ92cgNSd0pRirlIYvjignw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5dMJdTT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDEAC116B1;
-	Tue, 16 Jul 2024 16:05:46 +0000 (UTC)
+	 MIME-Version; b=oel0NNhqMEeqOGIYCy+P68VIzh19EA/0+LPpOOfl2xtAbNRIxNPM+rXF438uedgkcRp9Gtxqtg78SjmpkqL3bVrv2r8dpHl2pJMyI1w2rLrd0unaWt4W7zek8ZK3blOrybPJl8NfHuoknKa81YAbdxMyI3RzEHqnV9QaUUBiB/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9kxOYJq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB40C116B1;
+	Tue, 16 Jul 2024 15:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145947;
-	bh=GLWsoqS9G8L5M4y6BJ5KEErMBCq66lhqEL448T1jo7s=;
+	s=korg; t=1721144366;
+	bh=0408nMAZnSQpR5yeNXjzB5HrWqZ6IHq0Ftl8sKTa55M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5dMJdTTS0PN3fUt3NVCXlaFvystpewmdrwGNh0N+I/wh88LT0MUJ9QL8TDIxr9Gq
-	 Zuzs/4Zh9n4OFV5Wghot/ZpFhgLffQuk63IF+36oDwhZiUSOUFWno5cm2dLR8JDDBu
-	 9zRJ2Hkt0ZNFREeRnafHnK6eIsIMtcSbebsFIZJ8=
+	b=W9kxOYJqyndyq67HnXX6IaQLInWW/Q/UvOgPQKf6dLkvVVNE5hjhMlqnCmIXskvp4
+	 PYBg63OLQWQx6UJ6oN/SauGAZcy2+tP2CgaHM2oZGLQYodOyefmIG4YiBkWsGe48Cn
+	 gi5ub7wRm/onJQ/z528T4oMshaEx5qN8F/kyr5qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	linke li <lilinke99@qq.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/144] drm/amd/display: Check pipe offset before setting vblank
+Subject: [PATCH 5.4 47/78] fs/dcache: Re-use value stored to dentry->d_flags instead of re-reading
 Date: Tue, 16 Jul 2024 17:31:19 +0200
-Message-ID: <20240716152752.928121864@linuxfoundation.org>
+Message-ID: <20240716152742.460047420@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
-References: <20240716152752.524497140@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: linke li <lilinke99@qq.com>
 
-[ Upstream commit 5396a70e8cf462ec5ccf2dc8de103c79de9489e6 ]
+[ Upstream commit 8bfb40be31ddea0cb4664b352e1797cfe6c91976 ]
 
-pipe_ctx has a size of MAX_PIPES so checking its index before accessing
-the array.
+Currently, the __d_clear_type_and_inode() writes the value flags to
+dentry->d_flags, then immediately re-reads it in order to use it in a if
+statement. This re-read is useless because no other update to
+dentry->d_flags can occur at this point.
 
-This fixes an OVERRUN issue reported by Coverity.
+This commit therefore re-use flags in the if statement instead of
+re-reading dentry->d_flags.
 
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: linke li <lilinke99@qq.com>
+Link: https://lore.kernel.org/r/tencent_5E187BD0A61BA28605E85405F15228254D0A@qq.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: aabfe57ebaa7 ("vfs: don't mod negative dentry count when on shrinker list")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/irq/dce110/irq_service_dce110.c    | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/dcache.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-index 378cc11aa0476..3d8b2b127f3f5 100644
---- a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-+++ b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-@@ -211,8 +211,12 @@ bool dce110_vblank_set(struct irq_service *irq_service,
- 						   info->ext_id);
- 	uint8_t pipe_offset = dal_irq_src - IRQ_TYPE_VBLANK;
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 43864a276faa2..9505e5df30b74 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -329,7 +329,7 @@ static inline void __d_clear_type_and_inode(struct dentry *dentry)
+ 	flags &= ~(DCACHE_ENTRY_TYPE | DCACHE_FALLTHRU);
+ 	WRITE_ONCE(dentry->d_flags, flags);
+ 	dentry->d_inode = NULL;
+-	if (dentry->d_flags & DCACHE_LRU_LIST)
++	if (flags & DCACHE_LRU_LIST)
+ 		this_cpu_inc(nr_dentry_negative);
+ }
  
--	struct timing_generator *tg =
--			dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
-+	struct timing_generator *tg;
-+
-+	if (pipe_offset >= MAX_PIPES)
-+		return false;
-+
-+	tg = dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
- 
- 	if (enable) {
- 		if (!tg || !tg->funcs->arm_vert_intr(tg, 2)) {
 -- 
 2.43.0
 
