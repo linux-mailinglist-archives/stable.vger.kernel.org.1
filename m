@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-60097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7716932D5B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:04:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E72932CE9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8A111C21C80
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:04:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A274B23AF1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F104D19AD59;
-	Tue, 16 Jul 2024 16:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A0719E830;
+	Tue, 16 Jul 2024 15:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WflX5+t5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cv1WAvF+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01601DDCE;
-	Tue, 16 Jul 2024 16:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2545719AD93;
+	Tue, 16 Jul 2024 15:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145850; cv=none; b=WOSBdceLgQ8h0wygPqrcfMHRcL88GqLT4wd/3W1D3PgLX1htXIxH9uR+adR9zm1D+PBorwHQetDkfh2t91IvdDy0ai6ObWF4CUu8VHG2oM2PW+c28W8AKRTWxYKVTuYPWI4WIooiYsXjChLoQ7+kkkL0cYYH8oBcekPuGoo0ufQ=
+	t=1721145535; cv=none; b=cdEbHZLquV2wk40U9z7dszFq4nh9hUr33LlKbg/HDYH4MaMNgkNsSb1Obzqn5F5gCxsLHiHltCYswowviYrgUwZVjMwUpr9kdyq/hiMgwUsaOoXJuK7Is6l2tcUiX8jPtqtSmGT10qjDhmczO+aP/9iKlBvdVOYKrK1/4QqwHzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145850; c=relaxed/simple;
-	bh=Ls/zT67t6BQXM2E8h0JvPrn3DySpQ2kPSdnwKcRp/58=;
+	s=arc-20240116; t=1721145535; c=relaxed/simple;
+	bh=dQiey/ZovuebsT5NY8fTKJQONmVsKLpij+M3ayfBSsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/w//dVsrrNodFc2vm/gaD3llGqpJtGN8NoeSj/skGqwVc+zkz2CfhpLXmDWH2ZACZyI3KWI2oa84cmIJLRGv9DnPfnUymaKLjpZtxayzRBZhG8Bj1TdSXnSSr9+Fy/2OfcNqXpgOpieONotakagpqW1MdlxTAJA1gSIl/8x82E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WflX5+t5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FF7C116B1;
-	Tue, 16 Jul 2024 16:04:09 +0000 (UTC)
+	 MIME-Version; b=TATgtFvfWED24KglmiOwxhim/fTVoGBeKe4BJh3o8z0MzThtHzsMk/42x/YT2ZolaWoIEWrh/SdJz300hbf/ZG58y0e5+SGcK5uzrg3ECPZBB00pADrOiLG4C7tithX1/AT3tmRt64kEcv9heo5/pYi5U5lZlXgPzeBcvFn0rUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cv1WAvF+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F929C116B1;
+	Tue, 16 Jul 2024 15:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145850;
-	bh=Ls/zT67t6BQXM2E8h0JvPrn3DySpQ2kPSdnwKcRp/58=;
+	s=korg; t=1721145535;
+	bh=dQiey/ZovuebsT5NY8fTKJQONmVsKLpij+M3ayfBSsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WflX5+t5qap/EZuQzxfCsbWSYTWpjLaTkjA17nB0aSugz6ZWSl8t3sg7VVGrhUPin
-	 SP81r6/rEPhXX6qaQ4WM74k51wjUrzfiJE1ZQxn5bBmp2g1j9TmCxXUSMFQei/V9SV
-	 vqwpjTQgWVBOK4SaaewxQ1A2/M5+FCmihStEluiI=
+	b=cv1WAvF+PaBhnttwvozX5kzsbUPTtq+VBAAnUoSw1WR2IFkWNbMD50jXLEgtaoS4G
+	 lQtI3q3VXcJOKFkswl+OQi8mcjgn993DGNgzjT+/tA3vgYaZHNP+BRHKhQEMIWbTQr
+	 bc6rO6ghm+ROZse392dgHUs1qX8RSYhXxNSeSc+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 104/121] mm/damon/core: merge regions aggressively when max_nr_regions is unmet
-Date: Tue, 16 Jul 2024 17:32:46 +0200
-Message-ID: <20240716152755.330468995@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 6.1 96/96] i2c: rcar: fix error code in probe()
+Date: Tue, 16 Jul 2024 17:32:47 +0200
+Message-ID: <20240716152750.203443803@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6 upstream.
+commit 37a672be3ae357a0f87fbc00897fa7fcb3d7d782 upstream.
 
-DAMON keeps the number of regions under max_nr_regions by skipping regions
-split operations when doing so can make the number higher than the limit.
-It works well for preventing violation of the limit.  But, if somehow the
-violation happens, it cannot recovery well depending on the situation.  In
-detail, if the real number of regions having different access pattern is
-higher than the limit, the mechanism cannot reduce the number below the
-limit.  In such a case, the system could suffer from high monitoring
-overhead of DAMON.
+Return an error code if devm_reset_control_get_exclusive() fails.
+The current code returns success.
 
-The violation can actually happen.  For an example, the user could reduce
-max_nr_regions while DAMON is running, to be lower than the current number
-of regions.  Fix the problem by repeating the merge operations with
-increasing aggressiveness in kdamond_merge_regions() for the case, until
-the limit is met.
-
-[sj@kernel.org: increase regions merge aggressiveness while respecting min_nr_regions]
-  Link: https://lkml.kernel.org/r/20240626164753.46270-1-sj@kernel.org
-[sj@kernel.org: ensure max threshold attempt for max_nr_regions violation]
-  Link: https://lkml.kernel.org/r/20240627163153.75969-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20240624175814.89611-1-sj@kernel.org
-Fixes: b9a6ac4e4ede ("mm/damon: adaptively adjust regions")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 0e864b552b23 ("i2c: rcar: reset controller is mandatory for Gen3+")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-rcar.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1121,14 +1121,31 @@ static void damon_merge_regions_of(struc
-  * access frequencies are similar.  This is for minimizing the monitoring
-  * overhead under the dynamically changeable access pattern.  If a merge was
-  * unnecessarily made, later 'kdamond_split_regions()' will revert it.
-+ *
-+ * The total number of regions could be higher than the user-defined limit,
-+ * max_nr_regions for some cases.  For example, the user can update
-+ * max_nr_regions to a number that lower than the current number of regions
-+ * while DAMON is running.  For such a case, repeat merging until the limit is
-+ * met while increasing @threshold up to possible maximum level.
-  */
- static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 				  unsigned long sz_limit)
- {
- 	struct damon_target *t;
-+	unsigned int nr_regions;
-+	unsigned int max_thres;
- 
--	damon_for_each_target(t, c)
--		damon_merge_regions_of(t, threshold, sz_limit);
-+	max_thres = c->attrs.aggr_interval /
-+		(c->attrs.sample_interval ?  c->attrs.sample_interval : 1);
-+	do {
-+		nr_regions = 0;
-+		damon_for_each_target(t, c) {
-+			damon_merge_regions_of(t, threshold, sz_limit);
-+			nr_regions += damon_nr_regions(t);
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -1121,8 +1121,10 @@ static int rcar_i2c_probe(struct platfor
+ 	/* R-Car Gen3+ needs a reset before every transfer */
+ 	if (priv->devtype >= I2C_RCAR_GEN3) {
+ 		priv->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+-		if (IS_ERR(priv->rstc))
++		if (IS_ERR(priv->rstc)) {
++			ret = PTR_ERR(priv->rstc);
+ 			goto out_pm_put;
 +		}
-+		threshold = max(1, threshold * 2);
-+	} while (nr_regions > c->attrs.max_nr_regions &&
-+			threshold / 2 < max_thres);
- }
  
- /*
+ 		ret = reset_control_status(priv->rstc);
+ 		if (ret < 0)
 
 
 
