@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-60279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F64F932F6C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 19:52:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93950932F6E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 19:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E4691C21B30
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 476BE281DAB
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D471A01A7;
-	Tue, 16 Jul 2024 17:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BB61A01CC;
+	Tue, 16 Jul 2024 17:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f9Vv6KTD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z2YK3HVQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7F91A00F7;
-	Tue, 16 Jul 2024 17:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B6A1A01BA;
+	Tue, 16 Jul 2024 17:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721152336; cv=none; b=hqj5oyY0euBzbp344MEjoQ8bokZTvuFEn4iVJ8qoN89Uy76ZkVbhx1F8rfxJ3rD4/0z2ny89QXMMOMzjGSsgA6CPIRxGMRZzuFE+Mm/lxGwGC+oEvCSvBIYYZp4sfYnrULnbNoMb/5wRIuoeqKM0L7sayY1fJrwukKhzwKV5Lrk=
+	t=1721152336; cv=none; b=d97F1ziW2yfHi6zGpI9Dug9ED0NGlScIq3z9pL7v26d/j2vgxiz57+fMN3zRdXvWBQamjpa713QH9pFXbYue2dZ4eQ2FX8TgO+PLM0Aoo9IUu0YxHFDa4IAjrbfWKNji4bDLS6IRdUdQzHKYScW6ZpPEBueKrLebuOHAUC1qH4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1721152336; c=relaxed/simple;
-	bh=p3+cbQrtzD34rlMr4M+1CIjAqE6/GqsWTPXFKfSsxdw=;
+	bh=aThZ+zEPJT8k/go9mqoqA2XrygvL1lG02piMFP8v6xI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AmLrLJsN/rZP1vTvfwK8p0+NuMcsQiePj8rtGGFcpSEoMSnRnqEAVfeXfP9nAPsE/Xqf6s+gBkAsnKIgXcSXkHZIh4Kbfbzuo2mAGVVekTAb5sfVG+vKF3Bk4iDbjdsKSHuX3RLdbv4nUurkHHbxecvvXihLiwY7rJoL8kMsxVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f9Vv6KTD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C51C4AF0E;
+	 MIME-Version; b=RxuLFTcxtGApWFaMlxuH26xT+6Y8gF0c0sPELuJc7JlcHEWffBUp1qJhyCrdQF1nymMjUI22njkriMhCHkIXQVIBlRTheIdysCHXfiRo6Jozh5vOmeawn95umr4sgroxKAKC9nHCF+DBGs5NWNMaSluXuwsR/NzV5/4z0Gm/U8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z2YK3HVQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA50C4AF0F;
 	Tue, 16 Jul 2024 17:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721152335;
-	bh=p3+cbQrtzD34rlMr4M+1CIjAqE6/GqsWTPXFKfSsxdw=;
+	s=k20201202; t=1721152336;
+	bh=aThZ+zEPJT8k/go9mqoqA2XrygvL1lG02piMFP8v6xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9Vv6KTDxu3pDLw4K2EcYpGjkhIiBszgq2OH3QC80jHrVIJEUMwUlvaF2nkbTXAu6
-	 mrO3qaKhy80SadeBCLzPl7/Eqm/stbRfEsTP872cBCQST9bwU5pctzX5K7S6wzB45d
-	 TRCDZ2nVHz7KOl/mN7rFeedAhY8PP4rt3WXYVXfY/4/Zj6RB9u1wo2X4OCzbVG+U1B
-	 YjMEumNQzOjYRPpV5WrS5q7MLA8K0RsoFf4TbFaRWVGk1f46DctrzIHzqpPA+4jvfh
-	 OwZTbAg5YjvrRryyvbZaLZzOaxnffIjDviWzqcW3JDUuUunSpXeTrIumbP4BAVporC
-	 e2DieOl2H6ytQ==
+	b=Z2YK3HVQ8ZlIDBNw7z9ATdtjdqMn3ZNPDs4F8BAoC1IfkGTYqZa7cRKQjlh3sKRF2
+	 Ws1zaQafugyi0++ntVxWhsYBR8n1pNsktdy2YB3n0d0IldeT+be8nm0U2TR4DUoc7U
+	 2+qt2Gi0/ML4X53fkel0UCwCexJcdyir1/6Qbw6+oMWKp5pJHMPNOWxTjwiVIJeB6d
+	 vO8oHX7Vd7u2D7BS6BJehzmYv66whHXgE/Hlojz6H3bmMnOLE7zWDd7DYByBrQDHwI
+	 K2gprFHdChBHUPxjssqkO2HnHhN5ayT8jFcK3HsueZR8cecte8WTlYGXPGRPeSXPx5
+	 wi/5ayJURbDMA==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -50,9 +50,9 @@ Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Kees Cook <keescook@chromium.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	SeongJae Park <sj@kernel.org>
-Subject: [PATCH 6.1.y 1/7] minmax: sanity check constant bounds when clamping
-Date: Tue, 16 Jul 2024 10:51:59 -0700
-Message-Id: <20240716175205.51280-2-sj@kernel.org>
+Subject: [PATCH 6.1.y 2/7] minmax: clamp more efficiently by avoiding extra comparison
+Date: Tue, 16 Jul 2024 10:52:00 -0700
+Message-Id: <20240716175205.51280-3-sj@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240716175205.51280-1-sj@kernel.org>
 References: <20240716175205.51280-1-sj@kernel.org>
@@ -66,77 +66,183 @@ Content-Transfer-Encoding: 8bit
 
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 
-commit 5efcecd9a3b18078d3398b359a84c83f549e22cf upstream.
+commit 2122e2a4efc2cd139474079e11939b6e07adfacd upstream.
 
-The clamp family of functions only makes sense if hi>=lo.  If hi and lo
-are compile-time constants, then raise a build error.  Doing so has
-already caught buggy code.  This also introduces the infrastructure to
-improve the clamping function in subsequent commits.
+Currently the clamp algorithm does:
 
-[akpm@linux-foundation.org: coding-style cleanups]
-[akpm@linux-foundation.org: s@&&\@&& \@]
-Link: https://lkml.kernel.org/r/20220926133435.1333846-1-Jason@zx2c4.com
+    if (val > hi)
+        val = hi;
+    if (val < lo)
+        val = lo;
+
+But since hi > lo by definition, this can be made more efficient with:
+
+    if (val > hi)
+        val = hi;
+    else if (val < lo)
+        val = lo;
+
+So fix up the clamp and clamp_t functions to do this, adding the same
+argument checking as for min and min_t.
+
+For simple cases, code generation on x86_64 and aarch64 stay about the
+same:
+
+    before:
+            cmp     edi, edx
+            mov     eax, esi
+            cmova   edi, edx
+            cmp     edi, esi
+            cmovnb  eax, edi
+            ret
+    after:
+            cmp     edi, esi
+            mov     eax, edx
+            cmovnb  esi, edi
+            cmp     edi, edx
+            cmovb   eax, esi
+            ret
+
+    before:
+            cmp     w0, w2
+            csel    w8, w0, w2, lo
+            cmp     w8, w1
+            csel    w0, w8, w1, hi
+            ret
+    after:
+            cmp     w0, w1
+            csel    w8, w0, w1, hi
+            cmp     w0, w2
+            csel    w0, w8, w2, lo
+            ret
+
+On MIPS64, however, code generation improves, by removing arithmetic in
+the second branch:
+
+    before:
+            sltu    $3,$6,$4
+            bne     $3,$0,.L2
+            move    $2,$6
+
+            move    $2,$4
+    .L2:
+            sltu    $3,$2,$5
+            bnel    $3,$0,.L7
+            move    $2,$5
+
+    .L7:
+            jr      $31
+            nop
+    after:
+            sltu    $3,$4,$6
+            beq     $3,$0,.L13
+            move    $2,$6
+
+            sltu    $3,$4,$5
+            bne     $3,$0,.L12
+            move    $2,$4
+
+    .L13:
+            jr      $31
+            nop
+
+    .L12:
+            jr      $31
+            move    $2,$5
+
+For more complex cases with surrounding code, the effects are a bit
+more complicated. For example, consider this simplified version of
+timestamp_truncate() from fs/inode.c on x86_64:
+
+    struct timespec64 timestamp_truncate(struct timespec64 t, struct inode *inode)
+    {
+        struct super_block *sb = inode->i_sb;
+        unsigned int gran = sb->s_time_gran;
+
+        t.tv_sec = clamp(t.tv_sec, sb->s_time_min, sb->s_time_max);
+        if (t.tv_sec == sb->s_time_max || t.tv_sec == sb->s_time_min)
+            t.tv_nsec = 0;
+        return t;
+    }
+
+    before:
+            mov     r8, rdx
+            mov     rdx, rsi
+            mov     rcx, QWORD PTR [r8]
+            mov     rax, QWORD PTR [rcx+8]
+            mov     rcx, QWORD PTR [rcx+16]
+            cmp     rax, rdi
+            mov     r8, rcx
+            cmovge  rdi, rax
+            cmp     rdi, rcx
+            cmovle  r8, rdi
+            cmp     rax, r8
+            je      .L4
+            cmp     rdi, rcx
+            jge     .L4
+            mov     rax, r8
+            ret
+    .L4:
+            xor     edx, edx
+            mov     rax, r8
+            ret
+
+    after:
+            mov     rax, QWORD PTR [rdx]
+            mov     rdx, QWORD PTR [rax+8]
+            mov     rax, QWORD PTR [rax+16]
+            cmp     rax, rdi
+            jg      .L6
+            mov     r8, rax
+            xor     edx, edx
+    .L2:
+            mov     rax, r8
+            ret
+    .L6:
+            cmp     rdx, rdi
+            mov     r8, rdi
+            cmovge  r8, rdx
+            cmp     rax, r8
+            je      .L4
+            xor     eax, eax
+            cmp     rdx, rdi
+            cmovl   rax, rsi
+            mov     rdx, rax
+            mov     rax, r8
+            ret
+    .L4:
+            xor     edx, edx
+            jmp     .L2
+
+In this case, we actually gain a branch, unfortunately, because the
+compiler's replacement axioms no longer as cleanly apply.
+
+So all and all, this change is a bit of a mixed bag.
+
+Link: https://lkml.kernel.org/r/20220926133435.1333846-2-Jason@zx2c4.com
 Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Kees Cook <keescook@chromium.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 5efcecd9a3b18078d3398b359a84c83f549e22cf)
+(cherry picked from commit 2122e2a4efc2cd139474079e11939b6e07adfacd)
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/minmax.h | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ include/linux/minmax.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 1aea34b8f19b..8b092c66c5aa 100644
+index 8b092c66c5aa..abdeae409dad 100644
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -37,6 +37,28 @@
- 		__cmp(x, y, op), \
+@@ -38,7 +38,7 @@
  		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
  
-+#define __clamp(val, lo, hi)	\
-+	__cmp(__cmp(val, lo, >), hi, <)
-+
-+#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
-+		typeof(val) unique_val = (val);				\
-+		typeof(lo) unique_lo = (lo);				\
-+		typeof(hi) unique_hi = (hi);				\
-+		__clamp(unique_val, unique_lo, unique_hi); })
-+
-+#define __clamp_input_check(lo, hi)					\
-+        (BUILD_BUG_ON_ZERO(__builtin_choose_expr(			\
-+                __is_constexpr((lo) > (hi)), (lo) > (hi), false)))
-+
-+#define __careful_clamp(val, lo, hi) ({					\
-+	__clamp_input_check(lo, hi) +					\
-+	__builtin_choose_expr(__typecheck(val, lo) && __typecheck(val, hi) && \
-+			      __typecheck(hi, lo) && __is_constexpr(val) && \
-+			      __is_constexpr(lo) && __is_constexpr(hi),	\
-+		__clamp(val, lo, hi),					\
-+		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
-+			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
-+
- /**
-  * min - return minimum of two values of the same or compatible types
-  * @x: first value
-@@ -103,7 +125,7 @@
-  * This macro does strict typechecking of @lo/@hi to make sure they are of the
-  * same type as @val.  See the unnecessary pointer comparisons.
-  */
--#define clamp(val, lo, hi) min((typeof(val))max(val, lo), hi)
-+#define clamp(val, lo, hi) __careful_clamp(val, lo, hi)
+ #define __clamp(val, lo, hi)	\
+-	__cmp(__cmp(val, lo, >), hi, <)
++	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
  
- /*
-  * ..and if you can't take the strict
-@@ -138,7 +160,7 @@
-  * This macro does no typechecking and uses temporary variables of type
-  * @type to make all the comparisons.
-  */
--#define clamp_t(type, val, lo, hi) min_t(type, max_t(type, val, lo), hi)
-+#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
- 
- /**
-  * clamp_val - return a value clamped to a given range using val's type
+ #define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
+ 		typeof(val) unique_val = (val);				\
 -- 
 2.39.2
 
