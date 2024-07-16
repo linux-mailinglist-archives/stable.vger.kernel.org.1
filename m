@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-59661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C35E932B23
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:42:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 102B6932BC4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEC73B20B0D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:42:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE804280D76
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E841448ED;
-	Tue, 16 Jul 2024 15:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0476C12B72;
+	Tue, 16 Jul 2024 15:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpISGFoA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WCoC1qM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07BE1DDF5;
-	Tue, 16 Jul 2024 15:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74CF17A93F;
+	Tue, 16 Jul 2024 15:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144520; cv=none; b=Zn7mCg+CWwrFmDqeYX7tI02/l/qwoTctEr6AjkrLmA5ZhjpkwZqbi5ct/A1FOw4zFbRYJYzptzkK/0am/hjgtbRkTNYjG71oyrbtW9RvPWbKXwiTwnFh//dgPyiL/C3Y7aEIWHxt9lq3z1AIhzArqkSa4NJQ3dcwL+b63pjWJ54=
+	t=1721144916; cv=none; b=IsGqiGYZP1qHRJeFtF9TgXlWGynGqK1/zvYUiYfMGIxLGldmXI37xr+0AMwsSsCE9bAloPlT723XdEEx39aVfYQiMlXCQbFXr/g+V+oHXbN4otb0mkNQjSuBVBUqQa2RJcYT4YB1AOeXgmFfS4ON1E/jiQ6xnRTEhjXt3rJltwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144520; c=relaxed/simple;
-	bh=NeX+ULFTwturiwn3e6gBbDBpIv1Gv8TACqV+JIsVPMM=;
+	s=arc-20240116; t=1721144916; c=relaxed/simple;
+	bh=Ai2M2RMi73FktqSm8sxYt+zw6vvAhpz5MumpE0YqvFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhIJ67ntHEA2Sdb9vDOpdu8iGWcSd79nBUHpHDeaUmwLelpXTaJ++vVrchDIs3qvOJ5SlCLxgTMUs1oFZsXVgneyyXcbQjhQAfl0nhU/X7fbEec3jvfvdk4RdfVMn5HKAg1W9Sye2VQjVXA5/e54P4SOCzPzcgvWt/5cyCT6VUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpISGFoA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276E1C116B1;
-	Tue, 16 Jul 2024 15:41:59 +0000 (UTC)
+	 MIME-Version; b=KB1r8GpGB7wuPQlU6csbAG+g5rb+hR6RHClNfbeAwzcgw3ervuioFDAvQ4GqfomFdxCEzQfCVMJmeAq9T76C0SnD3xWCpINjS1mf+hUDKgnpwWJ8sZKWqJ5Rd2zD9XRL4gZX/i7pxiRsVvdKacX2BTlwBGL2B2RyhCWIYTuhsCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WCoC1qM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD56C116B1;
+	Tue, 16 Jul 2024 15:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144520;
-	bh=NeX+ULFTwturiwn3e6gBbDBpIv1Gv8TACqV+JIsVPMM=;
+	s=korg; t=1721144916;
+	bh=Ai2M2RMi73FktqSm8sxYt+zw6vvAhpz5MumpE0YqvFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpISGFoAVR4LUffAQWurq437JDZHJbA0J5KMqliGvBa2Syhq7lvTR+TShFlhVoZNQ
-	 4ev5Cfu199x2wDedSX6MvE+JPLFf3yyHOEVm32t/aBi74FKp3xb4Bz/JuhJk8C8a7m
-	 xMagMMGi1cWv2llCJOrZrmqxySzzMBCiKEOau950=
+	b=1WCoC1qMMip0IUrrKkGUMwW8ADfOZpKbrSZSGp508I+J+6vGXMygCE+eE/2xJixGm
+	 j/MXIdDWUmkStVMm0Fm+N73FtOiJP+kcKmgfMRYbP394/kQdlsCVRbgI/cfhffevWv
+	 VwbI14oKunQ+VTNW3cSvTiMaoLDfNB5hFoV8vF+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 020/108] powerpc/64: Set _IO_BASE to POISON_POINTER_DELTA not 0 for CONFIG_PCI=n
+Subject: [PATCH 6.9 039/143] ethtool: netlink: do not return SQI value if link is down
 Date: Tue, 16 Jul 2024 17:30:35 +0200
-Message-ID: <20240716152746.776706179@linuxfoundation.org>
+Message-ID: <20240716152757.492499422@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit be140f1732b523947425aaafbe2e37b41b622d96 ]
+[ Upstream commit c184cf94e73b04ff7048d045f5413899bc664788 ]
 
-There is code that builds with calls to IO accessors even when
-CONFIG_PCI=n, but the actual calls are guarded by runtime checks.
+Do not attach SQI value if link is down. "SQI values are only valid if
+link-up condition is present" per OpenAlliance specification of
+100Base-T1 Interoperability Test suite [1]. The same rule would apply
+for other link types.
 
-If not those calls would be faulting, because the page at virtual
-address zero is (usually) not mapped into the kernel. As Arnd pointed
-out, it is possible a large port value could cause the address to be
-above mmap_min_addr which would then access userspace, which would be
-a bug.
+[1] https://opensig.org/automotive-ethernet-specifications/#
 
-To avoid any such issues, set _IO_BASE to POISON_POINTER_DELTA. That
-is a value chosen to point into unmapped space between the kernel and
-userspace, so any access will always fault.
-
-Note that on 32-bit POISON_POINTER_DELTA is 0, so the patch only has an
-effect on 64-bit.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240503075619.394467-2-mpe@ellerman.id.au
+Fixes: 806602191592 ("ethtool: provide UAPI for PHY Signal Quality Index (SQI)")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Woojung Huh <woojung.huh@microchip.com>
+Link: https://patch.msgid.link/20240709061943.729381-1-o.rempel@pengutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/io.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ethtool/linkstate.c | 41 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index 058d21f493fad..c6b56aa0334fd 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -45,7 +45,7 @@ extern struct pci_dev *isa_bridge_pcidev;
-  * define properly based on the platform
-  */
- #ifndef CONFIG_PCI
--#define _IO_BASE	0
-+#define _IO_BASE	POISON_POINTER_DELTA
- #define _ISA_MEM_BASE	0
- #define PCI_DRAM_OFFSET 0
- #elif defined(CONFIG_PPC32)
+diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
+index b2de2108b356a..34d76e87847d0 100644
+--- a/net/ethtool/linkstate.c
++++ b/net/ethtool/linkstate.c
+@@ -37,6 +37,8 @@ static int linkstate_get_sqi(struct net_device *dev)
+ 	mutex_lock(&phydev->lock);
+ 	if (!phydev->drv || !phydev->drv->get_sqi)
+ 		ret = -EOPNOTSUPP;
++	else if (!phydev->link)
++		ret = -ENETDOWN;
+ 	else
+ 		ret = phydev->drv->get_sqi(phydev);
+ 	mutex_unlock(&phydev->lock);
+@@ -55,6 +57,8 @@ static int linkstate_get_sqi_max(struct net_device *dev)
+ 	mutex_lock(&phydev->lock);
+ 	if (!phydev->drv || !phydev->drv->get_sqi_max)
+ 		ret = -EOPNOTSUPP;
++	else if (!phydev->link)
++		ret = -ENETDOWN;
+ 	else
+ 		ret = phydev->drv->get_sqi_max(phydev);
+ 	mutex_unlock(&phydev->lock);
+@@ -62,6 +66,17 @@ static int linkstate_get_sqi_max(struct net_device *dev)
+ 	return ret;
+ };
+ 
++static bool linkstate_sqi_critical_error(int sqi)
++{
++	return sqi < 0 && sqi != -EOPNOTSUPP && sqi != -ENETDOWN;
++}
++
++static bool linkstate_sqi_valid(struct linkstate_reply_data *data)
++{
++	return data->sqi >= 0 && data->sqi_max >= 0 &&
++	       data->sqi <= data->sqi_max;
++}
++
+ static int linkstate_get_link_ext_state(struct net_device *dev,
+ 					struct linkstate_reply_data *data)
+ {
+@@ -93,12 +108,12 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
+ 	data->link = __ethtool_get_link(dev);
+ 
+ 	ret = linkstate_get_sqi(dev);
+-	if (ret < 0 && ret != -EOPNOTSUPP)
++	if (linkstate_sqi_critical_error(ret))
+ 		goto out;
+ 	data->sqi = ret;
+ 
+ 	ret = linkstate_get_sqi_max(dev);
+-	if (ret < 0 && ret != -EOPNOTSUPP)
++	if (linkstate_sqi_critical_error(ret))
+ 		goto out;
+ 	data->sqi_max = ret;
+ 
+@@ -136,11 +151,10 @@ static int linkstate_reply_size(const struct ethnl_req_info *req_base,
+ 	len = nla_total_size(sizeof(u8)) /* LINKSTATE_LINK */
+ 		+ 0;
+ 
+-	if (data->sqi != -EOPNOTSUPP)
+-		len += nla_total_size(sizeof(u32));
+-
+-	if (data->sqi_max != -EOPNOTSUPP)
+-		len += nla_total_size(sizeof(u32));
++	if (linkstate_sqi_valid(data)) {
++		len += nla_total_size(sizeof(u32)); /* LINKSTATE_SQI */
++		len += nla_total_size(sizeof(u32)); /* LINKSTATE_SQI_MAX */
++	}
+ 
+ 	if (data->link_ext_state_provided)
+ 		len += nla_total_size(sizeof(u8)); /* LINKSTATE_EXT_STATE */
+@@ -164,13 +178,14 @@ static int linkstate_fill_reply(struct sk_buff *skb,
+ 	    nla_put_u8(skb, ETHTOOL_A_LINKSTATE_LINK, !!data->link))
+ 		return -EMSGSIZE;
+ 
+-	if (data->sqi != -EOPNOTSUPP &&
+-	    nla_put_u32(skb, ETHTOOL_A_LINKSTATE_SQI, data->sqi))
+-		return -EMSGSIZE;
++	if (linkstate_sqi_valid(data)) {
++		if (nla_put_u32(skb, ETHTOOL_A_LINKSTATE_SQI, data->sqi))
++			return -EMSGSIZE;
+ 
+-	if (data->sqi_max != -EOPNOTSUPP &&
+-	    nla_put_u32(skb, ETHTOOL_A_LINKSTATE_SQI_MAX, data->sqi_max))
+-		return -EMSGSIZE;
++		if (nla_put_u32(skb, ETHTOOL_A_LINKSTATE_SQI_MAX,
++				data->sqi_max))
++			return -EMSGSIZE;
++	}
+ 
+ 	if (data->link_ext_state_provided) {
+ 		if (nla_put_u8(skb, ETHTOOL_A_LINKSTATE_EXT_STATE,
 -- 
 2.43.0
 
