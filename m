@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-59914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63C3932C66
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC4B932B12
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 737E3284C33
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4552F1F21A48
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E87A19DFB3;
-	Tue, 16 Jul 2024 15:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B286F136643;
+	Tue, 16 Jul 2024 15:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YCJJLuh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAMWkqaJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5202A19DFB9;
-	Tue, 16 Jul 2024 15:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691C9F9E8;
+	Tue, 16 Jul 2024 15:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145292; cv=none; b=hIL9U1xW3OUDdCLPlJGQrZjBZgLmp61TD7ksh1OL6LbJ5L6J+inzHNhk7jPCTxhxTUZ+CMH71S51r8hqEjW6jwm51uT1vTcX8jZqcP9jU8/nX46+96MTJH8dTLrzarbmwBKhYq8J7jaGb3gyENh3i3n+hm7N2mSRord904kCxXQ=
+	t=1721144473; cv=none; b=tk9p58EcG+KZbEFhZpQJt3/Jdj1f/T11ON0NtUyqQL18jt0cDtemUNhr89yeNzFJJVqn5Oz1miq+RfZvtJlTziisTIKFqAJRfsroLND31u7roMi4qOTZFyzDWSvuPlK+zgh4E6wu4SEGkg7TkNkF+iDkxrIp94FdsxD/tH638ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145292; c=relaxed/simple;
-	bh=zdOjB4/OJbI8jWoR4P1INqHRwvsDT35m5nmkAQqNCi8=;
+	s=arc-20240116; t=1721144473; c=relaxed/simple;
+	bh=v90KkQGJtlr95uHfv9m1WY0mUgQPOcbp5wOKusnGMuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=El5tfW8YufZhIm/tMRqrVDIONWAUHVfzKNK7S2tokuiTQ90yezegiUmsgkHNhMQL2ziF6gCAooZohJbvBtrLp0yuN6x8vp+uKFZLZ+afOD3Hou6YRelL2QWVcKaDcGJRQWAQKFHLndodIr8TX/dugyZo6v34vicz6Oy3flpI66M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YCJJLuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA48C116B1;
-	Tue, 16 Jul 2024 15:54:51 +0000 (UTC)
+	 MIME-Version; b=F1udrzu/ubFPgcpH4MxjGKMCdMKSrnq+oGGWRj+SHxKOt81G6DqxenhYFW8Yd77yJjXgpL/aPtup2nlPJXBVJh8bcfYXLJpra55xJmvrE/3jgSk50eNISOiutniUZytiysX7J9hNDB20wtA+oXNmGY/xVPUzhdxZvuPP2QeoW3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAMWkqaJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3394C116B1;
+	Tue, 16 Jul 2024 15:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145292;
-	bh=zdOjB4/OJbI8jWoR4P1INqHRwvsDT35m5nmkAQqNCi8=;
+	s=korg; t=1721144473;
+	bh=v90KkQGJtlr95uHfv9m1WY0mUgQPOcbp5wOKusnGMuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2YCJJLuhMROMJ7gPlv3CAYNonjxqQGvxktP50knRKVdqgfivuFqMpgBySDQjuEeeH
-	 ey2mNBNTgAYOdQADOZj4BMDdR2jtO5btAwAejg6XPx/Y/K3ilmv06NDwsCuHRK1n+B
-	 5woyu+1+lPbtwu9Tv6GlAPlqF+h+XpZua3zVpVUo=
+	b=XAMWkqaJhBF+QpXyx3oxieMSMQlp3ZWXCemYg9cF+SBCY2hmV4BnK0abJLY5AZMTw
+	 2rQkFI3CarMY8uWxtzjGwEa1Fls/thgZL9VoIL4ONoOeZKRLUmpKuzSyLsbCmgiFb6
+	 HEdFTZQRVme0bJ5r9oO5voBzxFDodr2+F8SpTRX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Perches <joe@perches.com>,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 18/96] net: ethernet: lantiq_etop: fix double free in detach
+Subject: [PATCH 5.4 57/78] ARM: davinci: Convert comma to semicolon
 Date: Tue, 16 Jul 2024 17:31:29 +0200
-Message-ID: <20240716152747.218147643@linuxfoundation.org>
+Message-ID: <20240716152742.849102431@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit e1533b6319ab9c3a97dad314dd88b3783bc41b69 ]
+[ Upstream commit acc3815db1a02d654fbc19726ceaadca0d7dd81c ]
 
-The number of the currently released descriptor is never incremented
-which results in the same skb being released multiple times.
+Replace a comma between expression statements by a semicolon.
 
-Fixes: 504d4721ee8e ("MIPS: Lantiq: Add ethernet driver")
-Reported-by: Joe Perches <joe@perches.com>
-Closes: https://lore.kernel.org/all/fc1bf93d92bb5b2f99c6c62745507cc22f3a7b2d.camel@perches.com/
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240708205826.5176-1-olek2@wp.pl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: efc1bb8a6fd5 ("davinci: add power management support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/lantiq_etop.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-davinci/pm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index f5961bdcc4809..61baf1da76eea 100644
---- a/drivers/net/ethernet/lantiq_etop.c
-+++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -217,9 +217,9 @@ ltq_etop_free_channel(struct net_device *dev, struct ltq_etop_chan *ch)
- 	if (ch->dma.irq)
- 		free_irq(ch->dma.irq, priv);
- 	if (IS_RX(ch->idx)) {
--		int desc;
-+		struct ltq_dma_channel *dma = &ch->dma;
+diff --git a/arch/arm/mach-davinci/pm.c b/arch/arm/mach-davinci/pm.c
+index e33c6bcb4598c..bae0a2e07d866 100644
+--- a/arch/arm/mach-davinci/pm.c
++++ b/arch/arm/mach-davinci/pm.c
+@@ -62,7 +62,7 @@ static void davinci_pm_suspend(void)
  
--		for (desc = 0; desc < LTQ_DESC_NUM; desc++)
-+		for (dma->desc = 0; dma->desc < LTQ_DESC_NUM; dma->desc++)
- 			dev_kfree_skb_any(ch->skb[ch->dma.desc]);
- 	}
- }
+ 	/* Configure sleep count in deep sleep register */
+ 	val = __raw_readl(pm_config.deepsleep_reg);
+-	val &= ~DEEPSLEEP_SLEEPCOUNT_MASK,
++	val &= ~DEEPSLEEP_SLEEPCOUNT_MASK;
+ 	val |= pm_config.sleepcount;
+ 	__raw_writel(val, pm_config.deepsleep_reg);
+ 
 -- 
 2.43.0
 
