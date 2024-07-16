@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-60057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E04D932D2D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6C4932CA9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE25E1C20A30
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54DB5284415
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F22A19AD5A;
-	Tue, 16 Jul 2024 16:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC8419EEA1;
+	Tue, 16 Jul 2024 15:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/cmF3GF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK5aOgH1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12951DDCE;
-	Tue, 16 Jul 2024 16:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C25C17A93F;
+	Tue, 16 Jul 2024 15:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145726; cv=none; b=rEhCvNtBM0sPvWs3MOZbyZCc9HLzBtt8EvQR7Jv7GgxoQOMYQQ+g7OtAClvNJg3DI3xWp7D0YXLUjPkb6SJqM8TPUkXef8UrFGMIYdZ/iqYBKadMbNjCcgjOI/DEmXSrs2vlKHyEp35Y/Td2nndIHTv+FwJRIf4WE2UIyVxM1+M=
+	t=1721145405; cv=none; b=Cf6eW8/RURAlq9AjkBj6sNZ4s2A03SIeXjmTRlW+1sriFQa0WIdfTvKOnwb7CIEmXxFu4/f02Vqc0rXjDZxW4t6CvbUOwi3xpnvx2L5/N/9rH1XijbExJiv6kFJyyxNRCmP7MAlcAcDf+Eu02gnvybK8SaCeyigtXUfnJeZi5+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145726; c=relaxed/simple;
-	bh=R7IK7Z5aiC5ph6S1sm9ut614bq/6ryrTld6UprKIFzQ=;
+	s=arc-20240116; t=1721145405; c=relaxed/simple;
+	bh=Oif3yMnWJJlHGc5oNU10U9IwzoKKW9FNoangfdCCWa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evPq+x/tPgLmDaF515CrUzIacVuwnNyppJ7ND08NOYL22Ux36ZiVrdlLmA0yPGXNC7Pr/ITF/7gyEpTu+v+6HFfrZl/ENJ1/OcbWyOxyM8adcs57AKuYTKu+ShJbirL/k8wwa4qU3maGyosCovrwIgkTh9LEG0mE8HLUtFFM4IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/cmF3GF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A7CC4AF0D;
-	Tue, 16 Jul 2024 16:02:05 +0000 (UTC)
+	 MIME-Version; b=lUABSXGd24Y1y2cGluLfGu8vKqY50Y+5Vh2z36Kv6yZ/PpaJRX5OnmHRfbu0P0wwWFgv5Ja7mcY1Rotf4i2jTNY8G2pQgOcwBVqFL67/jSV9xJzbFcF78XF368N/em6k9eSjbkAP6NGZuSff/QFPy9FGnJcC1r2XAHCs6HAVVW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK5aOgH1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B551EC4AF11;
+	Tue, 16 Jul 2024 15:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145725;
-	bh=R7IK7Z5aiC5ph6S1sm9ut614bq/6ryrTld6UprKIFzQ=;
+	s=korg; t=1721145405;
+	bh=Oif3yMnWJJlHGc5oNU10U9IwzoKKW9FNoangfdCCWa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H/cmF3GFxs28/Ary89xqdXKxY8+Hd+mSb170uLlZAi+HAnu40Kdu7gVvdOp0FUDfk
-	 crG28i34ZwGBc9Rs6WDwNwyC2CY5SA5B48jxw+3wdM+tIaMJ9FWcGxyPt/gWK831by
-	 61Bm8suQKy/AD+R8dvbD0hszf8v5z2ZZkhQzVRmM=
+	b=xK5aOgH1dW4Z9MSbdM+XMOXrMVWSX4kOJ5hmpDuqlylxWIpa9Q1sSZ4Yy8+uSCgFP
+	 slTGnQzzNTkbA3zboh04IykbJdLA9V3NEk7UAOuAYuMREj5OtE4gyXqpjeiuCgc0m+
+	 DJuS/aCsXZgn3FP4YWKdSX+cftYJOUzH/HYiLjfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	jinxiaobo <jinxiaobo@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 6.6 064/121] USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
+	Vanillan Wang <vanillanwang@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 55/96] USB: serial: option: add Rolling RW350-GL variants
 Date: Tue, 16 Jul 2024 17:32:06 +0200
-Message-ID: <20240716152753.791854732@linuxfoundation.org>
+Message-ID: <20240716152748.620399797@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Vanillan Wang <vanillanwang@163.com>
 
-commit 3859e85de30815a20bce7db712ce3d94d40a682d upstream.
+commit ae420771551bd9f04347c59744dd062332bdec3e upstream.
 
-START BP-850K is a dot matrix printer that crashes when
-it receives a Set-Interface request and needs USB_QUIRK_NO_SET_INTF
-to work properly.
+Update the USB serial option driver support for the Rolling
+RW350-GL
+- VID:PID 33f8:0802, RW350-GL are laptop M.2 cards (with
+MBIM interfaces for /Linux/Chrome OS)
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: jinxiaobo <jinxiaobo@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/202E4B2BD0F0FEA4+20240702154408.631201-1-wangyuli@uniontech.com
+Here are the outputs of usb-devices:
+
+usbmode=63: mbim, pipe
+
+T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0802 Rev=00.01
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=USB DATA CARD
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+usbmode=64: mbim, others at (If#= 5 adb)
+
+MBIM(MI0) + GNSS(MI2) + AP log(MI3) + AP META(MI4) + ADB(MI5) +
+MD AT(MI6) + MD META(MI7) + NPT(MI8) + Debug(MI9)
+
+T:  Bus=02 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  5 Spd=5000 MxCh= 0
+D:  Ver= 3.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0802 Rev=00.01
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=USB DATA CARD
+C:  #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=07(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=08(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=09(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8a(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -506,6 +506,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x1b1c, 0x1b38), .driver_info = USB_QUIRK_DELAY_INIT |
- 	  USB_QUIRK_DELAY_CTRL_MSG },
- 
-+	/* START BP-850k Printer */
-+	{ USB_DEVICE(0x1bc3, 0x0003), .driver_info = USB_QUIRK_NO_SET_INTF },
-+
- 	/* MIDI keyboard WORLDE MINI */
- 	{ USB_DEVICE(0x1c75, 0x0204), .driver_info =
- 			USB_QUIRK_CONFIG_INTF_STRINGS },
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2333,6 +2333,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
 
 
 
