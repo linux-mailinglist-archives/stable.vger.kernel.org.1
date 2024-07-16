@@ -1,228 +1,248 @@
-Return-Path: <stable+bounces-59403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D26932638
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:08:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 275BD9326B0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:36:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EBCE1C22D08
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 12:08:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1BD61F239DB
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 12:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AC91CA9F;
-	Tue, 16 Jul 2024 12:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RNwFALi0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6DE19AA4B;
+	Tue, 16 Jul 2024 12:36:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1C419A2A4
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 12:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6593417C23D;
+	Tue, 16 Jul 2024 12:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721131679; cv=none; b=ifXiBy9/49IpbnCl8QcoERPgaS8DK70PW3dUiTAtyskGTcPzRkxoHRFT56t1ZvhmIkScTm2s7+6tO40OkvtJnGR7sApUyJz2LpSjO4kLgDR1odTqFZJjEjdvnEnR3O4bzwhk/l2rNa8eZRl/eOUr7I3qxtiAvtlFnALxUxzjVsQ=
+	t=1721133403; cv=none; b=Sn1TiaitTPI8dVrg4oYPMP0Ew80GAw5WatellAbMFAkSfIx6Fd6OYBV5RZ9eVd3sOCnwrnDCJC79GHDmdgMK2T5Yjqdh6c6fDlFevxgY9H0zbmkRa+EvkWxLuCKLOjwQH5WSgYUKU7mv+WIN2B6rxCa02IEs/1txQbsQr6TN/Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721131679; c=relaxed/simple;
-	bh=sJNaQQ8z+UMQkMXmX+aHHOIETmZlhJGofI6ILpW+yNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PL7Qgykm16pUYqDb/5hlRxa9n+jBsNs/onG0fz/fhbNBPlfyYd0hK58SEx5cjCym0R9WqdfyWe7fqR/mFxxtwQyJ0nLtmfh+Z0joleCLABECfZG7sTQHpt/EnelrtgDnY/R3lgcO4t46jPd+egWmkdZjaMbT/GZfWSauKsC+pX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RNwFALi0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721131675;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=D+bPivzczJ9pAjIr87r9UjtTBufZdVjCZHzu0pDoqKs=;
-	b=RNwFALi0XWrlZVx9+BpkkT5PjjzxbMDYSz/uNCj3y8K/wDpoFAfcOyJzAWNZU0RAnQtSL9
-	j/RAs2IBKnyH5Czbw2brTZckUMVle6adzYVWd0GWjBkuktgg0+vajcN6yZ6RJVWjZHzFj0
-	Qeqo1T4rd8gHO7HVmvtNxlCA2WVanHg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-475-kSm3ky6INluXHuZniLihOw-1; Tue,
- 16 Jul 2024 08:07:48 -0400
-X-MC-Unique: kSm3ky6INluXHuZniLihOw-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ABED01956046;
-	Tue, 16 Jul 2024 12:07:46 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.72.116.106])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 32EBB300018E;
-	Tue, 16 Jul 2024 12:07:42 +0000 (UTC)
-From: xiubli@redhat.com
-To: ceph-devel@vger.kernel.org
-Cc: idryomov@gmail.com,
-	vshankar@redhat.com,
-	Xiubo Li <xiubli@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] ceph: force sending a cap update msg back to MDS for revoke op
-Date: Tue, 16 Jul 2024 20:07:24 +0800
-Message-ID: <20240716120724.134512-1-xiubli@redhat.com>
+	s=arc-20240116; t=1721133403; c=relaxed/simple;
+	bh=W7n5vfMLjSj98w//EJCKimU18gg1EXqJ4tB4oYgfrjU=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=B7fzhmaKptNceR3HnTvLXzSKAtPtz7lp23S5uFXb5FqbQdyfE+khlEx2UZhMn59oaW7YSCiJa8FcjdL6Qv78UmqDlGawCMxzkABQIMrjXxK7wNZrG0OItLu+6m1Gs1eqckHYb3vpRdgFUVIfBQ0ps+P+9sYCSw0zbbcadxMySUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=amazon.com; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+X-Amazon-filename: signature.asc
+X-IronPort-AV: E=Sophos;i="6.09,211,1716249600"; 
+   d="asc'?scan'208";a="415104187"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2024 12:36:39 +0000
+Received: from EX19MTAUEB002.ant.amazon.com [10.0.0.204:44857]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.12.239:2525] with esmtp (Farcaster)
+ id fd760f37-0450-4c56-abc8-1c20c3b32b70; Tue, 16 Jul 2024 12:36:38 +0000 (UTC)
+X-Farcaster-Flow-ID: fd760f37-0450-4c56-abc8-1c20c3b32b70
+Received: from EX19EXOUEC001.ant.amazon.com (10.252.135.173) by
+ EX19MTAUEB002.ant.amazon.com (10.252.135.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Tue, 16 Jul 2024 12:36:34 +0000
+Received: from EX19MTAUEB001.ant.amazon.com (10.252.135.35) by
+ EX19EXOUEC001.ant.amazon.com (10.252.135.173) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Tue, 16 Jul 2024 12:36:32 +0000
+Received: from dev-dsk-pjy-1a-76bc80b3.eu-west-1.amazon.com (10.15.97.110) by
+ mail-relay.amazon.com (10.252.135.35) with Microsoft SMTP Server id
+ 15.2.1258.34 via Frontend Transport; Tue, 16 Jul 2024 12:36:32 +0000
+Received: by dev-dsk-pjy-1a-76bc80b3.eu-west-1.amazon.com (Postfix, from userid 22993570)
+	id B580F20AC8; Tue, 16 Jul 2024 12:36:31 +0000 (UTC)
+From: Puranjay Mohan <puranjay@kernel.org>
+To: <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, "Daniel
+ Borkmann" <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+	Russell King <russell.king@oracle.com>, Alan Maguire
+	<alan.maguire@oracle.com>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+	<stable@vger.kernel.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 5.10] arm64/bpf: Remove 128MB limit for BPF JIT programs
+In-Reply-To: <20240701114659.39539-1-pjy@amazon.com>
+References: <20240701114659.39539-1-pjy@amazon.com>
+Date: Tue, 16 Jul 2024 12:36:29 +0000
+Message-ID: <mb61py1617bua.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: multipart/signed; boundary="=-=-="; micalg=pgp-sha512;
+	protocol="application/pgp-signature"
 
-From: Xiubo Li <xiubli@redhat.com>
-
-If a client sends out a cap update dropping caps with the prior 'seq'
-just before an incoming cap revoke request, then the client may drop
-the revoke because it believes it's already released the requested
-capabilities.
-
-This causes the MDS to wait indefinitely for the client to respond
-to the revoke. It's therefore always a good idea to ack the cap
-revoke request with the bumped up 'seq'.
-
-Currently if the cap->issued equals to the newcaps the check_caps()
-will do nothing, we should force flush the caps.
-
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/61782
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
----
-
-V3:
-- Move the force check earlier
-
-V2:
-- Improved the patch to force send the cap update only when no caps
-being used.
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
 
- fs/ceph/caps.c  | 35 ++++++++++++++++++++++++-----------
- fs/ceph/super.h |  7 ++++---
- 2 files changed, 28 insertions(+), 14 deletions(-)
++CC Greg
 
-diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-index 24c31f795938..672c6611d749 100644
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -2024,6 +2024,8 @@ bool __ceph_should_report_size(struct ceph_inode_info *ci)
-  *  CHECK_CAPS_AUTHONLY - we should only check the auth cap
-  *  CHECK_CAPS_FLUSH - we should flush any dirty caps immediately, without
-  *    further delay.
-+ *  CHECK_CAPS_FLUSH_FORCE - we should flush any caps immediately, without
-+ *    further delay.
-  */
- void ceph_check_caps(struct ceph_inode_info *ci, int flags)
- {
-@@ -2105,7 +2107,7 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
- 	}
- 
- 	doutc(cl, "%p %llx.%llx file_want %s used %s dirty %s "
--	      "flushing %s issued %s revoking %s retain %s %s%s%s\n",
-+	      "flushing %s issued %s revoking %s retain %s %s%s%s%s\n",
- 	     inode, ceph_vinop(inode), ceph_cap_string(file_wanted),
- 	     ceph_cap_string(used), ceph_cap_string(ci->i_dirty_caps),
- 	     ceph_cap_string(ci->i_flushing_caps),
-@@ -2113,7 +2115,8 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
- 	     ceph_cap_string(retain),
- 	     (flags & CHECK_CAPS_AUTHONLY) ? " AUTHONLY" : "",
- 	     (flags & CHECK_CAPS_FLUSH) ? " FLUSH" : "",
--	     (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "");
-+	     (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "",
-+	     (flags & CHECK_CAPS_FLUSH_FORCE) ? " FLUSH_FORCE" : "");
- 
- 	/*
- 	 * If we no longer need to hold onto old our caps, and we may
-@@ -2188,6 +2191,11 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
- 				queue_writeback = true;
- 		}
- 
-+		if (flags & CHECK_CAPS_FLUSH_FORCE) {
-+			doutc(cl, "force to flush caps\n");
-+			goto ack;
-+		}
-+
- 		if (cap == ci->i_auth_cap &&
- 		    (cap->issued & CEPH_CAP_FILE_WR)) {
- 			/* request larger max_size from MDS? */
-@@ -3518,6 +3526,8 @@ static void handle_cap_grant(struct inode *inode,
- 	bool queue_invalidate = false;
- 	bool deleted_inode = false;
- 	bool fill_inline = false;
-+	bool revoke_wait = false;
-+	int flags = 0;
- 
- 	/*
- 	 * If there is at least one crypto block then we'll trust
-@@ -3713,16 +3723,18 @@ static void handle_cap_grant(struct inode *inode,
- 		      ceph_cap_string(cap->issued), ceph_cap_string(newcaps),
- 		      ceph_cap_string(revoking));
- 		if (S_ISREG(inode->i_mode) &&
--		    (revoking & used & CEPH_CAP_FILE_BUFFER))
-+		    (revoking & used & CEPH_CAP_FILE_BUFFER)) {
- 			writeback = true;  /* initiate writeback; will delay ack */
--		else if (queue_invalidate &&
-+			revoke_wait = true;
-+		} else if (queue_invalidate &&
- 			 revoking == CEPH_CAP_FILE_CACHE &&
--			 (newcaps & CEPH_CAP_FILE_LAZYIO) == 0)
--			; /* do nothing yet, invalidation will be queued */
--		else if (cap == ci->i_auth_cap)
-+			 (newcaps & CEPH_CAP_FILE_LAZYIO) == 0) {
-+			revoke_wait = true; /* do nothing yet, invalidation will be queued */
-+		} else if (cap == ci->i_auth_cap) {
- 			check_caps = 1; /* check auth cap only */
--		else
-+		} else {
- 			check_caps = 2; /* check all caps */
-+		}
- 		/* If there is new caps, try to wake up the waiters */
- 		if (~cap->issued & newcaps)
- 			wake = true;
-@@ -3749,8 +3761,9 @@ static void handle_cap_grant(struct inode *inode,
- 	BUG_ON(cap->issued & ~cap->implemented);
- 
- 	/* don't let check_caps skip sending a response to MDS for revoke msgs */
--	if (le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
-+	if (!revoke_wait && le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
- 		cap->mds_wanted = 0;
-+		flags |= CHECK_CAPS_FLUSH_FORCE;
- 		if (cap == ci->i_auth_cap)
- 			check_caps = 1; /* check auth cap only */
- 		else
-@@ -3806,9 +3819,9 @@ static void handle_cap_grant(struct inode *inode,
- 
- 	mutex_unlock(&session->s_mutex);
- 	if (check_caps == 1)
--		ceph_check_caps(ci, CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOINVAL);
-+		ceph_check_caps(ci, flags | CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOINVAL);
- 	else if (check_caps == 2)
--		ceph_check_caps(ci, CHECK_CAPS_NOINVAL);
-+		ceph_check_caps(ci, flags | CHECK_CAPS_NOINVAL);
- }
- 
- /*
-diff --git a/fs/ceph/super.h b/fs/ceph/super.h
-index b0b368ed3018..831e8ec4d5da 100644
---- a/fs/ceph/super.h
-+++ b/fs/ceph/super.h
-@@ -200,9 +200,10 @@ struct ceph_cap {
- 	struct list_head caps_item;
- };
- 
--#define CHECK_CAPS_AUTHONLY   1  /* only check auth cap */
--#define CHECK_CAPS_FLUSH      2  /* flush any dirty caps */
--#define CHECK_CAPS_NOINVAL    4  /* don't invalidate pagecache */
-+#define CHECK_CAPS_AUTHONLY     1  /* only check auth cap */
-+#define CHECK_CAPS_FLUSH        2  /* flush any dirty caps */
-+#define CHECK_CAPS_NOINVAL      4  /* don't invalidate pagecache */
-+#define CHECK_CAPS_FLUSH_FORCE  8  /* force flush any caps */
- 
- struct ceph_cap_flush {
- 	u64 tid;
--- 
-2.45.1
+> From: Russell King <russell.king@oracle.com>
+>
+> [ Upstream commit b89ddf4cca43f1269093942cf5c4e457fd45c335 ]
+>
+> Commit 91fc957c9b1d ("arm64/bpf: don't allocate BPF JIT programs in module
+> memory") restricts BPF JIT program allocation to a 128MB region to ensure
+> BPF programs are still in branching range of each other. However this
+> restriction should not apply to the aarch64 JIT, since BPF_JMP | BPF_CALL
+> are implemented as a 64-bit move into a register and then a BLR instructi=
+on -
+> which has the effect of being able to call anything without proximity
+> limitation.
+>
+> The practical reason to relax this restriction on JIT memory is that 128M=
+B of
+> JIT memory can be quickly exhausted, especially where PAGE_SIZE is 64KB -=
+ one
+> page is needed per program. In cases where seccomp filters are applied to
+> multiple VMs on VM launch - such filters are classic BPF but converted to
+> BPF - this can severely limit the number of VMs that can be launched. In a
+> world where we support BPF JIT always on, turning off the JIT isn't alway=
+s an
+> option either.
+>
+> Fixes: 91fc957c9b1d ("arm64/bpf: don't allocate BPF JIT programs in modul=
+e memory")
+> Suggested-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Signed-off-by: Russell King <russell.king@oracle.com>
+> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+> Tested-by: Alan Maguire <alan.maguire@oracle.com>
+> Link: https://lore.kernel.org/bpf/1636131046-5982-2-git-send-email-alan.m=
+aguire@oracle.com
+> [Replace usage of in_bpf_jit() with is_bpf_text_address()]
+> Signed-off-by: Puranjay Mohan <pjy@amazon.com>
+> ---
+>  arch/arm64/include/asm/extable.h | 9 ---------
+>  arch/arm64/include/asm/memory.h  | 5 +----
+>  arch/arm64/kernel/traps.c        | 2 +-
+>  arch/arm64/mm/extable.c          | 3 ++-
+>  arch/arm64/mm/ptdump.c           | 2 --
+>  arch/arm64/net/bpf_jit_comp.c    | 7 ++-----
+>  6 files changed, 6 insertions(+), 22 deletions(-)
+>
+> diff --git a/arch/arm64/include/asm/extable.h b/arch/arm64/include/asm/ex=
+table.h
+> index b15eb4a3e6b20..840a35ed92ec8 100644
+> --- a/arch/arm64/include/asm/extable.h
+> +++ b/arch/arm64/include/asm/extable.h
+> @@ -22,15 +22,6 @@ struct exception_table_entry
+>=20=20
+>  #define ARCH_HAS_RELATIVE_EXTABLE
+>=20=20
+> -static inline bool in_bpf_jit(struct pt_regs *regs)
+> -{
+> -	if (!IS_ENABLED(CONFIG_BPF_JIT))
+> -		return false;
+> -
+> -	return regs->pc >=3D BPF_JIT_REGION_START &&
+> -	       regs->pc < BPF_JIT_REGION_END;
+> -}
+> -
+>  #ifdef CONFIG_BPF_JIT
+>  int arm64_bpf_fixup_exception(const struct exception_table_entry *ex,
+>  			      struct pt_regs *regs);
+> diff --git a/arch/arm64/include/asm/memory.h b/arch/arm64/include/asm/mem=
+ory.h
+> index 505bdd75b5411..eef03120c0daf 100644
+> --- a/arch/arm64/include/asm/memory.h
+> +++ b/arch/arm64/include/asm/memory.h
+> @@ -44,11 +44,8 @@
+>  #define _PAGE_OFFSET(va)	(-(UL(1) << (va)))
+>  #define PAGE_OFFSET		(_PAGE_OFFSET(VA_BITS))
+>  #define KIMAGE_VADDR		(MODULES_END)
+> -#define BPF_JIT_REGION_START	(KASAN_SHADOW_END)
+> -#define BPF_JIT_REGION_SIZE	(SZ_128M)
+> -#define BPF_JIT_REGION_END	(BPF_JIT_REGION_START + BPF_JIT_REGION_SIZE)
+>  #define MODULES_END		(MODULES_VADDR + MODULES_VSIZE)
+> -#define MODULES_VADDR		(BPF_JIT_REGION_END)
+> +#define MODULES_VADDR		(_PAGE_END(VA_BITS_MIN))
+>  #define MODULES_VSIZE		(SZ_128M)
+>  #define VMEMMAP_START		(-VMEMMAP_SIZE - SZ_2M)
+>  #define VMEMMAP_END		(VMEMMAP_START + VMEMMAP_SIZE)
+> diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+> index 563d07d3904e4..e9cc15414133f 100644
+> --- a/arch/arm64/kernel/traps.c
+> +++ b/arch/arm64/kernel/traps.c
+> @@ -913,7 +913,7 @@ static struct break_hook bug_break_hook =3D {
+>  static int reserved_fault_handler(struct pt_regs *regs, unsigned int esr)
+>  {
+>  	pr_err("%s generated an invalid instruction at %pS!\n",
+> -		in_bpf_jit(regs) ? "BPF JIT" : "Kernel text patching",
+> +		"Kernel text patching",
+>  		(void *)instruction_pointer(regs));
+>=20=20
+>  	/* We cannot handle this */
+> diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
+> index aa0060178343a..9a8147b6878b9 100644
+> --- a/arch/arm64/mm/extable.c
+> +++ b/arch/arm64/mm/extable.c
+> @@ -5,6 +5,7 @@
+>=20=20
+>  #include <linux/extable.h>
+>  #include <linux/uaccess.h>
+> +#include <linux/filter.h>
+>=20=20
+>  int fixup_exception(struct pt_regs *regs)
+>  {
+> @@ -14,7 +15,7 @@ int fixup_exception(struct pt_regs *regs)
+>  	if (!fixup)
+>  		return 0;
+>=20=20
+> -	if (in_bpf_jit(regs))
+> +	if (is_bpf_text_address(regs->pc))
+>  		return arm64_bpf_fixup_exception(fixup, regs);
+>=20=20
+>  	regs->pc =3D (unsigned long)&fixup->fixup + fixup->fixup;
+> diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
+> index 807dc634bbd24..ba6d1d89f9b2a 100644
+> --- a/arch/arm64/mm/ptdump.c
+> +++ b/arch/arm64/mm/ptdump.c
+> @@ -41,8 +41,6 @@ static struct addr_marker address_markers[] =3D {
+>  	{ 0 /* KASAN_SHADOW_START */,	"Kasan shadow start" },
+>  	{ KASAN_SHADOW_END,		"Kasan shadow end" },
+>  #endif
+> -	{ BPF_JIT_REGION_START,		"BPF start" },
+> -	{ BPF_JIT_REGION_END,		"BPF end" },
+>  	{ MODULES_VADDR,		"Modules start" },
+>  	{ MODULES_END,			"Modules end" },
+>  	{ VMALLOC_START,		"vmalloc() area" },
+> diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+> index 18627cbd6da4e..2a47165abbe5e 100644
+> --- a/arch/arm64/net/bpf_jit_comp.c
+> +++ b/arch/arm64/net/bpf_jit_comp.c
+> @@ -1145,15 +1145,12 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_p=
+rog *prog)
+>=20=20
+>  u64 bpf_jit_alloc_exec_limit(void)
+>  {
+> -	return BPF_JIT_REGION_SIZE;
+> +	return VMALLOC_END - VMALLOC_START;
+>  }
+>=20=20
+>  void *bpf_jit_alloc_exec(unsigned long size)
+>  {
+> -	return __vmalloc_node_range(size, PAGE_SIZE, BPF_JIT_REGION_START,
+> -				    BPF_JIT_REGION_END, GFP_KERNEL,
+> -				    PAGE_KERNEL, 0, NUMA_NO_NODE,
+> -				    __builtin_return_address(0));
+> +	return vmalloc(size);
+>  }
+>=20=20
+>  void bpf_jit_free_exec(void *addr)
+> --=20
+> 2.40.1
 
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iIoEARYKADIWIQQ3wHGvVs/5bdl78BKwwPkjG3B2nQUCZpZpTxQccHVyYW5qYXlA
+a2VybmVsLm9yZwAKCRCwwPkjG3B2nRhaAP9Nuu68cfxKp8A7G2ZWurpQd9n9dcus
+U/4aCK0askqnYgEA6Oq+nM1tOovIPsXyQrTnEAn2d/kWvRHu/LoMQaNfqg8=
+=5di0
+-----END PGP SIGNATURE-----
+--=-=-=--
 
