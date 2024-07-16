@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-59980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41FD8932CCC
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB096932CCE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64FA21C22087
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 642761F246F9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F21A19DFB3;
-	Tue, 16 Jul 2024 15:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFBD19E809;
+	Tue, 16 Jul 2024 15:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j50CYkIg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gii5FPxJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB3119AD72;
-	Tue, 16 Jul 2024 15:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49431195B27;
+	Tue, 16 Jul 2024 15:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145493; cv=none; b=rWbwBSVm+oWFOEDis8wfPqgfbF/LPDwkJ9mLKOSHok6TTrI5mSukyAD6k2kbVGl9qCbhRmxqBJUtLFeoNqaF9l0wWEa6yDYWA2LxNau8vmCW+poiO4pdhzCP0MGDSi9K29uS2DHRd/L96b7IHRAbq5G8WaxhwuR8A8UchkXS4og=
+	t=1721145499; cv=none; b=EHYM+sKi7zAxZ8YOkBj1oX/5undDfE8QaBrDA6TX+FRlKSsUjYpBIXZ52/1TjrZlmcDPzhiO3NSsC1lU0+1g1Sp4auvmIuGcJ3L7Op5YCoDXl5Q0jzYo8VUSN9OHsR90Prvh24qQMuxyCLZ5rvBEzsJkkuEyaqgdvRnLW5tA0+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145493; c=relaxed/simple;
-	bh=cJbW0iwtJiAaAaAd6kkN0ptXjq2xHcafzj1tAAvpd9U=;
+	s=arc-20240116; t=1721145499; c=relaxed/simple;
+	bh=pkJSU+RCD9hbRt3Bu9pJWbWOhrhYx4vCiXSqckVMoIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0TV28S6Zc8njBdHrLV+sk/K0YeUHVHLjweaHCowEQR565mefhqwhcx0xECgaykZrseIKPCoG+k/jZ1mkgeMLy79hlfUBdLL3Zq1Tk/j4uRZO/AOEBnPbu01IIByr5p2DWK3WTJnuzkzl6Jxd091ceKy99o5o23Hh1WOPOtousI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j50CYkIg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8696C116B1;
-	Tue, 16 Jul 2024 15:58:12 +0000 (UTC)
+	 MIME-Version; b=akQ4Q7mgTSmAiKhHi/G3qT9+K9IV2MxI722LZYWLF9b68Js9JPllvD27MeDSuXSz/OVIdgKEo+/xyDq43CGJzlfOElMMIdmMiq6ACbp2gWveMGZ0yvCSWYfEMm417g/OtB49F1vsYcQsIbSbWZXUf7Lk0S/UL/gPFliEq+fL77s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gii5FPxJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C481EC116B1;
+	Tue, 16 Jul 2024 15:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145493;
-	bh=cJbW0iwtJiAaAaAd6kkN0ptXjq2xHcafzj1tAAvpd9U=;
+	s=korg; t=1721145499;
+	bh=pkJSU+RCD9hbRt3Bu9pJWbWOhrhYx4vCiXSqckVMoIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j50CYkIgdWmXTiXqstMri5oJNVFme255+YOfUac6KrPgIaXZ+bfXlRZDi6Sl+tDfK
-	 ndiCR1OOf58338o5XvQFD9uD9DMCvDbKH9gta0QzJJUjnjWD40ekWCnRNThYZhCTY1
-	 vLB7SZddby0hPd3FrtIJslm5MTHLLocDDVzW3770=
+	b=Gii5FPxJD9egxmaNPh1NhFJRFKQMN30Ec4bDUh+9XBiIPq7Y4jnB6fRq4EkU18Tqg
+	 txxWnEJWgu3niOfWwU2e0ofZyzoct2aOfI1t75+HGxi8guOemEyqiQb0vZutv+gzsL
+	 NLNOdJGzYfUFce/zMDPyr+teUg/R3iUU+7MDGpMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 84/96] nilfs2: fix kernel bug on rename operation of broken directory
-Date: Tue, 16 Jul 2024 17:32:35 +0200
-Message-ID: <20240716152749.747162543@linuxfoundation.org>
+	Jimmy Shiu <jimmyshiu@google.com>,
+	John Stultz <jstultz@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Qais Yousef <qyousef@layalina.io>
+Subject: [PATCH 6.1 85/96] sched: Move psi_account_irqtime() out of update_rq_clock_task() hotpath
+Date: Tue, 16 Jul 2024 17:32:36 +0200
+Message-ID: <20240716152749.784037398@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
 References: <20240716152746.516194097@linuxfoundation.org>
@@ -66,79 +68,187 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: John Stultz <jstultz@google.com>
 
-commit a9e1ddc09ca55746079cc479aa3eb6411f0d99d4 upstream.
+commit ddae0ca2a8fe12d0e24ab10ba759c3fbd755ada8 upstream.
 
-Syzbot reported that in rename directory operation on broken directory on
-nilfs2, __block_write_begin_int() called to prepare block write may fail
-BUG_ON check for access exceeding the folio/page size.
+It was reported that in moving to 6.1, a larger then 10%
+regression was seen in the performance of
+clock_gettime(CLOCK_THREAD_CPUTIME_ID,...).
 
-This is because nilfs_dotdot(), which gets parent directory reference
-entry ("..") of the directory to be moved or renamed, does not check
-consistency enough, and may return location exceeding folio/page size for
-broken directories.
+Using a simple reproducer, I found:
+5.10:
+100000000 calls in 24345994193 ns => 243.460 ns per call
+100000000 calls in 24288172050 ns => 242.882 ns per call
+100000000 calls in 24289135225 ns => 242.891 ns per call
 
-Fix this issue by checking required directory entries ("." and "..") in
-the first chunk of the directory in nilfs_dotdot().
+6.1:
+100000000 calls in 28248646742 ns => 282.486 ns per call
+100000000 calls in 28227055067 ns => 282.271 ns per call
+100000000 calls in 28177471287 ns => 281.775 ns per call
 
-Link: https://lkml.kernel.org/r/20240628165107.9006-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d3abed1ad3d367fa2627
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The cause of this was finally narrowed down to the addition of
+psi_account_irqtime() in update_rq_clock_task(), in commit
+52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ
+pressure").
+
+In my initial attempt to resolve this, I leaned towards moving
+all accounting work out of the clock_gettime() call path, but it
+wasn't very pretty, so it will have to wait for a later deeper
+rework. Instead, Peter shared this approach:
+
+Rework psi_account_irqtime() to use its own psi_irq_time base
+for accounting, and move it out of the hotpath, calling it
+instead from sched_tick() and __schedule().
+
+In testing this, we found the importance of ensuring
+psi_account_irqtime() is run under the rq_lock, which Johannes
+Weiner helpfully explained, so also add some lockdep annotations
+to make that requirement clear.
+
+With this change the performance is back in-line with 5.10:
+6.1+fix:
+100000000 calls in 24297324597 ns => 242.973 ns per call
+100000000 calls in 24318869234 ns => 243.189 ns per call
+100000000 calls in 24291564588 ns => 242.916 ns per call
+
+Reported-by: Jimmy Shiu <jimmyshiu@google.com>
+Originally-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Link: https://lore.kernel.org/r/20240618215909.4099720-1-jstultz@google.com
+Fixes: 52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ pressure")
+[jstultz: Fixed up minor collisions w/ 6.1-stable]
+Signed-off-by: John Stultz <jstultz@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/dir.c |   32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ kernel/sched/core.c  |    7 +++++--
+ kernel/sched/psi.c   |   21 ++++++++++++++++-----
+ kernel/sched/sched.h |    1 +
+ kernel/sched/stats.h |   11 ++++++++---
+ 4 files changed, 30 insertions(+), 10 deletions(-)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -396,11 +396,39 @@ found:
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -701,7 +701,6 @@ static void update_rq_clock_task(struct
  
- struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
+ 	rq->prev_irq_time += irq_delta;
+ 	delta -= irq_delta;
+-	psi_account_irqtime(rq->curr, irq_delta);
+ #endif
+ #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
+ 	if (static_key_false((&paravirt_steal_rq_enabled))) {
+@@ -5500,7 +5499,7 @@ void scheduler_tick(void)
  {
--	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
-+	struct page *page;
-+	struct nilfs_dir_entry *de, *next_de;
-+	size_t limit;
-+	char *msg;
+ 	int cpu = smp_processor_id();
+ 	struct rq *rq = cpu_rq(cpu);
+-	struct task_struct *curr = rq->curr;
++	struct task_struct *curr;
+ 	struct rq_flags rf;
+ 	unsigned long thermal_pressure;
+ 	u64 resched_latency;
+@@ -5512,6 +5511,9 @@ void scheduler_tick(void)
  
-+	de = nilfs_get_page(dir, 0, &page);
- 	if (IS_ERR(de))
- 		return NULL;
--	return nilfs_next_entry(de);
+ 	rq_lock(rq, &rf);
+ 
++	curr = rq->curr;
++	psi_account_irqtime(rq, curr, NULL);
 +
-+	limit = nilfs_last_byte(dir, 0);  /* is a multiple of chunk size */
-+	if (unlikely(!limit || le64_to_cpu(de->inode) != dir->i_ino ||
-+		     !nilfs_match(1, ".", de))) {
-+		msg = "missing '.'";
-+		goto fail;
-+	}
-+
-+	next_de = nilfs_next_entry(de);
-+	/*
-+	 * If "next_de" has not reached the end of the chunk, there is
-+	 * at least one more record.  Check whether it matches "..".
-+	 */
-+	if (unlikely((char *)next_de == (char *)de + nilfs_chunk_size(dir) ||
-+		     !nilfs_match(2, "..", next_de))) {
-+		msg = "missing '..'";
-+		goto fail;
-+	}
-+	*p = page;
-+	return next_de;
-+
-+fail:
-+	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
-+	nilfs_put_page(page);
-+	return NULL;
+ 	update_rq_clock(rq);
+ 	thermal_pressure = arch_scale_thermal_pressure(cpu_of(rq));
+ 	update_thermal_load_avg(rq_clock_thermal(rq), rq, thermal_pressure);
+@@ -6550,6 +6552,7 @@ static void __sched notrace __schedule(u
+ 		++*switch_count;
+ 
+ 		migrate_disable_switch(rq, prev);
++		psi_account_irqtime(rq, prev, next);
+ 		psi_sched_switch(prev, next, !task_on_rq_queued(prev));
+ 
+ 		trace_sched_switch(sched_mode & SM_MASK_PREEMPT, prev, next, prev_state);
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -785,6 +785,7 @@ static void psi_group_change(struct psi_
+ 	enum psi_states s;
+ 	u32 state_mask;
+ 
++	lockdep_assert_rq_held(cpu_rq(cpu));
+ 	groupc = per_cpu_ptr(group->pcpu, cpu);
+ 
+ 	/*
+@@ -1003,19 +1004,29 @@ void psi_task_switch(struct task_struct
  }
  
- ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
+ #ifdef CONFIG_IRQ_TIME_ACCOUNTING
+-void psi_account_irqtime(struct task_struct *task, u32 delta)
++void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_struct *prev)
+ {
+-	int cpu = task_cpu(task);
++	int cpu = task_cpu(curr);
+ 	struct psi_group *group;
+ 	struct psi_group_cpu *groupc;
+-	u64 now;
++	u64 now, irq;
++	s64 delta;
+ 
+-	if (!task->pid)
++	if (!curr->pid)
++		return;
++
++	lockdep_assert_rq_held(rq);
++	group = task_psi_group(curr);
++	if (prev && task_psi_group(prev) == group)
+ 		return;
+ 
+ 	now = cpu_clock(cpu);
++	irq = irq_time_read(cpu);
++	delta = (s64)(irq - rq->psi_irq_time);
++	if (delta < 0)
++		return;
++	rq->psi_irq_time = irq;
+ 
+-	group = task_psi_group(task);
+ 	do {
+ 		if (!group->enabled)
+ 			continue;
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1084,6 +1084,7 @@ struct rq {
+ 
+ #ifdef CONFIG_IRQ_TIME_ACCOUNTING
+ 	u64			prev_irq_time;
++	u64			psi_irq_time;
+ #endif
+ #ifdef CONFIG_PARAVIRT
+ 	u64			prev_steal_time;
+--- a/kernel/sched/stats.h
++++ b/kernel/sched/stats.h
+@@ -110,8 +110,12 @@ __schedstats_from_se(struct sched_entity
+ void psi_task_change(struct task_struct *task, int clear, int set);
+ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 		     bool sleep);
+-void psi_account_irqtime(struct task_struct *task, u32 delta);
+-
++#ifdef CONFIG_IRQ_TIME_ACCOUNTING
++void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_struct *prev);
++#else
++static inline void psi_account_irqtime(struct rq *rq, struct task_struct *curr,
++				       struct task_struct *prev) {}
++#endif /*CONFIG_IRQ_TIME_ACCOUNTING */
+ /*
+  * PSI tracks state that persists across sleeps, such as iowaits and
+  * memory stalls. As a result, it has to distinguish between sleeps,
+@@ -206,7 +210,8 @@ static inline void psi_ttwu_dequeue(stru
+ static inline void psi_sched_switch(struct task_struct *prev,
+ 				    struct task_struct *next,
+ 				    bool sleep) {}
+-static inline void psi_account_irqtime(struct task_struct *task, u32 delta) {}
++static inline void psi_account_irqtime(struct rq *rq, struct task_struct *curr,
++				       struct task_struct *prev) {}
+ #endif /* CONFIG_PSI */
+ 
+ #ifdef CONFIG_SCHED_INFO
 
 
 
