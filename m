@@ -1,234 +1,247 @@
-Return-Path: <stable+bounces-59381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E54E931EA4
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 04:03:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97EA6931EAD
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 04:12:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 615BB1C22190
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 02:03:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B9F31F21E94
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 02:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704B14C9F;
-	Tue, 16 Jul 2024 02:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="ApNqLRRv";
-	dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="nPGBDQsy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602246AB6;
+	Tue, 16 Jul 2024 02:12:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF2A6FBE;
-	Tue, 16 Jul 2024 02:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=210.61.82.184
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721095401; cv=fail; b=gpO8waLzC2SrmOYYtR/JQ4OtnixLkOgn7rYV6FhfhLTDLD4YuCLbGKoq4V3sSq/Cl6y/Vbe7c7K0n7egYRdfuK1imCu10MyR07fo/jYjwBEWm7i4T3zjkpm88NDQc9xDf81zdJQmjI3sxcNG1nKup2p6fy1otJBzmfmO5cvedTg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721095401; c=relaxed/simple;
-	bh=WZLxfOV32iI5ME//IbAq2XV9TR4twaM4ugoQs56PuVA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ujj5nMy97MJuPGndvbbVWUlhWL/W9iy39eQhX/dOGg+k0rtP2/O7DS1cn/LVJGleHrgPRQ/l/GyOaEfiXicOHJvpQzLdjd/VXaS3gNw4+EN6x3+p7z1yqgKZWjEdikwcjod2yVzpGQOkc9ZQYTyF0G5jJA3MQHWKp3XPFeW/ALI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=ApNqLRRv; dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b=nPGBDQsy; arc=fail smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 8e2bc4e0431711ef87684b57767b52b1-20240716
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=WZLxfOV32iI5ME//IbAq2XV9TR4twaM4ugoQs56PuVA=;
-	b=ApNqLRRvf3hfpMmpJUTcpaxAAdYiPFNreoSxGJwaQKuIQCCEsvzOFXgjSVtR0ECB3odUKvtKX/SQZjm1EzKUHE5LfFtFw2DIsooxQ1jry5jcyjIAyotyKDlRTnwjC+btnOjjjxyKMhLxBHDI/eALh+HtaYHrTOZtzsomceUkdfo=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.40,REQID:09f5764e-f5fb-4ee5-8fbc-e3c9ac5459d0,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:ba885a6,CLOUDID:b43962d5-0d68-4615-a20f-01d7bd41f0bb,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 8e2bc4e0431711ef87684b57767b52b1-20240716
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
-	(envelope-from <peter.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 532151868; Tue, 16 Jul 2024 10:03:12 +0800
-Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 16 Jul 2024 10:03:12 +0800
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (172.21.101.237)
- by mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 16 Jul 2024 10:03:12 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Rkeu6E3DY+DTDhDO05nW8wgMO1xuHkrsfyk29xZqPLoLbpqAnOpOfMPzoW0B39ZF/QiSMK2Q9kCTNE7sPoNWLZab56wpX3HBBThGVZ8c27Gwing11yalHKvjvyiYCvGHEUjrJc/AvZBsh7iu3J2HNy6piE0sd+7d/Kskzd4ByYyauCoCF8oaG379DaPDr+os9MCRyosIFKUuyIvC2D9lwYSAqYwgs2BiXGItkOF6B/NMLcU/tTY0aJABg/5BoH9Df6brmxzABrCFypDesP5eFYek+lMBxGUbtZICXGjJvX78fsmWvOE2d5PewQFOAskXjO9lAzhWVwk12gDhaHiJAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WZLxfOV32iI5ME//IbAq2XV9TR4twaM4ugoQs56PuVA=;
- b=j3BpNa+U80uYlLXuhjbHRmO3LfCMt4MhoLByqL82zyOv4clEpiGMMzzBwG/q/FAaavykaAQn6PfEPa0tQ8XoWWbRiy/uIb0qpjmB7twSJ/a3Dbf2xqNe3/lTj9UUcpUx/mKe0EEHERww3jtdxmkF2qY5oY18v/iS9X0/5NF/mFlu3/4/XGXsM3FAvvbbRObScUsbDHXl8Bcx7kKkyC0dL1lmtovtiIb5dnf+B7k/JfHCpequmpfTyMxmC4F6J7ukosFpFNUE8nT7SftCTLW12mp2JpYoSwDCPgSBtDeMPW/esd0h3RAdWKOSapw8ZGq1wgfGz+jbf54G86+4YMlSOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
- dkim=pass header.d=mediatek.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WZLxfOV32iI5ME//IbAq2XV9TR4twaM4ugoQs56PuVA=;
- b=nPGBDQsyJ8ngu3ZvakJqVWRlLoQ/uX/GokuMSdtT9wTpS8xnkv/FfK/wHg1EVlr2xjHUskxK1BxgxK93qbK74H2f0KwjG2NDEPUzjxpdHWhsYw5B4mWuAgrxyld8ujqCnPvm1s7IRUyfTbfhkngRDDGrsmNPcMYBIZqvvqNBLy0=
-Received: from PSAPR03MB5605.apcprd03.prod.outlook.com (2603:1096:301:66::6)
- by KL1PR03MB7598.apcprd03.prod.outlook.com (2603:1096:820:e0::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.28; Tue, 16 Jul
- 2024 02:03:08 +0000
-Received: from PSAPR03MB5605.apcprd03.prod.outlook.com
- ([fe80::3945:7dbc:62bd:c31c]) by PSAPR03MB5605.apcprd03.prod.outlook.com
- ([fe80::3945:7dbc:62bd:c31c%5]) with mapi id 15.20.7762.027; Tue, 16 Jul 2024
- 02:03:07 +0000
-From: =?utf-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>
-To: "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-	"bvanassche@acm.org" <bvanassche@acm.org>, "avri.altman@wdc.com"
-	<avri.altman@wdc.com>, "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
-	"alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
-	"martin.petersen@oracle.com" <martin.petersen@oracle.com>
-CC: "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
-	=?utf-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
-	=?utf-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
-	=?utf-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
-	=?utf-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
-	wsd_upstream <wsd_upstream@mediatek.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, =?utf-8?B?TGluIEd1aSAo5qGC5p6XKQ==?=
-	<Lin.Gui@mediatek.com>, =?utf-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?=
-	<Chun-hung.Wu@mediatek.com>, =?utf-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?=
-	<Tun-yu.Yu@mediatek.com>, "chu.stanley@gmail.com" <chu.stanley@gmail.com>,
-	=?utf-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
-	<Chaotian.Jing@mediatek.com>, =?utf-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
-	<Powen.Kao@mediatek.com>, =?utf-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
-	<Naomi.Chu@mediatek.com>, "huobean@gmail.com" <huobean@gmail.com>,
-	=?utf-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?= <Qilin.Tan@mediatek.com>
-Subject: Re: [PATCH v2] ufs: core: fix deadlock when rtc update
-Thread-Topic: [PATCH v2] ufs: core: fix deadlock when rtc update
-Thread-Index: AQHa1oGfHX9jD5TnakSNwh6noF9JO7H4CNgAgACSvQA=
-Date: Tue, 16 Jul 2024 02:03:07 +0000
-Message-ID: <0c2ef22bb06369c94b65cb4892bb130f5ec9d78b.camel@mediatek.com>
-References: <20240715063831.29792-1-peter.wang@mediatek.com>
-	 <814b2e3f-3386-45b6-ba72-7a1143e57e33@acm.org>
-In-Reply-To: <814b2e3f-3386-45b6-ba72-7a1143e57e33@acm.org>
-Accept-Language: zh-TW, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mediatek.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PSAPR03MB5605:EE_|KL1PR03MB7598:EE_
-x-ms-office365-filtering-correlation-id: fd89a817-82e4-402e-0c9c-08dca53b6fa1
-x-ld-processed: a7687ede-7a6b-4ef6-bace-642f677fbe31,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?WTZRYjFudXl1Z0ZuYkptQXVEZ3FiZEpzK3Q3aThDVTk3d3N5ZGtXNlFwZU54?=
- =?utf-8?B?R2lVbEZQTWZUMWVMR3I4bmFNejRJRFpRSWxqa25QT1hZMVB2YUNlY0ZRZ3I0?=
- =?utf-8?B?OVJjY0lnMm5oOEZtMVJiYU5UT0RhRksxc0YxS0hzREhEZGFrOFlKYVdycXFq?=
- =?utf-8?B?MEoyRmZ6d1Vaa1VWVElYa09UN01FMnV1cVhrR2tpb2RBUjBUelYzZitqRWVG?=
- =?utf-8?B?UVVKQWdhS3g4clo1ZnhFd3U2ZXBVNjJLM1phdlpiWlQxMHJTcUpSUkZkRzZw?=
- =?utf-8?B?aGFPRXpQa1F2TWQyMDZBNTdYeFpLYXIxUC9nN1hCR0hTVE1JT3I2SnBPUFdC?=
- =?utf-8?B?TklQOWY1c0l6RzdhcCtJT0dFUHU3ekNSbDRpK0pna0ZWMEYvOWxINHJlN2xh?=
- =?utf-8?B?aFk0bVd5TEd5OUszbk80dkVjY0RaNVdKcHExSC92UUs4QVZwc0dnVnQ0OTdv?=
- =?utf-8?B?MlFpTnZreFg3RExPbmNsa3RmcG5QTm56dm5YYU5EMG9MQkFTNXp3WkdsU2Zk?=
- =?utf-8?B?S0xvS1dqYkVTSXBLUEhkaG1oKzN6TDFCRXJEenEzSlpoVVNsV25jTkZOZG10?=
- =?utf-8?B?dnJNNmdjVmF4UkdFcHc0dTkreXQvZ3EwRit0U2JxSFZSRzNyY3oyYWw0V1gw?=
- =?utf-8?B?RUdMblBGdTNucU56NHh2aEI4d2lDSjFnYXNhcjduZEtXMkp1dWZpbzg1bGo0?=
- =?utf-8?B?RVpXTkFxanJRVHVkWU1pdlROZGQ0OXJBVlc5YTcxU282NlFmbGxVVllrai8w?=
- =?utf-8?B?TnVxVG5VOHlxN2k2cmE4WWVOYjNGUklDOGljeU1VNU0rZFNUakxNRGowbUpB?=
- =?utf-8?B?aFBRNnZTMlFPMzNpdVNvam5VZGZZYTdjaTVDU1hFeEtNNDB0MGlXL0JNL3Zr?=
- =?utf-8?B?QUtCVnBjUC9mZW9kUUh0UVp4OGFleUkzWktPbHFGWXZtZExNQjlTL0lidCt5?=
- =?utf-8?B?UUdYcjVJRHhIWnVuamtlbktRemNsdEFSWmRTUk5NWGlrR3Jpd2drZHhCUnhT?=
- =?utf-8?B?a3Zvbk4wMExoZ09GNXg2L09DM3hBOWRJblBIQ1FyZjFiYnI0cGNHZkZIemN3?=
- =?utf-8?B?amlzSXFkeHNEMGw1Sy9OV2dQUnhBQ3pMMWlhckFjVGhES0NaN0dMS0tnS29u?=
- =?utf-8?B?NUF0UEkwQkYyZ1JLZVZ6anN3TVRLWkZjNy8reWsvL0xuK3UrLy8wZExKZ1ZI?=
- =?utf-8?B?YVIzZXJxR1RxbzNqSHJPMWpId0pyek5QZEI2Y0N0MXN4R3FZSmJpdjBNMFZO?=
- =?utf-8?B?VjcxQjIzTUZRNEF2KzBwdnM5N1FzMEFGTGZFcGV2Vm8wRlRwYlVDME5ZOEpu?=
- =?utf-8?B?Lzh2TEtqNGxlaWpxazhPOXVCbVpDaGFibzVpcWFTd3JvK3NWRUx4SDZsUHhz?=
- =?utf-8?B?aHZZanNCcloydGZMM01VWndSbmYvcTdlZnBabEU3d2JEUjNBQ0wweU9NaFBX?=
- =?utf-8?B?VEVxb2xsVkI0Ylk0eHRXVkJwZHFadkFDTGYyNWdJaDR3RnZFUVJjdGQvN3Fq?=
- =?utf-8?B?TDd6U2xEZ2MwMCszU0tOUUVZcTZhSjlUZG96Z0UwQ0hJcVlnNVdwc3NZOWpN?=
- =?utf-8?B?clFkbzM5UXY2TjNGeVZQSlFKZGlCRFZOMnloR25IcVlJczlpbEJWL2lETnZP?=
- =?utf-8?B?T2ZCVlY1QVdTNXhBZFdJUHZCOW5Lb2Q4OEdQVHVvZldLRFY5NEVPbDdLR0l5?=
- =?utf-8?B?KzFWcTl0N3ZsaFhjZXU5VHhkeXR5VEl5ZWxZUDFMdEtMeWc4ZWg1M1FObHl4?=
- =?utf-8?B?d2l3M3VuN0pJNldTcWp0MTlyY1RyeVNVMDRDb24zQWFNUndhKzFUaGNLRHdO?=
- =?utf-8?B?aURzVkFnOHIvNXBydzFTTFhJR3hpYmwyb2NtanpKQU1HSm5JdzhEZXQxM2Qv?=
- =?utf-8?B?bkdwTTdJMlYya1BkZEdYUW16TGFNdUcybWp2a040dVZZakE9PQ==?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PSAPR03MB5605.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TmhiVDFlSTYrU3RtaU9OME04WGRtMVMyWUZMUUlkMTlMV1U1ZWlKZnE2TG9w?=
- =?utf-8?B?YnFmQ0JJTHVoWWsvMTh3eVk4MDRmZy9qWFM4OGlOWlNTTEVCQTJHK0x6b3p4?=
- =?utf-8?B?cXRtQ3pLRURiTER5N1RvcVVFa282SWRJU1pyemxFSzdIYUtsOXBCMDZLMU9T?=
- =?utf-8?B?WnYvVkRuQU9TaFNtMkthMndrVERsUFhnc2JNRkxXRW1pTSs3UjlKN3dXSXJy?=
- =?utf-8?B?YzdlWlRVRlV5YWMyMEFyTzBVdGZPUCtXWmFDemtReXlBUGN6MlFFYmcxMzND?=
- =?utf-8?B?dTE3eUpRNUU3RzNjbDZtelZtSFpnU0RZWUhRVnpCV3JBcUREMmNvMXEwUmow?=
- =?utf-8?B?dXFsVjVmRm4rbDBaUVZYemI5U013cFMxbXI1Q3I4d0VtcUdlVjFsZ2Ntemo3?=
- =?utf-8?B?cmVCUHJ6ZW1SNVpDSENSNjFheklCa1V0QU9RMWU5MDQrMWdKLzltb1pOZlR1?=
- =?utf-8?B?OE5XcGlhcFlmVW5IRmVUcTJ3Vjh2QjBmRWhIM0trcFBkeVlWclE3SCs2L3dI?=
- =?utf-8?B?R0hjMmFtSlduR0Yyc21YRzdLSlZKWlVRUmNnWFJwZ3FvTnprVFV1ektXaG5v?=
- =?utf-8?B?TDdRRHZ5QTBtaHcvVWJLbExLdFpHYmpYS005aHpQSEhjNm5Vd1N3b1V2dGVs?=
- =?utf-8?B?dXJxaEUyTVRuOUVUY0FObUVLMjVYV2hxeDZieldFeEE5djV3RXdmSWsrUXZq?=
- =?utf-8?B?Z3dBQmhDVE1PY1hUS0U0S202ZXhMNDBpbjVFalNZVFJ5Z0lhUWJUN2RLOGdN?=
- =?utf-8?B?UGdCQ0lTQW15SjF3amE4Zm1hRWpvM3NBRWFZS3pTUnc5ZXFnR0d0UTNZL2Zo?=
- =?utf-8?B?Q09BOTJXS2UwNkFaTWxKdmV6ZHhvekl2Y2p6RmQ5ZXQ2Unc0K0pXYVg2SHNn?=
- =?utf-8?B?NjJKSGlCeTZUbVA2WkU0dm1LWWg1YUZjUVh4UEduNCtPem9Fc3Rra1JCRWdN?=
- =?utf-8?B?NStnWVhLRkVPUWxxZjBSeTI0eWY3UUVhdHhtNm9NZmw5NFNSdXJlaWozRS9S?=
- =?utf-8?B?MmkvUjVnV0xNQVVBZWtDMitEekU3azVlS25nM3ZGZFgxS2I3aTJhRTNSNFBl?=
- =?utf-8?B?b3J6QWhucjlUQmZVVi9VVk9iUDhhUkZmZWxDdEZ0REN4ZFFhcTRXWWtlcjBH?=
- =?utf-8?B?TkZLTHpUTjRDYlhUMEFVSVhTNW1vZWlNKzFsTUpNditscmlIN1N0d2hscmVB?=
- =?utf-8?B?VCtDRU9FNDNBMU4vdU1yWTI0UndTSFFydnhGR1FzNUpPeGVieHBHOUk1RnAr?=
- =?utf-8?B?WkVmMTN5MDJUbStSY2cvRDV4dDV3eENrWHpLNnlRQ1VoN1BzSzkxbmFuYlU0?=
- =?utf-8?B?SmMvZUNSUHZwV1N4WW5heTc1Y1NCN3dJMkcxSC9GYmdEdFhnWkZhYzRLdTNU?=
- =?utf-8?B?SktnR2crY2ZhdjVmUTA4Q2ZzREhzejBaTXFNUW91c1YxRlVBT1NJc1daZklv?=
- =?utf-8?B?N0plcmpmbUNWMGM0UzNjNXNxRVdlcVZUM2I5cjMyS25JZGdpeTdNcC9lZ0xo?=
- =?utf-8?B?MEZXV0lJS1RyNUQweEpMU1JRNzk3Qm1KVHZCL1ZkNnUzakRETU5pTFMxb1dJ?=
- =?utf-8?B?MHBmWktoZXhuYkVicVNGVDhuQjFNd2trOE5ieDdQZjlRTjZWY3h6ZkxwbXBl?=
- =?utf-8?B?K0NRLzNicTM5Qkd0Z25kWWh0SjBodThITFBYQ2xvZmJFcmNSRjNCZW1STEFj?=
- =?utf-8?B?SStHcU9qcldEdFpCZ1hOSzQzMzZYZzZOMUI1YjBDbzVUTWNUVHJ5WGVUTC9o?=
- =?utf-8?B?U0VZNnZ6eGhsWXJObTZnbWxKb3FadzY4NGNreXVITkU4emlTblZGNWhLdDU4?=
- =?utf-8?B?blFxeklFN3ozWFZXbExYakNXOUFGYUNHWkJiUFJuYkRhSjQ4VzFId1U2ZEMw?=
- =?utf-8?B?ZGNTNllERXYwUndlVkFEUFJsVzBGeFQxZ0U5ckY1MnVmWCtZUFcwUW9XMFND?=
- =?utf-8?B?ZXpHZHZuWjg4L3pmbklqaGJQWU9USU10aGx1ZzJHd3k5OVFOWFovR2xtcWND?=
- =?utf-8?B?VWtpRTlHNjN0U0wvWXVpTFdSNVlZUkJlMFdvMXpKbnVaYjFFVXBMNG1tR01Z?=
- =?utf-8?B?UndwVzd3R1Q3T0tEbVcvc1hhTEN5R1pRR21CemN0ZU1GYkxGbTZDWFVOU3JO?=
- =?utf-8?B?VldSelJwVlZvZWRLSmZHc2kwY3ZPQXFpdUxaU1JlekIxUGlzaFVqL25kVTRv?=
- =?utf-8?B?N2c9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <CCEC3811646F4748964B406A8E79BBEE@apcprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B270618028
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 02:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721095928; cv=none; b=btUik9gXrOs/4sM3NGbxPEj/uf8Zyatq3Wq6K8AhCosCofnIo8Df5mXhy3TyPX0WuW5esfD8p4SJbPGX6MqPgnk2RG7D0RFcUo0cKEc0MkJrIcp7E5+yJzqGg8YOZb3jcwiyQUgRBqxbj08j4cFxbiywJWCOVNsezcPUQPbsr4Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721095928; c=relaxed/simple;
+	bh=2gAvbUggJLdIYoMTeoRLq2CnFZUmuS/WFxayjJM8DiI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fEXpaXnMOW0NRiWpXMF1vDmwxfSV5TzohGce6wYTBE/EcBw46ie6/N2aeFc6fB1XBn0TRvEDjwrt+lYffAry19uWcxZIuZz5sHCnixZcP0P2en9dKV+vtoYDAQ4CuPMEunnh7jhxIwZmNrIx1lJrMY4/Ed1gBinJvyDqGPrBUYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4WNMyD6g9Rz4f3jXV
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 10:11:48 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id DC0291A058E
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 10:12:00 +0800 (CST)
+Received: from [10.174.177.174] (unknown [10.174.177.174])
+	by APP4 (Coremail) with SMTP id gCh0CgA3Gznr1pVmVPgFAQ--.376S3;
+	Tue, 16 Jul 2024 10:11:59 +0800 (CST)
+Message-ID: <c8784653-bd67-4839-b2a4-bbbfbfa3ba14@huaweicloud.com>
+Date: Tue, 16 Jul 2024 10:11:55 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PSAPR03MB5605.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd89a817-82e4-402e-0c9c-08dca53b6fa1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jul 2024 02:03:07.3621
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qBAwIJcist+Xc24LNC8gCkLlgwC/M4IEm2RJ8IMUUbWhF/HwkZiB0FPcrkhFyutfq0O2yRM+sXKluUs5r61UKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR03MB7598
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6/6.9 v2 2/2] ext4: fix slab-out-of-bounds in
+ ext4_mb_find_good_group_avg_frag_lists()
+To: gregkh@linuxfoundation.org
+Cc: sashal@kernel.org, yangerkun@huawei.com, Jan Kara <jack@suse.cz>,
+ Ojaswin Mujoo <ojaswin@linux.ibm.com>, Theodore Ts'o <tytso@mit.edu>,
+ libaokun@huaweicloud.com, stable@vger.kernel.org
+References: <20240619121952.3508695-1-libaokun@huaweicloud.com>
+ <20240619121952.3508695-2-libaokun@huaweicloud.com>
+Content-Language: en-US
+From: Baokun Li <libaokun@huaweicloud.com>
+In-Reply-To: <20240619121952.3508695-2-libaokun@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgA3Gznr1pVmVPgFAQ--.376S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxKw1fGw15Zw17XryxXFyfXrb_yoWxWr4fpa
+	nIyFyxGr1FgryUWr4kC3Z0g34Fgw4xC3WUXryfXw18ZasrJF1Skr9rtF1YvF1kKrWkZF1f
+	XFW2qFnrKrsrWa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkv14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_
+	Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+	42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUBVbkUUUUU=
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgAGBWaU3hQ7-AAAs+
 
-T24gTW9uLCAyMDI0LTA3LTE1IGF0IDEwOjE3IC0wNzAwLCBCYXJ0IFZhbiBBc3NjaGUgd3JvdGU6
-DQo+ICAJIA0KPiBFeHRlcm5hbCBlbWFpbCA6IFBsZWFzZSBkbyBub3QgY2xpY2sgbGlua3Mgb3Ig
-b3BlbiBhdHRhY2htZW50cyB1bnRpbA0KPiB5b3UgaGF2ZSB2ZXJpZmllZCB0aGUgc2VuZGVyIG9y
-IHRoZSBjb250ZW50Lg0KPiAgT24gNy8xNC8yNCAxMTozOCBQTSwgcGV0ZXIud2FuZ0BtZWRpYXRl
-ay5jb20gd3JvdGU6DQo+ID4gVGhlcmUgaXMgYSBkZWFkbG9jayB3aGVuIHJ1bnRpbWUgc3VzcGVu
-ZCB3YWl0cyBmb3IgdGhlIGZsdXNoIG9mIFJUQw0KPiB3b3JrLA0KPiA+IGFuZCB0aGUgUlRDIHdv
-cmsgY2FsbHMgdWZzaGNkX3JwbV9nZXRfc3luYyB0byB3YWl0IGZvciBydW50aW1lDQo+IHJlc3Vt
-ZS4NCj4gDQo+IFRoZSBhYm92ZSBkZXNjcmlwdGlvbiBpcyB0b28gYnJpZWYgLSBhIGRlc2NyaXB0
-aW9uIG9mIGhvdyB0aGUgZml4DQo+IHdvcmtzDQo+IGlzIG1pc3NpbmcuIFBsZWFzZSBpbmNsdWRl
-IGEgbW9yZSBkZXRhaWxlZCBkZXNjcmlwdGlvbiBpbiBmdXR1cmUNCj4gcGF0Y2hlcy4NCj4gDQo+
-IEFueXdheToNCj4gDQo+IFJldmlld2VkLWJ5OiBCYXJ0IFZhbiBBc3NjaGUgPGJ2YW5hc3NjaGVA
-YWNtLm9yZz4NCg0KSGkgQmFydCwNCg0KV2lsbCBpbXByb3ZlIGluIGZ1dHVyZSBwYXRjaGVzLg0K
-DQpUaGFua3MgZm9yIHJldmlldy4NClBldGVyDQoNCg==
+On 2024/6/19 20:19, libaokun@huaweicloud.com wrote:
+> From: Baokun Li <libaokun1@huawei.com>
+>
+> [ Upstream commit 13df4d44a3aaabe61cd01d277b6ee23ead2a5206 ]
+>
+> We can trigger a slab-out-of-bounds with the following commands:
+>
+>      mkfs.ext4 -F /dev/$disk 10G
+>      mount /dev/$disk /tmp/test
+>      echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
+>      echo test > /tmp/test/file && sync
+>
+> ==================================================================
+> BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
+> Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
+> CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
+> Call Trace:
+>   dump_stack_lvl+0x2c/0x50
+>   kasan_report+0xb6/0xf0
+>   ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
+>   ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
+>   ext4_mb_new_blocks+0x88a/0x1370 [ext4]
+>   ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
+>   ext4_map_blocks+0x569/0xea0 [ext4]
+>   ext4_do_writepages+0x10f6/0x1bc0 [ext4]
+> [...]
+> ==================================================================
+>
+> The flow of issue triggering is as follows:
+>
+> // Set s_mb_group_prealloc to 2147483647 via sysfs
+> ext4_mb_new_blocks
+>    ext4_mb_normalize_request
+>      ext4_mb_normalize_group_request
+>        ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
+>    ext4_mb_regular_allocator
+>      ext4_mb_choose_next_group
+>        ext4_mb_choose_next_group_best_avail
+>          mb_avg_fragment_size_order
+>            order = fls(len) - 2 = 29
+>          ext4_mb_find_good_group_avg_frag_lists
+>            frag_list = &sbi->s_mb_avg_fragment_size[order]
+>            if (list_empty(frag_list)) // Trigger SOOB!
+>
+> At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
+> but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
+> to be triggered by an attempt to access an element at index 29.
+>
+> Add a new attr_id attr_clusters_in_group with values in the range
+> [0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
+> that type to fix the issue. In addition avoid returning an order
+> from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
+> and reduce some useless loops.
+>
+> Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+> Link: https://lore.kernel.org/r/20240319113325.3110393-5-libaokun1@huawei.com
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> ---
+>   fs/ext4/mballoc.c |  4 ++++
+>   fs/ext4/sysfs.c   | 15 ++++++++++++++-
+>   2 files changed, 18 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+> index 714f83632e3f..66b5a68b0254 100644
+> --- a/fs/ext4/mballoc.c
+> +++ b/fs/ext4/mballoc.c
+> @@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
+>   		return 0;
+>   	if (order == MB_NUM_ORDERS(sb))
+>   		order--;
+> +	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
+> +		order = MB_NUM_ORDERS(sb) - 1;
+>   	return order;
+>   }
+>   
+> @@ -1008,6 +1010,8 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
+>   	 * goal length.
+>   	 */
+>   	order = fls(ac->ac_g_ex.fe_len) - 1;
+> +	if (WARN_ON_ONCE(order - 1 > MB_NUM_ORDERS(ac->ac_sb)))
+> +		order = MB_NUM_ORDERS(ac->ac_sb);
+>   	min_order = order - sbi->s_mb_best_avail_max_trim_order;
+>   	if (min_order < 0)
+>   		min_order = 0;
+> diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
+> index ca820620b974..d65dccb44ed5 100644
+> --- a/fs/ext4/sysfs.c
+> +++ b/fs/ext4/sysfs.c
+> @@ -29,6 +29,7 @@ typedef enum {
+>   	attr_trigger_test_error,
+>   	attr_first_error_time,
+>   	attr_last_error_time,
+> +	attr_clusters_in_group,
+>   	attr_feature,
+>   	attr_pointer_ui,
+>   	attr_pointer_ul,
+> @@ -207,13 +208,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit, 0444);
+>   
+>   EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
+>   		 ext4_sb_info, s_inode_readahead_blks);
+> +EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, clusters_in_group,
+> +		 ext4_sb_info, s_mb_group_prealloc);
+>   EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
+>   EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
+>   EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
+>   EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
+>   EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
+>   EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
+> -EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
+>   EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
+>   EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
+>   EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
+> @@ -392,6 +394,7 @@ static ssize_t ext4_attr_show(struct kobject *kobj,
+>   				(unsigned long long)
+>   			percpu_counter_sum(&sbi->s_sra_exceeded_retry_limit));
+>   	case attr_inode_readahead:
+> +	case attr_clusters_in_group:
+>   	case attr_pointer_ui:
+>   		if (!ptr)
+>   			return 0;
+> @@ -469,6 +472,16 @@ static ssize_t ext4_attr_store(struct kobject *kobj,
+>   		else
+>   			*((unsigned int *) ptr) = t;
+>   		return len;
+> +	case attr_clusters_in_group:
+
+Hi Greg,
+
+> +		if (!ptr)
+> +			return 0;
+
+I've found that the commit that eventually gets merged in doesn't have 
+this judgment.
+
+6.6: 677ff4589f15 ("ext4: fix slab-out-of-bounds in 
+ext4_mb_find_good_group_avg_frag_lists()")
+6.9: b829687ae122 ("ext4: fix slab-out-of-bounds in 
+ext4_mb_find_good_group_avg_frag_lists()")
+
+This may result in a null pointer dereference.
+
+
+History:
+https://lore.kernel.org/all/0d620010-c6b4-4f80-a835-451813f957e3@huawei.com/
+https://lore.kernel.org/all/20240619121952.3508695-2-libaokun@huaweicloud.com/
+https://lore.kernel.org/all/20240625085542.189183696@linuxfoundation.org/
+
+Regards,
+Baokun
+> +		ret = kstrtouint(skip_spaces(buf), 0, &t);
+> +		if (ret)
+> +			return ret;
+> +		if (t > sbi->s_clusters_per_group)
+> +			return -EINVAL;
+> +		*((unsigned int *) ptr) = t;
+> +		return len;
+>   	case attr_pointer_ul:
+>   		if (!ptr)
+>   			return 0;
+
 
