@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-59689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090D8932B4B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB74932BF0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8E2E280F81
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA9DC1F215E5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CD619E7E3;
-	Tue, 16 Jul 2024 15:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB1B19DF71;
+	Tue, 16 Jul 2024 15:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnnrZs7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CArUp3BJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AAA19DF9D;
-	Tue, 16 Jul 2024 15:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84ECC27733;
+	Tue, 16 Jul 2024 15:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144610; cv=none; b=HVxPQn2O9yb4FbW8ok0jxm45t0sYhhON3HcOGIT2haF8X6/B3+19iYMVMTdpAHzkGKo+IF3j2YKY7Ksl+9Tw5uKQo+DeerWTya4q8TwpnIDfkPA2z4FWQagiKQaR+fcDRWPOKiir/gYM9yTKc4HFNA2pG6XA6TPThdcYrJUkp4o=
+	t=1721145004; cv=none; b=fvNisg9UXp/1D7ZwZZ3JFRkyi4WVQV9UG5FrejB8KCUQvXbXrZx2HK2ncYdU/3VMk4tsT5IjNhj1DZPERnW8dPuUhGUDnYktcf/TiATI/JQQpU75WgWoY2fkAoUo7osqQkQUjJhSnRMevfa7Y2840AnO8x4P15+cQDTtPCqpPt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144610; c=relaxed/simple;
-	bh=j/sI52PZ98Vfl+ENunLelXAIrWuE/feMjate5cTQ9Pk=;
+	s=arc-20240116; t=1721145004; c=relaxed/simple;
+	bh=qu6Tru9SuDoh9yo86wiyiz3SH1FA7rHVsXgEUqY2S/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eq5/MEoG5H7GNf7x5cCa/kkflxxx+lphNDRGWpMcasVctk6MDgc63EQ9qsm3EDwU2BY0WkxLg9+2d2ZPgeMkj3s15KRiDJciAKCQFWDap2k4MOhnJhGHzHkC+aD8aCI5tY+EOyi6TAxft4HRenfnlo9YGZFMJGNyqfgefcaf534=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnnrZs7X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD51AC116B1;
-	Tue, 16 Jul 2024 15:43:29 +0000 (UTC)
+	 MIME-Version; b=VtSm1QA/QMzX2RbSY47rdNDKYc8nA2j29Brh6gQdlumpsIdlDyOoULMDiDiq4n3C478ocGPkp+JkuuBASkrCBsFmBgOn7mfy+kpzUrQKQM9oPlHECc154KZ2d5HQo0MVFsqnxJdEUKdYD/liQozVqlKn4Q9hvOei8aa9NeIskic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CArUp3BJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8AFC116B1;
+	Tue, 16 Jul 2024 15:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144610;
-	bh=j/sI52PZ98Vfl+ENunLelXAIrWuE/feMjate5cTQ9Pk=;
+	s=korg; t=1721145004;
+	bh=qu6Tru9SuDoh9yo86wiyiz3SH1FA7rHVsXgEUqY2S/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nnnrZs7Xphz+EIp6OypOqzA+QwVq5yRHJy/h2nksAMMySQf+a0hbZI9SPejo9Vb71
-	 SRL7nKTkh+VZaqLSjaCY7I6J6ZRNPVPVNWUE+2sh5Pgd9G+OKF6ACMI+YSFp3G+O4p
-	 TFEHaMHvCCm7FQ89AtqCB4SguW5ri42WZnDQUh64=
+	b=CArUp3BJYugRaNGhj6fMKmXI9D422Ny+aNtcGAd/UeR5bekDu/wu57kLT48YbHYCo
+	 HeMdDjNqxtpcgCDTTl1PU6st8Y2bNdsT/wBfq4a8l1o2KmwinaBIu9w5byQT0nwViQ
+	 PjKQIWSbrJvS1ohVGHwoXWH8HPHMEGGVgntKcwAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 5.10 048/108] media: dw2102: fix a potential buffer overflow
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Ronald Wahl <ronald.wahl@raritan.com>
+Subject: [PATCH 6.9 067/143] net: ks8851: Fix deadlock with the SPI chip variant
 Date: Tue, 16 Jul 2024 17:31:03 +0200
-Message-ID: <20240716152747.835537982@linuxfoundation.org>
+Message-ID: <20240716152758.555282172@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +66,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-commit 1c73d0b29d04bf4082e7beb6a508895e118ee30d upstream.
+commit 0913ec336a6c0c4a2b296bd9f74f8e41c4c83c8c upstream.
 
-As pointed by smatch:
-	 drivers/media/usb/dvb-usb/dw2102.c:802 su3000_i2c_transfer() error: __builtin_memcpy() '&state->data[4]' too small (64 vs 67)
+When SMP is enabled and spinlocks are actually functional then there is
+a deadlock with the 'statelock' spinlock between ks8851_start_xmit_spi
+and ks8851_irq:
 
-That seemss to be due to a wrong copy-and-paste.
+    watchdog: BUG: soft lockup - CPU#0 stuck for 27s!
+    call trace:
+      queued_spin_lock_slowpath+0x100/0x284
+      do_raw_spin_lock+0x34/0x44
+      ks8851_start_xmit_spi+0x30/0xb8
+      ks8851_start_xmit+0x14/0x20
+      netdev_start_xmit+0x40/0x6c
+      dev_hard_start_xmit+0x6c/0xbc
+      sch_direct_xmit+0xa4/0x22c
+      __qdisc_run+0x138/0x3fc
+      qdisc_run+0x24/0x3c
+      net_tx_action+0xf8/0x130
+      handle_softirqs+0x1ac/0x1f0
+      __do_softirq+0x14/0x20
+      ____do_softirq+0x10/0x1c
+      call_on_irq_stack+0x3c/0x58
+      do_softirq_own_stack+0x1c/0x28
+      __irq_exit_rcu+0x54/0x9c
+      irq_exit_rcu+0x10/0x1c
+      el1_interrupt+0x38/0x50
+      el1h_64_irq_handler+0x18/0x24
+      el1h_64_irq+0x64/0x68
+      __netif_schedule+0x6c/0x80
+      netif_tx_wake_queue+0x38/0x48
+      ks8851_irq+0xb8/0x2c8
+      irq_thread_fn+0x2c/0x74
+      irq_thread+0x10c/0x1b0
+      kthread+0xc8/0xd8
+      ret_from_fork+0x10/0x20
 
-Fixes: 0e148a522b84 ("media: dw2102: Don't translate i2c read into write")
+This issue has not been identified earlier because tests were done on
+a device with SMP disabled and so spinlocks were actually NOPs.
 
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Now use spin_(un)lock_bh for TX queue related locking to avoid execution
+of softirq work synchronously that would lead to a deadlock.
+
+Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240706101337.854474-1-rwahl@gmx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/dvb-usb/dw2102.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/micrel/ks8851_common.c |    8 ++++----
+ drivers/net/ethernet/micrel/ks8851_spi.c    |    4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/media/usb/dvb-usb/dw2102.c
-+++ b/drivers/media/usb/dvb-usb/dw2102.c
-@@ -786,7 +786,7 @@ static int su3000_i2c_transfer(struct i2
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -352,11 +352,11 @@ static irqreturn_t ks8851_irq(int irq, v
+ 		netif_dbg(ks, intr, ks->netdev,
+ 			  "%s: txspace %d\n", __func__, tx_space);
  
- 			if (msg[j].flags & I2C_M_RD) {
- 				/* single read */
--				if (1 + msg[j].len > sizeof(state->data)) {
-+				if (4 + msg[j].len > sizeof(state->data)) {
- 					warn("i2c rd: len=%d is too big!\n", msg[j].len);
- 					num = -EOPNOTSUPP;
- 					break;
+-		spin_lock(&ks->statelock);
++		spin_lock_bh(&ks->statelock);
+ 		ks->tx_space = tx_space;
+ 		if (netif_queue_stopped(ks->netdev))
+ 			netif_wake_queue(ks->netdev);
+-		spin_unlock(&ks->statelock);
++		spin_unlock_bh(&ks->statelock);
+ 	}
+ 
+ 	if (status & IRQ_SPIBEI) {
+@@ -635,14 +635,14 @@ static void ks8851_set_rx_mode(struct ne
+ 
+ 	/* schedule work to do the actual set of the data if needed */
+ 
+-	spin_lock(&ks->statelock);
++	spin_lock_bh(&ks->statelock);
+ 
+ 	if (memcmp(&rxctrl, &ks->rxctrl, sizeof(rxctrl)) != 0) {
+ 		memcpy(&ks->rxctrl, &rxctrl, sizeof(ks->rxctrl));
+ 		schedule_work(&ks->rxctrl_work);
+ 	}
+ 
+-	spin_unlock(&ks->statelock);
++	spin_unlock_bh(&ks->statelock);
+ }
+ 
+ static int ks8851_set_mac_address(struct net_device *dev, void *addr)
+--- a/drivers/net/ethernet/micrel/ks8851_spi.c
++++ b/drivers/net/ethernet/micrel/ks8851_spi.c
+@@ -340,10 +340,10 @@ static void ks8851_tx_work(struct work_s
+ 
+ 	tx_space = ks8851_rdreg16_spi(ks, KS_TXMIR);
+ 
+-	spin_lock(&ks->statelock);
++	spin_lock_bh(&ks->statelock);
+ 	ks->queued_len -= dequeued_len;
+ 	ks->tx_space = tx_space;
+-	spin_unlock(&ks->statelock);
++	spin_unlock_bh(&ks->statelock);
+ 
+ 	ks8851_unlock_spi(ks, &flags);
+ }
 
 
 
