@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1ED932C4A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7767932CEF
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F98B1C231BA
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9FEC1C2226A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E02A19DF71;
-	Tue, 16 Jul 2024 15:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B08D19E7D8;
+	Tue, 16 Jul 2024 15:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T66wN697"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdw3zNQR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3B51DDCE;
-	Tue, 16 Jul 2024 15:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DE319E7D0;
+	Tue, 16 Jul 2024 15:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145224; cv=none; b=FAkVLp8LD1PouD6yTQ+wHDTXsFD7gWCOOMIBlowLauZ/29SvRubxtxdvC19M3Qkkwp1UlJC2KFUvk99LrS9qsd1KqrbGq0I8HOU1fflZXEkjD304uQM6OXY1vLe9iD2aAL0oQRltQAgmdEUnECa4kjAd8Bh0AtcnoamWNaogKSM=
+	t=1721145555; cv=none; b=JsYQwmAI+xqh7cnhij7khd6c9D219jnW5/2TFg8gl7TqRksB7W1QvstSzQHtOwxAGafKK3mGQZmZevw8zBmkXXz5wujfkvGZW4u7GEb/O4Qsg3liBtakIKw8QkOJecSelRMgIHRQFsExAXmIiAo7/3Lrk9Xn8xiQezEp/jK3OdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145224; c=relaxed/simple;
-	bh=NsqVSpuxgu0bfKmbBl/hvnFXuf7PXMEDuMiqVUho2jw=;
+	s=arc-20240116; t=1721145555; c=relaxed/simple;
+	bh=q/njhZvNGrl/YcRW9aPexiJl522eCifYU1dRVJlMmew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKk0qYq9qMMQlcFk7Bv3FjDZ2mEm+7inE6H5pQczZCYliN/prTDlsIvbAlgBqx0d9cFtCQWLzaMtViErS4CblRwegUf820qGSwgl2mVvedAa+bgqDDutRW1EcydNsMKHa/vRsjfMZfbfYSFzhwbJYdZhexad+o9jEYg9YfMi1Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T66wN697; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B7EC116B1;
-	Tue, 16 Jul 2024 15:53:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fbf5JnsvU1vtyhw3c8Z1GvFld9qmY8diE5btSG0yx7iVg1KyOh1n3EbTV9CdJfE5Yp3mdeGBYN8Bmri5NFJAmZzimgCQxTdtS6Jp6IrrpZa2+8bxaolkcdn0SX3ggV1Q+GxfwfyAM3WcdMK1X1V3mdC7hQ6V4ZF8TEr7lO/6XLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdw3zNQR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386E5C4AF0B;
+	Tue, 16 Jul 2024 15:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145224;
-	bh=NsqVSpuxgu0bfKmbBl/hvnFXuf7PXMEDuMiqVUho2jw=;
+	s=korg; t=1721145555;
+	bh=q/njhZvNGrl/YcRW9aPexiJl522eCifYU1dRVJlMmew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T66wN697YUI3gkwom/KqELQ93yUNmT+2iIxc/H+tJbfngKfHTFyCSPjmA28TQ9znQ
-	 4JMCzExx/FfD5y5XFQJusAu7hXujEjuT2fmLPY5bFQ9Xu1FFgY6AQek9pnR/PjATE7
-	 oEGWjtjsRkSdkKcmK6cNCKNFYAXszHYciCjGIRoI=
+	b=kdw3zNQRnID39rV3yknCmFI3YQgJw6hpcJrgPQf5pZ+DVIKTCPefLtYMEJ++XoOX5
+	 +TSrO+hYruRzMJHvqdfSQOkuZK8/gtsSiyEOGeusYX8HtX612srXMyDP5ps6blLo0x
+	 arAfjmLgb5Pv9odUySR278vL9CWFIVAVQR/bRzkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 139/143] i2c: testunit: avoid re-issued work after read message
-Date: Tue, 16 Jul 2024 17:32:15 +0200
-Message-ID: <20240716152801.341624200@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.1 65/96] nvmem: core: only change name to fram for current attribute
+Date: Tue, 16 Jul 2024 17:32:16 +0200
+Message-ID: <20240716152749.008910041@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 119736c7af442ab398dbb806865988c98ef60d46 ]
+commit 0ba424c934fd43dccf0d597e1ae8851f07cb2edf upstream.
 
-The to-be-fixed commit rightfully prevented that the registers will be
-cleared. However, the index must be cleared. Otherwise a read message
-will re-issue the last work. Fix it and add a comment describing the
-situation.
+bin_attr_nvmem_eeprom_compat is the template from which all future
+compat attributes are created.
+Changing it means to change all subsquent compat attributes, too.
 
-Fixes: c422b6a63024 ("i2c: testunit: don't erase registers after STOP")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead only use the "fram" name for the currently registered attribute.
+
+Fixes: fd307a4ad332 ("nvmem: prepare basics for FRAM support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240628113704.13742-4-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-slave-testunit.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/nvmem/core.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i2c/i2c-slave-testunit.c b/drivers/i2c/i2c-slave-testunit.c
-index ca43e98cae1b2..23a11e4e92567 100644
---- a/drivers/i2c/i2c-slave-testunit.c
-+++ b/drivers/i2c/i2c-slave-testunit.c
-@@ -118,6 +118,13 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
- 			queue_delayed_work(system_long_wq, &tu->worker,
- 					   msecs_to_jiffies(10 * tu->regs[TU_REG_DELAY]));
- 		}
-+
-+		/*
-+		 * Reset reg_idx to avoid that work gets queued again in case of
-+		 * STOP after a following read message. But do not clear TU regs
-+		 * here because we still need them in the workqueue!
-+		 */
-+		tu->reg_idx = 0;
- 		break;
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -367,10 +367,9 @@ static int nvmem_sysfs_setup_compat(stru
+ 	if (!config->base_dev)
+ 		return -EINVAL;
  
- 	case I2C_SLAVE_WRITE_REQUESTED:
--- 
-2.43.0
-
+-	if (config->type == NVMEM_TYPE_FRAM)
+-		bin_attr_nvmem_eeprom_compat.attr.name = "fram";
+-
+ 	nvmem->eeprom = bin_attr_nvmem_eeprom_compat;
++	if (config->type == NVMEM_TYPE_FRAM)
++		nvmem->eeprom.attr.name = "fram";
+ 	nvmem->eeprom.attr.mode = nvmem_bin_attr_get_umode(nvmem);
+ 	nvmem->eeprom.size = nvmem->size;
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
 
 
 
