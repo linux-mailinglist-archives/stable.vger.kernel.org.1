@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-59931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF36C932C85
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 388E3932CF6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 855EA1F245D5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED0DA280E29
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7C519EEC4;
-	Tue, 16 Jul 2024 15:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0285199EA3;
+	Tue, 16 Jul 2024 15:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQd4mjeS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcNaK8nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBF619E7F7;
-	Tue, 16 Jul 2024 15:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB2D1DA4D;
+	Tue, 16 Jul 2024 15:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145343; cv=none; b=i3tG7pApqcvy3acHrtzDlN/aO3ckcEaHzzGJu6A8h/IyLq43tRfimCXUgiHGlUEgedS1odaJh8kaEavtrfZ68+cnZtZxF400DWSQ74L9h2zXyQO+g/LZGZMCL85VX+GeshKpH8krIhOs+pd0d1wsn/rgs9OtiXtMgjnbDoo8cZ0=
+	t=1721145576; cv=none; b=r+kE8ameS7TjhzDgCbcY3STyx2OYMxUyPcc6JJRWKBYcT6iCrKAP37coHTn0A+ir9bFhOXJpacRO9YREH2Ww7OVZ6lj7gaOVRsV/Jhll2D3T9VPu/5aU3F0ToW/JKAU5pxe3CzQdbD11AMWxZ69sfTB2ZDEKqm2cVn633bGulyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145343; c=relaxed/simple;
-	bh=2EakMh8Nuw7SrAEOqj9IRXVWdeRROUdrCEvPUNttsM4=;
+	s=arc-20240116; t=1721145576; c=relaxed/simple;
+	bh=GJuOkDDtkFp6oVc6xjUBlabRTRzn/gNFYkgolQWMaYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lsh+8mQmywrkv4hMWYCkjkxLmJVK0n6pKkBc6HNNMnA8cfaoyRBJHkJWuNpZgIklJe0jS/OdloHOphiDq+prJR2AuBMe+eFFB8Z5mjZna4R96giMYcOrRJrKeNoeJQ69izFMDizpdK2DWV6QNmR7lGR5f/07VIHnrh3t8t1QH2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQd4mjeS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113F9C116B1;
-	Tue, 16 Jul 2024 15:55:41 +0000 (UTC)
+	 MIME-Version; b=On90/272ug7Hs2qF6OMopYGxWqv2ncQ9a4ugpMpe2DDmBEgSWvMlm0cvSnSdzlYDnx0T1MzDYPq7ef4Q5d3AcgbJIymYx7bfsBRcDCVOM5PObHjeVJy/s1EhHbnECNoSTyPqj0BoWtKm/4C4ZQbCZzb7TdREcOD12A2MjgCE12M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcNaK8nx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5ADC116B1;
+	Tue, 16 Jul 2024 15:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145342;
-	bh=2EakMh8Nuw7SrAEOqj9IRXVWdeRROUdrCEvPUNttsM4=;
+	s=korg; t=1721145576;
+	bh=GJuOkDDtkFp6oVc6xjUBlabRTRzn/gNFYkgolQWMaYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cQd4mjeSARNsqszaButexUzoLyRrQF18aCDFIn8faBg1UZe9LBHNAAqu1PsemtJ0T
-	 I8lHP0bpLA0jgTGXKg58x3FhOWn9zrzna61SA9kyJTy3ZSNIK0VtORpXWcD9uW/w6c
-	 EBsPxU/M7D+4/1W9GBn+/M9WxqRZq6S8P4PV3W0o=
+	b=vcNaK8nxYWCelvjqv473ImDK9Tr/Xuz/0J98kZBxhmjDTy7grh3yXccFQ0ig6znj+
+	 9+DccKzgzwA03x0gNe9u7h/3+RoVlddSRtZ3BPpBKYSqbfRF9ge+NwReFCczNWPQUn
+	 ViVSWknN2Usy9hKk5Gvvbqwk0VRz72PX3ckI81T0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	linke li <lilinke99@qq.com>,
+	Jan Kara <jack@suse.cz>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/96] cachefiles: wait for ondemand_object_worker to finish when dropping object
+Subject: [PATCH 6.6 015/121] fs/dcache: Re-use value stored to dentry->d_flags instead of re-reading
 Date: Tue, 16 Jul 2024 17:31:17 +0200
-Message-ID: <20240716152746.764350098@linuxfoundation.org>
+Message-ID: <20240716152751.908144647@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: linke li <lilinke99@qq.com>
 
-[ Upstream commit 12e009d60852f7bce0afc373ca0b320f14150418 ]
+[ Upstream commit 8bfb40be31ddea0cb4664b352e1797cfe6c91976 ]
 
-When queuing ondemand_object_worker() to re-open the object,
-cachefiles_object is not pinned. The cachefiles_object may be freed when
-the pending read request is completed intentionally and the related
-erofs is umounted. If ondemand_object_worker() runs after the object is
-freed, it will incur use-after-free problem as shown below.
+Currently, the __d_clear_type_and_inode() writes the value flags to
+dentry->d_flags, then immediately re-reads it in order to use it in a if
+statement. This re-read is useless because no other update to
+dentry->d_flags can occur at this point.
 
-process A  processs B  process C  process D
+This commit therefore re-use flags in the if statement instead of
+re-reading dentry->d_flags.
 
-cachefiles_ondemand_send_req()
-// send a read req X
-// wait for its completion
-
-           // close ondemand fd
-           cachefiles_ondemand_fd_release()
-           // set object as CLOSE
-
-                       cachefiles_ondemand_daemon_read()
-                       // set object as REOPENING
-                       queue_work(fscache_wq, &info->ondemand_work)
-
-                                // close /dev/cachefiles
-                                cachefiles_daemon_release
-                                cachefiles_flush_reqs
-                                complete(&req->done)
-
-// read req X is completed
-// umount the erofs fs
-cachefiles_put_object()
-// object will be freed
-cachefiles_ondemand_deinit_obj_info()
-kmem_cache_free(object)
-                       // both info and object are freed
-                       ondemand_object_worker()
-
-When dropping an object, it is no longer necessary to reopen the object,
-so use cancel_work_sync() to cancel or wait for ondemand_object_worker()
-to finish.
-
-Fixes: 0a7e54c1959c ("cachefiles: resend an open request if the read request's object is closed")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240628062930.2467993-8-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: linke li <lilinke99@qq.com>
+Link: https://lore.kernel.org/r/tencent_5E187BD0A61BA28605E85405F15228254D0A@qq.com
+Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: aabfe57ebaa7 ("vfs: don't mod negative dentry count when on shrinker list")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/ondemand.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/dcache.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index acaecfce8aaa9..1f6561814e702 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -661,6 +661,9 @@ void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
- 		}
- 	}
- 	xa_unlock(&cache->reqs);
-+
-+	/* Wait for ondemand_object_worker() to finish to avoid UAF. */
-+	cancel_work_sync(&object->ondemand->ondemand_work);
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 9ae808fba517b..fca3e7490d091 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -356,7 +356,7 @@ static inline void __d_clear_type_and_inode(struct dentry *dentry)
+ 	flags &= ~(DCACHE_ENTRY_TYPE | DCACHE_FALLTHRU);
+ 	WRITE_ONCE(dentry->d_flags, flags);
+ 	dentry->d_inode = NULL;
+-	if (dentry->d_flags & DCACHE_LRU_LIST)
++	if (flags & DCACHE_LRU_LIST)
+ 		this_cpu_inc(nr_dentry_negative);
  }
  
- int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
 -- 
 2.43.0
 
