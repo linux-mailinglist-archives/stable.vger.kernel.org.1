@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-59848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DC6932C17
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0AF932AD3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:38:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57BAE1F2446D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF4CBB236F0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA6C19EEA2;
-	Tue, 16 Jul 2024 15:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A5E19AA78;
+	Tue, 16 Jul 2024 15:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rf9R0qpu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UY76xxe1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2AC19DF73;
-	Tue, 16 Jul 2024 15:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462ACE541;
+	Tue, 16 Jul 2024 15:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145091; cv=none; b=t4wFEejHPiFdzO0FXxKKQUskyfHL5fIZApLiws0oZhkBOWfKTAPdBteqwAij0nj/R0qrrxzNH9kIWYZGqpdhWBQdo5LXO/g/FI8Ws1x+FIl2GeFBEwB0Lyfec4rgKZfbsWMFHVunwMhgpo6ZZimzvcFWNU+SpOErnNKXU+yudRg=
+	t=1721144310; cv=none; b=ABgpe9Joqr45UHpLS3JDg3ueooDV+pFcMaDqlyO0NUnEWy0wAQEWwP6B6vZlwmsTW1zgVMgT4T9c1lBpD3FpD5glFKC+RnB8+YRiK5uV3MAmfUkP2qngOxM1WlSnNtlVqbGTKsYioZqFuFVQhkwbwYJcBsrwXfoI86lExCBLhTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145091; c=relaxed/simple;
-	bh=8Pk/6pZMJ9UmGQPJk2fU+p7AclxovVkIWST7WY0255o=;
+	s=arc-20240116; t=1721144310; c=relaxed/simple;
+	bh=IfYtF3jndenVUOzjCXh1+pw5puSTrABOOCrEhW2apFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1q1nUnzut70JIx+u1vA8zamoK/pUsvqZI6N6gQuD7bfLpMn/jjYGGo/V8DYgAeY+8Fhxv4zJk38clfvCtNyrEzJK8J9nJRzJkW/CZJKU0hnWfz0rYrBLn6DXZzX8ydWnGBaZhAN5qHhqnGWlrw79P69P7+GtkZ0ET6DomS7l3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rf9R0qpu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2019BC116B1;
-	Tue, 16 Jul 2024 15:51:30 +0000 (UTC)
+	 MIME-Version; b=UoCPpUvrUmheimRbNlDTL8Su2pYQ5KJ8vGNxON5nw0sbYTI4Yz18nF2hWytWZzDhoviGBQoLQ+yqaROmNe9sPfoSSareywdqmwyZvmz8jBO7HHBtIiio5h75Nf66dqDairdEH8on3YpNn5eWpsANUtiVnAmkzfX5Fdsl18vhSLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UY76xxe1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF67C116B1;
+	Tue, 16 Jul 2024 15:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145091;
-	bh=8Pk/6pZMJ9UmGQPJk2fU+p7AclxovVkIWST7WY0255o=;
+	s=korg; t=1721144310;
+	bh=IfYtF3jndenVUOzjCXh1+pw5puSTrABOOCrEhW2apFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rf9R0qpuxGFVcLhzOCITtgY7xKofEhUJ+ywPbvUSx8+j4AGkeC77k9R/UvWAUQKRe
-	 eVSqhhEljiXADHaSZgheov8L+kn9Dd2tTeqZVUNXfYaplv9w/TZfyozHJHfWbER9zW
-	 rifVNDVjx3Degn7GqLViIgZEmfYpQ5hj1/SFozd8=
+	b=UY76xxe1feZTyJW1bTomEOGqkEG9lZLbHI8SnHYR5R6Ej4O6EHIB8EEbtaiUd7hrD
+	 iaEhf8/G8CTlkTUycnE+lLpYJ0FGDuu2vB5hX9NKOskhInstlYHHtFv0sYeqCFSsWl
+	 H16PixKsWwEZvVezsQXrP313o1rQWOriJV45O+kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.9 065/143] cifs: fix setting SecurityFlags to true
-Date: Tue, 16 Jul 2024 17:31:01 +0200
-Message-ID: <20240716152758.479606867@linuxfoundation.org>
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Xiaochun Lu <xiaochun.lu@bytedance.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 30/78] selftests: make order checking verbose in msg_zerocopy selftest
+Date: Tue, 16 Jul 2024 17:31:02 +0200
+Message-ID: <20240716152741.803529010@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-commit d2346e2836318a227057ed41061114cbebee5d2a upstream.
+[ Upstream commit 7d6d8f0c8b700c9493f2839abccb6d29028b4219 ]
 
-If you try to set /proc/fs/cifs/SecurityFlags to 1 it
-will set them to CIFSSEC_MUST_NTLMV2 which no longer is
-relevant (the less secure ones like lanman have been removed
-from cifs.ko) and is also missing some flags (like for
-signing and encryption) and can even cause mount to fail,
-so change this to set it to Kerberos in this case.
+We find that when lock debugging is on, notifications may not come in
+order. Thus, we have order checking outputs managed by cfg_verbose, to
+avoid too many outputs in this case.
 
-Also change the description of the SecurityFlags to remove mention
-of flags which are no longer supported.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 07b65c5b31ce ("test: add msg_zerocopy test")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Signed-off-by: Xiaochun Lu <xiaochun.lu@bytedance.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240701225349.3395580-3-zijianzhang@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/cifs/usage.rst |   34 +++++++++----------------------
- fs/smb/client/cifsglob.h                 |    4 +--
- 2 files changed, 12 insertions(+), 26 deletions(-)
+ tools/testing/selftests/net/msg_zerocopy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/admin-guide/cifs/usage.rst
-+++ b/Documentation/admin-guide/cifs/usage.rst
-@@ -723,40 +723,26 @@ Configuration pseudo-files:
- ======================= =======================================================
- SecurityFlags		Flags which control security negotiation and
- 			also packet signing. Authentication (may/must)
--			flags (e.g. for NTLM and/or NTLMv2) may be combined with
-+			flags (e.g. for NTLMv2) may be combined with
- 			the signing flags.  Specifying two different password
- 			hashing mechanisms (as "must use") on the other hand
- 			does not make much sense. Default flags are::
- 
--				0x07007
-+				0x00C5
- 
--			(NTLM, NTLMv2 and packet signing allowed).  The maximum
--			allowable flags if you want to allow mounts to servers
--			using weaker password hashes is 0x37037 (lanman,
--			plaintext, ntlm, ntlmv2, signing allowed).  Some
--			SecurityFlags require the corresponding menuconfig
--			options to be enabled.  Enabling plaintext
--			authentication currently requires also enabling
--			lanman authentication in the security flags
--			because the cifs module only supports sending
--			laintext passwords using the older lanman dialect
--			form of the session setup SMB.  (e.g. for authentication
--			using plain text passwords, set the SecurityFlags
--			to 0x30030)::
-+			(NTLMv2 and packet signing allowed).  Some SecurityFlags
-+			may require enabling a corresponding menuconfig option.
- 
- 			  may use packet signing			0x00001
- 			  must use packet signing			0x01001
--			  may use NTLM (most common password hash)	0x00002
--			  must use NTLM					0x02002
- 			  may use NTLMv2				0x00004
- 			  must use NTLMv2				0x04004
--			  may use Kerberos security			0x00008
--			  must use Kerberos				0x08008
--			  may use lanman (weak) password hash		0x00010
--			  must use lanman password hash			0x10010
--			  may use plaintext passwords			0x00020
--			  must use plaintext passwords			0x20020
--			  (reserved for future packet encryption)	0x00040
-+			  may use Kerberos security (krb5)		0x00008
-+			  must use Kerberos                             0x08008
-+			  may use NTLMSSP               		0x00080
-+			  must use NTLMSSP           			0x80080
-+			  seal (packet encryption)			0x00040
-+			  must seal (not implemented yet)               0x40040
- 
- cifsFYI			If set to non-zero value, additional debug information
- 			will be logged to the system error log.  This field
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1938,8 +1938,8 @@ require use of the stronger protocol */
- #define   CIFSSEC_MUST_SEAL	0x40040 /* not supported yet */
- #define   CIFSSEC_MUST_NTLMSSP	0x80080 /* raw ntlmssp with ntlmv2 */
- 
--#define   CIFSSEC_DEF (CIFSSEC_MAY_SIGN | CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_NTLMSSP)
--#define   CIFSSEC_MAX (CIFSSEC_MUST_NTLMV2)
-+#define   CIFSSEC_DEF (CIFSSEC_MAY_SIGN | CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_NTLMSSP | CIFSSEC_MAY_SEAL)
-+#define   CIFSSEC_MAX (CIFSSEC_MAY_SIGN | CIFSSEC_MUST_KRB5 | CIFSSEC_MAY_SEAL)
- #define   CIFSSEC_AUTH_MASK (CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_KRB5 | CIFSSEC_MAY_NTLMSSP)
- /*
-  *****************************************************************
+diff --git a/tools/testing/selftests/net/msg_zerocopy.c b/tools/testing/selftests/net/msg_zerocopy.c
+index 926556febc83c..7ea5fb28c93db 100644
+--- a/tools/testing/selftests/net/msg_zerocopy.c
++++ b/tools/testing/selftests/net/msg_zerocopy.c
+@@ -438,7 +438,7 @@ static bool do_recv_completion(int fd, int domain)
+ 	/* Detect notification gaps. These should not happen often, if at all.
+ 	 * Gaps can occur due to drops, reordering and retransmissions.
+ 	 */
+-	if (lo != next_completion)
++	if (cfg_verbose && lo != next_completion)
+ 		fprintf(stderr, "gap: %u..%u does not append to %u\n",
+ 			lo, hi, next_completion);
+ 	next_completion = hi + 1;
+-- 
+2.43.0
+
 
 
 
