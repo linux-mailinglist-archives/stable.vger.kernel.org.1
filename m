@@ -1,59 +1,82 @@
-Return-Path: <stable+bounces-60122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2C2932D78
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:05:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7AA5932AB2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBB35280D7B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B5AD1F2304E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DBD19DF59;
-	Tue, 16 Jul 2024 16:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A951DDF5;
+	Tue, 16 Jul 2024 15:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmX+O76Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pl5FXvqi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D195E199EA3;
-	Tue, 16 Jul 2024 16:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86C1CA40
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 15:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145938; cv=none; b=hONXXyenflr8HvFHuCFuh0BjidIxwg10sqbyJ9pRRcj8AJu7YamI+66Ws0lgAilmRMmxA+NJEja9MY7D1wjbZ7Hh5g8fRY8lDBrNb/o/grDilgKITv2O50rShIKPUzWmLUzdtjqA39FTCRDouiyeIQWq2csYQHWe2+/U5Kw39vA=
+	t=1721144222; cv=none; b=HF0hgyi+SfGH1Tb2Jf3CaNbk0enPr4P4yCj636lgOt2W33A4jGhgDkUtpS3YFrUPuIli2pi8Kq0uflFgDyxO6n/5MUuwxtJrUyoXWh9DGE0+b3DPGdXj+jS+EfAl+9oezQIz5Hg7ajFonR+gJsrunhihDVLBSipLxBP0pnJJ/QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145938; c=relaxed/simple;
-	bh=eudxTO9ACYFEl5PEKgYF6ZUhlimUq48v6GQnbNLfqzY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RvezeANFXuo2DYnT33aq6hARRp37HS774+4beqUbR4Y4A4SafcF0vHBfZKFmms3KBXkd2aq9+IOJYHyGnsasPUOQ5iSkS1Jwt+ncmuurCCgRWkdfBLB9DkuiTIFZp4/vfNmk98hqgbs5j/NUDKn6ju1A/9Gwpgi4dgLkYrcjTBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmX+O76Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD6EC116B1;
-	Tue, 16 Jul 2024 16:05:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145938;
-	bh=eudxTO9ACYFEl5PEKgYF6ZUhlimUq48v6GQnbNLfqzY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DmX+O76QMvbQwr7eHek2V1hE8jIAuW+IgjArMDfwRLQxCU+JTAH9RnF6dBIaLhc1m
-	 92zUW5iBmMeSs67UDOQ5PSOLWcHkOUEmhFORNNuYIrI1VKbi6rZ9nb+uEdRi62N4XW
-	 e9vR24lyluzFuS75buL4lGsgClic4JVlU8hj1LD8=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	s=arc-20240116; t=1721144222; c=relaxed/simple;
+	bh=VB2Owqtq50u7VrxMX5z85QWLrV2wRmibzdod3jc9a0Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=TyLgw/SOYgfQDidQnYkI9bNG54l1yH0swvbypNxKgTG+mPbKIogxYZ3cmRAuzKKFnazbJcbO4KDfCOoHXF+mAyrpgOcltx1zVQiyqBBhCdR7Vmg4Z2hlpAeZyvKYseNiAsb7aRMT8y3A64qHvX0xN3r17zNexMBDyubUTEzuLKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pl5FXvqi; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70af934313aso177603b3a.1
+        for <stable@vger.kernel.org>; Tue, 16 Jul 2024 08:37:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721144219; x=1721749019; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z9W1SbA18Lj9YiNGpo9pngBPh/SwGd9f/jdv1vwGJFA=;
+        b=Pl5FXvqijrr4F0/6kzTFCLeYBC5S9YjAQMZHWY+KR8B3cW4uPQR+V3bULPfzUrpQIj
+         kzLR/t1zK3gIfIkcBBXNFC+ga3pmP9KHRjzJW2qilD42myKuHFguxns7Nnx9cWTP0VpP
+         3rC6XwW9cCUIqsCQjymfmQh1Lc//VZ5jIAcTleQbePkruLL8RMbMtVQZugY/6Xt0+kUA
+         7OFdtVjKrOM6PtHCNYetHDXDoNxcpWycOuSR9KoUBjs3RVzCo0EKXmPFHrkqmWyhaw5A
+         E/Tt6NgoKTD8+vJJvyF/tiCVmbyTnfBA8lRct8YFn1ufxp36Ata0hOgM39BJ800mlacd
+         SKkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721144219; x=1721749019;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z9W1SbA18Lj9YiNGpo9pngBPh/SwGd9f/jdv1vwGJFA=;
+        b=qcY68mPaCe+AOnMHcU77apSEjfOkR4OgKst0g7dDxsld1kNy8j1/ThXcxZaURyONL2
+         mjQa/iUNeU0VU4nvS6V4qstwsfcDwAKOCSiKzoXtzvM9PlK50FahuinQ5ZKuYVAGM5EO
+         DUOJfmMw0eEqqnWwXOmJN6KRpAW6YCS0Wju8MIRnKxZNtG3Ev9Mo4lpK/tQsmYSlz9QF
+         YeFHStL8kfw+X8Ez042jqlynaGeMZYh6nsSXdRxtnzgZ2LocnLrm6f3fHP01ESF2d5R2
+         1LQ+6h5s1fhRpI96wke9sujpAzw7lv4QNTmDEOWtrFQBfE0l+0knAKZtkVWzg7dMQf5k
+         4A0g==
+X-Gm-Message-State: AOJu0Yx9GD8muYLpVbFLGQpKBpNFK6/UMcatV3IQNsNw5nRqJWiaJOUw
+	sRhcpKaWy3EoXODKB57XvnopfVBNqc2wqurdL4NKlxHtWz+kJYS3X6xRsA==
+X-Google-Smtp-Source: AGHT+IFwGCSUfnfn70rzut6BSl/JGQGTGTectLko4wMo1G9k0NWNgP4DspzmXzmXPSkzpRxWQNKGug==
+X-Received: by 2002:a05:6a00:8510:b0:705:d60f:e64e with SMTP id d2e1a72fcca58-70ba4783892mr2445017b3a.1.1721144218878;
+        Tue, 16 Jul 2024 08:36:58 -0700 (PDT)
+Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b7ec7d963sm6437802b3a.130.2024.07.16.08.36.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jul 2024 08:36:58 -0700 (PDT)
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 6.6 121/121] i2c: rcar: fix error code in probe()
-Date: Tue, 16 Jul 2024 17:33:03 +0200
-Message-ID: <20240716152755.983507861@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Julian Sikorski <belegdol@gmail.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10.y] ACPI: processor_idle: Fix invalid comparison with insertion sort for latency
+Date: Tue, 16 Jul 2024 23:36:53 +0800
+Message-Id: <20240716153653.207824-1-visitorckw@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2024071529-prognosis-achiness-85fd@gregkh>
+References: <2024071529-prognosis-achiness-85fd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,40 +85,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+The acpi_cst_latency_cmp() comparison function currently used for
+sorting C-state latencies does not satisfy transitivity, causing
+incorrect sorting results.
 
-------------------
+Specifically, if there are two valid acpi_processor_cx elements A and B
+and one invalid element C, it may occur that A < B, A = C, and B = C.
+Sorting algorithms assume that if A < B and A = C, then C < B, leading
+to incorrect ordering.
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+Given the small size of the array (<=8), we replace the library sort
+function with a simple insertion sort that properly ignores invalid
+elements and sorts valid ones based on latency. This change ensures
+correct ordering of the C-state latencies.
 
-commit 37a672be3ae357a0f87fbc00897fa7fcb3d7d782 upstream.
-
-Return an error code if devm_reset_control_get_exclusive() fails.
-The current code returns success.
-
-Fixes: 0e864b552b23 ("i2c: rcar: reset controller is mandatory for Gen3+")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 65ea8f2c6e23 ("ACPI: processor idle: Fix up C-state latency if not ordered")
+Reported-by: Julian Sikorski <belegdol@gmail.com>
+Closes: https://lore.kernel.org/lkml/70674dc7-5586-4183-8953-8095567e73df@gmail.com
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Tested-by: Julian Sikorski <belegdol@gmail.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240701205639.117194-1-visitorckw@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+(cherry picked from commit 233323f9b9f828cd7cd5145ad811c1990b692542)
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
 ---
- drivers/i2c/busses/i2c-rcar.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/processor_idle.c | 40 ++++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 24 deletions(-)
 
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -1121,8 +1121,10 @@ static int rcar_i2c_probe(struct platfor
- 	/* R-Car Gen3+ needs a reset before every transfer */
- 	if (priv->devtype >= I2C_RCAR_GEN3) {
- 		priv->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
--		if (IS_ERR(priv->rstc))
-+		if (IS_ERR(priv->rstc)) {
-+			ret = PTR_ERR(priv->rstc);
- 			goto out_pm_put;
-+		}
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 3deeabb27394..ae07927910ca 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -16,7 +16,6 @@
+ #include <linux/acpi.h>
+ #include <linux/dmi.h>
+ #include <linux/sched.h>       /* need_resched() */
+-#include <linux/sort.h>
+ #include <linux/tick.h>
+ #include <linux/cpuidle.h>
+ #include <linux/cpu.h>
+@@ -390,28 +389,24 @@ static void acpi_processor_power_verify_c3(struct acpi_processor *pr,
+ 	return;
+ }
  
- 		ret = reset_control_status(priv->rstc);
- 		if (ret < 0)
-
+-static int acpi_cst_latency_cmp(const void *a, const void *b)
++static void acpi_cst_latency_sort(struct acpi_processor_cx *states, size_t length)
+ {
+-	const struct acpi_processor_cx *x = a, *y = b;
++	int i, j, k;
+ 
+-	if (!(x->valid && y->valid))
+-		return 0;
+-	if (x->latency > y->latency)
+-		return 1;
+-	if (x->latency < y->latency)
+-		return -1;
+-	return 0;
+-}
+-static void acpi_cst_latency_swap(void *a, void *b, int n)
+-{
+-	struct acpi_processor_cx *x = a, *y = b;
+-	u32 tmp;
++	for (i = 1; i < length; i++) {
++		if (!states[i].valid)
++			continue;
+ 
+-	if (!(x->valid && y->valid))
+-		return;
+-	tmp = x->latency;
+-	x->latency = y->latency;
+-	y->latency = tmp;
++		for (j = i - 1, k = i; j >= 0; j--) {
++			if (!states[j].valid)
++				continue;
++
++			if (states[j].latency > states[k].latency)
++				swap(states[j].latency, states[k].latency);
++
++			k = j;
++		}
++	}
+ }
+ 
+ static int acpi_processor_power_verify(struct acpi_processor *pr)
+@@ -456,10 +451,7 @@ static int acpi_processor_power_verify(struct acpi_processor *pr)
+ 
+ 	if (buggy_latency) {
+ 		pr_notice("FW issue: working around C-state latencies out of order\n");
+-		sort(&pr->power.states[1], max_cstate,
+-		     sizeof(struct acpi_processor_cx),
+-		     acpi_cst_latency_cmp,
+-		     acpi_cst_latency_swap);
++		acpi_cst_latency_sort(&pr->power.states[1], max_cstate);
+ 	}
+ 
+ 	lapic_timer_propagate_broadcast(pr);
+-- 
+2.34.1
 
 
