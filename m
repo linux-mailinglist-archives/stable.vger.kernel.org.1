@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-59555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8726C932AAD
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB57932AFC
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D6E11F230B3
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 592F0280FE0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7391DDCE;
-	Tue, 16 Jul 2024 15:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25471E895;
+	Tue, 16 Jul 2024 15:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPilVyGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUzxqtX1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AED7CA40;
-	Tue, 16 Jul 2024 15:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F968B641;
+	Tue, 16 Jul 2024 15:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144201; cv=none; b=YEFNlKzL2G6hqGu2snkrhIszt92j0GDaf2Z7zhQZuNzkq6lssk15mzPpANEulJLTdLBkPfPnjc1E1A+9AuVy7bkMRCDVFkqhXtbMzVUgy1MO6Zm/TFid9soEU+OakaW3kiGQBPYtmOh2jIYO8wZVMNV9fRaLZ7uzF7435XTT7iU=
+	t=1721144414; cv=none; b=kGOG0Krrii6ccvelUYyT1Jz0jUneqHF1iocXYLSs63n9XjQl31UrFB4W2sz0YAScuazlxVXv0v0AooIX/GER6b+Uzriyq5EiEV6uj8nx/YZqCgCsB4uFKsoLXFsRuddi6I6V9dpLk67qON66AVwCGBH1Z++26YBUoTDHBTPwH/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144201; c=relaxed/simple;
-	bh=VvT2UAg6W+gUYR3wPkdxk/7UcuxBA6yykg3YbQ9QUWM=;
+	s=arc-20240116; t=1721144414; c=relaxed/simple;
+	bh=siWKAdMSWtqQHfQYTj4YtGeSqae57eCwUhnXXD+1BlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lga5tlF8V+BZfCVhB9o7t/w1451DrFGLtagZcJMqSlLwm9uMMvMUwkn2ZMpOMUzBJjBq23fZ2/sDh7vMW8fPHtp+cYmiPOO+q4l4brM6fjvlJz6fYY+x2RNRoYF4I1Vy1RFeQW0Tv2orOen6HVE2uBZiU0JPFfc8nnDByQtyEbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPilVyGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60A0C116B1;
-	Tue, 16 Jul 2024 15:36:40 +0000 (UTC)
+	 MIME-Version; b=DD4oaNT446eDTqOel+Qqa2niidBQuICmCJfazE7OboFHsgZEPHkvZzKop7UBuDJTjKZmSsqbDIbI9BvUpGKwQbVxjIQkMRoyiMx30i5SHy5gSXLgQaKr89yw3T1HdjqchnYHi/sWq6tvL/MbF1GTRoAMS6uFlzr/ooe1fEGr594=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUzxqtX1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081C5C116B1;
+	Tue, 16 Jul 2024 15:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144201;
-	bh=VvT2UAg6W+gUYR3wPkdxk/7UcuxBA6yykg3YbQ9QUWM=;
+	s=korg; t=1721144414;
+	bh=siWKAdMSWtqQHfQYTj4YtGeSqae57eCwUhnXXD+1BlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPilVyGtJ2E5nUFnZtLd8Lw3TEnzxzZ4782zDr66DD7LsimmB4QWnLAuBaDqGs6Yl
-	 +5GJUNES+kobbfJinV/Lop+UYjMSUTFAy51YelYRgeUMioibf93X0hg+nLUaulqF7Q
-	 M5olCdEkCg790BRwJXrV0UZr4aF9r5JZ6b5zzaas=
+	b=uUzxqtX13XH6UsiuIImp8XPqr0mvvBIoLPh4KQyFqKYe5ZWuHuymgvbe7rKrS+9AU
+	 Cv25NKgVi00tk4urr8znaJgkJ4ZfI32rkxKAioRlPkCpQtQsy9nz/Ry9owIXLp/PI1
+	 qFIWuGAb8CPixUJReZgYcGZuAkyrzPtMSa8eM0x8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Menglong Dong <imagedong@tencent.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 62/66] tcp: use signed arithmetic in tcp_rtx_probe0_timed_out()
+	stable <stable@kernel.org>,
+	jinxiaobo <jinxiaobo@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 5.4 65/78] USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
 Date: Tue, 16 Jul 2024 17:31:37 +0200
-Message-ID: <20240716152740.528897942@linuxfoundation.org>
+Message-ID: <20240716152743.158090614@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 36534d3c54537bf098224a32dc31397793d4594d upstream.
+commit 3859e85de30815a20bce7db712ce3d94d40a682d upstream.
 
-Due to timer wheel implementation, a timer will usually fire
-after its schedule.
+START BP-850K is a dot matrix printer that crashes when
+it receives a Set-Interface request and needs USB_QUIRK_NO_SET_INTF
+to work properly.
 
-For instance, for HZ=1000, a timeout between 512ms and 4s
-has a granularity of 64ms.
-For this range of values, the extra delay could be up to 63ms.
-
-For TCP, this means that tp->rcv_tstamp may be after
-inet_csk(sk)->icsk_timeout whenever the timer interrupt
-finally triggers, if one packet came during the extra delay.
-
-We need to make sure tcp_rtx_probe0_timed_out() handles this case.
-
-Fixes: e89688e3e978 ("net: tcp: fix unexcepted socket die when snd_wnd is 0")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Menglong Dong <imagedong@tencent.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Link: https://lore.kernel.org/r/20240607125652.1472540-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: jinxiaobo <jinxiaobo@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/202E4B2BD0F0FEA4+20240702154408.631201-1-wangyuli@uniontech.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_timer.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -416,8 +416,13 @@ static bool tcp_rtx_probe0_timed_out(con
- {
- 	const struct tcp_sock *tp = tcp_sk(sk);
- 	const int timeout = TCP_RTO_MAX * 2;
--	u32 rcv_delta, rtx_delta;
-+	u32 rtx_delta;
-+	s32 rcv_delta;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -504,6 +504,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x1b1c, 0x1b38), .driver_info = USB_QUIRK_DELAY_INIT |
+ 	  USB_QUIRK_DELAY_CTRL_MSG },
  
-+	/* Note: timer interrupt might have been delayed by at least one jiffy,
-+	 * and tp->rcv_tstamp might very well have been written recently.
-+	 * rcv_delta can thus be negative.
-+	 */
- 	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
- 	if (rcv_delta <= timeout)
- 		return false;
++	/* START BP-850k Printer */
++	{ USB_DEVICE(0x1bc3, 0x0003), .driver_info = USB_QUIRK_NO_SET_INTF },
++
+ 	/* MIDI keyboard WORLDE MINI */
+ 	{ USB_DEVICE(0x1c75, 0x0204), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
 
 
 
