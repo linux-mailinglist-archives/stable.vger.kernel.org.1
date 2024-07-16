@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-59729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F908932B7A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F11932D16
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA6061F21792
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AC86B24B29
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF3E19E7EB;
-	Tue, 16 Jul 2024 15:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6052517A930;
+	Tue, 16 Jul 2024 16:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUFPojN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9t+5B7y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E30A17C9E9;
-	Tue, 16 Jul 2024 15:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C96F1DDCE;
+	Tue, 16 Jul 2024 16:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144733; cv=none; b=u4j7uZJcYExY6CuAOsdD05R3LhjDPNQ1VK26p+3SatcOChypfHs+fB7/6sjhrYLArurxT1/VZ/VUsFocXYw1PCvapNiRVS7wlaXr5oGFFZOiuf2tDPbwIfPHt2o7f43vRHqF7FOYYehbyvaelsHr1Ez4TgUXCkbMzrwHGT4Vpw4=
+	t=1721145658; cv=none; b=AmGhrZecdpdWt6YLm1YXltMQYzhQgMOQT4LPWzFAHaA98uFBTxCL8A47N1NObfH2jV+F59JBSHsuvFtp5R9G1jPgGpm1QoYA3rgABo7jW3CNv4ij9ZreP1DtSjy3kHuHRGoXvV+neu4NWKGded9ZzASBAx1aIUczD0EWMC7kJv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144733; c=relaxed/simple;
-	bh=jFoMyGDg6NAPDOCbZGrL8PWMquZ1SLjmmRc+tWfycx0=;
+	s=arc-20240116; t=1721145658; c=relaxed/simple;
+	bh=AHnGMIRGhlCDGYE4geJXOvM5VCoaDMVeNOW7CL6ZpeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0zunxWJbcEPc5LQ+y5irJan/ZMuQQGPoHNFgLJ/5yNrrRIlr4owxVSoa9VPJnx+QzNMCzc2/YTVzm3uul4nJEe0/DWAHjg8GZ0DvZJvK5UDUZpqZmL8DJM/q7OSWqJ3Lykm9RSRc5vSgPZS8CWlcFZW/yCsxUyLdBU3dRcm5g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUFPojN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C13C4AF0D;
-	Tue, 16 Jul 2024 15:45:32 +0000 (UTC)
+	 MIME-Version; b=te/5/HZKhU8GBZxisV2AKqd5AvLhE0aYUJS3T+Fk+kWH3Go6+GpkK+3s9T+Kf99LLmLEgO14mme6az5IJbjyVcuIzEomj5mpal1PLk/luUkLlKy0nElm8+jXtjy9TY0G4IBWTp0ZdvaUIuHpAiQnONkfEApY9xLxQn+B5JHbNC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9t+5B7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE6EC4AF0D;
+	Tue, 16 Jul 2024 16:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144733;
-	bh=jFoMyGDg6NAPDOCbZGrL8PWMquZ1SLjmmRc+tWfycx0=;
+	s=korg; t=1721145657;
+	bh=AHnGMIRGhlCDGYE4geJXOvM5VCoaDMVeNOW7CL6ZpeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TUFPojN50afpUM9cTUXLye4YETABCKOXaT0vJe2WJ/MP14sFOgqq3oNHgN+2kan4z
-	 nicbPAPPnk8OPbawNqNE8t5ymcD2JGo3eU0CoohriX3+0W6f3/3wYz2aKo5wWfc9eQ
-	 /Vp8qsWrroDcGNi2z6jDqjjOlyVghuV0zRKpj9Pw=
+	b=p9t+5B7yVukKGxzrFGDcTn+7hmCDG09q0k5rdBEcKJ4tSrmorxzjx8ow5X5CuKMbK
+	 O6leNrDY7UDcKXz+0HZ+VMtFteMGLeb1kgZhAmP3Rs2gfYObfsvcq+Y+xO6nIHfqDN
+	 iq2D3l5ucVQAyZ+uAUch4K9LqMxJ2nI1UTHoiv0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Chakraborty <joychakr@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 5.10 087/108] nvmem: meson-efuse: Fix return value of nvmem callbacks
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 040/121] firmware: cs_dsp: Validate payload length before processing block
 Date: Tue, 16 Jul 2024 17:31:42 +0200
-Message-ID: <20240716152749.325345604@linuxfoundation.org>
+Message-ID: <20240716152752.866238620@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Chakraborty <joychakr@google.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit 7a0a6d0a7c805f9380381f4deedffdf87b93f408 upstream.
+[ Upstream commit 6598afa9320b6ab13041616950ca5f8f938c0cf1 ]
 
-Read/write callbacks registered with nvmem core expect 0 to be returned
-on success and a negative value to be returned on failure.
+Move the payload length check in cs_dsp_load() and cs_dsp_coeff_load()
+to be done before the block is processed.
 
-meson_efuse_read() and meson_efuse_write() call into
-meson_sm_call_read() and meson_sm_call_write() respectively which return
-the number of bytes read or written on success as per their api
-description.
+The check that the length of a block payload does not exceed the number
+of remaining bytes in the firwmware file buffer was being done near the
+end of the loop iteration. However, some code before that check used the
+length field without validating it.
 
-Fix to return error if meson_sm_call_read()/meson_sm_call_write()
-returns an error else return 0.
-
-Fixes: a29a63bdaf6f ("nvmem: meson-efuse: simplify read callback")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240628113704.13742-3-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: f6bc909e7673 ("firmware: cs_dsp: add driver to support firmware loading on Cirrus Logic DSPs")
+Link: https://patch.msgid.link/20240627141432.93056-4-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/meson-efuse.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/firmware/cirrus/cs_dsp.c | 36 +++++++++++++-------------------
+ 1 file changed, 15 insertions(+), 21 deletions(-)
 
---- a/drivers/nvmem/meson-efuse.c
-+++ b/drivers/nvmem/meson-efuse.c
-@@ -18,18 +18,24 @@ static int meson_efuse_read(void *contex
- 			    void *val, size_t bytes)
- {
- 	struct meson_sm_firmware *fw = context;
-+	int ret;
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index 28d24cf4456da..031fd3e4045ec 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -1398,6 +1398,12 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
+ 		}
  
--	return meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
--				  bytes, 0, 0, 0);
-+	ret = meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
-+				 bytes, 0, 0, 0);
+ 		region = (void *)&(firmware->data[pos]);
 +
-+	return ret < 0 ? ret : 0;
++		if (le32_to_cpu(region->len) > firmware->size - pos - sizeof(*region)) {
++			ret = -EOVERFLOW;
++			goto out_fw;
++		}
++
+ 		region_name = "Unknown";
+ 		reg = 0;
+ 		text = NULL;
+@@ -1454,16 +1460,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
+ 			   regions, le32_to_cpu(region->len), offset,
+ 			   region_name);
+ 
+-		if (le32_to_cpu(region->len) >
+-		    firmware->size - pos - sizeof(*region)) {
+-			cs_dsp_err(dsp,
+-				   "%s.%d: %s region len %d bytes exceeds file length %zu\n",
+-				   file, regions, region_name,
+-				   le32_to_cpu(region->len), firmware->size);
+-			ret = -EINVAL;
+-			goto out_fw;
+-		}
+-
+ 		if (text) {
+ 			memcpy(text, region->data, le32_to_cpu(region->len));
+ 			cs_dsp_info(dsp, "%s: %s\n", file, text);
+@@ -2093,6 +2089,11 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
+ 
+ 		blk = (void *)(&firmware->data[pos]);
+ 
++		if (le32_to_cpu(blk->len) > firmware->size - pos - sizeof(*blk)) {
++			ret = -EOVERFLOW;
++			goto out_fw;
++		}
++
+ 		type = le16_to_cpu(blk->type);
+ 		offset = le16_to_cpu(blk->offset);
+ 		version = le32_to_cpu(blk->ver) >> 8;
+@@ -2189,17 +2190,6 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
+ 		}
+ 
+ 		if (reg) {
+-			if (le32_to_cpu(blk->len) >
+-			    firmware->size - pos - sizeof(*blk)) {
+-				cs_dsp_err(dsp,
+-					   "%s.%d: %s region len %d bytes exceeds file length %zu\n",
+-					   file, blocks, region_name,
+-					   le32_to_cpu(blk->len),
+-					   firmware->size);
+-				ret = -EINVAL;
+-				goto out_fw;
+-			}
+-
+ 			buf = cs_dsp_buf_alloc(blk->data,
+ 					       le32_to_cpu(blk->len),
+ 					       &buf_list);
+@@ -2239,6 +2229,10 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
+ 	regmap_async_complete(regmap);
+ 	cs_dsp_buf_free(&buf_list);
+ 	kfree(text);
++
++	if (ret == -EOVERFLOW)
++		cs_dsp_err(dsp, "%s: file content overflows file data\n", file);
++
+ 	return ret;
  }
  
- static int meson_efuse_write(void *context, unsigned int offset,
- 			     void *val, size_t bytes)
- {
- 	struct meson_sm_firmware *fw = context;
-+	int ret;
-+
-+	ret = meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
-+				  bytes, 0, 0, 0);
- 
--	return meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
--				   bytes, 0, 0, 0);
-+	return ret < 0 ? ret : 0;
- }
- 
- static const struct of_device_id meson_efuse_match[] = {
+-- 
+2.43.0
+
 
 
 
