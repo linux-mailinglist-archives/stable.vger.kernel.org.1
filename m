@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-60032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A87D932D14
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A348932B75
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BFD31C214CB
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 453AF281051
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9B917A930;
-	Tue, 16 Jul 2024 16:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA3819B59C;
+	Tue, 16 Jul 2024 15:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYXdT7Js"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOWZkWj4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2A81DDCE;
-	Tue, 16 Jul 2024 16:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B27912B72;
+	Tue, 16 Jul 2024 15:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145652; cv=none; b=dpllfOUpKRPO9hZyXczzenHnzHkyKoZgAV0ZTRdDSzzvC04heN2Z9JauOfMIPBm+F5nYh61T9trKGJX5wVa2WIc9CzFbtuQmqT+OkFA/8n9nUfb07rlGckXORBsVbuop3nVqybp/pYjJMH6zaFCloyO25oXGk1Galqevxjtp4sc=
+	t=1721144730; cv=none; b=goQjjjbgcUHp322Ar5IRlKPeEdlDPrxsvUsFh0FUz2jtTp9c2T4aIryVFp5a3bWxlj7kLl1UEw4a1VAK+Uwoz8q+B3yXrg2JE9XRLFhmQPFEoX74Pl2qLBUjoXtFxKs9Pe2urTbmt14bIVy72YtM400FriGEMWPcmakFG3yNkdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145652; c=relaxed/simple;
-	bh=5LS8gKPxM/TFi4fCEPk+gNJZwzNf4K5w866pwHoSgtk=;
+	s=arc-20240116; t=1721144730; c=relaxed/simple;
+	bh=Ctkf4yclRPt+3F+oPvxLcoVH8V9OfKsOHgzyu7Zl2U8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQPcWQWg+mg569Si1nEGKYkV4yc6v+xjM0jIzUl7s7kWGuZObQXloUbF9J9L8Sjs4Zm4uDm4P/4u048CVKOnswqZ+iZ82QphbdN445qtcdaMDRnIeB+QXCwfJ4D2gLQEakvq7QgtQk3lxmv8JFEc3YvRP0DJ9WMo5gzdms0aR3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYXdT7Js; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55B5C116B1;
-	Tue, 16 Jul 2024 16:00:51 +0000 (UTC)
+	 MIME-Version; b=lQ5+jRrME4lusnw49fRGfJ5+6wPGu5Fu8nWcU4OoIomwCDrnx7WKf7HBKJeEGaN/lsPUfMWCDaxKu8rCgSYRdTDKcbaF6yDsT7Lr2kUuh/7t7XUtgqKyK4IhZVD2W9+TPx10kzl6l+CZVcIzeXhD224zkAK6FhgeCtOIFVVwcRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOWZkWj4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44EEC116B1;
+	Tue, 16 Jul 2024 15:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145652;
-	bh=5LS8gKPxM/TFi4fCEPk+gNJZwzNf4K5w866pwHoSgtk=;
+	s=korg; t=1721144730;
+	bh=Ctkf4yclRPt+3F+oPvxLcoVH8V9OfKsOHgzyu7Zl2U8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bYXdT7Js9/XvPnu+GzwDcloL+B8OCBYGgvWYeZ2YXxLCfEp2cEUI6PoT0EeusxGRl
-	 37CHei44vOtUA6buBX5bTsshqZ1K5Ap8l98u1k5xEeFeXHdh7KexfXz4yDKlecXAnw
-	 teDEiAm0IyPTMXXzMU8zUMo5IF9aKSo/gr7GAktY=
+	b=MOWZkWj4FSWummTCqGf9TWV2cA2akqSh9lBXrNTuUiB0D2YQJipbzw4Ufd/SUr+JW
+	 6uCUGOGOzAYTViFOmU0LkA/WfdxacZvug0U/VOhWslntYMPkaFMQR3KMJ1k2mDM/Sa
+	 VkDiPMffzE1EtLIoRLaAQmD7Nj0JVWiYigF2cRGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/121] firmware: cs_dsp: Return error if block header overflows file
+	He Zhe <zhe.he@windriver.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.10 086/108] hpet: Support 32-bit userspace
 Date: Tue, 16 Jul 2024 17:31:41 +0200
-Message-ID: <20240716152752.827657797@linuxfoundation.org>
+Message-ID: <20240716152749.287209899@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +61,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: He Zhe <zhe.he@windriver.com>
 
-[ Upstream commit 959fe01e85b7241e3ec305d657febbe82da16a02 ]
+commit 4e60131d0d36af65ab9c9144f4f163fe97ae36e8 upstream.
 
-Return an error from cs_dsp_power_up() if a block header is longer
-than the amount of data left in the file.
+hpet_compat_ioctl and read file operations failed to handle parameters from
+32-bit userspace and thus samples/timers/hpet_example.c fails as below.
 
-The previous code in cs_dsp_load() and cs_dsp_load_coeff() would loop
-while there was enough data left in the file for a valid region. This
-protected against overrunning the end of the file data, but it didn't
-abort the file processing with an error.
+root@intel-x86-64:~# ./hpet_example-32.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: HPET_IRQFREQ failed
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f6bc909e7673 ("firmware: cs_dsp: add driver to support firmware loading on Cirrus Logic DSPs")
-Link: https://patch.msgid.link/20240627141432.93056-3-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes cmd and arg handling in hpet_compat_ioctl and adds compat
+handling for 32-bit userspace in hpet_read.
+
+hpet_example now shows that it works for both 64-bit and 32-bit.
+
+root@intel-x86-64:~# ./hpet_example-32.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: info.hi_flags 0x0
+hpet_poll: expired time = 0xf4298
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+hpet_poll: expired time = 0xf4235
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+root@intel-x86-64:~# ./hpet_example-64.out poll /dev/hpet 1 2
+-hpet: executing poll
+hpet_poll: info.hi_flags 0x0
+hpet_poll: expired time = 0xf42a1
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+hpet_poll: expired time = 0xf4232
+hpet_poll: revents = 0x1
+hpet_poll: data 0x1
+
+Cc: stable@vger.kernel.org
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: 54066a57c584 ("hpet: kill BKL, add compat_ioctl")
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240606123908.738733-1-zhe.he@windriver.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/char/hpet.c |   34 +++++++++++++++++++++++++++++-----
+ 1 file changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index f0c3c4011411d..28d24cf4456da 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1390,8 +1390,13 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 	cs_dsp_dbg(dsp, "%s: timestamp %llu\n", file,
- 		   le64_to_cpu(footer->timestamp));
+--- a/drivers/char/hpet.c
++++ b/drivers/char/hpet.c
+@@ -304,8 +304,13 @@ hpet_read(struct file *file, char __user
+ 	if (!devp->hd_ireqfreq)
+ 		return -EIO;
  
--	while (pos < firmware->size &&
--	       sizeof(*region) < firmware->size - pos) {
-+	while (pos < firmware->size) {
-+		/* Is there enough data for a complete block header? */
-+		if (sizeof(*region) > firmware->size - pos) {
-+			ret = -EOVERFLOW;
-+			goto out_fw;
-+		}
+-	if (count < sizeof(unsigned long))
+-		return -EINVAL;
++	if (in_compat_syscall()) {
++		if (count < sizeof(compat_ulong_t))
++			return -EINVAL;
++	} else {
++		if (count < sizeof(unsigned long))
++			return -EINVAL;
++	}
+ 
+ 	add_wait_queue(&devp->hd_waitqueue, &wait);
+ 
+@@ -329,9 +334,16 @@ hpet_read(struct file *file, char __user
+ 		schedule();
+ 	}
+ 
+-	retval = put_user(data, (unsigned long __user *)buf);
+-	if (!retval)
+-		retval = sizeof(unsigned long);
++	if (in_compat_syscall()) {
++		retval = put_user(data, (compat_ulong_t __user *)buf);
++		if (!retval)
++			retval = sizeof(compat_ulong_t);
++	} else {
++		retval = put_user(data, (unsigned long __user *)buf);
++		if (!retval)
++			retval = sizeof(unsigned long);
++	}
 +
- 		region = (void *)&(firmware->data[pos]);
- 		region_name = "Unknown";
- 		reg = 0;
-@@ -2079,8 +2084,13 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 	pos = le32_to_cpu(hdr->len);
+ out:
+ 	__set_current_state(TASK_RUNNING);
+ 	remove_wait_queue(&devp->hd_waitqueue, &wait);
+@@ -686,12 +698,24 @@ struct compat_hpet_info {
+ 	unsigned short hi_timer;
+ };
  
- 	blocks = 0;
--	while (pos < firmware->size &&
--	       sizeof(*blk) < firmware->size - pos) {
-+	while (pos < firmware->size) {
-+		/* Is there enough data for a complete block header? */
-+		if (sizeof(*blk) > firmware->size - pos) {
-+			ret = -EOVERFLOW;
-+			goto out_fw;
-+		}
++/* 32-bit types would lead to different command codes which should be
++ * translated into 64-bit ones before passed to hpet_ioctl_common
++ */
++#define COMPAT_HPET_INFO       _IOR('h', 0x03, struct compat_hpet_info)
++#define COMPAT_HPET_IRQFREQ    _IOW('h', 0x6, compat_ulong_t)
 +
- 		blk = (void *)(&firmware->data[pos]);
+ static long
+ hpet_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	struct hpet_info info;
+ 	int err;
  
- 		type = le16_to_cpu(blk->type);
--- 
-2.43.0
-
++	if (cmd == COMPAT_HPET_INFO)
++		cmd = HPET_INFO;
++
++	if (cmd == COMPAT_HPET_IRQFREQ)
++		cmd = HPET_IRQFREQ;
++
+ 	mutex_lock(&hpet_mutex);
+ 	err = hpet_ioctl_common(file->private_data, cmd, arg, &info);
+ 	mutex_unlock(&hpet_mutex);
 
 
 
