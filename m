@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-60054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51078932D2A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8F5932C0D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:51:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08A1D2836F8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95E04B20D90
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E5B17623C;
-	Tue, 16 Jul 2024 16:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC1019F468;
+	Tue, 16 Jul 2024 15:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B068Iwbo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWYFNPqA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2479C1DDCE;
-	Tue, 16 Jul 2024 16:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186E619EEA9;
+	Tue, 16 Jul 2024 15:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145717; cv=none; b=mgBB7rkPQvbgf1kez5yFFBw2mqVDHHOyXsUuJ5J0IOHqMuiwQfA8nsfqZYJdyqEMwI2pQaSofqpBSDJquU5A9Lg+1xzZ4GoD1JNTYB/Mj+gnaBQpNSLX6m55ayzxtKBUZbTrXdH8Qa1eQeqBxXK8M1OAFWBqzx/baBJW+oxIeaw=
+	t=1721145071; cv=none; b=eDbF9iN+pO5/CTMYQPEf+9Coq9e401lWESzDS/DdeEEeG6tb0h0Yiy9aqCtrhzp/f1N4rns6Hup274oswhDbRAxH8mHXeAdXHVUkcf+idCinx1vwdQSPJ3MgIzI+qb5MIjIZvMCNwIwHVcD6tjX1RDnxxluJ1tXyLzMOXGYxjqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145717; c=relaxed/simple;
-	bh=F79a/6w5xhpyLujg5nGRPik6FPtpGCA3F2nIm+m/1dc=;
+	s=arc-20240116; t=1721145071; c=relaxed/simple;
+	bh=d5ccjW/sg26z60RTSzehEMGctmXrHdazXr7FxI0VKjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5eNeFUaW72n2FtSqvfSq3zZ9HBy43ARxtfyVS6tl5SwXA79UvIBkOPEWeEhV03gh2G5BBaYwKKmAxy2ul//BJ7ZggrDPnD+HJPwS8WPcanz3adMWmsCFf9iZvMC5XFS/qm6gJCBfuUzjPBznJdsTG/a2TdtfW3n++i1/o0ch5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B068Iwbo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE67C116B1;
-	Tue, 16 Jul 2024 16:01:56 +0000 (UTC)
+	 MIME-Version; b=oO/36B59yR4r9dq96/QFVxJun7F7bghCtIV4tK8pN5APaaW6gAWeRy5pf4iHU2IZzEV7kvsxlVR9Lzv4sMrzz7HOQn4gdsqb3rrn6z4ANa5nNovcp4lkDYgTC4kT65ykppaF+PH2QUh/gmTr53MxRYv7A6w2uPOCGsw8rQqLth8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWYFNPqA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C23C4AF0D;
+	Tue, 16 Jul 2024 15:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145717;
-	bh=F79a/6w5xhpyLujg5nGRPik6FPtpGCA3F2nIm+m/1dc=;
+	s=korg; t=1721145071;
+	bh=d5ccjW/sg26z60RTSzehEMGctmXrHdazXr7FxI0VKjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B068IwbownILMzlm0QaCuaWqrDfP3OHYi2Kk7fxT8sICX+02wxGpjtQ1olsecj6rK
-	 sFqCloDg96kDPRclITRnCqPWOgKloF5KFNA00wN4e2AkhEViXW/Kbk3klOTlE8qSb5
-	 NcWrF/BRf+kDLKdnYWYPmMZeYY2piVTqvqPgQglE=
+	b=LWYFNPqAoYQqQ9ZUSDuhXhmBnB8ZrZ+EP3VT0EJK2jH3soCbRaUnmXGCyvxRkSuZ4
+	 2H0lj5/MeIdmeSEwpaNov37/qklN5gRD2MziUsMTmGhRkWO/YgUW4e9RUA82mlX1x/
+	 PRBaZWw+s1kpsggHODTByKkxiaAk+1D9hFLwiYxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/121] net: phy: microchip: lan87xx: reinit PHY after cable test
-Date: Tue, 16 Jul 2024 17:31:22 +0200
-Message-ID: <20240716152752.097897551@linuxfoundation.org>
+	Nick Bowler <nbowler@draconx.ca>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Baoquan He <bhe@redhat.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	"Hailong.Liu" <hailong.liu@oppo.com>,
+	Oleksiy Avramchenko <oleksiy.avramchenko@sony.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 087/143] mm: vmalloc: check if a hash-index is in cpu_possible_mask
+Date: Tue, 16 Jul 2024 17:31:23 +0200
+Message-ID: <20240716152759.321109374@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +66,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-[ Upstream commit 30f747b8d53bc73555f268d0f48f56174fa5bf10 ]
+commit a34acf30b19bc4ee3ba2f1082756ea2604c19138 upstream.
 
-Reinit PHY after cable test, otherwise link can't be established on
-tested port. This issue is reproducible on LAN9372 switches with
-integrated 100BaseT1 PHYs.
+The problem is that there are systems where cpu_possible_mask has gaps
+between set CPUs, for example SPARC.  In this scenario addr_to_vb_xa()
+hash function can return an index which accesses to not-possible and not
+setup CPU area using per_cpu() macro.  This results in an oops on SPARC.
 
-Fixes: 788050256c411 ("net: phy: microchip_t1: add cable test support for lan87xx phy")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240705084954.83048-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A per-cpu vmap_block_queue is also used as hash table, incorrectly
+assuming the cpu_possible_mask has no gaps.  Fix it by adjusting an index
+to a next possible CPU.
+
+Link: https://lkml.kernel.org/r/20240626140330.89836-1-urezki@gmail.com
+Fixes: 062eacf57ad9 ("mm: vmalloc: remove a global vmap_blocks xarray")
+Reported-by: Nick Bowler <nbowler@draconx.ca>
+Closes: https://lore.kernel.org/linux-kernel/ZntjIE6msJbF8zTa@MiWiFi-R3L-srv/T/
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Hailong.Liu <hailong.liu@oppo.com>
+Cc: Oleksiy Avramchenko <oleksiy.avramchenko@sony.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/microchip_t1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/vmalloc.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
-index a838b61cd844b..a35528497a576 100644
---- a/drivers/net/phy/microchip_t1.c
-+++ b/drivers/net/phy/microchip_t1.c
-@@ -748,7 +748,7 @@ static int lan87xx_cable_test_report(struct phy_device *phydev)
- 	ethnl_cable_test_result(phydev, ETHTOOL_A_CABLE_PAIR_A,
- 				lan87xx_cable_test_report_trans(detect));
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2519,7 +2519,15 @@ static DEFINE_PER_CPU(struct vmap_block_
+ static struct xarray *
+ addr_to_vb_xa(unsigned long addr)
+ {
+-	int index = (addr / VMAP_BLOCK_SIZE) % num_possible_cpus();
++	int index = (addr / VMAP_BLOCK_SIZE) % nr_cpu_ids;
++
++	/*
++	 * Please note, nr_cpu_ids points on a highest set
++	 * possible bit, i.e. we never invoke cpumask_next()
++	 * if an index points on it which is nr_cpu_ids - 1.
++	 */
++	if (!cpu_possible(index))
++		index = cpumask_next(index, cpu_possible_mask);
  
--	return 0;
-+	return phy_init_hw(phydev);
+ 	return &per_cpu(vmap_block_queue, index).vmap_blocks;
  }
- 
- static int lan87xx_cable_test_get_status(struct phy_device *phydev,
--- 
-2.43.0
-
 
 
 
