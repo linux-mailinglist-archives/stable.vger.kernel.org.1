@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-59378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E85C6931E0D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 02:28:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A16C931E10
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 02:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BB6C1F221F1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 00:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39112280F35
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 00:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC17196;
-	Tue, 16 Jul 2024 00:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65228136A;
+	Tue, 16 Jul 2024 00:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xpvD5BYU"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aAOzu08Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A12191
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 00:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9864281E
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 00:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721089733; cv=none; b=laBQxqbUq5t5zUToQUbcQ2K+2imYL/ZnbhKBO+at9rvRKq3vGwjPU/NrWqpdcXrfzwiIAIGSLQwVECbKgo909BS9KzdGJRxbtJsOBNFBumewqox85dsDMlBHbZBP6LpWWPshRn6s0+wTYVl8yjQ7qAwpVd2RHUekMH93J1opfdo=
+	t=1721090458; cv=none; b=pPvcm6lnXMYRDlH7xLUfOYvmvrMHF7QcFUZA1OCM59LZ+B+1deXnQLklEnqtJhK/1Wcfx6Z53Gbbb3KEC5b9O/b9Ciu1i7EiwN8lmnJ675CtmE6Xp/vkHjQhovsu6VRGtK3PcQU1LTez6mxjtHXLflepRCKgzbyz6NNjrp9OdI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721089733; c=relaxed/simple;
-	bh=GIFgbUjQP3Vz277VyMSIYFasUvcxMEYHx+8CqkkMukA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=n9iUBciom4NFvMVaCpXE/3VPDdpsSfBzhGNxIHe2Vi2131aPjsRh+Ze0rz/+6X9kYrxAz3gVbnlbA4ZqGTWpQY0DaQo/qXkulcMgJPk85nCXM6lvSnL4Wwrs7Ix6E2GSDymEUWMRKPMJzvK3yCqPvH+VzcbrDoIBIqW+icz+L9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jstultz.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xpvD5BYU; arc=none smtp.client-ip=209.85.215.202
+	s=arc-20240116; t=1721090458; c=relaxed/simple;
+	bh=PILS42D4ycoLws60Fv+D4w67bQyWtVMrUFZPlF+oeP4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bK1lOYvSOugH0cEctozvt6BhJoINn5RhXaGmAg4nfn3itIMr49I5dKhGjHl/z1GQ20QmEb/kazXgrvExeeZ5pC6HSNO2S7oPrCdGUnowMyTGxW2BjCZWEyjx299XVdtaoDalOMnAdX4F2MoWG0xzwlSYO/BaS2ppOpO+YXfHFMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jstultz.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aAOzu08Q; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jstultz.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-5e4df21f22dso3960528a12.0
-        for <stable@vger.kernel.org>; Mon, 15 Jul 2024 17:28:51 -0700 (PDT)
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-781cc721188so3941844a12.0
+        for <stable@vger.kernel.org>; Mon, 15 Jul 2024 17:40:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721089731; x=1721694531; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1721090456; x=1721695256; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=G+6TDAsVIX+6TyoCKalzwlmSqVWfMv5WGuuuki+ewUo=;
-        b=xpvD5BYU5QA5f7FzkJHxLFI56wDT2pEvBK0QrqMF7jGgeXdcLA/H9zKu/6nUw0GVng
-         XgTfThSahzDAAoZ+kEb/F/cRB4/K7RLXgqkFTsj+HT58WteacOfPGIIMfTmn/98rt5Z4
-         iBkYpZLHg1D7cMeI0HjFyDFYj8cMXamgtvTBORY9tJTgcw/soiS73Z1pSWnpYDUt3hL/
-         nuWRGofJ5Uj3i+XCoyFOqEQU9A+Z8DCqLc/UaHegdE9sdqIZYx+PJEuz/Qqzp284Na2J
-         /Rl3q8DHRjoIM6SnFcMfyDkQUghEUszkpEWmaYgj3dte4S/KqGobYltxy8QjRDpzgsG5
-         Le6Q==
+        bh=nF/s5da7+QmopDwYkHabPwflMAhA5q2V/O/NyA7ZyyY=;
+        b=aAOzu08Qwf7HyntF7ledKbvspyhpd6BQFK+M0/IVHwZBRpidZomN5JKGckNcwDRYxt
+         tfkC35Vusf+VUT19tZUatOo6hR0SnS6sHMhV2tkJ9S3xA08nzLC4EGoe0KAj88RES46U
+         yupcTPp6A2jxhCAwpnCzqx2kXDmbGL4jxgo+oFXSnFE+tyP5sfFdSKvSkpAswBEpO0HA
+         ftjqK1p1dm/NlmwCqHJrNRvSFyL4pQMbiAs2vQsucdUxzavVV4bBg3f3OKO73RgxOGOm
+         fhtb5stw3JjNwCvhdxOeQTxpdGeA6plaD74u70Iqnnh3KspEDXaCksrljVcoESqXo5A7
+         v3jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721089731; x=1721694531;
+        d=1e100.net; s=20230601; t=1721090456; x=1721695256;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=G+6TDAsVIX+6TyoCKalzwlmSqVWfMv5WGuuuki+ewUo=;
-        b=c+fQwiGyaD5pYPIhYY87+ZxaRVAEpHI8j4tXfqOqmiXPYlOS3Kpj+l3Sg4OYlJSPXM
-         AjINxuUqdE+ysi5XKyhpbXUVrHVCn+mJFOuUnvtTfT8j5ga3Dap4AWUebo+JljEBxx96
-         IuYHlP+zyxq7wY4PHFtKu7gRqu/K9zhDVg95r8Aw3UYzWaen1FoqSldSyQAOBLcSFop8
-         /RRYwJJ5H626mzdGgXKuVdmRS0eXNApxJfNtFnz37cnO3iVo3I4EXieUNALrEcs4I1n4
-         vr9hotwdf9vsTszfvSwqBYi8RC8hdwHofX/A2y19YsMZXB5T6SKzL42uhtq3aNI3WK/q
-         mTYQ==
-X-Gm-Message-State: AOJu0Yyc6XA9WVqQZc6rcTTafQbhrwkGUtkNQED10oA0NBLkxmpbFZvU
-	X6JqRkcz1s07bg8ge+Jx9/w9CPZeO8HiwDGOVuY1NqyJ2i9aqNygmblAtYlJGlPYGjH0ccB/PMT
-	ziMd6TCYeR2n404RyynIKwvevCJk0/GaNynCh9iUpjayIFxcq6fwmkwYgJtZa1VQF42hDNvDu4X
-	+oLo1IGrpsGsmGeG92Kn1TRehrjXCXB1k/2PVR
-X-Google-Smtp-Source: AGHT+IGnTgKuaGF+43mUTmJ8jtGQOR7q8Rh9SBgpQTN/Y0q4D+gZdGZITbpopuKIYkjj4y+tTHEoFVBUujKx
+        bh=nF/s5da7+QmopDwYkHabPwflMAhA5q2V/O/NyA7ZyyY=;
+        b=dRA5GjCJ8koNPU95JFLxUaAqjydqrYcyvrjWgG/nty5JeDPE0QdeAaw0yoBnVcZw4N
+         mbaf61dJ1+jCAMEE906hwIj6Pc0CwYSGCT6O3zzq6YifkH84As70x3BZgwTjd1CzCY1J
+         aF37aCz+Fw0eavZq0thTwiPkfEkr/2ElahLkQI61DHKGZOuRaeIfPFC1baK34s3ERUmW
+         2yhzbT70dWzFYM7RLKS47YSOb3xKYkIJZWHXp+IVLT6ROJUnOkwyRjo6ChVYzu3R9bXT
+         VE4/bdnv6hviC12Tv3nWf/yrZAywk6AddddHgYYQ0LFmYkbwabN93Day22lo9dVi3Aju
+         5JBA==
+X-Gm-Message-State: AOJu0YyyaXvvFZ7BcdQOmAJyweroqhcubrf0xhk+GiolEhuQieJCBKtJ
+	aAx51Fm2fXsaHwvuwWSuKu8tmL+xgvycdlHhe2vKums3wrRmG/1POUMh0E51vfMPSFxgZGpHgli
+	zHJTLcHvM6mRWBLzIcC4bTFg9uXqFIQy9xEC2097xVN6h3ekbPuB+aKKQfRpy7c8+8bjIS0hUhe
+	wbNQ0xaE5AxjhmAeC0JD+pyoFzNcgqlg/G+ISH
+X-Google-Smtp-Source: AGHT+IF0EJYQtftwQFcl30JKpNgxynj+zF2RRNCyxQgkby28FQwA95FrjflTwTFWhp7Qs8fjPUckiG+AjZgl
 X-Received: from jstultz-noogler2.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:600])
- (user=jstultz job=sendgmr) by 2002:a63:7f52:0:b0:701:d445:c8f7 with SMTP id
- 41be03b00d2f7-79632b31457mr585a12.3.1721089728814; Mon, 15 Jul 2024 17:28:48
+ (user=jstultz job=sendgmr) by 2002:a63:5c59:0:b0:6ea:87eb:9493 with SMTP id
+ 41be03b00d2f7-795c1cbcff3mr1583a12.2.1721090455171; Mon, 15 Jul 2024 17:40:55
  -0700 (PDT)
-Date: Mon, 15 Jul 2024 17:28:21 -0700
+Date: Mon, 15 Jul 2024 17:40:39 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,8 +71,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.45.2.993.g49e7a77208-goog
-Message-ID: <20240716002835.349841-1-jstultz@google.com>
-Subject: [PATCH 6.6] sched: Move psi_account_irqtime() out of
+Message-ID: <20240716004050.515306-1-jstultz@google.com>
+Subject: [PATCH 6.1] sched: Move psi_account_irqtime() out of
  update_rq_clock_task() hotpath
 From: John Stultz <jstultz@google.com>
 To: stable@vger.kernel.org
@@ -131,7 +131,7 @@ Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
 Reviewed-by: Qais Yousef <qyousef@layalina.io>
 Link: https://lore.kernel.org/r/20240618215909.4099720-1-jstultz@google.com
 Fixes: 52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ pressure")
-[jstultz: Fixed up minor collisions w/ 6.6-stable]
+[jstultz: Fixed up minor collisions w/ 6.1-stable]
 Signed-off-by: John Stultz <jstultz@google.com>
 ---
  kernel/sched/core.c  |  7 +++++--
@@ -141,18 +141,18 @@ Signed-off-by: John Stultz <jstultz@google.com>
  4 files changed, 30 insertions(+), 10 deletions(-)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index dcb30e304871..820880960513 100644
+index d71234729edb..cac41c49bd2f 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -722,7 +722,6 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
+@@ -701,7 +701,6 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
  
  	rq->prev_irq_time += irq_delta;
  	delta -= irq_delta;
 -	psi_account_irqtime(rq->curr, irq_delta);
- 	delayacct_irq(rq->curr, irq_delta);
  #endif
  #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
-@@ -5641,7 +5640,7 @@ void scheduler_tick(void)
+ 	if (static_key_false((&paravirt_steal_rq_enabled))) {
+@@ -5500,7 +5499,7 @@ void scheduler_tick(void)
  {
  	int cpu = smp_processor_id();
  	struct rq *rq = cpu_rq(cpu);
@@ -161,7 +161,7 @@ index dcb30e304871..820880960513 100644
  	struct rq_flags rf;
  	unsigned long thermal_pressure;
  	u64 resched_latency;
-@@ -5653,6 +5652,9 @@ void scheduler_tick(void)
+@@ -5512,6 +5511,9 @@ void scheduler_tick(void)
  
  	rq_lock(rq, &rf);
  
@@ -171,7 +171,7 @@ index dcb30e304871..820880960513 100644
  	update_rq_clock(rq);
  	thermal_pressure = arch_scale_thermal_pressure(cpu_of(rq));
  	update_thermal_load_avg(rq_clock_thermal(rq), rq, thermal_pressure);
-@@ -6690,6 +6692,7 @@ static void __sched notrace __schedule(unsigned int sched_mode)
+@@ -6550,6 +6552,7 @@ static void __sched notrace __schedule(unsigned int sched_mode)
  		++*switch_count;
  
  		migrate_disable_switch(rq, prev);
@@ -180,10 +180,10 @@ index dcb30e304871..820880960513 100644
  
  		trace_sched_switch(sched_mode & SM_MASK_PREEMPT, prev, next, prev_state);
 diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 1d0f634725a6..431971acc763 100644
+index 80d8c10e9363..81dbced92df5 100644
 --- a/kernel/sched/psi.c
 +++ b/kernel/sched/psi.c
-@@ -784,6 +784,7 @@ static void psi_group_change(struct psi_group *group, int cpu,
+@@ -785,6 +785,7 @@ static void psi_group_change(struct psi_group *group, int cpu,
  	enum psi_states s;
  	u32 state_mask;
  
@@ -191,7 +191,7 @@ index 1d0f634725a6..431971acc763 100644
  	groupc = per_cpu_ptr(group->pcpu, cpu);
  
  	/*
-@@ -1002,19 +1003,29 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+@@ -1003,19 +1004,29 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
  }
  
  #ifdef CONFIG_IRQ_TIME_ACCOUNTING
@@ -227,10 +227,10 @@ index 1d0f634725a6..431971acc763 100644
  		if (!group->enabled)
  			continue;
 diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 35c38daa2d3e..2e8f26a919ed 100644
+index b62d53d7c264..81d9698f0a1e 100644
 --- a/kernel/sched/sched.h
 +++ b/kernel/sched/sched.h
-@@ -1094,6 +1094,7 @@ struct rq {
+@@ -1084,6 +1084,7 @@ struct rq {
  
  #ifdef CONFIG_IRQ_TIME_ACCOUNTING
  	u64			prev_irq_time;
@@ -239,7 +239,7 @@ index 35c38daa2d3e..2e8f26a919ed 100644
  #ifdef CONFIG_PARAVIRT
  	u64			prev_steal_time;
 diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
-index 38f3698f5e5b..b02dfc322951 100644
+index 84a188913cc9..b49a96fad1d2 100644
 --- a/kernel/sched/stats.h
 +++ b/kernel/sched/stats.h
 @@ -110,8 +110,12 @@ __schedstats_from_se(struct sched_entity *se)
@@ -257,7 +257,7 @@ index 38f3698f5e5b..b02dfc322951 100644
  /*
   * PSI tracks state that persists across sleeps, such as iowaits and
   * memory stalls. As a result, it has to distinguish between sleeps,
-@@ -192,7 +196,8 @@ static inline void psi_ttwu_dequeue(struct task_struct *p) {}
+@@ -206,7 +210,8 @@ static inline void psi_ttwu_dequeue(struct task_struct *p) {}
  static inline void psi_sched_switch(struct task_struct *prev,
  				    struct task_struct *next,
  				    bool sleep) {}
