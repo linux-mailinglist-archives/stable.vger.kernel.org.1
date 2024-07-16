@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-59633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FAC932B03
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A20F932C24
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 363C91C2276F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF99C2853E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842FD1E894;
-	Tue, 16 Jul 2024 15:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B70119E7E5;
+	Tue, 16 Jul 2024 15:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HzNoNd3a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sXCLChS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41495B641;
-	Tue, 16 Jul 2024 15:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB6A19DFB3;
+	Tue, 16 Jul 2024 15:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144435; cv=none; b=C5nWC6PjyORl6gMKaVfueGm4NEjUy+H13krWwzFP9KbLZi0JTTIjOg2QocI6lJ7XTV3JYYzCunJWds31v15AX2f5eFkQzRFWIQzcXvk1hfSutWY59NCh3eyOHWhXNgAswARvYxSLDtX922a4Rs36T90jnDtUMefwA09O/4bQaOw=
+	t=1721145126; cv=none; b=ifUKK0/61lvjxbIG/auBkjHm497/w6pBlJxzf1wetnX5D7dXM7rfldKrX9Xy7frT1IWXseWlS+CxeB1smLS87BLehbPIzMymvKIq7a8fFnUC4FyPvvsjI0aj+QaAr6ICIY+LK1kZdzYyc4fw3rKuU0ZuqNIJhN8yqMzImTI80Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144435; c=relaxed/simple;
-	bh=c+uN2TRybdXFn7fuI9ql8f5CqVRBD0wyRBBF3GXZJd4=;
+	s=arc-20240116; t=1721145126; c=relaxed/simple;
+	bh=sN+iYLG2BD1yKfazP1viU2bGdA0f1Pz4TBay+foSTmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qI2wucmV/CLJuDVOOWEfUx3nWShN4kOMXmdDMJCih7YEmdsyQzdlITyAFhxbtg5Wc5AasCcf1XO91bPgTMJygho4w3UMQjNTpKYpAY6gtaYJeOHFDT57j0GdgBnYNXm7K/m/+fHFyX/ByqVmAy9XolRvfyI0wRCckpGO3in0Zg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HzNoNd3a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC19C116B1;
-	Tue, 16 Jul 2024 15:40:34 +0000 (UTC)
+	 MIME-Version; b=TWKI5w+OCtWhmdeVGEeXzW/Bk0EcfdjdNutQYH3SBgixo21XCScObTomZI8DHsWHfvBjxwgxtmYos/WrUW7xdV0b/RFIwhjnhZi9tYQiOe4LG3w6n59ClfD7F2+fJDgJrdBBem92nhD5L+4+buhBuFUXdbd2nOCGAB13ZK8Ez+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sXCLChS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54879C116B1;
+	Tue, 16 Jul 2024 15:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144435;
-	bh=c+uN2TRybdXFn7fuI9ql8f5CqVRBD0wyRBBF3GXZJd4=;
+	s=korg; t=1721145126;
+	bh=sN+iYLG2BD1yKfazP1viU2bGdA0f1Pz4TBay+foSTmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HzNoNd3ajOlQdIrouZpOvjhf3enz48xNFWP0d0v/BNcbpX1Bzj3eDq9/R+Qt+iiJe
-	 xCsGszR7OknvV2XPdSmt3zhdNKJYB2biS1NIQ8FN8sX/pj8CIbsSzJpF+sW0y/oKJJ
-	 mwS6YCy+0dAt8qFECqY0iaZkbrWX1CDAEzUjPlNQ=
+	b=2sXCLChSg2LMAhY2qFtZO4T6f+uJGAZYQSDGN/viTCVdrT2F+yXkjgra0wH5DCKBG
+	 7C3wWAzNILEdGc963cCHzJuFxEd0JCiCh4Yq9ki5Grd4FoE+WlPcxaDDZrv0N8fvX0
+	 SDIrEEZxv3qBEZC3bKHVrFq0wWCtdd5AsuO6554E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>
-Subject: [PATCH 5.4 71/78] libceph: fix race between delayed_work() and ceph_monc_stop()
-Date: Tue, 16 Jul 2024 17:31:43 +0200
-Message-ID: <20240716152743.387683525@linuxfoundation.org>
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.9 108/143] ALSA: hda/realtek: Limit mic boost on VAIO PRO PX
+Date: Tue, 16 Jul 2024 17:31:44 +0200
+Message-ID: <20240716152800.131994846@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-commit 69c7b2fe4c9cc1d3b1186d1c5606627ecf0de883 upstream.
+commit 6db03b1929e207d2c6e84e75a9cd78124b3d6c6d upstream.
 
-The way the delayed work is handled in ceph_monc_stop() is prone to
-races with mon_fault() and possibly also finish_hunting().  Both of
-these can requeue the delayed work which wouldn't be canceled by any of
-the following code in case that happens after cancel_delayed_work_sync()
-runs -- __close_session() doesn't mess with the delayed work in order
-to avoid interfering with the hunting interval logic.  This part was
-missed in commit b5d91704f53e ("libceph: behave in mon_fault() if
-cur_mon < 0") and use-after-free can still ensue on monc and objects
-that hang off of it, with monc->auth and monc->monmap being
-particularly susceptible to quickly being reused.
+The internal mic boost on the VAIO models VJFE-CL and VJFE-IL is too high.
+Fix this by applying the ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine
+to limit the gain.
 
-To fix this:
-
-- clear monc->cur_mon and monc->hunting as part of closing the session
-  in ceph_monc_stop()
-- bail from delayed_work() if monc->cur_mon is cleared, similar to how
-  it's done in mon_fault() and finish_hunting() (based on monc->hunting)
-- call cancel_delayed_work_sync() after the session is closed
-
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/66857
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240705141012.5368-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/mon_client.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/ceph/mon_client.c
-+++ b/net/ceph/mon_client.c
-@@ -975,13 +975,19 @@ static void delayed_work(struct work_str
- 	struct ceph_mon_client *monc =
- 		container_of(work, struct ceph_mon_client, delayed_work.work);
- 
--	dout("monc delayed_work\n");
- 	mutex_lock(&monc->mutex);
-+	dout("%s mon%d\n", __func__, monc->cur_mon);
-+	if (monc->cur_mon < 0) {
-+		goto out;
-+	}
-+
- 	if (monc->hunting) {
- 		dout("%s continuing hunt\n", __func__);
- 		reopen_session(monc);
- 	} else {
- 		int is_auth = ceph_auth_is_authenticated(monc->auth);
-+
-+		dout("%s is_authed %d\n", __func__, is_auth);
- 		if (ceph_con_keepalive_expired(&monc->con,
- 					       CEPH_MONC_PING_TIMEOUT)) {
- 			dout("monc keepalive timeout\n");
-@@ -1006,6 +1012,8 @@ static void delayed_work(struct work_str
- 		}
- 	}
- 	__schedule_delayed(monc);
-+
-+out:
- 	mutex_unlock(&monc->mutex);
- }
- 
-@@ -1118,13 +1126,15 @@ EXPORT_SYMBOL(ceph_monc_init);
- void ceph_monc_stop(struct ceph_mon_client *monc)
- {
- 	dout("stop\n");
--	cancel_delayed_work_sync(&monc->delayed_work);
- 
- 	mutex_lock(&monc->mutex);
- 	__close_session(monc);
-+	monc->hunting = false;
- 	monc->cur_mon = -1;
- 	mutex_unlock(&monc->mutex);
- 
-+	cancel_delayed_work_sync(&monc->delayed_work);
-+
- 	/*
- 	 * flush msgr queue before we destroy ourselves to ensure that:
- 	 *  - any work that references our embedded con is finished.
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10328,6 +10328,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
+ 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
+ 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
++	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x1252, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+@@ -10596,6 +10597,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
++	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+ 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
 
 
 
