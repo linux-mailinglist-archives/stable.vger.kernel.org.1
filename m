@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-59840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E311D932C07
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:51:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A720D932AF2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E9F01C21015
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:51:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EDC02835C5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F6819DF71;
-	Tue, 16 Jul 2024 15:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD6819B3EC;
+	Tue, 16 Jul 2024 15:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9kp5Ijx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdyciDwu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA7E19B3EC;
-	Tue, 16 Jul 2024 15:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A20ACA40;
+	Tue, 16 Jul 2024 15:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145068; cv=none; b=dbwXNzJQjwymfm25tMRfD30UekWSPYTaUS70QQt3Gshpn1P+2EsJs5UkumYqicNY4m8cd/35RKuIwq7uBU3H2xSSD2jMMXGbDB90hwgi85sZc2r+7o2lWgjkW9mDP3BB9uBCqSoEbJkZDZwF2mCS9piVxGLMofy67lb6or2L1EY=
+	t=1721144384; cv=none; b=C6K8q/1IwvyCmws597wnHjf5wZgxTUbcXCRQ4kQ87zXqyiQq+xCTkZT9v0RgmP82z369oHn5chRaoIOYbgw0ktVX7tyDaFZJgDS3p5Oex6WmuK4bFPd0VArTpUWAEFn7oZFtl1Pjzsc9E9zLbpiS2G5H3DgLlQBI+Cc8d3gsGIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145068; c=relaxed/simple;
-	bh=Inq+bGdkJPUTdRlFj4x0aHcsHvqz+4w4NgnTMVpxXpc=;
+	s=arc-20240116; t=1721144384; c=relaxed/simple;
+	bh=hHlAMpLFJPWXr3joab7VJFgMBi9Fnuq/zJXwac2NdEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSC2ajj2dt06Ok5SsP5RuNeOaZ5C3C82KCDKE983gXawUEtSVMZqdafp01PRYvFMC+y+vZU2Wi6QbXSOYWw5cTNV/hu2CjAFcq/QLq6NjllxEG/flzxvKhFLbt2AEUHqgoe49i+f9o/bfOluJm5zz0ZTgUXoKNUXbSa5w2OlvbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9kp5Ijx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977D7C4AF0B;
-	Tue, 16 Jul 2024 15:51:07 +0000 (UTC)
+	 MIME-Version; b=gSe8hKsdzCaYhJDgjQwW+DsIYDD0KkKbuTT2KOM0kGUlvoMfe2oVmMSKrEW6f6JLBEm59tdlFxCgteLgQ6wYrqrc4xxg5sfr+pcc+xlT+7Cyt9xEbAEtY7V52cTmlXPuZqJ2sz3YPXzf9Qj3yWa9OWSagXnxiYOBE/RsCCE0bR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdyciDwu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E3CC116B1;
+	Tue, 16 Jul 2024 15:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145068;
-	bh=Inq+bGdkJPUTdRlFj4x0aHcsHvqz+4w4NgnTMVpxXpc=;
+	s=korg; t=1721144384;
+	bh=hHlAMpLFJPWXr3joab7VJFgMBi9Fnuq/zJXwac2NdEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9kp5IjxyT4loj/irsmhkIN+9tJ51wfRprKrCkY3GoySCwK+tmxhXP8cXXx0B5UEj
-	 74MpcMAQm46Pg0tBW98yQpElDD7PtIsD+/uODtH5QB3voeL521is3hfQDcZWWdsNl8
-	 2qsVotthG4n161+7iBH2YzZ8cvNvC8YP6mm7wc9I=
+	b=RdyciDwuyZHAtxfs3/hVqPhx0aRGcj3m5vAVKJZt2sLdI3eqQzgmUI6BKUC0S22GZ
+	 ag7Lu8mt75A23F5OVttm1Mcz528bslPegqeZE/DB8AKEwUmuC6hzViQIk6uldHdCyE
+	 adlT/MJANNrY1+BFkES8xZGXahoi+/PmnHjHvnQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nithin Dabilpuram <ndabilpuram@marvell.com>,
+	mingkun bian <bianmingkun@gmail.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Eric Dumazet <edumazet@google.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 060/143] octeontx2-af: replace cpt slot with lf id on reg write
+Subject: [PATCH 5.4 24/78] net: tcp better handling of reordering then loss cases
 Date: Tue, 16 Jul 2024 17:30:56 +0200
-Message-ID: <20240716152758.287982964@linuxfoundation.org>
+Message-ID: <20240716152741.571200655@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +65,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nithin Dabilpuram <ndabilpuram@marvell.com>
+From: Yuchung Cheng <ycheng@google.com>
 
-[ Upstream commit bc35e28af7890085dcbe5cc32373647dfb4d9af9 ]
+[ Upstream commit a29cb6914681a55667436a9eb7a42e28da8cf387 ]
 
-Replace slot id with global CPT lf id on reg read/write as
-CPTPF/VF driver would send slot number instead of global
-lf id in the reg offset. And also update the mailbox response
-with the global lf's register offset.
+This patch aims to improve the situation when reordering and loss are
+ocurring in the same flight of packets.
 
-Fixes: ae454086e3c2 ("octeontx2-af: add mailbox interface for CPT")
-Signed-off-by: Nithin Dabilpuram <ndabilpuram@marvell.com>
+Previously the reordering would first induce a spurious recovery, then
+the subsequent ACK may undo the cwnd (based on the timestamps e.g.).
+However the current loss recovery does not proceed to invoke
+RACK to install a reordering timer. If some packets are also lost, this
+may lead to a long RTO-based recovery. An example is
+https://groups.google.com/g/bbr-dev/c/OFHADvJbTEI
+
+The solution is to after reverting the recovery, always invoke RACK
+to either mount the RACK timer to fast retransmit after the reordering
+window, or restarts the recovery if new loss is identified. Hence
+it is possible the sender may go from Recovery to Disorder/Open to
+Recovery again in one ACK.
+
+Reported-by: mingkun bian <bianmingkun@gmail.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: a6458ab7fd4f ("UPSTREAM: tcp: fix DSACK undo in fast recovery to call tcp_try_to_open()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeontx2/af/rvu_cpt.c   | 23 +++++++++++++------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ net/ipv4/tcp_input.c | 45 +++++++++++++++++++++++++-------------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-index f047185f38e0f..3e09d22858147 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-@@ -696,7 +696,8 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
- 					struct cpt_rd_wr_reg_msg *req,
- 					struct cpt_rd_wr_reg_msg *rsp)
- {
--	int blkaddr;
-+	u64 offset = req->reg_offset;
-+	int blkaddr, lf;
- 
- 	blkaddr = validate_and_get_cpt_blkaddr(req->blkaddr);
- 	if (blkaddr < 0)
-@@ -707,17 +708,25 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
- 	    !is_cpt_vf(rvu, req->hdr.pcifunc))
- 		return CPT_AF_ERR_ACCESS_DENIED;
- 
--	rsp->reg_offset = req->reg_offset;
--	rsp->ret_val = req->ret_val;
--	rsp->is_write = req->is_write;
--
- 	if (!is_valid_offset(rvu, req))
- 		return CPT_AF_ERR_ACCESS_DENIED;
- 
-+	/* Translate local LF used by VFs to global CPT LF */
-+	lf = rvu_get_lf(rvu, &rvu->hw->block[blkaddr], req->hdr.pcifunc,
-+			(offset & 0xFFF) >> 3);
-+
-+	/* Translate local LF's offset to global CPT LF's offset */
-+	offset &= 0xFF000;
-+	offset += lf << 3;
-+
-+	rsp->reg_offset = offset;
-+	rsp->ret_val = req->ret_val;
-+	rsp->is_write = req->is_write;
-+
- 	if (req->is_write)
--		rvu_write64(rvu, blkaddr, req->reg_offset, req->val);
-+		rvu_write64(rvu, blkaddr, offset, req->val);
- 	else
--		rsp->val = rvu_read64(rvu, blkaddr, req->reg_offset);
-+		rsp->val = rvu_read64(rvu, blkaddr, offset);
- 
- 	return 0;
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 0451249c61e27..1097bca0f24fb 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2736,8 +2736,17 @@ static void tcp_process_loss(struct sock *sk, int flag, int num_dupack,
+ 	*rexmit = REXMIT_LOST;
  }
+ 
++static bool tcp_force_fast_retransmit(struct sock *sk)
++{
++	struct tcp_sock *tp = tcp_sk(sk);
++
++	return after(tcp_highest_sack_seq(tp),
++		     tp->snd_una + tp->reordering * tp->mss_cache);
++}
++
+ /* Undo during fast recovery after partial ACK. */
+-static bool tcp_try_undo_partial(struct sock *sk, u32 prior_snd_una)
++static bool tcp_try_undo_partial(struct sock *sk, u32 prior_snd_una,
++				 bool *do_lost)
+ {
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 
+@@ -2762,7 +2771,9 @@ static bool tcp_try_undo_partial(struct sock *sk, u32 prior_snd_una)
+ 		tcp_undo_cwnd_reduction(sk, true);
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPPARTIALUNDO);
+ 		tcp_try_keep_open(sk);
+-		return true;
++	} else {
++		/* Partial ACK arrived. Force fast retransmit. */
++		*do_lost = tcp_force_fast_retransmit(sk);
+ 	}
+ 	return false;
+ }
+@@ -2786,14 +2797,6 @@ static void tcp_identify_packet_loss(struct sock *sk, int *ack_flag)
+ 	}
+ }
+ 
+-static bool tcp_force_fast_retransmit(struct sock *sk)
+-{
+-	struct tcp_sock *tp = tcp_sk(sk);
+-
+-	return after(tcp_highest_sack_seq(tp),
+-		     tp->snd_una + tp->reordering * tp->mss_cache);
+-}
+-
+ /* Process an event, which can update packets-in-flight not trivially.
+  * Main goal of this function is to calculate new estimate for left_out,
+  * taking into account both packets sitting in receiver's buffer and
+@@ -2863,17 +2866,21 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
+ 		if (!(flag & FLAG_SND_UNA_ADVANCED)) {
+ 			if (tcp_is_reno(tp))
+ 				tcp_add_reno_sack(sk, num_dupack, ece_ack);
+-		} else {
+-			if (tcp_try_undo_partial(sk, prior_snd_una))
+-				return;
+-			/* Partial ACK arrived. Force fast retransmit. */
+-			do_lost = tcp_force_fast_retransmit(sk);
+-		}
+-		if (tcp_try_undo_dsack(sk)) {
+-			tcp_try_keep_open(sk);
++		} else if (tcp_try_undo_partial(sk, prior_snd_una, &do_lost))
+ 			return;
+-		}
++
++		if (tcp_try_undo_dsack(sk))
++			tcp_try_keep_open(sk);
++
+ 		tcp_identify_packet_loss(sk, ack_flag);
++		if (icsk->icsk_ca_state != TCP_CA_Recovery) {
++			if (!tcp_time_to_recover(sk, flag))
++				return;
++			/* Undo reverts the recovery state. If loss is evident,
++			 * starts a new recovery (e.g. reordering then loss);
++			 */
++			tcp_enter_recovery(sk, ece_ack);
++		}
+ 		break;
+ 	case TCP_CA_Loss:
+ 		tcp_process_loss(sk, flag, num_dupack, rexmit);
 -- 
 2.43.0
 
