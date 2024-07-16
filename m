@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-59819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3432932BF2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E100932AD5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FB841C22F46
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C01161C229D6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4ED19E827;
-	Tue, 16 Jul 2024 15:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768561DA4D;
+	Tue, 16 Jul 2024 15:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BECP8C33"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSVsEH8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DD527733;
-	Tue, 16 Jul 2024 15:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE68F9E8;
+	Tue, 16 Jul 2024 15:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145007; cv=none; b=FizQajWXDeZovJyKvte8Lyg1uSrHytqt13dhIzNJf5oaw2oRmLoX8Wc7ZlO343AejOn0eqWtHtsKDwJ5R/FEnoQHPaO6vUi9SfGua4bJxqHTiI1EIA/hoz5QU+vroEtdG7gl9rrkilGWcKisP8bN1NNm3xiyb1dgoUrwiLT7Mug=
+	t=1721144319; cv=none; b=dTAg9uHBL5NXTleGeQ5IxkmiEN173JieDwsyy0h2QOa8+LRwZ6x7+HwKN6rwrPzPKiP7ChboP0sZkS67pi1SbR3/o/vmkxp/6DOaLt0hx/2DQqFrzOtt4HubQA7IAUvIneSmw6GnJdpUBsqe31AvM7wm1Y5ydWONwvIAy2fF9Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145007; c=relaxed/simple;
-	bh=njuW7f0YnixF7X0+N2TvmOmUd7VHAjjlw2aw7RYGRcs=;
+	s=arc-20240116; t=1721144319; c=relaxed/simple;
+	bh=SRgAz+L5snsj0m6nElKa4B7R5QzIZFBmMjgSNN3dots=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bt0yextngFV4Oe955S/cvmSbnIly5lgACOaDt14+ZDHvJ1KpkNr6kL5lCmUjkUhzOf7PHxmU/5JPuswF7+7OOdajKHQJ/2JMaA7MYdUgy0lBM0JJUhjz1JnWoqrRfkhelArBSYHiRwA7zXsmITXQpMP/lXlMacITKOAkG/xLJv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BECP8C33; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E76C116B1;
-	Tue, 16 Jul 2024 15:50:06 +0000 (UTC)
+	 MIME-Version; b=Y1DrnHsAgDSvFCBMk2F0E+zs8xgZge0fIlwSDgjlqsEun6GrQvVxKEQ+prNiMNzmiO91SkTaUzFMm4u/lgm5CTDk0KKp4mkURvO3IUd+I7x2kaTqexqRlhOObr8vqD1PBlTloBigRQ0ZpZeuF/SsilDOc7ntYF/NfCxNQ54iX5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSVsEH8Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A774BC116B1;
+	Tue, 16 Jul 2024 15:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145007;
-	bh=njuW7f0YnixF7X0+N2TvmOmUd7VHAjjlw2aw7RYGRcs=;
+	s=korg; t=1721144319;
+	bh=SRgAz+L5snsj0m6nElKa4B7R5QzIZFBmMjgSNN3dots=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BECP8C33F5uhwK56MA0M3/raXk1sMAMrBEP2aKaHgxR3BuNVPRqbY5Uzebp4eY4OH
-	 nbR8P0uMVCU3NIiu/5SWqpNRX/PYXzz99g2teVn7dCxdOd+EGJNAK6ADeZ8n0vf/el
-	 gJ8j/pihV5U73EKfxQ57IuMmdu14AjWgT121chjg=
+	b=eSVsEH8YjncOdbY3BwBPhbcCKyr+G+G/MQJx3al2I7bpWflfGxH4sd82u8WEhtGB8
+	 mHsAmA8L5T3xFb7ckCM5G2aNiF4qrVUFKBNOmLDS/D/DdVsT7m8r/If9LXo+mmCYwh
+	 OhtZG1WN23cqMvgW3THbOe9edodDl//AeKH7GLNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH 6.9 068/143] net: ks8851: Fix potential TX stall after interface reopen
-Date: Tue, 16 Jul 2024 17:31:04 +0200
-Message-ID: <20240716152758.594309082@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Hillf Danton <hdanton@sina.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 33/78] nilfs2: add missing check for inode numbers on directory entries
+Date: Tue, 16 Jul 2024 17:31:05 +0200
+Message-ID: <20240716152741.917789598@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 7a99afef17af66c276c1d6e6f4dbcac223eaf6ac upstream.
+commit bb76c6c274683c8570ad788f79d4b875bde0e458 upstream.
 
-The amount of TX space in the hardware buffer is tracked in the tx_space
-variable. The initial value is currently only set during driver probing.
+Syzbot reported that mounting and unmounting a specific pattern of
+corrupted nilfs2 filesystem images causes a use-after-free of metadata
+file inodes, which triggers a kernel bug in lru_add_fn().
 
-After closing the interface and reopening it the tx_space variable has
-the last value it had before close. If it is smaller than the size of
-the first send packet after reopeing the interface the queue will be
-stopped. The queue is woken up after receiving a TX interrupt but this
-will never happen since we did not send anything.
+As Jan Kara pointed out, this is because the link count of a metadata file
+gets corrupted to 0, and nilfs_evict_inode(), which is called from iput(),
+tries to delete that inode (ifile inode in this case).
 
-This commit moves the initialization of the tx_space variable to the
-ks8851_net_open function right before starting the TX queue. Also query
-the value from the hardware instead of using a hard coded value.
+The inconsistency occurs because directories containing the inode numbers
+of these metadata files that should not be visible in the namespace are
+read without checking.
 
-Only the SPI chip variant is affected by this issue because only this
-driver variant actually depends on the tx_space variable in the xmit
-function.
+Fix this issue by treating the inode numbers of these internal files as
+errors in the sanity check helper when reading directory folios/pages.
 
-Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org # 5.10+
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20240709195845.9089-1-rwahl@gmx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Also thanks to Hillf Danton and Matthew Wilcox for their initial mm-layer
+analysis.
+
+Link: https://lkml.kernel.org/r/20240623051135.4180-3-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d79afb004be235636ee8
+Reported-by: Jan Kara <jack@suse.cz>
+Closes: https://lkml.kernel.org/r/20240617075758.wewhukbrjod5fp5o@quack3
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/micrel/ks8851_common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/dir.c   |    6 ++++++
+ fs/nilfs2/nilfs.h |    5 +++++
+ 2 files changed, 11 insertions(+)
 
---- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -482,6 +482,7 @@ static int ks8851_net_open(struct net_de
- 	ks8851_wrreg16(ks, KS_IER, ks->rc_ier);
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -143,6 +143,9 @@ static bool nilfs_check_page(struct page
+ 			goto Enamelen;
+ 		if (((offs + rec_len - 1) ^ offs) & ~(chunk_size-1))
+ 			goto Espan;
++		if (unlikely(p->inode &&
++			     NILFS_PRIVATE_INODE(le64_to_cpu(p->inode))))
++			goto Einumber;
+ 	}
+ 	if (offs != limit)
+ 		goto Eend;
+@@ -168,6 +171,9 @@ Enamelen:
+ 	goto bad_entry;
+ Espan:
+ 	error = "directory entry across blocks";
++	goto bad_entry;
++Einumber:
++	error = "disallowed inode number";
+ bad_entry:
+ 	nilfs_error(sb,
+ 		    "bad entry in directory #%lu: %s - offset=%lu, inode=%lu, rec_len=%d, name_len=%d",
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -121,6 +121,11 @@ enum {
+ 	((ino) >= NILFS_FIRST_INO(sb) ||				\
+ 	 ((ino) < NILFS_USER_INO && (NILFS_SYS_INO_BITS & BIT(ino))))
  
- 	ks->queued_len = 0;
-+	ks->tx_space = ks8851_rdreg16(ks, KS_TXMIR);
- 	netif_start_queue(ks->netdev);
- 
- 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
-@@ -1101,7 +1102,6 @@ int ks8851_probe_common(struct net_devic
- 	int ret;
- 
- 	ks->netdev = netdev;
--	ks->tx_space = 6144;
- 
- 	ks->gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
- 	ret = PTR_ERR_OR_ZERO(ks->gpio);
++#define NILFS_PRIVATE_INODE(ino) ({					\
++	ino_t __ino = (ino);						\
++	((__ino) < NILFS_USER_INO && (__ino) != NILFS_ROOT_INO &&	\
++	 (__ino) != NILFS_SKETCH_INO); })
++
+ /**
+  * struct nilfs_transaction_info: context information for synchronization
+  * @ti_magic: Magic number
 
 
 
