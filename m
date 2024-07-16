@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-59739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEAC7932B84
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3E2932C06
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF4591C23266
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 283241F20ED2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D1F19B3D3;
-	Tue, 16 Jul 2024 15:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB4A19DF53;
+	Tue, 16 Jul 2024 15:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Lxw0ikK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LV3ayjDY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E05195B27;
-	Tue, 16 Jul 2024 15:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4B417A93F;
+	Tue, 16 Jul 2024 15:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144763; cv=none; b=DyQIeM8dJ59ZC0DP1K0301VyIXwj321cp1hqkgjbm+52OkggfGMz48Nnq9FY8/v2nnhGEBV9CPphUY89cRjbRCQDcd25ZahnuySr2Ij0cKf2nxl4Vcyo2U6qXOXTenH2XujbgcMMa9rvZX78Sc6irQxxc6l0J5hC2+EekzOjhJ8=
+	t=1721145065; cv=none; b=qQXmtq2gAl+LGXBXhfshYEPZdHG8T9an6Dq0mznn4ZsMSRllHIKF9mcWVz4EDvP00OrLTEeLFqBnIoPvxW2xPwSd2HaNnI951B4YYA9QPlmd73jDpbKQRS384Ke9vXHGxxHo837iLaGuhG6MmqPlkBGFmxqWN0MjnxCrSuk0+kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144763; c=relaxed/simple;
-	bh=qhXY+6yPEqPBfZW27k4mD0WT6UpprRY3MWMu4jC1jHE=;
+	s=arc-20240116; t=1721145065; c=relaxed/simple;
+	bh=dPGYHwRyTV075muJGCkO2C6LngU86bwdWlRSx5JzmiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=noD/9Chs4N4rL+1UH/l/kKdawXSMHOwl7eNh1txf3uH3m66dxi4W0wz27N8u16S3J0UE1ENzpvxHK5s5wt0kEPSVDfzYbFXJUtznc16UpIxUS4PosjvQDFFT5Q80cEoHLgZn7vJLo77Jq0m0d+QY+x1f+KDEWkwPWXx8gWBGgoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Lxw0ikK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEE0C116B1;
-	Tue, 16 Jul 2024 15:46:02 +0000 (UTC)
+	 MIME-Version; b=qks2SBWVKnY4LFxiCfyXUQReNQO9nIcAt8arj+YcPgWj7ypzusHQ8jeJpbhtzrbpFIJ5ve6eH6MX1uthi3kwb1wLMeFMG/zzubGie1DJ8114dpJiYCpWCyDfpWt4v4UixPMz3q6faiGQ6jhiwnWS0ZR9/7CrD38M5b0iwRQdy2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LV3ayjDY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A874C116B1;
+	Tue, 16 Jul 2024 15:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144762;
-	bh=qhXY+6yPEqPBfZW27k4mD0WT6UpprRY3MWMu4jC1jHE=;
+	s=korg; t=1721145065;
+	bh=dPGYHwRyTV075muJGCkO2C6LngU86bwdWlRSx5JzmiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Lxw0ikK4QBXN4nYbrLioP2dkSgAXvDHG+X0uEqb0S2M4tSggVW+0JOC+4nI9CIaz
-	 XBZ8yjbCXeY7cpLg9XapUSXg5YsSyuh1SmXiK5spHMdIPhx3KmsYkjD1yLBauJvhB8
-	 Bc93MYbsqKjfijlvV8M4WwQyM0qg/c/WrvfJci4Q=
+	b=LV3ayjDYNw/SbozYr64KqWdtJUpqQuAAgRgBznyMby124lPAjnChU+eqcyoUyxrl7
+	 oPIyHqbphOREbXCyTRkuk3GFVThP7sBqgxV0C+l01wqpvxf/O72VLPW1COlRdrinsh
+	 XsuQHOaqrxEmCAlylwtSkWnF+0qKiMlay/joYe7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 067/108] ethtool: netlink: do not return SQI value if link is down
+	Nhat Pham <nphamcs@gmail.com>,
+	syzbot+b7f13b2d0cc156edf61a@syzkaller.appspotmail.com,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	David Hildenbrand <david@redhat.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Kairui Song <kasong@tencent.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 086/143] cachestat: do not flush stats in recency check
 Date: Tue, 16 Jul 2024 17:31:22 +0200
-Message-ID: <20240716152748.554117362@linuxfoundation.org>
+Message-ID: <20240716152759.281987724@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +71,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Nhat Pham <nphamcs@gmail.com>
 
-[ Upstream commit c184cf94e73b04ff7048d045f5413899bc664788 ]
+commit 5a4d8944d6b1e1aaaa83ea42c116b520b4ed0394 upstream.
 
-Do not attach SQI value if link is down. "SQI values are only valid if
-link-up condition is present" per OpenAlliance specification of
-100Base-T1 Interoperability Test suite [1]. The same rule would apply
-for other link types.
+syzbot detects that cachestat() is flushing stats, which can sleep, in its
+RCU read section (see [1]).  This is done in the workingset_test_recent()
+step (which checks if the folio's eviction is recent).
 
-[1] https://opensig.org/automotive-ethernet-specifications/#
+Move the stat flushing step to before the RCU read section of cachestat,
+and skip stat flushing during the recency check.
 
-Fixes: 806602191592 ("ethtool: provide UAPI for PHY Signal Quality Index (SQI)")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Woojung Huh <woojung.huh@microchip.com>
-Link: https://patch.msgid.link/20240709061943.729381-1-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
+
+Link: https://lkml.kernel.org/r/20240627201737.3506959-1-nphamcs@gmail.com
+Fixes: b00684722262 ("mm: workingset: move the stats flush into workingset_test_recent()")
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+Reported-by: syzbot+b7f13b2d0cc156edf61a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
+Debugged-by: Johannes Weiner <hannes@cmpxchg.org>
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: <stable@vger.kernel.org>	[6.8+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ethtool/linkstate.c | 41 ++++++++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+ include/linux/swap.h |    3 ++-
+ mm/filemap.c         |    5 ++++-
+ mm/workingset.c      |   14 +++++++++++---
+ 3 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
-index fb676f349455a..470582a70ccbe 100644
---- a/net/ethtool/linkstate.c
-+++ b/net/ethtool/linkstate.c
-@@ -36,6 +36,8 @@ static int linkstate_get_sqi(struct net_device *dev)
- 	mutex_lock(&phydev->lock);
- 	if (!phydev->drv || !phydev->drv->get_sqi)
- 		ret = -EOPNOTSUPP;
-+	else if (!phydev->link)
-+		ret = -ENETDOWN;
- 	else
- 		ret = phydev->drv->get_sqi(phydev);
- 	mutex_unlock(&phydev->lock);
-@@ -54,6 +56,8 @@ static int linkstate_get_sqi_max(struct net_device *dev)
- 	mutex_lock(&phydev->lock);
- 	if (!phydev->drv || !phydev->drv->get_sqi_max)
- 		ret = -EOPNOTSUPP;
-+	else if (!phydev->link)
-+		ret = -ENETDOWN;
- 	else
- 		ret = phydev->drv->get_sqi_max(phydev);
- 	mutex_unlock(&phydev->lock);
-@@ -61,6 +65,17 @@ static int linkstate_get_sqi_max(struct net_device *dev)
- 	return ret;
- };
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -344,7 +344,8 @@ static inline swp_entry_t page_swap_entr
+ }
  
-+static bool linkstate_sqi_critical_error(int sqi)
-+{
-+	return sqi < 0 && sqi != -EOPNOTSUPP && sqi != -ENETDOWN;
-+}
+ /* linux/mm/workingset.c */
+-bool workingset_test_recent(void *shadow, bool file, bool *workingset);
++bool workingset_test_recent(void *shadow, bool file, bool *workingset,
++				bool flush);
+ void workingset_age_nonresident(struct lruvec *lruvec, unsigned long nr_pages);
+ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg);
+ void workingset_refault(struct folio *folio, void *shadow);
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -4153,6 +4153,9 @@ static void filemap_cachestat(struct add
+ 	XA_STATE(xas, &mapping->i_pages, first_index);
+ 	struct folio *folio;
+ 
++	/* Flush stats (and potentially sleep) outside the RCU read section. */
++	mem_cgroup_flush_stats_ratelimited(NULL);
 +
-+static bool linkstate_sqi_valid(struct linkstate_reply_data *data)
-+{
-+	return data->sqi >= 0 && data->sqi_max >= 0 &&
-+	       data->sqi <= data->sqi_max;
-+}
-+
- static int linkstate_get_link_ext_state(struct net_device *dev,
- 					struct linkstate_reply_data *data)
+ 	rcu_read_lock();
+ 	xas_for_each(&xas, folio, last_index) {
+ 		int order;
+@@ -4216,7 +4219,7 @@ static void filemap_cachestat(struct add
+ 					goto resched;
+ 			}
+ #endif
+-			if (workingset_test_recent(shadow, true, &workingset))
++			if (workingset_test_recent(shadow, true, &workingset, false))
+ 				cs->nr_recently_evicted += nr_pages;
+ 
+ 			goto resched;
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -412,10 +412,12 @@ void *workingset_eviction(struct folio *
+  * @file: whether the corresponding folio is from the file lru.
+  * @workingset: where the workingset value unpacked from shadow should
+  * be stored.
++ * @flush: whether to flush cgroup rstat.
+  *
+  * Return: true if the shadow is for a recently evicted folio; false otherwise.
+  */
+-bool workingset_test_recent(void *shadow, bool file, bool *workingset)
++bool workingset_test_recent(void *shadow, bool file, bool *workingset,
++				bool flush)
  {
-@@ -92,12 +107,12 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
- 	data->link = __ethtool_get_link(dev);
+ 	struct mem_cgroup *eviction_memcg;
+ 	struct lruvec *eviction_lruvec;
+@@ -467,10 +469,16 @@ bool workingset_test_recent(void *shadow
  
- 	ret = linkstate_get_sqi(dev);
--	if (ret < 0 && ret != -EOPNOTSUPP)
-+	if (linkstate_sqi_critical_error(ret))
- 		goto out;
- 	data->sqi = ret;
+ 	/*
+ 	 * Flush stats (and potentially sleep) outside the RCU read section.
++	 *
++	 * Note that workingset_test_recent() itself might be called in RCU read
++	 * section (for e.g, in cachestat) - these callers need to skip flushing
++	 * stats (via the flush argument).
++	 *
+ 	 * XXX: With per-memcg flushing and thresholding, is ratelimiting
+ 	 * still needed here?
+ 	 */
+-	mem_cgroup_flush_stats_ratelimited(eviction_memcg);
++	if (flush)
++		mem_cgroup_flush_stats_ratelimited(eviction_memcg);
  
- 	ret = linkstate_get_sqi_max(dev);
--	if (ret < 0 && ret != -EOPNOTSUPP)
-+	if (linkstate_sqi_critical_error(ret))
- 		goto out;
- 	data->sqi_max = ret;
+ 	eviction_lruvec = mem_cgroup_lruvec(eviction_memcg, pgdat);
+ 	refault = atomic_long_read(&eviction_lruvec->nonresident_age);
+@@ -558,7 +566,7 @@ void workingset_refault(struct folio *fo
  
-@@ -122,11 +137,10 @@ static int linkstate_reply_size(const struct ethnl_req_info *req_base,
- 	len = nla_total_size(sizeof(u8)) /* LINKSTATE_LINK */
- 		+ 0;
+ 	mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + file, nr);
  
--	if (data->sqi != -EOPNOTSUPP)
--		len += nla_total_size(sizeof(u32));
--
--	if (data->sqi_max != -EOPNOTSUPP)
--		len += nla_total_size(sizeof(u32));
-+	if (linkstate_sqi_valid(data)) {
-+		len += nla_total_size(sizeof(u32)); /* LINKSTATE_SQI */
-+		len += nla_total_size(sizeof(u32)); /* LINKSTATE_SQI_MAX */
-+	}
+-	if (!workingset_test_recent(shadow, file, &workingset))
++	if (!workingset_test_recent(shadow, file, &workingset, true))
+ 		return;
  
- 	if (data->link_ext_state_provided)
- 		len += nla_total_size(sizeof(u8)); /* LINKSTATE_EXT_STATE */
-@@ -147,13 +161,14 @@ static int linkstate_fill_reply(struct sk_buff *skb,
- 	    nla_put_u8(skb, ETHTOOL_A_LINKSTATE_LINK, !!data->link))
- 		return -EMSGSIZE;
- 
--	if (data->sqi != -EOPNOTSUPP &&
--	    nla_put_u32(skb, ETHTOOL_A_LINKSTATE_SQI, data->sqi))
--		return -EMSGSIZE;
-+	if (linkstate_sqi_valid(data)) {
-+		if (nla_put_u32(skb, ETHTOOL_A_LINKSTATE_SQI, data->sqi))
-+			return -EMSGSIZE;
- 
--	if (data->sqi_max != -EOPNOTSUPP &&
--	    nla_put_u32(skb, ETHTOOL_A_LINKSTATE_SQI_MAX, data->sqi_max))
--		return -EMSGSIZE;
-+		if (nla_put_u32(skb, ETHTOOL_A_LINKSTATE_SQI_MAX,
-+				data->sqi_max))
-+			return -EMSGSIZE;
-+	}
- 
- 	if (data->link_ext_state_provided) {
- 		if (nla_put_u8(skb, ETHTOOL_A_LINKSTATE_EXT_STATE,
--- 
-2.43.0
-
+ 	folio_set_active(folio);
 
 
 
