@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-60049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9EB932D25
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 173D9932C63
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 815EA1C2197C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48A961C23206
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49F119AD5A;
-	Tue, 16 Jul 2024 16:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C06619DF73;
+	Tue, 16 Jul 2024 15:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXYF2Qo0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXSoVsP5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724F71DDCE;
-	Tue, 16 Jul 2024 16:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DD219AD93;
+	Tue, 16 Jul 2024 15:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145702; cv=none; b=dal2wB8qESxICrnDFafrtVmUqwy8ZpSqVZOEAIi0xXQVGwIjdA5AqQ2cnhyZ6fZ2vXbcEDCiKSQgVF/JGZSYEnhFrtyF+GQynWoCW2GzbHrshLKHxUZNdeeDvcS6WH0Y6AHY31uREJ+A5bt1mX3/itaBmpijBi68LpczTEULLuw=
+	t=1721145286; cv=none; b=cm9QvlUXGlyUuDbR3RWepOtUvMNwAjisjFJe5jGIlFilJr3O4diaX44CUOGfo2f9eAZ2H0bvjGx9P2MGEQ2ipSrX68Bxn9z2J4oAT6oPb91itI72EP2HtZJPXEjO/Egz1QdsM/i0wOv3JKSKLvvycOu3CXKQJZrkkaexzLsnXDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145702; c=relaxed/simple;
-	bh=ZP1m4zw+XEm3kuHTQzxBkipjMvjIqu29+mDUegnL0Cc=;
+	s=arc-20240116; t=1721145286; c=relaxed/simple;
+	bh=3HTwdN1/kQhaOPQGp4ZHZJ1ltUPOLz+/ATpvi5MhLXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEMxK2Am1G4vLtygaN3fuBt3s87sXHuElhx+IG30E63NM+3Z/MTzoLAw+QNoGcTS6ydU+adNQJI1zs/dnHpC8PXgAvQVudicXnaOrvfL1q9T2SBkhXnPKdxbSJuCf7c0qm7CUWQgwItqoQZBQoZodWCTspSEVESUB7AFmM1kbxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXYF2Qo0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71F8C116B1;
-	Tue, 16 Jul 2024 16:01:41 +0000 (UTC)
+	 MIME-Version; b=U9mfevyu6yCdCrp15FpazpUpaRpmry30J2ydtHgHCmVyEl4lqvEGlT5sIXHLZAqfxy6TB/uhiEHwvj/QyeaUcmPLcgO6PRYB4Rf2xLn4AcV8wbPfwkDjsIOz0IB88OJkqBCEwAgyAUBQ/7BV7Yq1MV8UyMqxJcbpk8hPs+zeycs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXSoVsP5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17EFC116B1;
+	Tue, 16 Jul 2024 15:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145702;
-	bh=ZP1m4zw+XEm3kuHTQzxBkipjMvjIqu29+mDUegnL0Cc=;
+	s=korg; t=1721145286;
+	bh=3HTwdN1/kQhaOPQGp4ZHZJ1ltUPOLz+/ATpvi5MhLXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TXYF2Qo0tkdlu17mpxA9WjKmEaT31t2+Z5w+1ShtT9qiFAulFhYIif6+p8TFErQX/
-	 mnMUG2WGFOZC8CiRe48i8qvVtxG7RK/HW0/jA/4ADGkjcEo8VwgwyCn4JFmWzqkZbu
-	 9zxiXRBBW2YWdNqyw/qnDf+6cXqCIB9NnABRAwr0=
+	b=FXSoVsP57v7A3KNEpwSKxIqiZR50XhWcH6XTgtj3DiC1FcvUdrotGN8FGIdBDL316
+	 2gvrapb1OxqKUev5gvnp9Tm8xkRewraa7d4w+uhx/eYG5hTVQUM+k3BfLmjVbx/TBB
+	 /KegkmCc5GxDZqb0ev74Nn0ydPiYHckEHt2rhDIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Perches <joe@perches.com>,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Hugh Dickins <hughd@google.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/121] net: ethernet: lantiq_etop: fix double free in detach
+Subject: [PATCH 6.1 16/96] net: fix rc7s __skb_datagram_iter()
 Date: Tue, 16 Jul 2024 17:31:27 +0200
-Message-ID: <20240716152752.292522455@linuxfoundation.org>
+Message-ID: <20240716152747.140896518@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Hugh Dickins <hughd@google.com>
 
-[ Upstream commit e1533b6319ab9c3a97dad314dd88b3783bc41b69 ]
+[ Upstream commit f153831097b4435f963e385304cc0f1acba1c657 ]
 
-The number of the currently released descriptor is never incremented
-which results in the same skb being released multiple times.
+X would not start in my old 32-bit partition (and the "n"-handling looks
+just as wrong on 64-bit, but for whatever reason did not show up there):
+"n" must be accumulated over all pages before it's added to "offset" and
+compared with "copy", immediately after the skb_frag_foreach_page() loop.
 
-Fixes: 504d4721ee8e ("MIPS: Lantiq: Add ethernet driver")
-Reported-by: Joe Perches <joe@perches.com>
-Closes: https://lore.kernel.org/all/fc1bf93d92bb5b2f99c6c62745507cc22f3a7b2d.camel@perches.com/
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240708205826.5176-1-olek2@wp.pl
+Fixes: d2d30a376d9c ("net: allow skb_datagram_iter to be called from any context")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Link: https://patch.msgid.link/fef352e8-b89a-da51-f8ce-04bc39ee6481@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/lantiq_etop.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/datagram.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index f5961bdcc4809..61baf1da76eea 100644
---- a/drivers/net/ethernet/lantiq_etop.c
-+++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -217,9 +217,9 @@ ltq_etop_free_channel(struct net_device *dev, struct ltq_etop_chan *ch)
- 	if (ch->dma.irq)
- 		free_irq(ch->dma.irq, priv);
- 	if (IS_RX(ch->idx)) {
--		int desc;
-+		struct ltq_dma_channel *dma = &ch->dma;
+diff --git a/net/core/datagram.c b/net/core/datagram.c
+index cdd65ca3124a4..87c39cc12327f 100644
+--- a/net/core/datagram.c
++++ b/net/core/datagram.c
+@@ -441,11 +441,12 @@ static int __skb_datagram_iter(const struct sk_buff *skb, int offset,
+ 			if (copy > len)
+ 				copy = len;
  
--		for (desc = 0; desc < LTQ_DESC_NUM; desc++)
-+		for (dma->desc = 0; dma->desc < LTQ_DESC_NUM; dma->desc++)
- 			dev_kfree_skb_any(ch->skb[ch->dma.desc]);
- 	}
- }
++			n = 0;
+ 			skb_frag_foreach_page(frag,
+ 					      skb_frag_off(frag) + offset - start,
+ 					      copy, p, p_off, p_len, copied) {
+ 				vaddr = kmap_local_page(p);
+-				n = INDIRECT_CALL_1(cb, simple_copy_to_iter,
++				n += INDIRECT_CALL_1(cb, simple_copy_to_iter,
+ 					vaddr + p_off, p_len, data, to);
+ 				kunmap_local(vaddr);
+ 			}
 -- 
 2.43.0
 
