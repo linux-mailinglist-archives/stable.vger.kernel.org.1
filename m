@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-59886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EAFF932C44
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:53:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C66DF932CB0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55AE01C22C31
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:53:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 701631F24616
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BEB19DF75;
-	Tue, 16 Jul 2024 15:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B394519E7D0;
+	Tue, 16 Jul 2024 15:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epPhfuke"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVAF8nnh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2853017A93F;
-	Tue, 16 Jul 2024 15:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709CF1DDCE;
+	Tue, 16 Jul 2024 15:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145209; cv=none; b=nF6DA6pn1IovSaEAFSgTYd/YWz/AY4uSbV05z65aOhqm8caAU9rC0qhrluw7u3e+5znAiF34DM3OMXO6go+N8vPcadVBCdjDqQyTi9oogW73d1/03DhFQeiFVHwkLV6oZHpVlAWJVogiG/YL0kxIqea2jmJf4V8Ionk+pWGAPVs=
+	t=1721145422; cv=none; b=Gugze8g3WV7w5gUfaCd4/k7/JM55K8LN5Jo6cAmYu+O15bGg9wbq8bc8rg7O/DtEtWFyRRENcaEBSBH+Tcl8cNu649FLgoE3sPapMByp0IEbzV02DrP/IbwNupf8Jyx4LIvkRGrt88qKboLdxSUMTMxUkUf5R33X0tRllK+bXKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145209; c=relaxed/simple;
-	bh=+VhqDU8Ycv9I63f+rl4TxSh13c//1FVx1rJ/HcaJ2zw=;
+	s=arc-20240116; t=1721145422; c=relaxed/simple;
+	bh=G+3jZBgfGyx6+kLsouBUkiW2lBCK+8ZvSzFy0uwSk3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dGYqtTW1EAGHKf+u5VJVPdcYcM2mcOecP3Gez67SmvsEzd/GMmV3/vGdG2HU6IjLB7XST66wLQVV2yLBdXkKnjGCzFCGB+olQlkI+BFeNdka3/3XfcvVVfCxJr+dzcsFyVqy7un2ICx4KYaqzT1mXQ8wiwnmPIUchCT9LPz5DcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epPhfuke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A322EC116B1;
-	Tue, 16 Jul 2024 15:53:28 +0000 (UTC)
+	 MIME-Version; b=Y9W90kEH+rQiWTi9DF586vmNqU0FOcJ+iJ0O5jy7cAfb5u+8PbxN+qNQo7JksY73ZFbqYmwAa+dyA3GrWjrBXr51rrOCBzBOja1+5KLTW4D2/6CJxBgygSGm7iifURz6knfdI/n+BGQuvvHP63Nq+0nnbbUIN8EjiyQW4i9pCSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVAF8nnh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C8AC116B1;
+	Tue, 16 Jul 2024 15:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145209;
-	bh=+VhqDU8Ycv9I63f+rl4TxSh13c//1FVx1rJ/HcaJ2zw=;
+	s=korg; t=1721145422;
+	bh=G+3jZBgfGyx6+kLsouBUkiW2lBCK+8ZvSzFy0uwSk3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=epPhfukeBW/UTjGnPydzNgqiNIcYoabmdc50ee/OGE6KvEjgb7K7u0kEh2EkuHQ2E
-	 0GqgMbH9DTU9+ApAexWdgpJjJiVIN0bii50DENYbIrXEdzYHrHCUSdtARLpt8KI90q
-	 YGFsl30C7gS4trbFf5n25L/bXDuxUqCqbaqjW6uM=
+	b=lVAF8nnhwOrf41tLguqxyycbkHkFgSPU1YqAUkAEzYRosbH3stPWnRC6dTA9GNATB
+	 CAbQ+aG5UJFWggEypFg9iy3vEaBYjJ4wQDhrEoOwqCD/VP90SqbO13tGQeuzkOojGC
+	 OkiHYlM+99+HqoxffpnIsUu/cTsgrJWKCvQEqSmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"sashal@kernel.org, tytso@mit.edu, jack@suse.cz, patches@lists.linux.dev, yi.zhang@huawei.com, yangerkun@huawei.com, libaokun@huaweicloud.com, Baokun Li" <libaokun1@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>
-Subject: [PATCH 6.9 134/143] ext4: avoid ptr null pointer dereference
+	Alan Stern <stern@rowland.harvard.edu>,
+	Oliver Neukum <oneukum@suse.com>,
+	syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 59/96] USB: core: Fix duplicate endpoint bug by clearing reserved bits in the descriptor
 Date: Tue, 16 Jul 2024 17:32:10 +0200
-Message-ID: <20240716152801.150173479@linuxfoundation.org>
+Message-ID: <20240716152748.776508588@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-When commit 13df4d44a3aa ("ext4: fix slab-out-of-bounds in
-ext4_mb_find_good_group_avg_frag_lists()") was backported to stable, the
-commit f536808adcc3 ("ext4: refactor out ext4_generic_attr_store()") that
-uniformly determines if the ptr is null is not merged in, so it needs to
-be judged whether ptr is null or not in each case of the switch, otherwise
-null pointer dereferencing may occur.
+commit a368ecde8a5055b627749b09c6218ef793043e47 upstream.
 
-Fixes: b829687ae122 ("ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Syzbot has identified a bug in usbcore (see the Closes: tag below)
+caused by our assumption that the reserved bits in an endpoint
+descriptor's bEndpointAddress field will always be 0.  As a result of
+the bug, the endpoint_is_duplicate() routine in config.c (and possibly
+other routines as well) may believe that two descriptors are for
+distinct endpoints, even though they have the same direction and
+endpoint number.  This can lead to confusion, including the bug
+identified by syzbot (two descriptors with matching endpoint numbers
+and directions, where one was interrupt and the other was bulk).
+
+To fix the bug, we will clear the reserved bits in bEndpointAddress
+when we parse the descriptor.  (Note that both the USB-2.0 and USB-3.1
+specs say these bits are "Reserved, reset to zero".)  This requires us
+to make a copy of the descriptor earlier in usb_parse_endpoint() and
+use the copy instead of the original when checking for duplicates.
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-and-tested-by: syzbot+8693a0bb9c10b554272a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/0000000000003d868e061bc0f554@google.com/
+Fixes: 0a8fd1346254 ("USB: fix problems with duplicate endpoint addresses")
+CC: Oliver Neukum <oneukum@suse.com>
+CC: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/205a5edc-7fef-4159-b64a-80374b6b101a@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/sysfs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/core/config.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -473,6 +473,8 @@ static ssize_t ext4_attr_store(struct ko
- 			*((unsigned int *) ptr) = t;
- 		return len;
- 	case attr_clusters_in_group:
-+		if (!ptr)
-+			return 0;
- 		ret = kstrtouint(skip_spaces(buf), 0, &t);
- 		if (ret)
- 			return ret;
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -291,6 +291,20 @@ static int usb_parse_endpoint(struct dev
+ 	if (ifp->desc.bNumEndpoints >= num_ep)
+ 		goto skip_to_next_endpoint_or_interface_descriptor;
+ 
++	/* Save a copy of the descriptor and use it instead of the original */
++	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
++	memcpy(&endpoint->desc, d, n);
++	d = &endpoint->desc;
++
++	/* Clear the reserved bits in bEndpointAddress */
++	i = d->bEndpointAddress &
++			(USB_ENDPOINT_DIR_MASK | USB_ENDPOINT_NUMBER_MASK);
++	if (i != d->bEndpointAddress) {
++		dev_notice(ddev, "config %d interface %d altsetting %d has an endpoint descriptor with address 0x%X, changing to 0x%X\n",
++		    cfgno, inum, asnum, d->bEndpointAddress, i);
++		endpoint->desc.bEndpointAddress = i;
++	}
++
+ 	/* Check for duplicate endpoint addresses */
+ 	if (config_endpoint_is_duplicate(config, inum, asnum, d)) {
+ 		dev_notice(ddev, "config %d interface %d altsetting %d has a duplicate endpoint with address 0x%X, skipping\n",
+@@ -308,10 +322,8 @@ static int usb_parse_endpoint(struct dev
+ 		}
+ 	}
+ 
+-	endpoint = &ifp->endpoint[ifp->desc.bNumEndpoints];
++	/* Accept this endpoint */
+ 	++ifp->desc.bNumEndpoints;
+-
+-	memcpy(&endpoint->desc, d, n);
+ 	INIT_LIST_HEAD(&endpoint->urb_list);
+ 
+ 	/*
 
 
 
