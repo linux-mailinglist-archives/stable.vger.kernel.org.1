@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-59928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E676932C81
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58388932B00
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 075F6285518
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13D2E282967
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0483C19DF73;
-	Tue, 16 Jul 2024 15:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF111E895;
+	Tue, 16 Jul 2024 15:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJfqJiFp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oxrl47NG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A6819EEA1;
-	Tue, 16 Jul 2024 15:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD3AB641;
+	Tue, 16 Jul 2024 15:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145333; cv=none; b=iJv5BJcac5gpGlTxBCLrtwDCkXAN+mnLfPqLrUSSRPIHiaFVKt49g+G87ZGTL+ARiUmNq14H73KWqzfkYKB4D8v+DnZHUR6oU+NM+tyR2f4x+AQEhwe2/++owObIgbnykw8DLhT2sho2gXyIKTWnPWEXZko0NrBFdPdxe8bK1lA=
+	t=1721144426; cv=none; b=YYmbNH7rCsUIkvTeMHQ2ipQ7XG9PPYopPoEVJEKbl1cp/R2e16WFWkfv03iB5AY2CwV5PTqETpxnpzFSRWAG/N6Cs9Yc8FM/nJk4zKcmxvJkJokkOVfZ86+DSsuJ4DlT3946d1/vwj4VAbLkWBIReb8nTjOAlooLRsRRE2VBLpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145333; c=relaxed/simple;
-	bh=5pK/tMVTcYSg84XVui0HoXD1gkCHb7FvcWh59nWHyJI=;
+	s=arc-20240116; t=1721144426; c=relaxed/simple;
+	bh=JkdsvQDjr6ytp8ycS5vB/Eymil4hWEsDXZWXDIYx4WQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2+0GTrtgw+hM5Ts75/KPsoHQLM/993ura4Czbd86FMEDqLahpP2S4y+6Gi7jije+55bh8Ii1ry/RlaViIhPimyhIaj6pGHr2qXxW/TIrqJj5HBoAljO69056RDiVqNVv/IeA4coptlDra20c8O4N6d9gwumJN+keGOQf4Fmyi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJfqJiFp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE00C116B1;
-	Tue, 16 Jul 2024 15:55:33 +0000 (UTC)
+	 MIME-Version; b=KXY5BxcyN5XVrRGpxY9qxNIi3gx/QBEff9EBmSRvGs2muHkb99eUQPdpUfcUYFai6IoEvAVc6YOK+NbfBTY8trrFmyz3Zgh8JgPhGCYsQI3/9SRQXShFY9oUehUTlcJP1JXaYU5u4+IIQ4DsDTfSjo4uHls0E+rIRwBnJ2WM3iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oxrl47NG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FD4C116B1;
+	Tue, 16 Jul 2024 15:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145333;
-	bh=5pK/tMVTcYSg84XVui0HoXD1gkCHb7FvcWh59nWHyJI=;
+	s=korg; t=1721144426;
+	bh=JkdsvQDjr6ytp8ycS5vB/Eymil4hWEsDXZWXDIYx4WQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJfqJiFpuXsarGAeMQbF1SLI04MRgodHRaVPlx3O3Vbgeq2jTg1z5qIcpBQGu/Wav
-	 wK0a5AyHhzwmcWi/6uA2ZrK9momSToEYR76ovVbX10AvvrpRn8TDlbK4p34cHlhn6g
-	 2QvBrgnZFlMYqHzwYFRqtixo69UfZxnKALMVEJQA=
+	b=Oxrl47NG2DkK9DlP0k9E4xf25fhKLyOowr6ic7Oy62Q/O9j9am7rRI40g/fau5gru
+	 xGGedxivG+MoFoqBfwsEqpJPT3TBJMKUJuFYYpwK+EbYEvGShe8zfzChqKBcxSlamK
+	 5wiN41XnG4HjUaQk/79l/Mal3zqo1649YzorSKmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/96] s390: Mark psw in __load_psw_mask() as __unitialized
+	Joy Chakraborty <joychakr@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5.4 69/78] nvmem: meson-efuse: Fix return value of nvmem callbacks
 Date: Tue, 16 Jul 2024 17:31:41 +0200
-Message-ID: <20240716152747.672325176@linuxfoundation.org>
+Message-ID: <20240716152743.312050669@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Joy Chakraborty <joychakr@google.com>
 
-[ Upstream commit 7278a8fb8d032dfdc03d9b5d17e0bc451cdc1492 ]
+commit 7a0a6d0a7c805f9380381f4deedffdf87b93f408 upstream.
 
-Without __unitialized, the following code is generated when
-INIT_STACK_ALL_ZERO is enabled:
+Read/write callbacks registered with nvmem core expect 0 to be returned
+on success and a negative value to be returned on failure.
 
-86: d7 0f f0 a0 f0 a0     xc      160(16,%r15), 160(%r15)
-8c: e3 40 f0 a0 00 24     stg     %r4, 160(%r15)
-92: c0 10 00 00 00 08     larl    %r1, 0xa2
-98: e3 10 f0 a8 00 24     stg     %r1, 168(%r15)
-9e: b2 b2 f0 a0           lpswe   160(%r15)
+meson_efuse_read() and meson_efuse_write() call into
+meson_sm_call_read() and meson_sm_call_write() respectively which return
+the number of bytes read or written on success as per their api
+description.
 
-The xc is not adding any security because psw is fully initialized
-with the following instructions. Add __unitialized to the psw
-definitiation to avoid the superfluous clearing of psw.
+Fix to return error if meson_sm_call_read()/meson_sm_call_write()
+returns an error else return 0.
 
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a29a63bdaf6f ("nvmem: meson-efuse: simplify read callback")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joy Chakraborty <joychakr@google.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240628113704.13742-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/processor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/meson-efuse.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
-index c907f747d2a04..26861b09293f1 100644
---- a/arch/s390/include/asm/processor.h
-+++ b/arch/s390/include/asm/processor.h
-@@ -250,8 +250,8 @@ static inline void __load_psw(psw_t psw)
-  */
- static __always_inline void __load_psw_mask(unsigned long mask)
+--- a/drivers/nvmem/meson-efuse.c
++++ b/drivers/nvmem/meson-efuse.c
+@@ -18,18 +18,24 @@ static int meson_efuse_read(void *contex
+ 			    void *val, size_t bytes)
  {
-+	psw_t psw __uninitialized;
- 	unsigned long addr;
--	psw_t psw;
+ 	struct meson_sm_firmware *fw = context;
++	int ret;
  
- 	psw.mask = mask;
+-	return meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
+-				  bytes, 0, 0, 0);
++	ret = meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
++				 bytes, 0, 0, 0);
++
++	return ret < 0 ? ret : 0;
+ }
  
--- 
-2.43.0
-
+ static int meson_efuse_write(void *context, unsigned int offset,
+ 			     void *val, size_t bytes)
+ {
+ 	struct meson_sm_firmware *fw = context;
++	int ret;
++
++	ret = meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
++				  bytes, 0, 0, 0);
+ 
+-	return meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
+-				   bytes, 0, 0, 0);
++	return ret < 0 ? ret : 0;
+ }
+ 
+ static const struct of_device_id meson_efuse_match[] = {
 
 
 
