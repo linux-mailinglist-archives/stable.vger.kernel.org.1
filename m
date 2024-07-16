@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-60063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1C3932D33
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B099F932CB3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0951A284B2A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E19F31C2095A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23E417623C;
-	Tue, 16 Jul 2024 16:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF3A19E7EB;
+	Tue, 16 Jul 2024 15:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXwR4Ov0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2XKGdU7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7047B1DDCE;
-	Tue, 16 Jul 2024 16:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D3E1DDCE;
+	Tue, 16 Jul 2024 15:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145743; cv=none; b=HtRCnADBwELZ5TpTNUfPm+3EVOexdOnlEkwRKxqUalVqWG3qrPg3DbqQTppfVc7QFKoS+Y2kKrfFcCP/xe7ekeQdio9vvaLFeX1O9I+/y/XFYDeXCdnx4kLPQR9EtDLy5KYOEiYFRAmOv/lLTiBrTTpLr0lfIvCN8FF0F1N/5YM=
+	t=1721145431; cv=none; b=XaHEOiev8Me5hYdDW+Ki2UOMa0qMbj+nBNquUdP0rHNkc5Rj+1cvvog59bvQp+oJFxNowSifgploXUeau8N1Jag4v+O24HJ2wlNK0YpRhjV0Wz9SUbJnMjhyL2Xq7LLBwANe89nez+1g1clhy6qJuSamJ0ugRHq9It7QCJRCfz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145743; c=relaxed/simple;
-	bh=EhHyXhOIZq/4TAQo8wMAXI+GQGXqxBO7P11+Fd9D27c=;
+	s=arc-20240116; t=1721145431; c=relaxed/simple;
+	bh=jtslgVwOjrUfkJmgTvSbKt1ydb6EPZovkNR4yjaCCv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvGKWRSONZu+IrLWmG8PUkzFGxow1+T/eI+x3TnuV2l3G8ycoj4e7ppXh7A85Q+s41F+4gRhQiku8Nax4wElv8sDnLeMryDtBhF8OnHFioP9Q4sCTvVPkt0ZDN0YwEkxv/UlowKRnJFtsOrT38tCd565eQGokbIXEyu/OLCHQPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXwR4Ov0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB001C116B1;
-	Tue, 16 Jul 2024 16:02:22 +0000 (UTC)
+	 MIME-Version; b=p4tuDrc4py5tOstaTD1ve33Q0nrKDkwTEuutpbcRcOw4lcynYgI4guvQAtRG0vUlUhvbpr268RwIlmtPtYKc1P8McZLTbeRwOijLeWrL9bwv0QBN0d7Mi7M4/bK8j5tigolZ4O85ban11sxHD/ey3PKBx4sPimw4BZFqdvaivsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2XKGdU7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10B5C116B1;
+	Tue, 16 Jul 2024 15:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145743;
-	bh=EhHyXhOIZq/4TAQo8wMAXI+GQGXqxBO7P11+Fd9D27c=;
+	s=korg; t=1721145431;
+	bh=jtslgVwOjrUfkJmgTvSbKt1ydb6EPZovkNR4yjaCCv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DXwR4Ov0ttxzgPLg4i+LNDmYfvAjKPZ0nnJ36oPoJBD3KWCqwO9ALz0xEscQgSLo8
-	 toILKRfmMhLu4KjACaD4ZnkS7LwCTopNeP01LGLbavGeRjOIJ+8t3pujAFgVP5uo41
-	 99Lz43PyTuplrIgR3T9HurGfLGkadCPoYQaQsLSA=
+	b=Y2XKGdU75gjN8nAPZBxIEnlaZmE9f/jIxUoeLJyqHYhzfcjRVpATD6PS0Ak/L48m3
+	 MsX6HwsMKZao3zz2+7GS9R1cRaKvQJeiJ9p4jay9XpczglOrOmsERKTgqLR5DteDAO
+	 98N2AAk9sw8+MeCAHBbuHXT0T5LbdDWFr50aG+7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Remi Pommarel <repk@triplefau.lt>,
 	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 070/121] xhci: always resume roothubs if xHC was reset during resume
+Subject: [PATCH 6.1 61/96] xhci: always resume roothubs if xHC was reset during resume
 Date: Tue, 16 Jul 2024 17:32:12 +0200
-Message-ID: <20240716152754.022191726@linuxfoundation.org>
+Message-ID: <20240716152748.853638124@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -99,7 +99,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/usb/host/xhci.c
 +++ b/drivers/usb/host/xhci.c
-@@ -1084,10 +1084,20 @@ int xhci_resume(struct xhci_hcd *xhci, p
+@@ -1247,10 +1247,20 @@ int xhci_resume(struct xhci_hcd *xhci, b
  			xhci_dbg(xhci, "Start the secondary HCD\n");
  			retval = xhci_run(xhci->shared_hcd);
  		}
@@ -122,7 +122,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		goto done;
  	}
  
-@@ -1111,7 +1121,6 @@ int xhci_resume(struct xhci_hcd *xhci, p
+@@ -1274,7 +1284,6 @@ int xhci_resume(struct xhci_hcd *xhci, b
  
  	xhci_dbc_resume(xhci);
  
@@ -130,7 +130,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	if (retval == 0) {
  		/*
  		 * Resume roothubs only if there are pending events.
-@@ -1137,6 +1146,7 @@ int xhci_resume(struct xhci_hcd *xhci, p
+@@ -1293,6 +1302,7 @@ int xhci_resume(struct xhci_hcd *xhci, b
  			usb_hcd_resume_root_hub(hcd);
  		}
  	}
