@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-59730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E844932B7B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E25932C23
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 801B51C22D72
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D72E02850D5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA3A17A93F;
-	Tue, 16 Jul 2024 15:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3190319E7D3;
+	Tue, 16 Jul 2024 15:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqZVpwtr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNZPIS2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFA61EA73;
-	Tue, 16 Jul 2024 15:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E619A19DF53;
+	Tue, 16 Jul 2024 15:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144736; cv=none; b=EieJ3zsWcVctFQhcEteZ1gbANTY4N5YAiwaciAOAmXimSG/pIgypF0tDJCKEB4MCduWfTlROcC71CP7Z30KeKZwhKAl8YJFh2a8qekAqJzQ+2ofBo/n/pcLGAVJ9O1pl9x6FU/udFZg2kNw4DS7r8ddUL42FxhxqtBQR+qQnUmo=
+	t=1721145124; cv=none; b=E+e85T86HtY9WLP2Fa3Jkr/j+fi6HjDKApAhi+WJ0jEKKlGt1ZzjlG0uF6aMzsBfQkmtAD+HfaMQvQUIJmdPLUajtWDeITwPx+jfbE7IdafwjO3BLruE2poLjSUqZE3DpMmXVZmCrwpjCWcakfzlHpqk/yf8RgMmH4Di8w7UL5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144736; c=relaxed/simple;
-	bh=imMjoyL2X5JO8V35tp0GiTqzoU0SVaFlTQFek9ZpMN0=;
+	s=arc-20240116; t=1721145124; c=relaxed/simple;
+	bh=kX5fOQEQTidfaH3YGZIyVjGe+tl9PtvHifqHrOk+Nr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/pxFTfwFJBG/UD+O3WeKQJfepU9mfgrnXh8n3y59FqJ6ycvcyFF9u4VO1lePtbt8sqmwrrcUauntfzlhFfJj4+3P02aKDIKxmPm1Dn7+MklqvVT1XY2cqYFpsWsdn6k92gB9WtOrRJMWIUczXcUhTGSImAZpugrmBa/6iCOg5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqZVpwtr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5850C116B1;
-	Tue, 16 Jul 2024 15:45:35 +0000 (UTC)
+	 MIME-Version; b=dvj0Q/DRbmF1J9z4NNROSLlXqB4UIw23rIGYvylKmVW8misfKSecjo7Lw4pU5+z6cHHMboWt68CDZLM1HAIbR5ALX0UnVmp/nr9Tnho+YND9Q+T8z6hHKLL4LEjria05SnVIeARocQpIn6My30XP/UaHJZ68mmYakkSS9eGKpN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNZPIS2x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3A5C116B1;
+	Tue, 16 Jul 2024 15:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144736;
-	bh=imMjoyL2X5JO8V35tp0GiTqzoU0SVaFlTQFek9ZpMN0=;
+	s=korg; t=1721145123;
+	bh=kX5fOQEQTidfaH3YGZIyVjGe+tl9PtvHifqHrOk+Nr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqZVpwtr/MjNxnjDSDyb40pxp4p0htZSWVEepbjfBm64R/e+KwrqCuIhMahmlRll8
-	 bEikZ4NsnO6rdiRo0Rh+bE9JmvwYnjngm614MjVgR/7GC1DijkdW/MY9SQMnCQK6so
-	 P12C4mXjV/LurY9P7/xXnxY7ENxGnqpt9CJnEuBk=
+	b=eNZPIS2x7XJWW/Nl2Jg+FBrJA8Km7KE9HLVAdENRwumW8dAYwvVRvxLyOO+V1gvAd
+	 vSZwN00duRKOzubskS+H4j7IH3A9F+RzezdvGDjGA0gu/vVJlLhYFAqCSwE3LXxASv
+	 aQyQoJnic+k5ui5Ax+YKnrDrzXPlIRDejGBE3ifk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Nazar Bilinskyi <nbilinskyi@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 088/108] ALSA: hda/realtek: Enable Mute LED on HP 250 G7
+Subject: [PATCH 6.9 107/143] ALSA: hda/realtek: Enable Mute LED on HP 250 G7
 Date: Tue, 16 Jul 2024 17:31:43 +0200
-Message-ID: <20240716152749.368031251@linuxfoundation.org>
+Message-ID: <20240716152800.093242984@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -83,7 +83,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -9057,6 +9057,7 @@ static const struct snd_pci_quirk alc269
+@@ -9999,6 +9999,7 @@ static const struct snd_pci_quirk alc269
  	SND_PCI_QUIRK(0x103c, 0x83b9, "HP Spectre x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
  	SND_PCI_QUIRK(0x103c, 0x841c, "HP Pavilion 15-CK0xx", ALC269_FIXUP_HP_MUTE_LED_MIC3),
  	SND_PCI_QUIRK(0x103c, 0x8497, "HP Envy x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
