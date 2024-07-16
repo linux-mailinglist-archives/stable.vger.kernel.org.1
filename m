@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-59487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82EFA93293E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:41:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A65932943
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:41:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 397B51F22EB1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:41:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 013642853E5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6B81A2C13;
-	Tue, 16 Jul 2024 14:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D7D1A2C19;
+	Tue, 16 Jul 2024 14:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQs5JO8e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CR9YO/bT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA93E1A2C12;
-	Tue, 16 Jul 2024 14:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3A619F469;
+	Tue, 16 Jul 2024 14:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721140215; cv=none; b=tEvqUzBA+zE3yVSTA7t1GcjzwBjchhbfnV7GX0bWInohxczKVGM6yMw/jJTLXAVdlZv3alDn+HNs1AHwnqp2puWP+gI31ZIBT7bN+yvV4OukM4ZaR4IqrqYolgU9IbwoUnqHfsNF9J8IUlPRKU+nCH/pcfgVpkQ/lfZkWhN/xbk=
+	t=1721140227; cv=none; b=aY6ZgKWe0z3h0awQRoFplAfM30GFR75NR3BD9SEL40JOmqEnbZS+53wiafN3pSeAOZk2B+Lkl4ubMUQSoszm24R0A2q9aCixUfNIlP7t9HYsOb9hrocsLYUgZJ50h0yz2ENkM1EpxfJqMIavkWNuAxfpce559M7JhuDzu8r/45Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721140215; c=relaxed/simple;
-	bh=6yXjER20qZ2cVxsEGMvxHRNT5+nIS1xUWtyl3BM3zUk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mi66WEmCSCCpaxQUYB3fBci9NKJNkXRrvhbJkZRvb9p/sj+Oilu7wm7LsmqsjQyG9Zr75e3N1dHlojt/vNoIiL/Qma+2L3YDMlp7w7kWwYROcAKi1uBPX1RBOAf212gL/OVO5nZz0dfmkguocv1pKgwlIb6kOlsUr+H1s6BonJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQs5JO8e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F58C4AF0D;
-	Tue, 16 Jul 2024 14:30:13 +0000 (UTC)
+	s=arc-20240116; t=1721140227; c=relaxed/simple;
+	bh=u3eDL3m89BqR3aZoF5Fzrc9E8G8z3esOlf2CP5TfC2s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XsdWTkXwIOd4hEBcLXhkaROZv8DdcP+zxTnKQ0kJprzamOagBsXayk9uLyRApxjHgdh2CllII2rlGMXuXO5VJF/s2X2HzWdRZzzM7iQEs9WOSJ/hkWl8F3J49UWWSmSTWEDgfmrjgdJbvpLg/3RDE3Mj5T5bwnppBONwx7nmmAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CR9YO/bT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134C7C4AF0E;
+	Tue, 16 Jul 2024 14:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721140214;
-	bh=6yXjER20qZ2cVxsEGMvxHRNT5+nIS1xUWtyl3BM3zUk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQs5JO8eaxNuZf9NbzzJjrKuCpzgfKnX0SxlwIi7AnDHkaVMmSnce+OiKxwLNkR0B
-	 5jZ3LNr8zn9t4WZoH54G6yD8JHzcpvDPzvsJfR/gHIh368kT2Kf1uCWltL0wm4eZG9
-	 w31xf9Zql9+FvunrsHt8vAs15ffVUGfvpIP8/SIKii1K+HK+JOVV+qiBHxZpE6d6xw
-	 q2wSISQ/EcxgAzW6Qwhcyb/5mI8mzzIo6XFPLXuycC+z38gDNRilz4r/Re+ayMv+h0
-	 ZOWBYd7+eH1KyC1o1kflW5ZZQ5rLvrCcNJKh5+5ibRlRRRhEXoBIxhatjXuDLadO6+
-	 31QuhX6/2W34A==
+	s=k20201202; t=1721140224;
+	bh=u3eDL3m89BqR3aZoF5Fzrc9E8G8z3esOlf2CP5TfC2s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CR9YO/bTdVrhB6dRmW2zE/NlnerYb/D7dOgI8x5le58g7Ja1W1LJtyH/cpXShOpds
+	 o+AH0sNk+3cEMYC6/pQ6ysdOM69/MP9xUequKRpDdTBSlIx353d6Ii3j2KSIMsTD+n
+	 SVTegg6/rGfYEq3ECW+LUs4VwKUqm6xwklbFLdsp4ftG8TyLbrTOfBmMY6YF3pfrva
+	 +sNlLu9czSn1Dn7KEPYi4bKNBbcHcLNn2hbZpF0X+5hxunH7t36PLvxZGL5HclF6ox
+	 J1R1hBsCv4ZYjOVZnd0QhA2gJVwJwePl2asRVUv05sIgoHkWe8qeB9udlLE9JOT5BX
+	 +DrCQPbunFbLg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Yunshui Jiang <jiangyunshui@kylinos.cn>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 7/7] fs: better handle deep ancestor chains in is_subdir()
-Date: Tue, 16 Jul 2024 10:29:47 -0400
-Message-ID: <20240716142953.2714154-7-sashal@kernel.org>
+	alex.aring@gmail.com,
+	miquel.raynal@bootlin.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/7] net: mac802154: Fix racy device stats updates by DEV_STATS_INC() and DEV_STATS_ADD()
+Date: Tue, 16 Jul 2024 10:30:09 -0400
+Message-ID: <20240716143021.2714348-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240716142953.2714154-1-sashal@kernel.org>
-References: <20240716142953.2714154-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,81 +66,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.221
+X-stable-base: Linux 5.4.279
 Content-Transfer-Encoding: 8bit
 
-From: Christian Brauner <brauner@kernel.org>
+From: Yunshui Jiang <jiangyunshui@kylinos.cn>
 
-[ Upstream commit 391b59b045004d5b985d033263ccba3e941a7740 ]
+[ Upstream commit b8ec0dc3845f6c9089573cb5c2c4b05f7fc10728 ]
 
-Jan reported that 'cd ..' may take a long time in deep directory
-hierarchies under a bind-mount. If concurrent renames happen it is
-possible to livelock in is_subdir() because it will keep retrying.
+mac802154 devices update their dev->stats fields locklessly. Therefore
+these counters should be updated atomically. Adopt SMP safe DEV_STATS_INC()
+and DEV_STATS_ADD() to achieve this.
 
-Change is_subdir() from simply retrying over and over to retry once and
-then acquire the rename lock to handle deep ancestor chains better. The
-list of alternatives to this approach were less then pleasant. Change
-the scope of rcu lock to cover the whole walk while at it.
-
-A big thanks to Jan and Linus. Both Jan and Linus had proposed
-effectively the same thing just that one version ended up being slightly
-more elegant.
-
-Reported-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Yunshui Jiang <jiangyunshui@kylinos.cn>
+Message-ID: <20240531080739.2608969-1-jiangyunshui@kylinos.cn>
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dcache.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+ net/mac802154/tx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index 976c7474d62a9..db81d0f5bdc00 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -3086,28 +3086,25 @@ EXPORT_SYMBOL(d_splice_alias);
-   
- bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
- {
--	bool result;
-+	bool subdir;
- 	unsigned seq;
+diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
+index c829e4a753256..7cea95d0b78f9 100644
+--- a/net/mac802154/tx.c
++++ b/net/mac802154/tx.c
+@@ -34,8 +34,8 @@ void ieee802154_xmit_worker(struct work_struct *work)
+ 	if (res)
+ 		goto err_tx;
  
- 	if (new_dentry == old_dentry)
- 		return true;
+-	dev->stats.tx_packets++;
+-	dev->stats.tx_bytes += skb->len;
++	DEV_STATS_INC(dev, tx_packets);
++	DEV_STATS_ADD(dev, tx_bytes, skb->len);
  
--	do {
--		/* for restarting inner loop in case of seq retry */
--		seq = read_seqbegin(&rename_lock);
--		/*
--		 * Need rcu_readlock to protect against the d_parent trashing
--		 * due to d_move
--		 */
--		rcu_read_lock();
--		if (d_ancestor(old_dentry, new_dentry))
--			result = true;
--		else
--			result = false;
--		rcu_read_unlock();
--	} while (read_seqretry(&rename_lock, seq));
--
--	return result;
-+	/* Access d_parent under rcu as d_move() may change it. */
-+	rcu_read_lock();
-+	seq = read_seqbegin(&rename_lock);
-+	subdir = d_ancestor(old_dentry, new_dentry);
-+	 /* Try lockless once... */
-+	if (read_seqretry(&rename_lock, seq)) {
-+		/* ...else acquire lock for progress even on deep chains. */
-+		read_seqlock_excl(&rename_lock);
-+		subdir = d_ancestor(old_dentry, new_dentry);
-+		read_sequnlock_excl(&rename_lock);
-+	}
-+	rcu_read_unlock();
-+	return subdir;
- }
- EXPORT_SYMBOL(is_subdir);
+ 	ieee802154_xmit_complete(&local->hw, skb, false);
  
+@@ -86,8 +86,8 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
+ 			goto err_tx;
+ 		}
+ 
+-		dev->stats.tx_packets++;
+-		dev->stats.tx_bytes += len;
++		DEV_STATS_INC(dev, tx_packets);
++		DEV_STATS_ADD(dev, tx_bytes, len);
+ 	} else {
+ 		local->tx_skb = skb;
+ 		queue_work(local->workqueue, &local->tx_work);
 -- 
 2.43.0
 
