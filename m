@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-60017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F150B932D03
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057AC932B52
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A75B11F21041
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B39B02842B1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D09B19E822;
-	Tue, 16 Jul 2024 16:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBC819AA78;
+	Tue, 16 Jul 2024 15:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rd8rYRxF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IdTQNvf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2AD19E7D8;
-	Tue, 16 Jul 2024 16:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6F9136643;
+	Tue, 16 Jul 2024 15:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145602; cv=none; b=U2u1s/CZ6fDRhV6p5KyWOGjlm9a/YcF2DBwdKaWNSfInP3+fzb3gnur2QlLMcZIC/rp/rf9mmzps70lCBiC20d3E9/NpPvWyXMUstajEx9YGfABNpNQeRRaLVZUB7UnbzXMwFnS+XV+dro+xeZOuN1mhzGusN9pImHtqNMdVTIM=
+	t=1721144628; cv=none; b=ZtwxHG6OhBwqa3Am6tpIne5OfP0yC14RR9ebMAYVekX1z7xel6gU+rnkLgFuU2QgB+23dptV1GqB7P1S0gsS5CBuUACIBMa3PCgLzL4JKvF0wZgVtvNoAWO7YDJEDO+sNkVYp701v6wvVRm9l24UqbWCfmvAap4uZiDKRPNsQlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145602; c=relaxed/simple;
-	bh=6JpjjLy3fA579K8RDrmDvpgOVTIB+FLQy+QBYx3RpuI=;
+	s=arc-20240116; t=1721144628; c=relaxed/simple;
+	bh=sFRRPhboPKRE4Q9iaPvv1WzcEQ8qDJP2nGnrL6SWKcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iVkkB+KBtT/PYQ8LjV+qBbVgHp84dJGuG7dpAM8Gca9jeMkwUdopKIkKe46w+KL8kKbV4rQEOWdMnZXEcV+WDQ0IuCxzxIEWEsgDKrj09JUCtdqH7nKWoOVQA68BfjWVbaoOBClfywA1Ijl+vJQWQ+/ENmmM1Eg9I2E0Z3XIX9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rd8rYRxF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60092C116B1;
-	Tue, 16 Jul 2024 16:00:02 +0000 (UTC)
+	 MIME-Version; b=PcQ8nX/m1xvBqA8fWa0avnbeg/sdlpWIgLUMGZBw9tYfko3w9D4/0pDcoywkutW+ufKnjEn2w+fSNCEJ1DOjCSWIxjZ3QI7FX6fVnCGhmsgvmSx0yfXax7FXF9ck8ODyciwDklChYq49Sm7oHzHucI4nSndHmXgct6MKtVNklZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IdTQNvf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86581C116B1;
+	Tue, 16 Jul 2024 15:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145602;
-	bh=6JpjjLy3fA579K8RDrmDvpgOVTIB+FLQy+QBYx3RpuI=;
+	s=korg; t=1721144627;
+	bh=sFRRPhboPKRE4Q9iaPvv1WzcEQ8qDJP2nGnrL6SWKcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rd8rYRxF27wOzjCb6z2Ac6DevNV6LlHJ//ow6KGbLz9lTN/ykj1ihPwN7nDlnWXx4
-	 BeS2Y+oRecxS6i0I/zLEjOkPca/L+6llGdLIzf44DgQ7zPnw8Nrv+2faeHKVfv3T8J
-	 RCZXS+f5GLqTOK+S6lqcTc1ZQ9GyzONCa+vXQFUM=
+	b=2IdTQNvfxuwqrxIPjRhuZULVIprNb3Dolqv6MWT1bu75PUykiXGs/Wau0vc/J6TNS
+	 pS1bcTQXWTpt4rk1Euu1mdeMciSbhlqiSC+Ro2nZK806odmt8j2QLf3xl+Iqxz2mRH
+	 EVqXfNo1XNqQm5XHw46TbJ494Z5pOjbrIqmaOAZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Yin <yinxin.x@bytedance.com>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	hmtheboy154 <buingoc67@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/121] cachefiles: narrow the scope of triggering EPOLLIN events in ondemand mode
+Subject: [PATCH 5.10 053/108] platform/x86: touchscreen_dmi: Add info for GlobalSpace SolT IVW 11.6" tablet
 Date: Tue, 16 Jul 2024 17:31:08 +0200
-Message-ID: <20240716152751.563239355@linuxfoundation.org>
+Message-ID: <20240716152748.024663101@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,91 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia Zhu <zhujia.zj@bytedance.com>
+From: hmtheboy154 <buingoc67@gmail.com>
 
-[ Upstream commit b817e22b2e91257ace32a6768c3c003faeaa1c5c ]
+[ Upstream commit 7c8639aa41343fd7b3dbe09baf6b0791fcc407a1 ]
 
-Don't trigger EPOLLIN when there are only reopening read requests in
-xarray.
+This is a tablet created by GlobalSpace Technologies Limited
+which uses an Intel Atom x5-Z8300, 4GB of RAM & 64GB of storage.
 
-Suggested-by: Xin Yin <yinxin.x@bytedance.com>
-Signed-off-by: Jia Zhu <zhujia.zj@bytedance.com>
-Link: https://lore.kernel.org/r/20231120041422.75170-5-zhujia.zj@bytedance.com
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 12e009d60852 ("cachefiles: wait for ondemand_object_worker to finish when dropping object")
+Link: https://web.archive.org/web/20171102141952/http://globalspace.in/11.6-device.html
+Signed-off-by: hmtheboy154 <buingoc67@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240527091447.248849-2-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/daemon.c   | 14 ++++++++++++--
- fs/cachefiles/internal.h | 12 ++++++++++++
- 2 files changed, 24 insertions(+), 2 deletions(-)
+ drivers/platform/x86/touchscreen_dmi.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index b9945e4f697be..06cdf1a8a16f6 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -357,14 +357,24 @@ static __poll_t cachefiles_daemon_poll(struct file *file,
- 					   struct poll_table_struct *poll)
- {
- 	struct cachefiles_cache *cache = file->private_data;
-+	XA_STATE(xas, &cache->reqs, 0);
-+	struct cachefiles_req *req;
- 	__poll_t mask;
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index fbaa618594628..8cb07f0166c26 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -857,6 +857,22 @@ static const struct ts_dmi_data schneider_sct101ctm_data = {
+ 	.properties	= schneider_sct101ctm_props,
+ };
  
- 	poll_wait(file, &cache->daemon_pollwq, poll);
- 	mask = 0;
- 
- 	if (cachefiles_in_ondemand_mode(cache)) {
--		if (!xa_empty(&cache->reqs))
--			mask |= EPOLLIN;
-+		if (!xa_empty(&cache->reqs)) {
-+			rcu_read_lock();
-+			xas_for_each_marked(&xas, req, ULONG_MAX, CACHEFILES_REQ_NEW) {
-+				if (!cachefiles_ondemand_is_reopening_read(req)) {
-+					mask |= EPOLLIN;
-+					break;
-+				}
-+			}
-+			rcu_read_unlock();
-+		}
- 	} else {
- 		if (test_bit(CACHEFILES_STATE_CHANGED, &cache->flags))
- 			mask |= EPOLLIN;
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 3eea52462fc87..e0eac16e4741c 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -335,6 +335,13 @@ cachefiles_ondemand_set_object_##_state(struct cachefiles_object *object) \
- CACHEFILES_OBJECT_STATE_FUNCS(open, OPEN);
- CACHEFILES_OBJECT_STATE_FUNCS(close, CLOSE);
- CACHEFILES_OBJECT_STATE_FUNCS(reopening, REOPENING);
++static const struct property_entry globalspace_solt_ivw116_props[] = {
++	PROPERTY_ENTRY_U32("touchscreen-min-x", 7),
++	PROPERTY_ENTRY_U32("touchscreen-min-y", 22),
++	PROPERTY_ENTRY_U32("touchscreen-size-x", 1723),
++	PROPERTY_ENTRY_U32("touchscreen-size-y", 1077),
++	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-globalspace-solt-ivw116.fw"),
++	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
++	PROPERTY_ENTRY_BOOL("silead,home-button"),
++	{ }
++};
 +
-+static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
-+{
-+	return cachefiles_ondemand_object_is_reopening(req->object) &&
-+			req->msg.opcode == CACHEFILES_OP_READ;
-+}
++static const struct ts_dmi_data globalspace_solt_ivw116_data = {
++	.acpi_name	= "MSSL1680:00",
++	.properties	= globalspace_solt_ivw116_props,
++};
 +
- #else
- static inline ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 					char __user *_buffer, size_t buflen)
-@@ -365,6 +372,11 @@ static inline int cachefiles_ondemand_init_obj_info(struct cachefiles_object *ob
- static inline void cachefiles_ondemand_deinit_obj_info(struct cachefiles_object *obj)
- {
- }
-+
-+static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
-+{
-+	return false;
-+}
- #endif
- 
- /*
+ static const struct property_entry techbite_arc_11_6_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-min-x", 5),
+ 	PROPERTY_ENTRY_U32("touchscreen-min-y", 7),
+@@ -1490,6 +1506,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "SCT101CTM"),
+ 		},
+ 	},
++	{
++		/* GlobalSpace SoLT IVW 11.6" */
++		.driver_data = (void *)&globalspace_solt_ivw116_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Globalspace Tech Pvt Ltd"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "SolTIVW"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "PN20170413488"),
++		},
++	},
+ 	{
+ 		/* Techbite Arc 11.6 */
+ 		.driver_data = (void *)&techbite_arc_11_6_data,
 -- 
 2.43.0
 
