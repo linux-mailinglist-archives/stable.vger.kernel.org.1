@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-59662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4932A932B25
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:42:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D42F4932AC7
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 059FF283402
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:42:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4961F242A7
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD34A195B27;
-	Tue, 16 Jul 2024 15:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22D81DA4D;
+	Tue, 16 Jul 2024 15:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZydshtRB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSQQoCTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9784919DF71;
-	Tue, 16 Jul 2024 15:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9152ECA40;
+	Tue, 16 Jul 2024 15:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144523; cv=none; b=awmBCYV080M0UGaYgLtMc3jmsE/S0RysB4DjFkvvvV1W/NV/njxcQaF9QwrGgXZz9IJVWC9zSXYjIKNS7Pvx+uMRPvpohVkARmdHH7y/gVryw2Dvbq1vge1xxBYj+CQ8H6gTN6RCU1Z2relMIyHCay5ybpFTtGazpElp9Ygzc1E=
+	t=1721144277; cv=none; b=Mi+F7fCOBLCV/5ISLDqRAeaII99K3urPObsSxzGZ2ufGGv1oOCLkgNAarqI4RhcQ5VzNTGE0ODk2tgMLDJgFqi5vKS1Xa5AiTpTLi4iMNdAm144xBDsMqEiD60oRBw/ozTWOfn31TUGJM+L+vb/dnwO6C0pNCdla9qyHaib/rmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144523; c=relaxed/simple;
-	bh=RhVVIoquaSwzP6jnc+dTDIX5BVqbLUrJERBSExmbLR0=;
+	s=arc-20240116; t=1721144277; c=relaxed/simple;
+	bh=VrkBDzKVtYmqUiBtvyhPo65cxArmOLwlauX2cD2cHE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iqrrr0tWkR3gjpUlztWTA/B8f0T0rjEJNQOelPvHFH/BNJKe1IRAepK2ZShvjpmro6MQSo7qF/D1oE/JZtzlAn7PnQIkaz5JocTXpj19crMpxTNt1BTJnz0Yj2CCODIs49tSdBt19gBA307PZyoy5v0sHVdFhY2AH9ONvB64Y/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZydshtRB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C814C4AF0F;
-	Tue, 16 Jul 2024 15:42:02 +0000 (UTC)
+	 MIME-Version; b=Fi9pohkNPa83rtTkJnMSuUIYb0wqnndhlmtvVOX7dNkl+c1gRI7XaxSj1/+STnbY/Mc/jaVZkKqBRinu4Pd77wsVcFXgmuFn5wgZU2leIvbDgHw5d0rb6U/Bx5dOVtALBFX57OwCEQBI9Ay4WVWX3NJYnnf0XIsiXD2xx8r1Fkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSQQoCTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149EBC116B1;
+	Tue, 16 Jul 2024 15:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144523;
-	bh=RhVVIoquaSwzP6jnc+dTDIX5BVqbLUrJERBSExmbLR0=;
+	s=korg; t=1721144277;
+	bh=VrkBDzKVtYmqUiBtvyhPo65cxArmOLwlauX2cD2cHE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZydshtRBe+HAOggNVlJkhWZMGFFeDBm7spvcw020eaXdSReWSGcF1jrxQ+IH2nIrK
-	 X62aSJyrpyamQ2j0Nq2JbtC6ZuGievFNWo+1nZbaV4xN7QrpvTW3RtMI7iGTWoBubI
-	 oQAtefFiEhOINOO6N9KAnhLi82YSVfbSUAbuXin0=
+	b=oSQQoCTIhcw6J3lU3Lfd4BBql+kbyL+rGWEJdA9uol6g7Mknv8/NMGez2Q8MsSByZ
+	 BqXSGmtwcQ9SPpgf9OMOtKoUy64lgyFz+/2QnETN8nRQB6bJoJW5Cj7Eyl4LYk82Zi
+	 k7xUb4w+0GLa4W9SgiwTRKO2uQ5EM4031Gfr3LsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marshall <hubcap@omnibond.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/108] orangefs: fix out-of-bounds fsid access
+Subject: [PATCH 5.4 04/78] IB/core: Implement a limit on UMAD receive List
 Date: Tue, 16 Jul 2024 17:30:36 +0200
-Message-ID: <20240716152746.814983545@linuxfoundation.org>
+Message-ID: <20240716152740.801678938@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marshall <hubcap@omnibond.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-[ Upstream commit 53e4efa470d5fc6a96662d2d3322cfc925818517 ]
+[ Upstream commit ca0b44e20a6f3032224599f02e7c8fb49525c894 ]
 
-Arnd Bergmann sent a patch to fsdevel, he says:
+The existing behavior of ib_umad, which maintains received MAD
+packets in an unbounded list, poses a risk of uncontrolled growth.
+As user-space applications extract packets from this list, the rate
+of extraction may not match the rate of incoming packets, leading
+to potential list overflow.
 
-"orangefs_statfs() copies two consecutive fields of the superblock into
-the statfs structure, which triggers a warning from the string fortification
-helpers"
+To address this, we introduce a limit to the size of the list. After
+considering typical scenarios, such as OpenSM processing, which can
+handle approximately 100k packets per second, and the 1-second retry
+timeout for most packets, we set the list size limit to 200k. Packets
+received beyond this limit are dropped, assuming they are likely timed
+out by the time they are handled by user-space.
 
-Jan Kara suggested an alternate way to do the patch to make it more readable.
+Notably, packets queued on the receive list due to reasons like
+timed-out sends are preserved even when the list is full.
 
-I ran both ideas through xfstests and both seem fine. This patch
-is based on Jan Kara's suggestion.
-
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Reviewed-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://lore.kernel.org/r/7197cb58a7d9e78399008f25036205ceab07fbd5.1713268818.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/user_mad.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/fs/orangefs/super.c b/fs/orangefs/super.c
-index 2f2e430461b21..b48aef43b51d5 100644
---- a/fs/orangefs/super.c
-+++ b/fs/orangefs/super.c
-@@ -200,7 +200,8 @@ static int orangefs_statfs(struct dentry *dentry, struct kstatfs *buf)
- 		     (long)new_op->downcall.resp.statfs.files_avail);
+diff --git a/drivers/infiniband/core/user_mad.c b/drivers/infiniband/core/user_mad.c
+index 390123f87658b..51ce5b7be0718 100644
+--- a/drivers/infiniband/core/user_mad.c
++++ b/drivers/infiniband/core/user_mad.c
+@@ -63,6 +63,8 @@ MODULE_AUTHOR("Roland Dreier");
+ MODULE_DESCRIPTION("InfiniBand userspace MAD packet access");
+ MODULE_LICENSE("Dual BSD/GPL");
  
- 	buf->f_type = sb->s_magic;
--	memcpy(&buf->f_fsid, &ORANGEFS_SB(sb)->fs_id, sizeof(buf->f_fsid));
-+	buf->f_fsid.val[0] = ORANGEFS_SB(sb)->fs_id;
-+	buf->f_fsid.val[1] = ORANGEFS_SB(sb)->id;
- 	buf->f_bsize = new_op->downcall.resp.statfs.block_size;
- 	buf->f_namelen = ORANGEFS_NAME_MAX;
++#define MAX_UMAD_RECV_LIST_SIZE 200000
++
+ enum {
+ 	IB_UMAD_MAX_PORTS  = RDMA_MAX_PORTS,
+ 	IB_UMAD_MAX_AGENTS = 32,
+@@ -113,6 +115,7 @@ struct ib_umad_file {
+ 	struct mutex		mutex;
+ 	struct ib_umad_port    *port;
+ 	struct list_head	recv_list;
++	atomic_t		recv_list_size;
+ 	struct list_head	send_list;
+ 	struct list_head	port_list;
+ 	spinlock_t		send_lock;
+@@ -180,24 +183,28 @@ static struct ib_mad_agent *__get_agent(struct ib_umad_file *file, int id)
+ 	return file->agents_dead ? NULL : file->agent[id];
+ }
  
+-static int queue_packet(struct ib_umad_file *file,
+-			struct ib_mad_agent *agent,
+-			struct ib_umad_packet *packet)
++static int queue_packet(struct ib_umad_file *file, struct ib_mad_agent *agent,
++			struct ib_umad_packet *packet, bool is_recv_mad)
+ {
+ 	int ret = 1;
+ 
+ 	mutex_lock(&file->mutex);
+ 
++	if (is_recv_mad &&
++	    atomic_read(&file->recv_list_size) > MAX_UMAD_RECV_LIST_SIZE)
++		goto unlock;
++
+ 	for (packet->mad.hdr.id = 0;
+ 	     packet->mad.hdr.id < IB_UMAD_MAX_AGENTS;
+ 	     packet->mad.hdr.id++)
+ 		if (agent == __get_agent(file, packet->mad.hdr.id)) {
+ 			list_add_tail(&packet->list, &file->recv_list);
++			atomic_inc(&file->recv_list_size);
+ 			wake_up_interruptible(&file->recv_wait);
+ 			ret = 0;
+ 			break;
+ 		}
+-
++unlock:
+ 	mutex_unlock(&file->mutex);
+ 
+ 	return ret;
+@@ -224,7 +231,7 @@ static void send_handler(struct ib_mad_agent *agent,
+ 	if (send_wc->status == IB_WC_RESP_TIMEOUT_ERR) {
+ 		packet->length = IB_MGMT_MAD_HDR;
+ 		packet->mad.hdr.status = ETIMEDOUT;
+-		if (!queue_packet(file, agent, packet))
++		if (!queue_packet(file, agent, packet, false))
+ 			return;
+ 	}
+ 	kfree(packet);
+@@ -284,7 +291,7 @@ static void recv_handler(struct ib_mad_agent *agent,
+ 		rdma_destroy_ah_attr(&ah_attr);
+ 	}
+ 
+-	if (queue_packet(file, agent, packet))
++	if (queue_packet(file, agent, packet, true))
+ 		goto err2;
+ 	return;
+ 
+@@ -409,6 +416,7 @@ static ssize_t ib_umad_read(struct file *filp, char __user *buf,
+ 
+ 	packet = list_entry(file->recv_list.next, struct ib_umad_packet, list);
+ 	list_del(&packet->list);
++	atomic_dec(&file->recv_list_size);
+ 
+ 	mutex_unlock(&file->mutex);
+ 
+@@ -421,6 +429,7 @@ static ssize_t ib_umad_read(struct file *filp, char __user *buf,
+ 		/* Requeue packet */
+ 		mutex_lock(&file->mutex);
+ 		list_add(&packet->list, &file->recv_list);
++		atomic_inc(&file->recv_list_size);
+ 		mutex_unlock(&file->mutex);
+ 	} else {
+ 		if (packet->recv_wc)
 -- 
 2.43.0
 
