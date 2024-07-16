@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-59953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002F9932CAD
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8978E932C56
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6211F24620
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA8F51C20B45
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F73319FA81;
-	Tue, 16 Jul 2024 15:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0F219DF71;
+	Tue, 16 Jul 2024 15:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyiK0C2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTJoO+qE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABDB19FA6B;
-	Tue, 16 Jul 2024 15:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10371DDCE;
+	Tue, 16 Jul 2024 15:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145413; cv=none; b=aTAlijVwz0s04vnWJt18UKo5odWWvLvapsRblTkr5KVw5nb7I2XVpT40MCh7feZZFK8YxjrUZcmKnDhdFUACXUkjDU39cCzbR2ST9tSVABD7JlKrKrx6DT2BG40ajeCZzR7ccaMjt6oven7niQXqmKr9DMDycvYrlw4b6iico0Q=
+	t=1721145256; cv=none; b=KM6EUZy3bRNNIQZkhWKP+3BSmxGX9Brb+bNdDZYyRGBBiSawN38dlBJRetk1vg6L/RABmAqdxKLhdbM39lgIXmK9XhaM2HnjynH7DwpQLdsAEFR0I0o+n+ifovLkFxn7lhxa8gEOnjE5UsOe6xfd7XUdI1tj5A7bpgwfEeQyg0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145413; c=relaxed/simple;
-	bh=CQJazhY9RipsLptMhIPJEWw4GX0TQRKI+Z7em0qoFRg=;
+	s=arc-20240116; t=1721145256; c=relaxed/simple;
+	bh=jcecMMV2KSOUelF/ZAlgOk9RczeeosVnn2TjQyHtPOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TxM5IL9aoWl8rlrLXegEm1atYTIPc8C/s/6OE6o7nHAJo7LjrVNqIwjdzup5orxFciMTtlrbzWKlxoeuOYsfGL7De+aZBjtgp2T4S1VPQVsk7ZokcNyMVHWy+L4jakDvNJlBYIO+mpXo6WXvZsqrlFgBPlyObI6sVLfuxJ/j/7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyiK0C2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6111C4AF17;
-	Tue, 16 Jul 2024 15:56:52 +0000 (UTC)
+	 MIME-Version; b=PFSzaCwpJJTBxpyPOYBCF6mmsn/hZQVcK0qQmB0Zn36W7NSWeMZmBLmxtzGdH6KOR3vsBM7NQdJmJgsc0UX4UeiabtIu+cTxFWciXEjqu9yaWWeUeHeA2JLfrztJ/O9OaRh7W13bd4zbKLzg7IAjQJkooUHnYz1XQW5GpHwVfb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTJoO+qE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5977EC116B1;
+	Tue, 16 Jul 2024 15:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145413;
-	bh=CQJazhY9RipsLptMhIPJEWw4GX0TQRKI+Z7em0qoFRg=;
+	s=korg; t=1721145256;
+	bh=jcecMMV2KSOUelF/ZAlgOk9RczeeosVnn2TjQyHtPOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kyiK0C2MNnunYVJNhVzFYhjQDnORZD+eoxBVnfTtd98UqPxsm5C+mKRWAu7u76wc4
-	 blM9KmufkrDTPmS3GVt5TcdmSFL4RlVOHfs9SOUMGyc5sFVc8Sd/eMMSIeP7scqkgY
-	 Zi+SkHVojCnL3TyyHuWXzHUL7+W2gQY2/xg1ALvo=
+	b=CTJoO+qEJUDdshuLiVGMx0Efbd73e8WYfbu8Q7GLowVQDMA0iPh0pC+cbzlUAe/vd
+	 CAjANoSSpbtmbPeCGvDJDQ2OsegeAdEWV4/TUyOfgwdzo2YothROiLwC2iJG2oNYJq
+	 rz+7ld0iEomnh6jdZwILHEOB4m//+sP3sst+rzXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Smirnov <d.smirnov@inbox.lv>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 56/96] USB: serial: mos7840: fix crash on resume
-Date: Tue, 16 Jul 2024 17:32:07 +0200
-Message-ID: <20240716152748.658765982@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 132/143] mm/damon/core: merge regions aggressively when max_nr_regions is unmet
+Date: Tue, 16 Jul 2024 17:32:08 +0200
+Message-ID: <20240716152801.068704820@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Smirnov <d.smirnov@inbox.lv>
+From: SeongJae Park <sj@kernel.org>
 
-commit c15a688e49987385baa8804bf65d570e362f8576 upstream.
+commit 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6 upstream.
 
-Since commit c49cfa917025 ("USB: serial: use generic method if no
-alternative is provided in usb serial layer"), USB serial core calls the
-generic resume implementation when the driver has not provided one.
+DAMON keeps the number of regions under max_nr_regions by skipping regions
+split operations when doing so can make the number higher than the limit.
+It works well for preventing violation of the limit.  But, if somehow the
+violation happens, it cannot recovery well depending on the situation.  In
+detail, if the real number of regions having different access pattern is
+higher than the limit, the mechanism cannot reduce the number below the
+limit.  In such a case, the system could suffer from high monitoring
+overhead of DAMON.
 
-This can trigger a crash on resume with mos7840 since support for
-multiple read URBs was added back in 2011. Specifically, both port read
-URBs are now submitted on resume for open ports, but the context pointer
-of the second URB is left set to the core rather than mos7840 port
-structure.
+The violation can actually happen.  For an example, the user could reduce
+max_nr_regions while DAMON is running, to be lower than the current number
+of regions.  Fix the problem by repeating the merge operations with
+increasing aggressiveness in kdamond_merge_regions() for the case, until
+the limit is met.
 
-Fix this by implementing dedicated suspend and resume functions for
-mos7840.
-
-Tested with Delock 87414 USB 2.0 to 4x serial adapter.
-
-Signed-off-by: Dmitry Smirnov <d.smirnov@inbox.lv>
-[ johan: analyse crash and rewrite commit message; set busy flag on
-         resume; drop bulk-in check; drop unnecessary usb_kill_urb() ]
-Fixes: d83b405383c9 ("USB: serial: add support for multiple read urbs")
-Cc: stable@vger.kernel.org	# 3.3
-Signed-off-by: Johan Hovold <johan@kernel.org>
+[sj@kernel.org: increase regions merge aggressiveness while respecting min_nr_regions]
+  Link: https://lkml.kernel.org/r/20240626164753.46270-1-sj@kernel.org
+[sj@kernel.org: ensure max threshold attempt for max_nr_regions violation]
+  Link: https://lkml.kernel.org/r/20240627163153.75969-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20240624175814.89611-1-sj@kernel.org
+Fixes: b9a6ac4e4ede ("mm/damon: adaptively adjust regions")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/mos7840.c |   45 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+ mm/damon/core.c |   21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/mos7840.c
-+++ b/drivers/usb/serial/mos7840.c
-@@ -1736,6 +1736,49 @@ static void mos7840_port_remove(struct u
- 	kfree(mos7840_port);
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1357,14 +1357,31 @@ static void damon_merge_regions_of(struc
+  * access frequencies are similar.  This is for minimizing the monitoring
+  * overhead under the dynamically changeable access pattern.  If a merge was
+  * unnecessarily made, later 'kdamond_split_regions()' will revert it.
++ *
++ * The total number of regions could be higher than the user-defined limit,
++ * max_nr_regions for some cases.  For example, the user can update
++ * max_nr_regions to a number that lower than the current number of regions
++ * while DAMON is running.  For such a case, repeat merging until the limit is
++ * met while increasing @threshold up to possible maximum level.
+  */
+ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
+ 				  unsigned long sz_limit)
+ {
+ 	struct damon_target *t;
++	unsigned int nr_regions;
++	unsigned int max_thres;
+ 
+-	damon_for_each_target(t, c)
+-		damon_merge_regions_of(t, threshold, sz_limit);
++	max_thres = c->attrs.aggr_interval /
++		(c->attrs.sample_interval ?  c->attrs.sample_interval : 1);
++	do {
++		nr_regions = 0;
++		damon_for_each_target(t, c) {
++			damon_merge_regions_of(t, threshold, sz_limit);
++			nr_regions += damon_nr_regions(t);
++		}
++		threshold = max(1, threshold * 2);
++	} while (nr_regions > c->attrs.max_nr_regions &&
++			threshold / 2 < max_thres);
  }
  
-+static int mos7840_suspend(struct usb_serial *serial, pm_message_t message)
-+{
-+	struct moschip_port *mos7840_port;
-+	struct usb_serial_port *port;
-+	int i;
-+
-+	for (i = 0; i < serial->num_ports; ++i) {
-+		port = serial->port[i];
-+		if (!tty_port_initialized(&port->port))
-+			continue;
-+
-+		mos7840_port = usb_get_serial_port_data(port);
-+
-+		usb_kill_urb(mos7840_port->read_urb);
-+		mos7840_port->read_urb_busy = false;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mos7840_resume(struct usb_serial *serial)
-+{
-+	struct moschip_port *mos7840_port;
-+	struct usb_serial_port *port;
-+	int res;
-+	int i;
-+
-+	for (i = 0; i < serial->num_ports; ++i) {
-+		port = serial->port[i];
-+		if (!tty_port_initialized(&port->port))
-+			continue;
-+
-+		mos7840_port = usb_get_serial_port_data(port);
-+
-+		mos7840_port->read_urb_busy = true;
-+		res = usb_submit_urb(mos7840_port->read_urb, GFP_NOIO);
-+		if (res)
-+			mos7840_port->read_urb_busy = false;
-+	}
-+
-+	return 0;
-+}
-+
- static struct usb_serial_driver moschip7840_4port_device = {
- 	.driver = {
- 		   .owner = THIS_MODULE,
-@@ -1763,6 +1806,8 @@ static struct usb_serial_driver moschip7
- 	.port_probe = mos7840_port_probe,
- 	.port_remove = mos7840_port_remove,
- 	.read_bulk_callback = mos7840_bulk_in_callback,
-+	.suspend = mos7840_suspend,
-+	.resume = mos7840_resume,
- };
- 
- static struct usb_serial_driver * const serial_drivers[] = {
+ /*
 
 
 
