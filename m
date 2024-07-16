@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-59693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A6B932B50
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D370932A8B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D07B1F23A35
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F6F51C22A2D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2C719A86F;
-	Tue, 16 Jul 2024 15:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9171DDCE;
+	Tue, 16 Jul 2024 15:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4xw9UbL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwLaZtTs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AED8195B27;
-	Tue, 16 Jul 2024 15:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB45E541;
+	Tue, 16 Jul 2024 15:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144622; cv=none; b=r3aQK3WUOf7SD8NWGe7EIlz3igKoV4FpipeBS73r/C6jN9ApILYyik7/NsfV2ky7S3wqORXYzoBDolxdxhEu/bk4TcXcU0sw9OmhbFJIP3rYoTM5dagUoM9h0R6zm6if7jlc9+Uf0vzzfa4d87TA81Jw+tSYOpAaEC4AbAK0BLg=
+	t=1721144109; cv=none; b=LD/viCf5UIDAjkSNKbXc3eVmz6XBahmktb60SDr0HtNAk6B59jZhn0z/WW+4XPDLuFESTqtXmsf00rxVXyXviFjYsL/lnPnpnzGDnjOT3VEc5MSoCm2+jSVS6fh6emcEb5WJW2dkcRBBfeFcYdqnyCVTSeu1KXlA/QfjaCYkp1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144622; c=relaxed/simple;
-	bh=BtulGJ9LNbRAPcObdIkHOHkZoaha5oeazXu1dvH510I=;
+	s=arc-20240116; t=1721144109; c=relaxed/simple;
+	bh=pPc3dH9FY5stg+c2E7CeFzWCCiGwC2Y5S/x0aeSjAsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SEjHD/Z8hVrRXytLcwykCkknPfFLoHIG3iqO1CUD87bP3U9tT41zuEPvJzjSbv3aBRdCFsY9ZiebRHcgZ6yabvxoAnl7uCOBRBHDExlYX0LHRRUDYzRtiu1aarlsM8BGz0ZK1fSuyjqnNq/8TVksBcLYw3iR3aXjbb5nbno2i9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4xw9UbL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF86C116B1;
-	Tue, 16 Jul 2024 15:43:41 +0000 (UTC)
+	 MIME-Version; b=SWNdLPRriaKYBHBZFvkFsxpWjtxLE9TJU89kkRDBJDpSlqsnB8BqfgHbUdaLbJULy4NWtGJPvIS5Jk2RypXGoIx6Rmr+qLBBRPtyUYOnAPfyfiW0AQu5v+5q7EGqlYYF/vjiULlBjG+QtGMIx4Q4cZuV8US3z7J7Kw+TjvI5Czk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwLaZtTs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE69C116B1;
+	Tue, 16 Jul 2024 15:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144622;
-	bh=BtulGJ9LNbRAPcObdIkHOHkZoaha5oeazXu1dvH510I=;
+	s=korg; t=1721144109;
+	bh=pPc3dH9FY5stg+c2E7CeFzWCCiGwC2Y5S/x0aeSjAsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m4xw9UbLzdvI5CRfm+krfdv+SVkFOTYXy0fPdzEaOCMB7DXNksRD8b9Nj6SaExhj9
-	 RfZFUw+VVX8xeoCCJJdRDm0S11SRRsB+4AkLJpyrJcfLUwHFjYmkzeZB0JpXL4SK0y
-	 NtNuephVRyxpSvCmOdZx7PMAJJTgEZzxMIVLkwgw=
+	b=gwLaZtTszVa/W4qNJ+dme2TTrLWbN/Yr9zlArqwGbNFRkZ1B1BUlWKO9oe3lcw+Gr
+	 qcG3aFlgoopRl4tbpGsJ4KGfV3HHKP25BTAKF5A4KJhz/XOTRL/8XMMWl+pUZzOb+f
+	 1WmZN1Tr+MbKgeHAsumZT4f1onbbZnSYSwyV28y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 051/108] nvme-multipath: find NUMA path only for online numa-node
+	Jinliang Zheng <alexjlzheng@tencent.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Tycho Andersen <tandersen@netflix.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 31/66] mm: optimize the redundant loop of mm_update_owner_next()
 Date: Tue, 16 Jul 2024 17:31:06 +0200
-Message-ID: <20240716152747.947535835@linuxfoundation.org>
+Message-ID: <20240716152739.354389283@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +68,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Jinliang Zheng <alexjlzheng@tencent.com>
 
-[ Upstream commit d3a043733f25d743f3aa617c7f82dbcb5ee2211a ]
+commit cf3f9a593dab87a032d2b6a6fb205e7f3de4f0a1 upstream.
 
-In current native multipath design when a shared namespace is created,
-we loop through each possible numa-node, calculate the NUMA distance of
-that node from each nvme controller and then cache the optimal IO path
-for future reference while sending IO. The issue with this design is that
-we may refer to the NUMA distance table for an offline node which may not
-be populated at the time and so we may inadvertently end up finding and
-caching a non-optimal path for IO. Then latter when the corresponding
-numa-node becomes online and hence the NUMA distance table entry for that
-node is created, ideally we should re-calculate the multipath node distance
-for the newly added node however that doesn't happen unless we rescan/reset
-the controller. So essentially, we may keep using non-optimal IO path for a
-node which is made online after namespace is created.
-This patch helps fix this issue ensuring that when a shared namespace is
-created, we calculate the multipath node distance for each online numa-node
-instead of each possible numa-node. Then latter when a node becomes online
-and we receive any IO on that newly added node, we would calculate the
-multipath node distance for newly added node but this time NUMA distance
-table would have been already populated for newly added node. Hence we
-would be able to correctly calculate the multipath node distance and choose
-the optimal path for the IO.
+When mm_update_owner_next() is racing with swapoff (try_to_unuse()) or
+/proc or ptrace or page migration (get_task_mm()), it is impossible to
+find an appropriate task_struct in the loop whose mm_struct is the same as
+the target mm_struct.
 
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the above race condition is combined with the stress-ng-zombie and
+stress-ng-dup tests, such a long loop can easily cause a Hard Lockup in
+write_lock_irq() for tasklist_lock.
+
+Recognize this situation in advance and exit early.
+
+Link: https://lkml.kernel.org/r/20240620122123.3877432-1-alexjlzheng@tencent.com
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Tycho Andersen <tandersen@netflix.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/multipath.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/exit.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index 9f59f93b70e26..54ca60db65473 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -420,7 +420,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
- 		int node, srcu_idx;
- 
- 		srcu_idx = srcu_read_lock(&head->srcu);
--		for_each_node(node)
-+		for_each_online_node(node)
- 			__nvme_find_path(head, node);
- 		srcu_read_unlock(&head->srcu, srcu_idx);
- 	}
--- 
-2.43.0
-
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -494,6 +494,8 @@ retry:
+ 	 * Search through everything else, we should not get here often.
+ 	 */
+ 	for_each_process(g) {
++		if (atomic_read(&mm->mm_users) <= 1)
++			break;
+ 		if (g->flags & PF_KTHREAD)
+ 			continue;
+ 		for_each_thread(g, c) {
 
 
 
