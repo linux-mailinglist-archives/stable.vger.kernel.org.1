@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-59858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE8C932C22
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F908932B7A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C655C1F24312
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA6061F21792
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772AB19E7D8;
-	Tue, 16 Jul 2024 15:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF3E19E7EB;
+	Tue, 16 Jul 2024 15:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1ZvNgll"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUFPojN5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351D919DF53;
-	Tue, 16 Jul 2024 15:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E30A17C9E9;
+	Tue, 16 Jul 2024 15:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145121; cv=none; b=hm+HFoFVX0hSW7NmtI33kDClYcxeVmqvWp6XD7ePrt4M/LITp2elHTLAOKqcEuPDKB5MLfJn85HoNaAYvZoMacSOZ5QRjujE7LO3yoZLWaZFiGnXWcMgyCIoE0oq5hxPAWfXczWkqWoNPJFokqz8dOS5u+PoQyWPBRctyH3tWzM=
+	t=1721144733; cv=none; b=u4j7uZJcYExY6CuAOsdD05R3LhjDPNQ1VK26p+3SatcOChypfHs+fB7/6sjhrYLArurxT1/VZ/VUsFocXYw1PCvapNiRVS7wlaXr5oGFFZOiuf2tDPbwIfPHt2o7f43vRHqF7FOYYehbyvaelsHr1Ez4TgUXCkbMzrwHGT4Vpw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145121; c=relaxed/simple;
-	bh=mhhfe//jTpXMtGQnYu4FdZOHCII073u/GmSJakhFOxE=;
+	s=arc-20240116; t=1721144733; c=relaxed/simple;
+	bh=jFoMyGDg6NAPDOCbZGrL8PWMquZ1SLjmmRc+tWfycx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GqYld2T7BmBhZy/khhOIuPnR4kfh1EvLx9h5HUPmu+GmgzBNFQBYXYdbC20J7EoGqnjCBK/rcLIj3uD3HmIVeIftr7eypjwzP2daGvWUj5xHS30xE9eWFv2GMj2+6wY90e7JLj6zPurza59c1i7U34llWlrRe7GKbIePEIYteR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1ZvNgll; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79800C116B1;
-	Tue, 16 Jul 2024 15:52:00 +0000 (UTC)
+	 MIME-Version; b=t0zunxWJbcEPc5LQ+y5irJan/ZMuQQGPoHNFgLJ/5yNrrRIlr4owxVSoa9VPJnx+QzNMCzc2/YTVzm3uul4nJEe0/DWAHjg8GZ0DvZJvK5UDUZpqZmL8DJM/q7OSWqJ3Lykm9RSRc5vSgPZS8CWlcFZW/yCsxUyLdBU3dRcm5g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUFPojN5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C13C4AF0D;
+	Tue, 16 Jul 2024 15:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145120;
-	bh=mhhfe//jTpXMtGQnYu4FdZOHCII073u/GmSJakhFOxE=;
+	s=korg; t=1721144733;
+	bh=jFoMyGDg6NAPDOCbZGrL8PWMquZ1SLjmmRc+tWfycx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1ZvNgll++S0GhBpwwlee4ZeQdtmLiHlQmtgYxKvMI5Soz6n6Fnrchree8ZX+gSG1
-	 jT3FE+kJKwX4ml7+Xd8OcIzdFXj1yqIeYRz1qO6lwmdLaNN7nihXaNQLkk6BDR+Gn5
-	 Ogl9Lfj7NVgG1DYfqHnR6U9q/XuJe8iHYTAEo0js=
+	b=TUFPojN50afpUM9cTUXLye4YETABCKOXaT0vJe2WJ/MP14sFOgqq3oNHgN+2kan4z
+	 nicbPAPPnk8OPbawNqNE8t5ymcD2JGo3eU0CoohriX3+0W6f3/3wYz2aKo5wWfc9eQ
+	 /Vp8qsWrroDcGNi2z6jDqjjOlyVghuV0zRKpj9Pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal.kopec@3mdeb.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.9 106/143] ALSA: hda/realtek: add quirk for Clevo V5[46]0TU
+	Joy Chakraborty <joychakr@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5.10 087/108] nvmem: meson-efuse: Fix return value of nvmem callbacks
 Date: Tue, 16 Jul 2024 17:31:42 +0200
-Message-ID: <20240716152800.054745201@linuxfoundation.org>
+Message-ID: <20240716152749.325345604@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michał Kopeć <michal.kopec@3mdeb.com>
+From: Joy Chakraborty <joychakr@google.com>
 
-commit e1c6db864599be341cd3bcc041540383215ce05e upstream.
+commit 7a0a6d0a7c805f9380381f4deedffdf87b93f408 upstream.
 
-Apply quirk to fix combo jack detection on a new Clevo model: V5[46]0TU
+Read/write callbacks registered with nvmem core expect 0 to be returned
+on success and a negative value to be returned on failure.
 
-Signed-off-by: Michał Kopeć <michal.kopec@3mdeb.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240701111010.1496569-1-michal.kopec@3mdeb.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+meson_efuse_read() and meson_efuse_write() call into
+meson_sm_call_read() and meson_sm_call_write() respectively which return
+the number of bytes read or written on success as per their api
+description.
+
+Fix to return error if meson_sm_call_read()/meson_sm_call_write()
+returns an error else return 0.
+
+Fixes: a29a63bdaf6f ("nvmem: meson-efuse: simplify read callback")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joy Chakraborty <joychakr@google.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240628113704.13742-3-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvmem/meson-efuse.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10424,6 +10424,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1558, 0xa600, "Clevo NL50NU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0xa650, "Clevo NP[567]0SN[CD]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0xa671, "Clevo NP70SN[CDE]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1558, 0xa763, "Clevo V54x_6x_TU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0xb018, "Clevo NP50D[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0xb019, "Clevo NH77D[BE]Q", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0xb022, "Clevo NH77D[DC][QW]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+--- a/drivers/nvmem/meson-efuse.c
++++ b/drivers/nvmem/meson-efuse.c
+@@ -18,18 +18,24 @@ static int meson_efuse_read(void *contex
+ 			    void *val, size_t bytes)
+ {
+ 	struct meson_sm_firmware *fw = context;
++	int ret;
+ 
+-	return meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
+-				  bytes, 0, 0, 0);
++	ret = meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
++				 bytes, 0, 0, 0);
++
++	return ret < 0 ? ret : 0;
+ }
+ 
+ static int meson_efuse_write(void *context, unsigned int offset,
+ 			     void *val, size_t bytes)
+ {
+ 	struct meson_sm_firmware *fw = context;
++	int ret;
++
++	ret = meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
++				  bytes, 0, 0, 0);
+ 
+-	return meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
+-				   bytes, 0, 0, 0);
++	return ret < 0 ? ret : 0;
+ }
+ 
+ static const struct of_device_id meson_efuse_match[] = {
 
 
 
