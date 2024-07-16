@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-59927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97EF0932C83
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EDCE932C82
 	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D16FB238CB
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 394922854FC
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A7D19DF75;
-	Tue, 16 Jul 2024 15:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEB119EEA9;
+	Tue, 16 Jul 2024 15:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVMrxlhY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALvXovEC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B9819E7F7;
-	Tue, 16 Jul 2024 15:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC0819E82C;
+	Tue, 16 Jul 2024 15:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145332; cv=none; b=Hm72vsOHOJjuk5VA7mQjDmJRfcwfUhCl7J3Y2jjg8a/6k+ncs0N/VA00nQ2/9DzQGEq3G6KFE9aOuTunmxifzwYK9yHNPveEm31BPO37Iv3LyVsRGU9tloNAhx2FnSmxN+sTD2mEHoXNSDgojMCiuEnI6Ik5M7cu5yWfKZOjVqw=
+	t=1721145337; cv=none; b=QULLQbz26EVsFWWKs3MsEbMsKZZzkMOJO8YtD/wzhA8vgvIyHclv3eYPtzaFKVN/qaX5rdbAA4iVVz1hR+0LTub4IvVt6Qkk5vZxZSYq0sd3Q9kwhAgHcN7nWm4rlsESJuSWiWEuDBNpkBB0TebcoSI2lFZTMAZNBnmyFfkFGdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145332; c=relaxed/simple;
-	bh=KnG1VaZv2Fc8t4ESjUkozP2JsxGkfIF73+D9Z9aGZVE=;
+	s=arc-20240116; t=1721145337; c=relaxed/simple;
+	bh=vbS6efU/rdVSxbf3P2nVizOX1Zfla0DvKhdiB87XIMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUQRirHkHNI5MOsQrGaDZVNXML9eLm0gV3EvDmLzZ0CMS6wXtj71XZLGFvMiMKRuwHPHt2CoiumRpOsU43knu3zw44w8Z4XI6VDgk46/rJB27hpv+pIT7Gh0m4Vm1lDDfgtp+ZmvLPVKNvwCQ1pVMeyfdA1R5bZ+WPLeDGnHlFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVMrxlhY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E88C116B1;
-	Tue, 16 Jul 2024 15:55:30 +0000 (UTC)
+	 MIME-Version; b=MQbv5lki9ur3zIV5knyBqbxkFQiQfGwb8gvE+pU/h96aZ/1s0gRojzX9mkcs47ZJ1TowauCkTuIwLUjUXD4Vit9urDAGZAEK9pPe1XFvKC0oED8vHLbWf1wceQmgdnJoaQTwcw2hZBYNSKsPfoFf4TdyoO174Ai4hLi1k0T58GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALvXovEC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3008EC116B1;
+	Tue, 16 Jul 2024 15:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145330;
-	bh=KnG1VaZv2Fc8t4ESjUkozP2JsxGkfIF73+D9Z9aGZVE=;
+	s=korg; t=1721145336;
+	bh=vbS6efU/rdVSxbf3P2nVizOX1Zfla0DvKhdiB87XIMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVMrxlhYFUVIaJZAU+jhLUE3U4+YeSiki8pjZY0vPBfX1WDqcsezQ86JgfGnIimTk
-	 PYlxA9WXWmrGg6dOPTWtI0cu3BpYWH1N6EFD+wBlhG9Ym+ByMBTzH8WbznQ9jG8rmP
-	 XRyavTFCRupQmI5m4/dGqIgIhrcK4yXgQy1/79sQ=
+	b=ALvXovEC9n/Avuc9qlJlxyuxRTJCSxutINfpbyEw/QNeUl8f/O2LIEYaxNFRhL0YC
+	 VbXfKS1+DrZQiWKnxlmckcaQZ7i0TgZJkKVI2iw074CAy7Ruw0pGFQ5IWE80l6Kgou
+	 PU4nth4ptB4vKpC07wpE3YMnKOb3WP3/g1dGJFQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Yin <yinxin.x@bytedance.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Jia Zhu <zhujia.zj@bytedance.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	David Howells <dhowells@redhat.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 03/96] cachefiles: narrow the scope of triggering EPOLLIN events in ondemand mode
-Date: Tue, 16 Jul 2024 17:31:14 +0200
-Message-ID: <20240716152746.651765928@linuxfoundation.org>
+Subject: [PATCH 6.1 04/96] cachefiles: stop sending new request when dropping object
+Date: Tue, 16 Jul 2024 17:31:15 +0200
+Message-ID: <20240716152746.689078610@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
 References: <20240716152746.516194097@linuxfoundation.org>
@@ -69,87 +69,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jia Zhu <zhujia.zj@bytedance.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit b817e22b2e91257ace32a6768c3c003faeaa1c5c ]
+[ Upstream commit b2415d1f4566b6939acacc69637eaa57815829c1 ]
 
-Don't trigger EPOLLIN when there are only reopening read requests in
-xarray.
+Added CACHEFILES_ONDEMAND_OBJSTATE_DROPPING indicates that the cachefiles
+object is being dropped, and is set after the close request for the dropped
+object completes, and no new requests are allowed to be sent after this
+state.
 
-Suggested-by: Xin Yin <yinxin.x@bytedance.com>
-Signed-off-by: Jia Zhu <zhujia.zj@bytedance.com>
-Link: https://lore.kernel.org/r/20231120041422.75170-5-zhujia.zj@bytedance.com
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
+This prepares for the later addition of cancel_work_sync(). It prevents
+leftover reopen requests from being sent, to avoid processing unnecessary
+requests and to avoid cancel_work_sync() blocking by waiting for daemon to
+complete the reopen requests.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240628062930.2467993-6-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Stable-dep-of: 12e009d60852 ("cachefiles: wait for ondemand_object_worker to finish when dropping object")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/daemon.c   | 14 ++++++++++++--
- fs/cachefiles/internal.h | 12 ++++++++++++
- 2 files changed, 24 insertions(+), 2 deletions(-)
+ fs/cachefiles/internal.h |  2 ++
+ fs/cachefiles/ondemand.c | 10 ++++++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index b9945e4f697be..06cdf1a8a16f6 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -357,14 +357,24 @@ static __poll_t cachefiles_daemon_poll(struct file *file,
- 					   struct poll_table_struct *poll)
- {
- 	struct cachefiles_cache *cache = file->private_data;
-+	XA_STATE(xas, &cache->reqs, 0);
-+	struct cachefiles_req *req;
- 	__poll_t mask;
- 
- 	poll_wait(file, &cache->daemon_pollwq, poll);
- 	mask = 0;
- 
- 	if (cachefiles_in_ondemand_mode(cache)) {
--		if (!xa_empty(&cache->reqs))
--			mask |= EPOLLIN;
-+		if (!xa_empty(&cache->reqs)) {
-+			rcu_read_lock();
-+			xas_for_each_marked(&xas, req, ULONG_MAX, CACHEFILES_REQ_NEW) {
-+				if (!cachefiles_ondemand_is_reopening_read(req)) {
-+					mask |= EPOLLIN;
-+					break;
-+				}
-+			}
-+			rcu_read_unlock();
-+		}
- 	} else {
- 		if (test_bit(CACHEFILES_STATE_CHANGED, &cache->flags))
- 			mask |= EPOLLIN;
 diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 3eea52462fc87..e0eac16e4741c 100644
+index e0eac16e4741c..94f59123726ca 100644
 --- a/fs/cachefiles/internal.h
 +++ b/fs/cachefiles/internal.h
-@@ -335,6 +335,13 @@ cachefiles_ondemand_set_object_##_state(struct cachefiles_object *object) \
+@@ -48,6 +48,7 @@ enum cachefiles_object_state {
+ 	CACHEFILES_ONDEMAND_OBJSTATE_CLOSE, /* Anonymous fd closed by daemon or initial state */
+ 	CACHEFILES_ONDEMAND_OBJSTATE_OPEN, /* Anonymous fd associated with object is available */
+ 	CACHEFILES_ONDEMAND_OBJSTATE_REOPENING, /* Object that was closed and is being reopened. */
++	CACHEFILES_ONDEMAND_OBJSTATE_DROPPING, /* Object is being dropped. */
+ };
+ 
+ struct cachefiles_ondemand_info {
+@@ -335,6 +336,7 @@ cachefiles_ondemand_set_object_##_state(struct cachefiles_object *object) \
  CACHEFILES_OBJECT_STATE_FUNCS(open, OPEN);
  CACHEFILES_OBJECT_STATE_FUNCS(close, CLOSE);
  CACHEFILES_OBJECT_STATE_FUNCS(reopening, REOPENING);
-+
-+static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
-+{
-+	return cachefiles_ondemand_object_is_reopening(req->object) &&
-+			req->msg.opcode == CACHEFILES_OP_READ;
-+}
-+
- #else
- static inline ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 					char __user *_buffer, size_t buflen)
-@@ -365,6 +372,11 @@ static inline int cachefiles_ondemand_init_obj_info(struct cachefiles_object *ob
- static inline void cachefiles_ondemand_deinit_obj_info(struct cachefiles_object *obj)
- {
- }
-+
-+static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
-+{
-+	return false;
-+}
- #endif
++CACHEFILES_OBJECT_STATE_FUNCS(dropping, DROPPING);
  
- /*
+ static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
+ {
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index 4b39f0422e590..cc2de0e3ee60f 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -494,7 +494,8 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+ 		 */
+ 		xas_lock(&xas);
+ 
+-		if (test_bit(CACHEFILES_DEAD, &cache->flags)) {
++		if (test_bit(CACHEFILES_DEAD, &cache->flags) ||
++		    cachefiles_ondemand_object_is_dropping(object)) {
+ 			xas_unlock(&xas);
+ 			ret = -EIO;
+ 			goto out;
+@@ -535,7 +536,8 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+ 	 * If error occurs after creating the anonymous fd,
+ 	 * cachefiles_ondemand_fd_release() will set object to close.
+ 	 */
+-	if (opcode == CACHEFILES_OP_OPEN)
++	if (opcode == CACHEFILES_OP_OPEN &&
++	    !cachefiles_ondemand_object_is_dropping(object))
+ 		cachefiles_ondemand_set_object_close(object);
+ 	kfree(req);
+ 	return ret;
+@@ -634,8 +636,12 @@ int cachefiles_ondemand_init_object(struct cachefiles_object *object)
+ 
+ void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
+ {
++	if (!object->ondemand)
++		return;
++
+ 	cachefiles_ondemand_send_req(object, CACHEFILES_OP_CLOSE, 0,
+ 			cachefiles_ondemand_init_close_req, NULL);
++	cachefiles_ondemand_set_object_dropping(object);
+ }
+ 
+ int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
 -- 
 2.43.0
 
