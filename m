@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A82932B30
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:42:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6B3932BC9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:48:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF5D2B23868
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:42:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B04C11C20B3D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B221A19FA7E;
-	Tue, 16 Jul 2024 15:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B045B17A93F;
+	Tue, 16 Jul 2024 15:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+igSQv0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V45sd8GX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6A019FA6C;
-	Tue, 16 Jul 2024 15:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6DF12B72;
+	Tue, 16 Jul 2024 15:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144532; cv=none; b=mm8KIXHvsdSJhS8vgtTTjwAoa9tHfl00kSruILAS1Zeibpg4ZxwrleBsGlgtdrS79ByUAc/CGTTV+WEf+5F0mi5a/pWklSpKEDoLEmtB46zt6Bcyz8sSjWJaX+FkicIeuPaVKbhvWjXuSSaDu/TfKVYqSBwIfAAm3UQVfb2h0yo=
+	t=1721144928; cv=none; b=b7wcsOk/+7JBAvmPpaJ3RDsJdG762/XamwmyXS72p6LQDolftiOWakidJxbbAJox+TCvUJEPVrLO6DeNpFwYjejZRzZSecKYosl6/kTAcTShxS9ynEJPylXpx1JqfrdMldL+gZ5t9NxsbFdyyYpYOZw9x36Kjj3VrRwkMjTVeAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144532; c=relaxed/simple;
-	bh=lxlqlOfrI8DPPAGMpDE3VD9AM6iyTSKPEjVOXBa2V+U=;
+	s=arc-20240116; t=1721144928; c=relaxed/simple;
+	bh=7adI8O+peV0Zx4VW9pzkT9ERLgCJMnxlSFUWyewvbys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyFsTPK2f+StfUpbVFzxJYh2ihzzdxjLj/Y4OUE9v0P0rgk5d5B37L0x+AKW5mDheGC9aMnqERM0jU+1IMatKgDCtFmOQAVPhLNo3Qjq8l8gItOQ6H6KhcfKJ7vpw0+tGY2j9Un9xrNADxDSe/w6dsv/ds8jUC3LfxhYaU5eFuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+igSQv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BEBC4AF0D;
-	Tue, 16 Jul 2024 15:42:11 +0000 (UTC)
+	 MIME-Version; b=A3qKqYT1/MTDF6HuE7ygVWQuQi3cQqH2XColu/LT30sNbguVPd2/BL3EG/y4WKeQF+IFVknHbXj2hmNOGPoZhxwasRWksc4DwTRblkT4O3wDeheBRyl5QyOAiFsrQFPdIECAMsdnVTB0mf1yR6Ihs8RgQgzoUVZri/BxnNtCdRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V45sd8GX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CBBC4AF0D;
+	Tue, 16 Jul 2024 15:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144532;
-	bh=lxlqlOfrI8DPPAGMpDE3VD9AM6iyTSKPEjVOXBa2V+U=;
+	s=korg; t=1721144928;
+	bh=7adI8O+peV0Zx4VW9pzkT9ERLgCJMnxlSFUWyewvbys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+igSQv03UbJXujevzAHpEpQaQw7F12CvxGhCMsPDHoYogCviaLRyeGd+3LxzF3A+
-	 GyQZ4yb7D+CJdfzn6L4kmc9saPbFfmwbWe+5YzmlkJFzd8h+gPUIBmZwtaYO7uuWXY
-	 QWAgh/IEqTIIvjctdq8RwCMER7a+yuWcQk45qRc8=
+	b=V45sd8GX/d77WoimEyFOfPcKOnL4iwUJFZquE7KNFd5A1H0vkUzeijSL/cR+PIxV0
+	 Cd1F7wFg1f+bEUBfCMcvOH0nyGRpRVFGkNVeZaoWES5c1fr41kuhR/+bDjcf8Lv2sI
+	 3qOUTnGwlc93KMLK3JabDqAwoUrYsTrtNtlxV86I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jose E. Marchesi" <jose.marchesi@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Gerald Yang <gerald.yang@canonical.com>,
+	Chengen Du <chengen.du@canonical.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 024/108] bpf: Avoid uninitialized value in BPF_CORE_READ_BITFIELD
+Subject: [PATCH 6.9 043/143] net/sched: Fix UAF when resolving a clash
 Date: Tue, 16 Jul 2024 17:30:39 +0200
-Message-ID: <20240716152746.931327629@linuxfoundation.org>
+Message-ID: <20240716152757.645576432@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose E. Marchesi <jose.marchesi@oracle.com>
+From: Chengen Du <chengen.du@canonical.com>
 
-[ Upstream commit 009367099eb61a4fc2af44d4eb06b6b4de7de6db ]
+[ Upstream commit 26488172b0292bed837b95a006a3f3431d1898c3 ]
 
-[Changes from V1:
- - Use a default branch in the switch statement to initialize `val'.]
+KASAN reports the following UAF:
 
-GCC warns that `val' may be used uninitialized in the
-BPF_CRE_READ_BITFIELD macro, defined in bpf_core_read.h as:
+ BUG: KASAN: slab-use-after-free in tcf_ct_flow_table_process_conn+0x12b/0x380 [act_ct]
+ Read of size 1 at addr ffff888c07603600 by task handler130/6469
 
-	[...]
-	unsigned long long val;						      \
-	[...]								      \
-	switch (__CORE_RELO(s, field, BYTE_SIZE)) {			      \
-	case 1: val = *(const unsigned char *)p; break;			      \
-	case 2: val = *(const unsigned short *)p; break;		      \
-	case 4: val = *(const unsigned int *)p; break;			      \
-	case 8: val = *(const unsigned long long *)p; break;		      \
-        }       							      \
-	[...]
-	val;								      \
-	}								      \
+ Call Trace:
+  <IRQ>
+  dump_stack_lvl+0x48/0x70
+  print_address_description.constprop.0+0x33/0x3d0
+  print_report+0xc0/0x2b0
+  kasan_report+0xd0/0x120
+  __asan_load1+0x6c/0x80
+  tcf_ct_flow_table_process_conn+0x12b/0x380 [act_ct]
+  tcf_ct_act+0x886/0x1350 [act_ct]
+  tcf_action_exec+0xf8/0x1f0
+  fl_classify+0x355/0x360 [cls_flower]
+  __tcf_classify+0x1fd/0x330
+  tcf_classify+0x21c/0x3c0
+  sch_handle_ingress.constprop.0+0x2c5/0x500
+  __netif_receive_skb_core.constprop.0+0xb25/0x1510
+  __netif_receive_skb_list_core+0x220/0x4c0
+  netif_receive_skb_list_internal+0x446/0x620
+  napi_complete_done+0x157/0x3d0
+  gro_cell_poll+0xcf/0x100
+  __napi_poll+0x65/0x310
+  net_rx_action+0x30c/0x5c0
+  __do_softirq+0x14f/0x491
+  __irq_exit_rcu+0x82/0xc0
+  irq_exit_rcu+0xe/0x20
+  common_interrupt+0xa1/0xb0
+  </IRQ>
+  <TASK>
+  asm_common_interrupt+0x27/0x40
 
-This patch adds a default entry in the switch statement that sets
-`val' to zero in order to avoid the warning, and random values to be
-used in case __builtin_preserve_field_info returns unexpected values
-for BPF_FIELD_BYTE_SIZE.
+ Allocated by task 6469:
+  kasan_save_stack+0x38/0x70
+  kasan_set_track+0x25/0x40
+  kasan_save_alloc_info+0x1e/0x40
+  __kasan_krealloc+0x133/0x190
+  krealloc+0xaa/0x130
+  nf_ct_ext_add+0xed/0x230 [nf_conntrack]
+  tcf_ct_act+0x1095/0x1350 [act_ct]
+  tcf_action_exec+0xf8/0x1f0
+  fl_classify+0x355/0x360 [cls_flower]
+  __tcf_classify+0x1fd/0x330
+  tcf_classify+0x21c/0x3c0
+  sch_handle_ingress.constprop.0+0x2c5/0x500
+  __netif_receive_skb_core.constprop.0+0xb25/0x1510
+  __netif_receive_skb_list_core+0x220/0x4c0
+  netif_receive_skb_list_internal+0x446/0x620
+  napi_complete_done+0x157/0x3d0
+  gro_cell_poll+0xcf/0x100
+  __napi_poll+0x65/0x310
+  net_rx_action+0x30c/0x5c0
+  __do_softirq+0x14f/0x491
 
-Tested in bpf-next master.
-No regressions.
+ Freed by task 6469:
+  kasan_save_stack+0x38/0x70
+  kasan_set_track+0x25/0x40
+  kasan_save_free_info+0x2b/0x60
+  ____kasan_slab_free+0x180/0x1f0
+  __kasan_slab_free+0x12/0x30
+  slab_free_freelist_hook+0xd2/0x1a0
+  __kmem_cache_free+0x1a2/0x2f0
+  kfree+0x78/0x120
+  nf_conntrack_free+0x74/0x130 [nf_conntrack]
+  nf_ct_destroy+0xb2/0x140 [nf_conntrack]
+  __nf_ct_resolve_clash+0x529/0x5d0 [nf_conntrack]
+  nf_ct_resolve_clash+0xf6/0x490 [nf_conntrack]
+  __nf_conntrack_confirm+0x2c6/0x770 [nf_conntrack]
+  tcf_ct_act+0x12ad/0x1350 [act_ct]
+  tcf_action_exec+0xf8/0x1f0
+  fl_classify+0x355/0x360 [cls_flower]
+  __tcf_classify+0x1fd/0x330
+  tcf_classify+0x21c/0x3c0
+  sch_handle_ingress.constprop.0+0x2c5/0x500
+  __netif_receive_skb_core.constprop.0+0xb25/0x1510
+  __netif_receive_skb_list_core+0x220/0x4c0
+  netif_receive_skb_list_internal+0x446/0x620
+  napi_complete_done+0x157/0x3d0
+  gro_cell_poll+0xcf/0x100
+  __napi_poll+0x65/0x310
+  net_rx_action+0x30c/0x5c0
+  __do_softirq+0x14f/0x491
 
-Signed-off-by: Jose E. Marchesi <jose.marchesi@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240508101313.16662-1-jose.marchesi@oracle.com
+The ct may be dropped if a clash has been resolved but is still passed to
+the tcf_ct_flow_table_process_conn function for further usage. This issue
+can be fixed by retrieving ct from skb again after confirming conntrack.
+
+Fixes: 0cc254e5aa37 ("net/sched: act_ct: Offload connections with commit action")
+Co-developed-by: Gerald Yang <gerald.yang@canonical.com>
+Signed-off-by: Gerald Yang <gerald.yang@canonical.com>
+Signed-off-by: Chengen Du <chengen.du@canonical.com>
+Link: https://patch.msgid.link/20240710053747.13223-1-chengen.du@canonical.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/bpf_core_read.h | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/act_ct.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tools/lib/bpf/bpf_core_read.h b/tools/lib/bpf/bpf_core_read.h
-index f05cfc082915d..4303b31498d81 100644
---- a/tools/lib/bpf/bpf_core_read.h
-+++ b/tools/lib/bpf/bpf_core_read.h
-@@ -101,6 +101,7 @@ enum bpf_enum_value_kind {
- 	case 2: val = *(const unsigned short *)p; break;		      \
- 	case 4: val = *(const unsigned int *)p; break;			      \
- 	case 8: val = *(const unsigned long long *)p; break;		      \
-+	default: val = 0; break;					      \
- 	}								      \
- 	val <<= __CORE_RELO(s, field, LSHIFT_U64);			      \
- 	if (__CORE_RELO(s, field, SIGNED))				      \
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 2a96d9c1db65b..6fa3cca87d346 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -1077,6 +1077,14 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
+ 		 */
+ 		if (nf_conntrack_confirm(skb) != NF_ACCEPT)
+ 			goto drop;
++
++		/* The ct may be dropped if a clash has been resolved,
++		 * so it's necessary to retrieve it from skb again to
++		 * prevent UAF.
++		 */
++		ct = nf_ct_get(skb, &ctinfo);
++		if (!ct)
++			skip_add = true;
+ 	}
+ 
+ 	if (!skip_add)
 -- 
 2.43.0
 
