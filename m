@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-59561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7AA5932AB2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEC2932B41
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B5AD1F2304E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5727E281D90
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A951DDF5;
-	Tue, 16 Jul 2024 15:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450FD19F48B;
+	Tue, 16 Jul 2024 15:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pl5FXvqi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PP96tdlH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86C1CA40
-	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 15:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D1A19F47B
+	for <stable@vger.kernel.org>; Tue, 16 Jul 2024 15:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144222; cv=none; b=HF0hgyi+SfGH1Tb2Jf3CaNbk0enPr4P4yCj636lgOt2W33A4jGhgDkUtpS3YFrUPuIli2pi8Kq0uflFgDyxO6n/5MUuwxtJrUyoXWh9DGE0+b3DPGdXj+jS+EfAl+9oezQIz5Hg7ajFonR+gJsrunhihDVLBSipLxBP0pnJJ/QY=
+	t=1721144576; cv=none; b=sjhKnYv+5kBVEYhtms68svtLqljnoLEZN/dFa3LXPWKAbHNdck49cwqDbah3Uy8J5mE0T+qeaFVM7Uc8iaV1jzfe8f7IuKKrp9oAPmbwprjqwMjhLqD84y3lPh3Kzva1FdAmAeFDRIgL6oZyMHrCkW5L6aWmLI6kP6Eu+VhMsTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144222; c=relaxed/simple;
-	bh=VB2Owqtq50u7VrxMX5z85QWLrV2wRmibzdod3jc9a0Q=;
+	s=arc-20240116; t=1721144576; c=relaxed/simple;
+	bh=SuYkkG+qfVHkIUP+BiAV9dq32Za/KdfU+M/YTNG7Xno=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TyLgw/SOYgfQDidQnYkI9bNG54l1yH0swvbypNxKgTG+mPbKIogxYZ3cmRAuzKKFnazbJcbO4KDfCOoHXF+mAyrpgOcltx1zVQiyqBBhCdR7Vmg4Z2hlpAeZyvKYseNiAsb7aRMT8y3A64qHvX0xN3r17zNexMBDyubUTEzuLKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pl5FXvqi; arc=none smtp.client-ip=209.85.210.171
+	 MIME-Version; b=s+/0cVU5WQxTVz/qdr0ghOlpB6ubvWbLG25zichovWh2anVLKYNmYrPZW3MoTxG120tyh22Dvf1lNdyhEQRNu1i6jmQg6BjfeHkqggD0ANzauTq7xUWntNXeyfBX2dYfa4Uh4wz53hNAqJbLpAecrLmJSExC6N5z5ixRe4D7v6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PP96tdlH; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70af934313aso177603b3a.1
-        for <stable@vger.kernel.org>; Tue, 16 Jul 2024 08:37:00 -0700 (PDT)
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2c9becdc45aso771798a91.0
+        for <stable@vger.kernel.org>; Tue, 16 Jul 2024 08:42:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721144219; x=1721749019; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1721144573; x=1721749373; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z9W1SbA18Lj9YiNGpo9pngBPh/SwGd9f/jdv1vwGJFA=;
-        b=Pl5FXvqijrr4F0/6kzTFCLeYBC5S9YjAQMZHWY+KR8B3cW4uPQR+V3bULPfzUrpQIj
-         kzLR/t1zK3gIfIkcBBXNFC+ga3pmP9KHRjzJW2qilD42myKuHFguxns7Nnx9cWTP0VpP
-         3rC6XwW9cCUIqsCQjymfmQh1Lc//VZ5jIAcTleQbePkruLL8RMbMtVQZugY/6Xt0+kUA
-         7OFdtVjKrOM6PtHCNYetHDXDoNxcpWycOuSR9KoUBjs3RVzCo0EKXmPFHrkqmWyhaw5A
-         E/Tt6NgoKTD8+vJJvyF/tiCVmbyTnfBA8lRct8YFn1ufxp36Ata0hOgM39BJ800mlacd
-         SKkQ==
+        bh=jD8b1yCXzdeJIVLHMx0DmmNjpp4xPDi1UEKaHLBOfDo=;
+        b=PP96tdlHWuBzvXxp675lha/L1CvdE3BYDUYP4DBBjtmbW33dns7biNsBxCHnDNH2j0
+         ohdT7biHQ8RxuwAkonXPulxI0OWObPm2EI07bnn6gT4Hu6h/2CFSFL53JIOr5tLKFVs3
+         MWYa16y8KIbpdkjudiDc7YVAtXRSGULhZgdxsoZW+SxP/Ak7R/n2zvLkX0o+E/fR9nfG
+         tWRThcCHru8fet3VOY/K4IU//g+nCO435vTjqBV2I2nkwHXrbcBnegWztx43JkcxZkd9
+         5ODGLxz/b5drEK+QHKyWAwwHtpp3nHGm83qYR8Y6K5C/8hxrb/yWMuLYvd6KnQ5nsixD
+         4rhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721144219; x=1721749019;
+        d=1e100.net; s=20230601; t=1721144573; x=1721749373;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=z9W1SbA18Lj9YiNGpo9pngBPh/SwGd9f/jdv1vwGJFA=;
-        b=qcY68mPaCe+AOnMHcU77apSEjfOkR4OgKst0g7dDxsld1kNy8j1/ThXcxZaURyONL2
-         mjQa/iUNeU0VU4nvS6V4qstwsfcDwAKOCSiKzoXtzvM9PlK50FahuinQ5ZKuYVAGM5EO
-         DUOJfmMw0eEqqnWwXOmJN6KRpAW6YCS0Wju8MIRnKxZNtG3Ev9Mo4lpK/tQsmYSlz9QF
-         YeFHStL8kfw+X8Ez042jqlynaGeMZYh6nsSXdRxtnzgZ2LocnLrm6f3fHP01ESF2d5R2
-         1LQ+6h5s1fhRpI96wke9sujpAzw7lv4QNTmDEOWtrFQBfE0l+0knAKZtkVWzg7dMQf5k
-         4A0g==
-X-Gm-Message-State: AOJu0Yx9GD8muYLpVbFLGQpKBpNFK6/UMcatV3IQNsNw5nRqJWiaJOUw
-	sRhcpKaWy3EoXODKB57XvnopfVBNqc2wqurdL4NKlxHtWz+kJYS3X6xRsA==
-X-Google-Smtp-Source: AGHT+IFwGCSUfnfn70rzut6BSl/JGQGTGTectLko4wMo1G9k0NWNgP4DspzmXzmXPSkzpRxWQNKGug==
-X-Received: by 2002:a05:6a00:8510:b0:705:d60f:e64e with SMTP id d2e1a72fcca58-70ba4783892mr2445017b3a.1.1721144218878;
-        Tue, 16 Jul 2024 08:36:58 -0700 (PDT)
+        bh=jD8b1yCXzdeJIVLHMx0DmmNjpp4xPDi1UEKaHLBOfDo=;
+        b=wcsbgT6n1k/6tsaTMpoD6ibDjEfn6EFXQAyhNohZypq0aUXLRf+29mXqYZBzQykJEb
+         SgkpuF6xehVxRA9XychHRMmV5t5bU4P9Oyie1vd1RhcQzh1PtzhbPx5Gqw5TBCLi0E3V
+         pm28ytWrRQNhryiGKl8oXYx3an0EHNch0PcUSoxbu16LUVhKQS/siu5mCix8A6T6nNHT
+         fHJU+3ykumuTxCvV2jKhhAKUckOJWT7gEzaDOpTPBTZNNgVcy+HSh8BLH4H8XbifoeoH
+         pKas8qFD306X76EMg3+Ous/Z5llwBBg3vHzvRw0m+0+0JyEiRiR+YDlQDlvbOWih2hqT
+         dDOw==
+X-Gm-Message-State: AOJu0Yw2WX+EdOuBfYMUv9UAYlc4CmawXm36hCBW/xF6tCQgj6H7uYAq
+	Aydiia7SH0TgL54c3pnEf829JoLncK27Q2jm8pClUWpSHa7JZymgMAESfQ==
+X-Google-Smtp-Source: AGHT+IEUd79K1hxwCWt2gFdJBzPumJ0Qxwph69+PILR89BbtzfR+JctnnJ/xrUNVO5OrAhTKB7Ib2g==
+X-Received: by 2002:a17:90a:4409:b0:2ca:7cc3:994b with SMTP id 98e67ed59e1d1-2cb340f937emr2464815a91.2.1721144572708;
+        Tue, 16 Jul 2024 08:42:52 -0700 (PDT)
 Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b7ec7d963sm6437802b3a.130.2024.07.16.08.36.57
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cacd6da72csm8473701a91.36.2024.07.16.08.42.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jul 2024 08:36:58 -0700 (PDT)
+        Tue, 16 Jul 2024 08:42:52 -0700 (PDT)
 From: Kuan-Wei Chiu <visitorckw@gmail.com>
 To: stable@vger.kernel.org
 Cc: Kuan-Wei Chiu <visitorckw@gmail.com>,
 	Julian Sikorski <belegdol@gmail.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.10.y] ACPI: processor_idle: Fix invalid comparison with insertion sort for latency
-Date: Tue, 16 Jul 2024 23:36:53 +0800
-Message-Id: <20240716153653.207824-1-visitorckw@gmail.com>
+Subject: [PATCH 5.4.y] ACPI: processor_idle: Fix invalid comparison with insertion sort for latency
+Date: Tue, 16 Jul 2024 23:42:47 +0800
+Message-Id: <20240716154247.254888-1-visitorckw@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2024071529-prognosis-achiness-85fd@gregkh>
-References: <2024071529-prognosis-achiness-85fd@gregkh>
+In-Reply-To: <2024071530-rambling-fable-98ea@gregkh>
+References: <2024071530-rambling-fable-98ea@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -114,7 +114,7 @@ Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
  1 file changed, 16 insertions(+), 24 deletions(-)
 
 diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 3deeabb27394..ae07927910ca 100644
+index 0aca77cb8301..92db8b0622b2 100644
 --- a/drivers/acpi/processor_idle.c
 +++ b/drivers/acpi/processor_idle.c
 @@ -16,7 +16,6 @@
@@ -125,7 +125,7 @@ index 3deeabb27394..ae07927910ca 100644
  #include <linux/tick.h>
  #include <linux/cpuidle.h>
  #include <linux/cpu.h>
-@@ -390,28 +389,24 @@ static void acpi_processor_power_verify_c3(struct acpi_processor *pr,
+@@ -541,28 +540,24 @@ static void acpi_processor_power_verify_c3(struct acpi_processor *pr,
  	return;
  }
  
@@ -169,7 +169,7 @@ index 3deeabb27394..ae07927910ca 100644
  }
  
  static int acpi_processor_power_verify(struct acpi_processor *pr)
-@@ -456,10 +451,7 @@ static int acpi_processor_power_verify(struct acpi_processor *pr)
+@@ -607,10 +602,7 @@ static int acpi_processor_power_verify(struct acpi_processor *pr)
  
  	if (buggy_latency) {
  		pr_notice("FW issue: working around C-state latencies out of order\n");
