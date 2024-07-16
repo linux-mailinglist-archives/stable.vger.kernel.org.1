@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-59583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD27B932ACA
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:38:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57336932A7B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:34:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 645881F233F3
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:38:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 011831F23721
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B80F9E8;
-	Tue, 16 Jul 2024 15:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEA51DFDE;
+	Tue, 16 Jul 2024 15:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1k0CCCbP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQ0fXGBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6140B641;
-	Tue, 16 Jul 2024 15:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB9BE541;
+	Tue, 16 Jul 2024 15:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144286; cv=none; b=EFQlwieU/I67CRkrYaHwIn539IHoYaOeM1uCvrQ2bbrB0fw+pAoWSoYsV5czahz0c0yRxRl/39ShwIvS1q9cwV4t5MTtWTKlLhODLoxPoMDiS/8pOzz4TmegP2krhW3KDQm4+vQSBl/GMiU9GkOU5B+5mh7hhsGOZKjWTI3cSo8=
+	t=1721144065; cv=none; b=ULYtCoeKYFMqwGWtd29VwNZwhQS9EBcgkqyf/U8YWv5yUvDQSGIlt/xCMd3MTXDMm2+GA+qTRyayNmVahG/9vVOdJFLvaUhm4Fd2C7+oniLbr0owfPFz1bXqVQg/k8M2GphZhsKmMJWK1Uxi42yJ59Y+pzmVpFxm3udb5e6hCk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144286; c=relaxed/simple;
-	bh=K1HFRG3GNTK0JsCbHxcZxOj/F7KbX6aCeC2/WVYabVc=;
+	s=arc-20240116; t=1721144065; c=relaxed/simple;
+	bh=NhZSDD9urzrwILdzr3fEMrcwGNmdZB3RODffLvygE+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dh137KzCfhQPf6PhniBoKH+qOB0pZ42P1lsYZC2zOa8WfWcGabAy+UgbgNGTCoFbYA/bXfE0S+9m1KUjku2AdhgF7NyN7mYCZtsqZdNKR3wNik8G46R4NrcHcSozsUsL9YRHCKvXL5dlbU4UBSVgNtxK5Ebsu/cGHnxm3naApm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1k0CCCbP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D79C116B1;
-	Tue, 16 Jul 2024 15:38:05 +0000 (UTC)
+	 MIME-Version; b=TvImuSPRXHAsiLHTb2GXnjNe0+FHhslJ7cTsOR2O0pJLO2bV4gU4uL6xY5/oZ49C4PDSl2Y6bj6GgS0hQ8iUnLpBG5x0HzfCuZGgY6FmI65X5A99ruWNupUh0Q2dBMBTyGMku/rx6q46UC8wPAI07JD2WAnQ8CEGuUc5x6F+/ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQ0fXGBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF06AC116B1;
+	Tue, 16 Jul 2024 15:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144286;
-	bh=K1HFRG3GNTK0JsCbHxcZxOj/F7KbX6aCeC2/WVYabVc=;
+	s=korg; t=1721144065;
+	bh=NhZSDD9urzrwILdzr3fEMrcwGNmdZB3RODffLvygE+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1k0CCCbP8WDsa/3k9qqXBbHHt0i59IVpfwDuphJ9dY+LapARdyuf2X7LdYfrCA45D
-	 imWfs0UxsIHhkjh6+cxLA7hl69TI+GZRC9xvjietNc3MLNbCSL/YAbR9RaWK35w1Kq
-	 vF4OawOafb16yXC2VK22/uzTvPWqjl0BzA6DPjGU=
+	b=DQ0fXGBZFdZFsXo47oi1HU2/caVSOmTuz5fwC+ILV7JzM74+qal+6AtonBv6nwW/Q
+	 dFmQgKobmf53Ayt6s0bqV44EMdUX2Z3Q74YfuPIgPMsoE0FeMWkT+WrohfnBlpeytT
+	 dtHqWxCXR5DDRqWjydnyciyrWIcKjMv6CmgVoNvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Hung <alex.hung@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 07/78] drm/amd/display: Skip finding free audio for unknown engine_id
+Subject: [PATCH 4.19 04/66] drm/amd/display: Skip finding free audio for unknown engine_id
 Date: Tue, 16 Jul 2024 17:30:39 +0200
-Message-ID: <20240716152740.913274434@linuxfoundation.org>
+Message-ID: <20240716152738.336040014@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index cdcd5051dd666..2f56684780eb5 100644
+index 6896d69b8c240..8b4337794d1ef 100644
 --- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
 +++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -1646,6 +1646,9 @@ static struct audio *find_first_free_audio(
+@@ -1703,6 +1703,9 @@ static struct audio *find_first_free_audio(
  {
  	int i, available_audio_count;
  
