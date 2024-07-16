@@ -1,99 +1,118 @@
-Return-Path: <stable+bounces-60317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D178933043
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:38:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A07933023
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6B431F2316E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCE78282CBD
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DC31A256C;
-	Tue, 16 Jul 2024 18:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C903E1A2FC2;
+	Tue, 16 Jul 2024 18:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="toxJEzyi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ba5Tj+mx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639C51A708C;
-	Tue, 16 Jul 2024 18:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA9A1A01D8;
+	Tue, 16 Jul 2024 18:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154841; cv=none; b=HGlsmdvHq3euP2geRRUkmizIoHLWwf5c8oO9990lZg4cgf6nPc7KQaChpWIhabflLoY+jZwvKai4TaG4ZrRtZ+61h/9ZYe7j4k8+FkUd8TZM6DwOq+wQrMf8UrmK3j29t9+pouepMhramNBXGZOK2z0nHg9UO/rAgV/HF8Td0VE=
+	t=1721154819; cv=none; b=lwMzVPn5AGX/32S2QFZyKqtCY2NlnvaXJ2ZCF8OvfOUNi9pnoAphKyDpnXlUPPHVMGlaqxcCEGz2XamAh6G3Tj1l0oGRhC1CzzfZ8AxxRBXqZSgNgqkaYFO5Aiyup+0TyFR6uXGligIVaqno0coVRlpvEtjS+hEvnPkEJH60goY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154841; c=relaxed/simple;
-	bh=+ZEh5ZWgZ7uqm+6KF+zNAbFjx6DKTcUOJevfXK/5pRo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GX4zxyKVygM1WaSrAlVVVSbjl0QoHtTdiXMiXdUfxBKbA2WSePONjBQD//WkY2xCq/1pE28leveg4gvWdIhYu4iTiBsOyF/LOjbt9050/iKVqTyLalJ342uP9/XlPsn/uk+zWOgyxpFil02oXNkEAXFPc3MRoTx+tsRTxZCdsmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=toxJEzyi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABE3C4AF0D;
-	Tue, 16 Jul 2024 18:34:00 +0000 (UTC)
+	s=arc-20240116; t=1721154819; c=relaxed/simple;
+	bh=RoTz8SCDctxTyPa/A3kJf11i3VVBdS3TP8fU1fccXPk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=u8wrDG8LpUSlugxJQOOA5RVJmEqhqLZw/VwLZ3f4QSOOTUV9gvv+tXiCjpIHfVinlncyr2UI30Nj2xbETJA7zQk65C5ucUjLJNM1tePGQGLjzDUy0kOWEFdqdvhE5B/nF26cVgmWVAfiAJmcjenta0FvMbVQXVrWxXw7mCnvbp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ba5Tj+mx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0D9C4AF0E;
+	Tue, 16 Jul 2024 18:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154841;
-	bh=+ZEh5ZWgZ7uqm+6KF+zNAbFjx6DKTcUOJevfXK/5pRo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=toxJEzyiL8jmVSWHYkN6jeWch0mZTEGZQ6GfceJsQZ8SbNSOGUpVuEzTmMHv1lDzQ
-	 X/aRO4kUDSiyXetnDmqWk2kEbkueM+/OacIoF+X/skZ2Zg6EGRHGtxlHSM4R2lRqkj
-	 CzQyd9PIhfxbzHwbynE15fZYjQtoZXKyB2oAuAtrBgqrMpmhSs7zmA+J8/szX1JyBY
-	 LhGZXswLUBf3Gxbr6UFgErXW6XJMObq8DdlIhc0DI9w3u6wyewEVDOZBDGKVpV2t00
-	 hjqgkd2xROjX0dtIqFeWejklAEJo2bf5BIjPVvb1P1NCWtHZjn941XsJ5Jr+85J0LO
-	 S+BF7UXnFj2EQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 8/8] spi: mux: set ctlr->bits_per_word_mask
-Date: Tue, 16 Jul 2024 14:33:05 -0400
-Message-ID: <20240716183324.2814275-8-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240716183324.2814275-1-sashal@kernel.org>
-References: <20240716183324.2814275-1-sashal@kernel.org>
+	s=k20201202; t=1721154819;
+	bh=RoTz8SCDctxTyPa/A3kJf11i3VVBdS3TP8fU1fccXPk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ba5Tj+mxToRnRvQFkDDUXX1LI3YQCVsfunTbHPZdgbMp3Fosf9I/uRFn+aTUNw3gr
+	 ncHffD5kX8NBDV4VHTTxnO1UadEYU4YWVoPz83NyFHLD2zOTiBpR9fEUduZVV+TeWg
+	 kvxFWaH+jsBng/DIHdwBWjcEpbo3XgJsgg8gmhPL7SXCPbveCDZropmyKJPvtQwRD5
+	 iIdQizTJevrzaYVjcoZJP9kM1hSbsU4IvY+sahjlblKkBK0EaTQoFhpMc3tsQt7TG0
+	 octmW0uD0GEEgMFNOTUxN+VisZb7SA2AKtadC4g4CMNKP8kdDwpYcDLEJCCm+kSYtd
+	 sZqZ3Wk0fjKQQ==
+From: SeongJae Park <sj@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-sparse@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y 0/8] Backport patches for DAMON merge regions fix
+Date: Tue, 16 Jul 2024 11:33:25 -0700
+Message-Id: <20240716183333.138498-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.40
 Content-Transfer-Encoding: 8bit
 
-From: David Lechner <dlechner@baylibre.com>
+Commit 310d6c15e910 ("mm/damon/core: merge regions aggressively when
+max_nr_regions") causes a build warning and a build failure [1] on
+5.15.y.  Those are due to
+1) unnecessarily strict type check from max(), and
+2) use of not-yet-introduced damon_ctx->attrs field, respectively.
 
-[ Upstream commit c8bd922d924bb4ab6c6c488310157d1a27996f31 ]
+Fix the warning by backporting a minmax.h upstream commit that made the
+type check less strict for unnecessary case, and upstream commits that
+it depends on.
 
-Like other SPI controller flags, bits_per_word_mask may be used by a
-peripheral driver, so it needs to reflect the capabilities of the
-underlying controller.
+Note that all patches except the fourth one ("minmax: fix header
+inclusions") are clean cherry-picks of upstream commit.  For the fourth
+one, minor conflict resolving was needed.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20240708-spi-mux-fix-v1-3-6c8845193128@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-mux.c | 1 +
- 1 file changed, 1 insertion(+)
+Also, the last patch, which is the backport of the DAMON fix, was
+cleanly cherry-picked, but added manual fix for the build failure.
 
-diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
-index fa8c1f740c702..804b911f2baf1 100644
---- a/drivers/spi/spi-mux.c
-+++ b/drivers/spi/spi-mux.c
-@@ -156,6 +156,7 @@ static int spi_mux_probe(struct spi_device *spi)
- 	/* supported modes are the same as our parent's */
- 	ctlr->mode_bits = spi->controller->mode_bits;
- 	ctlr->flags = spi->controller->flags;
-+	ctlr->bits_per_word_mask = spi->controller->bits_per_word_mask;
- 	ctlr->transfer_one_message = spi_mux_transfer_one_message;
- 	ctlr->setup = spi_mux_setup;
- 	ctlr->num_chipselect = mux_control_states(priv->mux);
+[1] https://lore.kernel.org/2024071532-pebble-jailhouse-48b2@gregkh
+
+Andy Shevchenko (1):
+  minmax: fix header inclusions
+
+Bart Van Assche (1):
+  tracing: Define the is_signed_type() macro once
+
+David Laight (3):
+  minmax: allow min()/max()/clamp() if the arguments have the same
+    signedness.
+  minmax: allow comparisons of 'int' against 'unsigned char/short'
+  minmax: relax check to allow comparison between unsigned arguments and
+    signed constants
+
+Jason A. Donenfeld (2):
+  minmax: sanity check constant bounds when clamping
+  minmax: clamp more efficiently by avoiding extra comparison
+
+SeongJae Park (1):
+  mm/damon/core: merge regions aggressively when max_nr_regions is unmet
+
+ include/linux/compiler.h     |  6 +++
+ include/linux/minmax.h       | 89 ++++++++++++++++++++++++++----------
+ include/linux/overflow.h     |  1 -
+ include/linux/trace_events.h |  2 -
+ mm/damon/core.c              | 23 ++++++++--
+ 5 files changed, 90 insertions(+), 31 deletions(-)
+
+
+base-commit: 4d1b7f1bf3858ed48a98c004bda5fdff2cdf13c8
 -- 
-2.43.0
+2.39.2
 
 
