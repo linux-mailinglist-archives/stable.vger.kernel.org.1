@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B22932CC8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9AD0932D6D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B855028423D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38DD8B23BAF
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8AE619E7DB;
-	Tue, 16 Jul 2024 15:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B4519B3EE;
+	Tue, 16 Jul 2024 16:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXKYzgD0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9zv0qqx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A3E1DDCE;
-	Tue, 16 Jul 2024 15:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96AB1DDCE;
+	Tue, 16 Jul 2024 16:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145481; cv=none; b=Zd2fhiv0IboCz9EaiyoDkwDalQoZupa1hc9I9pKWZ0nepuLI7cwkXAmAlwjTAHZQssoPyy3YMdG7lA+I27lc41M3y44UkGuR2c/eDwhRDYrd3MUTldTEAfbqetNBDEi4Gr/JklTPYHtkplqVKdOS3TJyzR4gTgNgHbkCJwasjZg=
+	t=1721145903; cv=none; b=X4kDScgvym+ef2K8r9g16KyEzUOeUnfyer2vJlGlmvTo4FxJCuYTHEkz0moRSeL7q0W0LGkyfaBAZMsb5HJssQDgwZALY4z9KfweJOJX1k+qRBg72R/fq9jMyfkvl9fIzRx6EwWw4GzSrHPBUp841kVExtKA1O5BbUDnmoKnXa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145481; c=relaxed/simple;
-	bh=vCbBIQkak/y9tfc1DFRgQXTW9ppXbM3Vq4FjU9fcaFs=;
+	s=arc-20240116; t=1721145903; c=relaxed/simple;
+	bh=LQp0wJ6nBJ3ZCCqFc/smJhLn9Sxf+E4iWJJW5AVrTcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyopN2VCtFh0I/rTxqhSdAGpV9o6iDhry2qWRRyZf/YCTHQZASvZIdvrdnpuTedSIYP/jv1GHMgYKn5wuhhm8Zt7VA15ryBQj1F0tbPY99X9Kxn5NPc3VxIbrq+/Fb4X43Ih9hwxv9OY78BQX9EXqsJLzL5wMsyBmmlDwD8ajU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXKYzgD0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2E0C116B1;
-	Tue, 16 Jul 2024 15:58:00 +0000 (UTC)
+	 MIME-Version; b=OgU4ttY/X8RtDYdb9w/f11ldlMXWM6x3zUhdK6LqIOccn8JWxkUWmQTK8oV/hyxVnw7DVCmPcdUtNhrpgbQuCXGm09BLsBF8q54cAPkbTW5URSsffJCKjMPUGwa3C24bwJYOzfU4zfziSm+rHYe4H8FkhE9gCsU2EkxYZ05ObCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9zv0qqx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E24C116B1;
+	Tue, 16 Jul 2024 16:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145481;
-	bh=vCbBIQkak/y9tfc1DFRgQXTW9ppXbM3Vq4FjU9fcaFs=;
+	s=korg; t=1721145903;
+	bh=LQp0wJ6nBJ3ZCCqFc/smJhLn9Sxf+E4iWJJW5AVrTcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cXKYzgD0WqtHTePT40vRzNDIJGPQhjIMysT8RepW0Cqei87teJtHbRWLiDtsf2Abw
-	 Ucd8njewh71AUF7oMuTzkhRxrZCSqcmyD/DXiWHzdBAF1fNEEGMIyf28IGW14VrQTL
-	 GR1KwlvU28TOTUJAIBbNWmmuM9jjNz4NySvp6Gx8=
+	b=k9zv0qqxq9x+zc1nw5zImsNZE+8kD2B+7Q/tIV4P1Z2lbS6Kf7Ak4yyZzD5MqTyId
+	 oekfGXBZOYaZTcEBbaEcuRWcDg/nHz7zQ3LcXGKSPKfU2FijORvQYJj875KhpiJabL
+	 U9FUXxidHJElkjEOzoa75L4JapZWVE02QOG/eTpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Greg Thelen <gthelen@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 80/96] x86/retpoline: Move a NOENDBR annotation to the SRSO dummy return thunk
+	Ilya Dryomov <idryomov@gmail.com>,
+	Xiubo Li <xiubli@redhat.com>
+Subject: [PATCH 6.6 089/121] libceph: fix race between delayed_work() and ceph_monc_stop()
 Date: Tue, 16 Jul 2024 17:32:31 +0200
-Message-ID: <20240716152749.589880661@linuxfoundation.org>
+Message-ID: <20240716152754.752003501@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-The linux-6.1-y backport of commit b377c66ae350 ("x86/retpoline: Add
-NOENDBR annotation to the SRSO dummy return thunk") misplaced the new
-NOENDBR annotation, repeating the annotation on __x86_return_thunk,
-rather than adding the annotation to the !CONFIG_CPU_SRSO version of
-srso_alias_untrain_ret, as intended.
+commit 69c7b2fe4c9cc1d3b1186d1c5606627ecf0de883 upstream.
 
-Move the annotation to the right place.
+The way the delayed work is handled in ceph_monc_stop() is prone to
+races with mon_fault() and possibly also finish_hunting().  Both of
+these can requeue the delayed work which wouldn't be canceled by any of
+the following code in case that happens after cancel_delayed_work_sync()
+runs -- __close_session() doesn't mess with the delayed work in order
+to avoid interfering with the hunting interval logic.  This part was
+missed in commit b5d91704f53e ("libceph: behave in mon_fault() if
+cur_mon < 0") and use-after-free can still ensue on monc and objects
+that hang off of it, with monc->auth and monc->monmap being
+particularly susceptible to quickly being reused.
 
-Fixes: b377c66ae350 ("x86/retpoline: Add NOENDBR annotation to the SRSO dummy return thunk")
-Reported-by: Greg Thelen <gthelen@google.com>
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+To fix this:
+
+- clear monc->cur_mon and monc->hunting as part of closing the session
+  in ceph_monc_stop()
+- bail from delayed_work() if monc->cur_mon is cleared, similar to how
+  it's done in mon_fault() and finish_hunting() (based on monc->hunting)
+- call cancel_delayed_work_sync() after the session is closed
+
 Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/66857
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/lib/retpoline.S |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ceph/mon_client.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -107,6 +107,7 @@ __EXPORT_THUNK(srso_alias_untrain_ret)
- /* dummy definition for alternatives */
- SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	ANNOTATE_UNRET_SAFE
-+	ANNOTATE_NOENDBR
- 	ret
- 	int3
- SYM_FUNC_END(srso_alias_untrain_ret)
-@@ -261,7 +262,6 @@ SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
- 	ANNOTATE_UNRET_SAFE
--	ANNOTATE_NOENDBR
- 	ret
- 	int3
- SYM_CODE_END(__x86_return_thunk)
+--- a/net/ceph/mon_client.c
++++ b/net/ceph/mon_client.c
+@@ -1085,13 +1085,19 @@ static void delayed_work(struct work_str
+ 	struct ceph_mon_client *monc =
+ 		container_of(work, struct ceph_mon_client, delayed_work.work);
+ 
+-	dout("monc delayed_work\n");
+ 	mutex_lock(&monc->mutex);
++	dout("%s mon%d\n", __func__, monc->cur_mon);
++	if (monc->cur_mon < 0) {
++		goto out;
++	}
++
+ 	if (monc->hunting) {
+ 		dout("%s continuing hunt\n", __func__);
+ 		reopen_session(monc);
+ 	} else {
+ 		int is_auth = ceph_auth_is_authenticated(monc->auth);
++
++		dout("%s is_authed %d\n", __func__, is_auth);
+ 		if (ceph_con_keepalive_expired(&monc->con,
+ 					       CEPH_MONC_PING_TIMEOUT)) {
+ 			dout("monc keepalive timeout\n");
+@@ -1116,6 +1122,8 @@ static void delayed_work(struct work_str
+ 		}
+ 	}
+ 	__schedule_delayed(monc);
++
++out:
+ 	mutex_unlock(&monc->mutex);
+ }
+ 
+@@ -1232,13 +1240,15 @@ EXPORT_SYMBOL(ceph_monc_init);
+ void ceph_monc_stop(struct ceph_mon_client *monc)
+ {
+ 	dout("stop\n");
+-	cancel_delayed_work_sync(&monc->delayed_work);
+ 
+ 	mutex_lock(&monc->mutex);
+ 	__close_session(monc);
++	monc->hunting = false;
+ 	monc->cur_mon = -1;
+ 	mutex_unlock(&monc->mutex);
+ 
++	cancel_delayed_work_sync(&monc->delayed_work);
++
+ 	/*
+ 	 * flush msgr queue before we destroy ourselves to ensure that:
+ 	 *  - any work that references our embedded con is finished.
 
 
 
