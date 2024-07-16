@@ -1,52 +1,61 @@
-Return-Path: <stable+bounces-60241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7868F932E05
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:11:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B3D932E2A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D12A1C21BC4
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:11:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FE361F23058
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7096819B3C4;
-	Tue, 16 Jul 2024 16:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A7F19E7FE;
+	Tue, 16 Jul 2024 16:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5lvy6lx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9jOlRql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E01D1DDCE;
-	Tue, 16 Jul 2024 16:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F1F19DF71;
+	Tue, 16 Jul 2024 16:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721146311; cv=none; b=rcko56HeeYj/+GwwF1JXB/7CKqcq0jy6eNn91tHLEZf2qTKwedZuEQfA3O0Wvhbi18TuxzneBdLT9g63HPx5fiDRvbhxQ3sVUrIQzhBfy6TzADnatanLH8JI8uXKP0Az2+KVTrGlzh4p1Iu0788XqcXtOqPb5pj5XpjHM5Uinmw=
+	t=1721146393; cv=none; b=Hg0inhDJObEw/sWH4DVin7RPkCo1BxnfkPa1cDaD8kbcnsYSiOBkTfCfApV8+bz/cAsr7grjms3070Q9VgbNRsUOuF13Z78FSPM2MHgUrHjslWmDOAEwgGFLA8xOUW1WR2XmZrvNafezc1r8G12ybH/LcitvnBmM8j49JwM71/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721146311; c=relaxed/simple;
-	bh=cGHFKCFBUUA19ovWeuOHkfuNwtvtvA4E1haepmfTAkA=;
+	s=arc-20240116; t=1721146393; c=relaxed/simple;
+	bh=9CDQsYfLsrsEWfaB2FJ7eLOcKRm2DOg2aZp17IsNPIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXFu47BK7kO6R72XQPQ2ZrXv6UieL/ozU74Xs3cFKUmWNhUWgLz51hXuhx7XGtwC907ozTj+qiukafrdnHANxFq8O3KNqXvm2AyyAfyZogCTWQdALwnq0otsil/uLb8XuX55NM4QPs5UBqy7RZzRpaFBjWNa0JNrUA23K2+j30U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5lvy6lx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A867FC116B1;
-	Tue, 16 Jul 2024 16:11:50 +0000 (UTC)
+	 MIME-Version; b=I3dWqESnobXpAoTvGdqr5oapSbU0yak2QTi7EKlg8f6ezuREEzjL7mI7jiCnl+BJR6L3pPcyasKBGRYyvofsnmuoNGThraGuQvNxjEmq/ninWpVuXdJoi9lT39+6WGoIx60QCeEGvazylSSHM5AqNPfBjZCTt1WFOt75/gqMqO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9jOlRql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF66FC116B1;
+	Tue, 16 Jul 2024 16:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721146311;
-	bh=cGHFKCFBUUA19ovWeuOHkfuNwtvtvA4E1haepmfTAkA=;
+	s=korg; t=1721146393;
+	bh=9CDQsYfLsrsEWfaB2FJ7eLOcKRm2DOg2aZp17IsNPIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X5lvy6lxPccNr0jbT4124LLrevqTY6qp3HzoYwbsImJoDijHjFjxhxnkCslJjLT/G
-	 AP92rbyn+8c2R54fMqpo21kBxlt4terNbcsRq8sg1FVTWiqBO13zYGtvOJpLM1pY7d
-	 txaiTSAmgEwhn3pikRDgZ4nHpYOTvxG+DrWt2Zrc=
+	b=V9jOlRqloiSGt0Hxqm7jyag9vMHzbgMf3whcnRt+fl94j1E3moytIPwiPabJS2qE7
+	 XlyCF/+QeAMb/thXCusYGHgzv6fr4DWQIdHcVgzZHyvSgVgBFyecDjf4UucLGaL4ax
+	 fcc7tk2oRrQoEj1HGUdJ1v7m7QZDJO8X/4cuaPwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 123/144] ALSA: hda/realtek: Limit mic boost on VAIO PRO PX
-Date: Tue, 16 Jul 2024 17:33:12 +0200
-Message-ID: <20240716152757.250182945@linuxfoundation.org>
+	Audra Mitchell <audra@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Mike Rapoport <rppt@linux.vnet.ibm.com>,
+	Peter Xu <peterx@redhat.com>,
+	Rafael Aquini <raquini@redhat.com>,
+	Shaohua Li <shli@fb.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 124/144] Fix userfaultfd_api to return EINVAL as expected
+Date: Tue, 16 Jul 2024 17:33:13 +0200
+Message-ID: <20240716152757.287526195@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
 References: <20240716152752.524497140@linuxfoundation.org>
@@ -65,41 +74,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Audra Mitchell <audra@redhat.com>
 
-commit 6db03b1929e207d2c6e84e75a9cd78124b3d6c6d upstream.
+commit 1723f04caacb32cadc4e063725d836a0c4450694 upstream.
 
-The internal mic boost on the VAIO models VJFE-CL and VJFE-IL is too high.
-Fix this by applying the ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine
-to limit the gain.
+Currently if we request a feature that is not set in the Kernel config we
+fail silently and return all the available features.  However, the man
+page indicates we should return an EINVAL.
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+We need to fix this issue since we can end up with a Kernel warning should
+a program request the feature UFFD_FEATURE_WP_UNPOPULATED on a kernel with
+the config not set with this feature.
+
+ [  200.812896] WARNING: CPU: 91 PID: 13634 at mm/memory.c:1660 zap_pte_range+0x43d/0x660
+ [  200.820738] Modules linked in:
+ [  200.869387] CPU: 91 PID: 13634 Comm: userfaultfd Kdump: loaded Not tainted 6.9.0-rc5+ #8
+ [  200.877477] Hardware name: Dell Inc. PowerEdge R6525/0N7YGH, BIOS 2.7.3 03/30/2022
+ [  200.885052] RIP: 0010:zap_pte_range+0x43d/0x660
+
+Link: https://lkml.kernel.org/r/20240626130513.120193-1-audra@redhat.com
+Fixes: e06f1e1dd499 ("userfaultfd: wp: enabled write protection in userfaultfd API")
+Signed-off-by: Audra Mitchell <audra@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rafael Aquini <raquini@redhat.com>
+Cc: Shaohua Li <shli@fb.com>
+Cc: Shuah Khan <shuah@kernel.org>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240705141012.5368-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/userfaultfd.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9268,6 +9268,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
- 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
- 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x1252, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
-@@ -9481,6 +9482,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -1935,7 +1935,7 @@ static int userfaultfd_api(struct userfa
+ 		goto out;
+ 	features = uffdio_api.features;
+ 	ret = -EINVAL;
+-	if (uffdio_api.api != UFFD_API || (features & ~UFFD_API_FEATURES))
++	if (uffdio_api.api != UFFD_API)
+ 		goto err_out;
+ 	ret = -EPERM;
+ 	if ((features & UFFD_FEATURE_EVENT_FORK) && !capable(CAP_SYS_PTRACE))
+@@ -1949,6 +1949,11 @@ static int userfaultfd_api(struct userfa
+ #ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+ 	uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
+ #endif
++
++	ret = -EINVAL;
++	if (features & ~uffdio_api.features)
++		goto err_out;
++
+ 	uffdio_api.ioctls = UFFD_API_IOCTLS;
+ 	ret = -EFAULT;
+ 	if (copy_to_user(buf, &uffdio_api, sizeof(uffdio_api)))
 
 
 
