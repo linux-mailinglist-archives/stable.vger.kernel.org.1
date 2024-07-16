@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-59983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A36932CCF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD86932D55
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC9BB1F2214A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91CC4B24D04
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0F119E832;
-	Tue, 16 Jul 2024 15:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106F419DF59;
+	Tue, 16 Jul 2024 16:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tK6TSd1R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9GoHiH1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A43419E7F7;
-	Tue, 16 Jul 2024 15:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C119E19B59C;
+	Tue, 16 Jul 2024 16:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145502; cv=none; b=lkfumRsFZ7rYo/scSRt1wFKEYRX6gT4yRN+XVdLYOqzYW7OswMt407PU0SnVsTbXS2R59udc5CT/JzOQunh+eH3p5ePnLyvtdaUmyDw65/TQN2mqdxBVOebwZ2EsWX3wXsTirrR2uoLb3O8m7M4W91wcnOF1UW702Chr4PIQEw8=
+	t=1721145820; cv=none; b=HZeVqglC3aG4QHIopMb++YCftEdwgpUmHZpmG7tgcSif0UOrGuVbGBtlT/IaCTMeoDjxWBkSfXP92OfUy0wIaGEAXCTvpmQbP6npZaGkkZhJQsd9aKd7bsLB5MRXC6N4/N4h9HgfELrahYl8dEWg+9e4W1JNciNQwjj5w3A7vR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145502; c=relaxed/simple;
-	bh=rmYmGX2IAMocvQ7Io2dlgsFNh2+RLvbiVvhkPpfu3HI=;
+	s=arc-20240116; t=1721145820; c=relaxed/simple;
+	bh=GL6TNVmMZhk052JNlIqTcRSdeYI0Lp12/NZhSzATjEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTMVx/9l09LU1zTwnnk/S2K0aZat7lY8OjHhLHOUhxKV/IWuVc/ROwD+ShR5I3ddQ//f7iQJIF0z0/Ka4uO3v3/TzhWAyAjJAnr7FSDjstnrYWXQkGIFYQKcGhzmBF2AEEsg/LK8/7+LDLYr7CineH864w3nE+ukuJAxivsHg8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tK6TSd1R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62AEC116B1;
-	Tue, 16 Jul 2024 15:58:21 +0000 (UTC)
+	 MIME-Version; b=mOSa2pOpw2hkS+zag++sYi2Dasbp7EqrEGWrRaM+oV0NxiwT46khndxO3BGCXj5nmuDza6mds90EVHSn/fxN7GcgzF5EyQrL361Wie05m86K3gI7SCMpsMR79h4cgXbu/LcLwmQSc0Uz4gvW8T5iXyl7lxewJj+mC94P9eKEQis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9GoHiH1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A26C116B1;
+	Tue, 16 Jul 2024 16:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145502;
-	bh=rmYmGX2IAMocvQ7Io2dlgsFNh2+RLvbiVvhkPpfu3HI=;
+	s=korg; t=1721145820;
+	bh=GL6TNVmMZhk052JNlIqTcRSdeYI0Lp12/NZhSzATjEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tK6TSd1RLs9p/V9/UUngOJ/T+mlz0SBHbIO2RwDt7NAg7SGOWE1yMChLpGaH5kf+d
-	 AG+MqwJOCQXavyfsgqnEE/e2gYGLC92CRJ6NK9dwkV0tIXl+Q4ItCBY+jN+Zac1Sx0
-	 Q4/gJ7S/g5x4nnv6pt+ElTHH40rwLr9fFu7nXIR8=
+	b=I9GoHiH1HtzB9iNbICjLUIQ4WH35X+27yEMnUOc6owEw/c2gGX/v0sWtZ5PLz4s+R
+	 l1P163XijJGHmFcd0tYaeKwPaYdGhv4XTU6UPZG/rVqqcCzG5U4PurtxLqdqKiCcfV
+	 SkAiOlr73MKvk+ppeqJwu6rlUsEc/bpzGqT6/8cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 86/96] i2c: rcar: bring hardware to known state when probing
-Date: Tue, 16 Jul 2024 17:32:37 +0200
-Message-ID: <20240716152749.822078075@linuxfoundation.org>
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 096/121] wireguard: send: annotate intentional data race in checking empty queue
+Date: Tue, 16 Jul 2024 17:32:38 +0200
+Message-ID: <20240716152755.022202290@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-[ Upstream commit 4e36c0f20cb1c74c7bd7ea31ba432c1c4a989031 ]
+commit 381a7d453fa2ac5f854a154d3c9b1bbb90c4f94f upstream.
 
-When probing, the hardware is not brought into a known state. This may
-be a problem when a hypervisor restarts Linux without resetting the
-hardware, leaving an old state running. Make sure the hardware gets
-initialized, especially interrupts should be cleared and disabled.
+KCSAN reports a race in wg_packet_send_keepalive, which is intentional:
 
-Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Closes: https://lore.kernel.org/r/20240702045535.2000393-1-dirk.behme@de.bosch.com
-Fixes: 6ccbe607132b ("i2c: add Renesas R-Car I2C driver")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    BUG: KCSAN: data-race in wg_packet_send_keepalive / wg_packet_send_staged_packets
+
+    write to 0xffff88814cd91280 of 8 bytes by task 3194 on cpu 0:
+     __skb_queue_head_init include/linux/skbuff.h:2162 [inline]
+     skb_queue_splice_init include/linux/skbuff.h:2248 [inline]
+     wg_packet_send_staged_packets+0xe5/0xad0 drivers/net/wireguard/send.c:351
+     wg_xmit+0x5b8/0x660 drivers/net/wireguard/device.c:218
+     __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
+     netdev_start_xmit include/linux/netdevice.h:4954 [inline]
+     xmit_one net/core/dev.c:3548 [inline]
+     dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3564
+     __dev_queue_xmit+0xeff/0x1d80 net/core/dev.c:4349
+     dev_queue_xmit include/linux/netdevice.h:3134 [inline]
+     neigh_connected_output+0x231/0x2a0 net/core/neighbour.c:1592
+     neigh_output include/net/neighbour.h:542 [inline]
+     ip6_finish_output2+0xa66/0xce0 net/ipv6/ip6_output.c:137
+     ip6_finish_output+0x1a5/0x490 net/ipv6/ip6_output.c:222
+     NF_HOOK_COND include/linux/netfilter.h:303 [inline]
+     ip6_output+0xeb/0x220 net/ipv6/ip6_output.c:243
+     dst_output include/net/dst.h:451 [inline]
+     NF_HOOK include/linux/netfilter.h:314 [inline]
+     ndisc_send_skb+0x4a2/0x670 net/ipv6/ndisc.c:509
+     ndisc_send_rs+0x3ab/0x3e0 net/ipv6/ndisc.c:719
+     addrconf_dad_completed+0x640/0x8e0 net/ipv6/addrconf.c:4295
+     addrconf_dad_work+0x891/0xbc0
+     process_one_work kernel/workqueue.c:2633 [inline]
+     process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2706
+     worker_thread+0x525/0x730 kernel/workqueue.c:2787
+     kthread+0x1d7/0x210 kernel/kthread.c:388
+     ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
+     ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
+
+    read to 0xffff88814cd91280 of 8 bytes by task 3202 on cpu 1:
+     skb_queue_empty include/linux/skbuff.h:1798 [inline]
+     wg_packet_send_keepalive+0x20/0x100 drivers/net/wireguard/send.c:225
+     wg_receive_handshake_packet drivers/net/wireguard/receive.c:186 [inline]
+     wg_packet_handshake_receive_worker+0x445/0x5e0 drivers/net/wireguard/receive.c:213
+     process_one_work kernel/workqueue.c:2633 [inline]
+     process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2706
+     worker_thread+0x525/0x730 kernel/workqueue.c:2787
+     kthread+0x1d7/0x210 kernel/kthread.c:388
+     ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
+     ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
+
+    value changed: 0xffff888148fef200 -> 0xffff88814cd91280
+
+Mark this race as intentional by using the skb_queue_empty_lockless()
+function rather than skb_queue_empty(), which uses READ_ONCE()
+internally to annotate the race.
+
+Cc: stable@vger.kernel.org
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20240704154517.1572127-5-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/net/wireguard/send.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index cef82b205c261..f8ac1489e1de5 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -223,6 +223,14 @@ static void rcar_i2c_init(struct rcar_i2c_priv *priv)
- 
- }
- 
-+static void rcar_i2c_reset_slave(struct rcar_i2c_priv *priv)
-+{
-+	rcar_i2c_write(priv, ICSIER, 0);
-+	rcar_i2c_write(priv, ICSSR, 0);
-+	rcar_i2c_write(priv, ICSCR, SDBS);
-+	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
-+}
-+
- static int rcar_i2c_bus_barrier(struct rcar_i2c_priv *priv)
+--- a/drivers/net/wireguard/send.c
++++ b/drivers/net/wireguard/send.c
+@@ -222,7 +222,7 @@ void wg_packet_send_keepalive(struct wg_
  {
- 	int ret;
-@@ -975,11 +983,8 @@ static int rcar_unreg_slave(struct i2c_client *slave)
+ 	struct sk_buff *skb;
  
- 	/* ensure no irq is running before clearing ptr */
- 	disable_irq(priv->irq);
--	rcar_i2c_write(priv, ICSIER, 0);
--	rcar_i2c_write(priv, ICSSR, 0);
-+	rcar_i2c_reset_slave(priv);
- 	enable_irq(priv->irq);
--	rcar_i2c_write(priv, ICSCR, SDBS);
--	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
- 
- 	priv->slave = NULL;
- 
-@@ -1092,7 +1097,9 @@ static int rcar_i2c_probe(struct platform_device *pdev)
- 		goto out_pm_disable;
- 	}
- 
--	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
-+	/* Bring hardware to known state */
-+	rcar_i2c_init(priv);
-+	rcar_i2c_reset_slave(priv);
- 
- 	if (priv->devtype < I2C_RCAR_GEN3) {
- 		irqflags |= IRQF_NO_THREAD;
--- 
-2.43.0
-
+-	if (skb_queue_empty(&peer->staged_packet_queue)) {
++	if (skb_queue_empty_lockless(&peer->staged_packet_queue)) {
+ 		skb = alloc_skb(DATA_PACKET_HEAD_ROOM + MESSAGE_MINIMUM_LENGTH,
+ 				GFP_ATOMIC);
+ 		if (unlikely(!skb))
 
 
 
