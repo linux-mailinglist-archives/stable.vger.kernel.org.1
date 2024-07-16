@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-60048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B85932D24
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CFB8932AB4
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9198F1F228BC
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC5F11F2429E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDC117A930;
-	Tue, 16 Jul 2024 16:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E620F9E8;
+	Tue, 16 Jul 2024 15:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCYsKedF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVKHbcO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4951DDCE;
-	Tue, 16 Jul 2024 16:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DE1CA40;
+	Tue, 16 Jul 2024 15:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145699; cv=none; b=iuKT9Zps6yGb4G5anAfaOtZTItntIg13sHb1vxUOOFDnuxSl/9hplLDIK0CEjVqquNLZnYWQC/1gakojyDvU90FovD4g7qQ6AuQCgeLoNUQtXUEDUo8C8qXDc8B4ZLpiESLW6YwKTlODbFB8oB6c0D3GmxH81/IKFDFugDyHTFA=
+	t=1721144227; cv=none; b=Fg0QkR2H6V5lGO5U0dgi01qsfNrXFB58Rve88JRMa6HIro/vQSWQUGCfYhFiS3gwe2uEB6DyI6pSXr83P3aa+VDX11cVBer+Oy3K21ZuCAkUZa16iuW8QDr2pClxRhgqhJ2mUp0e/RoOG0BY52hpQb4XCHlNfLdyPShcLM+crew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145699; c=relaxed/simple;
-	bh=a35+M+sjOb7bwc9aeCRog/6ldV3Z5mbwTqc4DGmNj7k=;
+	s=arc-20240116; t=1721144227; c=relaxed/simple;
+	bh=N/de5h/CoKa3QwVF5bd0ow5cueyvbUQV+CMKFNqXEMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eob7pfnsyKWXj4hF4PXfWf9p5ZloEw2hIO1b8DhAET2t0NBjmQs/p/uP1ue7WcxlX1lNVOkXtbdQYXobUSG09b7mB86D0VMsfqLEpbaprBK+Ow4V0Mu/uoHQb/aGRZa1UOnawrQXWcWIG5aqrv+FmFx009/25KTMUE5ZU/WxXQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCYsKedF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2FDC116B1;
-	Tue, 16 Jul 2024 16:01:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EtuWE4wkw0KRvi0OrN5TK+gosS/gSwl3lO7ZEZad6UHs9jzEEA3vGDgdjKMtCbzN877IUbW4M/CRvta7Tbs430xbIqNxwf30+tbxEAFY1dNZ5CJYgUjt8xQ8DjHJR/dL1L8AYf0/DjaKUbA8kJIbGUcvxylfPoFWl+YtFpEGOt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVKHbcO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4350C116B1;
+	Tue, 16 Jul 2024 15:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145699;
-	bh=a35+M+sjOb7bwc9aeCRog/6ldV3Z5mbwTqc4DGmNj7k=;
+	s=korg; t=1721144227;
+	bh=N/de5h/CoKa3QwVF5bd0ow5cueyvbUQV+CMKFNqXEMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SCYsKedFEuGvALEwlWNeigRisFPh5S2SxBN5tbYZll9Ml+HBr9guR5wKrp4UOOG2D
-	 SkR8A92EBe+EIzwLOUGY7iKyvwBOpw3QTCjC3cuF4ydZVaQPfPoN7EbV4neYtDtGEL
-	 tq3KXxjSx+O+yukGFvsKcioGlEKq1M/9N9oywDKY=
+	b=zVKHbcO5km+f6OY+gugT+n/+iAI9mAIzbe3tXsR/vo0dglit2uFTPHXF93pbULIhI
+	 YS02VxrxnDcLEJuCrB9Rf+XxjeQOdkEPdZWULAdgzwG6vPnVjkJ1kiIg+wSaY6tN80
+	 X5glYzJoangiJHi+3/L8+dOFp7HO5s8jZJan4bkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.6 024/121] i40e: Fix XDP program unloading while removing the driver
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 51/66] USB: serial: option: add Fibocom FM350-GL
 Date: Tue, 16 Jul 2024 17:31:26 +0200
-Message-ID: <20240716152752.253111477@linuxfoundation.org>
+Message-ID: <20240716152740.112074287@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +59,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kubiak <michal.kubiak@intel.com>
+From: Bjørn Mork <bjorn@mork.no>
 
-[ Upstream commit 01fc5142ae6b06b61ed51a624f2732d6525d8ea3 ]
+commit 2604e08ff251dba330e16b65e80074c9c540aad7 upstream.
 
-The commit 6533e558c650 ("i40e: Fix reset path while removing
-the driver") introduced a new PF state "__I40E_IN_REMOVE" to block
-modifying the XDP program while the driver is being removed.
-Unfortunately, such a change is useful only if the ".ndo_bpf()"
-callback was called out of the rmmod context because unloading the
-existing XDP program is also a part of driver removing procedure.
-In other words, from the rmmod context the driver is expected to
-unload the XDP program without reporting any errors. Otherwise,
-the kernel warning with callstack is printed out to dmesg.
+FM350-GL is 5G Sub-6 WWAN module which uses M.2 form factor interface.
+It is based on Mediatek's MTK T700 CPU. The module supports PCIe Gen3
+x1 and USB 2.0 and 3.0 interfaces.
 
-Example failing scenario:
- 1. Load the i40e driver.
- 2. Load the XDP program.
- 3. Unload the i40e driver (using "rmmod" command).
+The manufacturer states that USB is "for debug" but it has been
+confirmed to be fully functional, except for modem-control requests on
+some of the interfaces.
 
-The example kernel warning log:
+USB device composition is controlled by AT+GTUSBMODE=<mode> command.
+Two values are currently supported for the <mode>:
 
-[  +0.004646] WARNING: CPU: 94 PID: 10395 at net/core/dev.c:9290 unregister_netdevice_many_notify+0x7a9/0x870
-[...]
-[  +0.010959] RIP: 0010:unregister_netdevice_many_notify+0x7a9/0x870
-[...]
-[  +0.002726] Call Trace:
-[  +0.002457]  <TASK>
-[  +0.002119]  ? __warn+0x80/0x120
-[  +0.003245]  ? unregister_netdevice_many_notify+0x7a9/0x870
-[  +0.005586]  ? report_bug+0x164/0x190
-[  +0.003678]  ? handle_bug+0x3c/0x80
-[  +0.003503]  ? exc_invalid_op+0x17/0x70
-[  +0.003846]  ? asm_exc_invalid_op+0x1a/0x20
-[  +0.004200]  ? unregister_netdevice_many_notify+0x7a9/0x870
-[  +0.005579]  ? unregister_netdevice_many_notify+0x3cc/0x870
-[  +0.005586]  unregister_netdevice_queue+0xf7/0x140
-[  +0.004806]  unregister_netdev+0x1c/0x30
-[  +0.003933]  i40e_vsi_release+0x87/0x2f0 [i40e]
-[  +0.004604]  i40e_remove+0x1a1/0x420 [i40e]
-[  +0.004220]  pci_device_remove+0x3f/0xb0
-[  +0.003943]  device_release_driver_internal+0x19f/0x200
-[  +0.005243]  driver_detach+0x48/0x90
-[  +0.003586]  bus_remove_driver+0x6d/0xf0
-[  +0.003939]  pci_unregister_driver+0x2e/0xb0
-[  +0.004278]  i40e_exit_module+0x10/0x5f0 [i40e]
-[  +0.004570]  __do_sys_delete_module.isra.0+0x197/0x310
-[  +0.005153]  do_syscall_64+0x85/0x170
-[  +0.003684]  ? syscall_exit_to_user_mode+0x69/0x220
-[  +0.004886]  ? do_syscall_64+0x95/0x170
-[  +0.003851]  ? exc_page_fault+0x7e/0x180
-[  +0.003932]  entry_SYSCALL_64_after_hwframe+0x71/0x79
-[  +0.005064] RIP: 0033:0x7f59dc9347cb
-[  +0.003648] Code: 73 01 c3 48 8b 0d 65 16 0c 00 f7 d8 64 89 01 48 83
-c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f
-05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 35 16 0c 00 f7 d8 64 89 01 48
-[  +0.018753] RSP: 002b:00007ffffac99048 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
-[  +0.007577] RAX: ffffffffffffffda RBX: 0000559b9bb2f6e0 RCX: 00007f59dc9347cb
-[  +0.007140] RDX: 0000000000000000 RSI: 0000000000000800 RDI: 0000559b9bb2f748
-[  +0.007146] RBP: 00007ffffac99070 R08: 1999999999999999 R09: 0000000000000000
-[  +0.007133] R10: 00007f59dc9a5ac0 R11: 0000000000000206 R12: 0000000000000000
-[  +0.007141] R13: 00007ffffac992d8 R14: 0000559b9bb2f6e0 R15: 0000000000000000
-[  +0.007151]  </TASK>
-[  +0.002204] ---[ end trace 0000000000000000 ]---
+40: RNDIS+AT+AP(GNSS)+META+DEBUG+NPT+ADB
+41: RNDIS+AT+AP(GNSS)+META+DEBUG+NPT+ADB+AP(LOG)+AP(META) (default value)
 
-Fix this by checking if the XDP program is being loaded or unloaded.
-Then, block only loading a new program while "__I40E_IN_REMOVE" is set.
-Also, move testing "__I40E_IN_REMOVE" flag to the beginning of XDP_SETUP
-callback to avoid unnecessary operations and checks.
+[ Note that the functions above are not ordered by interface number. ]
 
-Fixes: 6533e558c650 ("i40e: Fix reset path while removing the driver")
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20240708230750.625986-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Mode 40 corresponds to:
+
+T:  Bus=03 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#= 22 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0e8d ProdID=7126 Rev= 0.01
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=FM350-GL
+C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=02 Prot=ff Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=125us
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Mode 41 corresponds to:
+
+T:  Bus=03 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0e8d ProdID=7127 Rev= 0.01
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=FM350-GL
+C:* #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=02 Prot=ff Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=125us
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Bjørn Mork <bjorn@mork.no>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index f8d1a994c2f65..1d241ebd04ec7 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -13372,6 +13372,10 @@ static int i40e_xdp_setup(struct i40e_vsi *vsi, struct bpf_prog *prog,
- 	bool need_reset;
- 	int i;
- 
-+	/* VSI shall be deleted in a moment, block loading new programs */
-+	if (prog && test_bit(__I40E_IN_REMOVE, pf->state))
-+		return -EINVAL;
-+
- 	/* Don't allow frames that span over multiple buffers */
- 	if (vsi->netdev->mtu > frame_size - I40E_PACKET_HDR_PAD) {
- 		NL_SET_ERR_MSG_MOD(extack, "MTU too large for linear frames and XDP prog does not support frags");
-@@ -13380,14 +13384,9 @@ static int i40e_xdp_setup(struct i40e_vsi *vsi, struct bpf_prog *prog,
- 
- 	/* When turning XDP on->off/off->on we reset and rebuild the rings. */
- 	need_reset = (i40e_enabled_xdp_vsi(vsi) != !!prog);
--
- 	if (need_reset)
- 		i40e_prep_for_reset(pf);
- 
--	/* VSI shall be deleted in a moment, just return EINVAL */
--	if (test_bit(__I40E_IN_REMOVE, pf->state))
--		return -EINVAL;
--
- 	old_prog = xchg(&vsi->xdp_prog, prog);
- 
- 	if (need_reset) {
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2230,6 +2230,10 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, MEDIATEK_PRODUCT_7106_2COM, 0x02, 0x02, 0x01) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, MEDIATEK_PRODUCT_DC_4COM2, 0xff, 0x02, 0x01) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, MEDIATEK_PRODUCT_DC_4COM2, 0xff, 0x00, 0x00) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7126, 0xff, 0x00, 0x00),
++	  .driver_info = NCTRL(2) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7127, 0xff, 0x00, 0x00),
++	  .driver_info = NCTRL(2) | NCTRL(3) | NCTRL(4) },
+ 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MEN200) },
+ 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MPL200),
+ 	  .driver_info = RSVD(1) | RSVD(4) },
 
 
 
