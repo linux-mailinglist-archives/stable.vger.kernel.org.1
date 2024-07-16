@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-59542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC71932A9F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EADE6932C1A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88872280F25
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B2B11F24457
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3407FF9E8;
-	Tue, 16 Jul 2024 15:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0495219EED7;
+	Tue, 16 Jul 2024 15:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izOYOz8W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0u83J0OT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44D1CA40;
-	Tue, 16 Jul 2024 15:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AC319EEA5;
+	Tue, 16 Jul 2024 15:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144163; cv=none; b=YCnlc5DS1e5FTQN84f/jMarA6h4IPkW0iOcqaYyyJvdkGF/fyn6gixVsh5tSg2DNiDxSjKSDTK+HcWdNGmm3LLwiVV4VyCCXTkgm9Gzni4GwN3OFNxxynKmAr1o877gPvnopiRKzLQCHQs3hUW3NaGMEUp3B9vFkpCCZHFeVuJw=
+	t=1721145097; cv=none; b=tPtIwhNfSw/xnggRiFsjOlZR88nkiWMp37vcMLFONwEHlPYNNg3OBA2dM7E6GpGyXZI3YhDhWbjA9m/7XzEXIA7Tmz/3QMqKIAKCsf6V4jXldrDaIJMNCugxWqVVyXBFEOWa12hybeaB4ZXzxfvuDqugd0xQOemqALZ3P7s8I1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144163; c=relaxed/simple;
-	bh=yCTYfc8U5WwmOgxju+mh3I5dNhV9X05KGh/OpjLQmao=;
+	s=arc-20240116; t=1721145097; c=relaxed/simple;
+	bh=mIkIbkx7B1Iw39+r/HcRvbBRoicyj9X9M+KS+A76akQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Acpgl4kmgselVrCI6rWv+Pazs3reSyvcAt3pTvb7AwlSpJvaT5R/4OBTrVYXIqLxtvnob1cuxBkKlK3nL8CNZc2D6bNBWiG0ccOLG1e38nTdGLYp8fuWfm8TMbaoKlzbcJDuVs6AMR5YfeuF3T4nxYsbYBLqzF1i5NvXwoHZsrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izOYOz8W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689D2C116B1;
-	Tue, 16 Jul 2024 15:36:02 +0000 (UTC)
+	 MIME-Version; b=pHDE0H6CZCs76PboHD6+MzRyCNzhyYP3bsSzx2MG47yf3jjDH5eszqUZnEw8kwsxjqgUn0b1pRLbbkngC6mgIPz2G9JCMSixcX+KAstOwI7oNzdOLHBabWPeDr8kYEu4lOQfNDkYCxH6O00s6Zv777c5GuH9htsdbebUBfLoX20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0u83J0OT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6ABC116B1;
+	Tue, 16 Jul 2024 15:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144162;
-	bh=yCTYfc8U5WwmOgxju+mh3I5dNhV9X05KGh/OpjLQmao=;
+	s=korg; t=1721145097;
+	bh=mIkIbkx7B1Iw39+r/HcRvbBRoicyj9X9M+KS+A76akQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izOYOz8W1otjH/HOXvIZ8q6m2Oua95LpHrlzHBg/o8eAhqmvKpJr3G0baRFFM2E/m
-	 1koNn2FGYIrvGnWki2Kqw1Mt8n6b8C/D8s8pKoZ5Pvo4fdskREyxuTTcNbT4Z8zNSi
-	 1yEhkcdA/KJW7QvNRVVmPST70JGkH2Huvv5PRB9o=
+	b=0u83J0OTL8oa1TTNhJKrxx3kaCSVrJDxBfzl0zQp2smhw4HHs8ts9Z5dDPSu055Vo
+	 iYNj72rYdIzhGe1uNP61/b/zT9ZxL6apDXuuqoEL782GHkj+dXvJtMX7bw5u53QJ6M
+	 /BgbOeat12rJGLadIeFXxlVaNhZLWmBWyAak9Ibk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 18/66] s390/pkey: Wipe sensitive data on failure
+Subject: [PATCH 6.9 057/143] ARM: davinci: Convert comma to semicolon
 Date: Tue, 16 Jul 2024 17:30:53 +0200
-Message-ID: <20240716152738.857835019@linuxfoundation.org>
+Message-ID: <20240716152758.173467308@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Holger Dengler <dengler@linux.ibm.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 1d8c270de5eb74245d72325d285894a577a945d9 ]
+[ Upstream commit acc3815db1a02d654fbc19726ceaadca0d7dd81c ]
 
-Wipe sensitive data from stack also if the copy_to_user() fails.
+Replace a comma between expression statements by a semicolon.
 
-Suggested-by: Heiko Carstens <hca@linux.ibm.com>
-Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: efc1bb8a6fd5 ("davinci: add power management support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/pkey_api.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-davinci/pm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
-index b16344479959b..fa97e666f19e6 100644
---- a/drivers/s390/crypto/pkey_api.c
-+++ b/drivers/s390/crypto/pkey_api.c
-@@ -1089,7 +1089,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
- 		if (rc)
- 			break;
- 		if (copy_to_user(ucs, &kcs, sizeof(kcs)))
--			return -EFAULT;
-+			rc = -EFAULT;
- 		memzero_explicit(&kcs, sizeof(kcs));
- 		break;
- 	}
-@@ -1120,7 +1120,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
- 		if (rc)
- 			break;
- 		if (copy_to_user(ucp, &kcp, sizeof(kcp)))
--			return -EFAULT;
-+			rc = -EFAULT;
- 		memzero_explicit(&kcp, sizeof(kcp));
- 		break;
- 	}
+diff --git a/arch/arm/mach-davinci/pm.c b/arch/arm/mach-davinci/pm.c
+index 8aa39db095d76..2c5155bd376ba 100644
+--- a/arch/arm/mach-davinci/pm.c
++++ b/arch/arm/mach-davinci/pm.c
+@@ -61,7 +61,7 @@ static void davinci_pm_suspend(void)
+ 
+ 	/* Configure sleep count in deep sleep register */
+ 	val = __raw_readl(pm_config.deepsleep_reg);
+-	val &= ~DEEPSLEEP_SLEEPCOUNT_MASK,
++	val &= ~DEEPSLEEP_SLEEPCOUNT_MASK;
+ 	val |= pm_config.sleepcount;
+ 	__raw_writel(val, pm_config.deepsleep_reg);
+ 
 -- 
 2.43.0
 
