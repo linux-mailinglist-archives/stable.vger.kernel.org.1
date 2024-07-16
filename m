@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-59537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800BD932A9A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:35:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E4A932CF8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BFCE1F23974
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AA781F21765
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631391DDD1;
-	Tue, 16 Jul 2024 15:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC63C19AD93;
+	Tue, 16 Jul 2024 15:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IqdGbeJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f821AkN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2140DCA40;
-	Tue, 16 Jul 2024 15:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5EF1DA4D;
+	Tue, 16 Jul 2024 15:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144148; cv=none; b=Ux1feM1df3XdJ8Jd1S0icXsscs3IiQ4S5pr+ozN57ffwtMSV9fPNMOCKEEYhGAZKePGudYEXXT4VGs0rUhdrUAOKutvM7tT/Du3bV1cH5TwjCMqgoaYqeU4zku6VheQzc7so2kMpSQXUwIwdJd2JZTnrbZ4ZTUXfqcyhfm8BNJo=
+	t=1721145579; cv=none; b=NbB1aIJxNkvMH7Rt5f6JMlixXjaXzCquh37iSXMqAPt2wOJh3WPoNRLgEe9O7QSvpaHNpqHaRIvl+1URRM4M0u5G/cU6p/PU8s6Yf07UtbQxUZNjLZdLXiSK04xona/N1rniw1AiYMUel00ZR8js8EELNdGU5s6//6Dudfn8A8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144148; c=relaxed/simple;
-	bh=xRbunoqeimjsvAswC7tKTKVx2SoqkdFvLCQS4kaQty8=;
+	s=arc-20240116; t=1721145579; c=relaxed/simple;
+	bh=V1ZgPJor0kDbpHzh2dVMzuWuNsLRr/5NTz+QjJ5jV1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AnDJoKAkuLrUc2r1FWjwK8TcZgWGDz2lmJ/xe5z3hL+LD2020kYeoZ18XlOSYE8TgUH7f42aHsOhQx5Zqp+dHWfrtV8efALYScYaXF+5ASeCfSSAlAceIIOgM9ImIfrv66rFTshDsOCvKUf0q7o++q4kZ7uYsMNu1JpN3Zp4j8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IqdGbeJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DAEBC116B1;
-	Tue, 16 Jul 2024 15:35:47 +0000 (UTC)
+	 MIME-Version; b=Tpe/sclwGPgbe7IzfwsBBnyIH2mWNhxm5hy7w/WX0Y5gSN2lFMKfWDwQcTYLGtizE0L9tNTLeE6v0l4pLGIdlBUaRoZFEEU1SyPTzjfdkRQ82Hm9vxsiqOyJKdQZ1J8wRI92u4jWmOu78oR8YQTZy+b/2afrX25XFp7mDjYHGh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f821AkN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D3EC116B1;
+	Tue, 16 Jul 2024 15:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144148;
-	bh=xRbunoqeimjsvAswC7tKTKVx2SoqkdFvLCQS4kaQty8=;
+	s=korg; t=1721145579;
+	bh=V1ZgPJor0kDbpHzh2dVMzuWuNsLRr/5NTz+QjJ5jV1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2IqdGbeJWc1F3h3u0tgTDWNB9qP0lt5joC/VUHj8xGv9i0iabLDoF5Ukh09/wV+ut
-	 2688gem14IfQv8oFKeGEkpeBDsAQ52rTVdfw78M9uSjOaF0e9EvGIM51mUNyJsPI36
-	 ufbHYB74TXDyg2jc5msgUoc5uwqP3D2jCsidNblE=
+	b=f821AkN0wH34hvBrBJUYon/vrv6mLEKwnyS9u9xfE7zjaOWVk1460n3ZgeBxjX8kK
+	 FvLsSUULfFzGhIZHVjPcKLuPDBBYSmjxc6YW8C9BaRnjOlQjwgbg91xn6SXgT3dHvo
+	 uiZZfsYiCG0YEfkxnaIzFuOKzEezZOYWmvE08AoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Kevin Yang <yyd@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Brian Foster <bfoster@redhat.com>,
+	Ian Kent <ikent@redhat.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Waiman Long <longman@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 43/66] tcp: fix incorrect undo caused by DSACK of TLP retransmit
+Subject: [PATCH 6.6 016/121] vfs: dont mod negative dentry count when on shrinker list
 Date: Tue, 16 Jul 2024 17:31:18 +0200
-Message-ID: <20240716152739.812069497@linuxfoundation.org>
+Message-ID: <20240716152751.946109354@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +65,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Brian Foster <bfoster@redhat.com>
 
-[ Upstream commit 0ec986ed7bab6801faed1440e8839dcc710331ff ]
+[ Upstream commit aabfe57ebaa75841db47ea59091ec3c5a06d2f52 ]
 
-Loss recovery undo_retrans bookkeeping had a long-standing bug where a
-DSACK from a spurious TLP retransmit packet could cause an erroneous
-undo of a fast recovery or RTO recovery that repaired a single
-really-lost packet (in a sequence range outside that of the TLP
-retransmit). Basically, because the loss recovery state machine didn't
-account for the fact that it sent a TLP retransmit, the DSACK for the
-TLP retransmit could erroneously be implicitly be interpreted as
-corresponding to the normal fast recovery or RTO recovery retransmit
-that plugged a real hole, thus resulting in an improper undo.
+The nr_dentry_negative counter is intended to only account negative
+dentries that are present on the superblock LRU. Therefore, the LRU
+add, remove and isolate helpers modify the counter based on whether
+the dentry is negative, but the shrinker list related helpers do not
+modify the counter, and the paths that change a dentry between
+positive and negative only do so if DCACHE_LRU_LIST is set.
 
-For example, consider the following buggy scenario where there is a
-real packet loss but the congestion control response is improperly
-undone because of this bug:
+The problem with this is that a dentry on a shrinker list still has
+DCACHE_LRU_LIST set to indicate ->d_lru is in use. The additional
+DCACHE_SHRINK_LIST flag denotes whether the dentry is on LRU or a
+shrink related list. Therefore if a relevant operation (i.e. unlink)
+occurs while a dentry is present on a shrinker list, and the
+associated codepath only checks for DCACHE_LRU_LIST, then it is
+technically possible to modify the negative dentry count for a
+dentry that is off the LRU. Since the shrinker list related helpers
+do not modify the negative dentry count (because non-LRU dentries
+should not be included in the count) when the dentry is ultimately
+removed from the shrinker list, this can cause the negative dentry
+count to become permanently inaccurate.
 
-+ send packets P1, P2, P3, P4
-+ P1 is really lost
-+ send TLP retransmit of P4
-+ receive SACK for original P2, P3, P4
-+ enter fast recovery, fast-retransmit P1, increment undo_retrans to 1
-+ receive DSACK for TLP P4, decrement undo_retrans to 0, undo (bug!)
-+ receive cumulative ACK for P1-P4 (fast retransmit plugged real hole)
+This problem can be reproduced via a heavy file create/unlink vs.
+drop_caches workload. On an 80xcpu system, I start 80 tasks each
+running a 1k file create/delete loop, and one task spinning on
+drop_caches. After 10 minutes or so of runtime, the idle/clean cache
+negative dentry count increases from somewhere in the range of 5-10
+entries to several hundred (and increasingly grows beyond
+nr_dentry_unused).
 
-The fix: when we initialize undo machinery in tcp_init_undo(), if
-there is a TLP retransmit in flight, then increment tp->undo_retrans
-so that we make sure that we receive a DSACK corresponding to the TLP
-retransmit, as well as DSACKs for all later normal retransmits, before
-triggering a loss recovery undo. Note that we also have to move the
-line that clears tp->tlp_high_seq for RTO recovery, so that upon RTO
-we remember the tp->tlp_high_seq value until tcp_init_undo() and clear
-it only afterward.
+Tweak the logic in the paths that turn a dentry negative or positive
+to filter out the case where the dentry is present on a shrink
+related list. This allows the above workload to maintain an accurate
+negative dentry count.
 
-Also note that the bug dates back to the original 2013 TLP
-implementation, commit 6ba8a3b19e76 ("tcp: Tail loss probe (TLP)").
-
-However, this patch will only compile and work correctly with kernels
-that have tp->tlp_retrans, which was added only in v5.8 in 2020 in
-commit 76be93fc0702 ("tcp: allow at most one TLP probe per flight").
-So we associate this fix with that later commit.
-
-Fixes: 76be93fc0702 ("tcp: allow at most one TLP probe per flight")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Cc: Yuchung Cheng <ycheng@google.com>
-Cc: Kevin Yang <yyd@google.com>
-Link: https://patch.msgid.link/20240703171246.1739561-1-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: af0c9af1b3f6 ("fs/dcache: Track & report number of negative dentries")
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+Link: https://lore.kernel.org/r/20240703121301.247680-1-bfoster@redhat.com
+Acked-by: Ian Kent <ikent@redhat.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 11 ++++++++++-
- net/ipv4/tcp_timer.c |  2 --
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ fs/dcache.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 9a66c37958451..9254705afa869 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -1948,8 +1948,16 @@ void tcp_clear_retrans(struct tcp_sock *tp)
- static inline void tcp_init_undo(struct tcp_sock *tp)
- {
- 	tp->undo_marker = tp->snd_una;
-+
- 	/* Retransmission still in flight may cause DSACKs later. */
--	tp->undo_retrans = tp->retrans_out ? : -1;
-+	/* First, account for regular retransmits in flight: */
-+	tp->undo_retrans = tp->retrans_out;
-+	/* Next, account for TLP retransmits in flight: */
-+	if (tp->tlp_high_seq && tp->tlp_retrans)
-+		tp->undo_retrans++;
-+	/* Finally, avoid 0, because undo_retrans==0 means "can undo now": */
-+	if (!tp->undo_retrans)
-+		tp->undo_retrans = -1;
+diff --git a/fs/dcache.c b/fs/dcache.c
+index fca3e7490d091..186c0e1b5713f 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -356,7 +356,11 @@ static inline void __d_clear_type_and_inode(struct dentry *dentry)
+ 	flags &= ~(DCACHE_ENTRY_TYPE | DCACHE_FALLTHRU);
+ 	WRITE_ONCE(dentry->d_flags, flags);
+ 	dentry->d_inode = NULL;
+-	if (flags & DCACHE_LRU_LIST)
++	/*
++	 * The negative counter only tracks dentries on the LRU. Don't inc if
++	 * d_lru is on another list.
++	 */
++	if ((flags & (DCACHE_LRU_LIST|DCACHE_SHRINK_LIST)) == DCACHE_LRU_LIST)
+ 		this_cpu_inc(nr_dentry_negative);
  }
  
- static bool tcp_is_rack(const struct sock *sk)
-@@ -2028,6 +2036,7 @@ void tcp_enter_loss(struct sock *sk)
+@@ -2000,9 +2004,11 @@ static void __d_instantiate(struct dentry *dentry, struct inode *inode)
  
- 	tcp_set_ca_state(sk, TCP_CA_Loss);
- 	tp->high_seq = tp->snd_nxt;
-+	tp->tlp_high_seq = 0;
- 	tcp_ecn_queue_cwr(tp);
- 
- 	/* F-RTO RFC5682 sec 3.1 step 1: retransmit SND.UNA if no previous
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index d8d28ba169b4d..cebbac092f322 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -441,8 +441,6 @@ void tcp_retransmit_timer(struct sock *sk)
- 	if (!tp->packets_out || WARN_ON_ONCE(tcp_rtx_queue_empty(sk)))
- 		return;
- 
--	tp->tlp_high_seq = 0;
--
- 	if (!tp->snd_wnd && !sock_flag(sk, SOCK_DEAD) &&
- 	    !((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV))) {
- 		/* Receiver dastardly shrinks window. Our retransmits
+ 	spin_lock(&dentry->d_lock);
+ 	/*
+-	 * Decrement negative dentry count if it was in the LRU list.
++	 * The negative counter only tracks dentries on the LRU. Don't dec if
++	 * d_lru is on another list.
+ 	 */
+-	if (dentry->d_flags & DCACHE_LRU_LIST)
++	if ((dentry->d_flags &
++	     (DCACHE_LRU_LIST|DCACHE_SHRINK_LIST)) == DCACHE_LRU_LIST)
+ 		this_cpu_dec(nr_dentry_negative);
+ 	hlist_add_head(&dentry->d_u.d_alias, &inode->i_dentry);
+ 	raw_write_seqcount_begin(&dentry->d_seq);
 -- 
 2.43.0
 
