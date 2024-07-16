@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-59974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A28932CC5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F72932D50
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEA461F246A1
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 693AC1C21D83
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2CF19F49E;
-	Tue, 16 Jul 2024 15:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BEF19B3E3;
+	Tue, 16 Jul 2024 16:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spIYpR80"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nO1gSG4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1CD1DDCE;
-	Tue, 16 Jul 2024 15:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86361DDCE;
+	Tue, 16 Jul 2024 16:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145475; cv=none; b=O4ypssB8Ls3QSDwGaU4+Mes0CsAUGp7+ScXrvrDuxRpTl+8j7daqxAQTTWPy0fgnXZ7A/UsXx4yvhfD5fog4/dJO1MXkR5Yst7m+vErOJzzaiQ5UEv2d/B+pu76o7/Ae1hZCZyqFUUfWCooqrlgtcfQGi5/EENgA/EjpcpgYvdU=
+	t=1721145817; cv=none; b=sj9oJBfTB/90qv1a2w4C/juTFD5WM0Z2ix6J43WpgNeB/aK1nZeoLVZ1fo4JShPTgKZQvnkZnsiHfVepyV8v0dQf5saBZr0X0gppSYRwEQ3CqlKGm1U462XEYqy/Z6+glhqzTgiy2SbYVJ308WRXSgeq5kJOH1/I0o+qf9iOO+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145475; c=relaxed/simple;
-	bh=r4FSGGKzwq2CGoF+sD5KETeyLdAsMukBd83wy0GaYXY=;
+	s=arc-20240116; t=1721145817; c=relaxed/simple;
+	bh=Esz6IPIZ/coz5SCNHGUR/3/OsH0yH/p6z/ncCfC0nGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=knv2JMhcsRqWaTvCZT/uAaWh5XnKwvFB8tW0HObuTgStSC+QJ7A0SE/K0n2r1NAkl95q5kQYAmB9uZHhL9MvG9RSTPAAOz2WMx79k72QMeiCl5eJRm8sIZKhc/wdKrf7WsjS2TLI9yPpcLwQsuu/1xShvxKJotF4+JukfDaGkss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spIYpR80; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2333DC116B1;
-	Tue, 16 Jul 2024 15:57:54 +0000 (UTC)
+	 MIME-Version; b=BuGtY8jQm6lmQX0tc2mU5RZa+QFSGsFi/vkqowgIrCt9NhDz+2VXP8XwI83lcRPKh5PAY9NrQOeMl1x0BiuoKC9kH0S3XOsAYw9afjnuhcAS+mxfgZh74XdRzw7XuqE/WhxzYrbRfR6ngVTqe3oXuOHlDTxPb9+Jor6OiXvnV+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nO1gSG4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16D2C116B1;
+	Tue, 16 Jul 2024 16:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145475;
-	bh=r4FSGGKzwq2CGoF+sD5KETeyLdAsMukBd83wy0GaYXY=;
+	s=korg; t=1721145817;
+	bh=Esz6IPIZ/coz5SCNHGUR/3/OsH0yH/p6z/ncCfC0nGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=spIYpR80wdaHAFQYwrjKtgtX1ieCWavpCtE7oC+3moBmgXIpFQmWquqJhv7pgZVXb
-	 nPWEU4+iV5Mvyw7Ul/zxvB0e4d6doYyu72gkvw58W2gFUArsYJXkjq8/eMSjJ7LJzh
-	 O+y1TrFeDEJvDR74/YuAooFTfFNGDFCC/3x8+ZHs=
+	b=nO1gSG4ynV7NAx4Rk/PMYisDCVKJE/WgwUo15jjFtBgUdfRaGSnm58U4a8hIrOHy8
+	 6N1z5eb2UHKInUnHeN9Wj51QGkxonM6PSc82h8oTke2LLgndIXuCmSp0oCIOERxjLX
+	 RYG0nieMJJFZQipq71l8Iw8oo1tzbiPdxFhBs3g4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.1 78/96] misc: fastrpc: Avoid updating PD type for capability request
+	Audra Mitchell <audra@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Mike Rapoport <rppt@linux.vnet.ibm.com>,
+	Peter Xu <peterx@redhat.com>,
+	Rafael Aquini <raquini@redhat.com>,
+	Shaohua Li <shli@fb.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 087/121] Fix userfaultfd_api to return EINVAL as expected
 Date: Tue, 16 Jul 2024 17:32:29 +0200
-Message-ID: <20240716152749.511248994@linuxfoundation.org>
+Message-ID: <20240716152754.674526437@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +70,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Audra Mitchell <audra@redhat.com>
 
-commit bfb6b07d2a30ffe98864d8cfc31fc00470063025 upstream.
+commit 1723f04caacb32cadc4e063725d836a0c4450694 upstream.
 
-When user is requesting for DSP capability, the process pd type is
-getting updated to USER_PD which is incorrect as DSP will assume the
-process which is making the request is a user PD and this will never
-get updated back to the original value. The actual PD type should not
-be updated for capability request and it should be serviced by the
-respective PD on DSP side. Don't change process's PD type for DSP
-capability request.
+Currently if we request a feature that is not set in the Kernel config we
+fail silently and return all the available features.  However, the man
+page indicates we should return an EINVAL.
 
-Fixes: 6c16fd8bdd40 ("misc: fastrpc: Add support to get DSP capabilities")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240628114501.14310-4-srinivas.kandagatla@linaro.org
+We need to fix this issue since we can end up with a Kernel warning should
+a program request the feature UFFD_FEATURE_WP_UNPOPULATED on a kernel with
+the config not set with this feature.
+
+ [  200.812896] WARNING: CPU: 91 PID: 13634 at mm/memory.c:1660 zap_pte_range+0x43d/0x660
+ [  200.820738] Modules linked in:
+ [  200.869387] CPU: 91 PID: 13634 Comm: userfaultfd Kdump: loaded Not tainted 6.9.0-rc5+ #8
+ [  200.877477] Hardware name: Dell Inc. PowerEdge R6525/0N7YGH, BIOS 2.7.3 03/30/2022
+ [  200.885052] RIP: 0010:zap_pte_range+0x43d/0x660
+
+Link: https://lkml.kernel.org/r/20240626130513.120193-1-audra@redhat.com
+Fixes: e06f1e1dd499 ("userfaultfd: wp: enabled write protection in userfaultfd API")
+Signed-off-by: Audra Mitchell <audra@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rafael Aquini <raquini@redhat.com>
+Cc: Shaohua Li <shli@fb.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/userfaultfd.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1523,7 +1523,6 @@ static int fastrpc_get_info_from_dsp(str
- 	args[1].ptr = (u64)(uintptr_t)&dsp_attr_buf[1];
- 	args[1].length = dsp_attr_buf_len * sizeof(u32);
- 	args[1].fd = -1;
--	fl->pd = USER_PD;
- 
- 	return fastrpc_internal_invoke(fl, true, FASTRPC_DSP_UTILITIES_HANDLE,
- 				       FASTRPC_SCALARS(0, 1, 1), args);
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -2050,7 +2050,7 @@ static int userfaultfd_api(struct userfa
+ 		goto out;
+ 	features = uffdio_api.features;
+ 	ret = -EINVAL;
+-	if (uffdio_api.api != UFFD_API || (features & ~UFFD_API_FEATURES))
++	if (uffdio_api.api != UFFD_API)
+ 		goto err_out;
+ 	ret = -EPERM;
+ 	if ((features & UFFD_FEATURE_EVENT_FORK) && !capable(CAP_SYS_PTRACE))
+@@ -2068,6 +2068,11 @@ static int userfaultfd_api(struct userfa
+ 	uffdio_api.features &= ~UFFD_FEATURE_WP_HUGETLBFS_SHMEM;
+ 	uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
+ #endif
++
++	ret = -EINVAL;
++	if (features & ~uffdio_api.features)
++		goto err_out;
++
+ 	uffdio_api.ioctls = UFFD_API_IOCTLS;
+ 	ret = -EFAULT;
+ 	if (copy_to_user(buf, &uffdio_api, sizeof(uffdio_api)))
 
 
 
