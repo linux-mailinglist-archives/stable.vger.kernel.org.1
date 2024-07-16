@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-59581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FF2932AC8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:38:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079AE932B28
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 717B1B23215
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:38:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1E111F232AE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE51A1DDCE;
-	Tue, 16 Jul 2024 15:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82D119F464;
+	Tue, 16 Jul 2024 15:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CR32JVxE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5w2QHHN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F42CA40;
-	Tue, 16 Jul 2024 15:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A2919EEB1;
+	Tue, 16 Jul 2024 15:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144280; cv=none; b=d5qk9Mo6gXYML52Zj9rIJ+fd5+nwM3YNW2jcZ8rT/ls+8487igvE3jWEvu5nXmpTN9Gi33SuLgqO3DZxXK+FP49tnZh2rb8Eu8DwvnsM/wakcv+Amo2YCQl8aHELZ6BpSW2Cz7lRMFekHNTgGxxnezBnbkI1jAwmCjAOahw5Qeg=
+	t=1721144526; cv=none; b=MzN35R+7ZnQ49WxobmTKXrK7gIPybJUxkEvrMSg9aeqBi0sUCxQzjI9ckO4OJdSGa8H0f999IZRYweBD6ldRev9tSlmRPXJXiphKPZKSptxcwSh6m4aUccDQbkMsh3AGl/OGHYh+/NtBo09+ZrHUmRkdkqvAKcQtL8mMZdfc46U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144280; c=relaxed/simple;
-	bh=FQvebcCVfFQR5Jkpi26LMgmSf8V69eEPSz0I+kpf+GU=;
+	s=arc-20240116; t=1721144526; c=relaxed/simple;
+	bh=vROyVmyUCogV5zhs9vReVc5GlGkFo6uVvfQN0lefpFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQqeAkrLXEFAlzq4zqXCLaOXkiVyw4jSkRZdx1VR2OV4AnS1nJFcn7k9LemYIz7wIv0jzXSpityyDh8XmK9Hecryjhx/L/xIl906i76ZiipNGgM6rknn86X4fURwoji4GkOzCqpIA/nmYAh/MXJ1nKIXMk9k13kFvbnVrV11HEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CR32JVxE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3DEC116B1;
-	Tue, 16 Jul 2024 15:37:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QQRtOgppDwwSPXbjbnh8oxQiaVHaT8bMtIbsxaVq1nzcjyfxltdqFldH6Gih6f7mUQm/eYcL03aiGprhUV+wwNSe8dxnS8bpV5DtXoUV/wpaTjVYRA+MwzU+gSOchSwrwBEZ3GUTyO3vOlbaxKN8ThnPeHyPHVP4LEtySnhasU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5w2QHHN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E64BC4AF0B;
+	Tue, 16 Jul 2024 15:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144280;
-	bh=FQvebcCVfFQR5Jkpi26LMgmSf8V69eEPSz0I+kpf+GU=;
+	s=korg; t=1721144526;
+	bh=vROyVmyUCogV5zhs9vReVc5GlGkFo6uVvfQN0lefpFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CR32JVxEQp4XtevrL/9sZB7kYSDlCagj3EXFN3WtEBPjn21o7SkpEMzmQElJPhuhR
-	 2AxJk1/gvNVQgktAM0kwidXF43npFh8jLGfxMIraeL/aUVSQ5kfrwB5Iyi9tmQ9NLG
-	 SE2ZfAy6CkGkLI4R7wXMVwK1tchKXIZf3Dj8xDCw=
+	b=z5w2QHHN8XpNNoECsbKJkeoVywqn7m6Hxvku6RFErpxRoLGYp3B5K/uyiys3rWSMn
+	 X++Yhf6n5azCnMnSNpPWJXDzcEds6kHhMe+9646hJ5A5Kj66sY+iQXqAdk7YSxvAiv
+	 kLXBTqEqfQUsCqO7Tota/dFazglLKTWIKmH9C0as=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangwu Zhang <guazhang@redhat.com>,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Brendan Higgins <brendanhiggins@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	David Gow <davidgow@google.com>,
+	Rae Moar <rmoar@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 05/78] scsi: qedf: Make qedf_execute_tmf() non-preemptible
+Subject: [PATCH 5.10 022/108] kunit: Fix timeout message
 Date: Tue, 16 Jul 2024 17:30:37 +0200
-Message-ID: <20240716152740.838502652@linuxfoundation.org>
+Message-ID: <20240716152746.854244413@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Meneghini <jmeneghi@redhat.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 0d8b637c9c5eeaa1a4e3dfb336f3ff918eb64fec ]
+[ Upstream commit 53026ff63bb07c04a0e962a74723eb10ff6f9dc7 ]
 
-Stop calling smp_processor_id() from preemptible code in
-qedf_execute_tmf90.  This results in BUG_ON() when running an RT kernel.
+The exit code is always checked, so let's properly handle the -ETIMEDOUT
+error code.
 
-[ 659.343280] BUG: using smp_processor_id() in preemptible [00000000] code: sg_reset/3646
-[ 659.343282] caller is qedf_execute_tmf+0x8b/0x360 [qedf]
-
-Tested-by: Guangwu Zhang <guazhang@redhat.com>
-Cc: Saurav Kashyap <skashyap@marvell.com>
-Cc: Nilesh Javali <njavali@marvell.com>
-Signed-off-by: John Meneghini <jmeneghi@redhat.com>
-Link: https://lore.kernel.org/r/20240403150155.412954-1-jmeneghi@redhat.com
-Acked-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Brendan Higgins <brendanhiggins@google.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Rae Moar <rmoar@google.com>
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Link: https://lore.kernel.org/r/20240408074625.65017-4-mic@digikod.net
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_io.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/kunit/try-catch.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedf/qedf_io.c b/drivers/scsi/qedf/qedf_io.c
-index d02d1ef0d0116..dc1ba29c16762 100644
---- a/drivers/scsi/qedf/qedf_io.c
-+++ b/drivers/scsi/qedf/qedf_io.c
-@@ -2330,9 +2330,6 @@ static int qedf_execute_tmf(struct qedf_rport *fcport, struct scsi_cmnd *sc_cmd,
- 	io_req->fcport = fcport;
- 	io_req->cmd_type = QEDF_TASK_MGMT_CMD;
+diff --git a/lib/kunit/try-catch.c b/lib/kunit/try-catch.c
+index 71e5c58530996..d18da926b2cd7 100644
+--- a/lib/kunit/try-catch.c
++++ b/lib/kunit/try-catch.c
+@@ -76,7 +76,6 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
+ 	time_remaining = wait_for_completion_timeout(&try_completion,
+ 						     kunit_test_timeout());
+ 	if (time_remaining == 0) {
+-		kunit_err(test, "try timed out\n");
+ 		try_catch->try_result = -ETIMEDOUT;
+ 	}
  
--	/* Record which cpu this request is associated with */
--	io_req->cpu = smp_processor_id();
--
- 	/* Set TM flags */
- 	io_req->io_req_flags = QEDF_READ;
- 	io_req->data_xfer_len = 0;
-@@ -2354,6 +2351,9 @@ static int qedf_execute_tmf(struct qedf_rport *fcport, struct scsi_cmnd *sc_cmd,
+@@ -89,6 +88,8 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
+ 		try_catch->try_result = 0;
+ 	else if (exit_code == -EINTR)
+ 		kunit_err(test, "wake_up_process() was never called\n");
++	else if (exit_code == -ETIMEDOUT)
++		kunit_err(test, "try timed out\n");
+ 	else if (exit_code)
+ 		kunit_err(test, "Unknown error: %d\n", exit_code);
  
- 	spin_lock_irqsave(&fcport->rport_lock, flags);
- 
-+	/* Record which cpu this request is associated with */
-+	io_req->cpu = smp_processor_id();
-+
- 	sqe_idx = qedf_get_sqe_idx(fcport);
- 	sqe = &fcport->sq[sqe_idx];
- 	memset(sqe, 0, sizeof(struct fcoe_wqe));
 -- 
 2.43.0
 
