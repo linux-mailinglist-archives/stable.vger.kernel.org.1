@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-60117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B753932D73
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:05:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FD8932CCC
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AF9E1C22A1D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64FA21C22087
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5BB1DDCE;
-	Tue, 16 Jul 2024 16:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F21A19DFB3;
+	Tue, 16 Jul 2024 15:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kgo8QPR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j50CYkIg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EE0199EA3;
-	Tue, 16 Jul 2024 16:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB3119AD72;
+	Tue, 16 Jul 2024 15:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145924; cv=none; b=aNRQz9YLtU8hbxAnu3mZfqHqv9EcykTbMmFsKMCfoeVV3/DEI+hjKBgiT4nCbM8Ru+QlTBE6cWuprVc2mEBtn7DG84S+bHZCew+o8ZGjL+3AOYlsu+Nb6bvD6BD4BPAuTxpyhx4M0TiE+/q113MsuqUO1q/rCcNwzp33EKZ732U=
+	t=1721145493; cv=none; b=rWbwBSVm+oWFOEDis8wfPqgfbF/LPDwkJ9mLKOSHok6TTrI5mSukyAD6k2kbVGl9qCbhRmxqBJUtLFeoNqaF9l0wWEa6yDYWA2LxNau8vmCW+poiO4pdhzCP0MGDSi9K29uS2DHRd/L96b7IHRAbq5G8WaxhwuR8A8UchkXS4og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145924; c=relaxed/simple;
-	bh=rRHUeGvMkhkYXi17M3vch4lwm+ljGDkPZYuPIHnwAZw=;
+	s=arc-20240116; t=1721145493; c=relaxed/simple;
+	bh=cJbW0iwtJiAaAaAd6kkN0ptXjq2xHcafzj1tAAvpd9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBYvw7lY1eeFYGZtNqOKRfLuNodz+WmqsGh4I715sTRtbbU0YAfx7v6+dlZQfdJDAnK4+teuSEa/HAiPL0NX9dvXw1oATkq2z5cXjeOOZa//CakyMt2EIyW4H1befgH16IV8OPfB42HWyHEfHKOuJrtHtsexCYbvHvzL9Q/O7xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kgo8QPR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A750FC116B1;
-	Tue, 16 Jul 2024 16:05:23 +0000 (UTC)
+	 MIME-Version; b=Z0TV28S6Zc8njBdHrLV+sk/K0YeUHVHLjweaHCowEQR565mefhqwhcx0xECgaykZrseIKPCoG+k/jZ1mkgeMLy79hlfUBdLL3Zq1Tk/j4uRZO/AOEBnPbu01IIByr5p2DWK3WTJnuzkzl6Jxd091ceKy99o5o23Hh1WOPOtousI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j50CYkIg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8696C116B1;
+	Tue, 16 Jul 2024 15:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145924;
-	bh=rRHUeGvMkhkYXi17M3vch4lwm+ljGDkPZYuPIHnwAZw=;
+	s=korg; t=1721145493;
+	bh=cJbW0iwtJiAaAaAd6kkN0ptXjq2xHcafzj1tAAvpd9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kgo8QPR/npxwRPKGTGOH80SxsQ3BmpxECTd3Tl538US/yqIL5R+V824VYQEkdx3/0
-	 7crXv/c3qlMykKGbBxdCc39EY77YrWc7ujebfmbKIxNRR1SsVsQjDNr3BRbbjnTW7q
-	 RRJVKE27RoOlaQpp1a6FCzylMJUvT/hCetQYg8R0=
+	b=j50CYkIgdWmXTiXqstMri5oJNVFme255+YOfUac6KrPgIaXZ+bfXlRZDi6Sl+tDfK
+	 ndiCR1OOf58338o5XvQFD9uD9DMCvDbKH9gta0QzJJUjnjWD40ekWCnRNThYZhCTY1
+	 vLB7SZddby0hPd3FrtIJslm5MTHLLocDDVzW3770=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 093/121] wireguard: selftests: use acpi=off instead of -no-acpi for recent QEMU
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 84/96] nilfs2: fix kernel bug on rename operation of broken directory
 Date: Tue, 16 Jul 2024 17:32:35 +0200
-Message-ID: <20240716152754.907231627@linuxfoundation.org>
+Message-ID: <20240716152749.747162543@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason A. Donenfeld <Jason@zx2c4.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 2cb489eb8dfc291060516df313ff31f4f9f3d794 upstream.
+commit a9e1ddc09ca55746079cc479aa3eb6411f0d99d4 upstream.
 
-QEMU 9.0 removed -no-acpi, in favor of machine properties, so update the
-Makefile to use the correct QEMU invocation.
+Syzbot reported that in rename directory operation on broken directory on
+nilfs2, __block_write_begin_int() called to prepare block write may fail
+BUG_ON check for access exceeding the folio/page size.
 
-Cc: stable@vger.kernel.org
-Fixes: b83fdcd9fb8a ("wireguard: selftests: use microvm on x86")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Link: https://patch.msgid.link/20240704154517.1572127-2-Jason@zx2c4.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is because nilfs_dotdot(), which gets parent directory reference
+entry ("..") of the directory to be moved or renamed, does not check
+consistency enough, and may return location exceeding folio/page size for
+broken directories.
+
+Fix this issue by checking required directory entries ("." and "..") in
+the first chunk of the directory in nilfs_dotdot().
+
+Link: https://lkml.kernel.org/r/20240628165107.9006-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d3abed1ad3d367fa2627
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/wireguard/qemu/Makefile |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/nilfs2/dir.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/wireguard/qemu/Makefile
-+++ b/tools/testing/selftests/wireguard/qemu/Makefile
-@@ -109,9 +109,9 @@ KERNEL_ARCH := x86_64
- KERNEL_BZIMAGE := $(KERNEL_BUILD_PATH)/arch/x86/boot/bzImage
- QEMU_VPORT_RESULT := virtio-serial-device
- ifeq ($(HOST_ARCH),$(ARCH))
--QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off -no-acpi
-+QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off,acpi=off
- else
--QEMU_MACHINE := -cpu max -machine microvm -no-acpi
-+QEMU_MACHINE := -cpu max -machine microvm,acpi=off
- endif
- else ifeq ($(ARCH),i686)
- CHOST := i686-linux-musl
-@@ -120,9 +120,9 @@ KERNEL_ARCH := x86
- KERNEL_BZIMAGE := $(KERNEL_BUILD_PATH)/arch/x86/boot/bzImage
- QEMU_VPORT_RESULT := virtio-serial-device
- ifeq ($(subst x86_64,i686,$(HOST_ARCH)),$(ARCH))
--QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off -no-acpi
-+QEMU_MACHINE := -cpu host -machine microvm,accel=kvm,pit=off,pic=off,rtc=off,acpi=off
- else
--QEMU_MACHINE := -cpu coreduo -machine microvm -no-acpi
-+QEMU_MACHINE := -cpu coreduo -machine microvm,acpi=off
- endif
- else ifeq ($(ARCH),mips64)
- CHOST := mips64-linux-musl
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -396,11 +396,39 @@ found:
+ 
+ struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
+ {
+-	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
++	struct page *page;
++	struct nilfs_dir_entry *de, *next_de;
++	size_t limit;
++	char *msg;
+ 
++	de = nilfs_get_page(dir, 0, &page);
+ 	if (IS_ERR(de))
+ 		return NULL;
+-	return nilfs_next_entry(de);
++
++	limit = nilfs_last_byte(dir, 0);  /* is a multiple of chunk size */
++	if (unlikely(!limit || le64_to_cpu(de->inode) != dir->i_ino ||
++		     !nilfs_match(1, ".", de))) {
++		msg = "missing '.'";
++		goto fail;
++	}
++
++	next_de = nilfs_next_entry(de);
++	/*
++	 * If "next_de" has not reached the end of the chunk, there is
++	 * at least one more record.  Check whether it matches "..".
++	 */
++	if (unlikely((char *)next_de == (char *)de + nilfs_chunk_size(dir) ||
++		     !nilfs_match(2, "..", next_de))) {
++		msg = "missing '..'";
++		goto fail;
++	}
++	*p = page;
++	return next_de;
++
++fail:
++	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
++	nilfs_put_page(page);
++	return NULL;
+ }
+ 
+ ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
 
 
 
