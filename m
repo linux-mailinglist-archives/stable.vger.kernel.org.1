@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-59690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B150932B4C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052CA932AC2
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF604283781
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A265C1F242A1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C26819DF9D;
-	Tue, 16 Jul 2024 15:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EBD1DDCE;
+	Tue, 16 Jul 2024 15:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uqGA7K2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PhPGnla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8C1F9E8;
-	Tue, 16 Jul 2024 15:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AC1CA40;
+	Tue, 16 Jul 2024 15:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144613; cv=none; b=tBQRJ7unK61/DU3byfGBEWf3l70Bv2duPGCbbRNctZeRuEpYdoxB9OLr9/uzxIZAJoQteTnHCWpLvkQ8t+s6PBcxjom/FDdYzl1Ytr6j7rpTtJFnkEkDGCVy1e41lnLyZILZdSYAvmM4Epmthf5yZ9bUo9sDlrAKkLqgCqRAZh4=
+	t=1721144263; cv=none; b=rZdak/9iz0AcRIKLtx0FJJJLukIVPP2AwykJb3lu+JbYBmaDgWfd7PuZa0lp4ikOydgsSRErsU+bgwDPPLrLW4Yge1BQfIMX1iZ4ZbbaygWJMBtKcM4FuVqwfyF45F4hP3DIQoYQxVPkJoP7AqHjJ/4Eaa8KYfChseltvyiKAgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144613; c=relaxed/simple;
-	bh=FrXu0Rmp/1jat9pqsOiWV5pk5r3ZQtZj5t1ko2+dk1s=;
+	s=arc-20240116; t=1721144263; c=relaxed/simple;
+	bh=+o0Rtpb4k+eQzq1TclkVHuMa+5+h+4SCragjU1nUdGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fo6hWH6MmXDTXgFdEMdIiPaHi+nF7RoS+/ktP8IWV877NScxOqaBPo4nN+rw7GJA7elE4iTpLM/UMs4mJAwH2+Lig6sJzhACYAJ2O1cVVHNka7Bh0G3hkSOkyMbW/HY8d37dhbcxCFK5vSgE+yJtceC4gpt19/7hidl9JeHvKko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uqGA7K2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D95C116B1;
-	Tue, 16 Jul 2024 15:43:32 +0000 (UTC)
+	 MIME-Version; b=QzStyD6mqL9sRW5zoH9R5afsvuPDVlFCxFcHyObtHz9opimAAMlQUbAiqrKuaP90kFMADPc6udU5gZTqTiS+SeHa74XdkyyTxo2H9R5E/sBo9RHW8JFEtrJVgAzWmgFGen819ZoZOHoU6EUTrUBzAcUHlk6T2vBP8s5MxBdCRAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PhPGnla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6895EC4AF0B;
+	Tue, 16 Jul 2024 15:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144613;
-	bh=FrXu0Rmp/1jat9pqsOiWV5pk5r3ZQtZj5t1ko2+dk1s=;
+	s=korg; t=1721144262;
+	bh=+o0Rtpb4k+eQzq1TclkVHuMa+5+h+4SCragjU1nUdGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2uqGA7K2mJYIWYFXP8V/vcDlZY4WwCVLHwfBBgYgEpgOOUlPl0iaIQb2MwRDF+Syb
-	 0Z9W/c2ei27LzUkOyWNg/1sAvy9dDufWP2PvwViuJ29sXWItlvPBK90LcTRSyWI6bJ
-	 Rn5ZID8MpWZFfh+zJody17pYrbEEWZTcBUT0y//k=
+	b=2PhPGnlaNVVQ+Ddl3qiphjHVY/4KSfmSAw0FS8Bkg2xCq/1tzNrhjD2MHlxWSEKXD
+	 LQCuxKe6+J0iYGSk/pS6O3gJgRNy9PVq9SV2gWdUypxqQi9OgwRoX8b6DuPvzbhjE8
+	 lYEOopjTerkwFpVEa/aHoU45oaxoesfzP6ZMb4BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Xiaochun Lu <xiaochun.lu@bytedance.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/108] selftests: fix OOM in msg_zerocopy selftest
+Subject: [PATCH 5.4 14/78] media: s2255: Use refcount_t instead of atomic_t for num_channels
 Date: Tue, 16 Jul 2024 17:30:46 +0200
-Message-ID: <20240716152747.193640710@linuxfoundation.org>
+Message-ID: <20240716152741.180285636@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit af2b7e5b741aaae9ffbba2c660def434e07aa241 ]
+[ Upstream commit 6cff72f6bcee89228a662435b7c47e21a391c8d0 ]
 
-In selftests/net/msg_zerocopy.c, it has a while loop keeps calling sendmsg
-on a socket with MSG_ZEROCOPY flag, and it will recv the notifications
-until the socket is not writable. Typically, it will start the receiving
-process after around 30+ sendmsgs. However, as the introduction of commit
-dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale"), the sender is
-always writable and does not get any chance to run recv notifications.
-The selftest always exits with OUT_OF_MEMORY because the memory used by
-opt_skb exceeds the net.core.optmem_max. Meanwhile, it could be set to a
-different value to trigger OOM on older kernels too.
+Use an API that resembles more the actual use of num_channels.
 
-Thus, we introduce "cfg_notification_limit" to force sender to receive
-notifications after some number of sendmsgs.
+Found by cocci:
+drivers/media/usb/s2255/s2255drv.c:2362:5-24: WARNING: atomic_dec_and_test variation before object free at line 2363.
+drivers/media/usb/s2255/s2255drv.c:1557:5-24: WARNING: atomic_dec_and_test variation before object free at line 1558.
 
-Fixes: 07b65c5b31ce ("test: add msg_zerocopy test")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Signed-off-by: Xiaochun Lu <xiaochun.lu@bytedance.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240701225349.3395580-2-zijianzhang@bytedance.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-11-3c4865f5a4b0@chromium.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/msg_zerocopy.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/media/usb/s2255/s2255drv.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/net/msg_zerocopy.c b/tools/testing/selftests/net/msg_zerocopy.c
-index bdc03a2097e85..926556febc83c 100644
---- a/tools/testing/selftests/net/msg_zerocopy.c
-+++ b/tools/testing/selftests/net/msg_zerocopy.c
-@@ -85,6 +85,7 @@ static bool cfg_rx;
- static int  cfg_runtime_ms	= 4200;
- static int  cfg_verbose;
- static int  cfg_waittime_ms	= 500;
-+static int  cfg_notification_limit = 32;
- static bool cfg_zerocopy;
+diff --git a/drivers/media/usb/s2255/s2255drv.c b/drivers/media/usb/s2255/s2255drv.c
+index 7ed526306816a..845869240abee 100644
+--- a/drivers/media/usb/s2255/s2255drv.c
++++ b/drivers/media/usb/s2255/s2255drv.c
+@@ -247,7 +247,7 @@ struct s2255_vc {
+ struct s2255_dev {
+ 	struct s2255_vc         vc[MAX_CHANNELS];
+ 	struct v4l2_device      v4l2_dev;
+-	atomic_t                num_channels;
++	refcount_t		num_channels;
+ 	int			frames;
+ 	struct mutex		lock;	/* channels[].vdev.lock */
+ 	struct mutex		cmdlock; /* protects cmdbuf */
+@@ -1552,11 +1552,11 @@ static void s2255_video_device_release(struct video_device *vdev)
+ 		container_of(vdev, struct s2255_vc, vdev);
  
- static socklen_t cfg_alen;
-@@ -95,6 +96,7 @@ static char payload[IP_MAXPACKET];
- static long packets, bytes, completions, expected_completions;
- static int  zerocopied = -1;
- static uint32_t next_completion;
-+static uint32_t sends_since_notify;
+ 	dprintk(dev, 4, "%s, chnls: %d\n", __func__,
+-		atomic_read(&dev->num_channels));
++		refcount_read(&dev->num_channels));
  
- static unsigned long gettimeofday_ms(void)
- {
-@@ -208,6 +210,7 @@ static bool do_sendmsg(int fd, struct msghdr *msg, bool do_zerocopy, int domain)
- 		error(1, errno, "send");
- 	if (cfg_verbose && ret != len)
- 		fprintf(stderr, "send: ret=%u != %u\n", ret, len);
-+	sends_since_notify++;
+ 	v4l2_ctrl_handler_free(&vc->hdl);
  
- 	if (len) {
- 		packets++;
-@@ -460,6 +463,7 @@ static bool do_recv_completion(int fd, int domain)
- static void do_recv_completions(int fd, int domain)
- {
- 	while (do_recv_completion(fd, domain)) {}
-+	sends_since_notify = 0;
+-	if (atomic_dec_and_test(&dev->num_channels))
++	if (refcount_dec_and_test(&dev->num_channels))
+ 		s2255_destroy(dev);
+ 	return;
  }
- 
- /* Wait for all remaining completions on the errqueue */
-@@ -549,6 +553,9 @@ static void do_tx(int domain, int type, int protocol)
- 		else
- 			do_sendmsg(fd, &msg, cfg_zerocopy, domain);
- 
-+		if (cfg_zerocopy && sends_since_notify >= cfg_notification_limit)
-+			do_recv_completions(fd, domain);
-+
- 		while (!do_poll(fd, POLLOUT)) {
- 			if (cfg_zerocopy)
- 				do_recv_completions(fd, domain);
-@@ -708,7 +715,7 @@ static void parse_opts(int argc, char **argv)
- 
- 	cfg_payload_len = max_payload_len;
- 
--	while ((c = getopt(argc, argv, "46c:C:D:i:mp:rs:S:t:vz")) != -1) {
-+	while ((c = getopt(argc, argv, "46c:C:D:i:l:mp:rs:S:t:vz")) != -1) {
- 		switch (c) {
- 		case '4':
- 			if (cfg_family != PF_UNSPEC)
-@@ -736,6 +743,9 @@ static void parse_opts(int argc, char **argv)
- 			if (cfg_ifindex == 0)
- 				error(1, errno, "invalid iface: %s", optarg);
+@@ -1661,7 +1661,7 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
+ 				"failed to register video device!\n");
  			break;
-+		case 'l':
-+			cfg_notification_limit = strtoul(optarg, NULL, 0);
-+			break;
- 		case 'm':
- 			cfg_cork_mixed = true;
- 			break;
+ 		}
+-		atomic_inc(&dev->num_channels);
++		refcount_inc(&dev->num_channels);
+ 		v4l2_info(&dev->v4l2_dev, "V4L2 device registered as %s\n",
+ 			  video_device_node_name(&vc->vdev));
+ 
+@@ -1669,11 +1669,11 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
+ 	pr_info("Sensoray 2255 V4L driver Revision: %s\n",
+ 		S2255_VERSION);
+ 	/* if no channels registered, return error and probe will fail*/
+-	if (atomic_read(&dev->num_channels) == 0) {
++	if (refcount_read(&dev->num_channels) == 0) {
+ 		v4l2_device_unregister(&dev->v4l2_dev);
+ 		return ret;
+ 	}
+-	if (atomic_read(&dev->num_channels) != MAX_CHANNELS)
++	if (refcount_read(&dev->num_channels) != MAX_CHANNELS)
+ 		pr_warn("s2255: Not all channels available.\n");
+ 	return 0;
+ }
+@@ -2222,7 +2222,7 @@ static int s2255_probe(struct usb_interface *interface,
+ 		goto errorFWDATA1;
+ 	}
+ 
+-	atomic_set(&dev->num_channels, 0);
++	refcount_set(&dev->num_channels, 0);
+ 	dev->pid = id->idProduct;
+ 	dev->fw_data = kzalloc(sizeof(struct s2255_fw), GFP_KERNEL);
+ 	if (!dev->fw_data)
+@@ -2342,12 +2342,12 @@ static void s2255_disconnect(struct usb_interface *interface)
+ {
+ 	struct s2255_dev *dev = to_s2255_dev(usb_get_intfdata(interface));
+ 	int i;
+-	int channels = atomic_read(&dev->num_channels);
++	int channels = refcount_read(&dev->num_channels);
+ 	mutex_lock(&dev->lock);
+ 	v4l2_device_disconnect(&dev->v4l2_dev);
+ 	mutex_unlock(&dev->lock);
+ 	/*see comments in the uvc_driver.c usb disconnect function */
+-	atomic_inc(&dev->num_channels);
++	refcount_inc(&dev->num_channels);
+ 	/* unregister each video device. */
+ 	for (i = 0; i < channels; i++)
+ 		video_unregister_device(&dev->vc[i].vdev);
+@@ -2360,7 +2360,7 @@ static void s2255_disconnect(struct usb_interface *interface)
+ 		dev->vc[i].vidstatus_ready = 1;
+ 		wake_up(&dev->vc[i].wait_vidstatus);
+ 	}
+-	if (atomic_dec_and_test(&dev->num_channels))
++	if (refcount_dec_and_test(&dev->num_channels))
+ 		s2255_destroy(dev);
+ 	dev_info(&interface->dev, "%s\n", __func__);
+ }
 -- 
 2.43.0
 
