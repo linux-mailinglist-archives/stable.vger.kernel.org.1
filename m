@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-60124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E42D932D7A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:05:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCDC0932D05
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA86A1C22BEB
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:05:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0FAC1C21B75
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39C71DDCE;
-	Tue, 16 Jul 2024 16:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B69619AD93;
+	Tue, 16 Jul 2024 16:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rN817ONt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKu01aP3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA5419B59C;
-	Tue, 16 Jul 2024 16:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B6D136643;
+	Tue, 16 Jul 2024 16:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145944; cv=none; b=DclWEedXN5u3Z2rTgC1VwJpVIfcYHB0Kycb6YErlNAxDTdXjjNa5MtUB3M5yM3Rz9Hcv0fgjmO7mPbmorEpS3jI7ePpvYpBtlRN1hanr1wm3T1//F3kEtSdnWSoIRJhQJKV9mYNICn1hXIKXeDKNJec91OvPmTEGl+w2rYVxSWo=
+	t=1721145614; cv=none; b=qxzgZV4cABmin41XGutbNmDH1r2zu+4jTTdRPQR7MojZhaO0FGatfh++Sg1pxMx9DM8l7eHcWg6K6fhd4tLd73KirerbLj4llBbqcQ5d6FdksngHD6NMMz9Wu1rWQK3v7IvVXc/AN/EVK+ZKUWjni2AEdxhRrxeJL1G3RCROZhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145944; c=relaxed/simple;
-	bh=CExSc/qwkYlvlm4XQup32LNl6JZzBCz0u7crYzy4uBM=;
+	s=arc-20240116; t=1721145614; c=relaxed/simple;
+	bh=cgGbM2RLQtd1VTA+Ukbi0h4MJP50JBJCJl+EopxmAYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aRf6+bURuhpfb9xBR6dRJTVKiAQQts+WCV+TmS0FYTg2z2Qh6eiKCmY60QuUkdlKYSD/DcCDczHSw7H1D0f+l/hssjqLw1oDauH8IcCFZ3tdcDobQaY3a/Fr2QlAdJKVQJ3qd6+7tFZDNHyyfqAUyFclaj65/8NUypCryewx5Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rN817ONt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3358CC116B1;
-	Tue, 16 Jul 2024 16:05:44 +0000 (UTC)
+	 MIME-Version; b=fKfNdYT3s+m0tYonj8I8z2wHOGBKfss3ysFFhj42YiTWlWJimXi97rfk9xTbXRBvSDDM56nM+ulYJLQ7h/GE6kkmtGMTPjO0UKXVzM2nrY79UT7ghRC2ScutUFBKiVvOzQAJ94ia2V9SzKWm4H5RTo/YmtE3SIhIKqvuYTRvjdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKu01aP3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F43C116B1;
+	Tue, 16 Jul 2024 16:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145944;
-	bh=CExSc/qwkYlvlm4XQup32LNl6JZzBCz0u7crYzy4uBM=;
+	s=korg; t=1721145613;
+	bh=cgGbM2RLQtd1VTA+Ukbi0h4MJP50JBJCJl+EopxmAYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rN817ONt+0Fz3tmLJ86+T1fvgZ4luoMLsvALoiLqpp3NMX4QGl8jtf9oXsvQmqpHa
-	 kJYs1wjUIwvint3CSBhi9ZcTud10x630DsjUcqpkhq7inF1ayhZaNFuN4b1qYUI66A
-	 emYrp9IlfJd/qulK+2UlMm7QzEEcHMYHt3PoY7sU=
+	b=MKu01aP3moZcq7de3AGnOsaGO7N20ghyw2LDbBcwzCW/Pr7HagpD5/EtVzoaVLDLW
+	 4/tLdV8ccSY0CJmA+e0K1Dez9RAyRE/Hx01dgQxg7W6QjUKc7x/gaPKtlNidSU75MQ
+	 XR6G/C8s5vJoaCwEp2r8MXwNNBmnPjjnf6l63OpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	George Stark <gnstark@salutedevices.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Lee Jones <lee@kernel.org>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 001/144] locking/mutex: Introduce devm_mutex_init()
+Subject: [PATCH 6.6 008/121] cachefiles: cancel all requests for the object that is being dropped
 Date: Tue, 16 Jul 2024 17:31:10 +0200
-Message-ID: <20240716152752.583490101@linuxfoundation.org>
+Message-ID: <20240716152751.639233768@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152752.524497140@linuxfoundation.org>
-References: <20240716152752.524497140@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Stark <gnstark@salutedevices.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 4cd47222e435dec8e3787614924174f53fcfb5ae ]
+[ Upstream commit 751f524635a4f076117d714705eeddadaf6748ee ]
 
-Using of devm API leads to a certain order of releasing resources.
-So all dependent resources which are not devm-wrapped should be deleted
-with respect to devm-release order. Mutex is one of such objects that
-often is bound to other resources and has no own devm wrapping.
-Since mutex_destroy() actually does nothing in non-debug builds
-frequently calling mutex_destroy() is just ignored which is safe for now
-but wrong formally and can lead to a problem if mutex_destroy() will be
-extended so introduce devm_mutex_init().
+Because after an object is dropped, requests for that object are useless,
+cancel them to avoid causing other problems.
 
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: George Stark <gnstark@salutedevices.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Marek Behún <kabel@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/r/20240411161032.609544-2-gnstark@salutedevices.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+This prepares for the later addition of cancel_work_sync(). After the
+reopen requests is generated, cancel it to avoid cancel_work_sync()
+blocking by waiting for daemon to complete the reopen requests.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240628062930.2467993-7-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 12e009d60852 ("cachefiles: wait for ondemand_object_worker to finish when dropping object")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mutex.h        | 27 +++++++++++++++++++++++++++
- kernel/locking/mutex-debug.c | 12 ++++++++++++
- 2 files changed, 39 insertions(+)
+ fs/cachefiles/ondemand.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-index 8f226d460f51c..9ef01b9d24563 100644
---- a/include/linux/mutex.h
-+++ b/include/linux/mutex.h
-@@ -20,6 +20,8 @@
- #include <linux/osq_lock.h>
- #include <linux/debug_locks.h>
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index cc2de0e3ee60f..acaecfce8aaa9 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -636,12 +636,31 @@ int cachefiles_ondemand_init_object(struct cachefiles_object *object)
  
-+struct device;
+ void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
+ {
++	unsigned long index;
++	struct cachefiles_req *req;
++	struct cachefiles_cache *cache;
 +
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- # define __DEP_MAP_MUTEX_INITIALIZER(lockname)			\
- 		, .dep_map = {					\
-@@ -170,6 +172,31 @@ do {							\
- } while (0)
- #endif /* CONFIG_PREEMPT_RT */
+ 	if (!object->ondemand)
+ 		return;
  
-+#ifdef CONFIG_DEBUG_MUTEXES
+ 	cachefiles_ondemand_send_req(object, CACHEFILES_OP_CLOSE, 0,
+ 			cachefiles_ondemand_init_close_req, NULL);
 +
-+int __devm_mutex_init(struct device *dev, struct mutex *lock);
++	if (!object->ondemand->ondemand_id)
++		return;
 +
-+#else
-+
-+static inline int __devm_mutex_init(struct device *dev, struct mutex *lock)
-+{
-+	/*
-+	 * When CONFIG_DEBUG_MUTEXES is off mutex_destroy() is just a nop so
-+	 * no really need to register it in the devm subsystem.
-+	 */
-+	return 0;
-+}
-+
-+#endif
-+
-+#define devm_mutex_init(dev, mutex)			\
-+({							\
-+	typeof(mutex) mutex_ = (mutex);			\
-+							\
-+	mutex_init(mutex_);				\
-+	__devm_mutex_init(dev, mutex_);			\
-+})
-+
- /*
-  * See kernel/locking/mutex.c for detailed documentation of these APIs.
-  * Also see Documentation/locking/mutex-design.rst.
-diff --git a/kernel/locking/mutex-debug.c b/kernel/locking/mutex-debug.c
-index bc8abb8549d20..6e6f6071cfa27 100644
---- a/kernel/locking/mutex-debug.c
-+++ b/kernel/locking/mutex-debug.c
-@@ -12,6 +12,7 @@
-  */
- #include <linux/mutex.h>
- #include <linux/delay.h>
-+#include <linux/device.h>
- #include <linux/export.h>
- #include <linux/poison.h>
- #include <linux/sched.h>
-@@ -89,6 +90,17 @@ void debug_mutex_init(struct mutex *lock, const char *name,
- 	lock->magic = lock;
++	/* Cancel all requests for the object that is being dropped. */
++	cache = object->volume->cache;
++	xa_lock(&cache->reqs);
+ 	cachefiles_ondemand_set_object_dropping(object);
++	xa_for_each(&cache->reqs, index, req) {
++		if (req->object == object) {
++			req->error = -EIO;
++			complete(&req->done);
++			__xa_erase(&cache->reqs, index);
++		}
++	}
++	xa_unlock(&cache->reqs);
  }
  
-+static void devm_mutex_release(void *res)
-+{
-+	mutex_destroy(res);
-+}
-+
-+int __devm_mutex_init(struct device *dev, struct mutex *lock)
-+{
-+	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
-+}
-+EXPORT_SYMBOL_GPL(__devm_mutex_init);
-+
- /***
-  * mutex_destroy - mark a mutex unusable
-  * @lock: the mutex to be destroyed
+ int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
 -- 
 2.43.0
 
