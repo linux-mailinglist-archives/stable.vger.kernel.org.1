@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-59435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4725B9328A4
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:29:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6489328AD
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:30:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CF4E1C22A0A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:29:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17353B23F83
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 14:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E837C1A254A;
-	Tue, 16 Jul 2024 14:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035691A2570;
+	Tue, 16 Jul 2024 14:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uIemXVyZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C3Ucw+J4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5911A2544;
-	Tue, 16 Jul 2024 14:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B407E19E827;
+	Tue, 16 Jul 2024 14:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721140000; cv=none; b=ptGhTCGDgoCGNukt/6pgwiLaXgGGZP3RXGbMLdZ/fA4foJ8riiOU7Iy0tWod0zqBxsR6klKSCYbzw+DhCi6jqHF+6KT4zfRQqFnFxaiNCKfPC07D0TjuEIInziF7YB5kRYv0Xsa9nNR+qAsEal9IiCuzhoejcwRpWdhD3MqXJ9U=
+	t=1721140005; cv=none; b=gVYKGxY7BFqpkEwXtIr+TqyBSo1zXOUu01WwM3K/hOhNp4pl4Ji7CYioyViQ5xGpWSz6SbwTYTU7o7aSx3Z1gSxZ8DJsTV6E2fbSSTRdVXDevqohpmGoBpCVv1TkfIIGl+g5jsCW2ho8/NfVw2qro8qSDFuy8odok+oJdTlnAho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721140000; c=relaxed/simple;
-	bh=MnGWsvST1Li4q23h4/0+i+m9oWC0LMX6t/9IiU4DRAA=;
+	s=arc-20240116; t=1721140005; c=relaxed/simple;
+	bh=vgR+WnEIyInGRZTT391ah5DJ77CZ92bMxyRFab4ePP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJJhTFE+fg49YnI9z4k4qAixObBv83FnDj8RQL7ZlV3Irjea5iAh5vv3di0DaM/1BcwLvcgPC5DqesOPpdkn4bgIVbCSCxf6RMmiCRdYB/WJWzgR7IUH7YOUrK3eJH1/Dg5ZDDPxGT1GpSiVsX3owN79RQEO9EewiBFTidkW3nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uIemXVyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0F2C4AF0D;
-	Tue, 16 Jul 2024 14:26:39 +0000 (UTC)
+	 MIME-Version; b=bblbuTC9qV7PD4Fc0C88IrRhz+D6ui8MO551gUBk/iNBztvao3KXvg2euoxmyl7CxRmJAZY1Pchm4ghbsb2YY3BpgZNhKaHsQOm+smG8mh9QT6HDhKtv33cqqittlnog31fMVoIoEhpBrm3oC50khIjSACpIEor7mHFkpbpc34I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C3Ucw+J4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A0AC4AF09;
+	Tue, 16 Jul 2024 14:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721140000;
-	bh=MnGWsvST1Li4q23h4/0+i+m9oWC0LMX6t/9IiU4DRAA=;
+	s=k20201202; t=1721140005;
+	bh=vgR+WnEIyInGRZTT391ah5DJ77CZ92bMxyRFab4ePP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIemXVyZ8Cd9Jn3bxNzYJuqpcbx23PXyBi6ovijoHAgq6R749FEJowFsaFSXy3zel
-	 tUlDa/4oJJ2Xxe9kJ8vxFWU3kCLFqxAE6VGtpjGicpond500J19ovS0hO1PUrTR0BN
-	 OvTqPG+qEUzu612JnFLkeDMzP+vw6r4NHabtpDmhuwUD6y1Wng8+HgfZ9J0SV+5U76
-	 taXlye59jSx09W40eBDtipzWOBTThFdtSM2ELWcAY4eqxxuN8kAz796NXfhiS8judi
-	 RWZvAJTaTKQ+5Dxpz014INVJycqhQJjalmYiHQ0iZWAqbyvPwhs+3eu4rt09JjNVgV
-	 oadhc5egE4NvA==
+	b=C3Ucw+J4Dxab8Nj92MdiFywrIbD4tePpRsVQBTGcaY1DeP3h8DViNcLN/aLJd70wc
+	 Ud+FxOrxiUDP2r8xno+z8nhEiosbwumoSpFmOQNB45sksLscoLnJabAskS3b5pQAtb
+	 JCpwDQVR5cDWc6IYvYhnwCDUMr21D4QcPuTlwdEYLKLXKj+qhGBJEno957/KNgv2Eq
+	 rQXQleDdg6oe8fFoP+aGYONNk05pHWiQb5fl4x9nms3wUrSS7eNUJ8U80hlOpE080+
+	 IfhEW7g9YY5ywNGQJXytH7RKW6mbMrSayWf4t2lci5SoxkJc5rN5cY0FVnQ8YEYcC2
+	 CPQqiGQ3P4cLA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Daniel Gabay <daniel.gabay@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 19/22] fs: better handle deep ancestor chains in is_subdir()
-Date: Tue, 16 Jul 2024 10:24:26 -0400
-Message-ID: <20240716142519.2712487-19-sashal@kernel.org>
+	kvalo@kernel.org,
+	gregory.greenman@intel.com,
+	emmanuel.grumbach@intel.com,
+	ilan.peer@intel.com,
+	shaul.triebitz@intel.com,
+	benjamin.berg@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 20/22] wifi: iwlwifi: properly set WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK
+Date: Tue, 16 Jul 2024 10:24:27 -0400
+Message-ID: <20240716142519.2712487-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716142519.2712487-1-sashal@kernel.org>
 References: <20240716142519.2712487-1-sashal@kernel.org>
@@ -67,78 +72,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.9
 Content-Transfer-Encoding: 8bit
 
-From: Christian Brauner <brauner@kernel.org>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit 391b59b045004d5b985d033263ccba3e941a7740 ]
+[ Upstream commit 4ec17ce716bdaf680288ce680b4621b52483cc96 ]
 
-Jan reported that 'cd ..' may take a long time in deep directory
-hierarchies under a bind-mount. If concurrent renames happen it is
-possible to livelock in is_subdir() because it will keep retrying.
+The WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK should be set based on the
+WOWLAN_KEK_KCK_MATERIAL command version. Currently, the command
+version in the firmware has advanced to 4, which prevents the
+flag from being set correctly, fix that.
 
-Change is_subdir() from simply retrying over and over to retry once and
-then acquire the rename lock to handle deep ancestor chains better. The
-list of alternatives to this approach were less then pleasant. Change
-the scope of rcu lock to cover the whole walk while at it.
-
-A big thanks to Jan and Linus. Both Jan and Linus had proposed
-effectively the same thing just that one version ended up being slightly
-more elegant.
-
-Reported-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240703064026.a0f162108575.If1a9785727d2a1b0197a396680965df1b53d4096@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dcache.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index 71a8e943a0fa5..e38d2d6a37e12 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -3029,28 +3029,25 @@ EXPORT_SYMBOL(d_splice_alias);
-   
- bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
- {
--	bool result;
-+	bool subdir;
- 	unsigned seq;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 5f6b16d3fc8a3..853da607549a7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -651,7 +651,7 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 		hw->wiphy->features |= NL80211_FEATURE_WFA_TPC_IE_IN_PROBES;
  
- 	if (new_dentry == old_dentry)
- 		return true;
+ 	if (iwl_fw_lookup_cmd_ver(mvm->fw, WOWLAN_KEK_KCK_MATERIAL,
+-				  IWL_FW_CMD_VER_UNKNOWN) == 3)
++				  IWL_FW_CMD_VER_UNKNOWN) >= 3)
+ 		hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK;
  
--	do {
--		/* for restarting inner loop in case of seq retry */
--		seq = read_seqbegin(&rename_lock);
--		/*
--		 * Need rcu_readlock to protect against the d_parent trashing
--		 * due to d_move
--		 */
--		rcu_read_lock();
--		if (d_ancestor(old_dentry, new_dentry))
--			result = true;
--		else
--			result = false;
--		rcu_read_unlock();
--	} while (read_seqretry(&rename_lock, seq));
--
--	return result;
-+	/* Access d_parent under rcu as d_move() may change it. */
-+	rcu_read_lock();
-+	seq = read_seqbegin(&rename_lock);
-+	subdir = d_ancestor(old_dentry, new_dentry);
-+	 /* Try lockless once... */
-+	if (read_seqretry(&rename_lock, seq)) {
-+		/* ...else acquire lock for progress even on deep chains. */
-+		read_seqlock_excl(&rename_lock);
-+		subdir = d_ancestor(old_dentry, new_dentry);
-+		read_sequnlock_excl(&rename_lock);
-+	}
-+	rcu_read_unlock();
-+	return subdir;
- }
- EXPORT_SYMBOL(is_subdir);
- 
+ 	if (fw_has_api(&mvm->fw->ucode_capa,
 -- 
 2.43.0
 
