@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-59694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B048B932B51
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 669F7932BF6
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1CA51C220AF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 101241F2151D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622D819DF75;
-	Tue, 16 Jul 2024 15:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA6019DF53;
+	Tue, 16 Jul 2024 15:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQ33eRue"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiiKJQ+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF4C19AA40;
-	Tue, 16 Jul 2024 15:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14B01DA4D;
+	Tue, 16 Jul 2024 15:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144625; cv=none; b=L+Gt1JjYM1TtAfedhgMP70ap3+7xWKtTBhLqR09EQ9p4SKceEPFN4ID4Iv8y+TZql5WzdCW8lD1Vv+ONpYnx+oDilpsClkJNu8cWvVnarD4OSKVHbO4zEN3N4nlhuahsm+33UUfdeSnHuAQWZ+lnNk7jSByZM3l+4idWv1RYFLE=
+	t=1721145019; cv=none; b=n4jG/avdZAdBOM+yg21+wCnPn/5iESs+jg1kU4FboMQ5SV5oVioihw3T2poWSL0yoSTjqzVSMyONyKwWSLMTPIJjiuFMzbjtTpjnWCsXaqMJQTJHsRnEJxqb7xMY8xvEMQAtGp/y/e047pcrgCFgIXcT5Mt1SRcqgTGJ6yChUKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144625; c=relaxed/simple;
-	bh=V2d0QwK8famWjJVwxS3f8KEDuGD7I066VkSsuvG4Le4=;
+	s=arc-20240116; t=1721145019; c=relaxed/simple;
+	bh=fV8aoi2DHEkUOflzk8En5YGWI9Y5ABP/SqzTyJfH5gY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mh9tP7yRpAwYlSkWmfqdEpHpfQ2Hp85LlP1uG0/JVT33LLLDgXL4HKWw/HQjkU8zs2YQkskr+2JyGpSJdRYD08SSzdRvTrJfG8/LzqP3q+i1xZt18XhkaydydoKHzcaitfXXT/XDW2/iedjsJAjih41hCyIv/OP8vkI2kqWoKog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQ33eRue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96875C116B1;
-	Tue, 16 Jul 2024 15:43:44 +0000 (UTC)
+	 MIME-Version; b=bV5b9A3K9XTzjYmxxn2CWU7aABxf2JvQ+jlPDA5pjzTM9VsxUGGgxXLzkD4HEhaKRV7HI3f4ytek1zR0H76Y9AICKuqnN2KOutKv6VTMXgZeESDlclj0BoQILt95+Yyrzq/Q/davGSGWXP5AZ7lojbuHQuZxVf39GgD9P+BYd98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiiKJQ+2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E079C116B1;
+	Tue, 16 Jul 2024 15:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144625;
-	bh=V2d0QwK8famWjJVwxS3f8KEDuGD7I066VkSsuvG4Le4=;
+	s=korg; t=1721145018;
+	bh=fV8aoi2DHEkUOflzk8En5YGWI9Y5ABP/SqzTyJfH5gY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQ33eRuepzMnlEDqgjq3EPCPiH7MgWxZikwCV3efVaS2lvDa41VajCY7vqkCYh4Wf
-	 k1wwOGa/jZc/40GVJ+pMSJC1GX/rAwd+Fk3FXchl3DPQPVEak2gVFlnBTMoXOVRbAE
-	 SzYau0CZ2W2qmXfBqmjkxhsE5pt7Vz4o3RsOH+JE=
+	b=tiiKJQ+2DONFIV24NlpWLWBiLss1l14sjRoD5vt7nvcAmJhJ106Jatcb7uClRIIsH
+	 0kNnRHBk1ngyjmLPcSXdwx0HsLUbe9CyXJlPmwhzg4Y9pRrcSz6UP5kORQtAr0+JOz
+	 LhxswRF9pLuB8fjO5BP8g7iSyL8PUk5U9RyFIIms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Kundan Kumar <kundan.kumar@samsung.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 052/108] nvme: adjust multiples of NVME_CTRL_PAGE_SIZE in offset
-Date: Tue, 16 Jul 2024 17:31:07 +0200
-Message-ID: <20240716152747.986142597@linuxfoundation.org>
+	Slark Xiao <slark_xiao@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.9 072/143] USB: serial: option: add support for Foxconn T99W651
+Date: Tue, 16 Jul 2024 17:31:08 +0200
+Message-ID: <20240716152758.746841663@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kundan Kumar <kundan.kumar@samsung.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit 1bd293fcf3af84674e82ed022c049491f3768840 ]
+commit 3c841d54b63e4446383de3238399a3910e47d8e2 upstream.
 
-bio_vec start offset may be relatively large particularly when large
-folio gets added to the bio. A bigger offset will result in avoiding the
-single-segment mapping optimization and end up using expensive
-mempool_alloc further.
+T99W651 is a RNDIS based modem device. There are 3 serial ports
+need to be enumerated: Diag, NMEA and AT.
 
-Rather than using absolute value, adjust bv_offset by
-NVME_CTRL_PAGE_SIZE while checking if segment can be fitted into one/two
-PRP entries.
+Test evidence as below:
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e145 Rev=05.15
+S:  Manufacturer=QCOM
+S:  Product=SDXPINN-IDP _SN:93B562B2
+S:  SerialNumber=82e6fe26
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+I:  If#=0x1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+I:  If#=0x6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
 
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0&1: RNDIS, 2:AT, 3:NMEA, 4:DIAG, 5:QDSS, 6:ADB
+QDSS is not a serial port.
+
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 5242feda5471a..a7131f4752e28 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -844,7 +844,8 @@ static blk_status_t nvme_map_data(struct nvme_dev *dev, struct request *req,
- 		struct bio_vec bv = req_bvec(req);
- 
- 		if (!is_pci_p2pdma_page(bv.bv_page)) {
--			if (bv.bv_offset + bv.bv_len <= NVME_CTRL_PAGE_SIZE * 2)
-+			if ((bv.bv_offset & (NVME_CTRL_PAGE_SIZE - 1)) +
-+			     bv.bv_len <= NVME_CTRL_PAGE_SIZE * 2)
- 				return nvme_setup_prp_simple(dev, req,
- 							     &cmnd->rw, &bv);
- 
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2294,6 +2294,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
+ 	  .driver_info = RSVD(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
++	  .driver_info = RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
+ 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
 
 
 
