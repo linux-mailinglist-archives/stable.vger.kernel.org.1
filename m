@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-59707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5BD932B5E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 679F7932ACF
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:38:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08815281997
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DC111F24319
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2BF19A86F;
-	Tue, 16 Jul 2024 15:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DA319DF78;
+	Tue, 16 Jul 2024 15:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0WnTVN5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0n+nNOR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4A5F9E8;
-	Tue, 16 Jul 2024 15:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E0619DF52;
+	Tue, 16 Jul 2024 15:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144663; cv=none; b=c1cqEuWVMCHExWh2c8I6nDc5lpPzBNsViu0ClW7zpPk6h4mZhs32GEItLmv28gVQxo5+Fg3TM79PUnNF+OcFYn034N/+29aLIPCg71euXCUx4WLKG3tNS/7paVo/2QvweZxyeO8WRNmfP58bHVNA4SmH2eAVo6kNq77B4yoZWsw=
+	t=1721144298; cv=none; b=gcXFJof+2ObmsXpMXAzclNRAXON8E8VoVjFW0qoCIEcXstgii/UF0rB969QIje1XyEV1eFCob9aAXlHD6nutKlDGsH0Cs4pjy4ZhJrfs63vxKnrnHMIV+0MGxeddQFYJOMYj9ELQSP3lQZxoxZ7voSiHZ5wbVCn7iKku0b/bsGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144663; c=relaxed/simple;
-	bh=wyqES2wZKGzO1F5tTFviC6UOObjqfSviQ8sv3GF1654=;
+	s=arc-20240116; t=1721144298; c=relaxed/simple;
+	bh=gz7N2EmAt2kL8aIPrvpF7A7jeBQS1Z1canTxtibf+fI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2ptxIQ66ME4rc02y02Abq0uiS/q+ANh/35ew3zNzkE75k50Dlw0IuItajGZhpjOb8uoxGP2JVTw5x1G0Vs8BNlivZL1IlddcISxwsofSHB+6p7eOuJi3LFqG9rVJBWShRoM17oFIe+zKOgivKuCAFJnrF2LMaDzfSvwlI/xw0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0WnTVN5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E084DC116B1;
-	Tue, 16 Jul 2024 15:44:22 +0000 (UTC)
+	 MIME-Version; b=AxjicLSRGXI+giIUqUhIJAwRdkUgOaUuYDzCorcb0RroDfq6hwWRuOr/5GsRBqNTukv8oRgQjnAxJsmPIYgWB6PBkV9HxMawsmvrO4hW5fxkcvoUkxkw2cK3ZYfxZL0GcLJHC5XeGxGjp0pLZMSTTU9A31tjIIplaXfIoyRGJVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0n+nNOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF886C4AF11;
+	Tue, 16 Jul 2024 15:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144663;
-	bh=wyqES2wZKGzO1F5tTFviC6UOObjqfSviQ8sv3GF1654=;
+	s=korg; t=1721144298;
+	bh=gz7N2EmAt2kL8aIPrvpF7A7jeBQS1Z1canTxtibf+fI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0WnTVN5cjyC8cVo3KHkAxstVQDlvgQDBsE+484FQdLHE8RpXYnBO4P1uShE5vORpk
-	 eTcOAOVWtn7cdn995arFA/KhP17DTAmfk0FH/idHWp9qzE66X56ijJv4Zqlt32sLfS
-	 D2rwiXHJaAiOeD6YE6LgJmrNy+jnF2JEOyb7FzPY=
+	b=G0n+nNORPy+0j2GceIV4NZwAkanRSWAQl/sLntJGuD4UHqdj5Qocnr4SSJrsnKEuq
+	 th0IhS8mjg1fbMIaumFGwCc2FLzvAI37YvhtAVeAgpn2JXbJDpfmGmMiql+8DulEhw
+	 E2X00Lk1cMigfiBMw7FisOYeLT78lBdLUDqWDaLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Jan Kara <jack@suse.cz>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 034/108] nilfs2: fix inode number range checks
-Date: Tue, 16 Jul 2024 17:30:49 +0200
-Message-ID: <20240716152747.307408562@linuxfoundation.org>
+	Mike Marshall <hubcap@omnibond.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 18/78] orangefs: fix out-of-bounds fsid access
+Date: Tue, 16 Jul 2024 17:30:50 +0200
+Message-ID: <20240716152741.335087416@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Mike Marshall <hubcap@omnibond.com>
 
-commit e2fec219a36e0993642844be0f345513507031f4 upstream.
+[ Upstream commit 53e4efa470d5fc6a96662d2d3322cfc925818517 ]
 
-Patch series "nilfs2: fix potential issues related to reserved inodes".
+Arnd Bergmann sent a patch to fsdevel, he says:
 
-This series fixes one use-after-free issue reported by syzbot, caused by
-nilfs2's internal inode being exposed in the namespace on a corrupted
-filesystem, and a couple of flaws that cause problems if the starting
-number of non-reserved inodes written in the on-disk super block is
-intentionally (or corruptly) changed from its default value.
+"orangefs_statfs() copies two consecutive fields of the superblock into
+the statfs structure, which triggers a warning from the string fortification
+helpers"
 
+Jan Kara suggested an alternate way to do the patch to make it more readable.
 
-This patch (of 3):
+I ran both ideas through xfstests and both seem fine. This patch
+is based on Jan Kara's suggestion.
 
-In the current implementation of nilfs2, "nilfs->ns_first_ino", which
-gives the first non-reserved inode number, is read from the superblock,
-but its lower limit is not checked.
-
-As a result, if a number that overlaps with the inode number range of
-reserved inodes such as the root directory or metadata files is set in the
-super block parameter, the inode number test macros (NILFS_MDT_INODE and
-NILFS_VALID_INODE) will not function properly.
-
-In addition, these test macros use left bit-shift calculations using with
-the inode number as the shift count via the BIT macro, but the result of a
-shift calculation that exceeds the bit width of an integer is undefined in
-the C specification, so if "ns_first_ino" is set to a large value other
-than the default value NILFS_USER_INO (=11), the macros may potentially
-malfunction depending on the environment.
-
-Fix these issues by checking the lower bound of "nilfs->ns_first_ino" and
-by preventing bit shifts equal to or greater than the NILFS_USER_INO
-constant in the inode number test macros.
-
-Also, change the type of "ns_first_ino" from signed integer to unsigned
-integer to avoid the need for type casting in comparisons such as the
-lower bound check introduced this time.
-
-Link: https://lkml.kernel.org/r/20240623051135.4180-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20240623051135.4180-2-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/nilfs.h     |    5 +++--
- fs/nilfs2/the_nilfs.c |    6 ++++++
- fs/nilfs2/the_nilfs.h |    2 +-
- 3 files changed, 10 insertions(+), 3 deletions(-)
+ fs/orangefs/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/nilfs2/nilfs.h
-+++ b/fs/nilfs2/nilfs.h
-@@ -116,9 +116,10 @@ enum {
- #define NILFS_FIRST_INO(sb) (((struct the_nilfs *)sb->s_fs_info)->ns_first_ino)
+diff --git a/fs/orangefs/super.c b/fs/orangefs/super.c
+index 2f2e430461b21..b48aef43b51d5 100644
+--- a/fs/orangefs/super.c
++++ b/fs/orangefs/super.c
+@@ -200,7 +200,8 @@ static int orangefs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 		     (long)new_op->downcall.resp.statfs.files_avail);
  
- #define NILFS_MDT_INODE(sb, ino) \
--	((ino) < NILFS_FIRST_INO(sb) && (NILFS_MDT_INO_BITS & BIT(ino)))
-+	((ino) < NILFS_USER_INO && (NILFS_MDT_INO_BITS & BIT(ino)))
- #define NILFS_VALID_INODE(sb, ino) \
--	((ino) >= NILFS_FIRST_INO(sb) || (NILFS_SYS_INO_BITS & BIT(ino)))
-+	((ino) >= NILFS_FIRST_INO(sb) ||				\
-+	 ((ino) < NILFS_USER_INO && (NILFS_SYS_INO_BITS & BIT(ino))))
+ 	buf->f_type = sb->s_magic;
+-	memcpy(&buf->f_fsid, &ORANGEFS_SB(sb)->fs_id, sizeof(buf->f_fsid));
++	buf->f_fsid.val[0] = ORANGEFS_SB(sb)->fs_id;
++	buf->f_fsid.val[1] = ORANGEFS_SB(sb)->id;
+ 	buf->f_bsize = new_op->downcall.resp.statfs.block_size;
+ 	buf->f_namelen = ORANGEFS_NAME_MAX;
  
- /**
-  * struct nilfs_transaction_info: context information for synchronization
---- a/fs/nilfs2/the_nilfs.c
-+++ b/fs/nilfs2/the_nilfs.c
-@@ -452,6 +452,12 @@ static int nilfs_store_disk_layout(struc
- 	}
- 
- 	nilfs->ns_first_ino = le32_to_cpu(sbp->s_first_ino);
-+	if (nilfs->ns_first_ino < NILFS_USER_INO) {
-+		nilfs_err(nilfs->ns_sb,
-+			  "too small lower limit for non-reserved inode numbers: %u",
-+			  nilfs->ns_first_ino);
-+		return -EINVAL;
-+	}
- 
- 	nilfs->ns_blocks_per_segment = le32_to_cpu(sbp->s_blocks_per_segment);
- 	if (nilfs->ns_blocks_per_segment < NILFS_SEG_MIN_BLOCKS) {
---- a/fs/nilfs2/the_nilfs.h
-+++ b/fs/nilfs2/the_nilfs.h
-@@ -182,7 +182,7 @@ struct the_nilfs {
- 	unsigned long		ns_nrsvsegs;
- 	unsigned long		ns_first_data_block;
- 	int			ns_inode_size;
--	int			ns_first_ino;
-+	unsigned int		ns_first_ino;
- 	u32			ns_crc_seed;
- 
- 	/* /sys/fs/<nilfs>/<device> */
+-- 
+2.43.0
+
 
 
 
