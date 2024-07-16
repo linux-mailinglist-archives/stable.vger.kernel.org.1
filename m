@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-59846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7629932C15
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B8F932AD0
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E3721C231A4
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBB1F1F242B7
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D74819B59C;
-	Tue, 16 Jul 2024 15:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5751D53B;
+	Tue, 16 Jul 2024 15:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfpmInjd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bevRMyaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00B71A00D4;
-	Tue, 16 Jul 2024 15:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A5AB641;
+	Tue, 16 Jul 2024 15:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145085; cv=none; b=pUgcwBj/6JyZ2kypdBHEpOb9amd2oXFgMITxPhTLsf86K6Y60Y/1gJyRQf+2/HgDgQp/6KluRavMRJXV/s2qsOKoII4HEV4yh3edqNA619tJHLQbXx/wf2yXSsBtHLHYtJ60Fgjc/CCBumJtSv74oe8TFoulUFHM50dHeZx45tw=
+	t=1721144301; cv=none; b=aEKtpPBajsgBYt9gxPP0rH9u6p8XwVOs+2WOJzNk+JeEjfv5Cb2V6fHTyOyFMLA1kLcPYU0zwSVXxsDBei+lj5ZU5xOUEbj7HXeiPTCi4JHRMRN1IU6LmLiixulJn0VDp9wLoABPPXg3+7prfe0/IjcoRaB9f4SzbYHFCdh7ukI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145085; c=relaxed/simple;
-	bh=qZ256fIQKgDuWXUv7x4pWoshUkoN1lBOo83iRDX/W7o=;
+	s=arc-20240116; t=1721144301; c=relaxed/simple;
+	bh=KaPWowwe3v742xyx6tyEx3x3RwxGFLSc1t5bJK9c3/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vE9Ke1ibXFkWOE2HRDfYBm+r6HzvL3nK447OpnopjYckbsjyPuC/9QAPfkyxIC2LObtoxIYBuCh1jdqDBRmoXyuQfg1+5R/kWo623rPejfDy4qrwUKpZGSXJ/SG3S90UV922X8FnK2lK9xIFTEPa0DXN97k5N9BvUneKoVeEUt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfpmInjd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D18EC116B1;
-	Tue, 16 Jul 2024 15:51:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aHCtzDRsWlj9OvMGdkzWlVQlOAIQ/zYJme6xDh1z96F4oNoRytXtlE/B6oP1DLV0hhFQG1ab1Lf9fq4O3N4GlFEs8UmsmnPvopTBCkH96NpnUzKOmOh1r6fAf4wjZ1mMcACf1Q4x2IQHsgsYUWP191yhFd4XFoQEjZVGzYWK1+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bevRMyaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2242C116B1;
+	Tue, 16 Jul 2024 15:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145085;
-	bh=qZ256fIQKgDuWXUv7x4pWoshUkoN1lBOo83iRDX/W7o=;
+	s=korg; t=1721144301;
+	bh=KaPWowwe3v742xyx6tyEx3x3RwxGFLSc1t5bJK9c3/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yfpmInjdebhY6EceUvrfiwmyweQDtrU+U+tkCiaQST85fKvX6BhIY0WeuKbDV2G0E
-	 vLzD0+gF5YaVzHGMyLcunnFxV1pMsrKrcFrtl8thnZ+WKZv9UWO2MnXSk2Aa/3LegV
-	 0vpRGpMGONuRdOMsZ0DIvEnPOL4LK4HhZh/kXFSI=
+	b=bevRMyaHWFAZYIPC8DZOWj9VJIjj9EwuT11c+DnrjIbUdA26VNTsKuvhtHbWt6lBm
+	 ChuHmeMBKsyMOYrIFbxGViuDkvPxAwdYW+yFvTWkkS6Bf7tldx5TYMOTiPguvUphEz
+	 eyG1HVFPbVMKOnmhQY60Ts/kF6L4/RJMPqajETB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiran Kumar K <kirankumark@marvell.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jozef Hopko <jozef.hopko@altana.com>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Ajay Singh <ajay.kathat@microchip.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 063/143] octeontx2-af: fix issue with IPv6 ext match for RSS
+Subject: [PATCH 5.4 27/78] wifi: wilc1000: fix ies_len type in connect path
 Date: Tue, 16 Jul 2024 17:30:59 +0200
-Message-ID: <20240716152758.402438041@linuxfoundation.org>
+Message-ID: <20240716152741.688355566@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran Kumar K <kirankumark@marvell.com>
+From: Jozef Hopko <jozef.hopko@altana.com>
 
-[ Upstream commit e23ac1095b9eb8ac48f98c398d81d6ba062c9b5d ]
+[ Upstream commit 39ab8fff623053a50951b659e5f6b72343d7d78c ]
 
-While performing RSS based on IPv6, extension ltype
-is not being considered. This will be problem for
-fragmented packets or packets with extension header.
-Adding changes to match IPv6 ext header along with IPv6
-ltype.
+Commit 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
+made sure that the IEs data was manipulated under the relevant RCU section.
+Unfortunately, while doing so, the commit brought a faulty implicit cast
+from int to u8 on the ies_len variable, making the parsing fail to be
+performed correctly if the IEs block is larger than 255 bytes. This failure
+can be observed with Access Points appending a lot of IEs TLVs in their
+beacon frames (reproduced with a Pixel phone acting as an Access Point,
+which brough 273 bytes of IE data in my testing environment).
 
-Fixes: 41a7aa7b800d ("octeontx2-af: NIX Rx flowkey configuration for RSS")
-Signed-off-by: Kiran Kumar K <kirankumark@marvell.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix IEs parsing by removing this undesired implicit cast.
+
+Fixes: 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
+Signed-off-by: Jozef Hopko <jozef.hopko@altana.com>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Acked-by: Ajay Singh <ajay.kathat@microchip.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240701-wilc_fix_ies_data-v1-1-7486cbacf98a@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/staging/wilc1000/wilc_hif.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 00af8888e3291..19fe3ed5c0ee6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -3864,6 +3864,9 @@ static int get_flowkey_alg_idx(struct nix_hw *nix_hw, u32 flow_cfg)
- 	return -ERANGE;
- }
+diff --git a/drivers/staging/wilc1000/wilc_hif.c b/drivers/staging/wilc1000/wilc_hif.c
+index 22e02fd068b4d..7f54665c0a0f6 100644
+--- a/drivers/staging/wilc1000/wilc_hif.c
++++ b/drivers/staging/wilc1000/wilc_hif.c
+@@ -446,7 +446,8 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
+ 	struct ieee80211_p2p_noa_attr noa_attr;
+ 	const struct cfg80211_bss_ies *ies;
+ 	struct wilc_join_bss_param *param;
+-	u8 rates_len = 0, ies_len;
++	u8 rates_len = 0;
++	int ies_len;
+ 	int ret;
  
-+/* Mask to match ipv6(NPC_LT_LC_IP6) and ipv6 ext(NPC_LT_LC_IP6_EXT) */
-+#define NPC_LT_LC_IP6_MATCH_MSK ((~(NPC_LT_LC_IP6 ^ NPC_LT_LC_IP6_EXT)) & 0xf)
-+
- static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- {
- 	int idx, nr_field, key_off, field_marker, keyoff_marker;
-@@ -3990,7 +3993,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 					field->bytesm1 = 15; /* DIP,16 bytes */
- 				}
- 			}
--			field->ltype_mask = 0xF; /* Match only IPv6 */
-+			field->ltype_mask = NPC_LT_LC_IP6_MATCH_MSK;
- 			break;
- 		case NIX_FLOW_KEY_TYPE_TCP:
- 		case NIX_FLOW_KEY_TYPE_UDP:
+ 	param = kzalloc(sizeof(*param), GFP_KERNEL);
 -- 
 2.43.0
 
