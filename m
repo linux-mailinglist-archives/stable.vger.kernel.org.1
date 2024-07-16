@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-59934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16B0932C87
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32836932C04
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EBED1C2107D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BA3A1C20F58
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C821019DFB9;
-	Tue, 16 Jul 2024 15:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF6119B59C;
+	Tue, 16 Jul 2024 15:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NypBuW4a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqPBZ2tv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8598417A93F;
-	Tue, 16 Jul 2024 15:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6451DDCE;
+	Tue, 16 Jul 2024 15:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145351; cv=none; b=SWrSUjy2/Pqy4cVUIVjwYk8O935Be+vfP5L2kGQn6Aix59EYEcUye+4UwlXyi/a6Rpf3k8sKXqWM11kk0rUrzKlZex8I3us7IZ3yusMh2ZHoi03XMXxKvqzWU3HHNKT+3lzIMh1Ur8Zr3ZyewJZq5mw+nZbAJh65EE/f5Tljr6o=
+	t=1721145059; cv=none; b=FlPzaD7mgxa0y5IE+YvwlZrW79W65a3mmGog1WOWmyaoOQGfviAsg6DD10iv5IToKRjQC9+DOB9dMmU31ip27pAnpSgPN7Z5CSQck78E2oxmtB7bfGEmDQBg4+FYKwEzYwoYzR7Ceow+Q5SsLpiG3Pt6q+SrupGJP+TXRTFPLq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145351; c=relaxed/simple;
-	bh=v39x/fwQAmG4AFlPFbJD1bm5u9op7F8mVdsH0oqAke0=;
+	s=arc-20240116; t=1721145059; c=relaxed/simple;
+	bh=GRm/TN8vnbFZ1fwMxx8KrUkSIg4s1Nhe/Dj0L4QMyjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oHY+2DPp8bD4FwncL2+pK5nTNHBZdHlB8bbWOiW2PVbVRNQ8cOZgZGfIj6lymsyrbUoePwqsm4Ky0cQQugukpt5UNBnwFfv3PnQyIRLb5fGRS3E/duZopDfZ6JN3bW1et5ARA7xCeigKUYpajqedUc5iLr+MsvyL2hkqjfjDi54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NypBuW4a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7EEC116B1;
-	Tue, 16 Jul 2024 15:55:50 +0000 (UTC)
+	 MIME-Version; b=NjrcEE/8sZop0ilKGXvDme6RKMfZozbivnqo/nIgOjvDnMtlSGIDN8yJ4dqTECkO3uXUfVu9JcduFPBp2iANPv+wZ2gXZi/voTHo2Nyec1EUqhL0dhZDWDqkUY9riZM61vLR+CdfaLeNK2vmrnYGNUJDaD4EOASQQjJOqQZGHfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqPBZ2tv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5676C116B1;
+	Tue, 16 Jul 2024 15:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145351;
-	bh=v39x/fwQAmG4AFlPFbJD1bm5u9op7F8mVdsH0oqAke0=;
+	s=korg; t=1721145059;
+	bh=GRm/TN8vnbFZ1fwMxx8KrUkSIg4s1Nhe/Dj0L4QMyjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NypBuW4aVzuU670KET0NYvzqPsm/AG1dgHeHj6ILu5PiD9DbFXT/xnOZfpwMb6awx
-	 VOOVhPdxLSn4y4QKwhXTWK2Rd4upCKGFw6Qa23XZ5kiKVfoUx8dIm7m6eQ0EZosTvO
-	 VCvWtrcmOs2M4E2QQcaJrgQJnx7Y/qqlDq+hk7RE=
+	b=xqPBZ2tvlUaJtI6Hrhco2Z34uAWtqL/VmiCpSaw+o5ChP+d0/wpWmx5YWNYLpLsdJ
+	 +q/6YWTSGCytuWmN/kJoC/4jWciQk2flOtn3fS9va5E6kIMWguWsK1ce8o4CmK7EWx
+	 A/OzPmEe4t2fJR184k3kJgZ1rMHL3kITF6bf3mRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Light=20Hsieh=20 ?= <Light.Hsieh@mediatek.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Alexander Aring <aahringo@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 09/96] filelock: fix potential use-after-free in posix_lock_inode
+	Yunseong Kim <yskelg@gmail.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	stable@kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.9 084/143] s390/mm: Add NULL pointer check to crst_table_free() base_crst_free()
 Date: Tue, 16 Jul 2024 17:31:20 +0200
-Message-ID: <20240716152746.876907938@linuxfoundation.org>
+Message-ID: <20240716152759.206872946@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 1b3ec4f7c03d4b07bad70697d7e2f4088d2cfe92 ]
+commit b5efb63acf7bddaf20eacfcac654c25c446eabe8 upstream.
 
-Light Hsieh reported a KASAN UAF warning in trace_posix_lock_inode().
-The request pointer had been changed earlier to point to a lock entry
-that was added to the inode's list. However, before the tracepoint could
-fire, another task raced in and freed that lock.
+crst_table_free() used to work with NULL pointers before the conversion
+to ptdescs.  Since crst_table_free() can be called with a NULL pointer
+(error handling in crst_table_upgrade() add an explicit check.
 
-Fix this by moving the tracepoint inside the spinlock, which should
-ensure that this doesn't happen.
+Also add the same check to base_crst_free() for consistency reasons.
 
-Fixes: 74f6f5912693 ("locks: fix KASAN: use-after-free in trace_event_raw_event_filelock_lock")
-Link: https://lore.kernel.org/linux-fsdevel/724ffb0a2962e912ea62bb0515deadf39c325112.camel@kernel.org/
-Reported-by: Light Hsieh (謝明燈) <Light.Hsieh@mediatek.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/r/20240702-filelock-6-10-v1-1-96e766aadc98@kernel.org
-Reviewed-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In real life this should not happen, since order two GFP_KERNEL
+allocations will not fail, unless FAIL_PAGE_ALLOC is enabled and used.
+
+Reported-by: Yunseong Kim <yskelg@gmail.com>
+Fixes: 6326c26c1514 ("s390: convert various pgalloc functions to use ptdescs")
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: stable@kernel.org
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/locks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/mm/pgalloc.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/locks.c b/fs/locks.c
-index 7d0918b8fe5d6..c23bcfe9b0fdd 100644
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -1298,9 +1298,9 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
- 		locks_wake_up_blocks(left);
- 	}
-  out:
-+	trace_posix_lock_inode(inode, request, error);
- 	spin_unlock(&ctx->flc_lock);
- 	percpu_up_read(&file_rwsem);
--	trace_posix_lock_inode(inode, request, error);
- 	/*
- 	 * Free any unused locks.
- 	 */
--- 
-2.43.0
-
+--- a/arch/s390/mm/pgalloc.c
++++ b/arch/s390/mm/pgalloc.c
+@@ -55,6 +55,8 @@ unsigned long *crst_table_alloc(struct m
+ 
+ void crst_table_free(struct mm_struct *mm, unsigned long *table)
+ {
++	if (!table)
++		return;
+ 	pagetable_free(virt_to_ptdesc(table));
+ }
+ 
+@@ -262,6 +264,8 @@ static unsigned long *base_crst_alloc(un
+ 
+ static void base_crst_free(unsigned long *table)
+ {
++	if (!table)
++		return;
+ 	pagetable_free(virt_to_ptdesc(table));
+ }
+ 
 
 
 
