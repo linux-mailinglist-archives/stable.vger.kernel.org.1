@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-59830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B27D4932BFD
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97EF0932C83
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E41BF1C20DC9
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D16FB238CB
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBACC17C9E9;
-	Tue, 16 Jul 2024 15:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A7D19DF75;
+	Tue, 16 Jul 2024 15:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNB00FCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVMrxlhY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894CA1DDCE;
-	Tue, 16 Jul 2024 15:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B9819E7F7;
+	Tue, 16 Jul 2024 15:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145041; cv=none; b=MG4CcaxHnGgj07OXWvu/kANmBFW/82acqTnhR30vqdecYDwzqtP6AsXFtAXIhl7Ht+iDPQdUWVSzHy+owLWm5LrPok8z1xVyhxdOEU7qZXi0TIoVf4LJ5vpUeiQl+Mpa0QM3w/CVz86B2aWD55Bxvx93MU2bN9YxUwc9XrBFI0I=
+	t=1721145332; cv=none; b=Hm72vsOHOJjuk5VA7mQjDmJRfcwfUhCl7J3Y2jjg8a/6k+ncs0N/VA00nQ2/9DzQGEq3G6KFE9aOuTunmxifzwYK9yHNPveEm31BPO37Iv3LyVsRGU9tloNAhx2FnSmxN+sTD2mEHoXNSDgojMCiuEnI6Ik5M7cu5yWfKZOjVqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145041; c=relaxed/simple;
-	bh=8yCJzeFyyoRQ3EYeFUxNK3ewAeCtfJHdEYU/Bqaa414=;
+	s=arc-20240116; t=1721145332; c=relaxed/simple;
+	bh=KnG1VaZv2Fc8t4ESjUkozP2JsxGkfIF73+D9Z9aGZVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQb1oC2qqXQyF2LWNKWPs6CreG2V3XtGfZR21HXMW4NrZyKSjiG86SD0rE74jYNuJTNWcO5cdVVJjpiZMjimeUbWPVzp7/ZiGmPwdmVndKNmI40Y1trsb+xGhwHlRIRQIdBfoR33HdIeXlekAf2GbLD2SpImNuJSaNjKs/TJ5lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNB00FCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3A1C116B1;
-	Tue, 16 Jul 2024 15:50:40 +0000 (UTC)
+	 MIME-Version; b=dUQRirHkHNI5MOsQrGaDZVNXML9eLm0gV3EvDmLzZ0CMS6wXtj71XZLGFvMiMKRuwHPHt2CoiumRpOsU43knu3zw44w8Z4XI6VDgk46/rJB27hpv+pIT7Gh0m4Vm1lDDfgtp+ZmvLPVKNvwCQ1pVMeyfdA1R5bZ+WPLeDGnHlFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVMrxlhY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E88C116B1;
+	Tue, 16 Jul 2024 15:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145041;
-	bh=8yCJzeFyyoRQ3EYeFUxNK3ewAeCtfJHdEYU/Bqaa414=;
+	s=korg; t=1721145330;
+	bh=KnG1VaZv2Fc8t4ESjUkozP2JsxGkfIF73+D9Z9aGZVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNB00FCVAVvPX1KcX6YFGkNvvlOQyKrW8HAXEOtmHKv27iUSW7gym085hs4O7RCJg
-	 WLZZ2qFSJJ0klL7dzb97vtc2MUJO2BDELZuNqe10A0D89CuBEq35IdT9e721l0/1ex
-	 AWjMEavhC1iNpbApEE1vTlKyDmqwk/9Do8XuDkdg=
+	b=mVMrxlhYFUVIaJZAU+jhLUE3U4+YeSiki8pjZY0vPBfX1WDqcsezQ86JgfGnIimTk
+	 PYlxA9WXWmrGg6dOPTWtI0cu3BpYWH1N6EFD+wBlhG9Ym+ByMBTzH8WbznQ9jG8rmP
+	 XRyavTFCRupQmI5m4/dGqIgIhrcK4yXgQy1/79sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stephen Boyd <swboyd@chromium.org>
-Subject: [PATCH 6.9 078/143] usb: core: add missing of_node_put() in usb_of_has_devices_or_graph
+	Xin Yin <yinxin.x@bytedance.com>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 03/96] cachefiles: narrow the scope of triggering EPOLLIN events in ondemand mode
 Date: Tue, 16 Jul 2024 17:31:14 +0200
-Message-ID: <20240716152758.978208541@linuxfoundation.org>
+Message-ID: <20240716152746.651765928@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +65,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Jia Zhu <zhujia.zj@bytedance.com>
 
-commit c7a5403ea04320e08f2595baa940541a59a3856e upstream.
+[ Upstream commit b817e22b2e91257ace32a6768c3c003faeaa1c5c ]
 
-The for_each_child_of_node() macro requires an explicit call to
-of_node_put() on early exits to decrement the child refcount and avoid a
-memory leak.
-The child node is not required outsie the loop, and the resource must be
-released before the function returns.
+Don't trigger EPOLLIN when there are only reopening read requests in
+xarray.
 
-Add the missing of_node_put().
-
-Cc: stable@vger.kernel.org
-Fixes: 82e82130a78b ("usb: core: Set connect_type of ports based on DT node")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20240624-usb_core_of_memleak-v1-1-af6821c1a584@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Xin Yin <yinxin.x@bytedance.com>
+Signed-off-by: Jia Zhu <zhujia.zj@bytedance.com>
+Link: https://lore.kernel.org/r/20231120041422.75170-5-zhujia.zj@bytedance.com
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 12e009d60852 ("cachefiles: wait for ondemand_object_worker to finish when dropping object")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/of.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/cachefiles/daemon.c   | 14 ++++++++++++--
+ fs/cachefiles/internal.h | 12 ++++++++++++
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/core/of.c b/drivers/usb/core/of.c
-index f1a499ee482c..763e4122ed5b 100644
---- a/drivers/usb/core/of.c
-+++ b/drivers/usb/core/of.c
-@@ -84,9 +84,12 @@ static bool usb_of_has_devices_or_graph(const struct usb_device *hub)
- 	if (of_graph_is_present(np))
- 		return true;
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index b9945e4f697be..06cdf1a8a16f6 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -357,14 +357,24 @@ static __poll_t cachefiles_daemon_poll(struct file *file,
+ 					   struct poll_table_struct *poll)
+ {
+ 	struct cachefiles_cache *cache = file->private_data;
++	XA_STATE(xas, &cache->reqs, 0);
++	struct cachefiles_req *req;
+ 	__poll_t mask;
  
--	for_each_child_of_node(np, child)
--		if (of_property_present(child, "reg"))
-+	for_each_child_of_node(np, child) {
-+		if (of_property_present(child, "reg")) {
-+			of_node_put(child);
- 			return true;
+ 	poll_wait(file, &cache->daemon_pollwq, poll);
+ 	mask = 0;
+ 
+ 	if (cachefiles_in_ondemand_mode(cache)) {
+-		if (!xa_empty(&cache->reqs))
+-			mask |= EPOLLIN;
++		if (!xa_empty(&cache->reqs)) {
++			rcu_read_lock();
++			xas_for_each_marked(&xas, req, ULONG_MAX, CACHEFILES_REQ_NEW) {
++				if (!cachefiles_ondemand_is_reopening_read(req)) {
++					mask |= EPOLLIN;
++					break;
++				}
++			}
++			rcu_read_unlock();
 +		}
-+	}
- 
- 	return false;
+ 	} else {
+ 		if (test_bit(CACHEFILES_STATE_CHANGED, &cache->flags))
+ 			mask |= EPOLLIN;
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index 3eea52462fc87..e0eac16e4741c 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -335,6 +335,13 @@ cachefiles_ondemand_set_object_##_state(struct cachefiles_object *object) \
+ CACHEFILES_OBJECT_STATE_FUNCS(open, OPEN);
+ CACHEFILES_OBJECT_STATE_FUNCS(close, CLOSE);
+ CACHEFILES_OBJECT_STATE_FUNCS(reopening, REOPENING);
++
++static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
++{
++	return cachefiles_ondemand_object_is_reopening(req->object) &&
++			req->msg.opcode == CACHEFILES_OP_READ;
++}
++
+ #else
+ static inline ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 					char __user *_buffer, size_t buflen)
+@@ -365,6 +372,11 @@ static inline int cachefiles_ondemand_init_obj_info(struct cachefiles_object *ob
+ static inline void cachefiles_ondemand_deinit_obj_info(struct cachefiles_object *obj)
+ {
  }
++
++static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
++{
++	return false;
++}
+ #endif
+ 
+ /*
 -- 
-2.45.2
+2.43.0
 
 
 
