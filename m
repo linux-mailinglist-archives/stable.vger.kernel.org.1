@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-59921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C24932C6F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:55:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD778932D0F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C198F283C84
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:55:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19D141C23307
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB6619EEA4;
-	Tue, 16 Jul 2024 15:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F1919AD93;
+	Tue, 16 Jul 2024 16:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ul/8pEVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLEZVEOL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA81419E809;
-	Tue, 16 Jul 2024 15:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4430B136643;
+	Tue, 16 Jul 2024 16:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145313; cv=none; b=BUJ+exsZefU8TdDxRCl+++Y6FEqDn8N/Floh+lVhnh9t5+k0yr4LV5WyvHsSuEI8DjF7LQjuUKZ64DMzQfooLfk74dnt+aqMi2Cn4aE4PMXnckQD4Lsyjx8eviSvtfXiHY1sKS8Xvdj1L4gq6oEcfvT37U4hcclnabwl9tGpogg=
+	t=1721145637; cv=none; b=os5TCfVoFM41uh+z8d6LRV8ySjecXaVGkSpQ4lWfvbDWzDX3ArbL5WlFQTSwo8IyN85ofQI7Nwoiw4bU5s/BHk3lWiuNpERe4ECf/F7Z8PqKAGm1K7vkjIVjEEUuHK1SCs3MfkZcV1OUU3GJkPLLuJayO5yuAFCESmasghTAvwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145313; c=relaxed/simple;
-	bh=Xx2CmBkOEShO1IHg+Hrohe1D0YE4pqzvEB/847ABjRU=;
+	s=arc-20240116; t=1721145637; c=relaxed/simple;
+	bh=ZTqTV4C3hZ2i8CjQmAkemmzK4CX4JkutVYmWQp+j95E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aryMI6shiFdzU2SSqZ87Cr85veHqSxDRmHOYyf7Z8U972C7wKGDpYxRKYYarfqr1TUYB9zdavI+4dFdQG8/HeRTg+Iz3c/VK1L5qQ1M+sXuFFWmQrn3SAbX4JRGoMNTrmS9AZxJDpj2hLovENc8aGymlVYqJbHhydLg6pbcqHqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ul/8pEVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3B1C4AF0B;
-	Tue, 16 Jul 2024 15:55:12 +0000 (UTC)
+	 MIME-Version; b=tRE0ZsLxMCaqO7Ss+MDb9rduGpJKWloWe2LhVibSBLNIMR7gl6C+s2bfCxfBm3t718Ah3MulYzYmD3Ao54UYRwXematfT37HxWcNCXiVoBX6ph98o3zBnshnDQt2BM3RxNe2wH6CYl0oEDtWlbiHy/nEoO0WlRi+XVeNz8cXbBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLEZVEOL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEEAC116B1;
+	Tue, 16 Jul 2024 16:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145312;
-	bh=Xx2CmBkOEShO1IHg+Hrohe1D0YE4pqzvEB/847ABjRU=;
+	s=korg; t=1721145637;
+	bh=ZTqTV4C3hZ2i8CjQmAkemmzK4CX4JkutVYmWQp+j95E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ul/8pEVuQ4XnX9rO6rtNytDYBNAqhyYX3Mbq1RiR2E/65dd8Cx4NHM1g4kyPmgcUL
-	 MkR4bypn/86BzE9UQu2s+71cjIm40KO6gK4EreOm/ufK1u23fKIuY1EiMCRYxb2yi0
-	 YbJkaCfDWjoVZ/tKVddyPvVOT9+mnQyeSGQtOMY0=
+	b=BLEZVEOLeMgocZ+GWKOt4Cfk1b8mo0/aA0pEFrhy9Batuo151qDYiKNzNP24swZnS
+	 BcmQReQhBGEVFmfN3zu3biQ4SgBMfAOQUB5nLnRrOH61n7WEN9OyX7d6puzhIGqmZF
+	 2iOoaoii+J55uz9n7HIFqsVuvanak+unKvTBDp78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Hui Lee <jianhui.lee@canonical.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	Gerald Yang <gerald.yang@canonical.com>,
+	Chengen Du <chengen.du@canonical.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 24/96] net: ethernet: mtk-star-emac: set mac_managed_pm when probing
-Date: Tue, 16 Jul 2024 17:31:35 +0200
-Message-ID: <20240716152747.445256689@linuxfoundation.org>
+Subject: [PATCH 6.6 034/121] net/sched: Fix UAF when resolving a clash
+Date: Tue, 16 Jul 2024 17:31:36 +0200
+Message-ID: <20240716152752.635784117@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Hui Lee <jianhui.lee@canonical.com>
+From: Chengen Du <chengen.du@canonical.com>
 
-[ Upstream commit 8c6790b5c25dfac11b589cc37346bcf9e23ad468 ]
+[ Upstream commit 26488172b0292bed837b95a006a3f3431d1898c3 ]
 
-The below commit introduced a warning message when phy state is not in
-the states: PHY_HALTED, PHY_READY, and PHY_UP.
-commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+KASAN reports the following UAF:
 
-mtk-star-emac doesn't need mdiobus suspend/resume. To fix the warning
-message during resume, indicate the phy resume/suspend is managed by the
-mac when probing.
+ BUG: KASAN: slab-use-after-free in tcf_ct_flow_table_process_conn+0x12b/0x380 [act_ct]
+ Read of size 1 at addr ffff888c07603600 by task handler130/6469
 
-Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
-Signed-off-by: Jian Hui Lee <jianhui.lee@canonical.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20240708065210.4178980-1-jianhui.lee@canonical.com
+ Call Trace:
+  <IRQ>
+  dump_stack_lvl+0x48/0x70
+  print_address_description.constprop.0+0x33/0x3d0
+  print_report+0xc0/0x2b0
+  kasan_report+0xd0/0x120
+  __asan_load1+0x6c/0x80
+  tcf_ct_flow_table_process_conn+0x12b/0x380 [act_ct]
+  tcf_ct_act+0x886/0x1350 [act_ct]
+  tcf_action_exec+0xf8/0x1f0
+  fl_classify+0x355/0x360 [cls_flower]
+  __tcf_classify+0x1fd/0x330
+  tcf_classify+0x21c/0x3c0
+  sch_handle_ingress.constprop.0+0x2c5/0x500
+  __netif_receive_skb_core.constprop.0+0xb25/0x1510
+  __netif_receive_skb_list_core+0x220/0x4c0
+  netif_receive_skb_list_internal+0x446/0x620
+  napi_complete_done+0x157/0x3d0
+  gro_cell_poll+0xcf/0x100
+  __napi_poll+0x65/0x310
+  net_rx_action+0x30c/0x5c0
+  __do_softirq+0x14f/0x491
+  __irq_exit_rcu+0x82/0xc0
+  irq_exit_rcu+0xe/0x20
+  common_interrupt+0xa1/0xb0
+  </IRQ>
+  <TASK>
+  asm_common_interrupt+0x27/0x40
+
+ Allocated by task 6469:
+  kasan_save_stack+0x38/0x70
+  kasan_set_track+0x25/0x40
+  kasan_save_alloc_info+0x1e/0x40
+  __kasan_krealloc+0x133/0x190
+  krealloc+0xaa/0x130
+  nf_ct_ext_add+0xed/0x230 [nf_conntrack]
+  tcf_ct_act+0x1095/0x1350 [act_ct]
+  tcf_action_exec+0xf8/0x1f0
+  fl_classify+0x355/0x360 [cls_flower]
+  __tcf_classify+0x1fd/0x330
+  tcf_classify+0x21c/0x3c0
+  sch_handle_ingress.constprop.0+0x2c5/0x500
+  __netif_receive_skb_core.constprop.0+0xb25/0x1510
+  __netif_receive_skb_list_core+0x220/0x4c0
+  netif_receive_skb_list_internal+0x446/0x620
+  napi_complete_done+0x157/0x3d0
+  gro_cell_poll+0xcf/0x100
+  __napi_poll+0x65/0x310
+  net_rx_action+0x30c/0x5c0
+  __do_softirq+0x14f/0x491
+
+ Freed by task 6469:
+  kasan_save_stack+0x38/0x70
+  kasan_set_track+0x25/0x40
+  kasan_save_free_info+0x2b/0x60
+  ____kasan_slab_free+0x180/0x1f0
+  __kasan_slab_free+0x12/0x30
+  slab_free_freelist_hook+0xd2/0x1a0
+  __kmem_cache_free+0x1a2/0x2f0
+  kfree+0x78/0x120
+  nf_conntrack_free+0x74/0x130 [nf_conntrack]
+  nf_ct_destroy+0xb2/0x140 [nf_conntrack]
+  __nf_ct_resolve_clash+0x529/0x5d0 [nf_conntrack]
+  nf_ct_resolve_clash+0xf6/0x490 [nf_conntrack]
+  __nf_conntrack_confirm+0x2c6/0x770 [nf_conntrack]
+  tcf_ct_act+0x12ad/0x1350 [act_ct]
+  tcf_action_exec+0xf8/0x1f0
+  fl_classify+0x355/0x360 [cls_flower]
+  __tcf_classify+0x1fd/0x330
+  tcf_classify+0x21c/0x3c0
+  sch_handle_ingress.constprop.0+0x2c5/0x500
+  __netif_receive_skb_core.constprop.0+0xb25/0x1510
+  __netif_receive_skb_list_core+0x220/0x4c0
+  netif_receive_skb_list_internal+0x446/0x620
+  napi_complete_done+0x157/0x3d0
+  gro_cell_poll+0xcf/0x100
+  __napi_poll+0x65/0x310
+  net_rx_action+0x30c/0x5c0
+  __do_softirq+0x14f/0x491
+
+The ct may be dropped if a clash has been resolved but is still passed to
+the tcf_ct_flow_table_process_conn function for further usage. This issue
+can be fixed by retrieving ct from skb again after confirming conntrack.
+
+Fixes: 0cc254e5aa37 ("net/sched: act_ct: Offload connections with commit action")
+Co-developed-by: Gerald Yang <gerald.yang@canonical.com>
+Signed-off-by: Gerald Yang <gerald.yang@canonical.com>
+Signed-off-by: Chengen Du <chengen.du@canonical.com>
+Link: https://patch.msgid.link/20240710053747.13223-1-chengen.du@canonical.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_star_emac.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/sched/act_ct.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-index 7050351250b7a..ad27749c0931c 100644
---- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
-+++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-@@ -1531,6 +1531,7 @@ static int mtk_star_probe(struct platform_device *pdev)
- {
- 	struct device_node *of_node;
- 	struct mtk_star_priv *priv;
-+	struct phy_device *phydev;
- 	struct net_device *ndev;
- 	struct device *dev;
- 	void __iomem *base;
-@@ -1656,6 +1657,12 @@ static int mtk_star_probe(struct platform_device *pdev)
- 	netif_napi_add(ndev, &priv->rx_napi, mtk_star_rx_poll);
- 	netif_napi_add_tx(ndev, &priv->tx_napi, mtk_star_tx_poll);
- 
-+	phydev = of_phy_find_device(priv->phy_node);
-+	if (phydev) {
-+		phydev->mac_managed_pm = true;
-+		put_device(&phydev->mdio.dev);
-+	}
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 1bd86868726bf..3ac19516ed803 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -1073,6 +1073,14 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
+ 		 */
+ 		if (nf_conntrack_confirm(skb) != NF_ACCEPT)
+ 			goto drop;
 +
- 	return devm_register_netdev(dev, ndev);
- }
++		/* The ct may be dropped if a clash has been resolved,
++		 * so it's necessary to retrieve it from skb again to
++		 * prevent UAF.
++		 */
++		ct = nf_ct_get(skb, &ctinfo);
++		if (!ct)
++			skip_add = true;
+ 	}
  
+ 	if (!skip_add)
 -- 
 2.43.0
 
