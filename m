@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-59601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F352932ADE
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81015932B54
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B2B3282688
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B6B01F2151D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2579D1DFF7;
-	Tue, 16 Jul 2024 15:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7604F19A86F;
+	Tue, 16 Jul 2024 15:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KY5o2tDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hE1yuYN8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D445FB641;
-	Tue, 16 Jul 2024 15:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335251DDF5;
+	Tue, 16 Jul 2024 15:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144339; cv=none; b=LOkjfsl8kOAp5D3ml9eEs2yoG1unTLKHA+l4j/J1EIRvHRJWc9+CzqtrnOvXCmribjTE0OU1fJQ4kBWCeu16ASa94+ya/KQqPXr8m2o5kOC4m5M7NtbSoR5KaphpjXCxPS4eYYMGOGycjM91hGaspF0boJB3UWU2YdEZhR25dkA=
+	t=1721144637; cv=none; b=RblZTBVp0dLJykM4aQBJBXTsWBjlLHPDKXHx6OHUCXFwq+q75owrYXVDU5PeA3fHHHQBHx43FHzAqRacMIkDaYmLUIUgSs31vJR2er2q2AvkEXXs9szwVfAu7a9jZXBi6V1Z90z34+NRIx1nDdEdPio6fdFtbmGJLAerEBsPAdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144339; c=relaxed/simple;
-	bh=Zyc1bc/1aCug2rUGEDBNnJ1Gl7naFEEYS6jfEKzw7tk=;
+	s=arc-20240116; t=1721144637; c=relaxed/simple;
+	bh=Vh4HTRfSNh9uEHb7xF6j47FpxSslNLvOe8l8TpHt8l8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BaYhp8h6cmfdn/ulBW0XngcDc7rhBjU7owDYCIjYqRE2fDfNlDtM4pxH4XplRC1UxMdCmzE3fOBBlI1dxelWnvifcB9TzefiIHoHnWJrHsW0hB/iPgL94yedSf9uajtIQQQoobk1ftFlvcmzl1GcjZmDZWRfqNCsScK6PZLxi9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KY5o2tDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5EDC116B1;
-	Tue, 16 Jul 2024 15:38:59 +0000 (UTC)
+	 MIME-Version; b=myIPXgI3WwGYh1LMdtNlPuzzNcz0G3LFs+VeXHfsqa8JGmEepvoODeByUcMTEXSB56GMMhzzNOFess/wjxPgYr0aXzXlj9VqbElVVx4qRoZjVieqcRict8zAyfsqyL2BH1optn0jmwllgK39eAs8jHypGm9/OdlqG5OICA2ogMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hE1yuYN8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AD3C4AF0B;
+	Tue, 16 Jul 2024 15:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144339;
-	bh=Zyc1bc/1aCug2rUGEDBNnJ1Gl7naFEEYS6jfEKzw7tk=;
+	s=korg; t=1721144636;
+	bh=Vh4HTRfSNh9uEHb7xF6j47FpxSslNLvOe8l8TpHt8l8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KY5o2tDJ2vSUnvQ2Hfi8Xd197t7U3axttLtkB9of5tMWOnGUSwb+zcCAZwL/NRcEZ
-	 PRSCzq3FytkVkzGF5+rl37DuZdQpIFOqgo349FQvFR3yX/u6sBZM31fKiRQ83jAoMI
-	 Wp5lE2EQuxYegKjP7THUXgbvgOohv8M9k4N+U+yA=
+	b=hE1yuYN867/lfcOS7stQOTgdYzE2shbb58GN6t4NAKHFNS+WKvQxRJjwIMVp9Z3ih
+	 lBopty2w44iPv+dUcgn1F/o1lJuZeryaPPa/nIwYrYCxco0LO46z5d83nI1nGWDQg+
+	 rz/2EzGbHgpfELLqzoazCS8JYjAMHZMVNl4XZUuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.4 39/78] drm/amdgpu/atomfirmware: silence UBSAN warning
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 056/108] kbuild: fix short log for AS in link-vmlinux.sh
 Date: Tue, 16 Jul 2024 17:31:11 +0200
-Message-ID: <20240716152742.147794627@linuxfoundation.org>
+Message-ID: <20240716152748.137404969@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit d0417264437a8fa05f894cabba5a26715b32d78e upstream.
+[ Upstream commit 3430f65d6130ccbc86f0ff45642eeb9e2032a600 ]
 
-This is a variable sized array.
+In convention, short logs print the output file, not the input file.
 
-Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/110420.html
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's change the suffix for 'AS' since it assembles *.S into *.o.
+
+[Before]
+
+  LD      .tmp_vmlinux.kallsyms1
+  NM      .tmp_vmlinux.kallsyms1.syms
+  KSYMS   .tmp_vmlinux.kallsyms1.S
+  AS      .tmp_vmlinux.kallsyms1.S
+  LD      .tmp_vmlinux.kallsyms2
+  NM      .tmp_vmlinux.kallsyms2.syms
+  KSYMS   .tmp_vmlinux.kallsyms2.S
+  AS      .tmp_vmlinux.kallsyms2.S
+  LD      vmlinux
+
+[After]
+
+  LD      .tmp_vmlinux.kallsyms1
+  NM      .tmp_vmlinux.kallsyms1.syms
+  KSYMS   .tmp_vmlinux.kallsyms1.S
+  AS      .tmp_vmlinux.kallsyms1.o
+  LD      .tmp_vmlinux.kallsyms2
+  NM      .tmp_vmlinux.kallsyms2.syms
+  KSYMS   .tmp_vmlinux.kallsyms2.S
+  AS      .tmp_vmlinux.kallsyms2.o
+  LD      vmlinux
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/include/atomfirmware.h |    2 +-
+ scripts/link-vmlinux.sh | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/include/atomfirmware.h
-+++ b/drivers/gpu/drm/amd/include/atomfirmware.h
-@@ -653,7 +653,7 @@ struct atom_gpio_pin_lut_v2_1
- {
-   struct  atom_common_table_header  table_header;
-   /*the real number of this included in the structure is calcualted by using the (whole structure size - the header size)/size of atom_gpio_pin_lut  */
--  struct  atom_gpio_pin_assignment  gpio_pin[8];
-+  struct  atom_gpio_pin_assignment  gpio_pin[];
- };
+diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+index 3a1ffd84eac28..bf534a323fddc 100755
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -213,7 +213,7 @@ kallsyms_step()
+ 	vmlinux_link ${kallsyms_vmlinux} "${kallsymso_prev}" ${btf_vmlinux_bin_o}
+ 	kallsyms ${kallsyms_vmlinux} ${kallsyms_S}
  
- 
+-	info AS ${kallsyms_S}
++	info AS ${kallsymso}
+ 	${CC} ${NOSTDINC_FLAGS} ${LINUXINCLUDE} ${KBUILD_CPPFLAGS} \
+ 	      ${KBUILD_AFLAGS} ${KBUILD_AFLAGS_KERNEL} \
+ 	      -c -o ${kallsymso} ${kallsyms_S}
+-- 
+2.43.0
+
 
 
 
