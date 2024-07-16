@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-59733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94EF932B7E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C66E0932C27
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3801F21C5E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8261B28551D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B9219DF88;
-	Tue, 16 Jul 2024 15:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053DF19E801;
+	Tue, 16 Jul 2024 15:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UI83XV5y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wy9PzH7i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281BE1EA73;
-	Tue, 16 Jul 2024 15:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC35119E809;
+	Tue, 16 Jul 2024 15:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144745; cv=none; b=QMCwX6E0wYbig1W4lN8V73hR479p6tDETAsMxeCeUoKSCUrvVUm3417/QvyW4H6q8onS80I3y87xm8iXYRDk1fYreIvHfrREdUPNLy9i1hgnn7qTgauSb5QMGV8moeuQQ3nEL8gC2vYjagbVcz2pY9pqs9zxvQUespkv2ySkMU8=
+	t=1721145135; cv=none; b=hnQAgLzGBdK3L0GRPTMe3v9+MXoBbpLBIhodLnSIEQZ7s2vN5SdeZhLo4Uch0kJIVsY4oubj3Qlsk/8DxzH6z64k16weZ7XKbeKdZNXTxQgi2VmlWmD4d8VVDUocDlPLsEM34NiivoxGVICAqJX3pxuZ46obFfr/fmwrLM1eeCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144745; c=relaxed/simple;
-	bh=wC5y0Meiq4i+V1iWacAnbCi3vAHN1Ka5uniCFeqF+eM=;
+	s=arc-20240116; t=1721145135; c=relaxed/simple;
+	bh=+8L2tPgsUiWKNnbY3CciScwm219vFT6/CD3SawtT4LY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ga/EeLlLrTkOwwk8v6twdc8klTUASLG5vvaePnmErkxw2YJjPT9xYXrQ1huXBJYycaP7W+1Xd/Il8jCL75aUf2aJSxAmbnE3idSIT4xkzXIt0UUDzfG1Cx01X3L40GvYaKVfaPokSUoLG3jzmyl9wiEkpH7Oy1/gdPPCGS06J3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UI83XV5y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE46C4AF0D;
-	Tue, 16 Jul 2024 15:45:44 +0000 (UTC)
+	 MIME-Version; b=rEqyqapp7X7hf+aNQotuaSJ3mSIMZCajyRqrvz7jBTFHWdFLk5kiqlC5w9eHQ3vnCZl01pXeTPT20KXqA8y/B9tNn3hWjvCSLZsFMvCIZ6rmmRaPiJfKCyGmK7T16XgwB2BZa68eOznSDqoy4YjhmfmgpFZhbe2CUjSQqmKlrEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wy9PzH7i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9AFC4AF0B;
+	Tue, 16 Jul 2024 15:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144745;
-	bh=wC5y0Meiq4i+V1iWacAnbCi3vAHN1Ka5uniCFeqF+eM=;
+	s=korg; t=1721145135;
+	bh=+8L2tPgsUiWKNnbY3CciScwm219vFT6/CD3SawtT4LY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UI83XV5y+Xue3Uhku+zPbm3MreeWvVQH5qNlUBBOlzAq5WmV2b+MXGsi6FVm0q/lI
-	 dGj7bNx9OtlXN4cA9qSHmDehXxOVZjY9jmypYCb/CONIpmPUElIJl6YCU5mcRB9/CB
-	 SpiT9eRacTxsxPx84YK6EfnoNijlxWhINr65T1ak=
+	b=wy9PzH7ioZtfLAW4EN8rjKK7JpbQR1CPvLoJXK6b5O8EneTVy+/WUyh2yf1mx0DmJ
+	 maE0zIGuTBqUHRKuF283lOFPrPYDc+X9Z9Zb8DcpLqcQE9wS5KNG1lsn7d/r3SuEWX
+	 f9LvYFqGPlB41WdPNVEOruUDCwZW44h9jJDuDD10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 091/108] wireguard: allowedips: avoid unaligned 64-bit memory accesses
+	Wentong Wu <wentong.wu@intel.com>,
+	Jason Chen <jason.z.chen@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.9 110/143] mei: vsc: Prevent timeout error with added delay post-firmware download
 Date: Tue, 16 Jul 2024 17:31:46 +0200
-Message-ID: <20240716152749.483525901@linuxfoundation.org>
+Message-ID: <20240716152800.208810062@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Wentong Wu <wentong.wu@intel.com>
 
-commit 948f991c62a4018fb81d85804eeab3029c6209f8 upstream.
+commit a9e8fe38195ae6f8e5b32907a17b397ff3ce3e48 upstream.
 
-On the parisc platform, the kernel issues kernel warnings because
-swap_endian() tries to load a 128-bit IPv6 address from an unaligned
-memory location:
+After completing the firmware download, the firmware requires some
+time to become functional. This change introduces additional sleep
+time before the first read operation to prevent a confusing timeout
+error in vsc_tp_xfer().
 
- Kernel: unaligned access to 0x55f4688c in wg_allowedips_insert_v6+0x2c/0x80 [wireguard] (iir 0xf3010df)
- Kernel: unaligned access to 0x55f46884 in wg_allowedips_insert_v6+0x38/0x80 [wireguard] (iir 0xf2010dc)
-
-Avoid such unaligned memory accesses by instead using the
-get_unaligned_be64() helper macro.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-[Jason: replace src[8] in original patch with src+8]
-Cc: stable@vger.kernel.org
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Link: https://patch.msgid.link/20240704154517.1572127-3-Jason@zx2c4.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
+Cc: stable@vger.kernel.org # for 6.8+
+Signed-off-by: Wentong Wu <wentong.wu@intel.com>
+Tested-by: Jason Chen <jason.z.chen@intel.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240625081047.4178494-3-wentong.wu@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireguard/allowedips.c |    4 ++--
+ drivers/misc/mei/platform-vsc.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireguard/allowedips.c
-+++ b/drivers/net/wireguard/allowedips.c
-@@ -15,8 +15,8 @@ static void swap_endian(u8 *dst, const u
- 	if (bits == 32) {
- 		*(u32 *)dst = be32_to_cpu(*(const __be32 *)src);
- 	} else if (bits == 128) {
--		((u64 *)dst)[0] = be64_to_cpu(((const __be64 *)src)[0]);
--		((u64 *)dst)[1] = be64_to_cpu(((const __be64 *)src)[1]);
-+		((u64 *)dst)[0] = get_unaligned_be64(src);
-+		((u64 *)dst)[1] = get_unaligned_be64(src + 8);
- 	}
- }
+--- a/drivers/misc/mei/platform-vsc.c
++++ b/drivers/misc/mei/platform-vsc.c
+@@ -28,8 +28,8 @@
+ 
+ #define MEI_VSC_MAX_MSG_SIZE		512
+ 
+-#define MEI_VSC_POLL_DELAY_US		(50 * USEC_PER_MSEC)
+-#define MEI_VSC_POLL_TIMEOUT_US		(200 * USEC_PER_MSEC)
++#define MEI_VSC_POLL_DELAY_US		(100 * USEC_PER_MSEC)
++#define MEI_VSC_POLL_TIMEOUT_US		(400 * USEC_PER_MSEC)
+ 
+ #define mei_dev_to_vsc_hw(dev)		((struct mei_vsc_hw *)((dev)->hw))
  
 
 
