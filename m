@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-59826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABBD7932BF9
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5BE932D07
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67DC2281E52
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B4801C220A8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF1019E7E2;
-	Tue, 16 Jul 2024 15:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0093119B59C;
+	Tue, 16 Jul 2024 16:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyQmhscY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNncZpZi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B6B1DA4D;
-	Tue, 16 Jul 2024 15:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD50D136643;
+	Tue, 16 Jul 2024 16:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145027; cv=none; b=SCQHuCYYf2Yc+oBgprzu6z+odDKmX87pGzxYjOKJHhvzduvcsUCKFZxpjyG3sgsHuG6gCuPBcfi93AOshCvj2+zF/AQPCrR7iTqYKpuCIFKXAtuHtcR/If2WuA8JSFE2aIrvMRhXAzdPuK2brSzS1yxCTVEjC4PlOaV41nKm8rg=
+	t=1721145616; cv=none; b=AGlMjCIVvsZnsHLR88EYn+q6vZTqLZ7L1K2nssUydlz1UZSvBAYCjqy43+UZ01r0Y6fdDQ43V+1GpGduvfyQ03dO80Eo+V5HclmmVqXknyshLc7sZpXztxe60/KtN3rEGdRLPI+wVTQnOeKUKrHfrvK6/A8Z3RmuZp/vnq7ZlDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145027; c=relaxed/simple;
-	bh=rvM+J7XcPa7eMAFu5bVwKN3K1aEOXXgKiWa2B4/yLOI=;
+	s=arc-20240116; t=1721145616; c=relaxed/simple;
+	bh=Zv34NrZp5fFTgdpCnEVHdvXpD/1s9S1QNswDYF9BaO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BtO0wABKX5pN9nXGnMyp/MuRaPFEoDlNVNBGTQO4MtiHLGxuMic/+LiavTWuIV7prJRkHBitd+zGuhFX06HOh0UMUdPSeYN4wumzyAsmQI+Kh6uZl3GDqFUZReIF2hfwFaofju7Hx1lp7DJ/R21oFSTLNbSxZUKMjeQ1bSOtZek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyQmhscY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EF8C4AF0B;
-	Tue, 16 Jul 2024 15:50:26 +0000 (UTC)
+	 MIME-Version; b=ews5fZ2M9oB6ISD4Mp7WNzTbHfcj5Ub4qma3ZN+Sx4IoZYihry0bvq3j5PDHM3C5Bl/GVvMdclcXzw6lrxHvnzVSWRnZdCaP4XP+GKn9zCfhorXxSeuURzwy2jwQDmT7bNKfmuMpaJY4fbWEpdg6NxPUhinfUgPcV3oV4TzfLDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNncZpZi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32425C4AF0B;
+	Tue, 16 Jul 2024 16:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145027;
-	bh=rvM+J7XcPa7eMAFu5bVwKN3K1aEOXXgKiWa2B4/yLOI=;
+	s=korg; t=1721145616;
+	bh=Zv34NrZp5fFTgdpCnEVHdvXpD/1s9S1QNswDYF9BaO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JyQmhscYKjmAGSJ8e4TRA8zV8IS00Y0okFgKR0c+tLQmNM3cq8hgLX58Ofk8m1K/q
-	 WdpTnz0CTf6tfj4ClB98jS+rfEu915Z2Mtbu7EELYmvtQqHMZ1x+9N+04nFDvTPlN2
-	 6uc/dx08anmmbQP2IpdUrxw5uqMaFwacsFw8n9RI=
+	b=NNncZpZiR62twAayvrelSGsYabApiZVfApiwSMKCz8bTmbghuuRN7g6+d8MC4uWFZ
+	 ssExithsySEhiYExwMFKAUmiga0vaA3DjoHZahP8zRPXGdDYi+glEBv8a6osmjLaKL
+	 a/yq48P2sReUKeTBaZBk8TqZRhJPDP6OUxCDHLOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Smirnov <d.smirnov@inbox.lv>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.9 075/143] USB: serial: mos7840: fix crash on resume
+	Hou Tao <houtao1@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 009/121] cachefiles: wait for ondemand_object_worker to finish when dropping object
 Date: Tue, 16 Jul 2024 17:31:11 +0200
-Message-ID: <20240716152758.862446342@linuxfoundation.org>
+Message-ID: <20240716152751.677258835@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Smirnov <d.smirnov@inbox.lv>
+From: Hou Tao <houtao1@huawei.com>
 
-commit c15a688e49987385baa8804bf65d570e362f8576 upstream.
+[ Upstream commit 12e009d60852f7bce0afc373ca0b320f14150418 ]
 
-Since commit c49cfa917025 ("USB: serial: use generic method if no
-alternative is provided in usb serial layer"), USB serial core calls the
-generic resume implementation when the driver has not provided one.
+When queuing ondemand_object_worker() to re-open the object,
+cachefiles_object is not pinned. The cachefiles_object may be freed when
+the pending read request is completed intentionally and the related
+erofs is umounted. If ondemand_object_worker() runs after the object is
+freed, it will incur use-after-free problem as shown below.
 
-This can trigger a crash on resume with mos7840 since support for
-multiple read URBs was added back in 2011. Specifically, both port read
-URBs are now submitted on resume for open ports, but the context pointer
-of the second URB is left set to the core rather than mos7840 port
-structure.
+process A  processs B  process C  process D
 
-Fix this by implementing dedicated suspend and resume functions for
-mos7840.
+cachefiles_ondemand_send_req()
+// send a read req X
+// wait for its completion
 
-Tested with Delock 87414 USB 2.0 to 4x serial adapter.
+           // close ondemand fd
+           cachefiles_ondemand_fd_release()
+           // set object as CLOSE
 
-Signed-off-by: Dmitry Smirnov <d.smirnov@inbox.lv>
-[ johan: analyse crash and rewrite commit message; set busy flag on
-         resume; drop bulk-in check; drop unnecessary usb_kill_urb() ]
-Fixes: d83b405383c9 ("USB: serial: add support for multiple read urbs")
-Cc: stable@vger.kernel.org	# 3.3
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+                       cachefiles_ondemand_daemon_read()
+                       // set object as REOPENING
+                       queue_work(fscache_wq, &info->ondemand_work)
+
+                                // close /dev/cachefiles
+                                cachefiles_daemon_release
+                                cachefiles_flush_reqs
+                                complete(&req->done)
+
+// read req X is completed
+// umount the erofs fs
+cachefiles_put_object()
+// object will be freed
+cachefiles_ondemand_deinit_obj_info()
+kmem_cache_free(object)
+                       // both info and object are freed
+                       ondemand_object_worker()
+
+When dropping an object, it is no longer necessary to reopen the object,
+so use cancel_work_sync() to cancel or wait for ondemand_object_worker()
+to finish.
+
+Fixes: 0a7e54c1959c ("cachefiles: resend an open request if the read request's object is closed")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240628062930.2467993-8-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/mos7840.c |   45 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+ fs/cachefiles/ondemand.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/serial/mos7840.c
-+++ b/drivers/usb/serial/mos7840.c
-@@ -1737,6 +1737,49 @@ static void mos7840_port_remove(struct u
- 	kfree(mos7840_port);
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index acaecfce8aaa9..1f6561814e702 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -661,6 +661,9 @@ void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
+ 		}
+ 	}
+ 	xa_unlock(&cache->reqs);
++
++	/* Wait for ondemand_object_worker() to finish to avoid UAF. */
++	cancel_work_sync(&object->ondemand->ondemand_work);
  }
  
-+static int mos7840_suspend(struct usb_serial *serial, pm_message_t message)
-+{
-+	struct moschip_port *mos7840_port;
-+	struct usb_serial_port *port;
-+	int i;
-+
-+	for (i = 0; i < serial->num_ports; ++i) {
-+		port = serial->port[i];
-+		if (!tty_port_initialized(&port->port))
-+			continue;
-+
-+		mos7840_port = usb_get_serial_port_data(port);
-+
-+		usb_kill_urb(mos7840_port->read_urb);
-+		mos7840_port->read_urb_busy = false;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mos7840_resume(struct usb_serial *serial)
-+{
-+	struct moschip_port *mos7840_port;
-+	struct usb_serial_port *port;
-+	int res;
-+	int i;
-+
-+	for (i = 0; i < serial->num_ports; ++i) {
-+		port = serial->port[i];
-+		if (!tty_port_initialized(&port->port))
-+			continue;
-+
-+		mos7840_port = usb_get_serial_port_data(port);
-+
-+		mos7840_port->read_urb_busy = true;
-+		res = usb_submit_urb(mos7840_port->read_urb, GFP_NOIO);
-+		if (res)
-+			mos7840_port->read_urb_busy = false;
-+	}
-+
-+	return 0;
-+}
-+
- static struct usb_serial_driver moschip7840_4port_device = {
- 	.driver = {
- 		   .owner = THIS_MODULE,
-@@ -1764,6 +1807,8 @@ static struct usb_serial_driver moschip7
- 	.port_probe = mos7840_port_probe,
- 	.port_remove = mos7840_port_remove,
- 	.read_bulk_callback = mos7840_bulk_in_callback,
-+	.suspend = mos7840_suspend,
-+	.resume = mos7840_resume,
- };
- 
- static struct usb_serial_driver * const serial_drivers[] = {
+ int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
+-- 
+2.43.0
+
 
 
 
