@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-59645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC4B932B12
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B4A932B67
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4552F1F21A48
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CFD7282497
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B286F136643;
-	Tue, 16 Jul 2024 15:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516F61448ED;
+	Tue, 16 Jul 2024 15:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAMWkqaJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+Y+OKg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691C9F9E8;
-	Tue, 16 Jul 2024 15:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEE5F9E8;
+	Tue, 16 Jul 2024 15:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144473; cv=none; b=tk9p58EcG+KZbEFhZpQJt3/Jdj1f/T11ON0NtUyqQL18jt0cDtemUNhr89yeNzFJJVqn5Oz1miq+RfZvtJlTziisTIKFqAJRfsroLND31u7roMi4qOTZFyzDWSvuPlK+zgh4E6wu4SEGkg7TkNkF+iDkxrIp94FdsxD/tH638ms=
+	t=1721144687; cv=none; b=HaCy7b/T41yhfjILuZ1UgJtv3SAx6IZwrrGmtLQ0SHNY8Rw4KkHv/ILgx8bCBzr4h7fhAY93Pt23pYKF0B6IGX9IHYxFiSXWiNGqut0lTNUGN6Z7KkQmuXLwunZ3lBi2ttQWYyNFJLv0G/pMjv2fsZepxcTeKglbkNaoFkzUSLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144473; c=relaxed/simple;
-	bh=v90KkQGJtlr95uHfv9m1WY0mUgQPOcbp5wOKusnGMuY=;
+	s=arc-20240116; t=1721144687; c=relaxed/simple;
+	bh=McBscCc1Q43AkFtllQMjQkWO5ya1pz8HfqiqT53eKaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F1udrzu/ubFPgcpH4MxjGKMCdMKSrnq+oGGWRj+SHxKOt81G6DqxenhYFW8Yd77yJjXgpL/aPtup2nlPJXBVJh8bcfYXLJpra55xJmvrE/3jgSk50eNISOiutniUZytiysX7J9hNDB20wtA+oXNmGY/xVPUzhdxZvuPP2QeoW3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAMWkqaJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3394C116B1;
-	Tue, 16 Jul 2024 15:41:12 +0000 (UTC)
+	 MIME-Version; b=KjSywHxKnVHvBi6OyvPMUwqfowJrHmUrIylJcUg6a80XfMudF30GH1W6TY6t1ov03owFOw+lKxGVyxqk/nt1O/lP7JNevVR9dOvfjq5bBqZFGmVkpsc/zEgyxD/7whaPGaDDUglSDoNSqum0rvu6UvsgVsomUy/Mjzq2GCSUObc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+Y+OKg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EECC116B1;
+	Tue, 16 Jul 2024 15:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144473;
-	bh=v90KkQGJtlr95uHfv9m1WY0mUgQPOcbp5wOKusnGMuY=;
+	s=korg; t=1721144686;
+	bh=McBscCc1Q43AkFtllQMjQkWO5ya1pz8HfqiqT53eKaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XAMWkqaJhBF+QpXyx3oxieMSMQlp3ZWXCemYg9cF+SBCY2hmV4BnK0abJLY5AZMTw
-	 2rQkFI3CarMY8uWxtzjGwEa1Fls/thgZL9VoIL4ONoOeZKRLUmpKuzSyLsbCmgiFb6
-	 HEdFTZQRVme0bJ5r9oO5voBzxFDodr2+F8SpTRX0=
+	b=e+Y+OKg6yU0zNmiWve7+7MF8zAhXoZlPh9caexX1lO9APhCEBG+GUpcqHfksNI8Pz
+	 gKrfQc+wV8QwL5wNpom/pt73+18sDUoMfbzatUBpCHLpu9ErvEfAZGnERRH9XtO+Q5
+	 xs5jE3F58hRpItolxXvHvN1rd40rHKrH/HT1BdWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 57/78] ARM: davinci: Convert comma to semicolon
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jon Maxwell <jmaxwell37@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 074/108] tcp: avoid too many retransmit packets
 Date: Tue, 16 Jul 2024 17:31:29 +0200
-Message-ID: <20240716152742.849102431@linuxfoundation.org>
+Message-ID: <20240716152748.822887202@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit acc3815db1a02d654fbc19726ceaadca0d7dd81c ]
+commit 97a9063518f198ec0adb2ecb89789de342bb8283 upstream.
 
-Replace a comma between expression statements by a semicolon.
+If a TCP socket is using TCP_USER_TIMEOUT, and the other peer
+retracted its window to zero, tcp_retransmit_timer() can
+retransmit a packet every two jiffies (2 ms for HZ=1000),
+for about 4 minutes after TCP_USER_TIMEOUT has 'expired'.
 
-Fixes: efc1bb8a6fd5 ("davinci: add power management support")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The fix is to make sure tcp_rtx_probe0_timed_out() takes
+icsk->icsk_user_timeout into account.
+
+Before blamed commit, the socket would not timeout after
+icsk->icsk_user_timeout, but would use standard exponential
+backoff for the retransmits.
+
+Also worth noting that before commit e89688e3e978 ("net: tcp:
+fix unexcepted socket die when snd_wnd is 0"), the issue
+would last 2 minutes instead of 4.
+
+Fixes: b701a99e431d ("tcp: Add tcp_clamp_rto_to_user_timeout() helper to improve accuracy")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Jon Maxwell <jmaxwell37@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240710001402.2758273-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-davinci/pm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_timer.c |   22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/pm.c b/arch/arm/mach-davinci/pm.c
-index e33c6bcb4598c..bae0a2e07d866 100644
---- a/arch/arm/mach-davinci/pm.c
-+++ b/arch/arm/mach-davinci/pm.c
-@@ -62,7 +62,7 @@ static void davinci_pm_suspend(void)
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -440,22 +440,34 @@ static void tcp_fastopen_synack_timer(st
+ static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
+ 				     const struct sk_buff *skb)
+ {
++	const struct inet_connection_sock *icsk = inet_csk(sk);
++	u32 user_timeout = READ_ONCE(icsk->icsk_user_timeout);
+ 	const struct tcp_sock *tp = tcp_sk(sk);
+-	const int timeout = TCP_RTO_MAX * 2;
++	int timeout = TCP_RTO_MAX * 2;
+ 	u32 rtx_delta;
+ 	s32 rcv_delta;
  
- 	/* Configure sleep count in deep sleep register */
- 	val = __raw_readl(pm_config.deepsleep_reg);
--	val &= ~DEEPSLEEP_SLEEPCOUNT_MASK,
-+	val &= ~DEEPSLEEP_SLEEPCOUNT_MASK;
- 	val |= pm_config.sleepcount;
- 	__raw_writel(val, pm_config.deepsleep_reg);
++	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
++			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
++
++	if (user_timeout) {
++		/* If user application specified a TCP_USER_TIMEOUT,
++		 * it does not want win 0 packets to 'reset the timer'
++		 * while retransmits are not making progress.
++		 */
++		if (rtx_delta > user_timeout)
++			return true;
++		timeout = min_t(u32, timeout, msecs_to_jiffies(user_timeout));
++	}
++
+ 	/* Note: timer interrupt might have been delayed by at least one jiffy,
+ 	 * and tp->rcv_tstamp might very well have been written recently.
+ 	 * rcv_delta can thus be negative.
+ 	 */
+-	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
++	rcv_delta = icsk->icsk_timeout - tp->rcv_tstamp;
+ 	if (rcv_delta <= timeout)
+ 		return false;
  
--- 
-2.43.0
-
+-	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
+-			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
+-
+ 	return rtx_delta > timeout;
+ }
+ 
 
 
 
