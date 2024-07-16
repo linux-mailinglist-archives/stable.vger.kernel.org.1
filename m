@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-59715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2B4A932B67
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC8F932C31
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CFD7282497
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECC70284CDE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516F61448ED;
-	Tue, 16 Jul 2024 15:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572DE17C9E9;
+	Tue, 16 Jul 2024 15:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+Y+OKg6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTKymMzE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEE5F9E8;
-	Tue, 16 Jul 2024 15:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F5B1DDCE;
+	Tue, 16 Jul 2024 15:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144687; cv=none; b=HaCy7b/T41yhfjILuZ1UgJtv3SAx6IZwrrGmtLQ0SHNY8Rw4KkHv/ILgx8bCBzr4h7fhAY93Pt23pYKF0B6IGX9IHYxFiSXWiNGqut0lTNUGN6Z7KkQmuXLwunZ3lBi2ttQWYyNFJLv0G/pMjv2fsZepxcTeKglbkNaoFkzUSLk=
+	t=1721145165; cv=none; b=c2P+jdwR9s1EVJpxUJeNzmZN9LtsPaIAnIDsWdan7rJuzdG3RRQNAzA8QJTUzDfSg5WC6Zd9dVFvonkZbXhsm39IZZ4VIPTeYlg44wEU/4sj12wlY3SboDEwnC78F67OENN+IrnTu9/PUkv8YQ2WzkpxVu1gTlxcQ2R19bAyol0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144687; c=relaxed/simple;
-	bh=McBscCc1Q43AkFtllQMjQkWO5ya1pz8HfqiqT53eKaE=;
+	s=arc-20240116; t=1721145165; c=relaxed/simple;
+	bh=+eYoPk/MwCSCBT2nMaLlJYrbDbPAIskh5Vw2TrNrmYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjSywHxKnVHvBi6OyvPMUwqfowJrHmUrIylJcUg6a80XfMudF30GH1W6TY6t1ov03owFOw+lKxGVyxqk/nt1O/lP7JNevVR9dOvfjq5bBqZFGmVkpsc/zEgyxD/7whaPGaDDUglSDoNSqum0rvu6UvsgVsomUy/Mjzq2GCSUObc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+Y+OKg6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EECC116B1;
-	Tue, 16 Jul 2024 15:44:46 +0000 (UTC)
+	 MIME-Version; b=qP1ryebo8jkoyqc/UIziL8+Ei11vgSxOJhCot/ZAT1iTPo9w3ZTiJRPmIllyP0VCmK8zAobDJMGEifTukxdsZELSv0VBeN9zBp/+AdZC/NbTGIFEJULN17Am24Z7kKR0d5j8CXVvcq1t0Wc6Xf5gcHKOnTRPeHx4PG3r8Gs4dS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTKymMzE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9103AC116B1;
+	Tue, 16 Jul 2024 15:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144686;
-	bh=McBscCc1Q43AkFtllQMjQkWO5ya1pz8HfqiqT53eKaE=;
+	s=korg; t=1721145165;
+	bh=+eYoPk/MwCSCBT2nMaLlJYrbDbPAIskh5Vw2TrNrmYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+Y+OKg6yU0zNmiWve7+7MF8zAhXoZlPh9caexX1lO9APhCEBG+GUpcqHfksNI8Pz
-	 gKrfQc+wV8QwL5wNpom/pt73+18sDUoMfbzatUBpCHLpu9ErvEfAZGnERRH9XtO+Q5
-	 xs5jE3F58hRpItolxXvHvN1rd40rHKrH/HT1BdWg=
+	b=QTKymMzEKatVHBMSYVTX9Ew6tTO2obXaPH/Y3o6lTCyUSO/hjGyK/tTHXFmxC+LhD
+	 choE16hYCxPSlyLM/6+W7mRa8jmEXmApVNwgfVGRUEjimcOworiTq8SPR4+H2vfe9g
+	 ca2CIp25PUXU+CJVzinsuMBDh+LaY6Kr9ZCy3C/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jon Maxwell <jmaxwell37@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 074/108] tcp: avoid too many retransmit packets
+	Damien Le Moal <dlemoal@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.9 093/143] scsi: sd: Do not repeat the starting disk message
 Date: Tue, 16 Jul 2024 17:31:29 +0200
-Message-ID: <20240716152748.822887202@linuxfoundation.org>
+Message-ID: <20240716152759.554308808@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 97a9063518f198ec0adb2ecb89789de342bb8283 upstream.
+commit 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4 upstream.
 
-If a TCP socket is using TCP_USER_TIMEOUT, and the other peer
-retracted its window to zero, tcp_retransmit_timer() can
-retransmit a packet every two jiffies (2 ms for HZ=1000),
-for about 4 minutes after TCP_USER_TIMEOUT has 'expired'.
+The SCSI disk message "Starting disk" to signal resuming of a suspended
+disk is printed in both sd_resume() and sd_resume_common() which results
+in this message being printed twice when resuming from e.g. autosuspend:
 
-The fix is to make sure tcp_rtx_probe0_timed_out() takes
-icsk->icsk_user_timeout into account.
+$ echo 5000 > /sys/block/sda/device/power/autosuspend_delay_ms
+$ echo auto > /sys/block/sda/device/power/control
 
-Before blamed commit, the socket would not timeout after
-icsk->icsk_user_timeout, but would use standard exponential
-backoff for the retransmits.
+[ 4962.438293] sd 0:0:0:0: [sda] Synchronizing SCSI cache
+[ 4962.501121] sd 0:0:0:0: [sda] Stopping disk
 
-Also worth noting that before commit e89688e3e978 ("net: tcp:
-fix unexcepted socket die when snd_wnd is 0"), the issue
-would last 2 minutes instead of 4.
+$ echo on > /sys/block/sda/device/power/control
 
-Fixes: b701a99e431d ("tcp: Add tcp_clamp_rto_to_user_timeout() helper to improve accuracy")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Jon Maxwell <jmaxwell37@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240710001402.2758273-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ 4972.805851] sd 0:0:0:0: [sda] Starting disk
+[ 4980.558806] sd 0:0:0:0: [sda] Starting disk
+
+Fix this double print by removing the call to sd_printk() from sd_resume()
+and moving the call to sd_printk() in sd_resume_common() earlier in the
+function, before the check using sd_do_start_stop().  Doing so, the message
+is printed once regardless if sd_resume_common() actually executes
+sd_start_stop_device() (i.e. SCSI device case) or not (libsas and libata
+managed ATA devices case).
+
+Fixes: 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240701215326.128067-1-dlemoal@kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_timer.c |   22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/scsi/sd.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -440,22 +440,34 @@ static void tcp_fastopen_synack_timer(st
- static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
- 				     const struct sk_buff *skb)
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -4127,8 +4127,6 @@ static int sd_resume(struct device *dev)
  {
-+	const struct inet_connection_sock *icsk = inet_csk(sk);
-+	u32 user_timeout = READ_ONCE(icsk->icsk_user_timeout);
- 	const struct tcp_sock *tp = tcp_sk(sk);
--	const int timeout = TCP_RTO_MAX * 2;
-+	int timeout = TCP_RTO_MAX * 2;
- 	u32 rtx_delta;
- 	s32 rcv_delta;
+ 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
  
-+	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
-+			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
-+
-+	if (user_timeout) {
-+		/* If user application specified a TCP_USER_TIMEOUT,
-+		 * it does not want win 0 packets to 'reset the timer'
-+		 * while retransmits are not making progress.
-+		 */
-+		if (rtx_delta > user_timeout)
-+			return true;
-+		timeout = min_t(u32, timeout, msecs_to_jiffies(user_timeout));
-+	}
-+
- 	/* Note: timer interrupt might have been delayed by at least one jiffy,
- 	 * and tp->rcv_tstamp might very well have been written recently.
- 	 * rcv_delta can thus be negative.
- 	 */
--	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
-+	rcv_delta = icsk->icsk_timeout - tp->rcv_tstamp;
- 	if (rcv_delta <= timeout)
- 		return false;
- 
--	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
--			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
+-	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
 -
- 	return rtx_delta > timeout;
- }
+ 	if (opal_unlock_from_suspend(sdkp->opal_dev)) {
+ 		sd_printk(KERN_NOTICE, sdkp, "OPAL unlock failed\n");
+ 		return -EIO;
+@@ -4145,12 +4143,13 @@ static int sd_resume_common(struct devic
+ 	if (!sdkp)	/* E.g.: runtime resume at the start of sd_probe() */
+ 		return 0;
  
++	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
++
+ 	if (!sd_do_start_stop(sdkp->device, runtime)) {
+ 		sdkp->suspended = false;
+ 		return 0;
+ 	}
+ 
+-	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
+ 	ret = sd_start_stop_device(sdkp, 1);
+ 	if (!ret) {
+ 		sd_resume(dev);
 
 
 
