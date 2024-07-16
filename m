@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-59594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E100932AD5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:38:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD63D932D01
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C01161C229D6
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:38:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 698DBB2480A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768561DA4D;
-	Tue, 16 Jul 2024 15:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFCF19EEA7;
+	Tue, 16 Jul 2024 15:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSVsEH8Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZE8exvQj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE68F9E8;
-	Tue, 16 Jul 2024 15:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC9819DF71;
+	Tue, 16 Jul 2024 15:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144319; cv=none; b=dTAg9uHBL5NXTleGeQ5IxkmiEN173JieDwsyy0h2QOa8+LRwZ6x7+HwKN6rwrPzPKiP7ChboP0sZkS67pi1SbR3/o/vmkxp/6DOaLt0hx/2DQqFrzOtt4HubQA7IAUvIneSmw6GnJdpUBsqe31AvM7wm1Y5ydWONwvIAy2fF9Dc=
+	t=1721145594; cv=none; b=CtXR8cVnpOsoqB0rp/iqY68R+aTHnG/3ITGYHbyU1iHckY9cM0wDenR9Hc1sWzljUd2jsImG8jMYWSnfUnS2brHhGWYunhlKn7h0yskQB3I3laN/4sjdlQwgszWwAZbwRfPGnqc4eTP5qISq8jhPtQL3H76oB/abA4dAm02VWck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144319; c=relaxed/simple;
-	bh=SRgAz+L5snsj0m6nElKa4B7R5QzIZFBmMjgSNN3dots=;
+	s=arc-20240116; t=1721145594; c=relaxed/simple;
+	bh=Hs+bqfNp0X3S3lBOvNgtlywFg8308KvMAn96Af1Vwng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1DrnHsAgDSvFCBMk2F0E+zs8xgZge0fIlwSDgjlqsEun6GrQvVxKEQ+prNiMNzmiO91SkTaUzFMm4u/lgm5CTDk0KKp4mkURvO3IUd+I7x2kaTqexqRlhOObr8vqD1PBlTloBigRQ0ZpZeuF/SsilDOc7ntYF/NfCxNQ54iX5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSVsEH8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A774BC116B1;
-	Tue, 16 Jul 2024 15:38:38 +0000 (UTC)
+	 MIME-Version; b=D185vHxMsBY9howIT2yb6af9haiwzM00B16BG4iJnM4dO53lH0W+vsx+nV/ChQrsiGbLTLL7TR7wp+Re+T73PMEbM5ovcGESBg+tQ3mhFzSj2Ypowqgs9xsWZ00TlkK2Eh0IHHF9xIWw9qKf2mmwmFgKdLqyj5XOfhV0S3Jh/WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZE8exvQj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D35CC116B1;
+	Tue, 16 Jul 2024 15:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144319;
-	bh=SRgAz+L5snsj0m6nElKa4B7R5QzIZFBmMjgSNN3dots=;
+	s=korg; t=1721145594;
+	bh=Hs+bqfNp0X3S3lBOvNgtlywFg8308KvMAn96Af1Vwng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eSVsEH8YjncOdbY3BwBPhbcCKyr+G+G/MQJx3al2I7bpWflfGxH4sd82u8WEhtGB8
-	 mHsAmA8L5T3xFb7ckCM5G2aNiF4qrVUFKBNOmLDS/D/DdVsT7m8r/If9LXo+mmCYwh
-	 OhtZG1WN23cqMvgW3THbOe9edodDl//AeKH7GLNA=
+	b=ZE8exvQjxNQwwQT1IXnJ7Rv4ekwSlizVRdBSgvTqpvOiJuJ+Qzf7IV1vaKnxALyLH
+	 xfQD+O4fBQRF3PPCBdrcDvYvIi5HeiHpC4AyIUZFHAOms+eZC0et55lL5bif3+eLFG
+	 +KHkA0kBn8g4Yk1XvGP8W6r2ux0cBNfjReoXrBtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Hillf Danton <hdanton@sina.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 33/78] nilfs2: add missing check for inode numbers on directory entries
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 003/121] scsi: ufs: core: Fix ufshcd_abort_one racing issue
 Date: Tue, 16 Jul 2024 17:31:05 +0200
-Message-ID: <20240716152741.917789598@linuxfoundation.org>
+Message-ID: <20240716152751.448632100@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-commit bb76c6c274683c8570ad788f79d4b875bde0e458 upstream.
+[ Upstream commit 74736103fb4123c71bf11fb7a6abe7c884c5269e ]
 
-Syzbot reported that mounting and unmounting a specific pattern of
-corrupted nilfs2 filesystem images causes a use-after-free of metadata
-file inodes, which triggers a kernel bug in lru_add_fn().
+When ufshcd_abort_one is racing with the completion ISR, the completed tag
+of the request's mq_hctx pointer will be set to NULL by ISR.  Return
+success when request is completed by ISR because ufshcd_abort_one does not
+need to do anything.
 
-As Jan Kara pointed out, this is because the link count of a metadata file
-gets corrupted to 0, and nilfs_evict_inode(), which is called from iput(),
-tries to delete that inode (ifile inode in this case).
+The racing flow is:
 
-The inconsistency occurs because directories containing the inode numbers
-of these metadata files that should not be visible in the namespace are
-read without checking.
+Thread A
+ufshcd_err_handler					step 1
+	...
+	ufshcd_abort_one
+		ufshcd_try_to_abort_task
+			ufshcd_cmd_inflight(true)	step 3
+		ufshcd_mcq_req_to_hwq
+			blk_mq_unique_tag
+				rq->mq_hctx->queue_num	step 5
 
-Fix this issue by treating the inode numbers of these internal files as
-errors in the sanity check helper when reading directory folios/pages.
+Thread B
+ufs_mtk_mcq_intr(cq complete ISR)			step 2
+	scsi_done
+		...
+		__blk_mq_free_request
+			rq->mq_hctx = NULL;		step 4
 
-Also thanks to Hillf Danton and Matthew Wilcox for their initial mm-layer
-analysis.
+Below is KE back trace.
+  ufshcd_try_to_abort_task: cmd at tag 41 not pending in the device.
+  ufshcd_try_to_abort_task: cmd at tag=41 is cleared.
+  Aborting tag 41 / CDB 0x28 succeeded
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000194
+  pc : [0xffffffddd7a79bf8] blk_mq_unique_tag+0x8/0x14
+  lr : [0xffffffddd6155b84] ufshcd_mcq_req_to_hwq+0x1c/0x40 [ufs_mediatek_mod_ise]
+   do_mem_abort+0x58/0x118
+   el1_abort+0x3c/0x5c
+   el1h_64_sync_handler+0x54/0x90
+   el1h_64_sync+0x68/0x6c
+   blk_mq_unique_tag+0x8/0x14
+   ufshcd_err_handler+0xae4/0xfa8 [ufs_mediatek_mod_ise]
+   process_one_work+0x208/0x4fc
+   worker_thread+0x228/0x438
+   kthread+0x104/0x1d4
+   ret_from_fork+0x10/0x20
 
-Link: https://lkml.kernel.org/r/20240623051135.4180-3-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d79afb004be235636ee8
-Reported-by: Jan Kara <jack@suse.cz>
-Closes: https://lkml.kernel.org/r/20240617075758.wewhukbrjod5fp5o@quack3
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 93e6c0e19d5b ("scsi: ufs: core: Clear cmd if abort succeeds in MCQ mode")
+Suggested-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20240628070030.30929-3-peter.wang@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c   |    6 ++++++
- fs/nilfs2/nilfs.h |    5 +++++
- 2 files changed, 11 insertions(+)
+ drivers/ufs/core/ufshcd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -143,6 +143,9 @@ static bool nilfs_check_page(struct page
- 			goto Enamelen;
- 		if (((offs + rec_len - 1) ^ offs) & ~(chunk_size-1))
- 			goto Espan;
-+		if (unlikely(p->inode &&
-+			     NILFS_PRIVATE_INODE(le64_to_cpu(p->inode))))
-+			goto Einumber;
- 	}
- 	if (offs != limit)
- 		goto Eend;
-@@ -168,6 +171,9 @@ Enamelen:
- 	goto bad_entry;
- Espan:
- 	error = "directory entry across blocks";
-+	goto bad_entry;
-+Einumber:
-+	error = "disallowed inode number";
- bad_entry:
- 	nilfs_error(sb,
- 		    "bad entry in directory #%lu: %s - offset=%lu, inode=%lu, rec_len=%d, name_len=%d",
---- a/fs/nilfs2/nilfs.h
-+++ b/fs/nilfs2/nilfs.h
-@@ -121,6 +121,11 @@ enum {
- 	((ino) >= NILFS_FIRST_INO(sb) ||				\
- 	 ((ino) < NILFS_USER_INO && (NILFS_SYS_INO_BITS & BIT(ino))))
- 
-+#define NILFS_PRIVATE_INODE(ino) ({					\
-+	ino_t __ino = (ino);						\
-+	((__ino) < NILFS_USER_INO && (__ino) != NILFS_ROOT_INO &&	\
-+	 (__ino) != NILFS_SKETCH_INO); })
-+
- /**
-  * struct nilfs_transaction_info: context information for synchronization
-  * @ti_magic: Magic number
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 7bb820bfd7437..808979a093505 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -6363,6 +6363,8 @@ static bool ufshcd_abort_one(struct request *rq, void *priv)
+ 	/* Release cmd in MCQ mode if abort succeeds */
+ 	if (is_mcq_enabled(hba) && (*ret == 0)) {
+ 		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(lrbp->cmd));
++		if (!hwq)
++			return 0;
+ 		spin_lock_irqsave(&hwq->cq_lock, flags);
+ 		if (ufshcd_cmd_inflight(lrbp->cmd))
+ 			ufshcd_release_scsi_cmd(hba, lrbp);
+-- 
+2.43.0
+
 
 
 
