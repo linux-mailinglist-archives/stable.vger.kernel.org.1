@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-59876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10281932C34
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16AE932D47
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 376991C2308D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E3C81F215F9
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962CF19AD93;
-	Tue, 16 Jul 2024 15:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A47D19DF59;
+	Tue, 16 Jul 2024 16:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgNpc245"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBon/fQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A9A1DDCE;
-	Tue, 16 Jul 2024 15:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F2519EEA2;
+	Tue, 16 Jul 2024 16:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145174; cv=none; b=MSoizK0f4CVK0PWRF8DnW28j/fZdkUXPpFI08/cXQ/g2gP46+2OKfAhWQ9DjC5D2J7coOESVu3ZkcdxFzyPti8Mtt3rZvc08+4HbNIUJ0RWljMDKWN90RxCssHI/d8K+JhFLuOglCGXNdKbNpq17ukk/C1luJQS9lOIQ/42FohE=
+	t=1721145785; cv=none; b=aBwmxkg5y9KEnlxmRMdFeQ+A8D/VXrYKMi5x6NGKyVjN/K362IfEfqgUEBPlq9NpC5J51miGlkWbPgAo/0XNCbAULr2THOP+PlE2LlPn+vcRhUZxZBCd8m8T4AH+Jy5IVy5EM/y/z5ejFeHisseCq/NX63d7hkpD+xFheqc0oVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145174; c=relaxed/simple;
-	bh=gpXPr6/OGCxFAk1mFgEUzLMt/yRsFmZnsRUqN/4SSbA=;
+	s=arc-20240116; t=1721145785; c=relaxed/simple;
+	bh=e/x/T71qazPYlnTzBjN8NZGUrE/Cj3b0/v0gAslDIDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SITEImUS1v96+d1G5n/Shk0Uu3uA6FB8P3sHr7dn9HEda3CwEHdygJHjDuxaweBujEcGkIgN9VToKvCXsRaedJiPyAFJSGj8byUH4O7dHaSu/aHIBAOULASERzTIyE4I0oYw3KZqewWyooCO8+fHWkqDFkwj4suLegQmMXPL8zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgNpc245; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF71C116B1;
-	Tue, 16 Jul 2024 15:52:53 +0000 (UTC)
+	 MIME-Version; b=kEs2pR6no1C1vsZXXBjmLSGU5Oxzf+MTifKNtQWeZjA4zBbKDVC2ZxwSRfTq+Nktfrp5TNrai6EhPk2zcMyIEJ8TFA0Qu3jhQwgEyixxkNQISvobB0Nj7Mf+n7CRd/dtc7lt0sobPygZprxljxuYH/qO7jSEOZug2QxTbomZyjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBon/fQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC08C4AF15;
+	Tue, 16 Jul 2024 16:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145174;
-	bh=gpXPr6/OGCxFAk1mFgEUzLMt/yRsFmZnsRUqN/4SSbA=;
+	s=korg; t=1721145785;
+	bh=e/x/T71qazPYlnTzBjN8NZGUrE/Cj3b0/v0gAslDIDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YgNpc245L2GJg9BO21n/1d7COThj3AMfm2ZBbeF90zN+X4pXMAGski568m41GYFhq
-	 3tyELpHmlL58LA0eD/4bKd19GaoCw58fFcGnaxYTxhH+NhvzMG5iHNv1HwssvKE8jM
-	 3d6v9o/PR0rFgkFoUIatroa1611bdEx9mK+P6ZU8=
+	b=IBon/fQqTZMS+FD+zvRgig0RebU8EhA35JZKYDVhtngG13BSCspDAB7xKbmz09avB
+	 5q+thBhzS/TdGIfK3DgcEyWRtpFLFCZkapIaUlf2ZDxI8EJofBvUU8L+W9SZOJlecZ
+	 LRLUGXG+QR5x3UkJnd9o7bWAn7kQGvHKUtFrIngU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.9 122/143] wireguard: queueing: annotate intentional data race in cpu round robin
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Jacob Keller <jacob.e.keller@intel.com>
+Subject: [PATCH 6.6 056/121] net: ks8851: Fix potential TX stall after interface reopen
 Date: Tue, 16 Jul 2024 17:31:58 +0200
-Message-ID: <20240716152800.674620467@linuxfoundation.org>
+Message-ID: <20240716152753.480501816@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +67,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason A. Donenfeld <Jason@zx2c4.com>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-commit 2fe3d6d2053c57f2eae5e85ca1656d185ebbe4e8 upstream.
+commit 7a99afef17af66c276c1d6e6f4dbcac223eaf6ac upstream.
 
-KCSAN reports a race in the CPU round robin function, which, as the
-comment points out, is intentional:
+The amount of TX space in the hardware buffer is tracked in the tx_space
+variable. The initial value is currently only set during driver probing.
 
-    BUG: KCSAN: data-race in wg_packet_send_staged_packets / wg_packet_send_staged_packets
+After closing the interface and reopening it the tx_space variable has
+the last value it had before close. If it is smaller than the size of
+the first send packet after reopeing the interface the queue will be
+stopped. The queue is woken up after receiving a TX interrupt but this
+will never happen since we did not send anything.
 
-    read to 0xffff88811254eb28 of 4 bytes by task 3160 on cpu 1:
-     wg_cpumask_next_online drivers/net/wireguard/queueing.h:127 [inline]
-     wg_queue_enqueue_per_device_and_peer drivers/net/wireguard/queueing.h:173 [inline]
-     wg_packet_create_data drivers/net/wireguard/send.c:320 [inline]
-     wg_packet_send_staged_packets+0x60e/0xac0 drivers/net/wireguard/send.c:388
-     wg_packet_send_keepalive+0xe2/0x100 drivers/net/wireguard/send.c:239
-     wg_receive_handshake_packet drivers/net/wireguard/receive.c:186 [inline]
-     wg_packet_handshake_receive_worker+0x449/0x5f0 drivers/net/wireguard/receive.c:213
-     process_one_work kernel/workqueue.c:3248 [inline]
-     process_scheduled_works+0x483/0x9a0 kernel/workqueue.c:3329
-     worker_thread+0x526/0x720 kernel/workqueue.c:3409
-     kthread+0x1d1/0x210 kernel/kthread.c:389
-     ret_from_fork+0x4b/0x60 arch/x86/kernel/process.c:147
-     ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+This commit moves the initialization of the tx_space variable to the
+ks8851_net_open function right before starting the TX queue. Also query
+the value from the hardware instead of using a hard coded value.
 
-    write to 0xffff88811254eb28 of 4 bytes by task 3158 on cpu 0:
-     wg_cpumask_next_online drivers/net/wireguard/queueing.h:130 [inline]
-     wg_queue_enqueue_per_device_and_peer drivers/net/wireguard/queueing.h:173 [inline]
-     wg_packet_create_data drivers/net/wireguard/send.c:320 [inline]
-     wg_packet_send_staged_packets+0x6e5/0xac0 drivers/net/wireguard/send.c:388
-     wg_packet_send_keepalive+0xe2/0x100 drivers/net/wireguard/send.c:239
-     wg_receive_handshake_packet drivers/net/wireguard/receive.c:186 [inline]
-     wg_packet_handshake_receive_worker+0x449/0x5f0 drivers/net/wireguard/receive.c:213
-     process_one_work kernel/workqueue.c:3248 [inline]
-     process_scheduled_works+0x483/0x9a0 kernel/workqueue.c:3329
-     worker_thread+0x526/0x720 kernel/workqueue.c:3409
-     kthread+0x1d1/0x210 kernel/kthread.c:389
-     ret_from_fork+0x4b/0x60 arch/x86/kernel/process.c:147
-     ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+Only the SPI chip variant is affected by this issue because only this
+driver variant actually depends on the tx_space variable in the xmit
+function.
 
-    value changed: 0xffffffff -> 0x00000000
-
-Mark this race as intentional by using READ/WRITE_ONCE().
-
-Cc: stable@vger.kernel.org
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Link: https://patch.msgid.link/20240704154517.1572127-4-Jason@zx2c4.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20240709195845.9089-1-rwahl@gmx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireguard/queueing.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/micrel/ks8851_common.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireguard/queueing.h
-+++ b/drivers/net/wireguard/queueing.h
-@@ -124,10 +124,10 @@ static inline int wg_cpumask_choose_onli
-  */
- static inline int wg_cpumask_next_online(int *last_cpu)
- {
--	int cpu = cpumask_next(*last_cpu, cpu_online_mask);
-+	int cpu = cpumask_next(READ_ONCE(*last_cpu), cpu_online_mask);
- 	if (cpu >= nr_cpu_ids)
- 		cpu = cpumask_first(cpu_online_mask);
--	*last_cpu = cpu;
-+	WRITE_ONCE(*last_cpu, cpu);
- 	return cpu;
- }
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -482,6 +482,7 @@ static int ks8851_net_open(struct net_de
+ 	ks8851_wrreg16(ks, KS_IER, ks->rc_ier);
  
+ 	ks->queued_len = 0;
++	ks->tx_space = ks8851_rdreg16(ks, KS_TXMIR);
+ 	netif_start_queue(ks->netdev);
+ 
+ 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
+@@ -1101,7 +1102,6 @@ int ks8851_probe_common(struct net_devic
+ 	int ret;
+ 
+ 	ks->netdev = netdev;
+-	ks->tx_space = 6144;
+ 
+ 	ks->gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+ 	ret = PTR_ERR_OR_ZERO(ks->gpio);
 
 
 
