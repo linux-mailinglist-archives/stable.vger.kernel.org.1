@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-59937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B55932C91
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B9B932C2D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5743B227AF
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DB2C1F22AAA
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29D319FA91;
-	Tue, 16 Jul 2024 15:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2AA19DF73;
+	Tue, 16 Jul 2024 15:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntmVmuzZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+S3uQXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFAD19FA85;
-	Tue, 16 Jul 2024 15:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B87817A93F;
+	Tue, 16 Jul 2024 15:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145360; cv=none; b=f8dK2jkMVMNt0RHFnwJ4EGtdPCsxOK+CMatBN5WbhWDyeVmMZueQSGsZeESyoxzR6yLsvLXJzgfCr+qlyssBWnNawrSDbuLlnmHiG58YqPzGRJk+osAjH4aEyIZ8uiUvl+uV631D2UEX+53O9dWHNH5zAJE9x2UmDVdyaf4ZiBo=
+	t=1721145153; cv=none; b=XYLHM3pBWtyDXJlDbXOtBpjaz8+0VZhuwNLdIW+LJZwGAZcx1WQvJqunBsXpE1Bvchg5jpghf4McmcEx585Edi7tejHIIFTOK/d7d8vjh94DhXH0kqZbWqFbk0hI/KzLpszqZNCNVTcywM0wf2niwUuyy5PhAuT2S+OsK5oe4EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145360; c=relaxed/simple;
-	bh=vZMgNb37vZIYLQv8LM41yCum4EkUY6o+kqOUgGDZve0=;
+	s=arc-20240116; t=1721145153; c=relaxed/simple;
+	bh=tk+9Bg3QfQCH35igkL9hRfAJZpSR7ER3roRe5Af49jQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWyRTBzTQvFslj30QElqsP9OJDgKXXOSpz8HL5aKLLlEwemv5i2S2p2tXjzsKLevb2cmC1UsGrReVrMGPlqW1cC/Y1JvidTObyIqQBpJVVXvo4ZR6bW8pVBQau/Q8Nac7u2rXNm2yak5l/VGq3cXPKUpbjcRQhBfAMvJ6W5YlbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntmVmuzZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CC6C116B1;
-	Tue, 16 Jul 2024 15:55:59 +0000 (UTC)
+	 MIME-Version; b=vEKv11Kye2ZWJ6NM64hcfqXdpJRboPGTuSEZJYKBFKpJgm5OavE4DolsPBuxvoVflJ3K8E9qeUDuZ0z4MDh7UiqlXUBXoHhGMNWC5jsamYB56PkGvhI8LtLPF26L98h3KqbSAxybUC/rk8wYN2HLRileqMckc17CpjbCn6K57i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+S3uQXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66C1C4AF0B;
+	Tue, 16 Jul 2024 15:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145360;
-	bh=vZMgNb37vZIYLQv8LM41yCum4EkUY6o+kqOUgGDZve0=;
+	s=korg; t=1721145153;
+	bh=tk+9Bg3QfQCH35igkL9hRfAJZpSR7ER3roRe5Af49jQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ntmVmuzZl2B2fVJ65s5tOkQNvyiBCkd5IShy05XMiMxpz4XKl5yeq17MWu0wHYtOc
-	 lLvME3QsKyV9nGra2kA8K5CbX0BDBP42VqSg6FoXRK0ihjtSuuPvvBgEhhFCSoVPpC
-	 ipzwd0QmrZv9Kl+6vuxFik9NezuWHKMW1ys4BjSM=
+	b=H+S3uQXBzXMmqTLtGZanrvu/iBkPKcyiAUrNfAYFdGQVk2sUp9uvPvWYLYKY2ax5R
+	 bakVpmCJfMQfrQaiEptXDeEkMMpPr3PM9ROqXqXPwBLnNfsOeCflj+6y+FM1xst1cX
+	 G5Zkgw32HzDqpFxT8MdzM6M3ytdKm2tfRBZHbZF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiran Kumar K <kirankumark@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Naveen Mamindlapalli <naveenm@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 41/96] octeontx2-af: extend RSS supported offload types
+	Ilya Dryomov <idryomov@gmail.com>,
+	Xiubo Li <xiubli@redhat.com>
+Subject: [PATCH 6.9 116/143] libceph: fix race between delayed_work() and ceph_monc_stop()
 Date: Tue, 16 Jul 2024 17:31:52 +0200
-Message-ID: <20240716152748.087947116@linuxfoundation.org>
+Message-ID: <20240716152800.441353793@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,160 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran Kumar K <kirankumark@marvell.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit 79bc788c038c9c87224d41ba6bbab20b6bf1a141 ]
+commit 69c7b2fe4c9cc1d3b1186d1c5606627ecf0de883 upstream.
 
-Add support to select L3 SRC or DST only, L4 SRC or DST only for RSS
-calculation.
+The way the delayed work is handled in ceph_monc_stop() is prone to
+races with mon_fault() and possibly also finish_hunting().  Both of
+these can requeue the delayed work which wouldn't be canceled by any of
+the following code in case that happens after cancel_delayed_work_sync()
+runs -- __close_session() doesn't mess with the delayed work in order
+to avoid interfering with the hunting interval logic.  This part was
+missed in commit b5d91704f53e ("libceph: behave in mon_fault() if
+cur_mon < 0") and use-after-free can still ensue on monc and objects
+that hang off of it, with monc->auth and monc->monmap being
+particularly susceptible to quickly being reused.
 
-AF consumer may have requirement as we can select only SRC or DST data for
-RSS calculation in L3, L4 layers. With this requirement there will be
-following combinations, IPV[4,6]_SRC_ONLY, IPV[4,6]_DST_ONLY,
-[TCP,UDP,SCTP]_SRC_ONLY, [TCP,UDP,SCTP]_DST_ONLY. So, instead of creating
-a bit for each combination, we are using upper 4 bits (31:28) in the
-flow_key_cfg to represent the SRC, DST selection. 31 => L3_SRC,
-30 => L3_DST, 29 => L4_SRC, 28 => L4_DST. These won't be part of flow_cfg,
-so that we don't need to change the existing ABI.
+To fix this:
 
-Signed-off-by: Kiran Kumar K <kirankumark@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e23ac1095b9e ("octeontx2-af: fix issue with IPv6 ext match for RSS")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- clear monc->cur_mon and monc->hunting as part of closing the session
+  in ceph_monc_stop()
+- bail from delayed_work() if monc->cur_mon is cleared, similar to how
+  it's done in mon_fault() and finish_hunting() (based on monc->hunting)
+- call cancel_delayed_work_sync() after the session is closed
+
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/66857
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/mbox.h  |  6 ++
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 57 +++++++++++++++++++
- 2 files changed, 63 insertions(+)
+ net/ceph/mon_client.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index e76d3bc8edea1..c288589446935 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -1084,6 +1084,8 @@ struct nix_vtag_config_rsp {
- 	 */
- };
+--- a/net/ceph/mon_client.c
++++ b/net/ceph/mon_client.c
+@@ -1085,13 +1085,19 @@ static void delayed_work(struct work_str
+ 	struct ceph_mon_client *monc =
+ 		container_of(work, struct ceph_mon_client, delayed_work.work);
  
-+#define NIX_FLOW_KEY_TYPE_L3_L4_MASK (~(0xf << 28))
+-	dout("monc delayed_work\n");
+ 	mutex_lock(&monc->mutex);
++	dout("%s mon%d\n", __func__, monc->cur_mon);
++	if (monc->cur_mon < 0) {
++		goto out;
++	}
 +
- struct nix_rss_flowkey_cfg {
- 	struct mbox_msghdr hdr;
- 	int	mcam_index;  /* MCAM entry index to modify */
-@@ -1109,6 +1111,10 @@ struct nix_rss_flowkey_cfg {
- #define NIX_FLOW_KEY_TYPE_IPV4_PROTO	BIT(21)
- #define NIX_FLOW_KEY_TYPE_AH		BIT(22)
- #define NIX_FLOW_KEY_TYPE_ESP		BIT(23)
-+#define NIX_FLOW_KEY_TYPE_L4_DST_ONLY BIT(28)
-+#define NIX_FLOW_KEY_TYPE_L4_SRC_ONLY BIT(29)
-+#define NIX_FLOW_KEY_TYPE_L3_DST_ONLY BIT(30)
-+#define NIX_FLOW_KEY_TYPE_L3_SRC_ONLY BIT(31)
- 	u32	flowkey_cfg; /* Flowkey types selected */
- 	u8	group;       /* RSS context or group */
- };
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 67080d5053e07..8a18497ad1a03 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -3361,6 +3361,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 	struct nix_rx_flowkey_alg *field;
- 	struct nix_rx_flowkey_alg tmp;
- 	u32 key_type, valid_key;
-+	u32 l3_l4_src_dst;
- 	int l4_key_offset = 0;
+ 	if (monc->hunting) {
+ 		dout("%s continuing hunt\n", __func__);
+ 		reopen_session(monc);
+ 	} else {
+ 		int is_auth = ceph_auth_is_authenticated(monc->auth);
++
++		dout("%s is_authed %d\n", __func__, is_auth);
+ 		if (ceph_con_keepalive_expired(&monc->con,
+ 					       CEPH_MONC_PING_TIMEOUT)) {
+ 			dout("monc keepalive timeout\n");
+@@ -1116,6 +1122,8 @@ static void delayed_work(struct work_str
+ 		}
+ 	}
+ 	__schedule_delayed(monc);
++
++out:
+ 	mutex_unlock(&monc->mutex);
+ }
  
- 	if (!alg)
-@@ -3388,6 +3389,15 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 	 * group_member - Enabled when protocol is part of a group.
- 	 */
+@@ -1232,13 +1240,15 @@ EXPORT_SYMBOL(ceph_monc_init);
+ void ceph_monc_stop(struct ceph_mon_client *monc)
+ {
+ 	dout("stop\n");
+-	cancel_delayed_work_sync(&monc->delayed_work);
  
-+	/* Last 4 bits (31:28) are reserved to specify SRC, DST
-+	 * selection for L3, L4 i.e IPV[4,6]_SRC, IPV[4,6]_DST,
-+	 * [TCP,UDP,SCTP]_SRC, [TCP,UDP,SCTP]_DST
-+	 * 31 => L3_SRC, 30 => L3_DST, 29 => L4_SRC, 28 => L4_DST
-+	 */
-+	l3_l4_src_dst = flow_cfg;
-+	/* Reset these 4 bits, so that these won't be part of key */
-+	flow_cfg &= NIX_FLOW_KEY_TYPE_L3_L4_MASK;
-+
- 	keyoff_marker = 0; max_key_off = 0; group_member = 0;
- 	nr_field = 0; key_off = 0; field_marker = 1;
- 	field = &tmp; max_bit_pos = fls(flow_cfg);
-@@ -3425,6 +3435,22 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 			}
- 			field->hdr_offset = 12; /* SIP offset */
- 			field->bytesm1 = 7; /* SIP + DIP, 8 bytes */
-+
-+			/* Only SIP */
-+			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L3_SRC_ONLY)
-+				field->bytesm1 = 3; /* SIP, 4 bytes */
-+
-+			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L3_DST_ONLY) {
-+				/* Both SIP + DIP */
-+				if (field->bytesm1 == 3) {
-+					field->bytesm1 = 7; /* SIP + DIP, 8B */
-+				} else {
-+					/* Only DIP */
-+					field->hdr_offset = 16; /* DIP off */
-+					field->bytesm1 = 3; /* DIP, 4 bytes */
-+				}
-+			}
-+
- 			field->ltype_mask = 0xF; /* Match only IPv4 */
- 			keyoff_marker = false;
- 			break;
-@@ -3438,6 +3464,22 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 			}
- 			field->hdr_offset = 8; /* SIP offset */
- 			field->bytesm1 = 31; /* SIP + DIP, 32 bytes */
-+
-+			/* Only SIP */
-+			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L3_SRC_ONLY)
-+				field->bytesm1 = 15; /* SIP, 16 bytes */
-+
-+			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L3_DST_ONLY) {
-+				/* Both SIP + DIP */
-+				if (field->bytesm1 == 15) {
-+					/* SIP + DIP, 32 bytes */
-+					field->bytesm1 = 31;
-+				} else {
-+					/* Only DIP */
-+					field->hdr_offset = 24; /* DIP off */
-+					field->bytesm1 = 15; /* DIP,16 bytes */
-+				}
-+			}
- 			field->ltype_mask = 0xF; /* Match only IPv6 */
- 			break;
- 		case NIX_FLOW_KEY_TYPE_TCP:
-@@ -3453,6 +3495,21 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 				field->lid = NPC_LID_LH;
- 			field->bytesm1 = 3; /* Sport + Dport, 4 bytes */
+ 	mutex_lock(&monc->mutex);
+ 	__close_session(monc);
++	monc->hunting = false;
+ 	monc->cur_mon = -1;
+ 	mutex_unlock(&monc->mutex);
  
-+			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L4_SRC_ONLY)
-+				field->bytesm1 = 1; /* SRC, 2 bytes */
++	cancel_delayed_work_sync(&monc->delayed_work);
 +
-+			if (l3_l4_src_dst & NIX_FLOW_KEY_TYPE_L4_DST_ONLY) {
-+				/* Both SRC + DST */
-+				if (field->bytesm1 == 1) {
-+					/* SRC + DST, 4 bytes */
-+					field->bytesm1 = 3;
-+				} else {
-+					/* Only DIP */
-+					field->hdr_offset = 2; /* DST off */
-+					field->bytesm1 = 1; /* DST, 2 bytes */
-+				}
-+			}
-+
- 			/* Enum values for NPC_LID_LD and NPC_LID_LG are same,
- 			 * so no need to change the ltype_match, just change
- 			 * the lid for inner protocols
--- 
-2.43.0
-
+ 	/*
+ 	 * flush msgr queue before we destroy ourselves to ensure that:
+ 	 *  - any work that references our embedded con is finished.
 
 
 
