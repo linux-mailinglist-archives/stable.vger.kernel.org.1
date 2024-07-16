@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BE1932B8D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B31BE932D4E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34A651F212CC
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 660461F23C3B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC535195B27;
-	Tue, 16 Jul 2024 15:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D7219AD59;
+	Tue, 16 Jul 2024 16:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bz1cr27f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hg70gYZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D3112B72;
-	Tue, 16 Jul 2024 15:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AAF19AD5A;
+	Tue, 16 Jul 2024 16:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144789; cv=none; b=ZMG9TvoZckkGiOhuLttYeLhXicuTBmwKA528gOYvBqTLUouov8H6UdRP1A+RLU/ay53I72pCBZruH574557MkchRpNXJrrTCfZuFD4KhoK5+bhXLKSkbezs7q/m5In/KRW0dFhuWZr5JY/zNs9qwOJD0T7K+evx39QYciHyyWdk=
+	t=1721145805; cv=none; b=Uc7kKi/aqhOxuwfS54M1hACS1MszKfp5TC2geiSAzq3kKc1v1id2tcdeWMpeAMmAbOjcp1Vn0wF8HL4ItJcK2An2rBKHfRXeFL/DLljTUJQ8zcGvXn6cnTgC/g/WdJlLBeugWhvjRDtaIbq/OmgQwdz4H5XJEfHsf3WgCUCnUOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144789; c=relaxed/simple;
-	bh=XnNRtOfTHeMXLs9Btr9kDbNdULX2o1r7pBRqSitEeNo=;
+	s=arc-20240116; t=1721145805; c=relaxed/simple;
+	bh=5koaTwwfPHoZCHhadsToYoiTZnJILBDlNw7QkUYSW1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSifbTqtJOZYRd5G1eVc35bb4wz7q7ym1M0UIASBGHbVkxq+OLiIYneafgwZd7uh5o2eUccu5/eMXcEsLR7DlE9gmLnsi6npGuHzUi8IpPSTARngjawFNxbuCToFnOfNZZZrz8BChWHl7QJbgJ60ij8QZ5T5Xc+DPiTsVM90Wac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bz1cr27f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB218C116B1;
-	Tue, 16 Jul 2024 15:46:28 +0000 (UTC)
+	 MIME-Version; b=MyKSuIkO+u/k9KpZzN0x7mAr47ZXJdLrworUmN7W/NeEh9lh7oDX/RB/4KfEEKnFMqEs4ykrI5hftgfX4r2nqq5I9gQ63CEmMcg9VYF5nywSDX5yGsKcBMg22F9gmlkouw70a1hO5cmGgX5G9y+OWWNRmGnYz6KYTzAUQC9sjfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hg70gYZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F529C116B1;
+	Tue, 16 Jul 2024 16:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144789;
-	bh=XnNRtOfTHeMXLs9Btr9kDbNdULX2o1r7pBRqSitEeNo=;
+	s=korg; t=1721145805;
+	bh=5koaTwwfPHoZCHhadsToYoiTZnJILBDlNw7QkUYSW1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bz1cr27fRckwIURTyT7mtEPToiXpK1smKzh6NbgpghxzidO/VZv6FeRNpw0HeHL/s
-	 G0O8gf4CijB3oz8X62hMJifZa9nrgYW9r1kVNV8ZadHsGaj+cAW2OrtEEzJ50yuWA3
-	 vPdFA8EGpil5msyVqfu1xkzRTpQtC1GHh9sNlV+E=
+	b=hg70gYZreYZiBEvs9L4s/Jpc3rAzsWH39HIIPh3YCnD4utSfN8I+BpxfjprcCzvs+
+	 Yr5K45Tug/pKPOOEhoy626wARf40tcMSQ70MV6TE1UfCxrJCHmKsKuI21I/NNZRdDS
+	 0hNj1tbaz1dsAPGF05zhap64U8tGnp84sJrw6PBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 107/108] i2c: rcar: clear NO_RXDMA flag after resetting
+	Slark Xiao <slark_xiao@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 060/121] USB: serial: option: add support for Foxconn T99W651
 Date: Tue, 16 Jul 2024 17:32:02 +0200
-Message-ID: <20240716152750.106601433@linuxfoundation.org>
+Message-ID: <20240716152753.637123373@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit fea6b5ebb71a2830b042e42de7ae255017ac3ce8 ]
+commit 3c841d54b63e4446383de3238399a3910e47d8e2 upstream.
 
-We should allow RXDMA only if the reset was really successful, so clear
-the flag after the reset call.
+T99W651 is a RNDIS based modem device. There are 3 serial ports
+need to be enumerated: Diag, NMEA and AT.
 
-Fixes: 0e864b552b23 ("i2c: rcar: reset controller is mandatory for Gen3+")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Test evidence as below:
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e145 Rev=05.15
+S:  Manufacturer=QCOM
+S:  Product=SDXPINN-IDP _SN:93B562B2
+S:  SerialNumber=82e6fe26
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+I:  If#=0x1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+I:  If#=0x6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+
+0&1: RNDIS, 2:AT, 3:NMEA, 4:DIAG, 5:QDSS, 6:ADB
+QDSS is not a serial port.
+
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index db3a5b80f1aa8..8a8c2403641b0 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -826,10 +826,10 @@ static int rcar_i2c_master_xfer(struct i2c_adapter *adap,
- 
- 	/* Gen3+ needs a reset. That also allows RXDMA once */
- 	if (priv->devtype >= I2C_RCAR_GEN3) {
--		priv->flags &= ~ID_P_NO_RXDMA;
- 		ret = rcar_i2c_do_reset(priv);
- 		if (ret)
- 			goto out;
-+		priv->flags &= ~ID_P_NO_RXDMA;
- 	}
- 
- 	rcar_i2c_init(priv);
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2294,6 +2294,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
+ 	  .driver_info = RSVD(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
++	  .driver_info = RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
+ 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
 
 
 
