@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-59963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92723932CB8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:58:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A7A8932C28
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F1F0B23272
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:58:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B489D1F2431C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3EA119E83C;
-	Tue, 16 Jul 2024 15:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D727419E810;
+	Tue, 16 Jul 2024 15:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ek6nt4sm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmpnKOko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919EC19AD59;
-	Tue, 16 Jul 2024 15:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A8219B59C;
+	Tue, 16 Jul 2024 15:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145443; cv=none; b=SCW8kyt67QxdSBs+7QIeQBcmVxfe2ECHoiQ0uRdVO4bBjUp7/DWKj54UuHCCvfhH1FLSekUnuHLzpYubPIaNp4IDkgeLcXtSg7nQTJn0jd8huhq5STAk3baB3aaqvD5Rnk9MYXP6tA7GOID460KoqMIMwklAwi2tUec9FFHjLkQ=
+	t=1721145138; cv=none; b=VvMOsii6ZwipWBs2szUSyGfdNKyHaBCYkS3n1Zz9Sori++2qijtPXLDpMoovwJCiqPZMwDcKgLPsME+kArxp2EYDl7LqDPkxfwY1OneyXWkdtz6A0fbPVhaamru7Wi6uZTwrDEWNILdC6yV6LPhgynW59JZnbwkvbOwSDsMxQeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145443; c=relaxed/simple;
-	bh=BH7o3pCorBeF61N8QPkys9VHOMBHL8wS3fjVp6Y29oU=;
+	s=arc-20240116; t=1721145138; c=relaxed/simple;
+	bh=c1mNAw3xS5BXoyGZBZP6Nl+qD69nHk6jWN6U0jLWLW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCW8ejzN9yw0C4Q9Ur6AMi3BUSch/HROLABYzp67xKlFWSB55+4/V5PbGjJ9nmAYE9gB4Tu3JXV+KRXwnvZ8TEi1K50hM4zftYc97CtNkytuzZsmflvhIc7+35AHrv7gM8rjPREPDy6LIXloCnB+HF6no2Cy/hyf3/GuQHuzHI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ek6nt4sm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A10DC116B1;
-	Tue, 16 Jul 2024 15:57:22 +0000 (UTC)
+	 MIME-Version; b=Gzl3XmvVz7QiZQABRCzo6Em20rEj+MEvFkk2mbnxp1JVIW6SW5zvE3RuDSQmSpyELraaVHP/xAL3shQr4al7eimWiB3/95WHfg1Sp6o4V/MxE9QpPzPWyRGpOKi5jZTGDC0m4U7gsCRcScly9OZCVOnd6TXvjkKw0ISavCXV/So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmpnKOko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF2AC116B1;
+	Tue, 16 Jul 2024 15:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145443;
-	bh=BH7o3pCorBeF61N8QPkys9VHOMBHL8wS3fjVp6Y29oU=;
+	s=korg; t=1721145138;
+	bh=c1mNAw3xS5BXoyGZBZP6Nl+qD69nHk6jWN6U0jLWLW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ek6nt4smAjFrLRnjqAEhlaxzUHSp6ZrFHruhijRJsntIvn+NakdowTF+x8wT2MLrJ
-	 HYXurON9xTp+yR+NFu9UB+O1OIk++Tx6kBNoIx3k/qTBSAWIWv7y2tdEifSEuLAxji
-	 zIADxz3JQUcTs9/I4O8vcS/1R6uESdza9cMegrG8=
+	b=lmpnKOkoG9YUK96fvA4vDwBmGIHkDQPFdjItHiPrTz8mPdKJfO0N4FAp4PcWvOcXF
+	 ByFn1F60Dvg0PbPr6zYJYsHu5PV/kHL/ZVcTV/oBxgs1lqERAErtguM99ZkMZ4fZgf
+	 yglmf8ORkbSRNqZcchz+nY5gu3bBX7pxmfPF4FHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 35/96] firmware: cs_dsp: Use strnlen() on name fields in V1 wmfw files
-Date: Tue, 16 Jul 2024 17:31:46 +0200
-Message-ID: <20240716152747.863005446@linuxfoundation.org>
+	Wentong Wu <wentong.wu@intel.com>,
+	Jason Chen <jason.z.chen@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.9 111/143] mei: vsc: Utilize the appropriate byte order swap function
+Date: Tue, 16 Jul 2024 17:31:47 +0200
+Message-ID: <20240716152800.247825682@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Wentong Wu <wentong.wu@intel.com>
 
-[ Upstream commit 680e126ec0400f6daecf0510c5bb97a55779ff03 ]
+commit a896a8a127f45d00fb69fa7536955aa9b2e5d610 upstream.
 
-Use strnlen() instead of strlen() on the algorithm and coefficient name
-string arrays in V1 wmfw files.
+Switch from cpu_to_be32_array() to be32_to_cpu_array() for the
+received ROM data.
 
-In V1 wmfw files the name is a NUL-terminated string in a fixed-size
-array. cs_dsp should protect against overrunning the array if the NUL
-terminator is missing.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f6bc909e7673 ("firmware: cs_dsp: add driver to support firmware loading on Cirrus Logic DSPs")
-Link: https://patch.msgid.link/20240708144855.385332-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
+Cc: stable@vger.kernel.org # for 6.8+
+Signed-off-by: Wentong Wu <wentong.wu@intel.com>
+Tested-by: Jason Chen <jason.z.chen@intel.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240625081047.4178494-4-wentong.wu@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/mei/vsc-tp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index eb6caeba6cdc3..ee4c32669607f 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1089,7 +1089,7 @@ static int cs_dsp_coeff_parse_alg(struct cs_dsp *dsp,
+--- a/drivers/misc/mei/vsc-tp.c
++++ b/drivers/misc/mei/vsc-tp.c
+@@ -336,7 +336,7 @@ int vsc_tp_rom_xfer(struct vsc_tp *tp, c
+ 		return ret;
  
- 		blk->id = le32_to_cpu(raw->id);
- 		blk->name = raw->name;
--		blk->name_len = strlen(raw->name);
-+		blk->name_len = strnlen(raw->name, ARRAY_SIZE(raw->name));
- 		blk->ncoeff = le32_to_cpu(raw->ncoeff);
+ 	if (ibuf)
+-		cpu_to_be32_array(ibuf, tp->rx_buf, words);
++		be32_to_cpu_array(ibuf, tp->rx_buf, words);
  
- 		pos = sizeof(*raw);
-@@ -1165,7 +1165,7 @@ static int cs_dsp_coeff_parse_coeff(struct cs_dsp *dsp,
- 			return -EOVERFLOW;
- 
- 		blk->name = raw->name;
--		blk->name_len = strlen(raw->name);
-+		blk->name_len = strnlen(raw->name, ARRAY_SIZE(raw->name));
- 		blk->ctl_type = le16_to_cpu(raw->ctl_type);
- 		blk->flags = le16_to_cpu(raw->flags);
- 		blk->len = le32_to_cpu(raw->len);
--- 
-2.43.0
-
+ 	return ret;
+ }
 
 
 
