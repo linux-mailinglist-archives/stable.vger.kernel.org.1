@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-60329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB48933067
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:41:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B877793306C
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1A431C22543
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:41:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA5ED1C20357
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95B61A08C5;
-	Tue, 16 Jul 2024 18:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3BA1AB52C;
+	Tue, 16 Jul 2024 18:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GzHGuZwm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+Bz7ppO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954991AB509;
-	Tue, 16 Jul 2024 18:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F601AB508;
+	Tue, 16 Jul 2024 18:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154893; cv=none; b=FKjQgL6Of1jvhzmllDA7w9JefbSRT1r4VZT1pnbM0MJKHtU1jatYAEz46ucPgmnKkU1bWpGMmH13Pt66dOKibGd/mD2n3MVXsll+FSAJD6f071IQJQth1YE1aw422iZVrn7kF5xtA4GVOCk9BhbmUNZfp/j6URxzE+/bwlBLOnA=
+	t=1721154895; cv=none; b=HIfyrzQJWeU22xJG3GqqZ21FULJEV70NovPEeBVFVPb3r7BvfZ7PrJyv1L/0vzphwQuDar+nP9XCXzz23xWRpBNA1Z7oW70mILOBaX26wvpGyVaf3vBVReUhhFtxiy08CJ2uRooAJ/zz+cCR3NE3oD/WprIaIY7TtE+QDE3jHkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154893; c=relaxed/simple;
-	bh=HL7KMBOMviRezCQsJgprPPAWt0XN7JR8kqiaHBw7blU=;
+	s=arc-20240116; t=1721154895; c=relaxed/simple;
+	bh=E+5TwT6MRjxAF7RnKL0fPWWqAO9TyyqyIw9cGaL56y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/9Cf3SHyBmx4bCHXJNsWmE8UT6jx9dcAkzXPaVEiOOmZhZi0dkD5q5BN+dOZHMWOmTQ8u3oRPRtLZNyVOoao9E1kuX8bw2L/RVfI+I+BbGLFPBC5/KdaJlWjdNAKYVDHKgOSbjKLo3bV7NtxZWrFARZ2twNR6CY7nCAmX+/VyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GzHGuZwm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1C6C4AF0F;
-	Tue, 16 Jul 2024 18:34:52 +0000 (UTC)
+	 MIME-Version; b=Veg9iolRcBbvof/+hpwktLNvOkGuzWl0m/gDmkw9K3fgCzl2A3gUZPVDUx9xsPa7OvyABLdUF3FjfvbmMk30I7RQuCuPbLwoWG+Bj6ELQvoUC7ZShulDIEfTtbqqcoou3OO4I+ZoLak/8eT5EBAIGhNhgUwtICyT8vsQ3Ll1CdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+Bz7ppO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FCDC4AF0B;
+	Tue, 16 Jul 2024 18:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154893;
-	bh=HL7KMBOMviRezCQsJgprPPAWt0XN7JR8kqiaHBw7blU=;
+	s=k20201202; t=1721154894;
+	bh=E+5TwT6MRjxAF7RnKL0fPWWqAO9TyyqyIw9cGaL56y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzHGuZwmez6IebvMEAW09sqQbvf++shdDWch0GL/1w7TQ/IN2TYZid++is9skXCHD
-	 OV4dXNmm3uhwopdbl1ItmWmH+sCvXUKdNP91M/9M/9OOdChYp5REbqqUA0pMwhXdXb
-	 n82oXRdpaBlgUjlk97uQVDgSDh/3tcLCoRcU4MKzQzWbAoDAHKaLvNqxBYmmUoUCN8
-	 azVtn1WKErF7THnRcNz/NyBKpJ/E286kOF8cH4DUSwWBWkBvtxbCEmQjF+y8R3SkPv
-	 onc/sGFa4yFTVd3eRyQU9Yn/RtwYpiMC1j8WlB4f1YJdgmuxvzHA0XzPFt09NgGDjc
-	 75qPp+5morelQ==
+	b=U+Bz7ppO5+hKlipXwGqre0FOGOwz5rVD1Sz/zjL+A5fMrmBMGQt1KaJRgtjBiN43Q
+	 qPjXe7v4lmev4ukrI0+R6QctYn7WxXliovFWBnUZ5dSyJ4/uZN5vgKBGdwgjDNzg/l
+	 U0fjUgwqRAE+qtwVUfLZXun28tOQqv5p5lIJF+fwW3y4jVS520p6nbVHPgZkvJVTS2
+	 UalRRvb0thbJg9T9/SmuqBhCO/9kSCxO3qslfK61KADeFnBBvHjbUdnVmR/oPl1EkG
+	 Tm5kLJ+tzRmRXZb9pTYtRTWGEZ6Ta0UJVpwt46WivdmPLuHWFZtAeST4b43nV6NAcI
+	 j1R8U2JNrYWvg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com,
-	syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
+Cc: David Lechner <dlechner@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	walmeida@microsoft.com,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 3/4] hfsplus: fix uninit-value in copy_name
-Date: Tue, 16 Jul 2024 14:34:38 -0400
-Message-ID: <20240716183443.2814769-3-sashal@kernel.org>
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 4/4] spi: mux: set ctlr->bits_per_word_mask
+Date: Tue, 16 Jul 2024 14:34:39 -0400
+Message-ID: <20240716183443.2814769-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716183443.2814769-1-sashal@kernel.org>
 References: <20240716183443.2814769-1-sashal@kernel.org>
@@ -68,68 +65,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.221
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 0570730c16307a72f8241df12363f76600baf57d ]
+[ Upstream commit c8bd922d924bb4ab6c6c488310157d1a27996f31 ]
 
-[syzbot reported]
-BUG: KMSAN: uninit-value in sized_strscpy+0xc4/0x160
- sized_strscpy+0xc4/0x160
- copy_name+0x2af/0x320 fs/hfsplus/xattr.c:411
- hfsplus_listxattr+0x11e9/0x1a50 fs/hfsplus/xattr.c:750
- vfs_listxattr fs/xattr.c:493 [inline]
- listxattr+0x1f3/0x6b0 fs/xattr.c:840
- path_listxattr fs/xattr.c:864 [inline]
- __do_sys_listxattr fs/xattr.c:876 [inline]
- __se_sys_listxattr fs/xattr.c:873 [inline]
- __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
- x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Like other SPI controller flags, bits_per_word_mask may be used by a
+peripheral driver, so it needs to reflect the capabilities of the
+underlying controller.
 
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:3877 [inline]
- slab_alloc_node mm/slub.c:3918 [inline]
- kmalloc_trace+0x57b/0xbe0 mm/slub.c:4065
- kmalloc include/linux/slab.h:628 [inline]
- hfsplus_listxattr+0x4cc/0x1a50 fs/hfsplus/xattr.c:699
- vfs_listxattr fs/xattr.c:493 [inline]
- listxattr+0x1f3/0x6b0 fs/xattr.c:840
- path_listxattr fs/xattr.c:864 [inline]
- __do_sys_listxattr fs/xattr.c:876 [inline]
- __se_sys_listxattr fs/xattr.c:873 [inline]
- __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
- x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[Fix]
-When allocating memory to strbuf, initialize memory to 0.
-
-Reported-and-tested-by: syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://lore.kernel.org/r/tencent_8BBB6433BC9E1C1B7B4BDF1BF52574BA8808@qq.com
-Reported-and-tested-by: syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20240708-spi-mux-fix-v1-3-6c8845193128@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/xattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-mux.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
-index bb0b27d88e502..d91f76ef18d9b 100644
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -700,7 +700,7 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
- 		return err;
- 	}
- 
--	strbuf = kmalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
-+	strbuf = kzalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
- 			XATTR_MAC_OSX_PREFIX_LEN + 1, GFP_KERNEL);
- 	if (!strbuf) {
- 		res = -ENOMEM;
+diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
+index 9708b7827ff70..b18c5265e858c 100644
+--- a/drivers/spi/spi-mux.c
++++ b/drivers/spi/spi-mux.c
+@@ -149,6 +149,7 @@ static int spi_mux_probe(struct spi_device *spi)
+ 	/* supported modes are the same as our parent's */
+ 	ctlr->mode_bits = spi->controller->mode_bits;
+ 	ctlr->flags = spi->controller->flags;
++	ctlr->bits_per_word_mask = spi->controller->bits_per_word_mask;
+ 	ctlr->transfer_one_message = spi_mux_transfer_one_message;
+ 	ctlr->setup = spi_mux_setup;
+ 	ctlr->num_chipselect = mux_control_states(priv->mux);
 -- 
 2.43.0
 
