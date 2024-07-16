@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-59724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3109F932B71
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 493B8932A9D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A031F21A2E
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7750B2320A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261A319DF75;
-	Tue, 16 Jul 2024 15:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EE81DA4D;
+	Tue, 16 Jul 2024 15:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFjCn9LL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKITKPrd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D881919DF70;
-	Tue, 16 Jul 2024 15:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BB0CA40;
+	Tue, 16 Jul 2024 15:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144713; cv=none; b=BS2nFiRLRJwOR8xLSfpA3pinOEtrykWSkJNb8lrng3FiqUBLp3ff3LE5ZggQaMi+HRjD3EUSWfknzbERKfZtcOmeRtpo88CswXNqb64MzNQLBqMx2n8j00tL+LluS4fJwIEJWBG3TqlAQSUfnlG0v3UKww6PfWbhqZFlHKRxT3k=
+	t=1721144157; cv=none; b=LEH1E38oYZqMBpLqf99bMt/tadmenagYAXLXmH0MBvxUYZutTO0Z137flYxq/bJPzrgn3eWHPfTXBRMRHAEZ17emsBuSqs/mvKCRm8jhRitRAeu3u6B+76d9/aT4d3U/4AF7HrqwYyyqJBX4poKF/76cvX4azHQaRPYzzQsP5mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144713; c=relaxed/simple;
-	bh=IycMh13wCJna4TlYyJwbhQC5K99P1YDyf1rb3WGIfI4=;
+	s=arc-20240116; t=1721144157; c=relaxed/simple;
+	bh=fWgOg745/JgesTVebeeKcbgkiAfA5leNPXeEEYCO2U4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjoR27G908lyAiI9nElA02yMbHgsCOWg/d0MSR7SX6XiHTXCAV1l83uJcExLGSB6y/NtYVcNqEz+Ld+q+g4ltX8LhtGwClh6D49SZD8RSP2PDGwBsiFNrg+LoO+eckeJRcdoK8Y70L8xEVqabm6r8l7Ph1T7wVdhI53ns8Zvvts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFjCn9LL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA60C116B1;
-	Tue, 16 Jul 2024 15:45:12 +0000 (UTC)
+	 MIME-Version; b=tM5GeopCz4zf+LnpsY8YaOJx3X7awyJRVM3sP/ASd6/pz1G8sfjeGsRfMt7RPgxVYLWfk/we1LmRj1yviWhdXtB4bX/OPCDXitVaTl9evz4BIJoKOznhO3tt0zeQjarvYBrVpRpPNzLnGlN7dzOwAJPhQPRjT07z9OJfbjTqldo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKITKPrd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708B3C116B1;
+	Tue, 16 Jul 2024 15:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144713;
-	bh=IycMh13wCJna4TlYyJwbhQC5K99P1YDyf1rb3WGIfI4=;
+	s=korg; t=1721144156;
+	bh=fWgOg745/JgesTVebeeKcbgkiAfA5leNPXeEEYCO2U4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SFjCn9LLrUMcCTO9uwYbuGnU0lqZSV9FSMAygBacesKbRUowven47ekhW34B03f5M
-	 CiDm8EuyrbGkVuqDgsjjXfupmOotkGOyQFrBOaAYWP6ErylW40ROsZ0rJQs7m+qGi1
-	 //vbhm0KhesMbc2vkuldD1fA1BiEjOew1CPn7WhY=
+	b=yKITKPrdYKq/8MF8PWukG+Q/jVm3SpsHajOcn0W7a+9fV4qUqqEwy+Ucd3R9WDxel
+	 seAj66i3zoBKmzvQZkyLcyHk5ZAIe9W3b1Woxj6dEiq6HEdB4gIuLZGQG/cgyrn9g+
+	 N8Z0zsB9YzrqP3brP0KNkAgQnuYSc8mHlM/41fuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 065/108] net: ethernet: lantiq_etop: fix double free in detach
+Subject: [PATCH 4.19 45/66] net: ethernet: lantiq_etop: fix double free in detach
 Date: Tue, 16 Jul 2024 17:31:20 +0200
-Message-ID: <20240716152748.478641354@linuxfoundation.org>
+Message-ID: <20240716152739.888272069@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -88,10 +88,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index 62300d46d9186..1d7c0b872c594 100644
+index fd391cbd5774e..b41822d08649d 100644
 --- a/drivers/net/ethernet/lantiq_etop.c
 +++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -213,9 +213,9 @@ ltq_etop_free_channel(struct net_device *dev, struct ltq_etop_chan *ch)
+@@ -221,9 +221,9 @@ ltq_etop_free_channel(struct net_device *dev, struct ltq_etop_chan *ch)
  	if (ch->dma.irq)
  		free_irq(ch->dma.irq, priv);
  	if (IS_RX(ch->idx)) {
