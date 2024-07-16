@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-59758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061E3932BA2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:47:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC68932C2B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3B8D1F20C3D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:47:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53B0E2856DF
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D964019F47B;
-	Tue, 16 Jul 2024 15:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6B219DF70;
+	Tue, 16 Jul 2024 15:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dumEUXvR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuBuu+zU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9909A19E7E5;
-	Tue, 16 Jul 2024 15:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF3317A93F;
+	Tue, 16 Jul 2024 15:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144824; cv=none; b=qk+ExTunCVuhG9rtLzlmt1wcam1PkQUxJT+Lu74RSozPQiVe0Gllp7pTZrmNDVb7QLAIP65yob5bV+UNeFeZYzO3Y2XlDutstFN3pWH6tRA8EEIA3u6BPATCmPEHjZX9RADSnrqRBH8TyJZKuPsz3qKPnhMzjLq95UR3iB7WXwQ=
+	t=1721145151; cv=none; b=Org/AGoPUsh19q1zKLjfAyeGgBLI0pYMF63ehpubnQ7jwlIFAlfKodpVQhyH180cBg8FfEVyacAQFNGSLI8is624txNxSmpsP8i3mfqyJj1Bw0FpRKJUzFfrWOiX45JwPCQ6x+t8HLImr81fCmLEwedImzVQFCdPAcqBzCWsC08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144824; c=relaxed/simple;
-	bh=Z8OD7PVSn+Aplvp+fiRgp+/V2fhd69ayfxqfNgIHv1Y=;
+	s=arc-20240116; t=1721145151; c=relaxed/simple;
+	bh=QTe64/+/HuPCuDrBD8TWI1zbnoc/jf6tYcdWkgZ+ayw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSiwc7fMTUfqvJSyjB6qud17m7V+RFcGFkOeX9OHPAxvfGHvnn+V36zpv2ouUr+AvZDCO5iVINf1O/Kv6ltEu6uayuR/NcnW8hjFGUzQ2+ViwEB9jamXFwuvux14ok1fxKjrdKXvgjaDjrH7jDB6/BxBzr6NiWyVC5g+TrJVizU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dumEUXvR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB24C116B1;
-	Tue, 16 Jul 2024 15:47:03 +0000 (UTC)
+	 MIME-Version; b=B+dAhy+uDB6yeozlFhKLUGgAbHgFYfUb1GbxygVVswyOEy+zG2cHL7oE3cLpOBSd+s4KeE+zRAZTn78TWVlFSvJMdYsMvETpZopk2XVIO6taS9A3EtWW3I3NA58+BehtMhHJ5t5xEXesE6xvSjXEm0KiplgNOmMZfl6XqHGHu9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuBuu+zU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED36C116B1;
+	Tue, 16 Jul 2024 15:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144824;
-	bh=Z8OD7PVSn+Aplvp+fiRgp+/V2fhd69ayfxqfNgIHv1Y=;
+	s=korg; t=1721145150;
+	bh=QTe64/+/HuPCuDrBD8TWI1zbnoc/jf6tYcdWkgZ+ayw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dumEUXvR6lJ6ivowkc0wVymBYrjf5hF5w9xqL6NnCdAxYJSsjIsArIGCjCfhEdpcv
-	 CGqj7a2FZ+9ope9LJtneqZG+X/fRKi3TB+qJikYd+xA+uecsQTXVflZOR+nJCnyrar
-	 5uLnqqDo/W24XVfn7ZJll7nFd5h6mk4w+7i9pGwA=
+	b=kuBuu+zUibDAKv2ibCbxR7Ha5RiiOOZzQau+VPHrSSnEcjMfLDVJehLUrqeZL3nZ6
+	 tNJYlqxENwapkIkIEvWfLfql7zPVWQk2UxC0i4rGkXaONIptKCu7IV6nGSgNC2MMYD
+	 pTNUx0h/NDv2vYunIS969vBImv6SS1T0mgLI2z9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-Subject: [PATCH 5.10 096/108] ipv6: annotate data-races around cnf.disable_ipv6
+	Bjorn Andersson <andersson@kernel.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.9 115/143] pmdomain: qcom: rpmhpd: Skip retention level for Power Domains
 Date: Tue, 16 Jul 2024 17:31:51 +0200
-Message-ID: <20240716152749.676626026@linuxfoundation.org>
+Message-ID: <20240716152800.402050494@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-commit d289ab65b89c1d4d88417cb6c03e923f21f95fae upstream.
+commit ddab91f4b2de5c5b46e312a90107d9353087d8ea upstream.
 
-disable_ipv6 is read locklessly, add appropriate READ_ONCE()
-and WRITE_ONCE() annotations.
+In the cases where the power domain connected to logics is allowed to
+transition from a level(L)-->power collapse(0)-->retention(1) or
+vice versa retention(1)-->power collapse(0)-->level(L)  will cause the
+logic to lose the configurations. The ARC does not support retention
+to collapse transition on MxC rails.
 
-v2: do not preload net before rtnl_trylock() in
-    addrconf_disable_ipv6() (Jiri)
+The targets from SM8450 onwards the PLL logics of clock controllers are
+connected to MxC rails and the recommended configurations are carried
+out during the clock controller probes. The MxC transition as mentioned
+above should be skipped to ensure the PLL settings are intact across
+clock controller power on & off.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Ashwin: Regenerated the Patch for v5.10]
-Signed-off-by: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
+On older targets that do not split MX into MxA and MxC does not collapse
+the logic and it is parked always at RETENTION, thus this issue is never
+observed on those targets.
+
+Cc: stable@vger.kernel.org # v5.17
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20240625-avoid_mxc_retention-v2-1-af9c2f549a5f@quicinc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c   |    9 +++++----
- net/ipv6/ip6_input.c  |    2 +-
- net/ipv6/ip6_output.c |    2 +-
- 3 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/pmdomain/qcom/rpmhpd.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -4107,7 +4107,7 @@ static void addrconf_dad_work(struct wor
- 			if (!ipv6_generate_eui64(addr.s6_addr + 8, idev->dev) &&
- 			    ipv6_addr_equal(&ifp->addr, &addr)) {
- 				/* DAD failed for link-local based on MAC */
--				idev->cnf.disable_ipv6 = 1;
-+				WRITE_ONCE(idev->cnf.disable_ipv6, 1);
+--- a/drivers/pmdomain/qcom/rpmhpd.c
++++ b/drivers/pmdomain/qcom/rpmhpd.c
+@@ -40,6 +40,7 @@
+  * @addr:		Resource address as looped up using resource name from
+  *			cmd-db
+  * @state_synced:	Indicator that sync_state has been invoked for the rpmhpd resource
++ * @skip_retention_level: Indicate that retention level should not be used for the power domain
+  */
+ struct rpmhpd {
+ 	struct device	*dev;
+@@ -56,6 +57,7 @@ struct rpmhpd {
+ 	const char	*res_name;
+ 	u32		addr;
+ 	bool		state_synced;
++	bool            skip_retention_level;
+ };
  
- 				pr_info("%s: IPv6 being disabled!\n",
- 					ifp->idev->dev->name);
-@@ -6220,7 +6220,8 @@ static void addrconf_disable_change(stru
- 		idev = __in6_dev_get(dev);
- 		if (idev) {
- 			int changed = (!idev->cnf.disable_ipv6) ^ (!newf);
--			idev->cnf.disable_ipv6 = newf;
+ struct rpmhpd_desc {
+@@ -173,6 +175,7 @@ static struct rpmhpd mxc = {
+ 	.pd = { .name = "mxc", },
+ 	.peer = &mxc_ao,
+ 	.res_name = "mxc.lvl",
++	.skip_retention_level = true,
+ };
+ 
+ static struct rpmhpd mxc_ao = {
+@@ -180,6 +183,7 @@ static struct rpmhpd mxc_ao = {
+ 	.active_only = true,
+ 	.peer = &mxc,
+ 	.res_name = "mxc.lvl",
++	.skip_retention_level = true,
+ };
+ 
+ static struct rpmhpd nsp = {
+@@ -819,6 +823,9 @@ static int rpmhpd_update_level_mapping(s
+ 		return -EINVAL;
+ 
+ 	for (i = 0; i < rpmhpd->level_count; i++) {
++		if (rpmhpd->skip_retention_level && buf[i] == RPMH_REGULATOR_LEVEL_RETENTION)
++			continue;
 +
-+			WRITE_ONCE(idev->cnf.disable_ipv6, newf);
- 			if (changed)
- 				dev_disable_change(idev);
- 		}
-@@ -6237,7 +6238,7 @@ static int addrconf_disable_ipv6(struct
+ 		rpmhpd->level[i] = buf[i];
  
- 	net = (struct net *)table->extra2;
- 	old = *p;
--	*p = newf;
-+	WRITE_ONCE(*p, newf);
- 
- 	if (p == &net->ipv6.devconf_dflt->disable_ipv6) {
- 		rtnl_unlock();
-@@ -6245,7 +6246,7 @@ static int addrconf_disable_ipv6(struct
- 	}
- 
- 	if (p == &net->ipv6.devconf_all->disable_ipv6) {
--		net->ipv6.devconf_dflt->disable_ipv6 = newf;
-+		WRITE_ONCE(net->ipv6.devconf_dflt->disable_ipv6, newf);
- 		addrconf_disable_change(net, newf);
- 	} else if ((!newf) ^ (!old))
- 		dev_disable_change((struct inet6_dev *)table->extra1);
---- a/net/ipv6/ip6_input.c
-+++ b/net/ipv6/ip6_input.c
-@@ -165,7 +165,7 @@ static struct sk_buff *ip6_rcv_core(stru
- 	__IP6_UPD_PO_STATS(net, idev, IPSTATS_MIB_IN, skb->len);
- 
- 	if ((skb = skb_share_check(skb, GFP_ATOMIC)) == NULL ||
--	    !idev || unlikely(idev->cnf.disable_ipv6)) {
-+	    !idev || unlikely(READ_ONCE(idev->cnf.disable_ipv6))) {
- 		__IP6_INC_STATS(net, idev, IPSTATS_MIB_INDISCARDS);
- 		goto drop;
- 	}
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -240,7 +240,7 @@ int ip6_output(struct net *net, struct s
- 	skb->protocol = htons(ETH_P_IPV6);
- 	skb->dev = dev;
- 
--	if (unlikely(idev->cnf.disable_ipv6)) {
-+	if (unlikely(READ_ONCE(idev->cnf.disable_ipv6))) {
- 		IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
- 		kfree_skb(skb);
- 		return 0;
+ 		/* Remember the first corner with non-zero level */
 
 
 
