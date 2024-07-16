@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-59901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62355932C58
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 002F9932CAD
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:57:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 996D3B21213
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6211F24620
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2428C19AD93;
-	Tue, 16 Jul 2024 15:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F73319FA81;
+	Tue, 16 Jul 2024 15:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DkQl9YKL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyiK0C2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62DB17A93F;
-	Tue, 16 Jul 2024 15:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABDB19FA6B;
+	Tue, 16 Jul 2024 15:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145253; cv=none; b=ODLEZqGxO7Uqd6E5ONJxr4q+cpo1o4JyIUeLtzzEZ4ZWW589XMa1SPFrspfboUYeTOhyr7bvjmIyxTWj68Jt5Zwv23aY3jqEI4rtqp2JfKe0vShu6wDN8VHIvy7CFJ6e0lUA/kraYhGmYVlkOAZvlbGytNHN7GdGhhv6xRElogc=
+	t=1721145413; cv=none; b=aTAlijVwz0s04vnWJt18UKo5odWWvLvapsRblTkr5KVw5nb7I2XVpT40MCh7feZZFK8YxjrUZcmKnDhdFUACXUkjDU39cCzbR2ST9tSVABD7JlKrKrx6DT2BG40ajeCZzR7ccaMjt6oven7niQXqmKr9DMDycvYrlw4b6iico0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145253; c=relaxed/simple;
-	bh=oMFHuPI8F/3FaSWf7WJo/5BmXZtg8GoPMll9onXzY0c=;
+	s=arc-20240116; t=1721145413; c=relaxed/simple;
+	bh=CQJazhY9RipsLptMhIPJEWw4GX0TQRKI+Z7em0qoFRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMix8o6TOL79Gi9mqHiK0q8wRZxDs1ljT7oNyahCR1mENwi1MMVaGeksy9yZtaWoGARaPjoPGBDXIN79CuzOvViVObSUyC9IY25JXuLariPjmHjqnigIU5qC2A0d1K+dHao1Vc5L3d0n4TJRnoWc3UmvoeO/fsw7uYXJHT2YCtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkQl9YKL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359B0C116B1;
-	Tue, 16 Jul 2024 15:54:13 +0000 (UTC)
+	 MIME-Version; b=TxM5IL9aoWl8rlrLXegEm1atYTIPc8C/s/6OE6o7nHAJo7LjrVNqIwjdzup5orxFciMTtlrbzWKlxoeuOYsfGL7De+aZBjtgp2T4S1VPQVsk7ZokcNyMVHWy+L4jakDvNJlBYIO+mpXo6WXvZsqrlFgBPlyObI6sVLfuxJ/j/7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyiK0C2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6111C4AF17;
+	Tue, 16 Jul 2024 15:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145253;
-	bh=oMFHuPI8F/3FaSWf7WJo/5BmXZtg8GoPMll9onXzY0c=;
+	s=korg; t=1721145413;
+	bh=CQJazhY9RipsLptMhIPJEWw4GX0TQRKI+Z7em0qoFRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DkQl9YKLKfYk0hKXDrIKnT+k23kD7ZOD1knjvsmt0sU2J1/t0vA7JUKZE4ZBXw2yE
-	 IfoXz8avkriPTysHmjLIp/6Q62aS7+ACt/f6WX+DQh8bK829g34uDouGmw2dHqW0TA
-	 Dw4LuqK95ZG2WUEmfjTRW47SF8fqU70B8hsa7kbs=
+	b=kyiK0C2MNnunYVJNhVzFYhjQDnORZD+eoxBVnfTtd98UqPxsm5C+mKRWAu7u76wc4
+	 blM9KmufkrDTPmS3GVt5TcdmSFL4RlVOHfs9SOUMGyc5sFVc8Sd/eMMSIeP7scqkgY
+	 Zi+SkHVojCnL3TyyHuWXzHUL7+W2gQY2/xg1ALvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gavin Shan <gshan@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Don Dutile <ddutile@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	William Kucharski <william.kucharski@oracle.com>,
-	Zhenyu Zhang <zhenyzha@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 131/143] mm/shmem: disable PMD-sized page cache if needed
+	Dmitry Smirnov <d.smirnov@inbox.lv>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 56/96] USB: serial: mos7840: fix crash on resume
 Date: Tue, 16 Jul 2024 17:32:07 +0200
-Message-ID: <20240716152801.029362403@linuxfoundation.org>
+Message-ID: <20240716152748.658765982@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,113 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Shan <gshan@redhat.com>
+From: Dmitry Smirnov <d.smirnov@inbox.lv>
 
-commit 9fd154ba926b34c833b7bfc4c14ee2e931b3d743 upstream.
+commit c15a688e49987385baa8804bf65d570e362f8576 upstream.
 
-For shmem files, it's possible that PMD-sized page cache can't be
-supported by xarray.  For example, 512MB page cache on ARM64 when the base
-page size is 64KB can't be supported by xarray.  It leads to errors as the
-following messages indicate when this sort of xarray entry is split.
+Since commit c49cfa917025 ("USB: serial: use generic method if no
+alternative is provided in usb serial layer"), USB serial core calls the
+generic resume implementation when the driver has not provided one.
 
-WARNING: CPU: 34 PID: 7578 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
-Modules linked in: binfmt_misc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6   \
-nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject        \
-nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4  \
-ip_set rfkill nf_tables nfnetlink vfat fat virtio_balloon drm fuse xfs  \
-libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64 sha1_ce virtio_net \
-net_failover virtio_console virtio_blk failover dimlib virtio_mmio
-CPU: 34 PID: 7578 Comm: test Kdump: loaded Tainted: G W 6.10.0-rc5-gavin+ #9
-Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : xas_split_alloc+0xf8/0x128
-lr : split_huge_page_to_list_to_order+0x1c4/0x720
-sp : ffff8000882af5f0
-x29: ffff8000882af5f0 x28: ffff8000882af650 x27: ffff8000882af768
-x26: 0000000000000cc0 x25: 000000000000000d x24: ffff00010625b858
-x23: ffff8000882af650 x22: ffffffdfc0900000 x21: 0000000000000000
-x20: 0000000000000000 x19: ffffffdfc0900000 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000018000000000 x15: 52f8004000000000
-x14: 0000e00000000000 x13: 0000000000002000 x12: 0000000000000020
-x11: 52f8000000000000 x10: 52f8e1c0ffff6000 x9 : ffffbeb9619a681c
-x8 : 0000000000000003 x7 : 0000000000000000 x6 : ffff00010b02ddb0
-x5 : ffffbeb96395e378 x4 : 0000000000000000 x3 : 0000000000000cc0
-x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
-Call trace:
- xas_split_alloc+0xf8/0x128
- split_huge_page_to_list_to_order+0x1c4/0x720
- truncate_inode_partial_folio+0xdc/0x160
- shmem_undo_range+0x2bc/0x6a8
- shmem_fallocate+0x134/0x430
- vfs_fallocate+0x124/0x2e8
- ksys_fallocate+0x4c/0xa0
- __arm64_sys_fallocate+0x24/0x38
- invoke_syscall.constprop.0+0x7c/0xd8
- do_el0_svc+0xb4/0xd0
- el0_svc+0x44/0x1d8
- el0t_64_sync_handler+0x134/0x150
- el0t_64_sync+0x17c/0x180
+This can trigger a crash on resume with mos7840 since support for
+multiple read URBs was added back in 2011. Specifically, both port read
+URBs are now submitted on resume for open ports, but the context pointer
+of the second URB is left set to the core rather than mos7840 port
+structure.
 
-Fix it by disabling PMD-sized page cache when HPAGE_PMD_ORDER is larger
-than MAX_PAGECACHE_ORDER.  As Matthew Wilcox pointed, the page cache in a
-shmem file isn't represented by a multi-index entry and doesn't have this
-limitation when the xarry entry is split until commit 6b24ca4a1a8d ("mm:
-Use multi-index entries in the page cache").
+Fix this by implementing dedicated suspend and resume functions for
+mos7840.
 
-Link: https://lkml.kernel.org/r/20240627003953.1262512-5-gshan@redhat.com
-Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Darrick J. Wong <djwong@kernel.org>
-Cc: Don Dutile <ddutile@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: William Kucharski <william.kucharski@oracle.com>
-Cc: Zhenyu Zhang <zhenyzha@redhat.com>
-Cc: <stable@vger.kernel.org>	[5.17+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tested with Delock 87414 USB 2.0 to 4x serial adapter.
+
+Signed-off-by: Dmitry Smirnov <d.smirnov@inbox.lv>
+[ johan: analyse crash and rewrite commit message; set busy flag on
+         resume; drop bulk-in check; drop unnecessary usb_kill_urb() ]
+Fixes: d83b405383c9 ("USB: serial: add support for multiple read urbs")
+Cc: stable@vger.kernel.org	# 3.3
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/shmem.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/usb/serial/mos7840.c |   45 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -541,8 +541,9 @@ static bool shmem_confirm_swap(struct ad
- 
- static int shmem_huge __read_mostly = SHMEM_HUGE_NEVER;
- 
--bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
--		   struct mm_struct *mm, unsigned long vm_flags)
-+static bool __shmem_is_huge(struct inode *inode, pgoff_t index,
-+			    bool shmem_huge_force, struct mm_struct *mm,
-+			    unsigned long vm_flags)
- {
- 	loff_t i_size;
- 
-@@ -573,6 +574,16 @@ bool shmem_is_huge(struct inode *inode,
- 	}
+--- a/drivers/usb/serial/mos7840.c
++++ b/drivers/usb/serial/mos7840.c
+@@ -1736,6 +1736,49 @@ static void mos7840_port_remove(struct u
+ 	kfree(mos7840_port);
  }
  
-+bool shmem_is_huge(struct inode *inode, pgoff_t index,
-+		   bool shmem_huge_force, struct mm_struct *mm,
-+		   unsigned long vm_flags)
++static int mos7840_suspend(struct usb_serial *serial, pm_message_t message)
 +{
-+	if (HPAGE_PMD_ORDER > MAX_PAGECACHE_ORDER)
-+		return false;
++	struct moschip_port *mos7840_port;
++	struct usb_serial_port *port;
++	int i;
 +
-+	return __shmem_is_huge(inode, index, shmem_huge_force, mm, vm_flags);
++	for (i = 0; i < serial->num_ports; ++i) {
++		port = serial->port[i];
++		if (!tty_port_initialized(&port->port))
++			continue;
++
++		mos7840_port = usb_get_serial_port_data(port);
++
++		usb_kill_urb(mos7840_port->read_urb);
++		mos7840_port->read_urb_busy = false;
++	}
++
++	return 0;
 +}
 +
- #if defined(CONFIG_SYSFS)
- static int shmem_parse_huge(const char *str)
- {
++static int mos7840_resume(struct usb_serial *serial)
++{
++	struct moschip_port *mos7840_port;
++	struct usb_serial_port *port;
++	int res;
++	int i;
++
++	for (i = 0; i < serial->num_ports; ++i) {
++		port = serial->port[i];
++		if (!tty_port_initialized(&port->port))
++			continue;
++
++		mos7840_port = usb_get_serial_port_data(port);
++
++		mos7840_port->read_urb_busy = true;
++		res = usb_submit_urb(mos7840_port->read_urb, GFP_NOIO);
++		if (res)
++			mos7840_port->read_urb_busy = false;
++	}
++
++	return 0;
++}
++
+ static struct usb_serial_driver moschip7840_4port_device = {
+ 	.driver = {
+ 		   .owner = THIS_MODULE,
+@@ -1763,6 +1806,8 @@ static struct usb_serial_driver moschip7
+ 	.port_probe = mos7840_port_probe,
+ 	.port_remove = mos7840_port_remove,
+ 	.read_bulk_callback = mos7840_bulk_in_callback,
++	.suspend = mos7840_suspend,
++	.resume = mos7840_resume,
+ };
+ 
+ static struct usb_serial_driver * const serial_drivers[] = {
 
 
 
