@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-59516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70862932A84
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:34:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F280C932B60
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:44:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E7D1B23221
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:34:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FA48281F8E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A89019DF75;
-	Tue, 16 Jul 2024 15:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC231448ED;
+	Tue, 16 Jul 2024 15:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urWrO4ii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2coeF7A1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3695219DF52;
-	Tue, 16 Jul 2024 15:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5E8F9E8;
+	Tue, 16 Jul 2024 15:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144086; cv=none; b=uht2aKeNGZoY5gd218aAXej4vOoQLWn3pWBd9k3r1kkqPDPvuyvAkGhDuv8FoIVujHfWdr3usRK6JxdAQII08nzc30s+VHBlE3z3PWn3BsDp7vdVvT+vx3OkjsFXd3K0DU+uNXiWf2D+2HJ0aXqjPlgnpU+kBpoQ2Rl1sT2oyjA=
+	t=1721144666; cv=none; b=pZzq59dr8/8TSbk1WKlYRmYglD7HaeaSliB/fcFb6CTfc9eg4NUN5zFbJvtiOUZmTmGKuHmHMnzfUMR2KljZiMwX6uplY7mxiCT1L09OHgDx2kaKUyxKAK0wtFndc90sSMlmCnRTXPk4FudRGzccOHYzhxkxOKcF5G4JqrQPltk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144086; c=relaxed/simple;
-	bh=4fwJPRJDzbISnpvc+EbnjhBhtqSVZTG5lfoHhrWGM1c=;
+	s=arc-20240116; t=1721144666; c=relaxed/simple;
+	bh=dgrXM2wsE2547ZoLxOvFB3qJBv0kHRuqC9Oy2oPaJdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Juh/nlD3iRc9uRMIW1yfqpvBOjP9DzHJMqBKqtZM9CaovwxyWcv6veHioSpilhpxh9uuub+sopWhuQhncG7oOva8VDUrl/al2CH07UarExbprTz34vilNusF4Id6ldZJaBCWA1hnSH8ErxCOzfccBFeVRPBQM1fw3eZiu73OBy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urWrO4ii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D45C116B1;
-	Tue, 16 Jul 2024 15:34:45 +0000 (UTC)
+	 MIME-Version; b=rc/vTpP2txh3XzDTmPM9NYEFRRK0mg3BbGaShEBKPrEuQ2vB1sRvaMgRAV4muVd3yqRl2ukNMbsrrCr+LyPCZkNLLdrdz72NmnFpqu73XkbDiZhQKg1cHcf4LY6tZFGvflWmOsousYQnxQ9ZgkwIdl6NB4bf0gZM/rSW64zkyJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2coeF7A1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E64C116B1;
+	Tue, 16 Jul 2024 15:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144086;
-	bh=4fwJPRJDzbISnpvc+EbnjhBhtqSVZTG5lfoHhrWGM1c=;
+	s=korg; t=1721144666;
+	bh=dgrXM2wsE2547ZoLxOvFB3qJBv0kHRuqC9Oy2oPaJdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=urWrO4iiXlYQ+f+A/U8lTDWf9bsfXlDVFPib8H4rnmrug3GFtqnPjElo4Yy1o62eH
-	 iRcowSrdADyIKGs+chEwaeYn1lksH8DADYrTcWerzq7pjjEGakXGOiBSasegf+s+cd
-	 wt8awpa6bKAsxT6wkr/NBptEQlb/uRtiyKGV2yn4=
+	b=2coeF7A1R8xvH0gAEhZaSqWF7yWIpV1/CZlYEGdfK4m93m1Ht8Aoz5qmu5/BaPBd8
+	 m+dm9C3WBzGDJvEDbUl24e8pXIldVMDE4JFkpGp9+JBZ5fmyYP54Z1nEa1GBhB+moc
+	 w0O4AvlV8XlsKehm4OidZaVmd31p4xpDiPxRU9dA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marshall <hubcap@omnibond.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 15/66] orangefs: fix out-of-bounds fsid access
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Hillf Danton <hdanton@sina.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 035/108] nilfs2: add missing check for inode numbers on directory entries
 Date: Tue, 16 Jul 2024 17:30:50 +0200
-Message-ID: <20240716152738.743946227@linuxfoundation.org>
+Message-ID: <20240716152747.346127994@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marshall <hubcap@omnibond.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 53e4efa470d5fc6a96662d2d3322cfc925818517 ]
+commit bb76c6c274683c8570ad788f79d4b875bde0e458 upstream.
 
-Arnd Bergmann sent a patch to fsdevel, he says:
+Syzbot reported that mounting and unmounting a specific pattern of
+corrupted nilfs2 filesystem images causes a use-after-free of metadata
+file inodes, which triggers a kernel bug in lru_add_fn().
 
-"orangefs_statfs() copies two consecutive fields of the superblock into
-the statfs structure, which triggers a warning from the string fortification
-helpers"
+As Jan Kara pointed out, this is because the link count of a metadata file
+gets corrupted to 0, and nilfs_evict_inode(), which is called from iput(),
+tries to delete that inode (ifile inode in this case).
 
-Jan Kara suggested an alternate way to do the patch to make it more readable.
+The inconsistency occurs because directories containing the inode numbers
+of these metadata files that should not be visible in the namespace are
+read without checking.
 
-I ran both ideas through xfstests and both seem fine. This patch
-is based on Jan Kara's suggestion.
+Fix this issue by treating the inode numbers of these internal files as
+errors in the sanity check helper when reading directory folios/pages.
 
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also thanks to Hillf Danton and Matthew Wilcox for their initial mm-layer
+analysis.
+
+Link: https://lkml.kernel.org/r/20240623051135.4180-3-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d79afb004be235636ee8
+Reported-by: Jan Kara <jack@suse.cz>
+Closes: https://lkml.kernel.org/r/20240617075758.wewhukbrjod5fp5o@quack3
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/orangefs/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nilfs2/dir.c   |    6 ++++++
+ fs/nilfs2/nilfs.h |    5 +++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/fs/orangefs/super.c b/fs/orangefs/super.c
-index 524fd95173b3a..571eebf1a263b 100644
---- a/fs/orangefs/super.c
-+++ b/fs/orangefs/super.c
-@@ -186,7 +186,8 @@ static int orangefs_statfs(struct dentry *dentry, struct kstatfs *buf)
- 		     (long)new_op->downcall.resp.statfs.files_avail);
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -143,6 +143,9 @@ static bool nilfs_check_page(struct page
+ 			goto Enamelen;
+ 		if (((offs + rec_len - 1) ^ offs) & ~(chunk_size-1))
+ 			goto Espan;
++		if (unlikely(p->inode &&
++			     NILFS_PRIVATE_INODE(le64_to_cpu(p->inode))))
++			goto Einumber;
+ 	}
+ 	if (offs != limit)
+ 		goto Eend;
+@@ -168,6 +171,9 @@ Enamelen:
+ 	goto bad_entry;
+ Espan:
+ 	error = "directory entry across blocks";
++	goto bad_entry;
++Einumber:
++	error = "disallowed inode number";
+ bad_entry:
+ 	nilfs_error(sb,
+ 		    "bad entry in directory #%lu: %s - offset=%lu, inode=%lu, rec_len=%d, name_len=%d",
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -121,6 +121,11 @@ enum {
+ 	((ino) >= NILFS_FIRST_INO(sb) ||				\
+ 	 ((ino) < NILFS_USER_INO && (NILFS_SYS_INO_BITS & BIT(ino))))
  
- 	buf->f_type = sb->s_magic;
--	memcpy(&buf->f_fsid, &ORANGEFS_SB(sb)->fs_id, sizeof(buf->f_fsid));
-+	buf->f_fsid.val[0] = ORANGEFS_SB(sb)->fs_id;
-+	buf->f_fsid.val[1] = ORANGEFS_SB(sb)->id;
- 	buf->f_bsize = new_op->downcall.resp.statfs.block_size;
- 	buf->f_namelen = ORANGEFS_NAME_MAX;
- 
--- 
-2.43.0
-
++#define NILFS_PRIVATE_INODE(ino) ({					\
++	ino_t __ino = (ino);						\
++	((__ino) < NILFS_USER_INO && (__ino) != NILFS_ROOT_INO &&	\
++	 (__ino) != NILFS_SKETCH_INO); })
++
+ /**
+  * struct nilfs_transaction_info: context information for synchronization
+  * @ti_magic: Magic number
 
 
 
