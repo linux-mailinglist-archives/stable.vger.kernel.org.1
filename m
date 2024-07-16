@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-60319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C8793304A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:38:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F8F93304D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 20:39:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7542B21EF4
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:38:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7685E1C21E44
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646E51A83DC;
-	Tue, 16 Jul 2024 18:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C105A1A908A;
+	Tue, 16 Jul 2024 18:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A1zf3erg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4zOxb3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1451A2C04;
-	Tue, 16 Jul 2024 18:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7812F1A2C14;
+	Tue, 16 Jul 2024 18:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154855; cv=none; b=OWG+hPjdS2NObfrtpdmV4RX+9RuHJBa8I89lsm5mF0Ij/86ZzNRuRvH9XxIikMitnAEMCAKvWTCcngt9n3XRkSLL7x5uSwL0OkUJDuj8R7zv3ul/PLQ8W3+fgNktkVoiYYVq49EzZyKvJ2pOLACps1kwIeFnF3HCqIlnjR713vs=
+	t=1721154859; cv=none; b=nf897SXjDOsdCINikKDh3VzSTSCciHsNM+xMqcR+urDAP8KQYyA3JTga8evpt3dLpgqbaifaVfIvZnY5C0AXtm1eLn3PLfVCd+bde8E3BeYSQuEbzyo/U59u3mDqVB+OAiZRxCt2QVHyHInpo/iZOW8ULes8NTysVHAlT9Ez5vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154855; c=relaxed/simple;
-	bh=4Pu9TiE6lBXR/e/lfKvIC9SzjKkhyM5s7/+Yl0k5q3w=;
+	s=arc-20240116; t=1721154859; c=relaxed/simple;
+	bh=2K0g1t7SFFmyFpHBYCQZgT7kd2mByMFkUCTErHVQcs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HY4iKuidMYgIOjKd4ZeIdVfz1XtNF/vMGzTFaVgbz9AsawVxkE//vQDDrORUBFN2Hn6ZmnPpbR5Vbtj7mY+UWg6XMT1s95LdafFq/hRZUiUY4z4SRw7fawVAudBuOEv5ltURUxDxYxKKHIHepc/2fXBPA7VPJ9AxxJ/pFw/lj2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A1zf3erg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32F3C4AF0B;
-	Tue, 16 Jul 2024 18:34:13 +0000 (UTC)
+	 MIME-Version; b=hXfsbNGMyrxddW+JqvqP7gMjmzNEKgOWTr88KAdv3ljUJwRiKuE6wPuDVYMV7kDpbHltAff1/RlcdjM+qVQ++yA7IPAi5Pl1VX19QrA0WJjLohAPU781WgZIZ/MOugP9CvoxgXDcerh8goIf2lNH1qdMEN4s2Gf/7k6DlpJa0/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4zOxb3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93948C4AF0B;
+	Tue, 16 Jul 2024 18:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154854;
-	bh=4Pu9TiE6lBXR/e/lfKvIC9SzjKkhyM5s7/+Yl0k5q3w=;
+	s=k20201202; t=1721154859;
+	bh=2K0g1t7SFFmyFpHBYCQZgT7kd2mByMFkUCTErHVQcs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1zf3erghwqv5litjYY3AxFBmwZ9QXXT2K0YURBALMKTItOGHuqZxVE0otdmqQiEA
-	 ws8fWvwTv62DB6DaE+U/lGnkduKDL/AqfDRsbyKz649PCcIH8gohr5PxdTnfImOCKu
-	 wRgm3LY9xzBRO6yISoCTGqrg92q4R4ardydM2cNwncsIDcJ0o4JZFlglQsQdlJwtiv
-	 32pqrH0uRKOIQ3Vur5Z0VhzG3cXxmHUiBUYkc2PRX60Bb2F3F4fntuTUBo+KJAo6c8
-	 o8q4SgFLCoDyKySAhCuyeqzgk1eizPiDITilOs35ODt1QqEILZLtdazBABylAsRHCV
-	 qtfmnCmSsnXtw==
+	b=m4zOxb3Qnz/Z32Dyweyl2vkwBKSXhq7ntBfQQ90aDMRfx11w6xnW26OGYwzvpGZmc
+	 b7GQQEg7lIqTKmddPPEfpoTNnBOeDVXpj7Ww/e9PTWADX9pFb8loGsGGozkT65GVNi
+	 B7lFYCLGyN7L6BZz9tqMuZbRj7Jec01RD1HWUUXfJFdnyiVB73FyPXygd02RlHBcTD
+	 GszcFKWQfZ+UZUJYAIFvFtWJf6285Cv+IeAZvI1fUowJPULgtz6+hLQ+o2ER1TxOnc
+	 f14mb7uuJRSgvCZFrWfDAw0wQWh9LNAIAC+dZDN7PjMvtGriGebiUYA0SUh7bYCZ5w
+	 jGYvrY8ZO4G2A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: John Hubbard <jhubbard@nvidia.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	Edward Liaw <edliaw@google.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.1 2/5] ksmbd: return FILE_DEVICE_DISK instead of super magic
-Date: Tue, 16 Jul 2024 14:33:59 -0400
-Message-ID: <20240716183409.2814531-2-sashal@kernel.org>
+	shuah@kernel.org,
+	nathan@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.1 3/5] selftests/vDSO: fix clang build errors and warnings
+Date: Tue, 16 Jul 2024 14:34:00 -0400
+Message-ID: <20240716183409.2814531-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716183409.2814531-1-sashal@kernel.org>
 References: <20240716183409.2814531-1-sashal@kernel.org>
@@ -67,87 +71,121 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.99
 Content-Transfer-Encoding: 8bit
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 25a6e135569b3901452e4863c94560df7c11c492 ]
+[ Upstream commit 73810cd45b99c6c418e1c6a487b52c1e74edb20d ]
 
-MS-SMB2 specification describes setting ->DeviceType to FILE_DEVICE_DISK
-or FILE_DEVICE_CD_ROM. Set FILE_DEVICE_DISK instead of super magic in
-FS_DEVICE_INFORMATION. And Set FILE_READ_ONLY_DEVICE for read-only share.
+When building with clang, via:
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+    make LLVM=1 -C tools/testing/selftests
+
+...there are several warnings, and an error. This fixes all of those and
+allows these tests to run and pass.
+
+1. Fix linker error (undefined reference to memcpy) by providing a local
+   version of memcpy.
+
+2. clang complains about using this form:
+
+    if (g = h & 0xf0000000)
+
+...so factor out the assignment into a separate step.
+
+3. The code is passing a signed const char* to elf_hash(), which expects
+   a const unsigned char *. There are several callers, so fix this at
+   the source by allowing the function to accept a signed argument, and
+   then converting to unsigned operations, once inside the function.
+
+4. clang doesn't have __attribute__((externally_visible)) and generates
+   a warning to that effect. Fortunately, gcc 12 and gcc 13 do not seem
+   to require that attribute in order to build, run and pass tests here,
+   so remove it.
+
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/common/smb2pdu.h | 34 ++++++++++++++++++++++++++++++++++
- fs/smb/server/smb2pdu.c |  9 +++++++--
- 2 files changed, 41 insertions(+), 2 deletions(-)
+ tools/testing/selftests/vDSO/parse_vdso.c      | 16 +++++++++++-----
+ .../selftests/vDSO/vdso_standalone_test_x86.c  | 18 ++++++++++++++++--
+ 2 files changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/fs/smb/common/smb2pdu.h b/fs/smb/common/smb2pdu.h
-index 25383b11d01b9..7d69a2a1d3ba4 100644
---- a/fs/smb/common/smb2pdu.h
-+++ b/fs/smb/common/smb2pdu.h
-@@ -905,6 +905,40 @@ struct smb2_query_directory_rsp {
- 	__u8   Buffer[];
- } __packed;
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index 413f75620a35b..4ae417372e9eb 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -55,14 +55,20 @@ static struct vdso_info
+ 	ELF(Verdef) *verdef;
+ } vdso_info;
  
-+/* DeviceType Flags */
-+#define FILE_DEVICE_CD_ROM              0x00000002
-+#define FILE_DEVICE_CD_ROM_FILE_SYSTEM  0x00000003
-+#define FILE_DEVICE_DFS                 0x00000006
-+#define FILE_DEVICE_DISK                0x00000007
-+#define FILE_DEVICE_DISK_FILE_SYSTEM    0x00000008
-+#define FILE_DEVICE_FILE_SYSTEM         0x00000009
-+#define FILE_DEVICE_NAMED_PIPE          0x00000011
-+#define FILE_DEVICE_NETWORK             0x00000012
-+#define FILE_DEVICE_NETWORK_FILE_SYSTEM 0x00000014
-+#define FILE_DEVICE_NULL                0x00000015
-+#define FILE_DEVICE_PARALLEL_PORT       0x00000016
-+#define FILE_DEVICE_PRINTER             0x00000018
-+#define FILE_DEVICE_SERIAL_PORT         0x0000001b
-+#define FILE_DEVICE_STREAMS             0x0000001e
-+#define FILE_DEVICE_TAPE                0x0000001f
-+#define FILE_DEVICE_TAPE_FILE_SYSTEM    0x00000020
-+#define FILE_DEVICE_VIRTUAL_DISK        0x00000024
-+#define FILE_DEVICE_NETWORK_REDIRECTOR  0x00000028
+-/* Straight from the ELF specification. */
+-static unsigned long elf_hash(const unsigned char *name)
++/*
++ * Straight from the ELF specification...and then tweaked slightly, in order to
++ * avoid a few clang warnings.
++ */
++static unsigned long elf_hash(const char *name)
+ {
+ 	unsigned long h = 0, g;
+-	while (*name)
++	const unsigned char *uch_name = (const unsigned char *)name;
 +
-+/* Device Characteristics */
-+#define FILE_REMOVABLE_MEDIA			0x00000001
-+#define FILE_READ_ONLY_DEVICE			0x00000002
-+#define FILE_FLOPPY_DISKETTE			0x00000004
-+#define FILE_WRITE_ONCE_MEDIA			0x00000008
-+#define FILE_REMOTE_DEVICE			0x00000010
-+#define FILE_DEVICE_IS_MOUNTED			0x00000020
-+#define FILE_VIRTUAL_VOLUME			0x00000040
-+#define FILE_DEVICE_SECURE_OPEN			0x00000100
-+#define FILE_CHARACTERISTIC_TS_DEVICE		0x00001000
-+#define FILE_CHARACTERISTIC_WEBDAV_DEVICE	0x00002000
-+#define FILE_PORTABLE_DEVICE			0x00004000
-+#define FILE_DEVICE_ALLOW_APPCONTAINER_TRAVERSAL 0x00020000
-+
- /*
-  * Maximum number of iovs we need for a set-info request.
-  * The largest one is rename/hardlink
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 34d88425434ab..bd422e98231fb 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -5039,8 +5039,13 @@ static int smb2_get_info_filesystem(struct ksmbd_work *work,
- 
- 		info = (struct filesystem_device_info *)rsp->Buffer;
- 
--		info->DeviceType = cpu_to_le32(stfs.f_type);
--		info->DeviceCharacteristics = cpu_to_le32(0x00000020);
-+		info->DeviceType = cpu_to_le32(FILE_DEVICE_DISK);
-+		info->DeviceCharacteristics =
-+			cpu_to_le32(FILE_DEVICE_IS_MOUNTED);
-+		if (!test_tree_conn_flag(work->tcon,
-+					 KSMBD_TREE_CONN_FLAG_WRITABLE))
-+			info->DeviceCharacteristics |=
-+				cpu_to_le32(FILE_READ_ONLY_DEVICE);
- 		rsp->OutputBufferLength = cpu_to_le32(8);
- 		break;
++	while (*uch_name)
+ 	{
+-		h = (h << 4) + *name++;
+-		if (g = h & 0xf0000000)
++		h = (h << 4) + *uch_name++;
++		g = h & 0xf0000000;
++		if (g)
+ 			h ^= g >> 24;
+ 		h &= ~g;
  	}
+diff --git a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
+index 8a44ff973ee17..27f6fdf119691 100644
+--- a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
++++ b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
+@@ -18,7 +18,7 @@
+ 
+ #include "parse_vdso.h"
+ 
+-/* We need a libc functions... */
++/* We need some libc functions... */
+ int strcmp(const char *a, const char *b)
+ {
+ 	/* This implementation is buggy: it never returns -1. */
+@@ -34,6 +34,20 @@ int strcmp(const char *a, const char *b)
+ 	return 0;
+ }
+ 
++/*
++ * The clang build needs this, although gcc does not.
++ * Stolen from lib/string.c.
++ */
++void *memcpy(void *dest, const void *src, size_t count)
++{
++	char *tmp = dest;
++	const char *s = src;
++
++	while (count--)
++		*tmp++ = *s++;
++	return dest;
++}
++
+ /* ...and two syscalls.  This is x86-specific. */
+ static inline long x86_syscall3(long nr, long a0, long a1, long a2)
+ {
+@@ -70,7 +84,7 @@ void to_base10(char *lastdig, time_t n)
+ 	}
+ }
+ 
+-__attribute__((externally_visible)) void c_main(void **stack)
++void c_main(void **stack)
+ {
+ 	/* Parse the stack */
+ 	long argc = (long)*stack;
 -- 
 2.43.0
 
