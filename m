@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-60245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908F3932E0A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD8E932E31
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F062B217AA
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:12:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6503B24B7E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8B619DF75;
-	Tue, 16 Jul 2024 16:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3050B19DF71;
+	Tue, 16 Jul 2024 16:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWOrx56i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EjGeDT12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875B41DDCE;
-	Tue, 16 Jul 2024 16:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19761DDCE;
+	Tue, 16 Jul 2024 16:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721146322; cv=none; b=IWJV72gSSlDrI2UyyBljHySVUaHmXHzSarAh1DmKcrU7/JR54MO9M/LtgMkegVIelVr7Zn46IsXnUKNGSO7nNeCbOhMzrUvnWbsptBPwSE6JdouqVOM3SR9Zyhkh8lsGXUWTdBEenCentMnKDSnbq9e8p4Idl65hESz8QNUhQbw=
+	t=1721146453; cv=none; b=rnCRzcou0vW+DYkrSlHvlObCmtYUUD90TYgh0JMXJHTIKhhfx76kJDVLcsxI7LqO1EeH0Bkzhw6jP3D0tU9veJZJSMxJNou+5CTQgV/vZ0LJXY6RgMpB+/NMyUA51h4DDK5SLBj4x/xB/y9sn/5ULTIdGeYqlAihG637ynGYBo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721146322; c=relaxed/simple;
-	bh=223TOiKAn8QnCVka2DNtxw3AZnBBCexiX1pgPf1xvxA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=idctbNFNdaalQPbcYQAnZ9/+OX/f2Vef2YzKQImXa8cLZNTWud6bJCOomkk7Zyihrv48L6kJQ0V5jIfJaEiLiXS86pH0mO2zBlM6pHj/yFVerFWxd13JrTNB7AWEgCXIkRalFgDCoIYp8PsjmswcTw8Oi4TDm09Haam6MfWtVx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWOrx56i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429ECC116B1;
-	Tue, 16 Jul 2024 16:12:02 +0000 (UTC)
+	s=arc-20240116; t=1721146453; c=relaxed/simple;
+	bh=pT5RpY9lauBmkOcsYuu4tTe9R4Aa3/4UfpKQYu5QfdM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kv76DvoZlEvm5EIxflvo+BMFYN0RoS6oP/anCXzmvFI3x4iVdXsUlFlNKFa2GFYJWNzJWKToSOcCveByU6/R5ku3QIKYaFYqzJdfqAKHIsfjukAOy5q/XpQ9I7NFyucj3ZFdHy4DbZ7nnW8/OCiqO+jnIzm6Bg/MXLF4TTMmAPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EjGeDT12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FDDC116B1;
+	Tue, 16 Jul 2024 16:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721146322;
-	bh=223TOiKAn8QnCVka2DNtxw3AZnBBCexiX1pgPf1xvxA=;
+	s=k20201202; t=1721146452;
+	bh=pT5RpY9lauBmkOcsYuu4tTe9R4Aa3/4UfpKQYu5QfdM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=gWOrx56ilTw0HLduJfVEGyZuoTT+SMCI8lqDcP88CcrSc4vZ1vK063vdpC2kgFCvM
-	 NccTUrTQH7HGoxX51nef5kM+enb7lcResJWb4nnln0xbGf2NdnbrcE8FOGVT4Ikqb+
-	 tZEOlZmzl36f36PNp9CxKJi57+jmlKalLyPvgOS7FKxVCpwS0i1MgJCKFO1gr3bgfg
-	 7DGE1phsnjhuDX+O8M0gL+ob7bUKmMK/RUTFPHN7GRBGaX17XuZmn5pfGyC+xFvHYJ
-	 hF4l9vHRHGS/8FuehRrDZpRg1cu8+gAM3+sk6x3PJqAte3bNFqfbUG77PmrYEBFRqi
-	 Xlc9eFL3LpwFw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1sTkmZ-00000000804-1kS8;
-	Tue, 16 Jul 2024 18:12:03 +0200
-From: Johan Hovold <johan+linaro@kernel.org>
-To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] Revert "scsi: sd: Do not repeat the starting disk message"
-Date: Tue, 16 Jul 2024 18:11:01 +0200
-Message-ID: <20240716161101.30692-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.44.2
+	b=EjGeDT12OdyyFi9IlXe3uM2QetKY/wnkWrKXyDdvQ0W1c/WywruYIHYpE3QruBBjC
+	 Po61Bv5Vd2bGGyRFMnFsmHR4KlI+a2mEGALKBTf2sM+E0qfG5i/zAZFmBnZXfC+XyY
+	 xqoFJYb7srotfzcX2cgOvA2evNzhNUbmLLDK9R8qbV3s6FcTK0+b3mseKLQJmh1RKi
+	 NfLOWjGmafDEeF16IfFeZ6u6Z5Qlqw/uHyrzjv0QJAX93ZqTnSuIVZ3CsjuXlyHT2X
+	 asvcC122tKDWMuAup3XE+o5sNywc80GmOg2VTT1QNcerVtxbdFL1CInWQ7HW/Lv7Pb
+	 E1D77SEMf4ENg==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	stable@vger.kernel.org,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] tpm: Fix alignment of buf->handles
+Date: Tue, 16 Jul 2024 19:13:46 +0300
+Message-ID: <20240716161348.99858-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,81 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This reverts commit 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4.
+tpm_buf_append_name() has the following snippet in the beginning:
 
-The offending commit tried to suppress a double "Starting disk" message
-for some drivers, but instead started spamming the log with bogus
-messages every five seconds:
+	if (!tpm2_chip_auth(chip)) {
+		tpm_buf_append_u32(buf, handle);
+		/* count the number of handles in the upper bits of flags */
+		buf->handles++;
+		return;
+	}
 
-	[  311.798956] sd 0:0:0:0: [sda] Starting disk
-	[  316.919103] sd 0:0:0:0: [sda] Starting disk
-	[  322.040775] sd 0:0:0:0: [sda] Starting disk
-	[  327.161140] sd 0:0:0:0: [sda] Starting disk
-	[  332.281352] sd 0:0:0:0: [sda] Starting disk
-	[  337.401878] sd 0:0:0:0: [sda] Starting disk
-	[  342.521527] sd 0:0:0:0: [sda] Starting disk
-	[  345.850401] sd 0:0:0:0: [sda] Starting disk
-	[  350.967132] sd 0:0:0:0: [sda] Starting disk
-	[  356.090454] sd 0:0:0:0: [sda] Starting disk
-	...
+The claim in the comment is wrong, and the comment is in the wrong place
+as it should not be anyway a concern of the "call site". So in essence
+it is lying about the code.
 
-on machines that do not actually stop the disk on runtime suspend (e.g.
-the Qualcomm sc8280xp CRD with UFS).
+Fix the alignment to be aligned with the claim in the comment and remove
+the comment.
 
-Let's just revert for now to address the regression.
-
-Fixes: 7a6bbc2829d4 ("scsi: sd: Do not repeat the starting disk message")
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- drivers/scsi/sd.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/char/tpm/tpm2-sessions.c | 1 -
+ include/linux/tpm.h              | 4 ++--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-
-Hi,
-
-I just noticed this regression that snuck into 6.10-final and tracked it
-down to 7a6bbc2829d4 ("scsi: sd: Do not repeat the starting disk
-message").
-
-I wanted to get this out ASAP to address the immediate regression while
-someone who cares enough can work out a proper fix for the double start
-message (which seems less annoying).
-
-Note that the offending commit is marked for stable.
-
-Johan
-
-
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 1b7561abe05d..6b64af7d4927 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -4119,6 +4119,8 @@ static int sd_resume(struct device *dev)
- {
- 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index d3521aadd43e..02fc5d4ff535 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -238,7 +238,6 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
  
-+	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
-+
- 	if (opal_unlock_from_suspend(sdkp->opal_dev)) {
- 		sd_printk(KERN_NOTICE, sdkp, "OPAL unlock failed\n");
- 		return -EIO;
-@@ -4135,13 +4137,12 @@ static int sd_resume_common(struct device *dev, bool runtime)
- 	if (!sdkp)	/* E.g.: runtime resume at the start of sd_probe() */
- 		return 0;
- 
--	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
--
- 	if (!sd_do_start_stop(sdkp->device, runtime)) {
- 		sdkp->suspended = false;
- 		return 0;
+ 	if (!tpm2_chip_auth(chip)) {
+ 		tpm_buf_append_u32(buf, handle);
+-		/* count the number of handles in the upper bits of flags */
+ 		buf->handles++;
+ 		return;
  	}
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index e93ee8d936a9..4b55298520b5 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -374,10 +374,10 @@ enum tpm_buf_flags {
+  * A string buffer type for constructing TPM commands.
+  */
+ struct tpm_buf {
+-	u32 flags;
++	u16 flags;
++	u16 handles;
+ 	u32 length;
+ 	u8 *data;
+-	u8 handles;
+ };
  
-+	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
- 	ret = sd_start_stop_device(sdkp, 1);
- 	if (!ret) {
- 		sd_resume(dev);
+ enum tpm2_object_attributes {
 -- 
-2.44.2
+2.45.2
 
 
