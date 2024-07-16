@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-60014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD63D932D01
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91532932BF3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 698DBB2480A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1EFA1C230AE
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFCF19EEA7;
-	Tue, 16 Jul 2024 15:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E5019E7C4;
+	Tue, 16 Jul 2024 15:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZE8exvQj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgRA6V2S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC9819DF71;
-	Tue, 16 Jul 2024 15:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B4627733;
+	Tue, 16 Jul 2024 15:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145594; cv=none; b=CtXR8cVnpOsoqB0rp/iqY68R+aTHnG/3ITGYHbyU1iHckY9cM0wDenR9Hc1sWzljUd2jsImG8jMYWSnfUnS2brHhGWYunhlKn7h0yskQB3I3laN/4sjdlQwgszWwAZbwRfPGnqc4eTP5qISq8jhPtQL3H76oB/abA4dAm02VWck=
+	t=1721145010; cv=none; b=lq1VSqxD1FQhaR3OdztKvncyjJW537BNqVxzPRuE+aJBf5I7PsZNflbHENPeCZr+KBg1Cl5RyFIfcbcXtk0tiFITH4p1US1GMQ7Gb84mLUHtaP8sAh7ALPcSe+zs8RDxFzhvhffA6mOcGRU16I0hUE4suJhPRwts8hGaNFLLNIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145594; c=relaxed/simple;
-	bh=Hs+bqfNp0X3S3lBOvNgtlywFg8308KvMAn96Af1Vwng=;
+	s=arc-20240116; t=1721145010; c=relaxed/simple;
+	bh=h75ehIqoW2aWoQ4pq0SXyaGw8dgivVcY9sUIF/FB4t8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D185vHxMsBY9howIT2yb6af9haiwzM00B16BG4iJnM4dO53lH0W+vsx+nV/ChQrsiGbLTLL7TR7wp+Re+T73PMEbM5ovcGESBg+tQ3mhFzSj2Ypowqgs9xsWZ00TlkK2Eh0IHHF9xIWw9qKf2mmwmFgKdLqyj5XOfhV0S3Jh/WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZE8exvQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D35CC116B1;
-	Tue, 16 Jul 2024 15:59:53 +0000 (UTC)
+	 MIME-Version; b=TRhoBYahVU8JCi7p2l+ikaNpGYUPWkhS4ZWS239Cwe5zuvjPmGChxw4DOHu+6/rsRSrp/B135vl7rJ341WJNji7Ld49K38Z/vJ8JkZSN1SyFkHTI967UUIJu3FwH3/f0Tf0YI29e+nwliSwkowO5ntgJUo9ae69eVH1ZLuUQqlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgRA6V2S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9232BC116B1;
+	Tue, 16 Jul 2024 15:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145594;
-	bh=Hs+bqfNp0X3S3lBOvNgtlywFg8308KvMAn96Af1Vwng=;
+	s=korg; t=1721145010;
+	bh=h75ehIqoW2aWoQ4pq0SXyaGw8dgivVcY9sUIF/FB4t8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZE8exvQjxNQwwQT1IXnJ7Rv4ekwSlizVRdBSgvTqpvOiJuJ+Qzf7IV1vaKnxALyLH
-	 xfQD+O4fBQRF3PPCBdrcDvYvIi5HeiHpC4AyIUZFHAOms+eZC0et55lL5bif3+eLFG
-	 +KHkA0kBn8g4Yk1XvGP8W6r2ux0cBNfjReoXrBtM=
+	b=CgRA6V2SAv0GMx8PvrJ5D6dPMgGlrmoKP37p7VPoGnAXogHkEbWF5XR5CKYvRXm+B
+	 2CIBZp32EhpcS7aJSlFsvD1lczsZUIhIyC75m++im3dT4gDJOuRQT+q2Q1QrbEvU3m
+	 KSnWoJgamTiY7K0sGpDBoz99+/lJO+4rGs9DCZOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/121] scsi: ufs: core: Fix ufshcd_abort_one racing issue
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.9 069/143] USB: serial: option: add Telit generic core-dump composition
 Date: Tue, 16 Jul 2024 17:31:05 +0200
-Message-ID: <20240716152751.448632100@linuxfoundation.org>
+Message-ID: <20240716152758.633162033@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit 74736103fb4123c71bf11fb7a6abe7c884c5269e ]
+commit 4298e400dbdbf259549d69c349e060652ad53611 upstream.
 
-When ufshcd_abort_one is racing with the completion ISR, the completed tag
-of the request's mq_hctx pointer will be set to NULL by ISR.  Return
-success when request is completed by ISR because ufshcd_abort_one does not
-need to do anything.
+Add the following core-dump composition, used in different Telit modems:
 
-The racing flow is:
+0x9000: tty (sahara)
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#= 41 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=9000 Rev=00.00
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990-dump
+S:  SerialNumber=e815bdde
+C:  #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=2mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=10 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Thread A
-ufshcd_err_handler					step 1
-	...
-	ufshcd_abort_one
-		ufshcd_try_to_abort_task
-			ufshcd_cmd_inflight(true)	step 3
-		ufshcd_mcq_req_to_hwq
-			blk_mq_unique_tag
-				rq->mq_hctx->queue_num	step 5
-
-Thread B
-ufs_mtk_mcq_intr(cq complete ISR)			step 2
-	scsi_done
-		...
-		__blk_mq_free_request
-			rq->mq_hctx = NULL;		step 4
-
-Below is KE back trace.
-  ufshcd_try_to_abort_task: cmd at tag 41 not pending in the device.
-  ufshcd_try_to_abort_task: cmd at tag=41 is cleared.
-  Aborting tag 41 / CDB 0x28 succeeded
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000194
-  pc : [0xffffffddd7a79bf8] blk_mq_unique_tag+0x8/0x14
-  lr : [0xffffffddd6155b84] ufshcd_mcq_req_to_hwq+0x1c/0x40 [ufs_mediatek_mod_ise]
-   do_mem_abort+0x58/0x118
-   el1_abort+0x3c/0x5c
-   el1h_64_sync_handler+0x54/0x90
-   el1h_64_sync+0x68/0x6c
-   blk_mq_unique_tag+0x8/0x14
-   ufshcd_err_handler+0xae4/0xfa8 [ufs_mediatek_mod_ise]
-   process_one_work+0x208/0x4fc
-   worker_thread+0x228/0x438
-   kthread+0x104/0x1d4
-   ret_from_fork+0x10/0x20
-
-Fixes: 93e6c0e19d5b ("scsi: ufs: core: Clear cmd if abort succeeds in MCQ mode")
-Suggested-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20240628070030.30929-3-peter.wang@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 ++
+ drivers/usb/serial/option.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 7bb820bfd7437..808979a093505 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -6363,6 +6363,8 @@ static bool ufshcd_abort_one(struct request *rq, void *priv)
- 	/* Release cmd in MCQ mode if abort succeeds */
- 	if (is_mcq_enabled(hba) && (*ret == 0)) {
- 		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(lrbp->cmd));
-+		if (!hwq)
-+			return 0;
- 		spin_lock_irqsave(&hwq->cq_lock, flags);
- 		if (ufshcd_cmd_inflight(lrbp->cmd))
- 			ufshcd_release_scsi_cmd(hba, lrbp);
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1433,6 +1433,8 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(2) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x701b, 0xff),	/* Telit LE910R1 (ECM) */
+ 	  .driver_info = NCTRL(2) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x9000, 0xff),	/* Telit generic core-dump device */
++	  .driver_info = NCTRL(0) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x9010),				/* Telit SBL FN980 flashing device */
+ 	  .driver_info = NCTRL(0) | ZLP },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x9200),				/* Telit LE910S1 flashing device */
 
 
 
