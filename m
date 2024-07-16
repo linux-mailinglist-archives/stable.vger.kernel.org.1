@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-59502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B37C932A73
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:34:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4932A932B25
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:42:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39AFE1C22341
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:34:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 059FF283402
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF584E54C;
-	Tue, 16 Jul 2024 15:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD34A195B27;
+	Tue, 16 Jul 2024 15:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwZ4L31P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZydshtRB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956E1CA40;
-	Tue, 16 Jul 2024 15:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9784919DF71;
+	Tue, 16 Jul 2024 15:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144044; cv=none; b=fVDxvp9bzl8+qtpuEyyBF8KIXfNf3qMo005ANjzdMJTCzo+9GAHDerKm1A1aOAw8c69rBjYs25DITK+RjiI5esJDnPlovY2gOQq+CISTq2zFbeDTZ6RgYpkcljrwwiAclF9u1pWZsgi69NZ4bfHNBVYegxbXovn0QFAEG8SRFu0=
+	t=1721144523; cv=none; b=awmBCYV080M0UGaYgLtMc3jmsE/S0RysB4DjFkvvvV1W/NV/njxcQaF9QwrGgXZz9IJVWC9zSXYjIKNS7Pvx+uMRPvpohVkARmdHH7y/gVryw2Dvbq1vge1xxBYj+CQ8H6gTN6RCU1Z2relMIyHCay5ybpFTtGazpElp9Ygzc1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144044; c=relaxed/simple;
-	bh=9jEI5xG6HUcp3ygZVdbDhyQoJDDdFvK53ClBSlVyhms=;
+	s=arc-20240116; t=1721144523; c=relaxed/simple;
+	bh=RhVVIoquaSwzP6jnc+dTDIX5BVqbLUrJERBSExmbLR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fU0pWu0gNhc/Vmx7gMsh/VBTnR1DSLbEZZGXMOM/cc3Mk5IsDcn4i7UwZc3FhFdwya+j3Zfj9yEV5vSNbilBHFf6z7TYcGpyrwIiJBxSZuZalSnwcBaIkAA1wupUDpPJTgwkRXg+v1uspJWUkccI27hqTZn/U9bnlPE7pw5IFyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwZ4L31P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985C1C116B1;
-	Tue, 16 Jul 2024 15:34:03 +0000 (UTC)
+	 MIME-Version; b=iqrrr0tWkR3gjpUlztWTA/B8f0T0rjEJNQOelPvHFH/BNJKe1IRAepK2ZShvjpmro6MQSo7qF/D1oE/JZtzlAn7PnQIkaz5JocTXpj19crMpxTNt1BTJnz0Yj2CCODIs49tSdBt19gBA307PZyoy5v0sHVdFhY2AH9ONvB64Y/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZydshtRB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C814C4AF0F;
+	Tue, 16 Jul 2024 15:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144044;
-	bh=9jEI5xG6HUcp3ygZVdbDhyQoJDDdFvK53ClBSlVyhms=;
+	s=korg; t=1721144523;
+	bh=RhVVIoquaSwzP6jnc+dTDIX5BVqbLUrJERBSExmbLR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwZ4L31PYLHihV8+q5IH0gxBfru8iZdzBLvZIWizr6eZPy/Qg1H6vpR85UfrPsgEG
-	 gQro7qrOSDahtLjhr2vTUt22n0dQbKX2ZbpGvc6nxCOv8e5ijQCDyHcOfvbBPJkOS/
-	 Dgodko0JNEuGonzC8UC9vpW7QyXRzgXFNcDRMLps=
+	b=ZydshtRBe+HAOggNVlJkhWZMGFFeDBm7spvcw020eaXdSReWSGcF1jrxQ+IH2nIrK
+	 X62aSJyrpyamQ2j0Nq2JbtC6ZuGievFNWo+1nZbaV4xN7QrpvTW3RtMI7iGTWoBubI
+	 oQAtefFiEhOINOO6N9KAnhLi82YSVfbSUAbuXin0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mike Marshall <hubcap@omnibond.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 01/66] media: dvb: as102-fe: Fix as10x_register_addr packing
+Subject: [PATCH 5.10 021/108] orangefs: fix out-of-bounds fsid access
 Date: Tue, 16 Jul 2024 17:30:36 +0200
-Message-ID: <20240716152738.221610486@linuxfoundation.org>
+Message-ID: <20240716152746.814983545@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-References: <20240716152738.161055634@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Mike Marshall <hubcap@omnibond.com>
 
-[ Upstream commit 309422d280748c74f57f471559980268ac27732a ]
+[ Upstream commit 53e4efa470d5fc6a96662d2d3322cfc925818517 ]
 
-This structure is embedded in multiple other structures that are packed,
-which conflicts with it being aligned.
+Arnd Bergmann sent a patch to fsdevel, he says:
 
-drivers/media/usb/as102/as10x_cmd.h:379:30: warning: field reg_addr within 'struct as10x_dump_memory::(unnamed at drivers/media/usb/as102/as10x_cmd.h:373:2)' is less aligned than 'struct as10x_register_addr' and is usually due to 'struct as10x_dump_memory::(unnamed at drivers/media/usb/as102/as10x_cmd.h:373:2)' being packed, which can lead to unaligned accesses [-Wunaligned-access]
+"orangefs_statfs() copies two consecutive fields of the superblock into
+the statfs structure, which triggers a warning from the string fortification
+helpers"
 
-Mark it as being packed.
+Jan Kara suggested an alternate way to do the patch to make it more readable.
 
-Marking the inner struct as 'packed' does not change the layout, since the
-whole struct is already packed, it just silences the clang warning. See
-also this llvm discussion:
+I ran both ideas through xfstests and both seem fine. This patch
+is based on Jan Kara's suggestion.
 
-https://github.com/llvm/llvm-project/issues/55520
-
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/as102_fe_types.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/orangefs/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/as102_fe_types.h b/drivers/media/dvb-frontends/as102_fe_types.h
-index 80a5398b580fe..661d7574a6c73 100644
---- a/drivers/media/dvb-frontends/as102_fe_types.h
-+++ b/drivers/media/dvb-frontends/as102_fe_types.h
-@@ -183,6 +183,6 @@ struct as10x_register_addr {
- 	uint32_t addr;
- 	/* register mode access */
- 	uint8_t mode;
--};
-+} __packed;
+diff --git a/fs/orangefs/super.c b/fs/orangefs/super.c
+index 2f2e430461b21..b48aef43b51d5 100644
+--- a/fs/orangefs/super.c
++++ b/fs/orangefs/super.c
+@@ -200,7 +200,8 @@ static int orangefs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 		     (long)new_op->downcall.resp.statfs.files_avail);
  
- #endif
+ 	buf->f_type = sb->s_magic;
+-	memcpy(&buf->f_fsid, &ORANGEFS_SB(sb)->fs_id, sizeof(buf->f_fsid));
++	buf->f_fsid.val[0] = ORANGEFS_SB(sb)->fs_id;
++	buf->f_fsid.val[1] = ORANGEFS_SB(sb)->id;
+ 	buf->f_bsize = new_op->downcall.resp.statfs.block_size;
+ 	buf->f_namelen = ORANGEFS_NAME_MAX;
+ 
 -- 
 2.43.0
 
