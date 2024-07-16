@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-59816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E13932BE8
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52877932B37
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C7E3281B78
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:49:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08CCC1F20F32
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F59819DF53;
-	Tue, 16 Jul 2024 15:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5592219DF63;
+	Tue, 16 Jul 2024 15:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ahrx2Xlf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXwIGeil"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5746C27733;
-	Tue, 16 Jul 2024 15:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133971DDF5;
+	Tue, 16 Jul 2024 15:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144998; cv=none; b=THGbHZZbv8YyrkZFXWxDvlFjzJdf0ByBaAsP8V7jORcC0+I7/M7T2pOJAGxF9C4Npkjhry3oh5c8WVgLM25Qp9qn7TZBIB9a6Z2PppEmytYlwSfm8N8UTkpLDvA+wVNFti/LhSeI0L7Fxx5eGfP9D3ozA+4SR5JVgRiQK5Rjeto=
+	t=1721144558; cv=none; b=kw495sDw38PgSCc8IxoKUO5O49dRCiCltgQzWUkq+8N6Kah+4rMNxqClCavw3DoB1W7nd7RIUTZrJxKW/WRT7KRA5VQ2tlk1xrkw65whKqQBxz91Vgkbw46dUAH9KWAcXE9NOnGwPd4QphJmgADo3HIFRTLCocLYMz2FImEMpcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144998; c=relaxed/simple;
-	bh=m0q9bOy0jgzHiWk+Gvq916U1ri+Ko9xMWmLMRecWLQU=;
+	s=arc-20240116; t=1721144558; c=relaxed/simple;
+	bh=5Ui2HLsTbv9wJ6hf12+j3IYdxfSdbBx/Na+iQcCnrMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4ifaTSaLghuwebL/jmFJRnBRp1l9xY/141CFWQvpcQO3a3ZcdHm0NocoIAgWNC3qjGiI0a+XDFVewFwBfHgDwh4I78LmkIFstB36L08v7LElVwjrJtG195DIuo40T7jvGSQfCV3s2ljWe3KR6ov4kiHV/5HFQexMQSRRtuhubM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ahrx2Xlf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C714FC4AF0B;
-	Tue, 16 Jul 2024 15:49:57 +0000 (UTC)
+	 MIME-Version; b=Ib9X1k/PW/bAyPoKbSi8fY7AaHvzpydnaf4GohNZ9cnRkn9SmN9fnsLIe8jSqJvDb2XCkBo/MlCVXw1/vD7jWZSkruwU2DxKuKH2T0vBoL93YRKrSiVfTAO7vRAaDzRBIGwk5DiVGo+KwMiRZ3jQ4E/nQrZxhRrEOzVXPzek2hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXwIGeil; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B059C116B1;
+	Tue, 16 Jul 2024 15:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144998;
-	bh=m0q9bOy0jgzHiWk+Gvq916U1ri+Ko9xMWmLMRecWLQU=;
+	s=korg; t=1721144557;
+	bh=5Ui2HLsTbv9wJ6hf12+j3IYdxfSdbBx/Na+iQcCnrMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ahrx2XlfWa78NxcYFxyQ/1S5JIONHd7RPotRbh28qwlubzn0+nMWB1v2Y+I9wtYav
-	 KGpflHg3q4WdkqNDDueR2MhXlW+nutR4J+h5WcfFPZ0T2U6gX8lbPIvBwOHl5lBh0Y
-	 CJCTUQQsSjS0GZQ98w2j0NmfkApSSe61lNXNXVB4=
+	b=JXwIGeilSGbzB+N37wep657RiYD+QItOIkRINYhAH2fm8hlJu3XDjTzRGX8xmVXFz
+	 9G5RLRg1ZEdrKmKpdQYsIAxt5gReJ5nuSomPnrofB05WcGb2sHgnnhiZeN2XAKAf/O
+	 qNQtTI8zyNcXkxokCY7D323gaZYpwO2UU5bqdr7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Guangwu Zhang <guazhang@redhat.com>,
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 024/143] octeontx2-af: Fix incorrect value output on error path in rvu_check_rsrc_availability()
+Subject: [PATCH 5.10 005/108] scsi: qedf: Make qedf_execute_tmf() non-preemptible
 Date: Tue, 16 Jul 2024 17:30:20 +0200
-Message-ID: <20240716152756.918496810@linuxfoundation.org>
+Message-ID: <20240716152746.201610590@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: John Meneghini <jmeneghi@redhat.com>
 
-[ Upstream commit 442e26af9aa8115c96541026cbfeaaa76c85d178 ]
+[ Upstream commit 0d8b637c9c5eeaa1a4e3dfb336f3ff918eb64fec ]
 
-In rvu_check_rsrc_availability() in case of invalid SSOW req, an incorrect
-data is printed to error log. 'req->sso' value is printed instead of
-'req->ssow'. Looks like "copy-paste" mistake.
+Stop calling smp_processor_id() from preemptible code in
+qedf_execute_tmf90.  This results in BUG_ON() when running an RT kernel.
 
-Fix this mistake by replacing 'req->sso' with 'req->ssow'.
+[ 659.343280] BUG: using smp_processor_id() in preemptible [00000000] code: sg_reset/3646
+[ 659.343282] caller is qedf_execute_tmf+0x8b/0x360 [qedf]
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 746ea74241fa ("octeontx2-af: Add RVU block LF provisioning support")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240705095317.12640-1-amishin@t-argos.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Guangwu Zhang <guazhang@redhat.com>
+Cc: Saurav Kashyap <skashyap@marvell.com>
+Cc: Nilesh Javali <njavali@marvell.com>
+Signed-off-by: John Meneghini <jmeneghi@redhat.com>
+Link: https://lore.kernel.org/r/20240403150155.412954-1-jmeneghi@redhat.com
+Acked-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qedf/qedf_io.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index ff78251f92d44..5f661e67ccbcf 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -1643,7 +1643,7 @@ static int rvu_check_rsrc_availability(struct rvu *rvu,
- 		if (req->ssow > block->lf.max) {
- 			dev_err(&rvu->pdev->dev,
- 				"Func 0x%x: Invalid SSOW req, %d > max %d\n",
--				 pcifunc, req->sso, block->lf.max);
-+				 pcifunc, req->ssow, block->lf.max);
- 			return -EINVAL;
- 		}
- 		mappedlfs = rvu_get_rsrc_mapcount(pfvf, block->addr);
+diff --git a/drivers/scsi/qedf/qedf_io.c b/drivers/scsi/qedf/qedf_io.c
+index 1f8e81296beb7..70f920f4b7a19 100644
+--- a/drivers/scsi/qedf/qedf_io.c
++++ b/drivers/scsi/qedf/qedf_io.c
+@@ -2351,9 +2351,6 @@ static int qedf_execute_tmf(struct qedf_rport *fcport, struct scsi_cmnd *sc_cmd,
+ 	io_req->fcport = fcport;
+ 	io_req->cmd_type = QEDF_TASK_MGMT_CMD;
+ 
+-	/* Record which cpu this request is associated with */
+-	io_req->cpu = smp_processor_id();
+-
+ 	/* Set TM flags */
+ 	io_req->io_req_flags = QEDF_READ;
+ 	io_req->data_xfer_len = 0;
+@@ -2375,6 +2372,9 @@ static int qedf_execute_tmf(struct qedf_rport *fcport, struct scsi_cmnd *sc_cmd,
+ 
+ 	spin_lock_irqsave(&fcport->rport_lock, flags);
+ 
++	/* Record which cpu this request is associated with */
++	io_req->cpu = smp_processor_id();
++
+ 	sqe_idx = qedf_get_sqe_idx(fcport);
+ 	sqe = &fcport->sq[sqe_idx];
+ 	memset(sqe, 0, sizeof(struct fcoe_wqe));
 -- 
 2.43.0
 
