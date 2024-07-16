@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-59862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D36932C26
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:52:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A787932D27
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C7562853FD
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:52:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D4B61C20B7F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1040219DFB3;
-	Tue, 16 Jul 2024 15:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8D919AD5A;
+	Tue, 16 Jul 2024 16:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aS6Tqnz3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yncgXhTD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45C219AD46;
-	Tue, 16 Jul 2024 15:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0DC1DDCE;
+	Tue, 16 Jul 2024 16:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145132; cv=none; b=aDcljTJ62BoMSv8s0mOE22Tj50VJ74pS/WPk1TfDsOsH4X02fqT3uH+7/UFltuvkNDX5/EW+J4cUqXKx+zeL2HM9CdUxBuWCt8ywzYPoUdSNAgM/I0cXUJB+bcLdcbNqWETaJoF4CNIfMBotflILtFAF1vtTIAQDieCS4XQkaZg=
+	t=1721145708; cv=none; b=f/RdgXskqVMuIXPRTyieLUSy6JRPhn2fK6RhXgH5K3WOMnJARGhgIV4AtN+CV3XoAxtI8gcKf+Pm6DUgRaNadbHQJJgWVvPIYn1iVzU1ByB3105PJXPVycymUoRFaygUcX8cPl8OSaNGtWVb4VxbiPrq8O7aY+zGBinxO5YxymM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145132; c=relaxed/simple;
-	bh=D9MmMUgNZXfbMm+IwaBP3VOl/vRNpdbP86qvzraulto=;
+	s=arc-20240116; t=1721145708; c=relaxed/simple;
+	bh=B7QFdjt5k8tGiY7Wap7rAtI5x/XGSPOnJDqPbOxYx1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3aOLznhTSeVSYsCmvFBUx9FG71CTHPHqvvMQRz0rCTkSHPXmNM+ETiEWw6J4HC0rep8QcTt4suoeXbEyj9LReUYWarkPSUDboNBipQimEP/MWQJl3U9ZZzbC8l8gBx8wV2jEy0zL8Fb/7Yuluu+yx5qu1Wvx101b4n4C2bF+8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aS6Tqnz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408C8C116B1;
-	Tue, 16 Jul 2024 15:52:12 +0000 (UTC)
+	 MIME-Version; b=RUpExu7PeMZRGPiC2DSqREXskRC0y0CedtQzQUFGmnEZXwG9GQ5V9xvJ/hjASR/rzG5yD7iCTjHAnMnjSex4tWlmQvonVWSOXF28dKCpvjPB8TQ4ImdIDzz/wwAp/6L9jE7FbGLIp+ZRNhsyjOXfuyIEvHbWTF1Q2vYWUT/LK3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yncgXhTD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28A3C116B1;
+	Tue, 16 Jul 2024 16:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145132;
-	bh=D9MmMUgNZXfbMm+IwaBP3VOl/vRNpdbP86qvzraulto=;
+	s=korg; t=1721145708;
+	bh=B7QFdjt5k8tGiY7Wap7rAtI5x/XGSPOnJDqPbOxYx1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aS6Tqnz37wYcAtGtPTu7z68HfHF6zzaMqi8DFHVmo+QWIBmiRGmh3ItP1adV0aPas
-	 +7McBKrb3ioDV2whCfMPAqnVv7CXqDkrB30+WXKM0mEgeS1mO3jR2FouLuz9FCuRS5
-	 JP8uD5bFP3En+cDSKQcWXvS+0cLkz/OM/3naBM10=
+	b=yncgXhTDJoFE8XXMGHjlk6NGtEA4tZyVdgEeDRiYmSf7aIEpNEOvcLrXbev/xZazt
+	 0u9r/CPKw1R4AAWoU1dPYFsxNrx/k5eT9lOomM8aiDecHanRUXBS8KCReMSJovK6WP
+	 tFfchUZ/ENaQ3gy/eNrterBn7kdnWsrts2a8oJCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoonho Shin <yoonho.shin@samsung.com>,
-	Hobin Woo <hobin.woo@samsung.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.9 092/143] ksmbd: discard write access to the directory open
-Date: Tue, 16 Jul 2024 17:31:28 +0200
-Message-ID: <20240716152759.515830155@linuxfoundation.org>
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 027/121] bpf: make timer data struct more generic
+Date: Tue, 16 Jul 2024 17:31:29 +0200
+Message-ID: <20240716152752.368850375@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,251 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hobin Woo <hobin.woo@samsung.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-commit e2e33caa5dc2eae7bddf88b22ce11ec3d760e5cd upstream.
+[ Upstream commit be2749beff62e0d63cf97fe63cabc79a68443139 ]
 
-may_open() does not allow a directory to be opened with the write access.
-However, some writing flags set by client result in adding write access
-on server, making ksmbd incompatible with FUSE file system. Simply, let's
-discard the write access when opening a directory.
+To be able to add workqueues and reuse most of the timer code, we need
+to make bpf_hrtimer more generic.
 
-list_add corruption. next is NULL.
-------------[ cut here ]------------
-kernel BUG at lib/list_debug.c:26!
-pc : __list_add_valid+0x88/0xbc
-lr : __list_add_valid+0x88/0xbc
-Call trace:
-__list_add_valid+0x88/0xbc
-fuse_finish_open+0x11c/0x170
-fuse_open_common+0x284/0x5e8
-fuse_dir_open+0x14/0x24
-do_dentry_open+0x2a4/0x4e0
-dentry_open+0x50/0x80
-smb2_open+0xbe4/0x15a4
-handle_ksmbd_work+0x478/0x5ec
-process_one_work+0x1b4/0x448
-worker_thread+0x25c/0x430
-kthread+0x104/0x1d4
-ret_from_fork+0x10/0x20
+There is no code change except that the new struct gets a new u64 flags
+attribute. We are still below 2 cache lines, so this shouldn't impact
+the current running codes.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Yoonho Shin <yoonho.shin@samsung.com>
-Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The ordering is also changed. Everything related to async callback
+is now on top of bpf_hrtimer.
+
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Link: https://lore.kernel.org/r/20240420-bpf_wq-v2-1-6c986a5a741f@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: d4523831f07a ("bpf: Fail bpf_timer_cancel when callback is being cancelled")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ kernel/bpf/helpers.c | 71 ++++++++++++++++++++++++--------------------
+ 1 file changed, 38 insertions(+), 33 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2051,15 +2051,22 @@ out_err1:
-  * @access:		file access flags
-  * @disposition:	file disposition flags
-  * @may_flags:		set with MAY_ flags
-+ * @is_dir:		is creating open flags for directory
-  *
-  * Return:      file open flags
-  */
- static int smb2_create_open_flags(bool file_present, __le32 access,
- 				  __le32 disposition,
--				  int *may_flags)
-+				  int *may_flags,
-+				  bool is_dir)
- {
- 	int oflags = O_NONBLOCK | O_LARGEFILE;
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 31da67703307b..b7669e1236f70 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -1078,11 +1078,20 @@ const struct bpf_func_proto bpf_snprintf_proto = {
+ 	.arg5_type	= ARG_CONST_SIZE_OR_ZERO,
+ };
  
-+	if (is_dir) {
-+		access &= ~FILE_WRITE_DESIRE_ACCESS_LE;
-+		ksmbd_debug(SMB, "Discard write access to a directory\n");
-+	}
++struct bpf_async_cb {
++	struct bpf_map *map;
++	struct bpf_prog *prog;
++	void __rcu *callback_fn;
++	void *value;
++	struct rcu_head rcu;
++	u64 flags;
++};
 +
- 	if (access & FILE_READ_DESIRED_ACCESS_LE &&
- 	    access & FILE_WRITE_DESIRE_ACCESS_LE) {
- 		oflags |= O_RDWR;
-@@ -3167,7 +3174,9 @@ int smb2_open(struct ksmbd_work *work)
+ /* BPF map elements can contain 'struct bpf_timer'.
+  * Such map owns all of its BPF timers.
+  * 'struct bpf_timer' is allocated as part of map element allocation
+  * and it's zero initialized.
+- * That space is used to keep 'struct bpf_timer_kern'.
++ * That space is used to keep 'struct bpf_async_kern'.
+  * bpf_timer_init() allocates 'struct bpf_hrtimer', inits hrtimer, and
+  * remembers 'struct bpf_map *' pointer it's part of.
+  * bpf_timer_set_callback() increments prog refcnt and assign bpf callback_fn.
+@@ -1095,16 +1104,12 @@ const struct bpf_func_proto bpf_snprintf_proto = {
+  * freeing the timers when inner map is replaced or deleted by user space.
+  */
+ struct bpf_hrtimer {
++	struct bpf_async_cb cb;
+ 	struct hrtimer timer;
+-	struct bpf_map *map;
+-	struct bpf_prog *prog;
+-	void __rcu *callback_fn;
+-	void *value;
+-	struct rcu_head rcu;
+ };
  
- 	open_flags = smb2_create_open_flags(file_present, daccess,
- 					    req->CreateDisposition,
--					    &may_flags);
-+					    &may_flags,
-+		req->CreateOptions & FILE_DIRECTORY_FILE_LE ||
-+		(file_present && S_ISDIR(d_inode(path.dentry)->i_mode)));
+ /* the actual struct hidden inside uapi struct bpf_timer */
+-struct bpf_timer_kern {
++struct bpf_async_kern {
+ 	struct bpf_hrtimer *timer;
+ 	/* bpf_spin_lock is used here instead of spinlock_t to make
+ 	 * sure that it always fits into space reserved by struct bpf_timer
+@@ -1118,14 +1123,14 @@ static DEFINE_PER_CPU(struct bpf_hrtimer *, hrtimer_running);
+ static enum hrtimer_restart bpf_timer_cb(struct hrtimer *hrtimer)
+ {
+ 	struct bpf_hrtimer *t = container_of(hrtimer, struct bpf_hrtimer, timer);
+-	struct bpf_map *map = t->map;
+-	void *value = t->value;
++	struct bpf_map *map = t->cb.map;
++	void *value = t->cb.value;
+ 	bpf_callback_t callback_fn;
+ 	void *key;
+ 	u32 idx;
  
- 	if (!test_tree_conn_flag(tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
- 		if (open_flags & (O_CREAT | O_TRUNC)) {
+ 	BTF_TYPE_EMIT(struct bpf_timer);
+-	callback_fn = rcu_dereference_check(t->callback_fn, rcu_read_lock_bh_held());
++	callback_fn = rcu_dereference_check(t->cb.callback_fn, rcu_read_lock_bh_held());
+ 	if (!callback_fn)
+ 		goto out;
+ 
+@@ -1154,7 +1159,7 @@ static enum hrtimer_restart bpf_timer_cb(struct hrtimer *hrtimer)
+ 	return HRTIMER_NORESTART;
+ }
+ 
+-BPF_CALL_3(bpf_timer_init, struct bpf_timer_kern *, timer, struct bpf_map *, map,
++BPF_CALL_3(bpf_timer_init, struct bpf_async_kern *, timer, struct bpf_map *, map,
+ 	   u64, flags)
+ {
+ 	clockid_t clockid = flags & (MAX_CLOCKS - 1);
+@@ -1162,8 +1167,8 @@ BPF_CALL_3(bpf_timer_init, struct bpf_timer_kern *, timer, struct bpf_map *, map
+ 	int ret = 0;
+ 
+ 	BUILD_BUG_ON(MAX_CLOCKS != 16);
+-	BUILD_BUG_ON(sizeof(struct bpf_timer_kern) > sizeof(struct bpf_timer));
+-	BUILD_BUG_ON(__alignof__(struct bpf_timer_kern) != __alignof__(struct bpf_timer));
++	BUILD_BUG_ON(sizeof(struct bpf_async_kern) > sizeof(struct bpf_timer));
++	BUILD_BUG_ON(__alignof__(struct bpf_async_kern) != __alignof__(struct bpf_timer));
+ 
+ 	if (in_nmi())
+ 		return -EOPNOTSUPP;
+@@ -1186,10 +1191,10 @@ BPF_CALL_3(bpf_timer_init, struct bpf_timer_kern *, timer, struct bpf_map *, map
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+-	t->value = (void *)timer - map->record->timer_off;
+-	t->map = map;
+-	t->prog = NULL;
+-	rcu_assign_pointer(t->callback_fn, NULL);
++	t->cb.value = (void *)timer - map->record->timer_off;
++	t->cb.map = map;
++	t->cb.prog = NULL;
++	rcu_assign_pointer(t->cb.callback_fn, NULL);
+ 	hrtimer_init(&t->timer, clockid, HRTIMER_MODE_REL_SOFT);
+ 	t->timer.function = bpf_timer_cb;
+ 	WRITE_ONCE(timer->timer, t);
+@@ -1221,7 +1226,7 @@ static const struct bpf_func_proto bpf_timer_init_proto = {
+ 	.arg3_type	= ARG_ANYTHING,
+ };
+ 
+-BPF_CALL_3(bpf_timer_set_callback, struct bpf_timer_kern *, timer, void *, callback_fn,
++BPF_CALL_3(bpf_timer_set_callback, struct bpf_async_kern *, timer, void *, callback_fn,
+ 	   struct bpf_prog_aux *, aux)
+ {
+ 	struct bpf_prog *prev, *prog = aux->prog;
+@@ -1236,7 +1241,7 @@ BPF_CALL_3(bpf_timer_set_callback, struct bpf_timer_kern *, timer, void *, callb
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
+-	if (!atomic64_read(&t->map->usercnt)) {
++	if (!atomic64_read(&t->cb.map->usercnt)) {
+ 		/* maps with timers must be either held by user space
+ 		 * or pinned in bpffs. Otherwise timer might still be
+ 		 * running even when bpf prog is detached and user space
+@@ -1245,7 +1250,7 @@ BPF_CALL_3(bpf_timer_set_callback, struct bpf_timer_kern *, timer, void *, callb
+ 		ret = -EPERM;
+ 		goto out;
+ 	}
+-	prev = t->prog;
++	prev = t->cb.prog;
+ 	if (prev != prog) {
+ 		/* Bump prog refcnt once. Every bpf_timer_set_callback()
+ 		 * can pick different callback_fn-s within the same prog.
+@@ -1258,9 +1263,9 @@ BPF_CALL_3(bpf_timer_set_callback, struct bpf_timer_kern *, timer, void *, callb
+ 		if (prev)
+ 			/* Drop prev prog refcnt when swapping with new prog */
+ 			bpf_prog_put(prev);
+-		t->prog = prog;
++		t->cb.prog = prog;
+ 	}
+-	rcu_assign_pointer(t->callback_fn, callback_fn);
++	rcu_assign_pointer(t->cb.callback_fn, callback_fn);
+ out:
+ 	__bpf_spin_unlock_irqrestore(&timer->lock);
+ 	return ret;
+@@ -1274,7 +1279,7 @@ static const struct bpf_func_proto bpf_timer_set_callback_proto = {
+ 	.arg2_type	= ARG_PTR_TO_FUNC,
+ };
+ 
+-BPF_CALL_3(bpf_timer_start, struct bpf_timer_kern *, timer, u64, nsecs, u64, flags)
++BPF_CALL_3(bpf_timer_start, struct bpf_async_kern *, timer, u64, nsecs, u64, flags)
+ {
+ 	struct bpf_hrtimer *t;
+ 	int ret = 0;
+@@ -1286,7 +1291,7 @@ BPF_CALL_3(bpf_timer_start, struct bpf_timer_kern *, timer, u64, nsecs, u64, fla
+ 		return -EINVAL;
+ 	__bpf_spin_lock_irqsave(&timer->lock);
+ 	t = timer->timer;
+-	if (!t || !t->prog) {
++	if (!t || !t->cb.prog) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
+@@ -1311,18 +1316,18 @@ static const struct bpf_func_proto bpf_timer_start_proto = {
+ 	.arg3_type	= ARG_ANYTHING,
+ };
+ 
+-static void drop_prog_refcnt(struct bpf_hrtimer *t)
++static void drop_prog_refcnt(struct bpf_async_cb *async)
+ {
+-	struct bpf_prog *prog = t->prog;
++	struct bpf_prog *prog = async->prog;
+ 
+ 	if (prog) {
+ 		bpf_prog_put(prog);
+-		t->prog = NULL;
+-		rcu_assign_pointer(t->callback_fn, NULL);
++		async->prog = NULL;
++		rcu_assign_pointer(async->callback_fn, NULL);
+ 	}
+ }
+ 
+-BPF_CALL_1(bpf_timer_cancel, struct bpf_timer_kern *, timer)
++BPF_CALL_1(bpf_timer_cancel, struct bpf_async_kern *, timer)
+ {
+ 	struct bpf_hrtimer *t;
+ 	int ret = 0;
+@@ -1344,7 +1349,7 @@ BPF_CALL_1(bpf_timer_cancel, struct bpf_timer_kern *, timer)
+ 		ret = -EDEADLK;
+ 		goto out;
+ 	}
+-	drop_prog_refcnt(t);
++	drop_prog_refcnt(&t->cb);
+ out:
+ 	__bpf_spin_unlock_irqrestore(&timer->lock);
+ 	/* Cancel the timer and wait for associated callback to finish
+@@ -1367,7 +1372,7 @@ static const struct bpf_func_proto bpf_timer_cancel_proto = {
+  */
+ void bpf_timer_cancel_and_free(void *val)
+ {
+-	struct bpf_timer_kern *timer = val;
++	struct bpf_async_kern *timer = val;
+ 	struct bpf_hrtimer *t;
+ 
+ 	/* Performance optimization: read timer->timer without lock first. */
+@@ -1379,7 +1384,7 @@ void bpf_timer_cancel_and_free(void *val)
+ 	t = timer->timer;
+ 	if (!t)
+ 		goto out;
+-	drop_prog_refcnt(t);
++	drop_prog_refcnt(&t->cb);
+ 	/* The subsequent bpf_timer_start/cancel() helpers won't be able to use
+ 	 * this timer, since it won't be initialized.
+ 	 */
+@@ -1406,7 +1411,7 @@ void bpf_timer_cancel_and_free(void *val)
+ 	 */
+ 	if (this_cpu_read(hrtimer_running) != t)
+ 		hrtimer_cancel(&t->timer);
+-	kfree_rcu(t, rcu);
++	kfree_rcu(t, cb.rcu);
+ }
+ 
+ BPF_CALL_2(bpf_kptr_xchg, void *, map_value, void *, ptr)
+-- 
+2.43.0
+
 
 
 
