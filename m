@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-60043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C062F932D1F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9530932D21
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FD172812E9
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63A432817E3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03CB417A930;
-	Tue, 16 Jul 2024 16:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4D0199EA3;
+	Tue, 16 Jul 2024 16:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuyS+srp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3aBh2Se"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49041DDCE;
-	Tue, 16 Jul 2024 16:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FF51DDCE;
+	Tue, 16 Jul 2024 16:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145684; cv=none; b=tIMAehkk/VQh9hOBnII4ibuua5vg7kYR3cgx8/VSo8/E0meGl2hv2MembYQR+1D63Z2n+X681U1yofDCgo+IZAzgVcSjb2ibcbPfZY6NlqdJBqo2oT1s3P1X7t04ZS79ES8JVBgCx/gmqmip6KveW+fL0kDEqzeiX9krsfgYHZk=
+	t=1721145690; cv=none; b=Pj9IZILHEHsoCdIm6OqqqJqxJbSMMYwlC6A7hUZT2tWs909aX33E/XISp0X3relyXDfssHdsXmmzyUWyKxuIiVu6fmGGTC4lv1RSOYBe8z+bv66qgFBusJXBMjTfNj0RAVAo3jfcg7Fk6E6qVmsJKOSwQJsuiylCwS1aFZOuV/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145684; c=relaxed/simple;
-	bh=zbUq7AyNHpsVZ28p3NRWDYt2x/A8zevK36QxKiohzqs=;
+	s=arc-20240116; t=1721145690; c=relaxed/simple;
+	bh=xPyGzfbrXsMzATJqG/4dlspoE/L+Z/DXW7ZMCr39ELw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tcVbCOknGn2Cwkbr/NBJHT+rrJW08M0CYF2oC/PFh4N9e+4Cc8GPPA1G4jyRx+KtDJYszf/ptwkoRTrfPcCe+nwnnXDrHgxIKbyVaRKjeOJLoKXccxK5S0WMSsNLBC3tEwxhEBjGZY9POVDAWCkASz+Ndig1fS+Bza5xM40pPVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuyS+srp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38287C4AF0D;
-	Tue, 16 Jul 2024 16:01:24 +0000 (UTC)
+	 MIME-Version; b=rR9n18SNPUEcKf14SDYUXwdaiK46Ek8HQBnkTG73jMiKYHeII09gTnjePTCr9Xc+hPKDqvS4KNcisP1jlrzyH8B65uhAhP+aFcXKV1uocQxJjuSGT5ckCMOlUfvQ5od9IdMuo71BkZLQAhaRDPdM6Y+kQRgdZ2UQWuw4MqMeIkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3aBh2Se; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B3EC116B1;
+	Tue, 16 Jul 2024 16:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145684;
-	bh=zbUq7AyNHpsVZ28p3NRWDYt2x/A8zevK36QxKiohzqs=;
+	s=korg; t=1721145690;
+	bh=xPyGzfbrXsMzATJqG/4dlspoE/L+Z/DXW7ZMCr39ELw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuyS+srppE5Of1WwrMPHcIbfd6HFZFEboow0UAE/KBd6dCnqFFhONTciP5lG0l6N4
-	 jWX/NN4XPq57F0J3PHpv0tMMwqLViRLb4XKtnLo5UqKcN7EYPMhnAb4bW5Xf2vX0LX
-	 ri6OORD4Cs6FE/t2i4IHaz3wOwLn9BbDBRQEjxqQ=
+	b=S3aBh2Seu0Rthz+erk82bE1EOJdkPAT1accxlSyn8z6Y2vRUDskZhGx4m02XKogQW
+	 eikeR30emNRHJSx2+kCpMcqpDF39Djn31yeSUFtOTxqzf2s8vdtz6moE94WwLFOwxt
+	 dAw9THMkVuYb+mZe5ABOSkc2hkcDz6NaVgewI1ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiran Kumar K <kirankumark@marvell.com>,
+	Satheesh Paul <psatheesh@marvell.com>,
 	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/121] octeontx2-af: fix issue with IPv6 ext match for RSS
-Date: Tue, 16 Jul 2024 17:31:51 +0200
-Message-ID: <20240716152753.211288081@linuxfoundation.org>
+Subject: [PATCH 6.6 050/121] octeontx2-af: fix issue with IPv4 match for RSS
+Date: Tue, 16 Jul 2024 17:31:52 +0200
+Message-ID: <20240716152753.249820154@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
 References: <20240716152751.312512071@linuxfoundation.org>
@@ -67,48 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kiran Kumar K <kirankumark@marvell.com>
+From: Satheesh Paul <psatheesh@marvell.com>
 
-[ Upstream commit e23ac1095b9eb8ac48f98c398d81d6ba062c9b5d ]
+[ Upstream commit 60795bbf047654c9f8ae88d34483233a56033578 ]
 
-While performing RSS based on IPv6, extension ltype
-is not being considered. This will be problem for
-fragmented packets or packets with extension header.
-Adding changes to match IPv6 ext header along with IPv6
-ltype.
+While performing RSS based on IPv4, packets with
+IPv4 options are not being considered. Adding changes
+to match both plain IPv4 and IPv4 with option header.
 
 Fixes: 41a7aa7b800d ("octeontx2-af: NIX Rx flowkey configuration for RSS")
-Signed-off-by: Kiran Kumar K <kirankumark@marvell.com>
+Signed-off-by: Satheesh Paul <psatheesh@marvell.com>
 Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index f6f6d7c04e8bf..e7ef07f1f0bb9 100644
+index e7ef07f1f0bb9..a07e5c8786c4b 100644
 --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
 +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -3517,6 +3517,9 @@ static int get_flowkey_alg_idx(struct nix_hw *nix_hw, u32 flow_cfg)
- 	return -ERANGE;
- }
+@@ -3519,6 +3519,8 @@ static int get_flowkey_alg_idx(struct nix_hw *nix_hw, u32 flow_cfg)
  
-+/* Mask to match ipv6(NPC_LT_LC_IP6) and ipv6 ext(NPC_LT_LC_IP6_EXT) */
-+#define NPC_LT_LC_IP6_MATCH_MSK ((~(NPC_LT_LC_IP6 ^ NPC_LT_LC_IP6_EXT)) & 0xf)
-+
+ /* Mask to match ipv6(NPC_LT_LC_IP6) and ipv6 ext(NPC_LT_LC_IP6_EXT) */
+ #define NPC_LT_LC_IP6_MATCH_MSK ((~(NPC_LT_LC_IP6 ^ NPC_LT_LC_IP6_EXT)) & 0xf)
++/* Mask to match both ipv4(NPC_LT_LC_IP) and ipv4 ext(NPC_LT_LC_IP_OPT) */
++#define NPC_LT_LC_IP_MATCH_MSK  ((~(NPC_LT_LC_IP ^ NPC_LT_LC_IP_OPT)) & 0xf)
+ 
  static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
  {
- 	int idx, nr_field, key_off, field_marker, keyoff_marker;
-@@ -3643,7 +3646,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
- 					field->bytesm1 = 15; /* DIP,16 bytes */
+@@ -3589,7 +3591,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
+ 			field->hdr_offset = 9; /* offset */
+ 			field->bytesm1 = 0; /* 1 byte */
+ 			field->ltype_match = NPC_LT_LC_IP;
+-			field->ltype_mask = 0xF;
++			field->ltype_mask = NPC_LT_LC_IP_MATCH_MSK;
+ 			break;
+ 		case NIX_FLOW_KEY_TYPE_IPV4:
+ 		case NIX_FLOW_KEY_TYPE_INNR_IPV4:
+@@ -3616,8 +3618,7 @@ static int set_flowkey_fields(struct nix_rx_flowkey_alg *alg, u32 flow_cfg)
+ 					field->bytesm1 = 3; /* DIP, 4 bytes */
  				}
  			}
--			field->ltype_mask = 0xF; /* Match only IPv6 */
-+			field->ltype_mask = NPC_LT_LC_IP6_MATCH_MSK;
+-
+-			field->ltype_mask = 0xF; /* Match only IPv4 */
++			field->ltype_mask = NPC_LT_LC_IP_MATCH_MSK;
+ 			keyoff_marker = false;
  			break;
- 		case NIX_FLOW_KEY_TYPE_TCP:
- 		case NIX_FLOW_KEY_TYPE_UDP:
+ 		case NIX_FLOW_KEY_TYPE_IPV6:
 -- 
 2.43.0
 
