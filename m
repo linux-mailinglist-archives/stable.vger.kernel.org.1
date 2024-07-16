@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-60071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5CC932D3C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E77E7932C50
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A6F9285379
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:02:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7ED4284BC8
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6535019AD93;
-	Tue, 16 Jul 2024 16:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95CA19E7CF;
+	Tue, 16 Jul 2024 15:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKrVweDi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAvYXubZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D1C17623C;
-	Tue, 16 Jul 2024 16:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793AA17C9E9;
+	Tue, 16 Jul 2024 15:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145767; cv=none; b=pJXofLK8hfPNCUZkltW5prjxT2Cn4rEeRbIh1vO/LoMiZNRzSD8057yjChEPmrRhW15pLgPU9s+U5LvWlPqKPMVNPkb7rIe6nC2O9WxeEXuPa9GeGOJf/n3I7HA5jggW61P8nV/yZHwAHpYShUPfZ5HGXuhzBLnI5TL+2Y8GbJg=
+	t=1721145236; cv=none; b=RbRLswOkLItTSXB70ZYgj8zo2FQeM89kxRmvCZvNN4DXcPB6c4tVlgoNBch02lhF8N1/DWznZeAhWfuD7MbbEuKKX8H4mbr8EscCuppIjRBhYk8CS8lfikgEZHwYNQZqVCisux2GI/YsOANEPgUY+YCE3jGR3MdMh6dto6i9xUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145767; c=relaxed/simple;
-	bh=K+dXzT6GrFkMr3jX3Sq8oMtdVJ4F7aAtv6D/FGfEYkk=;
+	s=arc-20240116; t=1721145236; c=relaxed/simple;
+	bh=6JRBxBD8jeWBl3MKTdY74Vg7vEhxqgpxYByMqeMyFuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dlK80pLeO48Mww7Mjz+YtpzYuPYTXohv1HGN7oD/xrAwdwIID898CO0bCINgB5FRVpxFk8YoTBSCQIRqIhigIAK4KvUZV/EqFSOt2ZQqWcWCRcW75U+T2bUUfiwHsmyEQgVvczHOrmDEpWs4MB8VkCtQXud6J4dVEXBPK7LCgvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKrVweDi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F430C116B1;
-	Tue, 16 Jul 2024 16:02:46 +0000 (UTC)
+	 MIME-Version; b=U4yucm4/o1mTbT/VCiOi7j/kDxrvA73b+upYodNAHCypm0iwDR+W74B9SuVmsLic4cfeTnPn5Ln5VfMbId9z2Jbb1/SfJ/RZXF/aHMVMawUIzhCfA6Nz0mFefjRRXXo0izyx2oI05C6K6lMnQCfP2lIQRS9XD4Ump0qmLbiFV9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAvYXubZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5234C4AF0E;
+	Tue, 16 Jul 2024 15:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145767;
-	bh=K+dXzT6GrFkMr3jX3Sq8oMtdVJ4F7aAtv6D/FGfEYkk=;
+	s=korg; t=1721145236;
+	bh=6JRBxBD8jeWBl3MKTdY74Vg7vEhxqgpxYByMqeMyFuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eKrVweDimP9ujkygcv+4Ticfq1S/HrXESGb5VgAoTO+Q2QYTwDk/u1fMQ9RaiBeb4
-	 +6513j+u0eKlW3kqbsdxmyHUApWgk1FwEdWIE22eDSQyH1GsDcwVyFjwDWyDdyLgkJ
-	 hkDwsR6bUE18CaiGldTYrg3CnZfLK2J56dXmRTCk=
+	b=aAvYXubZnJNbk5kvdwaWf6PIQ5xFdq4UWl26PHdv3QVSEnPF5lMzGmFwU6HRV1zeu
+	 uSlU8FyR/uqw3EACH9+cLDXDqa4YsMTmBD/e3uG3SPO33UFITDA46cFHxXhSImKquF
+	 t/5rLCUqqAMn23+f8VGV+YxA7TIX8mlKVyovAyvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Zhang <quic_congzhan@quicinc.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 077/121] arm64: dts: qcom: sa8775p: Correct IRQ number of EL2 non-secure physical timer
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 143/143] kbuild: rpm-pkg: avoid the warnings with dtbs listed twice
 Date: Tue, 16 Jul 2024 17:32:19 +0200
-Message-ID: <20240716152754.290855945@linuxfoundation.org>
+Message-ID: <20240716152801.496893506@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Zhang <quic_congzhan@quicinc.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit 41fca5930afb36453cc90d4002841edd9990d0ad upstream.
+[ Upstream commit e3286434d220efb9a8b78f7241a5667974d2ec80 ]
 
-The INTID of EL2 non-secure physical timer is 26. In linux, the IRQ
-number has a fixed 16 offset for PPIs. Therefore, the linux IRQ number
-of EL2 non-secure physical timer should be 10 (26 - 16).
+After 8d1001f7bdd0 (kbuild: rpm-pkg: fix build error with CONFIG_MODULES=n),
+the following warning "warning: File listed twice: *.dtb" is appearing for
+every dtb file that is included.
+The reason is that the commented commit already adds the folder
+/lib/modules/%{KERNELRELEASE} in kernel.list file so the folder
+/lib/modules/%{KERNELRELEASE}/dtb is no longer necessary, just remove it.
 
-Fixes: 603f96d4c9d0 ("arm64: dts: qcom: add initial support for qcom sa8775p-ride")
-Signed-off-by: Cong Zhang <quic_congzhan@quicinc.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240604085929.49227-1-quic_congzhan@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8d1001f7bdd0 ("kbuild: rpm-pkg: fix build error with CONFIG_MODULES=n")
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/package/kernel.spec | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-@@ -2398,7 +2398,7 @@
- 		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
--			     <GIC_PPI 12 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>;
-+			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>;
- 	};
+diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
+index fffc8af8deb17..c52d517b93647 100644
+--- a/scripts/package/kernel.spec
++++ b/scripts/package/kernel.spec
+@@ -83,7 +83,6 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEA
+ 	done
  
- 	pcie0: pci@1c00000{
+ 	if [ -d "%{buildroot}/lib/modules/%{KERNELRELEASE}/dtb" ];then
+-		echo "/lib/modules/%{KERNELRELEASE}/dtb"
+ 		find "%{buildroot}/lib/modules/%{KERNELRELEASE}/dtb" -printf "%%%ghost /boot/dtb-%{KERNELRELEASE}/%%P\n"
+ 	fi
+ 
+-- 
+2.43.0
+
 
 
 
