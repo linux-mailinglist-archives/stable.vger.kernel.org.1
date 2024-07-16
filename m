@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B6F932CEE
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:59:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E69FC932D48
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:03:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75D9F282412
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:59:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 221701C21E66
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB3D19E7E2;
-	Tue, 16 Jul 2024 15:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA3819DF9D;
+	Tue, 16 Jul 2024 16:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPbg04H5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNMEdJW8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C322E199EA3;
-	Tue, 16 Jul 2024 15:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D46419F498;
+	Tue, 16 Jul 2024 16:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145552; cv=none; b=JjIj/leEbtJBhmA/eiZBlcUIjy5WS+DQ+y+1UwPiKgRNMFwYcXs4HezlkAUG/BE14W6gsOTIXJ+IY6woFrQmu1mEzYnLtVcFk0Q7MU5ijQCnypQobk5wmWN2nbekyaks/i+cQSBhC0vsn6pzpBF/ptt8YuYR0aDkL3ey04Tzcd0=
+	t=1721145788; cv=none; b=PDW4JHPEwDxy/X7D/s62/lUjEs72P7spd3Fy7axzBLlrb3Ah9QTh3OaCFKPpqsfVGfLYe7ZLFZs+lYBTQRoPMslqgYZrnxTdJX6e7jCHbOLPgfWybs7DT+kuxZoXo/4p5Ue7ghsjX229tGycV5WP78CWGzf3JEvXkQuEJpjZOl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145552; c=relaxed/simple;
-	bh=vXtl8FOLvqp1GwdhsB7vFQr07qq4EBTRqt3yR6EQOHE=;
+	s=arc-20240116; t=1721145788; c=relaxed/simple;
+	bh=FmNAgN9w1XoAc+DZi5bgUJt23EOlWEvkeRlpOZE/rSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nu24SbUGkTGYRkN3/2qFPbIzmEON+ywqBHUwvcBzWL3cd5mpS5KfN87mvP++ckcd+VlNaJaeB/J2ykCFi+RDca2XNfCryArV/dpDBoj3cdzLGZLbWP10QA3hIUGHk0zN2BcFP5gMqcjUTBYCXz9FMfdDzdBatQ7wRCf9RGD8t8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPbg04H5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B80BC116B1;
-	Tue, 16 Jul 2024 15:59:12 +0000 (UTC)
+	 MIME-Version; b=c6y0FZL+ngsKtkigQhkd4ihfje66opYb7ERzVMuw5VBVg3Orecl4/H3OsXaWZjoGZmQCVZeycdjslpjAo2XKX0+2/2MfSH2+H+aqOlNAxoetp2AYdE6O+K5qP1R77UHuUfKLs69UmxKyWEsiYre3PG5brxlbgN4xE2yrjxELbsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNMEdJW8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87951C4AF0B;
+	Tue, 16 Jul 2024 16:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145552;
-	bh=vXtl8FOLvqp1GwdhsB7vFQr07qq4EBTRqt3yR6EQOHE=;
+	s=korg; t=1721145787;
+	bh=FmNAgN9w1XoAc+DZi5bgUJt23EOlWEvkeRlpOZE/rSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPbg04H5Rq5CBWWN7EV4GDKeQvuJLjZg5JbF4soB1op90We+bD6Vw6lYayEjGzCuZ
-	 fZdqMetfRT0vkrT2KTTM9uQ7RCF9FCp8rWH+yNqRvYhmtnc4nAB78b+0XyQ3DJ4EAy
-	 ZbR+ulLQ501s4gA/BDYsNdy/OPD42RdYlkzNTBes=
+	b=kNMEdJW8DhHzodys2Ch4OmGYbC/U15LG7CNUFJJcn3ezEbkUBqRCHbNVDCleii29F
+	 U+k8bu1nR80plqLfRo0aYofYrevDcqQT4rjgL5+CZ4a1VDw1LnB+WBh6vPi/kuOwku
+	 IaNpCjYRzuy6hvVtRhb3OKH4XdDWp/SW1WHH10KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 74/96] wireguard: allowedips: avoid unaligned 64-bit memory accesses
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 083/121] tty: serial: ma35d1: Add a NULL check for of_node
 Date: Tue, 16 Jul 2024 17:32:25 +0200
-Message-ID: <20240716152749.356564605@linuxfoundation.org>
+Message-ID: <20240716152754.521430138@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
+References: <20240716152751.312512071@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Jacky Huang <ychuang3@nuvoton.com>
 
-commit 948f991c62a4018fb81d85804eeab3029c6209f8 upstream.
+commit acd09ac253b5de8fd79fc61a482ee19154914c7a upstream.
 
-On the parisc platform, the kernel issues kernel warnings because
-swap_endian() tries to load a 128-bit IPv6 address from an unaligned
-memory location:
+The pdev->dev.of_node can be NULL if the "serial" node is absent.
+Add a NULL check to return an error in such cases.
 
- Kernel: unaligned access to 0x55f4688c in wg_allowedips_insert_v6+0x2c/0x80 [wireguard] (iir 0xf3010df)
- Kernel: unaligned access to 0x55f46884 in wg_allowedips_insert_v6+0x38/0x80 [wireguard] (iir 0xf2010dc)
-
-Avoid such unaligned memory accesses by instead using the
-get_unaligned_be64() helper macro.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-[Jason: replace src[8] in original patch with src+8]
-Cc: stable@vger.kernel.org
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Link: https://patch.msgid.link/20240704154517.1572127-3-Jason@zx2c4.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 930cbf92db01 ("tty: serial: Add Nuvoton ma35d1 serial driver support")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/8df7ce45-fd58-4235-88f7-43fe7cd67e8f@moroto.mountain/
+Signed-off-by: Jacky Huang <ychuang3@nuvoton.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240625064128.127-1-ychuang570808@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireguard/allowedips.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/ma35d1_serial.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/net/wireguard/allowedips.c
-+++ b/drivers/net/wireguard/allowedips.c
-@@ -15,8 +15,8 @@ static void swap_endian(u8 *dst, const u
- 	if (bits == 32) {
- 		*(u32 *)dst = be32_to_cpu(*(const __be32 *)src);
- 	} else if (bits == 128) {
--		((u64 *)dst)[0] = be64_to_cpu(((const __be64 *)src)[0]);
--		((u64 *)dst)[1] = be64_to_cpu(((const __be64 *)src)[1]);
-+		((u64 *)dst)[0] = get_unaligned_be64(src);
-+		((u64 *)dst)[1] = get_unaligned_be64(src + 8);
- 	}
- }
+diff --git a/drivers/tty/serial/ma35d1_serial.c b/drivers/tty/serial/ma35d1_serial.c
+index 19f0a305cc43..3b4206e815fe 100644
+--- a/drivers/tty/serial/ma35d1_serial.c
++++ b/drivers/tty/serial/ma35d1_serial.c
+@@ -688,12 +688,13 @@ static int ma35d1serial_probe(struct platform_device *pdev)
+ 	struct uart_ma35d1_port *up;
+ 	int ret = 0;
  
+-	if (pdev->dev.of_node) {
+-		ret = of_alias_get_id(pdev->dev.of_node, "serial");
+-		if (ret < 0) {
+-			dev_err(&pdev->dev, "failed to get alias/pdev id, errno %d\n", ret);
+-			return ret;
+-		}
++	if (!pdev->dev.of_node)
++		return -ENODEV;
++
++	ret = of_alias_get_id(pdev->dev.of_node, "serial");
++	if (ret < 0) {
++		dev_err(&pdev->dev, "failed to get alias/pdev id, errno %d\n", ret);
++		return ret;
+ 	}
+ 	up = &ma35d1serial_ports[ret];
+ 	up->port.line = ret;
+-- 
+2.45.2
+
 
 
 
