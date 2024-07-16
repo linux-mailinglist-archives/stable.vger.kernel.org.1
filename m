@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-59837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32836932C04
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:51:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE922932C5B
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BA3A1C20F58
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:51:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D9F3B23BBC
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF6119B59C;
-	Tue, 16 Jul 2024 15:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F1319B59C;
+	Tue, 16 Jul 2024 15:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqPBZ2tv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDxwjLHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6451DDCE;
-	Tue, 16 Jul 2024 15:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E84D1DDCE;
+	Tue, 16 Jul 2024 15:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145059; cv=none; b=FlPzaD7mgxa0y5IE+YvwlZrW79W65a3mmGog1WOWmyaoOQGfviAsg6DD10iv5IToKRjQC9+DOB9dMmU31ip27pAnpSgPN7Z5CSQck78E2oxmtB7bfGEmDQBg4+FYKwEzYwoYzR7Ceow+Q5SsLpiG3Pt6q+SrupGJP+TXRTFPLq4=
+	t=1721145268; cv=none; b=SU9npe6eDYecs6SyMdfn/kzDKw6n8/YYyQ+WaOrpHE2kwPQUhIKJA8tzoSZ8yKTq4FvgchdEoQBgboD/5gJzvzw71jTgP0el/2sQx9v8XU1le0+KOC7xaNg7mP63+pcRjoOyBRJH7B5nAzqcPdAbAhsrP3lNyPHJndttZPdqrX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145059; c=relaxed/simple;
-	bh=GRm/TN8vnbFZ1fwMxx8KrUkSIg4s1Nhe/Dj0L4QMyjc=;
+	s=arc-20240116; t=1721145268; c=relaxed/simple;
+	bh=hWoawiR62yJjf563mWI2fa+meGV0NXLDQZaBlO4lfN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjrcEE/8sZop0ilKGXvDme6RKMfZozbivnqo/nIgOjvDnMtlSGIDN8yJ4dqTECkO3uXUfVu9JcduFPBp2iANPv+wZ2gXZi/voTHo2Nyec1EUqhL0dhZDWDqkUY9riZM61vLR+CdfaLeNK2vmrnYGNUJDaD4EOASQQjJOqQZGHfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqPBZ2tv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5676C116B1;
-	Tue, 16 Jul 2024 15:50:58 +0000 (UTC)
+	 MIME-Version; b=qIIeP5717spwM0Om2HQiKmQ2JKkT5Oo52hH7FqFAY+aZOEgHhmzZx9l+Qd7fK9KOzxr2a9FwlRfNWRyU8j8vorKUR/OqLoGsMuq2qurHG9IrEQcGAEL7r2r6BSJAy8SQRPD1LyrXBRgA/pDk6ptHZ44kBncMwBFmgFZu/mkff10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDxwjLHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DBEC116B1;
+	Tue, 16 Jul 2024 15:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145059;
-	bh=GRm/TN8vnbFZ1fwMxx8KrUkSIg4s1Nhe/Dj0L4QMyjc=;
+	s=korg; t=1721145268;
+	bh=hWoawiR62yJjf563mWI2fa+meGV0NXLDQZaBlO4lfN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xqPBZ2tvlUaJtI6Hrhco2Z34uAWtqL/VmiCpSaw+o5ChP+d0/wpWmx5YWNYLpLsdJ
-	 +q/6YWTSGCytuWmN/kJoC/4jWciQk2flOtn3fS9va5E6kIMWguWsK1ce8o4CmK7EWx
-	 A/OzPmEe4t2fJR184k3kJgZ1rMHL3kITF6bf3mRU=
+	b=LDxwjLHBmE/IcsmIGsW6LgkOGHpfJ/Vwx/Jj0T5v/TVDSMvduCGmq8eY4aJbHmefo
+	 hMyEpehFWdJRBsAVzi/q4qD9fBd/71m64NswzeaB0ls0uR+JzzNdnJLwx8FC3yHeKE
+	 JVPwLsFZ8GvceRvhH60jfsLr/Rf4BIgGzHM22vmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunseong Kim <yskelg@gmail.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	stable@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.9 084/143] s390/mm: Add NULL pointer check to crst_table_free() base_crst_free()
-Date: Tue, 16 Jul 2024 17:31:20 +0200
-Message-ID: <20240716152759.206872946@linuxfoundation.org>
+	linke li <lilinke99@qq.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 10/96] fs/dcache: Re-use value stored to dentry->d_flags instead of re-reading
+Date: Tue, 16 Jul 2024 17:31:21 +0200
+Message-ID: <20240716152746.914191349@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: linke li <lilinke99@qq.com>
 
-commit b5efb63acf7bddaf20eacfcac654c25c446eabe8 upstream.
+[ Upstream commit 8bfb40be31ddea0cb4664b352e1797cfe6c91976 ]
 
-crst_table_free() used to work with NULL pointers before the conversion
-to ptdescs.  Since crst_table_free() can be called with a NULL pointer
-(error handling in crst_table_upgrade() add an explicit check.
+Currently, the __d_clear_type_and_inode() writes the value flags to
+dentry->d_flags, then immediately re-reads it in order to use it in a if
+statement. This re-read is useless because no other update to
+dentry->d_flags can occur at this point.
 
-Also add the same check to base_crst_free() for consistency reasons.
+This commit therefore re-use flags in the if statement instead of
+re-reading dentry->d_flags.
 
-In real life this should not happen, since order two GFP_KERNEL
-allocations will not fail, unless FAIL_PAGE_ALLOC is enabled and used.
-
-Reported-by: Yunseong Kim <yskelg@gmail.com>
-Fixes: 6326c26c1514 ("s390: convert various pgalloc functions to use ptdescs")
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: stable@kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: linke li <lilinke99@qq.com>
+Link: https://lore.kernel.org/r/tencent_5E187BD0A61BA28605E85405F15228254D0A@qq.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: aabfe57ebaa7 ("vfs: don't mod negative dentry count when on shrinker list")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/pgalloc.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/dcache.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/mm/pgalloc.c
-+++ b/arch/s390/mm/pgalloc.c
-@@ -55,6 +55,8 @@ unsigned long *crst_table_alloc(struct m
- 
- void crst_table_free(struct mm_struct *mm, unsigned long *table)
- {
-+	if (!table)
-+		return;
- 	pagetable_free(virt_to_ptdesc(table));
+diff --git a/fs/dcache.c b/fs/dcache.c
+index b09bc88dbbec7..9b10f1872f6c9 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -356,7 +356,7 @@ static inline void __d_clear_type_and_inode(struct dentry *dentry)
+ 	flags &= ~(DCACHE_ENTRY_TYPE | DCACHE_FALLTHRU);
+ 	WRITE_ONCE(dentry->d_flags, flags);
+ 	dentry->d_inode = NULL;
+-	if (dentry->d_flags & DCACHE_LRU_LIST)
++	if (flags & DCACHE_LRU_LIST)
+ 		this_cpu_inc(nr_dentry_negative);
  }
  
-@@ -262,6 +264,8 @@ static unsigned long *base_crst_alloc(un
- 
- static void base_crst_free(unsigned long *table)
- {
-+	if (!table)
-+		return;
- 	pagetable_free(virt_to_ptdesc(table));
- }
- 
+-- 
+2.43.0
+
 
 
 
