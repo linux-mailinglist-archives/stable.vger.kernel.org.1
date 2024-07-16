@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-60050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42A0A932D26
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DDD932B13
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDA45282289
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:01:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DFBD28196E
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08E817623C;
-	Tue, 16 Jul 2024 16:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF501448ED;
+	Tue, 16 Jul 2024 15:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTGjHAtj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLqvMqY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5EC1DDCE;
-	Tue, 16 Jul 2024 16:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0667F9E8;
+	Tue, 16 Jul 2024 15:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145705; cv=none; b=O5qmpobskV63ES9mSf15W/gzbqFhs4Ymkdkoa5J38YdIxkFjyDBsfH0SR+dYu2PzeHrzb5VwsYJQJY4JkxlqiEwgZJsQ+BynlvFMtnkACAfUZNFIRtMQ7k/uBJrPgJY+CSaGE549cRWj1pCytT0fPIGZ3hImyzaSNarIwbGxrrI=
+	t=1721144470; cv=none; b=I7zcLNOnCueXelXtDqZ82hXG4BvHFQOxMlsW2nLBx4IasbHBv1VgEFJvTZJ7Nranpkc8dT0prGwkxpFklwrPoCLGc+TgQJsHMkziES8jIhrNVBOt9KfU+TKExhEpeJg+1jScQyu7JtIuS9WFMBsfA24v7YBoAxvcn3X3GCyROug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145705; c=relaxed/simple;
-	bh=zo4qLkkYm6RgtBEgS1emdjbbHig8Y83nEYEvBUmWbmI=;
+	s=arc-20240116; t=1721144470; c=relaxed/simple;
+	bh=WGA0dQVzNTnpNyiCi/9Ch3JKbwGIdIDMbC4iKW9GSbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EtW+Jt32CwxAAanaC437k5T10BAIdXHv7DfVAUDlQtkCEFYRVnO1bVzYv1iXSZhlQHilmgFBD8McL9Rw4q2S54DvRBHiM+UwZWM92H7gXNe4IHZhdsMjGwuuBbTUw1SmFPm6VN3H+HPPcmy5h1tM3ABZdmZtCyklKxr2cuhXCvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTGjHAtj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DF3C116B1;
-	Tue, 16 Jul 2024 16:01:44 +0000 (UTC)
+	 MIME-Version; b=T3Y/lhMJ/Wk7W6n4wTlv5sF576El6nQxy5PL+/3BIf3NopBZn3KEQCiKJt4KNGLI6f3/X8lOyyrbZs5E4PGr1Mf/FtU7ogghlbNppPV0+zM/NyHRyIjX2yRtxN3QRYF1b/mb26jgoDhuZsEOdPk6hqFhux+cXXA9RvmdWEMCQDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLqvMqY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B7FC116B1;
+	Tue, 16 Jul 2024 15:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145705;
-	bh=zo4qLkkYm6RgtBEgS1emdjbbHig8Y83nEYEvBUmWbmI=;
+	s=korg; t=1721144470;
+	bh=WGA0dQVzNTnpNyiCi/9Ch3JKbwGIdIDMbC4iKW9GSbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTGjHAtj6JH3xYIVB1+fcurPnLwaMLe+P34CVybiS3XfXlmJ2MXC7h/vDFc/Xx+Sc
-	 U8yDuwN0guiA6OGMNu54gSRoqwGI5ZKfe9uz3Sdcm1FrbDH8QI06LvKh/cbPiNqyQY
-	 2+gdgSF4BjeiZLPdABNgzaFTBVrnhIlqpMIS1OSM=
+	b=VLqvMqY7xofHGnXeSzPjbROq9q6VC80VQPic4D6O1rnSRf9JOPMejoRHvMd2ZvEhj
+	 FQ7WOrEXRzXNgRdYzJ0nSLU1zHCh3ij2o/hrKvgf6ERF8dtASHLWOo1M/RRO3KoD9Q
+	 /V2qfKqgwkkAz26yDaAgr9dkI9PHxoE2w8+6qC0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Christian Kujau <lists@nerdbynature.de>,
-	Mohammad Shehar Yaar Tausif <sheharyaar48@gmail.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/121] bpf: fix order of args in call to bpf_map_kvcalloc
+Subject: [PATCH 5.4 56/78] s390: Mark psw in __load_psw_mask() as __unitialized
 Date: Tue, 16 Jul 2024 17:31:28 +0200
-Message-ID: <20240716152752.330773729@linuxfoundation.org>
+Message-ID: <20240716152742.809875902@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Shehar Yaar Tausif <sheharyaar48@gmail.com>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit af253aef183a31ce62d2e39fc520b0ebfb562bb9 ]
+[ Upstream commit 7278a8fb8d032dfdc03d9b5d17e0bc451cdc1492 ]
 
-The original function call passed size of smap->bucket before the number of
-buckets which raises the error 'calloc-transposed-args' on compilation.
+Without __unitialized, the following code is generated when
+INIT_STACK_ALL_ZERO is enabled:
 
-Vlastimil Babka added:
+86: d7 0f f0 a0 f0 a0     xc      160(16,%r15), 160(%r15)
+8c: e3 40 f0 a0 00 24     stg     %r4, 160(%r15)
+92: c0 10 00 00 00 08     larl    %r1, 0xa2
+98: e3 10 f0 a8 00 24     stg     %r1, 168(%r15)
+9e: b2 b2 f0 a0           lpswe   160(%r15)
 
-The order of parameters can be traced back all the way to 6ac99e8f23d4
-("bpf: Introduce bpf sk local storage") accross several refactorings,
-and that's why the commit is used as a Fixes: tag.
+The xc is not adding any security because psw is fully initialized
+with the following instructions. Add __unitialized to the psw
+definitiation to avoid the superfluous clearing of psw.
 
-In v6.10-rc1, a different commit 2c321f3f70bc ("mm: change inlined
-allocation helpers to account at the call site") however exposed the
-order of args in a way that gcc-14 has enough visibility to start
-warning about it, because (in !CONFIG_MEMCG case) bpf_map_kvcalloc is
-then a macro alias for kvcalloc instead of a static inline wrapper.
-
-To sum up the warning happens when the following conditions are all met:
-
-- gcc-14 is used (didn't see it with gcc-13)
-- commit 2c321f3f70bc is present
-- CONFIG_MEMCG is not enabled in .config
-- CONFIG_WERROR turns this from a compiler warning to error
-
-Fixes: 6ac99e8f23d4 ("bpf: Introduce bpf sk local storage")
-Reviewed-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Christian Kujau <lists@nerdbynature.de>
-Signed-off-by: Mohammad Shehar Yaar Tausif <sheharyaar48@gmail.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Link: https://lore.kernel.org/r/20240710100521.15061-2-vbabka@suse.cz
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/bpf_local_storage.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/include/asm/processor.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index 146824cc96893..e8d02212da703 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -808,8 +808,8 @@ bpf_local_storage_map_alloc(union bpf_attr *attr,
- 	nbuckets = max_t(u32, 2, nbuckets);
- 	smap->bucket_log = ilog2(nbuckets);
+diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
+index 48d6ccdef5f77..00bb2d287f740 100644
+--- a/arch/s390/include/asm/processor.h
++++ b/arch/s390/include/asm/processor.h
+@@ -256,8 +256,8 @@ static inline void __load_psw(psw_t psw)
+  */
+ static __always_inline void __load_psw_mask(unsigned long mask)
+ {
++	psw_t psw __uninitialized;
+ 	unsigned long addr;
+-	psw_t psw;
  
--	smap->buckets = bpf_map_kvcalloc(&smap->map, sizeof(*smap->buckets),
--					 nbuckets, GFP_USER | __GFP_NOWARN);
-+	smap->buckets = bpf_map_kvcalloc(&smap->map, nbuckets,
-+					 sizeof(*smap->buckets), GFP_USER | __GFP_NOWARN);
- 	if (!smap->buckets) {
- 		err = -ENOMEM;
- 		goto free_smap;
+ 	psw.mask = mask;
+ 
 -- 
 2.43.0
 
