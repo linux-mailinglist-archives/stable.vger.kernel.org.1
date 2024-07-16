@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-59834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90AD9932C01
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:50:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF36C932C85
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DFC41F20FC9
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:50:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 855EA1F245D5
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29EF17C9E9;
-	Tue, 16 Jul 2024 15:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7C519EEC4;
+	Tue, 16 Jul 2024 15:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fm1sTRgA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQd4mjeS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0F31DDCE;
-	Tue, 16 Jul 2024 15:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBF619E7F7;
+	Tue, 16 Jul 2024 15:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145050; cv=none; b=bgLMTx2gBUK9C1CtR5RjpMqbQ9tGYFKRNd92INQwqGd9emW2XFCD93Uux0aLcFgyPZRWAXgzBoGRX4TefzXYcsEaLTcdGpKlMA1LZJAcEteKAyo2udJyFDQCmENuh92nEqJbQCPIK9RMRMCsT9aL+i880emRT+k5cvNYryY5tLI=
+	t=1721145343; cv=none; b=i3tG7pApqcvy3acHrtzDlN/aO3ckcEaHzzGJu6A8h/IyLq43tRfimCXUgiHGlUEgedS1odaJh8kaEavtrfZ68+cnZtZxF400DWSQ74L9h2zXyQO+g/LZGZMCL85VX+GeshKpH8krIhOs+pd0d1wsn/rgs9OtiXtMgjnbDoo8cZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145050; c=relaxed/simple;
-	bh=OgxTHOGAzB/xc7Mzf0HZRTolpVHRtB0yGjpSwmtgwF8=;
+	s=arc-20240116; t=1721145343; c=relaxed/simple;
+	bh=2EakMh8Nuw7SrAEOqj9IRXVWdeRROUdrCEvPUNttsM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvYY+V/BbXCcWk92NMasmWWwdU4rPaipmP8X2pMU1qq0f3uM0UvmaogoY8CHu1qUgQ2Dv/UsOYd2331tsLnS5C1yOxwfUYYvaHij2ZpffcNG1UPlcj9O0Sy6Z4B7Dbt5+MYGfRMHSW9SUqBr0UB9kflYKCGFor7p0a0Q/vrMcaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fm1sTRgA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5600C116B1;
-	Tue, 16 Jul 2024 15:50:49 +0000 (UTC)
+	 MIME-Version; b=Lsh+8mQmywrkv4hMWYCkjkxLmJVK0n6pKkBc6HNNMnA8cfaoyRBJHkJWuNpZgIklJe0jS/OdloHOphiDq+prJR2AuBMe+eFFB8Z5mjZna4R96giMYcOrRJrKeNoeJQ69izFMDizpdK2DWV6QNmR7lGR5f/07VIHnrh3t8t1QH2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQd4mjeS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113F9C116B1;
+	Tue, 16 Jul 2024 15:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145050;
-	bh=OgxTHOGAzB/xc7Mzf0HZRTolpVHRtB0yGjpSwmtgwF8=;
+	s=korg; t=1721145342;
+	bh=2EakMh8Nuw7SrAEOqj9IRXVWdeRROUdrCEvPUNttsM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fm1sTRgAPoWZhpEaf4zD8pMEwqEsQEG5kumfhDrRKmSsleIHaMdRTsFbijxbe2Qd5
-	 Aqmb5YBrWc5m1QlGuFNDo6ILz0O9W3D35bOJPtbc3Mg7CRn+rr94GTSwOtqts2Iclu
-	 NTUypHs37heOGOGShWYKfZKNG6NkgsWo689SsNtc=
+	b=cQd4mjeSARNsqszaButexUzoLyRrQF18aCDFIn8faBg1UZe9LBHNAAqu1PsemtJ0T
+	 I8lHP0bpLA0jgTGXKg58x3FhOWn9zrzna61SA9kyJTy3ZSNIK0VtORpXWcD9uW/w6c
+	 EBsPxU/M7D+4/1W9GBn+/M9WxqRZq6S8P4PV3W0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Chakraborty <joychakr@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 6.9 081/143] misc: microchip: pci1xxxx: Fix return value of nvmem callbacks
+	Hou Tao <houtao1@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 06/96] cachefiles: wait for ondemand_object_worker to finish when dropping object
 Date: Tue, 16 Jul 2024 17:31:17 +0200
-Message-ID: <20240716152759.092448029@linuxfoundation.org>
+Message-ID: <20240716152746.764350098@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
-References: <20240716152755.980289992@linuxfoundation.org>
+In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
+References: <20240716152746.516194097@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Chakraborty <joychakr@google.com>
+From: Hou Tao <houtao1@huawei.com>
 
-commit a6a0f04e7d28378c181f76d32e4f965aa6a8b0a5 upstream.
+[ Upstream commit 12e009d60852f7bce0afc373ca0b320f14150418 ]
 
-Read/write callbacks registered with nvmem core expect 0 to be returned
-on success and a negative value to be returned on failure.
+When queuing ondemand_object_worker() to re-open the object,
+cachefiles_object is not pinned. The cachefiles_object may be freed when
+the pending read request is completed intentionally and the related
+erofs is umounted. If ondemand_object_worker() runs after the object is
+freed, it will incur use-after-free problem as shown below.
 
-Currently pci1xxxx_otp_read()/pci1xxxx_otp_write() and
-pci1xxxx_eeprom_read()/pci1xxxx_eeprom_write() return the number of
-bytes read/written on success.
-Fix to return 0 on success.
+process A  processs B  process C  process D
 
-Fixes: 9ab5465349c0 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX EEPROM via NVMEM sysfs")
-Fixes: 0969001569e4 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX OTP via NVMEM sysfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240612070031.1215558-1-joychakr@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+cachefiles_ondemand_send_req()
+// send a read req X
+// wait for its completion
+
+           // close ondemand fd
+           cachefiles_ondemand_fd_release()
+           // set object as CLOSE
+
+                       cachefiles_ondemand_daemon_read()
+                       // set object as REOPENING
+                       queue_work(fscache_wq, &info->ondemand_work)
+
+                                // close /dev/cachefiles
+                                cachefiles_daemon_release
+                                cachefiles_flush_reqs
+                                complete(&req->done)
+
+// read req X is completed
+// umount the erofs fs
+cachefiles_put_object()
+// object will be freed
+cachefiles_ondemand_deinit_obj_info()
+kmem_cache_free(object)
+                       // both info and object are freed
+                       ondemand_object_worker()
+
+When dropping an object, it is no longer necessary to reopen the object,
+so use cancel_work_sync() to cancel or wait for ondemand_object_worker()
+to finish.
+
+Fixes: 0a7e54c1959c ("cachefiles: resend an open request if the read request's object is closed")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240628062930.2467993-8-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c |    4 ----
- 1 file changed, 4 deletions(-)
+ fs/cachefiles/ondemand.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-+++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-@@ -153,7 +153,6 @@ static int pci1xxxx_eeprom_read(void *pr
- 
- 		buf[byte] = readl(rb + MMAP_EEPROM_OFFSET(EEPROM_DATA_REG));
- 	}
--	ret = byte;
- error:
- 	release_sys_lock(priv);
- 	return ret;
-@@ -197,7 +196,6 @@ static int pci1xxxx_eeprom_write(void *p
- 			goto error;
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index acaecfce8aaa9..1f6561814e702 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -661,6 +661,9 @@ void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
  		}
  	}
--	ret = byte;
- error:
- 	release_sys_lock(priv);
- 	return ret;
-@@ -258,7 +256,6 @@ static int pci1xxxx_otp_read(void *priv_
+ 	xa_unlock(&cache->reqs);
++
++	/* Wait for ondemand_object_worker() to finish to avoid UAF. */
++	cancel_work_sync(&object->ondemand->ondemand_work);
+ }
  
- 		buf[byte] = readl(rb + MMAP_OTP_OFFSET(OTP_RD_DATA_OFFSET));
- 	}
--	ret = byte;
- error:
- 	release_sys_lock(priv);
- 	return ret;
-@@ -315,7 +312,6 @@ static int pci1xxxx_otp_write(void *priv
- 			goto error;
- 		}
- 	}
--	ret = byte;
- error:
- 	release_sys_lock(priv);
- 	return ret;
+ int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
+-- 
+2.43.0
+
 
 
 
