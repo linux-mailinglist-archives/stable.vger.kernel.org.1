@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-60023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9A9932D0B
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 18:00:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 978BE932AF7
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56D5D1F21675
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 16:00:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D7A21F20F32
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE7F19E7FF;
-	Tue, 16 Jul 2024 16:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A53A1DFF0;
+	Tue, 16 Jul 2024 15:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOvaqVLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/tTpGAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B50C19E7F7;
-	Tue, 16 Jul 2024 16:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FBACA40;
+	Tue, 16 Jul 2024 15:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145625; cv=none; b=k+klSeTwXTD2FJAVKWJL+p7qv8qvjS5QJl8irkQGG9TjnKg3/o7oaxTz24dBPssLN/dP/SezSzMf12SCT9OsRnTGI/3fIBDCYufG1UDx7plT+2T0kktJSySk7nujiD6WqCAlAybj5exLytizVI+f8RU29GPfbA6Sk56+m3mE1iQ=
+	t=1721144399; cv=none; b=gUA6yroaFlTePN4FyQwypUCrqEouwaSLVCg+I11uyg5MXU+GrP6TZNtVVMullyCOSM2MaQ9o2DgpmhQSMFUInVHlFN4e7nk7O6RkJ0ZBW+A4eRRegiwLZZfG449GkdAdEm1S6Bl1xXYd8ubWozuZyPR+TecPfI5zlBdreKPxk3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145625; c=relaxed/simple;
-	bh=MXOx57TR/ZqNLeRPdrwIYO9uuvjXnegjUzDB1E5hvnU=;
+	s=arc-20240116; t=1721144399; c=relaxed/simple;
+	bh=jMAseMCa3enJbAFXJTf6vjwV3yKRqJBOMwyf1TF/qDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MYltktbmQx3nb1CWVaw6verwlgXhSwNffj/Ko9fStbwAixMil5J7NvpY1FojRyvcuYoVsCRma7SH5HdnyWgJibXFgZ6RlSSZHL9chIcL9+Hufz0Wkh2TD7LQAWuMIjnLzq5nDkTdMmhT5hvKjqgGAZo0RiPnlSVY3GD6jSRFx4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOvaqVLx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF71C4AF0E;
-	Tue, 16 Jul 2024 16:00:24 +0000 (UTC)
+	 MIME-Version; b=cxb3m9x36Jv4+0DOwUpcdH2Q86ngz0zJU6WRkJxli/Cw/HH8HyJ/rfFWIYDay3VTE8HkH1ZfQ4T6udfF04zKPOTHTdA1mTs+qlBZKcaKu1/yim+Tg4+92TzsXtsA5cipIIVFFFtCU1xBVBYsmijSk8d69PeMjEoqdnBFW22gIk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/tTpGAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C004DC116B1;
+	Tue, 16 Jul 2024 15:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145625;
-	bh=MXOx57TR/ZqNLeRPdrwIYO9uuvjXnegjUzDB1E5hvnU=;
+	s=korg; t=1721144399;
+	bh=jMAseMCa3enJbAFXJTf6vjwV3yKRqJBOMwyf1TF/qDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eOvaqVLxX5gklseGprOY1Vo/iX/Rd1yDfGwcdAryYSb1L6Vna6iuTH8HJ3kvaJ8wa
-	 QfRl0/gbDPK7KASWHxI3QXZEkfo2zx+D9Re42QaArYjSqDRa061nUM0UeQlFJLS+eK
-	 EpQI1PjcZSI2FIG5InbHFrCHHZbF3JMzNYN5MCX8=
+	b=c/tTpGAuVN7dwPXtdAg+OMV13nPJfsgUyLFxf/+dtECYyYLdoQ0si5wwffeEdxC53
+	 d3aT2kKfcdaX1JMEXD4WFCFL/QS87iPS+E/tqvftJ45FUebFvpIFyPtRuvocHcwDMW
+	 3c6yZa5oQbs1b144d4Kx4Ei2ecV2Tu9S87tp4AEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Hui Lee <jianhui.lee@canonical.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/121] net: ethernet: mtk-star-emac: set mac_managed_pm when probing
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 60/78] USB: serial: option: add Telit FN912 rmnet compositions
 Date: Tue, 16 Jul 2024 17:31:32 +0200
-Message-ID: <20240716152752.483485832@linuxfoundation.org>
+Message-ID: <20240716152742.963975706@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152751.312512071@linuxfoundation.org>
-References: <20240716152751.312512071@linuxfoundation.org>
+In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
+References: <20240716152740.626160410@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Hui Lee <jianhui.lee@canonical.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit 8c6790b5c25dfac11b589cc37346bcf9e23ad468 ]
+commit 9a590ff283421b71560deded2110dbdcbe1f7d1d upstream.
 
-The below commit introduced a warning message when phy state is not in
-the states: PHY_HALTED, PHY_READY, and PHY_UP.
-commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+Add the following Telit FN912 compositions:
 
-mtk-star-emac doesn't need mdiobus suspend/resume. To fix the warning
-message during resume, indicate the phy resume/suspend is managed by the
-mac when probing.
+0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3000 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
-Signed-off-by: Jian Hui Lee <jianhui.lee@canonical.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20240708065210.4178980-1-jianhui.lee@canonical.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3001 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_star_emac.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-index 31aebeb2e2858..25989c79c92e6 100644
---- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
-+++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-@@ -1524,6 +1524,7 @@ static int mtk_star_probe(struct platform_device *pdev)
- {
- 	struct device_node *of_node;
- 	struct mtk_star_priv *priv;
-+	struct phy_device *phydev;
- 	struct net_device *ndev;
- 	struct device *dev;
- 	void __iomem *base;
-@@ -1649,6 +1650,12 @@ static int mtk_star_probe(struct platform_device *pdev)
- 	netif_napi_add(ndev, &priv->rx_napi, mtk_star_rx_poll);
- 	netif_napi_add_tx(ndev, &priv->tx_napi, mtk_star_tx_poll);
- 
-+	phydev = of_phy_find_device(priv->phy_node);
-+	if (phydev) {
-+		phydev->mac_managed_pm = true;
-+		put_device(&phydev->mdio.dev);
-+	}
-+
- 	return devm_register_netdev(dev, ndev);
- }
- 
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1425,6 +1425,10 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1901, 0xff),	/* Telit LN940 (MBIM) */
+ 	  .driver_info = NCTRL(0) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3000, 0xff),	/* Telit FN912 */
++	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x3001, 0xff),	/* Telit FN912 */
++	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7010, 0xff),	/* Telit LE910-S1 (RNDIS) */
+ 	  .driver_info = NCTRL(2) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x7011, 0xff),	/* Telit LE910-S1 (ECM) */
 
 
 
