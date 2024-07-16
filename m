@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-59920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A155932C6C
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD77E932B6D
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A70A1F2166D
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:55:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AE7D1F2145F
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EBE19DF73;
-	Tue, 16 Jul 2024 15:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BE519DF71;
+	Tue, 16 Jul 2024 15:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ynbb//zt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkPFUcuu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E1717A93F;
-	Tue, 16 Jul 2024 15:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C1819ADBE;
+	Tue, 16 Jul 2024 15:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145310; cv=none; b=WNJSMsH6KalIlN1ExaAYNQzQN7F0Ofs6Lvh6up1naUC76J7zq/g51gfAuBTvE0K+vsq4QYuVM4Bu3STHt2rGSm94+wmGkR0ZlJdRmT48iHYpG6qF7toOZOjM8xARwYH/VBBFyHzRuN+adOcmCEuxJOLbCD5TT6CtZlAOA2PWuRI=
+	t=1721144701; cv=none; b=Q3WMJ2MHPTLtrLIa7hRdIHYHJsoKHR/jnET5xQ0o08WlKwRZbHcVIKHKESvxkXRVzs+w0y7ejz0dGco/sRJPN8C6rzy/XjrKzthGFNnuVfZyYhnhy+DhIfiwufEot+iOdnP+L5QXgtPc97/lCbrn+p3TmmcmJlMEwrdPSY9wHEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145310; c=relaxed/simple;
-	bh=hwppegqHY/GmTO2qMPIVA5ZGPBLEW7y+ulrEh/dk6Nk=;
+	s=arc-20240116; t=1721144701; c=relaxed/simple;
+	bh=HC6q3shokUCRK+nUuyUaASGxm0DoHH4ar72Z755uEOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5ay+lV9UM8pWYHDSaiaihfHDsasf2+9HXZ93S8YMWUS39eW+2Pu/HOOlqK/dlCjZs5Kn+4UB1UuPRehFTc2QNj74NnEl8UVmDEPK9Md6fcYcAVvhHpkWe1cCKq/vZWbB4kpphU0r331fkZESz2ewmdtWTbA5Wjwjw5q9X7px4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ynbb//zt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643A7C116B1;
-	Tue, 16 Jul 2024 15:55:09 +0000 (UTC)
+	 MIME-Version; b=HZAzjXW01gEYlSO5TA3Pj/s6r87Ab5Ktdzm7TRYfDTNmlNmik9wlPW+Fua40FCZlm1LQXMn79b5A0fv0DsEJfESEMO2K+0hdhSVYF+xf6FQONnDxMaP0eZel+ak2gmKRBRRX79HHSST04e9T/jKH6OZ0O1nm6rEOnTp+LJchSM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkPFUcuu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38285C116B1;
+	Tue, 16 Jul 2024 15:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145309;
-	bh=hwppegqHY/GmTO2qMPIVA5ZGPBLEW7y+ulrEh/dk6Nk=;
+	s=korg; t=1721144701;
+	bh=HC6q3shokUCRK+nUuyUaASGxm0DoHH4ar72Z755uEOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ynbb//zt2vnJk9fVtEdHFR+7mVEJESi4wRf6qBX0uEtFifvCkCrLGt8DUwJ0K4ajc
-	 z70tpJbId+0VV6rm/QTeV6/Z/VvNpfvQ9kZsvalaDjTiAxelDS8a6OlMWVwCNRYVpR
-	 8RiazV4RF5Sv3RtZVPl1WjZAYKHOFGB7IZMkWgDU=
+	b=kkPFUcuuRN8zhirYGCmbgCTEpDOxkXzuv7B4KyAUvtHxuAnSzMou2gSStfbaSayhv
+	 Faf16aKslrzt3lI6fo/bKd2xEeHoJnpZEyoB4fdCS6JrtKHk2J9TygS0+0XXsH3ZQO
+	 WPJE9yy/XexoNexpliHoPxgGHMyfmfPky3s2usz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Christian Kujau <lists@nerdbynature.de>,
-	Mohammad Shehar Yaar Tausif <sheharyaar48@gmail.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 23/96] bpf: fix order of args in call to bpf_map_kvcalloc
+	Slark Xiao <slark_xiao@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 079/108] USB: serial: option: add support for Foxconn T99W651
 Date: Tue, 16 Jul 2024 17:31:34 +0200
-Message-ID: <20240716152747.406463108@linuxfoundation.org>
+Message-ID: <20240716152749.015260489@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+References: <20240716152745.988603303@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Shehar Yaar Tausif <sheharyaar48@gmail.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit af253aef183a31ce62d2e39fc520b0ebfb562bb9 ]
+commit 3c841d54b63e4446383de3238399a3910e47d8e2 upstream.
 
-The original function call passed size of smap->bucket before the number of
-buckets which raises the error 'calloc-transposed-args' on compilation.
+T99W651 is a RNDIS based modem device. There are 3 serial ports
+need to be enumerated: Diag, NMEA and AT.
 
-Vlastimil Babka added:
+Test evidence as below:
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e145 Rev=05.15
+S:  Manufacturer=QCOM
+S:  Product=SDXPINN-IDP _SN:93B562B2
+S:  SerialNumber=82e6fe26
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+I:  If#=0x1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+I:  If#=0x6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
 
-The order of parameters can be traced back all the way to 6ac99e8f23d4
-("bpf: Introduce bpf sk local storage") accross several refactorings,
-and that's why the commit is used as a Fixes: tag.
+0&1: RNDIS, 2:AT, 3:NMEA, 4:DIAG, 5:QDSS, 6:ADB
+QDSS is not a serial port.
 
-In v6.10-rc1, a different commit 2c321f3f70bc ("mm: change inlined
-allocation helpers to account at the call site") however exposed the
-order of args in a way that gcc-14 has enough visibility to start
-warning about it, because (in !CONFIG_MEMCG case) bpf_map_kvcalloc is
-then a macro alias for kvcalloc instead of a static inline wrapper.
-
-To sum up the warning happens when the following conditions are all met:
-
-- gcc-14 is used (didn't see it with gcc-13)
-- commit 2c321f3f70bc is present
-- CONFIG_MEMCG is not enabled in .config
-- CONFIG_WERROR turns this from a compiler warning to error
-
-Fixes: 6ac99e8f23d4 ("bpf: Introduce bpf sk local storage")
-Reviewed-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Christian Kujau <lists@nerdbynature.de>
-Signed-off-by: Mohammad Shehar Yaar Tausif <sheharyaar48@gmail.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Link: https://lore.kernel.org/r/20240710100521.15061-2-vbabka@suse.cz
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/bpf_local_storage.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index 888b8e481083f..51a9f024c1829 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -620,8 +620,8 @@ bpf_local_storage_map_alloc(union bpf_attr *attr,
- 	nbuckets = max_t(u32, 2, nbuckets);
- 	smap->bucket_log = ilog2(nbuckets);
- 
--	smap->buckets = bpf_map_kvcalloc(&smap->map, sizeof(*smap->buckets),
--					 nbuckets, GFP_USER | __GFP_NOWARN);
-+	smap->buckets = bpf_map_kvcalloc(&smap->map, nbuckets,
-+					 sizeof(*smap->buckets), GFP_USER | __GFP_NOWARN);
- 	if (!smap->buckets) {
- 		bpf_map_area_free(smap);
- 		return ERR_PTR(-ENOMEM);
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2294,6 +2294,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
+ 	  .driver_info = RSVD(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
++	  .driver_info = RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
+ 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
 
 
 
