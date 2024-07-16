@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-59616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A720D932AF2
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:39:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F257A932AA3
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:36:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EDC02835C5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:39:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A85AE1F23220
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD6819B3EC;
-	Tue, 16 Jul 2024 15:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262851DDCE;
+	Tue, 16 Jul 2024 15:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdyciDwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ati+igK+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A20ACA40;
-	Tue, 16 Jul 2024 15:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D899EE541;
+	Tue, 16 Jul 2024 15:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144384; cv=none; b=C6K8q/1IwvyCmws597wnHjf5wZgxTUbcXCRQ4kQ87zXqyiQq+xCTkZT9v0RgmP82z369oHn5chRaoIOYbgw0ktVX7tyDaFZJgDS3p5Oex6WmuK4bFPd0VArTpUWAEFn7oZFtl1Pjzsc9E9zLbpiS2G5H3DgLlQBI+Cc8d3gsGIA=
+	t=1721144174; cv=none; b=IqzomgtVjevd9t3jrfF19039wG63QYc3mOQNomf0Zuo9tzjGRnXza1QkgOHfm0H5/rK+3sQh9nIL379no5B910cJOAyoPMGwJW9JNFy6Qh4m8ezFjJe8N1H+6k/ETrpC9Rbdu94zyf3Hw+KoFOo17Q3/1HxPb1++xpP1EIVKQW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144384; c=relaxed/simple;
-	bh=hHlAMpLFJPWXr3joab7VJFgMBi9Fnuq/zJXwac2NdEw=;
+	s=arc-20240116; t=1721144174; c=relaxed/simple;
+	bh=yMKYKQ9wHDEuvyRusNKGBaYk1t6P1KXs0aQdLXldrJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gSe8hKsdzCaYhJDgjQwW+DsIYDD0KkKbuTT2KOM0kGUlvoMfe2oVmMSKrEW6f6JLBEm59tdlFxCgteLgQ6wYrqrc4xxg5sfr+pcc+xlT+7Cyt9xEbAEtY7V52cTmlXPuZqJ2sz3YPXzf9Qj3yWa9OWSagXnxiYOBE/RsCCE0bR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdyciDwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E3CC116B1;
-	Tue, 16 Jul 2024 15:39:43 +0000 (UTC)
+	 MIME-Version; b=j95trapXvpIt+QJL18liJpx6Too2/A6G76UTK/fk6McFI7X8/cISOe6D2FkpiRxgc9nf7TMBPgr8955NmgT0pUm04mXZ8+Qx7l+By/fUhvYsG6VIJ+rNZwrlMxADdST6mmh3/v6ZUs1yFrJ1JC/Shy9MrQTzTiQ4PDJ1r2uhTEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ati+igK+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F813C116B1;
+	Tue, 16 Jul 2024 15:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144384;
-	bh=hHlAMpLFJPWXr3joab7VJFgMBi9Fnuq/zJXwac2NdEw=;
+	s=korg; t=1721144174;
+	bh=yMKYKQ9wHDEuvyRusNKGBaYk1t6P1KXs0aQdLXldrJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdyciDwuyZHAtxfs3/hVqPhx0aRGcj3m5vAVKJZt2sLdI3eqQzgmUI6BKUC0S22GZ
-	 ag7Lu8mt75A23F5OVttm1Mcz528bslPegqeZE/DB8AKEwUmuC6hzViQIk6uldHdCyE
-	 adlT/MJANNrY1+BFkES8xZGXahoi+/PmnHjHvnQg=
+	b=Ati+igK+Yi75cKDcv8GqKjXdaXUH8xMcmO8hjZWUN610lPlewNMdfcKrLT9nOe3YQ
+	 nWnROMsNs6nL94bAGrfaVnXe6NAD2jj9Va1tfhBxP3wR8shOGnFTHr3akYVsEYlpnx
+	 rERKj4eIIga3cr6wAFpX9TMCw8vKifP6EqYp09XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Eric Dumazet <edumazet@google.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 24/78] net: tcp better handling of reordering then loss cases
-Date: Tue, 16 Jul 2024 17:30:56 +0200
-Message-ID: <20240716152741.571200655@linuxfoundation.org>
+Subject: [PATCH 4.19 22/66] net: tcp better handling of reordering then loss cases
+Date: Tue, 16 Jul 2024 17:30:57 +0200
+Message-ID: <20240716152739.011062849@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152740.626160410@linuxfoundation.org>
-References: <20240716152740.626160410@linuxfoundation.org>
+In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
+References: <20240716152738.161055634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -101,10 +101,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 26 insertions(+), 19 deletions(-)
 
 diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 0451249c61e27..1097bca0f24fb 100644
+index 88216b87c986f..5503f130cc6dd 100644
 --- a/net/ipv4/tcp_input.c
 +++ b/net/ipv4/tcp_input.c
-@@ -2736,8 +2736,17 @@ static void tcp_process_loss(struct sock *sk, int flag, int num_dupack,
+@@ -2727,8 +2727,17 @@ static void tcp_process_loss(struct sock *sk, int flag, int num_dupack,
  	*rexmit = REXMIT_LOST;
  }
  
@@ -123,7 +123,7 @@ index 0451249c61e27..1097bca0f24fb 100644
  {
  	struct tcp_sock *tp = tcp_sk(sk);
  
-@@ -2762,7 +2771,9 @@ static bool tcp_try_undo_partial(struct sock *sk, u32 prior_snd_una)
+@@ -2753,7 +2762,9 @@ static bool tcp_try_undo_partial(struct sock *sk, u32 prior_snd_una)
  		tcp_undo_cwnd_reduction(sk, true);
  		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPPARTIALUNDO);
  		tcp_try_keep_open(sk);
@@ -134,7 +134,7 @@ index 0451249c61e27..1097bca0f24fb 100644
  	}
  	return false;
  }
-@@ -2786,14 +2797,6 @@ static void tcp_identify_packet_loss(struct sock *sk, int *ack_flag)
+@@ -2777,14 +2788,6 @@ static void tcp_identify_packet_loss(struct sock *sk, int *ack_flag)
  	}
  }
  
@@ -149,7 +149,7 @@ index 0451249c61e27..1097bca0f24fb 100644
  /* Process an event, which can update packets-in-flight not trivially.
   * Main goal of this function is to calculate new estimate for left_out,
   * taking into account both packets sitting in receiver's buffer and
-@@ -2863,17 +2866,21 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
+@@ -2854,17 +2857,21 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
  		if (!(flag & FLAG_SND_UNA_ADVANCED)) {
  			if (tcp_is_reno(tp))
  				tcp_add_reno_sack(sk, num_dupack, ece_ack);
