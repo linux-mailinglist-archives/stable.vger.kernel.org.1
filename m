@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-59918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A0BC932C6A
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:55:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C838932C3A
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4D7C2847C5
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:55:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32F621C231C1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4493C19B59C;
-	Tue, 16 Jul 2024 15:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB9019DF53;
+	Tue, 16 Jul 2024 15:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsKZRD1+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVksQQPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011201DDCE;
-	Tue, 16 Jul 2024 15:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE4419AD93;
+	Tue, 16 Jul 2024 15:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721145304; cv=none; b=TRC/1QNW496NQQwW9tFhEBglWpzUO9DPZCZPTQrNwNmIRI//Aly4QQdrdmZq9jsw73ziGL21ztECs69vVeSlKwDMV1rCD/DP00b4ZDMvXuQqBmVNQ1a8oSI5DvAZZ0utuoPOGuJ9R8XHqjIqDEDzj/Bh4LaZ1XEM9N1OHr6q0sQ=
+	t=1721145191; cv=none; b=EdgU9MzBbnMAzMV2ZThFsVQzSEbWJkHVGW5RpVV3OasGfdPjapf6vonMjIUPwkF41jcvurpmxDPG49CeWSx+iOCbfenLO2VwLIHkpMrkynf3FG+AZPjIMghUOEVpfCgayW+yCE+xPVg9xgo8cU7+l0YHyrSIDwqlZhseKqGFnH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721145304; c=relaxed/simple;
-	bh=yZQOb6ss2OGk4WJzVRdwaVloOXYIC8v+57Tzu+XuoLA=;
+	s=arc-20240116; t=1721145191; c=relaxed/simple;
+	bh=2VM1wC7aIlehK0RgB8UnKAFUcegy0g56UN8lLtXFbkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t6eOvDEpC5XwLf5AbxkFiq7bF4GH5IYQVTD846HP/SdZ2Cd7za5Md3H9xirTD2wq3zstuDuSoiHdMxPXl6KEvTlV1NQzEUENTBewHoIAp+thJdmgg2YGiOnuhnuRvf34mQUe7/Gjx901+khCtW8E4Tcs+pDB8kfBMtx3SaBzMBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MsKZRD1+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB8BC116B1;
-	Tue, 16 Jul 2024 15:55:03 +0000 (UTC)
+	 MIME-Version; b=Sv11AiyHskztCayhWjVKABhZo2ydvkznG/CeUckn3n80E86Xu8sWfjriSX2XBmt/xciRb8NU0KLE3fJH6R5d/NUDCh21VP7JeECPyAlzi2eRTBNpKjPSuw1VLnRJE9T0v58ttG7m8MmgpLji3Uk4S5/iLD6TrgyE0JsmweptRlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVksQQPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B50C116B1;
+	Tue, 16 Jul 2024 15:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721145303;
-	bh=yZQOb6ss2OGk4WJzVRdwaVloOXYIC8v+57Tzu+XuoLA=;
+	s=korg; t=1721145191;
+	bh=2VM1wC7aIlehK0RgB8UnKAFUcegy0g56UN8lLtXFbkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MsKZRD1+Qnx5Yo6Q16ZDD1xXG5YeEzSqzlXTvn+NKmFgoxImRrlK8bVuyTG1PWtMd
-	 c9VMoy+JUJ3KfbVEL4mD6za8lYdEVLp3yKWKK7kYrbYCDwrNhnatW4s0ah/yL9VZvs
-	 lbi7QK22RLpHUeGcKKhR5nbsrBq4AbXC7FZoDojY=
+	b=EVksQQPb09n8mJtSIi8GzkENAkkMsOnT9+88JkUHvM0crIOszeA8JrU8UUMi/ZIZo
+	 OunoJ5BbQ/ph7Lxv+ENckGXY57XUz8FqhpGJ98hzwYKl5vyddj1Qj52PZMFnKADna3
+	 lXLcetPaSRFBrFIb8Cp2xCBGHnUjPIP/EEICT4gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 21/96] bpf: use bpf_map_kvcalloc in bpf_local_storage
+	Steev Klimaszewski <steev@kali.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.9 096/143] arm64: dts: qcom: sc8280xp-x13s: fix touchscreen power on
 Date: Tue, 16 Jul 2024 17:31:32 +0200
-Message-ID: <20240716152747.330581504@linuxfoundation.org>
+Message-ID: <20240716152759.669211812@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152746.516194097@linuxfoundation.org>
-References: <20240716152746.516194097@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit ddef81b5fd1da4d7c3cc8785d2043b73b72f38ef ]
+commit 7bfb6a4289b0a63d67ec7d4ce3018cb4a7442f6a upstream.
 
-Introduce new helper bpf_map_kvcalloc() for the memory allocation in
-bpf_local_storage(). Then the allocation will charge the memory from the
-map instead of from current, though currently they are the same thing as
-it is only used in map creation path now. By charging map's memory into
-the memcg from the map, it will be more clear.
+The Elan eKTH5015M touch controller on the X13s requires a 300 ms delay
+before sending commands after having deasserted reset during power on.
 
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
-Link: https://lore.kernel.org/r/20230210154734.4416-3-laoar.shao@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: af253aef183a ("bpf: fix order of args in call to bpf_map_kvcalloc")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Switch to the Elan specific binding so that the OS can determine the
+required power-on sequence and make sure that the controller is always
+detected during boot.
+
+Note that the always-on 1.8 V supply (s10b) is not used by the
+controller directly and should not be described.
+
+Fixes: 32c231385ed4 ("arm64: dts: qcom: sc8280xp: add Lenovo Thinkpad X13s devicetree")
+Cc: stable@vger.kernel.org	# 6.0
+Tested-by: Steev Klimaszewski <steev@kali.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240507144821.12275-6-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bpf.h            |  8 ++++++++
- kernel/bpf/bpf_local_storage.c |  4 ++--
- kernel/bpf/syscall.c           | 15 +++++++++++++++
- 3 files changed, 25 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts |   15 ++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 1ca1902af23e9..6b18b8da025f9 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1777,6 +1777,8 @@ struct bpf_prog *bpf_prog_get_curr_or_next(u32 *id);
- void *bpf_map_kmalloc_node(const struct bpf_map *map, size_t size, gfp_t flags,
- 			   int node);
- void *bpf_map_kzalloc(const struct bpf_map *map, size_t size, gfp_t flags);
-+void *bpf_map_kvcalloc(struct bpf_map *map, size_t n, size_t size,
-+		       gfp_t flags);
- void __percpu *bpf_map_alloc_percpu(const struct bpf_map *map, size_t size,
- 				    size_t align, gfp_t flags);
- #else
-@@ -1793,6 +1795,12 @@ bpf_map_kzalloc(const struct bpf_map *map, size_t size, gfp_t flags)
- 	return kzalloc(size, flags);
- }
+--- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
++++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+@@ -618,15 +618,16 @@
  
-+static inline void *
-+bpf_map_kvcalloc(struct bpf_map *map, size_t n, size_t size, gfp_t flags)
-+{
-+	return kvcalloc(n, size, flags);
-+}
-+
- static inline void __percpu *
- bpf_map_alloc_percpu(const struct bpf_map *map, size_t size, size_t align,
- 		     gfp_t flags)
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index f8dd7c516e320..8ea65973739e4 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -568,8 +568,8 @@ static struct bpf_local_storage_map *__bpf_local_storage_map_alloc(union bpf_att
- 	nbuckets = max_t(u32, 2, nbuckets);
- 	smap->bucket_log = ilog2(nbuckets);
+ 	status = "okay";
  
--	smap->buckets = kvcalloc(sizeof(*smap->buckets), nbuckets,
--				 GFP_USER | __GFP_NOWARN | __GFP_ACCOUNT);
-+	smap->buckets = bpf_map_kvcalloc(&smap->map, sizeof(*smap->buckets),
-+					 nbuckets, GFP_USER | __GFP_NOWARN);
- 	if (!smap->buckets) {
- 		bpf_map_area_free(smap);
- 		return ERR_PTR(-ENOMEM);
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 1e46a84694b8a..d77597daa0022 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -470,6 +470,21 @@ void *bpf_map_kzalloc(const struct bpf_map *map, size_t size, gfp_t flags)
- 	return ptr;
- }
+-	/* FIXME: verify */
+ 	touchscreen@10 {
+-		compatible = "hid-over-i2c";
++		compatible = "elan,ekth5015m", "elan,ekth6915";
+ 		reg = <0x10>;
  
-+void *bpf_map_kvcalloc(struct bpf_map *map, size_t n, size_t size,
-+		       gfp_t flags)
-+{
-+	struct mem_cgroup *memcg, *old_memcg;
-+	void *ptr;
+-		hid-descr-addr = <0x1>;
+ 		interrupts-extended = <&tlmm 175 IRQ_TYPE_LEVEL_LOW>;
+-		vdd-supply = <&vreg_misc_3p3>;
+-		vddl-supply = <&vreg_s10b>;
++		reset-gpios = <&tlmm 99 (GPIO_ACTIVE_LOW | GPIO_OPEN_DRAIN)>;
++		no-reset-on-power-off;
 +
-+	memcg = bpf_map_get_memcg(map);
-+	old_memcg = set_active_memcg(memcg);
-+	ptr = kvcalloc(n, size, flags | __GFP_ACCOUNT);
-+	set_active_memcg(old_memcg);
-+	mem_cgroup_put(memcg);
-+
-+	return ptr;
-+}
-+
- void __percpu *bpf_map_alloc_percpu(const struct bpf_map *map, size_t size,
- 				    size_t align, gfp_t flags)
- {
--- 
-2.43.0
-
++		vcc33-supply = <&vreg_misc_3p3>;
++		vccio-supply = <&vreg_misc_3p3>;
+ 
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&ts0_default>;
+@@ -1417,8 +1418,8 @@
+ 		reset-n-pins {
+ 			pins = "gpio99";
+ 			function = "gpio";
+-			output-high;
+-			drive-strength = <16>;
++			drive-strength = <2>;
++			bias-disable;
+ 		};
+ 	};
+ 
 
 
 
