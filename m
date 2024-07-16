@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-59749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6AF932B8F
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:46:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0928A932C52
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 17:54:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 231AC1F21889
-	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:46:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BC621C224F1
+	for <lists+stable@lfdr.de>; Tue, 16 Jul 2024 15:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A749217A93F;
-	Tue, 16 Jul 2024 15:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E6519E7E2;
+	Tue, 16 Jul 2024 15:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYo8zrBN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzVhD4b7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6632312B72;
-	Tue, 16 Jul 2024 15:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119E219DF53;
+	Tue, 16 Jul 2024 15:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721144792; cv=none; b=hON+dat7b+jHbhsZfAsdHyHwwcYbPHmjbJJ4gHFHkZAgNWFNQMC7n3XakbxrMddlxAiB9NPX6v87q8iPJHllet+6ScKVYkzy5jyi6AbHUtcPakN/MU+TaklhmcpnUPkpea6m6bHzzxAP/nRF0beI9LBQygwmbTKu7ycxF4mvPgk=
+	t=1721145242; cv=none; b=FG6mbeFt+A47/dgeBnNtcteWDzVFUrrFJj+nTVU4LYzfkCMotjnaZS5rDAmQu1nekLSJYjB07g7S385o6dhey4UzbUZe5iZp06aSCLPmS0/IQ1UATGu6IpT5wiFT7hrNAQTMY1CR6vyu9SJ6YxTnR2IJuhmrfoo8dWkXYMXSX24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721144792; c=relaxed/simple;
-	bh=H/Ltk/jqQmFVOU8GrDsyNAoOv2s9/6ZSpaHdikcdmjk=;
+	s=arc-20240116; t=1721145242; c=relaxed/simple;
+	bh=f50AAW8lo9EK7f5MDU89hrn6DFhj4DmK/RfmRqNWh+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XhENrERaDPr1vHLccGFYb1MCqXEp6XqKd4H/+EDv5iI9pCPwk6vROM3+XAPx915vjrXZ2hIHstVQalw3NH8ausV0r9djLHkLhW8ZlcOIiJatxNPU6A2XC8Bj9+hlA5DfCZhGbY99P7l2hpJ5NLWoZga0tbfXgzW2MiTIy86+s94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYo8zrBN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8C3C116B1;
-	Tue, 16 Jul 2024 15:46:31 +0000 (UTC)
+	 MIME-Version; b=COb4glVl4pEI4/QJOawECGlyVxQxLoyyACr6RZDaaUOegbwbiyIvoLiL8AZNJUwoOncgTKhsElbSr1W1QnJ9EjjtvrYV1PhQ9HZ6PORBcJ3ZQrlmzOtQUMCtxaLtqD9wW521iLsyZBulVweJoKtYFFBhNiPaq974B+fr5PnZsGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzVhD4b7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0C7C4AF11;
+	Tue, 16 Jul 2024 15:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721144792;
-	bh=H/Ltk/jqQmFVOU8GrDsyNAoOv2s9/6ZSpaHdikcdmjk=;
+	s=korg; t=1721145241;
+	bh=f50AAW8lo9EK7f5MDU89hrn6DFhj4DmK/RfmRqNWh+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pYo8zrBNDqXmjiGarvP1ierpzpKcd/WgNpVNzmqO8MgHAZ+KzFfaONJKR0/vaC+HY
-	 TQ6Vw6PCmbi17KVbdI/8IkSAP91UE2g0iYBhLIo0uJPS8wo69l3CGlIYPaPafwcet0
-	 /mmI+ulrF4k07QpqB7TNhZMXAph1mIMqUmbS3MnI=
+	b=lzVhD4b71sSrrH05ZTxcuX5uvd6TqvfbWQ2KEPH2v8pgI7LKRTSTWv5eqPJavmzu/
+	 EJYA1Gjn1yOnhtNPjZ9JWf/MR2u5z+aaBV4Gcni+gWDsquL9373k8qJl94w/9c+3hQ
+	 4v6EwY1w3IFkS2NkgerNxygW6O7oQ/9i/8IvDnZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 5.10 108/108] i2c: rcar: fix error code in probe()
+	stable <stable@kernel.org>,
+	Ekansh Gupta <quic_ekangupt@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.9 127/143] misc: fastrpc: Fix memory leak in audio daemon attach operation
 Date: Tue, 16 Jul 2024 17:32:03 +0200
-Message-ID: <20240716152750.144415781@linuxfoundation.org>
+Message-ID: <20240716152800.872729057@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <20240716152755.980289992@linuxfoundation.org>
+References: <20240716152755.980289992@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-commit 37a672be3ae357a0f87fbc00897fa7fcb3d7d782 upstream.
+commit ad0bd973a033003ca578c42a760d1dc77aeea15e upstream.
 
-Return an error code if devm_reset_control_get_exclusive() fails.
-The current code returns success.
+Audio PD daemon send the name as part of the init IOCTL call. This
+name needs to be copied to kernel for which memory is allocated.
+This memory is never freed which might result in memory leak. Free
+the memory when it is not needed.
 
-Fixes: 0e864b552b23 ("i2c: rcar: reset controller is mandatory for Gen3+")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: 0871561055e6 ("misc: fastrpc: Add support for audiopd")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240628114501.14310-5-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-rcar.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/misc/fastrpc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -1034,8 +1034,10 @@ static int rcar_i2c_probe(struct platfor
- 	/* R-Car Gen3+ needs a reset before every transfer */
- 	if (priv->devtype >= I2C_RCAR_GEN3) {
- 		priv->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
--		if (IS_ERR(priv->rstc))
-+		if (IS_ERR(priv->rstc)) {
-+			ret = PTR_ERR(priv->rstc);
- 			goto out_pm_put;
-+		}
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1320,6 +1320,7 @@ static int fastrpc_init_create_static_pr
+ 		goto err_invoke;
  
- 		ret = reset_control_status(priv->rstc);
- 		if (ret < 0)
+ 	kfree(args);
++	kfree(name);
+ 
+ 	return 0;
+ err_invoke:
 
 
 
