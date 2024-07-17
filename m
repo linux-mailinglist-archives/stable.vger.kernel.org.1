@@ -1,150 +1,233 @@
-Return-Path: <stable+bounces-60438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634AD933CEE
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 14:28:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4846E933D47
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 15:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FA1E1C216B4
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 12:28:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9F091F21CD5
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 13:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D3317FAA4;
-	Wed, 17 Jul 2024 12:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFD2180A62;
+	Wed, 17 Jul 2024 13:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="TnQU7PO+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nX1Ean9X"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D1417F378;
-	Wed, 17 Jul 2024 12:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7331802C1
+	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 13:00:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721219281; cv=none; b=Ep+w9VQocu3IDUrMV/lXgkI9GKNxV2UfZM1XT4LVVHj3gP0aUOfj6sR8WtYxwRH0esVPEhW/RgP36NPppp4xdSDifdDvMLLzq9p6brZcaHjp13HHCivsxSOl0WUTucfzwqsKz2jJq4R5F7uBtI/IivgVj30DIKhbq4Ei4+d4gnY=
+	t=1721221246; cv=none; b=Q+7mnfm2wvajHwWceKwgoA7nNGFCD4xY3JTYasPOKOeiMvvdsqrWMAaZyxsv2IjQxD6enZckonEJPBLrjpgwDDqMFAfXOG2OvdeniInRHfq5KTGFNIlMl5/mMeZhLN6qsE/LP+Y8HxN/3PuGuNK7nbxGFcEIz0GIxFyY5mvSoEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721219281; c=relaxed/simple;
-	bh=8pdXIkxSbxEEaa0dOomW4yGjo/Lwu7C2h4OWoG18TK0=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=pim8UBusAsLFEe1AtysF4SIBrhDYOOguze2lQp2EeDZUpom+LRymqkbKMGsj+NDXcQ5PENqgIn/6fROHdmHE9W/KbuRCj1g1oloTpTmzapFXRhpz6vQF7Al8s5F2AFiEIqFROHuyLr9rBVdcDhCk6L3ahKClhgvwnhQ/8oMfd8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=TnQU7PO+; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46HCPvMC001221;
-	Wed, 17 Jul 2024 12:27:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	from:to:cc:subject:date:message-id; s=corp-2023-11-20; bh=7e8rCC
-	q6Pvp/2JOR9RDufes1ne0efzU0ciVK4xUxmGw=; b=TnQU7PO+eVKarRXz7IvJnF
-	eyeDZcbIrVgbQagOKT5BYGZYzxYPqWhOlbGBq8jo8TVqpxCUEht3aLCgLr4QzIzm
-	Tx9iutcj8GeYlmWHesgKKZmv+b7y4/04vkyT/IIJE76C4AuhSIw6cX4CYFfm+Uxi
-	GREKFLQ7EBglci7OBQeZzz1koCmeBftZOHAABVKXVGpNwjQiwCKse03iJayCWqqc
-	Z8sZMdoD/3SVYxXB0jWz9K85ynaaw+0qtj4NAAhP1JVMYe/dui63WV2vsRF3zPOe
-	LAHKGLMSfDuszCOF4Zul8rSE4fKfR1IaIBdszBK3hQLuAd28toUUi9AKaKuIqtfA
-	==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40edxpr04v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Jul 2024 12:27:46 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 46HCHgHJ006831;
-	Wed, 17 Jul 2024 12:27:45 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 40dwexgdyr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Jul 2024 12:27:45 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46HCRjXZ040778;
-	Wed, 17 Jul 2024 12:27:45 GMT
-Received: from gkennedy-linux.us.oracle.com (gkennedy-linux.us.oracle.com [10.152.170.45])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 40dwexgdyd-1;
-	Wed, 17 Jul 2024 12:27:45 +0000
-From: George Kennedy <george.kennedy@oracle.com>
-To: gregkh@linuxfoundation.org, jirislaby@kernel.org, tony@atomide.com,
-        andriy.shevchenko@linux.intel.com, l.sanfilippo@kunbus.com,
-        tglx@linutronix.de, linux-kernel@vger.kernel.org,
-        linux-serial@vger.kernel.org
-Cc: george.kennedy@oracle.com, stable@vger.kernel.org,
-        harshit.m.mogalapalli@oracle.com
-Subject: [PATCH] serial: core: check uartclk for zero to avoid divide by zero
-Date: Wed, 17 Jul 2024 07:24:38 -0500
-Message-Id: <1721219078-3209-1-git-send-email-george.kennedy@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-17_08,2024-07-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 mlxscore=0
- malwarescore=0 adultscore=0 phishscore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
- definitions=main-2407170095
-X-Proofpoint-GUID: 8_O0akFqp8QVPViJ8t8DIDwoE3iiXNnl
-X-Proofpoint-ORIG-GUID: 8_O0akFqp8QVPViJ8t8DIDwoE3iiXNnl
+	s=arc-20240116; t=1721221246; c=relaxed/simple;
+	bh=6vb13Iy5euZOR4dQ+SlApvRI6h/aNBGj1KptxzqtqHM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RJLFl40nRivaF6O9ZlXI22ZNh2YOGloCzTLxROlhV/gblNfJ4Bvx30bs3G+s0gzukow8t9oiIhdheyu07VbAIHaZXlQcpTi8VjYOivj7RejJ+SSC1a4Wa4MSuhf5cYq4aKC9ud2o8GdMFcr/3mVwCiM5YPPs5ITjSazRfswdA24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nX1Ean9X; arc=none smtp.client-ip=209.85.222.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-8102c9a5badso449984241.0
+        for <stable@vger.kernel.org>; Wed, 17 Jul 2024 06:00:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721221243; x=1721826043; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ElVioLoyTQhlcAXqwKpNT5fstW6n6vTuxhpKut5u5V0=;
+        b=nX1Ean9X+wVo0Cs7ycVjWISmwwcskN1RGCxdmNcqOUNzLPVk0Xftzue8Fyu/bILiRs
+         8nGPlBtn2SGpL6670TgJ47tit7vPAedRRM8aDED8SrjTybKDXAkWovWAj+P/pfszVq81
+         KK7gJV4jwk+TdvxZ1e/+P5LQPp2xv1qSI9a+MMru4AXthxCq/BYCu0d5evV5KtBG+6rg
+         ZgUnaHEiXMhRF6wrLAYnyxYYREqxfK6pMrGNsPJYYQtJ9y3iQzvh3vIROW0sHNKR5Ma4
+         zqcf3EJuAEy/m+Xcb0DhAFbctQxQGQywo619NSNR0hibiHWGotSAlMT/mvO27Y/tHCd0
+         O12w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721221243; x=1721826043;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ElVioLoyTQhlcAXqwKpNT5fstW6n6vTuxhpKut5u5V0=;
+        b=EjFn7/qkPFps9pr6u7D0XhpOFz+yvv9na6PSOdfV9kKdvU9L0eUEt4FzTKgAlLBNBf
+         54FK91bEf8RiXWsZRSPF+MIZ9t5hC7rulseLqUw65chNp6RAHuTiAz3O7QdQIzzojPb4
+         tpLyfey622HbdxrY//+xZHh6dszbKPFoBAYAipQ9aQlKhFdRoSVlhwsUf7QbN1XxWrgu
+         DxaGKeKboxLzYOdJFmG4jGMCJsKKPa/Mn7mlNEbwRXg+C6C5sS3GFqZWPWxIflzEhUJx
+         AynQzOXMrBLfH/fZ3/zp5OE8yQ0/dWaWVVLGzBnBOIUGGw8Ezwaz38ukMQHTfto1Ns8l
+         S5Ig==
+X-Gm-Message-State: AOJu0Yw8XH8vgSlnCKZGm3osAfG/Mj06iDut1N2mJpAIhLNP0eou0mMM
+	mtHrkTLdwvP27BgrBqIp0J/+NhaQnaoJB41EY4d/RHvVgUP9TTfSYuL7/ool9v1CudUyhAqyv1w
+	BVC+v/K4+hP1bJ9atseb48BaCDnBx922WzNvgyw==
+X-Google-Smtp-Source: AGHT+IH5XgJmvEXq/L7FHOyyXK3RkpSHdXHll5ESvSvmSgTLTU4h1DT36ljkuWFPLkfK9rf8NDemDXuqK12zJjQqcyI=
+X-Received: by 2002:a05:6102:3f86:b0:48f:ebb7:3919 with SMTP id
+ ada2fe7eead31-4915975b217mr1698584137.7.1721221242950; Wed, 17 Jul 2024
+ 06:00:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240717063806.741977243@linuxfoundation.org>
+In-Reply-To: <20240717063806.741977243@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 17 Jul 2024 18:30:31 +0530
+Message-ID: <CA+G9fYuRu35fggLrOaXZg=ic-pFjq7DRL1moSwmwHW1qejPfuQ@mail.gmail.com>
+Subject: Re: [PATCH 6.9 000/142] 6.9.10-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Calling ioctl TIOCSSERIAL with an invalid baud_base can
-result in uartclk being zero, which will result in a
-divide by zero error in uart_get_divisor(). The check for
-uartclk being zero in uart_set_info() needs to be done
-before other settings are made as subsequent calls to
-ioctl TIOCSSERIAL for the same port would be impacted if
-the uartclk check was done where uartclk gets set.
+On Wed, 17 Jul 2024 at 12:10, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.9.10 release.
+> There are 142 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 19 Jul 2024 06:37:32 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.9.10-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.9.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Oops: divide error: 0000  PREEMPT SMP KASAN PTI
-RIP: 0010:uart_get_divisor (drivers/tty/serial/serial_core.c:580)
-Call Trace:
- <TASK>
-serial8250_get_divisor (drivers/tty/serial/8250/8250_port.c:2576
-    drivers/tty/serial/8250/8250_port.c:2589)
-serial8250_do_set_termios (drivers/tty/serial/8250/8250_port.c:502
-    drivers/tty/serial/8250/8250_port.c:2741)
-serial8250_set_termios (drivers/tty/serial/8250/8250_port.c:2862)
-uart_change_line_settings (./include/linux/spinlock.h:376
-    ./include/linux/serial_core.h:608 drivers/tty/serial/serial_core.c:222)
-uart_port_startup (drivers/tty/serial/serial_core.c:342)
-uart_startup (drivers/tty/serial/serial_core.c:368)
-uart_set_info (drivers/tty/serial/serial_core.c:1034)
-uart_set_info_user (drivers/tty/serial/serial_core.c:1059)
-tty_set_serial (drivers/tty/tty_io.c:2637)
-tty_ioctl (drivers/tty/tty_io.c:2647 drivers/tty/tty_io.c:2791)
-__x64_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:907
-    fs/ioctl.c:893 fs/ioctl.c:893)
-do_syscall_64 (arch/x86/entry/common.c:52
-    (discriminator 1) arch/x86/entry/common.c:83 (discriminator 1))
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: George Kennedy <george.kennedy@oracle.com>
----
- serial_struct baud_base=0x30000000 will cause the crash.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
- drivers/tty/serial/serial_core.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+## Build
+* kernel: 6.9.10-rc2
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 61dff568763322453e014b07c0508620052362da
+* git describe: v6.9.8-338-g61dff5687633
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.9.y/build/v6.9.8=
+-338-g61dff5687633
 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index 2a8006e3d687..9967444eae10 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -881,6 +881,14 @@ static int uart_set_info(struct tty_struct *tty, struct tty_port *port,
- 	new_flags = (__force upf_t)new_info->flags;
- 	old_custom_divisor = uport->custom_divisor;
- 
-+	if (!(uport->flags & UPF_FIXED_PORT)) {
-+		unsigned int uartclk = new_info->baud_base * 16;
-+		/* check needs to be done here before other settings made */
-+		if (uartclk == 0) {
-+			retval = -EINVAL;
-+			goto exit;
-+		}
-+	}
- 	if (!capable(CAP_SYS_ADMIN)) {
- 		retval = -EPERM;
- 		if (change_irq || change_port ||
--- 
-2.39.3
+## Test Regressions (compared to v6.9.8-198-g2471237b27c6)
 
+## Metric Regressions (compared to v6.9.8-198-g2471237b27c6)
+
+## Test Fixes (compared to v6.9.8-198-g2471237b27c6)
+
+## Metric Fixes (compared to v6.9.8-198-g2471237b27c6)
+
+## Test result summary
+total: 178195, pass: 154558, fail: 2462, skip: 21175, xfail: 0
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 127 total, 127 passed, 0 failed
+* arm64: 36 total, 36 passed, 0 failed
+* i386: 27 total, 27 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 33 total, 33 passed, 0 failed
+* riscv: 17 total, 17 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 31 total, 31 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
