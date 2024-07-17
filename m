@@ -1,220 +1,376 @@
-Return-Path: <stable+bounces-60418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A764933B33
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 12:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F036933AF9
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 12:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A121BB21EBD
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 10:38:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90834B2198C
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 10:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90AE317E917;
-	Wed, 17 Jul 2024 10:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9F417DA39;
+	Wed, 17 Jul 2024 10:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=earth.li header.i=@earth.li header.b="MzZLfdDE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIDWLRjN"
 X-Original-To: stable@vger.kernel.org
-Received: from the.earth.li (the.earth.li [93.93.131.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0B114AD19;
-	Wed, 17 Jul 2024 10:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.93.131.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1FB19A;
+	Wed, 17 Jul 2024 10:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721212697; cv=none; b=TqcVTlqGUYHHul+vC+4xMGikc+mza6YNPM1fUS+5SFo3PbEYgcov/CgEEHJqtTszRuvuyFCSCMi9z1+5q3JHWVf9aOaliZqWyLxYzPz7C/A3QXRxk5I1fGl7CR1WGwf2H4FJHWQb+8V4Qn5abRV7V34feGcVQfnbIGDrpDFJVFY=
+	t=1721211169; cv=none; b=RGf9vzJqbXIULRPXJcpNvYSUChCxQvxYg/U6Shc/PFxfgu7QR79T+TC9bYRwY3sMQ1TwWjtRDC7+4rq83I37Mlf0qYdQN4LWCqb39tAh+nzFVcbmRrT72zzNGYyuIHFpm9h2HVZ2zZgcrSYZg/wiecim7fQhlRFmY5EFmiq24Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721212697; c=relaxed/simple;
-	bh=HvhgoHyJKpIIPXLDKtSS/sCs2jXautb++tsD2DLZoBI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ECv8qcEnPXNCTpQ949BXsN1wCdg7mAeA7B37WWyT8Z9545NfFn/lz6wuk549sPhUrPPuJXL8usO8zBJbv//VsevIjm8UipIe31+yCDSqxPphOh14dKMEffFf9JCdqohW21Xp+yfMEdX1d3h/BAtP/vDel0CZrIKauoyyko6EUug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li; spf=pass smtp.mailfrom=earth.li; dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b=MzZLfdDE; arc=none smtp.client-ip=93.93.131.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=earth.li
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=earth.li;
-	s=the; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:
-	Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=crA7kBcB4rPslVEtpJNh9J3l8TLIse9JtfSt0FeRbRs=; b=MzZLfdDErg+lO02YjKutidxYlY
-	r6Yo77WfjHzXWWmnJEpO6OMjO4mhdQnMSE0ZJ0vOhaT+T28S8GsD84LHrG0jSAXB9RNNDlRPvcg3+
-	mTzDKnCMTVet153q690eQElvXA+RL9crciP35BwrVIdmNWeMopk/uOksVVs1Q2WAkr/0qxEBnLTdJ
-	yzudAfS5w724oEPnyS82XPiEhKpPKjUmGg+jykafXDC0JxzKobNIDBwfu4x+ZxYAj4/NjpaElvuCJ
-	SWyvKVLy8kCQ5qeJh1CE1A5L66Sko97ltaH6jpOlD5UU/zsBtXnz1hI1JlLCHGPp5rEww1xKoT7wE
-	zbAGjhhQ==;
-Received: from noodles by the.earth.li with local (Exim 4.96)
-	(envelope-from <noodles@earth.li>)
-	id 1sU1NO-008WmH-2y;
-	Wed, 17 Jul 2024 10:55:10 +0100
-Date: Wed, 17 Jul 2024 10:55:10 +0100
-From: Jonathan McDowell <noodles@earth.li>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: linux-integrity@vger.kernel.org, stable@vger.kernel.org,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] tpm: Relocate buf->handles to appropriate place
-Message-ID: <ZpeU_lxLtrpKGk4s@earth.li>
-References: <20240716185225.873090-1-jarkko@kernel.org>
+	s=arc-20240116; t=1721211169; c=relaxed/simple;
+	bh=XO6yNXx8Y9e/wjz3msMK6OmjBPUMFejOU3nfu7h+xhk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=txb27t0B9QTrNWc57h1OjyuvAz6vQNmO6f3MTCFyK7hnOBHFd2mcR6PrmCYvTkLEHAhBMzX9yX4MtesdFxu2G5mNqCHMhGhkJ98rGpCaTfklUs052SIA0jG9SnrkJuN7raFWZAM4Xb/Le9chitIoE0vJsHkSTC2NSRYTnFzq2+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIDWLRjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033BEC32782;
+	Wed, 17 Jul 2024 10:12:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1721211168;
+	bh=XO6yNXx8Y9e/wjz3msMK6OmjBPUMFejOU3nfu7h+xhk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eIDWLRjNJwEfVjpwYwdVYtpTBpKdxcO74xqvh5zfApTWnt+i5T5f+EDKiSkyrMh9G
+	 giYDEIthPvJ4W4Jm25cuWaqhTXNHygovqKtfo95uHCdhZHWyWskDv0rPkwnpVq8OQd
+	 xg5T0tOQDPEq59lvOoKxyjtER0JDBsr0MsJAg6ew=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 4.19 00/66] 4.19.318-rc3 review
+Date: Wed, 17 Jul 2024 12:12:44 +0200
+Message-ID: <20240717101028.579732070@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240716185225.873090-1-jarkko@kernel.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.318-rc3.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-4.19.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 4.19.318-rc3
+X-KernelTest-Deadline: 2024-07-19T10:10+00:00
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 16, 2024 at 09:52:24PM +0300, Jarkko Sakkinen wrote:
-> tpm_buf_append_name() has the following snippet in the beginning:
-> 
-> 	if (!tpm2_chip_auth(chip)) {
-> 		tpm_buf_append_u32(buf, handle);
-> 		/* count the number of handles in the upper bits of flags */
-> 		buf->handles++;
-> 		return;
-> 	}
-> 
-> The claim in the comment is wrong, and the comment is in the wrong place
-> as alignment in this case should not anyway be a concern of the call
-> site. In essence the comment is  lying about the code, and thus needs to
-> be adressed.
-> 
-> Further, 'handles' was incorrectly place to struct tpm_buf, as tpm-buf.c
-> does manage its state. It is easy to grep that only piece of code that
-> actually uses the field is tpm2-sessions.c.
-> 
-> Address the issues by moving the variable to struct tpm_chip.
-> 
-> Cc: stable@vger.kernel.org # v6.10+
-> Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> 
-> v3:
-> * Reset chip->handles in the beginning of tpm2_start_auth_session()
->   so that it shows correct value, when TCG_TPM2_HMAC is enabled but
->   tpm2_sessions_init() has never been called.
-> v2:
-> * Was a bit more broken than I first thought, as 'handles' is only
->   useful for tpm2-sessions.c and has zero relation to tpm-buf.c.
-> ---
->  drivers/char/tpm/tpm-buf.c       | 1 -
->  drivers/char/tpm/tpm2-cmd.c      | 2 +-
->  drivers/char/tpm/tpm2-sessions.c | 7 ++++---
->  include/linux/tpm.h              | 8 ++++----
->  4 files changed, 9 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm-buf.c b/drivers/char/tpm/tpm-buf.c
-> index cad0048bcc3c..d06e8e063151 100644
-> --- a/drivers/char/tpm/tpm-buf.c
-> +++ b/drivers/char/tpm/tpm-buf.c
-> @@ -44,7 +44,6 @@ void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal)
->  	head->tag = cpu_to_be16(tag);
->  	head->length = cpu_to_be32(sizeof(*head));
->  	head->ordinal = cpu_to_be32(ordinal);
-> -	buf->handles = 0;
->  }
->  EXPORT_SYMBOL_GPL(tpm_buf_reset);
->  
-> diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
-> index 1e856259219e..b781e4406fc2 100644
-> --- a/drivers/char/tpm/tpm2-cmd.c
-> +++ b/drivers/char/tpm/tpm2-cmd.c
-> @@ -776,7 +776,7 @@ int tpm2_auto_startup(struct tpm_chip *chip)
->  	if (rc)
->  		goto out;
->  
-> -	rc = tpm2_sessions_init(chip);
-> +	/* rc = tpm2_sessions_init(chip); */
+This is the start of the stable review cycle for the 4.19.318 release.
+There are 66 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-Left over from testing? Or should be removed entirely?
+Responses should be made by Fri, 19 Jul 2024 10:10:11 +0000.
+Anything received after that time might be too late.
 
->  out:
->  	/*
-> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-> index d3521aadd43e..5e7c12d64ba8 100644
-> --- a/drivers/char/tpm/tpm2-sessions.c
-> +++ b/drivers/char/tpm/tpm2-sessions.c
-> @@ -238,8 +238,7 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
->  
->  	if (!tpm2_chip_auth(chip)) {
->  		tpm_buf_append_u32(buf, handle);
-> -		/* count the number of handles in the upper bits of flags */
-> -		buf->handles++;
-> +		chip->handles++;
->  		return;
->  	}
->  
-> @@ -310,7 +309,7 @@ void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
->  
->  	if (!tpm2_chip_auth(chip)) {
->  		/* offset tells us where the sessions area begins */
-> -		int offset = buf->handles * 4 + TPM_HEADER_SIZE;
-> +		int offset = chip->handles * 4 + TPM_HEADER_SIZE;
->  		u32 len = 9 + passphrase_len;
->  
->  		if (tpm_buf_length(buf) != offset) {
-> @@ -963,6 +962,8 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
->  	int rc;
->  	u32 null_key;
->  
-> +	chip->handles = 0;
-> +
->  	if (!auth) {
->  		dev_warn_once(&chip->dev, "auth session is not active\n");
->  		return 0;
-> diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-> index e93ee8d936a9..b664f7556494 100644
-> --- a/include/linux/tpm.h
-> +++ b/include/linux/tpm.h
-> @@ -202,9 +202,9 @@ struct tpm_chip {
->  	/* active locality */
->  	int locality;
->  
-> +	/* handle count for session: */
-> +	u8 handles;
->  #ifdef CONFIG_TCG_TPM2_HMAC
-> -	/* details for communication security via sessions */
-> -
->  	/* saved context for NULL seed */
->  	u8 null_key_context[TPM2_MAX_CONTEXT_SIZE];
->  	 /* name of NULL seed */
-> @@ -377,7 +377,6 @@ struct tpm_buf {
->  	u32 flags;
->  	u32 length;
->  	u8 *data;
-> -	u8 handles;
->  };
->  
->  enum tpm2_object_attributes {
-> @@ -517,7 +516,7 @@ static inline void tpm_buf_append_hmac_session_opt(struct tpm_chip *chip,
->  	if (tpm2_chip_auth(chip)) {
->  		tpm_buf_append_hmac_session(chip, buf, attributes, passphrase, passphraselen);
->  	} else  {
-> -		offset = buf->handles * 4 + TPM_HEADER_SIZE;
-> +		offset = chip->handles * 4 + TPM_HEADER_SIZE;
->  		head = (struct tpm_header *)buf->data;
->  
->  		/*
-> @@ -541,6 +540,7 @@ void tpm2_end_auth_session(struct tpm_chip *chip);
->  
->  static inline int tpm2_start_auth_session(struct tpm_chip *chip)
->  {
-> +	chip->handles = 0;
->  	return 0;
->  }
->  static inline void tpm2_end_auth_session(struct tpm_chip *chip)
-> -- 
-> 2.45.2
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.318-rc3.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+and the diffstat can be found below.
 
-J.
+thanks,
 
--- 
-"I'm not anti-establishment, I just don't see the point." -- Matthew
-Kirkwood, OxLUG mailing list.
+greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 4.19.318-rc3
+
+Wolfram Sang <wsa+renesas@sang-engineering.com>
+    i2c: rcar: bring hardware to known state when probing
+
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: fix kernel bug on rename operation of broken directory
+
+felix <fuzhen5@huawei.com>
+    SUNRPC: Fix RPC client cleaned up the freed pipefs dentries
+
+Eric Dumazet <edumazet@google.com>
+    tcp: avoid too many retransmit packets
+
+Eric Dumazet <edumazet@google.com>
+    tcp: use signed arithmetic in tcp_rtx_probe0_timed_out()
+
+Menglong Dong <imagedong@tencent.com>
+    net: tcp: fix unexcepted socket die when snd_wnd is 0
+
+Eric Dumazet <edumazet@google.com>
+    tcp: refactor tcp_retransmit_timer()
+
+Ilya Dryomov <idryomov@gmail.com>
+    libceph: fix race between delayed_work() and ceph_monc_stop()
+
+He Zhe <zhe.he@windriver.com>
+    hpet: Support 32-bit userspace
+
+Alan Stern <stern@rowland.harvard.edu>
+    USB: core: Fix duplicate endpoint bug by clearing reserved bits in the descriptor
+
+Lee Jones <lee@kernel.org>
+    usb: gadget: configfs: Prevent OOB read/write in usb_string_copy()
+
+WangYuli <wangyuli@uniontech.com>
+    USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
+
+Vanillan Wang <vanillanwang@163.com>
+    USB: serial: option: add Rolling RW350-GL variants
+
+Mank Wang <mank.wang@netprisma.us>
+    USB: serial: option: add Netprisma LCUK54 series modules
+
+Slark Xiao <slark_xiao@163.com>
+    USB: serial: option: add support for Foxconn T99W651
+
+Bjørn Mork <bjorn@mork.no>
+    USB: serial: option: add Fibocom FM350-GL
+
+Daniele Palmas <dnlplm@gmail.com>
+    USB: serial: option: add Telit FN912 rmnet compositions
+
+Daniele Palmas <dnlplm@gmail.com>
+    USB: serial: option: add Telit generic core-dump composition
+
+Chen Ni <nichen@iscas.ac.cn>
+    ARM: davinci: Convert comma to semicolon
+
+Dmitry Antipov <dmantipov@yandex.ru>
+    ppp: reject claimed-as-LCP but actually malformed packets
+
+Aleksander Jan Bajkowski <olek2@wp.pl>
+    net: ethernet: lantiq_etop: fix double free in detach
+
+Aleksander Jan Bajkowski <olek2@wp.pl>
+    net: lantiq_etop: add blank line after declaration
+
+Neal Cardwell <ncardwell@google.com>
+    tcp: fix incorrect undo caused by DSACK of TLP retransmit
+
+Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+    drm/i915: make find_fw_domain work on intel_uncore
+
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: fix incorrect inode allocation from reserved inodes
+
+Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+    i2c: pnx: Fix potential deadlock warning from del_timer_sync() call in isr
+
+Mauro Carvalho Chehab <mchehab@kernel.org>
+    media: dw2102: fix a potential buffer overflow
+
+Ghadi Elie Rahme <ghadi.rahme@canonical.com>
+    bnx2x: Fix multiple UBSAN array-index-out-of-bounds
+
+Alex Deucher <alexander.deucher@amd.com>
+    drm/amdgpu/atomfirmware: silence UBSAN warning
+
+Ma Ke <make24@iscas.ac.cn>
+    drm/nouveau: fix null pointer dereference in nouveau_connector_get_modes
+
+Jan Kara <jack@suse.cz>
+    Revert "mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again"
+
+Jan Kara <jack@suse.cz>
+    fsnotify: Do not generate events for O_PATH file descriptors
+
+Jimmy Assarsson <extja@kvaser.com>
+    can: kvaser_usb: Explicitly initialize family in leafimx driver_info struct
+
+Jaganath Kanakkassery <jaganath.k.os@gmail.com>
+    Bluetooth: Fix incorrect pointer arithmatic in ext_adv_report_evt
+
+Jinliang Zheng <alexjlzheng@tencent.com>
+    mm: optimize the redundant loop of mm_update_owner_next()
+
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: add missing check for inode numbers on directory entries
+
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: fix inode number range checks
+
+Shigeru Yoshida <syoshida@redhat.com>
+    inet_diag: Initialize pad field in struct inet_diag_req_v2
+
+Zijian Zhang <zijianzhang@bytedance.com>
+    selftests: make order checking verbose in msg_zerocopy selftest
+
+Zijian Zhang <zijianzhang@bytedance.com>
+    selftests: fix OOM in msg_zerocopy selftest
+
+Sam Sun <samsun1006219@gmail.com>
+    bonding: Fix out-of-bounds read in bond_option_arp_ip_targets_set()
+
+Jakub Kicinski <kuba@kernel.org>
+    tcp_metrics: validate source addr length
+
+Neal Cardwell <ncardwell@google.com>
+    UPSTREAM: tcp: fix DSACK undo in fast recovery to call tcp_try_to_open()
+
+Yuchung Cheng <ycheng@google.com>
+    net: tcp better handling of reordering then loss cases
+
+Yousuk Seung <ysseung@google.com>
+    tcp: add ece_ack flag to reno sack functions
+
+zhang kai <zhangkaiheb@126.com>
+    tcp: tcp_mark_head_lost is only valid for sack-tcp
+
+Eric Dumazet <edumazet@google.com>
+    tcp: take care of compressed acks in tcp_add_reno_sack()
+
+Holger Dengler <dengler@linux.ibm.com>
+    s390/pkey: Wipe sensitive data on failure
+
+Wang Yong <wang.yong12@zte.com.cn>
+    jffs2: Fix potential illegal address access in jffs2_free_inode
+
+Greg Kurz <groug@kaod.org>
+    powerpc/xmon: Check cpu id in commands "c#", "dp#" and "dx#"
+
+Mike Marshall <hubcap@omnibond.com>
+    orangefs: fix out-of-bounds fsid access
+
+Michael Ellerman <mpe@ellerman.id.au>
+    powerpc/64: Set _IO_BASE to POISON_POINTER_DELTA not 0 for CONFIG_PCI=n
+
+Heiner Kallweit <hkallweit1@gmail.com>
+    i2c: i801: Annotate apanel_addr as __ro_after_init
+
+Ricardo Ribalda <ribalda@chromium.org>
+    media: dvb-frontends: tda10048: Fix integer overflow
+
+Ricardo Ribalda <ribalda@chromium.org>
+    media: s2255: Use refcount_t instead of atomic_t for num_channels
+
+Ricardo Ribalda <ribalda@chromium.org>
+    media: dvb-frontends: tda18271c2dd: Remove casting during div
+
+Simon Horman <horms@kernel.org>
+    net: dsa: mv88e6xxx: Correct check for empty list
+
+Erick Archer <erick.archer@outlook.com>
+    Input: ff-core - prefer struct_size over open coded arithmetic
+
+Jean Delvare <jdelvare@suse.de>
+    firmware: dmi: Stop decoding on broken entry
+
+Erick Archer <erick.archer@outlook.com>
+    sctp: prefer struct_size over open coded arithmetic
+
+Michael Bunk <micha@freedict.org>
+    media: dw2102: Don't translate i2c read into write
+
+Alex Hung <alex.hung@amd.com>
+    drm/amd/display: Skip finding free audio for unknown engine_id
+
+Michael Guralnik <michaelgur@nvidia.com>
+    IB/core: Implement a limit on UMAD receive List
+
+Ricardo Ribalda <ribalda@chromium.org>
+    media: dvb-usb: dib0700_devices: Add missing release_firmware()
+
+Ricardo Ribalda <ribalda@chromium.org>
+    media: dvb: as102-fe: Fix as10x_register_addr packing
+
+Arnd Bergmann <arnd@arndb.de>
+    asm-generic: Move common compat types to asm-generic/compat.h
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                          |   4 +-
+ arch/arm/mach-davinci/pm.c                        |   2 +-
+ arch/arm64/include/asm/compat.h                   |  20 +--
+ arch/mips/include/asm/compat.h                    |  22 +--
+ arch/parisc/include/asm/compat.h                  |  18 +--
+ arch/powerpc/include/asm/compat.h                 |  18 +--
+ arch/powerpc/include/asm/io.h                     |   2 +-
+ arch/powerpc/xmon/xmon.c                          |   6 +-
+ arch/s390/include/asm/compat.h                    |  18 +--
+ arch/sparc/include/asm/compat.h                   |  19 +--
+ arch/x86/include/asm/compat.h                     |  19 +--
+ drivers/char/hpet.c                               |  34 ++++-
+ drivers/firmware/dmi_scan.c                       |  11 ++
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c |   3 +
+ drivers/gpu/drm/amd/include/atomfirmware.h        |   2 +-
+ drivers/gpu/drm/i915/intel_uncore.c               |  20 +--
+ drivers/gpu/drm/nouveau/nouveau_connector.c       |   3 +
+ drivers/i2c/busses/i2c-i801.c                     |   2 +-
+ drivers/i2c/busses/i2c-pnx.c                      |  48 ++-----
+ drivers/i2c/busses/i2c-rcar.c                     |  17 ++-
+ drivers/infiniband/core/user_mad.c                |  21 ++-
+ drivers/input/ff-core.c                           |   7 +-
+ drivers/media/dvb-frontends/as102_fe_types.h      |   2 +-
+ drivers/media/dvb-frontends/tda10048.c            |   9 +-
+ drivers/media/dvb-frontends/tda18271c2dd.c        |   4 +-
+ drivers/media/usb/dvb-usb/dib0700_devices.c       |  18 ++-
+ drivers/media/usb/dvb-usb/dw2102.c                | 120 +++++++++-------
+ drivers/media/usb/s2255/s2255drv.c                |  20 +--
+ drivers/net/bonding/bond_options.c                |   6 +-
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c  |   1 +
+ drivers/net/dsa/mv88e6xxx/chip.c                  |   4 +-
+ drivers/net/ethernet/broadcom/bnx2x/bnx2x.h       |   2 +-
+ drivers/net/ethernet/lantiq_etop.c                |   5 +-
+ drivers/net/ppp/ppp_generic.c                     |  15 ++
+ drivers/s390/crypto/pkey_api.c                    |   4 +-
+ drivers/usb/core/config.c                         |  18 ++-
+ drivers/usb/core/quirks.c                         |   3 +
+ drivers/usb/gadget/configfs.c                     |   3 +
+ drivers/usb/serial/option.c                       |  38 ++++++
+ fs/jffs2/super.c                                  |   1 +
+ fs/nilfs2/alloc.c                                 |  18 ++-
+ fs/nilfs2/alloc.h                                 |   4 +-
+ fs/nilfs2/dat.c                                   |   2 +-
+ fs/nilfs2/dir.c                                   |  38 +++++-
+ fs/nilfs2/ifile.c                                 |   7 +-
+ fs/nilfs2/nilfs.h                                 |  10 +-
+ fs/nilfs2/the_nilfs.c                             |   6 +
+ fs/nilfs2/the_nilfs.h                             |   2 +-
+ fs/orangefs/super.c                               |   3 +-
+ include/asm-generic/compat.h                      |  24 +++-
+ include/linux/compat.h                            |   2 -
+ include/linux/fsnotify.h                          |   8 +-
+ include/linux/sunrpc/clnt.h                       |   1 +
+ kernel/exit.c                                     |   2 +
+ mm/page-writeback.c                               |   2 +-
+ net/bluetooth/hci_event.c                         |   2 +-
+ net/ceph/mon_client.c                             |  14 +-
+ net/ipv4/inet_diag.c                              |   2 +
+ net/ipv4/tcp_input.c                              | 158 ++++++++++++----------
+ net/ipv4/tcp_metrics.c                            |   1 +
+ net/ipv4/tcp_timer.c                              |  45 +++++-
+ net/sctp/socket.c                                 |   7 +-
+ net/sunrpc/clnt.c                                 |   5 +-
+ tools/testing/selftests/net/msg_zerocopy.c        |  14 +-
+ 64 files changed, 580 insertions(+), 386 deletions(-)
+
+
 
