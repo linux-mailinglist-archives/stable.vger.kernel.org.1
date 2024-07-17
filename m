@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-60382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A69D9336EF
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 08:24:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9222E933701
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 08:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B2C71C20EED
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 06:24:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C346B1C21166
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 06:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D8812E48;
-	Wed, 17 Jul 2024 06:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61727134A8;
+	Wed, 17 Jul 2024 06:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7h37oqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExwohI5Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C8D182B9;
-	Wed, 17 Jul 2024 06:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA3018643;
+	Wed, 17 Jul 2024 06:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721197467; cv=none; b=XM/08XFiwdiJraRXyiuBlkEevmlK+Ka/a/gfxJU6FuZTfQgkIopZtKFpwnPm7u/m2OzcMrPMZlyvV6v+ooRBilhH9yBw/NWB5ehKJ66E+0WIvtni77sZfIqXInVFshFt13junjlxMxmEUPYpiLNzgbGtOZpMC9GZI5Ep3NQa+a8=
+	t=1721197602; cv=none; b=scviHcaLEg2OTEcIceYVx0ygdOyu6qj8UzQWpfBUf4FDsi/bqcA/u1uw21Etj+Sayg5wGnlxZiWXQGjNQTi8ElN2UkoFoJo0UoTop5rTdIBSN5oNe2OCALrEPAfOYELfaErMqJviE0Ti8GcVS4EvjsH+8QMGH47xBtahrrGQcDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721197467; c=relaxed/simple;
-	bh=RdbzDXJzGn73GVJApCxOgvtdvQRZ69jsEk+ZWOuXZ0E=;
+	s=arc-20240116; t=1721197602; c=relaxed/simple;
+	bh=TaTKwduvzWNdw4nBlJexfY5qBgFDvuZwsL/yMzvaJLs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u0qNdIZjGvmho2WPLMExIcfwLs6uMQOicG3oWJ799EjEBQ0Taozepql2rqbA/CAwTSCle1VsJup++0GOAhtM/zFLZeXc7fXr8MfoIm9PuvNQx6gcRL37mWWB0PbuUnfWElNjVpUojULx3os9/d0tqoVY/paRA6FxnyIxa8kwbw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7h37oqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3101AC32782;
-	Wed, 17 Jul 2024 06:24:26 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=jW3a6edIjTTdGe/eOFXWOwTHWY/eBeyh+kUQi0p1+qsRi5+Qrne6qgA0CbV5WLEVnwXV2OWxcnGtuawWVF4drZddbzMjfbM59X7admX6PVw2sJOSlKQlBVAWe55e1RtkGk9TXI7HkgXp9adrj/wmlwrp6XeeOMbOwTqoxgJLvwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExwohI5Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A2CC4AF0C;
+	Wed, 17 Jul 2024 06:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721197466;
-	bh=RdbzDXJzGn73GVJApCxOgvtdvQRZ69jsEk+ZWOuXZ0E=;
+	s=korg; t=1721197601;
+	bh=TaTKwduvzWNdw4nBlJexfY5qBgFDvuZwsL/yMzvaJLs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c7h37oqyeaqjsB5VzBL/uK+JriHqGPmA7682SWLa2sA1cOGRBAJmH+eZ0zfZ2iHiW
-	 TcFtJ5A4wRIs4v4+wrFPBGYjRGUhXGgkIbs2yHeIX4TJtfD7MiPa+53jj5nXuruO7s
-	 Ec+U/Os1B5XfRslgdjFKTAVRFVm3dR+FjFo2YQDI=
-Date: Wed, 17 Jul 2024 08:24:23 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Florian Fainelli <f.fainelli@gmail.com>
-Cc: stable@vger.kernel.org, Paulo Alcantara <pc@manguebit.com>,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.1 00/96] 6.1.100-rc1 review
-Message-ID: <2024071701-boned-drove-1269@gregkh>
-References: <20240716152746.516194097@linuxfoundation.org>
- <aaccd8cc-2bfe-4b2e-b690-be50540f9965@gmail.com>
+	b=ExwohI5QQoo3XT1IsF1PEXTe63C4puBJhiIPRsGT5V+eXKL7uMhkSfOPlFzhlRb7x
+	 V1bd1xelG8Nc29D9Rf5Mdjt5Tse08m2BhuGNURgCjY8srKyJW2yj3Wc6rTd9LRn389
+	 gxxYrcnBly/wGsCUZtH9SOdJwmB1kFPrbO9KeYH0=
+Date: Wed, 17 Jul 2024 08:26:39 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Andrew Paniakin <apanyaki@amazon.com>
+Cc: stable@vger.kernel.org, Benjamin Herrenschmidt <benh@amazon.com>,
+	Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
+	Paulo Alcantara <pc@manguebit.com>, Paulo Alcantara <pc@cjr.nz>,
+	Steve French <stfrench@microsoft.com>,
+	Steve French <sfrench@samba.org>,
+	Ronnie Sahlberg <lsahlber@redhat.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	"open list:COMMON INTERNET FILE SYSTEM CLIENT (CIFS and SMB3)" <linux-cifs@vger.kernel.org>,
+	"moderated list:COMMON INTERNET FILE SYSTEM CLIENT (CIFS and SMB3)" <samba-technical@lists.samba.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 6.1] cifs: use origin fullpath for automounts
+Message-ID: <2024071751-manhandle-taunt-00ef@gregkh>
+References: <20240713031147.20332-1-apanyaki@amazon.com>
+ <2024071535-scouting-sleet-08ee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,100 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aaccd8cc-2bfe-4b2e-b690-be50540f9965@gmail.com>
+In-Reply-To: <2024071535-scouting-sleet-08ee@gregkh>
 
-On Tue, Jul 16, 2024 at 11:42:39AM -0700, Florian Fainelli wrote:
-> On 7/16/24 08:31, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.1.100 release.
-> > There are 96 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
+On Mon, Jul 15, 2024 at 01:48:44PM +0200, Greg KH wrote:
+> On Sat, Jul 13, 2024 at 03:11:47AM +0000, Andrew Paniakin wrote:
+> > From: Paulo Alcantara <pc@cjr.nz>
 > > 
-> > Responses should be made by Thu, 18 Jul 2024 15:27:21 +0000.
-> > Anything received after that time might be too late.
+> > commit 7ad54b98fc1f141cfb70cfe2a3d6def5a85169ff upstream.
 > > 
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.100-rc1.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > and the diffstat can be found below.
+> > Use TCP_Server_Info::origin_fullpath instead of cifs_tcon::tree_name
+> > when building source paths for automounts as it will be useful for
+> > domain-based DFS referrals where the connections and referrals would
+> > get either re-used from the cache or re-created when chasing the dfs
+> > link.
 > > 
-> > thanks,
+> > Signed-off-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
+> > Signed-off-by: Steve French <stfrench@microsoft.com>
+> > [apanyaki: backport to v6.1-stable]
+> > Signed-off-by: Andrew Paniakin <apanyaki@amazon.com>
+> > ---
+> > This patch fixes issue reported in
+> > https://lore.kernel.org/regressions/ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com
 > > 
-> > greg k-h
+> > 1. The set_dest_addr function gets ip address differntly. In kernel 6.1
+> > the dns_resolve_server_name_to_ip function returns string instead of
+> > struct sockaddr, this string needs to be converted with
+> > cifs_convert_address then.
+> > 
+> > 2. There's no tmp.leaf_fullpath field in kernel 6.1, it was introduced
+> > later in a1c0d00572fc ("cifs: share dfs connections and supers")
+> > 
+> > 3. __build_path_from_dentry_optional_prefix and
+> > dfs_get_automount_devname were added to fs/smb/client/cifsproto.h
+> > instead of fs/cifs/dfs.h which doesn't exist in 6.1
 > 
-> Commit acbfb53f772f96fdffb3fba2fa16eed4ad7ba0d2 ("cifs: avoid dup prefix
-> path in dfs_get_automount_devname()") causes the following build failure on
-> bmips_stb_defconfig:
-> 
-> In file included from ./include/linux/build_bug.h:5,
->                  from ./include/linux/container_of.h:5,
->                  from ./include/linux/list.h:5,
->                  from ./include/linux/module.h:12,
->                  from fs/smb/client/cifsfs.c:13:
-> fs/smb/client/cifsproto.h: In function 'dfs_get_automount_devname':
-> fs/smb/client/cifsproto.h:74:22: error: 'struct TCP_Server_Info' has no
-> member named 'origin_fullpath'
->   if (unlikely(!server->origin_fullpath))
->                       ^~
-> ./include/linux/compiler.h:78:42: note: in definition of macro 'unlikely'
->  # define unlikely(x) __builtin_expect(!!(x), 0)
->                                           ^
-> In file included from fs/smb/client/cifsfs.c:35:
-> fs/smb/client/cifsproto.h:78:14: error: 'struct TCP_Server_Info' has no
-> member named 'origin_fullpath'
->         server->origin_fullpath,
->               ^~
-> fs/smb/client/cifsproto.h:79:21: error: 'struct TCP_Server_Info' has no
-> member named 'origin_fullpath'
->         strlen(server->origin_fullpath),
->                      ^~
-> fs/smb/client/cifsproto.h:88:21: error: 'struct TCP_Server_Info' has no
-> member named 'origin_fullpath'
->   len = strlen(server->origin_fullpath);
->                      ^~
-> fs/smb/client/cifsproto.h:93:18: error: 'struct TCP_Server_Info' has no
-> member named 'origin_fullpath'
->   memcpy(s, server->origin_fullpath, len);
->                   ^~
-> In file included from ./include/linux/build_bug.h:5,
->                  from ./include/linux/container_of.h:5,
->                  from ./include/linux/list.h:5,
->                  from ./include/linux/wait.h:7,
->                  from ./include/linux/wait_bit.h:8,
->                  from ./include/linux/fs.h:6,
->                  from fs/smb/client/cifs_debug.c:8:
-> fs/smb/client/cifsproto.h: In function 'dfs_get_automount_devname':
-> fs/smb/client/cifsproto.h:74:22: error: 'struct TCP_Server_Info' has no
-> member named 'origin_fullpath'
->   if (unlikely(!server->origin_fullpath))
->                       ^~
-> ./include/linux/compiler.h:78:42: note: in definition of macro 'unlikely'
->  # define unlikely(x) __builtin_expect(!!(x), 0)
->                                           ^
-> In file included from fs/smb/client/cifs_debug.c:16:
-> fs/smb/client/cifsproto.h:78:14: error: 'struct TCP_Server_Info' has no
-> member named 'origin_fullpath'
->         server->origin_fullpath,
->               ^~
-> fs/smb/client/cifsproto.h:79:21: error: 'struct TCP_Server_Info' has no
-> member named 'origin_fullpath'
->         strlen(server->origin_fullpath),
->                      ^~
-> fs/smb/client/cifsproto.h:88:21: error: 'struct TCP_Server_Info' has no
-> member named 'origin_fullpath'
->   len = strlen(server->origin_fullpath);
->                      ^~
-> fs/smb/client/cifsproto.h:93:18: error: 'struct TCP_Server_Info' has no
-> member named 'origin_fullpath'
->   memcpy(s, server->origin_fullpath, len);
->                   ^~
-> host-make[6]: *** [scripts/Makefile.build:250: fs/smb/client/cifsfs.o] Error
-> 1
-> host-make[6]: *** Waiting for unfinished jobs....
+> Now queued up, thanks.
 
-Ugh, this was because I had to add a fixup patch for a different patch
-here.  I'll go drop both of them for now, thanks.
+Nope, now dropped.  This required me to apply d5a863a153e9 ("cifs: avoid
+dup prefix path in dfs_get_automount_devname()") to the tree (and
+attempt to backport it myself), but that didn't work, as it caused
+reported build errors as seen here:
+	https://lore.kernel.org/r/aaccd8cc-2bfe-4b2e-b690-be50540f9965@gmail.com
+
+So I'm dropping this, and the fix-up patch.  Please be careful when
+sending backports that you do NOT miss additional patches that are
+required as well.  I'll be glad to take backports, as long as they are
+correct :)
+
+thanks,
 
 greg k-h
 
