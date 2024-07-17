@@ -1,164 +1,364 @@
-Return-Path: <stable+bounces-60385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED08933723
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 08:33:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9181C933738
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 08:39:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C03AD1F24410
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 06:32:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89568B21914
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 06:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E693714A96;
-	Wed, 17 Jul 2024 06:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F8113AF9;
+	Wed, 17 Jul 2024 06:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VDiexc/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4pSj6/G"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CFF13ACC;
-	Wed, 17 Jul 2024 06:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A30D125DE;
+	Wed, 17 Jul 2024 06:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721197972; cv=none; b=YDpKzCxhQGv3H3ocpN47w4F9D1GLxRZKMXWcVF+0OeanUOOncEdroJfHQ+vm0rv6hQ2KVFtc1IDUGR5aexUD5jXsKQxSvwepiX5oEVpAOtkD5khahYOtxTKdnIr+jM1ksVsx7e4rGORKVDsvawMZlzOri4uo1/cc8cd/5CDbtE4=
+	t=1721198344; cv=none; b=ZvE2xz1OmrKHfRPjKJEeeIxF6t9J/+8guYrWToI2I8muYoZaL1aZpOg9/ncD0beKDH0jO+Z4onqQgAdiUHE2ahkbFnvZo1cNoaz5xyfYlf21nKTMaYLOQ335fCm5bnISqeao9iYSVQG5tS1L+fAa3y/8+tn8Kj+g68mfLsFPZKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721197972; c=relaxed/simple;
-	bh=FLMKdQTAzcJMUBa/iZxVuBfsZ2o69ZqeF6US49UERP4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=t0S2ChwCjLV0Wnonnjqiaho6RKkT1ih9ucpEcajf1G5CyCgrpq8vAlS9ytHz6cdlUtt2WSpKueQmZt3KTIaGOhGgrCsjnXvNaI2cQ0dbYFJeXaveif68EFMz2WQeYmVXoYBxcmPfU/R8MBmhTvzH0ckBLAazvFBHoUR7m+kf5Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VDiexc/a; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46GHfY1s007011;
-	Wed, 17 Jul 2024 06:32:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pYrSmjHuBj1kCmSBVioflAmZ45t/EzDpNGXKhx0A75U=; b=VDiexc/ajpiRySNk
-	sviEuNk1NvfPGnuwUKDegqZghsr7SD0K89cCC8oPO+4b3HfBsbG/B7xx/iDXq5Sz
-	QBNpELBCTkiKOmRXIyL0cGGP7lMisCG7hIAyAp/OGfBDN4FowI9be1hO+Y/oxsse
-	I4f6flWn/Zi2PfhVEBa90CiD3SQn06aB/mcV8QTW8nhpIm5jnc9V+dE/LvEJ68/E
-	x2NCr9WxwV1+eceHy5be7eudAaJ2z7IQZpaUgjnvXLLI+n4Mlt9ASzJF66lMyux9
-	/nZJ5U80br9FXygwtZCY4xAontIuQ+0aJw8CSfr5dcYG7vqu1wp9UEGvqa8ZEvha
-	/j7TxA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40dwfx9bwp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Jul 2024 06:32:41 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46H6WeLP021812
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Jul 2024 06:32:40 GMT
-Received: from [10.218.19.46] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 16 Jul
- 2024 23:32:37 -0700
-Message-ID: <f0d4b7a3-2b61-3d42-a430-34b30eeaa644@quicinc.com>
-Date: Wed, 17 Jul 2024 12:02:33 +0530
+	s=arc-20240116; t=1721198344; c=relaxed/simple;
+	bh=xX5ht++u+8QTd0FGegU2o0OAEyhTmSRb2EpwY6hmmnc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tLppYo/IqOrMaHjwZKRMYyGAksgx5CTcHLKK/d1TMgxkARpla1ZplIEf+ri99qgoPkX/VwCeD39KYHqgAKPDR10/eIRZx2yMMa23/V8ae7eltz9KuWjrKPcoUG80Doh2MudEilYfA7Ipy4y6RmAbnrY4P5nIS5u9BbwWkvVjv60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4pSj6/G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A1FC32782;
+	Wed, 17 Jul 2024 06:39:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1721198343;
+	bh=xX5ht++u+8QTd0FGegU2o0OAEyhTmSRb2EpwY6hmmnc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=w4pSj6/GKeqeRuZ8fMDp8bn1Ea6wF8v/HeY6kSVnxzI8xpslNRLnSldPIaFYmPd/p
+	 6vZEjBuSsZvnRvV1CMuXDLesTWRIfrOQ5SDlpqMWOCcKL8rulx/mlHo0KTlQaktGAd
+	 y8spLVU5iktrLVeVysbJp87ckCTooc8gOxsRVzng=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 4.19 00/65] 4.19.318-rc2 review
+Date: Wed, 17 Jul 2024 08:38:59 +0200
+Message-ID: <20240717063749.349549112@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH] clk: qcom: camcc-sc8280xp: Remove always-on GDSC
- hard-coding
-Content-Language: en-US
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Bjorn Andersson
-	<andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen
- Boyd <sboyd@kernel.org>
-CC: <dmitry.baryshkov@linaro.org>, <stable@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20240715-linux-next-24-07-13-sc8280xp-camcc-fixes-v1-1-fadb5d9445c1@linaro.org>
-From: "Satya Priya Kakitapalli (Temp)" <quic_skakitap@quicinc.com>
-In-Reply-To: <20240715-linux-next-24-07-13-sc8280xp-camcc-fixes-v1-1-fadb5d9445c1@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: awqGHn7mLAqFUyQxJlf1tj2LVeoh9Z6x
-X-Proofpoint-GUID: awqGHn7mLAqFUyQxJlf1tj2LVeoh9Z6x
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-17_03,2024-07-16_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=999 bulkscore=0 adultscore=0
- spamscore=0 clxscore=1011 mlxscore=0 phishscore=0 priorityscore=1501
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407170048
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.318-rc2.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-4.19.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 4.19.318-rc2
+X-KernelTest-Deadline: 2024-07-19T06:37+00:00
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This is the start of the stable review cycle for the 4.19.318 release.
+There are 65 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
+
+Responses should be made by Fri, 19 Jul 2024 06:37:32 +0000.
+Anything received after that time might be too late.
+
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.318-rc2.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+and the diffstat can be found below.
+
+thanks,
+
+greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 4.19.318-rc2
+
+Wolfram Sang <wsa+renesas@sang-engineering.com>
+    i2c: rcar: bring hardware to known state when probing
+
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: fix kernel bug on rename operation of broken directory
+
+felix <fuzhen5@huawei.com>
+    SUNRPC: Fix RPC client cleaned up the freed pipefs dentries
+
+Eric Dumazet <edumazet@google.com>
+    tcp: avoid too many retransmit packets
+
+Eric Dumazet <edumazet@google.com>
+    tcp: use signed arithmetic in tcp_rtx_probe0_timed_out()
+
+Menglong Dong <imagedong@tencent.com>
+    net: tcp: fix unexcepted socket die when snd_wnd is 0
+
+Eric Dumazet <edumazet@google.com>
+    tcp: refactor tcp_retransmit_timer()
+
+Ilya Dryomov <idryomov@gmail.com>
+    libceph: fix race between delayed_work() and ceph_monc_stop()
+
+He Zhe <zhe.he@windriver.com>
+    hpet: Support 32-bit userspace
+
+Alan Stern <stern@rowland.harvard.edu>
+    USB: core: Fix duplicate endpoint bug by clearing reserved bits in the descriptor
+
+Lee Jones <lee@kernel.org>
+    usb: gadget: configfs: Prevent OOB read/write in usb_string_copy()
+
+WangYuli <wangyuli@uniontech.com>
+    USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
+
+Vanillan Wang <vanillanwang@163.com>
+    USB: serial: option: add Rolling RW350-GL variants
+
+Mank Wang <mank.wang@netprisma.us>
+    USB: serial: option: add Netprisma LCUK54 series modules
+
+Slark Xiao <slark_xiao@163.com>
+    USB: serial: option: add support for Foxconn T99W651
+
+Bjørn Mork <bjorn@mork.no>
+    USB: serial: option: add Fibocom FM350-GL
+
+Daniele Palmas <dnlplm@gmail.com>
+    USB: serial: option: add Telit FN912 rmnet compositions
+
+Daniele Palmas <dnlplm@gmail.com>
+    USB: serial: option: add Telit generic core-dump composition
+
+Chen Ni <nichen@iscas.ac.cn>
+    ARM: davinci: Convert comma to semicolon
+
+Dmitry Antipov <dmantipov@yandex.ru>
+    ppp: reject claimed-as-LCP but actually malformed packets
+
+Aleksander Jan Bajkowski <olek2@wp.pl>
+    net: ethernet: lantiq_etop: fix double free in detach
+
+Aleksander Jan Bajkowski <olek2@wp.pl>
+    net: lantiq_etop: add blank line after declaration
+
+Neal Cardwell <ncardwell@google.com>
+    tcp: fix incorrect undo caused by DSACK of TLP retransmit
+
+Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+    drm/i915: make find_fw_domain work on intel_uncore
+
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: fix incorrect inode allocation from reserved inodes
+
+Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+    i2c: pnx: Fix potential deadlock warning from del_timer_sync() call in isr
+
+Mauro Carvalho Chehab <mchehab@kernel.org>
+    media: dw2102: fix a potential buffer overflow
+
+Ghadi Elie Rahme <ghadi.rahme@canonical.com>
+    bnx2x: Fix multiple UBSAN array-index-out-of-bounds
+
+Alex Deucher <alexander.deucher@amd.com>
+    drm/amdgpu/atomfirmware: silence UBSAN warning
+
+Ma Ke <make24@iscas.ac.cn>
+    drm/nouveau: fix null pointer dereference in nouveau_connector_get_modes
+
+Jan Kara <jack@suse.cz>
+    Revert "mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again"
+
+Jan Kara <jack@suse.cz>
+    fsnotify: Do not generate events for O_PATH file descriptors
+
+Jimmy Assarsson <extja@kvaser.com>
+    can: kvaser_usb: Explicitly initialize family in leafimx driver_info struct
+
+Jaganath Kanakkassery <jaganath.k.os@gmail.com>
+    Bluetooth: Fix incorrect pointer arithmatic in ext_adv_report_evt
+
+Jinliang Zheng <alexjlzheng@tencent.com>
+    mm: optimize the redundant loop of mm_update_owner_next()
+
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: add missing check for inode numbers on directory entries
+
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: fix inode number range checks
+
+Shigeru Yoshida <syoshida@redhat.com>
+    inet_diag: Initialize pad field in struct inet_diag_req_v2
+
+Zijian Zhang <zijianzhang@bytedance.com>
+    selftests: make order checking verbose in msg_zerocopy selftest
+
+Zijian Zhang <zijianzhang@bytedance.com>
+    selftests: fix OOM in msg_zerocopy selftest
+
+Sam Sun <samsun1006219@gmail.com>
+    bonding: Fix out-of-bounds read in bond_option_arp_ip_targets_set()
+
+Jakub Kicinski <kuba@kernel.org>
+    tcp_metrics: validate source addr length
+
+Neal Cardwell <ncardwell@google.com>
+    UPSTREAM: tcp: fix DSACK undo in fast recovery to call tcp_try_to_open()
+
+Yuchung Cheng <ycheng@google.com>
+    net: tcp better handling of reordering then loss cases
+
+Yousuk Seung <ysseung@google.com>
+    tcp: add ece_ack flag to reno sack functions
+
+zhang kai <zhangkaiheb@126.com>
+    tcp: tcp_mark_head_lost is only valid for sack-tcp
+
+Eric Dumazet <edumazet@google.com>
+    tcp: take care of compressed acks in tcp_add_reno_sack()
+
+Holger Dengler <dengler@linux.ibm.com>
+    s390/pkey: Wipe sensitive data on failure
+
+Wang Yong <wang.yong12@zte.com.cn>
+    jffs2: Fix potential illegal address access in jffs2_free_inode
+
+Greg Kurz <groug@kaod.org>
+    powerpc/xmon: Check cpu id in commands "c#", "dp#" and "dx#"
+
+Mike Marshall <hubcap@omnibond.com>
+    orangefs: fix out-of-bounds fsid access
+
+Michael Ellerman <mpe@ellerman.id.au>
+    powerpc/64: Set _IO_BASE to POISON_POINTER_DELTA not 0 for CONFIG_PCI=n
+
+Heiner Kallweit <hkallweit1@gmail.com>
+    i2c: i801: Annotate apanel_addr as __ro_after_init
+
+Ricardo Ribalda <ribalda@chromium.org>
+    media: dvb-frontends: tda10048: Fix integer overflow
+
+Ricardo Ribalda <ribalda@chromium.org>
+    media: s2255: Use refcount_t instead of atomic_t for num_channels
+
+Ricardo Ribalda <ribalda@chromium.org>
+    media: dvb-frontends: tda18271c2dd: Remove casting during div
+
+Simon Horman <horms@kernel.org>
+    net: dsa: mv88e6xxx: Correct check for empty list
+
+Erick Archer <erick.archer@outlook.com>
+    Input: ff-core - prefer struct_size over open coded arithmetic
+
+Jean Delvare <jdelvare@suse.de>
+    firmware: dmi: Stop decoding on broken entry
+
+Erick Archer <erick.archer@outlook.com>
+    sctp: prefer struct_size over open coded arithmetic
+
+Michael Bunk <micha@freedict.org>
+    media: dw2102: Don't translate i2c read into write
+
+Alex Hung <alex.hung@amd.com>
+    drm/amd/display: Skip finding free audio for unknown engine_id
+
+Michael Guralnik <michaelgur@nvidia.com>
+    IB/core: Implement a limit on UMAD receive List
+
+Ricardo Ribalda <ribalda@chromium.org>
+    media: dvb-usb: dib0700_devices: Add missing release_firmware()
+
+Ricardo Ribalda <ribalda@chromium.org>
+    media: dvb: as102-fe: Fix as10x_register_addr packing
 
 
-On 7/15/2024 8:29 PM, Bryan O'Donoghue wrote:
-> We have both shared_ops for the Titan Top GDSC and a hard-coded always on
-> whack the register and forget about it in probe().
->
-> @static struct clk_branch camcc_gdsc_clk = {}
->
-> Only one representation of the Top GDSC is required. Use the CCF
-> representation not the hard-coded register write.
->
-> Fixes: ff93872a9c61 ("clk: qcom: camcc-sc8280xp: Add sc8280xp CAMCC")
-> Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # Lenovo X13s
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> ---
->   drivers/clk/qcom/camcc-sc8280xp.c | 7 +------
->   1 file changed, 1 insertion(+), 6 deletions(-)
->
-> diff --git a/drivers/clk/qcom/camcc-sc8280xp.c b/drivers/clk/qcom/camcc-sc8280xp.c
-> index 479964f91608..f99cd968459c 100644
-> --- a/drivers/clk/qcom/camcc-sc8280xp.c
-> +++ b/drivers/clk/qcom/camcc-sc8280xp.c
-> @@ -3031,19 +3031,14 @@ static int camcc_sc8280xp_probe(struct platform_device *pdev)
->   	clk_lucid_pll_configure(&camcc_pll6, regmap, &camcc_pll6_config);
->   	clk_lucid_pll_configure(&camcc_pll7, regmap, &camcc_pll7_config);
->   
-> -	/* Keep some clocks always-on */
-> -	qcom_branch_set_clk_en(regmap, 0xc1e4); /* CAMCC_GDSC_CLK */
+-------------
+
+Diffstat:
+
+ Makefile                                          |   4 +-
+ arch/arm/mach-davinci/pm.c                        |   2 +-
+ arch/powerpc/include/asm/io.h                     |   2 +-
+ arch/powerpc/xmon/xmon.c                          |   6 +-
+ drivers/char/hpet.c                               |  34 ++++-
+ drivers/firmware/dmi_scan.c                       |  11 ++
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c |   3 +
+ drivers/gpu/drm/amd/include/atomfirmware.h        |   2 +-
+ drivers/gpu/drm/i915/intel_uncore.c               |  20 +--
+ drivers/gpu/drm/nouveau/nouveau_connector.c       |   3 +
+ drivers/i2c/busses/i2c-i801.c                     |   2 +-
+ drivers/i2c/busses/i2c-pnx.c                      |  48 ++-----
+ drivers/i2c/busses/i2c-rcar.c                     |  17 ++-
+ drivers/infiniband/core/user_mad.c                |  21 ++-
+ drivers/input/ff-core.c                           |   7 +-
+ drivers/media/dvb-frontends/as102_fe_types.h      |   2 +-
+ drivers/media/dvb-frontends/tda10048.c            |   9 +-
+ drivers/media/dvb-frontends/tda18271c2dd.c        |   4 +-
+ drivers/media/usb/dvb-usb/dib0700_devices.c       |  18 ++-
+ drivers/media/usb/dvb-usb/dw2102.c                | 120 +++++++++-------
+ drivers/media/usb/s2255/s2255drv.c                |  20 +--
+ drivers/net/bonding/bond_options.c                |   6 +-
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c  |   1 +
+ drivers/net/dsa/mv88e6xxx/chip.c                  |   4 +-
+ drivers/net/ethernet/broadcom/bnx2x/bnx2x.h       |   2 +-
+ drivers/net/ethernet/lantiq_etop.c                |   5 +-
+ drivers/net/ppp/ppp_generic.c                     |  15 ++
+ drivers/s390/crypto/pkey_api.c                    |   4 +-
+ drivers/usb/core/config.c                         |  18 ++-
+ drivers/usb/core/quirks.c                         |   3 +
+ drivers/usb/gadget/configfs.c                     |   3 +
+ drivers/usb/serial/option.c                       |  38 ++++++
+ fs/jffs2/super.c                                  |   1 +
+ fs/nilfs2/alloc.c                                 |  18 ++-
+ fs/nilfs2/alloc.h                                 |   4 +-
+ fs/nilfs2/dat.c                                   |   2 +-
+ fs/nilfs2/dir.c                                   |  38 +++++-
+ fs/nilfs2/ifile.c                                 |   7 +-
+ fs/nilfs2/nilfs.h                                 |  10 +-
+ fs/nilfs2/the_nilfs.c                             |   6 +
+ fs/nilfs2/the_nilfs.h                             |   2 +-
+ fs/orangefs/super.c                               |   3 +-
+ include/linux/fsnotify.h                          |   8 +-
+ include/linux/sunrpc/clnt.h                       |   1 +
+ kernel/exit.c                                     |   2 +
+ mm/page-writeback.c                               |   2 +-
+ net/bluetooth/hci_event.c                         |   2 +-
+ net/ceph/mon_client.c                             |  14 +-
+ net/ipv4/inet_diag.c                              |   2 +
+ net/ipv4/tcp_input.c                              | 158 ++++++++++++----------
+ net/ipv4/tcp_metrics.c                            |   1 +
+ net/ipv4/tcp_timer.c                              |  45 +++++-
+ net/sctp/socket.c                                 |   7 +-
+ net/sunrpc/clnt.c                                 |   5 +-
+ tools/testing/selftests/net/msg_zerocopy.c        |  14 +-
+ 55 files changed, 543 insertions(+), 263 deletions(-)
 
 
-As I mentioned on [1], this change might break the GDSC functionality. 
-Hence this shouldn't be removed.
-
-
-[1] 
-https://lore.kernel.org/linux-clk/0b84b689-8ab8-bcdf-f058-da2ead73786c@quicinc.com/
-
-
-> -
->   	ret = qcom_cc_really_probe(&pdev->dev, &camcc_sc8280xp_desc, regmap);
->   	if (ret)
-> -		goto err_disable;
-> +		goto err_put_rpm;
->   
->   	pm_runtime_put(&pdev->dev);
->   
->   	return 0;
->   
-> -err_disable:
-> -	regmap_update_bits(regmap, 0xc1e4, BIT(0), 0);
-
-
-This change is required, hence can go as a separate patch.
-
-
->   err_put_rpm:
->   	pm_runtime_put_sync(&pdev->dev);
->   
->
-> ---
-> base-commit: 3fe121b622825ff8cc995a1e6b026181c48188db
-> change-id: 20240715-linux-next-24-07-13-sc8280xp-camcc-fixes-274f11b396ac
->
-> Best regards,
 
