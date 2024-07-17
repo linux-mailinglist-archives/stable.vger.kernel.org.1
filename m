@@ -1,68 +1,72 @@
-Return-Path: <stable+bounces-60482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05ED09342E7
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 22:04:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 086EE9342E5
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 22:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9480CB21B7A
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 20:03:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39CE91C21416
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 20:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EE518411C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E9C18411B;
 	Wed, 17 Jul 2024 20:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RH3+xGAa"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UIslOM8K"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAFD17F385
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6169181D15
 	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 20:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721246629; cv=none; b=DjXPYeY1DqvgcSgOZkVfF+2xR9GF7pM4UO9UvIfMp67VGiBJjBk09txK/RfTWSjADdE/S7Gk9UIQriXKFL7Imtufp5Xg7NbqEQlE/zOQlbTZCiJgblO8/mTMl9wvw/Zg59GUfOINc18pLtFGPOD7slCTHDjDK1nejB2/OuHgKhs=
+	t=1721246629; cv=none; b=BxVwzfV2RUoPhQr7KoMukLDN/uXW4R/XQgLb2qzngAqJ5otIKHIY5KN2UCQ/KUkwSpP9sFHQDTRkDNp0UrHEWgcIw5/IpzNWCzYiK5St8J1u59yDXhVnMHGCtFbLh866hVkdxHrFOOJro9dN35zAjbf/z84ls0Xz48AEXMAxils=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1721246629; c=relaxed/simple;
-	bh=vMGDxu2RKF5jKma5R4sq0owsnuwyN3/lYJkehAE2H4w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TJGIK5dIOm8qZBq88/mA9gx8E75YAlosYkQQa6SbJwClTNkLapcZSA/4H1tC7lNG7YezTm/VV/WjP8iVM7anbe1hWZOCdhC+0SD9VENXEQX9q/BcXVzgUgPTmqduOoCgFBa7H6ATJ5QZvmODSe87A4XGhZeEdmw68mz5Vr8iutU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RH3+xGAa; arc=none smtp.client-ip=170.10.133.124
+	bh=KGrfaJ5s+0k6XkuiXVwFQK/U93ROKT3s3z3P/ZDCxL0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Xb9fb0zNaoWZJXVhxaRqRflfQw9yPRKlNSYnyCTlxWiCqNDy42M5R9fmcnN93/qbI7TI6wtLppZRH9YFK3v5rhQ+mDnxRnBvNUTBOe9K6AgGpFKYj/x/E+CXCBzPqO+W9C83jmpsguzaD/UI3wSGyQDIiPwYKCpl9Axb0Eiu7yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UIslOM8K; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721246625;
+	s=mimecast20190719; t=1721246626;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=z/C3IQpGtU2AGOPpwHOlmqXZMKLhljDesKCWgyYBh64=;
-	b=RH3+xGAaCKe9M591sQrD0fFdllfAUQxDhfchFmavn325sTn+NxmmGWld9QgyFAvlF5Uq61
-	zejsldFm3tKXIEOVVNPw82e/2FA9bppXBcs6empooeeFy4mYaG8F5Bd+VVx7o7lJw/ntNo
-	feFOd/ZXB9ML76DZRgLFYnJwxrV8Zqw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6rW0UG9Yof46y51ZacZBWXQDytJijvjwyuV4pHxrgHQ=;
+	b=UIslOM8K3+QjiSY7Nmnc2Aj3ahHSCmMt7MFrcwx0+fRN58newjhkl+6snqF6tm49oWe3BV
+	npGqOGrX2R5Q/2HKPYOGaxRa4kzFqDAA9YLWQN20TsIpTmJMZLp3prg/WcGHPS272LUsu9
+	748hRtsm6mPlUCj4e1mlQzaVu8TLcZQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-W8i5cfvMM1G_XRlrwBZO7w-1; Wed,
- 17 Jul 2024 16:03:42 -0400
-X-MC-Unique: W8i5cfvMM1G_XRlrwBZO7w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-4Txr62dIN263a1cnIpYHIQ-1; Wed,
+ 17 Jul 2024 16:03:44 -0400
+X-MC-Unique: 4Txr62dIN263a1cnIpYHIQ-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4F8FD1955D47;
-	Wed, 17 Jul 2024 20:03:41 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3571A1955D4C;
+	Wed, 17 Jul 2024 20:03:43 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.39.192.36])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 93A4F19560B2;
-	Wed, 17 Jul 2024 20:03:39 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A613419560B2;
+	Wed, 17 Jul 2024 20:03:41 +0000 (UTC)
 From: Hans de Goede <hdegoede@redhat.com>
 To: Sebastian Reichel <sre@kernel.org>
 Cc: Hans de Goede <hdegoede@redhat.com>,
 	Chen-Yu Tsai <wens@csie.org>,
 	linux-pm@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] power: supply: axp288_charger: Fix constant_charge_voltage writes
-Date: Wed, 17 Jul 2024 22:03:32 +0200
-Message-ID: <20240717200333.56669-1-hdegoede@redhat.com>
+Subject: [PATCH 2/2] power: supply: axp288_charger: Round constant_charge_voltage writes down
+Date: Wed, 17 Jul 2024 22:03:33 +0200
+Message-ID: <20240717200333.56669-2-hdegoede@redhat.com>
+In-Reply-To: <20240717200333.56669-1-hdegoede@redhat.com>
+References: <20240717200333.56669-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,35 +76,53 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-info->max_cv is in millivolts, divide the microvolt value being written
-to constant_charge_voltage by 1000 *before* clamping it to info->max_cv.
+Round constant_charge_voltage writes down to the first supported lower
+value, rather then rounding them up to the first supported higher value.
 
-Before this fix the code always tried to set constant_charge_voltage
-to max_cv / 1000 = 4 millivolt, which ends up in setting it to 4.1V
-which is the lowest supported value.
+This fixes e.g. writing 4250000 resulting in a value of 4350000 which
+might be dangerous, instead writing 4250000 will now result in a safe
+4200000 value.
 
 Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/power/supply/axp288_charger.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/power/supply/axp288_charger.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/power/supply/axp288_charger.c b/drivers/power/supply/axp288_charger.c
-index b5903193e2f9..aea17289a178 100644
+index aea17289a178..ac05942e4e6a 100644
 --- a/drivers/power/supply/axp288_charger.c
 +++ b/drivers/power/supply/axp288_charger.c
-@@ -337,8 +337,8 @@ static int axp288_charger_usb_set_property(struct power_supply *psy,
- 		}
- 		break;
- 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
--		scaled_val = min(val->intval, info->max_cv);
--		scaled_val = DIV_ROUND_CLOSEST(scaled_val, 1000);
-+		scaled_val = DIV_ROUND_CLOSEST(val->intval, 1000);
-+		scaled_val = min(scaled_val, info->max_cv);
- 		ret = axp288_charger_set_cv(info, scaled_val);
- 		if (ret < 0) {
- 			dev_warn(&info->pdev->dev, "set charge voltage failed\n");
+@@ -178,18 +178,18 @@ static inline int axp288_charger_set_cv(struct axp288_chrg_info *info, int cv)
+ 	u8 reg_val;
+ 	int ret;
+ 
+-	if (cv <= CV_4100MV) {
+-		reg_val = CHRG_CCCV_CV_4100MV;
+-		cv = CV_4100MV;
+-	} else if (cv <= CV_4150MV) {
+-		reg_val = CHRG_CCCV_CV_4150MV;
+-		cv = CV_4150MV;
+-	} else if (cv <= CV_4200MV) {
+-		reg_val = CHRG_CCCV_CV_4200MV;
+-		cv = CV_4200MV;
+-	} else {
++	if (cv >= CV_4350MV) {
+ 		reg_val = CHRG_CCCV_CV_4350MV;
+ 		cv = CV_4350MV;
++	} else if (cv >= CV_4200MV) {
++		reg_val = CHRG_CCCV_CV_4200MV;
++		cv = CV_4200MV;
++	} else if (cv >= CV_4150MV) {
++		reg_val = CHRG_CCCV_CV_4150MV;
++		cv = CV_4150MV;
++	} else {
++		reg_val = CHRG_CCCV_CV_4100MV;
++		cv = CV_4100MV;
+ 	}
+ 
+ 	reg_val = reg_val << CHRG_CCCV_CV_BIT_POS;
 -- 
 2.45.2
 
