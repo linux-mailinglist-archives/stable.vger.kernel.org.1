@@ -1,95 +1,100 @@
-Return-Path: <stable+bounces-60374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE299335DD
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 05:52:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D9F9335E9
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 05:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC2021C21FEA
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 03:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFD3028210A
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 03:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FBD6FB6;
-	Wed, 17 Jul 2024 03:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0AE524F;
+	Wed, 17 Jul 2024 03:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="fNmyyzfn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cTV6lJaV"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D144320F;
-	Wed, 17 Jul 2024 03:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859BD566A
+	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 03:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721188370; cv=none; b=OvB0E0PHpUlQ5GtkUAk6NgtofjOptTxy2XrUvfxajukKBGZTBk1CGN4/vkHV3dDbe8vuRs/lOgT4oQEv0NcfY/jFhn/8NBk0e6CW3IehlQZjKkgHVSvI/GZrPZGPhEmT3lLylnmcwuTgra5DIMpYbh0+BqzJ0fjxGSgjLfa8KkI=
+	t=1721188721; cv=none; b=YBRTeQ3PHUwM77FHmkYSb99zUQqW9Ru3lgRJn424RrKI4cc4VuIbNmwggiyPLL8DAkF8KnSRpJjpqt2q7w/0U8wszUwEiZnFw3bXTnp2TJtlWxLPL5+kogL1Lr0r/j2Z9wWOS685S/XIZPFCeTAfmbbO95PdKGCgUQr+ZtVUmDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721188370; c=relaxed/simple;
-	bh=190Y2A5xkCBOqBLn+NRs79sKGVhsrUJNdiw30AX0/LY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TX0qb3XUYwo3B5NDRRYi4eZwfmWtDRFRpn80W9bz8JQkmW2TN2ztKHZnuqOYJlKUWA0JgtElRSt6dPsj19bu8JTMAuCBUFR/PvFsx2GrhK24EAR6m6dJker2E+5bPL3mEQP9+p0F+fjJCKYjejFALgzpG3NU1gk9rerfSqTcAT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=fNmyyzfn; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id E7C5D14C1E1;
-	Wed, 17 Jul 2024 05:43:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1721187837;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j14M4ThIz7cvNgo7f5L+LNqEQlcj1D957zhm9JjOXec=;
-	b=fNmyyzfnLABXtw7SiMBKgJBpB5dozUh27ZCC1AlTl1BguCLzxzHJ9o9vDiF4dRBCQO1FLt
-	fk8Iqb2aGKPeACAX0SRDqkfsgXvRQXcP+vrGpza5E+ohE/sVh1zkA32d7SewCr0xYB8Wr1
-	HexnRmTPpu0mTReZfM/nu8uFdZxzraB5Cs1ZcH48mp6+1WL9T8MgDrBRIPtGKbVENb9xSw
-	snr4eMRYHCIftM0IBXzOvpMFFO2/lrjV8+2+8jZIDi3hP++y582mUedkrhHnwVBHpArBOq
-	svIx9zP8aY4zsGMLf78wqkUutrjqwYJe6xUxpstVjSmWV23TF8AAYF7yCVNYFw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id fd859a0f;
-	Wed, 17 Jul 2024 03:43:50 +0000 (UTC)
-Date: Wed, 17 Jul 2024 12:43:35 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 5.10 000/108] 5.10.222-rc1 review
-Message-ID: <Zpc957aQlIxd240C@codewreck.org>
-References: <20240716152745.988603303@linuxfoundation.org>
+	s=arc-20240116; t=1721188721; c=relaxed/simple;
+	bh=iwWtonxYzuOhpYZKeoBBdMSWhddwnOSCDRCqq1RDEWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=PSxlme2To8EXeq9Q2cE4O7Xq9zcvqsYNIaTDm+pzO/IzwiT4kNi42WK90D90rV/UaJB1ZeqpStNw41ydBJz4HlG9IdQkynv+h2d45ZRcFgJhOAtmFD7EZrx1E6Czq1Fjtyqa2sX22OcNxyNH/ANbSFHcGgF75z+GbNfNdRzs3dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cTV6lJaV; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721188720; x=1752724720;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=iwWtonxYzuOhpYZKeoBBdMSWhddwnOSCDRCqq1RDEWk=;
+  b=cTV6lJaVxJ1oD+VHXfhFYwZo05ldcv43B3esw2fyUwTncc0qOt5hYgJa
+   a/UWbWcqv9y3AfUHEFBESj2dsK+/8N6mpCwDM+6QyzrqYILJc+H1To1d5
+   S+HymIgNbwIU9mD33Z/krTZHRV7TbQTmSew64FMdcvkqhhTUZBMHrtVKU
+   B2Hci5l65SyIA738Mn6STsWMuYVmj35H2Kbykv1V1kE7OuYJ8cHyia967
+   ETUjG4LlaHQv00Th8EhECLmbwApzQx5QJnoL+h7XZuawJkQufsqh/5CDb
+   i27EhaylLIjyM4r2rC9Tx85/IN7qoOZnZnFSmZAmPcqsmtOH5aTXsQpj5
+   w==;
+X-CSE-ConnectionGUID: TWkOgOSCQlybvHszXsFhFw==
+X-CSE-MsgGUID: qbTfCzf+RpCZpHlNUEf7BA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18513631"
+X-IronPort-AV: E=Sophos;i="6.09,213,1716274800"; 
+   d="scan'208";a="18513631"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2024 20:58:39 -0700
+X-CSE-ConnectionGUID: AsEcgNBsSeOp7Y+orr9U9w==
+X-CSE-MsgGUID: 7qRmFMxuTO2+wozxSDDVIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,213,1716274800"; 
+   d="scan'208";a="50178371"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 16 Jul 2024 20:58:39 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sTvoJ-000fx2-2e;
+	Wed, 17 Jul 2024 03:58:35 +0000
+Date: Wed, 17 Jul 2024 11:58:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: George Kennedy <george.kennedy@oracle.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] serial: core: check uartclk for zero to avoid divide by
+ zero
+Message-ID: <ZpdBXR-IfbNmFmUl@6724a33121ae>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240716152745.988603303@linuxfoundation.org>
+In-Reply-To: <1721148848-9784-1-git-send-email-george.kennedy@oracle.com>
 
-Greg Kroah-Hartman wrote on Tue, Jul 16, 2024 at 05:30:15PM +0200:
-> This is the start of the stable review cycle for the 5.10.222 release.
-> There are 108 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 18 Jul 2024 15:27:21 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.222-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
+Hi,
 
-Tested 4ec8d630a600 ("Linux 5.10.222-rc1") on:
-- arm i.MX6ULL (Armadillo 640)
-- arm64 i.MX8MP (Armadillo G4)
+Thanks for your patch.
 
-No obvious regression in dmesg or basic tests:
-Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] serial: core: check uartclk for zero to avoid divide by zero
+Link: https://lore.kernel.org/stable/1721148848-9784-1-git-send-email-george.kennedy%40oracle.com
+
 -- 
-Dominique Martinet
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
