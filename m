@@ -1,201 +1,118 @@
-Return-Path: <stable+bounces-60420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83E1933B37
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 12:39:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54AC6933B44
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 12:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBA911C21107
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 10:39:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819E51C211E5
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 10:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3561317E906;
-	Wed, 17 Jul 2024 10:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8E717E917;
+	Wed, 17 Jul 2024 10:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKX25Rpx"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="WjqAL6NF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0876374C2;
-	Wed, 17 Jul 2024 10:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9555C14AD20;
+	Wed, 17 Jul 2024 10:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721212744; cv=none; b=lOBP5byDTnaGBInt3saehorOuZODS6N5R9cHgqghKPhDgP9t01U/XbmFfxP6fkArudkyNNv9jkuLjVjTm00Mdr1gCoYLb3lN89zjUeT3H+Od3lxHI8l5Fv9pBAmwTNYSo5PnDp+6sjivnODbISMm5L/MzHkd1C6eh5TrKvhpsg4=
+	t=1721212832; cv=none; b=qNbPGJY8a7YBros4MUOVB7RvGpxqsElxrWIbXh0sy+tRzjHgayxWVjspI3irHj16nWOR9wLMgU+NgsEAFuh2qBStnIrOBGcrsIw/8IME3xe8MyLwJLemB3t/0Ds1BcbV/ZsbeyFuGXMQCJSwjYM6xHeNnJsW3ZKzIDtQV9qfGqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721212744; c=relaxed/simple;
-	bh=/2joJ6OWrM3T9+WwKJFjSZM8X5AF760AUd9+zeHl/g4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=cgxD8adPMT0FWrwPBhOe3c5DS5AzutgJTFjvvWuWlW+MivhLxP/YJc5p/kjJGcBTD737UQ97bmqRbkakHVXOgDAnxw/mVsfQMQOH4Uu6RNROXYbSeWBDsLo5yVOgN+V/yAbpfjJYqOC2XuUWnfuzVQ298j9uB8QHXMD16tLTVb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKX25Rpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8A6C32782;
-	Wed, 17 Jul 2024 10:39:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721212743;
-	bh=/2joJ6OWrM3T9+WwKJFjSZM8X5AF760AUd9+zeHl/g4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OKX25RpxStwLsMgnZAGwoqjEYQ8mYCWJtiSR3gM1M0xIOT4Z9e2Gtr72u7DxhahJG
-	 VnqAC4WWxTAl/3gyOYkReaH+/afZXxO2BIOFfNdYDhUYI2wd0Uqln/MewahIFEuYbF
-	 0Jy65H68HN82Q6g6g6K+SOWjNhATwMc+VK2IObE6NMqje3v/d73OKapbqnYd10mOhB
-	 AnDq4zz2vHCOV73auTLEbxTo6Lr18LD2waCcDo0mbEFVUEhmzjv+iNiUId/W+kKv+z
-	 kh20FhmHxqY6+TPYFLEDeftMAkAXkhpZaiCYY8udkzhN++ihy/i/BOqqMY8XzP1AoA
-	 J57kWWkbH6SPQ==
+	s=arc-20240116; t=1721212832; c=relaxed/simple;
+	bh=nLG7HzQccjTqp4Lu9GgprSBfB6cJU6QMPbFU6J7wqV4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QLcH8Zqkinx54Y1G16mjOaZ0aC848VwWxZW6wSpGpqleaF9ibI8hSHYcSdHfKFKghV3kPMhPMS6qcpQiq2KzHUs2qyADkDRLS0ncgV4gDo75jnL9WiYselfyHblUaBRiOnXIVaO9Pj+gclkql3/r5cMCJdWvI3E24ebQjyWCDPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=WjqAL6NF; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5a083ba04e7so576694a12.1;
+        Wed, 17 Jul 2024 03:40:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1721212829; x=1721817629; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BeiA4+yCeVCI23SPrGp8AYyUosGnfCOYmYJM+U4xtYs=;
+        b=WjqAL6NFo/+k5WXs3HENfMMVwX2vT8y3hTROn2h8IJW5wp4En0/gMfqeR9JH9v2SAy
+         PrpJ6vBvIozuJ3PGfjOsN496zRvCG1O8LIo4eNqeCxelMKmMZLfjBJSPR9REXG8RlPIk
+         Q/8JZyPr5Ugrz+N5nqjmlOEKXRG58Zve4CSMFVCxf8oFtVfcrjco/ybhru7OxLx8tpTx
+         7eYGUL2zcpO2iViDJJmB+g7pglp3pT9vl8Y0WjkSYKvSbKGJXo8KdX32PLss47iPfgAl
+         cpzzBAzIVHnl/TyAGD0Rubdr1oziUVoezV7Cbhk/OvhvH5ZBTN4eNMdN8Z+oEeVKBCF+
+         r/xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721212829; x=1721817629;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BeiA4+yCeVCI23SPrGp8AYyUosGnfCOYmYJM+U4xtYs=;
+        b=dIPWSAa2oNtSw87KethI+4NQWfhMVnT5DqGW8+yuWZa8ikeqk3O+rFGIfCvjJ0VT0p
+         BruO/6sX/Rsr+a5OfU+JYI+wi5KSS/+/9MS2nGIFmnNoxQFF1JYLpVFgR5mcRcD27I84
+         uAIHEmXp+Popm383V0QpEu4MG8tbujMl3FgkDFu2bfH5h5FMFPsm0p+tsLrw50g6sEmD
+         W4et6OS2faIvod4kcRNioETR5ydCkm+o3mTovOZiuAyIj2uLom7/7Gai0K9fcIBidh21
+         PGyVLWmj+AcGioVnSdZmcpQSyVyY9Fv96cpByV8E/7Ts1cJ0llvlRUe7PWOGn5fUUhPY
+         Pd6g==
+X-Forwarded-Encrypted: i=1; AJvYcCWcbwhEfSYbJuAwkrwXdzXYDZg24UD5q+yhfFecnRP3lC/DSFbNzOVwinz5KUJza23V1WAjdZ/FFc6nzxz2hXTeDBGUPaNT8mAK9NnzW7xTMtcZJ//6gOCxwD31ePwwuayYDYv+
+X-Gm-Message-State: AOJu0YwnhH/fOrwunh3ilryqXVDqEpiGXq7WKOEViuR6w6EifGwgqNl3
+	yb4/wqlA716iFC7QQReCVMsQVQBVxUO+gosnbNQ220c0hzD8aaA=
+X-Google-Smtp-Source: AGHT+IGPRYWY84cF4GKQ2fo+yH21EEObN21ZhtKUWYglYPTJwNess4mMJnLwjb5N0xFC6XWB6hbAVQ==
+X-Received: by 2002:a50:8750:0:b0:57c:b82e:884b with SMTP id 4fb4d7f45d1cf-5a06a475fc4mr1217233a12.19.1721212828702;
+        Wed, 17 Jul 2024 03:40:28 -0700 (PDT)
+Received: from [192.168.1.3] (p5b0576fa.dip0.t-ipconnect.de. [91.5.118.250])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-59b24a77114sm6820425a12.6.2024.07.17.03.40.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Jul 2024 03:40:28 -0700 (PDT)
+Message-ID: <eaa61714-6326-435c-9786-08884bfd1d51@googlemail.com>
+Date: Wed, 17 Jul 2024 12:40:26 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 17 Jul 2024 13:38:59 +0300
-Message-Id: <D2RQZSM3MMVN.8DFKF3GGGTWE@kernel.org>
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Dmitrii Kuvaiskii" <dmitrii.kuvaiskii@intel.com>,
- <dave.hansen@linux.intel.com>, <kai.huang@intel.com>,
- <haitao.huang@linux.intel.com>, <reinette.chatre@intel.com>,
- <linux-sgx@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Cc: <mona.vij@intel.com>, <kailun.qin@intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v4 3/3] x86/sgx: Resolve EREMOVE page vs EAUG page data
- race
-X-Mailer: aerc 0.17.0
-References: <20240705074524.443713-1-dmitrii.kuvaiskii@intel.com>
- <20240705074524.443713-4-dmitrii.kuvaiskii@intel.com>
-In-Reply-To: <20240705074524.443713-4-dmitrii.kuvaiskii@intel.com>
+MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/122] 6.6.41-rc2 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240717063802.663310305@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20240717063802.663310305@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri Jul 5, 2024 at 10:45 AM EEST, Dmitrii Kuvaiskii wrote:
-> Two enclave threads may try to add and remove the same enclave page
-> simultaneously (e.g., if the SGX runtime supports both lazy allocation
-> and MADV_DONTNEED semantics). Consider some enclave page added to the
-> enclave. User space decides to temporarily remove this page (e.g.,
-> emulating the MADV_DONTNEED semantics) on CPU1. At the same time, user
-> space performs a memory access on the same page on CPU2, which results
-> in a #PF and ultimately in sgx_vma_fault(). Scenario proceeds as
-> follows:
->
-> /*
->  * CPU1: User space performs
->  * ioctl(SGX_IOC_ENCLAVE_REMOVE_PAGES)
->  * on enclave page X
->  */
-> sgx_encl_remove_pages() {
->
->   mutex_lock(&encl->lock);
->
->   entry =3D sgx_encl_load_page(encl);
->   /*
->    * verify that page is
->    * trimmed and accepted
->    */
->
->   mutex_unlock(&encl->lock);
->
->   /*
->    * remove PTE entry; cannot
->    * be performed under lock
->    */
->   sgx_zap_enclave_ptes(encl);
->                                  /*
->                                   * Fault on CPU2 on same page X
->                                   */
->                                  sgx_vma_fault() {
->                                    /*
->                                     * PTE entry was removed, but the
->                                     * page is still in enclave's xarray
->                                     */
->                                    xa_load(&encl->page_array) !=3D NULL -=
->
->                                    /*
->                                     * SGX driver thinks that this page
->                                     * was swapped out and loads it
->                                     */
->                                    mutex_lock(&encl->lock);
->                                    /*
->                                     * this is effectively a no-op
->                                     */
->                                    entry =3D sgx_encl_load_page_in_vma();
->                                    /*
->                                     * add PTE entry
->                                     *
->                                     * *BUG*: a PTE is installed for a
->                                     * page in process of being removed
->                                     */
->                                    vmf_insert_pfn(...);
->
->                                    mutex_unlock(&encl->lock);
->                                    return VM_FAULT_NOPAGE;
->                                  }
->   /*
->    * continue with page removal
->    */
->   mutex_lock(&encl->lock);
->
->   sgx_encl_free_epc_page(epc_page) {
->     /*
->      * remove page via EREMOVE
->      */
->     /*
->      * free EPC page
->      */
->     sgx_free_epc_page(epc_page);
->   }
->
->   xa_erase(&encl->page_array);
->
->   mutex_unlock(&encl->lock);
-> }
->
-> Here, CPU1 removed the page. However CPU2 installed the PTE entry on the
-> same page. This enclave page becomes perpetually inaccessible (until
-> another SGX_IOC_ENCLAVE_REMOVE_PAGES ioctl). This is because the page is
-> marked accessible in the PTE entry but is not EAUGed, and any subsequent
-> access to this page raises a fault: with the kernel believing there to
-> be a valid VMA, the unlikely error code X86_PF_SGX encountered by code
-> path do_user_addr_fault() -> access_error() causes the SGX driver's
-> sgx_vma_fault() to be skipped and user space receives a SIGSEGV instead.
-> The userspace SIGSEGV handler cannot perform EACCEPT because the page
-> was not EAUGed. Thus, the user space is stuck with the inaccessible
-> page.
->
-> Fix this race by forcing the fault handler on CPU2 to back off if the
-> page is currently being removed (on CPU1). This is achieved by
-> setting SGX_ENCL_PAGE_BUSY flag right-before the first mutex_unlock() in
-> sgx_encl_remove_pages(). Upon loading the page, CPU2 checks whether this
-> page is busy, and if yes then CPU2 backs off and waits until the page is
-> completely removed. After that, any memory access to this page results
-> in a normal "allocate and EAUG a page on #PF" flow.
->
-> Fixes: 9849bb27152c ("x86/sgx: Support complete page removal")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
-> ---
->  arch/x86/kernel/cpu/sgx/ioctl.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/io=
-ctl.c
-> index 5d390df21440..02441883401d 100644
-> --- a/arch/x86/kernel/cpu/sgx/ioctl.c
-> +++ b/arch/x86/kernel/cpu/sgx/ioctl.c
-> @@ -1141,7 +1141,14 @@ static long sgx_encl_remove_pages(struct sgx_encl =
-*encl,
->  		/*
->  		 * Do not keep encl->lock because of dependency on
->  		 * mmap_lock acquired in sgx_zap_enclave_ptes().
-> +		 *
-> +		 * Releasing encl->lock leads to a data race: while CPU1
-> +		 * performs sgx_zap_enclave_ptes() and removes the PTE entry
-> +		 * for the enclave page, CPU2 may attempt to load this page
-> +		 * (because the page is still in enclave's xarray). To prevent
-> +		 * CPU2 from loading the page, mark the page as busy.
->  		 */
-> +		entry->desc |=3D SGX_ENCL_PAGE_BUSY;
->  		mutex_unlock(&encl->lock);
-> =20
->  		sgx_zap_enclave_ptes(encl, addr);
+Am 17.07.2024 um 08:39 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.41 release.
+> There are 122 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Ditto.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-BR, Jarkko
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
