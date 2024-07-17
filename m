@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-60489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77EA49343E3
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 23:29:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 212C09343F1
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 23:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A64BA1C21B5D
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 21:29:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5175F1C216E9
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 21:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8C6187857;
-	Wed, 17 Jul 2024 21:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F21187857;
+	Wed, 17 Jul 2024 21:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v/WPp6RX"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J6NHIgJc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275C1187561
-	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 21:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C65185E60
+	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 21:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721251729; cv=none; b=ikgYafW1zq0d8B7We7cxI9a6mKB8jHCw+bf8vTa5578S4zIv5SAFlR57E1M6iOmeMi5S8hLj/eH6NAp+2y9tA7qe1XSWYq9jnwzRzA/MAKO9OMQaqmqiG0qN5wQm0nvcpMHZNhCCeC5LdoB9gwNFA6pOA6BpKC2feiLL4ywFxks=
+	t=1721252026; cv=none; b=QYbvD74Ei5kjOWvfifNkGtkROthEy6JGLIZeGIkzFup8/TOQ3dSO/DfEGrXpkb9BJY3bHbERKDsl8v9eUwUUNHFAz6Nkm1u1gtN4Cw8SeZKKBsASDOX7kLJlonFcU9vH7M5G6rUIfXu09AYeqj/IT9/Y0C6xbmymMFCLUg0+/X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721251729; c=relaxed/simple;
-	bh=hV+gOr49p4cocawq3YpFNMPhdSPOJ5ilUmbodlA9FZI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lRCubD1aWoddVIzbh5B1sQRz8VvjFdbgX2NaAue00dF74AOqV3MfufDXdCLGX2mHPKIzygRs8YiLgBujFzDc9lFqfOrfpdzH4+tFT5j29ZlmqAygg5HD+PAbV2lvv9v9vWQ+gE5mDK12j1ybU4Uk2GdjmyKPs0NdB2Ro4lYxDIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v/WPp6RX; arc=none smtp.client-ip=209.85.128.201
+	s=arc-20240116; t=1721252026; c=relaxed/simple;
+	bh=x4AxNVE4O+WfqzVJnnmu85pZqmIfGnKYsIXUmc1r8y8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=DVVc4Ir1huTuUhghO3IrtvOra10+uOpDGwddo6frUXz6ePbx9QUkUoItIlGRx3xq8/f7EwWvOUcZhOnz1dPirYRND547CHTSYxXMJkjNwfxJQ/ihwt1NDlfVoJfKkmpHGlgl39syjRXxn5Y9j4sII8ls9xxB2jOgDW07jVU5X7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--axelrasmussen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J6NHIgJc; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6511c587946so2388487b3.1
-        for <stable@vger.kernel.org>; Wed, 17 Jul 2024 14:28:47 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--axelrasmussen.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-650ab31aabdso2237557b3.3
+        for <stable@vger.kernel.org>; Wed, 17 Jul 2024 14:33:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721251727; x=1721856527; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1721252024; x=1721856824; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=bC1XYrE8D3FwqV+dReridNcLxNzpjkdxcOvL08MCL8A=;
-        b=v/WPp6RXzAb8dRyANuKl13dRDZngyeiUccrWtTRzYSafen0oQTzdAP2TAAdXHXOnbS
-         RidsXLjc3yjIJ+i9RQD2G/FRq/lDHZzlsbOfswiZAaZQy1Jtu7huWxdGocTV8N7BalFx
-         UlNXtXLilp+PIavXdrr0S9dnP5Uz4TRbPVK0PUVhzU7ZB9wiR7USzuWYNYk/03la0F12
-         PBWQ0IV2EVZ/dWgnHFNFEntNTm+ya7FdyScyQv/uXPkpWQ2D5UquT6BUde9jHVNirotJ
-         xIs48WHmKZomzs4pQgrLW1cZl847sb1fw5izjaGZ4v7eQBLZ5lwVOD39+leZlastEwgO
-         UaGw==
+        bh=ZB/4mcQzsOoOaqb8afktp7uOucLSH7cA09jFpTDUMV0=;
+        b=J6NHIgJcOMqdTCGaKfi1bnUBDtXEX1rfUQMrsLm/YojnJve+Lqq40RnVV9Dj3+XWFn
+         w6ekM1nf5LUdJ+qgUin5K+hND0jFTtfn5+Y1uHYwAPWh1ENIfC0IqoLYUHjQTDBwSIAz
+         8sx3JHjGdaVJn5gQeVTmxAEBso0pEmZV+mKjLgANC1PCKlOi1+B7kI3Rd1jzJ1lBKUm7
+         j5OpNwEE1cSr88SSFOZFYQsfTNz2Yl5j+LVm9SC9Tplxa1ahhWhSvsDovaYt/7G/EPVX
+         eKdsDMjNqnZc4N/R15P/yWqYiWOK+qKMgDUynQDardNBmt+XiStyM+sq/lgM9rhQzD7m
+         sMFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721251727; x=1721856527;
+        d=1e100.net; s=20230601; t=1721252024; x=1721856824;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=bC1XYrE8D3FwqV+dReridNcLxNzpjkdxcOvL08MCL8A=;
-        b=J6ySHMdjaJ8hrld60fGgMSmP0kRf+yrhr20AbrYCmW8Ro4SDM+G0yi397rR6WSRyzz
-         ZxooDPVVrHv16hN+VKSt9yPnV0R1e9w6WJmeSD3CFhH9qcB+t5uFdO/XKWKkBpxTP3EC
-         zfrVSF2442R50K6Carkv9tBfWqOarRIAssJwfZyXobuyc249/RAH1eixSee0nkt6acXO
-         9Zh5eg3E0UZ6B2UYeDHVLr5rt5FdmH2zTTSuLS2MK9k/qgI3wjgcTA/GTcKtlDiH63ka
-         2+ogrf2Mhy7QmkQlh+XILGrVW8Y90nHlw5I/+/QwkwjkaKQjhIUQmGUbVkW6EpgJW/SA
-         QtsA==
-X-Forwarded-Encrypted: i=1; AJvYcCWNRE2H7wwu9SNS3XT8HMXOC8HfD++kazCyP7y9c7/6bRwcdJq9iQ5dmYfQPVBqETO9V0CSr8+ELvANQi0Acco3mdRoeTGN
-X-Gm-Message-State: AOJu0YwXa/XUwO1QcQyRggrZcZcj1wJLUSDKE7xLe33q/ZLmhByqSJhM
-	F8/0NLIJKRrK0lVScnQw3w/CnLeJExT1en3YNTijrHa5AO2vhq11l3wrwoy+CM2EFFSCkVpg2TH
-	rrw==
-X-Google-Smtp-Source: AGHT+IFLgB2C6j0dFHpvLIU7N8gDZUpXVn/57H01SUptIZ7LA4eVWYxCTx/3TCCmKxlLkZBSM9SJzGCH+/E=
-X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:f44b:e467:5c7c:74ab])
- (user=surenb job=sendgmr) by 2002:a05:690c:d8d:b0:62f:f535:f2c with SMTP id
- 00721157ae682-6660248e324mr151227b3.2.1721251727081; Wed, 17 Jul 2024
- 14:28:47 -0700 (PDT)
-Date: Wed, 17 Jul 2024 14:28:44 -0700
+        bh=ZB/4mcQzsOoOaqb8afktp7uOucLSH7cA09jFpTDUMV0=;
+        b=RdsBCHs3qdpHwL9QM4bueQ2DXVaDV1ynizFtkSylcN2Fa4G0R6ynw3ACQt//2+ByQ0
+         i1UZ+mK+csXFmrKXRiC7vZDdOOIVMf8xm8qBpPIYoQXh786qrkQgFUGy/ojv7h58bkyY
+         X6TuSEyu10j49SQ9FpRXwmIu0vgINQEGjfJ1zO2k3cmIy8WIKVx8NZgrfFDbDeU/JH+B
+         Ol4IirNDnkvYG/4lwISo61+uZCijkLgYzVFVHBH/ew+NvgUKjW/5/IkgmVWltrMr67mI
+         tLETG3QkrXpXM/Q8s1f7RLwk4d9hoygt56jJk26KmFHpRbpKu53b+7FDUaq/5EHh+Ujh
+         R4mQ==
+X-Gm-Message-State: AOJu0YwQHQopgxxBjSV9hx34okrVxurfzYBjhaXLOt9ITR6bntFIMx5O
+	GN/92padFV+eiUUFr7ZlgYonSCOkKJRnvmiDbmLgrH29EyRTdIDt4XxJQWTCGHJXOd3R5liSCIc
+	jNZK5luVKzIVGIAA5Wi69SX3My25ACjK+yC61cLDpAtdPUtdYOqVEZB979ozEElNMhtxNZ0VOVW
+	oD/3zhaRiT/jK7Bv7TJ22t+wmTb7fYJheATEN9J2oE3wlB/vumh4mFuqZ2I89SEELog8ES+Q==
+X-Google-Smtp-Source: AGHT+IE/F3kuqtrq1gronND0JsdGxzDxmNfarL3qLMn5KiwPZ0T3K407YPV2orhl71mUZY2G4uIIPHcXQ2a4+vbABDfo
+X-Received: from axel.svl.corp.google.com ([2620:15c:2a3:200:a503:d697:557b:840c])
+ (user=axelrasmussen job=sendgmr) by 2002:a05:690c:3405:b0:622:cd7d:fec4 with
+ SMTP id 00721157ae682-66605444531mr187067b3.9.1721252024222; Wed, 17 Jul 2024
+ 14:33:44 -0700 (PDT)
+Date: Wed, 17 Jul 2024 14:33:36 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,100 +71,59 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.45.2.993.g49e7a77208-goog
-Message-ID: <20240717212844.2749975-1-surenb@google.com>
-Subject: [PATCH v3 1/1] alloc_tag: outline and export free_reserved_page()
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: kent.overstreet@linux.dev, hch@infradead.org, vbabka@suse.cz, 
-	pasha.tatashin@soleen.com, souravpanda@google.com, keescook@chromium.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, surenb@google.com, 
-	kernel test robot <lkp@intel.com>, stable@vger.kernel.org
+Message-ID: <20240717213339.1921530-1-axelrasmussen@google.com>
+Subject: [PATCH 6.9 0/3] Backport VFIO refactor to fix fork ordering bug
+From: Axel Rasmussen <axelrasmussen@google.com>
+To: stable@vger.kernel.org
+Cc: Alex Williamson <alex.williamson@redhat.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Eric Auger <eric.auger@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, 
+	Kunwu Chan <chentao@kylinos.cn>, Leah Rumancik <leah.rumancik@gmail.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Stefan Hajnoczi <stefanha@redhat.com>, Yi Liu <yi.l.liu@intel.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Axel Rasmussen <axelrasmussen@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Outline and export free_reserved_page() because modules use it and it
-in turn uses page_ext_{get|put} which should not be exported. The same
-result could be obtained by outlining {get|put}_page_tag_ref() but that
-would have higher performance impact as these functions are used in
-more performance critical paths.
+35e351780fa9 ("fork: defer linking file vma until vma is fully initialized")
+switched the ordering of vm_ops->open() and copy_page_range() on fork. This is a
+bug for VFIO, because it causes two problems:
 
-Fixes: dcfe378c81f7 ("lib: introduce support for page allocation tagging")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202407080044.DWMC9N9I-lkp@intel.com/
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: stable@vger.kernel.org # v6.10
----
-Changes since v2 [1]
-- Dropped the first unnecessary patch from the patchset, per Vlastimil Babka
-- Added Acked-by, per Vlastimil Babka
-- CC'ed stable@, per Vlastimil Babka
+1. Because open() is called before copy_page_range(), the range can conceivably
+   have unmapped 'holes' in it. This causes the code underneath untrack_pfn() to
+   WARN.
 
-[1] https://lore.kernel.org/all/20240717181239.2510054-1-surenb@google.com/
+2. More seriously, open() is trying to guarantee that the entire range is
+   zapped, so any future accesses in the child will result in the VFIO fault
+   handler being called. Because we copy_page_range() *after* open() (and
+   therefore after zapping), this guarantee is violatd.
 
- include/linux/mm.h | 16 +---------------
- mm/page_alloc.c    | 17 +++++++++++++++++
- 2 files changed, 18 insertions(+), 15 deletions(-)
+We can't revert 35e351780fa9, because it fixes a real bug for hugetlbfs. The fix
+is also not as simple as just reodering open() and copy_page_range(), as Miaohe
+points out in [1]. So, although these patches are kind of large for stable, just
+backport this refactoring which completely sidesteps the issue.
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index eb7c96d24ac0..b58bad248eef 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3177,21 +3177,7 @@ extern void reserve_bootmem_region(phys_addr_t start,
- 				   phys_addr_t end, int nid);
- 
- /* Free the reserved page into the buddy system, so it gets managed. */
--static inline void free_reserved_page(struct page *page)
--{
--	if (mem_alloc_profiling_enabled()) {
--		union codetag_ref *ref = get_page_tag_ref(page);
--
--		if (ref) {
--			set_codetag_empty(ref);
--			put_page_tag_ref(ref);
--		}
--	}
--	ClearPageReserved(page);
--	init_page_count(page);
--	__free_page(page);
--	adjust_managed_page_count(page, 1);
--}
-+void free_reserved_page(struct page *page);
- #define free_highmem_page(page) free_reserved_page(page)
- 
- static inline void mark_page_reserved(struct page *page)
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 9ecf99190ea2..7d2fa9f5e750 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5805,6 +5805,23 @@ unsigned long free_reserved_area(void *start, void *end, int poison, const char
- 	return pages;
- }
- 
-+void free_reserved_page(struct page *page)
-+{
-+	if (mem_alloc_profiling_enabled()) {
-+		union codetag_ref *ref = get_page_tag_ref(page);
-+
-+		if (ref) {
-+			set_codetag_empty(ref);
-+			put_page_tag_ref(ref);
-+		}
-+	}
-+	ClearPageReserved(page);
-+	init_page_count(page);
-+	__free_page(page);
-+	adjust_managed_page_count(page, 1);
-+}
-+EXPORT_SYMBOL(free_reserved_page);
-+
- static int page_alloc_cpu_dead(unsigned int cpu)
- {
- 	struct zone *zone;
+Note that patch 2 is the key one here which fixes the issue. Patch 1 is a
+prerequisite required for patch 2 to build / work. This would almost be enough,
+but we might see significantly regressed performance. Patch 3 fixes that up,
+putting performance back on par with what it was before.
 
-base-commit: e2f710f97f3544df08ebe608c8157536e0ffb494
--- 
+Note [1] also has a more full discussion justifying taking these backports.
+
+[1]: https://lore.kernel.org/all/20240702042948.2629267-1-leah.rumancik@gmail.com/T/
+
+Alex Williamson (3):
+  vfio: Create vfio_fs_type with inode per device
+  vfio/pci: Use unmap_mapping_range()
+  vfio/pci: Insert full vma on mmap'd MMIO fault
+
+ drivers/vfio/device_cdev.c       |   7 +
+ drivers/vfio/group.c             |   7 +
+ drivers/vfio/pci/vfio_pci_core.c | 271 ++++++++-----------------------
+ drivers/vfio/vfio_main.c         |  44 +++++
+ include/linux/vfio.h             |   1 +
+ include/linux/vfio_pci_core.h    |   2 -
+ 6 files changed, 125 insertions(+), 207 deletions(-)
+
+--
 2.45.2.993.g49e7a77208-goog
 
 
