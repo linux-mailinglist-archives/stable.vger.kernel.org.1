@@ -1,118 +1,150 @@
-Return-Path: <stable+bounces-60433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E6E933C7A
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 13:46:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F9D933CA3
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 13:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7F7DB2286B
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 11:46:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE174281E86
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 11:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213E017F51C;
-	Wed, 17 Jul 2024 11:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5514517F389;
+	Wed, 17 Jul 2024 11:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="kCsvB+wI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vz8wPp57"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5959417F505;
-	Wed, 17 Jul 2024 11:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268C145009;
+	Wed, 17 Jul 2024 11:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721216775; cv=none; b=IybXJ1iFSJ2NHxIiQdCr+d7KP+zKoqyukzDRZ8osxxaXIlac8eMg+SI4MR4nGYh1dP+FgLYgx6zqC7pjqLwzaQlmUgb/fzSRvWTjYHbNFNdaVwnzLgozLC9iHqPB8KjcG6oNlQSMPA8xfZSRTWP9dz64c9UVQ4ivJutJDVyzT7w=
+	t=1721217315; cv=none; b=tvuEJhXfqVwLjPxY/jG8kV3gngeM2YI25RN65kKIXxWX2SaUVTCc1ATryY99gE0T37D1xEjt46Uef1hHP8eeLhCl9MVFco6amt5/svTLjw9cz6Niwi/qzwRqmVjvmgANFYUH2PAVhYeCXE3S9DkFCsIZc2xjlGoVX1Gr8InoAUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721216775; c=relaxed/simple;
-	bh=mPNNJXb9JtXOSrYhH09YI2E6ecROU8kEPA0TLFzJtFM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ycyi9/rPt876DU1fgDVvD9TO30qKrrAcASTW6anTGiE5ba/usFzdyVKaqP/V/rPrGr64uST8TxPK/WDSyKrbcpoJevtfkrpjrcB8dsIgW04WrmGKLPMGibDW4czxbA2T2TMRcsEmUGSY57eaiqOpc0JvAVv33vxmv420FxfKYRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=kCsvB+wI; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a77bf336171so128767066b.1;
-        Wed, 17 Jul 2024 04:46:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1721216773; x=1721821573; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FH2P+UODR03FUkhmyN08iuWgXrF+03JkmoesFJR614Q=;
-        b=kCsvB+wINrWwlGaSEKWWuur1zo/ualpf4EMF7Zxru8Ki7Y2mL6GUwAVkwk24Di16dG
-         W9/9iay48sJDSGjGrJ4KIhUbjxlaTylFOdjMjeMk3X2tqLQ4QGWDeeb5Co/hiWq4sfbj
-         g2Sks4VFkuT8ydNIB1auA/yVFl7qgEBcZwOgOif4sk1g4cSuDSc/7n6jvrVqTz397v9F
-         U3kzuhRATSVZ1dTZj9ujOw7p5p9ZEfJXHCONhm/1BJ8x+jSA6PmpODz6PbWW6ZrDR3KS
-         MtX1HvMBgKGflMGaL44V2qte7+5nVKU7Rn5kwUk2UYS3dSuCeaPz+SFmidHXLfLolDBd
-         Cl4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721216773; x=1721821573;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FH2P+UODR03FUkhmyN08iuWgXrF+03JkmoesFJR614Q=;
-        b=Jqxa+sKQjEpOIHmt5Er5KX0627ooyH7MXL/Yp9A5FtHsiLwXq/ijYXffQAX+FdmRcc
-         Si5yPpnn8s2CrEu8i+Tw+9fpbjLL99pzw0EqYTNI1f81MphunIRyHTp9LLoeqDnBVtm6
-         UcPPPAfTvyobhQBgZvCycS04NVGk7gtcsEOhwiF5lhIBoYbDbPvPxtBBYq9kbLlISnUo
-         LTb5+lNN9Vrg4IQK5HyVG5LpqvXlpM18g/BYLwXjXaQS4yKuOg3s5fsRehLvPEGnU4+C
-         RuPU7ko/Kk19DkprTxd+k+N1EOq4lmQsz/uGQlxCLmo1E7maYwflxs197ZiYyuGAPQAq
-         Gn1w==
-X-Forwarded-Encrypted: i=1; AJvYcCXGTMLVyKrSMTgFU3WElYjbt4wtt6a8zcDxt5NP3pEqwyi98wX3LRD8vQ3nn+6XJelAN/pJjP++/PWLznuVVGQeetICq9GsQHA9aBq6/6K4NjqfYfji4+k3Mlh+onWc2a7n+iuE
-X-Gm-Message-State: AOJu0YzdhA6dpWwihgb57PBrRy49+ThiCeuag9seNZ3mkrQwzOn8RqSA
-	orvLPk3KaRsDAAibk0Thc6SlP3d210F5+MxUkcitAILGa73F0wZVYfMxxJ8=
-X-Google-Smtp-Source: AGHT+IHY9UhZrcLqZUJEDjrrkScBQVarkTtANqFffDu6b0DNpiM/F0ukbPo2IDtdU96Z3B6jY5Z51w==
-X-Received: by 2002:a17:906:5a93:b0:a77:dc58:d30b with SMTP id a640c23a62f3a-a7a00915bc0mr153976366b.31.1721216771808;
-        Wed, 17 Jul 2024 04:46:11 -0700 (PDT)
-Received: from [192.168.1.3] (p5b0576fa.dip0.t-ipconnect.de. [91.5.118.250])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc5a359asm444939366b.19.2024.07.17.04.46.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jul 2024 04:46:11 -0700 (PDT)
-Message-ID: <56ba7dc3-bbcf-4d62-946e-a234c74dbd0a@googlemail.com>
-Date: Wed, 17 Jul 2024 13:46:09 +0200
+	s=arc-20240116; t=1721217315; c=relaxed/simple;
+	bh=ryFplDwaF9LrfXi9LMq+5WiAnqCBtaCywkMwnwyBkjs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fkHYNU/ZKMWxtIMsC//VgeChLqgWIyKhbx5iMrY0pLEZGDOXMbrVMI7+JBMLVRIwzJAhYeu9nB/BgTsPVTeWy/KKWarx8LHN+ttKSUBWvtg6RJJY7OGJGBhXoDAZQHRrMzjx3Zovw2E7g+EY6CGG5hpcz/mlsc5w7h1bHq8nVbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vz8wPp57; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721217313; x=1752753313;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ryFplDwaF9LrfXi9LMq+5WiAnqCBtaCywkMwnwyBkjs=;
+  b=Vz8wPp57WM/z7pMtJ8rUPkKyjivl09rR/RqQ2MNxtB7daqMSbQHmR/AS
+   Ucfn7dk9V43MYEU6nw/vAlfb+dvgc0838IGQ1COE96a6c1JNCveYOCHx+
+   04Ux2cwXInrDj8DZtofZsvpdI7dxL+jFlQSlLLRpbLs8ybhhRe+1TKtSx
+   0IYeCOAppQPuSqlQ73vzU1TqcvL1Vnuuc7ObMWb0k2iNfJjacBdd+WnB0
+   oXVgzw+vgG0yjjP3VfIuEseGuc/+67XJVDNReIXdvM9s9pwgSFVNL16WN
+   kuoWgESo7uK/BU//mrAy01J95+hvAOvb/GuKPSnmdd+5NWxHmq00+QtyJ
+   A==;
+X-CSE-ConnectionGUID: s1b6s4MyTe6TRpWMYtBBQg==
+X-CSE-MsgGUID: zRK0r//DRQGOQRWNCSg6TQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="21618510"
+X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; 
+   d="scan'208";a="21618510"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2024 04:55:12 -0700
+X-CSE-ConnectionGUID: WW7YfiZtSPuV/FAYAVfibQ==
+X-CSE-MsgGUID: 50N4wCG+QvCBSVg7wTTQVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; 
+   d="scan'208";a="81407900"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 17 Jul 2024 04:55:10 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id EB424161; Wed, 17 Jul 2024 14:55:08 +0300 (EEST)
+Date: Wed, 17 Jul 2024 14:55:08 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Mel Gorman <mgorman@suse.de>, Vlastimil Babka <vbabka@suse.cz>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Jianxiong Gao <jxgao@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: Fix endless reclaim on machines with unaccepted
+ memory.
+Message-ID: <xtcmz6b66wayqxzfio4funmrja7ezgmp3mvudjodt5xfx64rot@s6whj735oimb>
+References: <20240716130013.1997325-1-kirill.shutemov@linux.intel.com>
+ <ZpdwcOv9WiILZNvz@tiehlicka>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.9 000/142] 6.9.10-rc2 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240717063806.741977243@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20240717063806.741977243@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZpdwcOv9WiILZNvz@tiehlicka>
 
-Am 17.07.2024 um 08:40 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.9.10 release.
-> There are 142 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Jul 17, 2024 at 09:19:12AM +0200, Michal Hocko wrote:
+> On Tue 16-07-24 16:00:13, Kirill A. Shutemov wrote:
+> > Unaccepted memory is considered unusable free memory, which is not
+> > counted as free on the zone watermark check. This causes
+> > get_page_from_freelist() to accept more memory to hit the high
+> > watermark, but it creates problems in the reclaim path.
+> > 
+> > The reclaim path encounters a failed zone watermark check and attempts
+> > to reclaim memory. This is usually successful, but if there is little or
+> > no reclaimable memory, it can result in endless reclaim with little to
+> > no progress. This can occur early in the boot process, just after start
+> > of the init process when the only reclaimable memory is the page cache
+> > of the init executable and its libraries.
+> 
+> How does this happen when try_to_accept_memory is the first thing to do
+> when wmark check fails in the allocation path?
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+Good question.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+I've lost access to the test setup and cannot check it directly right now.
 
+Reading the code Looks like __alloc_pages_bulk() bypasses
+get_page_from_freelist() where we usually accept more pages and goes
+directly to __rmqueue_pcplist() -> rmqueue_bulk() -> __rmqueue().
 
-Beste Grüße,
-Peter Schneider
+Will look more into it when I have access to the test setup.
+
+> Could you describe what was the initial configuration of the system? How
+> much of the unaccepted memory was there to trigger this?
+
+This is large TDX guest VM: 176 vCPUs and ~800GiB of memory.
+
+One thing that I noticed that the problem is only triggered when LRU_GEN
+enabled. But I failed to identify why.
+
+The system hang (or have very little progress) shortly after systemd
+starts.
+
+> > To address this issue, teach shrink_node() and shrink_zones() to accept
+> > memory before attempting to reclaim.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Reported-by: Jianxiong Gao <jxgao@google.com>
+> > Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+> > Cc: stable@vger.kernel.org # v6.5+
+> [...]
+> >  static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
+> >  {
+> >  	unsigned long nr_reclaimed, nr_scanned, nr_node_reclaimed;
+> >  	struct lruvec *target_lruvec;
+> >  	bool reclaimable = false;
+> >  
+> > +	/* Try to accept memory before going for reclaim */
+> > +	if (node_try_to_accept_memory(pgdat, sc)) {
+> > +		if (!should_continue_reclaim(pgdat, 0, sc))
+> > +			return;
+> > +	}
+> > +
+> 
+> This would need an exemption from the memcg reclaim.
+
+Hm. Could you elaborate why?
 
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+  Kiryl Shutsemau / Kirill A. Shutemov
 
