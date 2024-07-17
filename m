@@ -1,48 +1,54 @@
-Return-Path: <stable+bounces-60423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D19933B60
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 12:46:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A92F933B75
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 12:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A93AF1C21884
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 10:46:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B86981F2312F
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 10:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9912A17E915;
-	Wed, 17 Jul 2024 10:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF9117E905;
+	Wed, 17 Jul 2024 10:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gb+8h9GJ"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="baBtptbc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE0B41C64;
-	Wed, 17 Jul 2024 10:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F811878;
+	Wed, 17 Jul 2024 10:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721213177; cv=none; b=uwC0HDA5W28Eg8XQUg3W3H36UwUFdb7UJVhz+0SMXpGqeSvaJfVJkAgmKNWACq3qMtDgIpmr55fKsyTw1PRNFyacbqyV5IouqB6zE69lopn0DP4ceC8dgZbqVp+om1UcKppSYJtBb1ms3S6RE+SIr1rs539D970N5T7PD1XHB2g=
+	t=1721213455; cv=none; b=udgnReOjTOwDY0rZyZtnXLEp+tHtneh4BsVkJ9V6otBbJaATgOXbLvnuykWdBlLCGrrGWY2yPhMAAHIohpnjm/0iFoTaiWJv51vDp9lF5FaZIEhHhCnDlFYMBOuwnHB3eABU5iVpU380R6RLF2bPLQX2x/CRXHVmUZKt/YKw0cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721213177; c=relaxed/simple;
-	bh=8nW/0YkeP5wEzj+p/3pW+0dbcf7fT3l2DRseYG9QkiE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bO4gR01Q9z7YJBp2VxmW81bJMVcu+xu3OnXszko25Dog6c7WC85vwbx1Z3NatdTwDuvVRkxuY6o+payHEPtRgm5r6KxJ/AUMygxnLbs+cWouFhm2CqhbdnEAkxREFeyrfSf21HdLegQgtWPB8eLZfKtq165TZrj2alLrkDIqLGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gb+8h9GJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB33AC4AF09;
-	Wed, 17 Jul 2024 10:46:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721213176;
-	bh=8nW/0YkeP5wEzj+p/3pW+0dbcf7fT3l2DRseYG9QkiE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gb+8h9GJpPciAOjw2qlO63dYwX08ENn1ArIVi6pEC7sFamktcwwYzOXKNQAKYlIjL
-	 74PUNtpKa/OYBcs6w3zZPvUW0Ergnpr6x2GyC5jvjzu1DauxyQqPIXNnxuFBkSlQkf
-	 3AWe7C/RP51y/3vSDdsWLp0jCBL5YUJQfboWOSoFdBo4Ph1HmZt3ji4t8qh1MFBqNo
-	 VgJAxA9TMYPbKVtoqXI6n1zdE6O99uDdVHv0x8h0hDDF84peiIcDdO5NR56yNm5pyM
-	 zS080OEgpNsEkZblNC8X0JAsZMTx4XGphDQ/sw3etfYpG1uZzwZo3nI2XMrb+jgSGp
-	 XnestQUKqnpig==
-Message-ID: <bb277462-579b-4dc3-b63c-bf5768dd1ce4@kernel.org>
-Date: Wed, 17 Jul 2024 19:46:14 +0900
+	s=arc-20240116; t=1721213455; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=a5FsuiD+2mIv8AvTUUcwaav/vi62dVYVj4IjWiBWQLqw8V19wxHwbL/HRi7sF5WhPOeHSK7lLL/yU26IcOljCns+tHNiEna69zHRCbhCrYz+bGwFjAbpz0LJCaua43lEj9hIIqNxKvgiCxnSyWzqbBx3D2Kvuc8agxMNKzxL6/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=baBtptbc; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1721213450; x=1721818250; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=baBtptbccu2gz/BAzLtDu5AmeXpHq+Ag1PcfQDcCeBuHRCxnBCSeq9C/mOLxRl8T
+	 HfCcp3r5GlHRzS1EDMU9iJHxMkW82uXfDzKGJeaPJI7v9V+u4B31BwnheZexaXSpZ
+	 HGRIrPGKVGvv03UiLjDIzfLRhCbRja5XW1WlKFjxjngXp2fmJBdpJpyU7KKXvwvdh
+	 pUHIO9J6D33ruoz9RojNcHOIXH9m7wGdphXU1QEhkkgxRCEVqQrVs0/DDbUMygyjX
+	 U7baInkZgSR7Hihjnf6314+JAVvy/24ryTGi3sycBDIfQjY6OOtQmFCGfk9wIJ45x
+	 3oPB+pV6Vh6ATTD4DA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.35.96]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MwQT9-1sAzzb1trR-00y6Gi; Wed, 17
+ Jul 2024 12:50:50 +0200
+Message-ID: <94b96235-4572-4cbc-8ac2-891c1dcfe3d4@gmx.de>
+Date: Wed, 17 Jul 2024 12:50:50 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,110 +56,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "scsi: sd: Do not repeat the starting disk
- message"
-To: Johan Hovold <johan@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Bart Van Assche <bvanassche@acm.org>, linux-scsi@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240716161101.30692-1-johan+linaro@kernel.org>
- <39143ca8-68e4-44eb-8619-0b935aa81603@kernel.org>
- <ZpeIOsEbBIho9P_1@hovoldconsulting.com>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <ZpeIOsEbBIho9P_1@hovoldconsulting.com>
-Content-Type: text/plain; charset=UTF-8
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.9 000/142] 6.9.10-rc2 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:DFCMSvfhYijB74j3gFyTUJ/Czlldfk0+b+11xIC0rhuB50xC8qh
+ zIYw0KN4Y+Pt3rPcwxgj2l0bg9HAlrCkhLZEkXR3n4Pnhc7IauWqQZc+xD+v39crGz83BGi
+ a8wyKOwHgzmQQnoRgUiaJ5VWmnaf7HgkwqevHzG97nAMzzhzD8qsngeO/m2b6Hj81hHPRZ8
+ 158Iwx/kSOmuEF1L/Os1w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:8dHNIc+lvQE=;uw13cgEBcD0j+SxoVlrpT1Rjn4u
+ hyXJI3XcVtKCId+41FEGhV3AZo30WKEymbkjNMf0e+bLFxjIWulCY08xYmdcrs+2Y+F1VKqDM
+ dgYyn+htHHvJ5uFLL0StDRfcgUxCRbFmngSfK25R594It7hAVorn89k6X+sJK7jK9fFMCO0Za
+ uMZmFu2uy4uMIfTwo+DGacTKYhyMfySg61AJFrEuyLe6vDwRTWqoV7Byvu03tyCRqAUdkk4iK
+ k60f7Z6FaGwMHRpJYsGz8MaHVepuHZn1uWTep6NKaLf16Wg9SJFy/1jgKPf0H/sKa4On7jy6e
+ fZi6sM/bu6zLLbz/XCBqqfhfdznGaC9heRmV+PhCrck/v9aDAcFqExGV/0OAh/t2iSdnkx/aX
+ x6CHaFf1XKAsSgr6U/aZitNMtbNOuF9CpIp2XbWHgy8uxEHbg4rXTW907SVsNiJ8U1DvvxBxf
+ elEPeIhBbjimymzAauChT7IR9UPXHmZ0aKLqObZoLPiVneKGkH7+UxdNE9oJ0xZSc24Xfa/k0
+ lQjoqQqF9i0Mo+eVQnpoVoYUEZlIDJASZKljrAk1nv6wRHoZk1WeqYPwj586chzDnYVbAMltv
+ VMLVmtMG/zHazaej3pWW1945VoM/Rxd7bG2hMPEnh5Er45pZin5vYEBoTXgxrIx4QDqhXmh2u
+ UdMKpv85dFt/edwmlHAJPK7bC2RVP75lfxpWP/uur6S/uW59D5WH/IVtZf65NsEWoqTxKkO8M
+ ZZCjUYm745tZt8qHBSwbEi7r8uY5XIXAZzK03gkMPqstcR11Yy0eVdUVckCarHBolqvf/Puza
+ KP9IjRc7ZGGHq+fRksB96CeA==
 
-On 7/17/24 18:00, Johan Hovold wrote:
-> On Wed, Jul 17, 2024 at 07:48:26AM +0900, Damien Le Moal wrote:
->> On 7/17/24 01:11, Johan Hovold wrote:
->>> This reverts commit 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4.
->>>
->>> The offending commit tried to suppress a double "Starting disk" message
->>> for some drivers, but instead started spamming the log with bogus
->>> messages every five seconds:
->>>
->>> 	[  311.798956] sd 0:0:0:0: [sda] Starting disk
->>> 	[  316.919103] sd 0:0:0:0: [sda] Starting disk
->>> 	[  322.040775] sd 0:0:0:0: [sda] Starting disk
->>> 	[  327.161140] sd 0:0:0:0: [sda] Starting disk
->>> 	[  332.281352] sd 0:0:0:0: [sda] Starting disk
->>> 	[  337.401878] sd 0:0:0:0: [sda] Starting disk
->>> 	[  342.521527] sd 0:0:0:0: [sda] Starting disk
->>> 	[  345.850401] sd 0:0:0:0: [sda] Starting disk
->>> 	[  350.967132] sd 0:0:0:0: [sda] Starting disk
->>> 	[  356.090454] sd 0:0:0:0: [sda] Starting disk
->>> 	...
->>>
->>> on machines that do not actually stop the disk on runtime suspend (e.g.
->>> the Qualcomm sc8280xp CRD with UFS).
->>
->> This is odd. If the disk is not being being suspended, why does the platform
->> even enable runtime PM for it ? 
-> 
-> This is clearly intended to be supported as sd_do_start_stop() returns
-> false and that prevents sd_start_stop_device() from being called on
-> resume (and similarly on suspend which is why there are no matching
-> stopping disk messages above):
-> 
-> 	[   32.822189] sd 0:0:0:0: sd_resume_common - runtime = 1, sd_do_start_stop = 0, manage_runtime_start_stop = 0
+Hi Greg
 
-Yes, so we can suppress the "Starting disk" message for runtime resume, to match
-the runtime suspend not having the message.
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-> 
->> Are you sure about this ? Or is it simply that
->> the runtime pm timer is set to a very low interval ?
-> 
-> I haven't tried to determine why runtime pm is used this way, but your
-> patch is clearly broken as it prints a message about starting the disk
-> even when sd_do_start_stop() returns false.
+Thanks
 
-The patch is not *that* broken, because sd_do_start_stop() returning false mean
-only that the disk will *not* be started using a START STOP UNIT command. But
-the underlying LLD must start the drive. So the message is not wrong, even
-though it is probably best to suppress it for the runtime case.
-
-The point here is that sd_runtime_resume() should NOT be called every 5s unless
-there is also a runtime suspend in between the calls. As mentioned, this can
-happen if the autosuspend timer is set to a very low timeout to aggressively
-suspend the disk after a short idle time. That of course makes absolutely no
-sense for HDDs given the spinup time needed, but I guess that is a possiblity
-for UFS drives.
-
-> 
->> It almost sound like what we need to do here is suppress this message for the
->> runtime resume case, so something like:
-> 
-> No, that would only make things worse as I assume you'd have a stopped
-> disk message without a matching start message for driver that do end up
-> stopping the disk here.
-
-OK. so let's revert this patch and I will rework that message to be displayed
-only on device removal, system suspend and system shutdown.
-
->> However, I would like to make sure that this platform is not calling
->> sd_resume_runtime() for nothing every 5s. If that is the case, then there is a
->> more fundamental problem here and reverting this patch is only hiding that.
-> 
-> This is with the Qualcomm UFS driver, but it seems it just relies on the
-> generic ufshcd_pltfrm_init() implementation.
-> 
-> Also not sure why anyone would want to see these messages on every
-> runtime suspend (for drivers that end up taking this path), but that's a
-> separate discussion.
-
-Not really. As mentioned above, it is probably best to suppress the start/stop
-messages for runtime suspend. The separate discussion is why sd_runtime_resume
-is called that often for this UFS drive: bug or aggressive autosuspend ? Given
-that I do not have this hardware, I will let someone else look into that.
-
--- 
-Damien Le Moal
-Western Digital Research
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
 
