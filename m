@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-60439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE31933D45
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 15:00:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D731933D4E
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 15:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D6B91F21B76
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 13:00:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E4771C22260
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 13:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B5518004E;
-	Wed, 17 Jul 2024 13:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC358180058;
+	Wed, 17 Jul 2024 13:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L61whck0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T/vOHMVX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B88B1CAB1;
-	Wed, 17 Jul 2024 13:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DBF1CAB1;
+	Wed, 17 Jul 2024 13:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721221243; cv=none; b=kVjKQq1loxCFZS857G5+gw+focz+KvqUdUvjaZ8t60yZipaLeVGK4DnowKI73gNuts5Ose8iq9ADRC1na1j1/1H5qqK+q8lnPuuGO/G8Z+6H55wvRjPP5H1DyAINLOq9KhyJBuAIb5uR5nA7kG7FfFjnPUAMNtl865J+r5JphS8=
+	t=1721221447; cv=none; b=NTiFoUs9Ksll9W/A8fune5S9cLcc+y1uiBeRpsRpHwXAhU58hwieOAnPrWHvE0cDfAMkiH0mNL8Xnma/CMxQWuYxNtgmcyRpErHyxdCpfTYq9iAawsvS8H0yzA+fDC428ZQJyoFUDcfgLX9hHaq0ML2NofCboNGqxS526WRlvBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721221243; c=relaxed/simple;
-	bh=PWzdVeGOYDFDvAAXX/W3p5qGqEG3bjIvRVMTy/P1o1w=;
+	s=arc-20240116; t=1721221447; c=relaxed/simple;
+	bh=EfoHhC4alA4XxntMcJQyaAM8VObvxJBSY7iPEZH4uIY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FAb6EsFr27bVWgSxx6rrBOdybQGoikW8K6xnxCLsAL4zTyakiY4x9GRy4j+HhDltZYdQUsy7kwYwbmfHPVgfzuFk4+aCeXswcvWxrxeOWNiS8LtHquLqcYG1gL4eiMsSsbjVbGt5tvE5ZlmxxUPBF0xmg40SSXq9pMi+WX9S3k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L61whck0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F3EC32782;
-	Wed, 17 Jul 2024 13:00:39 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=sLahA//dZSs54LLr4Q7svOkUsFKBaIs90EtxfancrOs3NruF8C/jLeyfY19n12k6jQy6918VDRp/+wGSGnbb0KpuedBjz9dyOLJOHXXDVdK/zWRm4fx0zZm0ctdxZgn6Zh5nIi+QQWM9vBP1MUeJEyMmIaOtKZCVO/Wvh9oddL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T/vOHMVX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F9CC32782;
+	Wed, 17 Jul 2024 13:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721221242;
-	bh=PWzdVeGOYDFDvAAXX/W3p5qGqEG3bjIvRVMTy/P1o1w=;
+	s=k20201202; t=1721221447;
+	bh=EfoHhC4alA4XxntMcJQyaAM8VObvxJBSY7iPEZH4uIY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L61whck09pE3scA4NiGcX6fe3jlbHK5L16zTkRpIAXtyGrc72WEVgwRKMurgkzwoD
-	 pASEsD0NPUsM5cdRcgjDug2xWAlqarla6xlxSfN+Z8Pzf+8nc/WK2/awqSGne5GA4I
-	 sJ2i/dtU5M39cqeNo57oH81T4Nb4yxS/0J1rFhTbuxLnDnD0J/1J5C8rjQg8Ngfxkw
-	 3XdzPjH+fXOczEe+aBd4IrNFJQI3R1vsKLAfK6SOhOEy4z6BbP8hKHUOtfkie3j3cP
-	 2PKRPeWQ/rOuYI4orQpb7ebPy9eLdJQDlO2jNGK05pbK+rvGiQ3aYi9DcgjXY7seAj
-	 s+XcAs+JTr9yw==
-Date: Wed, 17 Jul 2024 14:00:36 +0100
+	b=T/vOHMVXpPhqSLsxa7pB3G4AQZkv1NesJyiYYJ2ttNX0S/KERDCcST/YaGAE5PoKK
+	 gyrRiugBwxN56YN3Yb3p7TG3ErVgUW/n459omHn1/oHYwY37rFbac2P5fHmm9KkLkq
+	 +P+s0F+6S6JVPigyJTBgjo8TNb34eYQGK0XvGCHZFz3pmToUmrHP0EAq1NE8+3quLE
+	 k8mD/8xhNzCzoKm5JkW5Q+At9NDgoTS/6QNpdLwkMZwPAj+hfxLteLaEHouOM/T4HT
+	 egVzBcEZjNae1MqtpK7jLUi/dRp3hLa6btgB9q6+VTB7wybWPg+3KkcXIKQ+8VfULi
+	 tLzveoWNS2CQw==
+Date: Wed, 17 Jul 2024 14:04:00 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -51,9 +51,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 5.15 000/145] 5.15.163-rc2 review
-Message-ID: <8e698886-e458-4cf9-8067-1ccbbbf45ec7@sirena.org.uk>
-References: <20240717063804.076815489@linuxfoundation.org>
+Subject: Re: [PATCH 6.9 000/142] 6.9.10-rc2 review
+Message-ID: <75062431-b23d-442f-966f-8efee24ebf8c@sirena.org.uk>
+References: <20240717063806.741977243@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,38 +61,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2QE0r/hzZyKXLh34"
+	protocol="application/pgp-signature"; boundary="1YDpBjWSQCMZHotk"
 Content-Disposition: inline
-In-Reply-To: <20240717063804.076815489@linuxfoundation.org>
+In-Reply-To: <20240717063806.741977243@linuxfoundation.org>
 X-Cookie: You should go home.
 
 
---2QE0r/hzZyKXLh34
+--1YDpBjWSQCMZHotk
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Jul 17, 2024 at 08:39:16AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.163 release.
-> There are 145 patches in this series, all will be posted as a response
+On Wed, Jul 17, 2024 at 08:40:00AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.9.10 release.
+> There are 142 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 Tested-by: Mark Brown <broonie@kernel.org>
 
---2QE0r/hzZyKXLh34
+--1YDpBjWSQCMZHotk
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmaXwHMACgkQJNaLcl1U
-h9CiOQf9GRESAqPV8kfku5NFbPntaUwpMW0ibiCJI0C5kJi+QitBM/xtQR/zziVH
-eQXdV6VyQco4SIQU3agqYj7OmB7hz0V2TjJVVb6k3qxDFSt14QLkxroU57dYXyPz
-83eQ8G/3+/ZL7YW6TWAlCyWyqR0pONX+eP9vwSrH16LkpHRJ2BZPMCXNBtROZvwe
-ia73R/3uxz5hMI5onwH2l+TVVQ+bO9ywmhEGScGiuTWmO0IQ5CoED1DhNNzbrmhG
-W2ZD2t7iIU5QqeYFV6vs/EiKnCxA9l/N2nlqMeul73cyiYX4AS4F2T3+CJAi+Jwv
-nIeHtwJ8uslXX7QpIYQKihf6xstlPQ==
-=YdtL
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmaXwT8ACgkQJNaLcl1U
+h9AF2gf/ccanwHYzDMwyh5xIYAvI/FyN2rpCFJgRQCSuefYMccMqA9vohUgwMYvb
+oyxXPrA7kV8AjGK2+HawUv3ZXPicKxI7lA7JOvBRzGSoRZroFEI3Dwhz4hyPtPnb
+IDeL+CE8ZOaWeYekfW7ey83JRd5mcMkBfO7eEBPtPNad1NsqHyW61eenGUvTiZC7
+MX9fyR4iaIAGU902YYJjobnZL9E7l0arHRaJkgS/GqEtAKRyuKDiE2Ky2+2th0Yr
+M/0+TKI7Z3LT93HP6pv8EvB3g3UWIHTfzakzuR4ELDuQPd5+xVhA32q2cTwhoMHD
+wCauy7NmWzwlBGDu7iaOVM/lpXB4+w==
+=P0Xh
 -----END PGP SIGNATURE-----
 
---2QE0r/hzZyKXLh34--
+--1YDpBjWSQCMZHotk--
 
