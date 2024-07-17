@@ -1,129 +1,118 @@
-Return-Path: <stable+bounces-60483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086EE9342E5
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 22:03:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCB39342EB
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 22:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39CE91C21416
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 20:03:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C839C282912
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 20:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E9C18411B;
-	Wed, 17 Jul 2024 20:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BFE1822E8;
+	Wed, 17 Jul 2024 20:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UIslOM8K"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="geZIYHlZ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6169181D15
-	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 20:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C7F179AD;
+	Wed, 17 Jul 2024 20:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721246629; cv=none; b=BxVwzfV2RUoPhQr7KoMukLDN/uXW4R/XQgLb2qzngAqJ5otIKHIY5KN2UCQ/KUkwSpP9sFHQDTRkDNp0UrHEWgcIw5/IpzNWCzYiK5St8J1u59yDXhVnMHGCtFbLh866hVkdxHrFOOJro9dN35zAjbf/z84ls0Xz48AEXMAxils=
+	t=1721246814; cv=none; b=U6MZOtd9bSxcbj8P3uvnOZGqc76XmcAsSyw+zlC830AFQKMNF9TsRKTiAuWgYcSgeAn9Piph7lh+i0jt7/sdXV5DhJCSjPAn4So/kzVK0y0WNrYQodw2k5ehWrNQGOnv4jedDrgG570CssuH94eNSLE+mjBXQ+ZYP05hqFwXCg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721246629; c=relaxed/simple;
-	bh=KGrfaJ5s+0k6XkuiXVwFQK/U93ROKT3s3z3P/ZDCxL0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xb9fb0zNaoWZJXVhxaRqRflfQw9yPRKlNSYnyCTlxWiCqNDy42M5R9fmcnN93/qbI7TI6wtLppZRH9YFK3v5rhQ+mDnxRnBvNUTBOe9K6AgGpFKYj/x/E+CXCBzPqO+W9C83jmpsguzaD/UI3wSGyQDIiPwYKCpl9Axb0Eiu7yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UIslOM8K; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721246626;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6rW0UG9Yof46y51ZacZBWXQDytJijvjwyuV4pHxrgHQ=;
-	b=UIslOM8K3+QjiSY7Nmnc2Aj3ahHSCmMt7MFrcwx0+fRN58newjhkl+6snqF6tm49oWe3BV
-	npGqOGrX2R5Q/2HKPYOGaxRa4kzFqDAA9YLWQN20TsIpTmJMZLp3prg/WcGHPS272LUsu9
-	748hRtsm6mPlUCj4e1mlQzaVu8TLcZQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-4Txr62dIN263a1cnIpYHIQ-1; Wed,
- 17 Jul 2024 16:03:44 -0400
-X-MC-Unique: 4Txr62dIN263a1cnIpYHIQ-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3571A1955D4C;
-	Wed, 17 Jul 2024 20:03:43 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.192.36])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A613419560B2;
-	Wed, 17 Jul 2024 20:03:41 +0000 (UTC)
-From: Hans de Goede <hdegoede@redhat.com>
-To: Sebastian Reichel <sre@kernel.org>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	linux-pm@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] power: supply: axp288_charger: Round constant_charge_voltage writes down
-Date: Wed, 17 Jul 2024 22:03:33 +0200
-Message-ID: <20240717200333.56669-2-hdegoede@redhat.com>
-In-Reply-To: <20240717200333.56669-1-hdegoede@redhat.com>
-References: <20240717200333.56669-1-hdegoede@redhat.com>
+	s=arc-20240116; t=1721246814; c=relaxed/simple;
+	bh=uokmSFYVIrurhLroGwuLI4rQ+GbBhi2O9z7v4+kw31Y=;
+	h=Date:To:From:Subject:Message-Id; b=TUj1g+fAAsynd4WyHMWrWxs9I9vx5JQEQ0DiAHjIgr7APjpZjq3YmgW7V8qa0Uaz5R90QwU73yREJS6Tuod0aVt3uoUs9RVvPJfPcQ3/KB55iu4SK/qWlKEeLJ+6gNAb12N3hzRviRk1cR6RBkr2CJFu0SNhdlHCT3EfLKmdmmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=geZIYHlZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FC3C2BD10;
+	Wed, 17 Jul 2024 20:06:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1721246813;
+	bh=uokmSFYVIrurhLroGwuLI4rQ+GbBhi2O9z7v4+kw31Y=;
+	h=Date:To:From:Subject:From;
+	b=geZIYHlZgv+HCKaBdsckrqIVL1fC+ZTJxyj8MrfE9L5j19HodUWj9+vVcVEza57T0
+	 agozjOkO+tlnDSi50DuRPotyI17wgX7dyGAkDnRynngwSndfNnBOgxbZ3aWpunXSHO
+	 CSh/WV2k8WAfpYqmMff+i8uOO3DnghGoyY0DDLAE=
+Date: Wed, 17 Jul 2024 13:06:53 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,hpa@zytor.com,alain@knaff.lu,ross.lagerwall@citrix.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + decompress_bunzip2-fix-rare-decompression-failure.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240717200653.C0FC3C2BD10@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Round constant_charge_voltage writes down to the first supported lower
-value, rather then rounding them up to the first supported higher value.
 
-This fixes e.g. writing 4250000 resulting in a value of 4350000 which
-might be dangerous, instead writing 4250000 will now result in a safe
-4200000 value.
+The patch titled
+     Subject: decompress_bunzip2: fix rare decompression failure
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     decompress_bunzip2-fix-rare-decompression-failure.patch
 
-Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/decompress_bunzip2-fix-rare-decompression-failure.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Ross Lagerwall <ross.lagerwall@citrix.com>
+Subject: decompress_bunzip2: fix rare decompression failure
+Date: Wed, 17 Jul 2024 17:20:16 +0100
+
+The decompression code parses a huffman tree and counts the number of
+symbols for a given bit length.  In rare cases, there may be >= 256
+symbols with a given bit length, causing the unsigned char to overflow. 
+This causes a decompression failure later when the code tries and fails to
+find the bit length for a given symbol.
+
+Since the maximum number of symbols is 258, use unsigned short instead.
+
+Link: https://lkml.kernel.org/r/20240717162016.1514077-1-ross.lagerwall@citrix.com
+Fixes: bc22c17e12c1 ("bzip2/lzma: library support for gzip, bzip2 and lzma decompression")
+Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
+Cc: Alain Knaff <alain@knaff.lu>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/power/supply/axp288_charger.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/power/supply/axp288_charger.c b/drivers/power/supply/axp288_charger.c
-index aea17289a178..ac05942e4e6a 100644
---- a/drivers/power/supply/axp288_charger.c
-+++ b/drivers/power/supply/axp288_charger.c
-@@ -178,18 +178,18 @@ static inline int axp288_charger_set_cv(struct axp288_chrg_info *info, int cv)
- 	u8 reg_val;
- 	int ret;
- 
--	if (cv <= CV_4100MV) {
--		reg_val = CHRG_CCCV_CV_4100MV;
--		cv = CV_4100MV;
--	} else if (cv <= CV_4150MV) {
--		reg_val = CHRG_CCCV_CV_4150MV;
--		cv = CV_4150MV;
--	} else if (cv <= CV_4200MV) {
--		reg_val = CHRG_CCCV_CV_4200MV;
--		cv = CV_4200MV;
--	} else {
-+	if (cv >= CV_4350MV) {
- 		reg_val = CHRG_CCCV_CV_4350MV;
- 		cv = CV_4350MV;
-+	} else if (cv >= CV_4200MV) {
-+		reg_val = CHRG_CCCV_CV_4200MV;
-+		cv = CV_4200MV;
-+	} else if (cv >= CV_4150MV) {
-+		reg_val = CHRG_CCCV_CV_4150MV;
-+		cv = CV_4150MV;
-+	} else {
-+		reg_val = CHRG_CCCV_CV_4100MV;
-+		cv = CV_4100MV;
- 	}
- 
- 	reg_val = reg_val << CHRG_CCCV_CV_BIT_POS;
--- 
-2.45.2
+ lib/decompress_bunzip2.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/lib/decompress_bunzip2.c~decompress_bunzip2-fix-rare-decompression-failure
++++ a/lib/decompress_bunzip2.c
+@@ -232,7 +232,8 @@ static int INIT get_next_block(struct bu
+ 	   RUNB) */
+ 	symCount = symTotal+2;
+ 	for (j = 0; j < groupCount; j++) {
+-		unsigned char length[MAX_SYMBOLS], temp[MAX_HUFCODE_BITS+1];
++		unsigned char length[MAX_SYMBOLS];
++		unsigned short temp[MAX_HUFCODE_BITS+1];
+ 		int	minLen,	maxLen, pp;
+ 		/* Read Huffman code lengths for each symbol.  They're
+ 		   stored in a way similar to mtf; record a starting
+_
+
+Patches currently in -mm which might be from ross.lagerwall@citrix.com are
+
+decompress_bunzip2-fix-rare-decompression-failure.patch
 
 
