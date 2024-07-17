@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-60393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D3393378B
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 09:02:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44C39337A9
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 09:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 888AD281D9F
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 07:02:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 441CFB23C91
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 07:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D7618641;
-	Wed, 17 Jul 2024 07:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C187F1B970;
+	Wed, 17 Jul 2024 07:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RDubJZyl"
+	dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b="sVizOIy+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mout.web.de (mout.web.de [212.227.15.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3084714267;
-	Wed, 17 Jul 2024 07:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB0B18EB1;
+	Wed, 17 Jul 2024 07:14:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721199736; cv=none; b=GSLHAKf7TAcK2DV5CB75OK6Vhj0dS/hFUIaIsICjOYEXc/wJ4BDEz6h76PSceFnDLvEx4QJMv+iNbHdNH9h7GZr0hpy7IUKWZBlFwlR/9xD/A8u5YAdK6ACYmsIpgH6PtJsctm0PUTxSwEp+t0Xlctp6HouxpuhC/+ynGCLy/UI=
+	t=1721200480; cv=none; b=WGE09jhZHSmugYdo8q34T03//Zaet5lTabqQL6wRUBWLteAy7xiZ79LolOdtaMECyDbwys6T/cRgkj0VOYGTNVbCr/kjDZWX+OvIQp+4O96Z0IXDgRbi2d1jwGH5DGKwBjYHvs1P+guQUq3ln/QEY7//eohoBEW8+1Vhd2/gVW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721199736; c=relaxed/simple;
-	bh=2ORkHDg/IQyH91IGyRuUQbp/VHjRmcrzMEI+fNTKUJw=;
+	s=arc-20240116; t=1721200480; c=relaxed/simple;
+	bh=7YDAgM8hZW5ntSbpRA+tdwQRCUPWuI0iPufu6/S4KLA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TBz1DG/4VOpprI2/gFvL6PliG0C0/XwAtjLPtTI/8U7TjwzRp8MHhXWVj5tfdi4rPVtg7GrKCSauhwRontqFZMx6ju0h6x2NvKWgErknSoOB0WYXid2dkc1WVvuO1BFrTJqTxAMH4rNKq+OPGCyH8/h0Wy2xH++ZY/5bc6BejmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RDubJZyl; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721199734; x=1752735734;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2ORkHDg/IQyH91IGyRuUQbp/VHjRmcrzMEI+fNTKUJw=;
-  b=RDubJZyltlwSnq/Q2OpZyT8SwFnVRJEeoXon0pofX4vhSAieyHPNmFPZ
-   dEKqke475ZyTR5pirNGsXvfjyLhDAZNo8xzpyDz2F2nkxLIYaYbqKVhVw
-   Ah66XGB0KQ5FYKTIf1BEKg1NVfW0j2dD3+E3sicSaqq1AsdAM6PkRnOpz
-   HbuvBkSb5YEBq7AA9hzpFoZ666EvKl5+B4hI99uGmu+RW861dMSjurN2o
-   8TUjIK4rXs9KvxCVqdkKld8rGpYaxCnlj06cn91u5ZeAIL4MDONueGnmO
-   vyYf7dIus7BB4MTsZ1768QSS7XGPcyOVJkX55YbeVRE5qo9DcSAvZUHBB
-   g==;
-X-CSE-ConnectionGUID: iR7yCoHDR1mnJIlmGP9rug==
-X-CSE-MsgGUID: guVGp99yTPWM23IXvyW8YQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18530204"
-X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; 
-   d="scan'208";a="18530204"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2024 00:02:14 -0700
-X-CSE-ConnectionGUID: rO4h8ZivQwSuMP6Vw7fHag==
-X-CSE-MsgGUID: V3QDW3qFR165M/E/9SLH2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,213,1716274800"; 
-   d="scan'208";a="55151063"
-Received: from mohdfai2-mobl.gar.corp.intel.com (HELO [10.247.74.239]) ([10.247.74.239])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2024 00:02:09 -0700
-Message-ID: <2c5a0dcf-f9b0-49da-9dea-0a276fa4a0d9@linux.intel.com>
-Date: Wed, 17 Jul 2024 15:02:06 +0800
+	 In-Reply-To:Content-Type; b=Clos/nMH7Aq4RB0Ojqk+3T5GseZyk5yGSkPSKinnW82j60KmJviJFlbCh9ucWykEmZkD02HboN7NsdfYAsLGia+vrBI9o9rrlWb4v3D3dNQCp/rfZ9hrPv7qRpOXdCo6Q/47zEOvyTJjX4j14aPpcVV5OwXGOZKk3OUBS7E4i0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b=sVizOIy+; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1721200443; x=1721805243; i=frank.scheiner@web.de;
+	bh=9pFZJbajQATWyl0bSF67lukzXH6aiQLZrpGanM5WKPA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=sVizOIy+P8NLEku1mdH2LKjNgq5VbkorAFtGmafc7P+q1EnN0UF63AQkK70tKxug
+	 Eu4h/joEqPCSEFZWcefYII1GIaaUB6eUJOksXR3Mkj68w9Gk4aFbu1+HuNVsAIqqD
+	 CkpsuZA4/WRTOsk6o18tXRCNGMrheJBL/xB5m0kBOvb0VgosbasLDRaSJA/nrDPmS
+	 bqyfP4q5Ghq6G0h9WFU97Kg5gnwQK9DJRDoKd+LeZxTKqxuKZPcZbtU78exYWL1a8
+	 muKcO2sVy8QPSAo5XxLPm33nU6IUG58c9XrdZQ2B5wLMbJCHtBOyKkIEcBh9b/W9o
+	 I6L15UXwFP+3QnCeOw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.30] ([84.152.252.217]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1M3Euv-1sUn8p44s9-007o6u; Wed, 17
+ Jul 2024 09:14:03 +0200
+Message-ID: <b5c73716-697f-4bb7-b024-17ae9a69d223@web.de>
+Date: Wed, 17 Jul 2024 09:14:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,145 +58,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net v2 2/3] igc: Fix reset adapter logics when tx mode
- change
-To: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>, Simon Horman <horms@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>,
- Paul Menzel <pmenzel@molgen.mpg.de>, Sasha Neftin <sasha.neftin@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240707125318.3425097-1-faizal.abdul.rahim@linux.intel.com>
- <20240707125318.3425097-3-faizal.abdul.rahim@linux.intel.com>
- <87o774u807.fsf@intel.com>
- <6bb1ba4a-41ba-4bc1-9c4b-abfb27944891@linux.intel.com>
- <87le27ssu4.fsf@intel.com>
+Subject: Re: [PATCH 5.10 000/284] 5.10.221-rc2 review
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, akpm@linux-foundation.org, allen.lkml@gmail.com,
+ broonie@kernel.org, conor@kernel.org, f.fainelli@gmail.com,
+ jonathanh@nvidia.com, linux-kernel@vger.kernel.org, linux@roeck-us.net,
+ lkft-triage@lists.linaro.org, patches@kernelci.org, patches@lists.linux.dev,
+ pavel@denx.de, rwarsow@gmx.de, shuah@kernel.org, srw@sladewatkins.net,
+ sudipm.mukherjee@gmail.com, torvalds@linux-foundation.org,
+ =?UTF-8?B?VG9tw6HFoSBHbG96YXI=?= <tglozar@gmail.com>
+References: <20240704094505.095988824@linuxfoundation.org>
+ <76458f11-0ca4-4d3b-a9bc-916399f76b54@web.de>
+ <2024071237-hypnotize-lethargic-98f2@gregkh>
+ <07a7bc4b-9b71-486f-8666-d3b3593d682c@web.de>
+ <2024071543-footing-vantage-bd4f@gregkh>
 Content-Language: en-US
-From: "Abdul Rahim, Faizal" <faizal.abdul.rahim@linux.intel.com>
-In-Reply-To: <87le27ssu4.fsf@intel.com>
+From: Frank Scheiner <frank.scheiner@web.de>
+In-Reply-To: <2024071543-footing-vantage-bd4f@gregkh>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:lAs9nI1UYfVKpINGL7g2Ljhb+2pUjfTGUjnS9R9DQRvotzJHtX4
+ +KW2kGvp2Ne2nK+Qt5bjOLXWcf9HCRdMVOK+Q6EWbd5GwAxz/OP+rhqK1bsPfwxUm0613Ro
+ Ya2RuYRjBczFiignSw337BkHVLrP3tRTCF1QVwZMF6ig8YZpk24Y8Bw2pyScjRol1VrsAex
+ Xq2s0ascuvTr78f4/BKjw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:L8Emu7uAdvU=;ggrbhS6sGixVSroBDefhlCzhvUi
+ JH3oFi8/JSokOuLrHgeKLSF1xAOkl6x5BeetLSn2VtQy+GaKvgEGwKhxiRIAYBHCQZJzT35O6
+ VCWCR1ZfMdt22ZeWolVlmKUHdTDzbPwbDYDuPaZXXa6kK1/r5Xmtt9DVXO3/Pfp4tzzY77TED
+ Jqs6g0UH26uWYbk37uQfpbwUa6M1A3CreIxBS636pOa2nwapR4hAza0oLL2FWJhtbjLJKBup1
+ XuwQYNaW/ZzTWnmHDmruKZ8aS+mx7cLigTxAJPqKaWRfToYqi2PNXm2Jhstag1kGVwOo7fxLw
+ oFWjVkspRUtiMMyFcTp0Snhp1Zc3BoBRLH16kPwki6/GUkNIVppJ5EPA1+0jv8SF77fRCi6yw
+ oZtbdfKyQaZbKv5ZIl9q39zAogQMIeHknT1x7W3EMwuPF/0w1KTksCjL6uDENk4p3GOf2PdBU
+ qYZ5TcHaZgHmJ08Gwnjj+gh3wwFzQ4Z4NFZkDCbJY5BOh3LzERGhT4SyENuDEXSjUJytJ9Ayk
+ I2staZuIwjHrjC6Afw2IrW4/gq6T2U2wxSKC/ThsLOhrpvDDVH3nr87aZ5YSANbf8u2H1Tk9l
+ vDCAAqN3ZC6iLa6TGIsTDEgRkEPctb1y4D41sb6rFr43aUuHU9SSTu7qwVmMB0YBJUWbF1FMz
+ wE7Yhl1npoLdWnDNQkWgzCgKM/0MGyGk5Ri91jxAafeEBedroIPi8qlld4C+rFvO8IRUghDUW
+ m9PMgLgH9UFgULFaL6B/uSynDFiH7mP4tqvXy3v+DAWLsjaS9N2q9XQSc6MxD1VhwJxWekdDN
+ ii8GYOJNVeCG32P8XULikXLI+uHidd1m/gZBHuzXiwT8A=
 
+On 15.07.24 13:43, Greg KH wrote:
+> On Fri, Jul 12, 2024 at 04:19:39PM +0200, Frank Scheiner wrote:
+>> On 12.07.24 15:32, Greg KH wrote:
+>>> [...]
+>>  From my understanding 31e0721aeabde29371f624f56ce2f403508527a5 should
+>> not be merged w/o 8ff059b8531f3b98e14f0461859fc7cdd95823e4, which also
+>> seems to be the case for all other stable kernels from linux-5.12.y up.
+>>
+>> So 8ff059b8531f3b98e14f0461859fc7cdd95823e4 should be added, too, if
+>> 31e0721aeabde29371f624f56ce2f403508527a5 stays in.
+>
+> Ok, thanks, now queued up.
 
+Great! linux-5.10.y is already building fine now again for ia64.
 
-On 12/7/2024 1:10 am, Vinicius Costa Gomes wrote:
-> "Abdul Rahim, Faizal" <faizal.abdul.rahim@linux.intel.com> writes:
-> 
->> Hi Vinicius,
+>>> And I thought that ia64 was dead?
 >>
->> On 11/7/2024 6:44 am, Vinicius Costa Gomes wrote:
->>> Faizal Rahim <faizal.abdul.rahim@linux.intel.com> writes:
->>>
->>>> Following the "igc: Fix TX Hang issue when QBV Gate is close" changes,
->>>> remaining issues with the reset adapter logic in igc_tsn_offload_apply()
->>>> have been observed:
->>>>
->>>> 1. The reset adapter logics for i225 and i226 differ, although they should
->>>>      be the same according to the guidelines in I225/6 HW Design Section
->>>>      7.5.2.1 on software initialization during tx mode changes.
->>>> 2. The i225 resets adapter every time, even though tx mode doesn't change.
->>>>      This occurs solely based on the condition  igc_is_device_id_i225() when
->>>>      calling schedule_work().
->>>> 3. i226 doesn't reset adapter for tsn->legacy tx mode changes. It only
->>>>      resets adapter for legacy->tsn tx mode transitions.
->>>> 4. qbv_count introduced in the patch is actually not needed; in this
->>>>      context, a non-zero value of qbv_count is used to indicate if tx mode
->>>>      was unconditionally set to tsn in igc_tsn_enable_offload(). This could
->>>>      be replaced by checking the existing register
->>>>      IGC_TQAVCTRL_TRANSMIT_MODE_TSN bit.
->>>>
->>>> This patch resolves all issues and enters schedule_work() to reset the
->>>> adapter only when changing tx mode. It also removes reliance on qbv_count.
->>>>
->>>> qbv_count field will be removed in a future patch.
->>>>
->>>> Test ran:
->>>>
->>>> 1. Verify reset adapter behaviour in i225/6:
->>>>      a) Enrol a new GCL
->>>>         Reset adapter observed (tx mode change legacy->tsn)
->>>>      b) Enrol a new GCL without deleting qdisc
->>>>         No reset adapter observed (tx mode remain tsn->tsn)
->>>>      c) Delete qdisc
->>>>         Reset adapter observed (tx mode change tsn->legacy)
->>>>
->>>> 2. Tested scenario from "igc: Fix TX Hang issue when QBV Gate is closed"
->>>>      to confirm it remains resolved.
->>>>
->>>> Fixes: 175c241288c0 ("igc: Fix TX Hang issue when QBV Gate is closed")
->>>> Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
->>>> Reviewed-by: Simon Horman <horms@kernel.org>
->>>> ---
->>>
->>> There were a quite a few bugs, some of them my fault, on this part of
->>> the code, changing between the modes in the hardware.
->>>
->>> So I would like some confirmation that ETF offloading/LaunchTime was
->>> also tested with this change. Just to be sure.
->>>
->>> But code-wise, looks good:
->>>
->>> Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
->>>
->>>
->>> Cheers,
+>> No, actually it's alive and well - just currently outside of mainline -
+>> but still in the stable kernels up to linux-6.6.y and for newer kernels
+>> patched back in. If you want to check on our CI ([2]), all current
+>> stable kernels build fine for ia64 and run in Ski - but linux-5.10.y
+>> currently only because I manually added
+>> 8ff059b8531f3b98e14f0461859fc7cdd95823e4 to the list of patches applied
+>> by the CI.
 >>
->>
->> Tested etf with offload, looks like working correctly.
->>
->> 1. mqprio
->> tc qdisc add dev enp1s0 handle 100: parent root mqprio num_tc 3 \
->> map 2 2 1 0 2 2 2 2 2 2 2 2 2 2 2 2 \
->> queues 1@0 1@1 2@2 \
->> hw 0
->>
->> No reset adapter observed.
->>
->> 2. etf with offload
->> tc qdisc replace dev enp1s0 parent 100:1 etf \
->> clockid CLOCK_TAI delta 300000 offload
->>
->> Reset adapter observed (tx mode legacy -> tsn).
->>
->> 3. delete qdisc
->> tc qdisc delete dev enp1s0 parent root handle 100
->>
->> Reset adapter observed (tx mode tsn -> legacy).
->>
-> 
-> That no unexpected resets are happening, is good.
-> 
-> But what I had in mind was some functional tests that ETF is working. I
-> guess that's the only way of knowing that it's still working. Sorry that
-> I wasn't clear about that.
-> 
-> 
-> Cheers,
+>> [2]: https://github.com/linux-ia64/linux-stable-rc/actions/runs/9901808=
+825
+>
+> Will be interesting to see how long it lasts, good luck!
 
-My bad.
+Thanks! I think we get better and better with each obstacle moved out of
+the way.
 
-Just tested ETF functionality and it is working.
+BTW that seems to have been prophetic by you, because now the
+linux-4.19.y build for ia64 is broken. ;-) But we're already on it and
+have a trace. I'll report our findings soon. :-)
 
-1. On Tx Board
-a) mqprio
-    tc qdisc add dev enp1s0 handle 100: parent root mqprio num_tc 3 \
-    map 2 2 1 0 2 2 2 2 2 2 2 2 2 2 2 2 \
-    queues 1@0 1@1 2@2 \
-    hw 0
-b) etf with offload
-    tc qdisc replace dev enp1s0 parent 100:1 etf \
-    clockid CLOCK_TAI delta 300000 offload
-c) use UDP TAI app to send packets where tx timestamp is set to
-    current_time + 1ms for each packet.
-
-2. On Rx Board
-a) Checked .pcap log. Observed that interval duration between each rx
-    packet is 1ms
-
-
-Thanks for your help.
+Cheers,
+Frank
 
