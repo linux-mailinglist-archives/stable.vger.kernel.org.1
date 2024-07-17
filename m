@@ -1,660 +1,267 @@
-Return-Path: <stable+bounces-60392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA391933743
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 08:40:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 069DA933795
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 09:06:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 601DA282BBE
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 06:40:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21C771C22F9B
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 07:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E59168C7;
-	Wed, 17 Jul 2024 06:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42291862A;
+	Wed, 17 Jul 2024 07:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIitE3Nl"
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="EjzfHKvX";
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="jdO9ZU/A"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CD91D52D;
-	Wed, 17 Jul 2024 06:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10ABD168BD
+	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 07:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721198404; cv=none; b=hK0FoKQ5wsS/fAh4dmEljRyDbRl2iFO/I7QlmqxO6bljXhwCkhtzbbYQvFEtp9czgbANxR1sFbx7i8hpUzg6polSWF8913eh4/cV7BcFgG/lXH3GCDKZoxTMH4cB+NqYO5FACPiPRv9dCFGshzcLZhn+V01+U7/uauqYt+2Iy3M=
+	t=1721200011; cv=none; b=uyNC7czXIJTx6KdgIxOuxujpd3YWARcpbbi75Wmn8IoBcjoJJTYPJvyAv/DKOaNPWwCgq8WM5wroZ1R+EFOJVQiL0BKhN+dDbWwSq2WgNO2H5D31CI6G2KHn2Pb1b6i/hzDV2esIFqp2uufjiWRrCllxTAO3joZ+8IXmO54HPaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721198404; c=relaxed/simple;
-	bh=utBent/1GHz6bmDH8TpGJzLJ1wf1JcMAk8iQ8Io+MMg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EsRL0lfeyKbCa6WnQ2yKU/7cGaAKvPv852EoqqhVuCqZgEGa2D1EFZlVMIaPIyWF1qdtjU5ik0qivEQHGRlcoBv0SXJsrF+ArMYSAaZQ54MdOX/NLtHGC9v0uuZlrTUp9Iy/Co2JcFXeK70F3ropjt8MfLaFpjc86Bt6NiBf00Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIitE3Nl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32789C32782;
-	Wed, 17 Jul 2024 06:40:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721198403;
-	bh=utBent/1GHz6bmDH8TpGJzLJ1wf1JcMAk8iQ8Io+MMg=;
+	s=arc-20240116; t=1721200011; c=relaxed/simple;
+	bh=65xOSFoM8MP80drLWmLcDodRrDY9h6SdWFcHarUsseM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Dp+97lhlT1KNbpjqG4Ko6zi1rn3148QpidzIPsdmTM9G7yL2+jXtLdBkvpI2f3ZqhYnOozTCbgEn6ELYjTX2uL8oi8Itw5VCa8ooj22n98J4XgVWEGzOxQDzjHCcCxRQAjNMMVlOh+I5Y4bteWA3x21MNmlmX4Z7dVaiTf+WwMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=EjzfHKvX; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=jdO9ZU/A; arc=none smtp.client-ip=35.74.137.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
+	s=gw2_bookworm; t=1721199593;
+	bh=65xOSFoM8MP80drLWmLcDodRrDY9h6SdWFcHarUsseM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=VIitE3Nlqn9bZgTbg+Y23ETCu37DU5d8CwgCiWWJMMX8n2RKO4Zl0jFwMNMTFaILR
-	 +dMEobOJthyu51cZrDA+kviTdo+WuRoxiCOwhcAUFxCBQB3lXekEjE2ImtL8PxENfk
-	 WKXS+aA4fB3VUgzpgZKQlZ8yk6UYBoURq7rpJhVE=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org
-Subject: [PATCH 6.9 000/142] 6.9.10-rc2 review
-Date: Wed, 17 Jul 2024 08:40:00 +0200
-Message-ID: <20240717063806.741977243@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
+	b=EjzfHKvXx1vVzefD5UJr5ZZ9GDlIRv5eEao0d3HA+6hd7O5RXeg/EjVLDwibRKlAb
+	 /agxmAwqhTwfOWWIClh4bsV+ZpcD1GUkFMssbJLATiqBC3qHsD3kYBYi/J0NuzaN/g
+	 Z59dWPHn9bINpLFqfaSiIT77Wne58/G6hU+pLVUMh40myvDI1xxfATcgEOmExD5/q9
+	 BtAYtkWE7luN0FIdpempxngD0AvF+P6Mp13MnIXbYTjOfqz6d7NvQv12VG9s4IYKjK
+	 lRAsst7ysIAqvvp7TDNSGZ1TDSmq1zPMc9EyTogK0Ij0RCFRw7ZDUAagQ9i2jpMqJu
+	 lRyYu4muqO8VQ==
+Received: from gw2.atmark-techno.com (localhost [127.0.0.1])
+	by gw2.atmark-techno.com (Postfix) with ESMTP id 2CC5B3F2
+	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 15:59:53 +0900 (JST)
+Authentication-Results: gw2.atmark-techno.com;
+	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=jdO9ZU/A;
+	dkim-atps=neutral
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
+	by gw2.atmark-techno.com (Postfix) with ESMTPS id 2B08447A
+	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 15:59:52 +0900 (JST)
+Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-25e46c20b00so5954440fac.1
+        for <stable@vger.kernel.org>; Tue, 16 Jul 2024 23:59:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=atmark-techno.com; s=google; t=1721199591; x=1721804391; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CNfJfXpYedJZSYYzS17v37ye2jCftg3/OOWbhti96y4=;
+        b=jdO9ZU/Ad+j+JtbpMgPpn01s8tjn0M7VzautJaghbmx3FLG1ue5zCC/pKPNag4zbhH
+         M/CGXkD04BKq+w21Cq1S2gb1KLq8PwYJW6xdaVQuBjrZm22bqT9kvIBsDvQZlrgO5qgS
+         /flZVbOxQlupEPfEzQ9iiiH1Lul8NX9QSiiBc8pAVzIi86mPC5lyX+Q43u3TyOOgNJyr
+         pL6JRy8V3/kAET4R5QHW4DiM29giS31MtNai46sYwvnjGe9b0ZylCTsrotvoerPAAl/C
+         JyDOjIU15XRwZTGIdwDPo8uPTRsd0/a5wfZW7pLn4srXOXSkaG3pQgVHSBtpaymBnLLL
+         1QZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721199591; x=1721804391;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CNfJfXpYedJZSYYzS17v37ye2jCftg3/OOWbhti96y4=;
+        b=ldvmN914O3YhhOVWptq3cp+xu+xHlxXt8CXR1HYwFefTLDtELbk8NrWpW1Qa4KFihi
+         Vf0BkFb1zo2El7SD5I7UiWrrZljR7N7I1GRHjOe7AbIwXX8DfOf0U6iTROewbKLvgB5z
+         fEX/TyrcuP2CAfBSAdNxcI89DzgHgZG8srZiFRUHDTSwgcxGqFcC6rqeXaqzWUG8DTjj
+         /SjGd1YHXjniUcyXtoDRRmbBB0Ik7pF+JB7UXHnV+CaAKQERi9GANxCWzuVEtHasYeV+
+         mQwFM7DLS/xtNQn++0ix+YtNGqmGvwnQ5SgR/DQhiwZjXOAqSeY/iI6MmR/fXQ17iulH
+         n26w==
+X-Gm-Message-State: AOJu0Yzpk42awQjfdoukGJyqkmrOpyrQGuUZM0Jh2osC/s5QNTnRjS4B
+	mMEM+wV8opGgv+9HT+uyROhLfxHcANiGQ2+UGbpafDPNm8Wh8vWqopA/u17/iDAOrdE9VeSYW/U
+	iF2D34ZkcXX7Db9QPN4GmBJoysSGYG8T7gi3Jd512kRPrdZjcQhwGowOHQXQgNfY=
+X-Received: by 2002:a05:6870:3282:b0:25e:97a:cd69 with SMTP id 586e51a60fabf-260d94a9af0mr430603fac.55.1721199590707;
+        Tue, 16 Jul 2024 23:59:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IETlz6McS5Z+zSy0GArMhsC5E/QfLKzYPAoPMutexcz6hOvCr7WcimZ/g8id6+/M0dIK2mdLQ==
+X-Received: by 2002:a05:6870:3282:b0:25e:97a:cd69 with SMTP id 586e51a60fabf-260d94a9af0mr430597fac.55.1721199590320;
+        Tue, 16 Jul 2024 23:59:50 -0700 (PDT)
+Received: from pc-0182.atmarktech (178.101.200.35.bc.googleusercontent.com. [35.200.101.178])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b7ec7d2bcsm7684240b3a.99.2024.07.16.23.59.49
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 16 Jul 2024 23:59:49 -0700 (PDT)
+Received: from [::1] (helo=pc-0182.atmark.tech)
+	by pc-0182.atmarktech with esmtp (Exim 4.96)
+	(envelope-from <dominique.martinet@atmark-techno.com>)
+	id 1sTydg-005bjx-2D;
+	Wed, 17 Jul 2024 15:59:48 +0900
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Muhammad Ramdhan <ramdhan@starlabs.sg>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>
+Subject: [PATCH 5.10] bpf: Fix overrunning reservations in ringbuf
+Date: Wed, 17 Jul 2024 15:59:46 +0900
+Message-Id: <20240717065946.1336705-1-dominique.martinet@atmark-techno.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.10-rc2.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.9.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.9.10-rc2
-X-KernelTest-Deadline: 2024-07-19T06:38+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.9.10 release.
-There are 142 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Fri, 19 Jul 2024 06:37:32 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.10-rc2.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.9.10-rc2
-
-Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-    kbuild: rpm-pkg: avoid the warnings with dtb's listed twice
-
-Nathan Chancellor <nathan@kernel.org>
-    kbuild: Make ld-version.sh more robust against version string changes
-
-Alexandre Chartre <alexandre.chartre@oracle.com>
-    x86/bhi: Avoid warning in #DB handler due to BHI mitigation
-
-Wander Lairson Costa <wander@redhat.com>
-    sched/deadline: Fix task_struct reference leak
-
-Wolfram Sang <wsa+renesas@sang-engineering.com>
-    i2c: testunit: avoid re-issued work after read message
-
-Wolfram Sang <wsa+renesas@sang-engineering.com>
-    i2c: rcar: ensure Gen3+ reset does not disturb local targets
-
-Wolfram Sang <wsa+renesas@sang-engineering.com>
-    i2c: mark HostNotify target address as used
-
-Wolfram Sang <wsa+renesas@sang-engineering.com>
-    i2c: rcar: clear NO_RXDMA flag after resetting
-
-Wolfram Sang <wsa+renesas@sang-engineering.com>
-    i2c: rcar: bring hardware to known state when probing
-
-Baokun Li <libaokun1@huawei.com>
-    ext4: avoid ptr null pointer dereference
-
-Komal Bajaj <quic_kbajaj@quicinc.com>
-    Revert "dt-bindings: cache: qcom,llcc: correct QDU1000 reg entries"
-
-SeongJae Park <sj@kernel.org>
-    mm/damon/core: merge regions aggressively when max_nr_regions is unmet
-
-Gavin Shan <gshan@redhat.com>
-    mm/shmem: disable PMD-sized page cache if needed
-
-Gavin Shan <gshan@redhat.com>
-    mm/readahead: limit page cache size in page_cache_ra_order()
-
-Ekansh Gupta <quic_ekangupt@quicinc.com>
-    misc: fastrpc: Restrict untrusted app to attach to privileged PD
-
-Ekansh Gupta <quic_ekangupt@quicinc.com>
-    misc: fastrpc: Fix ownership reassignment of remote heap
-
-Ekansh Gupta <quic_ekangupt@quicinc.com>
-    misc: fastrpc: Fix memory leak in audio daemon attach operation
-
-Ekansh Gupta <quic_ekangupt@quicinc.com>
-    misc: fastrpc: Copy the complete capability structure to user
-
-Ekansh Gupta <quic_ekangupt@quicinc.com>
-    misc: fastrpc: Avoid updating PD type for capability request
-
-Ekansh Gupta <quic_ekangupt@quicinc.com>
-    misc: fastrpc: Fix DSP capabilities request
-
-Jason A. Donenfeld <Jason@zx2c4.com>
-    wireguard: send: annotate intentional data race in checking empty queue
-
-Jason A. Donenfeld <Jason@zx2c4.com>
-    wireguard: queueing: annotate intentional data race in cpu round robin
-
-Helge Deller <deller@kernel.org>
-    wireguard: allowedips: avoid unaligned 64-bit memory accesses
-
-Jason A. Donenfeld <Jason@zx2c4.com>
-    wireguard: selftests: use acpi=off instead of -no-acpi for recent QEMU
-
-Mario Limonciello <mario.limonciello@amd.com>
-    cpufreq: Allow drivers to advertise boost enabled
-
-Mario Limonciello <mario.limonciello@amd.com>
-    cpufreq: ACPI: Mark boost policy as enabled when setting boost
-
-Kuan-Wei Chiu <visitorckw@gmail.com>
-    ACPI: processor_idle: Fix invalid comparison with insertion sort for latency
-
-Ilya Dryomov <idryomov@gmail.com>
-    libceph: fix race between delayed_work() and ceph_monc_stop()
-
-Taniya Das <quic_tdas@quicinc.com>
-    pmdomain: qcom: rpmhpd: Skip retention level for Power Domains
-
-Bastien Curutchet <bastien.curutchet@bootlin.com>
-    mmc: davinci_mmc: Prevent transmitted data size from exceeding sgm's length
-
-Adrian Hunter <adrian.hunter@intel.com>
-    mmc: sdhci: Fix max_seg_size for 64KiB PAGE_SIZE
-
-Audra Mitchell <audra@redhat.com>
-    Fix userfaultfd_api to return EINVAL as expected
-
-Wentong Wu <wentong.wu@intel.com>
-    mei: vsc: Utilize the appropriate byte order swap function
-
-Wentong Wu <wentong.wu@intel.com>
-    mei: vsc: Prevent timeout error with added delay post-firmware download
-
-Wentong Wu <wentong.wu@intel.com>
-    mei: vsc: Enhance IVSC chipset stability during warm reboot
-
-Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-    ALSA: hda/realtek: Limit mic boost on VAIO PRO PX
-
-Nazar Bilinskyi <nbilinskyi@gmail.com>
-    ALSA: hda/realtek: Enable Mute LED on HP 250 G7
-
-Michał Kopeć <michal.kopec@3mdeb.com>
-    ALSA: hda/realtek: add quirk for Clevo V5[46]0TU
-
-Rasmus Villemoes <linux@rasmusvillemoes.dk>
-    serial: imx: ensure RTS signal is not left active after shutdown
-
-Jacky Huang <ychuang3@nuvoton.com>
-    tty: serial: ma35d1: Add a NULL check for of_node
-
-Armin Wolf <W_Armin@gmx.de>
-    platform/x86: toshiba_acpi: Fix array out-of-bounds access
-
-Thomas Weißschuh <linux@weissschuh.net>
-    nvmem: core: limit cell sysfs permissions to main attribute ones
-
-Thomas Weißschuh <linux@weissschuh.net>
-    nvmem: core: only change name to fram for current attribute
-
-Joy Chakraborty <joychakr@google.com>
-    nvmem: meson-efuse: Fix return value of nvmem callbacks
-
-Joy Chakraborty <joychakr@google.com>
-    nvmem: rmem: Fix return value of rmem_read()
-
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-    arm64: dts: qcom: x1e80100-crd: fix DAI used for headset recording
-
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-    arm64: dts: qcom: x1e80100-crd: fix WCD audio codec TX port mapping
-
-Johan Hovold <johan+linaro@kernel.org>
-    arm64: dts: qcom: sc8280xp-x13s: fix touchscreen power on
-
-Cong Zhang <quic_congzhan@quicinc.com>
-    arm64: dts: qcom: sa8775p: Correct IRQ number of EL2 non-secure physical timer
-
-João Paulo Gonçalves <joao.goncalves@toradex.com>
-    iio: trigger: Fix condition for own trigger
-
-Hobin Woo <hobin.woo@samsung.com>
-    ksmbd: discard write access to the directory open
-
-Gavin Shan <gshan@redhat.com>
-    mm/filemap: make MAX_PAGECACHE_ORDER acceptable to xarray
-
-Gavin Shan <gshan@redhat.com>
-    mm/filemap: skip to create PMD-sized page cache if needed
-
-ZhangPeng <zhangpeng362@huawei.com>
-    filemap: replace pte_offset_map() with pte_offset_map_nolock()
-
-Hugh Dickins <hughd@google.com>
-    mm: fix crashes from deferred split racing folio migration
-
-Uladzislau Rezki (Sony) <urezki@gmail.com>
-    mm: vmalloc: check if a hash-index is in cpu_possible_mask
-
-Nhat Pham <nphamcs@gmail.com>
-    cachestat: do not flush stats in recency check
-
-Ryusuke Konishi <konishi.ryusuke@gmail.com>
-    nilfs2: fix kernel bug on rename operation of broken directory
-
-Heiko Carstens <hca@linux.ibm.com>
-    s390/mm: Add NULL pointer check to crst_table_free() base_crst_free()
-
-Mathias Nyman <mathias.nyman@linux.intel.com>
-    xhci: always resume roothubs if xHC was reset during resume
-
-He Zhe <zhe.he@windriver.com>
-    hpet: Support 32-bit userspace
-
-Joy Chakraborty <joychakr@google.com>
-    misc: microchip: pci1xxxx: Fix return value of nvmem callbacks
-
-Alan Stern <stern@rowland.harvard.edu>
-    USB: core: Fix duplicate endpoint bug by clearing reserved bits in the descriptor
-
-Lee Jones <lee@kernel.org>
-    usb: gadget: configfs: Prevent OOB read/write in usb_string_copy()
-
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
-    usb: core: add missing of_node_put() in usb_of_has_devices_or_graph
-
-Heikki Krogerus <heikki.krogerus@linux.intel.com>
-    usb: dwc3: pci: add support for the Intel Panther Lake
-
-WangYuli <wangyuli@uniontech.com>
-    USB: Add USB_QUIRK_NO_SET_INTF quirk for START BP-850k
-
-Dmitry Smirnov <d.smirnov@inbox.lv>
-    USB: serial: mos7840: fix crash on resume
-
-Vanillan Wang <vanillanwang@163.com>
-    USB: serial: option: add Rolling RW350-GL variants
-
-Mank Wang <mank.wang@netprisma.us>
-    USB: serial: option: add Netprisma LCUK54 series modules
-
-Slark Xiao <slark_xiao@163.com>
-    USB: serial: option: add support for Foxconn T99W651
-
-Bjørn Mork <bjorn@mork.no>
-    USB: serial: option: add Fibocom FM350-GL
-
-Daniele Palmas <dnlplm@gmail.com>
-    USB: serial: option: add Telit FN912 rmnet compositions
-
-Daniele Palmas <dnlplm@gmail.com>
-    USB: serial: option: add Telit generic core-dump composition
-
-Ronald Wahl <ronald.wahl@raritan.com>
-    net: ks8851: Fix potential TX stall after interface reopen
-
-Ronald Wahl <ronald.wahl@raritan.com>
-    net: ks8851: Fix deadlock with the SPI chip variant
-
-Josh Don <joshdon@google.com>
-    Revert "sched/fair: Make sure to try to detach at least one movable task"
-
-Steve French <stfrench@microsoft.com>
-    cifs: fix setting SecurityFlags to true
-
-Satheesh Paul <psatheesh@marvell.com>
-    octeontx2-af: fix issue with IPv4 match for RSS
-
-Kiran Kumar K <kirankumark@marvell.com>
-    octeontx2-af: fix issue with IPv6 ext match for RSS
-
-Michal Mazur <mmazur2@marvell.com>
-    octeontx2-af: fix detection of IP layer
-
-Srujana Challa <schalla@marvell.com>
-    octeontx2-af: fix a issue with cpt_lf_alloc mailbox
-
-Nithin Dabilpuram <ndabilpuram@marvell.com>
-    octeontx2-af: replace cpt slot with lf id on reg write
-
-Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-    i40e: fix: remove needless retries of NVM update
-
-Saeed Mahameed <saeedm@nvidia.com>
-    net: ethtool: Fix RSS setting
-
-Chen Ni <nichen@iscas.ac.cn>
-    ARM: davinci: Convert comma to semicolon
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    firmware: cs_dsp: Use strnlen() on name fields in V1 wmfw files
-
-Kai Vehmanen <kai.vehmanen@linux.intel.com>
-    ASoC: SOF: Intel: hda: fix null deref on system suspend entry
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    firmware: cs_dsp: Prevent buffer overrun when processing V2 alg headers
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    firmware: cs_dsp: Validate payload length before processing block
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    firmware: cs_dsp: Return error if block header overflows file
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    firmware: cs_dsp: Fix overflow checking of wmfw header
-
-Komal Bajaj <quic_kbajaj@quicinc.com>
-    arm64: dts: qcom: qdu1000: Fix LLCC reg property
-
-Caleb Connolly <caleb.connolly@linaro.org>
-    arm64: dts: qcom: sm6115: add iommu for sdhc_1
-
-Abel Vesa <abel.vesa@linaro.org>
-    arm64: dts: qcom: x1e80100: Fix PCIe 6a reg offsets and add MHI
-
-Andre Przywara <andre.przywara@arm.com>
-    arm64: dts: allwinner: Fix PMIC interrupt number
-
-Konrad Dybcio <konrad.dybcio@linaro.org>
-    arm64: dts: qcom: x1e80100-*: Allocate some CMA buffers
-
-Bjorn Andersson <quic_bjorande@quicinc.com>
-    arm64: dts: qcom: sc8180x: Fix LLCC reg property again
-
-Daniel Borkmann <daniel@iogearbox.net>
-    net, sunrpc: Remap EPERM in case of connection failure in xs_tcp_setup_socket
-
-Chengen Du <chengen.du@canonical.com>
-    net/sched: Fix UAF when resolving a clash
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    udp: Set SOCK_RCU_FREE earlier in udp_lib_get_port().
-
-Florian Westphal <fw@strlen.de>
-    netfilter: nf_tables: prefer nft_chain_validate
-
-Florian Westphal <fw@strlen.de>
-    netfilter: nfnetlink_queue: drop bogus WARN_ON
-
-Oleksij Rempel <o.rempel@pengutronix.de>
-    ethtool: netlink: do not return SQI value if link is down
-
-Dmitry Antipov <dmantipov@yandex.ru>
-    ppp: reject claimed-as-LCP but actually malformed packets
-
-Jian Hui Lee <jianhui.lee@canonical.com>
-    net: ethernet: mtk-star-emac: set mac_managed_pm when probing
-
-Eric Dumazet <edumazet@google.com>
-    tcp: avoid too many retransmit packets
-
-Kumar Kartikeya Dwivedi <memxor@gmail.com>
-    bpf: Defer work in bpf_timer_cancel_and_free
-
-Kumar Kartikeya Dwivedi <memxor@gmail.com>
-    bpf: Fail bpf_timer_cancel when callback is being cancelled
-
-Benjamin Tissoires <bentiss@kernel.org>
-    bpf: replace bpf_timer_init with a generic helper
-
-Benjamin Tissoires <bentiss@kernel.org>
-    bpf: make timer data struct more generic
-
-Mohammad Shehar Yaar Tausif <sheharyaar48@gmail.com>
-    bpf: fix order of args in call to bpf_map_kvcalloc
-
-Matthew Wilcox (Oracle) <willy@infradead.org>
-    minixfs: Fix minixfs_rename with HIGHMEM
-
-Aleksander Jan Bajkowski <olek2@wp.pl>
-    net: ethernet: lantiq_etop: fix double free in detach
-
-Michal Kubiak <michal.kubiak@intel.com>
-    i40e: Fix XDP program unloading while removing the driver
-
-Hugh Dickins <hughd@google.com>
-    net: fix rc7's __skb_datagram_iter()
-
-David Lechner <dlechner@baylibre.com>
-    spi: add defer_optimize_message controller flag
-
-David Lechner <dlechner@baylibre.com>
-    spi: don't unoptimize message in spi_async()
-
-Aleksandr Mishin <amishin@t-argos.ru>
-    octeontx2-af: Fix incorrect value output on error path in rvu_check_rsrc_availability()
-
-Geliang Tang <tanggeliang@kylinos.cn>
-    skmsg: Skip zero length skb in sk_msg_recvmsg
-
-Oleksij Rempel <o.rempel@pengutronix.de>
-    net: phy: microchip: lan87xx: reinit PHY after cable test
-
-Daniel Borkmann <daniel@iogearbox.net>
-    bpf: Fix too early release of tcx_entry
-
-Neal Cardwell <ncardwell@google.com>
-    tcp: fix incorrect undo caused by DSACK of TLP retransmit
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    net: bcmasp: Fix error code in probe()
-
-Brian Foster <bfoster@redhat.com>
-    vfs: don't mod negative dentry count when on shrinker list
-
-linke li <lilinke99@qq.com>
-    fs/dcache: Re-use value stored to dentry->d_flags instead of re-reading
-
-Jeff Layton <jlayton@kernel.org>
-    filelock: fix potential use-after-free in posix_lock_inode
-
-Christian Eggers <ceggers@arri.de>
-    dsa: lan9303: Fix mapping between DSA port number and PHY address
-
-Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-    net: dsa: lan9303: provide own phylink MAC operations
-
-Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-    net: dsa: allow DSA switch drivers to provide their own phylink mac ops
-
-Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-    net: dsa: introduce dsa_phylink_to_port()
-
-Jingbo Xu <jefflexu@linux.alibaba.com>
-    cachefiles: add missing lock protection when polling
-
-Baokun Li <libaokun1@huawei.com>
-    cachefiles: cyclic allocation of msg_id to avoid reuse
-
-Hou Tao <houtao1@huawei.com>
-    cachefiles: wait for ondemand_object_worker to finish when dropping object
-
-Baokun Li <libaokun1@huawei.com>
-    cachefiles: cancel all requests for the object that is being dropped
-
-Baokun Li <libaokun1@huawei.com>
-    cachefiles: stop sending new request when dropping object
-
-Baokun Li <libaokun1@huawei.com>
-    cachefiles: propagate errors from vfs_getxattr() to avoid infinite loop
-
-David Lechner <dlechner@baylibre.com>
-    spi: axi-spi-engine: fix sleep calculation
-
-Yi Liu <yi.l.liu@intel.com>
-    vfio/pci: Init the count variable in collecting hot-reset devices
-
-Peter Wang <peter.wang@mediatek.com>
-    scsi: ufs: core: Fix ufshcd_abort_one racing issue
-
-Peter Wang <peter.wang@mediatek.com>
-    scsi: ufs: core: Fix ufshcd_clear_cmd racing issue
-
-Waiman Long <longman@redhat.com>
-    mm: prevent derefencing NULL ptr in pfn_section_valid()
-
-
--------------
-
-Diffstat:
-
- Documentation/admin-guide/cifs/usage.rst           |  34 +--
- .../devicetree/bindings/cache/qcom,llcc.yaml       |   2 +-
- Makefile                                           |   4 +-
- arch/arm/mach-davinci/pm.c                         |   2 +-
- .../dts/allwinner/sun50i-h64-remix-mini-pc.dts     |   2 +-
- arch/arm64/boot/dts/qcom/qdu1000.dtsi              |  16 +-
- arch/arm64/boot/dts/qcom/sa8775p.dtsi              |   2 +-
- arch/arm64/boot/dts/qcom/sc8180x.dtsi              |  11 +-
- .../dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts     |  15 +-
- arch/arm64/boot/dts/qcom/sm6115.dtsi               |   1 +
- arch/arm64/boot/dts/qcom/x1e80100-crd.dts          |  13 +-
- arch/arm64/boot/dts/qcom/x1e80100-qcp.dts          |   9 +
- arch/arm64/boot/dts/qcom/x1e80100.dtsi             |  10 +-
- arch/s390/mm/pgalloc.c                             |   4 +
- arch/x86/entry/entry_64_compat.S                   |  14 +-
- drivers/acpi/processor_idle.c                      |  37 ++--
- drivers/char/hpet.c                                |  34 ++-
- drivers/cpufreq/acpi-cpufreq.c                     |   4 +-
- drivers/cpufreq/cpufreq.c                          |   3 +-
- drivers/firmware/cirrus/cs_dsp.c                   | 231 +++++++++++++------
- drivers/i2c/busses/i2c-rcar.c                      |  27 ++-
- drivers/i2c/i2c-core-base.c                        |   1 +
- drivers/i2c/i2c-slave-testunit.c                   |   7 +
- drivers/iio/industrialio-trigger.c                 |   2 +-
- drivers/misc/fastrpc.c                             |  41 +++-
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c  |   4 -
- drivers/misc/mei/platform-vsc.c                    |   4 +-
- drivers/misc/mei/vsc-tp.c                          |  16 +-
- drivers/mmc/host/davinci_mmc.c                     |   3 +
- drivers/mmc/host/sdhci.c                           |  15 ++
- drivers/net/dsa/lan9303-core.c                     |  54 +++--
- drivers/net/ethernet/broadcom/asp2/bcmasp.c        |   1 +
- drivers/net/ethernet/intel/i40e/i40e_adminq.h      |   4 -
- drivers/net/ethernet/intel/i40e/i40e_main.c        |   9 +-
- drivers/net/ethernet/lantiq_etop.c                 |   4 +-
- drivers/net/ethernet/marvell/octeontx2/af/mbox.h   |   2 +-
- drivers/net/ethernet/marvell/octeontx2/af/npc.h    |   8 +-
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c    |   2 +-
- .../net/ethernet/marvell/octeontx2/af/rvu_cpt.c    |  23 +-
- .../net/ethernet/marvell/octeontx2/af/rvu_nix.c    |  12 +-
- drivers/net/ethernet/mediatek/mtk_star_emac.c      |   7 +
- drivers/net/ethernet/micrel/ks8851_common.c        |  10 +-
- drivers/net/ethernet/micrel/ks8851_spi.c           |   4 +-
- drivers/net/phy/microchip_t1.c                     |   2 +-
- drivers/net/ppp/ppp_generic.c                      |  15 ++
- drivers/net/wireguard/allowedips.c                 |   4 +-
- drivers/net/wireguard/queueing.h                   |   4 +-
- drivers/net/wireguard/send.c                       |   2 +-
- drivers/nvmem/core.c                               |   7 +-
- drivers/nvmem/meson-efuse.c                        |  14 +-
- drivers/nvmem/rmem.c                               |   5 +-
- drivers/platform/x86/toshiba_acpi.c                |   1 +
- drivers/pmdomain/qcom/rpmhpd.c                     |   7 +
- drivers/spi/spi-axi-spi-engine.c                   |  26 ++-
- drivers/spi/spi-mux.c                              |   1 +
- drivers/spi/spi.c                                  |  20 +-
- drivers/tty/serial/imx.c                           |  51 +++++
- drivers/tty/serial/ma35d1_serial.c                 |  13 +-
- drivers/ufs/core/ufs-mcq.c                         |  11 +-
- drivers/ufs/core/ufshcd.c                          |   2 +
- drivers/usb/core/config.c                          |  18 +-
- drivers/usb/core/of.c                              |   7 +-
- drivers/usb/core/quirks.c                          |   3 +
- drivers/usb/dwc3/dwc3-pci.c                        |   8 +
- drivers/usb/gadget/configfs.c                      |   3 +
- drivers/usb/host/xhci.c                            |  16 +-
- drivers/usb/serial/mos7840.c                       |  45 ++++
- drivers/usb/serial/option.c                        |  38 ++++
- drivers/vfio/pci/vfio_pci_core.c                   |   2 +-
- fs/cachefiles/daemon.c                             |   4 +-
- fs/cachefiles/internal.h                           |   3 +
- fs/cachefiles/ondemand.c                           |  52 ++++-
- fs/cachefiles/xattr.c                              |   5 +-
- fs/dcache.c                                        |  12 +-
- fs/ext4/sysfs.c                                    |   2 +
- fs/locks.c                                         |   2 +-
- fs/minix/namei.c                                   |   3 +-
- fs/nilfs2/dir.c                                    |  32 ++-
- fs/smb/client/cifsglob.h                           |   4 +-
- fs/smb/server/smb2pdu.c                            |  13 +-
- fs/userfaultfd.c                                   |   7 +-
- include/linux/mmzone.h                             |   3 +-
- include/linux/pagemap.h                            |  11 +-
- include/linux/spi/spi.h                            |   4 +
- include/linux/swap.h                               |   3 +-
- include/net/dsa.h                                  |  11 +
- include/net/tcx.h                                  |  13 +-
- include/uapi/misc/fastrpc.h                        |   3 +
- kernel/bpf/bpf_local_storage.c                     |   4 +-
- kernel/bpf/helpers.c                               | 245 +++++++++++++++------
- kernel/sched/deadline.c                            |   7 +-
- kernel/sched/fair.c                                |  12 +-
- mm/damon/core.c                                    |  21 +-
- mm/filemap.c                                       |  10 +-
- mm/memcontrol.c                                    |  11 -
- mm/migrate.c                                       |  13 ++
- mm/readahead.c                                     |   8 +-
- mm/shmem.c                                         |  15 +-
- mm/vmalloc.c                                       |  10 +-
- mm/workingset.c                                    |  14 +-
- net/ceph/mon_client.c                              |  14 +-
- net/core/datagram.c                                |   3 +-
- net/core/skmsg.c                                   |   3 +-
- net/dsa/dsa.c                                      |  11 +
- net/dsa/port.c                                     |  38 +++-
- net/ethtool/ioctl.c                                |   3 +-
- net/ethtool/linkstate.c                            |  41 ++--
- net/ipv4/tcp_input.c                               |  11 +-
- net/ipv4/tcp_timer.c                               |  17 +-
- net/ipv4/udp.c                                     |   4 +-
- net/netfilter/nf_tables_api.c                      | 158 ++-----------
- net/netfilter/nfnetlink_queue.c                    |   2 +-
- net/sched/act_ct.c                                 |   8 +
- net/sched/sch_ingress.c                            |  12 +-
- net/sunrpc/xprtsock.c                              |   7 +
- scripts/ld-version.sh                              |   8 +-
- scripts/package/kernel.spec                        |   1 -
- sound/pci/hda/patch_realtek.c                      |   4 +
- sound/soc/sof/intel/hda-dai.c                      |  12 +-
- tools/testing/selftests/wireguard/qemu/Makefile    |   8 +-
- 120 files changed, 1348 insertions(+), 607 deletions(-)
+From: Daniel Borkmann <daniel@iogearbox.net>
+
+[ Upstream commit cfa1a2329a691ffd991fcf7248a57d752e712881 ]
+
+The BPF ring buffer internally is implemented as a power-of-2 sized circular
+buffer, with two logical and ever-increasing counters: consumer_pos is the
+consumer counter to show which logical position the consumer consumed the
+data, and producer_pos which is the producer counter denoting the amount of
+data reserved by all producers.
+
+Each time a record is reserved, the producer that "owns" the record will
+successfully advance producer counter. In user space each time a record is
+read, the consumer of the data advanced the consumer counter once it finished
+processing. Both counters are stored in separate pages so that from user
+space, the producer counter is read-only and the consumer counter is read-write.
+
+One aspect that simplifies and thus speeds up the implementation of both
+producers and consumers is how the data area is mapped twice contiguously
+back-to-back in the virtual memory, allowing to not take any special measures
+for samples that have to wrap around at the end of the circular buffer data
+area, because the next page after the last data page would be first data page
+again, and thus the sample will still appear completely contiguous in virtual
+memory.
+
+Each record has a struct bpf_ringbuf_hdr { u32 len; u32 pg_off; } header for
+book-keeping the length and offset, and is inaccessible to the BPF program.
+Helpers like bpf_ringbuf_reserve() return `(void *)hdr + BPF_RINGBUF_HDR_SZ`
+for the BPF program to use. Bing-Jhong and Muhammad reported that it is however
+possible to make a second allocated memory chunk overlapping with the first
+chunk and as a result, the BPF program is now able to edit first chunk's
+header.
+
+For example, consider the creation of a BPF_MAP_TYPE_RINGBUF map with size
+of 0x4000. Next, the consumer_pos is modified to 0x3000 /before/ a call to
+bpf_ringbuf_reserve() is made. This will allocate a chunk A, which is in
+[0x0,0x3008], and the BPF program is able to edit [0x8,0x3008]. Now, lets
+allocate a chunk B with size 0x3000. This will succeed because consumer_pos
+was edited ahead of time to pass the `new_prod_pos - cons_pos > rb->mask`
+check. Chunk B will be in range [0x3008,0x6010], and the BPF program is able
+to edit [0x3010,0x6010]. Due to the ring buffer memory layout mentioned
+earlier, the ranges [0x0,0x4000] and [0x4000,0x8000] point to the same data
+pages. This means that chunk B at [0x4000,0x4008] is chunk A's header.
+bpf_ringbuf_submit() / bpf_ringbuf_discard() use the header's pg_off to then
+locate the bpf_ringbuf itself via bpf_ringbuf_restore_from_rec(). Once chunk
+B modified chunk A's header, then bpf_ringbuf_commit() refers to the wrong
+page and could cause a crash.
+
+Fix it by calculating the oldest pending_pos and check whether the range
+from the oldest outstanding record to the newest would span beyond the ring
+buffer size. If that is the case, then reject the request. We've tested with
+the ring buffer benchmark in BPF selftests (./benchs/run_bench_ringbufs.sh)
+before/after the fix and while it seems a bit slower on some benchmarks, it
+is still not significantly enough to matter.
+
+Fixes: 457f44363a88 ("bpf: Implement BPF ring buffer and verifier support for it")
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Reported-by: Muhammad Ramdhan <ramdhan@starlabs.sg>
+Co-developed-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Co-developed-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240621140828.18238-1-daniel@iogearbox.net
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+---
+The only conflict with the patch was in the comment at top of the patch
+(the commit that had changed this comment, 583c1f420173 ("bpf: Define
+new BPF_MAP_TYPE_USER_RINGBUF map type"), has nothing to do with this
+fix), so I went ahead with it.
+
+I'm not familiar with the ringbuf code but it doesn't look too wrong to
+me at first glance; and with this all stable branches are covered.
+
+ kernel/bpf/ringbuf.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
+
+diff --git a/kernel/bpf/ringbuf.c b/kernel/bpf/ringbuf.c
+index 1e4bf23528a3..eac0026e2fa6 100644
+--- a/kernel/bpf/ringbuf.c
++++ b/kernel/bpf/ringbuf.c
+@@ -41,9 +41,12 @@ struct bpf_ringbuf {
+ 	 * mapping consumer page as r/w, but restrict producer page to r/o.
+ 	 * This protects producer position from being modified by user-space
+ 	 * application and ruining in-kernel position tracking.
++	 * Note that the pending counter is placed in the same
++	 * page as the producer, so that it shares the same cache line.
+ 	 */
+ 	unsigned long consumer_pos __aligned(PAGE_SIZE);
+ 	unsigned long producer_pos __aligned(PAGE_SIZE);
++	unsigned long pending_pos;
+ 	char data[] __aligned(PAGE_SIZE);
+ };
+ 
+@@ -145,6 +148,7 @@ static struct bpf_ringbuf *bpf_ringbuf_alloc(size_t data_sz, int numa_node)
+ 	rb->mask = data_sz - 1;
+ 	rb->consumer_pos = 0;
+ 	rb->producer_pos = 0;
++	rb->pending_pos = 0;
+ 
+ 	return rb;
+ }
+@@ -323,9 +327,9 @@ bpf_ringbuf_restore_from_rec(struct bpf_ringbuf_hdr *hdr)
+ 
+ static void *__bpf_ringbuf_reserve(struct bpf_ringbuf *rb, u64 size)
+ {
+-	unsigned long cons_pos, prod_pos, new_prod_pos, flags;
+-	u32 len, pg_off;
++	unsigned long cons_pos, prod_pos, new_prod_pos, pend_pos, flags;
+ 	struct bpf_ringbuf_hdr *hdr;
++	u32 len, pg_off, tmp_size, hdr_len;
+ 
+ 	if (unlikely(size > RINGBUF_MAX_RECORD_SZ))
+ 		return NULL;
+@@ -343,13 +347,29 @@ static void *__bpf_ringbuf_reserve(struct bpf_ringbuf *rb, u64 size)
+ 		spin_lock_irqsave(&rb->spinlock, flags);
+ 	}
+ 
++	pend_pos = rb->pending_pos;
+ 	prod_pos = rb->producer_pos;
+ 	new_prod_pos = prod_pos + len;
+ 
+-	/* check for out of ringbuf space by ensuring producer position
+-	 * doesn't advance more than (ringbuf_size - 1) ahead
++	while (pend_pos < prod_pos) {
++		hdr = (void *)rb->data + (pend_pos & rb->mask);
++		hdr_len = READ_ONCE(hdr->len);
++		if (hdr_len & BPF_RINGBUF_BUSY_BIT)
++			break;
++		tmp_size = hdr_len & ~BPF_RINGBUF_DISCARD_BIT;
++		tmp_size = round_up(tmp_size + BPF_RINGBUF_HDR_SZ, 8);
++		pend_pos += tmp_size;
++	}
++	rb->pending_pos = pend_pos;
++
++	/* check for out of ringbuf space:
++	 * - by ensuring producer position doesn't advance more than
++	 *   (ringbuf_size - 1) ahead
++	 * - by ensuring oldest not yet committed record until newest
++	 *   record does not span more than (ringbuf_size - 1)
+ 	 */
+-	if (new_prod_pos - cons_pos > rb->mask) {
++	if (new_prod_pos - cons_pos > rb->mask ||
++	    new_prod_pos - pend_pos > rb->mask) {
+ 		spin_unlock_irqrestore(&rb->spinlock, flags);
+ 		return NULL;
+ 	}
+-- 
+2.39.2
 
 
 
