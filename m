@@ -1,154 +1,130 @@
-Return-Path: <stable+bounces-60401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594FE93396D
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 10:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0E193397E
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 11:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A4D3283551
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 08:55:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95CD82839B8
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 09:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA7B39FF2;
-	Wed, 17 Jul 2024 08:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F81737160;
+	Wed, 17 Jul 2024 09:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b="sVjdvMt5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XEoOuZZh"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2E1125DE;
-	Wed, 17 Jul 2024 08:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4503A8493;
+	Wed, 17 Jul 2024 09:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721206515; cv=none; b=iSngBOHfhMW7d46+PrHnpRTmMTG90vkOt09pGKU/bxSjm9BA0N7kJuOe13nChMpTeT4bJjOWnoz/Ex7WXVq78cX2PFyNJ+guefIduH02jRu2suVT3C8V+g5DAAxpYKT+9ldbkioPB72sf7RPAmpIK9S5wfHBy38TSoeDFjW31ZU=
+	t=1721206842; cv=none; b=uQXioYOyBadcl4RIvUJNxeAGIq6XjaVtjfNzHdvinwKL4H0BRYYRE3yEQRYkKTaUikVwe3X0K90RFu0dusnZkSXmmaWhKUezIG+q7TnkW0VBpoP86Ex5mlcZba6tvnwziGAlpXHLd8M8J/ei7V/EdSOMwgPrT4QuAzWrmjh1vUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721206515; c=relaxed/simple;
-	bh=pd4s4AR7E1paZHZ12GO/bLDev6ZB/amOcZAxHaFMPOo=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=b51FpfI5faqU4taGrf39WF/IdzkRWGZtkG+cJQOjimiPEtzgohm0qSC2nPTKrztHzNpExszbAhYI3t57Rj9omnuo5zx4sItLoJfZC7YPsHVQm09MevQpeBq39gm8FR7juI1ysSK+KUUzxHiM0d97+JbVMD3rYWCyoYdvL5tboNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b=sVjdvMt5; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1721206482; x=1721811282; i=frank.scheiner@web.de;
-	bh=pACsef4y0KFlrIpCzTL9xGMhp6hapO6kz5GpRGaWPg8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=sVjdvMt5c3IQI7TUjcCJ0m4MCIvX74aeqzzUQ3awH8LAEMoo2GXGPXPtk6MOQI6b
-	 sDbi5V/FB65vHMOoUclF8wtY1ydm0+ykAHjM2KT1JCrTNlsdOxGZm/G3khxTe+q1F
-	 yoyXcc1MhUUtD/4qFKLRcutu8ImqGqFhC9gnzgSPpwlJc1ZdY2wamxOYJmSquaw7h
-	 UK9mmO97yOQQohQVWU/xlQtVkUYSYQN1kBZEnZ5Hy+NRoyGM3tZT7Vteok/cMn24t
-	 qCGcybBVApc23UpLpPBgTechdOrPcnwXZgO29E5VdwdjHVo8Xa0yCqrbyELMg5NrT
-	 Z8o9a3lKv3UhcPvAog==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.30] ([84.152.252.217]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MEUSE-1sa76u0fyE-004Hjv; Wed, 17
- Jul 2024 10:54:42 +0200
-Message-ID: <01082e96-8c2e-4ebe-8030-6e308a03f9e5@web.de>
-Date: Wed, 17 Jul 2024 10:54:40 +0200
+	s=arc-20240116; t=1721206842; c=relaxed/simple;
+	bh=S+vNdNYt6/4XnOa6ae/hoTsv6eC/oZJVUbLX89ckCuE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dhfieQwkqYlp/CdFQrG/2WCaL7hE6cDv+B67go8L68YODZU2N9myuKPsmnPQkOGrEtZLzg/ygo9pEPvANqvqpJ+dT6zUDwkXlORaCU3hNti3ovomwaeSTnGV3o8WkFWEHla4fQ+KYNCC4rTH3W1ci4onj6QfT6OkonKnOJq7OAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XEoOuZZh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EBDC4AF0F;
+	Wed, 17 Jul 2024 09:00:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721206841;
+	bh=S+vNdNYt6/4XnOa6ae/hoTsv6eC/oZJVUbLX89ckCuE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XEoOuZZhaG2Os231agiwz3/Oe3Kl8aV1/NiMSr8JgQd3ESRU/NSLMVeq6eStOGpII
+	 Dkb9drwVfpRMQziE3mJh8a0/wqJzyH5ZXGY2ZHlmigPU7F4WOojkjuJCQAomG6gp9w
+	 pCPfuJNRMD727N+o0fIaT8+vDdYouQRMX5Hb7RkRadbP4wka2fK9HGdHa+NWGB75us
+	 PSYuoV0z9uxIlZjG/1ndYCE2Rj/jWpx/IvPhkWhhYtjQll0W1LSQah6ziHv+LqpkJH
+	 Ri0bhbL95rITe6LYhgw3KSv3JbyDVPxmRAa/YfnKh2ekwpAvJqTBwoJlnfb0rH/FG0
+	 Dzzx3n8fvSkmA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1sU0Wg-000000002Zs-1ziF;
+	Wed, 17 Jul 2024 11:00:43 +0200
+Date: Wed, 17 Jul 2024 11:00:42 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>, linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "scsi: sd: Do not repeat the starting disk
+ message"
+Message-ID: <ZpeIOsEbBIho9P_1@hovoldconsulting.com>
+References: <20240716161101.30692-1-johan+linaro@kernel.org>
+ <39143ca8-68e4-44eb-8619-0b935aa81603@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org, allen.lkml@gmail.com, broonie@kernel.org,
- conor@kernel.org, f.fainelli@gmail.com, jonathanh@nvidia.com,
- linux-kernel@vger.kernel.org, linux@roeck-us.net,
- lkft-triage@lists.linaro.org, patches@kernelci.org, patches@lists.linux.dev,
- pavel@denx.de, rwarsow@gmx.de, shuah@kernel.org, srw@sladewatkins.net,
- stable@vger.kernel.org, sudipm.mukherjee@gmail.com,
- torvalds@linux-foundation.org, =?UTF-8?B?VG9tw6HFoSBHbG96YXI=?=
- <tglozar@gmail.com>
-References: <20240716152738.161055634@linuxfoundation.org>
-Subject: Re: [PATCH 4.19 00/66] 4.19.318-rc1 review
-Content-Language: en-US
-From: Frank Scheiner <frank.scheiner@web.de>
-In-Reply-To: <20240716152738.161055634@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:wTq+LIOCT4rtn+gzEEK/9JdTCW4AJ25/w7OF6dR2nZfsgDVW+b3
- UMpXVbbt4gXcQg/dpQG8Rp31sadNwxwj91Inb2MARS0Yc7kYfackSbj4oU6Ouc+w4RdM1sb
- D5N8199gTjMHrrde9RL/C7WWVUjVR7viyEDZi9emI9lGtu9rWQO47zJ33/W3WRQ343bbw4T
- Ei/ZaPVFkgXV+YNFl4qSw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:s1ZMjZPxt4s=;ux0vIzCOd8DsijRpYIQrNfHprj3
- dy6bDUbd2zC+DrsMdO5FKTNdER2BBqY5Zd+eQIYYeCizy4VQLSyKgdovTfISimN/YZcmgoSvE
- M7LF5kXz5gzjVSLl+4lf4nb7180SrcsiOYB5Qw/uDKxeJcGPtcZgnk0e1/pGVxG4oIGf4emyP
- 4haYe97yZmGROqkkneC9vDfVwF9je9AdTG/8MuFTR4gaH+5j38EC55cS/hGWX8Jt4J6zCtR5Y
- 4SEzunW3/Xt5Q073UGPaSUL+KC4iUzMZzwWC3T0XKIHPGmz4D+5EkzhkBzbxruQ/M5kGOyeWJ
- 0ltu0Aipfu1tfpeAoOp4hqGAw/Z3rSF55XSDKYQ9qGyIzD9BXrTsZKhni+m7rZKKs6cPBr2sO
- S4lnuBo6BjpPWet0mkPkivsXNqZGbHi8Ih0AMh7rb6oLFwuugemZkpMnEAFsdtyDDJKbRKhep
- YWWVRSYG2pcSoVDVt/fWRcXNJZqFtXJ6A64tkjZM7lqPHvUPHB3PZXNUmm666SSwkIVe4Vj1n
- 3eV/DIBBhpH1Ql5GI8Ccm8N7CchQ8J67M/sO9mI1BjzJWH9Gs/Y0G0g6rUd23RUc9/oJX6mgg
- vksVNg7JHCt0W/Mi2XTPb96MONRo7GTLKYuPPIxkpBWcHmXYnuwKX/EMhZpGAF5d1fj3Vqk7K
- TJPH07anJTEYzqAhKBZmVxIj7K+gUV1d4iQD8HANEKFhfTjNbYXqRfu5YGeKR6BNyoPcmdHQv
- vMUCXictjNz3cfMDOVuUxyV97eCebe9pHyb8scEFH0kdeY9SUY5d9CxViiX7oYZeAJaMM2Hx/
- tlJ/qpEA+OZMgQ7tQGLdW5O8DlFAu3XutvRlswmB3w8+c=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <39143ca8-68e4-44eb-8619-0b935aa81603@kernel.org>
 
-Hi there,
+On Wed, Jul 17, 2024 at 07:48:26AM +0900, Damien Le Moal wrote:
+> On 7/17/24 01:11, Johan Hovold wrote:
+> > This reverts commit 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4.
+> > 
+> > The offending commit tried to suppress a double "Starting disk" message
+> > for some drivers, but instead started spamming the log with bogus
+> > messages every five seconds:
+> > 
+> > 	[  311.798956] sd 0:0:0:0: [sda] Starting disk
+> > 	[  316.919103] sd 0:0:0:0: [sda] Starting disk
+> > 	[  322.040775] sd 0:0:0:0: [sda] Starting disk
+> > 	[  327.161140] sd 0:0:0:0: [sda] Starting disk
+> > 	[  332.281352] sd 0:0:0:0: [sda] Starting disk
+> > 	[  337.401878] sd 0:0:0:0: [sda] Starting disk
+> > 	[  342.521527] sd 0:0:0:0: [sda] Starting disk
+> > 	[  345.850401] sd 0:0:0:0: [sda] Starting disk
+> > 	[  350.967132] sd 0:0:0:0: [sda] Starting disk
+> > 	[  356.090454] sd 0:0:0:0: [sda] Starting disk
+> > 	...
+> > 
+> > on machines that do not actually stop the disk on runtime suspend (e.g.
+> > the Qualcomm sc8280xp CRD with UFS).
+> 
+> This is odd. If the disk is not being being suspended, why does the platform
+> even enable runtime PM for it ? 
 
-fb3739759474d150a9927b920a80ea2afb4c2a51 (from mainline) should be
-included in linux-4.19.y, if a589979f345720aca32ff43a2ccaa16a70871b9e
-stays in.
+This is clearly intended to be supported as sd_do_start_stop() returns
+false and that prevents sd_start_stop_device() from being called on
+resume (and similarly on suspend which is why there are no matching
+stopping disk messages above):
 
-****
+	[   32.822189] sd 0:0:0:0: sd_resume_common - runtime = 1, sd_do_start_stop = 0, manage_runtime_start_stop = 0
 
-## Long version ##
+> Are you sure about this ? Or is it simply that
+> the runtime pm timer is set to a very low interval ?
 
-It looks like:
+I haven't tried to determine why runtime pm is used this way, but your
+patch is clearly broken as it prints a message about starting the disk
+even when sd_do_start_stop() returns false.
 
-```
-hpet: Support 32-bit userspace
+> It almost sound like what we need to do here is suppress this message for the
+> runtime resume case, so something like:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
-/commit/?h=3Dlinux-4.19.y&id=3Da589979f345720aca32ff43a2ccaa16a70871b9e
-```
+No, that would only make things worse as I assume you'd have a stopped
+disk message without a matching start message for driver that do end up
+stopping the disk here.
 
-...breaks the non-HP-Sim ia64 build ([1]) for us since yesterday:
+> However, I would like to make sure that this platform is not calling
+> sd_resume_runtime() for nothing every 5s. If that is the case, then there is a
+> more fundamental problem here and reverting this patch is only hiding that.
 
-```
-[...]
-drivers/char/hpet.c: In function 'hpet_read':
-drivers/char/hpet.c:311:36: error: 'compat_ulong_t' undeclared (first
-use in this function)
-   311 |                 if (count < sizeof(compat_ulong_t))
-       |                                    ^~~~~~~~~~~~~~
-drivers/char/hpet.c:311:36: note: each undeclared identifier is reported
-only once for each function it appears in
-[...]
-```
+This is with the Qualcomm UFS driver, but it seems it just relies on the
+generic ufshcd_pltfrm_init() implementation.
 
-...as it uses a type not known to ia64 (and possibly other
-architectures) w/o also including:
+Also not sure why anyone would want to see these messages on every
+runtime suspend (for drivers that end up taking this path), but that's a
+separate discussion.
 
-```
-asm-generic: Move common compat types to asm-generic/compat.h
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/=
-?id=3Dfb3739759474d150a9927b920a80ea2afb4c2a51
-```
-
-The latter seems to be in mainline only since v4.20-rc1 and fixes the
-non-HP-Sim ia64 build ([2]) for me.
-
-So fb3739759474d150a9927b920a80ea2afb4c2a51 should be included in
-linux-4.19.y, too, if a589979f345720aca32ff43a2ccaa16a70871b9e stays in.
-
-[1]:
-https://github.com/linux-ia64/linux-stable-rc/actions/runs/9947642032#summ=
-ary-27481009307
-
-[2]:
-https://github.com/linux-ia64/linux-stable-rc/actions/runs/9970651775#summ=
-ary-27550542084
-
-Cheers,
-Frank
+Johan
 
