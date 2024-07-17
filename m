@@ -1,163 +1,148 @@
-Return-Path: <stable+bounces-60503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A357934507
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 01:29:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D63934519
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 01:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCD1E1F21E50
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 23:29:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2F951F22396
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 23:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7933E55886;
-	Wed, 17 Jul 2024 23:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05AA6A8BE;
+	Wed, 17 Jul 2024 23:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Q8fGAGm5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZxRf+ku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079191DFC7;
-	Wed, 17 Jul 2024 23:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FA948CCD;
+	Wed, 17 Jul 2024 23:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721258941; cv=none; b=N6llAe2vhXClQp4kJQciNo4chkr5G+cTB9iDd4KUfWG3yKKAKkqfKhpV2IPg9rrqHHuEJhZOKRhj5Lt6AW0Xzd1ah7zxofuhW78hLS4yDhAh6jV32Lgy4r7u9IXbzql6wLwHcKo7JfkqfbzEiGn0U6wKCOOVlcjJHzp9p3xRfvo=
+	t=1721259801; cv=none; b=QidCxD26tq7FkcxyXPShDRBBpMX3QcaC18+teAbxRaKsQKlgUg/aQKTzrZt+J7IM6jImZckRNdSEDPqpkV47ruo+M9dypgkwCcJBCOlPtwvoU56nIsrKC858Pxknml6yuj61pCACKE6PqUMnLgb+Y8tDQY5B2IfFYTLl9vsReHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721258941; c=relaxed/simple;
-	bh=h+WP6NJ0681sUkIAu/+y1wxfvT9J/L2SxCRuZ7ajy98=;
-	h=Date:To:From:Subject:Message-Id; b=NtLaRo0poOsii+usdCy7ZXj5RxK9EbQVrc7j9xW9tCgG9+qxKASZhA35f8fykCQkwWDVS6RyIy9Z8/Td4uI5Nb0tAQCnodgjZeprvCgY7tkGSTXhK5PnwRrZtem75ejS1inYDRbXT9xtOxo0hUHrlCY0Sx0H17nswtoBqN/kh8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Q8fGAGm5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A43C2BD10;
-	Wed, 17 Jul 2024 23:29:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1721258940;
-	bh=h+WP6NJ0681sUkIAu/+y1wxfvT9J/L2SxCRuZ7ajy98=;
-	h=Date:To:From:Subject:From;
-	b=Q8fGAGm5PEl6Bpblev4sxt6ZxOyaogGv2D5kPUveWQgNS+Nrd8LcdFZvHwJJdcKTq
-	 qmuL2lSxp8c9sTBN2iAq2ADv4PZVyxtpiRGKMrDeeQFUHCFCoqcbtj90+cPvjN5DUl
-	 0VVrBQMNNBkmo6DKhctUbnQEg83C+6NIv1NKH4to=
-Date: Wed, 17 Jul 2024 16:28:59 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,souravpanda@google.com,pasha.tatashin@soleen.com,lkp@intel.com,kent.overstreet@linux.dev,keescook@chromium.org,hch@infradead.org,surenb@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + alloc_tag-outline-and-export-free_reserved_page.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240717232900.78A43C2BD10@smtp.kernel.org>
+	s=arc-20240116; t=1721259801; c=relaxed/simple;
+	bh=0SzqE6acgChptScakbVHZAGE65kPCaxYYa36nc5MtF0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Iu7T/CbVIMRQhESD5GcCXqTLf9vSI/mD2Ng5kR37guxFnsLniEK+Q677mD3nb0pju9ERd1uRCCdkr/su45PVtbVi6yhf43wyn2kQc/XZP5VxhR/leGCdIl24/ECcmfNdg1qRswLhRZrZ60nhAirv009WS6AY9TiI+pTChCA29ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZxRf+ku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B61C2BD10;
+	Wed, 17 Jul 2024 23:43:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721259800;
+	bh=0SzqE6acgChptScakbVHZAGE65kPCaxYYa36nc5MtF0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mZxRf+ku72/5+0Ss1CsbzU8f5+EnZcYo6kPyRsA/FGKPCLlWx1rTjlXcSORXsYDEU
+	 P/PUC94hPfK56AdsaJjpjrDaO4ZivMqyMadaOWjNJ8TzAIUO03AOT+br3Ouey1SmYm
+	 Pcvpz+lB1qA9sg2x/kS/Wa+cowo16YAiaXdrSxBL463HjEMsUETerp4GeLdnOjvh2x
+	 ensqj+AlNzia/H0EuHrW4/2xe/U4ZaS3zO97TIY5oS0fI4WsyjX09dYND8NhlXM6iA
+	 7hP3gXlCGsqiG7IA3nSkgLECVluZ26aci+26ic9oEu8byJUkfVDNxEZGj8IedDzp6n
+	 alTWHeegfaaNg==
+Message-ID: <daf86dec-9c35-49a5-ab81-ee667074f503@kernel.org>
+Date: Thu, 18 Jul 2024 08:43:16 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] ata: ahci_imx: Enlarge RX water mark for i.MX8QM
+ SATA
+To: Niklas Cassel <cassel@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>
+Cc: tj@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+ linux-ide@vger.kernel.org, stable@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ kernel@pengutronix.de
+References: <1721099895-26098-1-git-send-email-hongxing.zhu@nxp.com>
+ <1721099895-26098-4-git-send-email-hongxing.zhu@nxp.com>
+ <ZpgKxwziGXqNYLfc@ryzen.lan>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <ZpgKxwziGXqNYLfc@ryzen.lan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 7/18/24 3:17 AM, Niklas Cassel wrote:
+> Hello Richard,
+> 
+> On Tue, Jul 16, 2024 at 11:18:14AM +0800, Richard Zhu wrote:
+>> The RXWM(RxWaterMark) sets the minimum number of free location within
+>> the RX FIFO before the watermark is exceeded which in turn will cause
+>> the Transport Layer to instruct the Link Layer to transmit HOLDS to
+>> the transmitting end.
+>>
+>> Based on the default RXWM value 0x20, RX FIFO overflow might be
+>> observed on i.MX8QM MEK board, when some Gen3 SATA disks are used.
+>>
+>> The FIFO overflow will result in CRC error, internal error and protocol
+>> error, then the SATA link is not stable anymore.
+>>
+>> To fix this issue, enlarge RX water mark setting from 0x20 to 0x29.
+>>
+>> Fixes: 027fa4dee935 ("ahci: imx: add the imx8qm ahci sata support")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+>> ---
+> 
+> Looking at the title of this patch:
+> "ahci_imx: Enlarge RX water mark for i.MX8QM SATA"
+> 
+> This suggests that this fix is only needed for i.MX8QM.
+> 
+> Support for i.MX8QM was added to the device tree binding in patch 1/4 in
+> this series.
+> 
+> Doing a git grep in linux-next gives the following result:
+> 
+> $ git grep fsl,imx8qm-ahci linux-next/master
+> linux-next/master:drivers/ata/ahci_imx.c:       { .compatible = "fsl,imx8qm-ahci", .data = (void *)AHCI_IMX8QM },
+> 
+> 
+> This is interesting for two reasons:
+> 1) drivers/ata/ahci_imx.c already has support for this compatible string,
+> even though this compatible string does not exist in any DT binding
+> (in linux-next).
+> 
+> 2) There is not a single in-tree device tree (DTS) that uses this compatible
+> string ....and we do not care about out of tree device trees.
+> 
+> 
+> Considering 2) I do NOT think that we should have
+> Cc: stable@vger.kernel.org on this... we shouldn't just backport random driver
+> fixes is there are no in-tree users of this compatible string.
+> 
+> So I suggest that:
+> -Drop the CC: stable.
+> -I actually think that it is better that you drop the Fixes tag too, because if
+> you keep it, the stable bots will automatically select this for backporting,
+> and then we will need to reply and say that this should not be backported, so
+> better to avoid adding the Fixes tag in the first place.
+> (Since there are no users of this compatible string, there is nothing that is
+> broken, so there is nothing to fix.)
+> 
+> 
+> Damien, when applying this patch, I suggest that we apply it to for-6.12
+> together with the rest of the series (instead of applying it to
+> for-6.11-fixes).
 
-The patch titled
-     Subject: alloc_tag: outline and export free_reserved_page()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     alloc_tag-outline-and-export-free_reserved_page.patch
+It was me who asked for the Fixes and Cc-stable tags, but I had not checked
+that the compatible is not being used in any DT. So good catch.
+I will apply everything to for-6.12.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/alloc_tag-outline-and-export-free_reserved_page.patch
+> 
+> 
+> Kind regards,
+> Niklas
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: alloc_tag: outline and export free_reserved_page()
-Date: Wed, 17 Jul 2024 14:28:44 -0700
-
-Outline and export free_reserved_page() because modules use it and it in
-turn uses page_ext_{get|put} which should not be exported.  The same
-result could be obtained by outlining {get|put}_page_tag_ref() but that
-would have higher performance impact as these functions are used in more
-performance critical paths.
-
-Link: https://lkml.kernel.org/r/20240717212844.2749975-1-surenb@google.com
-Fixes: dcfe378c81f7 ("lib: introduce support for page allocation tagging")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202407080044.DWMC9N9I-lkp@intel.com/
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>	[6.10]
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/mm.h |   16 +---------------
- mm/page_alloc.c    |   17 +++++++++++++++++
- 2 files changed, 18 insertions(+), 15 deletions(-)
-
---- a/include/linux/mm.h~alloc_tag-outline-and-export-free_reserved_page
-+++ a/include/linux/mm.h
-@@ -3177,21 +3177,7 @@ extern void reserve_bootmem_region(phys_
- 				   phys_addr_t end, int nid);
- 
- /* Free the reserved page into the buddy system, so it gets managed. */
--static inline void free_reserved_page(struct page *page)
--{
--	if (mem_alloc_profiling_enabled()) {
--		union codetag_ref *ref = get_page_tag_ref(page);
--
--		if (ref) {
--			set_codetag_empty(ref);
--			put_page_tag_ref(ref);
--		}
--	}
--	ClearPageReserved(page);
--	init_page_count(page);
--	__free_page(page);
--	adjust_managed_page_count(page, 1);
--}
-+void free_reserved_page(struct page *page);
- #define free_highmem_page(page) free_reserved_page(page)
- 
- static inline void mark_page_reserved(struct page *page)
---- a/mm/page_alloc.c~alloc_tag-outline-and-export-free_reserved_page
-+++ a/mm/page_alloc.c
-@@ -5805,6 +5805,23 @@ unsigned long free_reserved_area(void *s
- 	return pages;
- }
- 
-+void free_reserved_page(struct page *page)
-+{
-+	if (mem_alloc_profiling_enabled()) {
-+		union codetag_ref *ref = get_page_tag_ref(page);
-+
-+		if (ref) {
-+			set_codetag_empty(ref);
-+			put_page_tag_ref(ref);
-+		}
-+	}
-+	ClearPageReserved(page);
-+	init_page_count(page);
-+	__free_page(page);
-+	adjust_managed_page_count(page, 1);
-+}
-+EXPORT_SYMBOL(free_reserved_page);
-+
- static int page_alloc_cpu_dead(unsigned int cpu)
- {
- 	struct zone *zone;
-_
-
-Patches currently in -mm which might be from surenb@google.com are
-
-alloc_tag-outline-and-export-free_reserved_page.patch
+-- 
+Damien Le Moal
+Western Digital Research
 
 
