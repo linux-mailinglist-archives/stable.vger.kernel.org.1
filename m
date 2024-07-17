@@ -1,157 +1,163 @@
-Return-Path: <stable+bounces-60502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0282C9344D8
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 00:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A357934507
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 01:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89CDD1F2245C
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 22:32:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCD1E1F21E50
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 23:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB25555E58;
-	Wed, 17 Jul 2024 22:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7933E55886;
+	Wed, 17 Jul 2024 23:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bzy3MF1A"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Q8fGAGm5"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DA84D8BA
-	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 22:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079191DFC7;
+	Wed, 17 Jul 2024 23:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721255512; cv=none; b=A+9dvncyAEKkW3e4dtese1D+sstwhExuOAyL8KyD+Jw23ZXl1Q9s4aVu9s1KxZzY7t4KwwKSVGva3hAjmMvXzZLnhu0AZ+ulK2Jlt0Bj3aWfAesM1nAkLjGM+CPnqiYqAk8JXWbQbwXS43rAO3SAYpkuOq2sN0tNJ6in35uVJrg=
+	t=1721258941; cv=none; b=N6llAe2vhXClQp4kJQciNo4chkr5G+cTB9iDd4KUfWG3yKKAKkqfKhpV2IPg9rrqHHuEJhZOKRhj5Lt6AW0Xzd1ah7zxofuhW78hLS4yDhAh6jV32Lgy4r7u9IXbzql6wLwHcKo7JfkqfbzEiGn0U6wKCOOVlcjJHzp9p3xRfvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721255512; c=relaxed/simple;
-	bh=ZeVb4NV1UtDsKj/hoB610U1gFo/rAq+Zrk+VLQva224=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pHpwlHV3btCvjmM4cV2v14vcWZ6ccyaLRCN/7QHYTTUJOlsLAzn11YPe7yB5j8uFgPgmU2xxPv3DuNBiOdEHtmHUMx7WeoTFL2awekVY38qUcqGia8FK+NsQ9wsWrcUzG190Ipes/F821gr5LvXMGf8Ft/mBm9jW3rZOF7OwrNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bzy3MF1A; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721255509;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JBsCYjvHFqCofeJfqJ0FDpq4lR84OryByqZWEVkFAUs=;
-	b=Bzy3MF1A4joU8//Plh7sgFZk/HzXD+PXa4s5PH/qobj2sg2sWqlqBdSqEpMdJ/gGqDnnyz
-	z0lJ55NzIw2lbRofykw2XULxt3nm7mskOJ0UJrDNAOzmNFqWJ9ITcDh3bjTX+RlIbS16Cx
-	TqKTRz9SOl5pCLEsS0oZeVT8NT75u4M=
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
- [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-490-VoxxvVbaPyawZmm0RPD0dw-1; Wed, 17 Jul 2024 18:31:45 -0400
-X-MC-Unique: VoxxvVbaPyawZmm0RPD0dw-1
-Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-8152f0c4837so25813539f.0
-        for <stable@vger.kernel.org>; Wed, 17 Jul 2024 15:31:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721255505; x=1721860305;
-        h=content-transfer-encoding:mime-version:organization:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JBsCYjvHFqCofeJfqJ0FDpq4lR84OryByqZWEVkFAUs=;
-        b=hoC+Rv3iLaDtlcOFxfWCwgEbF1E885sEJ6QjSWwmdh/NueW6E4Fw0pCDlNRGvxr7zL
-         CFqbaHjrlmgGvKm7Awo3YN8b6CUwi1pl0PBFQwRtpSpjqW0sVlVRFZsJPVe5Hw5VTB7I
-         s2MmwfRCHk7sA0ij9xMiWEdte1gFVnY6V3KKvkYbxPgEUd56L5vN362wEF1/Tw8KGTPy
-         KAVNrdNPWD7H0v9UOYhV9bBYS7+0hWKBupsizfMu3c/O7/C6hyPs59ILS89OrV/hrG2j
-         pr6ZKFB3TYBZXqRIfoAXkjqgL4L8saiG6V1jJOoLjJoEa9cKehK5XQ0tUZjAO9L49+sq
-         i36Q==
-X-Gm-Message-State: AOJu0YxNlA0ATmkjD8lQBYoGQDvsyGGcfpRa3GVk/U4t1AhAXYESxENJ
-	dAvqjEMtKaF3pp4Kd6c3e3k5QPZQQu2Ivh8ENstCE/Hh7MhccAktsrSvjbHKHBRMuG/wXmxAz8c
-	afyz4eP459+NFBZrXRBoZc9SlMCmHcL0Q7uYOAT7E7aHFa5sgZnqcAg==
-X-Received: by 2002:a05:6602:29c2:b0:806:2e60:d169 with SMTP id ca18e2360f4ac-817123e1c6fmr434707939f.17.1721255505091;
-        Wed, 17 Jul 2024 15:31:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGPb97hbNXON2ByzzRKRynxRHlbiYrD3yDjp2uo84hIKMI6iQ+GFeGYUQQkaZREiI+LQxB6iA==
-X-Received: by 2002:a05:6602:29c2:b0:806:2e60:d169 with SMTP id ca18e2360f4ac-817123e1c6fmr434705739f.17.1721255504742;
-        Wed, 17 Jul 2024 15:31:44 -0700 (PDT)
-Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-816c17c5044sm92133839f.19.2024.07.17.15.31.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jul 2024 15:31:44 -0700 (PDT)
-Date: Wed, 17 Jul 2024 16:31:43 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Axel Rasmussen <axelrasmussen@google.com>
-Cc: stable@vger.kernel.org, Ankit Agrawal <ankita@nvidia.com>, Eric Auger
- <eric.auger@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian
- <kevin.tian@intel.com>, Kunwu Chan <chentao@kylinos.cn>, Leah Rumancik
- <leah.rumancik@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>, Stefan
- Hajnoczi <stefanha@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.6 0/3] Backport VFIO refactor to fix fork ordering bug
-Message-ID: <20240717163143.49b914cb.alex.williamson@redhat.com>
-In-Reply-To: <20240717222429.2011540-1-axelrasmussen@google.com>
-References: <20240717222429.2011540-1-axelrasmussen@google.com>
-Organization: Red Hat
+	s=arc-20240116; t=1721258941; c=relaxed/simple;
+	bh=h+WP6NJ0681sUkIAu/+y1wxfvT9J/L2SxCRuZ7ajy98=;
+	h=Date:To:From:Subject:Message-Id; b=NtLaRo0poOsii+usdCy7ZXj5RxK9EbQVrc7j9xW9tCgG9+qxKASZhA35f8fykCQkwWDVS6RyIy9Z8/Td4uI5Nb0tAQCnodgjZeprvCgY7tkGSTXhK5PnwRrZtem75ejS1inYDRbXT9xtOxo0hUHrlCY0Sx0H17nswtoBqN/kh8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Q8fGAGm5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A43C2BD10;
+	Wed, 17 Jul 2024 23:29:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1721258940;
+	bh=h+WP6NJ0681sUkIAu/+y1wxfvT9J/L2SxCRuZ7ajy98=;
+	h=Date:To:From:Subject:From;
+	b=Q8fGAGm5PEl6Bpblev4sxt6ZxOyaogGv2D5kPUveWQgNS+Nrd8LcdFZvHwJJdcKTq
+	 qmuL2lSxp8c9sTBN2iAq2ADv4PZVyxtpiRGKMrDeeQFUHCFCoqcbtj90+cPvjN5DUl
+	 0VVrBQMNNBkmo6DKhctUbnQEg83C+6NIv1NKH4to=
+Date: Wed, 17 Jul 2024 16:28:59 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,souravpanda@google.com,pasha.tatashin@soleen.com,lkp@intel.com,kent.overstreet@linux.dev,keescook@chromium.org,hch@infradead.org,surenb@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + alloc_tag-outline-and-export-free_reserved_page.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240717232900.78A43C2BD10@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Wed, 17 Jul 2024 15:24:26 -0700
-Axel Rasmussen <axelrasmussen@google.com> wrote:
 
-> 35e351780fa9 ("fork: defer linking file vma until vma is fully initialized")
-> switched the ordering of vm_ops->open() and copy_page_range() on fork. This is a
-> bug for VFIO, because it causes two problems:
-> 
-> 1. Because open() is called before copy_page_range(), the range can conceivably
->    have unmapped 'holes' in it. This causes the code underneath untrack_pfn() to
->    WARN.
-> 
-> 2. More seriously, open() is trying to guarantee that the entire range is
->    zapped, so any future accesses in the child will result in the VFIO fault
->    handler being called. Because we copy_page_range() *after* open() (and
->    therefore after zapping), this guarantee is violated.
-> 
-> We can't revert 35e351780fa9, because it fixes a real bug for hugetlbfs. The fix
-> is also not as simple as just reodering open() and copy_page_range(), as Miaohe
-> points out in [1]. So, although these patches are kind of large for stable, just
-> backport this refactoring which completely sidesteps the issue.
-> 
-> Note that patch 2 is the key one here which fixes the issue. Patch 1 is a
-> prerequisite required for patch 2 to build / work. This would almost be enough,
-> but we might see significantly regressed performance. Patch 3 fixes that up,
-> putting performance back on par with what it was before.
-> 
-> Note [1] also has a more full discussion justifying taking these backports.
-> 
-> I proposed the same backport for 6.9 [2], and now for 6.6. 6.6 is the oldest
-> kernel which needs the change: 35e351780fa9 was reverted for unrelated reasons
-> in 6.1, and was never backported to 5.15 or earlier.
+The patch titled
+     Subject: alloc_tag: outline and export free_reserved_page()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     alloc_tag-outline-and-export-free_reserved_page.patch
 
-AFAICT 35e351780fa9 was reverted in linux-6.6.y as well, so why isn't
-this one a 4-part series concluding with a new backport of that commit?
-I think without that, we don't need these in 6.6 either.  Thanks,
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/alloc_tag-outline-and-export-free_reserved_page.patch
 
-Alex
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> 
-> [1]: https://lore.kernel.org/all/20240702042948.2629267-1-leah.rumancik@gmail.com/T/
-> [2]: https://lore.kernel.org/r/20240717213339.1921530-1-axelrasmussen@google.com
-> 
-> Alex Williamson (3):
->   vfio: Create vfio_fs_type with inode per device
->   vfio/pci: Use unmap_mapping_range()
->   vfio/pci: Insert full vma on mmap'd MMIO fault
-> 
->  drivers/vfio/device_cdev.c       |   7 +
->  drivers/vfio/group.c             |   7 +
->  drivers/vfio/pci/vfio_pci_core.c | 271 ++++++++-----------------------
->  drivers/vfio/vfio_main.c         |  44 +++++
->  include/linux/vfio.h             |   1 +
->  include/linux/vfio_pci_core.h    |   2 -
->  6 files changed, 125 insertions(+), 207 deletions(-)
-> 
-> --
-> 2.45.2.993.g49e7a77208-goog
-> 
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Suren Baghdasaryan <surenb@google.com>
+Subject: alloc_tag: outline and export free_reserved_page()
+Date: Wed, 17 Jul 2024 14:28:44 -0700
+
+Outline and export free_reserved_page() because modules use it and it in
+turn uses page_ext_{get|put} which should not be exported.  The same
+result could be obtained by outlining {get|put}_page_tag_ref() but that
+would have higher performance impact as these functions are used in more
+performance critical paths.
+
+Link: https://lkml.kernel.org/r/20240717212844.2749975-1-surenb@google.com
+Fixes: dcfe378c81f7 ("lib: introduce support for page allocation tagging")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202407080044.DWMC9N9I-lkp@intel.com/
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>	[6.10]
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Sourav Panda <souravpanda@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/mm.h |   16 +---------------
+ mm/page_alloc.c    |   17 +++++++++++++++++
+ 2 files changed, 18 insertions(+), 15 deletions(-)
+
+--- a/include/linux/mm.h~alloc_tag-outline-and-export-free_reserved_page
++++ a/include/linux/mm.h
+@@ -3177,21 +3177,7 @@ extern void reserve_bootmem_region(phys_
+ 				   phys_addr_t end, int nid);
+ 
+ /* Free the reserved page into the buddy system, so it gets managed. */
+-static inline void free_reserved_page(struct page *page)
+-{
+-	if (mem_alloc_profiling_enabled()) {
+-		union codetag_ref *ref = get_page_tag_ref(page);
+-
+-		if (ref) {
+-			set_codetag_empty(ref);
+-			put_page_tag_ref(ref);
+-		}
+-	}
+-	ClearPageReserved(page);
+-	init_page_count(page);
+-	__free_page(page);
+-	adjust_managed_page_count(page, 1);
+-}
++void free_reserved_page(struct page *page);
+ #define free_highmem_page(page) free_reserved_page(page)
+ 
+ static inline void mark_page_reserved(struct page *page)
+--- a/mm/page_alloc.c~alloc_tag-outline-and-export-free_reserved_page
++++ a/mm/page_alloc.c
+@@ -5805,6 +5805,23 @@ unsigned long free_reserved_area(void *s
+ 	return pages;
+ }
+ 
++void free_reserved_page(struct page *page)
++{
++	if (mem_alloc_profiling_enabled()) {
++		union codetag_ref *ref = get_page_tag_ref(page);
++
++		if (ref) {
++			set_codetag_empty(ref);
++			put_page_tag_ref(ref);
++		}
++	}
++	ClearPageReserved(page);
++	init_page_count(page);
++	__free_page(page);
++	adjust_managed_page_count(page, 1);
++}
++EXPORT_SYMBOL(free_reserved_page);
++
+ static int page_alloc_cpu_dead(unsigned int cpu)
+ {
+ 	struct zone *zone;
+_
+
+Patches currently in -mm which might be from surenb@google.com are
+
+alloc_tag-outline-and-export-free_reserved_page.patch
 
 
