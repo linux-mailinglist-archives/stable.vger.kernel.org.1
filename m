@@ -1,122 +1,107 @@
-Return-Path: <stable+bounces-60481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AAE39342D3
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 21:49:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05ED09342E7
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 22:04:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13BA91F230C6
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 19:49:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9480CB21B7A
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 20:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6DD1849D6;
-	Wed, 17 Jul 2024 19:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EE518411C;
+	Wed, 17 Jul 2024 20:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YEjgsDmZ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RH3+xGAa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B9D17F385;
-	Wed, 17 Jul 2024 19:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAFD17F385
+	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 20:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721245741; cv=none; b=BaSRmD43EiaVmTD3hWPqZ3yWrGAHIC5fbX/2C+JzIIXX0JK5l/ma3b0bvfWFxFosYzBYuDERr3BhhF4SyX8QPN/nccC1XOOXDqToRpn9XQkHBVwxW020Bf7TlWWgT6spS1jK/4vfTC4vxMGqlPch+lmrjC2uV3l2wRbH4Vkln/U=
+	t=1721246629; cv=none; b=DjXPYeY1DqvgcSgOZkVfF+2xR9GF7pM4UO9UvIfMp67VGiBJjBk09txK/RfTWSjADdE/S7Gk9UIQriXKFL7Imtufp5Xg7NbqEQlE/zOQlbTZCiJgblO8/mTMl9wvw/Zg59GUfOINc18pLtFGPOD7slCTHDjDK1nejB2/OuHgKhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721245741; c=relaxed/simple;
-	bh=ztfVopKRce9PjULPAeFojdN1XcUZFJMBcx7jSdMOvy0=;
-	h=Date:To:From:Subject:Message-Id; b=RgUgoe0p/7ZLSbhNQlF0zgUw1nqUcG5WPKgs8XqYjsXKaIJiQhaAarevorpY1CFz7ydXtNXKCAcz24W+jroKWEGM7D0ftMkAqruCGpuN3JoWh7tawHVoP2H9aEILsEM5NTMmmC+fi9QfYZZtl6xV+rIEpLGxjcSwZmQwoTliEoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YEjgsDmZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB4BC2BD10;
-	Wed, 17 Jul 2024 19:49:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1721245740;
-	bh=ztfVopKRce9PjULPAeFojdN1XcUZFJMBcx7jSdMOvy0=;
-	h=Date:To:From:Subject:From;
-	b=YEjgsDmZMZGvAi8ToB0nCMUUGOdHSiRLPJnz05tUdUpS7JLwIkghgMX5ISsl98elM
-	 cNdL2ks3pwjgYTHOuFTmeR2Z6bryxVQUyrryWtB2LkBlCgPfbXR8XYKfpQiUN2fpV7
-	 +7choyk4BJZuaAN1W+pqyQOvIk8J/TOarHROqTe0=
-Date: Wed, 17 Jul 2024 12:49:00 -0700
-To: mm-commits@vger.kernel.org,vgoyal@redhat.com,stable@vger.kernel.org,dyoung@redhat.com,bhe@redhat.com,ruanjinjie@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] crash-fix-x86_32-memory-reserve-dead-loop-retry-bug.patch removed from -mm tree
-Message-Id: <20240717194900.BAB4BC2BD10@smtp.kernel.org>
+	s=arc-20240116; t=1721246629; c=relaxed/simple;
+	bh=vMGDxu2RKF5jKma5R4sq0owsnuwyN3/lYJkehAE2H4w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TJGIK5dIOm8qZBq88/mA9gx8E75YAlosYkQQa6SbJwClTNkLapcZSA/4H1tC7lNG7YezTm/VV/WjP8iVM7anbe1hWZOCdhC+0SD9VENXEQX9q/BcXVzgUgPTmqduOoCgFBa7H6ATJ5QZvmODSe87A4XGhZeEdmw68mz5Vr8iutU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RH3+xGAa; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721246625;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=z/C3IQpGtU2AGOPpwHOlmqXZMKLhljDesKCWgyYBh64=;
+	b=RH3+xGAaCKe9M591sQrD0fFdllfAUQxDhfchFmavn325sTn+NxmmGWld9QgyFAvlF5Uq61
+	zejsldFm3tKXIEOVVNPw82e/2FA9bppXBcs6empooeeFy4mYaG8F5Bd+VVx7o7lJw/ntNo
+	feFOd/ZXB9ML76DZRgLFYnJwxrV8Zqw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-W8i5cfvMM1G_XRlrwBZO7w-1; Wed,
+ 17 Jul 2024 16:03:42 -0400
+X-MC-Unique: W8i5cfvMM1G_XRlrwBZO7w-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4F8FD1955D47;
+	Wed, 17 Jul 2024 20:03:41 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.36])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 93A4F19560B2;
+	Wed, 17 Jul 2024 20:03:39 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: Sebastian Reichel <sre@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	linux-pm@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] power: supply: axp288_charger: Fix constant_charge_voltage writes
+Date: Wed, 17 Jul 2024 22:03:32 +0200
+Message-ID: <20240717200333.56669-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
+info->max_cv is in millivolts, divide the microvolt value being written
+to constant_charge_voltage by 1000 *before* clamping it to info->max_cv.
 
-The quilt patch titled
-     Subject: crash: fix x86_32 memory reserve dead loop retry bug
-has been removed from the -mm tree.  Its filename was
-     crash-fix-x86_32-memory-reserve-dead-loop-retry-bug.patch
+Before this fix the code always tried to set constant_charge_voltage
+to max_cv / 1000 = 4 millivolt, which ends up in setting it to 4.1V
+which is the lowest supported value.
 
-This patch was dropped because an updated version will be merged
-
-------------------------------------------------------
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-Subject: crash: fix x86_32 memory reserve dead loop retry bug
-Date: Thu, 11 Jul 2024 15:31:18 +0800
-
-On x86_32 Qemu machine with 1GB memory, the cmdline "crashkernel=1G,high"
-will cause system stall as below:
-
-	ACPI: Reserving FACP table memory at [mem 0x3ffe18b8-0x3ffe192b]
-	ACPI: Reserving DSDT table memory at [mem 0x3ffe0040-0x3ffe18b7]
-	ACPI: Reserving FACS table memory at [mem 0x3ffe0000-0x3ffe003f]
-	ACPI: Reserving APIC table memory at [mem 0x3ffe192c-0x3ffe19bb]
-	ACPI: Reserving HPET table memory at [mem 0x3ffe19bc-0x3ffe19f3]
-	ACPI: Reserving WAET table memory at [mem 0x3ffe19f4-0x3ffe1a1b]
-	143MB HIGHMEM available.
-	879MB LOWMEM available.
-	  mapped low ram: 0 - 36ffe000
-	  low ram: 0 - 36ffe000
-	 (stall here)
-
-The reason is that the CRASH_ADDR_LOW_MAX is equal to CRASH_ADDR_HIGH_MAX
-on x86_32, the first high crash kernel memory reservation will fail, then
-go into the "retry" loop and never came out as below.
-
--> reserve_crashkernel_generic() and high is true
- -> alloc at [CRASH_ADDR_LOW_MAX, CRASH_ADDR_HIGH_MAX] fail
-    -> alloc at [0, CRASH_ADDR_LOW_MAX] fail and repeatedly
-       (because CRASH_ADDR_LOW_MAX = CRASH_ADDR_HIGH_MAX).
-
-Fix it by changing the out check condition.
-
-After this patch, it prints:
-	cannot allocate crashkernel (size:0x40000000)
-
-Link: https://lkml.kernel.org/r/20240711073118.1289866-1-ruanjinjie@huawei.com
-Fixes: 9c08a2a139fe ("x86: kdump: use generic interface to simplify crashkernel reservation code")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
+ drivers/power/supply/axp288_charger.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- kernel/crash_reserve.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/kernel/crash_reserve.c~crash-fix-x86_32-memory-reserve-dead-loop-retry-bug
-+++ a/kernel/crash_reserve.c
-@@ -420,7 +420,7 @@ retry:
- 		 * For crashkernel=size[KMG],high, if the first attempt was
- 		 * for high memory, fall back to low memory.
- 		 */
--		if (high && search_end == CRASH_ADDR_HIGH_MAX) {
-+		if (high && search_base == CRASH_ADDR_LOW_MAX) {
- 			search_end = CRASH_ADDR_LOW_MAX;
- 			search_base = 0;
- 			goto retry;
-_
-
-Patches currently in -mm which might be from ruanjinjie@huawei.com are
-
+diff --git a/drivers/power/supply/axp288_charger.c b/drivers/power/supply/axp288_charger.c
+index b5903193e2f9..aea17289a178 100644
+--- a/drivers/power/supply/axp288_charger.c
++++ b/drivers/power/supply/axp288_charger.c
+@@ -337,8 +337,8 @@ static int axp288_charger_usb_set_property(struct power_supply *psy,
+ 		}
+ 		break;
+ 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+-		scaled_val = min(val->intval, info->max_cv);
+-		scaled_val = DIV_ROUND_CLOSEST(scaled_val, 1000);
++		scaled_val = DIV_ROUND_CLOSEST(val->intval, 1000);
++		scaled_val = min(scaled_val, info->max_cv);
+ 		ret = axp288_charger_set_cv(info, scaled_val);
+ 		if (ret < 0) {
+ 			dev_warn(&info->pdev->dev, "set charge voltage failed\n");
+-- 
+2.45.2
 
 
