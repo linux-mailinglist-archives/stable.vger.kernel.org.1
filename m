@@ -1,150 +1,194 @@
-Return-Path: <stable+bounces-60434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F9D933CA3
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 13:55:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4817E933CC2
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 14:04:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE174281E86
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 11:55:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03B9C284E76
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 12:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5514517F389;
-	Wed, 17 Jul 2024 11:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336F317F505;
+	Wed, 17 Jul 2024 12:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vz8wPp57"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/TN3bt5"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268C145009;
-	Wed, 17 Jul 2024 11:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A4D17F4FD;
+	Wed, 17 Jul 2024 12:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721217315; cv=none; b=tvuEJhXfqVwLjPxY/jG8kV3gngeM2YI25RN65kKIXxWX2SaUVTCc1ATryY99gE0T37D1xEjt46Uef1hHP8eeLhCl9MVFco6amt5/svTLjw9cz6Niwi/qzwRqmVjvmgANFYUH2PAVhYeCXE3S9DkFCsIZc2xjlGoVX1Gr8InoAUw=
+	t=1721217881; cv=none; b=o6D4O7bnkOJaKaA/an236OJFdQIrvjI71lTPuO+0HlLJ6xcU34vTOrI2AUjFt7voaM1CL8bJA5dbDdkdrH/FK2r+AQKZY9sgWy02uy/suofxg1Js754gRN1Z+6XZz3aC9eu0rBALmDOrs96fUADTMWdQIinV2P+MbKWkefjgeNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721217315; c=relaxed/simple;
-	bh=ryFplDwaF9LrfXi9LMq+5WiAnqCBtaCywkMwnwyBkjs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fkHYNU/ZKMWxtIMsC//VgeChLqgWIyKhbx5iMrY0pLEZGDOXMbrVMI7+JBMLVRIwzJAhYeu9nB/BgTsPVTeWy/KKWarx8LHN+ttKSUBWvtg6RJJY7OGJGBhXoDAZQHRrMzjx3Zovw2E7g+EY6CGG5hpcz/mlsc5w7h1bHq8nVbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vz8wPp57; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721217313; x=1752753313;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ryFplDwaF9LrfXi9LMq+5WiAnqCBtaCywkMwnwyBkjs=;
-  b=Vz8wPp57WM/z7pMtJ8rUPkKyjivl09rR/RqQ2MNxtB7daqMSbQHmR/AS
-   Ucfn7dk9V43MYEU6nw/vAlfb+dvgc0838IGQ1COE96a6c1JNCveYOCHx+
-   04Ux2cwXInrDj8DZtofZsvpdI7dxL+jFlQSlLLRpbLs8ybhhRe+1TKtSx
-   0IYeCOAppQPuSqlQ73vzU1TqcvL1Vnuuc7ObMWb0k2iNfJjacBdd+WnB0
-   oXVgzw+vgG0yjjP3VfIuEseGuc/+67XJVDNReIXdvM9s9pwgSFVNL16WN
-   kuoWgESo7uK/BU//mrAy01J95+hvAOvb/GuKPSnmdd+5NWxHmq00+QtyJ
-   A==;
-X-CSE-ConnectionGUID: s1b6s4MyTe6TRpWMYtBBQg==
-X-CSE-MsgGUID: zRK0r//DRQGOQRWNCSg6TQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="21618510"
-X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; 
-   d="scan'208";a="21618510"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2024 04:55:12 -0700
-X-CSE-ConnectionGUID: WW7YfiZtSPuV/FAYAVfibQ==
-X-CSE-MsgGUID: 50N4wCG+QvCBSVg7wTTQVQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; 
-   d="scan'208";a="81407900"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa001.fm.intel.com with ESMTP; 17 Jul 2024 04:55:10 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id EB424161; Wed, 17 Jul 2024 14:55:08 +0300 (EEST)
-Date: Wed, 17 Jul 2024 14:55:08 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Mel Gorman <mgorman@suse.de>, Vlastimil Babka <vbabka@suse.cz>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jianxiong Gao <jxgao@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: Fix endless reclaim on machines with unaccepted
- memory.
-Message-ID: <xtcmz6b66wayqxzfio4funmrja7ezgmp3mvudjodt5xfx64rot@s6whj735oimb>
-References: <20240716130013.1997325-1-kirill.shutemov@linux.intel.com>
- <ZpdwcOv9WiILZNvz@tiehlicka>
+	s=arc-20240116; t=1721217881; c=relaxed/simple;
+	bh=0UsurCWC37/vPF/S47s23Egqb3NYKAVgcUWW5RitYiM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=is3uzhy1xe5N64TCFlhyfr/wnyX211Wdn+OaiSf5m1dkgxYWVwWbD/KjNrvAZVsv1iQ3BbJDYkgIZ8yU2tRqb/pLaj3fyrvdGQAP9OQ9EeVXiNgsBm69FircdHkl9c62HtqoqUG8du6ijIJDjwdbyQGOCsa2cy8FaT5CPY0xQ8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/TN3bt5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAC5C32782;
+	Wed, 17 Jul 2024 12:04:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721217880;
+	bh=0UsurCWC37/vPF/S47s23Egqb3NYKAVgcUWW5RitYiM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=P/TN3bt5zqPl4Ver7cNMAMsDz/+jWOSAdS0JUo5xbuFa5SWd4CXRE6kEyJmnqcLyt
+	 9IdUOmUJ8+ovDGmAm/pgYUlCG8WdOHWtHRDsMhpPiiKVVS3XVaO1LIr5OV3oMC0Zi4
+	 hA+PLviDR59AvA4os9LaxTvflzK/agHglCDzk3lHUlNm3TrufLaHHJX2r/LVfgTw5/
+	 18Fp+0ccamTp2bk42HanewkP+tESle1OVH7ObVErE1dhzwJhR0PfA20IVjONV2tTi4
+	 wNA8rGYS3LsTRymWrvtv0qQJFTK54ZHh6lsCS42fBBK6Xz6BnHufnMizowllx+VZqV
+	 nePTpkim/Spzw==
+Message-ID: <98423f21-c661-4d59-bc69-9958a69b2dd8@kernel.org>
+Date: Wed, 17 Jul 2024 21:04:38 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZpdwcOv9WiILZNvz@tiehlicka>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "scsi: sd: Do not repeat the starting disk
+ message"
+To: Johan Hovold <johan@kernel.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Bart Van Assche <bvanassche@acm.org>, linux-scsi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240716161101.30692-1-johan+linaro@kernel.org>
+ <39143ca8-68e4-44eb-8619-0b935aa81603@kernel.org>
+ <ZpeIOsEbBIho9P_1@hovoldconsulting.com>
+ <bb277462-579b-4dc3-b63c-bf5768dd1ce4@kernel.org>
+ <ZpeqNohYoQI5HQP-@hovoldconsulting.com>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <ZpeqNohYoQI5HQP-@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 17, 2024 at 09:19:12AM +0200, Michal Hocko wrote:
-> On Tue 16-07-24 16:00:13, Kirill A. Shutemov wrote:
-> > Unaccepted memory is considered unusable free memory, which is not
-> > counted as free on the zone watermark check. This causes
-> > get_page_from_freelist() to accept more memory to hit the high
-> > watermark, but it creates problems in the reclaim path.
-> > 
-> > The reclaim path encounters a failed zone watermark check and attempts
-> > to reclaim memory. This is usually successful, but if there is little or
-> > no reclaimable memory, it can result in endless reclaim with little to
-> > no progress. This can occur early in the boot process, just after start
-> > of the init process when the only reclaimable memory is the page cache
-> > of the init executable and its libraries.
+On 7/17/24 20:25, Johan Hovold wrote:
+> On Wed, Jul 17, 2024 at 07:46:14PM +0900, Damien Le Moal wrote:
+>> On 7/17/24 18:00, Johan Hovold wrote:
+>>> On Wed, Jul 17, 2024 at 07:48:26AM +0900, Damien Le Moal wrote:
+>>>> On 7/17/24 01:11, Johan Hovold wrote:
+>>>>> This reverts commit 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4.
+>>>>>
+>>>>> The offending commit tried to suppress a double "Starting disk" message
+>>>>> for some drivers, but instead started spamming the log with bogus
+>>>>> messages every five seconds:
+>>>>>
+>>>>> 	[  311.798956] sd 0:0:0:0: [sda] Starting disk
+>>>>> 	[  316.919103] sd 0:0:0:0: [sda] Starting disk
+>>>>> 	[  322.040775] sd 0:0:0:0: [sda] Starting disk
+>>>>> 	[  327.161140] sd 0:0:0:0: [sda] Starting disk
+>>>>> 	[  332.281352] sd 0:0:0:0: [sda] Starting disk
+>>>>> 	[  337.401878] sd 0:0:0:0: [sda] Starting disk
+>>>>> 	[  342.521527] sd 0:0:0:0: [sda] Starting disk
+>>>>> 	[  345.850401] sd 0:0:0:0: [sda] Starting disk
+>>>>> 	[  350.967132] sd 0:0:0:0: [sda] Starting disk
+>>>>> 	[  356.090454] sd 0:0:0:0: [sda] Starting disk
+>>>>> 	...
+>>>>>
+>>>>> on machines that do not actually stop the disk on runtime suspend (e.g.
+>>>>> the Qualcomm sc8280xp CRD with UFS).
+>>>>
+>>>> This is odd. If the disk is not being being suspended, why does the platform
+>>>> even enable runtime PM for it ? 
+>>>
+>>> This is clearly intended to be supported as sd_do_start_stop() returns
+>>> false and that prevents sd_start_stop_device() from being called on
+>>> resume (and similarly on suspend which is why there are no matching
+>>> stopping disk messages above):
+>>>
+>>> 	[   32.822189] sd 0:0:0:0: sd_resume_common - runtime = 1, sd_do_start_stop = 0, manage_runtime_start_stop = 0
+>>
+>> Yes, so we can suppress the "Starting disk" message for runtime resume, to match
+>> the runtime suspend not having the message.
 > 
-> How does this happen when try_to_accept_memory is the first thing to do
-> when wmark check fails in the allocation path?
-
-Good question.
-
-I've lost access to the test setup and cannot check it directly right now.
-
-Reading the code Looks like __alloc_pages_bulk() bypasses
-get_page_from_freelist() where we usually accept more pages and goes
-directly to __rmqueue_pcplist() -> rmqueue_bulk() -> __rmqueue().
-
-Will look more into it when I have access to the test setup.
-
-> Could you describe what was the initial configuration of the system? How
-> much of the unaccepted memory was there to trigger this?
-
-This is large TDX guest VM: 176 vCPUs and ~800GiB of memory.
-
-One thing that I noticed that the problem is only triggered when LRU_GEN
-enabled. But I failed to identify why.
-
-The system hang (or have very little progress) shortly after systemd
-starts.
-
-> > To address this issue, teach shrink_node() and shrink_zones() to accept
-> > memory before attempting to reclaim.
-> > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Reported-by: Jianxiong Gao <jxgao@google.com>
-> > Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
-> > Cc: stable@vger.kernel.org # v6.5+
-> [...]
-> >  static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
-> >  {
-> >  	unsigned long nr_reclaimed, nr_scanned, nr_node_reclaimed;
-> >  	struct lruvec *target_lruvec;
-> >  	bool reclaimable = false;
-> >  
-> > +	/* Try to accept memory before going for reclaim */
-> > +	if (node_try_to_accept_memory(pgdat, sc)) {
-> > +		if (!should_continue_reclaim(pgdat, 0, sc))
-> > +			return;
-> > +	}
-> > +
+> No, the point is that the stopping disk message is also suppressed when
+> sd_do_start_stop() returns false (i.e. when sd_start_stop_device() is
+> never called). See sd_suspend_common().
 > 
-> This would need an exemption from the memcg reclaim.
+>>>> Are you sure about this ? Or is it simply that
+>>>> the runtime pm timer is set to a very low interval ?
+>>>
+>>> I haven't tried to determine why runtime pm is used this way, but your
+>>> patch is clearly broken as it prints a message about starting the disk
+>>> even when sd_do_start_stop() returns false.
+>>
+>> The patch is not *that* broken, because sd_do_start_stop() returning false mean
+>> only that the disk will *not* be started using a START STOP UNIT command. But
+>> the underlying LLD must start the drive. So the message is not wrong, even
+>> though it is probably best to suppress it for the runtime case.
+> 
+> From a quick look at the code I interpret the (original) intention to be
+> to only print these messages in cases were sd_start_stop_device() is
+> actually called.
+>  
+>> The point here is that sd_runtime_resume() should NOT be called every 5s unless
+>> there is also a runtime suspend in between the calls. As mentioned, this can
+>> happen if the autosuspend timer is set to a very low timeout to aggressively
+>> suspend the disk after a short idle time. That of course makes absolutely no
+>> sense for HDDs given the spinup time needed, but I guess that is a possiblity
+>> for UFS drives.
+> 
+> I don't see anything obviously wrong with this for things like UFS.
+> 
+> Here's what some printk reveal for the Qualcomm platform in question:
+> 
+> [   50.659451] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_resume
+> [   50.669756] sd 0:0:0:0: sd_resume_runtime
+> [   52.911603] sd 0:0:0:0: sd_suspend_runtime
+> [   52.921707] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_suspend
+> [   53.472894] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_resume
+> [   53.481464] sd 0:0:0:0: sd_resume_runtime
+> [   55.550493] sd 0:0:0:0: sd_suspend_runtime
+> [   55.559697] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_suspend
+> [   58.595554] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_resume
+> [   58.607868] sd 0:0:0:0: sd_resume_runtime
+> [   60.667330] sd 0:0:0:0: sd_suspend_runtime
+> [   60.677623] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_suspend
+> [   63.714149] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_resume
+> [   63.724498] sd 0:0:0:0: sd_resume_runtime
+> [   65.772893] sd 0:0:0:0: sd_suspend_runtime
+> [   65.784696] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_suspend
+> [   68.836015] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_resume
+> [   68.849576] sd 0:0:0:0: sd_resume_runtime
+> [   71.359102] sd 0:0:0:0: sd_suspend_runtime
+> [   71.368928] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_suspend
+> [   73.955031] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_resume
+> [   73.963040] sd 0:0:0:0: sd_resume_runtime
+> [   76.032153] sd 0:0:0:0: sd_suspend_runtime
+> [   76.042100] ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_suspend
+> 
+> Looks like a 2-second autosuspend timeout somewhere, and the controller
+> stays suspended for 1-3 seconds in between.
 
-Hm. Could you elaborate why?
+OK. So all good and nothing suspicious with this. That is only very aggressive
+autosuspend. As I said, let's revert and I will rework the start/stop messages.
+
+> 
+>>>> It almost sound like what we need to do here is suppress this message for the
+>>>> runtime resume case, so something like:
+>>>
+>>> No, that would only make things worse as I assume you'd have a stopped
+>>> disk message without a matching start message for driver that do end up
+>>> stopping the disk here.
+>>
+>> OK. so let's revert this patch and I will rework that message to be displayed
+>> only on device removal, system suspend and system shutdown.
+> 
+> Sounds good.
+> 
+> Johan
+> 
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Damien Le Moal
+Western Digital Research
+
 
