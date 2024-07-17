@@ -1,142 +1,95 @@
-Return-Path: <stable+bounces-60396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6087D9337B5
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 09:19:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3CCD9337F3
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 09:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 912301C223A3
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 07:19:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 988C01F2208C
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 07:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC971BF37;
-	Wed, 17 Jul 2024 07:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C0F12E7F;
+	Wed, 17 Jul 2024 07:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="PxRs7jWb"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="lvdOTDkR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667971CFA9
-	for <stable@vger.kernel.org>; Wed, 17 Jul 2024 07:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1349B1BF2A;
+	Wed, 17 Jul 2024 07:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721200758; cv=none; b=QVrhkqvfvj4iX9ROQ98RQbMVpMAsGS19Lq+FoGJG5/v8tXMqGmVHvSEeH5eij64z381bEmVdovXLFM0Eh+bOmTh4w7mXNn2YdSIxusauXw4zsAmVUUywqKxVQejPoNEN9/z3HrUNzbSTkFwZfEEpHyoEAGTk+mKIXyI141InQQs=
+	t=1721201075; cv=none; b=WMZpock+RIyzQuG8x/DdWLHc3Jmr3gI3KE4+DLBpSwsj5hayUiVON8lAtMBTYF6vaUYgPCS8C0kxEufkVlBYRIfK26cuk1TUeFK5gnCtPxqJZosMy0Qsf3mjIx05oLx34BVjAssYm3ZmLGaXgvRzg37CvPakf0hhcfx8TmAn9/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721200758; c=relaxed/simple;
-	bh=14a3EXAYx3n2AP13QV1T3S3XN5vJQPlb//kGSBxKTV8=;
+	s=arc-20240116; t=1721201075; c=relaxed/simple;
+	bh=z5MBYlG7Udg6jwHJE+vQ9//Mgm9ocI5FfN+SumzcXdc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vCoSCBjd7x04AKlG5kUKNTseOCP5oBY3JcBZaX1J0Ofde+6KF5QXfEM7KBhKzRF9em7Bu0z4D7ZNBzGW/3naS4Rnz2eVYtj3fnlFcM0qdZu7RcCDlpIVWAq+qnW0U7IkajhFOW3fOoV+wPR/JudQQqVWFtCUIoWtV1Iu8HT2QwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=PxRs7jWb; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a77c1658c68so673551666b.0
-        for <stable@vger.kernel.org>; Wed, 17 Jul 2024 00:19:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1721200754; x=1721805554; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ArgSkToA2nsjWvuTjSuyJoQaI0tJr7zvtfDgU/aUVoY=;
-        b=PxRs7jWbnOBywrRY+e752krtFT84TzIs8w/QBRfO6YgqtDgPU4b15aE2iiMWFvsiWr
-         1gLk2Er1i8zHDPqbR1G/l+bkez7d4+VXFhX/EAU5zH2IozG8j7EguTun8KJkQP2j2cHh
-         Qc4+Hdled9Oyv7V06h3nIdPC07suwas7zEybMupm27XlLUKJ4Z4DcGLCW07+JD2UdxUs
-         p0zjN4JtqZFyiaW2yaLGOVfuR2KSTlozROS3T10VhYeC4vBNBr2583jowAOHbo+Ohesh
-         DHNI4aUKfMPYy9mSU9FVMXvT6TUAPNL7L3yFL7p7Dsg0X/7AGMAofdGESZ9dxlDlXjrL
-         UU2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721200754; x=1721805554;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ArgSkToA2nsjWvuTjSuyJoQaI0tJr7zvtfDgU/aUVoY=;
-        b=K6re1rluDkampYkRMN+MFc6a/vJjPT8eM26Qi6lcfllgWJqgpdY0Q1I2OTrhOm4HN8
-         kHl4x4JHMfGX0bUzo6Eq7yQuL+IgA5gZ2yHy27xR7yAnkAZ8RfrhRHVNjADvdzJkDq/Q
-         rqgiKlPCtS+a2Vw9GPpKtyks02O+YxfcNN1PfXQVL88zrs5b65BWdjK/XB5yh5iFiUJz
-         /dg9/OjIPbwtWWux7Q5qC67T4sIzLCA0NBJb6i+ZY9XzDNHT+NEpumXXEhGqj6bCWf1I
-         4iVjF0hO9iSEiLgKLXkDqsQLF4IZ4mXpd0upCL7u3txh0ZbByJN5/1IGhM1WtuCtLmYS
-         wzSA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCzuYCeGFpGWocFPafVZ39VIGYOXa1zedZhGf1j9LXUsve0YhSblwX+F7dd6x489O6/GJf3HamhXhDEMJY6/mB4tJmW7om
-X-Gm-Message-State: AOJu0YxGs2pG7mBTnMY3lsFOlW6G7pGNUCji876V4fCHBRHgxA4HjHvo
-	gp0nzYCCCmtmLEPyRYc8hLoGs/BQv0ktDfgSObrFkXR9WrERnyhK4PkQ4gSaY5U=
-X-Google-Smtp-Source: AGHT+IEFiz1UoJ1wRFUr8yrOzP0AGE8hgSRnejnhyVKNJBJmgOedBuq6BWNoanv2GWM0dmVqE7bphw==
-X-Received: by 2002:a17:906:2b4b:b0:a77:cca9:b21c with SMTP id a640c23a62f3a-a7a011a1220mr45969466b.34.1721200753714;
-        Wed, 17 Jul 2024 00:19:13 -0700 (PDT)
-Received: from localhost (109-81-86-75.rct.o2.cz. [109.81.86.75])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc7f1e04sm413330566b.127.2024.07.17.00.19.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jul 2024 00:19:13 -0700 (PDT)
-Date: Wed, 17 Jul 2024 09:19:12 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Mel Gorman <mgorman@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Jianxiong Gao <jxgao@google.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm: Fix endless reclaim on machines with unaccepted
- memory.
-Message-ID: <ZpdwcOv9WiILZNvz@tiehlicka>
-References: <20240716130013.1997325-1-kirill.shutemov@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=WMNH2jCF4N+Tiy8JE7D8tlIHwWdtQcTd+axfeUKLFv5Kp1qT2bS52R1Igau5/wl/mqH3+yvHFknz055DSAlQ+KQG+EggW2aDu4w3qDRfI2uuS5QfScTQqxfOFIRq6lvUpoDWhPHzxbLvUCUIY7CHxhUw1xzGlDJ61ILc4cMx66Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=lvdOTDkR; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id B0DD314C2DC;
+	Wed, 17 Jul 2024 09:24:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1721201071;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/Rg3Z3WdvS72e3JZ+zdlDbXW6BPrLhver+qd+M8zc8Q=;
+	b=lvdOTDkROQbmAdwOGafVDaLtdQFUCowfzT5YHh6qa8Sd97m0+GwS5678ZGpPdidf1xnOsO
+	JpryON0lgeDCtNhULOh67MNCevi2vy+1K16KG/RaTJ8iahwapwD/3bsQDOPvPZs9AKVijX
+	GalgGHiqN/Ng1tK4HrsglrBGDG053/tDQv/pNrChwfS5ZvNC6Ye1GVC5OW9Pe0pgDZZf6/
+	MxVDHvHnzQBocwWnTFe4slt25+OPHgdhUWI+TtTwWM33nbJsAq7KkiXFhhnAJ+IWrJWVDk
+	GXNftrpTMv2x07lQH8GGjSerCXjzx9/rkJHTKf84oLOE7GSa4B6K8PU9XyiRsg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 1b23f0c2;
+	Wed, 17 Jul 2024 07:24:23 +0000 (UTC)
+Date: Wed, 17 Jul 2024 16:24:08 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/109] 5.10.222-rc2 review
+Message-ID: <ZpdxmEjmUqqERShV@codewreck.org>
+References: <20240717063758.061781150@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240716130013.1997325-1-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20240717063758.061781150@linuxfoundation.org>
 
-On Tue 16-07-24 16:00:13, Kirill A. Shutemov wrote:
-> Unaccepted memory is considered unusable free memory, which is not
-> counted as free on the zone watermark check. This causes
-> get_page_from_freelist() to accept more memory to hit the high
-> watermark, but it creates problems in the reclaim path.
+Greg Kroah-Hartman wrote on Wed, Jul 17, 2024 at 08:39:31AM +0200:
+> This is the start of the stable review cycle for the 5.10.222 release.
+> There are 109 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> The reclaim path encounters a failed zone watermark check and attempts
-> to reclaim memory. This is usually successful, but if there is little or
-> no reclaimable memory, it can result in endless reclaim with little to
-> no progress. This can occur early in the boot process, just after start
-> of the init process when the only reclaimable memory is the page cache
-> of the init executable and its libraries.
-
-How does this happen when try_to_accept_memory is the first thing to do
-when wmark check fails in the allocation path?
-
-Could you describe what was the initial configuration of the system? How
-much of the unaccepted memory was there to trigger this?
-
-> To address this issue, teach shrink_node() and shrink_zones() to accept
-> memory before attempting to reclaim.
+> Responses should be made by Fri, 19 Jul 2024 06:37:32 +0000.
+> Anything received after that time might be too late.
 > 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reported-by: Jianxiong Gao <jxgao@google.com>
-> Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
-> Cc: stable@vger.kernel.org # v6.5+
-[...]
->  static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
->  {
->  	unsigned long nr_reclaimed, nr_scanned, nr_node_reclaimed;
->  	struct lruvec *target_lruvec;
->  	bool reclaimable = false;
->  
-> +	/* Try to accept memory before going for reclaim */
-> +	if (node_try_to_accept_memory(pgdat, sc)) {
-> +		if (!should_continue_reclaim(pgdat, 0, sc))
-> +			return;
-> +	}
-> +
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.222-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-This would need an exemption from the memcg reclaim.
+Tested 3fac7bc30eab ("Linux 5.10.222-rc2") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
->  	if (lru_gen_enabled() && root_reclaim(sc)) {
->  		lru_gen_shrink_node(pgdat, sc);
->  		return;
-
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 -- 
-Michal Hocko
-SUSE Labs
+Dominique Martinet
 
