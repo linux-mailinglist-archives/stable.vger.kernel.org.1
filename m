@@ -1,93 +1,96 @@
-Return-Path: <stable+bounces-60424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A92F933B75
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 12:51:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6819C933BAB
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 13:04:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B86981F2312F
-	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 10:51:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A16A1C22B5A
+	for <lists+stable@lfdr.de>; Wed, 17 Jul 2024 11:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF9117E905;
-	Wed, 17 Jul 2024 10:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079DB17F38D;
+	Wed, 17 Jul 2024 11:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="baBtptbc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PJUgA8zR"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F811878;
-	Wed, 17 Jul 2024 10:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DB514A61B;
+	Wed, 17 Jul 2024 11:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721213455; cv=none; b=udgnReOjTOwDY0rZyZtnXLEp+tHtneh4BsVkJ9V6otBbJaATgOXbLvnuykWdBlLCGrrGWY2yPhMAAHIohpnjm/0iFoTaiWJv51vDp9lF5FaZIEhHhCnDlFYMBOuwnHB3eABU5iVpU380R6RLF2bPLQX2x/CRXHVmUZKt/YKw0cY=
+	t=1721214273; cv=none; b=ehuuLIaDDkggFFo7IaURIs+w8oPsbn5q6nU8bHZUaTkglXzDScI3Hmyg5PSRtjUbFq+JhNTpzG9QM8eEXcLLT7YIKLjDjbA4x5Guvhtz9WkeQCcLP1pOo6T5a2dvIXZLIPayqWvJw6QBzujc6EzleNMUUEaisL9d6lyU0jhB3wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721213455; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=a5FsuiD+2mIv8AvTUUcwaav/vi62dVYVj4IjWiBWQLqw8V19wxHwbL/HRi7sF5WhPOeHSK7lLL/yU26IcOljCns+tHNiEna69zHRCbhCrYz+bGwFjAbpz0LJCaua43lEj9hIIqNxKvgiCxnSyWzqbBx3D2Kvuc8agxMNKzxL6/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=baBtptbc; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1721213450; x=1721818250; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=baBtptbccu2gz/BAzLtDu5AmeXpHq+Ag1PcfQDcCeBuHRCxnBCSeq9C/mOLxRl8T
-	 HfCcp3r5GlHRzS1EDMU9iJHxMkW82uXfDzKGJeaPJI7v9V+u4B31BwnheZexaXSpZ
-	 HGRIrPGKVGvv03UiLjDIzfLRhCbRja5XW1WlKFjxjngXp2fmJBdpJpyU7KKXvwvdh
-	 pUHIO9J6D33ruoz9RojNcHOIXH9m7wGdphXU1QEhkkgxRCEVqQrVs0/DDbUMygyjX
-	 U7baInkZgSR7Hihjnf6314+JAVvy/24ryTGi3sycBDIfQjY6OOtQmFCGfk9wIJ45x
-	 3oPB+pV6Vh6ATTD4DA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.35.96]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MwQT9-1sAzzb1trR-00y6Gi; Wed, 17
- Jul 2024 12:50:50 +0200
-Message-ID: <94b96235-4572-4cbc-8ac2-891c1dcfe3d4@gmx.de>
-Date: Wed, 17 Jul 2024 12:50:50 +0200
+	s=arc-20240116; t=1721214273; c=relaxed/simple;
+	bh=b7LvGuAMDgLWRLN0jDRswesp0GHvGFFR+0W1/+lWb4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Opw9eMpBk2LxLkw0aNw8mieFw0EKWAK/l1e74low1OA8vfrAQluz9uTAVoEbmd+iXBNCJd5IfeEZZfsDLZibqam3Y9B4nXzyZkHNIV2o04+T4oMkd018RniisWyogorn1PhNFpq58BEcbfXdLE9o9BNdSpNsxZn+PHoWmO3MQFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PJUgA8zR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273F6C32782;
+	Wed, 17 Jul 2024 11:04:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721214273;
+	bh=b7LvGuAMDgLWRLN0jDRswesp0GHvGFFR+0W1/+lWb4M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PJUgA8zRlJ+M3frjrkEac7/suB52KHAsJR6ANkYtUeVH1ftg5kQo6eYqoOHaYRl2l
+	 XGjTTYG9kZhq+6jjwYW0MG32qZqJQWuzWVN0EwBY5Cw68c9Ru2l2wj9Qt5vy2KCq7O
+	 cVJn6TdQCduegz3MHwB8sEvE0MVdLcC9sGI4ogOLdSToawmXA6SAdpPLof8nG98mYM
+	 QQozqJzZ+w+7e/qlJfW6g3pdKsfIrEES8NIkdsC2G2cXd95vcZ5Peyb9hH5eIYUJqL
+	 wnjFd3C1etmBw/JfXNOIZsw/5TszyiR65EDJc8SA3J7Iv+F7E6UCQJ9K3VTxIEFOAB
+	 bbZWeQmIhB71g==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1sU2SY-000000004xL-2tym;
+	Wed, 17 Jul 2024 13:04:34 +0200
+Date: Wed, 17 Jul 2024 13:04:34 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hansverk@cisco.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Milen Mitkov <quic_mmitkov@quicinc.com>,
+	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] media: qcom: camss: Remove use_count guard in
+ stop_streaming
+Message-ID: <ZpelQj6HufZTe52d@hovoldconsulting.com>
+References: <20240716-linux-next-24-07-13-camss-fixes-v2-0-e60c9f6742f2@linaro.org>
+ <20240716-linux-next-24-07-13-camss-fixes-v2-1-e60c9f6742f2@linaro.org>
+ <ZpeJmWTfZGUXsc7K@hovoldconsulting.com>
+ <2d8ac288-da60-490a-a6ac-ebe524e3fc21@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ronald Warsow <rwarsow@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.9 000/142] 6.9.10-rc2 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:DFCMSvfhYijB74j3gFyTUJ/Czlldfk0+b+11xIC0rhuB50xC8qh
- zIYw0KN4Y+Pt3rPcwxgj2l0bg9HAlrCkhLZEkXR3n4Pnhc7IauWqQZc+xD+v39crGz83BGi
- a8wyKOwHgzmQQnoRgUiaJ5VWmnaf7HgkwqevHzG97nAMzzhzD8qsngeO/m2b6Hj81hHPRZ8
- 158Iwx/kSOmuEF1L/Os1w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:8dHNIc+lvQE=;uw13cgEBcD0j+SxoVlrpT1Rjn4u
- hyXJI3XcVtKCId+41FEGhV3AZo30WKEymbkjNMf0e+bLFxjIWulCY08xYmdcrs+2Y+F1VKqDM
- dgYyn+htHHvJ5uFLL0StDRfcgUxCRbFmngSfK25R594It7hAVorn89k6X+sJK7jK9fFMCO0Za
- uMZmFu2uy4uMIfTwo+DGacTKYhyMfySg61AJFrEuyLe6vDwRTWqoV7Byvu03tyCRqAUdkk4iK
- k60f7Z6FaGwMHRpJYsGz8MaHVepuHZn1uWTep6NKaLf16Wg9SJFy/1jgKPf0H/sKa4On7jy6e
- fZi6sM/bu6zLLbz/XCBqqfhfdznGaC9heRmV+PhCrck/v9aDAcFqExGV/0OAh/t2iSdnkx/aX
- x6CHaFf1XKAsSgr6U/aZitNMtbNOuF9CpIp2XbWHgy8uxEHbg4rXTW907SVsNiJ8U1DvvxBxf
- elEPeIhBbjimymzAauChT7IR9UPXHmZ0aKLqObZoLPiVneKGkH7+UxdNE9oJ0xZSc24Xfa/k0
- lQjoqQqF9i0Mo+eVQnpoVoYUEZlIDJASZKljrAk1nv6wRHoZk1WeqYPwj586chzDnYVbAMltv
- VMLVmtMG/zHazaej3pWW1945VoM/Rxd7bG2hMPEnh5Er45pZin5vYEBoTXgxrIx4QDqhXmh2u
- UdMKpv85dFt/edwmlHAJPK7bC2RVP75lfxpWP/uur6S/uW59D5WH/IVtZf65NsEWoqTxKkO8M
- ZZCjUYm745tZt8qHBSwbEi7r8uY5XIXAZzK03gkMPqstcR11Yy0eVdUVckCarHBolqvf/Puza
- KP9IjRc7ZGGHq+fRksB96CeA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2d8ac288-da60-490a-a6ac-ebe524e3fc21@linaro.org>
 
-Hi Greg
+On Wed, Jul 17, 2024 at 11:43:02AM +0100, Bryan O'Donoghue wrote:
+> On 17/07/2024 10:06, Johan Hovold wrote:
+> >> The use of use_count like this is a bit hacky and right now breaks regular
+> >> usage of CAMSS for a single stream case. As an example the "qcam"
+> >> application in libcamera will fail with an -EBUSY result on stream stop and
+> >> cannot then subsequently be restarted.
+> > No, stopping qcam results in the splat below, and then it cannot be
+> > started again and any attempts to do so fails with -EBUSY.
+> 
+> I thought that's what I said.
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+I read the above as if stopping the stream fails with -EBUSY, when it's
+really restarting the stream that fails that way after the first stop.
 
-Thanks
+> Let me reword the commit log with your sentence included directly :)
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Sounds good.
 
+Johan
 
