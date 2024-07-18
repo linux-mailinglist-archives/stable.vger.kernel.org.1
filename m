@@ -1,176 +1,116 @@
-Return-Path: <stable+bounces-60569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6239350F6
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 18:56:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538E49350F9
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 18:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AF841F227FC
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 16:56:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 849F11C21B89
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 16:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A85014532F;
-	Thu, 18 Jul 2024 16:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E60145332;
+	Thu, 18 Jul 2024 16:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="btCAZctD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H0OtqhnX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38322144D13
-	for <stable@vger.kernel.org>; Thu, 18 Jul 2024 16:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F17144D01;
+	Thu, 18 Jul 2024 16:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721321790; cv=none; b=gjUzdcqpGlVQc3QYE2dMRf7mdRim/1YHR9VIq0bl3RHpjCaPNI7SET2OAUKUrWOwnilAEmDWTRFbY6aFVm0sMk7Na8TCeo9z2+zXekidRaYOjIW3agfHn8aMoDycepCAjizDHbJMuXTmY9TfUWGlss7Q7njHCtTnif88yGG+FT4=
+	t=1721321811; cv=none; b=rP6CRR08OYWS06QTAzvWql5zDCJY/vUtqWpwMFWA4eMRfoW5icQffSQffMOkLNEbZ0c3yBsj9yEMXfixlp6JcPv29RcCdWhFjX0OxWGFJR9xAsiDcK3p4QDivB0D0awBVe/rJCXw+dhp7JSSrQu7H6qD8tE5UFgIw0dfIuetJCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721321790; c=relaxed/simple;
-	bh=/kNrC96SLa9pMwYKkTiBRBrhLaOWqYWyF4WqRaXV5nY=;
+	s=arc-20240116; t=1721321811; c=relaxed/simple;
+	bh=vNycuE6S7BuQIAvXu3VmSLPTI+xFJmtdQWvVxVWu2Yg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ERYuHzeasNhgL6qW+YP4bcE4MK7QZ/YNqZmbvTfCZ/ABYIBorScjxPeWVVlBczkrfyPD1hrVx6i8sO5dTyXcDWskLthNh4Z6Fm13kmz55ncl+gMhuj9UQgSBaPTyk04g9tPsjKrVCd0zAxF5dS8WfDxCUMOT6dz0EaUkctb/u7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=btCAZctD; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-368712acb8dso31836f8f.2
-        for <stable@vger.kernel.org>; Thu, 18 Jul 2024 09:56:28 -0700 (PDT)
+	 To:Cc:Content-Type; b=RieT1M8axG5eOG6cxqV9SK08HVZFyaSCxAAjA8J8A01NBBlo3LHGfaQjfVGBVZCrkNXcyVaLTLHBTGpHpeJ5gCi1tsDgdslu7WxHxinAmSCGOCzfUHSMA8hXhitxWNmfMRHKMMCfClqffZwlzIWee4Vg0fzp5HptJhoVz0YMYSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H0OtqhnX; arc=none smtp.client-ip=209.85.217.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-48ff19d7074so434045137.1;
+        Thu, 18 Jul 2024 09:56:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721321787; x=1721926587; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c08PzTn2tFJrcWBeS0gm34IumJSEF8qLdqwSHSTODjY=;
-        b=btCAZctDDIaWkC8VouZn2lmOgFzS3ktEcO3kCHRZZMgoPu7UCakUa1chnOhtBGYXB3
-         0gs5tqXZgGzyG2W2VvvoVhzP9NQMlvFwt4zVaCRae2NQpRcEjGfh6hPhjP4TUOTo8vBA
-         QYO9O93idXfhZGw5l9v/fP1YHwMr69piGcyuZ09p0PrgbFcDJhDzPtSoryz9MW7Xw1jY
-         6CWc4pb6HFPgwwt4E4hy6oag7A/5/DshiloVwk5LdOJN68eY/rB0JLdzdRQMm/vZC3HV
-         9zM6M1NDTdGWOgNRWRKBun/jsGJyQejJHRPFNUK6ypqmLntr5spnJvVl2C+6b8IsWNtN
-         l8WQ==
+        d=gmail.com; s=20230601; t=1721321809; x=1721926609; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=N6aEJS3ZPzDIEoyWlBsShm3zWqq8TNQ9J6QXNez4EB8=;
+        b=H0OtqhnXCMoq4ggDGWWYoNJijliGkub56FM9DCdGA9VSF/YOzzvmwPUfKiL7NX1hxM
+         5TE32zZhy6Ep2kQAz6yOJH7vsTNFCQPlJVi+bdB0Bkqqb6ADRpbZZiM4FlQDDCKHKjey
+         3Kpz+BiQ7U4nRo7pzjWG1gqyQdeCruUMd6sUwWeztKyQYGE5PSZLgfYg8iLntrWW9/Ik
+         Vid6fh1nlJK9ZtTeLlxQNx6GBrxEhz5JW+EbsO5j68MUzvN9wtCAu1A4dpGhuduP2Qvo
+         76LtHtdmmFLYgin+G72yp2bCtbGslbswDHLmFJmi9tY87X3k2PEJfxyUbwZTau9YPH4S
+         a1bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721321787; x=1721926587;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c08PzTn2tFJrcWBeS0gm34IumJSEF8qLdqwSHSTODjY=;
-        b=NnL3pxaoOkaCHfJ0XG7Ly2dddCEjYA62HCHkRZqmSoUr1LvhTiCLxrGtVMjf0fF/o9
-         x8pNsXIvqwS11t6cscsbxbOVbEk7/71RcbIs6NVvo/1DKzsyJPrUZe+vC8tr9H+DEaqA
-         s+IjfLMGePuY4zy9Qcpgx5aYVQMPcwIFC0gzi4orRZcYEkxOXkrBAQLIKTxjPrVg9urH
-         lw/akhX7ZYQguxk7+Gz/YgohGBTIvcdm1nDbHeBtVi0icqbG8qGOSk/k1l7609wcdY2Q
-         elYplSkMvcHqw9TVpLF6fPW3CIAyFBf/kjvDFvWWqW8mGDJylRItlT0byAarSswTimud
-         qx0A==
-X-Gm-Message-State: AOJu0Yyn+GAZ7mPGI/sjgh6R9ipnwY1cM5caeZFyas/l28PMlIRj1wxd
-	CHcRX22OaNNZME0uYtdfW3pfPdI9DURGGz2+c7d9rC0We9Ke+1OJTkifmkrgx0/82jrrt91or6f
-	6QXFl/tf3Z+48xUmcgTEs+ccbXWNBGhGVkDqq
-X-Google-Smtp-Source: AGHT+IHCRlJjFiV34H6eGFEE3lgXNolmOekCk6fiLh7LUhR040sGjR7vzN0sTWzI00yuNLk1UTieyf5oLyc3dDoui5M=
-X-Received: by 2002:a05:6000:1:b0:368:714e:5a5e with SMTP id
- ffacd0b85a97d-368714e5c12mr324696f8f.2.1721321787111; Thu, 18 Jul 2024
- 09:56:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1721321809; x=1721926609;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=N6aEJS3ZPzDIEoyWlBsShm3zWqq8TNQ9J6QXNez4EB8=;
+        b=r9/n+HYdOJybw4Z1WSUqDZiQpLng8WAQq9HwGK+QPjLVLHnvavZj1VxGzqTPZb9a9I
+         c7/PEuN1ZyW0BR8gs9woL2yL2QhNFJc7AjQJM55TrZW2jZ43TZz0sw+QoLSKWNrilEUF
+         Xh8EhH5C8thXW2639hIvYqTVMxniGCaDs5GN5oHvgvOoBDzDivVY4s/hIhoGy0yjFA/S
+         5aG8qtfhYUO/58+akUROZ1yo52R4OEVz8pFZIA4N+dmO7wU2MvC+hf6Ql6AxaK2RJ7qC
+         QySOTsd0bzFjpb63Y25dFxYSeauoLJwXy7JALrqCHJDDgtDvIuwlSPtj48J1ENgAlE9R
+         L+kQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXJjTHksKGEK+yjGvpe//3oNf1VnKu1zMBLsyPI3bNC6nmDxDBS3MHTlqXzQ1/agpcrHUeBdeYdmueABvI8KhLTA8ldutihfuQBQEi5
+X-Gm-Message-State: AOJu0YyDhN3jydC4EshSxFD3Txs31D4Zuwg+DP04xw1gzAn3luaT5txU
+	gh1KzQ4dm/ynskMfqKtdm/vnjvj6vtB5Z61tI2QCur9xXggagKmdprwwFmGbPjaYMmetj1LTkA/
+	rpaR+z8SLAaD2Vfa/zfukAWXgsO8=
+X-Google-Smtp-Source: AGHT+IH58sUM9LXnjs0x7sBz5rke0fe2dE4msxSSDtym413q2u9R+/rI8KIso2MhGpih3P3gSU8uXTXLmfdk2Du4pFk=
+X-Received: by 2002:a05:6102:1517:b0:48f:41ec:b0bc with SMTP id
+ ada2fe7eead31-4925c1f2030mr3820256137.4.1721321808974; Thu, 18 Jul 2024
+ 09:56:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240717222429.2011540-1-axelrasmussen@google.com> <20240717163143.49b914cb.alex.williamson@redhat.com>
-In-Reply-To: <20240717163143.49b914cb.alex.williamson@redhat.com>
-From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Thu, 18 Jul 2024 09:55:49 -0700
-Message-ID: <CAJHvVchM52Av_4zUueN6KyK+Bzh19nVs2fH_sZPv5VVhtEQ6bw@mail.gmail.com>
-Subject: Re: [PATCH 6.6 0/3] Backport VFIO refactor to fix fork ordering bug
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: stable@vger.kernel.org, Ankit Agrawal <ankita@nvidia.com>, 
-	Eric Auger <eric.auger@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, 
-	Kunwu Chan <chentao@kylinos.cn>, Leah Rumancik <leah.rumancik@gmail.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Stefan Hajnoczi <stefanha@redhat.com>, Yi Liu <yi.l.liu@intel.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240717063802.663310305@linuxfoundation.org>
+In-Reply-To: <20240717063802.663310305@linuxfoundation.org>
+From: Allen <allen.lkml@gmail.com>
+Date: Thu, 18 Jul 2024 09:56:37 -0700
+Message-ID: <CAOMdWS+V=Z=8dfYd7bF+=yirzKtg1g5GqzYZ=bSZKKCT9SAomg@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/122] 6.6.41-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, broonie@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 17, 2024 at 3:31=E2=80=AFPM Alex Williamson
-<alex.williamson@redhat.com> wrote:
+> This is the start of the stable review cycle for the 6.6.41 release.
+> There are 122 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> On Wed, 17 Jul 2024 15:24:26 -0700
-> Axel Rasmussen <axelrasmussen@google.com> wrote:
+> Responses should be made by Fri, 19 Jul 2024 06:37:32 +0000.
+> Anything received after that time might be too late.
 >
-> > 35e351780fa9 ("fork: defer linking file vma until vma is fully initiali=
-zed")
-> > switched the ordering of vm_ops->open() and copy_page_range() on fork. =
-This is a
-> > bug for VFIO, because it causes two problems:
-> >
-> > 1. Because open() is called before copy_page_range(), the range can con=
-ceivably
-> >    have unmapped 'holes' in it. This causes the code underneath untrack=
-_pfn() to
-> >    WARN.
-> >
-> > 2. More seriously, open() is trying to guarantee that the entire range =
-is
-> >    zapped, so any future accesses in the child will result in the VFIO =
-fault
-> >    handler being called. Because we copy_page_range() *after* open() (a=
-nd
-> >    therefore after zapping), this guarantee is violated.
-> >
-> > We can't revert 35e351780fa9, because it fixes a real bug for hugetlbfs=
-. The fix
-> > is also not as simple as just reodering open() and copy_page_range(), a=
-s Miaohe
-> > points out in [1]. So, although these patches are kind of large for sta=
-ble, just
-> > backport this refactoring which completely sidesteps the issue.
-> >
-> > Note that patch 2 is the key one here which fixes the issue. Patch 1 is=
- a
-> > prerequisite required for patch 2 to build / work. This would almost be=
- enough,
-> > but we might see significantly regressed performance. Patch 3 fixes tha=
-t up,
-> > putting performance back on par with what it was before.
-> >
-> > Note [1] also has a more full discussion justifying taking these backpo=
-rts.
-> >
-> > I proposed the same backport for 6.9 [2], and now for 6.6. 6.6 is the o=
-ldest
-> > kernel which needs the change: 35e351780fa9 was reverted for unrelated =
-reasons
-> > in 6.1, and was never backported to 5.15 or earlier.
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.41-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
 >
-> AFAICT 35e351780fa9 was reverted in linux-6.6.y as well, so why isn't
-> this one a 4-part series concluding with a new backport of that commit?
-> I think without that, we don't need these in 6.6 either.  Thanks,
+> thanks,
+>
+> greg k-h
+>
 
-Ah! You are correct, I had failed to notice:
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-dd782da47 ("Revert "fork: defer linking file vma until vma is fully
-initialized"")
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
-in linux-6.6.y. So, please ignore this series for 6.6 then. :)
+Thanks.
 
->
-> Alex
->
-> >
-> > [1]: https://lore.kernel.org/all/20240702042948.2629267-1-leah.rumancik=
-@gmail.com/T/
-> > [2]: https://lore.kernel.org/r/20240717213339.1921530-1-axelrasmussen@g=
-oogle.com
-> >
-> > Alex Williamson (3):
-> >   vfio: Create vfio_fs_type with inode per device
-> >   vfio/pci: Use unmap_mapping_range()
-> >   vfio/pci: Insert full vma on mmap'd MMIO fault
-> >
-> >  drivers/vfio/device_cdev.c       |   7 +
-> >  drivers/vfio/group.c             |   7 +
-> >  drivers/vfio/pci/vfio_pci_core.c | 271 ++++++++-----------------------
-> >  drivers/vfio/vfio_main.c         |  44 +++++
-> >  include/linux/vfio.h             |   1 +
-> >  include/linux/vfio_pci_core.h    |   2 -
-> >  6 files changed, 125 insertions(+), 207 deletions(-)
-> >
-> > --
-> > 2.45.2.993.g49e7a77208-goog
-> >
->
+-- 
+       - Allen
 
