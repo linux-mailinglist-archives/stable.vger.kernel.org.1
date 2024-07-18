@@ -1,153 +1,99 @@
-Return-Path: <stable+bounces-60577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E00935204
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 21:03:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FA9935209
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 21:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65D14B2105A
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 19:03:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF1D71F2227B
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 19:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F94D145A1A;
-	Thu, 18 Jul 2024 19:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101D2144D29;
+	Thu, 18 Jul 2024 19:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qHmJkA83"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GwNzJFH3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A24145A15
-	for <stable@vger.kernel.org>; Thu, 18 Jul 2024 19:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097EE64A98
+	for <stable@vger.kernel.org>; Thu, 18 Jul 2024 19:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721329354; cv=none; b=rTcuTUvvbuEoL5iCknOy3CjhBCZD/ixNKtn4nNk7fgHYS65UXHXRaoJWHCqukVRLyoK6AILxRbLbqW85j69Pw7d4WyZyVjxNrUC52HGGDgVJ3pkDMGHl9AOo6l04ftjHWjdMh5WetJ91s5rBou+/CTziXm8wIy7gH6BCepYu6wc=
+	t=1721329613; cv=none; b=n2muuH5jmte4lSFIrgDa88UbYI5FgiZciJ0kdm3XIznAIz/Eh8WuWYjoph9RoBgWpJN/Jw+F87YjwmxnF1S6M5LdM4F0+euXe0tOi8xMIF6w5ZFzCPjk06ORI8EeLaPtQF5tr8MU2Dh4lzlEVGPhzDsPZLRWu8FhW6+hZhLN5is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721329354; c=relaxed/simple;
-	bh=ww6qQONtJZStqms+LWq6iOpNCGMQQmzuptYiSaUtzFw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TAbnZVvgUnsaGs7KV91Ksb/muhy9N7ZP5HmTIciQ0NeQhgPjEe19t/a1DeJS3Tt/cH8PjAl2dvlOqa0VYzIAVB9y2RqU2azxfI4bJXDODe46sojhHxS5u5Gsr2byK9B3BmV5pECoW+aNh4Ct7knDv9dncAmsJ2GlJp4foe0XmM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--pkaligineedi.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qHmJkA83; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--pkaligineedi.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-65fabcd336fso32507997b3.0
-        for <stable@vger.kernel.org>; Thu, 18 Jul 2024 12:02:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721329352; x=1721934152; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Y9R8gsfsq0yB/G35OWfVJg7891znOv21k6n7O/XgO+A=;
-        b=qHmJkA83FNlPOgsQARHUI7vnDaex5dPniffgoZnSUVrHpoDAGfzx0BqPn4zTYPdLNQ
-         6AhYF+ekSr34CDIUrvGnglqrDc7VfIe4LvzrXfIPuwD2C/J0ZswrLKaTNY3g9DTi7wu5
-         1iV13VDioUu0ak1E7CGoOrjwY63piS6vWfEnLJcCitYQdO9BvJAR5Wv8H1QbXIDoYqJj
-         nKFFXUScDiDS1czrP4549WRkqDUN+/3ZH3Vf9EO+5lfjlvzSQoD19YQPoHtsZzkZpMHi
-         kyLSYgpRHYH6e8pH92o4F3xR6lf4H3v8YmY0QHQVfqQrZYrsZzysIDRMtEyrhtKoSDfZ
-         Bpxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721329352; x=1721934152;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y9R8gsfsq0yB/G35OWfVJg7891znOv21k6n7O/XgO+A=;
-        b=BwBf9BQ6usvirVKUFxJtvmBCs97sTpwNvtEvzOrZmvJn7Tfq1tAlpNBi28F8azDVL+
-         aon0YT6NbJFeobpT8anvcYpy8PiwFedJ4MubDa7ZJIkB1fIvQfIvhrUOxHtOItY5fHQ8
-         tLsLTB+BT4aCDnZSIG3fQA0HWam6VjpFUPON9R+0sK8+tP8LOa3NQ5G/+gU4VoFm+Sqh
-         1ul2zVccRgPkVrlKQnHMOhawEpajQfi1ieoSLPB7E/X+7SEXVDL4I/6F7Ieb9YS2niYc
-         rEoPUQobY8O1VE1GsjjL0/9NmUl2V6bvdIcBdm64kRfoz98+tJrkHx/Tyh/nMciwqnI7
-         MeyA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTgOxta6BuzOUcgCpJj7jjWIwjlk60gjW2+c9DezV1os135T7Gy01GdZTvjaPXh2xE3ANABIOSHuZ5NV6kEspLnLuMUs4r
-X-Gm-Message-State: AOJu0YwE7wdeANePfa4ZT3FS865uCGWPh0qIdFlx1F9+TeWwntT52OBI
-	FUMDpot6mWjU7RDL20B+ZPeOXvYcqAxjO2C4CxBKu/mnV+gqFFW2VCc0leys60uObCosU3jezY/
-	cavLQ+WZIki8tkAPQNEnq4D9FEA==
-X-Google-Smtp-Source: AGHT+IFt/ODkK6Zz6XaDieQLKxcWgnHGrTVXxY/TNdU1FzuT0sBAnFjBsx3I9pMmlW4eO+SErUVCKS3lv13K755WN7M=
-X-Received: from pkaligineedi.sea.corp.google.com ([2620:15c:11c:202:566:5def:e0a7:b439])
- (user=pkaligineedi job=sendgmr) by 2002:a05:690c:f0a:b0:62c:ea0b:a44c with
- SMTP id 00721157ae682-666015f061emr960507b3.2.1721329351738; Thu, 18 Jul 2024
- 12:02:31 -0700 (PDT)
-Date: Thu, 18 Jul 2024 12:02:21 -0700
+	s=arc-20240116; t=1721329613; c=relaxed/simple;
+	bh=F9ysAUKDetH8WdoAEmOitnKXgz4nDK3leXRYxMhozvM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=QXEd/0ypojrfPrq15vA5gBB4YczMtbosVKRz5leRNQf+82P0X8QQs1KWiw5RR8cKH/UgrgZBOpW75JP8UhCd6M9cfd0nsJbtg702fGX9oyeUm9CQSlkg+ae5S9bFB8LATyCgmbX5XMRfqJTPK0GSIo+p6r12XWrnhuUlpADmY+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GwNzJFH3; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721329612; x=1752865612;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=F9ysAUKDetH8WdoAEmOitnKXgz4nDK3leXRYxMhozvM=;
+  b=GwNzJFH34Q2b9HxP5lDykvhG+QKVWgwmmOUhxm2oF8HJkpoXxV0rYiMy
+   0FZboDmM1SjnJaccFj8ybgYZikMsAkK/cg3JfMHFmJemPg9FyS2MqYhDE
+   m5CzCBiPDtxLa/wmnUliltUWltuz87W8XqegBbOaxGWdLjMJy8yuGNRUM
+   L2TxcydZYLsxfBSNW0tenn4BTIpT0M48zUuyoTGb608h/oWTs1++ECK9V
+   Y1F6I5omCnQxlur6pnhImPXDeVuzyF8mviN9DEwHASQYNhbgde1TWPW9q
+   e1SyRZuBtZLS9JPGKrSJ/F9LJ7qggvRiZfpqD9T+jegh+089ccbMpDnvj
+   Q==;
+X-CSE-ConnectionGUID: ImFpc5cwT6ePaMAKAxSmqA==
+X-CSE-MsgGUID: otdwI76rTVSNneYksFA28w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11137"; a="19058988"
+X-IronPort-AV: E=Sophos;i="6.09,218,1716274800"; 
+   d="scan'208";a="19058988"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2024 12:06:51 -0700
+X-CSE-ConnectionGUID: P5TpEC+ERqmX2Q0Fr4dwGA==
+X-CSE-MsgGUID: UVEyMVyeTRm5PBN8HWjVOQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,218,1716274800"; 
+   d="scan'208";a="51476701"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 18 Jul 2024 12:06:51 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sUWSl-000hWs-2v;
+	Thu, 18 Jul 2024 19:06:47 +0000
+Date: Fri, 19 Jul 2024 03:06:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: Praveen Kaligineedi <pkaligineedi@google.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH net] gve: Fix an edge case for TSO skb validity check
+Message-ID: <ZplnqP9l0Dy0YVTF@6724a33121ae>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.45.2.1089.g2a221341d9-goog
-Message-ID: <20240718190221.2219835-1-pkaligineedi@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240718190221.2219835-1-pkaligineedi@google.com>
+
+Hi,
+
+Thanks for your patch.
+
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
 Subject: [PATCH net] gve: Fix an edge case for TSO skb validity check
-From: Praveen Kaligineedi <pkaligineedi@google.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, willemb@google.com, shailend@google.com, 
-	hramamurthy@google.com, csully@google.com, jfraker@google.com, 
-	stable@vger.kernel.org, Bailey Forrest <bcf@google.com>, 
-	Praveen Kaligineedi <pkaligineedi@google.com>, Jeroen de Borst <jeroendb@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Link: https://lore.kernel.org/stable/20240718190221.2219835-1-pkaligineedi%40google.com
 
-From: Bailey Forrest <bcf@google.com>
-
-The NIC requires each TSO segment to not span more than 10
-descriptors. gve_can_send_tso() performs this check. However,
-the current code misses an edge case when a TSO skb has a large
-frag that needs to be split into multiple descriptors, causing
-the 10 descriptor limit per TSO-segment to be exceeded. This
-change fixes the edge case.
-
-Fixes: a57e5de476be ("gve: DQO: Add TX path")
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Bailey Forrest <bcf@google.com>
-Reviewed-by: Jeroen de Borst <jeroendb@google.com>
----
- drivers/net/ethernet/google/gve/gve_tx_dqo.c | 22 +++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-index 0b3cca3fc792..dc39dc481f21 100644
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -866,22 +866,42 @@ static bool gve_can_send_tso(const struct sk_buff *skb)
- 	const int header_len = skb_tcp_all_headers(skb);
- 	const int gso_size = shinfo->gso_size;
- 	int cur_seg_num_bufs;
-+	int last_frag_size;
- 	int cur_seg_size;
- 	int i;
- 
- 	cur_seg_size = skb_headlen(skb) - header_len;
-+	last_frag_size = skb_headlen(skb);
- 	cur_seg_num_bufs = cur_seg_size > 0;
- 
- 	for (i = 0; i < shinfo->nr_frags; i++) {
- 		if (cur_seg_size >= gso_size) {
- 			cur_seg_size %= gso_size;
- 			cur_seg_num_bufs = cur_seg_size > 0;
-+
-+			/* If the last buffer is split in the middle of a TSO
-+			 * segment, then it will count as two descriptors.
-+			 */
-+			if (last_frag_size > GVE_TX_MAX_BUF_SIZE_DQO) {
-+				int last_frag_remain = last_frag_size %
-+					GVE_TX_MAX_BUF_SIZE_DQO;
-+
-+				/* If the last frag was evenly divisible by
-+				 * GVE_TX_MAX_BUF_SIZE_DQO, then it will not be
-+				 * split in the current segment.
-+				 */
-+				if (last_frag_remain &&
-+				    cur_seg_size > last_frag_remain) {
-+					cur_seg_num_bufs++;
-+				}
-+			}
- 		}
- 
- 		if (unlikely(++cur_seg_num_bufs > max_bufs_per_seg))
- 			return false;
- 
--		cur_seg_size += skb_frag_size(&shinfo->frags[i]);
-+		last_frag_size = skb_frag_size(&shinfo->frags[i]);
-+		cur_seg_size += last_frag_size;
- 	}
- 
- 	return true;
 -- 
-2.45.2.993.g49e7a77208-goog
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
