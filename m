@@ -1,127 +1,153 @@
-Return-Path: <stable+bounces-60576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BCCF9351F7
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 20:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2E00935204
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 21:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEF70B20E5D
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 18:58:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65D14B2105A
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 19:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62927143C54;
-	Thu, 18 Jul 2024 18:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F94D145A1A;
+	Thu, 18 Jul 2024 19:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="zIKoa500"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qHmJkA83"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA921B86FD;
-	Thu, 18 Jul 2024 18:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A24145A15
+	for <stable@vger.kernel.org>; Thu, 18 Jul 2024 19:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721329078; cv=none; b=JxuT1JvPwXTVsouuvx/FHmO5AX+CJJEgRFvRq3z2/hHr5begpBLlplvCNJalDXz4SkWu7jRz1fWwiua0nRj8Q8sEKiX72cILCqCKExLd6tJUbt7JmYlkpIkRP4kE13IW7wXLwR/lpKuBarx0qUfbTsDqaS6lBblK2qQEoyBi9DA=
+	t=1721329354; cv=none; b=rTcuTUvvbuEoL5iCknOy3CjhBCZD/ixNKtn4nNk7fgHYS65UXHXRaoJWHCqukVRLyoK6AILxRbLbqW85j69Pw7d4WyZyVjxNrUC52HGGDgVJ3pkDMGHl9AOo6l04ftjHWjdMh5WetJ91s5rBou+/CTziXm8wIy7gH6BCepYu6wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721329078; c=relaxed/simple;
-	bh=jWIr2p9q+APTlA02P8awT/Hq1xwOmy8iyNMZDtQywyc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qH7/zya+JPHxwCWQI0v8/7hggXv+FFcbI3/KzTukAax/1cc9i3nR4ub0v8zmEXGQitDwa6Xclz8cXMWDo0+MLoH12kMKarVJx6UY0ImDkYcUxehRYCB9CAiM2bopPBs+CRCydqT7WHS9XE/8e81NZsEHU3orfCw2hdtQt0FSgSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=zIKoa500; arc=none smtp.client-ip=212.227.126.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1721329028; x=1721933828; i=christian@heusel.eu;
-	bh=pasceRveCFkn1+I2qnzr9ZEiAmtkorF811Ry/SVshWg=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=zIKoa500aTr9p0u74sywlwEhn+cUQHubQk0tZqFZmLV9dR4HaM7q4AbZkLAsQOrU
-	 Uf8bq7wxipUnbDVkpuPGZLEcCg7lHIuPDwRaFL8sxt5ETrwTLU+EaDqTz1aPcZQto
-	 SFNVIqwKYxhCL8V16zT5M1Rk8+8g7UsE4OKm5+64WiIb1RTi/k88UKg5C2rQkTiS2
-	 MkKfckUpO7aIK1u8QYMiZdBE8xNBihChLS133dy5nevyz0gleWrpJcNBCOuoZKzip
-	 u43te/iGVjuvbX2KiStWbNMAy2ZCcxR7nebMK1RlzrfDGrzB5eaTu0n0ST+FJtRbj
-	 jC/mKqxHVFp2/bQOxA==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([147.142.158.42]) by mrelayeu.kundenserver.de
- (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MZkxj-1srnyF091L-00J2Qy; Thu, 18 Jul 2024 20:57:08 +0200
-Date: Thu, 18 Jul 2024 20:57:05 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.9 000/142] 6.9.10-rc2 review
-Message-ID: <90470268-4e53-4667-8102-38f1059d8e25@heusel.eu>
-References: <20240717063806.741977243@linuxfoundation.org>
+	s=arc-20240116; t=1721329354; c=relaxed/simple;
+	bh=ww6qQONtJZStqms+LWq6iOpNCGMQQmzuptYiSaUtzFw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TAbnZVvgUnsaGs7KV91Ksb/muhy9N7ZP5HmTIciQ0NeQhgPjEe19t/a1DeJS3Tt/cH8PjAl2dvlOqa0VYzIAVB9y2RqU2azxfI4bJXDODe46sojhHxS5u5Gsr2byK9B3BmV5pECoW+aNh4Ct7knDv9dncAmsJ2GlJp4foe0XmM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--pkaligineedi.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qHmJkA83; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--pkaligineedi.bounces.google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-65fabcd336fso32507997b3.0
+        for <stable@vger.kernel.org>; Thu, 18 Jul 2024 12:02:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721329352; x=1721934152; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Y9R8gsfsq0yB/G35OWfVJg7891znOv21k6n7O/XgO+A=;
+        b=qHmJkA83FNlPOgsQARHUI7vnDaex5dPniffgoZnSUVrHpoDAGfzx0BqPn4zTYPdLNQ
+         6AhYF+ekSr34CDIUrvGnglqrDc7VfIe4LvzrXfIPuwD2C/J0ZswrLKaTNY3g9DTi7wu5
+         1iV13VDioUu0ak1E7CGoOrjwY63piS6vWfEnLJcCitYQdO9BvJAR5Wv8H1QbXIDoYqJj
+         nKFFXUScDiDS1czrP4549WRkqDUN+/3ZH3Vf9EO+5lfjlvzSQoD19YQPoHtsZzkZpMHi
+         kyLSYgpRHYH6e8pH92o4F3xR6lf4H3v8YmY0QHQVfqQrZYrsZzysIDRMtEyrhtKoSDfZ
+         Bpxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721329352; x=1721934152;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y9R8gsfsq0yB/G35OWfVJg7891znOv21k6n7O/XgO+A=;
+        b=BwBf9BQ6usvirVKUFxJtvmBCs97sTpwNvtEvzOrZmvJn7Tfq1tAlpNBi28F8azDVL+
+         aon0YT6NbJFeobpT8anvcYpy8PiwFedJ4MubDa7ZJIkB1fIvQfIvhrUOxHtOItY5fHQ8
+         tLsLTB+BT4aCDnZSIG3fQA0HWam6VjpFUPON9R+0sK8+tP8LOa3NQ5G/+gU4VoFm+Sqh
+         1ul2zVccRgPkVrlKQnHMOhawEpajQfi1ieoSLPB7E/X+7SEXVDL4I/6F7Ieb9YS2niYc
+         rEoPUQobY8O1VE1GsjjL0/9NmUl2V6bvdIcBdm64kRfoz98+tJrkHx/Tyh/nMciwqnI7
+         MeyA==
+X-Forwarded-Encrypted: i=1; AJvYcCWTgOxta6BuzOUcgCpJj7jjWIwjlk60gjW2+c9DezV1os135T7Gy01GdZTvjaPXh2xE3ANABIOSHuZ5NV6kEspLnLuMUs4r
+X-Gm-Message-State: AOJu0YwE7wdeANePfa4ZT3FS865uCGWPh0qIdFlx1F9+TeWwntT52OBI
+	FUMDpot6mWjU7RDL20B+ZPeOXvYcqAxjO2C4CxBKu/mnV+gqFFW2VCc0leys60uObCosU3jezY/
+	cavLQ+WZIki8tkAPQNEnq4D9FEA==
+X-Google-Smtp-Source: AGHT+IFt/ODkK6Zz6XaDieQLKxcWgnHGrTVXxY/TNdU1FzuT0sBAnFjBsx3I9pMmlW4eO+SErUVCKS3lv13K755WN7M=
+X-Received: from pkaligineedi.sea.corp.google.com ([2620:15c:11c:202:566:5def:e0a7:b439])
+ (user=pkaligineedi job=sendgmr) by 2002:a05:690c:f0a:b0:62c:ea0b:a44c with
+ SMTP id 00721157ae682-666015f061emr960507b3.2.1721329351738; Thu, 18 Jul 2024
+ 12:02:31 -0700 (PDT)
+Date: Thu, 18 Jul 2024 12:02:21 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="vqaie2gfvhvbkzao"
-Content-Disposition: inline
-In-Reply-To: <20240717063806.741977243@linuxfoundation.org>
-X-Provags-ID: V03:K1:dwWZqQh0pX0cFK40QZ2IgXmiV1UEQ26AvCed0edPxDRa3f2IwcR
- xlRD3lxXm9uKHdW5IDl+xSs15jUXlNhKtTBdK1nE4yNnXLMgg6NekVoSOx2zXLBpVhHeNg1
- pXXeSy/C4inXHfafDjh93Y1BGFmL536eH62dDS/RbjQ6ZIfSrArJSumZx0wzIWuqGSwkJM1
- AFyui8I6Pg1io0RJI7lKQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:LPailIGziT8=;DsTel/T6L9rSZYSat8vc4pz+Hfo
- wfbXeaiTqWoSr+hlf67IVLETYSKRWNft1UgJ9SigAnFPDzHH15xUfIkAe/XV/G+UOAgxySgOP
- 6r58waa8HA+/MEgcMkLbC5etDX1sgvBA/L/w1jrz6CXvTmSuSykUiACJ4vAkQ8QUH86SBlOT2
- avPyy/i2Y522M4mqp9pb9bMoCF70McSVNJyPu2K8UR9uya5HuvmaaEFlC8QO0LvYabmAH6fr+
- 3pRNf7+5pO1Ns+xnKMbhKPyQ7KMBOHG+lqW6Z80qnVxsp7+vY7+9gLgz6I5SWPBINS/JTum+N
- IBrPYErTxaa6P4MxE+/yaoTQvakLVccwGIT9oN2/8GESkCHJYiAL85HVdXi0zbDTgsb3b7Qp2
- 7fGLS21pJilUqdJ5WUunY9h3oB/rgcPcsHU6gQ/hTzXjK5W79IcImwhJeHzmNlSReU0eh5esg
- yYOmY70GINdcXvSKaA3KJoTU5jh3Hzv6F4x3kGW1HXo2qlStbzxdnWVXChPpqtZ0H5QqnFjaR
- KDDq5doYDCaiZrxp5N13l9uVHrJQeEHGHapOBr0XlM4FfejWaXfszKFiFLQnZv4oWzf6snsXG
- VsSS/K8Xnh06oUXm76qxPG731LqDoMAy1MvncWqtsTcjAe/4NdBePJ6wy+gv9+VUAxPWj9tz1
- A6V7xb0I74k8/Ih5o7msoB6RMvcdKfQDiXXETMQpr1Oen9ms+tGuFUEUTBZAOVezOo6dpn/ta
- H2Q9tAnBD4L5LoY4pcOcNMbSTUPFoDORw==
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2.1089.g2a221341d9-goog
+Message-ID: <20240718190221.2219835-1-pkaligineedi@google.com>
+Subject: [PATCH net] gve: Fix an edge case for TSO skb validity check
+From: Praveen Kaligineedi <pkaligineedi@google.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, willemb@google.com, shailend@google.com, 
+	hramamurthy@google.com, csully@google.com, jfraker@google.com, 
+	stable@vger.kernel.org, Bailey Forrest <bcf@google.com>, 
+	Praveen Kaligineedi <pkaligineedi@google.com>, Jeroen de Borst <jeroendb@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
+From: Bailey Forrest <bcf@google.com>
 
---vqaie2gfvhvbkzao
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The NIC requires each TSO segment to not span more than 10
+descriptors. gve_can_send_tso() performs this check. However,
+the current code misses an edge case when a TSO skb has a large
+frag that needs to be split into multiple descriptors, causing
+the 10 descriptor limit per TSO-segment to be exceeded. This
+change fixes the edge case.
 
-On 24/07/17 08:40AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.10 release.
-> There are 142 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Fixes: a57e5de476be ("gve: DQO: Add TX path")
+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Signed-off-by: Bailey Forrest <bcf@google.com>
+Reviewed-by: Jeroen de Borst <jeroendb@google.com>
+---
+ drivers/net/ethernet/google/gve/gve_tx_dqo.c | 22 +++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-Tested-by: Christian Heusel <christian@heusel.eu>
+diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+index 0b3cca3fc792..dc39dc481f21 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+@@ -866,22 +866,42 @@ static bool gve_can_send_tso(const struct sk_buff *skb)
+ 	const int header_len = skb_tcp_all_headers(skb);
+ 	const int gso_size = shinfo->gso_size;
+ 	int cur_seg_num_bufs;
++	int last_frag_size;
+ 	int cur_seg_size;
+ 	int i;
+ 
+ 	cur_seg_size = skb_headlen(skb) - header_len;
++	last_frag_size = skb_headlen(skb);
+ 	cur_seg_num_bufs = cur_seg_size > 0;
+ 
+ 	for (i = 0; i < shinfo->nr_frags; i++) {
+ 		if (cur_seg_size >= gso_size) {
+ 			cur_seg_size %= gso_size;
+ 			cur_seg_num_bufs = cur_seg_size > 0;
++
++			/* If the last buffer is split in the middle of a TSO
++			 * segment, then it will count as two descriptors.
++			 */
++			if (last_frag_size > GVE_TX_MAX_BUF_SIZE_DQO) {
++				int last_frag_remain = last_frag_size %
++					GVE_TX_MAX_BUF_SIZE_DQO;
++
++				/* If the last frag was evenly divisible by
++				 * GVE_TX_MAX_BUF_SIZE_DQO, then it will not be
++				 * split in the current segment.
++				 */
++				if (last_frag_remain &&
++				    cur_seg_size > last_frag_remain) {
++					cur_seg_num_bufs++;
++				}
++			}
+ 		}
+ 
+ 		if (unlikely(++cur_seg_num_bufs > max_bufs_per_seg))
+ 			return false;
+ 
+-		cur_seg_size += skb_frag_size(&shinfo->frags[i]);
++		last_frag_size = skb_frag_size(&shinfo->frags[i]);
++		cur_seg_size += last_frag_size;
+ 	}
+ 
+ 	return true;
+-- 
+2.45.2.993.g49e7a77208-goog
 
-Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU
-
---vqaie2gfvhvbkzao
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmaZZYAACgkQwEfU8yi1
-JYVBBBAA4Ek4o84UKsxwDAEL4G6nWV7sEPqbJ/BOCyZGkyPYlzADhkqnorNsTbSl
-Sy7wyAfspvanYFcLFRGQK282YpobNA80zY9m/nPr4JdHVsBzaMq04w+79+0UezDN
-l0IB4BAaY3DgvgNJZ9vY09eIY0sIUTPcuuw7d299FsHYeyRnCj+6Rw2PrgqvTr0L
-pLXW42MiRaMBW2LcP7mOQIkQwR4/NJw8SoKjpnhkyjVyakZ74jT4//HPodvD58xV
-8n2PqqNFMqNyVvhAGSXltTPksyJz9pA6kR6H2SOylU68LQWt65k2Q0iJsbceVYtB
-eRzuiDJixFEty775J0J2abyPNNCwvWYiMYYlARUjy6Q+kfsGmCnVuCX8nQJqbO9i
-jy5pE2A8b68EPL6SORLjC6o00wOEcvr2U1GFsiJ/Vg3M1gBkT/W6vgw6DVqCXatq
-TqZ/SfsFIRpcHYhCzY+5HotbKAyMouNbihk7kf7c1e3NJpoyvxsEsAyQLQusup5o
-91Je++yQWE0elpJpWDByRZkKIrtnAgumfX4MVUe68o6dhtvCD1CvH89q7obRmnJP
-3qVBmuKKHHZqJ4HwMJhZh7Hl+uikfIfCGYGq1jMPFRQ6Bvqv5vQynFA9aqaJHoEg
-dwQN2Ee/aOeIFrt5ltBF2C7XYIbX7sIHxCY0dR9zDJ+S6oenAK4=
-=k7Hx
------END PGP SIGNATURE-----
-
---vqaie2gfvhvbkzao--
 
