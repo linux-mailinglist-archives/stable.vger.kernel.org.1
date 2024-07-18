@@ -1,122 +1,154 @@
-Return-Path: <stable+bounces-60518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801CB9348B3
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 09:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B16934904
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 09:38:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 345A41F2229E
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 07:22:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 122FA1F248C5
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 07:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125F0763EE;
-	Thu, 18 Jul 2024 07:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4579177114;
+	Thu, 18 Jul 2024 07:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="qhCbkG1+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="O2/awaCD"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741267640D;
-	Thu, 18 Jul 2024 07:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DF976056;
+	Thu, 18 Jul 2024 07:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721287280; cv=none; b=fSz8RfpXCb3GiA/X55KEgg5zOquyusGCelheEajNcxWUpYv1pJEvfyZ2ZCAXsHsIdB3C9lc7nDTPtLb4GrFB/vbC60OMZea/zfmVQGzm0wogna21YB3ZN323A6yAh3LXE9rhoyiXWfB+WWI5QaZEGPm6vxmw5aZmreBtxUwDSls=
+	t=1721288329; cv=none; b=Ga8GPOHN8pD+RJ0mlh/B0AQCVHmxfO24xr/q48jsYstXXBDpoZGWnDU67iry+sicJ/xf0c9T53IjB/eVgsKEGcqkTGjs5M/RKNUTC8D4uZOM1YRE4CteVhYCAkV907q0LJTF/wJb0L9qR9n5mRFVuRDdfKfADp/fRTveQ4B/A1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721287280; c=relaxed/simple;
-	bh=rodPdMqWswALPyc0nwR+ZLXdTdPhBNCc7nsEqwfJorg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JdSaIDXMvUMOHI+OqIWq4FM9L7s0cuj49DAgzC1hmYlZBX9tAISyvh87a7zt++pp35KHOdTKb6eh+VtJ2wrvxrgtb78wS0xQR0+sfHG6VqVSxCLXpJu84uEl2+8VYjyz99TRZ3gBwyelQLkCsxZcumO8czcstkED31DuTUI8uAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=qhCbkG1+; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id A5CB414C2DD;
-	Thu, 18 Jul 2024 09:21:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1721287271;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+rjvZQyHsJdpSR3htCONCiGKfa6XBkiGv3YmAB7J5z4=;
-	b=qhCbkG1+jEOVDWmzJOc62uCMpfeosooVgbok4QKuln+P4Wuj7r3ruNughtAa6lMtpdB6QA
-	bdic9LwIiLUK4oxByrSIhPJqMO+1elVoURS/Z0NlhPKlvRZSaVFbTQo68lUVWTgW/F3DrQ
-	sLGVRzcmcETc5FomeW38PX0xHTlYB6uG6N45hQOf/f/Dnfp2HvPSHGLa9QD2pOJPmyvXkp
-	8tV7m/6xtSASrJ9POWX0yPdO2QatKzu4mKBflk9Pcs+XBifMS/iHxKp05kTCeCMwkhWOys
-	t/h6M6PvPowNZuCFRz7WiU5GM5b6b/ANNrQjv464F/kOXnucKVUd75pgbt0BUw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 5c794c3b;
-	Thu, 18 Jul 2024 07:21:06 +0000 (UTC)
-Date: Thu, 18 Jul 2024 16:20:51 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>, linux-nfs@vger.kernel.org
-Subject: Re: [PATCH 5.10 762/770] nfsd: separate nfsd_last_thread() from
- nfsd_put()
-Message-ID: <ZpjCU1rS15JBasOV@codewreck.org>
-References: <20240618123407.280171066@linuxfoundation.org>
- <20240618123436.685336265@linuxfoundation.org>
- <ZnjyrccU0LXAFrZe@codewreck.org>
- <3afa32d75feeae84d894e7e71ce8e24372df78f3.camel@kernel.org>
+	s=arc-20240116; t=1721288329; c=relaxed/simple;
+	bh=PKeuFzvazocr5QRu/WGUbG5rPyb+cr8E2PCtHKS+FaU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F4mqlA0Ja8Y8uv35tgp0J+Re4kLqZfXbWymHyhg++IkbnFafLJluBDVlhnYW9jjbXxoI7fo4gwiTaiZYdgSbgb/L8vSKtklGHHJRiBI61OPTCyyhNXHVNynHM1Qq4LeIriYtGnFyP0aBM+cJYGlVQSJfJpI5MhonxxzM6C6v5ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=O2/awaCD; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46HHlfLZ019131;
+	Thu, 18 Jul 2024 07:38:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=iRl7Hp3kWjEIG+dQHsBwWHpj
+	eg8Z8C7PjLd3hqlS2I4=; b=O2/awaCDU1oT/a0e2LYxPKQtmwV0OGc4hZZHZC0z
+	d5eHNKKNTo7FhUSYkqarmhvAnLDhhtTDyP/6dx81ZkkZxK3xzrpfhEZD0CZi5ND+
+	tf3iewS6kZ06zyJG0RAFifTaXIc3eBmMdopGigZFZQzYyP3+OlSPe3RxK/vBZ9Y0
+	92XEk3b5TMh/DT63VK4NnMcXe0G4ZXSeGMlh9pd0hY59DV7fYyeHDHw4CzJ6QNGl
+	MAQ8NL3nfpUqrHLM9qvAjPP+l3fp5QsgTVneUUOsr0BwAfNvxfh4cjxI34SPq92h
+	uFL6VETXpykv/7rqfEETBSlGy0JjdYU1Gls4bTIVCr2CZw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40dwfpmq02-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Jul 2024 07:38:34 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46I7cXkd008118
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Jul 2024 07:38:33 GMT
+Received: from hu-pkondeti-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 18 Jul 2024 00:38:28 -0700
+Date: Thu, 18 Jul 2024 13:08:25 +0530
+From: Pavan Kondeti <quic_pkondeti@quicinc.com>
+To: Maulik Shah <quic_mkshah@quicinc.com>
+CC: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio
+	<konrad.dybcio@linaro.org>, <caleb.connolly@linaro.org>,
+        <stephan@gerhold.net>, <swboyd@chromium.org>, <dianders@chromium.org>,
+        <robdclark@gmail.com>, <nikita@trvn.ru>, <quic_eberman@quicinc.com>,
+        <quic_pkondeti@quicinc.com>, <quic_lsrao@quicinc.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Volodymyr
+ Babchuk" <Volodymyr_Babchuk@epam.com>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] soc: qcom: cmd-db: Map shared memory as WC, not WB
+Message-ID: <a49113a2-d7f8-4b77-81c7-22855809cee8@quicinc.com>
+References: <20240718-cmd_db_uncached-v2-1-f6cf53164c90@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <3afa32d75feeae84d894e7e71ce8e24372df78f3.camel@kernel.org>
+In-Reply-To: <20240718-cmd_db_uncached-v2-1-f6cf53164c90@quicinc.com>
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: aYzo42sn-TlTZryW5eE8PCTEiLOxnhcZ
+X-Proofpoint-GUID: aYzo42sn-TlTZryW5eE8PCTEiLOxnhcZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-18_04,2024-07-17_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 clxscore=1011 bulkscore=0 mlxscore=0
+ adultscore=0 phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407180051
 
-(Sorry for the slow reply)
-
-Jeff Layton wrote on Tue, Jun 25, 2024 at 11:45:22AM -0400:
-> > Jeff, you're the one who suggested reverting the two back then, sorry
-> > to
-> > dump it on you but do you remember the kind of problems you ran into?
-> > Is there any chance it would have gone unoticed in the 5.15 tree for
-> > 2.5 months? (5.15.154 was April 2024)
+On Thu, Jul 18, 2024 at 11:33:23AM +0530, Maulik Shah wrote:
+> From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
 > 
-> Sorry, I don't think I kept a record of that panic that I hit at the
-> time. I do think that I looked at the original bug report and it looked
-> like it was probably the same problem, but I don't remember the
-> details.
+> Linux does not write into cmd-db region. This region of memory is write
+> protected by XPU. XPU may sometime falsely detect clean cache eviction
+> as "write" into the write protected region leading to secure interrupt
+> which causes an endless loop somewhere in Trust Zone.
 > 
-> I think I just mentioned reverting them because I didn't see the
-> benefit in taking those into an old kernel. These are privileged
-> anyway, so even if they are bugs I don't seem them as particularly
-> critical.
-
-Right, normal users can't stop the nfsd so you're correct it probably
-doesn't matter as far as security goes (and this correctly doesn't have
-any of the shiny new CVEs assigned); I'm now curious why it got
-backported to all these trees at all if nothing needs it.
-
-Anyway, I really just started looking at it because it got reverted in
-6.1 so was wondering why it didn't get reverted in other trees, but if
-it hadn't made it to any tree I wouldn't have cared at all...
-
-As long as there doesn't seem to be a problem with older trees (and at
-least I'm not getting any weird hang or crash on shutdown on my 5.10)
-let's leave things as they are.
-
-> > (Bonus question: if that is really all there is, would that make
-> > sense
-> > / should we take the commits back in 6.1 with that extra fix?)
+> The only reason it is working right now is because Qualcomm Hypervisor
+> maps the same region as Non-Cacheable memory in Stage 2 translation
+> tables. The issue manifests if we want to use another hypervisor (like
+> Xen or KVM), which does not know anything about those specific mappings.
 > 
-> Maybe? The problem is that someone has to do the testing for this.
-> These interfaces aren't currently part of any testsuite, so a lot of
-> that tends to be a manual effort.
+> Changing the mapping of cmd-db memory from MEMREMAP_WB to MEMREMAP_WT/WC
+> removes dependency on correct mappings in Stage 2 tables. This patch
+> fixes the issue by updating the mapping to MEMREMAP_WC.
+> 
+> I tested this on SA8155P with Xen.
+> 
+> Fixes: 312416d9171a ("drivers: qcom: add command DB driver")
+> Cc: stable@vger.kernel.org # 5.4+
+> Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+> Tested-by: Nikita Travkin <nikita@trvn.ru> # sc7180 WoA in EL2
+> Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+> ---
+> Changes in v2:
+>  - Use MEMREMAP_WC instead of MEMREMAP_WT
+>  - Update commit message from comments in v1
+>  - Add Fixes tag and Cc to stable
+>  - Link to v1: https://lore.kernel.org/lkml/20240327200917.2576034-1-volodymyr_babchuk@epam.com
+> ---
+>  drivers/soc/qcom/cmd-db.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/soc/qcom/cmd-db.c b/drivers/soc/qcom/cmd-db.c
+> index d84572662017..ae66c2623d25 100644
+> --- a/drivers/soc/qcom/cmd-db.c
+> +++ b/drivers/soc/qcom/cmd-db.c
+> @@ -349,7 +349,7 @@ static int cmd_db_dev_probe(struct platform_device *pdev)
+>  		return -EINVAL;
+>  	}
+>  
+> -	cmd_db_header = memremap(rmem->base, rmem->size, MEMREMAP_WB);
+> +	cmd_db_header = memremap(rmem->base, rmem->size, MEMREMAP_WC);
+>  	if (!cmd_db_header) {
+>  		ret = -ENOMEM;
+>  		cmd_db_header = NULL;
+> 
 
-Agreed, let's not add more work there if no-one can quickly test this.
+Thanks Maulik for sharing the patch. It works as expected. Feel free to
+use
 
-If it turns out some later commit that actually needs this gets
-backported to 6.1 we can always bring the pair of commits back when
-someone notices.
+Tested-by: Pavankumar Kondeti <quic_pkondeti@quicinc.com>
 
-Thanks!
--- 
-Dominique
+Thanks,
+Pavan
 
