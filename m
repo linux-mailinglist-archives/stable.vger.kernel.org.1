@@ -1,97 +1,60 @@
-Return-Path: <stable+bounces-60516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC82934863
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 08:55:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64912934865
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 08:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 725071C21786
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 06:55:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C374E282B1F
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 06:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F036F06D;
-	Thu, 18 Jul 2024 06:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7276F2F6;
+	Thu, 18 Jul 2024 06:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="C/RX5UTN";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lbYoRHqY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOvEi3rP"
 X-Original-To: stable@vger.kernel.org
-Received: from flow1-smtp.messagingengine.com (flow1-smtp.messagingengine.com [103.168.172.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DC7548F7;
-	Thu, 18 Jul 2024 06:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF10526ACF;
+	Thu, 18 Jul 2024 06:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721285730; cv=none; b=UAQ3Wwrbt4fwv7+8xJUAZA7qf9ELIUIAZgR1107j0Vo9JsfT+7LjwIWZIp9BZqkb62i4Zai1Arc2bHVB+p8EjgCaSzqwF/lhfrUA9RnWo07RX+fD7cG3JUq13ZNNmFAVbAXGwBYlgvVoVSPArx11pkLgNJMkB7isAvsv+ljjaKE=
+	t=1721285738; cv=none; b=atWbQopI25rwD5gv8DYWD08oUuyEmagbrVN/QGc1LHx+cDZ9z/7mW/UzZW5H36L6v5F2StLA573q9CpPu/0pLOL3HCFA3frpWV5DAXc+UXJ2w9X2bCYNTrZCphjDfxsweav4+lGQ6dYcPOSs3WCyqJXpWzcfEp8yVQayQDu5DjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721285730; c=relaxed/simple;
-	bh=c3vf1Ob8TbBJBt5qFMzm6P7On7KTmAa6ZXsJUixATnM=;
+	s=arc-20240116; t=1721285738; c=relaxed/simple;
+	bh=nFH7ut82unMgxgxSn/vjZJx5nU38HuR9Ig9R58XYFes=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XJdh3QKgVEQimCo05OH0GUaoCklGAYzdZ3dyfDOdWQXeInFKtVOd2vpR+0i/dsEcj2c0ZBhtHFVPvj8ZLWmgcyMAkkoYUcD7/iTr4/etatNGxcmqC5aq+xIanbwIfswDxuctO+mW490uXjvMQRRXxto0mwHbBZVT9/6AlrLFhkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=C/RX5UTN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lbYoRHqY; arc=none smtp.client-ip=103.168.172.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailflow.nyi.internal (Postfix) with ESMTP id 3AE1C200381;
-	Thu, 18 Jul 2024 02:55:27 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 18 Jul 2024 02:55:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1721285727; x=1721292927; bh=ibaD26rgnG
-	JKK+UYgp8DF2BUsJMsG0N3OOtXuR99+38=; b=C/RX5UTNTnGBXcLjedzK2xjZgw
-	7zO7Wgby1jfLD4rRkaD3/60GV9S58fzFXwkv6wG6qgAjitza+ByLq7cxR40d6aTR
-	ca0CYRKGg82DWwuxVh7OZM3BRmWAryA81pCjQhfYVn0pCsOpancPcQYWhOgwvtvz
-	K6vizjL0sNCBJ5fHiYN+VYxttzh4brj8YJjMP+XndMOhMh5yYNRa2z4NGXrifYkd
-	l6G5MtbCStBurh6/T9XsAVm/BPwsO6P73jUs7Ywq79wfKE0iQ0cErJs4CUl75Gf1
-	r2Sbxs9n9JetGccJY98VnKSJhOrdiQnBWaxSeqi12fMxImWwNeMSQ99LHwig==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1721285727; x=1721292927; bh=ibaD26rgnGJKK+UYgp8DF2BUsJMs
-	G0N3OOtXuR99+38=; b=lbYoRHqYftmk+z9LyW2uhfkIkl8o1SNvakDr90Wo1Z+h
-	P23TTfmGLCjornyRGwDE1z1KSc0o5Fj4h6H9Mb5LNqkYoolsqtMxJGz63F6JQ2uM
-	0yMCqm73Wi/7j/sLhv8bwFTYRVD1QWw506/t0BmmYyaDMAH2pRVsMYOoJPA//q6O
-	WQM6LLzoDpZp2VO2bNA7tz4NGW2JhyJv+iAmktpv9l1Ib7szKUwvtwHf1ATCTzfo
-	RnzZnauh7yS+qYJ0nZV673Qe+6slg2tPUnn6Uys4vveEhFrSW3XkwENXrO1QkjBJ
-	KZcBk4iffO0Q4/N4nwZmiKBLsT0k9YonJFGttBQo+g==
-X-ME-Sender: <xms:XbyYZtcW4DPQR-82wU5fhFJfYRvb5ai7ILVEmpFyiTVlGKuzdKRQ6g>
-    <xme:XbyYZrP_GDNuVsAfNN1soh7cZcgrIfJWzE6zBylGao8m6HQzz9xV2zR3sEwDMjYCS
-    hc-sK-tr7EcRQ>
-X-ME-Received: <xmr:XbyYZmgJxCHwwzdhC9V7oN3V-iQ1yJHJK7RVLygM9N_R9XqsNVG7gYnkDZHgRam66M2sJtoQemPReep2IP2NzvWMBdIe14hzMRrhuA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrgeekgdduudeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
-    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:XbyYZm_drqFM142R-Ih0Tl16DM-utEtFIze5bSDxJZSQcGcFGTrk5w>
-    <xmx:XbyYZpvG_ZI02-soZ-PHlsnol-dzHJNaL68uveRIowGg1RBxObtlNQ>
-    <xmx:XbyYZlFuR5gBjwl2K6SOWYqXCz7OrN1jGHdOOU8nFI6k1hftk6PjAw>
-    <xmx:XbyYZgNQ0GbYq-uoGvlrWEiZIRN8P-pdu25GaXDd_IiUJ_6CUpouKw>
-    <xmx:X7yYZtTBaQO3eLU1h7vSHy2MaJfI-48KuiUgtXSOA9GJtRzF7E6t8PJL>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 18 Jul 2024 02:55:25 -0400 (EDT)
-Date: Thu, 18 Jul 2024 08:55:23 +0200
-From: Greg KH <greg@kroah.com>
-To: Puranjay Mohan <pjy@amazon.com>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Russell King <russell.king@oracle.com>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Ard Biesheuvel <ard.biesheuvel@linaro.org>, stable@vger.kernel.org,
-	puranjay@kernel.org, puranjay12@gmail.com
-Subject: Re: [PATCH 5.10] arm64/bpf: Remove 128MB limit for BPF JIT programs
-Message-ID: <2024071834-chalice-renewal-3412@gregkh>
-References: <20240701114659.39539-1-pjy@amazon.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nwbCSn/zTVbBV2Fghosd8MW+Rcq4kp5NJiSESpjqabHM2uv7jULwae/gpjyGim+/44Um3oG14XBB/VhuWlF/frFo+3++7Q8vwnfCXc6RMEwxSl/XnAxojZqLneqWJhLIUZbP0alo1ueluqJev1GvgLdvASDjqA0VNE+LynRCYlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOvEi3rP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE7DC116B1;
+	Thu, 18 Jul 2024 06:55:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1721285737;
+	bh=nFH7ut82unMgxgxSn/vjZJx5nU38HuR9Ig9R58XYFes=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YOvEi3rPsQSihVZL3J7iTGBlF80v0KaMUv45OTE52xI5S0fgUgT/2Q6Tz0B5CAJKK
+	 FYLAuRLnMQ0tcf5eDGzIIYs09RPSJNXzlEt70XZCuUFrPw1kHnCGqL75HcpiDTwREa
+	 VRaTDpesmQarSklaXYrRI8O99QO7dXDF1bDxOUTA=
+Date: Thu, 18 Jul 2024 08:55:34 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 5.10 000/109] 5.10.222-rc2 review
+Message-ID: <2024071825-unifier-patriot-26c2@gregkh>
+References: <20240717063758.061781150@linuxfoundation.org>
+ <CA+G9fYtfAbfcQ9J9Hzq-e6yoBVG3t_iHZ=bS2eJbO_aiOcquXQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,57 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240701114659.39539-1-pjy@amazon.com>
+In-Reply-To: <CA+G9fYtfAbfcQ9J9Hzq-e6yoBVG3t_iHZ=bS2eJbO_aiOcquXQ@mail.gmail.com>
 
-On Mon, Jul 01, 2024 at 11:46:59AM +0000, Puranjay Mohan wrote:
-> From: Russell King <russell.king@oracle.com>
+On Thu, Jul 18, 2024 at 10:45:22AM +0530, Naresh Kamboju wrote:
+> On Wed, 17 Jul 2024 at 12:09, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 5.10.222 release.
+> > There are 109 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Fri, 19 Jul 2024 06:37:32 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.222-rc2.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
 > 
-> [ Upstream commit b89ddf4cca43f1269093942cf5c4e457fd45c335 ]
 > 
-> Commit 91fc957c9b1d ("arm64/bpf: don't allocate BPF JIT programs in module
-> memory") restricts BPF JIT program allocation to a 128MB region to ensure
-> BPF programs are still in branching range of each other. However this
-> restriction should not apply to the aarch64 JIT, since BPF_JMP | BPF_CALL
-> are implemented as a 64-bit move into a register and then a BLR instruction -
-> which has the effect of being able to call anything without proximity
-> limitation.
+> The QEMU arm64 booting kunit enabled boot failed with clang and gcc.
 > 
-> The practical reason to relax this restriction on JIT memory is that 128MB of
-> JIT memory can be quickly exhausted, especially where PAGE_SIZE is 64KB - one
-> page is needed per program. In cases where seccomp filters are applied to
-> multiple VMs on VM launch - such filters are classic BPF but converted to
-> BPF - this can severely limit the number of VMs that can be launched. In a
-> world where we support BPF JIT always on, turning off the JIT isn't always an
-> option either.
+> Anders bisected to this as first bad commit,
+> # first bad commit: [c2ef31fd37ae11e89cb63c73cb7ee05bf4376455]
+>             arm64/bpf: Remove 128MB limit for BPF JIT programs
+>             commit b89ddf4cca43f1269093942cf5c4e457fd45c335 upstream.
 > 
-> Fixes: 91fc957c9b1d ("arm64/bpf: don't allocate BPF JIT programs in module memory")
-> Suggested-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Signed-off-by: Russell King <russell.king@oracle.com>
-> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-> Tested-by: Alan Maguire <alan.maguire@oracle.com>
-> Link: https://lore.kernel.org/bpf/1636131046-5982-2-git-send-email-alan.maguire@oracle.com
-> [Replace usage of in_bpf_jit() with is_bpf_text_address()]
-> Signed-off-by: Puranjay Mohan <pjy@amazon.com>
-> ---
->  arch/arm64/include/asm/extable.h | 9 ---------
->  arch/arm64/include/asm/memory.h  | 5 +----
->  arch/arm64/kernel/traps.c        | 2 +-
->  arch/arm64/mm/extable.c          | 3 ++-
->  arch/arm64/mm/ptdump.c           | 2 --
->  arch/arm64/net/bpf_jit_comp.c    | 7 ++-----
->  6 files changed, 6 insertions(+), 22 deletions(-)
-> 
+> Reverting the above patch made the boot successful on QEMU arm64.
 
-This is reported to cause problems:
-	https://lore.kernel.org/r/CA+G9fYtfAbfcQ9J9Hzq-e6yoBVG3t_iHZ=bS2eJbO_aiOcquXQ@mail.gmail.com
-so I will drop it now.
-
-How did you test this?
-
-And if you really need this feature, why not move to a more modern
-kernel version?
-
-thanks,
+Thanks, will go drop this now.
 
 greg k-h
 
