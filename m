@@ -1,135 +1,171 @@
-Return-Path: <stable+bounces-60573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3134393510F
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 19:07:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38FA8935119
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 19:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0EB2282F47
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 17:07:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADE771F2245C
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 17:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECA5145355;
-	Thu, 18 Jul 2024 17:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FD01459FB;
+	Thu, 18 Jul 2024 17:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="m7k+sYjb"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2TxTmCZG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F65C47A73
-	for <stable@vger.kernel.org>; Thu, 18 Jul 2024 17:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E2B1459F7
+	for <stable@vger.kernel.org>; Thu, 18 Jul 2024 17:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721322433; cv=none; b=oKbyb6KjxSOo6mLB7WtO0CnfC0vRDzWdI5/AvAv8uBC//AoUys4Kx9OD13KmyeHu9TYyJCJgnoNxM+q1yUa4oZGyM21nCFjfJpx5Zu3/BfzPOkaDYe/sJjUbM73nU50LFfSnKkE5blc20CYtMPODmCbwij5196IsN3jpVGhWVKM=
+	t=1721322603; cv=none; b=r9gCm3GFT7wBUj/YkYIdyzkG8RYAo8V/jVAe0NZ2MoXcXTmoYjzHtrrLdLyWwvszT196ZnZXz9rPmuad3NdsvPkAQB3ez+eZWXPRJ3V9h3QyW+8c4Sb6ZoPW9SevX2BfvWxtVDZ4XJUORqxOhYhKs8gHhHZ4BvGZbSwM715YkmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721322433; c=relaxed/simple;
-	bh=cjeX1aFyWdBgsxfxbKfPnG9h/qsmn1yS9giF+UQOvt4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EUecb34Wor+kITaJMhKHW5GgaT00QB5Jcxnh7qB1t2XixppAg+704Z1csAHxuXAeMBnVim9od3yJy3Z09eWpWc0usUgayXSwyirzUbUrQJ7W56balVNr/TPFkq6XFmAZWbpXGl/jTkzbvJxeBMeREtE+U5DXUZHjJDMAvvb+zBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=m7k+sYjb; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2cb566d528aso430629a91.1
-        for <stable@vger.kernel.org>; Thu, 18 Jul 2024 10:07:11 -0700 (PDT)
+	s=arc-20240116; t=1721322603; c=relaxed/simple;
+	bh=6nbNmq9keipECaitOCTHHOJ/2SiCOYt7HdwJHw9bbL8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WJ7XnsmSJ7oHQCl5BXN1CGk4NB99Ww5cAuKGQjruAqxiW8pUTpsiWq15723D7dnmVXrP6c4BkZZe4OKq2KLLVks8qcxFhcWgQzOVr+D8Zb6HyQaEt7TNBoBdbOdiT3gVJU9MsXkfTEOYZ72PpIyZdswTy1RWk6j+sFjWSHbN8xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2TxTmCZG; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42666b89057so2055e9.0
+        for <stable@vger.kernel.org>; Thu, 18 Jul 2024 10:10:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721322430; x=1721927230; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wbWG4pqQqIat0xDS0ZVANXGmuhcJIaLuF1t7QxTUgZc=;
-        b=m7k+sYjb1rMVAGo464+87Ykc1YRWqFoXtSxbQC1kX59ymqXr0mfiCrAJbMmEVs9jgn
-         20SxRBL7mn/iv5AtXEIidk6upCLzOAwt4RJx3aEFT0rFVwtzsgqCz/47fkkQr0M0jFSv
-         dnwKaS0XiyXEl9hTK8uDhIdnXtTFfpzhH162HCGykZl0fqoyX5qPlWKFuxXwqnDha0TR
-         ECBMwWuzWVoFsq0F9shtBzuyD8F5UBdt96b6BsEmuNpMJDgNSiN+X3TA0Zey2+oeJUn6
-         93b521i75fn1S7sHT9eU2C6MQ00Xd29h8vi/7YFz64ffY6lLdGmz094iYZP0SfOLl2Tq
-         sSkQ==
+        d=google.com; s=20230601; t=1721322600; x=1721927400; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VE1zlo0WYP5fFUwruBkAhVFeTQERu81k99aRGv+J5us=;
+        b=2TxTmCZGf48JiUhnNebuMdQmwRvECLCgP1uIGVrNDo9ptXShVA0DbJ7Suqt/cQE5Z/
+         /8BCp04kHCqK9nV98crOm72DyQIy8jLvMkvUouKmtbAvRFMc/yMM9sGaGaa26CxESKGm
+         yDkQKoVNOAeuQ7NTv/q5lLhFxoVzfirUUgXd1EBALAWIJL9uhsrwEx18pAzDcQTxeo2D
+         bCLV+5WASt/+g5xUA3pdofyQHT0UILkZms++fa3+ZuEfQhRJWiPhQm1px2C6IDwNTrO9
+         xd82jlmkvtxJpxHAiTo6kJx7N9VtR0TAE4sVfxAbPE6xfxNtOt79Hq991ZsY1qhgOJqA
+         a9ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721322430; x=1721927230;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wbWG4pqQqIat0xDS0ZVANXGmuhcJIaLuF1t7QxTUgZc=;
-        b=Yd0nX/8Ly4ep7X+unPql9D3uXmr7h8oWXzUIogPPETGh9Q3L4vDNjqSEpV4e5Jbsh7
-         IOCASu1g91jgRTry6ex9Nc/WlYOIe4kbFPjUSbKTPGVsX4WYrvjxC6whMckaDMNslbrs
-         VTOdn/I5ox3Rzw/2xw4Qvz8GkIokjRX3LmyRmz6AtGJKG7tfjPSlSU35VHqnCgcF7nf6
-         81+joqA1Yx4+/IfPE3cnGmu+b62Tn0pgxHfBeiUTNKltX/pfvDyr6JgWP+splWN0GGOk
-         Y3cwkr+61m724Qv3gXu2Bscba7Ya5Z0HjzBX64u46J1xQW/Ni/6ZOnouF7bMFkFxa/T3
-         7EeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7rsPgpSz1YdCJYNqoyjefLAwxco/Zg+Sd4Mv4Up0mdNyl3RR9YE0Usy3U7LVkciunMjnKPVbz6+2rD1VaybIUlp3ynj1i
-X-Gm-Message-State: AOJu0YwOFERooWXo41DBbCJcyyN8MKAKWncjY7UuQx63wpmUJZczSP3I
-	Aj+FaNyknnvgajCx13FG4GdPukW+bfOkdYTRcKbs5j3zti9b3fcwRmcKdVq80w==
-X-Google-Smtp-Source: AGHT+IHzfGYavO6Fs7TNZbgx1Lr2vRkcXC3MMHfexuW7iiUp4F5HrO19UwuxKuf2xwzNcnSQfjNJvg==
-X-Received: by 2002:a17:90a:b885:b0:2c9:93a3:1db6 with SMTP id 98e67ed59e1d1-2cb5269443amr4146865a91.11.1721322430332;
-        Thu, 18 Jul 2024 10:07:10 -0700 (PDT)
-Received: from localhost.localdomain ([120.56.207.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cb77342dcdsm969962a91.25.2024.07.18.10.07.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jul 2024 10:07:09 -0700 (PDT)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com
-Cc: alim.akhtar@samsung.com,
-	avri.altman@wdc.com,
-	bvanassche@acm.org,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Anjana Hari <quic_ahari@quicinc.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: ufs: core: Do not set link to OFF state while waking up from hibernation
-Date: Thu, 18 Jul 2024 22:36:59 +0530
-Message-Id: <20240718170659.201647-1-manivannan.sadhasivam@linaro.org>
-X-Mailer: git-send-email 2.25.1
+        d=1e100.net; s=20230601; t=1721322600; x=1721927400;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VE1zlo0WYP5fFUwruBkAhVFeTQERu81k99aRGv+J5us=;
+        b=QDlwBjL9bKqunWREhYGcPsH8J7ebvFGaeKzTeKjmgspGQ1YGxh0qAIzzxHvDtrQ12z
+         QI6lMxaoT3V/TU+f3p0GCfrqRnPgXrLlJqLl1WRLaK56kp0TkvcCA8kZUfZt8KEjP0Pi
+         qHIQIyOad6llxVULgnqm76ruchfIOjtCYWnrFhYbdZENJ2uqJ0lr7No4o4h3wYhY2TEe
+         idIIB4nhqWFTK9Kl9sCc2Rx0bRYQiXejRNHuwQdgEgh4r00+ezNDkseaatPYmIk+W0i4
+         VeAgVlgglCEJvezllI+NaEbyTCr3pb7dxWPMC3s6qB2E5Zicl6WB9gosGTua/FYBXPL7
+         J5ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV7Xlpm9/VE5NiynumqymrYSRd+RlbQCs2dA6Pv6fJHLCWdcah8cc1UE0JPKK7SOTS4smIypGgepKVeZegJvIsaEcVXGPPB
+X-Gm-Message-State: AOJu0YwGLsveZS8kweHV2wJmlXHWU0sKLvYu1qRNtGT3u48UWyJcqV7M
+	CUgeK2qg/umpvtDwn1HwURuZMrPZ7JdT6YBDDVqgIsvoAgDr4h9mGDjrLFjwyQ9VcwqQl3Ji3Z1
+	KLnUcc8bEI7AB777XZpOWY+j2sDNGL1+9/e8=
+X-Google-Smtp-Source: AGHT+IGqGloYtoDbE/cj4acqUh5GhvD1KBfFRWwub7Dz01wOaqAUA8znvrRis2rZfOvQNT79qUteAFFBjkjI5HQKUJg=
+X-Received: by 2002:a05:600c:3b23:b0:426:62a2:dfc with SMTP id
+ 5b1f17b1804b1-427d2a9794emr934485e9.5.1721322600131; Thu, 18 Jul 2024
+ 10:10:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230926160903.62924-1-masahiroy@kernel.org>
+In-Reply-To: <20230926160903.62924-1-masahiroy@kernel.org>
+From: John Stultz <jstultz@google.com>
+Date: Thu, 18 Jul 2024 10:09:47 -0700
+Message-ID: <CANDhNCraQ6UCDNH3s4+YKCWfk4dGjxP_LkZ7WBUnJ_WiKM5u6Q@mail.gmail.com>
+Subject: Re: [PATCH] ARM: fix get_user() broken with veneer
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: patches@armlinux.org.uk, linux-kernel@vger.kernel.org, 
+	Russell King <linux@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
+	Neill Kapron <nkapron@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-UFS link is just put into hibern8 state during the 'freeze' process of the
-hibernation. Afterwards, the system may get powered down. But that doesn't
-matter during wakeup. Because during wakeup from hibernation, UFS link is
-again put into hibern8 state by the restore kernel and then the control is
-handed over to the to image kernel.
+On Tue, Sep 26, 2023 at 9:09=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
+>
+> The 32-bit ARM kernel stops working if the kernel grows to the point
+> where veneers for __get_user_* are created.
+>
+> AAPCS32 [1] states, "Register r12 (IP) may be used by a linker as a
+> scratch register between a routine and any subroutine it calls. It
+> can also be used within a routine to hold intermediate values between
+> subroutine calls."
+>
+> However, bl instructions buried within the inline asm are unpredictable
+> for compilers; hence, "ip" must be added to the clobber list.
+>
+> This becomes critical when veneers for __get_user_* are created because
+> veneers use the ip register since commit 02e541db0540 ("ARM: 8323/1:
+> force linker to use PIC veneers").
+>
+> [1]: https://github.com/ARM-software/abi-aa/blob/2023Q1/aapcs32/aapcs32.r=
+st
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 
-So in both the places, UFS link is never turned OFF. But
-ufshcd_system_restore() just assumes that the link will be in OFF state and
-sets the link state accordingly. And this breaks hibernation wakeup:
++ stable@vger.kernel.org
+It seems like this (commit 24d3ba0a7b44c1617c27f5045eecc4f34752ab03
+upstream) would be a good candidate for -stable?
+The issue it fixes can manifest in lots of very strange ways, so it
+would be good to avoid others getting tripped up by it on -stable
+branches.
 
-[ 2445.371335] phy phy-1d87000.phy.3: phy_power_on was called before phy_init
-[ 2445.427883] ufshcd-qcom 1d84000.ufshc: Controller enable failed
-[ 2445.427890] ufshcd-qcom 1d84000.ufshc: ufshcd_host_reset_and_restore: Host init failed -5
-[ 2445.427906] ufs_device_wlun 0:0:0:49488: ufshcd_wl_resume failed: -5
-[ 2445.427918] ufs_device_wlun 0:0:0:49488: PM: dpm_run_callback(): scsi_bus_restore returns -5
-[ 2445.427973] ufs_device_wlun 0:0:0:49488: PM: failed to restore async: error -5
+(Apologies for being a bit verbose in the following, I've included a
+lot of details and breadcrumbs so others might find this if they run
+into the same issues.)
 
-So fix the issue by removing the code that sets the link to OFF state.
+I was recently looking into an arm32 issue, and found getting a custom
+built kernel consistently working in qemu-system-arm to bisect issues
+in the range of 5.15-6.6 was a bit difficult, as I would hit a couple
+different odd errors.
 
-Cc: Anjana Hari <quic_ahari@quicinc.com>
-Cc: stable@vger.kernel.org # 6.3
-Fixes: 88441a8d355d ("scsi: ufs: core: Add hibernation callbacks")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/ufs/core/ufshcd.c | 3 ---
- 1 file changed, 3 deletions(-)
+For 5.15 I was seeing systemd fail to start in a fairly opaque way:
+  starting systemd-udevd.service - Rule-based Manager for Device
+Events and Files.
+  systemd-udevd.service: Main process exited, code=3Dexited, status=3D1/FAI=
+LURE
+  systemd-udevd.service: Failed with result 'exit-code'.
+  Failed to start systemd-udevd.service - Rule-based Manager for
+Device Events and Files.
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 9f037a40316a..a9dfa82adac9 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10261,9 +10261,6 @@ int ufshcd_system_restore(struct device *dev)
- 	 */
- 	ufshcd_readl(hba, REG_UTP_TASK_REQ_LIST_BASE_H);
- 
--	/* Resuming from hibernate, assume that link was OFF */
--	ufshcd_set_link_off(hba);
--
- 	return 0;
- 
- }
--- 
-2.25.1
+But further looking through the logs I found:
+  systemd[1]: Failed to open netlink: Operation not permitted
 
+Despite lots of digging to try to understand what was going wrong, the
+one thing that worked was switching to CONFIG_CC_OPTIMIZE_FOR_SIZE
+(which I only tried as I came across this old thread:
+https://lists.yoctoproject.org/g/linux-yocto/message/8035 ), this
+seemed very suspicious, but I didn't have a lot of time to dig
+further.
+
+That resolved things until ~6.1, where I started seeing crashes at init:
+[   16.982562] Run /init as init process
+[   16.989311] Failed to execute /init (error -22)
+[   16.990017] Run /sbin/init as init process
+[   16.994737] Starting init: /sbin/init exists but couldn't execute
+it (error -22)
+
+That I bisected that failure down to being supposedly caused by commit
+5750121ae738 ("kbuild: list sub-directories in ./Kbuild")
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
+/?id=3D5750121ae7382ebac8d47ce6d68012d6cd1d7926
+
+And searching around that commit luckily led me to this change, which
+finally seems to resolve the different issues I saw for 6.6, 6.1 and
+5.15!
+
+Now, In my rush to get something booting with qemu, I started with the
+debian config but disabled modules, and didn't put much time into
+getting rid of config options or drivers I wouldn't need. So the
+kernel is pretty large. So maybe not super common, but I definitely
+wouldn't want others to have to go down this debugging rabbit hole.
+
+thanks
+-john
 
