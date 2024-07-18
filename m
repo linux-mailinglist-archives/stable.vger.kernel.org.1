@@ -1,165 +1,156 @@
-Return-Path: <stable+bounces-60515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA84F9347CD
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 08:04:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC82934863
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 08:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 736DF282469
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 06:04:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 725071C21786
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 06:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705353C6A6;
-	Thu, 18 Jul 2024 06:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F036F06D;
+	Thu, 18 Jul 2024 06:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Qxf7Osif"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="C/RX5UTN";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lbYoRHqY"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from flow1-smtp.messagingengine.com (flow1-smtp.messagingengine.com [103.168.172.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897C14AED1;
-	Thu, 18 Jul 2024 06:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DC7548F7;
+	Thu, 18 Jul 2024 06:55:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721282640; cv=none; b=tz00NCSYGALt190gI+ND3J+bFJwxNraygnj82YxGLCTqk9oUuNn7dpS+Gqa7poU4DKKD2YTZCziErK7Q+6xV++oFL9Tts/kM7Mb+sMdcDsG5tr21OuRxxwaXbzq+N8obPlfaEYFjR6oxdV+HzshEBbU+aU0CsZUvPMaaHyi9jRY=
+	t=1721285730; cv=none; b=UAQ3Wwrbt4fwv7+8xJUAZA7qf9ELIUIAZgR1107j0Vo9JsfT+7LjwIWZIp9BZqkb62i4Zai1Arc2bHVB+p8EjgCaSzqwF/lhfrUA9RnWo07RX+fD7cG3JUq13ZNNmFAVbAXGwBYlgvVoVSPArx11pkLgNJMkB7isAvsv+ljjaKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721282640; c=relaxed/simple;
-	bh=NZ3ng2iZcjXEfmc3D40nbbx/ZyOe2D+kdxHgxKcXUbw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=qv3KFrCh/n0q71/XbJeEk1QX1IEGatOGkxoCoYYNbbbJfneJ7/U/Yocj5LS4QVf+V0B75H4siLY5ud0A3p32Wr3dfn7IqiybxG77gIl9/q+TsfEUpRzbVUzVfEj0pjJ3bCAggkrPAGx6FaZomxCTZevAOYDeEeFFa+OwmKILwlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Qxf7Osif; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46I5f4Ns008355;
-	Thu, 18 Jul 2024 06:03:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=vlQY4FXkD/U9iUSMXAzp43
-	NvlX/hl5sdIfBON9ao3sc=; b=Qxf7OsifQWPHyzJfFo/spQn+E5oXdykDpQNstk
-	kVS4uLgfuaKg2XAS6Ak+GZLUoi83VL3rAlB+IPshtGntI4q+iUGByqoNgoCpJuHE
-	K57jWh0w0c9bnqVDYz2y17sSg6WZAOfq203zLjEj2GgUaH6spi7gJsWkerjgmO+M
-	R72JFxoWK8ma9b7XSXjhLLKFfNKLGMfbFcilXUMtHJNOmJx2LvN9xkoW/Xaxhqif
-	qeD6ODW+eTvU7RGE1kA7k9Tnq1v9+Xo1F/3Rw6R2IgCBEwDik/3gvXDO8yfOwDde
-	19UcjE6BA/VvIvz25dSCEe3XNOex8SXjc8DanrnoGpXbbhBA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40dwfu4f8v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jul 2024 06:03:43 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46I63gkP000418
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jul 2024 06:03:42 GMT
-Received: from hu-mkshah-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 17 Jul 2024 23:03:37 -0700
-From: Maulik Shah <quic_mkshah@quicinc.com>
-Date: Thu, 18 Jul 2024 11:33:23 +0530
-Subject: [PATCH v2] soc: qcom: cmd-db: Map shared memory as WC, not WB
+	s=arc-20240116; t=1721285730; c=relaxed/simple;
+	bh=c3vf1Ob8TbBJBt5qFMzm6P7On7KTmAa6ZXsJUixATnM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XJdh3QKgVEQimCo05OH0GUaoCklGAYzdZ3dyfDOdWQXeInFKtVOd2vpR+0i/dsEcj2c0ZBhtHFVPvj8ZLWmgcyMAkkoYUcD7/iTr4/etatNGxcmqC5aq+xIanbwIfswDxuctO+mW490uXjvMQRRXxto0mwHbBZVT9/6AlrLFhkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=C/RX5UTN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lbYoRHqY; arc=none smtp.client-ip=103.168.172.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailflow.nyi.internal (Postfix) with ESMTP id 3AE1C200381;
+	Thu, 18 Jul 2024 02:55:27 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Thu, 18 Jul 2024 02:55:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1721285727; x=1721292927; bh=ibaD26rgnG
+	JKK+UYgp8DF2BUsJMsG0N3OOtXuR99+38=; b=C/RX5UTNTnGBXcLjedzK2xjZgw
+	7zO7Wgby1jfLD4rRkaD3/60GV9S58fzFXwkv6wG6qgAjitza+ByLq7cxR40d6aTR
+	ca0CYRKGg82DWwuxVh7OZM3BRmWAryA81pCjQhfYVn0pCsOpancPcQYWhOgwvtvz
+	K6vizjL0sNCBJ5fHiYN+VYxttzh4brj8YJjMP+XndMOhMh5yYNRa2z4NGXrifYkd
+	l6G5MtbCStBurh6/T9XsAVm/BPwsO6P73jUs7Ywq79wfKE0iQ0cErJs4CUl75Gf1
+	r2Sbxs9n9JetGccJY98VnKSJhOrdiQnBWaxSeqi12fMxImWwNeMSQ99LHwig==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1721285727; x=1721292927; bh=ibaD26rgnGJKK+UYgp8DF2BUsJMs
+	G0N3OOtXuR99+38=; b=lbYoRHqYftmk+z9LyW2uhfkIkl8o1SNvakDr90Wo1Z+h
+	P23TTfmGLCjornyRGwDE1z1KSc0o5Fj4h6H9Mb5LNqkYoolsqtMxJGz63F6JQ2uM
+	0yMCqm73Wi/7j/sLhv8bwFTYRVD1QWw506/t0BmmYyaDMAH2pRVsMYOoJPA//q6O
+	WQM6LLzoDpZp2VO2bNA7tz4NGW2JhyJv+iAmktpv9l1Ib7szKUwvtwHf1ATCTzfo
+	RnzZnauh7yS+qYJ0nZV673Qe+6slg2tPUnn6Uys4vveEhFrSW3XkwENXrO1QkjBJ
+	KZcBk4iffO0Q4/N4nwZmiKBLsT0k9YonJFGttBQo+g==
+X-ME-Sender: <xms:XbyYZtcW4DPQR-82wU5fhFJfYRvb5ai7ILVEmpFyiTVlGKuzdKRQ6g>
+    <xme:XbyYZrP_GDNuVsAfNN1soh7cZcgrIfJWzE6zBylGao8m6HQzz9xV2zR3sEwDMjYCS
+    hc-sK-tr7EcRQ>
+X-ME-Received: <xmr:XbyYZmgJxCHwwzdhC9V7oN3V-iQ1yJHJK7RVLygM9N_R9XqsNVG7gYnkDZHgRam66M2sJtoQemPReep2IP2NzvWMBdIe14hzMRrhuA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrgeekgdduudeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
+    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
+    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:XbyYZm_drqFM142R-Ih0Tl16DM-utEtFIze5bSDxJZSQcGcFGTrk5w>
+    <xmx:XbyYZpvG_ZI02-soZ-PHlsnol-dzHJNaL68uveRIowGg1RBxObtlNQ>
+    <xmx:XbyYZlFuR5gBjwl2K6SOWYqXCz7OrN1jGHdOOU8nFI6k1hftk6PjAw>
+    <xmx:XbyYZgNQ0GbYq-uoGvlrWEiZIRN8P-pdu25GaXDd_IiUJ_6CUpouKw>
+    <xmx:X7yYZtTBaQO3eLU1h7vSHy2MaJfI-48KuiUgtXSOA9GJtRzF7E6t8PJL>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 18 Jul 2024 02:55:25 -0400 (EDT)
+Date: Thu, 18 Jul 2024 08:55:23 +0200
+From: Greg KH <greg@kroah.com>
+To: Puranjay Mohan <pjy@amazon.com>
+Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Russell King <russell.king@oracle.com>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Ard Biesheuvel <ard.biesheuvel@linaro.org>, stable@vger.kernel.org,
+	puranjay@kernel.org, puranjay12@gmail.com
+Subject: Re: [PATCH 5.10] arm64/bpf: Remove 128MB limit for BPF JIT programs
+Message-ID: <2024071834-chalice-renewal-3412@gregkh>
+References: <20240701114659.39539-1-pjy@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240718-cmd_db_uncached-v2-1-f6cf53164c90@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIACqwmGYC/0XMTQ6CMBBA4auYWVtShp+CK+9hDCnTwTZaSooQC
- eHuNm5cfov3dpg5Op7hctoh8upmF8YEPJ+ArB4fLJxJBpRYSpU3grzpTN8tI2mybAQ3bW10RRW
- 2NaRqijy4z+94uycPMXjxtpH1/1OgQinbXGVYqVoWpcjFGl7BbH6LXa97ssvzypP2GQUPx/EFw
- 1Q65qcAAAA=
-To: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio
-	<konrad.dybcio@linaro.org>
-CC: <caleb.connolly@linaro.org>, <stephan@gerhold.net>, <swboyd@chromium.org>,
-        <dianders@chromium.org>, <robdclark@gmail.com>, <nikita@trvn.ru>,
-        <quic_eberman@quicinc.com>, <quic_pkondeti@quicinc.com>,
-        <quic_lsrao@quicinc.com>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Volodymyr Babchuk
-	<Volodymyr_Babchuk@epam.com>,
-        <stable@vger.kernel.org>,
-        Volodymyr Babchuk
-	<volodymyr_babchuk@epam.com>,
-        Maulik Shah <quic_mkshah@quicinc.com>
-X-Mailer: b4 0.12.5-dev-2aabd
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1721282617; l=2071;
- i=quic_mkshah@quicinc.com; s=20240109; h=from:subject:message-id;
- bh=lKAIUb1skUkA8cL4EPiYWVNEAhYmNSsLm3hrt7vTGws=;
- b=6hCYuosMLrGlEhy14UfQUk3w8yLUpMDXqzOv48AtomrT5PHSzKYN11QC6DBRnBx54hITFszSz
- irz48zwvpGMBgzDW25DGEFwOod49uUiIxF+HvQid2ULK9iTlxtCWgIA
-X-Developer-Key: i=quic_mkshah@quicinc.com; a=ed25519;
- pk=bd9h5FIIliUddIk8p3BlQWBlzKEQ/YW5V+fe759hTWQ=
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: H62BE5nWWiN7h4iV7B0cjeGlWH15OCnp
-X-Proofpoint-GUID: H62BE5nWWiN7h4iV7B0cjeGlWH15OCnp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-18_02,2024-07-17_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- phishscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
- clxscore=1011 bulkscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407180039
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240701114659.39539-1-pjy@amazon.com>
 
-From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+On Mon, Jul 01, 2024 at 11:46:59AM +0000, Puranjay Mohan wrote:
+> From: Russell King <russell.king@oracle.com>
+> 
+> [ Upstream commit b89ddf4cca43f1269093942cf5c4e457fd45c335 ]
+> 
+> Commit 91fc957c9b1d ("arm64/bpf: don't allocate BPF JIT programs in module
+> memory") restricts BPF JIT program allocation to a 128MB region to ensure
+> BPF programs are still in branching range of each other. However this
+> restriction should not apply to the aarch64 JIT, since BPF_JMP | BPF_CALL
+> are implemented as a 64-bit move into a register and then a BLR instruction -
+> which has the effect of being able to call anything without proximity
+> limitation.
+> 
+> The practical reason to relax this restriction on JIT memory is that 128MB of
+> JIT memory can be quickly exhausted, especially where PAGE_SIZE is 64KB - one
+> page is needed per program. In cases where seccomp filters are applied to
+> multiple VMs on VM launch - such filters are classic BPF but converted to
+> BPF - this can severely limit the number of VMs that can be launched. In a
+> world where we support BPF JIT always on, turning off the JIT isn't always an
+> option either.
+> 
+> Fixes: 91fc957c9b1d ("arm64/bpf: don't allocate BPF JIT programs in module memory")
+> Suggested-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Signed-off-by: Russell King <russell.king@oracle.com>
+> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+> Tested-by: Alan Maguire <alan.maguire@oracle.com>
+> Link: https://lore.kernel.org/bpf/1636131046-5982-2-git-send-email-alan.maguire@oracle.com
+> [Replace usage of in_bpf_jit() with is_bpf_text_address()]
+> Signed-off-by: Puranjay Mohan <pjy@amazon.com>
+> ---
+>  arch/arm64/include/asm/extable.h | 9 ---------
+>  arch/arm64/include/asm/memory.h  | 5 +----
+>  arch/arm64/kernel/traps.c        | 2 +-
+>  arch/arm64/mm/extable.c          | 3 ++-
+>  arch/arm64/mm/ptdump.c           | 2 --
+>  arch/arm64/net/bpf_jit_comp.c    | 7 ++-----
+>  6 files changed, 6 insertions(+), 22 deletions(-)
+> 
 
-Linux does not write into cmd-db region. This region of memory is write
-protected by XPU. XPU may sometime falsely detect clean cache eviction
-as "write" into the write protected region leading to secure interrupt
-which causes an endless loop somewhere in Trust Zone.
+This is reported to cause problems:
+	https://lore.kernel.org/r/CA+G9fYtfAbfcQ9J9Hzq-e6yoBVG3t_iHZ=bS2eJbO_aiOcquXQ@mail.gmail.com
+so I will drop it now.
 
-The only reason it is working right now is because Qualcomm Hypervisor
-maps the same region as Non-Cacheable memory in Stage 2 translation
-tables. The issue manifests if we want to use another hypervisor (like
-Xen or KVM), which does not know anything about those specific mappings.
+How did you test this?
 
-Changing the mapping of cmd-db memory from MEMREMAP_WB to MEMREMAP_WT/WC
-removes dependency on correct mappings in Stage 2 tables. This patch
-fixes the issue by updating the mapping to MEMREMAP_WC.
+And if you really need this feature, why not move to a more modern
+kernel version?
 
-I tested this on SA8155P with Xen.
+thanks,
 
-Fixes: 312416d9171a ("drivers: qcom: add command DB driver")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
-Tested-by: Nikita Travkin <nikita@trvn.ru> # sc7180 WoA in EL2
-Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
----
-Changes in v2:
- - Use MEMREMAP_WC instead of MEMREMAP_WT
- - Update commit message from comments in v1
- - Add Fixes tag and Cc to stable
- - Link to v1: https://lore.kernel.org/lkml/20240327200917.2576034-1-volodymyr_babchuk@epam.com
----
- drivers/soc/qcom/cmd-db.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/soc/qcom/cmd-db.c b/drivers/soc/qcom/cmd-db.c
-index d84572662017..ae66c2623d25 100644
---- a/drivers/soc/qcom/cmd-db.c
-+++ b/drivers/soc/qcom/cmd-db.c
-@@ -349,7 +349,7 @@ static int cmd_db_dev_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
- 
--	cmd_db_header = memremap(rmem->base, rmem->size, MEMREMAP_WB);
-+	cmd_db_header = memremap(rmem->base, rmem->size, MEMREMAP_WC);
- 	if (!cmd_db_header) {
- 		ret = -ENOMEM;
- 		cmd_db_header = NULL;
-
----
-base-commit: 797012914d2d031430268fe512af0ccd7d8e46ef
-change-id: 20240718-cmd_db_uncached-e896da5c5296
-
-Best regards,
--- 
-Maulik Shah <quic_mkshah@quicinc.com>
-
+greg k-h
 
