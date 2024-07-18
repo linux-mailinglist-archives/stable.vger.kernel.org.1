@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-60507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447B6934706
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 06:09:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5D1934707
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 06:09:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3BB02826C5
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 04:09:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B95C6B218C8
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 04:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AAEE286A8;
-	Thu, 18 Jul 2024 04:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCA13B784;
+	Thu, 18 Jul 2024 04:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="retV6P1E"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="saRbaHpe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B5AEEAA;
-	Thu, 18 Jul 2024 04:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F083A1DB;
+	Thu, 18 Jul 2024 04:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721275765; cv=none; b=oWef3AS42095KsNKASXeuYfLpgx2yv+LFTIuoST4+v338pDQbR205jDpvEFk2UpDCK9iDenFRYdgfwBhBQPBlGD1vUz2gllHc49AKoOGvzpxDDj4J2L10ExMxJpKf2iTmJysYCwOU3S8JkOcZMMeqQguCS/RgxKOhKHSmJQWF7o=
+	t=1721275767; cv=none; b=t03vmGP1u4JPuXJXpSWUh2f5imtIEuT2yqAnJlx9KpVHUY3EdbWB9JUs85kUSLjFaMJpqdiSldISOFojZCjj3QsBx2mwY2xwFgCY9UshCW9OhMQ37xY57e92eZf7mV14IB0JK9LiY/iaW52ta1WeUxD9sKqW09OVE3Ztka5xWzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721275765; c=relaxed/simple;
-	bh=Z3mSEPzA6oPOyt/clEoJzunfTGq0erof77HuJzqiCXs=;
-	h=Date:To:From:Subject:Message-Id; b=nHY+zjUyOHeKQ/lyJcdL6lfMNwJ70CVgN0jdkejot7xfdWg7UqTOQYBrbP3Bb6/NEXtapygU+zDNGLHwARmTaMsGilBRLiVlHB+E00UIopJ2lgv/taz6bLK7VOIGbT9LNmrWUasfceZ9hsKZrb/LVMhBDrgqDXDy83Xuszr7Q9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=retV6P1E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3850DC116B1;
-	Thu, 18 Jul 2024 04:09:24 +0000 (UTC)
+	s=arc-20240116; t=1721275767; c=relaxed/simple;
+	bh=A6DlK2AfrtOC9MMHdk9LEpEt8Z+5C6r+EWsVNe9qo3U=;
+	h=Date:To:From:Subject:Message-Id; b=Q+qBVwff3I/xMbIcbcJnu8X6yq6h3+b2d4lwhLsJpSYwSVQOTbLFRZn3+nC34NHwSFhw79z3Y1w9hgmHLqofvnEJ6xWOnb5MfPD6xz53Lj0uOBqGf75tu63O3uwNE184ZIz3h6dCULrPylLXaeeSB/cXGK8cYboaGIY1uGuHZWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=saRbaHpe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF2AC4AF0A;
+	Thu, 18 Jul 2024 04:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1721275764;
-	bh=Z3mSEPzA6oPOyt/clEoJzunfTGq0erof77HuJzqiCXs=;
+	s=korg; t=1721275766;
+	bh=A6DlK2AfrtOC9MMHdk9LEpEt8Z+5C6r+EWsVNe9qo3U=;
 	h=Date:To:From:Subject:From;
-	b=retV6P1Erf+cmxbeRgwLPkoVpwdvfLAzBzuuWs9il/Frvv09LKY2VJ7oN1a5jJK2U
-	 aeMqLb+3+fx0U+QPsOcmPs2UVvpG0ECsA9+MaOku4hu2L3svHyeTc8EYJad5NQ/CEr
-	 AszFefFPgkMme2Rma6UQUECcILsCkj998C200NJM=
-Date: Wed, 17 Jul 2024 21:09:23 -0700
-To: mm-commits@vger.kernel.org,ying.huang@intel.com,willy@infradead.org,stable@vger.kernel.org,rientjes@google.com,riel@surriel.com,peterz@infradead.org,mingo@redhat.com,mhocko@suse.com,mgorman@suse.de,hannes@cmpxchg.org,dave.hansen@intel.com,ak@linux.intel.com,tvrtko.ursulin@igalia.com,akpm@linux-foundation.org
+	b=saRbaHpeJdeX2NCLqw0ZXmwDRXK4RKy/xRemVDZGlcsflaRNgbe5PPclYW7L5QAk5
+	 KLeqdPCZz4rEeNWKsbu+YJLTRnSyp2C1Pfd7kjqr+CRBMrvhwvemzBOuQyKF3goYST
+	 xiUbIYawioqZPDLivmwyMatNDQnaLpAKedwGVlyQ=
+Date: Wed, 17 Jul 2024 21:09:26 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,muchun.song@linux.dev,linmiaohe@huawei.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-numa_balancing-teach-mpol_to_str-about-the-balancing-mode.patch removed from -mm tree
-Message-Id: <20240718040924.3850DC116B1@smtp.kernel.org>
+Subject: [merged mm-stable] mm-hugetlb-fix-possible-recursive-locking-detected-warning.patch removed from -mm tree
+Message-Id: <20240718040926.9EF2AC4AF0A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,123 +50,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/numa_balancing: teach mpol_to_str about the balancing mode
+     Subject: mm/hugetlb: fix possible recursive locking detected warning
 has been removed from the -mm tree.  Its filename was
-     mm-numa_balancing-teach-mpol_to_str-about-the-balancing-mode.patch
+     mm-hugetlb-fix-possible-recursive-locking-detected-warning.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: mm/numa_balancing: teach mpol_to_str about the balancing mode
-Date: Mon, 8 Jul 2024 08:56:32 +0100
+From: Miaohe Lin <linmiaohe@huawei.com>
+Subject: mm/hugetlb: fix possible recursive locking detected warning
+Date: Fri, 12 Jul 2024 11:13:14 +0800
 
-Since balancing mode was added in bda420b98505 ("numa balancing: migrate
-on fault among multiple bound nodes"), it was possible to set this mode
-but it wouldn't be shown in /proc/<pid>/numa_maps since there was no
-support for it in the mpol_to_str() helper.
+When tries to demote 1G hugetlb folios, a lockdep warning is observed:
 
-Furthermore, because the balancing mode sets the MPOL_F_MORON flag, it
-would be displayed as 'default' due a workaround introduced a few years
-earlier in 8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in
-numa_maps").
+============================================
+WARNING: possible recursive locking detected
+6.10.0-rc6-00452-ga4d0275fa660-dirty #79 Not tainted
+--------------------------------------------
+bash/710 is trying to acquire lock:
+ffffffff8f0a7850 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0x244/0x460
 
-To tidy this up we implement two changes:
+but task is already holding lock:
+ffffffff8f0a6f48 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0xae/0x460
 
-Replace the MPOL_F_MORON check by pointer comparison against the
-preferred_node_policy array.  By doing this we generalise the current
-special casing and replace the incorrect 'default' with the correct 'bind'
-for the mode.
+other info that might help us debug this:
+ Possible unsafe locking scenario:
 
-Secondly, we add a string representation and corresponding handling for
-the MPOL_F_NUMA_BALANCING flag.
+       CPU0
+       ----
+  lock(&h->resize_lock);
+  lock(&h->resize_lock);
 
-With the two changes together we start showing the balancing flag when it
-is set and therefore complete the fix.
+ *** DEADLOCK ***
 
-Representation format chosen is to separate multiple flags with vertical
-bars, following what existed long time ago in kernel 2.6.25.  But as
-between then and now there wasn't a way to display multiple flags, this
-patch does not change the format in practice.
+ May be due to missing lock nesting notation
 
-Some /proc/<pid>/numa_maps output examples:
+4 locks held by bash/710:
+ #0: ffff8f118439c3f0 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x64/0xe0
+ #1: ffff8f11893b9e88 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0xf8/0x1d0
+ #2: ffff8f1183dc4428 (kn->active#98){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x100/0x1d0
+ #3: ffffffff8f0a6f48 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0xae/0x460
 
- 555559580000 bind=balancing:0-1,3 file=...
- 555585800000 bind=balancing|static:0,2 file=...
- 555635240000 prefer=relative:0 file=
+stack backtrace:
+CPU: 3 PID: 710 Comm: bash Not tainted 6.10.0-rc6-00452-ga4d0275fa660-dirty #79
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x68/0xa0
+ __lock_acquire+0x10f2/0x1ca0
+ lock_acquire+0xbe/0x2d0
+ __mutex_lock+0x6d/0x400
+ demote_store+0x244/0x460
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x380/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xb9/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa61db14887
+RSP: 002b:00007ffc56c48358 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007fa61db14887
+RDX: 0000000000000002 RSI: 000055a030050220 RDI: 0000000000000001
+RBP: 000055a030050220 R08: 00007fa61dbd1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
+R13: 00007fa61dc1b780 R14: 00007fa61dc17600 R15: 00007fa61dc16a00
+ </TASK>
 
-Link: https://lkml.kernel.org/r/20240708075632.95857-1-tursulin@igalia.com
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: bda420b98505 ("numa balancing: migrate on fault among multiple bound nodes")
-References: 8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in numa_maps")
-Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: <stable@vger.kernel.org>	[5.12+]
+Lockdep considers this an AA deadlock because the different resize_lock
+mutexes reside in the same lockdep class, but this is a false positive.
+Place them in distinct classes to avoid these warnings.
+
+Link: https://lkml.kernel.org/r/20240712031314.2570452-1-linmiaohe@huawei.com
+Fixes: 8531fc6f52f5 ("hugetlb: add hugetlb demote page support")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/mempolicy.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ include/linux/hugetlb.h |    1 +
+ mm/hugetlb.c            |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/mempolicy.c~mm-numa_balancing-teach-mpol_to_str-about-the-balancing-mode
-+++ a/mm/mempolicy.c
-@@ -3297,8 +3297,9 @@ out:
-  * @pol:  pointer to mempolicy to be formatted
-  *
-  * Convert @pol into a string.  If @buffer is too short, truncate the string.
-- * Recommend a @maxlen of at least 32 for the longest mode, "interleave", the
-- * longest flag, "relative", and to display at least a few node ids.
-+ * Recommend a @maxlen of at least 51 for the longest mode, "weighted
-+ * interleave", plus the longest flag flags, "relative|balancing", and to
-+ * display at least a few node ids.
-  */
- void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
- {
-@@ -3307,7 +3308,10 @@ void mpol_to_str(char *buffer, int maxle
- 	unsigned short mode = MPOL_DEFAULT;
- 	unsigned short flags = 0;
- 
--	if (pol && pol != &default_policy && !(pol->flags & MPOL_F_MORON)) {
-+	if (pol &&
-+	    pol != &default_policy &&
-+	    !(pol >= &preferred_node_policy[0] &&
-+	      pol <= &preferred_node_policy[ARRAY_SIZE(preferred_node_policy) - 1])) {
- 		mode = pol->mode;
- 		flags = pol->flags;
- 	}
-@@ -3335,12 +3339,18 @@ void mpol_to_str(char *buffer, int maxle
- 		p += snprintf(p, buffer + maxlen - p, "=");
- 
- 		/*
--		 * Currently, the only defined flags are mutually exclusive
-+		 * Static and relative are mutually exclusive.
- 		 */
- 		if (flags & MPOL_F_STATIC_NODES)
- 			p += snprintf(p, buffer + maxlen - p, "static");
- 		else if (flags & MPOL_F_RELATIVE_NODES)
- 			p += snprintf(p, buffer + maxlen - p, "relative");
-+
-+		if (flags & MPOL_F_NUMA_BALANCING) {
-+			if (!is_power_of_2(flags & MPOL_MODE_FLAGS))
-+				p += snprintf(p, buffer + maxlen - p, "|");
-+			p += snprintf(p, buffer + maxlen - p, "balancing");
-+		}
- 	}
- 
- 	if (!nodes_empty(nodes))
+--- a/include/linux/hugetlb.h~mm-hugetlb-fix-possible-recursive-locking-detected-warning
++++ a/include/linux/hugetlb.h
+@@ -663,6 +663,7 @@ HPAGEFLAG(RawHwpUnreliable, raw_hwp_unre
+ /* Defines one hugetlb page size */
+ struct hstate {
+ 	struct mutex resize_lock;
++	struct lock_class_key resize_key;
+ 	int next_nid_to_alloc;
+ 	int next_nid_to_free;
+ 	unsigned int order;
+--- a/mm/hugetlb.c~mm-hugetlb-fix-possible-recursive-locking-detected-warning
++++ a/mm/hugetlb.c
+@@ -4642,7 +4642,7 @@ void __init hugetlb_add_hstate(unsigned
+ 	BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+ 	BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
+ 	h = &hstates[hugetlb_max_hstate++];
+-	mutex_init(&h->resize_lock);
++	__mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
+ 	h->order = order;
+ 	h->mask = ~(huge_page_size(h) - 1);
+ 	for (i = 0; i < MAX_NUMNODES; ++i)
 _
 
-Patches currently in -mm which might be from tvrtko.ursulin@igalia.com are
+Patches currently in -mm which might be from linmiaohe@huawei.com are
 
+mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory.patch
 
 
