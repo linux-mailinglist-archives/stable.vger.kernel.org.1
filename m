@@ -1,151 +1,109 @@
-Return-Path: <stable+bounces-60552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007A4934DAE
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 15:02:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4A9934DC4
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 15:06:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB9B91F2410E
-	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 13:02:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39AB3B20E85
+	for <lists+stable@lfdr.de>; Thu, 18 Jul 2024 13:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE9D4A15;
-	Thu, 18 Jul 2024 13:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="djHauMTi"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DA213C3F6;
+	Thu, 18 Jul 2024 13:06:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-40140.protonmail.ch (mail-40140.protonmail.ch [185.70.40.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1938E1DDEA;
-	Thu, 18 Jul 2024 13:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F93224CF;
+	Thu, 18 Jul 2024 13:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721307772; cv=none; b=cDLBwI7i1KHiY+PZ1MxsoRy0+vxEHa4Rekni1Z4xghU5JclTH6UicIHddWVz7UTZIilzrRAvx/W7zYhIG4//JYMMhUKjo9MZyNVK6NJmodRZO3zA0dvmUJc/ZKxlPCyi6zNgKdfy3HJcR+r4BIFbl855/jBXnREsGqj9n4gna5A=
+	t=1721307970; cv=none; b=sXj2Oz05uyaMbmlh2b4f18R94kFHP7d5jjo4XEjb/nwlqL02F9XtEstE9rCLXG56Co/oXoSoAEi328ci02nEvVB0xycLQyw5jEKREiHi3CPma7HsF+JbGaMyO0ti2z/zYm8AsajTw0hudjHLsHTtzGbirCEAymcy9snDwImOlGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721307772; c=relaxed/simple;
-	bh=MZcf5HKg2xGnIwe/226e4jhMx8GAo1mzF03h+MQwqgk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qfUCGlm5gBGhHm+jR94SomanV2eOm7xt2/WHsDrCogbiPdoWQHpRsc5YkGN930ulC2mgS24DZ1TRkNV2KBJ/8Nbqc5O4z8i5nCeEbwfnq+Dnq3xyB7Ro+r+nveEUm5XI53/iojnFR8sldqywYcJzodfaBSkthcKpUjdRVKqGPbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=djHauMTi; arc=none smtp.client-ip=185.70.40.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1721307761; x=1721566961;
-	bh=9Cq1kYOOh4haPvErrEi0ZorhnPKKtbTkm37WeZr/RwI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=djHauMTirdLnUoYqo5ZWLurL59I8tmXbJ+F3r1tgjiEBDOwyfr9opyrqJJyKbg7X2
-	 BIRR76BLNnGgEgJRVnNU1U1ZKc8Qp8oNF5XApgoixL8AGyF/UuFX7oKIgiuK7gYuYi
-	 sPk9yZsYLosuPEGC0qaGzF1OR4sACzMmcBULzKrc6XVv2nG8zG22dQmEm6segYBn5w
-	 tgeZq74VZHeyKiWg444QVm1FckkgVGAqM/0BHAkgyWqvF8WHYiq6R6hNel89pNO3b8
-	 6H0avnpfkGpzOhYX3HVazwj90uwjV9eRTkbYBqua8L9V23zaVSEQdeeBHKCUTLwhn+
-	 1WbpD2ayW+mag==
-Date: Thu, 18 Jul 2024 13:02:26 +0000
-To: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-From: "edmund.raile" <edmund.raile@proton.me>
-Cc: alsa-devel@alsa-project.org, clemens@ladisch.de, linux-sound@vger.kernel.org, regressions@lists.linux.dev, stable@vger.kernel.org, tiwai@suse.de
-Subject: Re: [REGRESSION] ALSA: firewire-lib: snd_pcm_period_elapsed deadlock with Fireface 800
-Message-ID: <stydzmsrtsdpoi7umdhxk66zsqdqaj7yyerro63eatecj5p44b@vad2xzpgdkag>
-In-Reply-To: <20240717144649.GA317903@workstation.local>
-References: <kwryofzdmjvzkuw6j3clftsxmoolynljztxqwg76hzeo4simnl@jn3eo7pe642q> <20240717144649.GA317903@workstation.local>
-Feedback-ID: 45198251:user:proton
-X-Pm-Message-ID: 0f8570c0bec60156c33a86ccb863c54edc02e256
+	s=arc-20240116; t=1721307970; c=relaxed/simple;
+	bh=BvITnZGwrv0DcMi9+rbLEpK9pqpsSHIG6x1UYrJpaw0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HFxjcBmWm+zuogSuptUQL+8CNp8k3/DtKYkF/8cgwNCLq6vtRBCjf5z3Hu6Ay9Sclr0o5VVTWGMDmQmdFVE/n/R6JI6bafEufsESKcFmeuJcObOmN0RgPci7FGohha4JFj6kU5AX0enDqNpUu4BY2m5WY6UTT3x6/49FDe197yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-01 (Coremail) with SMTP id qwCowAC3aVQaE5lm7yMRBA--.17514S2;
+	Thu, 18 Jul 2024 21:05:42 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	sam@ravnborg.org,
+	noralf@tronnes.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 RESEND] drm/client: fix null pointer dereference in drm_client_modeset_probe
+Date: Thu, 18 Jul 2024 21:05:26 +0800
+Message-Id: <20240718130526.740592-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAC3aVQaE5lm7yMRBA--.17514S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrtr4DZw13CFy5urW7urW5trb_yoW8Jr18pr
+	43JF90yF4jvrZrKFs2va97CF17A3W3JF48G3W7Aan3u3Z0qry2vryYvr13WFy7Gry3JF1U
+	JrnIyFW2qF18CaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUQZ23UUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Am 24/07/17 04:46, schrieb Takashi Sakamoto:
-> Hi,
->=20
-> Thanks for the regression report, and I'm sorry for your inconvenience.
->=20
-> As long as reading the call trace, the issue is indeed deadlock between
-> the process and softIRQ (tasklet) contexts against the group lock for ALS=
-A
-> PCM substream and the tasklet for OHCI 1394 IT context.
->=20
-> A. In the process context
->     * (lock A) Acquiring spin_lock by snd_pcm_stream_lock_irq() in
->                snd_pcm_status64()
->     * (lock B) Then attempt to enter tasklet
->=20
-> B. In the softIRQ context
->     * (lock B) Enter tasklet
->     * (lock A) Attempt to acquire spin_lock by snd_pcm_stream_lock_irqsav=
-e() in
->                snd_pcm_period_elapsed()
->=20
-> It is the same issue as you reported in test branch for bh workqueue[1].
->=20
-> I think the users rarely face the issue when working with either PipeWire
-> or PulseAudio, since these processes run with no period wakeup mode of
-> runtime for PCM substream (thus with less hardIRQ).
->=20
-> Anyway, it is one of solutions to revert both a commit b5b519965c4c ("ALS=
-A:
-> firewire-lib: obsolete workqueue for period update") and a commit
-> 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event in
-> process context"). The returned workqueue is responsible for lock A, thus=
-:
->=20
-> A. In the process context
->     * (lock A) Acquiring spin_lock by snd_pcm_stream_lock_irq() in
->                snd_pcm_status64()
->     * (lock B) Then attempt to enter tasklet
->=20
-> B. In the softIRQ context
->     * (lock B) Enter tasklet
->     * schedule workqueue
->=20
-> C. another process context (workqueue)
->     * (lock A) Attempt to acquire spin_lock by snd_pcm_stream_lock_irqsav=
-e()
->                in snd_pcm_period_elapsed()
->=20
-> The deadlock would not occur.
->=20
-> [1] https://github.com/allenpais/for-6.9-bh-conversions/issues/1
->=20
->=20
-> Regards
->=20
-> Takashi Sakamoto
+In drm_client_modeset_probe(), the return value of drm_mode_duplicate() is
+assigned to modeset->mode, which will lead to a possible NULL pointer
+dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Thank you for taking the issue seriously!
-Yes, indeed it was the same issue reported to the test branch for
-bh workqueue!
+Cc: stable@vger.kernel.org
+Fixes: cf13909aee05 ("drm/fb-helper: Move out modeset config code")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v2:
+- added the recipient's email address, due to the prolonged absence of a 
+response from the recipients.
+- added Cc stable.
+---
+ drivers/gpu/drm/drm_client_modeset.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-It was "fun" living with this "hilarious" bug for years and not knowing
-where it comes from.
-Having it solved is almost like christmas to me, I am very glad I was
-able to.
-
-Your explaination of what was happening here also helped me understand
-the issue better, so thank you.
-
-Of course there will be better solutions in the future but for now,
-the kernel freeze is banished, I hope [2].
-
-Trying to implement my "fix" on the latest kernel (I was only testing
-with 6.9.9) revealed that 6.10.0 introduced another regression [3],
-resulting in heavy digital distortion.
-I'd like to ask you to look into it.
-Despite the horrible distortion, I'm happy to report that the patch [2]
-also works on the latest kernel!
-
-Thank you for your hard work on the firewire sound drivers!
-
-[2] https://lore.kernel.org/linux-sound/20240718115637.12816-1-edmund.raile=
-@proton.me/T/#u
-[3] https://lore.kernel.org/linux-sound/n4jdkizinqfoztqn2cwv7uqqqnvkyu2xk32=
-qebazqznh74b3d3@r23skt4k7mqe/T/#u
+diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
+index 31af5cf37a09..cca37b225385 100644
+--- a/drivers/gpu/drm/drm_client_modeset.c
++++ b/drivers/gpu/drm/drm_client_modeset.c
+@@ -880,6 +880,9 @@ int drm_client_modeset_probe(struct drm_client_dev *client, unsigned int width,
+ 
+ 			kfree(modeset->mode);
+ 			modeset->mode = drm_mode_duplicate(dev, mode);
++			if (!modeset->mode)
++				continue;
++
+ 			drm_connector_get(connector);
+ 			modeset->connectors[modeset->num_connectors++] = connector;
+ 			modeset->x = offset->x;
+-- 
+2.25.1
 
 
