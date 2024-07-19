@@ -1,145 +1,197 @@
-Return-Path: <stable+bounces-60625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6BF937CA2
-	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 20:42:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD18B937D0F
+	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 21:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B489B223CF
-	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 18:42:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C4D32815FD
+	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 19:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FCA147C90;
-	Fri, 19 Jul 2024 18:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893391487F1;
+	Fri, 19 Jul 2024 19:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y/tfv/JC"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="1qLf8wa8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54644147C87
-	for <stable@vger.kernel.org>; Fri, 19 Jul 2024 18:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101FB148308
+	for <stable@vger.kernel.org>; Fri, 19 Jul 2024 19:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721414535; cv=none; b=SAoz1jMlaaBeAf4tkpnasB5taL8M57ZEoJY5MxaI3Oy2MHDC049shRMSgEJkfVYzv9KZ9WbeAozpnXHGnG3xj5fCaruqa8pEx17RiovCh1OQQX73DHlSNVNSN2vIc9rpQrVSP1OlpwaBXX2CAUYJXll5wOxIJwUxZe6pJtn3rPc=
+	t=1721419029; cv=none; b=gptDdL3VBVTMc9y3RM+vn/TfmpYRD1rGDgKL/wJqc6wIE63V1rJXcGR8SwZ7aKkJ2+Ne0yRVOOaHM2fjnW/ssw629WHSPv7LEt/lIjun8A/Usz5ydkvOEpAmymeR+f7k6BRwGwC9fZCJbkY1ptRBqmhtj6jGCkId0YMiIKyITl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721414535; c=relaxed/simple;
-	bh=oltVxzNyvv77lf/BW3tNvz5FdxtrRpL5oGQZxptXz3c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IsY6JDEMGuSBImGcP1Ct5uzxSfnoDeYsuSZfCrEVdXiGc4OK/1g8Q8Z6DfWn9vdlSeFVTQjzOqPIu9mo6HrPUTtMaV6JcP+bJEtQ8stnsnqInTahg94LaLS/eijXAcTN9hxf3BC1e+JrCtZH5orbRoz/acmoRValomVph6Q6PNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y/tfv/JC; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-52e9f788e7bso2486050e87.0
-        for <stable@vger.kernel.org>; Fri, 19 Jul 2024 11:42:13 -0700 (PDT)
+	s=arc-20240116; t=1721419029; c=relaxed/simple;
+	bh=KkB0LKiiP3HMvRIhfAm3yM0pM8vg+pJ5iOZIl++tVg4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b8edTNfLlNQFDUBQ4hYMUiGayClfLBato6l4thoGYSw/hOMVofeTyyloGB59/UHTZu2FtUR3rRa0lsdjIV2KeFFvdDkSIfG+dMRT/amfAUmiBJXPjT+2NW9lmA4YQk5z7B9TLlVQKX6c+vhJ7HDkD1t+VG3y1mA6aVonl86N0Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=1qLf8wa8; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a6265d3ba8fso197354066b.0
+        for <stable@vger.kernel.org>; Fri, 19 Jul 2024 12:57:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721414531; x=1722019331; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=EMLi4/RLuYJzBVsjdG68JYfnV4VRSle+/uP4y/1zEDQ=;
-        b=Y/tfv/JCmThpVTxSNDhYhAwrQcUYzkZkTog2k00AWOc0sKiVbV6W3bXHHA2pSQVOYG
-         KFoswiMTnR5IRUk8315Q0T56UfSe7QK9hf7VcqFnbjTcwE2IfiqqBoM4EbGQj6Jt435M
-         j2T9rAFIDFeY4w8vtRMVcUPfu52OGGprhJy8guvY5K1UwBFHYgYYYr7MHOBlYaYmfgVA
-         +fIozHwpKwyAKKMDahNU/SmiGPcTxClI67HIh1ttPriguHI6F2dmCF0NFgk2PvaCXq0q
-         UX04HDk0xu7bJShMwsHYp5XaTqyRFZwm7MupIDpJcuLq96BdKhC1fdRRjroen1kiQ8md
-         walA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721414531; x=1722019331;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1721419024; x=1722023824; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EMLi4/RLuYJzBVsjdG68JYfnV4VRSle+/uP4y/1zEDQ=;
-        b=W6serD0T3pgixnoPvWxReLtQm2zYNH2Ba/CPdmz/4TrgZJC/pwVCRTlLlhAMKkC0LX
-         whzk8RyH+QuR9YNZ4a2afhGcbd87cOxhfFkdGEDUF01wmpnFBfZcKuuEgN38snNLGYdB
-         Y/X8r8uPVl9hUMIev6P7ZHOgwW/99+Um6e+SezUKHjza4DU5mrt+PYrI626tmq9yme8S
-         PYWgnb+W+hwH3E0ol1Woikd6ECDfREOgEsOQBq91HIb4GIMwZ8FtJEGlopVjsz6bVqbq
-         +rt9ALCM4PDK6Q7FU74AQq4jAjFxx9JVhpi/pQ15x8U1S/myuy5tbBjw3hyBQuu4bZM2
-         q7TA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+b13TwQcN+W0pyZPnvRi7jN8cxOm8StfkE0+DKwmmT7VeTYLOndQW4A8PEQphhFhgS3yTMnAuNibVXjKmt4XCm/saYcBh
-X-Gm-Message-State: AOJu0Yz1arbv777botrKgFSnutOoR+4mNDB4tRb/b2uhS5ql6/77mhGQ
-	U/vtNLYusujS52VOKPBqEyswD9W76mbTu0hoJgkJCEKfwMrkIcMw3kQwuAge9F4=
-X-Google-Smtp-Source: AGHT+IGjgUc8q8CuJVc2puKr/aAWGj5LpuLQMgFlj2AU5AveDFbYtHWsax9LqLtyeDndamYLDvFT6g==
-X-Received: by 2002:a05:6512:23a1:b0:52e:97dd:327b with SMTP id 2adb3069b0e04-52ee53b2ae5mr6943763e87.23.1721414531266;
-        Fri, 19 Jul 2024 11:42:11 -0700 (PDT)
-Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7a3c8beb09sm63341666b.135.2024.07.19.11.42.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Jul 2024 11:42:10 -0700 (PDT)
-Message-ID: <4bf8bf1a-a63d-4674-856b-f66e9eacb09c@linaro.org>
-Date: Fri, 19 Jul 2024 20:42:09 +0200
+        bh=71CBKJ5o7I4cy2JXrEI11tVDU0uyHgYLiRo2v5Mi+QE=;
+        b=1qLf8wa8SqVB9/cKN37XVE0lWIlpHdAyBP8a7mRRLI3pAqYmQ7RJOvkDJxnXoBHiXy
+         xaVwN7ZOMyr625FAYcU+YRtcqy+fYx5xmXOv+pybljXyieZcwF02E8PPHV6wmjSx+WUw
+         B1WgnuD1EY+mffSkgngJB/ekltneBOFddYU/eWRoyG9gDi1WYtNt5CGjzLb9U/gN4TYq
+         NsA7ymp1ikPnReY23mOKqrlC2R3xv9Idg/5e6g5aVJzs17kEXYqnKEPTcoZiWZDdSC63
+         pHfU1OButbMpStpd9IclcR0/rap54Wyz56CBwbrsF7J1r/BAg3nyDgX7sJWQj7TI++Zg
+         bJ7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721419024; x=1722023824;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=71CBKJ5o7I4cy2JXrEI11tVDU0uyHgYLiRo2v5Mi+QE=;
+        b=lnmsBHZWD6oIjMYAWnh96N68rDVWLyhbHsSbFnQdUJ2LSCz4uwfyvaOpEyIjSBP6xX
+         nLP88DY1StsQkfz3QmP86GN9rHRp2aUY2SHtDehkoIqvaxF0UFcYBs682NtCwQG7bEqb
+         TStvSp3pSTU2rAFeypz/L0f1sVM3muHbA6tlFb75N7cdZyqVEw8UoFf/sksYVN66/SHQ
+         b4hVwgJLxEmOjkCoLQJQjXQyruH5cKjIY82STlUm++d98gJ7qVD2j40jAR6jZ6QSTenF
+         QiK1kydwWO3N95VFfW7QFr6RvFjeqWUtFFhPxkmaoQoWI+E+QDHwbo3ANRwHPKRLZlCx
+         0EIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXbf2ODPxQvpw1E+ZttnEA92i/YNGfFuPfrzurepp4qamV5URQLccqI6vv+KtV1eWAZRuine6VIYJF/hiHeF38kkvLzp6Ft
+X-Gm-Message-State: AOJu0YyFLf6vbUExg4Tgcx5mzXYwNccMo+W5x6ACIttrI6qO6P3xrq9l
+	n9Fb3JTJJL4yBvJk3OM8cL3TSlijIpI5BA+IdfrI4AVmCxIdHRdtaXHONegMU0ZahopqS2owSdM
+	WuseHuLb8xQeSMaayD4FB9xeb7TdEn5wGlC33bA==
+X-Google-Smtp-Source: AGHT+IGMKZ7Id6PZ9k5+krjiDl6iseri2cr1uDlMZ6EwfH9XwMKTFPCtWo++b63LltYV6CLMBQXdC/iIw073Dt+So4w=
+X-Received: by 2002:a17:906:fa1a:b0:a6f:b58f:ae3c with SMTP id
+ a640c23a62f3a-a7a0116c6acmr543296366b.26.1721419024408; Fri, 19 Jul 2024
+ 12:57:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] arm64: dts: qcom: x1e80100: fix PCIe domain numbers
-To: Johan Hovold <johan+linaro@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Sibi Sankar <quic_sibis@quicinc.com>,
- Abel Vesa <abel.vesa@linaro.org>, Rajendra Nayak <quic_rjendra@quicinc.com>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240719131722.8343-1-johan+linaro@kernel.org>
- <20240719131722.8343-3-johan+linaro@kernel.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
- BB/OmIWU6X+LZW6P88ZmHe+KeyABLMP5s1tJNK1j4ntT7mECcWZDzafPWF4F6m4WJOG27kTJ
- HGWdmtO+RvadOVi6CoUDqALsmfS3MUG5Pj2Ne9+0jRg4hEnB92AyF9rW2G3qisFcwPgvatt7
- TXD5E38mLyOPOUyXNj9XpDbt1hNwKQfiidmPh5e7VNAWRnW1iCMMoKqzM1Anzq7e5Afyeifz
- zRcQPLaqrPjnKqZGL2BKQSZDh6NkI5ZLRhhHQf61fkWcUpTp1oDC6jWVfT7hwRVIQLrrNj9G
- MpPzrlN4YuAqKeIer1FMt8cq64ifgTzxHzXsMcUdclzq2LTk2RXaPl6Jg/IXWqUClJHbamSk
- t1bfif3SnmhA6TiNvEpDKPiT3IDs42THU6ygslrBxyROQPWLI9IL1y8S6RtEh8H+NZQWZNzm
- UQ3imZirlPjxZtvz1BtnnBWS06e7x/UEAguj7VHCuymVgpl2Za17d1jj81YN5Rp5L9GXxkV1
- aUEwONM3eCI3qcYm5JNc5X+JthZOWsbIPSC1Rhxz3JmWIwP1udr5E3oNRe9u2LIEq+wH/toH
- kpPDhTeMkvt4KfE5m5ercid9+ZXAqoaYLUL4HCEw+HW0DXcKDwARAQABzShLb25yYWQgRHli
- Y2lvIDxrb25yYWQuZHliY2lvQGxpbmFyby5vcmc+wsGOBBMBCAA4FiEEU24if9oCL2zdAAQV
- R4cBcg5dfFgFAmQ5bqwCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQR4cBcg5dfFjO
- BQ//YQV6fkbqQCceYebGg6TiisWCy8LG77zV7DB0VMIWJv7Km7Sz0QQrHQVzhEr3trNenZrf
- yy+o2tQOF2biICzbLM8oyQPY8B///KJTWI2khoB8IJSJq3kNG68NjPg2vkP6CMltC/X3ohAo
- xL2UgwN5vj74QnlNneOjc0vGbtA7zURNhTz5P/YuTudCqcAbxJkbqZM4WymjQhe0XgwHLkiH
- 5LHSZ31MRKp/+4Kqs4DTXMctc7vFhtUdmatAExDKw8oEz5NbskKbW+qHjW1XUcUIrxRr667V
- GWH6MkVceT9ZBrtLoSzMLYaQXvi3sSAup0qiJiBYszc/VOu3RbIpNLRcXN3KYuxdQAptacTE
- mA+5+4Y4DfC3rUSun+hWLDeac9z9jjHm5rE998OqZnOU9aztbd6zQG5VL6EKgsVXAZD4D3RP
- x1NaAjdA3MD06eyvbOWiA5NSzIcC8UIQvgx09xm7dThCuQYJR4Yxjd+9JPJHI6apzNZpDGvQ
- BBZzvwxV6L1CojUEpnilmMG1ZOTstktWpNzw3G2Gis0XihDUef0MWVsQYJAl0wfiv/0By+XK
- mm2zRR+l/dnzxnlbgJ5pO0imC2w0TVxLkAp0eo0LHw619finad2u6UPQAkZ4oj++iIGrJkt5
- Lkn2XgB+IW8ESflz6nDY3b5KQRF8Z6XLP0+IEdLOOARkOW7yEgorBgEEAZdVAQUBAQdAwmUx
- xrbSCx2ksDxz7rFFGX1KmTkdRtcgC6F3NfuNYkYDAQgHwsF2BBgBCAAgFiEEU24if9oCL2zd
- AAQVR4cBcg5dfFgFAmQ5bvICGwwACgkQR4cBcg5dfFju1Q//Xta1ShwL0MLSC1KL1lXGXeRM
- 8arzfyiB5wJ9tb9U/nZvhhdfilEDLe0jKJY0RJErbdRHsalwQCrtq/1ewQpMpsRxXzAjgfRN
- jc4tgxRWmI+aVTzSRpywNahzZBT695hMz81cVZJoZzaV0KaMTlSnBkrviPz1nIGHYCHJxF9r
- cIu0GSIyUjZ/7xslxdvjpLth16H27JCWDzDqIQMtg61063gNyEyWgt1qRSaK14JIH/DoYRfn
- jfFQSC8bffFjat7BQGFz4ZpRavkMUFuDirn5Tf28oc5ebe2cIHp4/kajTx/7JOxWZ80U70mA
- cBgEeYSrYYnX+UJsSxpzLc/0sT1eRJDEhI4XIQM4ClIzpsCIN5HnVF76UQXh3a9zpwh3dk8i
- bhN/URmCOTH+LHNJYN/MxY8wuukq877DWB7k86pBs5IDLAXmW8v3gIDWyIcgYqb2v8QO2Mqx
- YMqL7UZxVLul4/JbllsQB8F/fNI8AfttmAQL9cwo6C8yDTXKdho920W4WUR9k8NT/OBqWSyk
- bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
- nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
- izWDgYvmBE8=
-In-Reply-To: <20240719131722.8343-3-johan+linaro@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240717180727.4180475-1-jesse@rivosinc.com> <20240717180727.4180475-4-jesse@rivosinc.com>
+In-Reply-To: <20240717180727.4180475-4-jesse@rivosinc.com>
+From: Evan Green <evan@rivosinc.com>
+Date: Fri, 19 Jul 2024 12:56:28 -0700
+Message-ID: <CALs-Hst+Wb4MNoN6y+pOF92+MLenGZqhcZUmZW+rW76DTECduA@mail.gmail.com>
+Subject: Re: [PATCH v5 3/7] RISC-V: Check scalar unaligned access on all CPUs
+To: Jesse Taube <jesse@rivosinc.com>
+Cc: linux-riscv@lists.infradead.org, Jonathan Corbet <corbet@lwn.net>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Charlie Jenkins <charlie@rivosinc.com>, 
+	Xiao Wang <xiao.w.wang@intel.com>, Andy Chiu <andy.chiu@sifive.com>, 
+	Eric Biggers <ebiggers@google.com>, Greentime Hu <greentime.hu@sifive.com>, 
+	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Costa Shulyupin <costa.shul@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+	Anup Patel <apatel@ventanamicro.com>, Zong Li <zong.li@sifive.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Ben Dooks <ben.dooks@codethink.co.uk>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+	Erick Archer <erick.archer@gmx.com>, Joel Granados <j.granados@samsung.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 19.07.2024 3:17 PM, Johan Hovold wrote:
-> The current PCIe domain numbers are off by one and do not match the
-> numbers that the UEFI firmware (and Windows) uses.
-> 
-> Fixes: 5eb83fc10289 ("arm64: dts: qcom: x1e80100: Add PCIe nodes")
-> Cc: stable@vger.kernel.org	# 6.9
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+On Wed, Jul 17, 2024 at 11:07=E2=80=AFAM Jesse Taube <jesse@rivosinc.com> w=
+rote:
+>
+> Originally, the check_unaligned_access_emulated_all_cpus function
+> only checked the boot hart. This fixes the function to check all
+> harts.
+>
+> Fixes: 71c54b3d169d ("riscv: report misaligned accesses emulation to hwpr=
+obe")
+> Signed-off-by: Jesse Taube <jesse@rivosinc.com>
+> Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+
+Reviewed-by: Evan Green <evan@rivosinc.com>
+
+
+> Cc: stable@vger.kernel.org
 > ---
-
-can confirm dsdt calls them this
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-
-Konrad
+> V1 -> V2:
+>  - New patch
+> V2 -> V3:
+>  - Split patch
+> V3 -> V4:
+>  - Re-add check for a system where a heterogeneous
+>     CPU is hotplugged into a previously homogenous
+>     system.
+> V4 -> V5:
+>  - Change work_struct *unused to work_struct *work __always_unused
+> ---
+>  arch/riscv/kernel/traps_misaligned.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/tra=
+ps_misaligned.c
+> index b62d5a2f4541..9a1e94383d6d 100644
+> --- a/arch/riscv/kernel/traps_misaligned.c
+> +++ b/arch/riscv/kernel/traps_misaligned.c
+> @@ -526,11 +526,11 @@ int handle_misaligned_store(struct pt_regs *regs)
+>         return 0;
+>  }
+>
+> -static bool check_unaligned_access_emulated(int cpu)
+> +static void check_unaligned_access_emulated(struct work_struct *work __a=
+lways_unused)
+>  {
+> +       int cpu =3D smp_processor_id();
+>         long *mas_ptr =3D per_cpu_ptr(&misaligned_access_speed, cpu);
+>         unsigned long tmp_var, tmp_val;
+> -       bool misaligned_emu_detected;
+>
+>         *mas_ptr =3D RISCV_HWPROBE_MISALIGNED_UNKNOWN;
+>
+> @@ -538,19 +538,16 @@ static bool check_unaligned_access_emulated(int cpu=
+)
+>                 "       "REG_L" %[tmp], 1(%[ptr])\n"
+>                 : [tmp] "=3Dr" (tmp_val) : [ptr] "r" (&tmp_var) : "memory=
+");
+>
+> -       misaligned_emu_detected =3D (*mas_ptr =3D=3D RISCV_HWPROBE_MISALI=
+GNED_EMULATED);
+>         /*
+>          * If unaligned_ctl is already set, this means that we detected t=
+hat all
+>          * CPUS uses emulated misaligned access at boot time. If that cha=
+nged
+>          * when hotplugging the new cpu, this is something we don't handl=
+e.
+>          */
+> -       if (unlikely(unaligned_ctl && !misaligned_emu_detected)) {
+> +       if (unlikely(unaligned_ctl && (*mas_ptr !=3D RISCV_HWPROBE_MISALI=
+GNED_EMULATED))) {
+>                 pr_crit("CPU misaligned accesses non homogeneous (expecte=
+d all emulated)\n");
+>                 while (true)
+>                         cpu_relax();
+>         }
+> -
+> -       return misaligned_emu_detected;
+>  }
+>
+>  bool check_unaligned_access_emulated_all_cpus(void)
+> @@ -562,8 +559,11 @@ bool check_unaligned_access_emulated_all_cpus(void)
+>          * accesses emulated since tasks requesting such control can run =
+on any
+>          * CPU.
+>          */
+> +       schedule_on_each_cpu(check_unaligned_access_emulated);
+> +
+>         for_each_online_cpu(cpu)
+> -               if (!check_unaligned_access_emulated(cpu))
+> +               if (per_cpu(misaligned_access_speed, cpu)
+> +                   !=3D RISCV_HWPROBE_MISALIGNED_EMULATED)
+>                         return false;
+>
+>         unaligned_ctl =3D true;
+> --
+> 2.45.2
+>
 
