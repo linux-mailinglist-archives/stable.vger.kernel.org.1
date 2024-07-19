@@ -1,59 +1,83 @@
-Return-Path: <stable+bounces-60609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF7D9378A3
-	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 15:43:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1F69378A8
+	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 15:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DB5A1C21358
-	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 13:43:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9128E1F22712
+	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 13:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED50142915;
-	Fri, 19 Jul 2024 13:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A551422CA;
+	Fri, 19 Jul 2024 13:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="katqSECl"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C16B1422DF
-	for <stable@vger.kernel.org>; Fri, 19 Jul 2024 13:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01F91422DF
+	for <stable@vger.kernel.org>; Fri, 19 Jul 2024 13:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721396571; cv=none; b=g12IvgApT0tTRnTfsSLm9its/udY3qKRv8znhxm5p1sWXcdqZS3XpcYEkM2WvdkSFlUpMbksTm68QQOuutdF/iot/zvY4gLszr2PQXvEdpOSZUTjaX1mKBH2lJhdatHZiXWsSdmc6mJ4pIdZ82vw8GIJqkAeECDm3oaiYOCEl0s=
+	t=1721396577; cv=none; b=mMqWaoG/5C4R1FsC4fQlCFhYqAllnxbTTqcC4o2SzvQGdfyy6tGJVrQoY6ObrDZAPJuRfZ20fFowYxeZTgSzbyvDFf9sHCZ4faxPTMPg7sgR7kk9uHScvCO4gJCcyO/SExGVvAKx9oFxT1hPOmtVvskWgIy3TpdUnx7dtsb8RXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721396571; c=relaxed/simple;
-	bh=FzqOUfohx/qjKm/+urL5BDlU1thKZr9PQI937Ax/g6s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FPbgxFHjGvGi1gOPC+GTmbgdQDNqXDOFNqwCUvVtwJsz4YntMpdq7ML5mkBdL8uUM7A0d3bOtRtiaGYcIovCgQfsZK3+RQxoi96gaYfneWwLiENypxfKiTDOQaXM42ienAH1vEjYnwyCcOxGiyn4E053V4pJdtVFDu4AXeTks/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4WQW7r4Nkcz4f3kvv
-	for <stable@vger.kernel.org>; Fri, 19 Jul 2024 21:42:32 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id E97151A08F5
-	for <stable@vger.kernel.org>; Fri, 19 Jul 2024 21:42:45 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP4 (Coremail) with SMTP id gCh0CgCnizlSbZpm4AxQAg--.12422S6;
-	Fri, 19 Jul 2024 21:42:45 +0800 (CST)
-From: libaokun@huaweicloud.com
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	patches@lists.linux.dev,
-	hsiangkao@linux.alibaba.com,
-	yangerkun@huawei.com,
-	libaokun1@huawei.com,
-	Hou Tao <houtao1@huawei.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 3/3] cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()
-Date: Fri, 19 Jul 2024 21:40:04 +0800
-Message-Id: <20240719134004.1584648-3-libaokun@huaweicloud.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240719134004.1584648-1-libaokun@huaweicloud.com>
-References: <20240719134004.1584648-1-libaokun@huaweicloud.com>
+	s=arc-20240116; t=1721396577; c=relaxed/simple;
+	bh=OObjBT5+tmi8SJwD/vGEg0LnoSk/hpHy9nJZqdaQsvM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pVAda1j8muWvuuBBjcd/CFOjGlMkB5lMU+j+WSjKA0L8Et6+/ZO0gELMbaoThDo+bfFSwawwxUIexqKPhBftp2pF4icwgnCigFTWoD1DCeNejnUw1oO254FfPR3uiJdq6YYEZ6m3fc11EESN8b94vtg1wYzFjB/PN4IVT7MhBqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=katqSECl; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-708b273b437so1022954a34.0
+        for <stable@vger.kernel.org>; Fri, 19 Jul 2024 06:42:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721396574; x=1722001374; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6zxRHXX1Q8OwMxEpYD1fuoDQoSBRUnmedwW5/qepIyg=;
+        b=katqSEClNIYlnTIRHm7sdp859uGyzunL0Xk06UYblNyzq40EnSXhFkK2BQtziulcFQ
+         GnksgOQZ1hzDEF5lSKdSe2Jm9WgyMNQKbk8+HwbLK9yIKUqdKytgHSbYFHQwX/JraxZJ
+         1dOWE/HQrGdlNjqa/z+aQAR11RA7ym4zMGgVBmVinbnb+ZtSZaoaZf1uin8XgpoAgjTu
+         johMrUWct23ZKd67sYqdX5ssZTX5FSiZLNU2E56yamIzbeXS+/YL8mgholDLWt2DelGl
+         Dc7RA0d73rSod873Lvtiorti+JuRkP+wroT6am0oow8jXa/sdSaRkF5Q1pdpMrZVsu1J
+         9CFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721396574; x=1722001374;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6zxRHXX1Q8OwMxEpYD1fuoDQoSBRUnmedwW5/qepIyg=;
+        b=nfDgRNkIhcmF7iHQZgXkI8HC4Mof0+zTiGZVHrUYsB6J7yJp7qj/5s2EsKqdAqIq08
+         jla78Wwv6bS8yW156msmo74l6OJZqH3LBtVswJaMkAzqSqmqtnjH9P0UvhYmKY/p3Fe1
+         6bm7rGmoPV0VYGzrIBLcXIQNejPHMsgNCWYV1J9UV7Y3EdVfJpxMalZmTvlXBwFiHBfJ
+         Z+5fSozDustWiZuLvukCaMKIYCKCig8vRnjA3fc1hagjNj08wpyRyYqBXm3XVIKUo7w5
+         CzMZ1XOMWfCMs1H9r+Uoi5blFSWMEjD3yPdfSDkv2jYdviffBnRDpyOmPvdwtPYyTf6X
+         9G4w==
+X-Forwarded-Encrypted: i=1; AJvYcCXb70IBmUWCNuykGf9u8NXRNsziQo9BRE/23iAfZuxpOx+adKlKMfuANT4ReyWN/7pKod9OLhK30TBblse5ZI4KaMmaXlsi
+X-Gm-Message-State: AOJu0YxYMuZNekhcRR29bEcx8SrfNb824SrHqkyMDTHJ+1dVG0IE1IO2
+	92D/cdGwLs4cAk7ulUPghdMWj54PxhkRi48o2GxbrcZG8Qz725vaHRHLkwzGWA==
+X-Google-Smtp-Source: AGHT+IF797ziqOa4665rJuAHn4nLvwBl+NHT4V9kt7EP7l5a0fsyXgWUeyDot8Xa9UiXgvgE7Xem3w==
+X-Received: by 2002:a05:6870:8998:b0:261:164d:6854 with SMTP id 586e51a60fabf-261164dbbe6mr817994fac.54.1721396573901;
+        Fri, 19 Jul 2024 06:42:53 -0700 (PDT)
+Received: from localhost.localdomain ([120.60.142.236])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70cff491088sm1190212b3a.41.2024.07.19.06.42.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Jul 2024 06:42:53 -0700 (PDT)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: andersson@kernel.org,
+	mturquette@baylibre.com,
+	sboyd@kernel.org
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] clk: qcom: gcc-sm8250: Do not turn off PCIe GDSCs during gdsc_disable()
+Date: Fri, 19 Jul 2024 19:12:38 +0530
+Message-Id: <20240719134238.312191-1-manivannan.sadhasivam@linaro.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,185 +85,55 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCnizlSbZpm4AxQAg--.12422S6
-X-Coremail-Antispam: 1UD129KBjvJXoW3AFWftryDWw4fGrW8AFW3Awb_yoW7ZF43pF
-	ZIvrWxtrW8W3y7Grs8Jw1UJrn3J3s8JanrWw18Xr1rAws8Zr1YqF10yr1YvFy5CrWkArs2
-	y3WUKFy7WryUAr7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBlb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUXw
-	A2048vs2IY020Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	W8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMc
-	Ij6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_
-	Jr0_Gr1lF7xvr2IYc2Ij64vIr41lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r4a6rW5Mx
-	AIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_
-	Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwI
-	xGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWx
-	JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcV
-	C2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0KXdUUUUUU==
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgAJBWaaJBUUpgAAsx
 
-From: Baokun Li <libaokun1@huawei.com>
+With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
+can happen during scenarios such as system suspend and breaks the resume
+of PCIe controllers from suspend.
 
-[ Upstream commit 5d8f805789072ea7fd39504694b7bd17e5f751c4 ]
+So use PWRSTS_RET_ON to indicate the GDSC driver to not turn off the GDSCs
+during gdsc_disable() and allow the hardware to transition the GDSCs to
+retention when the parent domain enters low power state during system
+suspend.
 
-We got the following issue in our fault injection stress test:
-
-==================================================================
-BUG: KASAN: slab-use-after-free in cachefiles_withdraw_cookie+0x4d9/0x600
-Read of size 8 at addr ffff888118efc000 by task kworker/u78:0/109
-
-CPU: 13 PID: 109 Comm: kworker/u78:0 Not tainted 6.8.0-dirty #566
-Call Trace:
- <TASK>
- kasan_report+0x93/0xc0
- cachefiles_withdraw_cookie+0x4d9/0x600
- fscache_cookie_state_machine+0x5c8/0x1230
- fscache_cookie_worker+0x91/0x1c0
- process_one_work+0x7fa/0x1800
- [...]
-
-Allocated by task 117:
- kmalloc_trace+0x1b3/0x3c0
- cachefiles_acquire_volume+0xf3/0x9c0
- fscache_create_volume_work+0x97/0x150
- process_one_work+0x7fa/0x1800
- [...]
-
-Freed by task 120301:
- kfree+0xf1/0x2c0
- cachefiles_withdraw_cache+0x3fa/0x920
- cachefiles_put_unbind_pincount+0x1f6/0x250
- cachefiles_daemon_release+0x13b/0x290
- __fput+0x204/0xa00
- task_work_run+0x139/0x230
- do_exit+0x87a/0x29b0
- [...]
-==================================================================
-
-Following is the process that triggers the issue:
-
-           p1                |             p2
-------------------------------------------------------------
-                              fscache_begin_lookup
-                               fscache_begin_volume_access
-                                fscache_cache_is_live(fscache_cache)
-cachefiles_daemon_release
- cachefiles_put_unbind_pincount
-  cachefiles_daemon_unbind
-   cachefiles_withdraw_cache
-    fscache_withdraw_cache
-     fscache_set_cache_state(cache, FSCACHE_CACHE_IS_WITHDRAWN);
-    cachefiles_withdraw_objects(cache)
-    fscache_wait_for_objects(fscache)
-      atomic_read(&fscache_cache->object_count) == 0
-                              fscache_perform_lookup
-                               cachefiles_lookup_cookie
-                                cachefiles_alloc_object
-                                 refcount_set(&object->ref, 1);
-                                 object->volume = volume
-                                 fscache_count_object(vcookie->cache);
-                                  atomic_inc(&fscache_cache->object_count)
-    cachefiles_withdraw_volumes
-     cachefiles_withdraw_volume
-      fscache_withdraw_volume
-      __cachefiles_free_volume
-       kfree(cachefiles_volume)
-                              fscache_cookie_state_machine
-                               cachefiles_withdraw_cookie
-                                cache = object->volume->cache;
-                                // cachefiles_volume UAF !!!
-
-After setting FSCACHE_CACHE_IS_WITHDRAWN, wait for all the cookie lookups
-to complete first, and then wait for fscache_cache->object_count == 0 to
-avoid the cookie exiting after the volume has been freed and triggering
-the above issue. Therefore call fscache_withdraw_volume() before calling
-cachefiles_withdraw_objects().
-
-This way, after setting FSCACHE_CACHE_IS_WITHDRAWN, only the following two
-cases will occur:
-1) fscache_begin_lookup fails in fscache_begin_volume_access().
-2) fscache_withdraw_volume() will ensure that fscache_count_object() has
-   been executed before calling fscache_wait_for_objects().
-
-Fixes: fe2140e2f57f ("cachefiles: Implement volume support")
-Suggested-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240628062930.2467993-4-libaokun@huaweicloud.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Cc: stable@vger.kernel.org # 5.7
+Fixes: 3e5770921a88 ("clk: qcom: gcc: Add global clock controller driver for SM8250")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 ---
- fs/cachefiles/cache.c  | 35 ++++++++++++++++++++++++++++++++++-
- fs/cachefiles/volume.c |  1 -
- 2 files changed, 34 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/gcc-sm8250.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/cachefiles/cache.c b/fs/cachefiles/cache.c
-index 56ef519a36a0..9fb06dc16520 100644
---- a/fs/cachefiles/cache.c
-+++ b/fs/cachefiles/cache.c
-@@ -313,7 +313,39 @@ static void cachefiles_withdraw_objects(struct cachefiles_cache *cache)
- }
+diff --git a/drivers/clk/qcom/gcc-sm8250.c b/drivers/clk/qcom/gcc-sm8250.c
+index 991cd8b8d597..1c59d70e0f96 100644
+--- a/drivers/clk/qcom/gcc-sm8250.c
++++ b/drivers/clk/qcom/gcc-sm8250.c
+@@ -3226,7 +3226,7 @@ static struct gdsc pcie_0_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_0_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ };
  
- /*
-- * Withdraw volumes.
-+ * Withdraw fscache volumes.
-+ */
-+static void cachefiles_withdraw_fscache_volumes(struct cachefiles_cache *cache)
-+{
-+	struct list_head *cur;
-+	struct cachefiles_volume *volume;
-+	struct fscache_volume *vcookie;
-+
-+	_enter("");
-+retry:
-+	spin_lock(&cache->object_list_lock);
-+	list_for_each(cur, &cache->volumes) {
-+		volume = list_entry(cur, struct cachefiles_volume, cache_link);
-+
-+		if (atomic_read(&volume->vcookie->n_accesses) == 0)
-+			continue;
-+
-+		vcookie = fscache_try_get_volume(volume->vcookie,
-+						 fscache_volume_get_withdraw);
-+		if (vcookie) {
-+			spin_unlock(&cache->object_list_lock);
-+			fscache_withdraw_volume(vcookie);
-+			fscache_put_volume(vcookie, fscache_volume_put_withdraw);
-+			goto retry;
-+		}
-+	}
-+	spin_unlock(&cache->object_list_lock);
-+
-+	_leave("");
-+}
-+
-+/*
-+ * Withdraw cachefiles volumes.
-  */
- static void cachefiles_withdraw_volumes(struct cachefiles_cache *cache)
- {
-@@ -381,6 +413,7 @@ void cachefiles_withdraw_cache(struct cachefiles_cache *cache)
- 	pr_info("File cache on %s unregistering\n", fscache->name);
+ static struct gdsc pcie_1_gdsc = {
+@@ -3234,7 +3234,7 @@ static struct gdsc pcie_1_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_1_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ };
  
- 	fscache_withdraw_cache(fscache);
-+	cachefiles_withdraw_fscache_volumes(cache);
+ static struct gdsc pcie_2_gdsc = {
+@@ -3242,7 +3242,7 @@ static struct gdsc pcie_2_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_2_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ };
  
- 	/* we now have to destroy all the active objects pertaining to this
- 	 * cache - which we do by passing them off to thread pool to be
-diff --git a/fs/cachefiles/volume.c b/fs/cachefiles/volume.c
-index 89df0ba8ba5e..781aac4ef274 100644
---- a/fs/cachefiles/volume.c
-+++ b/fs/cachefiles/volume.c
-@@ -133,7 +133,6 @@ void cachefiles_free_volume(struct fscache_volume *vcookie)
- 
- void cachefiles_withdraw_volume(struct cachefiles_volume *volume)
- {
--	fscache_withdraw_volume(volume->vcookie);
- 	cachefiles_set_volume_xattr(volume);
- 	__cachefiles_free_volume(volume);
- }
+ static struct gdsc ufs_card_gdsc = {
 -- 
-2.39.2
+2.25.1
 
 
