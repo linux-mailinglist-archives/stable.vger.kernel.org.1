@@ -1,101 +1,166 @@
-Return-Path: <stable+bounces-60583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3151693717F
-	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 02:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A710E9371F7
+	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 03:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E3D9B21AD1
-	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 00:28:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4343CB2169C
+	for <lists+stable@lfdr.de>; Fri, 19 Jul 2024 01:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590531362;
-	Fri, 19 Jul 2024 00:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FA41392;
+	Fri, 19 Jul 2024 01:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SOiFiC5G"
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="MbfDLs2j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C664510E6
-	for <stable@vger.kernel.org>; Fri, 19 Jul 2024 00:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8236137E;
+	Fri, 19 Jul 2024 01:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721348887; cv=none; b=dVwoT3PsjLR6rlMeiQaf1RmYmpG+NAc7V5Y1D465CxYfvp/y/gYdvU9k1ea9nD2la8PTTgJ+C69sZPMDIkeBn+D0VzL3FZhE13/5TcX/2swQekOG+tg/Du6F+S0CX/rkcUpIQHKORcbanAWTqKcNAQHmz/pC4GJzlEEYW02lAfw=
+	t=1721352196; cv=none; b=TBTnRojTKc0wb2jlx2scCZAK/xiXcXWYpbqnr6maKin9D+Y+symVJapR4o8RaoGpc/0fDuDE7QlvuupatMqUa9ruTcRwIWc5Zd/7OSs2lrSHYOUPhoG8Du93t/m/urhMP7rlji1+OsIsO/eEl/AzcwvcMtvKtkrFfV9Ufp0SKog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721348887; c=relaxed/simple;
-	bh=d/mu7cP5jjh4/mMkeiQeWWPOvB/ezlKKGiah4w7cxnw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Udl/v9qFnsgBId+SP+ocuTfVrptUz2Sw8dNC0uzQlqQ+HbpuJ2Sh9jSSDJK69kExS0q2DeMr6LV7gzhpRoyJviN2kI5Q9CAzJjpXK49f0difdWoliAlQeDiPjE63uTfi5CpSkO47miC/7CQQBqn7Oj0uNmyd2o8qO8Br95CM9ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SOiFiC5G; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-44e534a1fbeso63391cf.1
-        for <stable@vger.kernel.org>; Thu, 18 Jul 2024 17:28:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721348885; x=1721953685; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d/mu7cP5jjh4/mMkeiQeWWPOvB/ezlKKGiah4w7cxnw=;
-        b=SOiFiC5GZSpWieeDEJViQIuMuLItkipn39/xE10j1uHkfAdrFAcqa3Jf3JmyzbvN+y
-         EYdG/QB66ILyRXn84skqewqHq9t+5lh5+nReRG9rRXYzj1edTC1M1ICmTJEFyEam+sr1
-         jXGSs51LvldvXmp4PCfyg3XVt3hiZr10ULLAMp3HX15VXzUfyMIGPmK9tPBDHJVPAeyb
-         kxRplOYRRhuN+xQ9ZbSA47zzveHFV6lCleyu0p82n4yciPOhsVPa5JrDqmkOP2I+uxdb
-         QtqEUuUl5FtBMLFlMtkLjSbfMSdYL4NKbPn7rkxeGG1U0CmGfLqdv9usa/Rmqa6ukw3v
-         vSqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721348885; x=1721953685;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d/mu7cP5jjh4/mMkeiQeWWPOvB/ezlKKGiah4w7cxnw=;
-        b=ixWNcSFDJGaqXe2eEG4eQH2MhmablUVMLGo2WIkSB4yV07B6WpIsX2p0vIfeBygrns
-         eH160b100AD9Q2bX4p9D3fk4Q155+o88mjn4BdyIHRifB4UUELd3wbjUnxmVSV92MXKb
-         v2YleNoMmJHXsAc8io3zvjuLTAjs8nuRmWHU7/Dfjr1V7g5LxY1kTdaFYlu2Xy69seor
-         p6/9YhFp/Og6nA6/9slsrY0epKFwXFaB8GBOR6vXSkmMoELkdUb5ibLLDw5AKzBoBDXJ
-         uyzJyve+vBsEP/eqzLM5pm9rekJbh+IxP85vO9PRaZJ8qSCygvwUzxY3bHLRYIQKeP3+
-         Phxw==
-X-Forwarded-Encrypted: i=1; AJvYcCVuIv2HgAhAAl5Ex7qCvr4/MMqhS+/BvJxN2nAF6gsrkERFPgpyHrH6zGHF8dVisachpy6rS0cXT4BhDqcJTtt+Ls342/hm
-X-Gm-Message-State: AOJu0YzW76mezOx2atrHZN6KSo9NRAbne7kU9RaTsbM7zD6MLtsrXWrT
-	MlqIiz+vz4ovo5yN0uSTtqWI3wnaYpOGpToKHMFGHSX6q78zy9TOunnE3n8UnAOyZ6FH+FCnDrz
-	fTXC1DGPf8Ybhci+4FAORSurRCkQwkQV52JYU
-X-Google-Smtp-Source: AGHT+IHUkPwwLyEnDU3Hrb7amWYbKCA9FWJ11CAI2pEwICjFFna9AffeJSpzThNFzs2JvY0VDMW9yOx4FTbfDn4t5hA=
-X-Received: by 2002:a05:622a:2295:b0:43f:ff89:dfb9 with SMTP id
- d75a77b69052e-44f9ac6c683mr1506831cf.6.1721348884454; Thu, 18 Jul 2024
- 17:28:04 -0700 (PDT)
+	s=arc-20240116; t=1721352196; c=relaxed/simple;
+	bh=9slxfzWz0uwt61aR55Fa9G5Y5+hoR5YB70Hqbt/WEFI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LvwQ583v0vGt7LCbxPqL3JZeAWqNv2xmTWJi31Xj6P7m1SywedbzkDyC6G8LLT8uPcUqFy6T/A8b8pJ22J0xKAYznf2a70snmeaoAGwjnU1evVRPL1NUX5qB2YwZpF3IQ6PD5lwHq+nNknjCCHEQsfNQ7TuPp7z6ACBBKuV0Xz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=MbfDLs2j; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1721352189;
+	bh=kks5Td3BcJE2RSambxKy4mn/i2Umcsqm6PazM0dpxEA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=MbfDLs2jhrxzlosqAldNpwILIjvnNJGzd0tmsec4SXfEz1RrVrP/1XZs0EHnBBIhZ
+	 vzCu7L59n4+mym/xYHGUjXIEfr+fftayKQJaCXLz1qYkv43pZh6+k1jctSjfB1c1J+
+	 9OlzCjWqkniw7UJYTy/9QWPXsThK3M0OsxZTTnMzLPd/6a23yF1G+kxFaS5B86P0mN
+	 6m0DBVRkmTthHkG8lbc9W2/VEeFZ9fGWcoo4E7zAUMgfXw8mYFqpH1GTONguI7po0W
+	 Clji9mgEBRVUBGC83avR6OjFcsWPY/xWrLln/vTgdx+VvmtDkfaOs3m40H33UQnzfk
+	 cH+ftEuIscXJw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WQBkj0Cgrz4wbr;
+	Fri, 19 Jul 2024 11:23:08 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: ajd@linux.ibm.com, arnd@arndb.de, clombard@linux.vnet.ibm.com,
+ fbarrat@linux.ibm.com, gregkh@linuxfoundation.org, imunsie@au1.ibm.com,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ make24@iscas.ac.cn, dan.carpenter@linaro.org, manoj@linux.vnet.ibm.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v4] cxl: Fix possible null pointer dereference in
+ read_handle()
+In-Reply-To: <20240716132737.1642226-1-make24@iscas.ac.cn>
+References: <87y163w4n4.fsf@mail.lhotse>
+ <20240716132737.1642226-1-make24@iscas.ac.cn>
+Date: Fri, 19 Jul 2024 11:23:07 +1000
+Message-ID: <87msmew4xw.fsf@mail.lhotse>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240718190221.2219835-1-pkaligineedi@google.com> <6699a042ebdc5_3a5334294df@willemb.c.googlers.com.notmuch>
-In-Reply-To: <6699a042ebdc5_3a5334294df@willemb.c.googlers.com.notmuch>
-From: Bailey Forrest <bcf@google.com>
-Date: Thu, 18 Jul 2024 17:27:53 -0700
-Message-ID: <CANH7hM6RA1-OLzu8dyz9b7oz+tiOmD0W7NAxyD9=c7qvj=+TZQ@mail.gmail.com>
-Subject: Re: [PATCH net] gve: Fix an edge case for TSO skb validity check
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Praveen Kaligineedi <pkaligineedi@google.com>, netdev@vger.kernel.org, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, willemb@google.com, 
-	shailend@google.com, hramamurthy@google.com, csully@google.com, 
-	jfraker@google.com, stable@vger.kernel.org, 
-	Jeroen de Borst <jeroendb@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 18, 2024 at 4:07=E2=80=AFPM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
->
-> This however loops skb->len / gso_size. While the above modulo
-> operation skips many segments that span a frag. Not sure if the more
-> intuitive approach could be as performant.
+Ma Ke <make24@iscas.ac.cn> writes:
+>> Michael Ellerman<mpe@ellerman.id.au> wrote:
+>> > In read_handle(), of_get_address() may return NULL if getting address =
+and
+>> > size of the node failed. When of_read_number() uses prop to handle
+>> > conversions between different byte orders, it could lead to a null poi=
+nter
+>> > dereference. Add NULL check to fix potential issue.
+>> >
+>> > Found by static analysis.
+>> >
+>> > Cc: stable@vger.kernel.org
+>> > Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
+>> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+>> > ---
+>> > Changes in v4:
+>> > - modified vulnerability description according to suggestions, making =
+the=20
+>> > process of static analysis of vulnerabilities clearer. No active resea=
+rch=20
+>> > on developer behavior.
+>> > Changes in v3:
+>> > - fixed up the changelog text as suggestions.
+>> > Changes in v2:
+>> > - added an explanation of how the potential vulnerability was discover=
+ed,
+>> > but not meet the description specification requirements.
+>> > ---
+>> >  drivers/misc/cxl/of.c | 2 +-
+>> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>> >
+>> > diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+>> > index bcc005dff1c0..d8dbb3723951 100644
+>> > --- a/drivers/misc/cxl/of.c
+>> > +++ b/drivers/misc/cxl/of.c
+>> > @@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *=
+handle)
+>> >=20=20
+>> >  	/* Get address and size of the node */
+>> >  	prop =3D of_get_address(np, 0, &size, NULL);
+>> > -	if (size)
+>> > +	if (!prop || size)
+>> >  		return -EINVAL;
+>> >=20=20
+>> >  	/* Helper to read a big number; size is in cells (not bytes) */
+>>=20
+>> If you expand the context this could just use of_property_read_reg(),
+>> something like below.
+>>=20
+>> cheers
+>>=20
+>>=20
+>> diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+>> index bcc005dff1c0..a184855b2a7b 100644
+>> --- a/drivers/misc/cxl/of.c
+>> +++ b/drivers/misc/cxl/of.c
+>> @@ -53,16 +53,15 @@ static const __be64 *read_prop64_dword(const struct =
+device_node *np,
+>>=20=20
+>>  static int read_handle(struct device_node *np, u64 *handle)
+>>  {
+>> -	const __be32 *prop;
+>>  	u64 size;
+>> +=09
+>> +	if (of_property_read_reg(np, 0, handle, &size))
+>> +		return -EINVAL;
+>>=20=20
+>> -	/* Get address and size of the node */
+>> -	prop =3D of_get_address(np, 0, &size, NULL);
+>> +	// Size must be zero per PAPR+ v2.13 =C2=A7 C.6.19
+>>  	if (size)
+>>  		return -EINVAL;
+>>=20=20
+>> -	/* Helper to read a big number; size is in cells (not bytes) */
+>> -	*handle =3D of_read_number(prop, of_n_addr_cells(np));
+>>  	return 0;
+>>  }
 
-Yes, the original intention of the code was to loop over nr_frags,
-instead of (skb->len / gso_size).
+> Thank you for discussing and guiding me on the vulnerability I submitted.=
+=20
+> I've carefully read through your conversation with Dan Carpenter. I'm=20
+> uncertain whether to use my patch or the one you provided. Could you plea=
+se
+> advise on which patch would be more appropriate?=20
+> Looking forward to your reply.
 
-But perhaps that's premature optimization if it makes the code
-significantly harder to follow.
+Your patch is OK, I'll send an ack.
+
+If we want to refactor it to use of_property_read_reg() we can do that
+in future - though this code will probably be removed in the not too
+distant future anyway.
+
+cheers
 
