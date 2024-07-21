@@ -1,190 +1,177 @@
-Return-Path: <stable+bounces-60645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C274593846D
-	for <lists+stable@lfdr.de>; Sun, 21 Jul 2024 13:16:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D24C193854F
+	for <lists+stable@lfdr.de>; Sun, 21 Jul 2024 17:39:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B903B1C20AD1
-	for <lists+stable@lfdr.de>; Sun, 21 Jul 2024 11:16:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4489F28127E
+	for <lists+stable@lfdr.de>; Sun, 21 Jul 2024 15:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D464F14885E;
-	Sun, 21 Jul 2024 11:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE052907;
+	Sun, 21 Jul 2024 15:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tNwHKGIX"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AmLJdvlQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3223441D
-	for <stable@vger.kernel.org>; Sun, 21 Jul 2024 11:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2152D16131C
+	for <stable@vger.kernel.org>; Sun, 21 Jul 2024 15:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721560604; cv=none; b=DIUodwt5fv2lCqpyD/fWGgBI+/zkBOh5BguAPrnkLh8NXlDwlyGZ61Frt7Hd0XJnHv13k6AKRhQfP7sR/D2aJL4+IYPBtvnar/OO+HZJ6nusS3XDLzulsnQIObTnyPLYuqvODRkdwEeSG8nKjscwvce+4syaOvLRjL6DBfbxTKY=
+	t=1721576340; cv=none; b=YbsoDg0mrNp5ZEjb7xOQl/FleoTZtpHJPtxR02c4r0oFYfz0VMAz6FpztGyWPqNeicXQFbtsBFC/vqd0atPEmBkcctQ4t/D2N6tN7ph3P8CT8YCZL0T330jPevTWTO32b8KZm13xjOnrzMRUpH3wMWslolv2wHtXNXHxB/lKmYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721560604; c=relaxed/simple;
-	bh=gSDr2qXiWunqD83kcCcfkWzmofL1UeyjfIsv5gb6YVw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Et1jh9/l3YYSTmLGt6/T6mbaHAZk2xAX5lNIWIwAwxSKq9EQ1t46DWqo04lOKFSIZJULanQbJivbNVjBNKX6zAPTLFkogDWey791iXnGJzAIKkcFn61gGf1BT/xt8Xzh2X+OzBY9OmTrikrMLXxVQLNV2cHJqpEsTfSq+bmBB2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tNwHKGIX; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2ef25511ba9so5896341fa.0
-        for <stable@vger.kernel.org>; Sun, 21 Jul 2024 04:16:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721560601; x=1722165401; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kAUIBKUFiqHBE7OX0O7eWG2UC2nEpnjuYCzeR97fn5c=;
-        b=tNwHKGIXQ6LBjtsoY4e4qSwmftmwP6EEArWld1e78O83YQB5Qxf9GQJXKc9zRurh9B
-         CFET0OJVkf0t8P0FyoVCA4wj9dJNWciA/6hKKhLIbSnWdQvWxV8nRM+yO3z7m0+a0RIF
-         sgLPFmg7CxIj1SBEwjrUL4sOwSwI4IMcIzLejxy9/qNzrEWTAxHnmvIiG9bMuvIqnegl
-         rfwARI6GuK43XY27Sw8fSzM3hwiWiZxS2hN1m20sOXCz92sYKLzBJt8Hm4Ke3lv6/rxw
-         hG18rIvUGJZhpAAlqZT4UU/Dj9voV9UOnmCS6WgNq4I67ZIaAJZvisNv7kAPgGgnvU2V
-         4JnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721560601; x=1722165401;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kAUIBKUFiqHBE7OX0O7eWG2UC2nEpnjuYCzeR97fn5c=;
-        b=vRl4IlFG+NWPp8LoR7iuXeWgoFRDN+v5k1I1hf42Zp8HCpwx/HbBxbjwzC8ALGZ+ub
-         Hp5udY5+LR/M4PP5cHTbqNkNCeCYS4JWKkyntCxWbO0K5264SkhWWgCJ5OB8NQkiw4Uz
-         sQwRp5UoYbLDLvuZ6wT+9uMu6uv56qN6L4o6RBEQ2Ol5VEWiHXUrI4qUqzgjOvfG8GrU
-         GzX7BJLfDwPefiBzYEBVIDFLzkEzwJFaV7EgcGO1ZXECwBH8JS3A91jSCDKpjuy526Nc
-         lWC7dD73PbGRhvf87vRc7LI0MqnXA+kAhOcmzRzr8Lsfl4ZPl7ZHM9yeEAuQpd3qkfBg
-         j2pw==
-X-Forwarded-Encrypted: i=1; AJvYcCU27DFUwy4i337Q/vWxenNjEeHVvXrUvIuQ0Re5AFST11mg1pZhExeMAQOVRVFx29zjxYXFsZlvuQ8cXkaj3fJhiVrhxhAq
-X-Gm-Message-State: AOJu0Yz02yjN7hChppVcFsXn6Xg442DHbpcG5tlF0wM5tl6VEK0Wi4HT
-	eANTSVsiHIf6ky6Q9KhSwIHlJUefng1qnJA30WIrBS5JnNJWp7TuYFt110YkKXw=
-X-Google-Smtp-Source: AGHT+IEY2idVUSGtat10CMxDBXzEMzhFrrDcQu9qRLhhVyj0rYaxZmSkj5WTR7wjcMw1NB1n7aTjHQ==
-X-Received: by 2002:a05:6512:695:b0:52c:8b11:80cf with SMTP id 2adb3069b0e04-52ef0702ae6mr2563685e87.8.1721560600793;
-        Sun, 21 Jul 2024 04:16:40 -0700 (PDT)
-Received: from umbar.lan ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ef5578506sm822451e87.295.2024.07.21.04.16.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jul 2024 04:16:40 -0700 (PDT)
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Sun, 21 Jul 2024 14:16:39 +0300
-Subject: [PATCH] thermal/drivers/qcom/lmh: remove false lockdep backtrace
+	s=arc-20240116; t=1721576340; c=relaxed/simple;
+	bh=Pr7O132SEouT6vs/viVJWv1ZAnadnppWHL83ixCCUJk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I2audLydfoizrljypdB+26oay86QDcdpvoRloJ7mWOkbvgRRKuVhm9Pd4aZNLjLiTquTtmukkOLPXYNmvxL7m0aeBQq0gg4hjpiukTh59Ly/yhfv3M5hbBZnYiGxy92eSVQ+z4ceamzDrF3SNNhfU234wvOAKbcvSF4q9keGdNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AmLJdvlQ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721576337;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=h+WIUySG3X8s8gHCDhDyFH9aRpd0ZesC03oonoawAOs=;
+	b=AmLJdvlQR2pBSsHM2+IpxB1xDZb6YON6Ti7DU7b3rV7ZL3mmDxEOYqXLIVw/uxyp5mwCqX
+	6lC//FpPovXjEgQsPm2eq/TaNTOz0dHQ/nGQmcx4wC0TjAFFJ9hjQ/H9NkwjhXddeUPM9h
+	om8PXMwPF3H/BjJi4HyUg47lUPtymHI=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-56-iq8vFZicMUmipSz6xp7ZzA-1; Sun,
+ 21 Jul 2024 11:38:49 -0400
+X-MC-Unique: iq8vFZicMUmipSz6xp7ZzA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 319CC19560A2;
+	Sun, 21 Jul 2024 15:38:47 +0000 (UTC)
+Received: from x1.localdomain (unknown [10.39.192.48])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1695B19560AE;
+	Sun, 21 Jul 2024 15:38:41 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Tsuchiya Yuto <kitakar@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Yury Luneff <yury.lunev@gmail.com>,
+	Nable <nable.maininbox@googlemail.com>,
+	andrey.i.trufanov@gmail.com,
+	Fabio Aiuto <fabioaiuto83@gmail.com>,
+	Kate Hsuan <hpa@redhat.com>,
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH] media: atomisp: Fix streaming no longer working on BYT / ISP2400 devices
+Date: Sun, 21 Jul 2024 17:38:40 +0200
+Message-ID: <20240721153840.60617-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240721-lmh-lockdep-v1-1-c1bf919b442f@linaro.org>
-X-B4-Tracking: v=1; b=H4sIABbunGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDcyND3ZzcDN2c/OTslNQCXQuLlFQDy1RzcwMLSyWgjoKi1LTMCrBp0bG
- 1tQCu+DtRXQAAAA==
-To: Amit Kucheria <amitk@kernel.org>, 
- Thara Gopinath <thara.gopinath@gmail.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>
-Cc: Thara Gopinath <thara.gopinath@linaro.org>, linux-pm@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2582;
- i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=gSDr2qXiWunqD83kcCcfkWzmofL1UeyjfIsv5gb6YVw=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmnO4Xrovb9aqAuAdMv9r/yiaa+XQt85hSxSvkN
- S02LdJPRPWJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZpzuFwAKCRCLPIo+Aiko
- 1YMfB/96eLGyMclo0vwO45CrMn9SgiqDGn+AOGcUjdu+za39MOncl4XANqiLM2cTVTris9Gl34l
- 7za8lffSnrIkvl6bRqidLnmEyxiYVRIlSpQ8y6noxVxc1qNvIlWHNsMgqhwcZAPhHX7mlE2RHek
- 0qDm2RBTUVLKVwB6Gd2v/+e0L/vdaXJtvhgK79pTsox7pADYLJ12PRgKRnyV3PS9Wj8PzSrYc1I
- zDxLvuUfacsDKnP/mPihVrSZn234rj9tHVAFXf+i8IENO421BtfhRz/2meEsQ72X3ggVUAA9PE/
- vFHWKoeBgIq9O27I9iWpRqLZ3AWQw/1eoHIRVIvpxaIKAaYK
-X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
- fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Annotate LMH IRQs with lockdep classes so that the lockdep doesn't
-report possible recursive locking issue between LMH and GIC interrupts.
+Commit a0821ca14bb8 ("media: atomisp: Remove test pattern generator (TPG)
+support") broke BYT support because it removed a seemingly unused field
+from struct sh_css_sp_config and a seemingly unused value from enum
+ia_css_input_mode.
 
-For the reference:
+But these are part of the ABI between the kernel and firmware on ISP2400
+and this part of the TPG support removal changes broke ISP2400 support.
 
-       CPU0
-       ----
-  lock(&irq_desc_lock_class);
-  lock(&irq_desc_lock_class);
+ISP2401 support was not affected because on ISP2401 only a part of
+struct sh_css_sp_config is used.
 
- *** DEADLOCK ***
+Restore the removed field and enum value to fix this.
 
-Call trace:
- dump_backtrace+0x98/0xf0
- show_stack+0x18/0x24
- dump_stack_lvl+0x90/0xd0
- dump_stack+0x18/0x24
- print_deadlock_bug+0x258/0x348
- __lock_acquire+0x1078/0x1f44
- lock_acquire+0x1fc/0x32c
- _raw_spin_lock_irqsave+0x60/0x88
- __irq_get_desc_lock+0x58/0x98
- enable_irq+0x38/0xa0
- lmh_enable_interrupt+0x2c/0x38
- irq_enable+0x40/0x8c
- __irq_startup+0x78/0xa4
- irq_startup+0x78/0x168
- __enable_irq+0x70/0x7c
- enable_irq+0x4c/0xa0
- qcom_cpufreq_ready+0x20/0x2c
- cpufreq_online+0x2a8/0x988
- cpufreq_add_dev+0x80/0x98
- subsys_interface_register+0x104/0x134
- cpufreq_register_driver+0x150/0x234
- qcom_cpufreq_hw_driver_probe+0x2a8/0x388
- platform_probe+0x68/0xc0
- really_probe+0xbc/0x298
- __driver_probe_device+0x78/0x12c
- driver_probe_device+0x3c/0x160
- __device_attach_driver+0xb8/0x138
- bus_for_each_drv+0x84/0xe0
- __device_attach+0x9c/0x188
- device_initial_probe+0x14/0x20
- bus_probe_device+0xac/0xb0
- deferred_probe_work_func+0x8c/0xc8
- process_one_work+0x20c/0x62c
- worker_thread+0x1bc/0x36c
- kthread+0x120/0x124
- ret_from_fork+0x10/0x20
-
-Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
+Fixes: a0821ca14bb8 ("media: atomisp: Remove test pattern generator (TPG) support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/thermal/qcom/lmh.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../media/atomisp/pci/ia_css_stream_public.h  |  8 ++++++--
+ .../media/atomisp/pci/sh_css_internal.h       | 19 ++++++++++++++++---
+ 2 files changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/thermal/qcom/lmh.c b/drivers/thermal/qcom/lmh.c
-index 5225b3621a56..d2d49264cf83 100644
---- a/drivers/thermal/qcom/lmh.c
-+++ b/drivers/thermal/qcom/lmh.c
-@@ -73,7 +73,14 @@ static struct irq_chip lmh_irq_chip = {
- static int lmh_irq_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
- {
- 	struct lmh_hw_data *lmh_data = d->host_data;
-+	static struct lock_class_key lmh_lock_key;
-+	static struct lock_class_key lmh_request_key;
+diff --git a/drivers/staging/media/atomisp/pci/ia_css_stream_public.h b/drivers/staging/media/atomisp/pci/ia_css_stream_public.h
+index 961c61288083..aad860e54d3a 100644
+--- a/drivers/staging/media/atomisp/pci/ia_css_stream_public.h
++++ b/drivers/staging/media/atomisp/pci/ia_css_stream_public.h
+@@ -27,12 +27,16 @@
+ #include "ia_css_prbs.h"
+ #include "ia_css_input_port.h"
  
-+	/*
-+	 * This lock class tells lockdep that GPIO irqs are in a different
-+	 * category than their parents, so it won't report false recursion.
-+	 */
-+	irq_set_lockdep_class(irq, &lmh_lock_key, &lmh_request_key);
- 	irq_set_chip_and_handler(irq, &lmh_irq_chip, handle_simple_irq);
- 	irq_set_chip_data(irq, lmh_data);
+-/* Input modes, these enumerate all supported input modes.
+- *  Note that not all ISP modes support all input modes.
++/*
++ * Input modes, these enumerate all supported input modes.
++ * This enum is part of the atomisp firmware ABI and must
++ * NOT be changed!
++ * Note that not all ISP modes support all input modes.
+  */
+ enum ia_css_input_mode {
+ 	IA_CSS_INPUT_MODE_SENSOR, /** data from sensor */
+ 	IA_CSS_INPUT_MODE_FIFO,   /** data from input-fifo */
++	IA_CSS_INPUT_MODE_TPG,    /** data from test-pattern generator */
+ 	IA_CSS_INPUT_MODE_PRBS,   /** data from pseudo-random bit stream */
+ 	IA_CSS_INPUT_MODE_MEMORY, /** data from a frame in memory */
+ 	IA_CSS_INPUT_MODE_BUFFERED_SENSOR /** data is sent through mipi buffer */
+diff --git a/drivers/staging/media/atomisp/pci/sh_css_internal.h b/drivers/staging/media/atomisp/pci/sh_css_internal.h
+index a2d972ea3fa0..959e7f549641 100644
+--- a/drivers/staging/media/atomisp/pci/sh_css_internal.h
++++ b/drivers/staging/media/atomisp/pci/sh_css_internal.h
+@@ -344,7 +344,14 @@ struct sh_css_sp_input_formatter_set {
  
-
----
-base-commit: 797012914d2d031430268fe512af0ccd7d8e46ef
-change-id: 20240721-lmh-lockdep-88de09e77089
-
-Best regards,
+ #define IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT (3)
+ 
+-/* SP configuration information */
++/*
++ * SP configuration information
++ *
++ * This struct is part of the atomisp firmware ABI and is directly copied
++ * to ISP DRAM by sh_css_store_sp_group_to_ddr()
++ *
++ * Do NOT change this struct's layout or remove seemingly unused fields!
++ */
+ struct sh_css_sp_config {
+ 	u8			no_isp_sync; /* Signal host immediately after start */
+ 	u8			enable_raw_pool_locking; /** Enable Raw Buffer Locking for HALv3 Support */
+@@ -354,6 +361,10 @@ struct sh_css_sp_config {
+ 	     host (true) or when they are passed to the preview/video pipe
+ 	     (false). */
+ 
++	 /*
++	  * Note the fields below are only used on the ISP2400 not on the ISP2401,
++	  * sh_css_store_sp_group_to_ddr() skip copying these when run on the ISP2401.
++	  */
+ 	struct {
+ 		u8					a_changed;
+ 		u8					b_changed;
+@@ -363,11 +374,13 @@ struct sh_css_sp_config {
+ 	} input_formatter;
+ 
+ 	sync_generator_cfg_t	sync_gen;
++	tpg_cfg_t		tpg;
+ 	prbs_cfg_t		prbs;
+ 	input_system_cfg_t	input_circuit;
+ 	u8			input_circuit_cfg_changed;
+-	u32		mipi_sizes_for_check[N_CSI_PORTS][IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT];
+-	u8                 enable_isys_event_queue;
++	u32			mipi_sizes_for_check[N_CSI_PORTS][IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT];
++	/* These last 2 fields are used on both the ISP2400 and the ISP2401 */
++	u8			enable_isys_event_queue;
+ 	u8			disable_cont_vf;
+ };
+ 
 -- 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+2.45.2
 
 
