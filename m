@@ -1,177 +1,199 @@
-Return-Path: <stable+bounces-60646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D24C193854F
-	for <lists+stable@lfdr.de>; Sun, 21 Jul 2024 17:39:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D2C9385DE
+	for <lists+stable@lfdr.de>; Sun, 21 Jul 2024 21:11:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4489F28127E
-	for <lists+stable@lfdr.de>; Sun, 21 Jul 2024 15:39:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7C91B20C5F
+	for <lists+stable@lfdr.de>; Sun, 21 Jul 2024 19:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE052907;
-	Sun, 21 Jul 2024 15:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5290513D53A;
+	Sun, 21 Jul 2024 19:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AmLJdvlQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f8eywZu9"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2152D16131C
-	for <stable@vger.kernel.org>; Sun, 21 Jul 2024 15:38:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DACC5228;
+	Sun, 21 Jul 2024 19:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721576340; cv=none; b=YbsoDg0mrNp5ZEjb7xOQl/FleoTZtpHJPtxR02c4r0oFYfz0VMAz6FpztGyWPqNeicXQFbtsBFC/vqd0atPEmBkcctQ4t/D2N6tN7ph3P8CT8YCZL0T330jPevTWTO32b8KZm13xjOnrzMRUpH3wMWslolv2wHtXNXHxB/lKmYw=
+	t=1721589055; cv=none; b=FugZb0ZisGaVKoJtEx5ZTwa+sn2HkbC3z9dfsNtVsA0bXi02lvfRPkQ9Hl8tzj7UQTRbV4SUfdhG62efpEO8faDJIm6VN1BwldToDw737qUXiRIRhEQhPAglu585OUO2y+RVf8ey3nd84fwFLyixRg+o7WwgRLLeHgn7snXn+HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721576340; c=relaxed/simple;
-	bh=Pr7O132SEouT6vs/viVJWv1ZAnadnppWHL83ixCCUJk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I2audLydfoizrljypdB+26oay86QDcdpvoRloJ7mWOkbvgRRKuVhm9Pd4aZNLjLiTquTtmukkOLPXYNmvxL7m0aeBQq0gg4hjpiukTh59Ly/yhfv3M5hbBZnYiGxy92eSVQ+z4ceamzDrF3SNNhfU234wvOAKbcvSF4q9keGdNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AmLJdvlQ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721576337;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=h+WIUySG3X8s8gHCDhDyFH9aRpd0ZesC03oonoawAOs=;
-	b=AmLJdvlQR2pBSsHM2+IpxB1xDZb6YON6Ti7DU7b3rV7ZL3mmDxEOYqXLIVw/uxyp5mwCqX
-	6lC//FpPovXjEgQsPm2eq/TaNTOz0dHQ/nGQmcx4wC0TjAFFJ9hjQ/H9NkwjhXddeUPM9h
-	om8PXMwPF3H/BjJi4HyUg47lUPtymHI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-56-iq8vFZicMUmipSz6xp7ZzA-1; Sun,
- 21 Jul 2024 11:38:49 -0400
-X-MC-Unique: iq8vFZicMUmipSz6xp7ZzA-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 319CC19560A2;
-	Sun, 21 Jul 2024 15:38:47 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.192.48])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1695B19560AE;
-	Sun, 21 Jul 2024 15:38:41 +0000 (UTC)
-From: Hans de Goede <hdegoede@redhat.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Tsuchiya Yuto <kitakar@gmail.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Yury Luneff <yury.lunev@gmail.com>,
-	Nable <nable.maininbox@googlemail.com>,
-	andrey.i.trufanov@gmail.com,
-	Fabio Aiuto <fabioaiuto83@gmail.com>,
-	Kate Hsuan <hpa@redhat.com>,
-	linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH] media: atomisp: Fix streaming no longer working on BYT / ISP2400 devices
-Date: Sun, 21 Jul 2024 17:38:40 +0200
-Message-ID: <20240721153840.60617-1-hdegoede@redhat.com>
+	s=arc-20240116; t=1721589055; c=relaxed/simple;
+	bh=GZE5IVYWp1qx6afe84x5JhRHv5XZbSBZtHwAfm9CvKQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bgUlN1Vos7w29Po39Bk4BE4+AI0sHWpdBK8JLF4tWCKzs3nmN1qgR3Jwga7ZAv6S4FcAoGjWNXa565hHShTHJdCtTXO9KwFRxSor/3EqzDNYy1y0V31cgoWEm6E0P62fzdYNGB/zG5fc+C6Z+2IwrmIJtCV/VFR0ZXCAANq6o1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f8eywZu9; arc=none smtp.client-ip=209.85.221.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-4f51e80f894so200708e0c.1;
+        Sun, 21 Jul 2024 12:10:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721589052; x=1722193852; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hsG5wBUVX6uA57qgyRsrmzJFE8fJMHgM8iKbGRrhC6E=;
+        b=f8eywZu9TjNvQIVJjHLv7QiuWtwj/BvsGOdPJWW1Vt77DvwuXBmelvuDtAgtZ/wUq4
+         olLR25vmWd1Qp07gm05CuMkCgom3YexAQ8xKHzjl1Sym7+9eOjdf80ZhNtGeNoiD4vmH
+         +vWHDk/nunqMcXmSREQ3659mbmh2YD7ah1gWabtBvYtuty77LH5jre1eqTBzQYY023U9
+         C4PZaDzhFT/7V6Ycp13JkHfO0nN/Vy4uWoGGTVzJhF2XhtC+r5ufp87oGVfq1fzLWPta
+         Rh3Lfp6sscyVlTT6vErsS576+nHp4RWticxnjLVJrcJ3Eq10bcBBBw4iU2JwTZGIdrk0
+         PxZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721589052; x=1722193852;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hsG5wBUVX6uA57qgyRsrmzJFE8fJMHgM8iKbGRrhC6E=;
+        b=R2QAduzt9I17xrnuSoQ3iM7QnmmytbSJ3Wv2e3SOOcQ6467UQp6YP4/Z1vuYYMB32K
+         Ch/Eux3yeaJl+PO+rXpbatxcG8JqpsTYJ3Ope6KHmU9NhzZfVJgoP05YwbgvCraIhoZy
+         V/MfsFsfZYBpFKEC4PMshoSbvjML9Lpny5jYRSes5R9jjiM5YlDbZDHiL3NtFV1GcAiL
+         PYHVUWiFVuhNRUL0xQprwIXCv7E33/iPN4iGqQtbNNQH/Sa6U7F8c5r0zI1huAbZGITt
+         wzp4MePlzvZx2bwGEforyoJA3FRNOGQ/UaAR3hzkrzo3Ug7QqyfnY7ixOASFMa1kyrnp
+         Jz7g==
+X-Forwarded-Encrypted: i=1; AJvYcCXsvHX7IpEJTEDvNXip9QA//BY324Ecwet+vpebJvysYOcyPhdwP97Xr5Hg84QWPkV4CzWxNhZ9T395F4YplL+5zfBxARnnEq2M/4yb7ZvSFspc1DbVBSYQTcCYWEk4
+X-Gm-Message-State: AOJu0YzfxQIL40MkTia7VisgX703GrZL8v2omkOXbXtS+Po6eSlpIAaF
+	5FmhwTRvhjGSvsSVQR5N9DgXtREQfUtRHjWuv5rjZEudlUZn9rhivzwa46uGXBVo7vutMuNkYvp
+	EV3MYQe8Kmxxvzw53WiQNzGmuX+Y=
+X-Google-Smtp-Source: AGHT+IGZUhWIFpsqLo999dLiGqgmFS9jPSgQKJgzDF7jHnMpHbzPnd6p8a/s68suZgW74/OWwr4dYrZzibgDVxOdb28=
+X-Received: by 2002:a05:6102:80a6:b0:48f:df86:dba with SMTP id
+ ada2fe7eead31-49283dc8f53mr8372243137.5.1721589051963; Sun, 21 Jul 2024
+ 12:10:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+References: <20240718190221.2219835-1-pkaligineedi@google.com>
+ <6699a042ebdc5_3a5334294df@willemb.c.googlers.com.notmuch>
+ <CA+f9V1PsjukhgLDjWQvbTyhHkOWt7JDY0zPWc_G322oKmasixA@mail.gmail.com>
+ <CAF=yD-L67uvVOrmEFz=LOPP9pr7NByx9DhbS8oWMkkNCjRWqLg@mail.gmail.com>
+ <CA+f9V1NwSNpjMzCK2A3yjai4UoXPrq65=d1=wy50=o-EBvKoNQ@mail.gmail.com> <CANH7hM4FEtF+VNvSg5PPPYWH8HzHpS+oQdW98=MP7cTu+nOA+g@mail.gmail.com>
+In-Reply-To: <CANH7hM4FEtF+VNvSg5PPPYWH8HzHpS+oQdW98=MP7cTu+nOA+g@mail.gmail.com>
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date: Sun, 21 Jul 2024 12:10:14 -0700
+Message-ID: <CAF=yD-JHDkDit0wPoKftTt3ZhtJ0gM3+E_YJsACKu916FpuCEg@mail.gmail.com>
+Subject: Re: [PATCH net] gve: Fix an edge case for TSO skb validity check
+To: Bailey Forrest <bcf@google.com>
+Cc: Praveen Kaligineedi <pkaligineedi@google.com>, netdev@vger.kernel.org, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, willemb@google.com, 
+	shailend@google.com, hramamurthy@google.com, csully@google.com, 
+	jfraker@google.com, stable@vger.kernel.org, 
+	Jeroen de Borst <jeroendb@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit a0821ca14bb8 ("media: atomisp: Remove test pattern generator (TPG)
-support") broke BYT support because it removed a seemingly unused field
-from struct sh_css_sp_config and a seemingly unused value from enum
-ia_css_input_mode.
+On Fri, Jul 19, 2024 at 9:56=E2=80=AFAM Bailey Forrest <bcf@google.com> wro=
+te:
+>
+> On Fri, Jul 19, 2024 at 7:31=E2=80=AFAM Praveen Kaligineedi
+> <pkaligineedi@google.com> wrote:
+> >
+> > On Thu, Jul 18, 2024 at 8:47=E2=80=AFPM Willem de Bruijn
+> > <willemdebruijn.kernel@gmail.com> wrote:
+> > >
+> > > On Thu, Jul 18, 2024 at 9:52=E2=80=AFPM Praveen Kaligineedi
+> > > <pkaligineedi@google.com> wrote:
+> > > >
+> > > > On Thu, Jul 18, 2024 at 4:07=E2=80=AFPM Willem de Bruijn
+> > > > <willemdebruijn.kernel@gmail.com> wrote:
+> > > >
+> > > > > > +                      * segment, then it will count as two des=
+criptors.
+> > > > > > +                      */
+> > > > > > +                     if (last_frag_size > GVE_TX_MAX_BUF_SIZE_=
+DQO) {
+> > > > > > +                             int last_frag_remain =3D last_fra=
+g_size %
+> > > > > > +                                     GVE_TX_MAX_BUF_SIZE_DQO;
+> > > > > > +
+> > > > > > +                             /* If the last frag was evenly di=
+visible by
+> > > > > > +                              * GVE_TX_MAX_BUF_SIZE_DQO, then =
+it will not be
+> > > > > > +                              * split in the current segment.
+> > > > >
+> > > > > Is this true even if the segment did not start at the start of th=
+e frag?
+> > > > The comment probably is a bit confusing here. The current segment
+> > > > we are tracking could have a portion in the previous frag. The code
+> > > > assumed that the portion on the previous frag (if present) mapped t=
+o only
+> > > > one descriptor. However, that portion could have been split across =
+two
+> > > > descriptors due to the restriction that each descriptor cannot exce=
+ed 16KB.
+> > >
+> > > >>> /* If the last frag was evenly divisible by
+> > > >>> +                                * GVE_TX_MAX_BUF_SIZE_DQO, then =
+it will not be
+> > > >>>  +                              * split in the current segment.
+> > >
+> > > This is true because the smallest multiple of 16KB is 32KB, and the
+> > > largest gso_size at least for Ethernet will be 9K. But I don't think
+> > > that that is what is used here as the basis for this statement?
+> > >
+> > The largest Ethernet gso_size (9K) is less than GVE_TX_MAX_BUF_SIZE_DQO
+> > is an implicit assumption made in this patch and in that comment. Baile=
+y,
+> > please correct me if I am wrong..
+>
+> If last_frag_size is evenly divisible by GVE_TX_MAX_BUF_SIZE_DQO, it
+> doesn't hit the edge case we're looking for.
+>
+> - If it's evenly divisible, then we know it will use exactly
+> (last_frag_size / GVE_TX_MAX_BUF_SIZE_DQO) descriptors
 
-But these are part of the ABI between the kernel and firmware on ISP2400
-and this part of the TPG support removal changes broke ISP2400 support.
+This assumes that gso_segment start is aligned with skb_frag
+start. That is not necessarily true, right?
 
-ISP2401 support was not affected because on ISP2401 only a part of
-struct sh_css_sp_config is used.
+If headlen minus protocol headers is 1B, then the first segment
+will have two descriptors { 1B, 9KB - 1 }. And the next segment
+can have skb_frag_size - ( 9KB - 1).
 
-Restore the removed field and enum value to fix this.
+I think the statement is correct, but because every multiple
+of 16KB is so much larger than the max gso_size of ~9KB,
+that a single segment will never include more than two
+skb_frags.
 
-Fixes: a0821ca14bb8 ("media: atomisp: Remove test pattern generator (TPG) support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- .../media/atomisp/pci/ia_css_stream_public.h  |  8 ++++++--
- .../media/atomisp/pci/sh_css_internal.h       | 19 ++++++++++++++++---
- 2 files changed, 22 insertions(+), 5 deletions(-)
+Quite possibly the code overestimates the number of
+descriptors per segment now, but that is safe and only a
+performance regression.
 
-diff --git a/drivers/staging/media/atomisp/pci/ia_css_stream_public.h b/drivers/staging/media/atomisp/pci/ia_css_stream_public.h
-index 961c61288083..aad860e54d3a 100644
---- a/drivers/staging/media/atomisp/pci/ia_css_stream_public.h
-+++ b/drivers/staging/media/atomisp/pci/ia_css_stream_public.h
-@@ -27,12 +27,16 @@
- #include "ia_css_prbs.h"
- #include "ia_css_input_port.h"
- 
--/* Input modes, these enumerate all supported input modes.
-- *  Note that not all ISP modes support all input modes.
-+/*
-+ * Input modes, these enumerate all supported input modes.
-+ * This enum is part of the atomisp firmware ABI and must
-+ * NOT be changed!
-+ * Note that not all ISP modes support all input modes.
-  */
- enum ia_css_input_mode {
- 	IA_CSS_INPUT_MODE_SENSOR, /** data from sensor */
- 	IA_CSS_INPUT_MODE_FIFO,   /** data from input-fifo */
-+	IA_CSS_INPUT_MODE_TPG,    /** data from test-pattern generator */
- 	IA_CSS_INPUT_MODE_PRBS,   /** data from pseudo-random bit stream */
- 	IA_CSS_INPUT_MODE_MEMORY, /** data from a frame in memory */
- 	IA_CSS_INPUT_MODE_BUFFERED_SENSOR /** data is sent through mipi buffer */
-diff --git a/drivers/staging/media/atomisp/pci/sh_css_internal.h b/drivers/staging/media/atomisp/pci/sh_css_internal.h
-index a2d972ea3fa0..959e7f549641 100644
---- a/drivers/staging/media/atomisp/pci/sh_css_internal.h
-+++ b/drivers/staging/media/atomisp/pci/sh_css_internal.h
-@@ -344,7 +344,14 @@ struct sh_css_sp_input_formatter_set {
- 
- #define IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT (3)
- 
--/* SP configuration information */
-+/*
-+ * SP configuration information
-+ *
-+ * This struct is part of the atomisp firmware ABI and is directly copied
-+ * to ISP DRAM by sh_css_store_sp_group_to_ddr()
-+ *
-+ * Do NOT change this struct's layout or remove seemingly unused fields!
-+ */
- struct sh_css_sp_config {
- 	u8			no_isp_sync; /* Signal host immediately after start */
- 	u8			enable_raw_pool_locking; /** Enable Raw Buffer Locking for HALv3 Support */
-@@ -354,6 +361,10 @@ struct sh_css_sp_config {
- 	     host (true) or when they are passed to the preview/video pipe
- 	     (false). */
- 
-+	 /*
-+	  * Note the fields below are only used on the ISP2400 not on the ISP2401,
-+	  * sh_css_store_sp_group_to_ddr() skip copying these when run on the ISP2401.
-+	  */
- 	struct {
- 		u8					a_changed;
- 		u8					b_changed;
-@@ -363,11 +374,13 @@ struct sh_css_sp_config {
- 	} input_formatter;
- 
- 	sync_generator_cfg_t	sync_gen;
-+	tpg_cfg_t		tpg;
- 	prbs_cfg_t		prbs;
- 	input_system_cfg_t	input_circuit;
- 	u8			input_circuit_cfg_changed;
--	u32		mipi_sizes_for_check[N_CSI_PORTS][IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT];
--	u8                 enable_isys_event_queue;
-+	u32			mipi_sizes_for_check[N_CSI_PORTS][IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT];
-+	/* These last 2 fields are used on both the ISP2400 and the ISP2401 */
-+	u8			enable_isys_event_queue;
- 	u8			disable_cont_vf;
- };
- 
--- 
-2.45.2
+> - GVE_TX_MAX_BUF_SIZE_DQO > 9k, so we know each descriptor won't
+> create a segment which exceeds the limit
 
+For a net patch, it is generally better to make a small fix rather than rew=
+rite.
+
+That said, my sketch without looping over every segment:
+
+        while (off < skb->len) {
+                gso_size_left =3D shinfo->gso_size;
+                num_desc =3D 0;
+
+                while (gso_size_left) {
+                        desc_len =3D min(gso_size_left, frag_size_left);
+                        gso_size_left -=3D desc_len;
+                        frag_size_left -=3D desc_len;
+                        num_desc++;
+
+                        if (num_desc > max_descs_per_seg)
+                                return false;
+
+                        if (!frag_size_left)
+                                frag_size_left =3D
+skb_frag_size(&shinfo->frags[frag_idx++]);
++                      else
++                              frag_size_left %=3D gso_size;        /*
+skip segments that fit in one desc */
+                }
+        }
 
