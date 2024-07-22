@@ -1,145 +1,102 @@
-Return-Path: <stable+bounces-60674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D4F938D37
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 12:09:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB39938D6D
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 12:26:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCDEDB23A5F
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 10:09:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9D571F212E9
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 10:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDC916D4D7;
-	Mon, 22 Jul 2024 10:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CF01684A4;
+	Mon, 22 Jul 2024 10:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BQNH0PPF"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="frEjqQuf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13E316D4C3
-	for <stable@vger.kernel.org>; Mon, 22 Jul 2024 10:04:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBF223DE;
+	Mon, 22 Jul 2024 10:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721642673; cv=none; b=i0B89NzIupgKXmjs5dJ7xMMDHtPPnFgJj/CWddB7s5TuWHwLSWEpzMfqKS/CJ04rL6JgKJ755+W1S6Kw2geQoJI0anPHFIvrxDAeQHpKQPII6JlGb5do/LSG98V4JLsHOYvaGTiHQ7oaPp2eiOxlhibna8Aw4dVRgFcRAjWzmAk=
+	t=1721643973; cv=none; b=ePmxHy41wn8WyfMVANueLIdGdG1rhQCYcc84MGIcmlIVlemp9XsjepDF5G7MXJ/FCQrbFGT9d2+RS/ocUA0+2xpc2ctO7DhDn0SG8gBE2sBnkx+ptcK+nFz55bAePt///hnM6FMQ6cRCYVvV4kWx/Q7PRTMO6eWfdVZ5neBfBMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721642673; c=relaxed/simple;
-	bh=m+hBv3YDOsBdnN+l1C7IdzIqVI63phAI09hFwsxrzHU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m50qfXMHcsOfuSvyLp9n85ICNb7FI9EolWQkzRAjGWxbDbHnuXW7/8Uj2AhOZCl/mc9CbPKu5EQxIh/ja/kfqBZElKREEKsYP36yCPzX18+TC+GSLbrqDNST6F6N7z3FP2QJgjT9wwtEbiFA5zRKgjRNtnvGgb6C8H/N9wOal+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BQNH0PPF; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5a79df5af51so1350363a12.0
-        for <stable@vger.kernel.org>; Mon, 22 Jul 2024 03:04:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721642670; x=1722247470; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=KkO0qAzED2Vp4UXiyXJ+8Xb7bIrXJwQmMIp6pUHLxGY=;
-        b=BQNH0PPFu8uqi3SOSXl0rLxK+gvFvO5TWGcf+xsTaGxi6u93ekKC5qW7jniDvLMx5z
-         vKOyRcL5taG8JFGM4PceElCjcm5gU3VC7uY2AWsiTe6GdyQzC3H0tFlsqUWcp24c+Duh
-         uSMM+Czci6bnj26UVIlONABca3m0d5G/n2h8hEWKalAA86EOzjxmE+0o1CeqJuY91Snb
-         yTTMS4vHW1Su3eIAnyfbiQ8RRxCXkGHLHMSYqxrd90CYB9aasJxoVnclAnYrtr/7EW/n
-         yRlv4yeR7kuUA4Go6OQUbDIY9XwP5n3TKqkxcvlk/2J2nmbhkfwN/3KqDAj2znWbUw7w
-         cJXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721642670; x=1722247470;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KkO0qAzED2Vp4UXiyXJ+8Xb7bIrXJwQmMIp6pUHLxGY=;
-        b=DGdchxNECfTXNGsr28u5MeMgmomGx7FinbA/PouD5MxXFrKyN7+ITr5xWlfK+nJrf7
-         YbodguSypRO9XTjIHYUCTgUZBszDP9W06wv+/yF0nDFuxS6akBlSzF8zLW3halu9GPSJ
-         pdKfY706vBkjoVkqd18FC9P/FgxnvOr8SMds4KTriSi8Y96KQjBP71Yn1tKOtoyEvTLA
-         p0fV327Oyhemdti/Y+RV58cXYBtystfXEgEuimqKjHNliXuJbMrIUw3cQ9/XVswzmJlr
-         PZWITNgc+q0n3LkGTZziFBn3TfTbtjY20QB2EPGhmYN12xjv+4pHTU8qlQPifmmZB/vb
-         nq5w==
-X-Forwarded-Encrypted: i=1; AJvYcCUd9w+4tPT170s0bETn9SoiIpfr2F3VfHaHfC5b4S1Rb2klnAQ81g1H6ChQjGAWB/ZcIKTF3CcGAApBGLl8e5F+TcT25PHy
-X-Gm-Message-State: AOJu0YwC9KIkESnFIt3OhZmOCEpXMMHHyO1EA0u8joTIdYR9MsSVz8J9
-	E3wqglqUsQewYHtMaZkPj8ctZzs/RJDGxbVilVlqK7B2K/9SQ4ul2NCtSxfdgTE=
-X-Google-Smtp-Source: AGHT+IGzDbPWknvSjJXM9N6an129Sn8Sjn2htqiq85IkDdRp6aJREUAL9diVfhetRdmEwh6dILJFmw==
-X-Received: by 2002:a17:907:208d:b0:a7a:130e:fb6e with SMTP id a640c23a62f3a-a7a130efe15mr1408717966b.15.1721642670059;
-        Mon, 22 Jul 2024 03:04:30 -0700 (PDT)
-Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7a3c7be08csm401776066b.70.2024.07.22.03.04.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jul 2024 03:04:29 -0700 (PDT)
-Message-ID: <2f6e4cf2-8047-497b-94f2-25e29bb05c22@linaro.org>
-Date: Mon, 22 Jul 2024 12:04:27 +0200
+	s=arc-20240116; t=1721643973; c=relaxed/simple;
+	bh=Qt0pSfpOd9uBkWnkfYjYMjZywxeQf5V5kpxLyx3iwfg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=frJhGNPCV9uvp7RK9AhQ7E2awv5aaj/apYOVNw9gScZhHhzUfjZdCeysc59F9GQpiuVKI5ih/Txl3OACfj2RXLGD3mnEDedX+gbN7zh8yFDVbid1cPLctcfhUBCzOzjx4RfAXimC9Wb53xZqCKVtNoAC3qdyqvpfR7OgrZodHSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=frEjqQuf; arc=none smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46M5A0s1002661;
+	Mon, 22 Jul 2024 05:26:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=PODMain02222019; bh=NHn1bBqpfkzxeBeN
+	JeFDRk0oJyJI0hodEFZvCSqHS6E=; b=frEjqQufTCfJuNryIQXIsq3e2oj+MCZ9
+	L3QMz6NFmRCvYdpOiVPtmmhxtoIKmvm06EX3kBzldWrw2V1UF+w29ZTOBeE6DNJk
+	o2Lei9T1WiDOUef61QJqmQ70tUbSg5Sm1Bdz+uQx4cURGOT8dZKC1DOiWydUmKLk
+	FdXWafUjUIAVk/8gBm709CpeySkJ2RsTnlgPxd4HqbvPDlxlZztRKEU5am544iYO
+	7LEoF+RQdlkwr3jLgqF8iHeAaMMPzCwuPIbQcFa9/OyC3qytFPY3YnrNLws91yFK
+	Zf0puyYHTUTmzbx63IqWPKTEVKrRf5OcnyyqphTx1vyByEqVXe2L5w==
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 40g9nj1n5j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jul 2024 05:26:02 -0500 (CDT)
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 22 Jul
+ 2024 11:26:00 +0100
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
+ 15.2.1544.9 via Frontend Transport; Mon, 22 Jul 2024 11:26:00 +0100
+Received: from ediswws06.ad.cirrus.com (ediswws06.ad.cirrus.com [198.90.208.18])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id 612FD820244;
+	Mon, 22 Jul 2024 10:26:00 +0000 (UTC)
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
+To: <stable@vger.kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-sound@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>
+Subject: [PATCH for-6.10 0/2] ASoC: cs35l56: Set correct upper volume limit
+Date: Mon, 22 Jul 2024 11:25:58 +0100
+Message-ID: <20240722102600.37931-1-rf@opensource.cirrus.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/8] arm64: dts: qcom: x1e80100: add missing PCIe
- minimum OPP
-To: Johan Hovold <johan+linaro@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Sibi Sankar <quic_sibis@quicinc.com>,
- Abel Vesa <abel.vesa@linaro.org>, Rajendra Nayak <quic_rjendra@quicinc.com>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240722094249.26471-1-johan+linaro@kernel.org>
- <20240722094249.26471-4-johan+linaro@kernel.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20240722094249.26471-4-johan+linaro@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: rue46z4JOrwXlG0dj2kdX8dkwPrQ1xQq
+X-Proofpoint-ORIG-GUID: rue46z4JOrwXlG0dj2kdX8dkwPrQ1xQq
+X-Proofpoint-Spam-Reason: safe
 
-On 22.07.2024 11:42 AM, Johan Hovold wrote:
-> Add the missing PCIe CX performance level votes to avoid relying on
-> other drivers (e.g. USB) to maintain the nominal performance level
-> required for Gen3 speeds.
-> 
-> Fixes: 5eb83fc10289 ("arm64: dts: qcom: x1e80100: Add PCIe nodes")
-> Cc: stable@vger.kernel.org	# 6.9
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
+Patch series to limit the upper range of the CS35L56 volume control to
++12 dB.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+These commits were not marked 'Fixes' because they were thought to be only
+a cosmetic issue. The user could reduce the volume to a usable value.
 
-Konrad
+But for some complex audio topologies with SOF Audio DSP + CS42L43 +
+multiple CS35L56 it has turned out to be not obvious to the user what the
+problem actually is and what to do to fix it. As support for these
+topologies went into 6.10 we would like this series to be applied to 6.10.
+
+Richard Fitzgerald (2):
+  ASoC: cs35l56: Use header defines for Speaker Volume control
+    definition
+  ASoC: cs35l56: Limit Speaker Volume to +12dB maximum
+
+ include/sound/cs35l56.h    | 2 +-
+ sound/soc/codecs/cs35l56.c | 6 +++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+-- 
+2.39.2
+
 
