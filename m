@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-60666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A39938C47
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 11:45:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FA3938CBF
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 11:59:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 806D82824B3
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 09:45:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 402B11F233BE
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 09:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AE516D9DA;
-	Mon, 22 Jul 2024 09:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED48B16EC0F;
+	Mon, 22 Jul 2024 09:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R3glgT7k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dw/zsZSJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1078016D9A5;
-	Mon, 22 Jul 2024 09:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBB216C846;
+	Mon, 22 Jul 2024 09:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721641426; cv=none; b=d7YNnKVzd138koGHgP8ecP0I87ysLzmExm6NYfN1T3NRWBcGmuUMMR0ys1Gs2+pjtsaR2TkzZ60QxptIk35twpwLb9gBfDx/vz2LwynpNJfmPb814j/6r+pius614CdzoRjdaOM9SRyabOtJJrJBxZru+oB2vbRIbJY4ChnU3+Y=
+	t=1721642120; cv=none; b=MN0htUQlyC3M7waVsDjDhCtHRMrnwpx0O2fsPX/r98dSHVIBFHJv2BLh3z4T2e7JERwqDwXSrVQFjytxISlwXRzsXaTNKHTlHO7BqxkZFSAwpP6ALsTvpfDFa3Kgqr4wNw+XjcwUH2/FVNqZnwkEk9DvM+/QG/Up0MxoMqtDvVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721641426; c=relaxed/simple;
-	bh=er2Upk0dY6MDGGuVZ64aChnt3Ks9PNTgqtMxvWEr06I=;
+	s=arc-20240116; t=1721642120; c=relaxed/simple;
+	bh=R1YDhQPevrJAfMVJRTnc1q+dNK0ScEuhS/1S2gK4RBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYH2GGw+9DxovShGybGkdVjugouOIJuUniHjD4Tg7oNwr+jf+P6r4ZXTHUHMU6gtHpBrns4x5lLHsPWobcYZfz8eqImrpqPFBiD3hw3oD1CsZ3BmdPWGza0rSzcqtpyKEZ3fsaRBf7LZtwlbH6XGBsmFAgp6ijiMjT9FW+w5AUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R3glgT7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1DCC4AF62;
-	Mon, 22 Jul 2024 09:43:45 +0000 (UTC)
+	 MIME-Version; b=PRJj2B/s/CyKNIX2vZG7MH7MdItpS9BB34duG8MnBFQ79NpLUUfehz6A1c60JUfMtdDP8POHqmpRyNxi1ZaXxCT/gzfuJYkyzsitSDEO7fEehu2StjcWBJ7FNA7Pl9vNdm7h3gE/kpO1Z5mPir9zpsjQLHMqa7sOJ9VvJBxPHoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dw/zsZSJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D92C4AF0E;
+	Mon, 22 Jul 2024 09:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721641425;
-	bh=er2Upk0dY6MDGGuVZ64aChnt3Ks9PNTgqtMxvWEr06I=;
+	s=k20201202; t=1721642120;
+	bh=R1YDhQPevrJAfMVJRTnc1q+dNK0ScEuhS/1S2gK4RBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3glgT7ky2zZua+lNoS/Wv5LbjEDECJCxGZvDHAvIn62NAkaBPTD3XIyH4FkBQddj
-	 iG4QlSgL7dJ8xaO1Y1lj6ZxG/gL8D78Rv1kS9WGFlHJ/HaKRxgi7oYbZGN6aPixkAO
-	 g4TcxCCTRwdodMT0rGpwo5rKiLbcTD3QkMZW2v4N3P4wkyESmVaqag01CWHQkpKyXL
-	 Af7FPiRNpo3XivZRtz1fA0llpLDbeIm925T3jghMksqG0YXsw8/ZNqB8HzxmaEO81Z
-	 1d6eFHIn9J3Wg1LY86AKwzfm59Pl4EJWtHSKuycTfI6BFcb6wRolIt432Dwj8Kcyim
-	 uii24pHyWpi9Q==
+	b=dw/zsZSJ7mW10iEDyOP9sHVc+T/4/mpEHR96hPkVSy7A1j8WSIxHAKcw5H+Hv3W+k
+	 CTmD8FsS9N6s9d2ZbscdEx74wqEAH8oCDFC+q5EQYa8Kyp1vekQjjQDvP3RkuSBq6W
+	 izNwf065RN+25lZc+OOnNC0/0gQH5wkXESKzokSVkQX4HAvLcK25HWeziwFBbhPOIX
+	 LfrHq0JR36SEJoV3q5L2EgGZAhFAYqcQBSpscioESfkYRti0YxC9V3XAXW0xWb8dkB
+	 fi0CCwoNgY7x7zTej4rq2qBY4bnN8vhY03J/Dn5Kx7+LS2f/q+FrknpnDbLjdRs8oa
+	 F1dUhnUT3h3Xw==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan+linaro@kernel.org>)
-	id 1sVpa4-000000006uQ-3G38;
-	Mon, 22 Jul 2024 11:43:44 +0200
+	id 1sVplH-0000000079K-0EnN;
+	Mon, 22 Jul 2024 11:55:19 +0200
 From: Johan Hovold <johan+linaro@kernel.org>
 To: Bjorn Andersson <andersson@kernel.org>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>
@@ -54,17 +54,19 @@ Cc: Rob Herring <robh@kernel.org>,
 	Sibi Sankar <quic_sibis@quicinc.com>,
 	Abel Vesa <abel.vesa@linaro.org>,
 	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Xilin Wu <wuxilin123@gmail.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan+linaro@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 6/8] arm64: dts: qcom: x1e80100-crd: fix missing PCIe4 gpios
-Date: Mon, 22 Jul 2024 11:42:47 +0200
-Message-ID: <20240722094249.26471-7-johan+linaro@kernel.org>
+Subject: [PATCH 01/12] arm64: dts: qcom: x1e80100-qcp: fix PCIe4 PHY supply
+Date: Mon, 22 Jul 2024 11:54:48 +0200
+Message-ID: <20240722095459.27437-2-johan+linaro@kernel.org>
 X-Mailer: git-send-email 2.44.2
-In-Reply-To: <20240722094249.26471-1-johan+linaro@kernel.org>
-References: <20240722094249.26471-1-johan+linaro@kernel.org>
+In-Reply-To: <20240722095459.27437-1-johan+linaro@kernel.org>
+References: <20240722095459.27437-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,63 +75,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the missing PCIe4 perst, wake and clkreq GPIOs and pin config.
+The PCIe4 PHY is powered by vreg_l3i (not vreg_l3j) on the CRD so assume
+the same applies to the QCP.
 
-Fixes: d7e03cce0400 ("arm64: dts: qcom: x1e80100-crd: Enable more support")
-Cc: stable@vger.kernel.org	# 6.9
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Fixes: f9a9c11471da ("arm64: dts: qcom: x1e80100-qcp: Enable more support")
+Cc: stable@vger.kernel.org      # 6.9
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-crd.dts | 29 +++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ arch/arm64/boot/dts/qcom/x1e80100-qcp.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-index 7406f1ad9c55..caae0c3d8c7a 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-@@ -784,6 +784,12 @@ &mdss_dp3_phy {
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
+index e7758f172d0d..212ed20b3369 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
+@@ -576,7 +576,7 @@ &pcie4 {
  };
  
- &pcie4 {
-+	perst-gpios = <&tlmm 146 GPIO_ACTIVE_LOW>;
-+	wake-gpios = <&tlmm 148 GPIO_ACTIVE_LOW>;
-+
-+	pinctrl-0 = <&pcie4_default>;
-+	pinctrl-names = "default";
-+
+ &pcie4_phy {
+-	vdda-phy-supply = <&vreg_l3j_0p8>;
++	vdda-phy-supply = <&vreg_l3i_0p8>;
+ 	vdda-pll-supply = <&vreg_l3e_1p2>;
+ 
  	status = "okay";
- };
- 
-@@ -975,6 +981,29 @@ nvme_reg_en: nvme-reg-en-state {
- 		bias-disable;
- 	};
- 
-+	pcie4_default: pcie4-default-state {
-+		clkreq-n-pins {
-+			pins = "gpio147";
-+			function = "pcie4_clk";
-+			drive-strength = <2>;
-+			bias-pull-up;
-+		};
-+
-+		perst-n-pins {
-+			pins = "gpio146";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-disable;
-+		};
-+
-+		wake-n-pins {
-+			pins = "gpio148";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-up;
-+		};
-+	};
-+
- 	pcie6a_default: pcie6a-default-state {
- 		clkreq-n-pins {
- 			pins = "gpio153";
 -- 
 2.44.2
 
