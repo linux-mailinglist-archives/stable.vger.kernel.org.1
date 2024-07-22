@@ -1,181 +1,161 @@
-Return-Path: <stable+bounces-60699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C223F938FC3
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 15:17:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FAAD938FFD
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 15:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 762ED282947
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 13:17:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86FC71F21B77
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 13:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2398116CD06;
-	Mon, 22 Jul 2024 13:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E49E16D9AE;
+	Mon, 22 Jul 2024 13:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="k8P8LVyA"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="TmICzQAh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BA13A8F7
-	for <stable@vger.kernel.org>; Mon, 22 Jul 2024 13:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415FC1D696
+	for <stable@vger.kernel.org>; Mon, 22 Jul 2024 13:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721654257; cv=none; b=lYFvx3TJ/N4uMbVdSkA/zzbhwLpMLFB8Wc8xNH+HaWNc0lQsCvNxcG3tFcx1lbHepln5hpdM8WPw2kdzU2SIaJ7yha1LaGXKVJI6L080aykXvcT8FE+1I8bbMypYArxb/bGel4GMlf/kU4ZAxRLQ8dPEyS8AKHDgh8lMpwc2vQw=
+	t=1721655536; cv=none; b=PGL9o9S1VdUy5tUYVlQCWGRTQTT6USxShltkgxb27oYED/02J/e42xKaa6C7pqw53kYoItvMrEKMZ4p+fFj88jTualoGFH3fR58/mQDRLq7YOu5grfX5J5XcatvUAjte58x5qHdvAtKKBehb5vjEWl9bu5ZCbXBFFQxff/QyM3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721654257; c=relaxed/simple;
-	bh=X8Og4cRRjTFTAVcy3iYNTI7NPvrU8WWaBElWujRSza8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=brECFDoj41sLE+Enlha6C2i0Q2uFhGKySKVJrOdkZ7kwJbTXF1MO9oCuCCBIS6zKOm0n9HyMD8z0hb8rnjzMkzP4jMWTLWjHdRLta3F22lNGt7lj8GBUrERytfOaaMACOlDXmcOyTEZPq2zbxEH8CT9GZQ364jACnk3P9DFPk+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=k8P8LVyA; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-58f9874aeb4so3188670a12.0
-        for <stable@vger.kernel.org>; Mon, 22 Jul 2024 06:17:35 -0700 (PDT)
+	s=arc-20240116; t=1721655536; c=relaxed/simple;
+	bh=EsCYzEpYzqKrSa5mU2oZ92LFXsRklqRrGu5dlu2E17s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fxx2fNs+VdnkMQjh0OaXgIQYD4GX9MTDZxI9mC++coCwgVI7FEbFCxch6T71odyMUc7t3qPFcRXE1UjqzxADkHgELrIuz2/TzAEq0B7EvAgZsfB42xgDpfkm7umSt7PGZhoy6Z7GjCQs+TUDV1gJmgrtyqXueKLG+hBqtV0TIyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=TmICzQAh; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=g.harvard.edu
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6ad86f3cc34so24847456d6.1
+        for <stable@vger.kernel.org>; Mon, 22 Jul 2024 06:38:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1721654254; x=1722259054; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wTbGlt1EcdcYHcKZI4SFSpYHzZQnoTGlIL/NjhJzDtA=;
-        b=k8P8LVyARpwL8AEGZ78nZ2qo2c5ZK4WGL7vy/K+veG6ke6PMT41onq5AUywvLAa+hY
-         jatgdu5l2I6NZ8bepmlkrAZcfofGrrxicBAE9+bwDUxO2WGLdgsa9euWAKaGgRSICGwa
-         Jx4iAO7q7ATUKbBX/yvejjN0L1EyTd0uoFIww=
+        d=rowland.harvard.edu; s=google; t=1721655532; x=1722260332; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=J+AsODRpLyxGEYBH8qQZNZibMcAK7VAjI4KRKdmAQhc=;
+        b=TmICzQAhNJwkKDZdjysmD5FK0p4cfiwedn/Wg9SYSQg/27zAVA3tuEmgGErSkWd2jO
+         QZJGoG+mf268yvkns+GFl252lk5eLPifQNKerrBzSnszE3q5bYcE0eJb+EfxLSw978hU
+         hDfPAtNLbHOnWWoSM+7CF5UpFv+TL3OW4K7jlT7jZdqpibmIQq1U3nDHxuLkHwTzLzQh
+         xhKz4BR5ytV3SXnmJsygP8lmqU0O+xe/oKeWDAenVqA+kQSlGJ6nCWBv0Py9d1eHPeY4
+         fDh/YYtKx147ybBRChkRBGtCdNuh/feLpCphYoPk69ZLMM5uM3+cR8ZuVblj9LLlHG6J
+         Cq8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721654254; x=1722259054;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wTbGlt1EcdcYHcKZI4SFSpYHzZQnoTGlIL/NjhJzDtA=;
-        b=LFnGP0M4EVuXPubN2WBOU8H66NGKXTknARZxylkDhOTTpig2Q2wzKjAV39vtqagoPM
-         xRPkG5xIJJ95/NwxnBW2YiXP26iKleV8PyZHNbnlYLdFa4ryWstmY4PK5HpCbjK5elZ+
-         BKiEyQbAFtfbtgaV5ksjrWG9Fa0hBzhplLf8rEOCrOKSlJXKJ0HXLubLie4mm9L3+o0T
-         4OtNkvZ1cVOskpZRvlK0u1LT1//PbaKh1U3n2cErCRYgT/E7BhuhXdi2NcSczOMp8mgq
-         N91LepFDHuregFpM0fbvJqAmFDzM4u3oR/zlhZ0KXp0jSi55DZTB+bgCirUoCmxROk+M
-         LISA==
-X-Forwarded-Encrypted: i=1; AJvYcCXCdS+xq7lbdpge94cuEBTjt/OO/gQZrx1qfB+NPUUH+igXvZtaHvCAIz5vmBPuePp7ydj9qH36tKeDgt3h3L0xiHHoil6Q
-X-Gm-Message-State: AOJu0YyO0d50wR0LdPihfVcwu7gdSC9CbIO0Y/DOB5lpefribVM/2eZw
-	FNPJ6kI44HWv2Kv/dcjABdK5UyXyNeJyJ+rqDmZeZH8uyn0WrlHpCmYQVqdD5YAqXHQ0RxFi1iZ
-	mBg==
-X-Google-Smtp-Source: AGHT+IFn7XInCts+fIv54oHN2XmtU5umqW0l6AOmGNRu26uizrxSHcHmhJT/sX++j5v98vVt74zbqw==
-X-Received: by 2002:a05:6402:510e:b0:5a2:8bf2:92c6 with SMTP id 4fb4d7f45d1cf-5a3ef3792e8mr6283448a12.21.1721654254147;
-        Mon, 22 Jul 2024 06:17:34 -0700 (PDT)
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com. [209.85.208.42])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5a30c7d213csm6082001a12.80.2024.07.22.06.17.33
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jul 2024 06:17:33 -0700 (PDT)
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5a309d1a788so3434319a12.3
-        for <stable@vger.kernel.org>; Mon, 22 Jul 2024 06:17:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVykUSvkSDcQn6+YG32emHpW7uWExEMepnpnXTp3+2SAdaI/0jaVAcgZs7ae/WBeiTMsGliwlJzjMzjrbgwNQDix3z4DHpq
-X-Received: by 2002:a17:906:ce57:b0:a72:b055:3de0 with SMTP id
- a640c23a62f3a-a7a01116219mr1036992766b.6.1721654252644; Mon, 22 Jul 2024
- 06:17:32 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1721655532; x=1722260332;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J+AsODRpLyxGEYBH8qQZNZibMcAK7VAjI4KRKdmAQhc=;
+        b=kYHWkJs8bvU6ymIAZsiwGG3azYFsvERBeqZlSBjUPORWM1mT/EsC1d4AM6xvYgYuPF
+         AUlCWBQMYSJhNWAgcs/9OMETyq0k2ZhbyC9SDL/PzCLikrrmtl6SCTuCj5FYBeTmFth/
+         5bgruY3e26/N6EK/OTegIVQp+n2MehzAw/qNpnfWN06xnArIqjSZmDhtY4p7f8tV7Wwi
+         9H/BfCLC3zSfJYMEk/udJCCz9qJRUU2moRkQ5pEGnZumYBMZa/uyJeX+T8UCUN3K2mgg
+         FG6BlHpuGd7eakxU9eJJfn/+piB4XJ4H1zP5kdbpF3XN03LsClJIEChutfFpirQ+l/JU
+         UK4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWDQ59FYzlKCZT098KoIVnTTa5Y/I5vg8KXUaBdH+7qkRZJtrd1p7RBKRjf16Ai1LL97bqXbAZt0Fiqv1yoNtrH1ra/hMle
+X-Gm-Message-State: AOJu0YwZ7gxsTVSVlifOjb5QlciL0X8mXJ0ibwn0NVxPB85rSnBmzdG2
+	bNhlgv5RQXu0mAytBPmPjShb2c1PV1jfvtEsVEjJNJPYIgcYd+VcNiiZ3u4lTw==
+X-Google-Smtp-Source: AGHT+IFjmr9AGaxyCdW/ULLLd3RGSItSvMoVfohtw51VAdmu35qfNZz3hxlPQvLclwvVcL5Do8abfw==
+X-Received: by 2002:ad4:5be8:0:b0:6b7:a32b:4427 with SMTP id 6a1803df08f44-6b95a79cf41mr107303956d6.52.1721655532070;
+        Mon, 22 Jul 2024 06:38:52 -0700 (PDT)
+Received: from rowland.harvard.edu (iolanthe.rowland.org. [192.131.102.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b7acaf1de1sm35688816d6.123.2024.07.22.06.38.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jul 2024 06:38:51 -0700 (PDT)
+Date: Mon, 22 Jul 2024 09:38:49 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Chris Wulff <crwulff@gmail.com>
+Cc: linux-usb@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Roy Luo <royluo@google.com>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	yuan linyu <yuanlinyu@hihonor.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Felipe Balbi <balbi@kernel.org>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: gadget: core: Check for unset descriptor
+Message-ID: <b35e043d-a371-4cf9-b414-34ba72df1ccc@rowland.harvard.edu>
+References: <20240721192048.3530097-2-crwulff@gmail.com>
+ <29bc21ae-1f8a-47fd-b361-c761564f483a@rowland.harvard.edu>
+ <CAB0kiBJYm9F4w5H8+9=dcmoCecgCwe6rTDM+=Ch1x-4mXEqB5A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240722-fix-filter-mapping-v2-1-7ed5bb6c1185@chromium.org> <20240722122211.GF5732@pendragon.ideasonboard.com>
-In-Reply-To: <20240722122211.GF5732@pendragon.ideasonboard.com>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 22 Jul 2024 15:17:17 +0200
-X-Gmail-Original-Message-ID: <CANiDSCs1nuvG1XF1XUAJVvkrbe_bVnvqyTR7gvHDdQ8k0M4pLA@mail.gmail.com>
-Message-ID: <CANiDSCs1nuvG1XF1XUAJVvkrbe_bVnvqyTR7gvHDdQ8k0M4pLA@mail.gmail.com>
-Subject: Re: [PATCH v2] media: uvcvideo: Fix custom control mapping probing
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	pmenzel@molgen.mpg.de, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAB0kiBJYm9F4w5H8+9=dcmoCecgCwe6rTDM+=Ch1x-4mXEqB5A@mail.gmail.com>
 
-On Mon, 22 Jul 2024 at 14:22, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> On Mon, Jul 22, 2024 at 11:52:26AM +0000, Ricardo Ribalda wrote:
-> > Custom control mapping introduced a bug, where the filter function was
-> > applied to every single control.
+On Mon, Jul 22, 2024 at 09:00:07AM -0400, Chris Wulff wrote:
+> On Sun, Jul 21, 2024 at 9:07 PM Alan Stern <stern@rowland.harvard.edu> wrote:
 > >
-> > Fix it so it is only applied to the matching controls.
+> > On Sun, Jul 21, 2024 at 03:20:49PM -0400, crwulff@gmail.com wrote:
+> > > From: Chris Wulff <crwulff@gmail.com>
+> > >
+> > > Make sure the descriptor has been set before looking at maxpacket.
+> > > This fixes a null pointer panic in this case.
+> > >
+> > > This may happen if the gadget doesn't properly set up the endpoint
+> > > for the current speed, or the gadget descriptors are malformed and
+> > > the descriptor for the speed/endpoint are not found.
 > >
-> > The following dmesg errors during probe are now fixed:
+> > If that happens, doesn't it mean there's a bug in the gadget driver?
+> > And if there's a bug, don't we want to be told about it by a big
+> > impossible-to-miss error message, so the bug can be fixed?
+> 
+> Yes, this is an indicator of a problem in a gadget driver as was the
+> previous check for a zero max packet size. In this case, the panic
+> is in an interrupt context and it doesn't make it out to the console.
+> This just results in a system freeze without this fix.
+> 
 > >
-> > usb 1-5: Found UVC 1.00 device Integrated_Webcam_HD (0c45:670c)
-> > usb 1-5: Failed to query (GET_CUR) UVC control 2 on unit 2: -75 (exp. 1).
-> > usb 1-5: Failed to query (GET_CUR) UVC control 3 on unit 2: -75 (exp. 1).
-> > usb 1-5: Failed to query (GET_CUR) UVC control 6 on unit 2: -75 (exp. 1).
-> > usb 1-5: Failed to query (GET_CUR) UVC control 7 on unit 2: -75 (exp. 1).
-> > usb 1-5: Failed to query (GET_CUR) UVC control 8 on unit 2: -75 (exp. 1).
-> > usb 1-5: Failed to query (GET_CUR) UVC control 9 on unit 2: -75 (exp. 1).
-> > usb 1-5: Failed to query (GET_CUR) UVC control 10 on unit 2: -75 (exp. 1).
+> > > Fixes: 54f83b8c8ea9 ("USB: gadget: Reject endpoints with 0 maxpacket value")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Chris Wulff <crwulff@gmail.com>
+> > > ---
+> > >  drivers/usb/gadget/udc/core.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+> > > index 2dfae7a17b3f..36a5d5935889 100644
+> > > --- a/drivers/usb/gadget/udc/core.c
+> > > +++ b/drivers/usb/gadget/udc/core.c
+> > > @@ -118,7 +118,7 @@ int usb_ep_enable(struct usb_ep *ep)
+> > >               goto out;
+> > >
+> > >       /* UDC drivers can't handle endpoints with maxpacket size 0 */
+> > > -     if (usb_endpoint_maxp(ep->desc) == 0) {
+> > > +     if (!ep->desc || usb_endpoint_maxp(ep->desc) == 0) {
+> > >               /*
+> > >                * We should log an error message here, but we can't call
+> > >                * dev_err() because there's no way to find the gadget
 > >
-> > Reported-by: Paul Menzen <pmenzel@molgen.mpg.de>
-> > Closes: https://lore.kernel.org/linux-media/518cd6b4-68a8-4895-b8fc-97d4dae1ddc4@molgen.mpg.de/T/#t
-> > Cc: stable@vger.kernel.org
-> > Fixes: 8f4362a8d42b ("media: uvcvideo: Allow custom control mapping")
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
->
-> I'll add
->
-> Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
->
-> from v1 and fix the reported-by tag.
->
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->
+> > This will just hide the error.  That's not good.
+> 
+> The previous check was also hiding the error, and introduced a panic.
+> I could add a printk to that error case, though it would be unassociated
+> with the gadget that caused the problem. This function does also return
+> an error code when it fails, so the calling function can check that and
+> print an error.
 
-Thanks :)
+Okay.  It wouldn't hurt to print out an error message, even if there's 
+no way to tell which gadget it refers to.  A dump_stack() would help in 
+that regard, but it won't be needed if the guilty party will always be 
+pretty obvious.
 
-> > ---
-> > Paul, could you check if this fixes your issue, thanks!
-> > ---
-> > Changes in v2:
-> > - Replace !(A && B) with (!A || !B)
-> > - Add error message to commit message
-> > - Link to v1: https://lore.kernel.org/r/20240722-fix-filter-mapping-v1-1-07cc9c6bf4e3@chromium.org
-> > ---
-> >  drivers/media/usb/uvc/uvc_ctrl.c | 8 +++++---
-> >  1 file changed, 5 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-> > index 0136df5732ba..4fe26e82e3d1 100644
-> > --- a/drivers/media/usb/uvc/uvc_ctrl.c
-> > +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-> > @@ -2680,6 +2680,10 @@ static void uvc_ctrl_init_ctrl(struct uvc_video_chain *chain,
-> >       for (i = 0; i < ARRAY_SIZE(uvc_ctrl_mappings); ++i) {
-> >               const struct uvc_control_mapping *mapping = &uvc_ctrl_mappings[i];
-> >
-> > +             if (!uvc_entity_match_guid(ctrl->entity, mapping->entity) ||
-> > +                 ctrl->info.selector != mapping->selector)
-> > +                     continue;
-> > +
-> >               /* Let the device provide a custom mapping. */
-> >               if (mapping->filter_mapping) {
-> >                       mapping = mapping->filter_mapping(chain, ctrl);
-> > @@ -2687,9 +2691,7 @@ static void uvc_ctrl_init_ctrl(struct uvc_video_chain *chain,
-> >                               continue;
-> >               }
-> >
-> > -             if (uvc_entity_match_guid(ctrl->entity, mapping->entity) &&
-> > -                 ctrl->info.selector == mapping->selector)
-> > -                     __uvc_ctrl_add_mapping(chain, ctrl, mapping);
-> > +             __uvc_ctrl_add_mapping(chain, ctrl, mapping);
-> >       }
-> >  }
-> >
-> >
-> > ---
-> > base-commit: 68a72104cbcf38ad16500216e213fa4eb21c4be2
-> > change-id: 20240722-fix-filter-mapping-18477dc69048
->
-> --
-> Regards,
->
-> Laurent Pinchart
+By the way, how did you manage to trigger this error?  None of the 
+in-kernel gadget drivers are known to have this bug, and both the 
+gadgetfs and raw_gadget drivers prevent userspace from doing it.  Were 
+you testing a gadget driver that was under development?
 
-
-
--- 
-Ricardo Ribalda
+Alan Stern
 
