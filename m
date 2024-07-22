@@ -1,90 +1,96 @@
-Return-Path: <stable+bounces-60693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD561938F57
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 14:49:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3103938F59
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 14:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A4EB1C20E4C
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 12:49:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 309E01C212F6
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 12:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9E016D30E;
-	Mon, 22 Jul 2024 12:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A455A16D30E;
+	Mon, 22 Jul 2024 12:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PHsmywl4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BIn44lyH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E7C16A399;
-	Mon, 22 Jul 2024 12:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E43016A399;
+	Mon, 22 Jul 2024 12:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721652575; cv=none; b=bYE2u9cHAR1FXxK8+4gv+YyOmegAMgBNgXu9k3d806HAsNLc60l55oyvbI5i4MXCwCzrpyItJ2LKAWbIVrn2Budn6kxys9EW5N6h8c+AXZ8b54A60YaH7Gu9FlKYILAGTeG7MOnJhEu9eDmok7CF07grHHth2H9gTvPLZFYmSrM=
+	t=1721652642; cv=none; b=Xd1n/hfmlAOo/F8BjlPtUE+jePA6h99akQZpYQIu86xOvZeiGjC2CkDcF67eKvleP2tAN+YBtt/Wh6feJr4DJL2oK3E7zWDqCrrNpcX9go4yuZND/ftSsa6BeM68Mn9NjGn/h0PEfEMzscs8FVgUF8tIOOo2MXSg6o5Vw+y6QR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721652575; c=relaxed/simple;
-	bh=PjR5duhkjr8DNHVqLUTYNN7l737LnHJ9IB8dtErhseA=;
+	s=arc-20240116; t=1721652642; c=relaxed/simple;
+	bh=W982RbKM0FhaZsBOiVBU/Ls1Lu4p3QpOAVhhr7poQCQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tmj2tbSRaOKWsx20kzDce/gLaxT67DtkTymgO3QR9k05/CH92E5MJbAmGTd2gPRMK8KK4QpIifGKvKkNSdkTWBMT3kiFgrdtjw2N5CXd5ztgYp+i0ulCCtotusrqr+PnYGAHfOMhxqtbeO/Vh7YwyFceiVPqalSZubgZsMYMJbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PHsmywl4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CEAC116B1;
-	Mon, 22 Jul 2024 12:49:35 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=DCcpviE2wkGL4u/kngiixcLNHFOPYP1FijmKByoA3y5oFOlCEPXMWv4SaCBFEaxYwqBQbZvXdwJSA1A45VbkL0BDjceiD143EEz3K2esDawea6vB8i/7tSkEBsR019tZAvq9LVbboVmj4GjdmdiFnyXAvCWv1tnVoTBpThJ4YqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BIn44lyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D846C116B1;
+	Mon, 22 Jul 2024 12:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721652575;
-	bh=PjR5duhkjr8DNHVqLUTYNN7l737LnHJ9IB8dtErhseA=;
+	s=k20201202; t=1721652641;
+	bh=W982RbKM0FhaZsBOiVBU/Ls1Lu4p3QpOAVhhr7poQCQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PHsmywl4/kHG4FfswELuiK/WjJ9b3REnDi82AulwR2LAuZkPEzNy8ny9CZcHppc8I
-	 GQjm8iWxCGEggAnGzjBGw33CFffLkHwUQWZK/LRXaht3FYEjMYGoZqkXy68bIt9TuK
-	 s1kkRa8waLMxjgL4mK8EybwegSoHNeD8CPsDPt5K9bTMoVwOsINy+IJnz3XdQH8nTb
-	 CENG3KZfhQZe7v4LQrKJNAkDfWoKZfnPNgqXzjWM/vHQBU7fKwWZdZAdvNsF9iOmy2
-	 USRMJyuCVJHCeKTiXI2mQz/pUmJGtvIWCCBe2oOzwRjH3FRs89hevDdyOwTSRgdYBy
-	 5Uv0f9V+JEwhA==
-Date: Mon, 22 Jul 2024 08:49:33 -0400
+	b=BIn44lyHzVYq4T2bA3n0wKBGo41TxkJMXDtOXKDU1gnZztUMQ12ikGRkmMb14aQJ5
+	 KZ2nCgnEXNuprrAmzGvHINWs/9IVj0AFqjsbOluR2ij5vdYms6Yn+YBMZQXbDjZYTb
+	 ef94QN+aVXPTKpuyV16or+h9Fd/KzBVva3W9NKfHleoWCblQ0VsOwAxGVL7iEORd/Z
+	 1Wr2qsTZZ2T3l+BVgZ4QA3Wh1yupMuVZ2FK6L5bFLcu/zDmuoJ+9wnHhYMb1Iw8RrW
+	 TOPoWUMTZE7pA8JKY1YHHlhhvbN2FpsuTm3M4y+P6sGHB57Er6vcyfhd1woxJYgkux
+	 TdFPgDvpLRCHQ==
+Date: Mon, 22 Jul 2024 08:50:40 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Mark Brown <broonie@kernel.org>
+To: Takashi Iwai <tiwai@suse.de>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>, lgirdwood@gmail.com,
-	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.9 10/40] ASoC: topology: Clean up route loading
-Message-ID: <Zp5VXeNkZPrcwwfw@sashalap>
-References: <20240709162007.30160-1-sashal@kernel.org>
- <20240709162007.30160-10-sashal@kernel.org>
- <844e0213-33ea-48b6-ad55-145c9dab584a@sirena.org.uk>
+	Simon Trimmer <simont@opensource.cirrus.com>, perex@perex.cz,
+	tiwai@suse.com, rf@opensource.cirrus.com, broonie@kernel.org,
+	shenghao-ding@ti.com, sbinding@opensource.cirrus.com,
+	lukas.bulwahn@gmail.com, linux-sound@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.6 11/12] ALSA: hda: cs35l56: Select
+ SERIAL_MULTI_INSTANTIATE
+Message-ID: <Zp5VoMzMjH6gHExm@sashalap>
+References: <20240701001342.2920907-1-sashal@kernel.org>
+ <20240701001342.2920907-11-sashal@kernel.org>
+ <87wmm5a8ka.wl-tiwai@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <844e0213-33ea-48b6-ad55-145c9dab584a@sirena.org.uk>
+In-Reply-To: <87wmm5a8ka.wl-tiwai@suse.de>
 
-On Tue, Jul 09, 2024 at 05:34:51PM +0100, Mark Brown wrote:
->On Tue, Jul 09, 2024 at 12:18:50PM -0400, Sasha Levin wrote:
->> From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+On Mon, Jul 01, 2024 at 09:13:41AM +0200, Takashi Iwai wrote:
+>On Mon, 01 Jul 2024 02:13:30 +0200,
+>Sasha Levin wrote:
 >>
->> [ Upstream commit e0e7bc2cbee93778c4ad7d9a792d425ffb5af6f7 ]
+>> From: Simon Trimmer <simont@opensource.cirrus.com>
 >>
->> Instead of using very long macro name, assign it to shorter variable
->> and use it instead. While doing that, we can reduce multiple if checks
->> using this define to one.
+>> [ Upstream commit 9b1effff19cdf2230d3ecb07ff4038a0da32e9cc ]
 >>
->> Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
->> Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
->> Link: https://lore.kernel.org/r/20240603102818.36165-5-amadeuszx.slawinski@linux.intel.com
->> Signed-off-by: Mark Brown <broonie@kernel.org>
+>> The ACPI IDs used in the CS35L56 HDA drivers are all handled by the
+>> serial multi-instantiate driver which starts multiple Linux device
+>> instances from a single ACPI Device() node.
+>>
+>> As serial multi-instantiate is not an optional part of the system add it
+>> as a dependency in Kconfig so that it is not overlooked.
+>>
+>> Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+>> Link: https://lore.kernel.org/20240619161602.117452-1-simont@opensource.cirrus.com
+>> Signed-off-by: Takashi Iwai <tiwai@suse.de>
 >> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
 >
->This is clearly a code cleanup, there is nothing here that looks in the
->slightest bit like stable material.
+>This change breaks random builds, so please pick up a follow-up fix
+>17563b4a19d1844bdbccc7a82d2f31c28ca9cfae
+>    ALSA: hda: Use imply for suggesting CONFIG_SERIAL_MULTI_INSTANTIATE
+>too.
 
-Dropped, thanks!
+Will do.
 
 -- 
 Thanks,
