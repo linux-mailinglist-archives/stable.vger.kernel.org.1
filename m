@@ -1,250 +1,146 @@
-Return-Path: <stable+bounces-60704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B047A939052
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 16:08:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB21B939098
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 16:23:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 328D31F21F19
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 14:08:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89AB9282042
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 14:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C14D16D9CA;
-	Mon, 22 Jul 2024 14:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8F51EB3D;
+	Mon, 22 Jul 2024 14:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VHQO925r"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1KZ3vhV4"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1B78F5E;
-	Mon, 22 Jul 2024 14:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964508BEA
+	for <stable@vger.kernel.org>; Mon, 22 Jul 2024 14:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721657279; cv=none; b=cywAROSnvO8o6IlvGi//32YRVOLGPdJc5Yru2GxjezyWTLMQpCu9XGRy0Avb3KUr+3B4yea/Tn8hi/DRyJn2UsElzArZ/TZfG4EwWE2YRYz1Ke+gkZHbKKEEAmjip/hIR8Ulk4YX4ROg2vH9/7PM2qdXl/93sAFXECIoAt/CE2Y=
+	t=1721658189; cv=none; b=OQgLcJUfJ75frSc1EgGp0JJT7cdwVdi66NDoJIkl+Ab7BPk91DZvgQC87dhPGp71UCNghtcZIbN4Ic+FGskn7NXxS9Pm2JUyboo5krDOZ6XoB1/ll0VKQnHCKor6wVJcMz2obIHeuzirbI1GwS0rJCi+MU4kq7Fi0kjNf8fxqGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721657279; c=relaxed/simple;
-	bh=+eZHdJDabvhe4yJl+I++bXRcuLcMT5qaWJvUi9IaS8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kg3762vJgd9T97vgnskq/jIn4VKI1IAGsCCgru/XOAgS5FubkrfHmpeAdgXRzFJgx8cXffbgnsiyVla3AajTGyJZ3UMpPfb+ShJzPI36I3J4G2xyWcF1fdqCHl62r21lZ2+/dLdMk6DIEAetSJjch7utQTtSdhLqXfIGH/Sx86s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VHQO925r; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721657278; x=1753193278;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+eZHdJDabvhe4yJl+I++bXRcuLcMT5qaWJvUi9IaS8A=;
-  b=VHQO925rkFnZO6wJnRhzk8njwDFsIbyIx1Ydx82tt+Hy3BCfl9HHgp/Z
-   A+jupAvxF2Ts0vf4uIKCQDzHIUUGZ44OJt7Vcu1zR+U2uPwdlqJGp/We1
-   hY139+d78IQhjfUhVS7Y0PrKHkbD9983JO+6yChgCjcZotvWEgIKL9XUf
-   9C3XG+7pRY5LjceKAPaFjaD/GyTKVrxNnzWX2jDpjz0Iw1g12M+7m3emZ
-   iyjjprQ/p7vBAR/TthYfh24lpsYmshAvuNGV+mku2zR56sn4GdTmRL6al
-   EcFVhX1E0GFJlzigyQK5gKvC2yi7gGvDrLx6ynxB0fCb8OBMd3/wolVzi
-   g==;
-X-CSE-ConnectionGUID: TPw3bl/BRp6JZ/KG4NZ91g==
-X-CSE-MsgGUID: ypr4qVZBSzGv7/moWLHjIw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11141"; a="18932538"
-X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; 
-   d="scan'208";a="18932538"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2024 07:07:49 -0700
-X-CSE-ConnectionGUID: ofWiXJEZQwS3NF984WTZng==
-X-CSE-MsgGUID: wQZBfRJeTvOFGUBExfTpLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; 
-   d="scan'208";a="82537212"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa002.jf.intel.com with ESMTP; 22 Jul 2024 07:07:47 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id E0A04540; Mon, 22 Jul 2024 17:07:44 +0300 (EEST)
-Date: Mon, 22 Jul 2024 17:07:44 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Mel Gorman <mgorman@suse.de>, Vlastimil Babka <vbabka@suse.cz>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jianxiong Gao <jxgao@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: Fix endless reclaim on machines with unaccepted
- memory.
-Message-ID: <brjw4kb3x4wohs4a6y5lqxr6a5zlz3m45hiyyyht5mgrqcryk7@m7mdyojo4h6a>
-References: <20240716130013.1997325-1-kirill.shutemov@linux.intel.com>
- <ZpdwcOv9WiILZNvz@tiehlicka>
- <xtcmz6b66wayqxzfio4funmrja7ezgmp3mvudjodt5xfx64rot@s6whj735oimb>
- <Zpez1rkIQzVWxi7q@tiehlicka>
+	s=arc-20240116; t=1721658189; c=relaxed/simple;
+	bh=x3hXaDpk6G0hsbOw1ZDFQ7qvC93c14EXUfk93NIBMZ8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=b6LctNwVqRS8ShzpN7xS8ytgsVE3HxhPFHpcRlCAVl64g517TPeqUhrbShca6UQBouLWFjA/IBSHr1OSRnneA59RY0HACIUXykcOR5ABriKty4DbZLxRfLuLpxOxtSc5NtHiouKWB2EBx3Rg3y5kk7ERnxDw/wZA4NDidCqIZuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1KZ3vhV4; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42666b89057so148885e9.0
+        for <stable@vger.kernel.org>; Mon, 22 Jul 2024 07:23:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721658186; x=1722262986; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nm69CtE6VQRKL/lPeUhl3NnXx6oMWgEL7L+HAkh6o/8=;
+        b=1KZ3vhV4EodAvV9njRae8RbqehFRgVVOKpitGkGh3cQvmB37+t57BmCbZjyCt0jMvW
+         PjEqslhYMB5enXMQIdfBt3pGSCXNPYjQlbXOu3i90v3v2O2NP9vB6E3uiiBqY7pJPG1V
+         Oqg9rkP46vonTtw32Y/zamjjhRXQlppJCk22xCKxCuWmFGeo/GCkclbkvUBAEVV3ETjN
+         1Z7FwPkWGXRmkGqfsrHdDHPPAYY2EEyBn+/NV+5KcT3rucE9YRNHhwQw2vzSOsvdkigl
+         gK60mNnN6TBji4oA7szBTMXOXJc5FLIfIEAQgcPbVkR726F0mfUwCAYGpr6hjS+Vgyh7
+         nWTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721658186; x=1722262986;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nm69CtE6VQRKL/lPeUhl3NnXx6oMWgEL7L+HAkh6o/8=;
+        b=R15L2qMKt8+nWl4XC7HMe0FdVSh6Kg+swaXNsuyvzDhlQESlkuT3Hlo65FcXXX2HLI
+         vMhA4f58RkhTcrCkzLb2NHDjZRhUCHN4g7OE/eW2wgD9Db6QD4ODNZjqQ1CU+W5O+6iV
+         F7H2bBabTvNhLJu0TZun5Ruc0yub+AIjDEAqstT1qPXw0R5oSPOCWSOiUxrUuX7fv6UL
+         XqI+wDsT5zCKLeHJyqFDMXBtiihXUPDT7G/335wVN6oJMrqfIgAqHh/0NPc5KFz8jo37
+         0IHW39hLFtI3HVPGDSpJCzLDuv7hDPEfi6owd37+U2FS6w9sL4gAqbVvIy5N5EUl8YEJ
+         hvrQ==
+X-Gm-Message-State: AOJu0YwVhHV5MR4jFlimQuZ8E4nw1A4z8ug7ASgKuw7w3+RD7YqC0cfq
+	eqUzSrjFQXbBeCwH9KtW7t/TP2ZPsg3JUEQD5mtQjZ+Xz/vZ5HW9AIp8jBfUkXUBXI90+9Xzi0G
+	auZvP93s=
+X-Google-Smtp-Source: AGHT+IE+ZlE5Se1n9BE40hJ1q5N/JMYE8VQmmFm9fpYHEAEpoSD85rNfq4IjtgBe0etWmOyVoiRbeA==
+X-Received: by 2002:a05:600c:1d0a:b0:426:8ee5:3e9c with SMTP id 5b1f17b1804b1-427dbb47c03mr3059115e9.6.1721658185304;
+        Mon, 22 Jul 2024 07:23:05 -0700 (PDT)
+Received: from localhost ([2a00:79e0:9d:4:560c:dcc0:a84e:7aff])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-368788117d5sm8642110f8f.115.2024.07.22.07.23.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jul 2024 07:23:04 -0700 (PDT)
+From: Jann Horn <jannh@google.com>
+To: stable@vger.kernel.org
+Subject: [PATCH stable 4.19-6.6] filelock: Remove locks reliably when fcntl/close race is detected
+Date: Mon, 22 Jul 2024 16:22:50 +0200
+Message-ID: <20240722142250.155873-1-jannh@google.com>
+X-Mailer: git-send-email 2.45.2.1089.g2a221341d9-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zpez1rkIQzVWxi7q@tiehlicka>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 17, 2024 at 02:06:46PM +0200, Michal Hocko wrote:
-> Please try to investigate this further. The patch as is looks rather
-> questionable to me TBH. Spilling unaccepted memory into the reclaim
-> seems like something we should avoid if possible as this is something
+commit 3cad1bc010416c6dd780643476bc59ed742436b9 upstream.
 
-Okay, I believe I have a better understanding of the situation:
+When fcntl_setlk() races with close(), it removes the created lock with
+do_lock_file_wait().
+However, LSMs can allow the first do_lock_file_wait() that created the lock
+while denying the second do_lock_file_wait() that tries to remove the lock.
+In theory (but AFAIK not in practice), posix_lock_file() could also fail to
+remove a lock due to GFP_KERNEL allocation failure (when splitting a range
+in the middle).
 
-- __alloc_pages_bulk() takes pages from the free list without accepting
-  more memory. This can cause number of free pages to fall below the
-  watermark.
+After the bug has been triggered, use-after-free reads will occur in
+lock_get_status() when userspace reads /proc/locks. This can likely be used
+to read arbitrary kernel memory, but can't corrupt kernel memory.
+This only affects systems with SELinux / Smack / AppArmor / BPF-LSM in
+enforcing mode and only works from some security contexts.
 
-  This issue can be resolved by accepting more memory in
-  __alloc_pages_bulk() if the watermark check fails.
+Fix it by calling locks_remove_posix() instead, which is designed to
+reliably get rid of POSIX locks associated with the given file and
+files_struct and is also used by filp_flush().
 
-  The problem is not only related to unallocated memory. I think the
-  deferred page initialization mechanism could result in premature OOM if
-  __alloc_pages_bulk() allocates pages faster than deferred page
-  initialization can add them to the free lists. However, this scenario is
-  unlikely.
+Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
+Cc: stable@kernel.org
+Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20240702-fs-lock-recover-2-v1-1-edd456f63789@google.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[stable fixup: ->c.flc_type was ->fl_type in older kernels]
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+ fs/locks.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-- There is nothing that compels the kernel to accept more memory after the
-  watermarks have been calculated in __setup_per_zone_wmarks(). This can
-  put us under the watermark.
-
-  This issue can be resolved by accepting memory up to the watermark after
-  the watermarks have been initialized.
-
-- Once kswapd is started, it will begin spinning if we are below the
-  watermark and there is no memory that can be reclaimed. Once the above
-  problems are fixed, the issue will be resolved.
-
-- The kernel needs to accept memory up to the PROMO watermark. This will
-  prevent unaccepted memory from interfering with NUMA balancing.
-
-The patch below addresses the issues I listed earlier. It is not yet ready
-for application. Please see the issues listed below.
-
-Andrew, please drop the current patch.
-
-There are a few more things I am worried about:
-
-- The current get_page_from_freelist() and patched __alloc_pages_bulk()
-  only try to accept memory if the requested (alloc_flags & ALLOC_WMARK_MASK)
-  watermark check fails. For example, if a requested allocation with
-  ALLOC_WMARK_MIN is called, we will not try to accept more memory, which
-  could potentially put us under the high/promo watermark and cause the
-  following kswapd start to get us into an endless loop.
-
-  Do we want to make memory acceptance in these paths independent of
-  alloc_flags?
-
-- __isolate_free_page() removes a page from the free list without
-  accepting new memory. The function is called with the zone lock taken.
-  It is bad idea to accept memory while holding the zone lock, but
-  the alternative of pushing the accept to the caller is not much better.
-
-  I have not observed any issues caused by __isolate_free_page() in
-  practice, but there is no reason why it couldn't potentially cause
-  problems.
- 
-- The function take_pages_off_buddy() also removes pages from the free
-  list without accepting new memory. Unlike the function
-  __isolate_free_page(), it is called without the zone lock being held, so
-  we can accept memory there. I believe we should do so.
-
-I understand why adding unaccepted memory handling into the reclaim path
-is questionable. However, it may be the best way to handle cases like
-__isolate_free_page() and possibly others in the future that directly take
-memory from free lists.
-
-Any thoughts?
-
-I am still new to reclaim code and may be overlooking something
-significant. Please correct any misconceptions you see.
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index c11b7cde81ef..5e0bdfbe2f1f 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -667,6 +667,7 @@ enum zone_watermarks {
- #define min_wmark_pages(z) (z->_watermark[WMARK_MIN] + z->watermark_boost)
- #define low_wmark_pages(z) (z->_watermark[WMARK_LOW] + z->watermark_boost)
- #define high_wmark_pages(z) (z->_watermark[WMARK_HIGH] + z->watermark_boost)
-+#define promo_wmark_pages(z) (z->_watermark[WMARK_PROMO] + z->watermark_boost)
- #define wmark_pages(z, i) (z->_watermark[i] + z->watermark_boost)
- 
- /*
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index c62805dbd608..d537c633c6e9 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -1748,7 +1748,7 @@ static bool pgdat_free_space_enough(struct pglist_data *pgdat)
- 			continue;
- 
- 		if (zone_watermark_ok(zone, 0,
--				      wmark_pages(zone, WMARK_PROMO) + enough_wmark,
-+				      promo_wmark_pages(zone) + enough_wmark,
- 				      ZONE_MOVABLE, 0))
- 			return true;
- 	}
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 14d39f34d336..b744743d14a2 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4462,6 +4462,22 @@ unsigned long __alloc_pages_bulk(gfp_t gfp, int preferred_nid,
- 				alloc_flags, gfp)) {
- 			break;
- 		}
-+
-+		if (has_unaccepted_memory()) {
-+			if (try_to_accept_memory(zone, 0))
-+				break;
-+		}
-+
-+#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-+		/*
-+		 * Watermark failed for this zone, but see if we can
-+		 * grow this zone if it contains deferred pages.
-+		 */
-+		if (deferred_pages_enabled()) {
-+			if (_deferred_grow_zone(zone, 0))
-+				break;
-+		}
-+#endif
- 	}
+diff --git a/fs/locks.c b/fs/locks.c
+index fb717dae9029..31659a2d9862 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2381,8 +2381,9 @@ int fcntl_setlk(unsigned int fd, struct file *filp, unsigned int cmd,
+ 	error = do_lock_file_wait(filp, cmd, file_lock);
  
  	/*
-@@ -5899,6 +5915,9 @@ static void __setup_per_zone_wmarks(void)
- 		zone->_watermark[WMARK_PROMO] = high_wmark_pages(zone) + tmp;
- 
- 		spin_unlock_irqrestore(&zone->lock, flags);
-+
-+		if (managed_zone(zone))
-+			try_to_accept_memory(zone, 0);
+-	 * Attempt to detect a close/fcntl race and recover by releasing the
+-	 * lock that was just acquired. There is no need to do that when we're
++	 * Detect close/fcntl races and recover by zapping all POSIX locks
++	 * associated with this file and our files_struct, just like on
++	 * filp_flush(). There is no need to do that when we're
+ 	 * unlocking though, or for OFD locks.
+ 	 */
+ 	if (!error && file_lock->fl_type != F_UNLCK &&
+@@ -2397,9 +2398,7 @@ int fcntl_setlk(unsigned int fd, struct file *filp, unsigned int cmd,
+ 		f = files_lookup_fd_locked(files, fd);
+ 		spin_unlock(&files->file_lock);
+ 		if (f != filp) {
+-			file_lock->fl_type = F_UNLCK;
+-			error = do_lock_file_wait(filp, cmd, file_lock);
+-			WARN_ON_ONCE(error);
++			locks_remove_posix(filp, files);
+ 			error = -EBADF;
+ 		}
  	}
- 
- 	/* update totalreserve_pages */
-@@ -6866,8 +6885,8 @@ static bool try_to_accept_memory(struct zone *zone, unsigned int order)
- 	long to_accept;
- 	int ret = false;
- 
--	/* How much to accept to get to high watermark? */
--	to_accept = high_wmark_pages(zone) -
-+	/* How much to accept to get to promo watermark? */
-+	to_accept = wmark_pages(zone, WMARK_PROMO) -
- 		    (zone_page_state(zone, NR_FREE_PAGES) -
- 		    __zone_watermark_unusable_free(zone, order, 0));
- 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 3ef654addd44..d20242e36904 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -6607,7 +6607,7 @@ static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)
- 			continue;
- 
- 		if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
--			mark = wmark_pages(zone, WMARK_PROMO);
-+			mark = promo_wmark_pages(zone);
- 		else
- 			mark = high_wmark_pages(zone);
- 		if (zone_watermark_ok_safe(zone, order, mark, highest_zoneidx))
+
+base-commit: 2eaf5c0d81911ba05bace3a722cbcd708fdbbcba
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.45.2.1089.g2a221341d9-goog
+
 
