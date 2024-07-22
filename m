@@ -1,96 +1,128 @@
-Return-Path: <stable+bounces-60711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D726593929A
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 18:34:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B21D79392F9
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 19:11:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7845B1F220BA
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 16:34:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6743C1F223A7
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 17:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E9B16EB65;
-	Mon, 22 Jul 2024 16:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604BA16EB6F;
+	Mon, 22 Jul 2024 17:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsSfz2wH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mL5mRUL4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B8216EB63
-	for <stable@vger.kernel.org>; Mon, 22 Jul 2024 16:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921AFC2FD;
+	Mon, 22 Jul 2024 17:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721666042; cv=none; b=MkdD26ef9Ar0C0X2Y1bTZIP1rLEycRYUYbdwfI0EvkvkSqmJ3gZq3Pp/TuvcyLOyFTIfpt/ralb8+Ur7lclXPlGYiLMihXw2b05hvQKmyjdCpny/Uax1ygDaSODjLurQoLfxSL42bfgRXSBLG4Q0PG9bm/5J3PmG9Ql1/THYcBQ=
+	t=1721668276; cv=none; b=ldblnqcweoUdM14YwSaSySRvVMnLr3X+8qRT5I2T0sm0vCF4n2H8Ri45ylucpNJJhCh78/5GdizEf1hYbO77SV8w4whk7jYChuoXbUIG4+mac/Ye0ZsSydFOJlBLrB0MzWd2nhIiJPnSVk+qR499gstminIHunBLYAyFPGQ7gnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721666042; c=relaxed/simple;
-	bh=2zErkkCXOo6QAcVxi+vE5cUp0C6FLuFy/WOwkoAGVqg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UEZBTZZRyEnc5/Wx0hgQed8yxBvPpFtd/Gv+Em9j6QGRJDYhBNMRZAh95fTCRqynNg8LOxzhaFxEuFQWmU8hOyTrTED/YuxNne5Q08TO4BmTv/fyTIqcbWzNeoekQIjr2/YKVD3UVCp3GzzGEyG6rTndVWUZ65mLm1Sva8xo55g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsSfz2wH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE73C32782;
-	Mon, 22 Jul 2024 16:34:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721666041;
-	bh=2zErkkCXOo6QAcVxi+vE5cUp0C6FLuFy/WOwkoAGVqg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CsSfz2wHfzj9HBw+29N9L8WjgOSO+mfpdaB29XFFVp4wlA6UgDWAx3renpuOO87Fu
-	 c4w5NGoOjPOdA+PZnQ+Vuyu+8zSFofsZlmNOe7bxy9S+iW/VZkPBvZnRP3zNJp4nyR
-	 FN8UVdomjwl9q9OTTY7FF584r75E+Igt3u0F3jeI=
-Date: Mon, 22 Jul 2024 18:33:59 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jann Horn <jannh@google.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH stable 4.19-6.6] filelock: Remove locks reliably when
- fcntl/close race is detected
-Message-ID: <2024072249-frostily-palatable-8482@gregkh>
-References: <20240722142250.155873-1-jannh@google.com>
+	s=arc-20240116; t=1721668276; c=relaxed/simple;
+	bh=CXBh8LFTmCrFo3O3jXXkAATuZ9qWv5yVnqNpJJjcWcE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bmHXodHwWEmiJCIp1CQIH40LFEjViMaHgQ7XYgB4uTJFHHOlBcvcqMLrTlNF1zKPMI9skPLz6w1sCJmljt47cr4UnjPmzpACNOlBXf7AF6B1nQohL8cZg/OpRe1seg27LngSN18SYTzLQzS42l2zSqIPTj3KmZx1R3u+sAYS5+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mL5mRUL4; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4279c10a40eso33298825e9.3;
+        Mon, 22 Jul 2024 10:11:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721668273; x=1722273073; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rfBt7EurseGXYsoA5Am2BgLzNyvZGNlVYktkOB++CV8=;
+        b=mL5mRUL4qYVhdaSN8SmtgCpMFXALrTbXx1aA+cRdBRjROhybWQhsiZ5FNUwNnLipOI
+         R//BYJ2YVE0g3brT0AElAj+F5hU7vvd+Itk0a79QfvLvHr6ArZ+iKtmt2W7XnAUxCvHF
+         4vC1H/FjPxKfQPgNaabkkfk90lEfiv+wci9dX31kvXf4JD65szM2SvnCIddxBPi3oz5y
+         PUrPvFAeH0RVS0AYK82IdFXwBdeVGXj7hyGKDu7eHC5PZSj+rm4LItBWXEbSxbmlqI1O
+         5DVZQRDwfvnKDpGu/IrlS087SJfoVWrR3u8ofRv590QMn17iMnFVvSfNNkOKQTv34+E8
+         8Njw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721668273; x=1722273073;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rfBt7EurseGXYsoA5Am2BgLzNyvZGNlVYktkOB++CV8=;
+        b=KI1yVEi3x593o+p0E4mr3oNubtDZp6OcW57XIBb047Xg1jsr/AoyxGsMPdIc14nXSk
+         c37a84L6uqhbR6RJw6cezMF2VMSjBxWTkCR0YbH4qkFFIyUL5SJNEbw9JgDhYnJb7IrZ
+         AYMMKFc6BLW6RSkwXE9ENmCYFQmFkpwMY3Ptq+ni0mBdqoJ8a8IC1ZqYo0nCzETcVjR5
+         gg2eCSBkSTsKqUaKiFv2LIBUxZ8dCIRou9tuNBGiDZzex1amx6c273ZVF/1eFwCeTUXS
+         l9Nt3eq6D0b6DHwcE27vpKLTaVuxkVJiK8lcQwL18ofs4OsEB2U6IobJ1d6e8NUyHHlm
+         WD4w==
+X-Forwarded-Encrypted: i=1; AJvYcCVL0Qfp4TXTG1DTPzgH0j+zCZC7by7Msa7h6jeW5NUjHr1h5/GKW239kz2BQOCDPgo/4LXxzOd1xoXsY/seo38qI5ZLTkHYIElpIGngBNCXmpOER3HECBIreeoVYpUPmxqhZEx6
+X-Gm-Message-State: AOJu0YyQTUtyXhVm617ZsATsiNt6LHHfM54m27dn6zA2sUnHGTlkodwP
+	0RvZa7OHYvgPvsaS5pekYLlhjI2q8R3JHFY4pX8/ra1x7eRL+RZmOZHEroQF7l6/V9uJ6lPUklz
+	BhQ4WT68l2yUHa7BBWYRK8hrATrE=
+X-Google-Smtp-Source: AGHT+IGTzxUv/FX5sa6ydbtvPdM8kuzOuT/RSsIxMbrBNtwenw401mF1FVn9AiDPUcfG3bAbS96SPPuKAfI2rcyJTd4=
+X-Received: by 2002:a05:600c:470b:b0:426:6e95:78d6 with SMTP id
+ 5b1f17b1804b1-427dc516017mr48785615e9.4.1721668272647; Mon, 22 Jul 2024
+ 10:11:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240722142250.155873-1-jannh@google.com>
+References: <20240721192048.3530097-2-crwulff@gmail.com> <29bc21ae-1f8a-47fd-b361-c761564f483a@rowland.harvard.edu>
+ <CAB0kiBJYm9F4w5H8+9=dcmoCecgCwe6rTDM+=Ch1x-4mXEqB5A@mail.gmail.com> <b35e043d-a371-4cf9-b414-34ba72df1ccc@rowland.harvard.edu>
+In-Reply-To: <b35e043d-a371-4cf9-b414-34ba72df1ccc@rowland.harvard.edu>
+From: Chris Wulff <crwulff@gmail.com>
+Date: Mon, 22 Jul 2024 13:11:01 -0400
+Message-ID: <CAB0kiBKDB=1kF4YRXckph4QG7tQbDdBMsOtcQh9+p1jtyokdPw@mail.gmail.com>
+Subject: Re: [PATCH] usb: gadget: core: Check for unset descriptor
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: linux-usb@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Roy Luo <royluo@google.com>, Krishna Kurapati <quic_kriskura@quicinc.com>, 
+	Michael Grzeschik <m.grzeschik@pengutronix.de>, yuan linyu <yuanlinyu@hihonor.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Felipe Balbi <balbi@kernel.org>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 22, 2024 at 04:22:50PM +0200, Jann Horn wrote:
-> commit 3cad1bc010416c6dd780643476bc59ed742436b9 upstream.
-> 
-> When fcntl_setlk() races with close(), it removes the created lock with
-> do_lock_file_wait().
-> However, LSMs can allow the first do_lock_file_wait() that created the lock
-> while denying the second do_lock_file_wait() that tries to remove the lock.
-> In theory (but AFAIK not in practice), posix_lock_file() could also fail to
-> remove a lock due to GFP_KERNEL allocation failure (when splitting a range
-> in the middle).
-> 
-> After the bug has been triggered, use-after-free reads will occur in
-> lock_get_status() when userspace reads /proc/locks. This can likely be used
-> to read arbitrary kernel memory, but can't corrupt kernel memory.
-> This only affects systems with SELinux / Smack / AppArmor / BPF-LSM in
-> enforcing mode and only works from some security contexts.
-> 
-> Fix it by calling locks_remove_posix() instead, which is designed to
-> reliably get rid of POSIX locks associated with the given file and
-> files_struct and is also used by filp_flush().
-> 
-> Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
-> Cc: stable@kernel.org
-> Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
-> Signed-off-by: Jann Horn <jannh@google.com>
-> Link: https://lore.kernel.org/r/20240702-fs-lock-recover-2-v1-1-edd456f63789@google.com
-> Reviewed-by: Jeff Layton <jlayton@kernel.org>
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-> [stable fixup: ->c.flc_type was ->fl_type in older kernels]
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
->  fs/locks.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+On Mon, Jul 22, 2024 at 9:38=E2=80=AFAM Alan Stern <stern@rowland.harvard.e=
+du> wrote:
+>
+> On Mon, Jul 22, 2024 at 09:00:07AM -0400, Chris Wulff wrote:
+> > On Sun, Jul 21, 2024 at 9:07=E2=80=AFPM Alan Stern <stern@rowland.harva=
+rd.edu> wrote:
+> > >
+> > > On Sun, Jul 21, 2024 at 03:20:49PM -0400, crwulff@gmail.com wrote:
+> > > > From: Chris Wulff <crwulff@gmail.com>
+...
+> > The previous check was also hiding the error, and introduced a panic.
+> > I could add a printk to that error case, though it would be unassociate=
+d
+> > with the gadget that caused the problem. This function does also return
+> > an error code when it fails, so the calling function can check that and
+> > print an error.
+>
+> Okay.  It wouldn't hurt to print out an error message, even if there's
+> no way to tell which gadget it refers to.  A dump_stack() would help in
+> that regard, but it won't be needed if the guilty party will always be
+> pretty obvious.
+>
+> By the way, how did you manage to trigger this error?  None of the
+> in-kernel gadget drivers are known to have this bug, and both the
+> gadgetfs and raw_gadget drivers prevent userspace from doing it.  Were
+> you testing a gadget driver that was under development?
 
-Now queued up, thanks.
+I am working on adding alternate settings to UAC1/2 gadgets, so this really
+was a case of trying to make the failure in development easier to deal with=
+.
+I don't believe there are any problems with existing gadgets causing this.
 
-greg k-h
+I will add an error message and submit a new version. Perhaps
+WARN_ON_ONCE would be appropriate here to get that backtrace
+instead of a printk?
+
+>
+> Alan Stern
 
