@@ -1,96 +1,89 @@
-Return-Path: <stable+bounces-60694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3103938F59
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 14:50:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77AF5938F73
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 14:56:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 309E01C212F6
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 12:50:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C64F1F21D4A
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 12:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A455A16D30E;
-	Mon, 22 Jul 2024 12:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC9F16D4E0;
+	Mon, 22 Jul 2024 12:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BIn44lyH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dO5bk3Ec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E43016A399;
-	Mon, 22 Jul 2024 12:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6911516D30E;
+	Mon, 22 Jul 2024 12:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721652642; cv=none; b=Xd1n/hfmlAOo/F8BjlPtUE+jePA6h99akQZpYQIu86xOvZeiGjC2CkDcF67eKvleP2tAN+YBtt/Wh6feJr4DJL2oK3E7zWDqCrrNpcX9go4yuZND/ftSsa6BeM68Mn9NjGn/h0PEfEMzscs8FVgUF8tIOOo2MXSg6o5Vw+y6QR4=
+	t=1721652954; cv=none; b=NeoCY17P8xlCASFOBwHfU2qwVHbvcesXnVta8JKfD0qSYmOXCosOs7FQZtt8hN0CtxHyrU4mEfbilE91ihR97jkusV/nzPor0n7BNKxV02O8FVSLTBUdtzONLNzBq3ukCOJINeVE1gC1954F13d63zP9YHJH2VclKhZeZt+0eBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721652642; c=relaxed/simple;
-	bh=W982RbKM0FhaZsBOiVBU/Ls1Lu4p3QpOAVhhr7poQCQ=;
+	s=arc-20240116; t=1721652954; c=relaxed/simple;
+	bh=XEr1R9iOxtde4IqHwns90ckqnpkrizp/7tl7omPCH9U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DCcpviE2wkGL4u/kngiixcLNHFOPYP1FijmKByoA3y5oFOlCEPXMWv4SaCBFEaxYwqBQbZvXdwJSA1A45VbkL0BDjceiD143EEz3K2esDawea6vB8i/7tSkEBsR019tZAvq9LVbboVmj4GjdmdiFnyXAvCWv1tnVoTBpThJ4YqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BIn44lyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D846C116B1;
-	Mon, 22 Jul 2024 12:50:41 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=KfjDY9yVHCZTa9VlbbFOHEraAq4Z8ur4ncdk8LP5hUeT9MVbqhLCO+boPUOHBG6iiJfthCIe5ewdbszJ/e2dbGCO+zNQUVBAJJ1bGvmgnG0IBwau3slzDd4t8Bb6DLivXmQRDZCCb2yqhw9FR9zpSLYtTKmSHKVCWuvt5ke3OdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dO5bk3Ec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4A7C116B1;
+	Mon, 22 Jul 2024 12:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721652641;
-	bh=W982RbKM0FhaZsBOiVBU/Ls1Lu4p3QpOAVhhr7poQCQ=;
+	s=k20201202; t=1721652953;
+	bh=XEr1R9iOxtde4IqHwns90ckqnpkrizp/7tl7omPCH9U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BIn44lyHzVYq4T2bA3n0wKBGo41TxkJMXDtOXKDU1gnZztUMQ12ikGRkmMb14aQJ5
-	 KZ2nCgnEXNuprrAmzGvHINWs/9IVj0AFqjsbOluR2ij5vdYms6Yn+YBMZQXbDjZYTb
-	 ef94QN+aVXPTKpuyV16or+h9Fd/KzBVva3W9NKfHleoWCblQ0VsOwAxGVL7iEORd/Z
-	 1Wr2qsTZZ2T3l+BVgZ4QA3Wh1yupMuVZ2FK6L5bFLcu/zDmuoJ+9wnHhYMb1Iw8RrW
-	 TOPoWUMTZE7pA8JKY1YHHlhhvbN2FpsuTm3M4y+P6sGHB57Er6vcyfhd1woxJYgkux
-	 TdFPgDvpLRCHQ==
-Date: Mon, 22 Jul 2024 08:50:40 -0400
+	b=dO5bk3Eci+cstrckuFXddKynl3is4BpUi4nBExxwJ3k9ZzafTjF1Q2wbfJnPI+1lZ
+	 m2MBNVA8mFDDgf1ekeqwkPVPGp2/6WnZlv/WnpCNd6u8uTyqXiOHqpPGoj6WNNWmGJ
+	 5pFCTXYM8hqMpRmrGRmt7FmZt45ellyEaQqZgvYuKP4QTiUYy8Mr8FLQcR1R7mL4JZ
+	 0IJfoRzyFLKRQGR339F5T2cNeJyQpt1EhCHdxVO4q++7YcK5P6t3KN4ycT3zxgpIlC
+	 SOSL8YblC5TKdkt8F2sfWQu91nzSXjf7UVPUcHR5qdJTHAIEnRD0pqZRRt2+e1BfVI
+	 gA2C0nQqJJ83A==
+Date: Mon, 22 Jul 2024 08:55:52 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Simon Trimmer <simont@opensource.cirrus.com>, perex@perex.cz,
-	tiwai@suse.com, rf@opensource.cirrus.com, broonie@kernel.org,
-	shenghao-ding@ti.com, sbinding@opensource.cirrus.com,
-	lukas.bulwahn@gmail.com, linux-sound@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.6 11/12] ALSA: hda: cs35l56: Select
- SERIAL_MULTI_INSTANTIATE
-Message-ID: <Zp5VoMzMjH6gHExm@sashalap>
-References: <20240701001342.2920907-1-sashal@kernel.org>
- <20240701001342.2920907-11-sashal@kernel.org>
- <87wmm5a8ka.wl-tiwai@suse.de>
+To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc: Pavel Machek <pavel@denx.de>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Jesse Zhang <jesse.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>, Xinhui.Pan@amd.com,
+	airlied@gmail.com, daniel@ffwll.ch, Felix.Kuehling@amd.com,
+	shashank.sharma@amd.com, guchun.chen@amd.com, Philip.Yang@amd.com,
+	mukul.joshi@amd.com, xiaogang.chen@amd.com,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH AUTOSEL 6.1 13/14] drm/amdgpu: fix dereference null
+ return value for the function amdgpu_vm_pt_parent
+Message-ID: <Zp5W2GE3G3j-0bjP@sashalap>
+References: <20240605120455.2967445-1-sashal@kernel.org>
+ <20240605120455.2967445-13-sashal@kernel.org>
+ <ZnFPL2BeQOEGPO6Q@duo.ucw.cz>
+ <6b933c16-5ddb-4b09-b367-3cf42ae94304@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-In-Reply-To: <87wmm5a8ka.wl-tiwai@suse.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6b933c16-5ddb-4b09-b367-3cf42ae94304@amd.com>
 
-On Mon, Jul 01, 2024 at 09:13:41AM +0200, Takashi Iwai wrote:
->On Mon, 01 Jul 2024 02:13:30 +0200,
->Sasha Levin wrote:
+On Tue, Jun 18, 2024 at 01:42:56PM +0200, Christian König wrote:
+>Am 18.06.24 um 11:11 schrieb Pavel Machek:
+>>Hi!
 >>
->> From: Simon Trimmer <simont@opensource.cirrus.com>
+>>>[ Upstream commit a0cf36546cc24ae1c95d72253c7795d4d2fc77aa ]
+>>>
+>>>The pointer parent may be NULLed by the function amdgpu_vm_pt_parent.
+>>>To make the code more robust, check the pointer parent.
+>>If this can happen, it should not WARN().
 >>
->> [ Upstream commit 9b1effff19cdf2230d3ecb07ff4038a0da32e9cc ]
->>
->> The ACPI IDs used in the CS35L56 HDA drivers are all handled by the
->> serial multi-instantiate driver which starts multiple Linux device
->> instances from a single ACPI Device() node.
->>
->> As serial multi-instantiate is not an optional part of the system add it
->> as a dependency in Kconfig so that it is not overlooked.
->>
->> Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
->> Link: https://lore.kernel.org/20240619161602.117452-1-simont@opensource.cirrus.com
->> Signed-off-by: Takashi Iwai <tiwai@suse.de>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>If this can not happen, we don't need the patch in stable.
 >
->This change breaks random builds, so please pick up a follow-up fix
->17563b4a19d1844bdbccc7a82d2f31c28ca9cfae
->    ALSA: hda: Use imply for suggesting CONFIG_SERIAL_MULTI_INSTANTIATE
->too.
+>Right, that patch shouldn't be backported in any way.
 
-Will do.
+I'll drop it, thanks!
 
 -- 
 Thanks,
