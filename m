@@ -1,115 +1,124 @@
-Return-Path: <stable+bounces-60655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51AE8938A37
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 09:38:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFA7938A3E
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 09:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 838BC1C21016
-	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 07:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B1D4281291
+	for <lists+stable@lfdr.de>; Mon, 22 Jul 2024 07:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721F413D638;
-	Mon, 22 Jul 2024 07:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FD31494CB;
+	Mon, 22 Jul 2024 07:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Op0eXhze"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kXWj5Gsx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272F5125C0;
-	Mon, 22 Jul 2024 07:38:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D7313E02A;
+	Mon, 22 Jul 2024 07:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721633902; cv=none; b=OCv6IX5Y93c11J+yvZVYPmHryKmea2Z1hOAgRzGngFdNJf0ZlhgODyK0vkJQbx3W3mKroZhsF+pxSWkwPk/ocRnzBr5eWPuN/rSyUVjY0oisZxZth+DQ7MMYnyu2vhb8TAY6rxvi2QCIHx8UD3mlPfQuse7RaAbaVMsK7AFNj+8=
+	t=1721633997; cv=none; b=oL5W133vZCyUIDj9kbFjfFc8orH0vj02xD5lJlWljW4AEYVIhH/o2BHlGp5yQ9k7NWalvjnlhrwk4K+U3lE9pIp/1X90J2CELw/qi1Kai5q2DxrWWtQY8FwKHj+rM0c6ma8cURJEljVOJ2aexlhSdKx8mc4I0f7egA+YdP3YUWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721633902; c=relaxed/simple;
-	bh=dJX8kFYt2iDgEt6E90DzHlaKoM6V3queSAA3G+YUGDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g9MoG8e7SSYprjaTTQ12df/Bwhx3HU4qYYxcl6PhFqiLr6/upJMwjkxW8b+zuU7fmAg8USKZ9ciAC0EJWMxl3zN8kRpfTMAK7zvgl39VhTTGuvI/EaXqcKRfpQIR+/GiwRnu765OB6gxeLjfnE4+sZw5o2kcLbvnPMgelRIzKTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Op0eXhze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6331C116B1;
-	Mon, 22 Jul 2024 07:38:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721633901;
-	bh=dJX8kFYt2iDgEt6E90DzHlaKoM6V3queSAA3G+YUGDE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Op0eXhzeiVrMzLsxYsawRoEjxp+ph5ZJqW6EMV/S0Om0O8L1UKpB0PT4goEaIcYVd
-	 wj30mN/oU5doawkNFREk1kb9+TtCnwcJV94DFMtMy2lcrSployjN/59RKQMwly9PVW
-	 1bmWEPhDAoyoHjrVQXEv1ctOIDzzfyJyoHEyzHrZmslsISLvFjU5ybOvhgM9nYkGRq
-	 X091g5FJDguWgFcQnW35pzCYvUGYmaZcNDZTzBHvPFh5UkXSktK+Xytb/bieVcPXhS
-	 nWQrYWWAOv3D2PGcQUXOOXJ3J5vdRRMChgY7Qyc3aTo6UuO795FgfjfvojHFCFpqny
-	 dohnHn5Y3bXPw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1sVnci-000000001fY-1Xxg;
-	Mon, 22 Jul 2024 09:38:20 +0200
-Date: Mon, 22 Jul 2024 09:38:20 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 5/7] arm64: dts: qcom: x1e80100-crd: fix missing PCIe4
- gpios
-Message-ID: <Zp4MbO9NeeOtXGY6@hovoldconsulting.com>
-References: <20240719131722.8343-1-johan+linaro@kernel.org>
- <20240719131722.8343-6-johan+linaro@kernel.org>
- <0e3e6925-f7ee-47ff-b555-6f35a5766d56@linaro.org>
+	s=arc-20240116; t=1721633997; c=relaxed/simple;
+	bh=oEC/Lwj06wbQoxnr7za85dRZRUfGfj8vnerb6oSYZsY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H4DeUgBwdPZFbGIP/+KcxtwCRIUOeYnOHbQSmQMt8gAbRFKljDSrX3svYoLH17obZnqEp+36bm9r3a2zIGMp/0QajH9gZw6VLDdzFaQSl2eYLh9hApczZWLQrvznjphTtVvc8YWoX3bfnWPPLNnA3tZwfIpnaD7d9dEx1CC2j1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kXWj5Gsx; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721633996; x=1753169996;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=oEC/Lwj06wbQoxnr7za85dRZRUfGfj8vnerb6oSYZsY=;
+  b=kXWj5GsxCfr4Lz3N9VQfIStN1d2zPYQ+3W1cy+viGUx7/6f/Yf3DH1tm
+   7dJD8pGEoqUq/8BtlZk2G26tZPb9xmfA1kFWz9/3mZKoqDDkoVrqAh7Ub
+   FdQMSRO6NvoAzqLR89/c3epocnnyXGv41Ftr1e8yaSozqkCdrRrX4bUvt
+   NBzeomwQXE6W2FiOJbtHzxCY80Jv9VIZk45N5BdLXbKDjueihOK9Mmt+k
+   SzRpmjPGODZYuD4DlRfpGWi4YHefDLNb80/9QFhk8I5ggEQQeOJQxE1d/
+   GA78IfTz5KMJmUVQq+VsWHEeXVvsy0D8UHdjdcifA8cQW/jqUVK741OWL
+   A==;
+X-CSE-ConnectionGUID: m6LP8fHvROCM2PYTjLFtSQ==
+X-CSE-MsgGUID: ITFtoqCBQiiSUfVw45dtFg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="19060490"
+X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; 
+   d="scan'208";a="19060490"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2024 00:39:55 -0700
+X-CSE-ConnectionGUID: QNdvz+AqRJqOcXLuZw/r2Q==
+X-CSE-MsgGUID: cevTNEMIRiG/a1AZaeCigQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; 
+   d="scan'208";a="55971761"
+Received: from zhaohaif-mobl.ccr.corp.intel.com (HELO [10.249.175.144]) ([10.249.175.144])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2024 00:39:51 -0700
+Message-ID: <a50b3865-8a04-4a9a-8d27-b317619a75c0@linux.intel.com>
+Date: Mon, 22 Jul 2024 15:39:39 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0e3e6925-f7ee-47ff-b555-6f35a5766d56@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] PCI: pci_call_probe: call local_pci_probe() when
+ selected cpu is offline
+To: Hongchen Zhang <zhanghongchen@loongson.cn>,
+ Markus Elfring <Markus.Elfring@web.de>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: Alex Belits <abelits@marvell.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Nitesh Narayan Lal <nitesh@redhat.com>,
+ Frederic Weisbecker <frederic@kernel.org>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ stable@vger.kernel.org, Huacai Chen <chenhuacai@loongson.cn>
+References: <20240613074258.4124603-1-zhanghongchen@loongson.cn>
+From: Ethan Zhao <haifeng.zhao@linux.intel.com>
+In-Reply-To: <20240613074258.4124603-1-zhanghongchen@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 19, 2024 at 08:36:33PM +0200, Konrad Dybcio wrote:
-> On 19.07.2024 3:17 PM, Johan Hovold wrote:
-> > Add the missing PCIe4 perst, wake and clkreq GPIOs.
-> > 
-> > Fixes: d7e03cce0400 ("arm64: dts: qcom: x1e80100-crd: Enable more support")
-> > Cc: stable@vger.kernel.org	# 6.9
-> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > ---
-> >  arch/arm64/boot/dts/qcom/x1e80100-crd.dts | 29 +++++++++++++++++++++++
-> >  1 file changed, 29 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-> > index 7406f1ad9c55..72d9feec907b 100644
-> > --- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-> > +++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-> > @@ -784,6 +784,12 @@ &mdss_dp3_phy {
-> >  };
-> >  
-> >  &pcie4 {
-> > +	perst-gpios = <&tlmm 146 GPIO_ACTIVE_LOW>;
-> > +	wake-gpios = <&tlmm 148 GPIO_ACTIVE_LOW>;
-> > +
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&pcie4_default>;
-> 
-> property-n
-> property-names
 
-This would make the x1e80100 pcie nodes inconsistent as this pattern is
-already used for pcie6a as well as the vast majority of all our upstream
-devicetrees (13k vs 3k) and bindings.
+On 6/13/2024 3:42 PM, Hongchen Zhang wrote:
+> Call work_on_cpu(cpu, fn, arg) in pci_call_probe() while the argument
+> @cpu is a offline cpu would cause system stuck forever.
+>
+> This can be happen if a node is online while all its CPUs are
+> offline (We can use "maxcpus=1" without "nr_cpus=1" to reproduce it).
+>
+> So, in the above case, let pci_call_probe() call local_pci_probe()
+> instead of work_on_cpu() when the best selected cpu is offline.
+>
+> Fixes: 69a18b18699b ("PCI: Restrict probe functions to housekeeping CPUs")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+> ---
+> v2 -> v3: Modify commit message according to Markus's suggestion
+> v1 -> v2: Add a method to reproduce the problem
+> ---
+>   drivers/pci/pci-driver.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+> index af2996d0d17f..32a99828e6a3 100644
+> --- a/drivers/pci/pci-driver.c
+> +++ b/drivers/pci/pci-driver.c
+> @@ -386,7 +386,7 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
+>   		free_cpumask_var(wq_domain_mask);
+>   	}
+>   
+> -	if (cpu < nr_cpu_ids)
 
-I know this is a pet peeve of yours, but perhaps it's better to just
-accept this exception (naming multiple pinctrl-N properties is also
-different from naming individual cells like in reg-names, if you need
-more motivation).
+Why not choose the right cpu to callwork_on_cpu() ? the one that is online. Thanks, Ethan
 
-Johan
+> +	if ((cpu < nr_cpu_ids) && cpu_online(cpu))
+>   		error = work_on_cpu(cpu, local_pci_probe, &ddi);
+>   	else
+>   		error = local_pci_probe(&ddi);
 
