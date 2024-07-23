@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-61022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA7E93A683
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CBF93A72E
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D2091C21CB6
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B48152837D5
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475CE158D9F;
-	Tue, 23 Jul 2024 18:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8C9158873;
+	Tue, 23 Jul 2024 18:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtvENZgo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mfh3Z6rF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CE8158D94;
-	Tue, 23 Jul 2024 18:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DCD13D896;
+	Tue, 23 Jul 2024 18:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759745; cv=none; b=f5aY9QLiCpW/AkpUnq5jUenYJtJ6V9c3oM60riMZt71aLyssIQqP8LAFvPJxUTQeChEQagYw2lTM2eCOYTnaHTRyvr6u1b9HKQgkUoxz1LgfXv3OqWI4KUFqCPB37YEz5GMmY5VntPDqqfe10POEj8lBq5Hb2FDAG6N5ehj3YBs=
+	t=1721760193; cv=none; b=HiQ8lA/XzgeDN6pV2QlJXr/OZqN0EE2v31hvgaLAXxUWtQXqi7DdEqYF0DHtlETsKwkdzgdXBTBmDEfNfjDtpvii06Q0cLxaJ/5VweKGD+U/dJul+yw5WNHjiDYVAOMZhJng68DXlAAeE+QhANDrGspT7rhQah1GysvLtL3/8NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759745; c=relaxed/simple;
-	bh=sUMwFW6DALRbMOFTjYoNZhLGIkM5SJVTkXJuekALt4s=;
+	s=arc-20240116; t=1721760193; c=relaxed/simple;
+	bh=pjOxc/NVReVhSpcR+DEYvzMm5HhR4N4IfoIyPS9hpDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RWSoJTotxiOUKRWoFvpRqMi3TuNFFuZVgIk849UtA9DR0Iz9oRsir/kmehqUVMzfNj69dxvDUKyGMLUWWxlKZdxuqqDJG5hQCE2TzEn1QuwDwiD+WS17JvBSuIP7zts4Zmu6GZDyP8Wd7IDpMTr5vz2IJmDuIho2YaVw1icn6NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtvENZgo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D887C4AF0B;
-	Tue, 23 Jul 2024 18:35:44 +0000 (UTC)
+	 MIME-Version; b=OsiIwie6j40uBEVUkfsJ2VR2OBXDCrufeYRcELTzbj+0XDLrMep3YGvK7Mzh/g2dHGacskQvNVDWqDEzWsKgg//7hJjK6xLtRjbJjvKk5tVhjqp5E1/mZfcV3HcnOz2CErUfS8sgvWE2PXwLD4UdA6eKR9TCbhT/Nwc/yn1L0mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mfh3Z6rF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DF6C4AF09;
+	Tue, 23 Jul 2024 18:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759744;
-	bh=sUMwFW6DALRbMOFTjYoNZhLGIkM5SJVTkXJuekALt4s=;
+	s=korg; t=1721760193;
+	bh=pjOxc/NVReVhSpcR+DEYvzMm5HhR4N4IfoIyPS9hpDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WtvENZgo0BwIG2VfeG173liFlocsi++zkXLK2jkVc5sDr9j37Zyc9tVnNZYf9Oyhq
-	 lC8ejyME+oZJcnWVUcxrhYoGNT8XIAcGhRq+9NvTD/fzr7vIMRsjMKVZR2iFChY2k2
-	 6jDpR/BYdikg6ZDpal/8nAeRM0+EFJ6inrZINk5g=
+	b=Mfh3Z6rF8uVG4+r/s7kFROEbbuX/2dew16ZRRl9/XrvJCILEXPbaoaTkw+oqiJZpZ
+	 npRS+HNjb1hoj4fMsAapy7waCUGKKddTi/6q7C9wb94112/i1SgXzL1hBY4A/IlTLV
+	 qvNpQCtCp2MWxQC1u5eYzWOXT5jmFjc3kS/I+n5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Safonov <dima@arista.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Andrei Vagin <avagin@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/129] selftest/timerns: fix clang build failures for abs() calls
+Subject: [PATCH 6.9 132/163] erofs: ensure m_llen is reset to 0 if metadata is invalid
 Date: Tue, 23 Jul 2024 20:24:21 +0200
-Message-ID: <20240723180409.157527210@linuxfoundation.org>
+Message-ID: <20240723180148.574205243@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,116 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit f76f9bc616b7320df6789241ca7d26cedcf03cf3 ]
+[ Upstream commit 9b32b063be1001e322c5f6e01f2a649636947851 ]
 
-When building with clang, via:
+Sometimes, the on-disk metadata might be invalid due to user
+interrupts, storage failures, or other unknown causes.
 
-    make LLVM=1 -C tools/testing/selftests
+In that case, z_erofs_map_blocks_iter() may still return a valid
+m_llen while other fields remain invalid (e.g., m_plen can be 0).
 
-...clang warns about mismatches between the expected and required
-integer length being supplied to abs(3).
+Due to the return value of z_erofs_scan_folio() in some path will
+be ignored on purpose, the following z_erofs_scan_folio() could
+then use the invalid value by accident.
 
-Fix this by using the correct variant of abs(3): labs(3) or llabs(3), in
-these cases.
+Let's reset m_llen to 0 to prevent this.
 
-Reviewed-by: Dmitry Safonov <dima@arista.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Acked-by: Andrei Vagin <avagin@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240629185743.2819229-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/timens/exec.c       | 6 +++---
- tools/testing/selftests/timens/timer.c      | 2 +-
- tools/testing/selftests/timens/timerfd.c    | 2 +-
- tools/testing/selftests/timens/vfork_exec.c | 4 ++--
- 4 files changed, 7 insertions(+), 7 deletions(-)
+ fs/erofs/zmap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/timens/exec.c b/tools/testing/selftests/timens/exec.c
-index e40dc5be2f668..d12ff955de0d8 100644
---- a/tools/testing/selftests/timens/exec.c
-+++ b/tools/testing/selftests/timens/exec.c
-@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index e313c936351d5..6bd435a565f61 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -723,6 +723,8 @@ int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
  
- 		for (i = 0; i < 2; i++) {
- 			_gettime(CLOCK_MONOTONIC, &tst, i);
--			if (abs(tst.tv_sec - now.tv_sec) > 5)
-+			if (labs(tst.tv_sec - now.tv_sec) > 5)
- 				return pr_fail("%ld %ld\n", now.tv_sec, tst.tv_sec);
- 		}
- 		return 0;
-@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
- 
- 	for (i = 0; i < 2; i++) {
- 		_gettime(CLOCK_MONOTONIC, &tst, i);
--		if (abs(tst.tv_sec - now.tv_sec) > 5)
-+		if (labs(tst.tv_sec - now.tv_sec) > 5)
- 			return pr_fail("%ld %ld\n",
- 					now.tv_sec, tst.tv_sec);
- 	}
-@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
- 		/* Check that a child process is in the new timens. */
- 		for (i = 0; i < 2; i++) {
- 			_gettime(CLOCK_MONOTONIC, &tst, i);
--			if (abs(tst.tv_sec - now.tv_sec - OFFSET) > 5)
-+			if (labs(tst.tv_sec - now.tv_sec - OFFSET) > 5)
- 				return pr_fail("%ld %ld\n",
- 						now.tv_sec + OFFSET, tst.tv_sec);
- 		}
-diff --git a/tools/testing/selftests/timens/timer.c b/tools/testing/selftests/timens/timer.c
-index 5e7f0051bd7be..5b939f59dfa4d 100644
---- a/tools/testing/selftests/timens/timer.c
-+++ b/tools/testing/selftests/timens/timer.c
-@@ -56,7 +56,7 @@ int run_test(int clockid, struct timespec now)
- 			return pr_perror("timerfd_gettime");
- 
- 		elapsed = new_value.it_value.tv_sec;
--		if (abs(elapsed - 3600) > 60) {
-+		if (llabs(elapsed - 3600) > 60) {
- 			ksft_test_result_fail("clockid: %d elapsed: %lld\n",
- 					      clockid, elapsed);
- 			return 1;
-diff --git a/tools/testing/selftests/timens/timerfd.c b/tools/testing/selftests/timens/timerfd.c
-index 9edd43d6b2c13..a4196bbd6e33f 100644
---- a/tools/testing/selftests/timens/timerfd.c
-+++ b/tools/testing/selftests/timens/timerfd.c
-@@ -61,7 +61,7 @@ int run_test(int clockid, struct timespec now)
- 			return pr_perror("timerfd_gettime(%d)", clockid);
- 
- 		elapsed = new_value.it_value.tv_sec;
--		if (abs(elapsed - 3600) > 60) {
-+		if (llabs(elapsed - 3600) > 60) {
- 			ksft_test_result_fail("clockid: %d elapsed: %lld\n",
- 					      clockid, elapsed);
- 			return 1;
-diff --git a/tools/testing/selftests/timens/vfork_exec.c b/tools/testing/selftests/timens/vfork_exec.c
-index beb7614941fb1..5b8907bf451dd 100644
---- a/tools/testing/selftests/timens/vfork_exec.c
-+++ b/tools/testing/selftests/timens/vfork_exec.c
-@@ -32,7 +32,7 @@ static void *tcheck(void *_args)
- 
- 	for (i = 0; i < 2; i++) {
- 		_gettime(CLOCK_MONOTONIC, &tst, i);
--		if (abs(tst.tv_sec - now->tv_sec) > 5) {
-+		if (labs(tst.tv_sec - now->tv_sec) > 5) {
- 			pr_fail("%s: in-thread: unexpected value: %ld (%ld)\n",
- 				args->tst_name, tst.tv_sec, now->tv_sec);
- 			return (void *)1UL;
-@@ -64,7 +64,7 @@ static int check(char *tst_name, struct timespec *now)
- 
- 	for (i = 0; i < 2; i++) {
- 		_gettime(CLOCK_MONOTONIC, &tst, i);
--		if (abs(tst.tv_sec - now->tv_sec) > 5)
-+		if (labs(tst.tv_sec - now->tv_sec) > 5)
- 			return pr_fail("%s: unexpected value: %ld (%ld)\n",
- 					tst_name, tst.tv_sec, now->tv_sec);
- 	}
+ 	err = z_erofs_do_map_blocks(inode, map, flags);
+ out:
++	if (err)
++		map->m_llen = 0;
+ 	trace_z_erofs_map_blocks_iter_exit(inode, map, flags, err);
+ 	return err;
+ }
 -- 
 2.43.0
 
