@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-60754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0450793A03E
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 13:52:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E7893A042
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 13:52:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4BE62835BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:52:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F9351F22F52
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3457415098E;
-	Tue, 23 Jul 2024 11:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7288A152196;
+	Tue, 23 Jul 2024 11:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gj4s7LtX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Md/Wjm/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0CA13D609;
-	Tue, 23 Jul 2024 11:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA321514DD;
+	Tue, 23 Jul 2024 11:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721735528; cv=none; b=pPmR4kpqYh7fjV5m6+7NezjrYMXsnA8zejDwClQnnXZslD5hFdoQIH+UdKWAt2Lvi2plfeVwuiOVRAYT/IRoI7zaA4YlHrsiEb16rK79RLgEffIJgG3UponFV1zBb58UUESeVAysUF9cIHkAoRt0sb17aCR15aSMFisXXOBIXe0=
+	t=1721735536; cv=none; b=trnKTwHg+JvOQmijyYEghSHoKByE/q1XO6UU9fvzFzbCX/h76wSp54A3FgaG2Sr+KPFqfEVJrCwxa4X7vbUe+XLpABbB88vDpXRNCxfvUYQAKJw+ekcRH2NedS/6RXg1pnV+vhOu70/lSacL5a/2tDiC6yDjH/o4h7HcV4PC5l0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721735528; c=relaxed/simple;
-	bh=RlR5xEXAj844xVXxfIqAzbJkTPPfMZAlfsf1HJKSRd8=;
+	s=arc-20240116; t=1721735536; c=relaxed/simple;
+	bh=Q75RzGZ+m5jPtvmJXq8cBIiETcYTaC1zaEsQkzRqdco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIpqo72R3b4SOTT3CfVkbVSenyWYUMJoWad/b4CP3+lSIfSgP+ji31T8wQehfQVuAUqTGvfgjBmCW9ZzAapRWhY+kAfi7GMxsm/EvovQzqKKe6CN81ihdmKRCqDQSdfzWkeU6ibHkM/SNW0rZPAUrU8eNDKWGplL4MFBQIEjejc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gj4s7LtX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023B0C4AF09;
-	Tue, 23 Jul 2024 11:52:06 +0000 (UTC)
+	 MIME-Version; b=sUwCrj+PI3CPK+LtKioJYk02gSf2gb4Nn5X9ojc5K41PsA8bHhdb5T5U1Ha+9jk2ybV1OUI6tZur8iyQ4L4WcBXkjP4rzvNKpP9rCT4m25BMcbHYZz6/YFPnLHKeygDvRy514Ymh2+komasqNp8dSzFjadOPT9LDTVlhDvDV8Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Md/Wjm/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB19C4AF09;
+	Tue, 23 Jul 2024 11:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721735527;
-	bh=RlR5xEXAj844xVXxfIqAzbJkTPPfMZAlfsf1HJKSRd8=;
+	s=korg; t=1721735535;
+	bh=Q75RzGZ+m5jPtvmJXq8cBIiETcYTaC1zaEsQkzRqdco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gj4s7LtXgWRjILs8HfFQAyKARVyiJw+qx3/4PQgVkBlU2lk9jm3YkAokyzr4XOmkK
-	 /P9y70ikWIICWvWjymmo9dDnVGnmfR2TqmImWs98cpAhfn2RuhOTZ4pjyodHIOwsvU
-	 IurpjWAJkJCT2kcqcovZK55YElwUUWEnueZQ4HIY=
+	b=Md/Wjm/wRlL5ZTX5fGMXgblYywoPBBSb6CB0ko6DnTorRCHkAmciASSOULre6WVRw
+	 cVCXExL2dAtol/skkm636iuyoyK+o/eyyRT7QxCgkG05S8JjT50uu0l9B/E27kI+fY
+	 aMtDxVhB1r+jWRzsy047bH/MHustNiV3UTsUHWdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+50835f73143cc2905b9e@syzkaller.appspotmail.com,
-	Kees Cook <keescook@chromium.org>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.10 1/9] ext4: use memtostr_pad() for s_volume_name
-Date: Tue, 23 Jul 2024 13:51:55 +0200
-Message-ID: <20240723114047.348582037@linuxfoundation.org>
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.10 2/9] cifs: Fix missing error code set
+Date: Tue, 23 Jul 2024 13:51:56 +0200
+Message-ID: <20240723114047.375094133@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240723114047.281580960@linuxfoundation.org>
 References: <20240723114047.281580960@linuxfoundation.org>
@@ -66,50 +70,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: David Howells <dhowells@redhat.com>
 
-commit be27cd64461c45a6088a91a04eba5cd44e1767ef upstream.
+commit d2c5eb57b6da10f335c30356f9696bd667601e6a upstream.
 
-As with the other strings in struct ext4_super_block, s_volume_name is
-not NUL terminated. The other strings were marked in commit 072ebb3bffe6
-("ext4: add nonstring annotations to ext4.h"). Using strscpy() isn't
-the right replacement for strncpy(); it should use memtostr_pad()
-instead.
+In cifs_strict_readv(), the default rc (-EACCES) is accidentally cleared by
+a successful return from netfs_start_io_direct(), such that if
+cifs_find_lock_conflict() fails, we don't return an error.
 
-Reported-by: syzbot+50835f73143cc2905b9e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/00000000000019f4c00619192c05@google.com/
-Fixes: 744a56389f73 ("ext4: replace deprecated strncpy with alternatives")
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://patch.msgid.link/20240523225408.work.904-kees@kernel.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fix this by resetting the default error code.
+
+Fixes: 14b1cd25346b ("cifs: Fix locking in cifs_strict_readv()")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h  |    2 +-
- fs/ext4/ioctl.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/file.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1347,7 +1347,7 @@ struct ext4_super_block {
- /*60*/	__le32	s_feature_incompat;	/* incompatible feature set */
- 	__le32	s_feature_ro_compat;	/* readonly-compatible feature set */
- /*68*/	__u8	s_uuid[16];		/* 128-bit uuid for volume */
--/*78*/	char	s_volume_name[EXT4_LABEL_MAX];	/* volume name */
-+/*78*/	char	s_volume_name[EXT4_LABEL_MAX] __nonstring; /* volume name */
- /*88*/	char	s_last_mounted[64] __nonstring;	/* directory where last mounted */
- /*C8*/	__le32	s_algorithm_usage_bitmap; /* For compression */
- 	/*
---- a/fs/ext4/ioctl.c
-+++ b/fs/ext4/ioctl.c
-@@ -1151,7 +1151,7 @@ static int ext4_ioctl_getlabel(struct ex
- 	BUILD_BUG_ON(EXT4_LABEL_MAX >= FSLABEL_MAX);
- 
- 	lock_buffer(sbi->s_sbh);
--	strscpy_pad(label, sbi->s_es->s_volume_name);
-+	memtostr_pad(label, sbi->s_es->s_volume_name);
- 	unlock_buffer(sbi->s_sbh);
- 
- 	if (copy_to_user(user_label, label, sizeof(label)))
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 1374635e89fa..6178c6d8097d 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -2877,6 +2877,7 @@ cifs_strict_readv(struct kiocb *iocb, struct iov_iter *to)
+ 		rc = netfs_start_io_direct(inode);
+ 		if (rc < 0)
+ 			goto out;
++		rc = -EACCES;
+ 		down_read(&cinode->lock_sem);
+ 		if (!cifs_find_lock_conflict(
+ 			    cfile, iocb->ki_pos, iov_iter_count(to),
+@@ -2889,6 +2890,7 @@ cifs_strict_readv(struct kiocb *iocb, struct iov_iter *to)
+ 		rc = netfs_start_io_read(inode);
+ 		if (rc < 0)
+ 			goto out;
++		rc = -EACCES;
+ 		down_read(&cinode->lock_sem);
+ 		if (!cifs_find_lock_conflict(
+ 			    cfile, iocb->ki_pos, iov_iter_count(to),
+-- 
+2.45.2
+
 
 
 
