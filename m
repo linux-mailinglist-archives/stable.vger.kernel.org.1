@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849AE93A5D6
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59FEE93A666
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F4152835AB
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10F751F232AC
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2795158848;
-	Tue, 23 Jul 2024 18:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D251581F4;
+	Tue, 23 Jul 2024 18:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/84Orb4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7iX+CHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2E9157A4F;
-	Tue, 23 Jul 2024 18:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855E7155351;
+	Tue, 23 Jul 2024 18:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759335; cv=none; b=izGYrG6GjomE3FADEBQI9Krlw9+wc0jfZZp0yMxbvvUym9mnRCLyO+Sea5QXJUaqEieGIlPph4D53u8fRr3Q7e6omUIcNEOtTqTEFKZ7qRH7usL3z44o5FhcY0HINdeN9CKe20KY9/UwY9OAmQSmdwYy6DkwzW+L0RvzNixIKkg=
+	t=1721759680; cv=none; b=gDfzB1aqQJ+SqQJLmFpOT+J50iCUPOOuG3tWBL+hAoLvIf35JyfFNssDcuC+JKmfdQsOuCce2grdFf7KjYr32DLs5NFggOtRgYi7uXVi0smtBXWpUpHk+2fWOUhjvd8IPGVmha7ObOTOGylZUAoUQrMPk0tFTG1cNwBer8LCtfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759335; c=relaxed/simple;
-	bh=SQprnU9ZYlbWBQMRBx0vaD2zs8QF9CCEaAipWRHCpw8=;
+	s=arc-20240116; t=1721759680; c=relaxed/simple;
+	bh=Gmo9vaGQGcymIBeD+oFghrpKbQXizMwmEJcMfzwFgZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GoQZLZLVi2Cv8036DTCGEMIk++R1vCYBIkZ3NFX1Nn8MWFaGkjvPuvpax+IQpL81kRE3KHf3Cp15r6SYBNpIEq36zLHxLyzF1gq8NBqUxpRhsEx3r+E3mK0mOcxZ8Bixl5lfg10GqP8AzMjVQELu6BoVskOb2VHU6anf+je/EWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/84Orb4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23244C4AF09;
-	Tue, 23 Jul 2024 18:28:54 +0000 (UTC)
+	 MIME-Version; b=oqAkRz4jL5ga5Ogzl+Z2+SLwBN6mpltbRNEnHEAl3iMHIyjM9PJGnYA4cN5u9dXOPdojMYhYRW2J7jdulQGL7YOYr/gSEi3gDkIRMFJi/nUgrgJZG51DoiJ+RIB3s0rh7Knx83vYgPeolzRqCsy0DKa+WGdMtHoV1AznEAN6UA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7iX+CHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37F4C4AF09;
+	Tue, 23 Jul 2024 18:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759335;
-	bh=SQprnU9ZYlbWBQMRBx0vaD2zs8QF9CCEaAipWRHCpw8=;
+	s=korg; t=1721759680;
+	bh=Gmo9vaGQGcymIBeD+oFghrpKbQXizMwmEJcMfzwFgZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/84Orb4G+Lss52ZG909vOjwT/MNQ3zhn7VklrxsquOlkQZlx2MLobFa4PYZMZGbv
-	 cbIAVCpRSW8vjISNVMPckfC0ay2Z63Vw3Zl1GX7iqPJGJT+lYFCHEuQBYj9JkwWdIL
-	 mtxjP6QpwXSZsTa5mUZSUYjL2Z+j7g9znnAIZr7Y=
+	b=w7iX+CHSl9neMdT0JwPcpwrdnd4lxtOALgxX1l5dWkEV+bMg5Ch/LIueoaf7/ftqS
+	 k58wswadahidky6m2rOm1ohd0BTDditj8APlumPr7Ocd15+aHIrPcLiW3J7kx1EY3w
+	 ZZbVfhTjhpXGgrFZsIoYPTAOHz6mzH79camwtt9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/105] scsi: libsas: Fix exp-attached device scan after probe failure scanned in again after probe failed
+Subject: [PATCH 6.6 090/129] ALSA: dmaengine_pcm: terminate dmaengine before synchronize
 Date: Tue, 23 Jul 2024 20:23:58 +0200
-Message-ID: <20240723180406.367202814@linuxfoundation.org>
+Message-ID: <20240723180408.263226673@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit ab2068a6fb84751836a84c26ca72b3beb349619d ]
+[ Upstream commit 6a7db25aad8ce6512b366d2ce1d0e60bac00a09d ]
 
-The expander phy will be treated as broadcast flutter in the next
-revalidation after the exp-attached end device probe failed, as follows:
+When dmaengine supports pause function, in suspend state,
+dmaengine_pause() is called instead of dmaengine_terminate_async(),
 
-[78779.654026] sas: broadcast received: 0
-[78779.654037] sas: REVALIDATING DOMAIN on port 0, pid:10
-[78779.654680] sas: ex 500e004aaaaaaa1f phy05 change count has changed
-[78779.662977] sas: ex 500e004aaaaaaa1f phy05 originated BROADCAST(CHANGE)
-[78779.662986] sas: ex 500e004aaaaaaa1f phy05 new device attached
-[78779.663079] sas: ex 500e004aaaaaaa1f phy05:U:8 attached: 500e004aaaaaaa05 (stp)
-[78779.693542] hisi_sas_v3_hw 0000:b4:02.0: dev[16:5] found
-[78779.701155] sas: done REVALIDATING DOMAIN on port 0, pid:10, res 0x0
-[78779.707864] sas: Enter sas_scsi_recover_host busy: 0 failed: 0
-...
-[78835.161307] sas: --- Exit sas_scsi_recover_host: busy: 0 failed: 0 tries: 1
-[78835.171344] sas: sas_probe_sata: for exp-attached device 500e004aaaaaaa05 returned -19
-[78835.180879] hisi_sas_v3_hw 0000:b4:02.0: dev[16:5] is gone
-[78835.187487] sas: broadcast received: 0
-[78835.187504] sas: REVALIDATING DOMAIN on port 0, pid:10
-[78835.188263] sas: ex 500e004aaaaaaa1f phy05 change count has changed
-[78835.195870] sas: ex 500e004aaaaaaa1f phy05 originated BROADCAST(CHANGE)
-[78835.195875] sas: ex 500e004aaaaaaa1f rediscovering phy05
-[78835.196022] sas: ex 500e004aaaaaaa1f phy05:U:A attached: 500e004aaaaaaa05 (stp)
-[78835.196026] sas: ex 500e004aaaaaaa1f phy05 broadcast flutter
-[78835.197615] sas: done REVALIDATING DOMAIN on port 0, pid:10, res 0x0
+In end of playback stream, the runtime->state will go to
+SNDRV_PCM_STATE_DRAINING, if system suspend & resume happen
+at this time, application will not resume playback stream, the
+stream will be closed directly, the dmaengine_terminate_async()
+will not be called before the dmaengine_synchronize(), which
+violates the call sequence for dmaengine_synchronize().
 
-The cause of the problem is that the related ex_phy's attached_sas_addr was
-not cleared after the end device probe failed, so reset it.
+This behavior also happens for capture streams, but there is no
+SNDRV_PCM_STATE_DRAINING state for capture. So use
+dmaengine_tx_status() to check the DMA status if the status is
+DMA_PAUSED, then call dmaengine_terminate_async() to terminate
+dmaengine before dmaengine_synchronize().
 
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Link: https://lore.kernel.org/r/20240619091742.25465-1-yangxingui@huawei.com
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/1718851218-27803-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libsas/sas_internal.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ sound/core/pcm_dmaengine.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/scsi/libsas/sas_internal.h b/drivers/scsi/libsas/sas_internal.h
-index a94bd0790b055..6ddccc67e808f 100644
---- a/drivers/scsi/libsas/sas_internal.h
-+++ b/drivers/scsi/libsas/sas_internal.h
-@@ -119,6 +119,20 @@ static inline void sas_fail_probe(struct domain_device *dev, const char *func, i
- 		func, dev->parent ? "exp-attached" :
- 		"direct-attached",
- 		SAS_ADDR(dev->sas_addr), err);
+diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
+index d142609570347..e299e8634751f 100644
+--- a/sound/core/pcm_dmaengine.c
++++ b/sound/core/pcm_dmaengine.c
+@@ -368,6 +368,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_sync_stop);
+ int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
 +
-+	/*
-+	 * If the device probe failed, the expander phy attached address
-+	 * needs to be reset so that the phy will not be treated as flutter
-+	 * in the next revalidation
-+	 */
-+	if (dev->parent && !dev_is_expander(dev->dev_type)) {
-+		struct sas_phy *phy = dev->phy;
-+		struct domain_device *parent = dev->parent;
-+		struct ex_phy *ex_phy = &parent->ex_dev.ex_phy[phy->number];
-+
-+		memset(ex_phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
-+	}
-+
- 	sas_unregister_dev(dev->port, dev);
- }
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status == DMA_PAUSED)
++		dmaengine_terminate_async(prtd->dma_chan);
  
+ 	dmaengine_synchronize(prtd->dma_chan);
+ 	kfree(prtd);
+@@ -388,6 +394,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_close);
+ int snd_dmaengine_pcm_close_release_chan(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
++
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status == DMA_PAUSED)
++		dmaengine_terminate_async(prtd->dma_chan);
+ 
+ 	dmaengine_synchronize(prtd->dma_chan);
+ 	dma_release_channel(prtd->dma_chan);
 -- 
 2.43.0
 
