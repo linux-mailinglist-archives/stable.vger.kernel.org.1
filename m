@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-61109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0434E93A6E9
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:40:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B72CE93A60B
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 832971F2386E
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61B731F233B7
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B66158A04;
-	Tue, 23 Jul 2024 18:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E8E1586F6;
+	Tue, 23 Jul 2024 18:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1LyeOvS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/6KBVJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CEE14EC58;
-	Tue, 23 Jul 2024 18:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5751014C5B0;
+	Tue, 23 Jul 2024 18:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760000; cv=none; b=Ga2RBacVd0BICE6UYImUYNb1P0LoC1MH8atgggY1r9ltwD4Uybh2JNye/AOEXJqmJD5WvCXNesrxbKOQ6uqxbCxC988MWJIjy5rDIxMFdr17IT8gDc4Noyjc2KQaYJQFjPSPRzTWxgXGIj34AZ0ez8/gOUJpzogiDi9/qCkCqqA=
+	t=1721759462; cv=none; b=D6kQqhxJ4alnUwBddsQ1NnX+tLUkoVnqy8VdXuahJyFLEcPe5xew7Mvg+jzWp3HAGgpvG9jLuf9LBXWATsjmaVNmVqBu9F7N5QQA90Itw8oT6ksixxuYblU129EBx+zLinsbyukJVq+w9WCd6oMjAnc0Xi8BlZJqrcGSJ1zb868=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760000; c=relaxed/simple;
-	bh=Y4UZaBo57hIi7Ft6gADCa8DZYYX+MShFUEIpzqpNVus=;
+	s=arc-20240116; t=1721759462; c=relaxed/simple;
+	bh=sQ1bmz8gqFuljWGJB/JaBB81BT9ayPbLaeyaTae4KfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MA5UGvFOqIg9Y2oraBkBPv/za1Rn9Hi4Po1oa0wAFaQNHOnzaekUuLJqQJzgsw38L7xPVyXOrHztnuXluzURfuiWwGWbpeglAPvY+YP2+aND+3jf0K60IRt2Y5+kmXBf0uZZsrMmvREyuoE9plaueDYgvqww17lNroXgkvHqXsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1LyeOvS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B075C4AF09;
-	Tue, 23 Jul 2024 18:40:00 +0000 (UTC)
+	 MIME-Version; b=WyqjO/sUsANCzpnsxxVfEcQ53GSzRSEQJNxXAXoAZYMfIN/b0YkSQT8uQSLJBtOiquA1pO8gPFTDSW6m40PA6hZi831gcEMnkuW+aEAsfYZi6/CH3qkDfgHaOXha7YAZW0GoegY2i/3UV41kcP+FrgLcr3ZSqy9QSBeYEDmTGDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/6KBVJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F96C4AF09;
+	Tue, 23 Jul 2024 18:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760000;
-	bh=Y4UZaBo57hIi7Ft6gADCa8DZYYX+MShFUEIpzqpNVus=;
+	s=korg; t=1721759462;
+	bh=sQ1bmz8gqFuljWGJB/JaBB81BT9ayPbLaeyaTae4KfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1LyeOvSFLXIoV4yNTjvmMvhqfU8xL7jqtNwZqLKcIsY09W/Fg+vBTccWQQhlP6Wk
-	 /ZkIBtKOK5+uMIAeMJyUqty9NEHQ/cIEGaYZcqKcNhajLF8GBlDHUjmswDYFbRRqkt
-	 sPPmIzyvLO05dHzoTM4uS8A0E/XEqlJLaxKaiKU0=
+	b=O/6KBVJf6Ni+lSLf8gF4fvCIIunNRUuML0GXFJ22dfvxjDmYG12ZebfqpEdgCAU3N
+	 4/khXeE4fPjnDF3TTLCops6X/IBbzW7+a/Wt5hc0fFV7vBHGRl2vlbpqXesNin2Pen
+	 iSNksnOX4lbyq7HlSkxF//8vlCTMmPnY4TdwV4tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tasos Sahanidis <tasos@tasossah.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ayala Beker <ayala.beker@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 038/163] drm/amdgpu/pptable: Fix UBSAN array-index-out-of-bounds
+Subject: [PATCH 6.6 019/129] wifi: iwlwifi: mvm: properly set 6 GHz channel direct probe option
 Date: Tue, 23 Jul 2024 20:22:47 +0200
-Message-ID: <20240723180144.946063723@linuxfoundation.org>
+Message-ID: <20240723180405.528348297@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,221 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tasos Sahanidis <tasos@tasossah.com>
+From: Ayala Beker <ayala.beker@intel.com>
 
-[ Upstream commit c6c4dd54012551cce5cde408b35468f2c62b0cce ]
+[ Upstream commit 989830d1cf16bd149bf0690d889a9caef95fb5b1 ]
 
-Flexible arrays used [1] instead of []. Replace the former with the latter
-to resolve multiple UBSAN warnings observed on boot with a BONAIRE card.
+Ensure that the 6 GHz channel is configured with a valid direct BSSID,
+avoiding any invalid or multicast BSSID addresses.
 
-In addition, use the __counted_by attribute where possible to hint the
-length of the arrays to the compiler and any sanitizers.
-
-Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Ayala Beker <ayala.beker@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.91a631a0fe60.I2ea2616af9b8a2eaf959b156c69cf65a2f1204d4@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/include/pptable.h | 91 ++++++++++++++-------------
- 1 file changed, 49 insertions(+), 42 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/include/pptable.h b/drivers/gpu/drm/amd/include/pptable.h
-index 2e8e6c9875f6c..f83ace2d7ec30 100644
---- a/drivers/gpu/drm/amd/include/pptable.h
-+++ b/drivers/gpu/drm/amd/include/pptable.h
-@@ -477,31 +477,30 @@ typedef struct _ATOM_PPLIB_STATE_V2
- } ATOM_PPLIB_STATE_V2;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 0841f1d6dc475..150beeb9df117 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -1718,7 +1718,10 @@ iwl_mvm_umac_scan_fill_6g_chan_list(struct iwl_mvm *mvm,
+ 				break;
+ 		}
  
- typedef struct _StateArray{
--    //how many states we have 
--    UCHAR ucNumEntries;
--    
--    ATOM_PPLIB_STATE_V2 states[1];
-+	//how many states we have
-+	UCHAR ucNumEntries;
-+
-+	ATOM_PPLIB_STATE_V2 states[] /* __counted_by(ucNumEntries) */;
- }StateArray;
- 
- 
- typedef struct _ClockInfoArray{
--    //how many clock levels we have
--    UCHAR ucNumEntries;
--    
--    //sizeof(ATOM_PPLIB_CLOCK_INFO)
--    UCHAR ucEntrySize;
--    
--    UCHAR clockInfo[];
-+	//how many clock levels we have
-+	UCHAR ucNumEntries;
-+
-+	//sizeof(ATOM_PPLIB_CLOCK_INFO)
-+	UCHAR ucEntrySize;
-+
-+	UCHAR clockInfo[];
- }ClockInfoArray;
- 
- typedef struct _NonClockInfoArray{
-+	//how many non-clock levels we have. normally should be same as number of states
-+	UCHAR ucNumEntries;
-+	//sizeof(ATOM_PPLIB_NONCLOCK_INFO)
-+	UCHAR ucEntrySize;
- 
--    //how many non-clock levels we have. normally should be same as number of states
--    UCHAR ucNumEntries;
--    //sizeof(ATOM_PPLIB_NONCLOCK_INFO)
--    UCHAR ucEntrySize;
--    
--    ATOM_PPLIB_NONCLOCK_INFO nonClockInfo[];
-+	ATOM_PPLIB_NONCLOCK_INFO nonClockInfo[] __counted_by(ucNumEntries);
- }NonClockInfoArray;
- 
- typedef struct _ATOM_PPLIB_Clock_Voltage_Dependency_Record
-@@ -513,8 +512,10 @@ typedef struct _ATOM_PPLIB_Clock_Voltage_Dependency_Record
- 
- typedef struct _ATOM_PPLIB_Clock_Voltage_Dependency_Table
- {
--    UCHAR ucNumEntries;                                                // Number of entries.
--    ATOM_PPLIB_Clock_Voltage_Dependency_Record entries[1];             // Dynamically allocate entries.
-+	// Number of entries.
-+	UCHAR ucNumEntries;
-+	// Dynamically allocate entries.
-+	ATOM_PPLIB_Clock_Voltage_Dependency_Record entries[] __counted_by(ucNumEntries);
- }ATOM_PPLIB_Clock_Voltage_Dependency_Table;
- 
- typedef struct _ATOM_PPLIB_Clock_Voltage_Limit_Record
-@@ -529,8 +530,10 @@ typedef struct _ATOM_PPLIB_Clock_Voltage_Limit_Record
- 
- typedef struct _ATOM_PPLIB_Clock_Voltage_Limit_Table
- {
--    UCHAR ucNumEntries;                                                // Number of entries.
--    ATOM_PPLIB_Clock_Voltage_Limit_Record entries[1];                  // Dynamically allocate entries.
-+	// Number of entries.
-+	UCHAR ucNumEntries;
-+	// Dynamically allocate entries.
-+	ATOM_PPLIB_Clock_Voltage_Limit_Record entries[] __counted_by(ucNumEntries);
- }ATOM_PPLIB_Clock_Voltage_Limit_Table;
- 
- union _ATOM_PPLIB_CAC_Leakage_Record
-@@ -553,8 +556,10 @@ typedef union _ATOM_PPLIB_CAC_Leakage_Record ATOM_PPLIB_CAC_Leakage_Record;
- 
- typedef struct _ATOM_PPLIB_CAC_Leakage_Table
- {
--    UCHAR ucNumEntries;                                                 // Number of entries.
--    ATOM_PPLIB_CAC_Leakage_Record entries[1];                           // Dynamically allocate entries.
-+	// Number of entries.
-+	UCHAR ucNumEntries;
-+	// Dynamically allocate entries.
-+	ATOM_PPLIB_CAC_Leakage_Record entries[] __counted_by(ucNumEntries);
- }ATOM_PPLIB_CAC_Leakage_Table;
- 
- typedef struct _ATOM_PPLIB_PhaseSheddingLimits_Record
-@@ -568,8 +573,10 @@ typedef struct _ATOM_PPLIB_PhaseSheddingLimits_Record
- 
- typedef struct _ATOM_PPLIB_PhaseSheddingLimits_Table
- {
--    UCHAR ucNumEntries;                                                 // Number of entries.
--    ATOM_PPLIB_PhaseSheddingLimits_Record entries[1];                   // Dynamically allocate entries.
-+	// Number of entries.
-+	UCHAR ucNumEntries;
-+	// Dynamically allocate entries.
-+	ATOM_PPLIB_PhaseSheddingLimits_Record entries[] __counted_by(ucNumEntries);
- }ATOM_PPLIB_PhaseSheddingLimits_Table;
- 
- typedef struct _VCEClockInfo{
-@@ -580,8 +587,8 @@ typedef struct _VCEClockInfo{
- }VCEClockInfo;
- 
- typedef struct _VCEClockInfoArray{
--    UCHAR ucNumEntries;
--    VCEClockInfo entries[1];
-+	UCHAR ucNumEntries;
-+	VCEClockInfo entries[] __counted_by(ucNumEntries);
- }VCEClockInfoArray;
- 
- typedef struct _ATOM_PPLIB_VCE_Clock_Voltage_Limit_Record
-@@ -592,8 +599,8 @@ typedef struct _ATOM_PPLIB_VCE_Clock_Voltage_Limit_Record
- 
- typedef struct _ATOM_PPLIB_VCE_Clock_Voltage_Limit_Table
- {
--    UCHAR numEntries;
--    ATOM_PPLIB_VCE_Clock_Voltage_Limit_Record entries[1];
-+	UCHAR numEntries;
-+	ATOM_PPLIB_VCE_Clock_Voltage_Limit_Record entries[] __counted_by(numEntries);
- }ATOM_PPLIB_VCE_Clock_Voltage_Limit_Table;
- 
- typedef struct _ATOM_PPLIB_VCE_State_Record
-@@ -604,8 +611,8 @@ typedef struct _ATOM_PPLIB_VCE_State_Record
- 
- typedef struct _ATOM_PPLIB_VCE_State_Table
- {
--    UCHAR numEntries;
--    ATOM_PPLIB_VCE_State_Record entries[1];
-+	UCHAR numEntries;
-+	ATOM_PPLIB_VCE_State_Record entries[] __counted_by(numEntries);
- }ATOM_PPLIB_VCE_State_Table;
- 
- 
-@@ -626,8 +633,8 @@ typedef struct _UVDClockInfo{
- }UVDClockInfo;
- 
- typedef struct _UVDClockInfoArray{
--    UCHAR ucNumEntries;
--    UVDClockInfo entries[1];
-+	UCHAR ucNumEntries;
-+	UVDClockInfo entries[] __counted_by(ucNumEntries);
- }UVDClockInfoArray;
- 
- typedef struct _ATOM_PPLIB_UVD_Clock_Voltage_Limit_Record
-@@ -638,8 +645,8 @@ typedef struct _ATOM_PPLIB_UVD_Clock_Voltage_Limit_Record
- 
- typedef struct _ATOM_PPLIB_UVD_Clock_Voltage_Limit_Table
- {
--    UCHAR numEntries;
--    ATOM_PPLIB_UVD_Clock_Voltage_Limit_Record entries[1];
-+	UCHAR numEntries;
-+	ATOM_PPLIB_UVD_Clock_Voltage_Limit_Record entries[] __counted_by(numEntries);
- }ATOM_PPLIB_UVD_Clock_Voltage_Limit_Table;
- 
- typedef struct _ATOM_PPLIB_UVD_Table
-@@ -657,8 +664,8 @@ typedef struct _ATOM_PPLIB_SAMClk_Voltage_Limit_Record
- }ATOM_PPLIB_SAMClk_Voltage_Limit_Record;
- 
- typedef struct _ATOM_PPLIB_SAMClk_Voltage_Limit_Table{
--    UCHAR numEntries;
--    ATOM_PPLIB_SAMClk_Voltage_Limit_Record entries[];
-+	UCHAR numEntries;
-+	ATOM_PPLIB_SAMClk_Voltage_Limit_Record entries[] __counted_by(numEntries);
- }ATOM_PPLIB_SAMClk_Voltage_Limit_Table;
- 
- typedef struct _ATOM_PPLIB_SAMU_Table
-@@ -675,8 +682,8 @@ typedef struct _ATOM_PPLIB_ACPClk_Voltage_Limit_Record
- }ATOM_PPLIB_ACPClk_Voltage_Limit_Record;
- 
- typedef struct _ATOM_PPLIB_ACPClk_Voltage_Limit_Table{
--    UCHAR numEntries;
--    ATOM_PPLIB_ACPClk_Voltage_Limit_Record entries[1];
-+	UCHAR numEntries;
-+	ATOM_PPLIB_ACPClk_Voltage_Limit_Record entries[] __counted_by(numEntries);
- }ATOM_PPLIB_ACPClk_Voltage_Limit_Table;
- 
- typedef struct _ATOM_PPLIB_ACP_Table
-@@ -743,9 +750,9 @@ typedef struct ATOM_PPLIB_VQ_Budgeting_Record{
- } ATOM_PPLIB_VQ_Budgeting_Record;
- 
- typedef struct ATOM_PPLIB_VQ_Budgeting_Table {
--    UCHAR revid;
--    UCHAR numEntries;
--    ATOM_PPLIB_VQ_Budgeting_Record         entries[1];
-+	UCHAR revid;
-+	UCHAR numEntries;
-+	ATOM_PPLIB_VQ_Budgeting_Record entries[] __counted_by(numEntries);
- } ATOM_PPLIB_VQ_Budgeting_Table;
- 
- #pragma pack()
+-		if (k == idex_b && idex_b < SCAN_BSSID_MAX_SIZE) {
++		if (k == idex_b && idex_b < SCAN_BSSID_MAX_SIZE &&
++		    !WARN_ONCE(!is_valid_ether_addr(scan_6ghz_params[j].bssid),
++			       "scan: invalid BSSID at index %u, index_b=%u\n",
++			       j, idex_b)) {
+ 			memcpy(&pp->bssid_array[idex_b++],
+ 			       scan_6ghz_params[j].bssid, ETH_ALEN);
+ 		}
 -- 
 2.43.0
 
