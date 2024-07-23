@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D7A093A5A3
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B3F93A6E5
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1DE6283652
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFDE2281475
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0242157A4F;
-	Tue, 23 Jul 2024 18:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604C31581F4;
+	Tue, 23 Jul 2024 18:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AE3/fbAV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6gM9++9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D309156F37;
-	Tue, 23 Jul 2024 18:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8C2158A37;
+	Tue, 23 Jul 2024 18:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759196; cv=none; b=BLJulVu23r/EW6xkSY5bgqok6xBEkbIirhp2H9J6uchrcrQdk/NLQRx2NXCn4/wOF6TiolhZaEPgRonyDcBMY577qH51aJgKh9tj6BSRkctJlLr2ehy6irSsgDRcQLeh4/zAHcUXbuI7pbWvuiPfPksTrNZjxvStRHpqiU+54HM=
+	t=1721759989; cv=none; b=AYEUAFY7oc67ruUlBn4W1Ewqr+TclrDRhl/E7/UKyx/9UHV2hj7LDkfcX8V09l/tgH4pqKXXYJJhy8SyAEpK/cr3ufzoKnpDax9YQ6GEgXWq00NAIM5xEtEH6xfJ0r87Hjh6s1305ZcTZTAJXK55flSQ09iVWkdKnCIPKL1eoIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759196; c=relaxed/simple;
-	bh=XV7Wpo3eKvAU7Kdwobz7AxVm+eVUSQiC9zHvjAbBX5g=;
+	s=arc-20240116; t=1721759989; c=relaxed/simple;
+	bh=X+etflOk4Jkbj8w4blOdUvaal54FyJHxo8Cj1WJlXdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ij3S8j0r7qUNcZn4kGAswPGqSGy0cXDr8HlKsF1BBq0523ZaLG2toqH1byM57xK8aKl7S03nGMZveqNHLEaXlBhXjCOVD82+krilhm6Q4itGCn1x1uZLkuS62emJCwlQnxaprhCjzKpbfOOjquACf6oQ3z8lh3/Smp8uUudkK+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AE3/fbAV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEB0C4AF0E;
-	Tue, 23 Jul 2024 18:26:35 +0000 (UTC)
+	 MIME-Version; b=oodjnlpY95/AX+E3f5VEjaUFfQWjJ7AnnlpEMO7uay7AQc6yL/d7arqAAaJYSD6AKxYksIbbqUFAg2O//auYHKc0zjBscRVIAr2petWTqJbAch0J2dBCebFkhwYnIK+uMtMInMluqBbuqBok1w+bcFO/8OxpeAkAxaiiaQJ4gMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6gM9++9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1E1C4AF0B;
+	Tue, 23 Jul 2024 18:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759196;
-	bh=XV7Wpo3eKvAU7Kdwobz7AxVm+eVUSQiC9zHvjAbBX5g=;
+	s=korg; t=1721759989;
+	bh=X+etflOk4Jkbj8w4blOdUvaal54FyJHxo8Cj1WJlXdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AE3/fbAV6pUIEcI1xAZ8R2RY5OJ4yMlA0UzRC6odNQeoPKATQ9l5fUWv01CmQj6NS
-	 hHdI+jStUf4FDiRWjDyazGDjPiQ+UW75ds51SNetfhcZYL00hsLf3qTiTo8mdbaolK
-	 83Z5iWyjorGkObEd9dVEA7HP1fG429lyMSpnLlBM=
+	b=e6gM9++9GjVh6CHx0G5tI92CETrsopj6kHAyUMdd1YSJiXeZ+Dw1W3AkVKcXG150I
+	 xi/QqM9eR/VrCMqKvqc0jSlgwCirEgKGqBjIv1QPyGD8nzG5ASXh5yEwbq9iPyrqeD
+	 ML/0EyEKr0JLaHCu1ApCo4YndYRYv+jPKushTR6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
+	Yan Zhao <yan.y.zhao@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/105] kconfig: remove wrong expr_trans_bool()
-Date: Tue, 23 Jul 2024 20:23:12 +0200
-Message-ID: <20240723180404.590294595@linuxfoundation.org>
+Subject: [PATCH 6.9 064/163] vfio/pci: Insert full vma on mmapd MMIO fault
+Date: Tue, 23 Jul 2024 20:23:13 +0200
+Message-ID: <20240723180145.943755294@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,160 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
+[ Upstream commit d71a989cf5d961989c273093cdff2550acdde314 ]
 
-expr_trans_bool() performs an incorrect transformation.
+In order to improve performance of typical scenarios we can try to insert
+the entire vma on fault.  This accelerates typical cases, such as when
+the MMIO region is DMA mapped by QEMU.  The vfio_iommu_type1 driver will
+fault in the entire DMA mapped range through fixup_user_fault().
 
-[Test Code]
+In synthetic testing, this improves the time required to walk a PCI BAR
+mapping from userspace by roughly 1/3rd.
 
-    config MODULES
-            def_bool y
-            modules
+This is likely an interim solution until vmf_insert_pfn_{pmd,pud}() gain
+support for pfnmaps.
 
-    config A
-            def_bool y
-            select C if B != n
-
-    config B
-            def_tristate m
-
-    config C
-            tristate
-
-[Result]
-
-    CONFIG_MODULES=y
-    CONFIG_A=y
-    CONFIG_B=m
-    CONFIG_C=m
-
-This output is incorrect because CONFIG_C=y is expected.
-
-Documentation/kbuild/kconfig-language.rst clearly explains the function
-of the '!=' operator:
-
-    If the values of both symbols are equal, it returns 'n',
-    otherwise 'y'.
-
-Therefore, the statement:
-
-    select C if B != n
-
-should be equivalent to:
-
-    select C if y
-
-Or, more simply:
-
-    select C
-
-Hence, the symbol C should be selected by the value of A, which is 'y'.
-
-However, expr_trans_bool() wrongly transforms it to:
-
-    select C if B
-
-Therefore, the symbol C is selected by (A && B), which is 'm'.
-
-The comment block of expr_trans_bool() correctly explains its intention:
-
-  * bool FOO!=n => FOO
-    ^^^^
-
-If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
-
-However, the actual code performs this transformation when FOO is
-tristate:
-
-    if (e->left.sym->type == S_TRISTATE) {
-                             ^^^^^^^^^^
-
-While it can be fixed to S_BOOLEAN, there is no point in doing so
-because expr_tranform() already transforms FOO!=n to FOO when FOO is
-bool. (see the "case E_UNEQUAL" part)
-
-expr_trans_bool() is wrong and unnecessary.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Suggested-by: Yan Zhao <yan.y.zhao@intel.com>
+Link: https://lore.kernel.org/all/Zl6XdUkt%2FzMMGOLF@yzhao56-desk.sh.intel.com/
+Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+Link: https://lore.kernel.org/r/20240607035213.2054226-1-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/expr.c | 29 -----------------------------
- scripts/kconfig/expr.h |  1 -
- scripts/kconfig/menu.c |  2 --
- 3 files changed, 32 deletions(-)
+ drivers/vfio/pci/vfio_pci_core.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
-index 81ebf8108ca74..81dfdf4470f75 100644
---- a/scripts/kconfig/expr.c
-+++ b/scripts/kconfig/expr.c
-@@ -396,35 +396,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
- 	return e;
- }
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 727a51ce9ad71..680b15ca4fcea 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1659,6 +1659,7 @@ static vm_fault_t vfio_pci_mmap_fault(struct vm_fault *vmf)
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
+ 	unsigned long pfn, pgoff = vmf->pgoff - vma->vm_pgoff;
++	unsigned long addr = vma->vm_start;
+ 	vm_fault_t ret = VM_FAULT_SIGBUS;
  
--/*
-- * bool FOO!=n => FOO
-- */
--struct expr *expr_trans_bool(struct expr *e)
--{
--	if (!e)
--		return NULL;
--	switch (e->type) {
--	case E_AND:
--	case E_OR:
--	case E_NOT:
--		e->left.expr = expr_trans_bool(e->left.expr);
--		e->right.expr = expr_trans_bool(e->right.expr);
--		break;
--	case E_UNEQUAL:
--		// FOO!=n -> FOO
--		if (e->left.sym->type == S_TRISTATE) {
--			if (e->right.sym == &symbol_no) {
--				e->type = E_SYMBOL;
--				e->right.sym = NULL;
--			}
--		}
--		break;
--	default:
--		;
--	}
--	return e;
--}
--
- /*
-  * e1 || e2 -> ?
-  */
-diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
-index 9c9caca5bd5f2..c91060e19e477 100644
---- a/scripts/kconfig/expr.h
-+++ b/scripts/kconfig/expr.h
-@@ -296,7 +296,6 @@ void expr_free(struct expr *e);
- void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
- int expr_eq(struct expr *e1, struct expr *e2);
- tristate expr_calc_value(struct expr *e);
--struct expr *expr_trans_bool(struct expr *e);
- struct expr *expr_eliminate_dups(struct expr *e);
- struct expr *expr_transform(struct expr *e);
- int expr_contains_symbol(struct expr *dep, struct symbol *sym);
-diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
-index 109325f31bef3..9d4c3f366a061 100644
---- a/scripts/kconfig/menu.c
-+++ b/scripts/kconfig/menu.c
-@@ -380,8 +380,6 @@ void menu_finalize(struct menu *parent)
- 				dep = expr_transform(dep);
- 				dep = expr_alloc_and(expr_copy(basedep), dep);
- 				dep = expr_eliminate_dups(dep);
--				if (menu->sym && menu->sym->type != S_TRISTATE)
--					dep = expr_trans_bool(dep);
- 				prop->visible.expr = dep;
+ 	pfn = vma_to_pfn(vma);
+@@ -1666,11 +1667,25 @@ static vm_fault_t vfio_pci_mmap_fault(struct vm_fault *vmf)
+ 	down_read(&vdev->memory_lock);
  
- 				/*
+ 	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
+-		goto out_disabled;
++		goto out_unlock;
+ 
+ 	ret = vmf_insert_pfn(vma, vmf->address, pfn + pgoff);
++	if (ret & VM_FAULT_ERROR)
++		goto out_unlock;
+ 
+-out_disabled:
++	/*
++	 * Pre-fault the remainder of the vma, abort further insertions and
++	 * supress error if fault is encountered during pre-fault.
++	 */
++	for (; addr < vma->vm_end; addr += PAGE_SIZE, pfn++) {
++		if (addr == vmf->address)
++			continue;
++
++		if (vmf_insert_pfn(vma, addr, pfn) & VM_FAULT_ERROR)
++			break;
++	}
++
++out_unlock:
+ 	up_read(&vdev->memory_lock);
+ 
+ 	return ret;
 -- 
 2.43.0
 
