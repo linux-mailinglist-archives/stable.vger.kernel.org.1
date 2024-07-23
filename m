@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF29993A641
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:33:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF7B93A700
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99D252818F3
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:33:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFFADB21111
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC8815746B;
-	Tue, 23 Jul 2024 18:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233E2158873;
+	Tue, 23 Jul 2024 18:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9nKn1P6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ujg1gZOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82D514C5B0;
-	Tue, 23 Jul 2024 18:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A6613D896;
+	Tue, 23 Jul 2024 18:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759614; cv=none; b=GyGQtaIskhe3rvlhuanbYCjZ0X7x3IRlM85gAtUS++pAgE8F/WQqe8WksZ9XIUZfs8xsC9u4TFmYJ0fCIc8dZr2B0Raq6qTov+lEBNsq31keKiYJlgfVuLDYwqSt1PWWOTUDaYox2nJowDREBF5771RbDjkWLJyxuvYGqtgK+cU=
+	t=1721760062; cv=none; b=inEDdh2fMJr5DmVHTE1xAZaYyOF4a+DqjQ0TU6j9zL0+RReA33bNjpT40T512gSVGwJCbSsIAMA7M78iFqBdCkgR/pPEDw4RTYjCs0+WEjKx0uiylSUaIBjZS89AnZDvQE/7g4c11zIODBz2a8VKxiyBudhZ066pQPXVbOlHQUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759614; c=relaxed/simple;
-	bh=UmFDRNWVfXxdvBrgmq8kgarAVGx6utMjdHIbHZPl3gI=;
+	s=arc-20240116; t=1721760062; c=relaxed/simple;
+	bh=0mhUeVWUVg8XHqKEPEJEhQjPrsIN978z7KI2Nm7X/QM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Auv5825dRhptnhU1ltIzZ7gFxU5mwAOHjURXoF2zDN0yhWr+wze5Ranqhmym9QQUIYgOmiTWMaMXt9vyPl5CDcOKAhJaKTO/jdqyiUoWeAwpQ54ainI5KczfuTLK6Pt9RogXbnZ30fVtAvOTI5cUmyr5i9OBSWP4+cgqbDWlI8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9nKn1P6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1B9C4AF0A;
-	Tue, 23 Jul 2024 18:33:33 +0000 (UTC)
+	 MIME-Version; b=Mx8VfOsMk6uvZFGW8lu9eejGQLciqJYs47lEQm4cHWXlN/qMHShue5GLt6NENEgNfcPXK8FMhFj2oSPOZqYW5lzWurc131H8R1K9ES45LqZFRUE0sEgjfnD43IiVYIour7KNqQYxBuQaSkYIpv/dZCl+g9UvBxopGsupWsf8k3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ujg1gZOi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59586C4AF09;
+	Tue, 23 Jul 2024 18:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759614;
-	bh=UmFDRNWVfXxdvBrgmq8kgarAVGx6utMjdHIbHZPl3gI=;
+	s=korg; t=1721760062;
+	bh=0mhUeVWUVg8XHqKEPEJEhQjPrsIN978z7KI2Nm7X/QM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a9nKn1P650diXpltq4Ha24dECBxABl44LmdwyMuOTlXb9puTfByoPAtzCb+ORw3tH
-	 x2xojTm/QEdBHqEGTjrLWf/LaFmDMss0/63u028hh78BSktU8VRCOzFnT59dxRTJCv
-	 NpDDVQT5Ez/To0ZiLnqOzZ/gHI6obeyK4CvE1sBM=
+	b=Ujg1gZOioLVO+m6Sg3A0z/Hr6Kill0QEgTktA9LcK/Xgtc4JG9qaxcQBoDPog35Ck
+	 9bYbbHWpAGaRhbafNJBQ++gLa0RigH48Z4DT383vIjgPyS6CssFIX/q9JZdqPMVhuZ
+	 6F3WSG7asm/s7p5+6wE1X7WKJSBo8PnmXNdo5ESc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Jai Luthra <j-luthra@ti.com>,
+	Zhang Yi <zhangyi@everest-semi.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/129] ALSA: dmaengine: Synchronize dma channel after drop()
-Date: Tue, 23 Jul 2024 20:23:38 +0200
-Message-ID: <20240723180407.488847573@linuxfoundation.org>
+Subject: [PATCH 6.9 090/163] ASoC: codecs: ES8326: Solve headphone detection issue
+Date: Tue, 23 Jul 2024 20:23:39 +0200
+Message-ID: <20240723180146.954207367@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jai Luthra <j-luthra@ti.com>
+From: Zhang Yi <zhangyi@everest-semi.com>
 
-[ Upstream commit e8343410ddf08fc36a9b9cc7c51a4e53a262d4c6 ]
+[ Upstream commit b7c40988808f8d7426dee1e4d96a4e204de4a8bc ]
 
-Sometimes the stream may be stopped due to XRUN events, in which case
-the userspace can call snd_pcm_drop() and snd_pcm_prepare() to stop and
-start the stream again.
+When switching between OMTP and CTIA headset, we can hear pop noise.
+To solve this issue, We modified the configuration for headphone detection
 
-In these cases, we must wait for the DMA channel to synchronize before
-marking the stream as prepared for playback, as the DMA channel gets
-stopped by drop() without any synchronization. Make sure the ALSA core
-synchronizes the DMA channel by adding a sync_stop() hook.
-
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240611-asoc_next-v3-1-fcfd84b12164@ti.com
+Signed-off-by: Zhang Yi <zhangyi@everest-semi.com>
+Link: https://msgid.link/r/20240604021946.2911-1-zhangyi@everest-semi.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/dmaengine_pcm.h         |  1 +
- sound/core/pcm_dmaengine.c            | 10 ++++++++++
- sound/soc/soc-generic-dmaengine-pcm.c |  8 ++++++++
- 3 files changed, 19 insertions(+)
+ sound/soc/codecs/es8326.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/sound/dmaengine_pcm.h b/include/sound/dmaengine_pcm.h
-index d70c55f17df7c..94dbb23580f2f 100644
---- a/include/sound/dmaengine_pcm.h
-+++ b/include/sound/dmaengine_pcm.h
-@@ -36,6 +36,7 @@ snd_pcm_uframes_t snd_dmaengine_pcm_pointer_no_residue(struct snd_pcm_substream
- int snd_dmaengine_pcm_open(struct snd_pcm_substream *substream,
- 	struct dma_chan *chan);
- int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream);
-+int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream);
- 
- int snd_dmaengine_pcm_open_request_chan(struct snd_pcm_substream *substream,
- 	dma_filter_fn filter_fn, void *filter_data);
-diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
-index 494ec0c207fad..d142609570347 100644
---- a/sound/core/pcm_dmaengine.c
-+++ b/sound/core/pcm_dmaengine.c
-@@ -349,6 +349,16 @@ int snd_dmaengine_pcm_open_request_chan(struct snd_pcm_substream *substream,
- }
- EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_open_request_chan);
- 
-+int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream)
-+{
-+	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
-+
-+	dmaengine_synchronize(prtd->dma_chan);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_sync_stop);
-+
- /**
-  * snd_dmaengine_pcm_close - Close a dmaengine based PCM substream
-  * @substream: PCM substream
-diff --git a/sound/soc/soc-generic-dmaengine-pcm.c b/sound/soc/soc-generic-dmaengine-pcm.c
-index cad222eb9a293..30bb1b018aa89 100644
---- a/sound/soc/soc-generic-dmaengine-pcm.c
-+++ b/sound/soc/soc-generic-dmaengine-pcm.c
-@@ -318,6 +318,12 @@ static int dmaengine_copy(struct snd_soc_component *component,
- 	return 0;
- }
- 
-+static int dmaengine_pcm_sync_stop(struct snd_soc_component *component,
-+				   struct snd_pcm_substream *substream)
-+{
-+	return snd_dmaengine_pcm_sync_stop(substream);
-+}
-+
- static const struct snd_soc_component_driver dmaengine_pcm_component = {
- 	.name		= SND_DMAENGINE_PCM_DRV_NAME,
- 	.probe_order	= SND_SOC_COMP_ORDER_LATE,
-@@ -327,6 +333,7 @@ static const struct snd_soc_component_driver dmaengine_pcm_component = {
- 	.trigger	= dmaengine_pcm_trigger,
- 	.pointer	= dmaengine_pcm_pointer,
- 	.pcm_construct	= dmaengine_pcm_new,
-+	.sync_stop	= dmaengine_pcm_sync_stop,
- };
- 
- static const struct snd_soc_component_driver dmaengine_pcm_component_process = {
-@@ -339,6 +346,7 @@ static const struct snd_soc_component_driver dmaengine_pcm_component_process = {
- 	.pointer	= dmaengine_pcm_pointer,
- 	.copy		= dmaengine_copy,
- 	.pcm_construct	= dmaengine_pcm_new,
-+	.sync_stop	= dmaengine_pcm_sync_stop,
- };
- 
- static const char * const dmaengine_pcm_dma_channel_names[] = {
+diff --git a/sound/soc/codecs/es8326.c b/sound/soc/codecs/es8326.c
+index 17bd6b5160772..8b2328d5d0c74 100644
+--- a/sound/soc/codecs/es8326.c
++++ b/sound/soc/codecs/es8326.c
+@@ -865,12 +865,16 @@ static void es8326_jack_detect_handler(struct work_struct *work)
+ 			 * set auto-check mode, then restart jack_detect_work after 400ms.
+ 			 * Don't report jack status.
+ 			 */
+-			regmap_write(es8326->regmap, ES8326_INT_SOURCE,
+-					(ES8326_INT_SRC_PIN9 | ES8326_INT_SRC_BUTTON));
++			regmap_write(es8326->regmap, ES8326_INT_SOURCE, 0x00);
+ 			regmap_update_bits(es8326->regmap, ES8326_HPDET_TYPE, 0x03, 0x01);
++			regmap_update_bits(es8326->regmap, ES8326_HPDET_TYPE, 0x10, 0x00);
+ 			es8326_enable_micbias(es8326->component);
+ 			usleep_range(50000, 70000);
+ 			regmap_update_bits(es8326->regmap, ES8326_HPDET_TYPE, 0x03, 0x00);
++			regmap_update_bits(es8326->regmap, ES8326_HPDET_TYPE, 0x10, 0x10);
++			usleep_range(50000, 70000);
++			regmap_write(es8326->regmap, ES8326_INT_SOURCE,
++					(ES8326_INT_SRC_PIN9 | ES8326_INT_SRC_BUTTON));
+ 			regmap_write(es8326->regmap, ES8326_SYS_BIAS, 0x1f);
+ 			regmap_update_bits(es8326->regmap, ES8326_HP_DRIVER_REF, 0x0f, 0x08);
+ 			queue_delayed_work(system_wq, &es8326->jack_detect_work,
 -- 
 2.43.0
 
