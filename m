@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-60965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C532993A635
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B56CB93A5B0
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52AC2B2282A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F84D281BEE
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AEC156C6C;
-	Tue, 23 Jul 2024 18:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5D81586E7;
+	Tue, 23 Jul 2024 18:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXuGJ9S8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxt5KZEF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8FD13D600;
-	Tue, 23 Jul 2024 18:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EC4156F37;
+	Tue, 23 Jul 2024 18:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759575; cv=none; b=C80M/JzLwSpC25Fu30pvubb8jXz6+PERLDNL4iTwhQawsWbRR/6sc6hm6n5Vi6xyb+uCpxnCUeZd+khfjW4BDXnnXI3r4C/BsToAatzMT6Mru9I94uyjkCKFbZlE+4LK8GJiWXwWMTciybVTEVcAfMCVE9Q8PFVUkbDBcsfknHc=
+	t=1721759234; cv=none; b=M3Ev7xJ3EiS4neEMLlr/kxvja/0nQ16PSd5adfTZQK9OqNzc186NDxuOj16FI+0zr0vtKF/n2PeORNO/0uVSqlw2L0yRYfso+u6zo7KnmCPmwEqgBX8PkKpXfmTVZsdu4D6KDbxjfqjWPu9OUpec3iFtXi+6dZA7NtDuLn1B5Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759575; c=relaxed/simple;
-	bh=i7r3UQYoWrdI9kcI6Ep9W2puxwIKf+dwf8gMxM5V4ZU=;
+	s=arc-20240116; t=1721759234; c=relaxed/simple;
+	bh=umqC/fw6lYjhQfUB6Q9bW5ypaULukBPaI80gKN6VRIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvaroAb7g59aD35ozHsRme2ybh5auTLYMfDWBDqGn99cjup30rkGqs4+BsmX3yy06ZDARZuErcKwB7UXN/KhUjUFkCcSdIVi96W3JS+RmVTMshxbkhmGWMOPk0fb4BfjSs+TYWc0JYO93HamojmCSN4MdzfZgGHMKDwsF+YD2uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXuGJ9S8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09A5C4AF0A;
-	Tue, 23 Jul 2024 18:32:54 +0000 (UTC)
+	 MIME-Version; b=CW4ii0kB5XvQhpt1yId/6v0IQVARd/+w8cnOiqM/5AKHb1OsEgGRHWYUvmHIAunlNIt0KGYYobTqqeQCZwS+AkHAcnkc6qc5Ez7MKfC09/qWRh4j7PAOG/2cmpFNt3tnI3io0gftMFVWYfQRfU+iOHPGADOKa+pXUaaU8QHOHbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxt5KZEF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57604C4AF0A;
+	Tue, 23 Jul 2024 18:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759575;
-	bh=i7r3UQYoWrdI9kcI6Ep9W2puxwIKf+dwf8gMxM5V4ZU=;
+	s=korg; t=1721759234;
+	bh=umqC/fw6lYjhQfUB6Q9bW5ypaULukBPaI80gKN6VRIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXuGJ9S8FoOyTvMo+peTdj86BQFgNbYd/U2nVQOYG1GCzJ3KSyfZcIETaNun44md3
-	 lccgkKNc0fCIcGBcQKdxbi3NJbApr+iEPXFb5aevdOl/lEDiaQ93+im2NEwT7WEMWW
-	 /4J74H8yoyskc2rezQI5H9aD5ZWqOEzmzfd/7gPQ=
+	b=fxt5KZEFfRX+PuNZOrNGn25bbK68gHj5Xo0tqrUk2tp2sTxMmyWAeZ6sQKHDtL2uR
+	 tAaphvitSs6J/w8yZskcv4UbCO3h7QTvOGl3Nkj6lZEg1AF8qMpsEWc8x8uTAezntv
+	 EBzdTJsNOaCsR9X3/qgq+2cuoMN+SVM0dWiJ1/20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Chunguang Xu <chunguang.xu@shopee.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/129] drm/vmwgfx: Fix missing HYPERVISOR_GUEST dependency
-Date: Tue, 23 Jul 2024 20:23:23 +0200
-Message-ID: <20240723180406.914494152@linuxfoundation.org>
+Subject: [PATCH 6.1 047/105] nvme: avoid double free special payload
+Date: Tue, 23 Jul 2024 20:23:24 +0200
+Message-ID: <20240723180405.063434457@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Makhalov <alexey.makhalov@broadcom.com>
+From: Chunguang Xu <chunguang.xu@shopee.com>
 
-[ Upstream commit 8c4d6945fe5bd04ff847c3c788abd34ca354ecee ]
+[ Upstream commit e5d574ab37f5f2e7937405613d9b1a724811e5ad ]
 
-VMWARE_HYPERCALL alternative will not work as intended without VMware guest code
-initialization.
+If a discard request needs to be retried, and that retry may fail before
+a new special payload is added, a double free will result. Clear the
+RQF_SPECIAL_LOAD when the request is cleaned.
 
-  [ bp: note that this doesn't reproduce with newer gccs so it must be
-    something gcc-9-specific. ]
-
-Closes: https://lore.kernel.org/oe-kbuild-all/202406152104.FxakP1MB-lkp@intel.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240616012511.198243-1-alexey.makhalov@broadcom.com
+Signed-off-by: Chunguang Xu <chunguang.xu@shopee.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/Kconfig b/drivers/gpu/drm/vmwgfx/Kconfig
-index faddae3d6ac2e..6f1ac940cbae7 100644
---- a/drivers/gpu/drm/vmwgfx/Kconfig
-+++ b/drivers/gpu/drm/vmwgfx/Kconfig
-@@ -2,7 +2,7 @@
- config DRM_VMWGFX
- 	tristate "DRM driver for VMware Virtual GPU"
- 	depends on DRM && PCI && MMU
--	depends on X86 || ARM64
-+	depends on (X86 && HYPERVISOR_GUEST) || ARM64
- 	select DRM_TTM
- 	select DRM_TTM_HELPER
- 	select MAPPING_DIRTY_HELPERS
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 75b4dd8a55b03..1aff793a1d77e 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -954,6 +954,7 @@ void nvme_cleanup_cmd(struct request *req)
+ 			clear_bit_unlock(0, &ctrl->discard_page_busy);
+ 		else
+ 			kfree(bvec_virt(&req->special_vec));
++		req->rq_flags &= ~RQF_SPECIAL_PAYLOAD;
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(nvme_cleanup_cmd);
 -- 
 2.43.0
 
