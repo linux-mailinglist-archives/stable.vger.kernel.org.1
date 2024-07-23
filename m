@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-61107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C814F93A6E8
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:40:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B79693A711
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5644BB2240E
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:40:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D31A1C21ADE
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F03158878;
-	Tue, 23 Jul 2024 18:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2A015884E;
+	Tue, 23 Jul 2024 18:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7Z9/O7T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INd1Zvyc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FFA14EC58;
-	Tue, 23 Jul 2024 18:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF6A13D600;
+	Tue, 23 Jul 2024 18:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759995; cv=none; b=G0/UTh9jFjl567El5/Emlw1l7kW9fEDSXCDYTABx9nVloubtFrlojWtiDY+bB1FknBzSPmkyLL5QUgwN5Ie+4mipuman3N7Nfa0O4wVvUt3dibd4BrO3tb0iZCD0MmcMpL5psLo8RDbRm3dW1o4CzE4x3aAiGWQFxAE9alNCX7Q=
+	t=1721760116; cv=none; b=hZ5aGyqTCukKtL7hlOwz1Cxvy8E0QbXP3bLWm4VaDZptjuaKN0iXbmZFgXAK8/jfJ8mdV4lyZGu14Y4KvjbtpG0gI6u1pvf2fOytTVEuOKlBnlAK8l5l48VxGZJg3UnyW1asdoABcwvHSVMX9FTR1C6TImEjpZ9ThMltVnoWzYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759995; c=relaxed/simple;
-	bh=O62zmvb8+rJkeLa5jUterfr7QonZ6LarYTvltJaBQ8U=;
+	s=arc-20240116; t=1721760116; c=relaxed/simple;
+	bh=RnHHvpQA8gL+09qcVi3pbCObbnQEBh3nPwr8oAqNEqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QT6arXjqiYalImmR51aaMYi66cC0WvedEgafr4Bn110PU1b057C+m/QKs8xBkdx7ZIAosXdbhgYuKTafFgNwo7IA3h3BVlV1FccBPzitK9ijhTE/DhFFPWWjINR8JpEhRIgAFbDxL0WO9QXyJsY1hoGxgjyKwIfB4pJEhhkbnj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7Z9/O7T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75DF9C4AF0A;
-	Tue, 23 Jul 2024 18:39:54 +0000 (UTC)
+	 MIME-Version; b=MP7/WC9hLIVmauxeYElIhkCG+G/Lejl9x+UDC0wd9nrdBf+Tx3Brt+nKefxGqvc1cg2CIhXzt/gaWb9x31WaSlBaEywZvduN6rPPdqr8LpRqSmFTw6BieF74krLNfT8e7iGbyYpKN4ol5pq8hx5B3SRLlcywv/F9VEJ7yWOEciY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INd1Zvyc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FBCC4AF09;
+	Tue, 23 Jul 2024 18:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759994;
-	bh=O62zmvb8+rJkeLa5jUterfr7QonZ6LarYTvltJaBQ8U=;
+	s=korg; t=1721760116;
+	bh=RnHHvpQA8gL+09qcVi3pbCObbnQEBh3nPwr8oAqNEqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7Z9/O7TEx5ktAXY+iXo15hnSA9RsWSryws7ZbPNUGwF3Y/c4PGQkv6xP9WjndKri
-	 QVGNXlp9w0T+mM6/obgu5OiHsm1ONYJl2ZHRHTnN54P8VA8hdhoNmDsHN2oZXOgo3M
-	 FW+U5928s4S417wfNsJU7lptMwWlNZ1kQ34ODtGI=
+	b=INd1Zvyc/l0OADuP0bFdBiLhuPsx8LfgGFkfe7F1B9IKqX+UXwfjno4ci5DW/MBj5
+	 A3Qw4JbFInUf7hXZ4DRYCFlTCJSkDHJ8nBkVmKnSt/KXB8b4hJc4Cui9Owa9uvRQSy
+	 pozWRVFmfmNjaPWW3fjIDa020n1XsuZ5F8K7baNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 066/163] ALSA: hda: cs35l56: Fix lifecycle of codec pointer
-Date: Tue, 23 Jul 2024 20:23:15 +0200
-Message-ID: <20240723180146.021934297@linuxfoundation.org>
+Subject: [PATCH 6.9 067/163] wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
+Date: Tue, 23 Jul 2024 20:23:16 +0200
+Message-ID: <20240723180146.059454109@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
 References: <20240723180143.461739294@linuxfoundation.org>
@@ -66,45 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit d339131bf02d4ed918415574082caf5e8af6e664 ]
+[ Upstream commit 6ef09cdc5ba0f93826c09d810c141a8d103a80fc ]
 
-The codec should be cleared when the amp driver is unbound and when
-resuming it should be tested to prevent loading firmware into the device
-and ALSA in a partially configured system state.
+In 'cfg80211_wext_siwscan()', add extra check whether number of
+channels passed via 'ioctl(sock, SIOCSIWSCAN, ...)' doesn't exceed
+IW_MAX_FREQUENCIES and reject invalid request with -EINVAL otherwise.
 
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20240531112716.25323-1-simont@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=253cd2d2491df77c93ac
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240531032010.451295-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/cs35l56_hda.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/wireless/scan.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
-index 6b77c38a0e155..e134ede6c5aa5 100644
---- a/sound/pci/hda/cs35l56_hda.c
-+++ b/sound/pci/hda/cs35l56_hda.c
-@@ -735,6 +735,8 @@ static void cs35l56_hda_unbind(struct device *dev, struct device *master, void *
- 	if (comps[cs35l56->index].dev == dev)
- 		memset(&comps[cs35l56->index], 0, sizeof(*comps));
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 0c0d54e40131d..a811ad02e6d1f 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -3411,10 +3411,14 @@ int cfg80211_wext_siwscan(struct net_device *dev,
+ 	wiphy = &rdev->wiphy;
  
-+	cs35l56->codec = NULL;
-+
- 	dev_dbg(cs35l56->base.dev, "Unbound\n");
- }
+ 	/* Determine number of channels, needed to allocate creq */
+-	if (wreq && wreq->num_channels)
++	if (wreq && wreq->num_channels) {
++		/* Passed from userspace so should be checked */
++		if (unlikely(wreq->num_channels > IW_MAX_FREQUENCIES))
++			return -EINVAL;
+ 		n_channels = wreq->num_channels;
+-	else
++	} else {
+ 		n_channels = ieee80211_get_num_supported_channels(wiphy);
++	}
  
-@@ -840,6 +842,9 @@ static int cs35l56_hda_system_resume(struct device *dev)
- 
- 	cs35l56->suspended = false;
- 
-+	if (!cs35l56->codec)
-+		return 0;
-+
- 	ret = cs35l56_is_fw_reload_needed(&cs35l56->base);
- 	dev_dbg(cs35l56->base.dev, "fw_reload_needed: %d\n", ret);
- 	if (ret > 0) {
+ 	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
+ 		       n_channels * sizeof(void *),
 -- 
 2.43.0
 
