@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-60824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A4593A597
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2416F93A63B
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:33:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E15C5B21AF7
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1C8A281D59
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED0715885A;
-	Tue, 23 Jul 2024 18:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F454156F29;
+	Tue, 23 Jul 2024 18:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+1WeQRY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7oCcLci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7AF156F37;
-	Tue, 23 Jul 2024 18:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B0713D600;
+	Tue, 23 Jul 2024 18:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759161; cv=none; b=hC58X4he8pgnDGP+vjv2oAjrc/wKVu0livWFsLFlXCgw4UINhJqawv4gHwrAYhgPzUlS/6M+0QTSfThH9ANaIN5CUIvs8mzH9cHQsVZXfkf/N411ip0p+M/n2o0bS9VzAlT2YkYAwrLlFL0a2blsskEWuEguNxIZPjKXJ+g6r5w=
+	t=1721759593; cv=none; b=I0E7Xnm+8c1IYXz+CVhjo6KaPoooeR7kHRcuB6HFx+ckqJ+uRv8d9ESaREklr9De2clWjlPAPscOshURRF0KUdsotVK34cgTdT2S2ooBUOHfXFZEb9cIYHjyB5AVbwTs6zefLhV4sGowv6WMo+NHzK2qqDxwu4ufV1zvUyKu0B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759161; c=relaxed/simple;
-	bh=Ek4P3ZCGrsX9wPQGzNlyBVJyjp2z8sxQzQ1IFAOChaw=;
+	s=arc-20240116; t=1721759593; c=relaxed/simple;
+	bh=J3DuDjzyIAq7RLDEzMu0qbuOxVeomBHSu+IH8mTyQMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MnkNuMvBUKaKYl9wNhwHAmDol+hCGPHYR+bmDHQdSwg2yR0HpBE5GY0cXcqsux/vrVZpFJWGM2JyrhxhDYakVpRL6n3JDAT2N9FGZDZjf8w1TByJ0xV2YURTYBDBp/A4Fo5ytnSSNWoF8jjhS0rQyWKLQgqW4hCy0y+YSfHt2CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+1WeQRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D32C4AF09;
-	Tue, 23 Jul 2024 18:26:00 +0000 (UTC)
+	 MIME-Version; b=IYi4qhhDWmxgFSy1Vba1amEoh+bN7ERu5XZTEtztpxTayc1PhjcG3FAPUgRUMXw2kqefLkcJHYJkjDSdLpkgNqHyL6MvQVLWyzRoP0WN3H3e3uOWMmWAC1CyoeKN4lOBZR8LiJ20UkDaoG4sj/xTG60wkJWd2MWSd2s+Kh/XxJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7oCcLci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782ECC4AF0A;
+	Tue, 23 Jul 2024 18:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759160;
-	bh=Ek4P3ZCGrsX9wPQGzNlyBVJyjp2z8sxQzQ1IFAOChaw=;
+	s=korg; t=1721759592;
+	bh=J3DuDjzyIAq7RLDEzMu0qbuOxVeomBHSu+IH8mTyQMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+1WeQRYtwFgoHOBOdTex0wLPxOFWSa8EKuOL+AI6L76Df6TeGyg06l5GG5ufmXWC
-	 JKxaUxrEIwCVruAhi0ilct6eXM/MwRB5aFhl3vRGwVn6iz5cz1HhQsxwF+jfV2OCiG
-	 OI3qcrcN/duR539tCmlCTd2+JxFb8/v4zuyk0d+U=
+	b=M7oCcLciiSmfc+vju45cfh1NDKzIiD25GIW+umpv5M//WpwzPAb8YcYGNw8rSzSkB
+	 J9165bhdhAwC90PMnagtu2e0P+4siJM8H6lLVzI+Ea2RiIEOLP0yBXVNSuxK1sGAuE
+	 strPTCSkArYB4elLeksS2zAhirg31uOSR2/B3tzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/105] wifi: iwlwifi: mvm: d3: fix WoWLAN command version lookup
-Date: Tue, 23 Jul 2024 20:22:59 +0200
-Message-ID: <20240723180403.839519400@linuxfoundation.org>
+Subject: [PATCH 6.6 032/129] kconfig: remove wrong expr_trans_bool()
+Date: Tue, 23 Jul 2024 20:23:00 +0200
+Message-ID: <20240723180406.031823235@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit b7ffca99313d856f7d1cc89038d9061b128e8e97 ]
+[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
 
-After moving from commands to notificaitons in the d3 resume flow,
-removing the WOWLAN_GET_STATUSES and REPLY_OFFLOADS_QUERY_CMD causes
-the return of the default value when looking up their version.
-Returning zero here results in the driver sending the not supported
-NON_QOS_TX_COUNTER_CMD.
+expr_trans_bool() performs an incorrect transformation.
 
-Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.8cabfd580614.If3a0db9851f56041f8f5360959354abd5379224a@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[Test Code]
+
+    config MODULES
+            def_bool y
+            modules
+
+    config A
+            def_bool y
+            select C if B != n
+
+    config B
+            def_tristate m
+
+    config C
+            tristate
+
+[Result]
+
+    CONFIG_MODULES=y
+    CONFIG_A=y
+    CONFIG_B=m
+    CONFIG_C=m
+
+This output is incorrect because CONFIG_C=y is expected.
+
+Documentation/kbuild/kconfig-language.rst clearly explains the function
+of the '!=' operator:
+
+    If the values of both symbols are equal, it returns 'n',
+    otherwise 'y'.
+
+Therefore, the statement:
+
+    select C if B != n
+
+should be equivalent to:
+
+    select C if y
+
+Or, more simply:
+
+    select C
+
+Hence, the symbol C should be selected by the value of A, which is 'y'.
+
+However, expr_trans_bool() wrongly transforms it to:
+
+    select C if B
+
+Therefore, the symbol C is selected by (A && B), which is 'm'.
+
+The comment block of expr_trans_bool() correctly explains its intention:
+
+  * bool FOO!=n => FOO
+    ^^^^
+
+If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
+
+However, the actual code performs this transformation when FOO is
+tristate:
+
+    if (e->left.sym->type == S_TRISTATE) {
+                             ^^^^^^^^^^
+
+While it can be fixed to S_BOOLEAN, there is no point in doing so
+because expr_tranform() already transforms FOO!=n to FOO when FOO is
+bool. (see the "case E_UNEQUAL" part)
+
+expr_trans_bool() is wrong and unnecessary.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/kconfig/expr.c | 29 -----------------------------
+ scripts/kconfig/expr.h |  1 -
+ scripts/kconfig/menu.c |  2 --
+ 3 files changed, 32 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 88f4f429d875c..9a36ce98b5bfc 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -1934,7 +1934,8 @@ static bool iwl_mvm_setup_connection_keep(struct iwl_mvm *mvm,
+diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
+index 81ebf8108ca74..81dfdf4470f75 100644
+--- a/scripts/kconfig/expr.c
++++ b/scripts/kconfig/expr.c
+@@ -396,35 +396,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
+ 	return e;
+ }
  
- out:
- 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP,
--				    WOWLAN_GET_STATUSES, 0) < 10) {
-+				    WOWLAN_GET_STATUSES,
-+				    IWL_FW_CMD_VER_UNKNOWN) < 10) {
- 		mvmvif->seqno_valid = true;
- 		/* +0x10 because the set API expects next-to-use, not last-used */
- 		mvmvif->seqno = status->non_qos_seq_ctr + 0x10;
+-/*
+- * bool FOO!=n => FOO
+- */
+-struct expr *expr_trans_bool(struct expr *e)
+-{
+-	if (!e)
+-		return NULL;
+-	switch (e->type) {
+-	case E_AND:
+-	case E_OR:
+-	case E_NOT:
+-		e->left.expr = expr_trans_bool(e->left.expr);
+-		e->right.expr = expr_trans_bool(e->right.expr);
+-		break;
+-	case E_UNEQUAL:
+-		// FOO!=n -> FOO
+-		if (e->left.sym->type == S_TRISTATE) {
+-			if (e->right.sym == &symbol_no) {
+-				e->type = E_SYMBOL;
+-				e->right.sym = NULL;
+-			}
+-		}
+-		break;
+-	default:
+-		;
+-	}
+-	return e;
+-}
+-
+ /*
+  * e1 || e2 -> ?
+  */
+diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
+index 4a9a23b1b7e1f..fa38f9f263f7e 100644
+--- a/scripts/kconfig/expr.h
++++ b/scripts/kconfig/expr.h
+@@ -295,7 +295,6 @@ void expr_free(struct expr *e);
+ void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
+ int expr_eq(struct expr *e1, struct expr *e2);
+ tristate expr_calc_value(struct expr *e);
+-struct expr *expr_trans_bool(struct expr *e);
+ struct expr *expr_eliminate_dups(struct expr *e);
+ struct expr *expr_transform(struct expr *e);
+ int expr_contains_symbol(struct expr *dep, struct symbol *sym);
+diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
+index 61c442d84aef4..69a77f308fdc1 100644
+--- a/scripts/kconfig/menu.c
++++ b/scripts/kconfig/menu.c
+@@ -380,8 +380,6 @@ void menu_finalize(struct menu *parent)
+ 				dep = expr_transform(dep);
+ 				dep = expr_alloc_and(expr_copy(basedep), dep);
+ 				dep = expr_eliminate_dups(dep);
+-				if (menu->sym && menu->sym->type != S_TRISTATE)
+-					dep = expr_trans_bool(dep);
+ 				prop->visible.expr = dep;
+ 
+ 				/*
 -- 
 2.43.0
 
