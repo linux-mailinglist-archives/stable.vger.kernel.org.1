@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F71C93A58D
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:25:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE5993A6CB
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3616282E5E
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:25:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55DA9283DA3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A423C1586E7;
-	Tue, 23 Jul 2024 18:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A52158A06;
+	Tue, 23 Jul 2024 18:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSZ7loEs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHedpYKZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6167A13D521;
-	Tue, 23 Jul 2024 18:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E7915746B;
+	Tue, 23 Jul 2024 18:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759140; cv=none; b=h8VMTSOcb+dmtF3oG+N/3E3ZsbtAxl6AgvglEJki/1j1rOQsvy0L2SMEP/XWc2gKcoimT4L1xrEcEPDujT9rUslId71EoJYQ2bsvNIQ/a7MiTXcU+Q6T9/7mA/o+MqiDvjcPs4QBdNXYKjyaoHOGRUiU9HoMA6aRtIcWiEx+3RI=
+	t=1721759922; cv=none; b=mf59z2R1fPv0I3aZGR/FXyr5+qj1y8DVvw9MGYsJyLzdjR2tnfdCsLy/pBf5sDz/xqNfF8rqxE2hbBTkF31+8TDOSGc6a3Bw8cMxDAorypUl2hvvT2Nh1e310XNu7Da/oI2YkssEq1oIf6GzgSGYcdrks6xr9KWKDCC0DRvlQF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759140; c=relaxed/simple;
-	bh=i0l14tRQCgEIeSr46U/UPve638cknil1XY8V35oVGR4=;
+	s=arc-20240116; t=1721759922; c=relaxed/simple;
+	bh=rZKVUqmff74tmTU3kXNZXOK061si2zsKe0xS19jRYws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XiJN1N9uYXm5eo2DgLnLJfCb+iY60m2gbblwSnahTwcth01IFVTwhXu2dQAzIhmer90FUh+XxE4z3i3OveYawaYQtnP25cGzJAnjhFv5iEvRnsJnla8hbAjGhPBEX0zgb3Bj9sBy1lAfN3lI6kAFOixUbMY0JMDOSxzPBsfi2GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSZ7loEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F91C4AF0A;
-	Tue, 23 Jul 2024 18:25:39 +0000 (UTC)
+	 MIME-Version; b=kE6eNE5ZjGFBGz+NPf/H4foGX3whd/6hcQB03YTQ0jEhsajOgRlBP2UkXNoIzRA8fr3dyv7GadSlfHxPrphzjWJSCxfYfzxBpfNkLvofVVwxnjqOD9Gp6HvjLilfLIYzvkpPnClERkjjmCMd7PInLPk1Qe68Cqe8Nrw3hYJOj+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHedpYKZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5373FC4AF0A;
+	Tue, 23 Jul 2024 18:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759140;
-	bh=i0l14tRQCgEIeSr46U/UPve638cknil1XY8V35oVGR4=;
+	s=korg; t=1721759922;
+	bh=rZKVUqmff74tmTU3kXNZXOK061si2zsKe0xS19jRYws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSZ7loEsdkWNk3Q7habKWDgg68GGM8a0oPEHsrnGeMP7Qxd00kjF4z35YwW4Y6Our
-	 h191Tpc8hVOF//LSOY8djRuOg+OJtp5ufa3a2pSrRToZRQsb09kG4FfZXhi4CzEcD+
-	 0BFe/pGMhs1xuh6k+WWWsJk+cB8VAuhk3/ajHjYI=
+	b=OHedpYKZX8oDPkArcT/jqyhSTEPVlzqOKAwxRyeBjRwcwKTvh6PxNozjNNs4pFXyo
+	 cyPJUfhMSHVyLZB8HIRHOQJLPVHmvJiGFKc57I1XB7ZLYfmBiGTuW9o7AcC2eokHJG
+	 Arb1M+h7FjzVUDf5UHSxSanfmejWlRtS73qKZGCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Louis Dalibard <ontake@ontake.dev>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/105] ACPI: EC: Avoid returning AE_OK on errors in address space handler
+Subject: [PATCH 6.9 044/163] HID: Ignore battery for ELAN touchscreens 2F2C and 4116
 Date: Tue, 23 Jul 2024 20:22:53 +0200
-Message-ID: <20240723180403.475314185@linuxfoundation.org>
+Message-ID: <20240723180145.175233144@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Louis Dalibard <ontake@ontake.dev>
 
-[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
+[ Upstream commit a3a5a37efba11b7cf1a86abe7bccfbcdb521764e ]
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
-returned by acpi_ec_space_handler().
+At least ASUS Zenbook 14 (2023) and ASUS Zenbook 14 Pro (2023) are affected.
 
-Fix this by only returning AE_OK on success, and return AE_ERROR
-otherwise.
+The touchscreen reports a battery status of 0% and jumps to 1% when a
+stylus is used.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The device ID was added and the battery ignore quirk was enabled for it.
+
+[jkosina@suse.com: reformatted changelog a bit]
+Signed-off-by: Louis Dalibard <ontake@ontake.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hid/hid-ids.h   | 2 ++
+ drivers/hid/hid-input.c | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index fc3dc83bb8707..7589908b358e3 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1332,8 +1332,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
- }
- 
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 68b0f39deaa9a..8eb073dea3593 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -421,6 +421,8 @@
+ #define I2C_DEVICE_ID_HP_SPECTRE_X360_13_AW0020NG  0x29DF
+ #define I2C_DEVICE_ID_ASUS_TP420IA_TOUCHSCREEN 0x2BC8
+ #define I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN 0x2C82
++#define I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN 0x2F2C
++#define I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN 0x4116
+ #define USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN	0x2544
+ #define USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN	0x2706
+ #define I2C_DEVICE_ID_SURFACE_GO_TOUCHSCREEN	0x261A
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index 8bb16e9b94aa5..c9094a4f281e9 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -377,6 +377,10 @@ static const struct hid_device_id hid_battery_quirks[] = {
+ 	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN),
+ 	  HID_BATTERY_QUIRK_IGNORE },
++	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN),
++	  HID_BATTERY_QUIRK_IGNORE },
++	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN),
++	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN),
+ 	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN),
 -- 
 2.43.0
 
