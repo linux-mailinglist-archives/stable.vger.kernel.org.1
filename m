@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02BF093A6D7
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF17793A5C6
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACE2C2830E1
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F8FF1F22DB4
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC42158A01;
-	Tue, 23 Jul 2024 18:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EB6158859;
+	Tue, 23 Jul 2024 18:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtCXDCYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yTuApvn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A8714EC58;
-	Tue, 23 Jul 2024 18:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80573157A4F;
+	Tue, 23 Jul 2024 18:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759952; cv=none; b=OyZgvgOGcEnETfWqgqUalOkjmSiShURerkCxSfCyeHW8CYgpB3W6N46dzwmZkr0+fKMqY5iD1nxxGPM5kwku01cE+BrUBw0piFcXpcMG9NZx4qyUPIfgQng9lx7pox98/irqUlK04Ik17m/GmhPZWP5IrOAMVr2FM3FXJNN0HWk=
+	t=1721759288; cv=none; b=lkP5HEPvL2B8i5C/nJEWMLiIm9p7DCv3yjLXe7O24Dl6SumzzPTxzZUCX/oEE3qN4iOe8w742nYgkascttFiRu56Yq/KSam4VtB/86RcOpcnMLK9nppwy4f1hZv4o5vUeGk0pQaSJ7Pzt33iwXIZg92c+Hm04+KnfHlyjKm4GLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759952; c=relaxed/simple;
-	bh=8QfLHWpe59ualerfkoZBowNHAQnvMbdsCOj3ZtHbPkg=;
+	s=arc-20240116; t=1721759288; c=relaxed/simple;
+	bh=lfOAuYV+nkmjF3euaVadx2qu27vSrGaW6Yxx/OQx9oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAY2Pvb/TwUvm4DKMG1pfET3mHBqRcicRrj7kFCV7qp/NNByJhCCmKMhfKCp5Gm9dy9iiLg++TPcxV+F5Vnp9UpfJ1xWABSznduwZiCSoS3CTXQ85io6rUJPB6oslQn1RZiR5q3T0hPdP7rnOVxz3wvZPeOAer4pW92cvGnKjyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtCXDCYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA430C4AF09;
-	Tue, 23 Jul 2024 18:39:11 +0000 (UTC)
+	 MIME-Version; b=XZCI0eQgH5WvGlSm+Fd7x5WFVcVEwLFQykwRl+fMGLH6vRJ+55tRVXWi7mF+96a2l/HCyDroIn8fnON1jPyI+5a7sGUEFHiFtWQcZXpRpQTUdMxCp2rkFoz64P1oAyYZwnip9sjcCM31sfp07hkyQaK6u1Ogd7o1wIAHrRMlaQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yTuApvn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1799C4AF09;
+	Tue, 23 Jul 2024 18:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759952;
-	bh=8QfLHWpe59ualerfkoZBowNHAQnvMbdsCOj3ZtHbPkg=;
+	s=korg; t=1721759288;
+	bh=lfOAuYV+nkmjF3euaVadx2qu27vSrGaW6Yxx/OQx9oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YtCXDCYXVBiSeDQG9KA09eet7+1YE+h86jJOQHouSCKZZPyOI1fZLgS6+GQ3Nfe5O
-	 p8bRvLxDyOH6ICiR1wMBmaDxvXQMDaQ97P7LtnI+nIASRCZ9+b27c9xDBRVsHpWN38
-	 mELygZ/hNyF9DmhUSe0i/sR5j8Mdyd38yvKmyaOM=
+	b=0yTuApvnqv9l5FEdtBjcgLyfJxzHuZVOroXpe16rbiC/JAsSCtK0+GSDeZI9VJTEz
+	 UeVdX4+LnJvi/pHu+mhsOpOh6UilngRzEx7umkbSoyCfdsN0Rr/OVhhoYfShrqURRU
+	 mMHh2m4R/IcNoWQ3BxcenMQo4/muJst+N6EcA2u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 053/163] vfio: Create vfio_fs_type with inode per device
+Subject: [PATCH 6.1 025/105] wifi: iwlwifi: mvm: Fix scan abort handling with HW rfkill
 Date: Tue, 23 Jul 2024 20:23:02 +0200
-Message-ID: <20240723180145.524125142@linuxfoundation.org>
+Message-ID: <20240723180404.020953597@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,174 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit b7c5e64fecfa88764791679cca4786ac65de739e ]
+[ Upstream commit e6dd2936ce7ce94a1915b799f8af8193ec628e87 ]
 
-By linking all the device fds we provide to userspace to an
-address space through a new pseudo fs, we can use tools like
-unmap_mapping_range() to zap all vmas associated with a device.
+When HW rfkill is toggled to disable the RF, the flow to stop scan is
+called. When trying to send the command to abort the scan, since
+HW rfkill is toggled, the command is not sent due to rfkill being
+asserted, and -ERFKILL is returned from iwl_trans_send_cmd(), but this
+is silently ignored in iwl_mvm_send_cmd() and thus the scan abort flow
+continues to wait for scan complete notification and fails. Since it
+fails, the UID to type mapping is not cleared, and thus a warning is
+later fired when trying to stop the interface.
 
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240530045236.1005864-2-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+To fix this, modify the UMAC scan abort flow to force sending the
+scan abort command even when in rfkill, so stop the FW from accessing
+the radio etc.
+
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.8cbe2f8c1a97.Iffe235c12a919dafec88eef399eb1f7bae2c5bdb@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/device_cdev.c |  7 ++++++
- drivers/vfio/group.c       |  7 ++++++
- drivers/vfio/vfio_main.c   | 44 ++++++++++++++++++++++++++++++++++++++
- include/linux/vfio.h       |  1 +
- 4 files changed, 59 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
-index e75da0a70d1f8..bb1817bd4ff31 100644
---- a/drivers/vfio/device_cdev.c
-+++ b/drivers/vfio/device_cdev.c
-@@ -39,6 +39,13 @@ int vfio_device_fops_cdev_open(struct inode *inode, struct file *filep)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 838ab08e68c6b..069bac72117fe 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -3057,10 +3057,11 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
  
- 	filep->private_data = df;
+ 	ret = iwl_mvm_send_cmd_pdu(mvm,
+ 				   WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
+-				   0, sizeof(cmd), &cmd);
++				   CMD_SEND_IN_RFKILL, sizeof(cmd), &cmd);
+ 	if (!ret)
+ 		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
  
-+	/*
-+	 * Use the pseudo fs inode on the device to link all mmaps
-+	 * to the same address space, allowing us to unmap all vmas
-+	 * associated to this device using unmap_mapping_range().
-+	 */
-+	filep->f_mapping = device->inode->i_mapping;
-+
- 	return 0;
- 
- err_put_registration:
-diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
-index 610a429c61912..ded364588d297 100644
---- a/drivers/vfio/group.c
-+++ b/drivers/vfio/group.c
-@@ -286,6 +286,13 @@ static struct file *vfio_device_open_file(struct vfio_device *device)
- 	 */
- 	filep->f_mode |= (FMODE_PREAD | FMODE_PWRITE);
- 
-+	/*
-+	 * Use the pseudo fs inode on the device to link all mmaps
-+	 * to the same address space, allowing us to unmap all vmas
-+	 * associated to this device using unmap_mapping_range().
-+	 */
-+	filep->f_mapping = device->inode->i_mapping;
-+
- 	if (device->group->type == VFIO_NO_IOMMU)
- 		dev_warn(device->dev, "vfio-noiommu device opened by user "
- 			 "(%s:%d)\n", current->comm, task_pid_nr(current));
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index e97d796a54fba..a5a62d9d963f7 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -22,8 +22,10 @@
- #include <linux/list.h>
- #include <linux/miscdevice.h>
- #include <linux/module.h>
-+#include <linux/mount.h>
- #include <linux/mutex.h>
- #include <linux/pci.h>
-+#include <linux/pseudo_fs.h>
- #include <linux/rwsem.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-@@ -43,9 +45,13 @@
- #define DRIVER_AUTHOR	"Alex Williamson <alex.williamson@redhat.com>"
- #define DRIVER_DESC	"VFIO - User Level meta-driver"
- 
-+#define VFIO_MAGIC 0x5646494f /* "VFIO" */
-+
- static struct vfio {
- 	struct class			*device_class;
- 	struct ida			device_ida;
-+	struct vfsmount			*vfs_mount;
-+	int				fs_count;
- } vfio;
- 
- #ifdef CONFIG_VFIO_NOIOMMU
-@@ -186,6 +192,8 @@ static void vfio_device_release(struct device *dev)
- 	if (device->ops->release)
- 		device->ops->release(device);
- 
-+	iput(device->inode);
-+	simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
- 	kvfree(device);
- }
- 
-@@ -228,6 +236,34 @@ struct vfio_device *_vfio_alloc_device(size_t size, struct device *dev,
- }
- EXPORT_SYMBOL_GPL(_vfio_alloc_device);
- 
-+static int vfio_fs_init_fs_context(struct fs_context *fc)
-+{
-+	return init_pseudo(fc, VFIO_MAGIC) ? 0 : -ENOMEM;
-+}
-+
-+static struct file_system_type vfio_fs_type = {
-+	.name = "vfio",
-+	.owner = THIS_MODULE,
-+	.init_fs_context = vfio_fs_init_fs_context,
-+	.kill_sb = kill_anon_super,
-+};
-+
-+static struct inode *vfio_fs_inode_new(void)
-+{
-+	struct inode *inode;
-+	int ret;
-+
-+	ret = simple_pin_fs(&vfio_fs_type, &vfio.vfs_mount, &vfio.fs_count);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	inode = alloc_anon_inode(vfio.vfs_mount->mnt_sb);
-+	if (IS_ERR(inode))
-+		simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
-+
-+	return inode;
-+}
-+
- /*
-  * Initialize a vfio_device so it can be registered to vfio core.
-  */
-@@ -246,6 +282,11 @@ static int vfio_init_device(struct vfio_device *device, struct device *dev,
- 	init_completion(&device->comp);
- 	device->dev = dev;
- 	device->ops = ops;
-+	device->inode = vfio_fs_inode_new();
-+	if (IS_ERR(device->inode)) {
-+		ret = PTR_ERR(device->inode);
-+		goto out_inode;
-+	}
- 
- 	if (ops->init) {
- 		ret = ops->init(device);
-@@ -260,6 +301,9 @@ static int vfio_init_device(struct vfio_device *device, struct device *dev,
- 	return 0;
- 
- out_uninit:
-+	iput(device->inode);
-+	simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
-+out_inode:
- 	vfio_release_device_set(device);
- 	ida_free(&vfio.device_ida, device->index);
++	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d\n", ret);
  	return ret;
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index 8b1a298204091..000a6cab2d318 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -64,6 +64,7 @@ struct vfio_device {
- 	struct completion comp;
- 	struct iommufd_access *iommufd_access;
- 	void (*put_kvm)(struct kvm *kvm);
-+	struct inode *inode;
- #if IS_ENABLED(CONFIG_IOMMUFD)
- 	struct iommufd_device *iommufd_device;
- 	u8 iommufd_attached:1;
+ }
+ 
 -- 
 2.43.0
 
