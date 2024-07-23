@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-60825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF0E93A596
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D112393A6D5
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BCC0282CD1
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E8ADB22656
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FFC158878;
-	Tue, 23 Jul 2024 18:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3219B158878;
+	Tue, 23 Jul 2024 18:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ye5KF8na"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdx1yZun"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02C6158848;
-	Tue, 23 Jul 2024 18:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33D815821E;
+	Tue, 23 Jul 2024 18:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759163; cv=none; b=RMfIyelo1ZNEXW0Ybom2/L1cy8xorsFYEcW+Hd3MBSyreHKTl//fC/NQok/gtrIo9671vQgRdYxFbIuoH/R/uS9dzuXWKsGwITYYI6DxxixfB8oIgINttj09+MHdOFFswTz+O8jq4BA2XGtHhmsPFoEiSQXu5TaP1jD+iRQxVfE=
+	t=1721759944; cv=none; b=XLUe4NJQP1LLgYrN5bYMB/xDBb0PVoVRx7asfufXaR9+0pjdz38yl/JHNv38eTz5d7wUN5ublqsL7MypGoMnV5tR6th321gz4Suw6IZuUNECOBH4if4r4iDOqWYvj/qW6GuYz0c2024G4f6OV2NsSOx1mZ1gapA6BeN84j+7A6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759163; c=relaxed/simple;
-	bh=GCg8wvu1BNXFOQbm2vdGPdSoHdkQMHvy293q6dOfIZs=;
+	s=arc-20240116; t=1721759944; c=relaxed/simple;
+	bh=K1CpoupfEUyMb/+oaQlaThdXD8ysGxCYAbQKIYtZCc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JxW4LBCe7BXRzwc0fbOloe63vdWzV3E3ea4ZXWXAJA728zAyOzkMghJcbv5soQJxwWM+k42oUp9GMQmduP7YeQQNVFaa2kGviUeqiQigC05r9SiJnz+6BYhIaslithU89PL4D371nDUQt9hJOCrOAmvrClTK8GfQaKQ0MbFJMqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ye5KF8na; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445F4C4AF0A;
-	Tue, 23 Jul 2024 18:26:03 +0000 (UTC)
+	 MIME-Version; b=TPZvA+NTbnFNCmDDXM1AtEd7B3ueA1kb+Cv+rztsnNtdal1eOlQViHO2uP5ydKIhy06AUGZ5GaQ8ADs7S6vPfd6Ge+O+NdRVzzH5FrrUvPCuSJmDT7PPLewcVg/BuvUmrwLL9SOWW2bw2C89LiNOVjGiecUxHKFcCuF9zbJ9Mjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdx1yZun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9D1C4AF09;
+	Tue, 23 Jul 2024 18:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759163;
-	bh=GCg8wvu1BNXFOQbm2vdGPdSoHdkQMHvy293q6dOfIZs=;
+	s=korg; t=1721759943;
+	bh=K1CpoupfEUyMb/+oaQlaThdXD8ysGxCYAbQKIYtZCc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ye5KF8naUnz6GxMRU8VC+lwBMbT54lomQqUPd1Hkshc6U0MvBk1Hi0zH5H3pRjOR+
-	 elrGEkUYHqk2aM6LXb0AMiQrV8m97sKV7OzIZ4tjlR2tJm9d6i5dkX5WxK5+pGD6qQ
-	 10cc1VKIAFE/sN/DUX1/1HwdHCs2yFBJ1JnBRMEQ=
+	b=sdx1yZun75+OCvrvcQG8w2kHsdfWgvw7we6epYnrWZ3UaUAD33qZ4K1e4eVCAMMXu
+	 Yp4JJsCRJ73el6GB5RSEw0hcK1NZsPTMxO+VSCYUsSghT0WSC6lDy8+Bvw92N3rA9m
+	 iUJ0zkaufJnjK+bLiuM9IyLBRiJjfcCnU+A2F6kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/105] wifi: iwlwifi: mvm: Handle BIGTK cipher in kek_kck cmd
+Subject: [PATCH 6.9 051/163] cachefiles: make on-demand read killable
 Date: Tue, 23 Jul 2024 20:23:00 +0200
-Message-ID: <20240723180403.898390303@linuxfoundation.org>
+Message-ID: <20240723180145.448591198@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +65,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 08b16d1b5997dc378533318e2a9cd73c7a898284 ]
+[ Upstream commit bc9dde6155464e906e630a0a5c17a4cab241ffbb ]
 
-The BIGTK cipher field was added to the kek_kck_material_cmd
-but wasn't assigned. Fix that by differentiating between the
-IGTK/BIGTK keys and assign the ciphers fields accordingly.
+Replacing wait_for_completion() with wait_for_completion_killable() in
+cachefiles_ondemand_send_req() allows us to kill processes that might
+trigger a hunk_task if the daemon is abnormal.
 
-Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.7fd0b22b7267.Ie9b581652b74bd7806980364d59e1b2e78e682c0@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+But now only CACHEFILES_OP_READ is killable, because OP_CLOSE and OP_OPEN
+is initiated from kworker context and the signal is prohibited in these
+kworker.
+
+Note that when the req in xas changes, i.e. xas_load(&xas) != req, it
+means that a process will complete the current request soon, so wait
+again for the request to be completed.
+
+In addition, add the cachefiles_ondemand_finish_req() helper function to
+simplify the code.
+
+Suggested-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240522114308.2402121-13-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/cachefiles/ondemand.c | 40 ++++++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 9a36ce98b5bfc..425588605a262 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -594,16 +594,25 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
- 					 void *_data)
- {
- 	struct wowlan_key_gtk_type_iter *data = _data;
-+	__le32 *cipher = NULL;
-+
-+	if (key->keyidx == 4 || key->keyidx == 5)
-+		cipher = &data->kek_kck_cmd->igtk_cipher;
-+	if (key->keyidx == 6 || key->keyidx == 7)
-+		cipher = &data->kek_kck_cmd->bigtk_cipher;
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index a0e34581a1cd6..d0059d36cbd51 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -380,6 +380,20 @@ static struct cachefiles_req *cachefiles_ondemand_select_req(struct xa_state *xa
+ 	return NULL;
+ }
  
- 	switch (key->cipher) {
- 	default:
- 		return;
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
--		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
-+		if (cipher)
-+			*cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
- 		return;
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_CCM);
-+	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
-+		if (cipher)
-+			*cipher = cpu_to_le32(STA_KEY_FLG_CCM);
- 		return;
- 	case WLAN_CIPHER_SUITE_CCMP:
- 		if (!sta)
++static inline bool cachefiles_ondemand_finish_req(struct cachefiles_req *req,
++						  struct xa_state *xas, int err)
++{
++	if (unlikely(!xas || !req))
++		return false;
++
++	if (xa_cmpxchg(xas->xa, xas->xa_index, req, NULL, 0) != req)
++		return false;
++
++	req->error = err;
++	complete(&req->done);
++	return true;
++}
++
+ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 					char __user *_buffer, size_t buflen)
+ {
+@@ -443,16 +457,8 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ out:
+ 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
+ 	/* Remove error request and CLOSE request has no reply */
+-	if (ret || msg->opcode == CACHEFILES_OP_CLOSE) {
+-		xas_reset(&xas);
+-		xas_lock(&xas);
+-		if (xas_load(&xas) == req) {
+-			req->error = ret;
+-			complete(&req->done);
+-			xas_store(&xas, NULL);
+-		}
+-		xas_unlock(&xas);
+-	}
++	if (ret || msg->opcode == CACHEFILES_OP_CLOSE)
++		cachefiles_ondemand_finish_req(req, &xas, ret);
+ 	cachefiles_req_put(req);
+ 	return ret ? ret : n;
+ }
+@@ -557,8 +563,18 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+ 		goto out;
+ 
+ 	wake_up_all(&cache->daemon_pollwq);
+-	wait_for_completion(&req->done);
+-	ret = req->error;
++wait:
++	ret = wait_for_completion_killable(&req->done);
++	if (!ret) {
++		ret = req->error;
++	} else {
++		ret = -EINTR;
++		if (!cachefiles_ondemand_finish_req(req, &xas, ret)) {
++			/* Someone will complete it soon. */
++			cpu_relax();
++			goto wait;
++		}
++	}
+ 	cachefiles_req_put(req);
+ 	return ret;
+ out:
 -- 
 2.43.0
 
