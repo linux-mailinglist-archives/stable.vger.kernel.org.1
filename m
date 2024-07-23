@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-60904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA86693A5ED
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 330E293A72C
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 177601C21CA6
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE5291F2397C
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC35F158A01;
-	Tue, 23 Jul 2024 18:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F723158873;
+	Tue, 23 Jul 2024 18:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRUvHYSB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sC5/XVqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B80A1586CB;
-	Tue, 23 Jul 2024 18:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8521581F4;
+	Tue, 23 Jul 2024 18:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759394; cv=none; b=NqBjysCgH3GohabL937EdsDX8O6GP3zJ9gfYLgRxbwCI0ZZlUxY9QH2LMlRAiMTPiuh4H6dv0hKDu741saX8LnVDSZPEGIMp8+YYPogDz5euENUeyEP7nRS2iD4JuWdRnB4W/Cctm2yOkKenQJK6WHAJznq25SEnCc2hf85D4xw=
+	t=1721760187; cv=none; b=ojTdZYSOxWhj5JgW7pM6EVZ43GGBBOKxz0bw/c5Ru8m91byGrhiB+dEHUSmqKhHgDqMQkgEnFKX1fit4WhwOb89j+lvtt4W+w8ajz/CbE1ldLKU0Dm0yQPlRIZ0wHo+Pf6KcfUszq0wzqFI+pMmNgW2eEWnCc6FdGj7iZtk6Y7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759394; c=relaxed/simple;
-	bh=BM23ZajvDc8jzuuglDoR102V/1NO+wHg8zEfgNQtbAI=;
+	s=arc-20240116; t=1721760187; c=relaxed/simple;
+	bh=mcqRJzvS6+BHdYXJBxTxwzwSfrR5Nvtri/hOCi45320=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWdtslRpcRZN0N7COtW8DyhkkePh1N0mQFhqOtR1z4U97e/djrWaKp44TPMgF2eVZ06hnVL8twLZaJPWybN0ROpCNLb5x2enAVkeMGN3XOzTFszEyEKJwM+0WjajEJP0VQLhdjgn35zdFjSwvzVtufsz41YM1qUoWEhPbJtsG/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRUvHYSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BA3C4AF09;
-	Tue, 23 Jul 2024 18:29:53 +0000 (UTC)
+	 MIME-Version; b=fUiSsgbqhAGMU0AbhB/9E4lRhLTGYDnZbwMPv1CsE36aobSPP1PwpokATYbng7I75AFgAEuH/DcjS/PKY1via095DO4F1zYKD26miZCebBifA8RlVN7TPGiQ0prlvnVFJ8wGqvC3ecMX+84bvt/0PYlCFOIbm9udWx0zISOs0+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sC5/XVqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C75C4AF0A;
+	Tue, 23 Jul 2024 18:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759394;
-	bh=BM23ZajvDc8jzuuglDoR102V/1NO+wHg8zEfgNQtbAI=;
+	s=korg; t=1721760187;
+	bh=mcqRJzvS6+BHdYXJBxTxwzwSfrR5Nvtri/hOCi45320=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bRUvHYSB7LDs8qbZh0samYLzhQCWu9jtUTMyTOZf09RIYHehlJH8gl+9Ci5Js+90H
-	 TnbFx7tN6pTpb784GEOp4l0Ln+5lLd/1HWKoUVHss7BRVAkp0WSRiFcfpg6DSD/Few
-	 TfIiCANDp8Du6Jabdvxijb3w0UgW/TdisNqqp45w=
+	b=sC5/XVqzqXYjtWz5Oer1m+0E0HTzd53hDDH2noLACVR9VOs4A3vgy3/XD1TNXmdqP
+	 +PyY0SYHX6Zfp46oRKq15kMKpbmXZqB4A3EFokvUDj9fuimdQVOkgRmCY0Lwsl9OBT
+	 6q02CJmyfclGgO/WT94wjl25xVQSrSKsD+p1BzAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1d516edf1e74469ba5d3@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 102/105] wifi: mac80211: disable softirqs for queued frame handling
+	Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 130/163] Bluetooth: btnxpuart: Enable Power Save feature on startup
 Date: Tue, 23 Jul 2024 20:24:19 +0200
-Message-ID: <20240723180407.174144818@linuxfoundation.org>
+Message-ID: <20240723180148.496066671@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
 
-commit 321028bc45f01edb9e57b0ae5c11c5c3600d00ca upstream.
+[ Upstream commit 4183a7be77009fc31c5760429fe095f163bf96a9 ]
 
-As noticed by syzbot, calling ieee80211_handle_queued_frames()
-(and actually handling frames there) requires softirqs to be
-disabled, since we call into the RX code. Fix that in the case
-of cleaning up frames left over during shutdown.
+This sets the default power save mode setting to enabled.
 
-Fixes: 177c6ae9725d ("wifi: mac80211: handle tasklet frames before stopping")
-Reported-by: syzbot+1d516edf1e74469ba5d3@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20240626091559.cd6f08105a6e.I74778610a5ff2cf8680964698131099d2960352a@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The power save feature is now stable and stress test issues, such as the
+TX timeout error, have been resolved.
+commit c7ee0bc8db32 ("Bluetooth: btnxpuart: Resolve TX timeout error in
+power save stress test")
+
+With this setting, the driver will send the vendor command to FW at
+startup, to enable power save feature.
+
+User can disable this feature using the following vendor command:
+hcitool cmd 3f 23 03 00 00 (HCI_NXP_AUTO_SLEEP_MODE)
+
+Signed-off-by: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/main.c |    1 +
- net/mac80211/util.c |    2 ++
- 2 files changed, 3 insertions(+)
+ drivers/bluetooth/btnxpuart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -300,6 +300,7 @@ u32 ieee80211_reset_erp_info(struct ieee
- 	       BSS_CHANGED_ERP_SLOT;
- }
+diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
+index 9d0c7e278114b..9bfa9a6ad56c8 100644
+--- a/drivers/bluetooth/btnxpuart.c
++++ b/drivers/bluetooth/btnxpuart.c
+@@ -281,7 +281,7 @@ static u8 crc8_table[CRC8_TABLE_SIZE];
  
-+/* context: requires softirqs disabled */
- void ieee80211_handle_queued_frames(struct ieee80211_local *local)
- {
- 	struct sk_buff *skb;
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2207,7 +2207,9 @@ u32 ieee80211_sta_get_rates(struct ieee8
+ /* Default configurations */
+ #define DEFAULT_H2C_WAKEUP_MODE	WAKEUP_METHOD_BREAK
+-#define DEFAULT_PS_MODE		PS_MODE_DISABLE
++#define DEFAULT_PS_MODE		PS_MODE_ENABLE
+ #define FW_INIT_BAUDRATE	HCI_NXP_PRI_BAUDRATE
  
- void ieee80211_stop_device(struct ieee80211_local *local)
- {
-+	local_bh_disable();
- 	ieee80211_handle_queued_frames(local);
-+	local_bh_enable();
- 
- 	ieee80211_led_radio(local, false);
- 	ieee80211_mod_tpt_led_trig(local, 0, IEEE80211_TPT_LEDTRIG_FL_RADIO);
+ static struct sk_buff *nxp_drv_send_cmd(struct hci_dev *hdev, u16 opcode,
+-- 
+2.43.0
+
 
 
 
