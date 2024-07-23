@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-60995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 749DF93A661
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC6493A5D3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6BA71C22396
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0335B21800
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53D5158D6D;
-	Tue, 23 Jul 2024 18:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB351586CB;
+	Tue, 23 Jul 2024 18:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xe/LwfGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJRXcJf0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930BC158A2C;
-	Tue, 23 Jul 2024 18:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD201156F29;
+	Tue, 23 Jul 2024 18:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759665; cv=none; b=JB325dIBx/SPnVt0alNjyiMl28ChkEGuZnm/LAqnelPup+nMXVLhlgHNWCAci9wDQjyVRgQDzskddd+KYSXu4mjN1R3rmugpklIFT/kIhPS+WP15XJHXfx6gHsjp5PsuMNGE578h9fXnDMjRWruKTa4ajpKhZZe0D/xOPEizchE=
+	t=1721759326; cv=none; b=Tx4obIF+dJxlK3jue5wFya/N5PZNKXlxFuXvtqm6DLU9JsP15iFurLSgoDRz+6cU3AWRklEA8n3Ki5UVp9HKrTvQkEzn22bNIaKqejt0J1fWUtti74EClc9SHMnrR+UQvjBCkYV/eMcfkZEY11+olNFOJ09Ewg+OFiEX62jSZSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759665; c=relaxed/simple;
-	bh=vWzjn/kp3gTaQJ2b7Cc99StA9rYMnKbb8OJd6EDlhZg=;
+	s=arc-20240116; t=1721759326; c=relaxed/simple;
+	bh=Na27QYwXVUvs+Ymqr68mzN85jc4vLoVuaqtHCkz6uRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ubIQoKHCc1QIDGDQbPMXgS6CTKrpVMTTNZDGh2ZamTNYuyH9MnoGtEmNY21CtxqWju/RGMkCe73eEcxYMOWmnAUJDRjeLoNEi41DO4+hSQ2LeAJAZ4PaqztL8VQlSooOTSWizrwP58KnYR5PEHgfALKSWGpKSU1inB3pfJkmWMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xe/LwfGs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B8FC4AF0A;
-	Tue, 23 Jul 2024 18:34:24 +0000 (UTC)
+	 MIME-Version; b=PSUnVbRatv/ywRyl+dui1eubk+uolnFa14j+2cFT4HhV73d04KdWXaHffTxWjlTHp6RHelwcNEQ2pkcqqQ8ThRr86j+cEybeQYpltnrd4pEgdUk4ZMkhsA3YC2aY384ZpvIczKMUkAVjcfMFDmp+dKssO/qY1XNIVGu2RvUvx0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJRXcJf0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5163DC4AF09;
+	Tue, 23 Jul 2024 18:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759665;
-	bh=vWzjn/kp3gTaQJ2b7Cc99StA9rYMnKbb8OJd6EDlhZg=;
+	s=korg; t=1721759326;
+	bh=Na27QYwXVUvs+Ymqr68mzN85jc4vLoVuaqtHCkz6uRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xe/LwfGsNXNrAxZ9IOimhxO/12emDRrk7zNhrrDkaRQje4barfFFbV2PE5m0wXWTu
-	 4vXKrVzE6ty2jSW6VyOJLgLjKY1HTtRYyb5BAyuKIaDgomnXPdiF90uzvjjXDKy0Pq
-	 u3zJith0JXpnl53gKF/4RrdyFL7CXq3CUYcc0iUU=
+	b=yJRXcJf0cVmPekrvui2QB4sxHMwXu9egWaKHlOE8Ilsann/K1CCnlzaCa4OORmjCW
+	 pCEYfwVdM0Feh5xVjIgJe44tbV8VPlZfP0XywzNEa8/uPIqH5LMuJTEi5vNz92rWWN
+	 TzKVFKWSOZvVAQonQvPlY1xxJ0VEcsgIAjEqLaBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Yunshui Jiang <jiangyunshui@kylinos.cn>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/129] btrfs: qgroup: fix quota root leak after quota disable failure
-Date: Tue, 23 Jul 2024 20:23:54 +0200
-Message-ID: <20240723180408.108771753@linuxfoundation.org>
+Subject: [PATCH 6.1 078/105] net: mac802154: Fix racy device stats updates by DEV_STATS_INC() and DEV_STATS_ADD()
+Date: Tue, 23 Jul 2024 20:23:55 +0200
+Message-ID: <20240723180406.252807973@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Yunshui Jiang <jiangyunshui@kylinos.cn>
 
-[ Upstream commit a7e4c6a3031c74078dba7fa36239d0f4fe476c53 ]
+[ Upstream commit b8ec0dc3845f6c9089573cb5c2c4b05f7fc10728 ]
 
-If during the quota disable we fail when cleaning the quota tree or when
-deleting the root from the root tree, we jump to the 'out' label without
-ever dropping the reference on the quota root, resulting in a leak of the
-root since fs_info->quota_root is no longer pointing to the root (we have
-set it to NULL just before those steps).
+mac802154 devices update their dev->stats fields locklessly. Therefore
+these counters should be updated atomically. Adopt SMP safe DEV_STATS_INC()
+and DEV_STATS_ADD() to achieve this.
 
-Fix this by always doing a btrfs_put_root() call under the 'out' label.
-This is a problem that exists since qgroups were first added in 2012 by
-commit bed92eae26cc ("Btrfs: qgroup implementation and prototypes"), but
-back then we missed a kfree on the quota root and free_extent_buffer()
-calls on its root and commit root nodes, since back then roots were not
-yet reference counted.
-
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Yunshui Jiang <jiangyunshui@kylinos.cn>
+Message-ID: <20240531080739.2608969-1-jiangyunshui@kylinos.cn>
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac802154/tx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 99ea2c6d31944..223dfbf009938 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1228,7 +1228,7 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info)
+diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
+index c829e4a753256..7cea95d0b78f9 100644
+--- a/net/mac802154/tx.c
++++ b/net/mac802154/tx.c
+@@ -34,8 +34,8 @@ void ieee802154_xmit_worker(struct work_struct *work)
+ 	if (res)
+ 		goto err_tx;
  
- int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
- {
--	struct btrfs_root *quota_root;
-+	struct btrfs_root *quota_root = NULL;
- 	struct btrfs_trans_handle *trans = NULL;
- 	int ret = 0;
+-	dev->stats.tx_packets++;
+-	dev->stats.tx_bytes += skb->len;
++	DEV_STATS_INC(dev, tx_packets);
++	DEV_STATS_ADD(dev, tx_bytes, skb->len);
  
-@@ -1323,9 +1323,9 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
- 	btrfs_free_tree_block(trans, btrfs_root_id(quota_root),
- 			      quota_root->node, 0, 1);
+ 	ieee802154_xmit_complete(&local->hw, skb, false);
  
--	btrfs_put_root(quota_root);
+@@ -86,8 +86,8 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
+ 			goto err_tx;
+ 		}
  
- out:
-+	btrfs_put_root(quota_root);
- 	mutex_unlock(&fs_info->qgroup_ioctl_lock);
- 	if (ret && trans)
- 		btrfs_end_transaction(trans);
+-		dev->stats.tx_packets++;
+-		dev->stats.tx_bytes += len;
++		DEV_STATS_INC(dev, tx_packets);
++		DEV_STATS_ADD(dev, tx_bytes, len);
+ 	} else {
+ 		local->tx_skb = skb;
+ 		queue_work(local->workqueue, &local->tx_work);
 -- 
 2.43.0
 
