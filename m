@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-60959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1293393A62F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E12D93A5AA
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13791F23692
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 211D9B20F6F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D597515821A;
-	Tue, 23 Jul 2024 18:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1A21586F6;
+	Tue, 23 Jul 2024 18:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYc4EFvd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXNwpXeb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9382813D896;
-	Tue, 23 Jul 2024 18:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E0F1581EB;
+	Tue, 23 Jul 2024 18:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759557; cv=none; b=cdhmuSRPJUj2CFsZ6Ll5Klekpg5rJJCe05lcxgsXOzcZqYD1bwzY4WxfAWbxy6sc7wiJV16JM2AMUEZQcY1EK/EfayFA4FEV/1hK6qZVw6v7rLXaf2ALThhwDt11A73bA7AATBY69j6WzrAPtKGBJCHoQNhiOWykGPX1A4D/2s8=
+	t=1721759217; cv=none; b=AzLezXZ7elNC2Qvb/fjHSmB8XNWfho81UtA7JPejqpUlraoJuNo23dXjGJQN9bmGJqrW1glWGMZTyPzmDHfH0gzu9ZoEZoqT8hVMiKcDYoB3wh4FdWSVpMcqMsIoiQ1s6oowTBuxxHRoexe2AFStBeN4ThkmsNAkFBjm7ZqHrUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759557; c=relaxed/simple;
-	bh=b0MGz9hz+IFCeYVlRrboKE/C0N4hSw6cQ+bTQRZamTk=;
+	s=arc-20240116; t=1721759217; c=relaxed/simple;
+	bh=u7X2drtD++NWNTUf3mzL1JqxZbTSkb1ogM2qQUCaC2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SXrFYC7CE64qo2CXsgC1nxuBZ8BblQ2Z1+lhyCqaIkR4wwRKrMWQ2EzGAXIM+e07+IKLh18K+Mp7kUMGEullGVyTMAkpI8wUN2rjcvp/xCvf2XZD0QuQsuIeIFpZV/5pWgNWTAZNdLuIzEikVlPuA2iy9pal4lJJXDHAcUgG6Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYc4EFvd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1548AC4AF09;
-	Tue, 23 Jul 2024 18:32:36 +0000 (UTC)
+	 MIME-Version; b=HdbfFVGlo21BXg08jF1Q7PxZLFXDxANbkhjDRpjASIx/oa6bv4P/gwtrQ+zVG2CN7z1gOEAJfUUh+FlNlMeF5aR9ZLUm1ht3/TPqI+6832fBbYC71IngBJCm8ALIA0ZE26LCnZlIv+I09IX+pFh0R390S1i3b5HMqvrh/8d1RJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXNwpXeb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA43BC4AF09;
+	Tue, 23 Jul 2024 18:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759557;
-	bh=b0MGz9hz+IFCeYVlRrboKE/C0N4hSw6cQ+bTQRZamTk=;
+	s=korg; t=1721759217;
+	bh=u7X2drtD++NWNTUf3mzL1JqxZbTSkb1ogM2qQUCaC2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FYc4EFvdvr3zJDqMCRplYprLmCIXG1Ieq7bmtav52lBy4lpR5fyVcWdOU6N1zD+GA
-	 hIr3lX/vh7b0gzZB/jV/1yQCrZzfPYs4NSV7edjIaSeV0rz9JOPFTW2/FNxttetDK2
-	 4AFYIb3r0PobMcEDc/VgHI9DkqBJO9TmeZ/AzM+k=
+	b=LXNwpXebHd60vHyvvn1C5G2X2O27HBF7cv4DTko0i/nEuImPcmp6SRaRCFQFp8qK2
+	 Di7QNQCw72h1yXGCbfFvBo685Fzbw8N4fH0a7+sfZeO1Usmn35IQvvnuRvICQFGLNb
+	 3aF1fOTXA6HOnOqf6Sr6ewBz4TXgBt4uhR/KPNL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <dwagner@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/129] nvmet: always initialize cqe.result
-Date: Tue, 23 Jul 2024 20:23:18 +0200
-Message-ID: <20240723180406.722346489@linuxfoundation.org>
+Subject: [PATCH 6.1 042/105] cachefiles: make on-demand read killable
+Date: Tue, 23 Jul 2024 20:23:19 +0200
+Message-ID: <20240723180404.867735110@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +65,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit cd0c1b8e045a8d2785342b385cb2684d9b48e426 ]
+[ Upstream commit bc9dde6155464e906e630a0a5c17a4cab241ffbb ]
 
-The spec doesn't mandate that the first two double words (aka results)
-for the command queue entry need to be set to 0 when they are not
-used (not specified). Though, the target implemention returns 0 for TCP
-and FC but not for RDMA.
+Replacing wait_for_completion() with wait_for_completion_killable() in
+cachefiles_ondemand_send_req() allows us to kill processes that might
+trigger a hunk_task if the daemon is abnormal.
 
-Let's make RDMA behave the same and thus explicitly initializing the
-result field. This prevents leaking any data from the stack.
+But now only CACHEFILES_OP_READ is killable, because OP_CLOSE and OP_OPEN
+is initiated from kworker context and the signal is prohibited in these
+kworker.
 
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Note that when the req in xas changes, i.e. xas_load(&xas) != req, it
+means that a process will complete the current request soon, so wait
+again for the request to be completed.
+
+In addition, add the cachefiles_ondemand_finish_req() helper function to
+simplify the code.
+
+Suggested-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240522114308.2402121-13-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/core.c             | 1 +
- drivers/nvme/target/fabrics-cmd-auth.c | 3 ---
- drivers/nvme/target/fabrics-cmd.c      | 6 ------
- 3 files changed, 1 insertion(+), 9 deletions(-)
+ fs/cachefiles/ondemand.c | 40 ++++++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index cfba3ec7add84..1cf6dfac18361 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -945,6 +945,7 @@ bool nvmet_req_init(struct nvmet_req *req, struct nvmet_cq *cq,
- 	req->metadata_sg_cnt = 0;
- 	req->transfer_len = 0;
- 	req->metadata_len = 0;
-+	req->cqe->result.u64 = 0;
- 	req->cqe->status = 0;
- 	req->cqe->sq_head = 0;
- 	req->ns = NULL;
-diff --git a/drivers/nvme/target/fabrics-cmd-auth.c b/drivers/nvme/target/fabrics-cmd-auth.c
-index 1d9854484e2e8..c103eba96350e 100644
---- a/drivers/nvme/target/fabrics-cmd-auth.c
-+++ b/drivers/nvme/target/fabrics-cmd-auth.c
-@@ -332,7 +332,6 @@ void nvmet_execute_auth_send(struct nvmet_req *req)
- 		pr_debug("%s: ctrl %d qid %d nvme status %x error loc %d\n",
- 			 __func__, ctrl->cntlid, req->sq->qid,
- 			 status, req->error_loc);
--	req->cqe->result.u64 = 0;
- 	if (req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2 &&
- 	    req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_FAILURE2) {
- 		unsigned long auth_expire_secs = ctrl->kato ? ctrl->kato : 120;
-@@ -515,8 +514,6 @@ void nvmet_execute_auth_receive(struct nvmet_req *req)
- 	status = nvmet_copy_to_sgl(req, 0, d, al);
- 	kfree(d);
- done:
--	req->cqe->result.u64 = 0;
--
- 	if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2)
- 		nvmet_auth_sq_free(req->sq);
- 	else if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_FAILURE1) {
-diff --git a/drivers/nvme/target/fabrics-cmd.c b/drivers/nvme/target/fabrics-cmd.c
-index d8da840a1c0ed..fa9e8dc921539 100644
---- a/drivers/nvme/target/fabrics-cmd.c
-+++ b/drivers/nvme/target/fabrics-cmd.c
-@@ -225,9 +225,6 @@ static void nvmet_execute_admin_connect(struct nvmet_req *req)
- 	if (status)
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index 37489ca2e8571..2185e2908dba8 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -380,6 +380,20 @@ static struct cachefiles_req *cachefiles_ondemand_select_req(struct xa_state *xa
+ 	return NULL;
+ }
+ 
++static inline bool cachefiles_ondemand_finish_req(struct cachefiles_req *req,
++						  struct xa_state *xas, int err)
++{
++	if (unlikely(!xas || !req))
++		return false;
++
++	if (xa_cmpxchg(xas->xa, xas->xa_index, req, NULL, 0) != req)
++		return false;
++
++	req->error = err;
++	complete(&req->done);
++	return true;
++}
++
+ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 					char __user *_buffer, size_t buflen)
+ {
+@@ -443,16 +457,8 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ out:
+ 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
+ 	/* Remove error request and CLOSE request has no reply */
+-	if (ret || msg->opcode == CACHEFILES_OP_CLOSE) {
+-		xas_reset(&xas);
+-		xas_lock(&xas);
+-		if (xas_load(&xas) == req) {
+-			req->error = ret;
+-			complete(&req->done);
+-			xas_store(&xas, NULL);
+-		}
+-		xas_unlock(&xas);
+-	}
++	if (ret || msg->opcode == CACHEFILES_OP_CLOSE)
++		cachefiles_ondemand_finish_req(req, &xas, ret);
+ 	cachefiles_req_put(req);
+ 	return ret ? ret : n;
+ }
+@@ -557,8 +563,18 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
  		goto out;
  
--	/* zero out initial completion result, assign values as needed */
--	req->cqe->result.u32 = 0;
--
- 	if (c->recfmt != 0) {
- 		pr_warn("invalid connect version (%d).\n",
- 			le16_to_cpu(c->recfmt));
-@@ -305,9 +302,6 @@ static void nvmet_execute_io_connect(struct nvmet_req *req)
- 	if (status)
- 		goto out;
- 
--	/* zero out initial completion result, assign values as needed */
--	req->cqe->result.u32 = 0;
--
- 	if (c->recfmt != 0) {
- 		pr_warn("invalid connect version (%d).\n",
- 			le16_to_cpu(c->recfmt));
+ 	wake_up_all(&cache->daemon_pollwq);
+-	wait_for_completion(&req->done);
+-	ret = req->error;
++wait:
++	ret = wait_for_completion_killable(&req->done);
++	if (!ret) {
++		ret = req->error;
++	} else {
++		ret = -EINTR;
++		if (!cachefiles_ondemand_finish_req(req, &xas, ret)) {
++			/* Someone will complete it soon. */
++			cpu_relax();
++			goto wait;
++		}
++	}
+ 	cachefiles_req_put(req);
+ 	return ret;
+ out:
 -- 
 2.43.0
 
