@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1AD93A62D
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A161B93A6F0
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:40:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4865D2817AA
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30C2AB22B9B
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA714156F29;
-	Tue, 23 Jul 2024 18:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D412015884E;
+	Tue, 23 Jul 2024 18:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DN9NJLEl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ef4yZRCX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A754913D896;
-	Tue, 23 Jul 2024 18:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DE71586CB;
+	Tue, 23 Jul 2024 18:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759551; cv=none; b=hZQ1taKKZfUne2x06Jn7FjRavSd2b6UMchD2vENMx0SZanJ6V2hAG8YWUrKZi+PBT8pzKLEXvNlGrYRCs8lto/uj9qp2foEZsUAf9mKaO8S8vyx7hRGQDnJPNezuifOSoRRe59dSp4VAZfvCCDQ4kYlOv2rK47CrIjpeVEsF7Os=
+	t=1721760018; cv=none; b=gbKNDeXEX+p2alBsCD98ZfHi/ew3rVKz5/zodvki4a0HxrxmJezIqTwWqGkvSOmIvWu/Bbf4VUXoOSaV4bX4MsvIDMnGADuXTRfj7s4aNC9cbrQx3V8Rhr+yJKnVnLxejLYg23bvI/Q2oPqfAnghlYJBz7FhspJku3y5a5BG0Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759551; c=relaxed/simple;
-	bh=Ccmj0teDDw54MtA7n6IN3cT7ywP5amKDD878cXtkB7Y=;
+	s=arc-20240116; t=1721760018; c=relaxed/simple;
+	bh=KbFOT0RlzmtwkWrbcURfuWnLO7/LHSZRmjl6qytRztU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=onY9Z02lYmJmbxU94Er3UTOpWh3XS6VBofWvXCuQPZxEqwgj5Zaygrd94PeERLRitB6Rvjwt5fTspKjmFYRm+5VtqbxcWI71RhTvxHAjiCeDow3GR//yi3KpK9aJ0RiGOCex28WSp4NdrZYCE6bTV90ccjtOT/aMJdUsLTLCVME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DN9NJLEl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310F5C4AF0A;
-	Tue, 23 Jul 2024 18:32:31 +0000 (UTC)
+	 MIME-Version; b=LksjwXoRMGapLvfa/8oLMEzAHDvDzNzHP+qDGj+qbxPlJAkK8P4Hm/DbyeoSk484kV4+HDh09ui1LKleRxu5hHKaxb76KRj0a1JknugpEg67r/tw/kx1d9TOOGconMGAq9833MWNMaYatMSJREd0KmirGrpDWWjCBb5YlmMxHcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ef4yZRCX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191EBC4AF09;
+	Tue, 23 Jul 2024 18:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759551;
-	bh=Ccmj0teDDw54MtA7n6IN3cT7ywP5amKDD878cXtkB7Y=;
+	s=korg; t=1721760018;
+	bh=KbFOT0RlzmtwkWrbcURfuWnLO7/LHSZRmjl6qytRztU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DN9NJLEl7zDDanHOCOb5NOMDw3LTy/yMRMkUvt7pNiGv2DzqFKFr1d2BiWzrOUnDG
-	 5p3TNz9th4fVzD8zcULvEcFWowlKkilTxZ8jEHWODTeD9zlC72n8nkMCvlCayrHeUu
-	 Iz++92WpYurGVw1GRx3TjtUjh4DfmsG2y3sWQ6vU=
+	b=Ef4yZRCXElbLwohLH44LNtnkLP6yYu6Y1XWVUrpwHPZdz8TAVK03pFXsg3nRvFAc0
+	 zeESrqTYPH3OL3Vy1ff/zo6B0OZ6KDSKqkOu2DAB2VpZF/lWmoPpvNXYLYiAA6qQJi
+	 fEgllYl+Byut7mdcGMY4DKB3LBGv1zJNpg1rFo/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Fei Shao <fshao@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/129] drm/mediatek: Call drm_atomic_helper_shutdown() at shutdown time
-Date: Tue, 23 Jul 2024 20:23:16 +0200
-Message-ID: <20240723180406.645133573@linuxfoundation.org>
+Subject: [PATCH 6.9 068/163] ALSA: hda: cs35l41: Support Lenovo Thinkbook 16P Gen 5
+Date: Tue, 23 Jul 2024 20:23:17 +0200
+Message-ID: <20240723180146.097530049@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit c38896ca6318c2df20bbe6c8e3f633e071fda910 ]
+[ Upstream commit 82f3daed2d3590fa286a02301573a183dd902a0f ]
 
-Based on grepping through the source code this driver appears to be
-missing a call to drm_atomic_helper_shutdown() at system shutdown
-time. Among other things, this means that if a panel is in use that it
-won't be cleanly powered off at system shutdown time.
+This laptop does not contain _DSD so needs to be supported using the
+configuration table.
 
-The fact that we should call drm_atomic_helper_shutdown() in the case
-of OS shutdown/restart comes straight out of the kernel doc "driver
-instance overview" in drm_drv.c.
-
-This driver users the component model and shutdown happens in the base
-driver. The "drvdata" for this driver will always be valid if
-shutdown() is called and as of commit 2a073968289d
-("drm/atomic-helper: drm_atomic_helper_shutdown(NULL) should be a
-noop") we don't need to confirm that "drm" is non-NULL.
-
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Tested-by: Fei Shao <fshao@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240611102744.v2.1.I2b014f90afc4729b6ecc7b5ddd1f6dedcea4625b@changeid
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240606130351.333495-2-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_drv.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/pci/hda/cs35l41_hda_property.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index cdd506c803733..37d8113ba92f0 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -926,6 +926,13 @@ static void mtk_drm_remove(struct platform_device *pdev)
- 		of_node_put(private->comp_node[i]);
- }
+diff --git a/sound/pci/hda/cs35l41_hda_property.c b/sound/pci/hda/cs35l41_hda_property.c
+index 4f5e581cdd5ff..e034828df4452 100644
+--- a/sound/pci/hda/cs35l41_hda_property.c
++++ b/sound/pci/hda/cs35l41_hda_property.c
+@@ -118,6 +118,8 @@ static const struct cs35l41_config cs35l41_config_table[] = {
+ 	{ "17AA38B5", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+ 	{ "17AA38B6", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+ 	{ "17AA38B7", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
++	{ "17AA38F9", 2, EXTERNAL, { CS35L41_RIGHT, CS35L41_LEFT, 0, 0 }, 0, 2, -1, 0, 0, 0 },
++	{ "17AA38FA", 2, EXTERNAL, { CS35L41_RIGHT, CS35L41_LEFT, 0, 0 }, 0, 2, -1, 0, 0, 0 },
+ 	{}
+ };
  
-+static void mtk_drm_shutdown(struct platform_device *pdev)
-+{
-+	struct mtk_drm_private *private = platform_get_drvdata(pdev);
-+
-+	drm_atomic_helper_shutdown(private->drm);
-+}
-+
- static int mtk_drm_sys_prepare(struct device *dev)
- {
- 	struct mtk_drm_private *private = dev_get_drvdata(dev);
-@@ -957,6 +964,7 @@ static const struct dev_pm_ops mtk_drm_pm_ops = {
- static struct platform_driver mtk_drm_platform_driver = {
- 	.probe	= mtk_drm_probe,
- 	.remove_new = mtk_drm_remove,
-+	.shutdown = mtk_drm_shutdown,
- 	.driver	= {
- 		.name	= "mediatek-drm",
- 		.pm     = &mtk_drm_pm_ops,
+@@ -509,6 +511,8 @@ static const struct cs35l41_prop_model cs35l41_prop_model_table[] = {
+ 	{ "CSC3551", "17AA38B5", generic_dsd_config },
+ 	{ "CSC3551", "17AA38B6", generic_dsd_config },
+ 	{ "CSC3551", "17AA38B7", generic_dsd_config },
++	{ "CSC3551", "17AA38F9", generic_dsd_config },
++	{ "CSC3551", "17AA38FA", generic_dsd_config },
+ 	{}
+ };
+ 
 -- 
 2.43.0
 
