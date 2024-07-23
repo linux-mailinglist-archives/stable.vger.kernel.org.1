@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-60881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A77593A5D4
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05EDD93A664
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D5931F2123E
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5B34282DA4
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0919E1586CB;
-	Tue, 23 Jul 2024 18:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990E0158A2C;
+	Tue, 23 Jul 2024 18:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJtNicRv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEjdj8SG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5D0157A4F;
-	Tue, 23 Jul 2024 18:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58513158878;
+	Tue, 23 Jul 2024 18:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759329; cv=none; b=tMm5hNupxKdRW0ogQnJL7X9CLunoX11XzfurHkjIMb4fIlZum7mq7pHH4zWSFkjWtQ5r5gs6Wu6fmNRHhn0hj8EdyQb3Z3K2GSGTBjKTDDeabhpIp/uBZg495fzoJey0/2WnA2KiTkNR4kVge5L8ntE+zHd/MNLTVJ22VDM1j64=
+	t=1721759674; cv=none; b=dLvYWxtgejL1jXjFMdxH+F68jwdJg5nL0GGye2+mdVugN1rZ3RjMdKdbZzBToWCQ6Y8XZpDS6xWOzLlNDfmlVyG10UOR7yARLiar4vtoW9opLXnxS3QJS1KJ3RAzEI4TOEjTOdAwrqqG69FF3X26jjRxZJxNQ0dE00/9gTPq+5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759329; c=relaxed/simple;
-	bh=hNp7qL4mf8nn/c3Oq69Qak3h04pmnyUo561OoZA97Gc=;
+	s=arc-20240116; t=1721759674; c=relaxed/simple;
+	bh=y1SFZgK7rAu9Enmgf7Gqd/oovAy10sDpekUq12s7XIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8mjbVHoVRwJjWx7V2M+DWI+K3Xgj/2wFxrb5h+9WxYNj3BPx7BtRTprZQbuprL9YW9s4pzR2z5dF0XSuweyeWfFepjq12tWEYZFoJ4uKrEv1Pn+HsuldD+hA0JVYTttOOQfbczmMynBS4xlpH0hkfrLVrBTHdFFLwlGDAedeQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJtNicRv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44025C4AF0A;
-	Tue, 23 Jul 2024 18:28:49 +0000 (UTC)
+	 MIME-Version; b=VxU3M48lD8/Vqpk+3PMOWR0lXAL3T8B8CX37EOsXJx+Crq9oDo8sBRHiVYGDJ4ZTBHYeblRrNRJqctgSK2yQpfuHNfCcGSLKgvxdvyZWbWIe2URdrms+ZtWQz4X1NtUfr58QmqpHRAxR9yyKFRrytwQGaNnbEnmzqO+Q7sdGLFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEjdj8SG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3394C4AF09;
+	Tue, 23 Jul 2024 18:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759329;
-	bh=hNp7qL4mf8nn/c3Oq69Qak3h04pmnyUo561OoZA97Gc=;
+	s=korg; t=1721759674;
+	bh=y1SFZgK7rAu9Enmgf7Gqd/oovAy10sDpekUq12s7XIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJtNicRvQt6oCFHEs5DtGLCwNf+FvF2f3W1DHoBqqtAcTVvwfFvrfRorZJ2xdmmP2
-	 HN9FpGnBWKc50J1Ooo0Hui6cN8nJCBqg8zL1v0z7vZHmRv6rwh7t2NIFI+1raPQihP
-	 uWCJlsf2pmhhbu2zzW2TGVivNgdTxXP0XXZyV8Zw=
+	b=fEjdj8SGOZgQm6lmwnQDcc5AUnoes9z8qNezkM344SAPpBa1XaYceUKJ/MQFnjl+4
+	 I7gipBjdeCSJlm6rYbgn3gB3o7zK/D68VdPvMnFyDU/1yN3x0pK9hkVs/AFo6CErC1
+	 Gs/P0gKU+ciYtPqkv9sivWqd79/2YzigieOkU9No=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Chourasia <vishalc@linux.ibm.com>,
-	Anjali K <anjalik@linux.ibm.com>,
-	Srikar Dronamraju <srikar@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/105] powerpc/pseries: Whitelist dtl slub object for copying to userspace
+Subject: [PATCH 6.6 088/129] ALSA: PCM: Allow resume only for suspended streams
 Date: Tue, 23 Jul 2024 20:23:56 +0200
-Message-ID: <20240723180406.291137782@linuxfoundation.org>
+Message-ID: <20240723180408.187076142@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anjali K <anjalik@linux.ibm.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 1a14150e1656f7a332a943154fc486504db4d586 ]
+[ Upstream commit 1225675ca74c746f09211528588e83b3def1ff6a ]
 
-Reading the dispatch trace log from /sys/kernel/debug/powerpc/dtl/cpu-*
-results in a BUG() when the config CONFIG_HARDENED_USERCOPY is enabled as
-shown below.
+snd_pcm_resume() should bail out if the stream isn't in a suspended
+state.  Otherwise it'd allow doubly resume.
 
-    kernel BUG at mm/usercopy.c:102!
-    Oops: Exception in kernel mode, sig: 5 [#1]
-    LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-    Modules linked in: xfs libcrc32c dm_service_time sd_mod t10_pi sg ibmvfc
-    scsi_transport_fc ibmveth pseries_wdt dm_multipath dm_mirror dm_region_hash dm_log dm_mod fuse
-    CPU: 27 PID: 1815 Comm: python3 Not tainted 6.10.0-rc3 #85
-    Hardware name: IBM,9040-MRX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NM1060_042) hv:phyp pSeries
-    NIP:  c0000000005d23d4 LR: c0000000005d23d0 CTR: 00000000006ee6f8
-    REGS: c000000120c078c0 TRAP: 0700   Not tainted  (6.10.0-rc3)
-    MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2828220f  XER: 0000000e
-    CFAR: c0000000001fdc80 IRQMASK: 0
-    [ ... GPRs omitted ... ]
-    NIP [c0000000005d23d4] usercopy_abort+0x78/0xb0
-    LR [c0000000005d23d0] usercopy_abort+0x74/0xb0
-    Call Trace:
-     usercopy_abort+0x74/0xb0 (unreliable)
-     __check_heap_object+0xf8/0x120
-     check_heap_object+0x218/0x240
-     __check_object_size+0x84/0x1a4
-     dtl_file_read+0x17c/0x2c4
-     full_proxy_read+0x8c/0x110
-     vfs_read+0xdc/0x3a0
-     ksys_read+0x84/0x144
-     system_call_exception+0x124/0x330
-     system_call_vectored_common+0x15c/0x2ec
-    --- interrupt: 3000 at 0x7fff81f3ab34
-
-Commit 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
-requires that only whitelisted areas in slab/slub objects can be copied to
-userspace when usercopy hardening is enabled using CONFIG_HARDENED_USERCOPY.
-Dtl contains hypervisor dispatch events which are expected to be read by
-privileged users. Hence mark this safe for user access.
-Specify useroffset=0 and usersize=DISPATCH_LOG_BYTES to whitelist the
-entire object.
-
-Co-developed-by: Vishal Chourasia <vishalc@linux.ibm.com>
-Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
-Signed-off-by: Anjali K <anjalik@linux.ibm.com>
-Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240614173844.746818-1-anjalik@linux.ibm.com
+Link: https://patch.msgid.link/20240624125443.27808-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/setup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/core/pcm_native.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index df07726192000..c2e6b3a0469d1 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -342,8 +342,8 @@ static int alloc_dispatch_log_kmem_cache(void)
+diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
+index bd9ddf412b465..cc21c483c4a57 100644
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -1783,6 +1783,8 @@ static int snd_pcm_pre_resume(struct snd_pcm_substream *substream,
+ 			      snd_pcm_state_t state)
  {
- 	void (*ctor)(void *) = get_dtl_cache_ctor();
- 
--	dtl_cache = kmem_cache_create("dtl", DISPATCH_LOG_BYTES,
--						DISPATCH_LOG_BYTES, 0, ctor);
-+	dtl_cache = kmem_cache_create_usercopy("dtl", DISPATCH_LOG_BYTES,
-+						DISPATCH_LOG_BYTES, 0, 0, DISPATCH_LOG_BYTES, ctor);
- 	if (!dtl_cache) {
- 		pr_warn("Failed to create dispatch trace log buffer cache\n");
- 		pr_warn("Stolen time statistics will be unreliable\n");
+ 	struct snd_pcm_runtime *runtime = substream->runtime;
++	if (runtime->state != SNDRV_PCM_STATE_SUSPENDED)
++		return -EBADFD;
+ 	if (!(runtime->info & SNDRV_PCM_INFO_RESUME))
+ 		return -ENOSYS;
+ 	runtime->trigger_master = substream;
 -- 
 2.43.0
 
