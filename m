@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-60866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4294993A5C5
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD91E93A627
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBACA1F22C5A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68BDF1F2375E
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826281586CB;
-	Tue, 23 Jul 2024 18:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47CA158A01;
+	Tue, 23 Jul 2024 18:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpmgBmIt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alhV/wFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40450156F29;
-	Tue, 23 Jul 2024 18:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935AF15746B;
+	Tue, 23 Jul 2024 18:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759285; cv=none; b=h4gRVrERsCNJTOOAxmHB47YRxGzWuaCMv8W8DTp9uLveoQhP0ZTvj0TPv6otEAA3JpWB4+8+SzmIxVyBKBY9pG2fa94y5Rdfw9RoiwIfuz/leY7SS2L1Sl/SlgamDWsZ8IEVAE19IBqhBuK/UNC2OYkJbthkkcwyW2J18uBxLBg=
+	t=1721759533; cv=none; b=r7t+efWgiK2E6LHdJlB7uPk0VOo/Letm8YE7SvUcpokkJL9shUT2BNywI5r/mZhoCu+ET7gfykWAQQ7bptw+ZrDRSnwLY8d+KmXi+bA8miSELm0k+yzRRBPQUeaqdtcZGMyoiuvr2cHJdXlKz1tdMW6TdzHWD0iNcqO/3S7d7NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759285; c=relaxed/simple;
-	bh=8LPSiDZI/m2fBKDqzWJmeHIsZqPr3iNMErmQImxD27g=;
+	s=arc-20240116; t=1721759533; c=relaxed/simple;
+	bh=E4FGyTOnJTkojsHh/a0U/TwEGw0iabXRp/MaGwZrY9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bITyT2Hn/S3AMFAIhFtt0fYXwI/A7oJixKo2loedJ9PJMvJX7LihvRnnC45hs7OJiXTxlkuXQmOFdmx+i/s4f7Jp8gQplH/X6JeZbOK9WiOeDBDjmmwV/nOXoH/Xo/e7Gd5t2uIie3eAovQ/C/oC3Is81ct7x2yokm37Asra67E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpmgBmIt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93AEC4AF0A;
-	Tue, 23 Jul 2024 18:28:04 +0000 (UTC)
+	 MIME-Version; b=YKSPPMnR7ChdqxM2m3t1NrrqyzvXan1QjufeRiKIIcOgOFZPDbH1tiWI2OCXyN8F43Az4q9hh+0T8KmzcRK94gTQQh0w4kSOTMqL2iDqJC5DACnhUGD/z3rk6bh7OmxtJcQ7v2bB0p3qSqcOegGEdNUeHBqlUTbaIRulAnUTH/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alhV/wFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAAAC4AF09;
+	Tue, 23 Jul 2024 18:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759285;
-	bh=8LPSiDZI/m2fBKDqzWJmeHIsZqPr3iNMErmQImxD27g=;
+	s=korg; t=1721759533;
+	bh=E4FGyTOnJTkojsHh/a0U/TwEGw0iabXRp/MaGwZrY9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SpmgBmItgrrdPTZn8/7+6WckYqazJfNecXFQ+6SE+xZkLDDFdzvTTBhaAxElYTlUX
-	 37tyRgRpX5XkcK7bcuvJ8aDb6kwfF8CC8MTDKxNPPU+p8gTRsPap+If38siXg9ET4m
-	 ivR0/e6OGRUcrwRovSbOYTfHAUgOrQ9h+JRKNJuw=
+	b=alhV/wFnAIi9yhdUdeJ9vUz34Gnsk+mx8rfC+hJYBpQpLbKwNhMzn8NVywMmZzy0Q
+	 UHs7CyTtM41VlcoDN3jBbCBoHRkuV94FBUgarcR2wkbD3TdQMIWFkuPt8LEg97E4rO
+	 9QSE6iVYHndBn21tIskFdDL52bbnao4JzvfCcVNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Yuntao Wang <yuntao.wang@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/105] kconfig: gconf: give a proper initial state to the Save button
+Subject: [PATCH 6.6 043/129] fs/file: fix the check in find_next_fd()
 Date: Tue, 23 Jul 2024 20:23:11 +0200
-Message-ID: <20240723180404.549822646@linuxfoundation.org>
+Message-ID: <20240723180406.452609731@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Yuntao Wang <yuntao.wang@linux.dev>
 
-[ Upstream commit 46edf4372e336ef3a61c3126e49518099d2e2e6d ]
+[ Upstream commit ed8c7fbdfe117abbef81f65428ba263118ef298a ]
 
-Currently, the initial state of the "Save" button is always active.
+The maximum possible return value of find_next_zero_bit(fdt->full_fds_bits,
+maxbit, bitbit) is maxbit. This return value, multiplied by BITS_PER_LONG,
+gives the value of bitbit, which can never be greater than maxfd, it can
+only be equal to maxfd at most, so the following check 'if (bitbit > maxfd)'
+will never be true.
 
-If none of the CONFIG options are changed while loading the .config
-file, the "Save" button should be greyed out.
+Moreover, when bitbit equals maxfd, it indicates that there are no unused
+fds, and the function can directly return.
 
-This can be fixed by calling conf_read() after widget initialization.
+Fix this check.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
+Link: https://lore.kernel.org/r/20240529160656.209352-1-yuntao.wang@linux.dev
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/gconf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/file.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index 17adabfd6e6bf..5d1404178e482 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -1481,7 +1481,6 @@ int main(int ac, char *av[])
+diff --git a/fs/file.c b/fs/file.c
+index 3e4a4dfa38fca..a815f6eddc511 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -481,12 +481,12 @@ struct files_struct init_files = {
  
- 	conf_parse(name);
- 	fixup_rootmenu(&rootmenu);
--	conf_read(NULL);
+ static unsigned int find_next_fd(struct fdtable *fdt, unsigned int start)
+ {
+-	unsigned int maxfd = fdt->max_fds;
++	unsigned int maxfd = fdt->max_fds; /* always multiple of BITS_PER_LONG */
+ 	unsigned int maxbit = maxfd / BITS_PER_LONG;
+ 	unsigned int bitbit = start / BITS_PER_LONG;
  
- 	/* Load the interface and connect signals */
- 	init_main_window(glade_file);
-@@ -1489,6 +1488,8 @@ int main(int ac, char *av[])
- 	init_left_tree();
- 	init_right_tree();
- 
-+	conf_read(NULL);
-+
- 	switch (view_mode) {
- 	case SINGLE_VIEW:
- 		display_tree_part();
+ 	bitbit = find_next_zero_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
+-	if (bitbit > maxfd)
++	if (bitbit >= maxfd)
+ 		return maxfd;
+ 	if (bitbit > start)
+ 		start = bitbit;
 -- 
 2.43.0
 
