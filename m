@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD37F93A6D4
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF4B93A63C
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F2731F22268
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91EE92812A8
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307AF158873;
-	Tue, 23 Jul 2024 18:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E86155351;
+	Tue, 23 Jul 2024 18:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7mF4XeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUCLsYHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A6015821E;
-	Tue, 23 Jul 2024 18:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFC742067;
+	Tue, 23 Jul 2024 18:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759947; cv=none; b=OOsMaKsuRg33k1VMaq+MNk8fosPsFu0xit8eiTL50xwitH21FU4BS12/m/Ax54uvK2D+7JdYKDThtz/HtxBG20QpvFDjBgvFSsU0z0+R3Z/JI99HPrd2GeFdmKncaC/i977a/++6Jl12ZUCSOMBurWUEmGi1+OOxtP7qfTnbOI8=
+	t=1721759597; cv=none; b=ey3an88LsP700pccaUoJ1t0yr+JTM1uV7iX2qhRirTbpgww5OPsDZ2y4z4g52RLBCm2OZIBmC0Z7mqKIFOl0qnYqtFGZRyKaVQJqghs9CA71d2624PCVaJW6YKFWGxyeWh4eMNO/R87tkUEjSl8SIRLJP4DWh5ByIbSOMABR3/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759947; c=relaxed/simple;
-	bh=IpyWVZWUBT0nAce6zc9I1Xm9NA9eFqdP7xJeMbNRCWU=;
+	s=arc-20240116; t=1721759597; c=relaxed/simple;
+	bh=5jM8wU9bdigQFxft7tkShJbNiA0lJJok06vNGW7XZjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5VKwBArZuA3xvNBOBXGr3eSLQ3XiNRNIbJKTgRWXsUs5K7tXTL6nxgtc3wrfGBRYSjVNhfQ+puug/4fA7QXb8asN4QL67APTxvLi1Trz+xmqK38Y3v4opnmlLqv7fb5o7VfIV+EVk8qx4HCjywevHfJUl4/xHoKtQEsoEolBt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7mF4XeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF5EC4AF09;
-	Tue, 23 Jul 2024 18:39:05 +0000 (UTC)
+	 MIME-Version; b=MMu/mBnldYoRYj0L2i7Kq3RF9dkMCIWplP6bQY0PkTDnegtkZ9O/9eN9wrCzK5g1RhrHYeA2AvkXuGrMwXOlcE2u1CptEczWkB+7KbqvB/pBnzO4qbA0HsqDOfLqfYcop5P67pZZSM2WFO8sAfgXmLSBgvPRvKz5Sj8gSHSIUd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUCLsYHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FBFC4AF09;
+	Tue, 23 Jul 2024 18:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759946;
-	bh=IpyWVZWUBT0nAce6zc9I1Xm9NA9eFqdP7xJeMbNRCWU=;
+	s=korg; t=1721759596;
+	bh=5jM8wU9bdigQFxft7tkShJbNiA0lJJok06vNGW7XZjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7mF4XeYpsZDSd8YPFw1Yz+3VSz68A6yhAqdv+1PbBpmJ2YR9Bp3Vo/P2m5Ai6ukJ
-	 RqmsvdUDr3jz6xvFocMYBaOBDoe3fhv8/qIxpt8/8joOxFgDqo9Kk9B5jZWUPowAGj
-	 I/9AaScdRFcagt2xWzAb5mOmqMuDk/iPkIt6+oaA=
+	b=jUCLsYHkvUAuyBm0v+NpUqscmvGPInAgI9wuDxcTuitrph8yTXuPYUVZh8L0svKtE
+	 dNvizpMDVPePxxdIMfVGEcHq7t990k8KQOAfFTSRkz+I6xOzLIhykPnu0Qp4dHwqsA
+	 DFtt7nH7mPnbTh75BDJn/a6GqjJkSOalPBgqj+I4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <yuntao.wang@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Aseda Aboagye <aaboagye@chromium.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 052/163] fs/file: fix the check in find_next_fd()
+Subject: [PATCH 6.6 033/129] input: Add event code for accessibility key
 Date: Tue, 23 Jul 2024 20:23:01 +0200
-Message-ID: <20240723180145.486096711@linuxfoundation.org>
+Message-ID: <20240723180406.069885305@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Aseda Aboagye <aaboagye@chromium.org>
 
-[ Upstream commit ed8c7fbdfe117abbef81f65428ba263118ef298a ]
+[ Upstream commit 0c7dd00de018ff70b3452c424901816e26366a8a ]
 
-The maximum possible return value of find_next_zero_bit(fdt->full_fds_bits,
-maxbit, bitbit) is maxbit. This return value, multiplied by BITS_PER_LONG,
-gives the value of bitbit, which can never be greater than maxfd, it can
-only be equal to maxfd at most, so the following check 'if (bitbit > maxfd)'
-will never be true.
+HUTRR116 added support for a new usage titled "System Accessibility
+Binding" which toggles a system-wide bound accessibility UI or command.
+This commit simply adds a new event code for the usage.
 
-Moreover, when bitbit equals maxfd, it indicates that there are no unused
-fds, and the function can directly return.
-
-Fix this check.
-
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://lore.kernel.org/r/20240529160656.209352-1-yuntao.wang@linux.dev
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Aseda Aboagye <aaboagye@chromium.org>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/Zl-e97O9nvudco5z@google.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-debug.c                | 1 +
+ drivers/hid/hid-input.c                | 1 +
+ include/uapi/linux/input-event-codes.h | 1 +
+ 3 files changed, 3 insertions(+)
 
-diff --git a/fs/file.c b/fs/file.c
-index 3b683b9101d84..005841dd35977 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -481,12 +481,12 @@ struct files_struct init_files = {
+diff --git a/drivers/hid/hid-debug.c b/drivers/hid/hid-debug.c
+index 7dd83ec74f8a9..c629ab161d5b2 100644
+--- a/drivers/hid/hid-debug.c
++++ b/drivers/hid/hid-debug.c
+@@ -974,6 +974,7 @@ static const char *keys[KEY_MAX + 1] = {
+ 	[KEY_CAMERA_ACCESS_ENABLE] = "CameraAccessEnable",
+ 	[KEY_CAMERA_ACCESS_DISABLE] = "CameraAccessDisable",
+ 	[KEY_CAMERA_ACCESS_TOGGLE] = "CameraAccessToggle",
++	[KEY_ACCESSIBILITY] = "Accessibility",
+ 	[KEY_DICTATE] = "Dictate",
+ 	[KEY_MICMUTE] = "MicrophoneMute",
+ 	[KEY_BRIGHTNESS_MIN] = "BrightnessMin",
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index e03d300d2bac4..d5a6e89c3086e 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -836,6 +836,7 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
+ 		if ((usage->hid & 0xf0) == 0xa0) {	/* SystemControl */
+ 			switch (usage->hid & 0xf) {
+ 			case 0x9: map_key_clear(KEY_MICMUTE); break;
++			case 0xa: map_key_clear(KEY_ACCESSIBILITY); break;
+ 			default: goto ignore;
+ 			}
+ 			break;
+diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
+index 03edf2ccdf6c8..39f11ec676fae 100644
+--- a/include/uapi/linux/input-event-codes.h
++++ b/include/uapi/linux/input-event-codes.h
+@@ -618,6 +618,7 @@
+ #define KEY_CAMERA_ACCESS_ENABLE	0x24b	/* Enables programmatic access to camera devices. (HUTRR72) */
+ #define KEY_CAMERA_ACCESS_DISABLE	0x24c	/* Disables programmatic access to camera devices. (HUTRR72) */
+ #define KEY_CAMERA_ACCESS_TOGGLE	0x24d	/* Toggles the current state of the camera access control. (HUTRR72) */
++#define KEY_ACCESSIBILITY		0x24e	/* Toggles the system bound accessibility UI/command (HUTRR116) */
  
- static unsigned int find_next_fd(struct fdtable *fdt, unsigned int start)
- {
--	unsigned int maxfd = fdt->max_fds;
-+	unsigned int maxfd = fdt->max_fds; /* always multiple of BITS_PER_LONG */
- 	unsigned int maxbit = maxfd / BITS_PER_LONG;
- 	unsigned int bitbit = start / BITS_PER_LONG;
- 
- 	bitbit = find_next_zero_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
--	if (bitbit > maxfd)
-+	if (bitbit >= maxfd)
- 		return maxfd;
- 	if (bitbit > start)
- 		start = bitbit;
+ #define KEY_BRIGHTNESS_MIN		0x250	/* Set Brightness to Minimum */
+ #define KEY_BRIGHTNESS_MAX		0x251	/* Set Brightness to Maximum */
 -- 
 2.43.0
 
