@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-61167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A003D93A728
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA3D93A5FA
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D22DF1C2247C
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46ED31F233F1
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A5E158871;
-	Tue, 23 Jul 2024 18:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21651586F5;
+	Tue, 23 Jul 2024 18:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5MBeKAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AiWIKlyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C842113D896;
-	Tue, 23 Jul 2024 18:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5A9158215;
+	Tue, 23 Jul 2024 18:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760175; cv=none; b=mUvWLTuYPjoeUkLMDvzFeev+C1BObH1VjAdzAXL3yFUPNaNA004U+niz5e1o4lqxhb2G7lsrw+NaWFA0wnZjfJ25CH3aM76+IBNZuzSEJKEf3R5ozh79yJ2adP9Y3pP9JrnMg2J+Rw28Dfezzt0ij4+elRAodPaCCS8iu2SS9kA=
+	t=1721759421; cv=none; b=RnkrwVTACqHsZSME+ui5m5Y92qY8xijNyLIbaa95K/HZfLo78Xh3WVhoUI3IuWOmDu3k4noDb8mpnNysSx/WECYZgPiMGd12EqB0iADkIueKjmlgA/qan7ndmW4atspRoTDrJRU3OU7rqi1iIINrKjsGuJgE3PM7rphfU+s8qHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760175; c=relaxed/simple;
-	bh=XNBbCZx8lMrufk1LSrBrC+JUdmbHFOITuaHNCFfb0sk=;
+	s=arc-20240116; t=1721759421; c=relaxed/simple;
+	bh=I1DiFbZU3C29x+V4GyZPtt12C6fY3asK0CLzOmA+az4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyptHqXMr3YXgSYmV6tkqEyNLkZJBwf1zxpDr18Wbsztino5FmAadXh/zClgjldo/OTdn2cOkSQBX50+jlLHBMICY7Y9lsfljZPbNgARuW4Fbv01B/DeqiQ91FcG3kNa1KVCRfTpaMS8hMMj8FkmMIdN7Qww85dxpeGMUp92Gl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5MBeKAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A279C4AF0A;
-	Tue, 23 Jul 2024 18:42:54 +0000 (UTC)
+	 MIME-Version; b=slEyhVTru33H4V+cPY/Xegvi6w1/dN8hLYj8J8FGREHA0DLDhJp8HLmtcH4o4YbyYHUketGIs6i2h8XBbKaLLoUSiue3DQJrAq9cSIif2aszlrvZAns67JcgJQSgUWfG5nXOocl24J4DB6u2UYFPz0wPvORGqRsxFveiOZPg8/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AiWIKlyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65C1C4AF0B;
+	Tue, 23 Jul 2024 18:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760175;
-	bh=XNBbCZx8lMrufk1LSrBrC+JUdmbHFOITuaHNCFfb0sk=;
+	s=korg; t=1721759421;
+	bh=I1DiFbZU3C29x+V4GyZPtt12C6fY3asK0CLzOmA+az4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5MBeKAzMWkWjulU26qSfNn+X6W5ItgS6W2QzHaGNEHAad9TnbxtO3d53dVXORszr
-	 ww2sb1E0fTreMjAwrhMfYVlmMv97GfTXEhpqZvHrV0cvoUjV5+dnSXP3EwFmBMIMou
-	 HBE67Gxti6hxRUx1eLH5o2nVrT1svDJiggOKslZQ=
+	b=AiWIKlyYAskKF73h3F4TQSfyWUseciuYT9bseeXPdAUCSgqfb/vQf2M7FVrUCFC8G
+	 wr/7qGM9Ix5ivPvQ3u5QZ9kbpGBFR7qjIWv5zyXUyg9tO9n4gOffig3HXcin/+ad3h
+	 C7F/Kce/0sG+Xryz9GVSJVO2JGzjq1khyBrKEZrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 127/163] scsi: libsas: Fix exp-attached device scan after probe failure scanned in again after probe failed
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 099/105] Bluetooth: L2CAP: Fix deadlock
 Date: Tue, 23 Jul 2024 20:24:16 +0200
-Message-ID: <20240723180148.380473308@linuxfoundation.org>
+Message-ID: <20240723180407.059667998@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +60,263 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit ab2068a6fb84751836a84c26ca72b3beb349619d ]
+commit f1a8f402f13f94263cf349216c257b2985100927 upstream.
 
-The expander phy will be treated as broadcast flutter in the next
-revalidation after the exp-attached end device probe failed, as follows:
+This fixes the following deadlock introduced by 39a92a55be13
+("bluetooth/l2cap: sync sock recv cb and release")
 
-[78779.654026] sas: broadcast received: 0
-[78779.654037] sas: REVALIDATING DOMAIN on port 0, pid:10
-[78779.654680] sas: ex 500e004aaaaaaa1f phy05 change count has changed
-[78779.662977] sas: ex 500e004aaaaaaa1f phy05 originated BROADCAST(CHANGE)
-[78779.662986] sas: ex 500e004aaaaaaa1f phy05 new device attached
-[78779.663079] sas: ex 500e004aaaaaaa1f phy05:U:8 attached: 500e004aaaaaaa05 (stp)
-[78779.693542] hisi_sas_v3_hw 0000:b4:02.0: dev[16:5] found
-[78779.701155] sas: done REVALIDATING DOMAIN on port 0, pid:10, res 0x0
-[78779.707864] sas: Enter sas_scsi_recover_host busy: 0 failed: 0
-...
-[78835.161307] sas: --- Exit sas_scsi_recover_host: busy: 0 failed: 0 tries: 1
-[78835.171344] sas: sas_probe_sata: for exp-attached device 500e004aaaaaaa05 returned -19
-[78835.180879] hisi_sas_v3_hw 0000:b4:02.0: dev[16:5] is gone
-[78835.187487] sas: broadcast received: 0
-[78835.187504] sas: REVALIDATING DOMAIN on port 0, pid:10
-[78835.188263] sas: ex 500e004aaaaaaa1f phy05 change count has changed
-[78835.195870] sas: ex 500e004aaaaaaa1f phy05 originated BROADCAST(CHANGE)
-[78835.195875] sas: ex 500e004aaaaaaa1f rediscovering phy05
-[78835.196022] sas: ex 500e004aaaaaaa1f phy05:U:A attached: 500e004aaaaaaa05 (stp)
-[78835.196026] sas: ex 500e004aaaaaaa1f phy05 broadcast flutter
-[78835.197615] sas: done REVALIDATING DOMAIN on port 0, pid:10, res 0x0
+============================================
+WARNING: possible recursive locking detected
+6.10.0-rc3-g4029dba6b6f1 #6823 Not tainted
+--------------------------------------------
+kworker/u5:0/35 is trying to acquire lock:
+ffff888002ec2510 (&chan->lock#2/1){+.+.}-{3:3}, at:
+l2cap_sock_recv_cb+0x44/0x1e0
 
-The cause of the problem is that the related ex_phy's attached_sas_addr was
-not cleared after the end device probe failed, so reset it.
+but task is already holding lock:
+ffff888002ec2510 (&chan->lock#2/1){+.+.}-{3:3}, at:
+l2cap_get_chan_by_scid+0xaf/0xd0
 
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Link: https://lore.kernel.org/r/20240619091742.25465-1-yangxingui@huawei.com
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&chan->lock#2/1);
+  lock(&chan->lock#2/1);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+3 locks held by kworker/u5:0/35:
+ #0: ffff888002b8a940 ((wq_completion)hci0#2){+.+.}-{0:0}, at:
+process_one_work+0x750/0x930
+ #1: ffff888002c67dd0 ((work_completion)(&hdev->rx_work)){+.+.}-{0:0},
+at: process_one_work+0x44e/0x930
+ #2: ffff888002ec2510 (&chan->lock#2/1){+.+.}-{3:3}, at:
+l2cap_get_chan_by_scid+0xaf/0xd0
+
+To fix the original problem this introduces l2cap_chan_lock at
+l2cap_conless_channel to ensure that l2cap_sock_recv_cb is called with
+chan->lock held.
+
+Fixes: 89e856e124f9 ("bluetooth/l2cap: sync sock recv cb and release")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/libsas/sas_internal.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ include/net/bluetooth/hci_sync.h |    2 +
+ net/bluetooth/hci_core.c         |   72 +++++++++------------------------------
+ net/bluetooth/hci_sync.c         |   13 +++++++
+ net/bluetooth/l2cap_core.c       |    3 +
+ net/bluetooth/l2cap_sock.c       |   13 -------
+ 5 files changed, 37 insertions(+), 66 deletions(-)
 
-diff --git a/drivers/scsi/libsas/sas_internal.h b/drivers/scsi/libsas/sas_internal.h
-index 3804aef165adb..164086c5824ec 100644
---- a/drivers/scsi/libsas/sas_internal.h
-+++ b/drivers/scsi/libsas/sas_internal.h
-@@ -145,6 +145,20 @@ static inline void sas_fail_probe(struct domain_device *dev, const char *func, i
- 		func, dev->parent ? "exp-attached" :
- 		"direct-attached",
- 		SAS_ADDR(dev->sas_addr), err);
-+
-+	/*
-+	 * If the device probe failed, the expander phy attached address
-+	 * needs to be reset so that the phy will not be treated as flutter
-+	 * in the next revalidation
-+	 */
-+	if (dev->parent && !dev_is_expander(dev->dev_type)) {
-+		struct sas_phy *phy = dev->phy;
-+		struct domain_device *parent = dev->parent;
-+		struct ex_phy *ex_phy = &parent->ex_dev.ex_phy[phy->number];
-+
-+		memset(ex_phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
-+	}
-+
- 	sas_unregister_dev(dev->port, dev);
- }
+--- a/include/net/bluetooth/hci_sync.h
++++ b/include/net/bluetooth/hci_sync.h
+@@ -35,6 +35,8 @@ int __hci_cmd_sync_status(struct hci_dev
+ int __hci_cmd_sync_status_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 			     const void *param, u8 event, u32 timeout,
+ 			     struct sock *sk);
++int hci_cmd_sync_status(struct hci_dev *hdev, u16 opcode, u32 plen,
++			const void *param, u32 timeout);
  
--- 
-2.43.0
-
+ void hci_cmd_sync_init(struct hci_dev *hdev);
+ void hci_cmd_sync_clear(struct hci_dev *hdev);
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -63,50 +63,6 @@ DEFINE_MUTEX(hci_cb_list_lock);
+ /* HCI ID Numbering */
+ static DEFINE_IDA(hci_index_ida);
+ 
+-static int hci_scan_req(struct hci_request *req, unsigned long opt)
+-{
+-	__u8 scan = opt;
+-
+-	BT_DBG("%s %x", req->hdev->name, scan);
+-
+-	/* Inquiry and Page scans */
+-	hci_req_add(req, HCI_OP_WRITE_SCAN_ENABLE, 1, &scan);
+-	return 0;
+-}
+-
+-static int hci_auth_req(struct hci_request *req, unsigned long opt)
+-{
+-	__u8 auth = opt;
+-
+-	BT_DBG("%s %x", req->hdev->name, auth);
+-
+-	/* Authentication */
+-	hci_req_add(req, HCI_OP_WRITE_AUTH_ENABLE, 1, &auth);
+-	return 0;
+-}
+-
+-static int hci_encrypt_req(struct hci_request *req, unsigned long opt)
+-{
+-	__u8 encrypt = opt;
+-
+-	BT_DBG("%s %x", req->hdev->name, encrypt);
+-
+-	/* Encryption */
+-	hci_req_add(req, HCI_OP_WRITE_ENCRYPT_MODE, 1, &encrypt);
+-	return 0;
+-}
+-
+-static int hci_linkpol_req(struct hci_request *req, unsigned long opt)
+-{
+-	__le16 policy = cpu_to_le16(opt);
+-
+-	BT_DBG("%s %x", req->hdev->name, policy);
+-
+-	/* Default link policy */
+-	hci_req_add(req, HCI_OP_WRITE_DEF_LINK_POLICY, 2, &policy);
+-	return 0;
+-}
+-
+ /* Get HCI device by index.
+  * Device is held on return. */
+ struct hci_dev *hci_dev_get(int index)
+@@ -733,6 +689,7 @@ int hci_dev_cmd(unsigned int cmd, void _
+ {
+ 	struct hci_dev *hdev;
+ 	struct hci_dev_req dr;
++	__le16 policy;
+ 	int err = 0;
+ 
+ 	if (copy_from_user(&dr, arg, sizeof(dr)))
+@@ -764,8 +721,8 @@ int hci_dev_cmd(unsigned int cmd, void _
+ 
+ 	switch (cmd) {
+ 	case HCISETAUTH:
+-		err = hci_req_sync(hdev, hci_auth_req, dr.dev_opt,
+-				   HCI_INIT_TIMEOUT, NULL);
++		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_AUTH_ENABLE,
++					    1, &dr.dev_opt, HCI_CMD_TIMEOUT);
+ 		break;
+ 
+ 	case HCISETENCRYPT:
+@@ -776,19 +733,23 @@ int hci_dev_cmd(unsigned int cmd, void _
+ 
+ 		if (!test_bit(HCI_AUTH, &hdev->flags)) {
+ 			/* Auth must be enabled first */
+-			err = hci_req_sync(hdev, hci_auth_req, dr.dev_opt,
+-					   HCI_INIT_TIMEOUT, NULL);
++			err = __hci_cmd_sync_status(hdev,
++						    HCI_OP_WRITE_AUTH_ENABLE,
++						    1, &dr.dev_opt,
++						    HCI_CMD_TIMEOUT);
+ 			if (err)
+ 				break;
+ 		}
+ 
+-		err = hci_req_sync(hdev, hci_encrypt_req, dr.dev_opt,
+-				   HCI_INIT_TIMEOUT, NULL);
++		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_ENCRYPT_MODE,
++					    1, &dr.dev_opt,
++					    HCI_CMD_TIMEOUT);
+ 		break;
+ 
+ 	case HCISETSCAN:
+-		err = hci_req_sync(hdev, hci_scan_req, dr.dev_opt,
+-				   HCI_INIT_TIMEOUT, NULL);
++		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_SCAN_ENABLE,
++					    1, &dr.dev_opt,
++					    HCI_CMD_TIMEOUT);
+ 
+ 		/* Ensure that the connectable and discoverable states
+ 		 * get correctly modified as this was a non-mgmt change.
+@@ -798,8 +759,11 @@ int hci_dev_cmd(unsigned int cmd, void _
+ 		break;
+ 
+ 	case HCISETLINKPOL:
+-		err = hci_req_sync(hdev, hci_linkpol_req, dr.dev_opt,
+-				   HCI_INIT_TIMEOUT, NULL);
++		policy = cpu_to_le16(dr.dev_opt);
++
++		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_DEF_LINK_POLICY,
++					    2, &policy,
++					    HCI_CMD_TIMEOUT);
+ 		break;
+ 
+ 	case HCISETLINKMODE:
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -279,6 +279,19 @@ int __hci_cmd_sync_status(struct hci_dev
+ }
+ EXPORT_SYMBOL(__hci_cmd_sync_status);
+ 
++int hci_cmd_sync_status(struct hci_dev *hdev, u16 opcode, u32 plen,
++			const void *param, u32 timeout)
++{
++	int err;
++
++	hci_req_sync_lock(hdev);
++	err = __hci_cmd_sync_status(hdev, opcode, plen, param, timeout);
++	hci_req_sync_unlock(hdev);
++
++	return err;
++}
++EXPORT_SYMBOL(hci_cmd_sync_status);
++
+ static void hci_cmd_sync_work(struct work_struct *work)
+ {
+ 	struct hci_dev *hdev = container_of(work, struct hci_dev, cmd_sync_work);
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -7798,6 +7798,8 @@ static void l2cap_conless_channel(struct
+ 
+ 	BT_DBG("chan %p, len %d", chan, skb->len);
+ 
++	l2cap_chan_lock(chan);
++
+ 	if (chan->state != BT_BOUND && chan->state != BT_CONNECTED)
+ 		goto drop;
+ 
+@@ -7814,6 +7816,7 @@ static void l2cap_conless_channel(struct
+ 	}
+ 
+ drop:
++	l2cap_chan_unlock(chan);
+ 	l2cap_chan_put(chan);
+ free_skb:
+ 	kfree_skb(skb);
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1523,18 +1523,9 @@ static int l2cap_sock_recv_cb(struct l2c
+ 	struct l2cap_pinfo *pi;
+ 	int err;
+ 
+-	/* To avoid race with sock_release, a chan lock needs to be added here
+-	 * to synchronize the sock.
+-	 */
+-	l2cap_chan_hold(chan);
+-	l2cap_chan_lock(chan);
+ 	sk = chan->data;
+-
+-	if (!sk) {
+-		l2cap_chan_unlock(chan);
+-		l2cap_chan_put(chan);
++	if (!sk)
+ 		return -ENXIO;
+-	}
+ 
+ 	pi = l2cap_pi(sk);
+ 	lock_sock(sk);
+@@ -1586,8 +1577,6 @@ static int l2cap_sock_recv_cb(struct l2c
+ 
+ done:
+ 	release_sock(sk);
+-	l2cap_chan_unlock(chan);
+-	l2cap_chan_put(chan);
+ 
+ 	return err;
+ }
 
 
 
