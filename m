@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A7993A710
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40B293A5B2
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F096128271F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D48341C20B63
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A208D1586C8;
-	Tue, 23 Jul 2024 18:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132EF158848;
+	Tue, 23 Jul 2024 18:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDGJ8+FH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvjbgpJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA7113D600;
-	Tue, 23 Jul 2024 18:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C776E157A4F;
+	Tue, 23 Jul 2024 18:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760113; cv=none; b=u+CTV+hCYeoeeidQYfiMF5mbkgfgV/AZW9UybxMJtz0a+m1S8yl0IYfGJ/M1pvbcyfKdB6F6tond07GpZsEmXEsEWyvjjJ3ZYfaD4Ig0cOk9Txjr0XDOnIbg4GfKRM64boOlwo5xjX5MctmoYQcyQyLWpPPndfkDx2AZwRqDCT8=
+	t=1721759237; cv=none; b=CDhAMHlhBeFky4/vgyXLcSZziuKULQ7jifJqjT5cgxIldub43hIuGsCLnstWJe7alKPKFzX+kG745rYXtpgwfdLlX7uiZCZztPPY+cer5OVG+trRjYEXNhxUCb9dol9UQIrazCVomidlVU21i0GNOL8Lv9krFdLZ0dgqS6FFxNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760113; c=relaxed/simple;
-	bh=5UqoxbDwXx2VcIXdoyjujmD3orObj+ivKX2DgFvtDnE=;
+	s=arc-20240116; t=1721759237; c=relaxed/simple;
+	bh=3nEuDfQLd/l+QGOmEFvmI950u9HE8wV8xddd0p+J2xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+a0e4dEb1uejh4geX18ZTucNwjkYgJ2skszMCLaLxFA/Ii2OOsdcMa+otLFRMrG4ySf4DrTCnUBRu1sKBG4yxxDETjr9uqRzkViDyrHtW7PF2hNMMgcGG5KgoEdrtWb9nrg/eBa89BdCLO31ys6wnqtOhNFHFv+smBYH6qG2WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDGJ8+FH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C2FC4AF09;
-	Tue, 23 Jul 2024 18:41:52 +0000 (UTC)
+	 MIME-Version; b=u8/L/o5oITzWEevOK2+sPZGG9uQyDMTxgizi6EF4dn4b0VkYNw9asRfhp+NB+KsrIzsW4Q9xzQbeWk7J7RTLvMcMnCyEmKQS+5qDZw1EPX+12CKsIxMnNFNWwsIHT767Wz8wvKIKQicDHRTJO9lTZ5lY0Q/5gwg3DDv36yb/0wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvjbgpJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC6DC4AF09;
+	Tue, 23 Jul 2024 18:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760113;
-	bh=5UqoxbDwXx2VcIXdoyjujmD3orObj+ivKX2DgFvtDnE=;
+	s=korg; t=1721759237;
+	bh=3nEuDfQLd/l+QGOmEFvmI950u9HE8wV8xddd0p+J2xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KDGJ8+FHqwa3AamvnUPOhYqb0K2UWnR0hmG+9a/5Emb7PzWNggp/jIBOhl+028scl
-	 TFVirNT/0ppEi0sWv2fHWs7JZLQck7oXROTYd+hpfUnoZSGG41ExIRVcSnMPIwzx6i
-	 gBJSTw0lGYOkvI338XnyvgDJ+WXlp5X8a+bBlLbE=
+	b=GvjbgpJeXqylVzuFWkuJPGDlltIiZynmqQ9ueF1IVnMP8QvbEdDU0K2Sb6qOGPLsD
+	 OX594gigY4lgS15gb55hMOc6/Qgzq5KGibT7d23pkQvVjoScIpu04LtjPpD0mFD/Xy
+	 DBpDdYbvkPLtgMGdqIEaywcVYzaTBq7QHbxFD8ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Wagner <dwagner@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 076/163] spi: Fix OCTAL mode support
+Subject: [PATCH 6.1 048/105] nvmet: always initialize cqe.result
 Date: Tue, 23 Jul 2024 20:23:25 +0200
-Message-ID: <20240723180146.405595558@linuxfoundation.org>
+Message-ID: <20240723180405.103597278@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrice Chotard <patrice.chotard@foss.st.com>
+From: Daniel Wagner <dwagner@suse.de>
 
-[ Upstream commit d6a711a898672dd873aab3844f754a3ca40723a5 ]
+[ Upstream commit cd0c1b8e045a8d2785342b385cb2684d9b48e426 ]
 
-Add OCTAL mode support.
-Issue detected using "--octal" spidev_test's option.
+The spec doesn't mandate that the first two double words (aka results)
+for the command queue entry need to be set to 0 when they are not
+used (not specified). Though, the target implemention returns 0 for TCP
+and FC but not for RDMA.
 
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Link: https://msgid.link/r/20240618132951.2743935-4-patrice.chotard@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Let's make RDMA behave the same and thus explicitly initializing the
+result field. This prevents leaking any data from the stack.
+
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c       | 6 ++++--
- include/linux/spi/spi.h | 5 +++--
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/nvme/target/core.c             | 1 +
+ drivers/nvme/target/fabrics-cmd-auth.c | 3 ---
+ drivers/nvme/target/fabrics-cmd.c      | 6 ------
+ 3 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 9304fd03bf764..fcc39523d6857 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4152,7 +4152,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 				return -EINVAL;
- 			if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
- 				xfer->tx_nbits != SPI_NBITS_DUAL &&
--				xfer->tx_nbits != SPI_NBITS_QUAD)
-+				xfer->tx_nbits != SPI_NBITS_QUAD &&
-+				xfer->tx_nbits != SPI_NBITS_OCTAL)
- 				return -EINVAL;
- 			if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
- 				!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
-@@ -4167,7 +4168,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 				return -EINVAL;
- 			if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
- 				xfer->rx_nbits != SPI_NBITS_DUAL &&
--				xfer->rx_nbits != SPI_NBITS_QUAD)
-+				xfer->rx_nbits != SPI_NBITS_QUAD &&
-+				xfer->rx_nbits != SPI_NBITS_OCTAL)
- 				return -EINVAL;
- 			if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
- 				!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 64a4deb18dd00..afe6631da1bc6 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1089,12 +1089,13 @@ struct spi_transfer {
- 	unsigned	dummy_data:1;
- 	unsigned	cs_off:1;
- 	unsigned	cs_change:1;
--	unsigned	tx_nbits:3;
--	unsigned	rx_nbits:3;
-+	unsigned	tx_nbits:4;
-+	unsigned	rx_nbits:4;
- 	unsigned	timestamped:1;
- #define	SPI_NBITS_SINGLE	0x01 /* 1-bit transfer */
- #define	SPI_NBITS_DUAL		0x02 /* 2-bit transfer */
- #define	SPI_NBITS_QUAD		0x04 /* 4-bit transfer */
-+#define	SPI_NBITS_OCTAL	0x08 /* 8-bit transfer */
- 	u8		bits_per_word;
- 	struct spi_delay	delay;
- 	struct spi_delay	cs_change_delay;
+diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
+index d2954406b2297..a68e7b1606da5 100644
+--- a/drivers/nvme/target/core.c
++++ b/drivers/nvme/target/core.c
+@@ -944,6 +944,7 @@ bool nvmet_req_init(struct nvmet_req *req, struct nvmet_cq *cq,
+ 	req->metadata_sg_cnt = 0;
+ 	req->transfer_len = 0;
+ 	req->metadata_len = 0;
++	req->cqe->result.u64 = 0;
+ 	req->cqe->status = 0;
+ 	req->cqe->sq_head = 0;
+ 	req->ns = NULL;
+diff --git a/drivers/nvme/target/fabrics-cmd-auth.c b/drivers/nvme/target/fabrics-cmd-auth.c
+index fbae76cdc2546..e0dc22fea086d 100644
+--- a/drivers/nvme/target/fabrics-cmd-auth.c
++++ b/drivers/nvme/target/fabrics-cmd-auth.c
+@@ -336,7 +336,6 @@ void nvmet_execute_auth_send(struct nvmet_req *req)
+ 		pr_debug("%s: ctrl %d qid %d nvme status %x error loc %d\n",
+ 			 __func__, ctrl->cntlid, req->sq->qid,
+ 			 status, req->error_loc);
+-	req->cqe->result.u64 = 0;
+ 	if (req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2 &&
+ 	    req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_FAILURE2) {
+ 		unsigned long auth_expire_secs = ctrl->kato ? ctrl->kato : 120;
+@@ -528,8 +527,6 @@ void nvmet_execute_auth_receive(struct nvmet_req *req)
+ 	status = nvmet_copy_to_sgl(req, 0, d, al);
+ 	kfree(d);
+ done:
+-	req->cqe->result.u64 = 0;
+-
+ 	if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2)
+ 		nvmet_auth_sq_free(req->sq);
+ 	else if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_FAILURE1) {
+diff --git a/drivers/nvme/target/fabrics-cmd.c b/drivers/nvme/target/fabrics-cmd.c
+index d8da840a1c0ed..fa9e8dc921539 100644
+--- a/drivers/nvme/target/fabrics-cmd.c
++++ b/drivers/nvme/target/fabrics-cmd.c
+@@ -225,9 +225,6 @@ static void nvmet_execute_admin_connect(struct nvmet_req *req)
+ 	if (status)
+ 		goto out;
+ 
+-	/* zero out initial completion result, assign values as needed */
+-	req->cqe->result.u32 = 0;
+-
+ 	if (c->recfmt != 0) {
+ 		pr_warn("invalid connect version (%d).\n",
+ 			le16_to_cpu(c->recfmt));
+@@ -305,9 +302,6 @@ static void nvmet_execute_io_connect(struct nvmet_req *req)
+ 	if (status)
+ 		goto out;
+ 
+-	/* zero out initial completion result, assign values as needed */
+-	req->cqe->result.u32 = 0;
+-
+ 	if (c->recfmt != 0) {
+ 		pr_warn("invalid connect version (%d).\n",
+ 			le16_to_cpu(c->recfmt));
 -- 
 2.43.0
 
