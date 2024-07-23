@@ -1,144 +1,135 @@
-Return-Path: <stable+bounces-60744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DBE0939EA1
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 12:14:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFC31939EB1
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 12:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E36A1C21FD7
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 10:14:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39E36B21E71
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 10:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2985014E2F5;
-	Tue, 23 Jul 2024 10:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9D514D71E;
+	Tue, 23 Jul 2024 10:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iA6wtirb"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KlRAv+BN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A3414BF98;
-	Tue, 23 Jul 2024 10:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4266A383AB
+	for <stable@vger.kernel.org>; Tue, 23 Jul 2024 10:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721729634; cv=none; b=KJTX8vPHgPS0iOIvJ1apeSRKf07tR/1O6OH8i94mkWQ9WG8tXidSVXoiskxBoJ8flUL1Brq8XeApMw16AB7uOfRZSUM67sHW35f7azZ7w5BBW7W8BgRSn9O4xLAM3fVOL4VU0a6/P8KmI3punOquii1h04MQkMl+FrkY4lMl4Lg=
+	t=1721730050; cv=none; b=DSrajTU12zMmrXs4KAXkSA0ZmlVcYr80SxASUn1XiNzqnMpkEMCMQBZOIEI+kEdE2dZD3WbEcLsm9FmfCIsevAqXGcT4fBuiwhU5tvKJv9DegQSEDxxJeeP1KxrqehkUQcXpEg62Nndl7NjsTq7rCxoEsUrjUcIZD7zwJ78V0Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721729634; c=relaxed/simple;
-	bh=KEk0smRLPVkFTP6+3W2ooQcQf5x72wZKLgttJGDtM8A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y9iMLysgLPDhUW5z7BJz+ThboV5esSGoNbPqNc2uEGESaHzGOENJR6x+dNm4RzPqo5WhzZ9788jphNQr7/XIBjnR3hLSYJLSHhWT4C9Yx8xme3gL3cGK/OOak9zrDooP4g0oo2n5meVMDfBE0IsgtxI36k7KTcbjQ5wcjhVTCN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iA6wtirb; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e087264e297so2903089276.3;
-        Tue, 23 Jul 2024 03:13:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721729632; x=1722334432; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KEk0smRLPVkFTP6+3W2ooQcQf5x72wZKLgttJGDtM8A=;
-        b=iA6wtirbceGJOiVFzws7sx2h8WojMApK1tW69zhEASWiMjZfLqhniCoAlqW1nFnQLQ
-         1cn8TtQXpfB7/PNtWuwl8nC+eHFU4m0+tvsz77x/PJJ9iA+qn8a0T18EJKK99U9CHzv1
-         l5szKg5Y2MvzAceq500lMdBdPsfkIgoAKNVmWW/xJ4Ao+2LydLBEMezogX365ZZfPoGF
-         huMTkJZZacncsKlQL5UHcvAEuPFEKxo3CJIvCbD+9WecH/UH+/2sWP5PhCMOO4oPubbd
-         ZUDW21xPYoVC2VU0yBT6yxBjlJHV/pWz/LBZyrTf55hgGqiss2no2QvxmD/9hDM9dDby
-         /8oA==
+	s=arc-20240116; t=1721730050; c=relaxed/simple;
+	bh=TBPirh3jKiWxpLLGLgpESD9t7UhyEC115ITRFrnTNJE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cwQjLfmfvzmV1wiXW8M63ocENrDmodqXrVUPuRyir5Cv0yKBf3EOv2ulKxWSHm3qUsKE66RXx3OPQlsXAZGF8QCUJQ+KeKrq+0yyLPRIfEfZ3I99WumlTo0RlFx3lBaxUJ4GkH1wL0mqLH3KoErl/N0DGUOdXNlxRgoUWOsZm5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KlRAv+BN; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721730048;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yhNinhvrGP79lOO1c/1IVjAHp19vKxY/aQ0LkZkFu3g=;
+	b=KlRAv+BNJLfsV79CRh3bks9rM5Tt16kvt6IPZrj7HQth6fDJt7L+8hSmnJsjjIKKhCOIKL
+	KOSQI2t1XChZgcRpyQBrS4lb0zH/tZmd0u9rN9SYzBZGLHNeZVPO5jOJv62TmH7EV7rhCn
+	YCSj3Wkeg0oEbgNZWnpcQIup1OdxiW8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-340-wmKLKENNOnugio6QiL8XiQ-1; Tue, 23 Jul 2024 06:20:46 -0400
+X-MC-Unique: wmKLKENNOnugio6QiL8XiQ-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-427d4b0d412so2493135e9.1
+        for <stable@vger.kernel.org>; Tue, 23 Jul 2024 03:20:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721729632; x=1722334432;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KEk0smRLPVkFTP6+3W2ooQcQf5x72wZKLgttJGDtM8A=;
-        b=vBTjOYb6wF0Pz5aA75MuESkDrJrFTVlOCJkWzVZekiSjjYh6xVl7mydZ+aMXmM91WT
-         Q8oMFxsBNr0BONR2V8YRxrAftsmWdXTkErezBj/TGl/s/TA+cNCQxxapuf3K/1/UmnB7
-         Qwtrn972D87w+s/yZ0lsCXpJ93uuWAkjHxa+9FNINozdy5baqO0XuYnnpxr6ch3TavVR
-         p2COZRThU/8KaUP4D9nSvKuq5Anv7ZHF0jLHfXJsHwlTRegz5CeFS+61M0pn/9n/QyM9
-         fTHya2dB3O1dKSm80UPmnb2HR+z2gLajOawqWoMMXojIZmR8cRFiA9vvc1bn4vnFB92y
-         EraA==
-X-Forwarded-Encrypted: i=1; AJvYcCU5aJAneMKMSqfVDbupnYzEULQxLq4ZwNGglxFB74Pbw2INBeXcn1kXDY9xK5Z4V8t2NlifiWeNL1M9LNiQvH3osV+vpS+mnFUX2xp7itPCMcME5rFDJBmrSEvEgV1HzfsSyg==
-X-Gm-Message-State: AOJu0YxFh7m8c0JDtuN3f8Zy+Uvlu7L9yP9zf5yaQSKk9lBlCFILHTVk
-	aGRV1vNZo3uL2BHppE+GS0BonoMGvlI/y99xrE1h0b5Kat1gtS6z5xEicaEsVUHJHBsaGmJHhrT
-	aQ2eLEgSFr7tsvhf2GLPCE3Ug5hU=
-X-Google-Smtp-Source: AGHT+IFQ4zPPSQuppKaSAmeMi32D6OCmwZWSG4R7sgAN2pLVjB8laSzPFfYfg33GVFpZciwNSLIWa2mDTWNrfVBxi1M=
-X-Received: by 2002:a05:6902:150e:b0:e08:7171:698d with SMTP id
- 3f1490d57ef6-e0871716fe2mr10571110276.20.1721729632472; Tue, 23 Jul 2024
- 03:13:52 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1721730045; x=1722334845;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yhNinhvrGP79lOO1c/1IVjAHp19vKxY/aQ0LkZkFu3g=;
+        b=sYp/qRdOkpdjVwdRThhpnD5LI+D9wPCBnhLInhzwysis6iH/uGIJ+XnWzJv61eVpEI
+         KQtoQLeEPE87LDtkAGqpVATWoRuUnJhg+spTX6MG6DxBCJhy4IUnrjHW+ZLfDYcuodgD
+         6YWZlWHLYGWkHhhmKkxQoGXk8bWnH1VdPL1Dl8PjtOhM8+3Eu5/CsjIVDofiug/HhIaA
+         /5RJE0ge7FOyDCjNOPK/T4DRdfv82S5XFxy8sNFCnq8JWr88KMpGNZow8s+Z8FyEmtlk
+         0mwDfaLp+dxUEMZvRa3cHrXVcvZw4O1Fe4qU+biencY0lEtFHH4lBAU2aig0+6gqdzdQ
+         w+vA==
+X-Forwarded-Encrypted: i=1; AJvYcCXpMpY6y/FJVq9XqsJMw7Ec6V7MrYRfyUtgVu4GWdbAGhVuqodgOwDykmEWoDKcM5JKlDgddFQNdY728BiQoNyYFy4XG1Hs
+X-Gm-Message-State: AOJu0Ywmmotiy6lIj1/n3/glBp1FY37R5bWsS4T8MWfOz/M8O+3qgLtR
+	xlSH4I6GBcxXt2iZundD8bcJzHpCy8k7ADfeUMj34vTQYR+/ZSeR4biieqhlIH5cFRjFi5CKFH6
+	pdd7qmub3UJ/g+jKgdB5cZFrqNYwCHxZ8SPvn1nuJAPCf3Pp4Km1d6e1O5rEMBQ==
+X-Received: by 2002:a05:600c:310b:b0:426:6ecc:e5c4 with SMTP id 5b1f17b1804b1-427daa713abmr43493955e9.4.1721730045321;
+        Tue, 23 Jul 2024 03:20:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFSzqwRL1LIwuRdraAOj+GaUOlgz5u6xwK3jOZXo5lxnKHsVUV0+EQ8JihhdGm97x1Wgb+v/Q==
+X-Received: by 2002:a05:600c:310b:b0:426:6ecc:e5c4 with SMTP id 5b1f17b1804b1-427daa713abmr43493865e9.4.1721730044949;
+        Tue, 23 Jul 2024 03:20:44 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:173f:4f10::f71? ([2a0d:3344:173f:4f10::f71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427f1f5d7c5sm9238405e9.1.2024.07.23.03.20.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Jul 2024 03:20:44 -0700 (PDT)
+Message-ID: <361c9ebd-d161-41a9-8690-b9e115836666@redhat.com>
+Date: Tue, 23 Jul 2024 12:20:42 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240618123422.213844892@linuxfoundation.org> <1721718387-9038-1-git-send-email-ajay.kaher@broadcom.com>
- <20240723092916.gtpvnifv2rizbyii@quack3>
-In-Reply-To: <20240723092916.gtpvnifv2rizbyii@quack3>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Tue, 23 Jul 2024 13:13:41 +0300
-Message-ID: <CAOQ4uxjGrPbq8=znBSV8i79Kj2Or4p5O5BZ0+RL1oXbxxNu3rw@mail.gmail.com>
-Subject: Re: [PATCH 5.10 387/770] fanotify: Allow users to request
- FAN_FS_ERROR events
-To: Jan Kara <jack@suse.cz>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>, gregkh@linuxfoundation.org, 
-	chuck.lever@oracle.com, krisman@collabora.com, patches@lists.linux.dev, 
-	sashal@kernel.org, stable@vger.kernel.org, adilger.kernel@dilger.ca, 
-	linux-ext4@vger.kernel.org, tytso@mit.edu, alexey.makhalov@broadcom.com, 
-	vasavi.sirnapalli@broadcom.com, florian.fainelli@broadcom.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] gve: Fix an edge case for TSO skb validity check
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Bailey Forrest <bcf@google.com>
+Cc: Praveen Kaligineedi <pkaligineedi@google.com>, netdev@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ willemb@google.com, shailend@google.com, hramamurthy@google.com,
+ csully@google.com, jfraker@google.com, stable@vger.kernel.org,
+ Jeroen de Borst <jeroendb@google.com>
+References: <20240718190221.2219835-1-pkaligineedi@google.com>
+ <6699a042ebdc5_3a5334294df@willemb.c.googlers.com.notmuch>
+ <CA+f9V1PsjukhgLDjWQvbTyhHkOWt7JDY0zPWc_G322oKmasixA@mail.gmail.com>
+ <CAF=yD-L67uvVOrmEFz=LOPP9pr7NByx9DhbS8oWMkkNCjRWqLg@mail.gmail.com>
+ <CA+f9V1NwSNpjMzCK2A3yjai4UoXPrq65=d1=wy50=o-EBvKoNQ@mail.gmail.com>
+ <CANH7hM4FEtF+VNvSg5PPPYWH8HzHpS+oQdW98=MP7cTu+nOA+g@mail.gmail.com>
+ <CAF=yD-JHDkDit0wPoKftTt3ZhtJ0gM3+E_YJsACKu916FpuCEg@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CAF=yD-JHDkDit0wPoKftTt3ZhtJ0gM3+E_YJsACKu916FpuCEg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 23, 2024 at 12:29=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
->
-> On Tue 23-07-24 12:36:27, Ajay Kaher wrote:
-> > > [ Upstream commit 9709bd548f11a092d124698118013f66e1740f9b ]
-> > >
-> > > Wire up the FAN_FS_ERROR event in the fanotify_mark syscall, allowing
-> > > user space to request the monitoring of FAN_FS_ERROR events.
-> > >
-> > > These events are limited to filesystem marks, so check it is the
-> > > case in the syscall handler.
-> >
-> > Greg,
-> >
-> > Without 9709bd548f11 in v5.10.y skips LTP fanotify22 test case, as:
-> > fanotify22.c:312: TCONF: FAN_FS_ERROR not supported in kernel
-> >
-> > With 9709bd548f11 in v5.10.220, LTP fanotify22 is failing because of
-> > timeout as no notification. To fix need to merge following two upstream
-> > commit to v5.10:
-> >
-> > 124e7c61deb27d758df5ec0521c36cf08d417f7a:
-> > 0001-ext4_fix_error_code_saved_on_super_block_during_file_system.patch
-> > https://lore.kernel.org/stable/1721717240-8786-1-git-send-email-ajay.ka=
-her@broadcom.com/T/#mf76930487697d8c1383ed5d21678fe504e8e2305
-> >
-> > 9a089b21f79b47eed240d4da7ea0d049de7c9b4d:
-> > 0001-ext4_Send_notifications_on_error.patch
-> > Link: https://lore.kernel.org/stable/1721717240-8786-1-git-send-email-a=
-jay.kaher@broadcom.com/T/#md1be98e0ecafe4f92d7b61c048e15bcf286cbd53
->
-> I know Chuck has been backporting the huge pile of fsnotify changes for
-> stable and he was running LTP so I'm a bit curious if he saw the fanotify=
-22
-> failure as well. The reason for the test failure seems to be that the
-> combination of features now present in stable has never been upstream whi=
-ch
-> confuses the test. As such I'm not sure if backporting more features to
-> stable is warranted just to fix a broken LTP test... But given the huge
-> pile Chuck has backported already I'm not strongly opposed to backporting=
- a
-> few more, there's just a question where does this stop :)
+On 7/21/24 21:10, Willem de Bruijn wrote:
+> On Fri, Jul 19, 2024 at 9:56 AM Bailey Forrest <bcf@google.com> wrote:
+>> If last_frag_size is evenly divisible by GVE_TX_MAX_BUF_SIZE_DQO, it
+>> doesn't hit the edge case we're looking for.
+>>
+>> - If it's evenly divisible, then we know it will use exactly
+>> (last_frag_size / GVE_TX_MAX_BUF_SIZE_DQO) descriptors
+> 
+> This assumes that gso_segment start is aligned with skb_frag
+> start. That is not necessarily true, right?
+> 
+> If headlen minus protocol headers is 1B, then the first segment
+> will have two descriptors { 1B, 9KB - 1 }. And the next segment
+> can have skb_frag_size - ( 9KB - 1).
+> 
+> I think the statement is correct, but because every multiple
+> of 16KB is so much larger than the max gso_size of ~9KB,
+> that a single segment will never include more than two
+> skb_frags.
 
-I'm not sure is it exactly "more features".
-The fanotify patches and ext4 patches that use them where merges as
-a feature together.
+I'm a bit lost, but what abut big TCP? that should allow (considerably) 
+more than 2 frags 16K each per segment.
 
-IOW, FAN_FS_ERROR was merged with support for a single fs (ext4)
-it would be weird to backport the feature with support for zero fs.
-Also, 5.15.y already has the ext4 patches - not sure why 5.10.y didn't get =
-them.
+In any case it looks like this needs at least some comments clarification.
 
 Thanks,
-Amir.
+
+Paolo
+
 
