@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-60921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97A193A602
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A4593A599
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93F841F234BF
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBB9B1C20AD9
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177BC156F3A;
-	Tue, 23 Jul 2024 18:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1353158A01;
+	Tue, 23 Jul 2024 18:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDgRXzPV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dezd4e3q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AA813D896;
-	Tue, 23 Jul 2024 18:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D747156F37;
+	Tue, 23 Jul 2024 18:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759444; cv=none; b=gZxFi7vG7wBBr5YTGuMz6XcnS/z5mH4R5UzjqVGrasS0xS02Zm0CAEHUxoOX3WqRdC6yKLDh6+Cg++w8LevPpjdt2lDCitSwLXwcF1OlI4r0GNl6kFGzwsbNPTFtG+YAPpz02XiOcxHnttmt05RBLYuzibMvuOt4OsfN2LKdsvg=
+	t=1721759172; cv=none; b=lqp5VepbpZQgNI53obqm5CQUvbIsKJxPhvno+6PD3GRF4fiQhRPk089FYr0UZFpBKdZO2ljyaEiyW6jSf4nl+QwggtR7qz3mX/5+lazyLxmtSXegymZURG4f23VSc0fXzwxU0vQyy6gFtbDgSXwNNm3+IMQe2qEnP+jjAarBo3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759444; c=relaxed/simple;
-	bh=YPZMrTOHy5yLszBORyNy4uibCCfAqp/cn/7l4vye7VQ=;
+	s=arc-20240116; t=1721759172; c=relaxed/simple;
+	bh=e5Oz6iEFYXv81r0pbUkCoxl+cgVnmtKc5mNnvK4WgIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bbl7IX+dl+wSbtEyxqOt5OdD2ojYWL0CSF3/lzgkBYr5B+P+zT5GmG2bSLh8KNVb57pf4kgCZ0rOWP+oScU7CQ4Ys/SEOivSy+L92VefqSsjPkzWkTkZ6/No5ACdlLeyoVTFIIeZxXpsld8dKTLY3iPvc4OuP9AI7qi6/s51G+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDgRXzPV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B21C4AF0A;
-	Tue, 23 Jul 2024 18:30:44 +0000 (UTC)
+	 MIME-Version; b=cBn5fP1AdnetYikm4woLsR2XHrx/R7gL48c7vqaKUidLvzwFhtbdi1R3fI5xSPsiGOJLOyfZiii/OuN93rUH60iuBSzrjFIzZLDCSRAfmQm/Hk6nCMz9vNpsN75ILckwW/2v4SGv5u/XsoXEhVFzuJyRjAtjN/TU4rmg96+sjGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dezd4e3q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1676FC4AF09;
+	Tue, 23 Jul 2024 18:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759444;
-	bh=YPZMrTOHy5yLszBORyNy4uibCCfAqp/cn/7l4vye7VQ=;
+	s=korg; t=1721759172;
+	bh=e5Oz6iEFYXv81r0pbUkCoxl+cgVnmtKc5mNnvK4WgIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDgRXzPVBEViKtKtfTEtLZkgMmfoEgAWbz+E7uC0qPg3mR08lTBvIR+P4wg9AHC4d
-	 UxAMfo9KYHvjwPph7icKhNpRDD+SezFpNfd0PvlvrMORPy31hbcP58l7PVNhYzT6Wo
-	 X8KpL4rTaRzV3u/pganaTXKTAWfP6DFDLXK9nnyU=
+	b=Dezd4e3qHeyhw+x9CSOT9sQhwACQA1DKRBGmVFFLx0RoBDZIirCeA+3GxYz8081Ph
+	 SkLBMjyrrtyq5/vXfKsl6iSg+/mLKhVpOLcK8nqQ2VBYSd4bDt+Ot15/jJgkXKR1Ji
+	 9nQb7xWjOhTRnbWxjF1ey7H8OX69Iq8I+2xNt/1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/129] wifi: mac80211: handle tasklet frames before stopping
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	SeongJae Park <sj@kernel.org>
+Subject: [PATCH 6.1 004/105] minmax: allow min()/max()/clamp() if the arguments have the same signedness.
 Date: Tue, 23 Jul 2024 20:22:41 +0200
-Message-ID: <20240723180405.295680553@linuxfoundation.org>
+Message-ID: <20240723180402.759487201@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +67,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 177c6ae9725d783f9e96f02593ce8fb2639be22f ]
+commit d03eba99f5bf7cbc6e2fdde3b6fa36954ad58e09 upstream.
 
-The code itself doesn't want to handle frames from the driver
-if it's already stopped, but if the tasklet was queued before
-and runs after the stop, then all bets are off. Flush queues
-before actually stopping, RX should be off at this point since
-all the interfaces are removed already, etc.
+The type-check in min()/max() is there to stop unexpected results if a
+negative value gets converted to a large unsigned value.  However it also
+rejects 'unsigned int' v 'unsigned long' compares which are common and
+never problematc.
 
-Reported-by: syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com
-Link: https://msgid.link/20240515135318.b05f11385c9a.I41c1b33a2e1814c3a7ef352cd7f2951b91785617@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Replace the 'same type' check with a 'same signedness' check.
+
+The new test isn't itself a compile time error, so use static_assert() to
+report the error and give a meaningful error message.
+
+Due to the way builtin_choose_expr() works detecting the error in the
+'non-constant' side (where static_assert() can be used) also detects
+errors when the arguments are constant.
+
+Link: https://lkml.kernel.org/r/fe7e6c542e094bfca655abcd323c1c98@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit d03eba99f5bf7cbc6e2fdde3b6fa36954ad58e09)
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/ieee80211_i.h |  2 ++
- net/mac80211/main.c        | 10 ++++++++--
- net/mac80211/util.c        |  2 ++
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ include/linux/minmax.h |   62 ++++++++++++++++++++++++++-----------------------
+ 1 file changed, 33 insertions(+), 29 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index fefaa9e902a2f..fb55014c0e898 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1846,6 +1846,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
- void ieee80211_configure_filter(struct ieee80211_local *local);
- u64 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata);
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -11,9 +11,8 @@
+  *
+  * - avoid multiple evaluations of the arguments (so side-effects like
+  *   "x++" happen only once) when non-constant.
+- * - perform strict type-checking (to generate warnings instead of
+- *   nasty runtime surprises). See the "unnecessary" pointer comparison
+- *   in __typecheck().
++ * - perform signed v unsigned type-checking (to generate compile
++ *   errors instead of nasty runtime surprises).
+  * - retain result as a constant expressions when called with only
+  *   constant expressions (to avoid tripping VLA warnings in stack
+  *   allocation usage).
+@@ -21,23 +20,30 @@
+ #define __typecheck(x, y) \
+ 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
  
-+void ieee80211_handle_queued_frames(struct ieee80211_local *local);
+-#define __no_side_effects(x, y) \
+-		(__is_constexpr(x) && __is_constexpr(y))
++/* is_signed_type() isn't a constexpr for pointer types */
++#define __is_signed(x) 								\
++	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
++		is_signed_type(typeof(x)), 0)
+ 
+-#define __safe_cmp(x, y) \
+-		(__typecheck(x, y) && __no_side_effects(x, y))
++#define __types_ok(x, y) \
++	(__is_signed(x) == __is_signed(y))
+ 
+-#define __cmp(x, y, op)	((x) op (y) ? (x) : (y))
++#define __cmp_op_min <
++#define __cmp_op_max >
+ 
+-#define __cmp_once(x, y, unique_x, unique_y, op) ({	\
++#define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
 +
- u64 ieee80211_mgmt_tx_cookie(struct ieee80211_local *local);
- int ieee80211_attach_ack_skb(struct ieee80211_local *local, struct sk_buff *skb,
- 			     u64 *cookie, gfp_t gfp);
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 4548f84451095..d7f67d81d5af9 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -301,9 +301,8 @@ u64 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata)
- 	       BSS_CHANGED_ERP_SLOT;
- }
- 
--static void ieee80211_tasklet_handler(struct tasklet_struct *t)
-+void ieee80211_handle_queued_frames(struct ieee80211_local *local)
- {
--	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
- 	struct sk_buff *skb;
- 
- 	while ((skb = skb_dequeue(&local->skb_queue)) ||
-@@ -328,6 +327,13 @@ static void ieee80211_tasklet_handler(struct tasklet_struct *t)
- 	}
- }
- 
-+static void ieee80211_tasklet_handler(struct tasklet_struct *t)
-+{
-+	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
++#define __cmp_once(op, x, y, unique_x, unique_y) ({	\
+ 		typeof(x) unique_x = (x);		\
+ 		typeof(y) unique_y = (y);		\
+-		__cmp(unique_x, unique_y, op); })
+-
+-#define __careful_cmp(x, y, op) \
+-	__builtin_choose_expr(__safe_cmp(x, y), \
+-		__cmp(x, y, op), \
+-		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
++		static_assert(__types_ok(x, y),		\
++			#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
++		__cmp(op, unique_x, unique_y); })
 +
-+	ieee80211_handle_queued_frames(local);
-+}
-+
- static void ieee80211_restart_work(struct work_struct *work)
- {
- 	struct ieee80211_local *local =
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 172173b2a9eb8..62c8b4342136e 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2313,6 +2313,8 @@ u32 ieee80211_sta_get_rates(struct ieee80211_sub_if_data *sdata,
++#define __careful_cmp(op, x, y)					\
++	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
++		__cmp(op, x, y),				\
++		__cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
  
- void ieee80211_stop_device(struct ieee80211_local *local)
- {
-+	ieee80211_handle_queued_frames(local);
-+
- 	ieee80211_led_radio(local, false);
- 	ieee80211_mod_tpt_led_trig(local, 0, IEEE80211_TPT_LEDTRIG_FL_RADIO);
+ #define __clamp(val, lo, hi)	\
+ 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+@@ -46,17 +52,15 @@
+ 		typeof(val) unique_val = (val);				\
+ 		typeof(lo) unique_lo = (lo);				\
+ 		typeof(hi) unique_hi = (hi);				\
++		static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
++				(lo) <= (hi), true),					\
++			"clamp() low limit " #lo " greater than high limit " #hi);	\
++		static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
++		static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
+ 		__clamp(unique_val, unique_lo, unique_hi); })
  
--- 
-2.43.0
-
+-#define __clamp_input_check(lo, hi)					\
+-        (BUILD_BUG_ON_ZERO(__builtin_choose_expr(			\
+-                __is_constexpr((lo) > (hi)), (lo) > (hi), false)))
+-
+ #define __careful_clamp(val, lo, hi) ({					\
+-	__clamp_input_check(lo, hi) +					\
+-	__builtin_choose_expr(__typecheck(val, lo) && __typecheck(val, hi) && \
+-			      __typecheck(hi, lo) && __is_constexpr(val) && \
+-			      __is_constexpr(lo) && __is_constexpr(hi),	\
++	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
+ 		__clamp(val, lo, hi),					\
+ 		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
+ 			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
+@@ -66,14 +70,14 @@
+  * @x: first value
+  * @y: second value
+  */
+-#define min(x, y)	__careful_cmp(x, y, <)
++#define min(x, y)	__careful_cmp(min, x, y)
+ 
+ /**
+  * max - return maximum of two values of the same or compatible types
+  * @x: first value
+  * @y: second value
+  */
+-#define max(x, y)	__careful_cmp(x, y, >)
++#define max(x, y)	__careful_cmp(max, x, y)
+ 
+ /**
+  * umin - return minimum of two non-negative values
+@@ -82,7 +86,7 @@
+  * @y: second value
+  */
+ #define umin(x, y)	\
+-	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, <)
++	__careful_cmp(min, (x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull)
+ 
+ /**
+  * umax - return maximum of two non-negative values
+@@ -90,7 +94,7 @@
+  * @y: second value
+  */
+ #define umax(x, y)	\
+-	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, >)
++	__careful_cmp(max, (x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull)
+ 
+ /**
+  * min3 - return minimum of three values
+@@ -142,7 +146,7 @@
+  * @x: first value
+  * @y: second value
+  */
+-#define min_t(type, x, y)	__careful_cmp((type)(x), (type)(y), <)
++#define min_t(type, x, y)	__careful_cmp(min, (type)(x), (type)(y))
+ 
+ /**
+  * max_t - return maximum of two values, using the specified type
+@@ -150,7 +154,7 @@
+  * @x: first value
+  * @y: second value
+  */
+-#define max_t(type, x, y)	__careful_cmp((type)(x), (type)(y), >)
++#define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
+ 
+ /**
+  * clamp_t - return a value clamped to a given range using a given type
 
 
 
