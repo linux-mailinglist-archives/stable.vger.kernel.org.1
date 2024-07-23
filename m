@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A3593A6FF
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D145A93A5DD
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 231B4283E2A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55442B218E2
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FF315884E;
-	Tue, 23 Jul 2024 18:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966D3158859;
+	Tue, 23 Jul 2024 18:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLJrkZ4n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oe8rqsU4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4122C13D896;
-	Tue, 23 Jul 2024 18:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F7A156F29;
+	Tue, 23 Jul 2024 18:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760060; cv=none; b=WURLGjAp8m0Q697g4t68AlOfpsxkHR/WNrOoRA8sJ0TaT5giXIviz0WAZjmF7ovufEddMPGFtCMz0m9YRymGyqZeAI7d/AgfGwpm8otK+uKJsVaB35rGqpha30rWKCH4+L+EX/FaNtJLRXCDqzl5Jha3NVmb5PlMzXnDVTF+aW8=
+	t=1721759356; cv=none; b=MAP9TiKRHYOaIgeR9Sx1p+2bVbabd3aFQRAGDZaaSt1tCdiIHLbqpo6CJ5WPCTIxPRsiMGTFrTk+RMs452sK1iCiNSWt4Vd849zShtD/Mj8Kdzwl2BMmZo54Uta5EkGkr7sT75f/K462m2nIbj01lkx5JUWti3bjAD38Vm4TEUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760060; c=relaxed/simple;
-	bh=DObRVz8uT/a8hro1codjtSqfa+iJNj1IzaoC0Qdojj0=;
+	s=arc-20240116; t=1721759356; c=relaxed/simple;
+	bh=ehOg+Q8uroEIvSIajdwycwAZ2tlxgp17sZe4q1Y/3dE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a7YlCHjKsWO9Z1w/ypypEmvf5YdH5J1qCDJ1PekY81c7QFqur8pVEKQY8Qge6Lyx5KEYq19CWP4VRfTNAurnbzMlHV8hjuCmOur1bjkXxH8GhAc4IAwudtEgykMlX/lK9ryOMgyuT5YbUbNm9chzKy6mzqRCgSA4bTFUOjHHJpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLJrkZ4n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D08C4AF0A;
-	Tue, 23 Jul 2024 18:40:59 +0000 (UTC)
+	 MIME-Version; b=e2IIazCBKaHlg5lFzNuCwK05s20azIw40a3B6t5W3YYTm3H6furr8jD08GiB/5WHgCxWVLgxC0ev+gi5rZf82AyEWHACo82RcV19XVzXsDnl82QPiQo/KnHxiLbrCvAmp24KFBAaxwOBhYIg05ekPDHi7pZ1nuS6tJ8dP6/3mis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oe8rqsU4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C63C4AF09;
+	Tue, 23 Jul 2024 18:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760059;
-	bh=DObRVz8uT/a8hro1codjtSqfa+iJNj1IzaoC0Qdojj0=;
+	s=korg; t=1721759356;
+	bh=ehOg+Q8uroEIvSIajdwycwAZ2tlxgp17sZe4q1Y/3dE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLJrkZ4nWq/Zgr/PC6oaV8upho6Y6ReM3TCkGWx5qw7sq/V2bCw2xo4DX+0+0/Rov
-	 4UP/9qNclmuzX00F2JsxHyWR2qu53Ay4ad5XurQzO07BjyCo8O0jBJegmk0OUSleKG
-	 poGdRMcjV8MfUNKNyWbhAGgDpxNTOXhwEGJ/jU0o=
+	b=Oe8rqsU4rzrFMYRdZ5gqRXfZFqIbwAZuWGypmCyrByBzDq66ABpLF/rreJVzz3pfy
+	 7PrMK4fwlP11VdqqFhDOdsgYzg//Xqcw8cb9KFzdoS3zno6ie3GBZSxVCUDKBWOicn
+	 fTc6IYjXDmO1R7bur0BRvVZrjnKIf8knfzlm3cd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Yu <jack.yu@realtek.com>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 089/163] ASoC: rt722-sdca-sdw: add silence detection register as volatile
+Subject: [PATCH 6.1 061/105] ASoC: ti: omap-hdmi: Fix too long driver name
 Date: Tue, 23 Jul 2024 20:23:38 +0200
-Message-ID: <20240723180146.915437970@linuxfoundation.org>
+Message-ID: <20240723180405.599003204@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Yu <jack.yu@realtek.com>
+From: Primoz Fiser <primoz.fiser@norik.com>
 
-[ Upstream commit 968c974c08106fcf911d8d390d0f049af855d348 ]
+[ Upstream commit 524d3f126362b6033e92cbe107ae2158d7fbff94 ]
 
-Including silence detection register as volatile.
+Set driver name to "HDMI". This simplifies the code and gets rid of
+the following error messages:
 
-Signed-off-by: Jack Yu <jack.yu@realtek.com>
-Link: https://msgid.link/r/c66a6bd6d220426793096b42baf85437@realtek.com
+  ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
+
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20240610125847.773394-1-primoz.fiser@norik.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt722-sdca-sdw.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/ti/omap-hdmi.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/sound/soc/codecs/rt722-sdca-sdw.c b/sound/soc/codecs/rt722-sdca-sdw.c
-index 65d584c1886e8..0a14198f8a424 100644
---- a/sound/soc/codecs/rt722-sdca-sdw.c
-+++ b/sound/soc/codecs/rt722-sdca-sdw.c
-@@ -68,6 +68,7 @@ static bool rt722_sdca_mbq_readable_register(struct device *dev, unsigned int re
- 	case 0x200007f:
- 	case 0x2000082 ... 0x200008e:
- 	case 0x2000090 ... 0x2000094:
-+	case 0x3110000:
- 	case 0x5300000 ... 0x5300002:
- 	case 0x5400002:
- 	case 0x5600000 ... 0x5600007:
-@@ -125,6 +126,7 @@ static bool rt722_sdca_mbq_volatile_register(struct device *dev, unsigned int re
- 	case 0x2000067:
- 	case 0x2000084:
- 	case 0x2000086:
-+	case 0x3110000:
- 		return true;
- 	default:
- 		return false;
+diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
+index 0dc0475670ffe..554e7896e8053 100644
+--- a/sound/soc/ti/omap-hdmi.c
++++ b/sound/soc/ti/omap-hdmi.c
+@@ -354,11 +354,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
+ 	if (!card)
+ 		return -ENOMEM;
+ 
+-	card->name = devm_kasprintf(dev, GFP_KERNEL,
+-				    "HDMI %s", dev_name(ad->dssdev));
+-	if (!card->name)
+-		return -ENOMEM;
+-
++	card->name = "HDMI";
+ 	card->owner = THIS_MODULE;
+ 	card->dai_link =
+ 		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
 -- 
 2.43.0
 
