@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-60885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC3993A5D8
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7979593A714
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DC42833DD
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:29:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BAA0283724
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095A9158859;
-	Tue, 23 Jul 2024 18:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78031586CB;
+	Tue, 23 Jul 2024 18:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blM8waX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKxs4sA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDEF157A4F;
-	Tue, 23 Jul 2024 18:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859FF13D600;
+	Tue, 23 Jul 2024 18:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759341; cv=none; b=FokdFIUZXsNBk/WEkVYrPmuxrqlT4PqSTUGVaQkTG0RRLr4Z6nezmsG4iRP3P6jpgCBtHBN7AWoUyIrIFAcQZ7cWNTS0q+tWBKN+lHIQ461VEcu/f7EGN9XMWHJNNFiYALCGxwpDDift8xOxY/ytzuYcUXQl8EBmofsiHY2EfRs=
+	t=1721760125; cv=none; b=EHWKUrI4PscariT0qsa8F7nCUZJFeRA5A3HHKZ0RtELEaviuNjzGJTZrdDtsB1qwR+L5jNpKvqNqpAjW6IjvDnUS+arwrh3pLWLz7taqA89/EdNOLZxyljKtb5zvP6SkpBdctxabuJbyyiXO2XLiZtIKYF061bjXLktW0aJuFRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759341; c=relaxed/simple;
-	bh=m91AIoPLJwPS5Vx8/6ZGqwuhbSQjNQ/z2IbARfLmS28=;
+	s=arc-20240116; t=1721760125; c=relaxed/simple;
+	bh=oSj0Vr9+AsMaVNnOzqn7OmiTDrzWpSO423c0SBGzAiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIrt19jZIsq+bVaoH9LkPbUtTYqYqP7LjzEQvYl5jmqAPirNdWBYxR5yuikcVB38TYpndQfUjPR0SuiU1/wSsOeBfcRR5oYugYuBKJp5FoGPFXJTpgmgGg3XRCyoLc9JwgjZEUDOlczUW+jl5hd8gs1XFPWY/cPiKZMWAEPbNzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blM8waX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC88C4AF09;
-	Tue, 23 Jul 2024 18:29:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=htqx62RvV6BZUZSKjLywalDpbkS9mrzO+FHq3oQqqKocy/Xz7smGJdtXDphybq1+ktNuH4twFWx0WSZVBj+MaPBh9nMi3CW0zMTue+6U8OWxoAm84qB1iiB2kKGik+BWQy8+e41WM8tbVuSPsXW00TRt9GJz/hEq5LPOGKDrdac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKxs4sA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E93C4AF0B;
+	Tue, 23 Jul 2024 18:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759341;
-	bh=m91AIoPLJwPS5Vx8/6ZGqwuhbSQjNQ/z2IbARfLmS28=;
+	s=korg; t=1721760125;
+	bh=oSj0Vr9+AsMaVNnOzqn7OmiTDrzWpSO423c0SBGzAiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blM8waX6lLhHugunODNJNGUa9aQfwZodINoFLb/hO2Tv+cnNS/eFauetL7ZzV7QJQ
-	 vhA4fPvLL3vnI5ZM5Thijyb03YbxVnKpkS5eByTHveJte40HwrGeRq9ar2ic2+dX1V
-	 2by7ZG+lFrFhmoK6VWcql895wwQ99mw+091dupNc=
+	b=FKxs4sA8kkzEdTcBrvxLjU1CipeTFIHLtOmN6ibtgM3UaRN5+4VbOWUQ7Kl6NaTEI
+	 c1AXB1hPFgNM0QssZfFu1kPqr6Oo1t4+CuXKYb83IdDop0sYgooF7/O5t2+nTmWnvL
+	 PqedU7mnlxyeC18GOLuE9HitvFABKuYeoIEKV3Qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Agathe Boutmy <agathe@boutmy.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/105] Bluetooth: hci_core: cancel all works upon hci_unregister_dev()
+Subject: [PATCH 6.9 111/163] platform/x86: lg-laptop: Remove LGEX0815 hotkey handling
 Date: Tue, 23 Jul 2024 20:24:00 +0200
-Message-ID: <20240723180406.443145835@linuxfoundation.org>
+Message-ID: <20240723180147.764809594@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 0d151a103775dd9645c78c97f77d6e2a5298d913 ]
+[ Upstream commit 413c204595ca98a4f33414a948c18d7314087342 ]
 
-syzbot is reporting that calling hci_release_dev() from hci_error_reset()
-due to hci_dev_put() from hci_error_reset() can cause deadlock at
-destroy_workqueue(), for hci_error_reset() is called from
-hdev->req_workqueue which destroy_workqueue() needs to flush.
+The rfkill hotkey handling is already provided by the wireless-hotkey
+driver. Remove the now unnecessary rfkill hotkey handling to avoid
+duplicating functionality.
 
-We need to make sure that hdev->{rx_work,cmd_work,tx_work} which are
-queued into hdev->workqueue and hdev->{power_on,error_reset} which are
-queued into hdev->req_workqueue are no longer running by the moment
+The ACPI notify handler still prints debugging information when
+receiving ACPI notifications to aid in reverse-engineering.
 
-       destroy_workqueue(hdev->workqueue);
-       destroy_workqueue(hdev->req_workqueue);
-
-are called from hci_release_dev().
-
-Call cancel_work_sync() on these work items from hci_unregister_dev()
-as soon as hdev->list is removed from hci_dev_list.
-
-Reported-by: syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=da0a9c9721e36db712e8
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Agathe Boutmy <agathe@boutmy.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606233540.9774-3-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/x86/lg-laptop.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index d6be3cb86598e..3b1b0fbd1240a 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2727,7 +2727,11 @@ void hci_unregister_dev(struct hci_dev *hdev)
- 	list_del(&hdev->list);
- 	write_unlock(&hci_dev_list_lock);
+diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
+index e714ee6298dda..5d4df782ce8e1 100644
+--- a/drivers/platform/x86/lg-laptop.c
++++ b/drivers/platform/x86/lg-laptop.c
+@@ -84,7 +84,6 @@ static const struct key_entry wmi_keymap[] = {
+ 					  * this key both sends an event and
+ 					  * changes backlight level.
+ 					  */
+-	{KE_KEY, 0x80, {KEY_RFKILL} },
+ 	{KE_END, 0}
+ };
  
-+	cancel_work_sync(&hdev->rx_work);
-+	cancel_work_sync(&hdev->cmd_work);
-+	cancel_work_sync(&hdev->tx_work);
- 	cancel_work_sync(&hdev->power_on);
-+	cancel_work_sync(&hdev->error_reset);
+@@ -272,14 +271,7 @@ static void wmi_input_setup(void)
  
- 	hci_cmd_sync_clear(hdev);
+ static void acpi_notify(struct acpi_device *device, u32 event)
+ {
+-	struct key_entry *key;
+-
+ 	acpi_handle_debug(device->handle, "notify: %d\n", event);
+-	if (inited & INIT_SPARSE_KEYMAP) {
+-		key = sparse_keymap_entry_from_scancode(wmi_input_dev, 0x80);
+-		if (key && key->type == KE_KEY)
+-			sparse_keymap_report_entry(wmi_input_dev, key, 1, true);
+-	}
+ }
  
+ static ssize_t fan_mode_store(struct device *dev,
 -- 
 2.43.0
 
