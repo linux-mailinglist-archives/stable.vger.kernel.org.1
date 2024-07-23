@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330E293A72C
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD4A493A680
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE5291F2397C
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D351283497
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F723158873;
-	Tue, 23 Jul 2024 18:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FE5158871;
+	Tue, 23 Jul 2024 18:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sC5/XVqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXXBW7Q3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8521581F4;
-	Tue, 23 Jul 2024 18:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2A915821A;
+	Tue, 23 Jul 2024 18:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760187; cv=none; b=ojTdZYSOxWhj5JgW7pM6EVZ43GGBBOKxz0bw/c5Ru8m91byGrhiB+dEHUSmqKhHgDqMQkgEnFKX1fit4WhwOb89j+lvtt4W+w8ajz/CbE1ldLKU0Dm0yQPlRIZ0wHo+Pf6KcfUszq0wzqFI+pMmNgW2eEWnCc6FdGj7iZtk6Y7o=
+	t=1721759742; cv=none; b=Ik1rRNmOrWph3FESXM3h2/JcfQ0JedEtMewFk4/LH8B1T4zXUZL4dxxj9M1o8oggM53O/8CUeSWdNIeLhcKyBuWjqn7wA0BC+8fMxrChJ466JRl1z5n5TAtMMkNLJrNERzdSG/zCW83OK38zRtgGilYZPFqcE/zqMHdehVEmFGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760187; c=relaxed/simple;
-	bh=mcqRJzvS6+BHdYXJBxTxwzwSfrR5Nvtri/hOCi45320=;
+	s=arc-20240116; t=1721759742; c=relaxed/simple;
+	bh=M9o7sUp1Xq912wDI2fi4ZGu+sC3UK2HNQIrJHiHk6no=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUiSsgbqhAGMU0AbhB/9E4lRhLTGYDnZbwMPv1CsE36aobSPP1PwpokATYbng7I75AFgAEuH/DcjS/PKY1via095DO4F1zYKD26miZCebBifA8RlVN7TPGiQ0prlvnVFJ8wGqvC3ecMX+84bvt/0PYlCFOIbm9udWx0zISOs0+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sC5/XVqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C75C4AF0A;
-	Tue, 23 Jul 2024 18:43:06 +0000 (UTC)
+	 MIME-Version; b=VJb+QtoYvtaWMdTo1z+lhWjm0oIvPUamFu+LMHo4s+1SA6aQfUrdqjmOuBDrfxmGj+3bG+O2Z62Auc6dLLvRLWX+kpDRTZw7YUCxA1feleLL94pU0eAvOToyKyjC6hBUfFWN8IeCeoBNJ48u/fdNAPaCEyF8yd6TRq4FCjuixMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXXBW7Q3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E82C4AF09;
+	Tue, 23 Jul 2024 18:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760187;
-	bh=mcqRJzvS6+BHdYXJBxTxwzwSfrR5Nvtri/hOCi45320=;
+	s=korg; t=1721759741;
+	bh=M9o7sUp1Xq912wDI2fi4ZGu+sC3UK2HNQIrJHiHk6no=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sC5/XVqzqXYjtWz5Oer1m+0E0HTzd53hDDH2noLACVR9VOs4A3vgy3/XD1TNXmdqP
-	 +PyY0SYHX6Zfp46oRKq15kMKpbmXZqB4A3EFokvUDj9fuimdQVOkgRmCY0Lwsl9OBT
-	 6q02CJmyfclGgO/WT94wjl25xVQSrSKsD+p1BzAg=
+	b=yXXBW7Q3aQQM8GtoO5NiYz6UrUggUyQ4hUOTbCm6/Meze5wKJrk0LXGlE9Fzpg094
+	 myHH+czbZf1nEUy2LecPNj4KTtcCYTb5lj7S8LxA5/oiY6+LZ9ppQZXB1nWnwBFoGb
+	 Ay7yrZGpi+eYASxY2ulU/5k8nIuWs398fvLriNHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 130/163] Bluetooth: btnxpuart: Enable Power Save feature on startup
-Date: Tue, 23 Jul 2024 20:24:19 +0200
-Message-ID: <20240723180148.496066671@linuxfoundation.org>
+Subject: [PATCH 6.6 112/129] ASoC: SOF: Intel: hda-pcm: Limit the maximum number of periods by MAX_BDL_ENTRIES
+Date: Tue, 23 Jul 2024 20:24:20 +0200
+Message-ID: <20240723180409.120100257@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 4183a7be77009fc31c5760429fe095f163bf96a9 ]
+[ Upstream commit 82bb8db96610b558920b8c57cd250ec90567d79b ]
 
-This sets the default power save mode setting to enabled.
+The HDaudio specification Section 3.6.2 limits the number of BDL entries to 256.
 
-The power save feature is now stable and stress test issues, such as the
-TX timeout error, have been resolved.
-commit c7ee0bc8db32 ("Bluetooth: btnxpuart: Resolve TX timeout error in
-power save stress test")
+Make sure we don't allow more periods than this normative value.
 
-With this setting, the driver will send the vendor command to FW at
-startup, to enable power save feature.
-
-User can disable this feature using the following vendor command:
-hcitool cmd 3f 23 03 00 00 (HCI_NXP_AUTO_SLEEP_MODE)
-
-Signed-off-by: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://patch.msgid.link/20240704090106.371497-1-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btnxpuart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/intel/hda-pcm.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
-index 9d0c7e278114b..9bfa9a6ad56c8 100644
---- a/drivers/bluetooth/btnxpuart.c
-+++ b/drivers/bluetooth/btnxpuart.c
-@@ -281,7 +281,7 @@ static u8 crc8_table[CRC8_TABLE_SIZE];
+diff --git a/sound/soc/sof/intel/hda-pcm.c b/sound/soc/sof/intel/hda-pcm.c
+index f23c72cdff489..7d17d586ed9db 100644
+--- a/sound/soc/sof/intel/hda-pcm.c
++++ b/sound/soc/sof/intel/hda-pcm.c
+@@ -254,6 +254,12 @@ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
+ 	snd_pcm_hw_constraint_integer(substream->runtime,
+ 				      SNDRV_PCM_HW_PARAM_PERIODS);
  
- /* Default configurations */
- #define DEFAULT_H2C_WAKEUP_MODE	WAKEUP_METHOD_BREAK
--#define DEFAULT_PS_MODE		PS_MODE_DISABLE
-+#define DEFAULT_PS_MODE		PS_MODE_ENABLE
- #define FW_INIT_BAUDRATE	HCI_NXP_PRI_BAUDRATE
- 
- static struct sk_buff *nxp_drv_send_cmd(struct hci_dev *hdev, u16 opcode,
++	/* Limit the maximum number of periods to not exceed the BDL entries count */
++	if (runtime->hw.periods_max > HDA_DSP_MAX_BDL_ENTRIES)
++		snd_pcm_hw_constraint_minmax(runtime, SNDRV_PCM_HW_PARAM_PERIODS,
++					     runtime->hw.periods_min,
++					     HDA_DSP_MAX_BDL_ENTRIES);
++
+ 	/* Only S16 and S32 supported by HDA hardware when used without DSP */
+ 	if (sdev->dspless_mode_selected)
+ 		snd_pcm_hw_constraint_mask64(substream->runtime, SNDRV_PCM_HW_PARAM_FORMAT,
 -- 
 2.43.0
 
