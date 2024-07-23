@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842AB93A6B6
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:37:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B865493A61A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EEA92822D7
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:37:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73A3F28309B
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54BB157A55;
-	Tue, 23 Jul 2024 18:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5175D156F29;
+	Tue, 23 Jul 2024 18:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwIQeDzb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jdr7Kgfg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A469F13C3F5;
-	Tue, 23 Jul 2024 18:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6F2155351;
+	Tue, 23 Jul 2024 18:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759875; cv=none; b=gIzDkmaKGWPk717audbapte8FeS6rDuE3QBlCpQPW+zwOA2VtOAraphPcRWFzHLEHg1CgCEuVJA8E9fy9U+ZUsdHsewLWLSnUYT33l8QXWlUAJiIVUOO98tROJB8V6d7W+v0Hm1lUKFGtzwtMxLgPKUOKAm5haLa2WwtlG8NB9I=
+	t=1721759498; cv=none; b=Vc7SEkNmHTRsGmFE208bmOdub+aVjA5ryLxHk16YOn/ORlMIQ+fJ4+JQDbea3nEJ0a/PC1nLWKtZxiJdQho4nRrUaWu+wtMOieD3YRHfoH+tbAr+2yaIfV8G/86+YMvejcmgAFZ0oq5hbcCdBjeXV6PXWrrPtDsVOMIkYyJFp4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759875; c=relaxed/simple;
-	bh=bPByfWGBaJyKAgP1i2xj8ezuqxJVXoMwBF1qC+QbCf8=;
+	s=arc-20240116; t=1721759498; c=relaxed/simple;
+	bh=NznWhy70FTo29nD3p+wnR4X6jyLb3pYOGkfpCiebQ4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TUGC1WOYjhnSXNiTtXmcN0FAS7zKxo5oKfY5HQCn+BipLisax1gsFTxLM8XWYkguWnOtqrEaYB1gsOXVL9U0Kg9Ni8LIcR0/k3lkLFLXCCUcDm0ZZf2OpVqmkbqKkDi0lHxmZdnRTY639QuYhMT1YeDs/OHCgF+2a+Hwal3NByo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwIQeDzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24876C4AF09;
-	Tue, 23 Jul 2024 18:37:54 +0000 (UTC)
+	 MIME-Version; b=VUQiSeOJLyTABzV4X+oJL9qXDfeZF2nZY/zvTpMvK29FSb4jm0aVTy8rGRY9mzsGf+9wi1taTVsxMj7pp6qgLTdW4306hY5cDzTRumjUHfxD3/M8RZ07frkwZuTwzck+qobPhDDuau8FLho3yqQu90JzuZ80MDeaaN/ZSNcrXho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jdr7Kgfg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9404DC4AF09;
+	Tue, 23 Jul 2024 18:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759875;
-	bh=bPByfWGBaJyKAgP1i2xj8ezuqxJVXoMwBF1qC+QbCf8=;
+	s=korg; t=1721759497;
+	bh=NznWhy70FTo29nD3p+wnR4X6jyLb3pYOGkfpCiebQ4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwIQeDzbLvaWp+pMjd42aqJzH4YaB7LAFgQWUmJIn2774ImcEa0CuBs0O4aBKZb3w
-	 LJUSpaOGHMDDc3FWyyfWMOl6plt1iws84L5JiXqkWP0CXHy9m7QvYlr/MAP7ujaFnF
-	 UDLIO8C+pcvYo1OjDycHOPjbdpwY/f158LkCVfrE=
+	b=Jdr7KgfgVtSOzQD7B9Bf5+iNodXovlmUilrSfm1bmExFLZpw1zu3yIO9UL9LmAK0P
+	 DGVG15mrGSgukVlqrDd2evuKOcjG414e4foYeuBi48X/FNwZAM+3HEH8ZHop6e9HSV
+	 HygOKmEp3CkUeqIG0IU4wSPxATEaj2bn5+jgRx4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 027/163] selftests/overlayfs: Fix build error on ppc64
+Subject: [PATCH 6.6 008/129] ACPI: EC: Abort address space access upon error
 Date: Tue, 23 Jul 2024 20:22:36 +0200
-Message-ID: <20240723180144.522775996@linuxfoundation.org>
+Message-ID: <20240723180405.102607483@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit e8b8c5264d4ebd248f60a5cef077fe615806e7a0 ]
+[ Upstream commit f6f172dc6a6d7775b2df6adfd1350700e9a847ec ]
 
-Fix build error on ppc64:
-  dev_in_maps.c: In function ‘get_file_dev_and_inode’:
-  dev_in_maps.c:60:59: error: format ‘%llu’ expects argument of type
-  ‘long long unsigned int *’, but argument 7 has type ‘__u64 *’ {aka ‘long
-  unsigned int *’} [-Werror=format=]
+When a multi-byte address space access is requested, acpi_ec_read()/
+acpi_ec_write() is being called multiple times.
 
-By switching to unsigned long long for u64 for ppc64 builds.
+Abort such operations if a single call to acpi_ec_read() /
+acpi_ec_write() fails, as the data read from / written to the EC
+might be incomplete.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/ec.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
-index 759f86e7d263e..2862aae58b79a 100644
---- a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
-+++ b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #define _GNU_SOURCE
-+#define __SANE_USERSPACE_TYPES__ // Use ll64
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index bdeae6ca9f059..3a2103da6a21c 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1333,10 +1333,13 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_enable(ec);
  
- #include <inttypes.h>
- #include <unistd.h>
+-	for (i = 0; i < bytes; ++i, ++address, ++value)
++	for (i = 0; i < bytes; ++i, ++address, ++value) {
+ 		result = (function == ACPI_READ) ?
+ 			acpi_ec_read(ec, address, value) :
+ 			acpi_ec_write(ec, address, *value);
++		if (result < 0)
++			break;
++	}
+ 
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_disable(ec);
 -- 
 2.43.0
 
