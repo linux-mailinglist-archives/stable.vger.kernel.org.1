@@ -1,83 +1,160 @@
-Return-Path: <stable+bounces-60768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5CA93A07A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 14:21:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A68B93A07F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 14:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDE4F1C20B4A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 12:21:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0400D282FB7
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 12:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A6F152181;
-	Tue, 23 Jul 2024 12:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA80115219E;
+	Tue, 23 Jul 2024 12:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acL7sdIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwnVNnef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA52B1514F6
-	for <stable@vger.kernel.org>; Tue, 23 Jul 2024 12:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7917114AD17;
+	Tue, 23 Jul 2024 12:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721737260; cv=none; b=uGtzwUh6+cwlzehxdcDm8KTiZyUr6/PH/stkjzFbjzR4ujaQB1wwFhz6dj1g9hHAlomdm40sLRYtLLuhX4uHrs4nP58T76rEyYSr6CfP5WkzEPXKj1DuSbGE7CHwSmT+vtkKq7U4wOPknaqv99i7UFYQSbhrk7lu6I7wfggla4A=
+	t=1721737736; cv=none; b=SGnzaco45x+BXH71GRQ026XC9Bl1flkl1beVSVyoqvbQgER1EgU89ZhNwO5mZOvdfV9GMTMDX7iS/j1xoP2UCiFs/pyPzrG+dM9znQCF6BwzUhWmHdl4CR652C4id0snpdHwPQL6IkdckA+Yu9GyIQK0yAuwosdXBgI8vssVTOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721737260; c=relaxed/simple;
-	bh=+epO4cxc9Ps0LL2DvOYYUBvh6+A3szvyXdbvG3+yGFw=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oSCIDhtTyGr0/HI/ILHrWns9P7t/+1F6rcccf9POiBPbnvWFtij2APAfbaSG2XlSwbWqseXCMvWPQBmoUnFunxcWiis17OqyHybPuc2lV/8HhC+br3GYZz7xdz/u7092eZDu9gKnn8L3Y5qhp35iljEneMSbSa/pMOWgL8buya0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acL7sdIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164A2C4AF09;
-	Tue, 23 Jul 2024 12:20:59 +0000 (UTC)
+	s=arc-20240116; t=1721737736; c=relaxed/simple;
+	bh=awSwb2cboI6RqbmY+PFcqfIX6SEr4n5iGukXM6aXalY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GTg5VmjH0wzVoRhKoFoF0ILftnBPmI9N13D79Vl5hQc07OhXeqAZuY9VFbNwc7pCWezbEIjBD6b4ZRO2EezBgaQaNZdKiXGpMAZfYAbxkTwDA3F3T1gpcnSBhPePQI//wT13zCO6uLfBabGGHddYKDZ5oj9yKjs/AaxxmUbPjuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwnVNnef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A50C4AF09;
+	Tue, 23 Jul 2024 12:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721737260;
-	bh=+epO4cxc9Ps0LL2DvOYYUBvh6+A3szvyXdbvG3+yGFw=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=acL7sdITzuvwVA3GvSRf+A8cQqxUdopN8pbz9epGrXCl6gfHc0jjLc7B2WgQ/jtKi
-	 WrqUziEEjLoviqkSR+prIBjZkc/EWMisAW9zrvVq21WUnwaS5RJ09A96ATi1ddhiEP
-	 EGsxGwSs75yMOpDLVpeHz+spkWNKZ3KRCcIfgOUE=
-Date: Tue, 23 Jul 2024 14:20:57 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: rafael.j.wysocki@intel.com, ebiggers@kernel.org,
-	oleksandr@natalenko.name, s.l-h@gmx.de, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] thermal: core: Allow thermal zones to
- tell the core to ignore" failed to apply to 6.10-stable tree
-Message-ID: <2024072348-penknife-heroism-3415@gregkh>
-References: <2024072302-policy-spleen-3156@gregkh>
+	s=korg; t=1721737736;
+	bh=awSwb2cboI6RqbmY+PFcqfIX6SEr4n5iGukXM6aXalY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lwnVNnefIrTL2KtFIWWEOSfniUcnhU+7QrZVSZ6Ee62qJyB7KzRneenMKmBMJLA6L
+	 zOeaCOs8bY2/aHQb0OjWvTiKcCL/zJ1ai2+UOHVCbZ8igUslc158dZVPpZR3lHVlAZ
+	 3d0xSFemGUMApDxwLIoz69sO7/nXClkpEM6lkCd4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 6.10 00/11] 6.10.1-rc2 review
+Date: Tue, 23 Jul 2024 14:28:51 +0200
+Message-ID: <20240723122838.406690588@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024072302-policy-spleen-3156@gregkh>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.1-rc2.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.10.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.10.1-rc2
+X-KernelTest-Deadline: 2024-07-25T12:28+00:00
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 23, 2024 at 02:17:02PM +0200, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.10-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x e528be3c87be953b73e7826a2d7e4b837cbad39d
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072302-policy-spleen-3156@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
-> 
-> Possible dependencies:
-> 
-> e528be3c87be ("thermal: core: Allow thermal zones to tell the core to ignore them")
-> 7c8267275de6 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+This is the start of the stable review cycle for the 6.10.1 release.
+There are 11 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-Nevermind, I fixed this up by hand.
+Responses should be made by Thu, 25 Jul 2024 12:28:30 +0000.
+Anything received after that time might be too late.
+
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.1-rc2.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+and the diffstat can be found below.
+
+thanks,
 
 greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.10.1-rc2
+
+Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+    thermal: core: Allow thermal zones to tell the core to ignore them
+
+Pavel Begunkov <asml.silence@gmail.com>
+    io_uring: fix error pbuf checking
+
+Richard Fitzgerald <rf@opensource.cirrus.com>
+    ASoC: cs35l56: Limit Speaker Volume to +12dB maximum
+
+Richard Fitzgerald <rf@opensource.cirrus.com>
+    ASoC: cs35l56: Use header defines for Speaker Volume control definition
+
+Hao Ge <gehao@kylinos.cn>
+    tpm: Use auth only after NULL check in tpm_buf_check_hmac_response()
+
+David Howells <dhowells@redhat.com>
+    cifs: Fix setting of zero_point after DIO write
+
+David Howells <dhowells@redhat.com>
+    cifs: Fix server re-repick on subrequest retry
+
+Steve French <stfrench@microsoft.com>
+    cifs: fix noisy message on copy_file_range
+
+David Howells <dhowells@redhat.com>
+    cifs: Fix missing fscache invalidation
+
+David Howells <dhowells@redhat.com>
+    cifs: Fix missing error code set
+
+Kees Cook <kees@kernel.org>
+    ext4: use memtostr_pad() for s_volume_name
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                    |  4 +--
+ drivers/char/tpm/tpm2-sessions.c            |  5 +--
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c |  7 +++-
+ drivers/thermal/thermal_core.c              | 51 ++++++++++++++---------------
+ drivers/thermal/thermal_core.h              |  3 ++
+ drivers/thermal/thermal_helpers.c           |  2 ++
+ fs/ext4/ext4.h                              |  2 +-
+ fs/ext4/ioctl.c                             |  2 +-
+ fs/smb/client/cifsfs.c                      |  2 +-
+ fs/smb/client/file.c                        | 21 +++++++++---
+ fs/smb/client/smb2pdu.c                     |  3 --
+ include/sound/cs35l56.h                     |  2 +-
+ io_uring/kbuf.c                             |  4 ++-
+ sound/soc/codecs/cs35l56.c                  |  6 +++-
+ 14 files changed, 69 insertions(+), 45 deletions(-)
+
+
 
