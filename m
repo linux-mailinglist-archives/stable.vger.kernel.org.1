@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B79693A711
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD8493A5A7
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D31A1C21ADE
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1505E1C2214F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2A015884E;
-	Tue, 23 Jul 2024 18:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E0815886B;
+	Tue, 23 Jul 2024 18:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INd1Zvyc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRXONjC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF6A13D600;
-	Tue, 23 Jul 2024 18:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6BF156F37;
+	Tue, 23 Jul 2024 18:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760116; cv=none; b=hZ5aGyqTCukKtL7hlOwz1Cxvy8E0QbXP3bLWm4VaDZptjuaKN0iXbmZFgXAK8/jfJ8mdV4lyZGu14Y4KvjbtpG0gI6u1pvf2fOytTVEuOKlBnlAK8l5l48VxGZJg3UnyW1asdoABcwvHSVMX9FTR1C6TImEjpZ9ThMltVnoWzYM=
+	t=1721759208; cv=none; b=LulJvuggyKCyOT2F/JTaOcYyAauxXwapGPFhZ6tJcd71y7a8MFJegnkZ1wAnqQEk7OdULPwKRO/RuZeN/Yosj0hr+nHCeXECLTyS9++415DYn54Ltz5G+zMNaI5u+1zjQIfH9a7QKT19Dw7jC2Rd54u3O9MCsI+ExEojDHpbJwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760116; c=relaxed/simple;
-	bh=RnHHvpQA8gL+09qcVi3pbCObbnQEBh3nPwr8oAqNEqE=;
+	s=arc-20240116; t=1721759208; c=relaxed/simple;
+	bh=BETKXisDMwTL1JparBljnPqP+onBZJJ11rjJASxxpJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MP7/WC9hLIVmauxeYElIhkCG+G/Lejl9x+UDC0wd9nrdBf+Tx3Brt+nKefxGqvc1cg2CIhXzt/gaWb9x31WaSlBaEywZvduN6rPPdqr8LpRqSmFTw6BieF74krLNfT8e7iGbyYpKN4ol5pq8hx5B3SRLlcywv/F9VEJ7yWOEciY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INd1Zvyc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FBCC4AF09;
-	Tue, 23 Jul 2024 18:41:55 +0000 (UTC)
+	 MIME-Version; b=BCxkbFTCkgmJV3eV75So9TImciuo4Ppb6VHzqrua89TPW7cIb1hV7kILIP6GxUsoVjM7DOg+RBH+We8eVUauVpafnH9T7nT2hBS0is/+Xv0nGSemWLToSLFDvZjFb1DA6rWjFrimqqV7BEN+ATQpX9njoYw4p7erBusYdL0MFco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRXONjC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A5EC4AF09;
+	Tue, 23 Jul 2024 18:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760116;
-	bh=RnHHvpQA8gL+09qcVi3pbCObbnQEBh3nPwr8oAqNEqE=;
+	s=korg; t=1721759208;
+	bh=BETKXisDMwTL1JparBljnPqP+onBZJJ11rjJASxxpJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INd1Zvyc/l0OADuP0bFdBiLhuPsx8LfgGFkfe7F1B9IKqX+UXwfjno4ci5DW/MBj5
-	 A3Qw4JbFInUf7hXZ4DRYCFlTCJSkDHJ8nBkVmKnSt/KXB8b4hJc4Cui9Owa9uvRQSy
-	 pozWRVFmfmNjaPWW3fjIDa020n1XsuZ5F8K7baNM=
+	b=gRXONjC/CHJof+Q2vbiIog/yjK43rTo8dkx7b+Df0/v2G4eUwcGElMCiGAnsYHF0a
+	 dIzDtnhek97f45kTTlz7Ez2r6wVDCNKL+9XU3vqrnVVQKEOFYzTLU9c1TwSIoRDL/2
+	 N4HGkpEl+luVM9vZrapYTSM4ahBa/FOiQJ1Ng+MQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Scott Mayhew <smayhew@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 067/163] wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
+Subject: [PATCH 6.1 039/105] nfs: dont invalidate dentries on transient errors
 Date: Tue, 23 Jul 2024 20:23:16 +0200
-Message-ID: <20240723180146.059454109@linuxfoundation.org>
+Message-ID: <20240723180404.747884564@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit 6ef09cdc5ba0f93826c09d810c141a8d103a80fc ]
+[ Upstream commit 0c8c7c559740d2d8b66048162af6c4dba8f0c88c ]
 
-In 'cfg80211_wext_siwscan()', add extra check whether number of
-channels passed via 'ioctl(sock, SIOCSIWSCAN, ...)' doesn't exceed
-IW_MAX_FREQUENCIES and reject invalid request with -EINVAL otherwise.
+This is a slight variation on a patch previously proposed by Neil Brown
+that never got merged.
 
-Reported-by: syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=253cd2d2491df77c93ac
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://msgid.link/20240531032010.451295-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Prior to commit 5ceb9d7fdaaf ("NFS: Refactor nfs_lookup_revalidate()"),
+any error from nfs_lookup_verify_inode() other than -ESTALE would result
+in nfs_lookup_revalidate() returning that error (-ESTALE is mapped to
+zero).
+
+Since that commit, all errors result in nfs_lookup_revalidate()
+returning zero, resulting in dentries being invalidated where they
+previously were not (particularly in the case of -ERESTARTSYS).
+
+Fix it by passing the actual error code to nfs_lookup_revalidate_done(),
+and leaving the decision on whether to  map the error code to zero or
+one to nfs_lookup_revalidate_done().
+
+A simple reproducer is to run the following python code in a
+subdirectory of an NFS mount (not in the root of the NFS mount):
+
+---8<---
+import os
+import multiprocessing
+import time
+
+if __name__=="__main__":
+    multiprocessing.set_start_method("spawn")
+
+    count = 0
+    while True:
+        try:
+            os.getcwd()
+            pool = multiprocessing.Pool(10)
+            pool.close()
+            pool.terminate()
+            count += 1
+        except Exception as e:
+            print(f"Failed after {count} iterations")
+            print(e)
+            break
+---8<---
+
+Prior to commit 5ceb9d7fdaaf, the above code would run indefinitely.
+After commit 5ceb9d7fdaaf, it fails almost immediately with -ENOENT.
+
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/nfs/dir.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 0c0d54e40131d..a811ad02e6d1f 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -3411,10 +3411,14 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 	wiphy = &rdev->wiphy;
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index a5a4d9422d6ed..70660ff248b79 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -1615,7 +1615,16 @@ nfs_lookup_revalidate_done(struct inode *dir, struct dentry *dentry,
+ 	switch (error) {
+ 	case 1:
+ 		break;
+-	case 0:
++	case -ETIMEDOUT:
++		if (inode && (IS_ROOT(dentry) ||
++			      NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL))
++			error = 1;
++		break;
++	case -ESTALE:
++	case -ENOENT:
++		error = 0;
++		fallthrough;
++	default:
+ 		/*
+ 		 * We can't d_drop the root of a disconnected tree:
+ 		 * its d_hash is on the s_anon list and d_drop() would hide
+@@ -1670,18 +1679,8 @@ static int nfs_lookup_revalidate_dentry(struct inode *dir,
  
- 	/* Determine number of channels, needed to allocate creq */
--	if (wreq && wreq->num_channels)
-+	if (wreq && wreq->num_channels) {
-+		/* Passed from userspace so should be checked */
-+		if (unlikely(wreq->num_channels > IW_MAX_FREQUENCIES))
-+			return -EINVAL;
- 		n_channels = wreq->num_channels;
--	else
-+	} else {
- 		n_channels = ieee80211_get_num_supported_channels(wiphy);
-+	}
+ 	dir_verifier = nfs_save_change_attribute(dir);
+ 	ret = NFS_PROTO(dir)->lookup(dir, dentry, fhandle, fattr);
+-	if (ret < 0) {
+-		switch (ret) {
+-		case -ESTALE:
+-		case -ENOENT:
+-			ret = 0;
+-			break;
+-		case -ETIMEDOUT:
+-			if (NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL)
+-				ret = 1;
+-		}
++	if (ret < 0)
+ 		goto out;
+-	}
  
- 	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
- 		       n_channels * sizeof(void *),
+ 	/* Request help from readdirplus */
+ 	nfs_lookup_advise_force_readdirplus(dir, flags);
+@@ -1725,7 +1724,7 @@ nfs_do_lookup_revalidate(struct inode *dir, struct dentry *dentry,
+ 			 unsigned int flags)
+ {
+ 	struct inode *inode;
+-	int error;
++	int error = 0;
+ 
+ 	nfs_inc_stats(dir, NFSIOS_DENTRYREVALIDATE);
+ 	inode = d_inode(dentry);
+@@ -1770,7 +1769,7 @@ nfs_do_lookup_revalidate(struct inode *dir, struct dentry *dentry,
+ out_bad:
+ 	if (flags & LOOKUP_RCU)
+ 		return -ECHILD;
+-	return nfs_lookup_revalidate_done(dir, dentry, inode, 0);
++	return nfs_lookup_revalidate_done(dir, dentry, inode, error);
+ }
+ 
+ static int
 -- 
 2.43.0
 
