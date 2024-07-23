@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C9293A613
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8776B93A6B3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B4331C22343
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B93BE1C20DA7
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A28E156C6C;
-	Tue, 23 Jul 2024 18:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254CD1586CB;
+	Tue, 23 Jul 2024 18:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+yxEdtP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1kZWh1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0759042067;
-	Tue, 23 Jul 2024 18:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78221581F4;
+	Tue, 23 Jul 2024 18:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759486; cv=none; b=sjXiMozSxVaaOxgkJToT8yS7Sdc047YCPiZ6jf8Pt/oH2vMJCjxH44LA+L/IHYDBRrw6tPWbl7VkQLRYBZ6Mr8dlqUQ0olfj7Pwz8mI12BYIl8exXP8d1ItsmxQ+BnwO69LRtECkWTW3+7HAwffgKzU5vbr+z3oK1XwW0lOHRzg=
+	t=1721759866; cv=none; b=MSAzFHWlalpPNrMvGi5LK0tHrmfubAW2hCZ8SRRz8yLKrlliL/o+JgvfYjzhNRF8QNqVMZeAW0w/ftRUECSR6xWTUQAe0GLWJ6J4eLR36UKR4UYlQI7ngV2nf0cCZ6V3eyEU+BT1uWsYGol8vSR1AEZ7wzbb8sPbJbA0jSblm9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759486; c=relaxed/simple;
-	bh=WpO/tfxzZbbpkuTsZsxY+9g/jFnhLbs3ZfEEMZqrIiA=;
+	s=arc-20240116; t=1721759866; c=relaxed/simple;
+	bh=rvj23M+fMNTNbJ0e1UPviN+Ix7zZiBezRVI62oeGpB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N1MtzLs9VcMCGop4MEwlWzYPcVUzwic37jUvlKSDKlIkR523OeV+Ky9SsrY+/4vRIc9OFOEVN4IFA8AxiZs3/fNv6eDu1mpFmoQjzMteUJXATTyw1TO43WRdUaZ1vPsYPvqGi1VM5IiJho4WeOWjb/Jpz1REnxH/0Mkj4ovhgd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+yxEdtP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E519C4AF0A;
-	Tue, 23 Jul 2024 18:31:25 +0000 (UTC)
+	 MIME-Version; b=bi2XU6+6syfXtF9uXflYLtKZ/YUmoTIXA0nuJJwvmAP/bZoBhRD6PnJncuuHS396dqmYds/vJHpQoOQlWKnvVOgiXdXIvyLOzPZQYtq4Su0sRXQp15AoVlwdlRhuhMwOfvpk4pp0eKlGEjQnXEULzcbvfcLecZ6GmoEOk/pN3m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B1kZWh1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C63DC4AF0B;
+	Tue, 23 Jul 2024 18:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759485;
-	bh=WpO/tfxzZbbpkuTsZsxY+9g/jFnhLbs3ZfEEMZqrIiA=;
+	s=korg; t=1721759866;
+	bh=rvj23M+fMNTNbJ0e1UPviN+Ix7zZiBezRVI62oeGpB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+yxEdtPfcrmy/S2sdZZS3FH2/6TQuD/ubUM4HB5FuhqT69wVEUS+x+RaQQO9VCbP
-	 WIr7iXj8f6xx0mytDTBX+xyi919DqJNwQdvh7TQBghUAT94wXnRoPuxdYJbqTJV6Hp
-	 nUD1UJENYqThooUib8CW8OMhoJYb70jXKazGN798=
+	b=B1kZWh1xRdvqWnNwDHQmJ7zVe9ZQQ7Jf1CLNdKTvVggA35G/n9CEBxH6ocYRzk6J6
+	 KDHJe4cHdNBVs+xPz+1MyT9uHxnGQ56vqunMdfmMR3yWW2khtzSTYAs/cKr9d1TCUj
+	 wrTWdajRVsXBJlflpRRk2Z6SpPMSUtv3h2ush/Ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/129] scsi: qedf: Dont process stag work during unload and recovery
-Date: Tue, 23 Jul 2024 20:22:32 +0200
-Message-ID: <20240723180404.937709370@linuxfoundation.org>
+Subject: [PATCH 6.9 024/163] wifi: mac80211: fix UBSAN noise in ieee80211_prep_hw_scan()
+Date: Tue, 23 Jul 2024 20:22:33 +0200
+Message-ID: <20240723180144.403894243@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 51071f0831ea975fc045526dd7e17efe669dc6e1 ]
+[ Upstream commit 92ecbb3ac6f3fe8ae9edf3226c76aa17b6800699 ]
 
-Stag work can cause issues during unload and recovery, hence don't process
-it.
+When testing the previous patch with CONFIG_UBSAN_BOUNDS, I've
+noticed the following:
 
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240515091101.18754-2-skashyap@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:372:4
+index 0 is out of range for type 'struct ieee80211_channel *[]'
+CPU: 0 PID: 1435 Comm: wpa_supplicant Not tainted 6.9.0+ #1
+Hardware name: LENOVO 20UN005QRT/20UN005QRT <...BIOS details...>
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x2d/0x90
+ __ubsan_handle_out_of_bounds+0xe7/0x140
+ ? timerqueue_add+0x98/0xb0
+ ieee80211_prep_hw_scan+0x2db/0x480 [mac80211]
+ ? __kmalloc+0xe1/0x470
+ __ieee80211_start_scan+0x541/0x760 [mac80211]
+ rdev_scan+0x1f/0xe0 [cfg80211]
+ nl80211_trigger_scan+0x9b6/0xae0 [cfg80211]
+ ...<the rest is not too useful...>
+
+Since '__ieee80211_start_scan()' leaves 'hw_scan_req->req.n_channels'
+uninitialized, actual boundaries of 'hw_scan_req->req.channels' can't
+be checked in 'ieee80211_prep_hw_scan()'. Although an initialization
+of 'hw_scan_req->req.n_channels' introduces some confusion around
+allocated vs. used VLA members, this shouldn't be a problem since
+everything is correctly adjusted soon in 'ieee80211_prep_hw_scan()'.
+
+Cleanup 'kmalloc()' math in '__ieee80211_start_scan()' by using the
+convenient 'struct_size()' as well.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240517153332.18271-2-dmantipov@yandex.ru
+[improve (imho) indentation a bit]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_main.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ net/mac80211/scan.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index 91f3f1d7098eb..c27e27cff0790 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -3996,6 +3996,22 @@ void qedf_stag_change_work(struct work_struct *work)
- 	struct qedf_ctx *qedf =
- 	    container_of(work, struct qedf_ctx, stag_work.work);
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index 3da1c5c450358..8ecc4b710b0e6 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -744,15 +744,21 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
+ 			local->hw_scan_ies_bufsize *= n_bands;
+ 		}
  
-+	if (!qedf) {
-+		QEDF_ERR(&qedf->dbg_ctx, "qedf is NULL");
-+		return;
-+	}
+-		local->hw_scan_req = kmalloc(
+-				sizeof(*local->hw_scan_req) +
+-				req->n_channels * sizeof(req->channels[0]) +
+-				local->hw_scan_ies_bufsize, GFP_KERNEL);
++		local->hw_scan_req = kmalloc(struct_size(local->hw_scan_req,
++							 req.channels,
++							 req->n_channels) +
++					     local->hw_scan_ies_bufsize,
++					     GFP_KERNEL);
+ 		if (!local->hw_scan_req)
+ 			return -ENOMEM;
+ 
+ 		local->hw_scan_req->req.ssids = req->ssids;
+ 		local->hw_scan_req->req.n_ssids = req->n_ssids;
++		/* None of the channels are actually set
++		 * up but let UBSAN know the boundaries.
++		 */
++		local->hw_scan_req->req.n_channels = req->n_channels;
 +
-+	if (test_bit(QEDF_IN_RECOVERY, &qedf->flags)) {
-+		QEDF_ERR(&qedf->dbg_ctx,
-+			 "Already is in recovery, hence not calling software context reset.\n");
-+		return;
-+	}
-+
-+	if (test_bit(QEDF_UNLOADING, &qedf->flags)) {
-+		QEDF_ERR(&qedf->dbg_ctx, "Driver unloading\n");
-+		return;
-+	}
-+
- 	printk_ratelimited("[%s]:[%s:%d]:%d: Performing software context reset.",
- 			dev_name(&qedf->pdev->dev), __func__, __LINE__,
- 			qedf->dbg_ctx.host_no);
+ 		ies = (u8 *)local->hw_scan_req +
+ 			sizeof(*local->hw_scan_req) +
+ 			req->n_channels * sizeof(req->channels[0]);
 -- 
 2.43.0
 
