@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAAA693A733
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4863B93A665
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EE7C1F236C5
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DABA61F228EC
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AE5158A03;
-	Tue, 23 Jul 2024 18:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA177158878;
+	Tue, 23 Jul 2024 18:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yo5tgfPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcsqEMAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AD01586F5;
-	Tue, 23 Jul 2024 18:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7957015746B;
+	Tue, 23 Jul 2024 18:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760208; cv=none; b=A77CXHxA2ZoYc6EGjp4GHEH1Oii6x6aAbArwIVBt88VfWQFlBMXVWcv0nTNizL522DNSDJujbS2YDNv8lPx1MVCoZA/FQYEP6uXVb1oSXtDGaGrNakW+VxUINbwPJv2fxqOoHiAXxVf4z23gqAETdF0nOI7WKDz+fIKoWhaUUXs=
+	t=1721759677; cv=none; b=kmqaBHGTon6nvH0/eb8sk1nHoH/AcXrPW3HFV+HjjlLvtCpOcUL6QB/UA9rp+LyaVhmS7bivaJ3BrL2yWV86VAL4HSlHXz96Y5t71wOBZlFu4gAttscEHZyJiB04JrwMyhnx+mZODG0v255dncu78yXy/486gDYHj+uFO3vf6vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760208; c=relaxed/simple;
-	bh=Ar3Tq95i79vPypTzuUUy5KHh5lwFVqGfiM81TcNl1DI=;
+	s=arc-20240116; t=1721759677; c=relaxed/simple;
+	bh=mL6eLnlLjQWTO41Ey3Aj3I411jF0yXe9kUGtVG5z36E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUvuh/iaJMfbYy+M2o1KPew/1zf/nykWtnsAuB9VEA9SXPavqW71R4Xf45y7HCPrGNMJcMQjSShP9XWJDZAZbHNgY+qqAvqRxdQCdUHgTK+d/Tm/WiX/qK54xfrFJ2tE4PjFBpZnGT/XOzpjXPlclG9jV6SDFrpS7d/BsoDhCUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yo5tgfPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F1DC4AF0A;
-	Tue, 23 Jul 2024 18:43:27 +0000 (UTC)
+	 MIME-Version; b=UtypNZE3IL5BbX4MvbxvGIY48gM9ktzVPVDVjHFE/v3c11fQbaEhwX3Z0RVVU6O8xNUJqJPvDO8MW0eNrSX68CDMK87F+Cvic+x8bAtnRmsfsarR8xEdHASfP8xizfxg8EK9YTmh1rBAjc++7p+kPQD1JtB55VpHsHPexbgMr4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcsqEMAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B77C4AF0A;
+	Tue, 23 Jul 2024 18:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760207;
-	bh=Ar3Tq95i79vPypTzuUUy5KHh5lwFVqGfiM81TcNl1DI=;
+	s=korg; t=1721759677;
+	bh=mL6eLnlLjQWTO41Ey3Aj3I411jF0yXe9kUGtVG5z36E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yo5tgfPxPu6KOm7JE5aUR8TRiatoWZrD8zu6p52hNwaJw8vI19FgUIiJ/dkmUsE8y
-	 D7BO30McEELSq9mBO4RzPnDxae+OMKGafZaZB7XrLEcvqNNBfoBYnh6GA/9Kp45ls5
-	 bA6YclLGibvXv2TFIPGLuiDxUy436ckTjvSBgpvg=
+	b=RcsqEMAsQPVHUyhkkhAzwB+OrA1hNMVPcdTjaBGMNHXieLX/YpfTd0cFRH85Y9TOX
+	 y7Vpe4p8wHYi4CnWUaZca3gnIw+XXnCF6oyqOXePENR3FObyeXvgg3xNAg+dW6DK/7
+	 GcC3pWjLXqAmMHTFzMldnpUrtQVF1Q0Iuu0L4Otw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Aivaz Latypov <reichaivaz@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 108/163] s390/sclp: Fix sclp_init() cleanup on failure
+Subject: [PATCH 6.6 089/129] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15-gw0xxx
 Date: Tue, 23 Jul 2024 20:23:57 +0200
-Message-ID: <20240723180147.647418456@linuxfoundation.org>
+Message-ID: <20240723180408.225295283@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Aivaz Latypov <reichaivaz@gmail.com>
 
-[ Upstream commit 6434b33faaa063df500af355ee6c3942e0f8d982 ]
+[ Upstream commit 1d091a98c399c17d0571fa1d91a7123a698446e4 ]
 
-If sclp_init() fails it only partially cleans up: if there are multiple
-failing calls to sclp_init() sclp_state_change_event will be added several
-times to sclp_reg_list, which results in the following warning:
+This HP Laptop uses ALC236 codec with COEF 0x07 controlling
+the mute LED. Enable existing quirk for this device.
 
-------------[ cut here ]------------
-list_add double add: new=000003ffe1598c10, prev=000003ffe1598bf0, next=000003ffe1598c10.
-WARNING: CPU: 0 PID: 1 at lib/list_debug.c:35 __list_add_valid_or_report+0xde/0xf8
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.10.0-rc3
-Krnl PSW : 0404c00180000000 000003ffe0d6076a (__list_add_valid_or_report+0xe2/0xf8)
-           R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-...
-Call Trace:
- [<000003ffe0d6076a>] __list_add_valid_or_report+0xe2/0xf8
-([<000003ffe0d60766>] __list_add_valid_or_report+0xde/0xf8)
- [<000003ffe0a8d37e>] sclp_init+0x40e/0x450
- [<000003ffe00009f2>] do_one_initcall+0x42/0x1e0
- [<000003ffe15b77a6>] do_initcalls+0x126/0x150
- [<000003ffe15b7a0a>] kernel_init_freeable+0x1ba/0x1f8
- [<000003ffe0d6650e>] kernel_init+0x2e/0x180
- [<000003ffe000301c>] __ret_from_fork+0x3c/0x60
- [<000003ffe0d759ca>] ret_from_fork+0xa/0x30
-
-Fix this by removing sclp_state_change_event from sclp_reg_list when
-sclp_init() fails.
-
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Aivaz Latypov <reichaivaz@gmail.com>
+Link: https://patch.msgid.link/20240625081217.1049-1-reichaivaz@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp.c | 1 +
+ sound/pci/hda/patch_realtek.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
-index d53ee34d398f6..fbe29cabcbb83 100644
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -1293,6 +1293,7 @@ sclp_init(void)
- fail_unregister_reboot_notifier:
- 	unregister_reboot_notifier(&sclp_reboot_notifier);
- fail_init_state_uninitialized:
-+	list_del(&sclp_state_change_event.list);
- 	sclp_init_state = sclp_init_state_uninitialized;
- 	free_page((unsigned long) sclp_read_sccb);
- 	free_page((unsigned long) sclp_init_sccb);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 20d5769fc0eaf..e883f7a242b62 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9857,6 +9857,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87e7, "HP ProBook 450 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87f1, "HP ProBook 630 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 -- 
 2.43.0
 
