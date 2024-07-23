@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD9493A619
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842AB93A6B6
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:37:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DE20282056
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EEA92822D7
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3425C1586CB;
-	Tue, 23 Jul 2024 18:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54BB157A55;
+	Tue, 23 Jul 2024 18:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQx3wir0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwIQeDzb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E558E156F29;
-	Tue, 23 Jul 2024 18:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A469F13C3F5;
+	Tue, 23 Jul 2024 18:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759495; cv=none; b=t5bv6jP6b1ReIuds9/TEHHyBrOm+e7/vBPpTkMn/UNSmxV7TTCzYu+/vY6Xr+UEqboO4h8kYlwEliAVmXQhMA0vzgQilUga6nxChDPdmiPBCKfIxtRqlyq5lhXFXRaLPiTS1MtI1A49c6tBky6YikWC9/QRstMSsa8KBIYe9uOY=
+	t=1721759875; cv=none; b=gIzDkmaKGWPk717audbapte8FeS6rDuE3QBlCpQPW+zwOA2VtOAraphPcRWFzHLEHg1CgCEuVJA8E9fy9U+ZUsdHsewLWLSnUYT33l8QXWlUAJiIVUOO98tROJB8V6d7W+v0Hm1lUKFGtzwtMxLgPKUOKAm5haLa2WwtlG8NB9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759495; c=relaxed/simple;
-	bh=PI+EBvpSV/oURDPE4rK6dKs2brrCBg+Jl24GOunBcdk=;
+	s=arc-20240116; t=1721759875; c=relaxed/simple;
+	bh=bPByfWGBaJyKAgP1i2xj8ezuqxJVXoMwBF1qC+QbCf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vCQqvfZeEDAxzGEQSak8KkrqsUxGIFh4dZ0tJXSyOnl4Ud/Ihv1ZdHfjm5IfkseVssZqt141HcJuinYo68CPlhVYlocGNGvGNEuEfBBW0Lw+3z05lH2nAXJ1YE/+IN5AYfMKXR6JPPDM1MrgNwYBvaTQRzIWeFNyaf2L/nQJ19o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQx3wir0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA32C4AF0B;
-	Tue, 23 Jul 2024 18:31:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TUGC1WOYjhnSXNiTtXmcN0FAS7zKxo5oKfY5HQCn+BipLisax1gsFTxLM8XWYkguWnOtqrEaYB1gsOXVL9U0Kg9Ni8LIcR0/k3lkLFLXCCUcDm0ZZf2OpVqmkbqKkDi0lHxmZdnRTY639QuYhMT1YeDs/OHCgF+2a+Hwal3NByo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwIQeDzb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24876C4AF09;
+	Tue, 23 Jul 2024 18:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759494;
-	bh=PI+EBvpSV/oURDPE4rK6dKs2brrCBg+Jl24GOunBcdk=;
+	s=korg; t=1721759875;
+	bh=bPByfWGBaJyKAgP1i2xj8ezuqxJVXoMwBF1qC+QbCf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQx3wir0FsBI6pIA6rl7b1VjWyjv3SINmAoXBn8/rfLXDuXmTXDNToS0JC/8tj8Wj
-	 hwiCLxba7RE8oJbLte4viFE7gudDO4vrO5GigUB9YBmxl53kafes0O6nVEjbUVB/Nu
-	 R14HZ1UQoWeZ0nHEp9dbavnBtr1L2mzuDptUGCc0=
+	b=rwIQeDzbLvaWp+pMjd42aqJzH4YaB7LAFgQWUmJIn2774ImcEa0CuBs0O4aBKZb3w
+	 LJUSpaOGHMDDc3FWyyfWMOl6plt1iws84L5JiXqkWP0CXHy9m7QvYlr/MAP7ujaFnF
+	 UDLIO8C+pcvYo1OjDycHOPjbdpwY/f158LkCVfrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/129] efi/libstub: zboot.lds: Discard .discard sections
-Date: Tue, 23 Jul 2024 20:22:35 +0200
-Message-ID: <20240723180405.060638951@linuxfoundation.org>
+Subject: [PATCH 6.9 027/163] selftests/overlayfs: Fix build error on ppc64
+Date: Tue, 23 Jul 2024 20:22:36 +0200
+Message-ID: <20240723180144.522775996@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 5134acb15d9ef27aa2b90aad46d4e89fcef79fdc ]
+[ Upstream commit e8b8c5264d4ebd248f60a5cef077fe615806e7a0 ]
 
-When building ARCH=loongarch defconfig + CONFIG_UNWINDER_ORC=y using
-LLVM, there is a warning from ld.lld when linking the EFI zboot image
-due to the use of unreachable() in number() in vsprintf.c:
+Fix build error on ppc64:
+  dev_in_maps.c: In function ‘get_file_dev_and_inode’:
+  dev_in_maps.c:60:59: error: format ‘%llu’ expects argument of type
+  ‘long long unsigned int *’, but argument 7 has type ‘__u64 *’ {aka ‘long
+  unsigned int *’} [-Werror=format=]
 
-  ld.lld: warning: drivers/firmware/efi/libstub/lib.a(vsprintf.stub.o):(.discard.unreachable+0x0): has non-ABS relocation R_LARCH_32_PCREL against symbol ''
+By switching to unsigned long long for u64 for ppc64 builds.
 
-If the compiler cannot eliminate the default case for any reason, the
-.discard.unreachable section will remain in the final binary but the
-entire point of any section prefixed with .discard is that it is only
-used at compile time, so it can be discarded via /DISCARD/ in a linker
-script. The asm-generic vmlinux.lds.h includes .discard and .discard.*
-in the COMMON_DISCARDS macro but that is not used for zboot.lds, as it
-is not a kernel image linker script.
-
-Add .discard and .discard.* to /DISCARD/ in zboot.lds, so that any
-sections meant to be discarded at link time are not included in the
-final zboot image. This issue is not specific to LoongArch, it is just
-the first architecture to select CONFIG_OBJTOOL, which defines
-annotate_unreachable() as an asm statement to add the
-.discard.unreachable section, and use the EFI stub.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2023
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/zboot.lds | 1 +
+ tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
-index ac8c0ef851581..af2c82f7bd902 100644
---- a/drivers/firmware/efi/libstub/zboot.lds
-+++ b/drivers/firmware/efi/libstub/zboot.lds
-@@ -41,6 +41,7 @@ SECTIONS
- 	}
+diff --git a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
+index 759f86e7d263e..2862aae58b79a 100644
+--- a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
++++ b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #define _GNU_SOURCE
++#define __SANE_USERSPACE_TYPES__ // Use ll64
  
- 	/DISCARD/ : {
-+		*(.discard .discard.*)
- 		*(.modinfo .init.modinfo)
- 	}
- }
+ #include <inttypes.h>
+ #include <unistd.h>
 -- 
 2.43.0
 
