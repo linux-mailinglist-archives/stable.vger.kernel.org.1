@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-60954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7172493A62A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C769593A5A5
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 267221F23427
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E1D21F232C6
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293DA156F29;
-	Tue, 23 Jul 2024 18:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD8F15887F;
+	Tue, 23 Jul 2024 18:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmXoXFZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDRb8BWU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA93813D896;
-	Tue, 23 Jul 2024 18:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705CB15886B;
+	Tue, 23 Jul 2024 18:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759542; cv=none; b=EDaGtYOFlrJ0HzY4q17+xenjLTHEq4MZC94icD5J3DoPqLAlzSarojP7KVi7sqCFdWlp4ZQfkFv3nwv+A5xS2BCEPi62AgUZVJj6njGA/lIjX/M/eKwCQopOVFq7tcCO+dEf/9aeDq0A7pX8oHAbi1WtnACCgiCgNic+zXm+SWc=
+	t=1721759202; cv=none; b=aAp3msg05JgjyZ7YpzJTRSrPXDhhLdfGcvxR6XtRDEUzUG1BEXfiBeHq5CkoWImDj0lECSCjjyE+Dq+FVB5/CMBtMdqH0zxdacbG8sUhnk+V9o6hNmU6fBoX6/RHrVGQtSC3cWzCwlxNAuDqN+p3AwpnnX0Ufq83ad0HQn+AulQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759542; c=relaxed/simple;
-	bh=vQKwhpGc0RFCe7fsMJOLRUFWTPzB7/W96JDgVqcZWjU=;
+	s=arc-20240116; t=1721759202; c=relaxed/simple;
+	bh=aWTcZps628oBgLQheuwPxZFCQ96p6TsatEnsCJ0KO/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IQ0IWRP7sUIM+yPd1leWdxdTIepYmTY2YgTTC+FDxZxoSHnb4y42wctipkSKyTpDOkWmdYaCUS7IuWHEdJ3i/c7mwDSPTIBxAPJnkB6jFVc2v0abMpbg92kXKzcYG+Hw8Nb9coaLF63pxG1MdzOUDqQhlx0vBH6NJS7dAY70ZJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmXoXFZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B81EC4AF0A;
-	Tue, 23 Jul 2024 18:32:22 +0000 (UTC)
+	 MIME-Version; b=pbk5OOkeKnkRlUwXHANlZ07TQdyZaRixboqFj3Ny87nn0/yOocepI9HMATjq+UZBfd6Sr+GnnAkEM+c3eylrOd2P5AtfqzAw7V5Faar9trgBSEO7Qb+uEQJCDQS3flYCiHbDCYx+c0W2O/yFQLg30CkFrmYUB+g7uythG4lTIWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDRb8BWU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0B8C4AF0A;
+	Tue, 23 Jul 2024 18:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759542;
-	bh=vQKwhpGc0RFCe7fsMJOLRUFWTPzB7/W96JDgVqcZWjU=;
+	s=korg; t=1721759202;
+	bh=aWTcZps628oBgLQheuwPxZFCQ96p6TsatEnsCJ0KO/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmXoXFZXlniua7ddkQ13vOMj0UdhM5LIdTgUrtbDR2wAbIxZiWJEBqY8025Fwuk93
-	 O/nouITrZwx+6Hc+eATIuzJTXz3hNx5Mv+Z+fYjJ9ZG89BkD0d4Hb0SI8chSwVvmX/
-	 6uRkRrNU5cd6Rg3+DXuAl3aW9HkQTUoBeRM6obOg=
+	b=bDRb8BWUb8utvjESp+nAJ5vqznGHnIJ8w4AabahT56RUffPcgMCMftjeR3tiqWsDn
+	 ecDrnGeQ2WWqf+lmXXV4wzAPNySFxuIOQseQB8X+28EoDCNbBdZtzHAcwPpQxUGOet
+	 E9hAYEIg5aY3tP0RKEIzR8EqPGFqA/HlHYzmeTtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Dmitry Mastykin <mastichi@gmail.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/129] iomap: Fix iomap_adjust_read_range for plen calculation
-Date: Tue, 23 Jul 2024 20:23:13 +0200
-Message-ID: <20240723180406.529898226@linuxfoundation.org>
+Subject: [PATCH 6.1 037/105] NFSv4: Fix memory leak in nfs4_set_security_label
+Date: Tue, 23 Jul 2024 20:23:14 +0200
+Message-ID: <20240723180404.669339394@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,57 +62,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Dmitry Mastykin <mastichi@gmail.com>
 
-[ Upstream commit f5ceb1bbc98c69536d4673a97315e8427e67de1b ]
+[ Upstream commit aad11473f8f4be3df86461081ce35ec5b145ba68 ]
 
-If the extent spans the block that contains i_size, we need to handle
-both halves separately so that we properly zero data in the page cache
-for blocks that are entirely outside of i_size. But this is needed only
-when i_size is within the current folio under processing.
-"orig_pos + length > isize" can be true for all folios if the mapped
-extent length is greater than the folio size. That is making plen to
-break for every folio instead of only the last folio.
+We leak nfs_fattr and nfs4_label every time we set a security xattr.
 
-So use orig_plen for checking if "orig_pos + orig_plen > isize".
-
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Link: https://lore.kernel.org/r/a32e5f9a4fcfdb99077300c4020ed7ae61d6e0f9.1715067055.git.ritesh.list@gmail.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Dmitry Mastykin <mastichi@gmail.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 129a85633797a..975fd88c1f0f4 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -201,6 +201,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
- 	unsigned block_size = (1 << block_bits);
- 	size_t poff = offset_in_folio(folio, *pos);
- 	size_t plen = min_t(loff_t, folio_size(folio) - poff, length);
-+	size_t orig_plen = plen;
- 	unsigned first = poff >> block_bits;
- 	unsigned last = (poff + plen - 1) >> block_bits;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index ec641a8f6604b..cc620fc7aaf7b 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -6274,6 +6274,7 @@ nfs4_set_security_label(struct inode *inode, const void *buf, size_t buflen)
+ 	if (status == 0)
+ 		nfs_setsecurity(inode, fattr);
  
-@@ -237,7 +238,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
- 	 * handle both halves separately so that we properly zero data in the
- 	 * page cache for blocks that are entirely outside of i_size.
- 	 */
--	if (orig_pos <= isize && orig_pos + length > isize) {
-+	if (orig_pos <= isize && orig_pos + orig_plen > isize) {
- 		unsigned end = offset_in_folio(folio, isize - 1) >> block_bits;
- 
- 		if (first <= end && last > end)
++	nfs_free_fattr(fattr);
+ 	return status;
+ }
+ #endif	/* CONFIG_NFS_V4_SECURITY_LABEL */
 -- 
 2.43.0
 
