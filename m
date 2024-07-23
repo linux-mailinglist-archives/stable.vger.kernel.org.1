@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7099893A672
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC3993A5D8
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A9C61F23607
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DC42833DD
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4009158D6A;
-	Tue, 23 Jul 2024 18:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095A9158859;
+	Tue, 23 Jul 2024 18:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYH6Xf7C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blM8waX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1765158A2E;
-	Tue, 23 Jul 2024 18:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDEF157A4F;
+	Tue, 23 Jul 2024 18:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759703; cv=none; b=ZU6DBgJBRHMkLRO2T9BVxTW6sFaAB0TDm3nRkCbRqRGIRFRx+OirdQ96wdhr8wRnk1xwuU7w08J8aqalCxe3Tb/w3jCPz5JwLTOCdL9I0zxMrIz/5AOMEhzTFYeIasdzeVqid7sO35WMQSnWSkIryyf7gqHtrAh3cFrhv1DUlI4=
+	t=1721759341; cv=none; b=FokdFIUZXsNBk/WEkVYrPmuxrqlT4PqSTUGVaQkTG0RRLr4Z6nezmsG4iRP3P6jpgCBtHBN7AWoUyIrIFAcQZ7cWNTS0q+tWBKN+lHIQ461VEcu/f7EGN9XMWHJNNFiYALCGxwpDDift8xOxY/ytzuYcUXQl8EBmofsiHY2EfRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759703; c=relaxed/simple;
-	bh=skU+ns3OvUWrsmgaB4Vb5ZLMBNs9xKjyTjLXMFVGx+o=;
+	s=arc-20240116; t=1721759341; c=relaxed/simple;
+	bh=m91AIoPLJwPS5Vx8/6ZGqwuhbSQjNQ/z2IbARfLmS28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t4dVGjISm/5hFBiYPGhBS5zedQtD9jYY3gvrJs/SUGR7CZh93HvXlgSZzbVmea3AsRTAhPJEZXgc9nEN7VBOI5b8c0y3BBu8fmMrxOnkDFh/3LzHpbJxhD0+aWh8cytkxfHZNmQKTcAxD6KddY69eFMu3UNgLsYXz0Op1R4O0hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYH6Xf7C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B534C4AF0A;
-	Tue, 23 Jul 2024 18:35:03 +0000 (UTC)
+	 MIME-Version; b=KIrt19jZIsq+bVaoH9LkPbUtTYqYqP7LjzEQvYl5jmqAPirNdWBYxR5yuikcVB38TYpndQfUjPR0SuiU1/wSsOeBfcRR5oYugYuBKJp5FoGPFXJTpgmgGg3XRCyoLc9JwgjZEUDOlczUW+jl5hd8gs1XFPWY/cPiKZMWAEPbNzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blM8waX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC88C4AF09;
+	Tue, 23 Jul 2024 18:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759703;
-	bh=skU+ns3OvUWrsmgaB4Vb5ZLMBNs9xKjyTjLXMFVGx+o=;
+	s=korg; t=1721759341;
+	bh=m91AIoPLJwPS5Vx8/6ZGqwuhbSQjNQ/z2IbARfLmS28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QYH6Xf7Ch5Dn7ttOmbpGSDm05+CKf2RyZu31PkgmExbhtNzKUb39ldQ8eLGwMEtI5
-	 08yXs8BZCRBoVWfYxaazdA/dDddP69eUtikZfx90X2UoykGZqbfG1G9/VB5/sTVOs0
-	 jdbsItvleRo72B8xX3lzrjWSwDXzhi47Hp7G/RF8=
+	b=blM8waX6lLhHugunODNJNGUa9aQfwZodINoFLb/hO2Tv+cnNS/eFauetL7ZzV7QJQ
+	 vhA4fPvLL3vnI5ZM5Thijyb03YbxVnKpkS5eByTHveJte40HwrGeRq9ar2ic2+dX1V
+	 2by7ZG+lFrFhmoK6VWcql895wwQ99mw+091dupNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/129] net: usb: qmi_wwan: add Telit FN912 compositions
+Subject: [PATCH 6.1 083/105] Bluetooth: hci_core: cancel all works upon hci_unregister_dev()
 Date: Tue, 23 Jul 2024 20:24:00 +0200
-Message-ID: <20240723180408.341325114@linuxfoundation.org>
+Message-ID: <20240723180406.443145835@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 77453e2b015b5ced5b3f45364dd5a72dfc3bdecb ]
+[ Upstream commit 0d151a103775dd9645c78c97f77d6e2a5298d913 ]
 
-Add the following Telit FN912 compositions:
+syzbot is reporting that calling hci_release_dev() from hci_error_reset()
+due to hci_dev_put() from hci_error_reset() can cause deadlock at
+destroy_workqueue(), for hci_error_reset() is called from
+hdev->req_workqueue which destroy_workqueue() needs to flush.
 
-0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3000 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+We need to make sure that hdev->{rx_work,cmd_work,tx_work} which are
+queued into hdev->workqueue and hdev->{power_on,error_reset} which are
+queued into hdev->req_workqueue are no longer running by the moment
 
-0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3001 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+       destroy_workqueue(hdev->workqueue);
+       destroy_workqueue(hdev->req_workqueue);
 
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Link: https://patch.msgid.link/20240625102236.69539-1-dnlplm@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+are called from hci_release_dev().
+
+Call cancel_work_sync() on these work items from hci_unregister_dev()
+as soon as hdev->list is removed from hci_dev_list.
+
+Reported-by: syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=da0a9c9721e36db712e8
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/hci_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index a5469cf5cf670..befbca01bfe37 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1380,6 +1380,8 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1260, 2)},	/* Telit LE910Cx */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1261, 2)},	/* Telit LE910Cx */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1900, 1)},	/* Telit LN940 series */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3000, 0)},	/* Telit FN912 series */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3001, 0)},	/* Telit FN912 series */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9801, 3)},	/* Telewell TW-3G HSPA+ */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9803, 4)},	/* Telewell TW-3G HSPA+ */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9b01, 3)},	/* XS Stick W100-2 from 4G Systems */
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index d6be3cb86598e..3b1b0fbd1240a 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2727,7 +2727,11 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	list_del(&hdev->list);
+ 	write_unlock(&hci_dev_list_lock);
+ 
++	cancel_work_sync(&hdev->rx_work);
++	cancel_work_sync(&hdev->cmd_work);
++	cancel_work_sync(&hdev->tx_work);
+ 	cancel_work_sync(&hdev->power_on);
++	cancel_work_sync(&hdev->error_reset);
+ 
+ 	hci_cmd_sync_clear(hdev);
+ 
 -- 
 2.43.0
 
