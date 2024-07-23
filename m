@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-60975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BE493A63F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:33:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D418C93A650
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:34:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AB39B22BC0
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:33:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C2771F22925
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00769155351;
-	Tue, 23 Jul 2024 18:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C87158D78;
+	Tue, 23 Jul 2024 18:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShvTf2nX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldgxreMQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B350742067;
-	Tue, 23 Jul 2024 18:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713BF13D896;
+	Tue, 23 Jul 2024 18:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759605; cv=none; b=DRSCMluKKq52BCglL6ybwPpYLzhYVEtz5XTMdRoFQVgKs1ZOaazdRc68iXjo5hQMG1U5GTXGt4MEd2mFx+Hwa/QkvFi7E8O6FQt7htXIwOgMxDanfiVp17sOLC0z1oL2W9eL3badQltvzmF29txOIDkVrVJxnhwP9lafv/TFMH8=
+	t=1721759638; cv=none; b=DbO0/EUPS5V+PSeum9Rbi9CkQIjtCweueKLd4TwR0iKRf9D489k+XKzeZ2PGYap+qrtfM/LgUFxndOlxxiI+hwlNifEROmp0wvEENTuEOHSKdLdQK8PH6Gaj2e8/7mi5Abx7A7geomC6nK3LHnzmJDFkgG8YuGBkpZOOJy+Dg38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759605; c=relaxed/simple;
-	bh=5b564QTNxdzAkhhCubPTK8Z94PyWQe0mlYRwMgeh3oI=;
+	s=arc-20240116; t=1721759638; c=relaxed/simple;
+	bh=wdV4zOYgAq2docihOx9RSLpHQh2bmWFdPOIFVpyd6rM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1ZvjfWJBb4lpdF6/nuX1evBZPhsPvJDjqcNlJhIhtLaIU/aNxhjf0+9yYJlnfVGQnvDtbz0ZmbhBWN/73PaLd7yGCBpGmGa/QRtEtMg5OlJI+u9l6p/7SIxyhmvRqusA7QSYapR8HmWiOjsXuYEtsLnQKCyRBCIlPNIa7dnhGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShvTf2nX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B198C4AF09;
-	Tue, 23 Jul 2024 18:33:25 +0000 (UTC)
+	 MIME-Version; b=ViGk5T3obhPQWDLDyNpj8hZwty897TpJCtxRqBqx0j6bOEemMBp7uZJkFPbb8E5fp81WOV433xqZnM4y7hnI02jMyBifsaebPdTvNWYVoQbE+0wshtjpLkRKT9tFA60yGSyDZEugu3ZJo4wjffdS3stpUIEqsB52FStXG7e9lDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldgxreMQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4E2C4AF0A;
+	Tue, 23 Jul 2024 18:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759605;
-	bh=5b564QTNxdzAkhhCubPTK8Z94PyWQe0mlYRwMgeh3oI=;
+	s=korg; t=1721759638;
+	bh=wdV4zOYgAq2docihOx9RSLpHQh2bmWFdPOIFVpyd6rM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ShvTf2nXiicEn8U7XgeayyQ7aGxP9e8p44eYZqLYFQVtEUiEpUUbEjGeRKDpPPoO8
-	 A+0bvt/2qsGQOBz0pmnanV3rZVYUi4tJELgUdROLnTHIPk4iWLV2tQ+72sPS/2pxWV
-	 6mX2DxVLE2UWSTNe5B1NyqCUAsATC+Jw7Dy0tehg=
+	b=ldgxreMQ27mi9oC9eUmyBZwOlUsaINNzikmhL1hIPpE3qVbhXK9fgbe3Y3OVjf9Yv
+	 VTfOWtBFO5j28XPWyRzn1s7y1aWEQUqdmrOo7aAUHzuKgtgKPOal8fa84hwYOOoXzF
+	 b/9QLAs/FKZzPcGZX8CG3VqJtXdFYOOdSPRuE7IY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Moreno <amorenoz@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/129] selftests: openvswitch: Set value to nla flags.
-Date: Tue, 23 Jul 2024 20:23:27 +0200
-Message-ID: <20240723180407.067208493@linuxfoundation.org>
+Subject: [PATCH 6.6 060/129] drm/amdgpu: Indicate CU havest info to CP
+Date: Tue, 23 Jul 2024 20:23:28 +0200
+Message-ID: <20240723180407.105484622@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
 References: <20240723180404.759900207@linuxfoundation.org>
@@ -67,69 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Adrian Moreno <amorenoz@redhat.com>
+From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
 
-[ Upstream commit a8763466669d21b570b26160d0a5e0a2ee529d22 ]
+[ Upstream commit 49c9ffabde555c841392858d8b9e6cf58998a50c ]
 
-Netlink flags, although they don't have payload at the netlink level,
-are represented as having "True" as value in pyroute2.
+To achieve full occupancy CP hardware needs to know if CUs in SE are
+symmetrically or asymmetrically harvested
 
-Without it, trying to add a flow with a flag-type action (e.g: pop_vlan)
-fails with the following traceback:
+v2: Reset is_symmetric_cus for each loop
 
-Traceback (most recent call last):
-  File "[...]/ovs-dpctl.py", line 2498, in <module>
-    sys.exit(main(sys.argv))
-             ^^^^^^^^^^^^^^
-  File "[...]/ovs-dpctl.py", line 2487, in main
-    ovsflow.add_flow(rep["dpifindex"], flow)
-  File "[...]/ovs-dpctl.py", line 2136, in add_flow
-    reply = self.nlm_request(
-            ^^^^^^^^^^^^^^^^^
-  File "[...]/pyroute2/netlink/nlsocket.py", line 822, in nlm_request
-    return tuple(self._genlm_request(*argv, **kwarg))
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "[...]/pyroute2/netlink/generic/__init__.py", line 126, in
-nlm_request
-    return tuple(super().nlm_request(*argv, **kwarg))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "[...]/pyroute2/netlink/nlsocket.py", line 1124, in nlm_request
-    self.put(msg, msg_type, msg_flags, msg_seq=msg_seq)
-  File "[...]/pyroute2/netlink/nlsocket.py", line 389, in put
-    self.sendto_gate(msg, addr)
-  File "[...]/pyroute2/netlink/nlsocket.py", line 1056, in sendto_gate
-    msg.encode()
-  File "[...]/pyroute2/netlink/__init__.py", line 1245, in encode
-    offset = self.encode_nlas(offset)
-             ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "[...]/pyroute2/netlink/__init__.py", line 1560, in encode_nlas
-    nla_instance.setvalue(cell[1])
-  File "[...]/pyroute2/netlink/__init__.py", line 1265, in setvalue
-    nlv.setvalue(nla_tuple[1])
-                 ~~~~~~~~~^^^
-IndexError: list index out of range
-
-Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/openvswitch/ovs-dpctl.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-index 5e0e539a323d5..8b120718768ec 100644
---- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-@@ -531,7 +531,7 @@ class ovsactions(nla):
-             for flat_act in parse_flat_map:
-                 if parse_starts_block(actstr, flat_act[0], False):
-                     actstr = actstr[len(flat_act[0]):]
--                    self["attrs"].append([flat_act[1]])
-+                    self["attrs"].append([flat_act[1], True])
-                     actstr = actstr[strspn(actstr, ", ") :]
-                     parsed = True
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+index af46823e43367..caa04d897c2de 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+@@ -4290,9 +4290,10 @@ static u32 gfx_v9_4_3_get_cu_active_bitmap(struct amdgpu_device *adev, int xcc_i
+ static int gfx_v9_4_3_get_cu_info(struct amdgpu_device *adev,
+ 				 struct amdgpu_cu_info *cu_info)
+ {
+-	int i, j, k, counter, xcc_id, active_cu_number = 0;
+-	u32 mask, bitmap, ao_bitmap, ao_cu_mask = 0;
++	int i, j, k, prev_counter, counter, xcc_id, active_cu_number = 0;
++	u32 mask, bitmap, ao_bitmap, ao_cu_mask = 0, tmp;
+ 	unsigned disable_masks[4 * 4];
++	bool is_symmetric_cus;
  
+ 	if (!adev || !cu_info)
+ 		return -EINVAL;
+@@ -4310,6 +4311,7 @@ static int gfx_v9_4_3_get_cu_info(struct amdgpu_device *adev,
+ 
+ 	mutex_lock(&adev->grbm_idx_mutex);
+ 	for (xcc_id = 0; xcc_id < NUM_XCC(adev->gfx.xcc_mask); xcc_id++) {
++		is_symmetric_cus = true;
+ 		for (i = 0; i < adev->gfx.config.max_shader_engines; i++) {
+ 			for (j = 0; j < adev->gfx.config.max_sh_per_se; j++) {
+ 				mask = 1;
+@@ -4337,6 +4339,15 @@ static int gfx_v9_4_3_get_cu_info(struct amdgpu_device *adev,
+ 					ao_cu_mask |= (ao_bitmap << (i * 16 + j * 8));
+ 				cu_info->ao_cu_bitmap[i][j] = ao_bitmap;
+ 			}
++			if (i && is_symmetric_cus && prev_counter != counter)
++				is_symmetric_cus = false;
++			prev_counter = counter;
++		}
++		if (is_symmetric_cus) {
++			tmp = RREG32_SOC15(GC, GET_INST(GC, xcc_id), regCP_CPC_DEBUG);
++			tmp = REG_SET_FIELD(tmp, CP_CPC_DEBUG, CPC_HARVESTING_RELAUNCH_DISABLE, 1);
++			tmp = REG_SET_FIELD(tmp, CP_CPC_DEBUG, CPC_HARVESTING_DISPATCH_DISABLE, 1);
++			WREG32_SOC15(GC, GET_INST(GC, xcc_id), regCP_CPC_DEBUG, tmp);
+ 		}
+ 		gfx_v9_4_3_xcc_select_se_sh(adev, 0xffffffff, 0xffffffff, 0xffffffff,
+ 					    xcc_id);
 -- 
 2.43.0
 
