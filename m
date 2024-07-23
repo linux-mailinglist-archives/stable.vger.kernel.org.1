@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917CA93A5BF
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D80193A66C
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAD021C222C9
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16FFA281B0D
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D0C155351;
-	Tue, 23 Jul 2024 18:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385E5158A3F;
+	Tue, 23 Jul 2024 18:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pfyg0WBM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IuWGg0Yl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636A215885A;
-	Tue, 23 Jul 2024 18:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8590158A27;
+	Tue, 23 Jul 2024 18:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759267; cv=none; b=ejZR/ndmUt5GoFlSk/33qSo35IF4vZvDClmjRF86/u0o7N32VtCzkJlw2t34R/ymsncQ3JhuQv80YDPanBJQdWlCkdxcLlJzrhl+2ZsvEib+v8+xjV7K7IMAAGanA6kSeBwHHcQ2/RH6/Rwjta+go3h5hbX5HDQX6upVS/wlFf8=
+	t=1721759695; cv=none; b=Xlsy74XMonwOsE/qmqvHt7YVz6d5z69I/xxQ4L1pbmMf8D4hSP3IGRWXtJ8cnS1dUjlXxMlsSOFhZWatILQe1tKLwLGx+3gpXRvbXjt8lgdS1wcRZ3rk/QdDC3BYke0bI4rHOx8tdptDA3ijt19/dR4tCwa1zTS7iaH3fITDjOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759267; c=relaxed/simple;
-	bh=mC4ILENqXIjf2QB5k+HzOZQ3d7d6FpIexA38Ve27zzE=;
+	s=arc-20240116; t=1721759695; c=relaxed/simple;
+	bh=xRYbgyojz5eRyWw0igpX267weI1Jjfj/8CEw+XfUU44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CzIYG1id2hNZOfrQx5JZr7LPzl5QAAMZi3yVTvs5E8oVbUeGzcJbV8z5NsqajkbLweMOAVfXIZhmI5I75lxRxMnqttYpOiDgvuOcaMcmW8B8MISH5PqK0/bIkw4zoboq9sCetQBHrS9Y04YeT6Y866jVcWkB2+AdYD8bO/m2SdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pfyg0WBM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC7EC4AF09;
-	Tue, 23 Jul 2024 18:27:46 +0000 (UTC)
+	 MIME-Version; b=jIccXnk3G7SNhlRDmGRzkFEVBe0+OaFgngm7dstIvx11nlRl6ImyYprmj8vj9JbjKqSqbSXnoJJGiRIemVW3xg4DVTNpqGFhWDvvnCFhA8UcgX/b4B1DVUQW6wpBw1KNUYxqelLvmBEAdtw0L5bMOTs7hxyoDQe28nF0L3wGGms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IuWGg0Yl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D14AC4AF09;
+	Tue, 23 Jul 2024 18:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759267;
-	bh=mC4ILENqXIjf2QB5k+HzOZQ3d7d6FpIexA38Ve27zzE=;
+	s=korg; t=1721759694;
+	bh=xRYbgyojz5eRyWw0igpX267weI1Jjfj/8CEw+XfUU44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pfyg0WBMeppOT7REzoVzEOEZVwAYQm3IUylGNUvC2l12lM+HtKzT0kkSLf6bhAvmN
-	 QQnBKxq2hFMSho9mVfud7O+e6M+glrs/sjEzq+zMeWMoaAb9LH+tPLFAbZWwEL/Hxc
-	 zzLer8IOkDNryP4qPz3TDugYvZEfSPipjvSWJv+I=
+	b=IuWGg0YlOXwYntLaxUeH5GOFMZGY6KAPqdVy3e+JfXxBKL+hYelSRY2NpCPgdNJAk
+	 VxIRekRKprzRVnT5Pdfs4EpDpdXgeplltV/kqt89ASNr5RbrBKXkpHhlCqW3WjFCta
+	 JoRtuPgRI/geTWngnuOFv5NDvudUrkLSv5wI/Rzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/105] ASoC: topology: Do not assign fields that are already set
+Subject: [PATCH 6.6 066/129] Input: xpad - add support for ASUS ROG RAIKIRI PRO
 Date: Tue, 23 Jul 2024 20:23:34 +0200
-Message-ID: <20240723180405.447172709@linuxfoundation.org>
+Message-ID: <20240723180407.335661276@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit daf0b99d4720c9f05bdb81c73b2efdb43fa9def3 ]
+[ Upstream commit cee77149ebe9cd971ba238d87aa10e09bd98f1c9 ]
 
-The routes are allocated with kzalloc(), so all fields are zeroed by
-default, skip unnecessary assignments.
+Add the VID/PID for ASUS ROG RAIKIRI PRO to the list of known devices.
 
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20240603102818.36165-4-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Link: https://lore.kernel.org/r/20240607223722.1170776-1-luke@ljones.dev
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-topology.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/input/joystick/xpad.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
-index b07083bae65ed..d3cbfa6a704f9 100644
---- a/sound/soc/soc-topology.c
-+++ b/sound/soc/soc-topology.c
-@@ -1113,11 +1113,7 @@ static int soc_tplg_dapm_graph_elems_load(struct soc_tplg *tplg,
- 			break;
- 		}
- 
--		/* set to NULL atm for tplg users */
--		route->connected = NULL;
--		if (strnlen(elem->control, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) == 0) {
--			route->control = NULL;
--		} else {
-+		if (strnlen(elem->control, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) != 0) {
- 			route->control = devm_kmemdup(tplg->dev, elem->control,
- 						      min(strlen(elem->control),
- 							  SNDRV_CTL_ELEM_ID_NAME_MAXLEN),
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index cd97a7a9f812d..daf2a46521f01 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -208,6 +208,7 @@ static const struct xpad_device {
+ 	{ 0x0738, 0xf738, "Super SFIV FightStick TE S", 0, XTYPE_XBOX360 },
+ 	{ 0x07ff, 0xffff, "Mad Catz GamePad", 0, XTYPE_XBOX360 },
+ 	{ 0x0b05, 0x1a38, "ASUS ROG RAIKIRI", 0, XTYPE_XBOXONE },
++	{ 0x0b05, 0x1abb, "ASUS ROG RAIKIRI PRO", 0, XTYPE_XBOXONE },
+ 	{ 0x0c12, 0x0005, "Intec wireless", 0, XTYPE_XBOX },
+ 	{ 0x0c12, 0x8801, "Nyko Xbox Controller", 0, XTYPE_XBOX },
+ 	{ 0x0c12, 0x8802, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
 -- 
 2.43.0
 
