@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-60905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A07093A5F0
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E820293A72D
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B65C1F233DA
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 257911C220D0
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C525158A04;
-	Tue, 23 Jul 2024 18:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8796C158878;
+	Tue, 23 Jul 2024 18:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="to2q0YiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d33MBMFq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF27C158A03;
-	Tue, 23 Jul 2024 18:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468041586CB;
+	Tue, 23 Jul 2024 18:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759397; cv=none; b=CXqDzfM80FR3wE47Fh2CMyChHhOkNSIIjtCSzXZqqCX0ei5B6fqYVdOWmBOmp8J77zhPy7InSmjaWDaomppYjV4Xx/5gxUP9wDpMAC6Uh4zjH7t0wWEXNfndRPLsXLIaFGqBBEKEXPZBKrLR2+wJUxxohRKW0ziM/NIxinC3pOg=
+	t=1721760190; cv=none; b=SQ62iGtETaaxjiyYWr1OPj0Mzd/+h2qR6no08wsFaPWhgNFxO0/FvsF1QVVkB8VooFUr86oehZEZh9IUZbV0mesCWZu/FLE61qjQNTt93iVpiVP99a57fxqd9rrXTL/x2CbVdtpp+ndrNxlWbQ5dxxYRpueOTHxyLconBTxvgbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759397; c=relaxed/simple;
-	bh=Eh2wKF1f1/D6+K5BzF1shBxvVZyObL2QdqlypengchY=;
+	s=arc-20240116; t=1721760190; c=relaxed/simple;
+	bh=7t4ujiBHxitu7RZQ1ZabEcPN+PYpltrpKlAe2aXw+BM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ela8PRUDidE7jb8tOU5DjFmxjvKy57ozLvb6FURJSHkCSXic6180HicIZ+FYvYJ6EqUmbIi0HJ3vw3ClTumBI8IUV7TeQ0VKqDES2p9Ylx2DEOy1+CK4wjET7sJSrOMZ7hEoceFjl3NLIfd6ASDZnxk5fOCp9ITsPKNUVeMq5Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=to2q0YiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125E2C4AF0A;
-	Tue, 23 Jul 2024 18:29:56 +0000 (UTC)
+	 MIME-Version; b=KLfcqLCCL+NNz3zoxn2DLca+4g0PIIpgX5SJQsiG9a+Rwokp3akQuPtabhiFHfMZvlUHLUmplW1U4Khz+XgvmlczjB4Fg0X3y9PQStq/exJNR5fMfTtoMMSt48AVt4SRrTNrBtK1ot5Qpdznizn8HIej6SEO9zgAD8041q+tvv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d33MBMFq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59CFC4AF0A;
+	Tue, 23 Jul 2024 18:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759397;
-	bh=Eh2wKF1f1/D6+K5BzF1shBxvVZyObL2QdqlypengchY=;
+	s=korg; t=1721760190;
+	bh=7t4ujiBHxitu7RZQ1ZabEcPN+PYpltrpKlAe2aXw+BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=to2q0YiSHSYwYOL/ZJLi/Qxp1D2vhaWRMkAjICYPN1RKxg+pFVDfu7VZDyuTX/NJ2
-	 44ET/IGNS6oHQtjYhNhgxL0ARAwHTbCADIKRO6YZvrhgLtm5eAcax7sw9JEPYWoBX2
-	 RK4sfDN9jmB6/kF2DiSaVhV/9KVZ/xIEy3/rPqEY=
+	b=d33MBMFqZ4Ptxrr7uUoq00mfnDV11dzeu6r9VcVeQ0xwz+v0nTxP7uClcRTLqLHB4
+	 wxAst4dpVuaef2YlkBUhCSTUG9wfE/HBOcRCJevb7C2xlKga/MvaWlVxltOVOgqglr
+	 Nnn1+hwPBS9DI0Am3RxPGtknuStJuYxd0KIuUH/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 103/105] netfs, fscache: export fscache_put_volume() and add fscache_try_get_volume()
+	Edward Adam Davis <eadavis@qq.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
+Subject: [PATCH 6.9 131/163] bluetooth/l2cap: sync sock recv cb and release
 Date: Tue, 23 Jul 2024 20:24:20 +0200
-Message-ID: <20240723180407.211980130@linuxfoundation.org>
+Message-ID: <20240723180148.535102307@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 85b08b31a22b481ec6528130daf94eee4452e23f ]
+[ Upstream commit 89e856e124f9ae548572c56b1b70c2255705f8fe ]
 
-Export fscache_put_volume() and add fscache_try_get_volume()
-helper function to allow cachefiles to get/put fscache_volume
-via linux/fscache-cache.h.
+The problem occurs between the system call to close the sock and hci_rx_work,
+where the former releases the sock and the latter accesses it without lock protection.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240628062930.2467993-2-libaokun@huaweicloud.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 522018a0de6b ("cachefiles: fix slab-use-after-free in fscache_withdraw_volume()")
-Stable-dep-of: 5d8f80578907 ("cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+           CPU0                       CPU1
+           ----                       ----
+           sock_close                 hci_rx_work
+	   l2cap_sock_release         hci_acldata_packet
+	   l2cap_sock_kill            l2cap_recv_frame
+	   sk_free                    l2cap_conless_channel
+	                              l2cap_sock_recv_cb
+
+If hci_rx_work processes the data that needs to be received before the sock is
+closed, then everything is normal; Otherwise, the work thread may access the
+released sock when receiving data.
+
+Add a chan mutex in the rx callback of the sock to achieve synchronization between
+the sock release and recv cb.
+
+Sock is dead, so set chan data to NULL, avoid others use invalid sock pointer.
+
+Reported-and-tested-by: syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fscache/internal.h         |    2 --
- fs/fscache/volume.c           |   14 ++++++++++++++
- include/linux/fscache-cache.h |    6 ++++++
- 3 files changed, 20 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_sock.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
---- a/fs/fscache/internal.h
-+++ b/fs/fscache/internal.h
-@@ -145,8 +145,6 @@ extern const struct seq_operations fscac
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index 8645461d45e81..64827e553d638 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1239,6 +1239,10 @@ static void l2cap_sock_kill(struct sock *sk)
  
- struct fscache_volume *fscache_get_volume(struct fscache_volume *volume,
- 					  enum fscache_volume_trace where);
--void fscache_put_volume(struct fscache_volume *volume,
--			enum fscache_volume_trace where);
- bool fscache_begin_volume_access(struct fscache_volume *volume,
- 				 struct fscache_cookie *cookie,
- 				 enum fscache_access_trace why);
---- a/fs/fscache/volume.c
-+++ b/fs/fscache/volume.c
-@@ -27,6 +27,19 @@ struct fscache_volume *fscache_get_volum
- 	return volume;
- }
+ 	BT_DBG("sk %p state %s", sk, state_to_string(sk->sk_state));
  
-+struct fscache_volume *fscache_try_get_volume(struct fscache_volume *volume,
-+					      enum fscache_volume_trace where)
-+{
-+	int ref;
-+
-+	if (!__refcount_inc_not_zero(&volume->ref, &ref))
-+		return NULL;
-+
-+	trace_fscache_volume(volume->debug_id, ref + 1, where);
-+	return volume;
-+}
-+EXPORT_SYMBOL(fscache_try_get_volume);
-+
- static void fscache_see_volume(struct fscache_volume *volume,
- 			       enum fscache_volume_trace where)
++	/* Sock is dead, so set chan data to NULL, avoid other task use invalid
++	 * sock pointer.
++	 */
++	l2cap_pi(sk)->chan->data = NULL;
+ 	/* Kill poor orphan */
+ 
+ 	l2cap_chan_put(l2cap_pi(sk)->chan);
+@@ -1481,12 +1485,25 @@ static struct l2cap_chan *l2cap_sock_new_connection_cb(struct l2cap_chan *chan)
+ 
+ static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
  {
-@@ -420,6 +433,7 @@ void fscache_put_volume(struct fscache_v
- 			fscache_free_volume(volume);
- 	}
+-	struct sock *sk = chan->data;
+-	struct l2cap_pinfo *pi = l2cap_pi(sk);
++	struct sock *sk;
++	struct l2cap_pinfo *pi;
+ 	int err;
+ 
+-	lock_sock(sk);
++	/* To avoid race with sock_release, a chan lock needs to be added here
++	 * to synchronize the sock.
++	 */
++	l2cap_chan_hold(chan);
++	l2cap_chan_lock(chan);
++	sk = chan->data;
+ 
++	if (!sk) {
++		l2cap_chan_unlock(chan);
++		l2cap_chan_put(chan);
++		return -ENXIO;
++	}
++
++	pi = l2cap_pi(sk);
++	lock_sock(sk);
+ 	if (chan->mode == L2CAP_MODE_ERTM && !list_empty(&pi->rx_busy)) {
+ 		err = -ENOMEM;
+ 		goto done;
+@@ -1535,6 +1552,8 @@ static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
+ 
+ done:
+ 	release_sock(sk);
++	l2cap_chan_unlock(chan);
++	l2cap_chan_put(chan);
+ 
+ 	return err;
  }
-+EXPORT_SYMBOL(fscache_put_volume);
- 
- /*
-  * Relinquish a volume representation cookie.
---- a/include/linux/fscache-cache.h
-+++ b/include/linux/fscache-cache.h
-@@ -19,6 +19,7 @@
- enum fscache_cache_trace;
- enum fscache_cookie_trace;
- enum fscache_access_trace;
-+enum fscache_volume_trace;
- 
- enum fscache_cache_state {
- 	FSCACHE_CACHE_IS_NOT_PRESENT,	/* No cache is present for this name */
-@@ -97,6 +98,11 @@ extern void fscache_withdraw_cookie(stru
- 
- extern void fscache_io_error(struct fscache_cache *cache);
- 
-+extern struct fscache_volume *
-+fscache_try_get_volume(struct fscache_volume *volume,
-+		       enum fscache_volume_trace where);
-+extern void fscache_put_volume(struct fscache_volume *volume,
-+			       enum fscache_volume_trace where);
- extern void fscache_end_volume_access(struct fscache_volume *volume,
- 				      struct fscache_cookie *cookie,
- 				      enum fscache_access_trace why);
+-- 
+2.43.0
+
 
 
 
