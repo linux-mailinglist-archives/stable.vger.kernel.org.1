@@ -1,125 +1,228 @@
-Return-Path: <stable+bounces-60795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A6C93A2D7
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 16:34:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D7793A386
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 17:10:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32DE51C22D24
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 14:34:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C89F2844D5
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 15:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06945155300;
-	Tue, 23 Jul 2024 14:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A6C155351;
+	Tue, 23 Jul 2024 15:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=krisman.be header.i=@krisman.be header.b="ixJYvmLs"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n0OfeBCH"
 X-Original-To: stable@vger.kernel.org
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D09D14C59A;
-	Tue, 23 Jul 2024 14:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5113413B599
+	for <stable@vger.kernel.org>; Tue, 23 Jul 2024 15:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721745263; cv=none; b=P9rFrz76v9djmDeZg5b9q+yRwbcMPjo421Fkv5BqJfA9Huzmp6ahNJcuU1EFadMBS8J89ZRIamnRT6sb/hGJsu9xk/gBiN7G5QsnpaSRG6kM/ODQEz1AbDI/6FkjX2ROikfLEpBpPZj+9EydGJX1Fe6hwxhCaUljGUnOMcA2xpw=
+	t=1721747447; cv=none; b=TkIpVIW1XWAdSN3w1nCrk69yKlk9a6zvHDDZeUxvXihmIx9aiY8vfC5HovcXq7PCWPjFz/bKEhi/mZQtgmNqzVtj/N0a/2/rtCW5LA4BaoifBpsfdrml0MWqVDnyKLyKWk2Ntu9IYd7kJylrQSJph/eMMSEN0/RYHauTWtU6Crs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721745263; c=relaxed/simple;
-	bh=1B6BsBDUtFfeVEALIeX4Iv8qeLMx4W7b1/biT1lFRn8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=NgNgbrId9Tvq9UbZnTvBHus0l0KUhAB6cypBpMzlZzaklJ/VCTpq5/khks0GoeULqH6G3nkMQ7PphsBzqPFkgU0PG/P2cRj31ZUZL0piXSNpwbYewcX18zgcVpEv48aHIMH/+20YcGa5mvi1UQL+RP9L45/KLwjWBBm2A9LRwf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=krisman.be; spf=pass smtp.mailfrom=krisman.be; dkim=pass (2048-bit key) header.d=krisman.be header.i=@krisman.be header.b=ixJYvmLs; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=krisman.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=krisman.be
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 89D0B240004;
-	Tue, 23 Jul 2024 14:34:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=krisman.be; s=gm1;
-	t=1721745254;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1IoKig6xPx7s5cqLIWwCW1VLXu1C3mGlxSSzRtiuDkc=;
-	b=ixJYvmLsYrtjIBStPK6eU8LhOXpkOrIjU5kHUvKu04nnfJEwg3SZSbNAdFqrsEP329pk0N
-	R5g5EQr48TRdg9fIFKMPX3vn1tSua4WdJhzEFIvht0KTKlswh1kAV9RL5bNFaIrj/ot/rI
-	BR4zMHSdSNRhQiXEO2VFEw7oER67mxaTtIfhp48sDeM7DGWSjvUHLKl7CsG59fq+0qmGLy
-	VAmYj9xcW5NVZrqoYqgnTSmXR9cRNlgZacPl4tVbU4bdUDKRbD2iAgFI9IcJwygYX5/SAO
-	kDorZzZDnKpwD+29hN2akJtGO4tHPrH8A4uTc3N6OmuameAapZU/8b6a0YJiRw==
-From: Gabriel Krisman Bertazi <gabriel@krisman.be>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>,  chuck.lever@oracle.com,
-  gregkh@linuxfoundation.org,  jack@suse.cz,  krisman@collabora.com,
-  patches@lists.linux.dev,  sashal@kernel.org,  stable@vger.kernel.org,
-  adilger.kernel@dilger.ca,  linux-ext4@vger.kernel.org,  tytso@mit.edu,
-  alexey.makhalov@broadcom.com,  vasavi.sirnapalli@broadcom.com,
-  florian.fainelli@broadcom.com
-Subject: Re: [PATCH 5.10 387/770] fanotify: Allow users to request
- FAN_FS_ERROR events
-In-Reply-To: <CAOQ4uxgz4Gq2Yg4upLWrOf15FaDuAPppRVsLbYvMxrLbpHJE1g@mail.gmail.com>
-	(Amir Goldstein's message of "Tue, 23 Jul 2024 12:20:39 +0300")
-References: <20240618123422.213844892@linuxfoundation.org>
-	<1721718387-9038-1-git-send-email-ajay.kaher@broadcom.com>
-	<CAOQ4uxgz4Gq2Yg4upLWrOf15FaDuAPppRVsLbYvMxrLbpHJE1g@mail.gmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-Date: Tue, 23 Jul 2024 10:34:08 -0400
-Message-ID: <875xswtbxb.fsf@mailhost.krisman.be>
+	s=arc-20240116; t=1721747447; c=relaxed/simple;
+	bh=h9rdsExAYkah/9HXr0Bq4RhbbyHUq5e4cri8lqIqx+w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Yvz7ytw6ocdAdlqBi7tWkxKu1WR4jGvC8XHr4oig+d6am9yYCUl+PdDSVgBqyeET0cn+sdZ8qivLOVZboZiMmbujfGhzCh0pHJgNwGq+5zH3u/tvNM4IxMTP2q8mTiJJWki8gqVCf4HsNoG9+6Kq42F2veWPhusbJTuof+kbiPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n0OfeBCH; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5a869e3e9dfso18213a12.0
+        for <stable@vger.kernel.org>; Tue, 23 Jul 2024 08:10:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721747444; x=1722352244; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=141zF03RZVnD+aDB2CpBuT4/vbbNhplPjuAH2IdR4gY=;
+        b=n0OfeBCHwVewK/pDPNQnjaCkwMJKTPAvRh6uX+sSWiKWL8uw+CYUFElWj7uNJuSyAz
+         5P0pn9yPsyYaWqf4yP6Ry4cclXpUnAYTvMkVF4TMdd0XkT9G9a1ornyrKuhRHi1ElK4W
+         JDnaSFZp2N9l7IxwAOm+xVjm0yA1V7gUyP8pqNqQ/uyv8Vo+D5PpdbXTmx4HZPMBQi7z
+         rgcGCwEmMMj6pjc2DiLF4DqIEKkd8FPPfw63xdaAi9nqjxj65z3RbMLa1TrA2p+kAMHK
+         kazHmUkwQEH8A6iryxEvkrbrKAaTchOu2ATVtqdqDfpq8NGve1/JRBMuRaR4ULVASotJ
+         VNGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721747444; x=1722352244;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=141zF03RZVnD+aDB2CpBuT4/vbbNhplPjuAH2IdR4gY=;
+        b=W60Ch/16QL3ruhjLxY6U0KJTsHr+nBtGQ0eWCzDG+yIGT6BteiXN/+lX6VEznEb2BS
+         Vq69YqB9lW4aonDHDmFNgcpyiSvvzSB9f021J8t0pFGenMgrPMJLwk/ZLQPV5a7lfyXU
+         fvuxHjkQinA+fmjijgBs0AKM/7DaQUHsF0KqDwRSbVQa5Vnh8xil8eXj0KCMT0XzkEsL
+         P1e8L923hGB5koS5Tu48zv3JAFLiBCsJnKf7g04xK9LO6dICMlhvuB9dWF678g1xb01J
+         yHJfN62Evq5qfkIUWMymFVTJmMUvI4MIEtj00hrdcW/WHDFXHD/iBVs92PKTOrfY1FRu
+         qPjA==
+X-Gm-Message-State: AOJu0Yz3mnrXvnG0+lwPfm8NOPNev9dU3AEFRw5AvKAEIHJe4R423tbp
+	BjEcDkUKvqg3zqZlItpccqOYEstUMFPpCeG20W/9mHV2Jxae4qrT379/iSwDWUf0s1uirT4Oz0B
+	omSjx1uhBLog7EQoAX3NIgOG8QLK7ZkWbb7yff/ZqFwbMwKB16ksqrcc=
+X-Google-Smtp-Source: AGHT+IEZKzsYIufxwsx6xHXcvgT9CyGXpJPB748DbnlvBuXBZNz5E6e31JB2yVYHf/Gr3IUhTMWLUiNfNeaVy434ty8=
+X-Received: by 2002:a05:6402:35d6:b0:58b:b1a0:4a2d with SMTP id
+ 4fb4d7f45d1cf-5a4a8428366mr600632a12.1.1721747442879; Tue, 23 Jul 2024
+ 08:10:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240722142250.155873-1-jannh@google.com> <2024072315-oppressor-traps-56a1@gregkh>
+ <2024072353-deceptive-subsector-54fb@gregkh> <2024072328-delirious-wired-1720@gregkh>
+ <CAG48ez0hRdmTjTO6+6qeEra89i_c3-2c_n84KeMV3=jdJv1thA@mail.gmail.com> <2024072310-anointer-unusable-fd67@gregkh>
+In-Reply-To: <2024072310-anointer-unusable-fd67@gregkh>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 23 Jul 2024 17:10:05 +0200
+Message-ID: <CAG48ez2Qp48fe3912kuD1q97QWOV8o2bqgEY0dmaBPW1T4gs0Q@mail.gmail.com>
+Subject: Re: [PATCH stable 4.19-6.6] filelock: Remove locks reliably when
+ fcntl/close race is detected
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: gabriel@krisman.be
 
-Amir Goldstein <amir73il@gmail.com> writes:
-
-> On Tue, Jul 23, 2024 at 10:06=E2=80=AFAM Ajay Kaher <ajay.kaher@broadcom.=
-com> wrote:
->> Without 9709bd548f11 in v5.10.y skips LTP fanotify22 test case, as:
->> fanotify22.c:312: TCONF: FAN_FS_ERROR not supported in kernel
->>
->> With 9709bd548f11 in v5.10.220, LTP fanotify22 is failing because of
->> timeout as no notification. To fix need to merge following two upstream
->> commit to v5.10:
->>
->> 124e7c61deb27d758df5ec0521c36cf08d417f7a:
->> 0001-ext4_fix_error_code_saved_on_super_block_during_file_system.patch
->> https://lore.kernel.org/stable/1721717240-8786-1-git-send-email-ajay.kah=
-er@broadcom.com/T/#mf76930487697d8c1383ed5d21678fe504e8e2305
->>
->> 9a089b21f79b47eed240d4da7ea0d049de7c9b4d:
->> 0001-ext4_Send_notifications_on_error.patch
->> Link: https://lore.kernel.org/stable/1721717240-8786-1-git-send-email-aj=
-ay.kaher@broadcom.com/T/#md1be98e0ecafe4f92d7b61c048e15bcf286cbd53
->>
->> -Ajay
+On Tue, Jul 23, 2024 at 3:52=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+> On Tue, Jul 23, 2024 at 03:36:07PM +0200, Jann Horn wrote:
+> > On Tue, Jul 23, 2024 at 3:09=E2=80=AFPM Greg KH <gregkh@linuxfoundation=
+.org> wrote:
+> > >
+> > > On Tue, Jul 23, 2024 at 03:00:28PM +0200, Greg KH wrote:
+> > > > On Tue, Jul 23, 2024 at 02:56:08PM +0200, Greg KH wrote:
+> > > > > On Mon, Jul 22, 2024 at 04:22:50PM +0200, Jann Horn wrote:
+> > > > > > commit 3cad1bc010416c6dd780643476bc59ed742436b9 upstream.
+> > > > > >
+> > > > > > When fcntl_setlk() races with close(), it removes the created l=
+ock with
+> > > > > > do_lock_file_wait().
+> > > > > > However, LSMs can allow the first do_lock_file_wait() that crea=
+ted the lock
+> > > > > > while denying the second do_lock_file_wait() that tries to remo=
+ve the lock.
+> > > > > > In theory (but AFAIK not in practice), posix_lock_file() could =
+also fail to
+> > > > > > remove a lock due to GFP_KERNEL allocation failure (when splitt=
+ing a range
+> > > > > > in the middle).
+> > > > > >
+> > > > > > After the bug has been triggered, use-after-free reads will occ=
+ur in
+> > > > > > lock_get_status() when userspace reads /proc/locks. This can li=
+kely be used
+> > > > > > to read arbitrary kernel memory, but can't corrupt kernel memor=
+y.
+> > > > > > This only affects systems with SELinux / Smack / AppArmor / BPF=
+-LSM in
+> > > > > > enforcing mode and only works from some security contexts.
+> > > > > >
+> > > > > > Fix it by calling locks_remove_posix() instead, which is design=
+ed to
+> > > > > > reliably get rid of POSIX locks associated with the given file =
+and
+> > > > > > files_struct and is also used by filp_flush().
+> > > > > >
+> > > > > > Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
+> > > > > > Cc: stable@kernel.org
+> > > > > > Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=
+=3D2563
+> > > > > > Signed-off-by: Jann Horn <jannh@google.com>
+> > > > > > Link: https://lore.kernel.org/r/20240702-fs-lock-recover-2-v1-1=
+-edd456f63789@google.com
+> > > > > > Reviewed-by: Jeff Layton <jlayton@kernel.org>
+> > > > > > Signed-off-by: Christian Brauner <brauner@kernel.org>
+> > > > > > [stable fixup: ->c.flc_type was ->fl_type in older kernels]
+> > > > > > Signed-off-by: Jann Horn <jannh@google.com>
+> > > > > > ---
+> > > > > >  fs/locks.c | 9 ++++-----
+> > > > > >  1 file changed, 4 insertions(+), 5 deletions(-)
+> > > > > >
+> > > > > > diff --git a/fs/locks.c b/fs/locks.c
+> > > > > > index fb717dae9029..31659a2d9862 100644
+> > > > > > --- a/fs/locks.c
+> > > > > > +++ b/fs/locks.c
+> > > > > > @@ -2381,8 +2381,9 @@ int fcntl_setlk(unsigned int fd, struct f=
+ile *filp, unsigned int cmd,
+> > > > > >   error =3D do_lock_file_wait(filp, cmd, file_lock);
+> > > > > >
+> > > > > >   /*
+> > > > > > -  * Attempt to detect a close/fcntl race and recover by releas=
+ing the
+> > > > > > -  * lock that was just acquired. There is no need to do that w=
+hen we're
+> > > > > > +  * Detect close/fcntl races and recover by zapping all POSIX =
+locks
+> > > > > > +  * associated with this file and our files_struct, just like =
+on
+> > > > > > +  * filp_flush(). There is no need to do that when we're
+> > > > > >    * unlocking though, or for OFD locks.
+> > > > > >    */
+> > > > > >   if (!error && file_lock->fl_type !=3D F_UNLCK &&
+> > > > > > @@ -2397,9 +2398,7 @@ int fcntl_setlk(unsigned int fd, struct f=
+ile *filp, unsigned int cmd,
+> > > > > >           f =3D files_lookup_fd_locked(files, fd);
+> > > > > >           spin_unlock(&files->file_lock);
+> > > > > >           if (f !=3D filp) {
+> > > > > > -                 file_lock->fl_type =3D F_UNLCK;
+> > > > > > -                 error =3D do_lock_file_wait(filp, cmd, file_l=
+ock);
+> > > > > > -                 WARN_ON_ONCE(error);
+> > > > > > +                 locks_remove_posix(filp, files);
+> > > > >
+> > > > > Wait, this breaks the build on 5.4.y with the error:
+> > > > >
+> > > > > fs/locks.c: In function =E2=80=98fcntl_setlk=E2=80=99:
+> > > > > fs/locks.c:2545:50: error: =E2=80=98files=E2=80=99 undeclared (fi=
+rst use in this function); did you mean =E2=80=98file=E2=80=99?
+> > > > >  2545 |                         locks_remove_posix(filp, files);
+> > > > >       |                                                  ^~~~~
+> > > > >       |                                                  file
+> > > > >
+> > > > > I didn't do test-builds yesterday, my fault for not noticing this=
+ yet.
+> > > > >
+> > > > > I've dropped this from the 5.4.y queues for now, can you fix this=
+ up and send
+> > > > > an updated version, or give me a hint as to what to do instead?  =
+Odd that this
+> > > > > works on 4.19.y, let me see why...
+> > > >
+> > > > Ah, I see why, it applied to the wrong function in 4.19 and that di=
+dn't
+> > > > get built on my test systems (i.e. 64bit only.)  And I see how to f=
+ix
+> > > > this up, let me go do that now, sorry for the noise.
+> > >
+> > > And it's fixed now on 5.4.y as well, I just reference current->files =
+and
+> > > all is good.
+> >
+> > Uuuugh, but actually as you mentioned the buggy code is duplicated
+> > (which was why you had that build success for 4.19). Even in mainline
+> > there are two versions and I missed the one for 64-bit offsets on
+> > 32-bit systems.
+> >
+> > So I guess I gotta go back and send another patch to mainline for the
+> > second path, and then get that through stable too... bleh.
 >
-> I agree that this is the best approach, because the test has no other
-> way to test
-> if ext4 specifically supports FAN_FS_ERROR.
+> Hey, the stable review process found a bug in mainline, that's a good
+> thing!  :)
+
+Yeah, I'm just a bit mad at myself-from-three-weeks-ago for not
+noticing this, I know I must have seen that compat code several
+times...
+
+I've sent a patch to the VFS folks now for fixing the compat path in
+mainline, with CC stable.
+
+> If you need help backporting, I'm glad to do so.
+
+Thanks for the help!
+
 >
-> Chuck,
+> thanks,
 >
-> I wonder how those patches end up in 5.15.y but not in 5.10.y?
-
-I wonder why this was backported to stable in the first place.  I get
-there is a lot of refactoring in this series, which might be useful when
-backporting further fixes. but 9709bd548f11 just enabled a new feature -
-which seems against stable rules.  Considering that "anything is a CVE",
-we really need to be cautious about this kind of stuff in stable
-kernels.
-
-Is it possible to drop 9709bd548f11 from stable instead?
-
-> Gabriel, if 9abeae5d4458 has a Fixes: tag it may have been auto seleced
-> for 5.15.y after c0baf9ac0b05 was picked up...
-
-right.  It would be really cool if we had a way to append this
-information after the fact.  How would people feel about using
-git-notes in the kernel tree to support that?
-
---=20
-Gabriel Krisman Bertazi
+> greg k-h
 
