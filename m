@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45EA93A662
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7C193A731
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 807C728301D
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D525283640
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7FD158215;
-	Tue, 23 Jul 2024 18:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400FF158878;
+	Tue, 23 Jul 2024 18:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JE+/8VaV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOkRYCgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6191586E7;
-	Tue, 23 Jul 2024 18:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35C113D896;
+	Tue, 23 Jul 2024 18:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759668; cv=none; b=T7QpmSUwIHRs81K/5jEKGdlCmtxPwHU5sX1dhLbT+COMEyshRLm0urdtry7BOMdozzRif0vSoSAB3QbWWhdRniNRAnCz6uo0PqtHhi3zJYSOvRIpt9wwdXoMTrcc9tNzw14lh7FV4ciUGcDJlqPur2XYGUSXa0FLmnRdG+Fq68E=
+	t=1721760202; cv=none; b=XiZwdNvhE6SaxNislh02HXcgrqPPCHMLri17LjwbVOrXCND2oWSCV0QU80LDb2Ho21i7EmriS5PQNmCLLKUp1pQQlK4MwPOGKYeVpuKrzSbKvF3jvwnQh2BIxQTUajCWZyZh6RV/YZmDIfKe9A89oHufbsuQ/9BLU4ySWxomlpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759668; c=relaxed/simple;
-	bh=wklxYMg8TBpn71MwiNGCiObxKbDB/Yp7Yi3EhbU1X5c=;
+	s=arc-20240116; t=1721760202; c=relaxed/simple;
+	bh=vztjWwC20udSGUvMA4UF5578Q45b8bz/i7brubcHtV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YS6OsxHnIF6EJ/W+J2/8XsdcKoD3f7g4mivZi8G9bl8m94mO61Mwrc2kwKnQKNt18MjX86AlSEzZfk9UkLqVHYvuC/I0niV43kZN73JAxFXhKfgE8rWYF2A5KQ3Af2eHoK3C/x2eZhJAqwbQB4IVHU+k0vmVz/r4AP1iCOgRgkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JE+/8VaV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0913AC4AF09;
-	Tue, 23 Jul 2024 18:34:27 +0000 (UTC)
+	 MIME-Version; b=raJE1dwNaTpEY3VwLgXI2ctTqt9qqnYmwSwOBovm8whHfKrKzZOtJKewA6NeWLDePZRDuMy2Z+t4bLtxcEx25h4oiziEykhMNmTvneO0f/s3DtXRy+HT/EaS9orbQZz3dgn08cf8Gqcxpmblh4AWNcW4n/uZma1ksF+yftixylA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOkRYCgD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E63C4AF09;
+	Tue, 23 Jul 2024 18:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759668;
-	bh=wklxYMg8TBpn71MwiNGCiObxKbDB/Yp7Yi3EhbU1X5c=;
+	s=korg; t=1721760201;
+	bh=vztjWwC20udSGUvMA4UF5578Q45b8bz/i7brubcHtV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JE+/8VaVCIdL/9j9VPpN6Q7dGH6R4aB8G2GcaWAd4iemsq+tQeAG4GGpMIuldEKv9
-	 pRTJdV/HF/xYsCGi3CFf2RkSg1xvQsUr1MvweFu5Lt9B5H64niMBRhlXyt19F/ucIP
-	 NwDKvNvYh1rN+693xlZKCi82ZBRK2K6eWDLdqNIU=
+	b=tOkRYCgD8YJIH8nI9E/0nFXnO1R8fpbI4Hl0/O4q6vTF26GKSdzsZsOXQSxWaltGr
+	 sjUz1NmVcpGRzWm02HxIvit33G6ZfxRa2idsR9dDv8EaeJzsCybnIVlJf2jFFO2CiJ
+	 vQCJJy8dFei/f2R8rvCBcTegA0MQ6sTR2Ow4vkuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Child <nnac123@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/129] ibmvnic: Add tx check to prevent skb leak
+Subject: [PATCH 6.9 106/163] gpio: pca953x: fix pca953x_irq_bus_sync_unlock race
 Date: Tue, 23 Jul 2024 20:23:55 +0200
-Message-ID: <20240723180408.148094597@linuxfoundation.org>
+Message-ID: <20240723180147.570483899@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Ian Ray <ian.ray@gehealthcare.com>
 
-[ Upstream commit 0983d288caf984de0202c66641577b739caad561 ]
+[ Upstream commit bfc6444b57dc7186b6acc964705d7516cbaf3904 ]
 
-Below is a summary of how the driver stores a reference to an skb during
-transmit:
-    tx_buff[free_map[consumer_index]]->skb = new_skb;
-    free_map[consumer_index] = IBMVNIC_INVALID_MAP;
-    consumer_index ++;
-Where variable data looks like this:
-    free_map == [4, IBMVNIC_INVALID_MAP, IBMVNIC_INVALID_MAP, 0, 3]
-                                               	consumer_index^
-    tx_buff == [skb=null, skb=<ptr>, skb=<ptr>, skb=null, skb=null]
+Ensure that `i2c_lock' is held when setting interrupt latch and mask in
+pca953x_irq_bus_sync_unlock() in order to avoid races.
 
-The driver has checks to ensure that free_map[consumer_index] pointed to
-a valid index but there was no check to ensure that this index pointed
-to an unused/null skb address. So, if, by some chance, our free_map and
-tx_buff lists become out of sync then we were previously risking an
-skb memory leak. This could then cause tcp congestion control to stop
-sending packets, eventually leading to ETIMEDOUT.
+The other (non-probe) call site pca953x_gpio_set_multiple() ensures the
+lock is held before calling pca953x_write_regs().
 
-Therefore, add a conditional to ensure that the skb address is null. If
-not then warn the user (because this is still a bug that should be
-patched) and free the old pointer to prevent memleak/tcp problems.
+The problem occurred when a request raced against irq_bus_sync_unlock()
+approximately once per thousand reboots on an i.MX8MP based system.
 
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+ * Normal case
+
+   0-0022: write register AI|3a {03,02,00,00,01} Input latch P0
+   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
+   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
+   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
+
+ * Race case
+
+   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
+   0-0022: write register AI|08 {03,02,00,00,01} *** Wrong register ***
+   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
+   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
+
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://lore.kernel.org/r/20240620042915.2173-1-ian.ray@gehealthcare.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpio/gpio-pca953x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index ca21e55335b23..61685c3053ad7 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2478,6 +2478,18 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	    (tx_pool->consumer_index + 1) % tx_pool->num_buffers;
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index 00ffa168e4056..f2f40393e3695 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -758,6 +758,8 @@ static void pca953x_irq_bus_sync_unlock(struct irq_data *d)
+ 	int level;
  
- 	tx_buff = &tx_pool->tx_buff[bufidx];
+ 	if (chip->driver_data & PCA_PCAL) {
++		guard(mutex)(&chip->i2c_lock);
 +
-+	/* Sanity checks on our free map to make sure it points to an index
-+	 * that is not being occupied by another skb. If skb memory is
-+	 * not freed then we see congestion control kick in and halt tx.
-+	 */
-+	if (unlikely(tx_buff->skb)) {
-+		dev_warn_ratelimited(dev, "TX free map points to untracked skb (%s %d idx=%d)\n",
-+				     skb_is_gso(skb) ? "tso_pool" : "tx_pool",
-+				     queue_num, bufidx);
-+		dev_kfree_skb_any(tx_buff->skb);
-+	}
-+
- 	tx_buff->skb = skb;
- 	tx_buff->index = bufidx;
- 	tx_buff->pool_index = queue_num;
+ 		/* Enable latch on interrupt-enabled inputs */
+ 		pca953x_write_regs(chip, PCAL953X_IN_LATCH, chip->irq_mask);
+ 
 -- 
 2.43.0
 
