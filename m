@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-60843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E12D93A5AA
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C438393A630
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 211D9B20F6F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4950EB22552
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1A21586F6;
-	Tue, 23 Jul 2024 18:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2ED1586C4;
+	Tue, 23 Jul 2024 18:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXNwpXeb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rTUAMPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E0F1581EB;
-	Tue, 23 Jul 2024 18:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A442156C6C;
+	Tue, 23 Jul 2024 18:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759217; cv=none; b=AzLezXZ7elNC2Qvb/fjHSmB8XNWfho81UtA7JPejqpUlraoJuNo23dXjGJQN9bmGJqrW1glWGMZTyPzmDHfH0gzu9ZoEZoqT8hVMiKcDYoB3wh4FdWSVpMcqMsIoiQ1s6oowTBuxxHRoexe2AFStBeN4ThkmsNAkFBjm7ZqHrUw=
+	t=1721759560; cv=none; b=lICwN8i1zGXqZslYkYE8nla93Zso2p9ZZ5X937eGs+a1M9tIPyo/TzoMsgfY+rV93EtgOG0E/dr4FklrRD571sU27hswc34vF+XIEq+Tg4pUUAVkLnqmd5jV7tr46ER1d06cZEqvrDzRDv4CWvOYRANT3BKoI8H/XeruNLpyvdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759217; c=relaxed/simple;
-	bh=u7X2drtD++NWNTUf3mzL1JqxZbTSkb1ogM2qQUCaC2s=;
+	s=arc-20240116; t=1721759560; c=relaxed/simple;
+	bh=IrOdLK3F3gQM3E+J5zwpi1Kd6e9+CazzXVUG+X0Z820=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdbfFVGlo21BXg08jF1Q7PxZLFXDxANbkhjDRpjASIx/oa6bv4P/gwtrQ+zVG2CN7z1gOEAJfUUh+FlNlMeF5aR9ZLUm1ht3/TPqI+6832fBbYC71IngBJCm8ALIA0ZE26LCnZlIv+I09IX+pFh0R390S1i3b5HMqvrh/8d1RJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXNwpXeb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA43BC4AF09;
-	Tue, 23 Jul 2024 18:26:56 +0000 (UTC)
+	 MIME-Version; b=SuY2RuFuL1lsLWLL8nY/G1lrYq0WfZx0//1kueelUXUiTFfRAip+AGM2C3zKdvW0C6YtO0mI04yCBP8Klqd1SKxVincn9KLT+FqrJuevQjCVwnD8ZeX8ESfkihvNmsReE4z2L7+VEdUxvlLCSZ/1wGqstxdpuaQYmN3Qj1DQ2P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rTUAMPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07ACDC4AF0A;
+	Tue, 23 Jul 2024 18:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759217;
-	bh=u7X2drtD++NWNTUf3mzL1JqxZbTSkb1ogM2qQUCaC2s=;
+	s=korg; t=1721759560;
+	bh=IrOdLK3F3gQM3E+J5zwpi1Kd6e9+CazzXVUG+X0Z820=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXNwpXebHd60vHyvvn1C5G2X2O27HBF7cv4DTko0i/nEuImPcmp6SRaRCFQFp8qK2
-	 Di7QNQCw72h1yXGCbfFvBo685Fzbw8N4fH0a7+sfZeO1Usmn35IQvvnuRvICQFGLNb
-	 3aF1fOTXA6HOnOqf6Sr6ewBz4TXgBt4uhR/KPNL4=
+	b=2rTUAMPjP9h2hT6DV0gmGknUpSpCMGJJOKHB8LEfDxzye3ckHI0EiDR2Mj+h+Q8hp
+	 vKDVzkaZ042bmyjOBP1og2AN1NlowEip7h9HWBZfX6NB14OmyO847MJSsDnZPGthq0
+	 qWfi07UYYbNsN6f1QUvzFZhE5cmpZNlAtjGZHyt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/105] cachefiles: make on-demand read killable
+Subject: [PATCH 6.6 051/129] ALSA: hda: cs35l56: Fix lifecycle of codec pointer
 Date: Tue, 23 Jul 2024 20:23:19 +0200
-Message-ID: <20240723180404.867735110@linuxfoundation.org>
+Message-ID: <20240723180406.760310350@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit bc9dde6155464e906e630a0a5c17a4cab241ffbb ]
+[ Upstream commit d339131bf02d4ed918415574082caf5e8af6e664 ]
 
-Replacing wait_for_completion() with wait_for_completion_killable() in
-cachefiles_ondemand_send_req() allows us to kill processes that might
-trigger a hunk_task if the daemon is abnormal.
+The codec should be cleared when the amp driver is unbound and when
+resuming it should be tested to prevent loading firmware into the device
+and ALSA in a partially configured system state.
 
-But now only CACHEFILES_OP_READ is killable, because OP_CLOSE and OP_OPEN
-is initiated from kworker context and the signal is prohibited in these
-kworker.
-
-Note that when the req in xas changes, i.e. xas_load(&xas) != req, it
-means that a process will complete the current request soon, so wait
-again for the request to be completed.
-
-In addition, add the cachefiles_ondemand_finish_req() helper function to
-simplify the code.
-
-Suggested-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240522114308.2402121-13-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20240531112716.25323-1-simont@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/ondemand.c | 40 ++++++++++++++++++++++++++++------------
- 1 file changed, 28 insertions(+), 12 deletions(-)
+ sound/pci/hda/cs35l56_hda.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 37489ca2e8571..2185e2908dba8 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -380,6 +380,20 @@ static struct cachefiles_req *cachefiles_ondemand_select_req(struct xa_state *xa
- 	return NULL;
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index 78e2eeba49345..b84f3b3eb1409 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -702,6 +702,8 @@ static void cs35l56_hda_unbind(struct device *dev, struct device *master, void *
+ 	if (comps[cs35l56->index].dev == dev)
+ 		memset(&comps[cs35l56->index], 0, sizeof(*comps));
+ 
++	cs35l56->codec = NULL;
++
+ 	dev_dbg(cs35l56->base.dev, "Unbound\n");
  }
  
-+static inline bool cachefiles_ondemand_finish_req(struct cachefiles_req *req,
-+						  struct xa_state *xas, int err)
-+{
-+	if (unlikely(!xas || !req))
-+		return false;
-+
-+	if (xa_cmpxchg(xas->xa, xas->xa_index, req, NULL, 0) != req)
-+		return false;
-+
-+	req->error = err;
-+	complete(&req->done);
-+	return true;
-+}
-+
- ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 					char __user *_buffer, size_t buflen)
- {
-@@ -443,16 +457,8 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- out:
- 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
- 	/* Remove error request and CLOSE request has no reply */
--	if (ret || msg->opcode == CACHEFILES_OP_CLOSE) {
--		xas_reset(&xas);
--		xas_lock(&xas);
--		if (xas_load(&xas) == req) {
--			req->error = ret;
--			complete(&req->done);
--			xas_store(&xas, NULL);
--		}
--		xas_unlock(&xas);
--	}
-+	if (ret || msg->opcode == CACHEFILES_OP_CLOSE)
-+		cachefiles_ondemand_finish_req(req, &xas, ret);
- 	cachefiles_req_put(req);
- 	return ret ? ret : n;
- }
-@@ -557,8 +563,18 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
- 		goto out;
+@@ -807,6 +809,9 @@ static int cs35l56_hda_system_resume(struct device *dev)
  
- 	wake_up_all(&cache->daemon_pollwq);
--	wait_for_completion(&req->done);
--	ret = req->error;
-+wait:
-+	ret = wait_for_completion_killable(&req->done);
-+	if (!ret) {
-+		ret = req->error;
-+	} else {
-+		ret = -EINTR;
-+		if (!cachefiles_ondemand_finish_req(req, &xas, ret)) {
-+			/* Someone will complete it soon. */
-+			cpu_relax();
-+			goto wait;
-+		}
-+	}
- 	cachefiles_req_put(req);
- 	return ret;
- out:
+ 	cs35l56->suspended = false;
+ 
++	if (!cs35l56->codec)
++		return 0;
++
+ 	ret = cs35l56_is_fw_reload_needed(&cs35l56->base);
+ 	dev_dbg(cs35l56->base.dev, "fw_reload_needed: %d\n", ret);
+ 	if (ret > 0) {
 -- 
 2.43.0
 
