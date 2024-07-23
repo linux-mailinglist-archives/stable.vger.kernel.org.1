@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-60988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5F393A653
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:34:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DDE93A709
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A7651F23211
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:34:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DF32282A66
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAB3158D8B;
-	Tue, 23 Jul 2024 18:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBDD158871;
+	Tue, 23 Jul 2024 18:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXLHzuZg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIEYOrgB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779E9158D81;
-	Tue, 23 Jul 2024 18:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9E91581F4;
+	Tue, 23 Jul 2024 18:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759644; cv=none; b=PvfvYlQYV8mebABJ4NHHdzVNOL7EVCmtelc6fVxD0JmjdUNj/dAIpQ7NJFFoXMZ5cvQwTTBSmS4X4vT5f0c3AhwBpL9BRaThTlnyVrXhtoTAQuC0ntz2aQklpFEihcJVTQubU0nyDGA1K4jaGcrloG9YSdsXR422zcCu2Fpw8v8=
+	t=1721760092; cv=none; b=nU68mixMk9peB69kuM2JpNYW4xWHehSKBllx20Ss4d1SmSZPNhRl9Nx15QO1kxdScKK2YeSmwnJbR6MS80y2V0z8/s0cQfWKn9T7TvzNRdTi70SfjhzXRqtp5ZuCtr+P+1cBZ3X1JfrxEs63tr26q68SgA+1/Ny73QZksxBt24U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759644; c=relaxed/simple;
-	bh=cVj9Tu1H9Ztaczt02ma7zrRLAZ/yKTbroXc5vlcGF6k=;
+	s=arc-20240116; t=1721760092; c=relaxed/simple;
+	bh=lsi2m4nyDQY5CuEyW/gps6XPJDAAQqj+jGGKOpTH35c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUIb079v9PA/xql0gwBl7WMBoxl4SvBST2v4P60tCpI7or5ck6XeUFVzXNNg6pacJjRmCdGvfFpYykFtNHvZwbjs5tMc8Ur47EqH5ThIM7p9O/iiJa/bEf5wrJB5P2IwsLjOrOMvQH2qJ3qdc+ZuwHLZv+pCGSxCsiuwhkcI11g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXLHzuZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD30C4AF0B;
-	Tue, 23 Jul 2024 18:34:03 +0000 (UTC)
+	 MIME-Version; b=CgB9x+5vOPegseEYpR06WS/D+18lj/u+6jbndikPDhpW7UUyY3Vi/2ETen8Pv6hblyPbmmzKYRAb8xFyT9t1N4TbzmO6zOutza6APJK/6MyaQDYBcj/BTlvMQqwDc3BGZGArg5n6Wf2qPREZ0XXU1zU9mvVubYmJnTJuI+JiVN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIEYOrgB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C15C4AF09;
+	Tue, 23 Jul 2024 18:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759644;
-	bh=cVj9Tu1H9Ztaczt02ma7zrRLAZ/yKTbroXc5vlcGF6k=;
+	s=korg; t=1721760092;
+	bh=lsi2m4nyDQY5CuEyW/gps6XPJDAAQqj+jGGKOpTH35c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXLHzuZgZJu/lgnB3Tt47nER6FZ90BYbps4WlEBB+iYcF8/wi15CSVwPqP5+sENJ1
-	 ffeRATLiKl08smeSNX77Y9QRYOlaUt47XhwBFjTzHAWZ9f8fPtK/NRhg1XHU7BG/gF
-	 7AjkIBvfLMwFd5L2f4FN+vPwxBxJcYMXCehWm014=
+	b=tIEYOrgB4pyjfNOZn6mdIJ1n3TLOrnD3SJhq8iSi7xl844if184mkv1oAR+MLlQeq
+	 qd9RhxenYcpzHhuqPeawRhh7HdK5dyoKbSt2fMYS8+Ex/e0E9G83VDZDSIi78lK97u
+	 TlQULlzNKq0M8Fu1nrtknBSTOynTF8bhVMBpjquE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Suman Ghosh <sumang@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/129] octeontx2-pf: Fix coverity and klockwork issues in octeon PF driver
+Subject: [PATCH 6.9 098/163] ASoC: ti: omap-hdmi: Fix too long driver name
 Date: Tue, 23 Jul 2024 20:23:47 +0200
-Message-ID: <20240723180407.836225063@linuxfoundation.org>
+Message-ID: <20240723180147.262972021@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,172 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Primoz Fiser <primoz.fiser@norik.com>
 
-[ Upstream commit 02ea312055da84e08e3e5bce2539c1ff11c8b5f2 ]
+[ Upstream commit 524d3f126362b6033e92cbe107ae2158d7fbff94 ]
 
-Fix unintended sign extension and klockwork issues. These are not real
-issue but for sanity checks.
+Set driver name to "HDMI". This simplifies the code and gets rid of
+the following error messages:
 
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
+
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20240610125847.773394-1-primoz.fiser@norik.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../marvell/octeontx2/nic/otx2_common.c       | 10 ++--
- .../ethernet/marvell/octeontx2/nic/otx2_reg.h | 55 ++++++++++---------
- .../marvell/octeontx2/nic/otx2_txrx.c         |  2 +-
- .../net/ethernet/marvell/octeontx2/nic/qos.c  |  3 +-
- 4 files changed, 35 insertions(+), 35 deletions(-)
+ sound/soc/ti/omap-hdmi.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index af62d66470d5e..b3064377510ed 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -648,14 +648,14 @@ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for
- 	} else if (lvl == NIX_TXSCH_LVL_TL4) {
- 		parent = schq_list[NIX_TXSCH_LVL_TL3][prio];
- 		req->reg[0] = NIX_AF_TL4X_PARENT(schq);
--		req->regval[0] = parent << 16;
-+		req->regval[0] = (u64)parent << 16;
- 		req->num_regs++;
- 		req->reg[1] = NIX_AF_TL4X_SCHEDULE(schq);
- 		req->regval[1] = dwrr_val;
- 	} else if (lvl == NIX_TXSCH_LVL_TL3) {
- 		parent = schq_list[NIX_TXSCH_LVL_TL2][prio];
- 		req->reg[0] = NIX_AF_TL3X_PARENT(schq);
--		req->regval[0] = parent << 16;
-+		req->regval[0] = (u64)parent << 16;
- 		req->num_regs++;
- 		req->reg[1] = NIX_AF_TL3X_SCHEDULE(schq);
- 		req->regval[1] = dwrr_val;
-@@ -670,11 +670,11 @@ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for
- 	} else if (lvl == NIX_TXSCH_LVL_TL2) {
- 		parent = schq_list[NIX_TXSCH_LVL_TL1][prio];
- 		req->reg[0] = NIX_AF_TL2X_PARENT(schq);
--		req->regval[0] = parent << 16;
-+		req->regval[0] = (u64)parent << 16;
+diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
+index 4513b527ab970..ad8925b6481ca 100644
+--- a/sound/soc/ti/omap-hdmi.c
++++ b/sound/soc/ti/omap-hdmi.c
+@@ -354,11 +354,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
+ 	if (!card)
+ 		return -ENOMEM;
  
- 		req->num_regs++;
- 		req->reg[1] = NIX_AF_TL2X_SCHEDULE(schq);
--		req->regval[1] = TXSCH_TL1_DFLT_RR_PRIO << 24 | dwrr_val;
-+		req->regval[1] = (u64)hw->txschq_aggr_lvl_rr_prio << 24 | dwrr_val;
- 
- 		if (lvl == hw->txschq_link_cfg_lvl) {
- 			req->num_regs++;
-@@ -698,7 +698,7 @@ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for
- 
- 		req->num_regs++;
- 		req->reg[1] = NIX_AF_TL1X_TOPOLOGY(schq);
--		req->regval[1] = (TXSCH_TL1_DFLT_RR_PRIO << 1);
-+		req->regval[1] = hw->txschq_aggr_lvl_rr_prio << 1;
- 
- 		req->num_regs++;
- 		req->reg[2] = NIX_AF_TL1X_CIR(schq);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
-index 45a32e4b49d1c..e3aee6e362151 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
-@@ -139,33 +139,34 @@
- #define	NIX_LF_CINTX_ENA_W1C(a)		(NIX_LFBASE | 0xD50 | (a) << 12)
- 
- /* NIX AF transmit scheduler registers */
--#define NIX_AF_SMQX_CFG(a)		(0x700 | (a) << 16)
--#define NIX_AF_TL1X_SCHEDULE(a)		(0xC00 | (a) << 16)
--#define NIX_AF_TL1X_CIR(a)		(0xC20 | (a) << 16)
--#define NIX_AF_TL1X_TOPOLOGY(a)		(0xC80 | (a) << 16)
--#define NIX_AF_TL2X_PARENT(a)		(0xE88 | (a) << 16)
--#define NIX_AF_TL2X_SCHEDULE(a)		(0xE00 | (a) << 16)
--#define NIX_AF_TL2X_TOPOLOGY(a)		(0xE80 | (a) << 16)
--#define NIX_AF_TL2X_CIR(a)              (0xE20 | (a) << 16)
--#define NIX_AF_TL2X_PIR(a)              (0xE30 | (a) << 16)
--#define NIX_AF_TL3X_PARENT(a)		(0x1088 | (a) << 16)
--#define NIX_AF_TL3X_SCHEDULE(a)		(0x1000 | (a) << 16)
--#define NIX_AF_TL3X_SHAPE(a)		(0x1010 | (a) << 16)
--#define NIX_AF_TL3X_CIR(a)		(0x1020 | (a) << 16)
--#define NIX_AF_TL3X_PIR(a)		(0x1030 | (a) << 16)
--#define NIX_AF_TL3X_TOPOLOGY(a)		(0x1080 | (a) << 16)
--#define NIX_AF_TL4X_PARENT(a)		(0x1288 | (a) << 16)
--#define NIX_AF_TL4X_SCHEDULE(a)		(0x1200 | (a) << 16)
--#define NIX_AF_TL4X_SHAPE(a)		(0x1210 | (a) << 16)
--#define NIX_AF_TL4X_CIR(a)		(0x1220 | (a) << 16)
--#define NIX_AF_TL4X_PIR(a)		(0x1230 | (a) << 16)
--#define NIX_AF_TL4X_TOPOLOGY(a)		(0x1280 | (a) << 16)
--#define NIX_AF_MDQX_SCHEDULE(a)		(0x1400 | (a) << 16)
--#define NIX_AF_MDQX_SHAPE(a)		(0x1410 | (a) << 16)
--#define NIX_AF_MDQX_CIR(a)		(0x1420 | (a) << 16)
--#define NIX_AF_MDQX_PIR(a)		(0x1430 | (a) << 16)
--#define NIX_AF_MDQX_PARENT(a)		(0x1480 | (a) << 16)
--#define NIX_AF_TL3_TL2X_LINKX_CFG(a, b)	(0x1700 | (a) << 16 | (b) << 3)
-+#define NIX_AF_SMQX_CFG(a)		(0x700 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_SDP_LINK_CFG(a)	(0xB10 | (u64)(a) << 16)
-+#define NIX_AF_TL1X_SCHEDULE(a)		(0xC00 | (u64)(a) << 16)
-+#define NIX_AF_TL1X_CIR(a)		(0xC20 | (u64)(a) << 16)
-+#define NIX_AF_TL1X_TOPOLOGY(a)		(0xC80 | (u64)(a) << 16)
-+#define NIX_AF_TL2X_PARENT(a)		(0xE88 | (u64)(a) << 16)
-+#define NIX_AF_TL2X_SCHEDULE(a)		(0xE00 | (u64)(a) << 16)
-+#define NIX_AF_TL2X_TOPOLOGY(a)		(0xE80 | (u64)(a) << 16)
-+#define NIX_AF_TL2X_CIR(a)		(0xE20 | (u64)(a) << 16)
-+#define NIX_AF_TL2X_PIR(a)		(0xE30 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_PARENT(a)		(0x1088 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_SCHEDULE(a)		(0x1000 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_SHAPE(a)		(0x1010 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_CIR(a)		(0x1020 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_PIR(a)		(0x1030 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_TOPOLOGY(a)		(0x1080 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_PARENT(a)		(0x1288 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_SCHEDULE(a)		(0x1200 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_SHAPE(a)		(0x1210 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_CIR(a)		(0x1220 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_PIR(a)		(0x1230 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_TOPOLOGY(a)		(0x1280 | (u64)(a) << 16)
-+#define NIX_AF_MDQX_SCHEDULE(a)		(0x1400 | (u64)(a) << 16)
-+#define NIX_AF_MDQX_SHAPE(a)		(0x1410 | (u64)(a) << 16)
-+#define NIX_AF_MDQX_CIR(a)		(0x1420 | (u64)(a) << 16)
-+#define NIX_AF_MDQX_PIR(a)		(0x1430 | (u64)(a) << 16)
-+#define NIX_AF_MDQX_PARENT(a)		(0x1480 | (u64)(a) << 16)
-+#define NIX_AF_TL3_TL2X_LINKX_CFG(a, b)	(0x1700 | (u64)(a) << 16 | (b) << 3)
- 
- /* LMT LF registers */
- #define LMT_LFBASE			BIT_ULL(RVU_FUNC_BLKADDR_SHIFT)
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index 04a49b9b545f3..0ca9f2ffd932d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -510,7 +510,7 @@ static int otx2_tx_napi_handler(struct otx2_nic *pfvf,
- 
- static void otx2_adjust_adaptive_coalese(struct otx2_nic *pfvf, struct otx2_cq_poll *cq_poll)
- {
--	struct dim_sample dim_sample;
-+	struct dim_sample dim_sample = { 0 };
- 	u64 rx_frames, rx_bytes;
- 	u64 tx_frames, tx_bytes;
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 6cddb4da85b71..4995a2d54d7d0 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -153,7 +153,6 @@ static void __otx2_qos_txschq_cfg(struct otx2_nic *pfvf,
- 		num_regs++;
- 
- 		otx2_config_sched_shaping(pfvf, node, cfg, &num_regs);
+-	card->name = devm_kasprintf(dev, GFP_KERNEL,
+-				    "HDMI %s", dev_name(ad->dssdev));
+-	if (!card->name)
+-		return -ENOMEM;
 -
- 	} else if (level == NIX_TXSCH_LVL_TL4) {
- 		otx2_config_sched_shaping(pfvf, node, cfg, &num_regs);
- 	} else if (level == NIX_TXSCH_LVL_TL3) {
-@@ -176,7 +175,7 @@ static void __otx2_qos_txschq_cfg(struct otx2_nic *pfvf,
- 		/* check if node is root */
- 		if (node->qid == OTX2_QOS_QID_INNER && !node->parent) {
- 			cfg->reg[num_regs] = NIX_AF_TL2X_SCHEDULE(node->schq);
--			cfg->regval[num_regs] =  TXSCH_TL1_DFLT_RR_PRIO << 24 |
-+			cfg->regval[num_regs] =  (u64)hw->txschq_aggr_lvl_rr_prio << 24 |
- 						 mtu_to_dwrr_weight(pfvf,
- 								    pfvf->tx_max_pktlen);
- 			num_regs++;
++	card->name = "HDMI";
+ 	card->owner = THIS_MODULE;
+ 	card->dai_link =
+ 		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
 -- 
 2.43.0
 
