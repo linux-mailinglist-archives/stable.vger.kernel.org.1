@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-61115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A161B93A6F0
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:40:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DC793A62E
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30C2AB22B9B
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:40:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43B03281D90
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D412015884E;
-	Tue, 23 Jul 2024 18:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BA5155351;
+	Tue, 23 Jul 2024 18:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ef4yZRCX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiIR80kd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DE71586CB;
-	Tue, 23 Jul 2024 18:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBFB13D600;
+	Tue, 23 Jul 2024 18:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760018; cv=none; b=gbKNDeXEX+p2alBsCD98ZfHi/ew3rVKz5/zodvki4a0HxrxmJezIqTwWqGkvSOmIvWu/Bbf4VUXoOSaV4bX4MsvIDMnGADuXTRfj7s4aNC9cbrQx3V8Rhr+yJKnVnLxejLYg23bvI/Q2oPqfAnghlYJBz7FhspJku3y5a5BG0Uk=
+	t=1721759554; cv=none; b=dtCJ8Ke8/PA7rkeCsXE1qdpHJzaRYG9C1FdT/3e8hBGVhSh52G+IDC1eGBeobSEP/iZtXeudyVpEtbBwHMDyXI4pLXAagM8DE5kNDv6iAzWwMfAal8cGYPMcrAuw6Lb1Ktwx/Crh6Drrt5PXBTgdbjqqo7DDcz8ldvGeFdUsaOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760018; c=relaxed/simple;
-	bh=KbFOT0RlzmtwkWrbcURfuWnLO7/LHSZRmjl6qytRztU=;
+	s=arc-20240116; t=1721759554; c=relaxed/simple;
+	bh=J39qEzhrXDvGTZEkxRLVSGkCj1T7bJyM7NT4XP+4WxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LksjwXoRMGapLvfa/8oLMEzAHDvDzNzHP+qDGj+qbxPlJAkK8P4Hm/DbyeoSk484kV4+HDh09ui1LKleRxu5hHKaxb76KRj0a1JknugpEg67r/tw/kx1d9TOOGconMGAq9833MWNMaYatMSJREd0KmirGrpDWWjCBb5YlmMxHcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ef4yZRCX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191EBC4AF09;
-	Tue, 23 Jul 2024 18:40:17 +0000 (UTC)
+	 MIME-Version; b=CXk/VGI8l16jXoztlEyayNLLtj2HXKc1ebMbWvhz2NNp8iy1nqcbapkC0mJMHCHnTZnZjwhEMA9stECP0bGwYj4r/0/YXps/wDgbfSlGWLYtWQrhgmWXSvkXNrSHgVWUbTxYXDnEwP3JwlxpfRQN5AU9WknKnoub9btV/ekw4bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiIR80kd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D00C4AF0A;
+	Tue, 23 Jul 2024 18:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760018;
-	bh=KbFOT0RlzmtwkWrbcURfuWnLO7/LHSZRmjl6qytRztU=;
+	s=korg; t=1721759554;
+	bh=J39qEzhrXDvGTZEkxRLVSGkCj1T7bJyM7NT4XP+4WxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ef4yZRCXElbLwohLH44LNtnkLP6yYu6Y1XWVUrpwHPZdz8TAVK03pFXsg3nRvFAc0
-	 zeESrqTYPH3OL3Vy1ff/zo6B0OZ6KDSKqkOu2DAB2VpZF/lWmoPpvNXYLYiAA6qQJi
-	 fEgllYl+Byut7mdcGMY4DKB3LBGv1zJNpg1rFo/E=
+	b=ZiIR80kdHj4abh2eldEtBc/yxp+Zu/jg4pt390udr35egy4UegYZtpvVncuZMQ4RK
+	 MuIamF57jZSqJZsNRcIPazrFhmuck0Q9f9aLaErJ1FsBa4KujKB05uDWhDryr6hYoy
+	 8eMp5b0XfZfvkvtnBJLiS7ok248/JKrvj7EgCfvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Chunguang Xu <chunguang.xu@shopee.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 068/163] ALSA: hda: cs35l41: Support Lenovo Thinkbook 16P Gen 5
+Subject: [PATCH 6.6 049/129] nvme: avoid double free special payload
 Date: Tue, 23 Jul 2024 20:23:17 +0200
-Message-ID: <20240723180146.097530049@linuxfoundation.org>
+Message-ID: <20240723180406.684484057@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Chunguang Xu <chunguang.xu@shopee.com>
 
-[ Upstream commit 82f3daed2d3590fa286a02301573a183dd902a0f ]
+[ Upstream commit e5d574ab37f5f2e7937405613d9b1a724811e5ad ]
 
-This laptop does not contain _DSD so needs to be supported using the
-configuration table.
+If a discard request needs to be retried, and that retry may fail before
+a new special payload is added, a double free will result. Clear the
+RQF_SPECIAL_LOAD when the request is cleaned.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20240606130351.333495-2-sbinding@opensource.cirrus.com
+Signed-off-by: Chunguang Xu <chunguang.xu@shopee.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/cs35l41_hda_property.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/nvme/host/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/cs35l41_hda_property.c b/sound/pci/hda/cs35l41_hda_property.c
-index 4f5e581cdd5ff..e034828df4452 100644
---- a/sound/pci/hda/cs35l41_hda_property.c
-+++ b/sound/pci/hda/cs35l41_hda_property.c
-@@ -118,6 +118,8 @@ static const struct cs35l41_config cs35l41_config_table[] = {
- 	{ "17AA38B5", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
- 	{ "17AA38B6", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
- 	{ "17AA38B7", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
-+	{ "17AA38F9", 2, EXTERNAL, { CS35L41_RIGHT, CS35L41_LEFT, 0, 0 }, 0, 2, -1, 0, 0, 0 },
-+	{ "17AA38FA", 2, EXTERNAL, { CS35L41_RIGHT, CS35L41_LEFT, 0, 0 }, 0, 2, -1, 0, 0, 0 },
- 	{}
- };
- 
-@@ -509,6 +511,8 @@ static const struct cs35l41_prop_model cs35l41_prop_model_table[] = {
- 	{ "CSC3551", "17AA38B5", generic_dsd_config },
- 	{ "CSC3551", "17AA38B6", generic_dsd_config },
- 	{ "CSC3551", "17AA38B7", generic_dsd_config },
-+	{ "CSC3551", "17AA38F9", generic_dsd_config },
-+	{ "CSC3551", "17AA38FA", generic_dsd_config },
- 	{}
- };
- 
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 94a0916f9cb78..e969da0a681b4 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -938,6 +938,7 @@ void nvme_cleanup_cmd(struct request *req)
+ 			clear_bit_unlock(0, &ctrl->discard_page_busy);
+ 		else
+ 			kfree(bvec_virt(&req->special_vec));
++		req->rq_flags &= ~RQF_SPECIAL_PAYLOAD;
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(nvme_cleanup_cmd);
 -- 
 2.43.0
 
