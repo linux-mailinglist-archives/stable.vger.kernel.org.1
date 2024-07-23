@@ -1,176 +1,121 @@
-Return-Path: <stable+bounces-60739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4009939DD2
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:32:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6441939DD6
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:32:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCE83B2297F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 09:32:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8934A1F230F5
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 09:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB0914D44D;
-	Tue, 23 Jul 2024 09:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2E0150987;
+	Tue, 23 Jul 2024 09:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ef/zH1Ya";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="b9MLnql7";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ef/zH1Ya";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="b9MLnql7"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Vn1U5ZZs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774DD14D2BD;
-	Tue, 23 Jul 2024 09:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B209414F102
+	for <stable@vger.kernel.org>; Tue, 23 Jul 2024 09:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721726964; cv=none; b=jqkleEwjtLYMnssUFmVkIYiXkviE54gCYGKVxRv5DaUKO5IIucYKOMpvA7ZkqZMaALuwAqYJwmzGIn2vCjkSm4JRf5YozagTalYyjB4GH1SBmKM/42u+qkN90Mthz31fDntz15rjb2BTODYPWQAFMJStLSOXyJvHZmBjQQGbOsc=
+	t=1721727001; cv=none; b=j1fV4DDPKpMbUOduf/eLM7m0pJtZKFvcxN8x46xUD17ioCbfq6aKZWbNG1/XBX0RiqWQHREBzpaOlHaLbjr8KWCPC0aeeFoPolVhu8Z1d04BqMD2UxcN8almTGwDGdnv0MUJsu2W7hjHfzCjSaTUPQeHmREjK/bMz59MATp2wXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721726964; c=relaxed/simple;
-	bh=iREJ5hETH4iOLpnSo4JBd93xj0uCQ+zee5hAXGztr6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IbYkGGA6CzG+dx/McWovgKiiVF++clx7yWHEoUoIqmt4g6e1LHz8qHrFxm3eJcmnh0d+faOIpZ4w09MDO3tqkI5d4NT02v+bhL8gF5miEAEbVLA2e8WAFXWJk1/PUONvS2kEW+yYduxY/vxnUj5WpMh1EPp8IWGszPwDx14uIgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ef/zH1Ya; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=b9MLnql7; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ef/zH1Ya; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=b9MLnql7; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C1E03218EC;
-	Tue, 23 Jul 2024 09:29:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1721726960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ArijaW9b6KicSHPt37A2ErQiZIilMSnhCUiCGMlxGSQ=;
-	b=ef/zH1YaWpIoSn2o1YI1id3po0hJj/vp3iVSYF+i3GimazkTLe6Oc3EaOz2RgXWt3htysO
-	e+QKeIu+38RKmPM0Yj1G3utdSZTxoCgR5h5tuZOcbGGId8FMbkf1Bdhd5Ju2Em5c0ctWgV
-	USoB0LxjGOn0yOSIueLUmuJwMiAYcL4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1721726960;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ArijaW9b6KicSHPt37A2ErQiZIilMSnhCUiCGMlxGSQ=;
-	b=b9MLnql7CY2jDPtfIIixkzsRtUHw0yY5IyNgOcmf+NEawg25wRm1fRLx7W715owFNndHwM
-	43l89uZi9dOsZeDA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1721726960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ArijaW9b6KicSHPt37A2ErQiZIilMSnhCUiCGMlxGSQ=;
-	b=ef/zH1YaWpIoSn2o1YI1id3po0hJj/vp3iVSYF+i3GimazkTLe6Oc3EaOz2RgXWt3htysO
-	e+QKeIu+38RKmPM0Yj1G3utdSZTxoCgR5h5tuZOcbGGId8FMbkf1Bdhd5Ju2Em5c0ctWgV
-	USoB0LxjGOn0yOSIueLUmuJwMiAYcL4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1721726960;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ArijaW9b6KicSHPt37A2ErQiZIilMSnhCUiCGMlxGSQ=;
-	b=b9MLnql7CY2jDPtfIIixkzsRtUHw0yY5IyNgOcmf+NEawg25wRm1fRLx7W715owFNndHwM
-	43l89uZi9dOsZeDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B366113874;
-	Tue, 23 Jul 2024 09:29:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id W8PDK/B3n2auegAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 23 Jul 2024 09:29:20 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 697F9A08BD; Tue, 23 Jul 2024 11:29:16 +0200 (CEST)
-Date: Tue, 23 Jul 2024 11:29:16 +0200
-From: Jan Kara <jack@suse.cz>
-To: Ajay Kaher <ajay.kaher@broadcom.com>
-Cc: gregkh@linuxfoundation.org, amir73il@gmail.com, chuck.lever@oracle.com,
-	jack@suse.cz, krisman@collabora.com, patches@lists.linux.dev,
-	sashal@kernel.org, stable@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, tytso@mit.edu,
-	alexey.makhalov@broadcom.com, vasavi.sirnapalli@broadcom.com,
-	florian.fainelli@broadcom.com
-Subject: Re: [PATCH 5.10 387/770] fanotify: Allow users to request
- FAN_FS_ERROR events
-Message-ID: <20240723092916.gtpvnifv2rizbyii@quack3>
-References: <20240618123422.213844892@linuxfoundation.org>
- <1721718387-9038-1-git-send-email-ajay.kaher@broadcom.com>
+	s=arc-20240116; t=1721727001; c=relaxed/simple;
+	bh=FAuZ0UAD+vdkUjJ0UlsabJSfZQUX4W2wFDKeefUEpgY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HpHfo/1veWjCOmOZNBb33YT9slOKqtQay3UkE0Wz+r00J8xknw8wra41SU07g/FwnQVNl8SeFh8FUu1Law6hrlTHBSchu3fyVBdUjSD3u3N7d6ypNyi8JjFIW3FyMP7fKV61w5fuGGT9LDSlLlkjtKYOp2ghOMKQLRhxY7DXC/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Vn1U5ZZs; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a7a8a4f21aeso112218966b.2
+        for <stable@vger.kernel.org>; Tue, 23 Jul 2024 02:29:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721726998; x=1722331798; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+vEOkvbFbp3f9Cjx9et2nB6QuzkeXuOLLdhC4BThQFM=;
+        b=Vn1U5ZZsU9hWnaEzg8S6MRZrUZQ167gaEgEawz6E19Vmj5QL9k5h8ZnP0oBYF5yY2o
+         5lpxJslsC0+ZhYLh7SUCP7MsW9hriP0gg1f6C6UBa5I7tjNel724WwW+PGhj+Swwimsh
+         iJnZ920wbB2NW/MJCma5Vpz0+K2hz0cvr6PgeilDzauW/e+2NLgGGjo/diqkEPRU0dOe
+         k8GPWOp2GZ4G7NBCKDTP6WduDrHB5KAzhY/u/JgqICIaGZWdTH85A2F9VCZeMWSo/prh
+         mRS3CJ9DHr7R/uUqIvzUJTbeu+pp/VdDMlAIPgyQ3hQ8vuYyhx+o89lKMnBZ/wCZdXON
+         lAUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721726998; x=1722331798;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+vEOkvbFbp3f9Cjx9et2nB6QuzkeXuOLLdhC4BThQFM=;
+        b=ny7G/q1ZE5u/pkv/urx7rckIRBBSCB6bDaLu4+2ISZjxb49/SNzyZRF8TmX40QX+j7
+         4xjLR9jc7v357/uswp1WdCar7JpgTSuqRrc1oM0ieSf1i2HfyyFlL7ReLzWZK4PSUnJ4
+         XU12RNVlZjFOjnME6xDrnRXYYETs4WcTmARJfaSBQUx5e4XHmM1xoM0mYbj0Xk6tUVzd
+         /xwY0LloGiBVen8CFrQA03KBfqDGeXPbgY5pzCrAaw3pzaqrR0MoE+RnkhhP2l9djrp9
+         6wH7bsv+CGW0ZtTF0t8u91anW9HtomdtJ5h24XxLi28eEKVUQ1iq6kFLFoeFmFTCS04i
+         cPYA==
+X-Forwarded-Encrypted: i=1; AJvYcCXo8uu2bFjcjbg56AuYoW72I+46wWis7zL6ir7xWc1vecGhLe+wBWwjEJjjgT6ZGnehSDLtn+1hNDdMlJ9aVrtwVVjXT1t/
+X-Gm-Message-State: AOJu0YzX6Wzr7PntaJtSo3ZphYREd4mK0D/0CthUDxfn3wLPUpw5acKa
+	dvUaxWW29aRyi8b/FYnvSmidbL5puRyuD4pGxMqXta00+U/YnZIAmWt6WKzF1HQ=
+X-Google-Smtp-Source: AGHT+IGrHFX9JiQx/Eykl83Z2R2uBLLYPpx8qq7c7tKOtjvgIyTkMQ510ZsluMgEq+if+UaXKvMqgg==
+X-Received: by 2002:a17:907:9408:b0:a6f:1ad5:20e0 with SMTP id a640c23a62f3a-a7a4c2a3323mr642854066b.45.1721726998064;
+        Tue, 23 Jul 2024 02:29:58 -0700 (PDT)
+Received: from [192.168.0.3] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7a8a4de922sm84336066b.56.2024.07.23.02.29.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Jul 2024 02:29:57 -0700 (PDT)
+Message-ID: <a0ac4c3b-3c46-4c89-9947-d91ba06309f4@linaro.org>
+Date: Tue, 23 Jul 2024 10:29:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1721718387-9038-1-git-send-email-ajay.kaher@broadcom.com>
-X-Spam-Score: -0.60
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-0.60 / 50.00];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,oracle.com,suse.cz,collabora.com,lists.linux.dev,kernel.org,vger.kernel.org,dilger.ca,mit.edu,broadcom.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email]
-X-Spam-Level: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] clk: qcom: camcc-sc8280xp: Remove always-on GDSC
+ hard-coding
+To: "Satya Priya Kakitapalli (Temp)" <quic_skakitap@quicinc.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
+Cc: dmitry.baryshkov@linaro.org, stable@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240715-linux-next-24-07-13-sc8280xp-camcc-fixes-v1-1-fadb5d9445c1@linaro.org>
+ <f0d4b7a3-2b61-3d42-a430-34b30eeaa644@quicinc.com>
+ <86068581-0ce7-47b5-b1c6-fda4f7d1037f@linaro.org>
+ <02679111-1a35-b931-fecd-01c952553652@quicinc.com>
+ <ce14800d-7411-47c5-ad46-6baa6fb678f4@linaro.org>
+ <dd588276-8f1c-4389-7b3a-88f483b7072e@quicinc.com>
+ <610efa39-e476-45ae-bd2b-3a0b8ea485dc@linaro.org>
+ <6055cb14-de80-97bc-be23-7af8ffc89fcc@quicinc.com>
+Content-Language: en-US
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <6055cb14-de80-97bc-be23-7af8ffc89fcc@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue 23-07-24 12:36:27, Ajay Kaher wrote:
-> > [ Upstream commit 9709bd548f11a092d124698118013f66e1740f9b ]
-> > 
-> > Wire up the FAN_FS_ERROR event in the fanotify_mark syscall, allowing
-> > user space to request the monitoring of FAN_FS_ERROR events.
-> > 
-> > These events are limited to filesystem marks, so check it is the
-> > case in the syscall handler.
+On 22/07/2024 09:57, Satya Priya Kakitapalli (Temp) wrote:
+>> I have no idea. Why does it matter ?
+>>
 > 
-> Greg,
-> 
-> Without 9709bd548f11 in v5.10.y skips LTP fanotify22 test case, as: 
-> fanotify22.c:312: TCONF: FAN_FS_ERROR not supported in kernel
-> 
-> With 9709bd548f11 in v5.10.220, LTP fanotify22 is failing because of
-> timeout as no notification. To fix need to merge following two upstream
-> commit to v5.10:
-> 
-> 124e7c61deb27d758df5ec0521c36cf08d417f7a:
-> 0001-ext4_fix_error_code_saved_on_super_block_during_file_system.patch
-> https://lore.kernel.org/stable/1721717240-8786-1-git-send-email-ajay.kaher@broadcom.com/T/#mf76930487697d8c1383ed5d21678fe504e8e2305
-> 
-> 9a089b21f79b47eed240d4da7ea0d049de7c9b4d:
-> 0001-ext4_Send_notifications_on_error.patch
-> Link: https://lore.kernel.org/stable/1721717240-8786-1-git-send-email-ajay.kaher@broadcom.com/T/#md1be98e0ecafe4f92d7b61c048e15bcf286cbd53 
+> This clock expected to be kept always ON, as per design, or else the 
+> GDSC transition form ON to OFF (vice versa) wont work.
 
-I know Chuck has been backporting the huge pile of fsnotify changes for
-stable and he was running LTP so I'm a bit curious if he saw the fanotify22
-failure as well. The reason for the test failure seems to be that the
-combination of features now present in stable has never been upstream which
-confuses the test. As such I'm not sure if backporting more features to
-stable is warranted just to fix a broken LTP test... But given the huge
-pile Chuck has backported already I'm not strongly opposed to backporting a
-few more, there's just a question where does this stop :)
+Yes, parking to XO per this patch works for me. So I guess its already 
+on and is left in that state by the park.
 
-								Honza
+> Want to know the clock status after bootup, to understand if the clock 
+> got turned off during the late init. May I know exactly what you have 
+> tested? Did you test the camera usecases as well?
 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Of course.
+
+The camera works on x13s with this patch. That's what I mean by tested.
+
+---
+bod
 
