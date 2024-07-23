@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-60898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0321693A5E6
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:29:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D8393A703
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC3911F233B7
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:29:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C51EC1F20F60
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368D11586CB;
-	Tue, 23 Jul 2024 18:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2428415884E;
+	Tue, 23 Jul 2024 18:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cMr8uR2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="em6Ujm7p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA416156F29;
-	Tue, 23 Jul 2024 18:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25421586F5;
+	Tue, 23 Jul 2024 18:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759380; cv=none; b=hZe0Caf+tyTK/TtUPbaxYoe7N8fj7COE1xpKXFHRaKTr54eYHOYNux010W9GRNGFo6/d4ffNR8a15UVqIC9Ld5fflGRt4akC0P1qznXD6KCS/hFzXg5Zj+vpID7VXizVDMnzYMXis+5gOq5iWKxTvaCjUzNNsdIHjmXppmLHWfQ=
+	t=1721760071; cv=none; b=QhRefOljbF2yhDYAQLXOUpgeHR/Bqe4yf0R1jzJRg5cPflkjubSVMIfpIjLL5VfLA1RdJNM3dJQREd9dRg4mUXSAaWQi7NwtXJTE9gHr9pBwK11I5mfIkPlJgpI99j+QYFKf8qoezTyc9Y6bmk24sUXZwBZqK22PUKTyZ7HIkIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759380; c=relaxed/simple;
-	bh=/e0D/7SXLsMeoWuOGM7zOkZ8tAOsISVJ2bNCgyhY9Po=;
+	s=arc-20240116; t=1721760071; c=relaxed/simple;
+	bh=fi6v8K8XEtg5o96MsAalZDdjB6jA5AoGiHtkyzL3ulU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YzG/8fQlRTc5xuilbxnAxUCQVhTwDii2noRsPKYxijrqh43EYOMWYh5njyt0w0HzyPmro84TuWb3EhTNNvrhqB1E3iRoRTi76CUyO8k6YhjTOgBXB3fteIs/ZWqoGXOeB304cfhInAKFPulvh4E/ByFPu+AvArMrqGU7fLGhw4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cMr8uR2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1AAC4AF09;
-	Tue, 23 Jul 2024 18:29:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KY/d7PHVrYyffkoTp+DqtnNctH+QnGbKjXm6GsIfOeF3lodMgOJzw0q42b/hw6OtYYgWe0+QW8YO6/caeNCHW1eONqdxhQB388TTffk6Ik8h4RhamSEOhx1XnDWSA+DsaYZNLuAYYoAL5HauyG3qEgrzlVZm8t4dsk+PDzNkS5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=em6Ujm7p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3878EC4AF0A;
+	Tue, 23 Jul 2024 18:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759379;
-	bh=/e0D/7SXLsMeoWuOGM7zOkZ8tAOsISVJ2bNCgyhY9Po=;
+	s=korg; t=1721760071;
+	bh=fi6v8K8XEtg5o96MsAalZDdjB6jA5AoGiHtkyzL3ulU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1cMr8uR2BONnZdeTfN+hKnrCg7mKB//51kmvNw/VZ7UfKaD8XCY2ltklNvjAbSHM/
-	 VOgjoGn7lbX83MWg0FvVB1KEa2IYpY61gz54IFBJWM+XWb/FtzPShozg6foeu8TTaw
-	 7UWhHHfxFG6k2S1yELuvlA6tiaMudEmT5ztu/mXA=
+	b=em6Ujm7pWrOWHNe19WwagLCNpaOMwBYOdjWvGlydel74TJJBl+qrpDiEH+O7PEbYh
+	 3OSeb0Hn0C/7NFIlU2BWxnmrAhr8QLka6ZKzVr+0nfXTaMNVPaaW1hXBOwHr8iarw9
+	 z7M+Z8Y8E86B5MV8gKy4cH3bojhANgu6TWjSTsiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Jason Montleon <jmontleo@redhat.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/105] s390/sclp: Fix sclp_init() cleanup on failure
+Subject: [PATCH 6.9 093/163] ASoC: Intel: avs: Fix route override
 Date: Tue, 23 Jul 2024 20:23:42 +0200
-Message-ID: <20240723180405.751833384@linuxfoundation.org>
+Message-ID: <20240723180147.071974282@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-[ Upstream commit 6434b33faaa063df500af355ee6c3942e0f8d982 ]
+[ Upstream commit fd660b1bd015e5aa9a558ee04088f2431010548d ]
 
-If sclp_init() fails it only partially cleans up: if there are multiple
-failing calls to sclp_init() sclp_state_change_event will be added several
-times to sclp_reg_list, which results in the following warning:
+Instead of overriding existing memory strings that may be too short,
+just allocate needed memory and point the route at it.
 
-------------[ cut here ]------------
-list_add double add: new=000003ffe1598c10, prev=000003ffe1598bf0, next=000003ffe1598c10.
-WARNING: CPU: 0 PID: 1 at lib/list_debug.c:35 __list_add_valid_or_report+0xde/0xf8
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.10.0-rc3
-Krnl PSW : 0404c00180000000 000003ffe0d6076a (__list_add_valid_or_report+0xe2/0xf8)
-           R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-...
-Call Trace:
- [<000003ffe0d6076a>] __list_add_valid_or_report+0xe2/0xf8
-([<000003ffe0d60766>] __list_add_valid_or_report+0xde/0xf8)
- [<000003ffe0a8d37e>] sclp_init+0x40e/0x450
- [<000003ffe00009f2>] do_one_initcall+0x42/0x1e0
- [<000003ffe15b77a6>] do_initcalls+0x126/0x150
- [<000003ffe15b7a0a>] kernel_init_freeable+0x1ba/0x1f8
- [<000003ffe0d6650e>] kernel_init+0x2e/0x180
- [<000003ffe000301c>] __ret_from_fork+0x3c/0x60
- [<000003ffe0d759ca>] ret_from_fork+0xa/0x30
-
-Fix this by removing sclp_state_change_event from sclp_reg_list when
-sclp_init() fails.
-
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reported-by: Jason Montleon <jmontleo@redhat.com>
+Link: https://github.com/thesofproject/avs-topology-xml/issues/22#issuecomment-2127892605
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20240603102818.36165-3-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/intel/avs/topology.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
-index ae1d6ee382a50..889d719c2d1f9 100644
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -1290,6 +1290,7 @@ sclp_init(void)
- fail_unregister_reboot_notifier:
- 	unregister_reboot_notifier(&sclp_reboot_notifier);
- fail_init_state_uninitialized:
-+	list_del(&sclp_state_change_event.list);
- 	sclp_init_state = sclp_init_state_uninitialized;
- 	free_page((unsigned long) sclp_read_sccb);
- 	free_page((unsigned long) sclp_init_sccb);
+diff --git a/sound/soc/intel/avs/topology.c b/sound/soc/intel/avs/topology.c
+index 42b42903ae9de..691d16ce95a0f 100644
+--- a/sound/soc/intel/avs/topology.c
++++ b/sound/soc/intel/avs/topology.c
+@@ -1545,8 +1545,8 @@ static int avs_route_load(struct snd_soc_component *comp, int index,
+ {
+ 	struct snd_soc_acpi_mach *mach = dev_get_platdata(comp->card->dev);
+ 	size_t len = SNDRV_CTL_ELEM_ID_NAME_MAXLEN;
+-	char buf[SNDRV_CTL_ELEM_ID_NAME_MAXLEN];
+ 	int ssp_port, tdm_slot;
++	char *buf;
+ 
+ 	/* See parse_link_formatted_string() for dynamic naming when(s). */
+ 	if (!avs_mach_singular_ssp(mach))
+@@ -1557,13 +1557,24 @@ static int avs_route_load(struct snd_soc_component *comp, int index,
+ 		return 0;
+ 	tdm_slot = avs_mach_ssp_tdm(mach, ssp_port);
+ 
++	buf = devm_kzalloc(comp->card->dev, len, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
+ 	avs_ssp_sprint(buf, len, route->source, ssp_port, tdm_slot);
+-	strscpy((char *)route->source, buf, len);
++	route->source = buf;
++
++	buf = devm_kzalloc(comp->card->dev, len, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
+ 	avs_ssp_sprint(buf, len, route->sink, ssp_port, tdm_slot);
+-	strscpy((char *)route->sink, buf, len);
++	route->sink = buf;
++
+ 	if (route->control) {
++		buf = devm_kzalloc(comp->card->dev, len, GFP_KERNEL);
++		if (!buf)
++			return -ENOMEM;
+ 		avs_ssp_sprint(buf, len, route->control, ssp_port, tdm_slot);
+-		strscpy((char *)route->control, buf, len);
++		route->control = buf;
+ 	}
+ 
+ 	return 0;
 -- 
 2.43.0
 
