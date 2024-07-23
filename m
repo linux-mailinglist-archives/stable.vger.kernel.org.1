@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-60874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4DC93A5CD
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE6A93A656
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC736281560
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 506711C21D4F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C74F15885A;
-	Tue, 23 Jul 2024 18:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80246158A07;
+	Tue, 23 Jul 2024 18:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxPBwfu9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLE+iJRS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E4B158858;
-	Tue, 23 Jul 2024 18:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECAB158A02;
+	Tue, 23 Jul 2024 18:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759309; cv=none; b=T/1zAA8uydeyk4ppuJzgRcWJ5zNvfMcAo7Zaa3veT9ISH54vMN1PaTZ6RyZ/4sF9zS3sSN6m7WGdq/u86JptOwOAXxBQlb1UdvFX+1PeNSzLCw8at6V+Pkp6s4GDLBNIZo5FP9mLOHBtko41i/ILQ4pKyZl4IPcXRIViceUX6Rw=
+	t=1721759653; cv=none; b=gGzw8Qcl+VxOA4eOxHHCs5nTQkFWN4sE9WDy8W0Ce/IdoaAAJC+ew0HtQ09j4EV7SoDqf2UmdxzN7RlKcXE15VWURwus8RDm5Tb34T4XbVM6/F65TZyJVbvonUMeQ3G8qfAh/DUicuWFcSu8a/lXgNBCYVwO4yzqMK+JB++W9rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759309; c=relaxed/simple;
-	bh=xQ2Vxc1PsuBgc2+FWENJw/NG0X/jFysdZy5Z9uH2AmI=;
+	s=arc-20240116; t=1721759653; c=relaxed/simple;
+	bh=I4+LwafH7gSzLnAUPQ2o0AWLET+NgNOymU25uX3d0lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuhDS8x7ja31zAzT3IQhVypBPUvQnW+VxIYBbcwAJxJM8GUVUYRvffrBzxOMBS7W2aSRpfe4G9cZj6RJleP4dk8q84Wa6c+uQoAp4Xmv3rsWdK3s2yzLDoeieB/m/COry4OgkY1jUB04rENbZ/XYm+IYNgNjq+cnETjk4xSY0R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxPBwfu9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E51C4AF09;
-	Tue, 23 Jul 2024 18:28:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rqrM8f9VR7Jdd5urcQLM1a71DLHjDjDUAOPIVuhV7hlRmmAmJRQ2NEfTPpqC2hAt4tXmYoOfdcrWSo5MWkbA0zh4E56KcwtewmqimggHgie3tG0bm30gIHR+qA9CHHVsBGW2XEeaoALjEYK9+iW+uISr2n53U6G/AT+6yP8QFAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLE+iJRS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2608C4AF0A;
+	Tue, 23 Jul 2024 18:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759309;
-	bh=xQ2Vxc1PsuBgc2+FWENJw/NG0X/jFysdZy5Z9uH2AmI=;
+	s=korg; t=1721759653;
+	bh=I4+LwafH7gSzLnAUPQ2o0AWLET+NgNOymU25uX3d0lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxPBwfu93lsdJNXh1TExQdrxxsRgFuViloc16KFRdFSzmlN162rvQE29wwpqOxoGL
-	 xJI86XjD842HJJoO29eD8Pe4j50T7cOpn5fV0sjLV3hQ/ON5YbQTh6EaKTRivnuexF
-	 VlJDsBUzBZYwUW+9oCKy5P2DVIzpiVp1LE02FWck=
+	b=gLE+iJRSn6zg5aGwH/Oux+tACNjcc6xph5CY6hsl87HTUdjheygvD2+6r/83To4RJ
+	 CEjIbm21MQsChOWNKIJZu8kQvbBIv2/O28UicaEbVQJFNzia1HbRm4a4634jhTbpR2
+	 tdYq9CsZg+TapOj6AEkw3IEyd+JXVIJ8D1yrkR0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Agathe Boutmy <agathe@boutmy.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/105] ALSA: PCM: Allow resume only for suspended streams
+Subject: [PATCH 6.6 082/129] platform/x86: wireless-hotkey: Add support for LG Airplane Button
 Date: Tue, 23 Jul 2024 20:23:50 +0200
-Message-ID: <20240723180406.059575354@linuxfoundation.org>
+Message-ID: <20240723180407.953207757@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 1225675ca74c746f09211528588e83b3def1ff6a ]
+[ Upstream commit 151e78a0b89ee6dec93382dbdf5b1ef83f9c4716 ]
 
-snd_pcm_resume() should bail out if the stream isn't in a suspended
-state.  Otherwise it'd allow doubly resume.
+The LGEX0815 ACPI device is used by the "LG Airplane Mode Button"
+Windows driver for handling rfkill requests. When the ACPI device
+receives an 0x80 ACPI notification, an rfkill event is to be
+send to userspace.
 
-Link: https://patch.msgid.link/20240624125443.27808-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add support for the LGEX0815 ACPI device to the driver.
+
+Tested-by: Agathe Boutmy <agathe@boutmy.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606233540.9774-2-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_native.c | 2 ++
+ drivers/platform/x86/wireless-hotkey.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index 9238abbfb2d62..2b73518e5e314 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -1781,6 +1781,8 @@ static int snd_pcm_pre_resume(struct snd_pcm_substream *substream,
- 			      snd_pcm_state_t state)
- {
- 	struct snd_pcm_runtime *runtime = substream->runtime;
-+	if (runtime->state != SNDRV_PCM_STATE_SUSPENDED)
-+		return -EBADFD;
- 	if (!(runtime->info & SNDRV_PCM_INFO_RESUME))
- 		return -ENOSYS;
- 	runtime->trigger_master = substream;
+diff --git a/drivers/platform/x86/wireless-hotkey.c b/drivers/platform/x86/wireless-hotkey.c
+index 4422863f47bbe..01feb6e6787f2 100644
+--- a/drivers/platform/x86/wireless-hotkey.c
++++ b/drivers/platform/x86/wireless-hotkey.c
+@@ -19,6 +19,7 @@ MODULE_AUTHOR("Alex Hung");
+ MODULE_ALIAS("acpi*:HPQ6001:*");
+ MODULE_ALIAS("acpi*:WSTADEF:*");
+ MODULE_ALIAS("acpi*:AMDI0051:*");
++MODULE_ALIAS("acpi*:LGEX0815:*");
+ 
+ struct wl_button {
+ 	struct input_dev *input_dev;
+@@ -29,6 +30,7 @@ static const struct acpi_device_id wl_ids[] = {
+ 	{"HPQ6001", 0},
+ 	{"WSTADEF", 0},
+ 	{"AMDI0051", 0},
++	{"LGEX0815", 0},
+ 	{"", 0},
+ };
+ 
 -- 
 2.43.0
 
