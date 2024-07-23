@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C769593A5A5
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1EC93A62B
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E1D21F232C6
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E8A62831ED
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD8F15887F;
-	Tue, 23 Jul 2024 18:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2316515746B;
+	Tue, 23 Jul 2024 18:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDRb8BWU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNzwbBuj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705CB15886B;
-	Tue, 23 Jul 2024 18:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D368613D896;
+	Tue, 23 Jul 2024 18:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759202; cv=none; b=aAp3msg05JgjyZ7YpzJTRSrPXDhhLdfGcvxR6XtRDEUzUG1BEXfiBeHq5CkoWImDj0lECSCjjyE+Dq+FVB5/CMBtMdqH0zxdacbG8sUhnk+V9o6hNmU6fBoX6/RHrVGQtSC3cWzCwlxNAuDqN+p3AwpnnX0Ufq83ad0HQn+AulQ=
+	t=1721759545; cv=none; b=tEVABIGAQQ0cEwjaTJVeu7u30ogtxPDb93QI3Y7haKMaiBNn1b0wgJrL9B4YeVrQbAUu81g/dAuPAr7WOat051R4OX3MGSXGkw7LVmNIT8ljg5XcOkFk5VbcjcgDe1bxh2pac57/GRAlcYxgXNCgXxswytsI5cG+/bz4FBucnos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759202; c=relaxed/simple;
-	bh=aWTcZps628oBgLQheuwPxZFCQ96p6TsatEnsCJ0KO/s=;
+	s=arc-20240116; t=1721759545; c=relaxed/simple;
+	bh=Ux4nYVHthkQfirnP4ey/fO8LVx9dRaJaQzaiWJrfOmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbk5OOkeKnkRlUwXHANlZ07TQdyZaRixboqFj3Ny87nn0/yOocepI9HMATjq+UZBfd6Sr+GnnAkEM+c3eylrOd2P5AtfqzAw7V5Faar9trgBSEO7Qb+uEQJCDQS3flYCiHbDCYx+c0W2O/yFQLg30CkFrmYUB+g7uythG4lTIWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDRb8BWU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0B8C4AF0A;
-	Tue, 23 Jul 2024 18:26:41 +0000 (UTC)
+	 MIME-Version; b=r1KlM2+GgTXkv+YS+y5UznvadvpblBRVdE2QoQijMg7pNWzkLFQDPTWUPgvnYDmu4UX0QzrlPYKukKi4QPmJmoR8yiv/fDQZtXM8GnXVj/mDjHGYobrOU5QDC9lUQGG5rVbtCguBe8iLa9hR+QjPc0Cwt5HHVmntV7McJdzoddw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNzwbBuj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51401C4AF0A;
+	Tue, 23 Jul 2024 18:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759202;
-	bh=aWTcZps628oBgLQheuwPxZFCQ96p6TsatEnsCJ0KO/s=;
+	s=korg; t=1721759545;
+	bh=Ux4nYVHthkQfirnP4ey/fO8LVx9dRaJaQzaiWJrfOmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bDRb8BWUb8utvjESp+nAJ5vqznGHnIJ8w4AabahT56RUffPcgMCMftjeR3tiqWsDn
-	 ecDrnGeQ2WWqf+lmXXV4wzAPNySFxuIOQseQB8X+28EoDCNbBdZtzHAcwPpQxUGOet
-	 E9hAYEIg5aY3tP0RKEIzR8EqPGFqA/HlHYzmeTtc=
+	b=TNzwbBujE94982sAEh2X/KNjet6IpbmhbBdR3r9Vn81AJdPnq+XHmMMs/GUYv68J2
+	 KKx6ktLQ8rs4KflzAfn7P7Z5Gocc4IadazOzjLZSPP1dF0prQLTs5wAWxYtlOdXgJL
+	 emiU++wrw3trBI+blhSHIChjeH1goqucoPmZ0W2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Mastykin <mastichi@gmail.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/105] NFSv4: Fix memory leak in nfs4_set_security_label
+Subject: [PATCH 6.6 046/129] drm/exynos: dp: drop driver owner initialization
 Date: Tue, 23 Jul 2024 20:23:14 +0200
-Message-ID: <20240723180404.669339394@linuxfoundation.org>
+Message-ID: <20240723180406.567840358@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,35 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Mastykin <mastichi@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit aad11473f8f4be3df86461081ce35ec5b145ba68 ]
+[ Upstream commit 1f3512cdf8299f9edaea9046d53ea324a7730bab ]
 
-We leak nfs_fattr and nfs4_label every time we set a security xattr.
+Core in platform_driver_register() already sets the .owner, so driver
+does not need to.  Whatever is set here will be anyway overwritten by
+main driver calling platform_driver_register().
 
-Signed-off-by: Dmitry Mastykin <mastichi@gmail.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/exynos/exynos_dp.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index ec641a8f6604b..cc620fc7aaf7b 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -6274,6 +6274,7 @@ nfs4_set_security_label(struct inode *inode, const void *buf, size_t buflen)
- 	if (status == 0)
- 		nfs_setsecurity(inode, fattr);
- 
-+	nfs_free_fattr(fattr);
- 	return status;
- }
- #endif	/* CONFIG_NFS_V4_SECURITY_LABEL */
+diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
+index 3404ec1367fb9..71ee824c4140b 100644
+--- a/drivers/gpu/drm/exynos/exynos_dp.c
++++ b/drivers/gpu/drm/exynos/exynos_dp.c
+@@ -288,7 +288,6 @@ struct platform_driver dp_driver = {
+ 	.remove		= exynos_dp_remove,
+ 	.driver		= {
+ 		.name	= "exynos-dp",
+-		.owner	= THIS_MODULE,
+ 		.pm	= pm_ptr(&exynos_dp_pm_ops),
+ 		.of_match_table = exynos_dp_match,
+ 	},
 -- 
 2.43.0
 
