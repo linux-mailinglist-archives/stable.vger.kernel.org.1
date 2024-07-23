@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-61209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C9E93A757
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61EF893A68D
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD3B41F23BB5
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:45:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF7B01F23782
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98D61586F5;
-	Tue, 23 Jul 2024 18:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594FE1581F4;
+	Tue, 23 Jul 2024 18:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRKBcDR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEhtzdfm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8897E15884E;
-	Tue, 23 Jul 2024 18:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1615813C3F5;
+	Tue, 23 Jul 2024 18:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760299; cv=none; b=n7aLXNnAGr7kRWZWk6khW8Ppfk5DxYbsv1tAk2jtpaQoo8zMdlFPiRjzJ6/B1e8i+wBsaeDaQheR4c8Td4jqCo/pFXxtJAA+I2wltifCWsPvtunfbgVbW8EUB5A7MnUrF/UV2239t4WmC7Crr1xXQGNVltpEldZ1/yTQJHWy8ZQ=
+	t=1721759775; cv=none; b=I72OoMWJjOnHN0BFpGNtLQilpji+akJtES9tX9doHi0hz/czO4xLLEhE4FlOs5DwVJRV2h7tT4qS0pTumNAls7ddUAVTEVuOAa3HDXq9L6CfhuHteSv+oZXgwR2a9mJvd5fcDAt52PMa77hr7wbpHx8oJViwPLmsU12X06BPqGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760299; c=relaxed/simple;
-	bh=MQ2hb1ZJE79JIAw3nqqasFS9X9Z1Bcnevf4MoUgJuZ4=;
+	s=arc-20240116; t=1721759775; c=relaxed/simple;
+	bh=bBs56YGxwvF/XSMGADByYlEZgs6JKz5t50DIVNHEOHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1QZl1UwSVoyWqrIt5cSHKlIjqHVtnzcydC8wDSCZxB+qYJYvo7Rc5TGbkdL9ieqkWbllqvPpVb4K70J8nOY7UeflH4c/Tezdyb0moDfl8VOykv+Dmhxa0CXbzZpMxmagwy4FvJIWh1wmNFYWO0ZvBsLfOGP3us6+XYy3i5MOv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRKBcDR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0858CC4AF0B;
-	Tue, 23 Jul 2024 18:44:58 +0000 (UTC)
+	 MIME-Version; b=Q/O8AxRNB6fr9GPMsVwxihw77FKOdXiv5gaMA4SgPvviUTMf2ljT/XGC2frDtuGCeADqUBP5kAszPfDg9sr+eRkcbrOug02HHFA54Uv3laLIYIh1puKdtttZ6myDzuiT56ZhSiauIRL06vB+Z7O7p3E6jLQCQY3UmOBYo7qYxYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEhtzdfm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859E7C4AF09;
+	Tue, 23 Jul 2024 18:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760299;
-	bh=MQ2hb1ZJE79JIAw3nqqasFS9X9Z1Bcnevf4MoUgJuZ4=;
+	s=korg; t=1721759774;
+	bh=bBs56YGxwvF/XSMGADByYlEZgs6JKz5t50DIVNHEOHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRKBcDR39TcsmxVlOXu/iU3SusMuz2KkWh59hfz1KvOvMrj+P3cq8PiLFAKFKylG3
-	 yGSctR6B8QTp7M1sbWI5WxvDsL4czJ2rSZ0QXO0Ffd4hLCvTYJsBroVQtV7bzxof+T
-	 p6gn8bjVCD6KQxQThTK2tWTeYrMi7hB8VH2sTCOM=
+	b=FEhtzdfmBRvZD0jy3OmFePj1waK5agY6/MIxFn3yVmPx26F5225NV5yvuFe7YNdgH
+	 1FX/ctvI5qG71Vmxty+1N/iDJ7yoTYKlQCM6e76pPlbp6G6OwQo7okOJW1nW5Rzu8Z
+	 tj2iR7rLXpAqlhSPg0tqYHEuJAA1oB+HGAHKj4vE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 141/163] wifi: iwlwifi: properly set WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 122/129] Bluetooth: L2CAP: Fix deadlock
 Date: Tue, 23 Jul 2024 20:24:30 +0200
-Message-ID: <20240723180148.921522974@linuxfoundation.org>
+Message-ID: <20240723180409.506227591@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +60,263 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 4ec17ce716bdaf680288ce680b4621b52483cc96 ]
+commit f1a8f402f13f94263cf349216c257b2985100927 upstream.
 
-The WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK should be set based on the
-WOWLAN_KEK_KCK_MATERIAL command version. Currently, the command
-version in the firmware has advanced to 4, which prevents the
-flag from being set correctly, fix that.
+This fixes the following deadlock introduced by 39a92a55be13
+("bluetooth/l2cap: sync sock recv cb and release")
 
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240703064026.a0f162108575.If1a9785727d2a1b0197a396680965df1b53d4096@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+============================================
+WARNING: possible recursive locking detected
+6.10.0-rc3-g4029dba6b6f1 #6823 Not tainted
+--------------------------------------------
+kworker/u5:0/35 is trying to acquire lock:
+ffff888002ec2510 (&chan->lock#2/1){+.+.}-{3:3}, at:
+l2cap_sock_recv_cb+0x44/0x1e0
+
+but task is already holding lock:
+ffff888002ec2510 (&chan->lock#2/1){+.+.}-{3:3}, at:
+l2cap_get_chan_by_scid+0xaf/0xd0
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&chan->lock#2/1);
+  lock(&chan->lock#2/1);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+3 locks held by kworker/u5:0/35:
+ #0: ffff888002b8a940 ((wq_completion)hci0#2){+.+.}-{0:0}, at:
+process_one_work+0x750/0x930
+ #1: ffff888002c67dd0 ((work_completion)(&hdev->rx_work)){+.+.}-{0:0},
+at: process_one_work+0x44e/0x930
+ #2: ffff888002ec2510 (&chan->lock#2/1){+.+.}-{3:3}, at:
+l2cap_get_chan_by_scid+0xaf/0xd0
+
+To fix the original problem this introduces l2cap_chan_lock at
+l2cap_conless_channel to ensure that l2cap_sock_recv_cb is called with
+chan->lock held.
+
+Fixes: 89e856e124f9 ("bluetooth/l2cap: sync sock recv cb and release")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/bluetooth/hci_sync.h |    2 +
+ net/bluetooth/hci_core.c         |   72 +++++++++------------------------------
+ net/bluetooth/hci_sync.c         |   13 +++++++
+ net/bluetooth/l2cap_core.c       |    3 +
+ net/bluetooth/l2cap_sock.c       |   13 -------
+ 5 files changed, 37 insertions(+), 66 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index d3db883dfaa5b..a61d5e7c08e04 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -651,7 +651,7 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
- 		hw->wiphy->features |= NL80211_FEATURE_WFA_TPC_IE_IN_PROBES;
+--- a/include/net/bluetooth/hci_sync.h
++++ b/include/net/bluetooth/hci_sync.h
+@@ -38,6 +38,8 @@ int __hci_cmd_sync_status(struct hci_dev
+ int __hci_cmd_sync_status_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 			     const void *param, u8 event, u32 timeout,
+ 			     struct sock *sk);
++int hci_cmd_sync_status(struct hci_dev *hdev, u16 opcode, u32 plen,
++			const void *param, u32 timeout);
  
- 	if (iwl_fw_lookup_cmd_ver(mvm->fw, WOWLAN_KEK_KCK_MATERIAL,
--				  IWL_FW_CMD_VER_UNKNOWN) == 3)
-+				  IWL_FW_CMD_VER_UNKNOWN) >= 3)
- 		hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK;
+ void hci_cmd_sync_init(struct hci_dev *hdev);
+ void hci_cmd_sync_clear(struct hci_dev *hdev);
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -63,50 +63,6 @@ DEFINE_MUTEX(hci_cb_list_lock);
+ /* HCI ID Numbering */
+ static DEFINE_IDA(hci_index_ida);
  
- 	if (fw_has_api(&mvm->fw->ucode_capa,
--- 
-2.43.0
-
+-static int hci_scan_req(struct hci_request *req, unsigned long opt)
+-{
+-	__u8 scan = opt;
+-
+-	BT_DBG("%s %x", req->hdev->name, scan);
+-
+-	/* Inquiry and Page scans */
+-	hci_req_add(req, HCI_OP_WRITE_SCAN_ENABLE, 1, &scan);
+-	return 0;
+-}
+-
+-static int hci_auth_req(struct hci_request *req, unsigned long opt)
+-{
+-	__u8 auth = opt;
+-
+-	BT_DBG("%s %x", req->hdev->name, auth);
+-
+-	/* Authentication */
+-	hci_req_add(req, HCI_OP_WRITE_AUTH_ENABLE, 1, &auth);
+-	return 0;
+-}
+-
+-static int hci_encrypt_req(struct hci_request *req, unsigned long opt)
+-{
+-	__u8 encrypt = opt;
+-
+-	BT_DBG("%s %x", req->hdev->name, encrypt);
+-
+-	/* Encryption */
+-	hci_req_add(req, HCI_OP_WRITE_ENCRYPT_MODE, 1, &encrypt);
+-	return 0;
+-}
+-
+-static int hci_linkpol_req(struct hci_request *req, unsigned long opt)
+-{
+-	__le16 policy = cpu_to_le16(opt);
+-
+-	BT_DBG("%s %x", req->hdev->name, policy);
+-
+-	/* Default link policy */
+-	hci_req_add(req, HCI_OP_WRITE_DEF_LINK_POLICY, 2, &policy);
+-	return 0;
+-}
+-
+ /* Get HCI device by index.
+  * Device is held on return. */
+ struct hci_dev *hci_dev_get(int index)
+@@ -728,6 +684,7 @@ int hci_dev_cmd(unsigned int cmd, void _
+ {
+ 	struct hci_dev *hdev;
+ 	struct hci_dev_req dr;
++	__le16 policy;
+ 	int err = 0;
+ 
+ 	if (copy_from_user(&dr, arg, sizeof(dr)))
+@@ -754,8 +711,8 @@ int hci_dev_cmd(unsigned int cmd, void _
+ 
+ 	switch (cmd) {
+ 	case HCISETAUTH:
+-		err = hci_req_sync(hdev, hci_auth_req, dr.dev_opt,
+-				   HCI_INIT_TIMEOUT, NULL);
++		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_AUTH_ENABLE,
++					    1, &dr.dev_opt, HCI_CMD_TIMEOUT);
+ 		break;
+ 
+ 	case HCISETENCRYPT:
+@@ -766,19 +723,23 @@ int hci_dev_cmd(unsigned int cmd, void _
+ 
+ 		if (!test_bit(HCI_AUTH, &hdev->flags)) {
+ 			/* Auth must be enabled first */
+-			err = hci_req_sync(hdev, hci_auth_req, dr.dev_opt,
+-					   HCI_INIT_TIMEOUT, NULL);
++			err = __hci_cmd_sync_status(hdev,
++						    HCI_OP_WRITE_AUTH_ENABLE,
++						    1, &dr.dev_opt,
++						    HCI_CMD_TIMEOUT);
+ 			if (err)
+ 				break;
+ 		}
+ 
+-		err = hci_req_sync(hdev, hci_encrypt_req, dr.dev_opt,
+-				   HCI_INIT_TIMEOUT, NULL);
++		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_ENCRYPT_MODE,
++					    1, &dr.dev_opt,
++					    HCI_CMD_TIMEOUT);
+ 		break;
+ 
+ 	case HCISETSCAN:
+-		err = hci_req_sync(hdev, hci_scan_req, dr.dev_opt,
+-				   HCI_INIT_TIMEOUT, NULL);
++		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_SCAN_ENABLE,
++					    1, &dr.dev_opt,
++					    HCI_CMD_TIMEOUT);
+ 
+ 		/* Ensure that the connectable and discoverable states
+ 		 * get correctly modified as this was a non-mgmt change.
+@@ -788,8 +749,11 @@ int hci_dev_cmd(unsigned int cmd, void _
+ 		break;
+ 
+ 	case HCISETLINKPOL:
+-		err = hci_req_sync(hdev, hci_linkpol_req, dr.dev_opt,
+-				   HCI_INIT_TIMEOUT, NULL);
++		policy = cpu_to_le16(dr.dev_opt);
++
++		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_DEF_LINK_POLICY,
++					    2, &policy,
++					    HCI_CMD_TIMEOUT);
+ 		break;
+ 
+ 	case HCISETLINKMODE:
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -280,6 +280,19 @@ int __hci_cmd_sync_status(struct hci_dev
+ }
+ EXPORT_SYMBOL(__hci_cmd_sync_status);
+ 
++int hci_cmd_sync_status(struct hci_dev *hdev, u16 opcode, u32 plen,
++			const void *param, u32 timeout)
++{
++	int err;
++
++	hci_req_sync_lock(hdev);
++	err = __hci_cmd_sync_status(hdev, opcode, plen, param, timeout);
++	hci_req_sync_unlock(hdev);
++
++	return err;
++}
++EXPORT_SYMBOL(hci_cmd_sync_status);
++
+ static void hci_cmd_sync_work(struct work_struct *work)
+ {
+ 	struct hci_dev *hdev = container_of(work, struct hci_dev, cmd_sync_work);
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6762,6 +6762,8 @@ static void l2cap_conless_channel(struct
+ 
+ 	BT_DBG("chan %p, len %d", chan, skb->len);
+ 
++	l2cap_chan_lock(chan);
++
+ 	if (chan->state != BT_BOUND && chan->state != BT_CONNECTED)
+ 		goto drop;
+ 
+@@ -6778,6 +6780,7 @@ static void l2cap_conless_channel(struct
+ 	}
+ 
+ drop:
++	l2cap_chan_unlock(chan);
+ 	l2cap_chan_put(chan);
+ free_skb:
+ 	kfree_skb(skb);
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1500,18 +1500,9 @@ static int l2cap_sock_recv_cb(struct l2c
+ 	struct l2cap_pinfo *pi;
+ 	int err;
+ 
+-	/* To avoid race with sock_release, a chan lock needs to be added here
+-	 * to synchronize the sock.
+-	 */
+-	l2cap_chan_hold(chan);
+-	l2cap_chan_lock(chan);
+ 	sk = chan->data;
+-
+-	if (!sk) {
+-		l2cap_chan_unlock(chan);
+-		l2cap_chan_put(chan);
++	if (!sk)
+ 		return -ENXIO;
+-	}
+ 
+ 	pi = l2cap_pi(sk);
+ 	lock_sock(sk);
+@@ -1563,8 +1554,6 @@ static int l2cap_sock_recv_cb(struct l2c
+ 
+ done:
+ 	release_sock(sk);
+-	l2cap_chan_unlock(chan);
+-	l2cap_chan_put(chan);
+ 
+ 	return err;
+ }
 
 
 
