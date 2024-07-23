@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-61023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED6F93A684
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4960093A5F1
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4525D281093
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C92DD1F234AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9064D158A1F;
-	Tue, 23 Jul 2024 18:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B26158A08;
+	Tue, 23 Jul 2024 18:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qwp6KqwJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evzloEkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E36A1586C4;
-	Tue, 23 Jul 2024 18:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87DC1581F9;
+	Tue, 23 Jul 2024 18:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759748; cv=none; b=I9RIJA8LYDuqx0gQudqNwe2NHC031ksVhkxmvMsYXndDWls6eVUqNFvXnI03nf2px2h35YutGvAVCdvIZqAM/69zFrt68crtXltb5198AacyODiUjF7jtq5IOiFmxELIAc9QnYcUDV6HGDPvxhD76ExzlnuZ9cSNnUsAjAnQL9g=
+	t=1721759404; cv=none; b=jmvAazzOLBOGi+Jw6jWWuqxvKo8n9n0Gm0F9zpo81CsS9Xh13UBjbi9nb+RxKviu8QUoBWcXFh0mS22O7+C5Y998NiAT30ieaJdOAkD4d2M9moocrNdFVp8PFeec5I+KWR7KmR2QG2tjvLIRXVNO7k3zspJAw7pst0MOVQqhO5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759748; c=relaxed/simple;
-	bh=x1LEW/5MMyos1GIeWmGYqewTL2S7xvfnAD/SxX9yNwI=;
+	s=arc-20240116; t=1721759404; c=relaxed/simple;
+	bh=PUwcg4n4d5D2a4lB4ojCZVv0B4kp+qgqwLRkZuxT/40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0IeSE0Voik7pSRAAawR6o6ubyxLFXLUG9R9xaANbWfLKkarSayAI9hPXtXLSkYzEi+NT/Ht56DUeBNVqbdaV2A/cMIo9YCM9K/cdQKYnAfXmBNa4hSl90Di9ChfoPsDELswvQRertW82a5x8Php8NkSTVW7EoUQ5hoRg3xoeeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qwp6KqwJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7575FC4AF0A;
-	Tue, 23 Jul 2024 18:35:47 +0000 (UTC)
+	 MIME-Version; b=pogwsFJXElez+AVtxTf7t2RLa/DzSr2r+fafpvYz4g3JWKpD5ySkCDI66q3kaUF1/0CMoQLzk+GueADCOdTkNMQxRuyDwVtK42Bi5adgP7ffAUw2/RA/dDySWTLlLYVVAfarWVR3A5Th6unGDfA2eyZsQvOVg4PavryWmdgcoJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evzloEkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22497C4AF09;
+	Tue, 23 Jul 2024 18:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759747;
-	bh=x1LEW/5MMyos1GIeWmGYqewTL2S7xvfnAD/SxX9yNwI=;
+	s=korg; t=1721759403;
+	bh=PUwcg4n4d5D2a4lB4ojCZVv0B4kp+qgqwLRkZuxT/40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qwp6KqwJaZQMsc8lWSAwJe57JR/5xC9iqix4vOfV2SLLctxmpn3XkOCtJTeXYk8fa
-	 MOAgtIs+WJJ3FPLkXyl9X4mBTMrul8/R2vow1w/0HQzcSXhuxMYXwD/qyv7v19HFIY
-	 t1Ovpr5DhlF8BNlrrgWCiJFFsS+bpyFhbVHyz1qg=
+	b=evzloEkB5Y3o2kwd0X1rvjsFOhDu7Aiw7NkyyhtgtUuH1Ou21H0Q0dq/Y1v2YsEZd
+	 W6osmet6Kjf6+V+drK2k7WTZS33wFMdS5oYgKjQi3/hzHBXlIx3b8bU8Ddq82IPr4K
+	 880yYQsbIG5vP6oyBUjqA+x/LdiQVeTDu1gT/OTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Edward Liaw <edliaw@google.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/129] selftests/vDSO: fix clang build errors and warnings
+	Hou Tao <houtao1@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 105/105] cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()
 Date: Tue, 23 Jul 2024 20:24:22 +0200
-Message-ID: <20240723180409.195789139@linuxfoundation.org>
+Message-ID: <20240723180407.287732882@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,128 +62,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 73810cd45b99c6c418e1c6a487b52c1e74edb20d ]
+[ Upstream commit 5d8f805789072ea7fd39504694b7bd17e5f751c4 ]
 
-When building with clang, via:
+We got the following issue in our fault injection stress test:
 
-    make LLVM=1 -C tools/testing/selftests
+==================================================================
+BUG: KASAN: slab-use-after-free in cachefiles_withdraw_cookie+0x4d9/0x600
+Read of size 8 at addr ffff888118efc000 by task kworker/u78:0/109
 
-...there are several warnings, and an error. This fixes all of those and
-allows these tests to run and pass.
+CPU: 13 PID: 109 Comm: kworker/u78:0 Not tainted 6.8.0-dirty #566
+Call Trace:
+ <TASK>
+ kasan_report+0x93/0xc0
+ cachefiles_withdraw_cookie+0x4d9/0x600
+ fscache_cookie_state_machine+0x5c8/0x1230
+ fscache_cookie_worker+0x91/0x1c0
+ process_one_work+0x7fa/0x1800
+ [...]
 
-1. Fix linker error (undefined reference to memcpy) by providing a local
-   version of memcpy.
+Allocated by task 117:
+ kmalloc_trace+0x1b3/0x3c0
+ cachefiles_acquire_volume+0xf3/0x9c0
+ fscache_create_volume_work+0x97/0x150
+ process_one_work+0x7fa/0x1800
+ [...]
 
-2. clang complains about using this form:
+Freed by task 120301:
+ kfree+0xf1/0x2c0
+ cachefiles_withdraw_cache+0x3fa/0x920
+ cachefiles_put_unbind_pincount+0x1f6/0x250
+ cachefiles_daemon_release+0x13b/0x290
+ __fput+0x204/0xa00
+ task_work_run+0x139/0x230
+ do_exit+0x87a/0x29b0
+ [...]
+==================================================================
 
-    if (g = h & 0xf0000000)
+Following is the process that triggers the issue:
 
-...so factor out the assignment into a separate step.
+           p1                |             p2
+------------------------------------------------------------
+                              fscache_begin_lookup
+                               fscache_begin_volume_access
+                                fscache_cache_is_live(fscache_cache)
+cachefiles_daemon_release
+ cachefiles_put_unbind_pincount
+  cachefiles_daemon_unbind
+   cachefiles_withdraw_cache
+    fscache_withdraw_cache
+     fscache_set_cache_state(cache, FSCACHE_CACHE_IS_WITHDRAWN);
+    cachefiles_withdraw_objects(cache)
+    fscache_wait_for_objects(fscache)
+      atomic_read(&fscache_cache->object_count) == 0
+                              fscache_perform_lookup
+                               cachefiles_lookup_cookie
+                                cachefiles_alloc_object
+                                 refcount_set(&object->ref, 1);
+                                 object->volume = volume
+                                 fscache_count_object(vcookie->cache);
+                                  atomic_inc(&fscache_cache->object_count)
+    cachefiles_withdraw_volumes
+     cachefiles_withdraw_volume
+      fscache_withdraw_volume
+      __cachefiles_free_volume
+       kfree(cachefiles_volume)
+                              fscache_cookie_state_machine
+                               cachefiles_withdraw_cookie
+                                cache = object->volume->cache;
+                                // cachefiles_volume UAF !!!
 
-3. The code is passing a signed const char* to elf_hash(), which expects
-   a const unsigned char *. There are several callers, so fix this at
-   the source by allowing the function to accept a signed argument, and
-   then converting to unsigned operations, once inside the function.
+After setting FSCACHE_CACHE_IS_WITHDRAWN, wait for all the cookie lookups
+to complete first, and then wait for fscache_cache->object_count == 0 to
+avoid the cookie exiting after the volume has been freed and triggering
+the above issue. Therefore call fscache_withdraw_volume() before calling
+cachefiles_withdraw_objects().
 
-4. clang doesn't have __attribute__((externally_visible)) and generates
-   a warning to that effect. Fortunately, gcc 12 and gcc 13 do not seem
-   to require that attribute in order to build, run and pass tests here,
-   so remove it.
+This way, after setting FSCACHE_CACHE_IS_WITHDRAWN, only the following two
+cases will occur:
+1) fscache_begin_lookup fails in fscache_begin_volume_access().
+2) fscache_withdraw_volume() will ensure that fscache_count_object() has
+   been executed before calling fscache_wait_for_objects().
 
-Reviewed-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Edward Liaw <edliaw@google.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fe2140e2f57f ("cachefiles: Implement volume support")
+Suggested-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240628062930.2467993-4-libaokun@huaweicloud.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/vDSO/parse_vdso.c      | 16 +++++++++++-----
- .../selftests/vDSO/vdso_standalone_test_x86.c  | 18 ++++++++++++++++--
- 2 files changed, 27 insertions(+), 7 deletions(-)
+ fs/cachefiles/cache.c  |   35 ++++++++++++++++++++++++++++++++++-
+ fs/cachefiles/volume.c |    1 -
+ 2 files changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
-index 413f75620a35b..4ae417372e9eb 100644
---- a/tools/testing/selftests/vDSO/parse_vdso.c
-+++ b/tools/testing/selftests/vDSO/parse_vdso.c
-@@ -55,14 +55,20 @@ static struct vdso_info
- 	ELF(Verdef) *verdef;
- } vdso_info;
- 
--/* Straight from the ELF specification. */
--static unsigned long elf_hash(const unsigned char *name)
-+/*
-+ * Straight from the ELF specification...and then tweaked slightly, in order to
-+ * avoid a few clang warnings.
-+ */
-+static unsigned long elf_hash(const char *name)
- {
- 	unsigned long h = 0, g;
--	while (*name)
-+	const unsigned char *uch_name = (const unsigned char *)name;
-+
-+	while (*uch_name)
- 	{
--		h = (h << 4) + *name++;
--		if (g = h & 0xf0000000)
-+		h = (h << 4) + *uch_name++;
-+		g = h & 0xf0000000;
-+		if (g)
- 			h ^= g >> 24;
- 		h &= ~g;
- 	}
-diff --git a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
-index 8a44ff973ee17..27f6fdf119691 100644
---- a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
-+++ b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
-@@ -18,7 +18,7 @@
- 
- #include "parse_vdso.h"
- 
--/* We need a libc functions... */
-+/* We need some libc functions... */
- int strcmp(const char *a, const char *b)
- {
- 	/* This implementation is buggy: it never returns -1. */
-@@ -34,6 +34,20 @@ int strcmp(const char *a, const char *b)
- 	return 0;
+--- a/fs/cachefiles/cache.c
++++ b/fs/cachefiles/cache.c
+@@ -313,7 +313,39 @@ static void cachefiles_withdraw_objects(
  }
  
-+/*
-+ * The clang build needs this, although gcc does not.
-+ * Stolen from lib/string.c.
+ /*
+- * Withdraw volumes.
++ * Withdraw fscache volumes.
 + */
-+void *memcpy(void *dest, const void *src, size_t count)
++static void cachefiles_withdraw_fscache_volumes(struct cachefiles_cache *cache)
 +{
-+	char *tmp = dest;
-+	const char *s = src;
++	struct list_head *cur;
++	struct cachefiles_volume *volume;
++	struct fscache_volume *vcookie;
 +
-+	while (count--)
-+		*tmp++ = *s++;
-+	return dest;
++	_enter("");
++retry:
++	spin_lock(&cache->object_list_lock);
++	list_for_each(cur, &cache->volumes) {
++		volume = list_entry(cur, struct cachefiles_volume, cache_link);
++
++		if (atomic_read(&volume->vcookie->n_accesses) == 0)
++			continue;
++
++		vcookie = fscache_try_get_volume(volume->vcookie,
++						 fscache_volume_get_withdraw);
++		if (vcookie) {
++			spin_unlock(&cache->object_list_lock);
++			fscache_withdraw_volume(vcookie);
++			fscache_put_volume(vcookie, fscache_volume_put_withdraw);
++			goto retry;
++		}
++	}
++	spin_unlock(&cache->object_list_lock);
++
++	_leave("");
 +}
 +
- /* ...and two syscalls.  This is x86-specific. */
- static inline long x86_syscall3(long nr, long a0, long a1, long a2)
++/*
++ * Withdraw cachefiles volumes.
+  */
+ static void cachefiles_withdraw_volumes(struct cachefiles_cache *cache)
  {
-@@ -70,7 +84,7 @@ void to_base10(char *lastdig, time_t n)
- 	}
- }
+@@ -381,6 +413,7 @@ void cachefiles_withdraw_cache(struct ca
+ 	pr_info("File cache on %s unregistering\n", fscache->name);
  
--__attribute__((externally_visible)) void c_main(void **stack)
-+void c_main(void **stack)
+ 	fscache_withdraw_cache(fscache);
++	cachefiles_withdraw_fscache_volumes(cache);
+ 
+ 	/* we now have to destroy all the active objects pertaining to this
+ 	 * cache - which we do by passing them off to thread pool to be
+--- a/fs/cachefiles/volume.c
++++ b/fs/cachefiles/volume.c
+@@ -133,7 +133,6 @@ void cachefiles_free_volume(struct fscac
+ 
+ void cachefiles_withdraw_volume(struct cachefiles_volume *volume)
  {
- 	/* Parse the stack */
- 	long argc = (long)*stack;
--- 
-2.43.0
-
+-	fscache_withdraw_volume(volume->vcookie);
+ 	cachefiles_set_volume_xattr(volume);
+ 	__cachefiles_free_volume(volume);
+ }
 
 
 
