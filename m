@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-60856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C45A93A5BB
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A618D93A668
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E984B1F2323F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DBFE1F23223
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C31158A31;
-	Tue, 23 Jul 2024 18:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28EA15884E;
+	Tue, 23 Jul 2024 18:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmIXKBbk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zctp+fvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A460A157A4F;
-	Tue, 23 Jul 2024 18:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6172314C5B0;
+	Tue, 23 Jul 2024 18:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759255; cv=none; b=rSiRkbrLblrJawq3xrOcdKl6TYo3mkFbpcqaMRWUPMbopDGEF2Q1LhCuxAWKLKhiEt9o61jwUDwRicrxpvSO5KcQS/jKjQ7s3h5HdB+Ig3DZ4DEdlADLbr+/Pg/s2B8HxDE4UqqpWf6w2/29K6HR4kNKh5HZuQjlpnvJATgK6Mo=
+	t=1721759687; cv=none; b=Z8RhuLT8GZPt1/g2URCKknnWKvq5rug/x2iim9XRBMAapVeN3s0nNu/tblYRdMyETI+LTmbgKaPTDXHnZdD4wroUdeDGcRaoShU1NRN7BNAYebwi8cndfDC0OtLeWups1S4DfigzdoQPoZrHqULBtlhFC1Ejay1PMdjfDAyThUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759255; c=relaxed/simple;
-	bh=4X3NEhgq5VaQx8Cv9iamxQd9+5J7GAaiAlfYr8bzZe4=;
+	s=arc-20240116; t=1721759687; c=relaxed/simple;
+	bh=njuRiQmC7foTVm/oyLmbvnZXYqERSp3s4N5+Xo7QbzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EdHvqwd+SacotsCPgLCmVLa/xO9QOMEDNHIv3W6u8OOGBOzps2pjuiqfaCM9RLNI7QvaxRfQsSrXYIzsl0zw1No8iCcZ0b+WfRSWMSWTMgU4HafxBDYJI3wxck/MPjocpDxa5oslBAuR4GsHlxHZ+4r9Hds87bJ9PRDAUrgKgig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmIXKBbk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0C7C4AF0B;
-	Tue, 23 Jul 2024 18:27:34 +0000 (UTC)
+	 MIME-Version; b=dDQlLDsF3cmQuSqnUffXd+Qk8wQlzVP/hhX5xhhwWRH/nSQ4GrClyIzBKYcoAUGkPxah3abx1HPdtzv18QmvpwmjTTLdiyF9vLzhqfztRvc0VbQQ+iKmedBRbow97Zu/RzjKJgRNOLPgl17EJVYjhpjaqGtVNzhbqBH9D1B1h1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zctp+fvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93852C4AF09;
+	Tue, 23 Jul 2024 18:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759255;
-	bh=4X3NEhgq5VaQx8Cv9iamxQd9+5J7GAaiAlfYr8bzZe4=;
+	s=korg; t=1721759686;
+	bh=njuRiQmC7foTVm/oyLmbvnZXYqERSp3s4N5+Xo7QbzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RmIXKBbkkn5pz/Enw4GCb8R1OOVzDDHy6cK/WZ1gl5Q2TzGYsuXvegzVlCSyAzdjr
-	 zxIwgvitN9iG0eMZkZyDtGQ2Z6SbGogPd/b2Zi6Ik6eTKA65FiUw6ruDkZiVJZDKjr
-	 65tlLPj9DHJmoCbZcLwoKbUYh7CjtjMMeRu8g/YQ=
+	b=Zctp+fvDXFOHZII39iGNysaakxycukxFQsjuZ4tR4WSfB5ICy2i/zhrTklSIj2n/D
+	 F9bI5/PFMcDfjZzVWA/OpiuuRspQ6BfL/KoaQNjwr8hh6DxpCjOPHKVcUmCKIihhpS
+	 9Wg+J9ct+/2jwEe8P7uJmmU2EOATI/EXRVC77aEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jonathan Denose <jdenose@google.com>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/105] Input: elantech - fix touchpad state on resume for Lenovo N24
+Subject: [PATCH 6.6 063/129] Input: elantech - fix touchpad state on resume for Lenovo N24
 Date: Tue, 23 Jul 2024 20:23:31 +0200
-Message-ID: <20240723180405.333166918@linuxfoundation.org>
+Message-ID: <20240723180407.220628009@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
