@@ -1,52 +1,58 @@
-Return-Path: <stable+bounces-61047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ECD493A6A3
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:37:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2248593A6AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:37:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10E8E1F22CDD
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:37:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB00B1F23853
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4EA158D83;
-	Tue, 23 Jul 2024 18:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DEC1586F5;
+	Tue, 23 Jul 2024 18:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oo2/6uA0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JPAn/kp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B3A158211;
-	Tue, 23 Jul 2024 18:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8B713C3F5;
+	Tue, 23 Jul 2024 18:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759820; cv=none; b=Jc0hJDicNfD5MSnyzDHV6GEe2sFRziHKjgeKQwpuM34+LWW+Ofnj4sbwM186jEDfEski9D6g1Z8xKpIouI97Xq/db8kITK8w/zkVqxGSzWzrkoyM57i86vvwRlaqeJo/YoR9X0v6QWKSNDPmX+xG1MT75ijPgsichWj3rmiryXw=
+	t=1721759852; cv=none; b=N300E34cFbhcMUf7vJ/jsbrvQOAMV3Y42W3ODl4cTdT8TCH87AuVPhJw4qjDf4uI/SNC1IJUSShZK95N5fhwD8EgUDuU6hU3jjUTE7/LOhfy61u0OHgYKeIYEOw9/wulsfyecF2CYJRm4ufq8uAxYVgoLeb4O8eXWl+d0QH7IdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759820; c=relaxed/simple;
-	bh=KRiGaO3BtOU3MUtky8F05Z6LKP48wKjsjrjNhE2JsFM=;
+	s=arc-20240116; t=1721759852; c=relaxed/simple;
+	bh=I7PXCCnJr5AKQgMg+Yga4IiLjl83B9io0rzvqFP8gqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCv+Pc1gLQdou/4VfqVGMAnq26Q2ghtp4hZvwkNaPKBZ2qOYVNm68lNjZbTQaZj9nD8Ogx8mPqEKTD7tV17l+S7415f51mpxGhO5tk0EWZ9mK9DW3y8rNdk/8NIzfq2NtXLPGRct4+wdJTtvaE0X2jcvYTewfClvaes8loKF2d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oo2/6uA0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DFCC4AF0A;
-	Tue, 23 Jul 2024 18:36:58 +0000 (UTC)
+	 MIME-Version; b=EdAr/aQ9TJQiI7AOBsVfqmpVGcn18ZLDNKwSAnawfcd5wQrYg6mvvCzausJGMECfgxcTUmAcdoRPZz9ja4YCapz0odgEEyjA5ciKqYGF7ayPg5jiZil/TeiSdSOf5YMYsmHZ5ity5GkD49an9UUehda1LT5ixLpmWqH4gOGwkgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JPAn/kp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C86C4AF0A;
+	Tue, 23 Jul 2024 18:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759819;
-	bh=KRiGaO3BtOU3MUtky8F05Z6LKP48wKjsjrjNhE2JsFM=;
+	s=korg; t=1721759852;
+	bh=I7PXCCnJr5AKQgMg+Yga4IiLjl83B9io0rzvqFP8gqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oo2/6uA0iA7xbPsvO7UpbTe3Hlhg9l6usYvcM8UDFXBh5ygM7TSwaX1CHIUpulFrv
-	 52QlRT6aXFs3ybUfAL+MA0xAKAhjSWOENYQ/hjA6y3xWgs7PTzbbcWUnDd90mGnX1B
-	 /1S2kAZ1mHbf2UwA+GSlK0+zvJS0GfGsfxuslv+E=
+	b=2JPAn/kpP7q1JyDh7mJv6C9LHZEJpa1v4ONx+H1F9hx5F6ILYUZK0HSzCjbUWwfLN
+	 oTIuI6avY46pwX0jFLNik952zSoDzy9pcHRjIfdoEjYXf27AmvjiC/FCQOfMC4yhzW
+	 aZu8rw+0G1yuzMEdD1acoO9BrQhDF4XqM9ektF54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.9 001/163] cifs: fix noisy message on copy_file_range
-Date: Tue, 23 Jul 2024 20:22:10 +0200
-Message-ID: <20240723180143.521664524@linuxfoundation.org>
+	Hannes Reinecke <hare@suse.de>,
+	Martin Wilck <martin.wilck@suse.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rajashekhar M A <rajs@netapp.com>
+Subject: [PATCH 6.9 002/163] scsi: core: alua: I/O errors for ALUA state transitions
+Date: Tue, 23 Jul 2024 20:22:11 +0200
+Message-ID: <20240723180143.559269316@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
 References: <20240723180143.461739294@linuxfoundation.org>
@@ -65,37 +71,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Martin Wilck <martin.wilck@suse.com>
 
-commit ae4ccca47195332c69176b8615c5ee17efd30c46 upstream.
+[ Upstream commit 10157b1fc1a762293381e9145041253420dfc6ad ]
 
-There are common cases where copy_file_range can noisily
-log "source and target of copy not on same server"
-e.g. the mv command across mounts to two different server's shares.
-Change this to informational rather than logging as an error.
+When a host is configured with a few LUNs and I/O is running, injecting FC
+faults repeatedly leads to path recovery problems.  The LUNs have 4 paths
+each and 3 of them come back active after say an FC fault which makes 2 of
+the paths go down, instead of all 4. This happens after several iterations
+of continuous FC faults.
 
-A followon patch will add dynamic trace points e.g. for
-cifs_file_copychunk_range
+Reason here is that we're returning an I/O error whenever we're
+encountering sense code 06/04/0a (LOGICAL UNIT NOT ACCESSIBLE, ASYMMETRIC
+ACCESS STATE TRANSITION) instead of retrying.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[mwilck: The original patch was developed by Rajashekhar M A and Hannes
+Reinecke. I moved the code to alua_check_sense() as suggested by Mike
+Christie [1]. Evan Milne had raised the question whether pg->state should
+be set to transitioning in the UA case [2]. I believe that doing this is
+correct. SCSI_ACCESS_STATE_TRANSITIONING by itself doesn't cause I/O
+errors. Our handler schedules an RTPG, which will only result in an I/O
+error condition if the transitioning timeout expires.]
+
+[1] https://lore.kernel.org/all/0bc96e82-fdda-4187-148d-5b34f81d4942@oracle.com/
+[2] https://lore.kernel.org/all/CAGtn9r=kicnTDE2o7Gt5Y=yoidHYD7tG8XdMHEBJTBraVEoOCw@mail.gmail.com/
+
+Co-developed-by: Rajashekhar M A <rajs@netapp.com>
+Co-developed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Martin Wilck <martin.wilck@suse.com>
+Link: https://lore.kernel.org/r/20240514140344.19538-1-mwilck@suse.com
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/device_handler/scsi_dh_alua.c | 31 +++++++++++++++-------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
 
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -1409,7 +1409,7 @@ ssize_t cifs_file_copychunk_range(unsign
- 	target_tcon = tlink_tcon(smb_file_target->tlink);
- 
- 	if (src_tcon->ses != target_tcon->ses) {
--		cifs_dbg(VFS, "source and target of copy not on same server\n");
-+		cifs_dbg(FYI, "source and target of copy not on same server\n");
- 		goto out;
+diff --git a/drivers/scsi/device_handler/scsi_dh_alua.c b/drivers/scsi/device_handler/scsi_dh_alua.c
+index a226dc1b65d71..4eb0837298d4d 100644
+--- a/drivers/scsi/device_handler/scsi_dh_alua.c
++++ b/drivers/scsi/device_handler/scsi_dh_alua.c
+@@ -414,28 +414,40 @@ static char print_alua_state(unsigned char state)
  	}
+ }
  
+-static enum scsi_disposition alua_check_sense(struct scsi_device *sdev,
+-					      struct scsi_sense_hdr *sense_hdr)
++static void alua_handle_state_transition(struct scsi_device *sdev)
+ {
+ 	struct alua_dh_data *h = sdev->handler_data;
+ 	struct alua_port_group *pg;
+ 
++	rcu_read_lock();
++	pg = rcu_dereference(h->pg);
++	if (pg)
++		pg->state = SCSI_ACCESS_STATE_TRANSITIONING;
++	rcu_read_unlock();
++	alua_check(sdev, false);
++}
++
++static enum scsi_disposition alua_check_sense(struct scsi_device *sdev,
++					      struct scsi_sense_hdr *sense_hdr)
++{
+ 	switch (sense_hdr->sense_key) {
+ 	case NOT_READY:
+ 		if (sense_hdr->asc == 0x04 && sense_hdr->ascq == 0x0a) {
+ 			/*
+ 			 * LUN Not Accessible - ALUA state transition
+ 			 */
+-			rcu_read_lock();
+-			pg = rcu_dereference(h->pg);
+-			if (pg)
+-				pg->state = SCSI_ACCESS_STATE_TRANSITIONING;
+-			rcu_read_unlock();
+-			alua_check(sdev, false);
++			alua_handle_state_transition(sdev);
+ 			return NEEDS_RETRY;
+ 		}
+ 		break;
+ 	case UNIT_ATTENTION:
++		if (sense_hdr->asc == 0x04 && sense_hdr->ascq == 0x0a) {
++			/*
++			 * LUN Not Accessible - ALUA state transition
++			 */
++			alua_handle_state_transition(sdev);
++			return NEEDS_RETRY;
++		}
+ 		if (sense_hdr->asc == 0x29 && sense_hdr->ascq == 0x00) {
+ 			/*
+ 			 * Power On, Reset, or Bus Device Reset.
+@@ -502,7 +514,8 @@ static int alua_tur(struct scsi_device *sdev)
+ 
+ 	retval = scsi_test_unit_ready(sdev, ALUA_FAILOVER_TIMEOUT * HZ,
+ 				      ALUA_FAILOVER_RETRIES, &sense_hdr);
+-	if (sense_hdr.sense_key == NOT_READY &&
++	if ((sense_hdr.sense_key == NOT_READY ||
++	     sense_hdr.sense_key == UNIT_ATTENTION) &&
+ 	    sense_hdr.asc == 0x04 && sense_hdr.ascq == 0x0a)
+ 		return SCSI_DH_RETRY;
+ 	else if (retval)
+-- 
+2.43.0
+
 
 
 
