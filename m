@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697B193A5F9
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1B9293A727
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 133F01F234F5
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9712A1F238ED
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE94158873;
-	Tue, 23 Jul 2024 18:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACA2158873;
+	Tue, 23 Jul 2024 18:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dn5Kw/nV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qd7F1cm6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE8C13D896;
-	Tue, 23 Jul 2024 18:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF951581F4;
+	Tue, 23 Jul 2024 18:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759418; cv=none; b=PcRtZ772P6XtJaa1VauB4JL4tFzeEvlXPvHLBs6K/Ohsq5kSAJHy2paLnmjFDpNMspFUmYfYShcpzhE7/ABI5ZDUtaDQk3JAqj6YzGPROfk8TKEjylRorOmE5BdVEtyC33CgGgW6RTe1EjfjRArAkyMz0bOv7YGKB+6JlCkmQ8s=
+	t=1721760173; cv=none; b=TMgQ13EMBU1mGon1PytxZfei5/GUwGVmHR1+/iiMfYwjFvc9QqRlX/lxu70HLFJhe/byO4SOfVh76lvvdCWQ6kaY05VMJCHzye3sEgH990+8X2IWkR9A6QZ6bqnX5LbGORN6oa7tFTe5rKqyK2+iZF1+wtJgq/Wcv8gVth/8wFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759418; c=relaxed/simple;
-	bh=lhApi1+jfr5Cmaaig5LL2pfqkEXrKbekjqHpuca3jKI=;
+	s=arc-20240116; t=1721760173; c=relaxed/simple;
+	bh=iYiB4xWqepMs0J5fwrFKRDCBEhWQgkZhWIhKRB2W+rY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lBnOdRjHDS0VDwvp/0L2vdusIlTjmZ6pmhrrW6+IWWlmKWnZPFsGtFHHk7pQzSvLHZI2F++r/VBkGvx1BfzLavjyue0gDC9+FCWcNQAX8nQAOS2to4AfnpEsqT+yZN0+rf+NJuSSMTce43HkNpMc4aAddmfaK7tKKWlyt8/+wbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dn5Kw/nV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7723C4AF0E;
-	Tue, 23 Jul 2024 18:30:17 +0000 (UTC)
+	 MIME-Version; b=LqRW4YcC/K/tnqsIfreHwv4qeFNoGz5S2jfpEbk2EHIW4eIwUehQTYzUx3JC7Ei4yLF/g+FNHNS/kKVZ0DaiG0qxcf1J4vwexyVW2I4fcCmyKEUrTgSdpEzEjrtUWHdKkEzE6bYfti00FokDVqOovIFRymFwxf+bTU51Jzy52ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qd7F1cm6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA1BC4AF0A;
+	Tue, 23 Jul 2024 18:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759418;
-	bh=lhApi1+jfr5Cmaaig5LL2pfqkEXrKbekjqHpuca3jKI=;
+	s=korg; t=1721760172;
+	bh=iYiB4xWqepMs0J5fwrFKRDCBEhWQgkZhWIhKRB2W+rY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dn5Kw/nVQtKYw+M/3c3uJVGjBIGubSwy84qq7YPeN0YNqLqr8w1aAyu8w0XVNcCma
-	 q/9cGVNn828Spp+fxoLXnSI8EKIaFl4aYnyFVVU//fgeKtJl7TanvsKLYlHGa/2KeC
-	 zv4U7sA2BhI8SxetqdI2B95JGCYnv06Syz789kls=
+	b=Qd7F1cm6flH78rx+rqOHZZOvdX1vJRyQ7pUb2pTpJnQEyFg4sBGK0/seAhL2DWAnB
+	 IRyWyzJLQWB6eC4IxSWG/XjnwJDNOZY7Ur8R2+ILbkoJWPpHCWSwpmbjmA9B+xIGP8
+	 L6Z+2gTUyfQtg/9vyQN0q7IPCrJkIP6p3nWIF8oE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	John Stultz <jstultz@google.com>
-Subject: [PATCH 6.1 098/105] ARM: 9324/1: fix get_user() broken with veneer
+	Ganesh Goudar <ganeshgr@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 126/163] powerpc/eeh: avoid possible crash when edev->pdev changes
 Date: Tue, 23 Jul 2024 20:24:15 +0200
-Message-ID: <20240723180407.021033421@linuxfoundation.org>
+Message-ID: <20240723180148.340889144@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
 
-commit 24d3ba0a7b44c1617c27f5045eecc4f34752ab03 upstream.
+[ Upstream commit a1216e62d039bf63a539bbe718536ec789a853dd ]
 
-The 32-bit ARM kernel stops working if the kernel grows to the point
-where veneers for __get_user_* are created.
+If a PCI device is removed during eeh_pe_report_edev(), edev->pdev
+will change and can cause a crash, hold the PCI rescan/remove lock
+while taking a copy of edev->pdev->bus.
 
-AAPCS32 [1] states, "Register r12 (IP) may be used by a linker as a
-scratch register between a routine and any subroutine it calls. It
-can also be used within a routine to hold intermediate values between
-subroutine calls."
-
-However, bl instructions buried within the inline asm are unpredictable
-for compilers; hence, "ip" must be added to the clobber list.
-
-This becomes critical when veneers for __get_user_* are created because
-veneers use the ip register since commit 02e541db0540 ("ARM: 8323/1:
-force linker to use PIC veneers").
-
-[1]: https://github.com/ARM-software/abi-aa/blob/2023Q1/aapcs32/aapcs32.rst
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Cc: John Stultz <jstultz@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240617140240.580453-1-ganeshgr@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/uaccess.h |   14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ arch/powerpc/kernel/eeh_pe.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/arm/include/asm/uaccess.h
-+++ b/arch/arm/include/asm/uaccess.h
-@@ -109,16 +109,6 @@ extern int __get_user_64t_1(void *);
- extern int __get_user_64t_2(void *);
- extern int __get_user_64t_4(void *);
+diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
+index e0ce812796241..7d1b50599dd6c 100644
+--- a/arch/powerpc/kernel/eeh_pe.c
++++ b/arch/powerpc/kernel/eeh_pe.c
+@@ -849,6 +849,7 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
+ {
+ 	struct eeh_dev *edev;
+ 	struct pci_dev *pdev;
++	struct pci_bus *bus = NULL;
  
--#define __GUP_CLOBBER_1	"lr", "cc"
--#ifdef CONFIG_CPU_USE_DOMAINS
--#define __GUP_CLOBBER_2	"ip", "lr", "cc"
--#else
--#define __GUP_CLOBBER_2 "lr", "cc"
--#endif
--#define __GUP_CLOBBER_4	"lr", "cc"
--#define __GUP_CLOBBER_32t_8 "lr", "cc"
--#define __GUP_CLOBBER_8	"lr", "cc"
--
- #define __get_user_x(__r2, __p, __e, __l, __s)				\
- 	   __asm__ __volatile__ (					\
- 		__asmeq("%0", "r0") __asmeq("%1", "r2")			\
-@@ -126,7 +116,7 @@ extern int __get_user_64t_4(void *);
- 		"bl	__get_user_" #__s				\
- 		: "=&r" (__e), "=r" (__r2)				\
- 		: "0" (__p), "r" (__l)					\
--		: __GUP_CLOBBER_##__s)
-+		: "ip", "lr", "cc")
+ 	if (pe->type & EEH_PE_PHB)
+ 		return pe->phb->bus;
+@@ -859,9 +860,11 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
  
- /* narrowing a double-word get into a single 32bit word register: */
- #ifdef __ARMEB__
-@@ -148,7 +138,7 @@ extern int __get_user_64t_4(void *);
- 		"bl	__get_user_64t_" #__s				\
- 		: "=&r" (__e), "=r" (__r2)				\
- 		: "0" (__p), "r" (__l)					\
--		: __GUP_CLOBBER_##__s)
-+		: "ip", "lr", "cc")
- #else
- #define __get_user_x_64t __get_user_x
- #endif
+ 	/* Retrieve the parent PCI bus of first (top) PCI device */
+ 	edev = list_first_entry_or_null(&pe->edevs, struct eeh_dev, entry);
++	pci_lock_rescan_remove();
+ 	pdev = eeh_dev_to_pci_dev(edev);
+ 	if (pdev)
+-		return pdev->bus;
++		bus = pdev->bus;
++	pci_unlock_rescan_remove();
+ 
+-	return NULL;
++	return bus;
+ }
+-- 
+2.43.0
+
 
 
 
