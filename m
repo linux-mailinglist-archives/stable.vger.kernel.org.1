@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-60827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C396593A598
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E97A193A602
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CF3A1F22DB4
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93F841F234BF
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F20158858;
-	Tue, 23 Jul 2024 18:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177BC156F3A;
+	Tue, 23 Jul 2024 18:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U9ejZf4G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDgRXzPV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42C0156F37;
-	Tue, 23 Jul 2024 18:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AA813D896;
+	Tue, 23 Jul 2024 18:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759169; cv=none; b=CblMsjsxkZJ4tcmbJUd8451qmx5N1WKyWp0JYQTBu/LjCZihUKuVKWAezdXlNfT0Ih5A4dS5Tdfafosecm3cTFN8kpbhgYxxH/Ofljx+rxZUy0geA22y8Ab7hWXPUjj9lyImPtuTFfYyXsDms6rvuYstfG4b+q4ArJNcNwkfN3s=
+	t=1721759444; cv=none; b=gZxFi7vG7wBBr5YTGuMz6XcnS/z5mH4R5UzjqVGrasS0xS02Zm0CAEHUxoOX3WqRdC6yKLDh6+Cg++w8LevPpjdt2lDCitSwLXwcF1OlI4r0GNl6kFGzwsbNPTFtG+YAPpz02XiOcxHnttmt05RBLYuzibMvuOt4OsfN2LKdsvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759169; c=relaxed/simple;
-	bh=hp9vlDS3eAH8VPHBNBB4ATJb5pueU2+G9BdFw3oC2vk=;
+	s=arc-20240116; t=1721759444; c=relaxed/simple;
+	bh=YPZMrTOHy5yLszBORyNy4uibCCfAqp/cn/7l4vye7VQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pjfk0J61ZA8KtQBvDB0WuPuqn06SeLYBTqp03IgULUg87XBZIFQSBiFw2apH0rohaqW9S9bGLoxYVk9CtNCZQpK5QbYWiOIjs5WDXlVG3EVlJ9QxsH1vgpXk4UoUUYklI/KAsbhc7LDCFRgNW3yBNw1elJh1mM+F6Xm+WhBK5L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U9ejZf4G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A031C4AF09;
-	Tue, 23 Jul 2024 18:26:08 +0000 (UTC)
+	 MIME-Version; b=Bbl7IX+dl+wSbtEyxqOt5OdD2ojYWL0CSF3/lzgkBYr5B+P+zT5GmG2bSLh8KNVb57pf4kgCZ0rOWP+oScU7CQ4Ys/SEOivSy+L92VefqSsjPkzWkTkZ6/No5ACdlLeyoVTFIIeZxXpsld8dKTLY3iPvc4OuP9AI7qi6/s51G+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDgRXzPV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B21C4AF0A;
+	Tue, 23 Jul 2024 18:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759169;
-	bh=hp9vlDS3eAH8VPHBNBB4ATJb5pueU2+G9BdFw3oC2vk=;
+	s=korg; t=1721759444;
+	bh=YPZMrTOHy5yLszBORyNy4uibCCfAqp/cn/7l4vye7VQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U9ejZf4GOyRgRnMMl5QhdtzB+xKyyse9DCjkBAvNaZ4oSyXtZmBlAhGe4Phi18q8A
-	 kJTUSZ7G+RlU35JD1+3gdBbM92Yfa4ms9cbVsr38Tlh0CdgqE8woNItqRla3vih0bE
-	 sKS16eyGxsDrULDvq1nHT8tLRcHj7QlqCER/aW0M=
+	b=YDgRXzPVBEViKtKtfTEtLZkgMmfoEgAWbz+E7uC0qPg3mR08lTBvIR+P4wg9AHC4d
+	 UxAMfo9KYHvjwPph7icKhNpRDD+SezFpNfd0PvlvrMORPy31hbcP58l7PVNhYzT6Wo
+	 X8KpL4rTaRzV3u/pganaTXKTAWfP6DFDLXK9nnyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	SeongJae Park <sj@kernel.org>
-Subject: [PATCH 6.1 003/105] minmax: fix header inclusions
-Date: Tue, 23 Jul 2024 20:22:40 +0200
-Message-ID: <20240723180402.697629523@linuxfoundation.org>
+	syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 013/129] wifi: mac80211: handle tasklet frames before stopping
+Date: Tue, 23 Jul 2024 20:22:41 +0200
+Message-ID: <20240723180405.295680553@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit f6e9d38f8eb00ac8b52e6d15f6aa9bcecacb081b upstream.
+[ Upstream commit 177c6ae9725d783f9e96f02593ce8fb2639be22f ]
 
-BUILD_BUG_ON*() macros are defined in build_bug.h.  Include it.  Replace
-compiler_types.h by compiler.h, which provides the former, to have a
-definition of the __UNIQUE_ID().
+The code itself doesn't want to handle frames from the driver
+if it's already stopped, but if the tasklet was queued before
+and runs after the stop, then all bets are off. Flush queues
+before actually stopping, RX should be off at this point since
+all the interfaces are removed already, etc.
 
-Link: https://lkml.kernel.org/r/20230912092355.79280-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit f6e9d38f8eb00ac8b52e6d15f6aa9bcecacb081b)
-Signed-off-by: SeongJae Park <sj@kernel.org>
-[Fix a conflict due to absence of compiler_types.h include]
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com
+Link: https://msgid.link/20240515135318.b05f11385c9a.I41c1b33a2e1814c3a7ef352cd7f2951b91785617@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/ieee80211_i.h |  2 ++
+ net/mac80211/main.c        | 10 ++++++++--
+ net/mac80211/util.c        |  2 ++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -2,6 +2,8 @@
- #ifndef _LINUX_MINMAX_H
- #define _LINUX_MINMAX_H
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index fefaa9e902a2f..fb55014c0e898 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1846,6 +1846,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ void ieee80211_configure_filter(struct ieee80211_local *local);
+ u64 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata);
  
-+#include <linux/build_bug.h>
-+#include <linux/compiler.h>
- #include <linux/const.h>
++void ieee80211_handle_queued_frames(struct ieee80211_local *local);
++
+ u64 ieee80211_mgmt_tx_cookie(struct ieee80211_local *local);
+ int ieee80211_attach_ack_skb(struct ieee80211_local *local, struct sk_buff *skb,
+ 			     u64 *cookie, gfp_t gfp);
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 4548f84451095..d7f67d81d5af9 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -301,9 +301,8 @@ u64 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata)
+ 	       BSS_CHANGED_ERP_SLOT;
+ }
  
- /*
+-static void ieee80211_tasklet_handler(struct tasklet_struct *t)
++void ieee80211_handle_queued_frames(struct ieee80211_local *local)
+ {
+-	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
+ 	struct sk_buff *skb;
+ 
+ 	while ((skb = skb_dequeue(&local->skb_queue)) ||
+@@ -328,6 +327,13 @@ static void ieee80211_tasklet_handler(struct tasklet_struct *t)
+ 	}
+ }
+ 
++static void ieee80211_tasklet_handler(struct tasklet_struct *t)
++{
++	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
++
++	ieee80211_handle_queued_frames(local);
++}
++
+ static void ieee80211_restart_work(struct work_struct *work)
+ {
+ 	struct ieee80211_local *local =
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 172173b2a9eb8..62c8b4342136e 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2313,6 +2313,8 @@ u32 ieee80211_sta_get_rates(struct ieee80211_sub_if_data *sdata,
+ 
+ void ieee80211_stop_device(struct ieee80211_local *local)
+ {
++	ieee80211_handle_queued_frames(local);
++
+ 	ieee80211_led_radio(local, false);
+ 	ieee80211_mod_tpt_led_trig(local, 0, IEEE80211_TPT_LEDTRIG_FL_RADIO);
+ 
+-- 
+2.43.0
+
 
 
 
