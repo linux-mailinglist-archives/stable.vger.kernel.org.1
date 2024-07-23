@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-61135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788DE93A705
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B82C93A5EB
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D65C1F238C7
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47FA62833DD
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7CE91586F5;
-	Tue, 23 Jul 2024 18:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1013C158862;
+	Tue, 23 Jul 2024 18:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXWciaIA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0sGuYWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860F013D896;
-	Tue, 23 Jul 2024 18:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C299915821A;
+	Tue, 23 Jul 2024 18:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760077; cv=none; b=UnZF9te9ixf4uFoawvA2nFSVeBhR39o8rpLlyDzI7VVw+W5KRrUY1nxceC8ejOzJ4YmQa1Tfy8lxU+kaT8+sz0PnrZEJ2a6RB+qj9QKdLTzsxOjKHYA65VuTC1KkEf17+asYgd6jUM0aQJk6x4Lf5s/TZrePVPLhkpKkTmlCXSg=
+	t=1721759385; cv=none; b=Yj5qEwQy9RxJrhT0D3i0ARqRzZLsW02auaiRDZugxIaBrqzjEzFjmZTKd7AsNtNP6sDXcThD5U5R8G04Cs9uxxAOVWorBXCmImac4JV5HEigxoNl3r1ingXAp26YYbqZ0+ZwukyAtbXfV32YZzZFeFK4ZDZWvKrmhMLCIT/vZaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760077; c=relaxed/simple;
-	bh=aXnXGtcCJtLlyIcV+gYTezpzoCxwdu5bUSP07Cg7f+M=;
+	s=arc-20240116; t=1721759385; c=relaxed/simple;
+	bh=z7pcKQoaNY4stb7WGSa9XzNRsCyBEUfZ7M6HAVWfHGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EYYrjHh8tQhYuvBuccps/n5qdyUvUZsXfKkSzmYCsg00y/flvXAUWtVwLp1AVWpz2m5r0l5yU3R2eG699efe6XwtiiGWCkDnYe8IRLsRkxT6QJcZw+KdbPQNRwl2bURvhe7yDCd8lG9bc/zFrYxM8+EwcfTGreWZFr5pbMvDTEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXWciaIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B576C4AF09;
-	Tue, 23 Jul 2024 18:41:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q4bfaEh7s7f2qSOBmL9fBxJmAt3N25Et26dpvGwKJjTzAtq1Yz+Gxqt7kfNvc2LIxqhRvOBwgdNCx0k1HbRqD4KSLcZ4sKmTQvUUUSiQy83Eihf9TMAxF27cxeEIUsFTv1iREH5uiUNJkIuJYDFSp/Kjz+BcPFYy2/bEoNsgVKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0sGuYWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B70C4AF09;
+	Tue, 23 Jul 2024 18:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760077;
-	bh=aXnXGtcCJtLlyIcV+gYTezpzoCxwdu5bUSP07Cg7f+M=;
+	s=korg; t=1721759385;
+	bh=z7pcKQoaNY4stb7WGSa9XzNRsCyBEUfZ7M6HAVWfHGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hXWciaIA6xYA/rAqFwfyR+gBbfSltShkLBSUzNm/v/sMWaH3xCEh9fECY3rx9NjyN
-	 Od6814VJ9pb3brO5etqwHfajftyYCM6Z14jRIUI/DxpNOYkN5J1proeIkOpxr6K3a6
-	 CwdOzPDnWzYU1ahmVe9lN/g0Ezzboihpi/QfueiY=
+	b=j0sGuYWX6J9fKCJaQ3iTPz6Ad8zG9+0fgBSM8CwQNRX0MZjIsinGncI/QkReo4Q+J
+	 LzhHSmQaVw9y3/ksDLhbDgquUoldkrnYKfHOm99KushrXc9UolDsAku/Z4+N6XSGSF
+	 7jUAyk2XtmqAA1QJW9pxwCg2meRDA32ko29ZRi+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas GENTY <tomlohave@gmail.com>,
+	Agathe Boutmy <agathe@boutmy.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Hans de Goede <hdegoede@redhat.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 095/163] bytcr_rt5640 : inverse jack detect for Archos 101 cesium
+Subject: [PATCH 6.1 067/105] platform/x86: wireless-hotkey: Add support for LG Airplane Button
 Date: Tue, 23 Jul 2024 20:23:44 +0200
-Message-ID: <20240723180147.148781299@linuxfoundation.org>
+Message-ID: <20240723180405.827538137@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas GENTY <tomlohave@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit e3209a1827646daaab744aa6a5767b1f57fb5385 ]
+[ Upstream commit 151e78a0b89ee6dec93382dbdf5b1ef83f9c4716 ]
 
-When headphones are plugged in, they appear absent; when they are removed,
-they appear present.
-Add a specific entry in bytcr_rt5640 for this device
+The LGEX0815 ACPI device is used by the "LG Airplane Mode Button"
+Windows driver for handling rfkill requests. When the ACPI device
+receives an 0x80 ACPI notification, an rfkill event is to be
+send to userspace.
 
-Signed-off-by: Thomas GENTY <tomlohave@gmail.com>
+Add support for the LGEX0815 ACPI device to the driver.
+
+Tested-by: Agathe Boutmy <agathe@boutmy.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606233540.9774-2-W_Armin@gmx.de
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240608170251.99936-1-tomlohave@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/platform/x86/wireless-hotkey.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index b41a1147f1c34..a64d1989e28a5 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -610,6 +610,17 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF1 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ARCHOS 101 CESIUM"),
-+		},
-+		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
-+					BYT_RT5640_JD_NOT_INV |
-+					BYT_RT5640_DIFF_MIC |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
+diff --git a/drivers/platform/x86/wireless-hotkey.c b/drivers/platform/x86/wireless-hotkey.c
+index 11c60a2734468..61ae722643e5a 100644
+--- a/drivers/platform/x86/wireless-hotkey.c
++++ b/drivers/platform/x86/wireless-hotkey.c
+@@ -19,6 +19,7 @@ MODULE_AUTHOR("Alex Hung");
+ MODULE_ALIAS("acpi*:HPQ6001:*");
+ MODULE_ALIAS("acpi*:WSTADEF:*");
+ MODULE_ALIAS("acpi*:AMDI0051:*");
++MODULE_ALIAS("acpi*:LGEX0815:*");
+ 
+ static struct input_dev *wl_input_dev;
+ 
+@@ -26,6 +27,7 @@ static const struct acpi_device_id wl_ids[] = {
+ 	{"HPQ6001", 0},
+ 	{"WSTADEF", 0},
+ 	{"AMDI0051", 0},
++	{"LGEX0815", 0},
+ 	{"", 0},
+ };
+ 
 -- 
 2.43.0
 
