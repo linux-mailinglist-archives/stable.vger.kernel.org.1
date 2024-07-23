@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-61071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4F793A6BB
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:38:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C396593A598
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDE2A1F23820
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:38:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CF3A1F22DB4
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6866C13D896;
-	Tue, 23 Jul 2024 18:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F20158858;
+	Tue, 23 Jul 2024 18:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9TP6rKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U9ejZf4G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2605C13C3F5;
-	Tue, 23 Jul 2024 18:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42C0156F37;
+	Tue, 23 Jul 2024 18:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759890; cv=none; b=ckqZjUwFw01dOkS8+rlOYYa5lmxy078XfLgnra9gcEqb0YIw1c3DputnZ/4A89ssYoX8m55bcOO6fDYQBn1tejS7nmKBXaoPGtS8LJNpRW/gFbE104ChQrzawPZJnpVPxf/37Dp2LOxDwxTOOk6QdzX7BsPaZvCzTIHW7rpRl64=
+	t=1721759169; cv=none; b=CblMsjsxkZJ4tcmbJUd8451qmx5N1WKyWp0JYQTBu/LjCZihUKuVKWAezdXlNfT0Ih5A4dS5Tdfafosecm3cTFN8kpbhgYxxH/Ofljx+rxZUy0geA22y8Ab7hWXPUjj9lyImPtuTFfYyXsDms6rvuYstfG4b+q4ArJNcNwkfN3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759890; c=relaxed/simple;
-	bh=q4SkxXtfY4PeETKlI6OpeIfeXQ1xbBv0Wz8HVpF+3AI=;
+	s=arc-20240116; t=1721759169; c=relaxed/simple;
+	bh=hp9vlDS3eAH8VPHBNBB4ATJb5pueU2+G9BdFw3oC2vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wadq5/uMuAGLmbfP/H8E7D1mBSUrM0kLsVH6Kyc0OekNzfVkDqLY6Gnn9NajlHxhUA5zLxqY1bcAxcZ6VdGwMZPyfUk1ztDKVb1EX9fmbmYYYnvcIaDzTaPB9qpvKcXGBeP3HP40c/i+B4qmzbrVEU4dEgOMK0IiZMH7zCCMb2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9TP6rKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F9DC4AF0A;
-	Tue, 23 Jul 2024 18:38:09 +0000 (UTC)
+	 MIME-Version; b=Pjfk0J61ZA8KtQBvDB0WuPuqn06SeLYBTqp03IgULUg87XBZIFQSBiFw2apH0rohaqW9S9bGLoxYVk9CtNCZQpK5QbYWiOIjs5WDXlVG3EVlJ9QxsH1vgpXk4UoUUYklI/KAsbhc7LDCFRgNW3yBNw1elJh1mM+F6Xm+WhBK5L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U9ejZf4G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A031C4AF09;
+	Tue, 23 Jul 2024 18:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759890;
-	bh=q4SkxXtfY4PeETKlI6OpeIfeXQ1xbBv0Wz8HVpF+3AI=;
+	s=korg; t=1721759169;
+	bh=hp9vlDS3eAH8VPHBNBB4ATJb5pueU2+G9BdFw3oC2vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9TP6rKKImi/HUiSxectNbsFFmUo5eI04bpdNU8o8PTdzShZALMiE66UQ9QRqPRct
-	 plSHrEShdIXpWa8hXu7bhPNeO1ryFJ/McaNqLc32ZopCh2B0lZU24rQeM0IUo0Q3Xi
-	 GDLOpeCBDsNgoeF/NsbQLbo7IsXrKTaNNpyEu5FU=
+	b=U9ejZf4GOyRgRnMMl5QhdtzB+xKyyse9DCjkBAvNaZ4oSyXtZmBlAhGe4Phi18q8A
+	 kJTUSZ7G+RlU35JD1+3gdBbM92Yfa4ms9cbVsr38Tlh0CdgqE8woNItqRla3vih0bE
+	 sKS16eyGxsDrULDvq1nHT8tLRcHj7QlqCER/aW0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 031/163] LoongArch: Fix GMACs phy-mode definitions in dts
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	SeongJae Park <sj@kernel.org>
+Subject: [PATCH 6.1 003/105] minmax: fix header inclusions
 Date: Tue, 23 Jul 2024 20:22:40 +0200
-Message-ID: <20240723180144.673573994@linuxfoundation.org>
+Message-ID: <20240723180402.697629523@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit eb36e520f4f1b690fd776f15cbac452f82ff7bfa ]
+commit f6e9d38f8eb00ac8b52e6d15f6aa9bcecacb081b upstream.
 
-The GMAC of Loongson chips cannot insert the correct 1.5-2ns delay. So
-we need the PHY to insert internal delays for both transmit and receive
-data lines from/to the PHY device. Fix this by changing the "phy-mode"
-from "rgmii" to "rgmii-id" in dts.
+BUILD_BUG_ON*() macros are defined in build_bug.h.  Include it.  Replace
+compiler_types.h by compiler.h, which provides the former, to have a
+definition of the __UNIQUE_ID().
 
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20230912092355.79280-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit f6e9d38f8eb00ac8b52e6d15f6aa9bcecacb081b)
+Signed-off-by: SeongJae Park <sj@kernel.org>
+[Fix a conflict due to absence of compiler_types.h include]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/boot/dts/loongson-2k0500-ref.dts | 4 ++--
- arch/loongarch/boot/dts/loongson-2k1000-ref.dts | 4 ++--
- arch/loongarch/boot/dts/loongson-2k2000-ref.dts | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ include/linux/minmax.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/loongarch/boot/dts/loongson-2k0500-ref.dts b/arch/loongarch/boot/dts/loongson-2k0500-ref.dts
-index 8aefb0c126722..a34734a6c3ce8 100644
---- a/arch/loongarch/boot/dts/loongson-2k0500-ref.dts
-+++ b/arch/loongarch/boot/dts/loongson-2k0500-ref.dts
-@@ -44,14 +44,14 @@ linux,cma {
- &gmac0 {
- 	status = "okay";
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -2,6 +2,8 @@
+ #ifndef _LINUX_MINMAX_H
+ #define _LINUX_MINMAX_H
  
--	phy-mode = "rgmii";
-+	phy-mode = "rgmii-id";
- 	bus_id = <0x0>;
- };
++#include <linux/build_bug.h>
++#include <linux/compiler.h>
+ #include <linux/const.h>
  
- &gmac1 {
- 	status = "okay";
- 
--	phy-mode = "rgmii";
-+	phy-mode = "rgmii-id";
- 	bus_id = <0x1>;
- };
- 
-diff --git a/arch/loongarch/boot/dts/loongson-2k1000-ref.dts b/arch/loongarch/boot/dts/loongson-2k1000-ref.dts
-index ed4d324340411..aaf41b565805a 100644
---- a/arch/loongarch/boot/dts/loongson-2k1000-ref.dts
-+++ b/arch/loongarch/boot/dts/loongson-2k1000-ref.dts
-@@ -43,7 +43,7 @@ linux,cma {
- &gmac0 {
- 	status = "okay";
- 
--	phy-mode = "rgmii";
-+	phy-mode = "rgmii-id";
- 	phy-handle = <&phy0>;
- 	mdio {
- 		compatible = "snps,dwmac-mdio";
-@@ -58,7 +58,7 @@ phy0: ethernet-phy@0 {
- &gmac1 {
- 	status = "okay";
- 
--	phy-mode = "rgmii";
-+	phy-mode = "rgmii-id";
- 	phy-handle = <&phy1>;
- 	mdio {
- 		compatible = "snps,dwmac-mdio";
-diff --git a/arch/loongarch/boot/dts/loongson-2k2000-ref.dts b/arch/loongarch/boot/dts/loongson-2k2000-ref.dts
-index 74b99bd234cc3..ea9e6985d0e9f 100644
---- a/arch/loongarch/boot/dts/loongson-2k2000-ref.dts
-+++ b/arch/loongarch/boot/dts/loongson-2k2000-ref.dts
-@@ -92,7 +92,7 @@ phy1: ethernet-phy@1 {
- &gmac2 {
- 	status = "okay";
- 
--	phy-mode = "rgmii";
-+	phy-mode = "rgmii-id";
- 	phy-handle = <&phy2>;
- 	mdio {
- 		compatible = "snps,dwmac-mdio";
--- 
-2.43.0
-
+ /*
 
 
 
