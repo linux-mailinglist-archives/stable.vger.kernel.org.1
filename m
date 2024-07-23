@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-60949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B70293A625
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6894F93A5C4
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 130961F23350
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F0E51F2329E
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEE9158A06;
-	Tue, 23 Jul 2024 18:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3D31586CB;
+	Tue, 23 Jul 2024 18:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gshtk9C0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpJGU1Zj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE9F15887F;
-	Tue, 23 Jul 2024 18:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3BA155351;
+	Tue, 23 Jul 2024 18:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759527; cv=none; b=IN5+0s3jYl0s7TGW6ox1hbsmyLZwpVt+kfaACSCEsrn50rFuTJ675Z+xpeIBF3MB9LRjQoCLC6lp8fK0zPbJRBYkrMtBBZm+YIdHzDoC0MUgL4yer8i5jiC2AHbic04LuDSPx4VzuIui3Ze1iptkavi7G34KVvV712TdqC3G3NY=
+	t=1721759282; cv=none; b=sl5EuujILKXpiI5M+dBPZGHAa6BFtsxXWJbuHY6N3vbGDpF5cJ8HHjiEm/HkEMQOzToLJCwdgXto565V9Zr66oxPcb6h9x9vzmZt3YAVE8nVOf/vmGzBp4WRjp1yCcPrycSQWzvqXCZHpzqTNPx7m32nSzDsSZo8rjrPQxnB+E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759527; c=relaxed/simple;
-	bh=z4Py9DUoBC2gvOmYX3RMdmHx8z+G+1r9A1n+DmFEJQo=;
+	s=arc-20240116; t=1721759282; c=relaxed/simple;
+	bh=iPtaqb5htyeFcHUwVJ4OzdpmaQVG+OjFg62DUSwmZQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=maKjSV3aVXw10uoDOBGDxOq7AZjifVXcHRneVlz2k6SM0KkEZTpgZslnKVVc4z8agf0GfoVZzTYBm+QsDyW7v39PjRiH4rSHG/sjgK5KSSfrmbLzLiiZqpAkhikn5xCg+vLJWXb450J51iT36GGnCkMdWrv6g292dx4UC+Tv4Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gshtk9C0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04351C4AF0A;
-	Tue, 23 Jul 2024 18:32:06 +0000 (UTC)
+	 MIME-Version; b=Ppj5VytnkP0RAQAxz/PwVCi3IrmeHYtqbVkkw0X1uAef5s5EcUVB00ylUNW+qrypRQkc8zMZKPjwqWP7NW6ScSDGwoJXUl2EBogt/ACx+ShjunVOY3phZAbmt8L8v5XzNhR+MHuB3CJwhKEwm2BiunM9ajzB+3cEFh/xfjS7Xjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpJGU1Zj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71BAC4AF09;
+	Tue, 23 Jul 2024 18:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759527;
-	bh=z4Py9DUoBC2gvOmYX3RMdmHx8z+G+1r9A1n+DmFEJQo=;
+	s=korg; t=1721759282;
+	bh=iPtaqb5htyeFcHUwVJ4OzdpmaQVG+OjFg62DUSwmZQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gshtk9C08ES8Snw6hZpiC+64ov8Q1VGorAvhyTry6i5/SfEVG8Dz9P4B213S/tIDE
-	 BJ93L7BUj5HAxv0By8veHIujg7R3qtnuO9VDvvDGgP7urShiFUgCg2N3peLSa4FEW/
-	 g3ycelgxXTJ/h9lLaKcDtHywiWki9UkWGGpAty58=
+	b=wpJGU1ZjkUS0Rwp/Tp4cTanMYGhClHeG6u8LVC1cF1HoVM0XuNPLwGg4GNlOKiPuw
+	 onews225Y6LW9mdkVLRZ6G9VrVvciLoep+/jFjx9GbCdjgCw/76YCN741u1AX6O7rU
+	 jce9vhVokv2UGI8TdveeqwB6HqJjuhMvQc/ZDGYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zizhi Wo <wozizhi@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/129] cachefiles: Set object to close if ondemand_id < 0 in copen
-Date: Tue, 23 Jul 2024 20:23:09 +0200
-Message-ID: <20240723180406.375892482@linuxfoundation.org>
+Subject: [PATCH 6.1 033/105] null_blk: fix validation of block size
+Date: Tue, 23 Jul 2024 20:23:10 +0200
+Message-ID: <20240723180404.500268519@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-[ Upstream commit 4f8703fb3482f92edcfd31661857b16fec89c2c0 ]
+[ Upstream commit c462ecd659b5fce731f1d592285832fd6ad54053 ]
 
-If copen is maliciously called in the user mode, it may delete the request
-corresponding to the random id. And the request may have not been read yet.
+Block size should be between 512 and PAGE_SIZE and be a power of 2. The current
+check does not validate this, so update the check.
 
-Note that when the object is set to reopen, the open request will be done
-with the still reopen state in above case. As a result, the request
-corresponding to this object is always skipped in select_req function, so
-the read request is never completed and blocks other process.
+Without this patch, null_blk would Oops due to a null pointer deref when
+loaded with bs=1536 [1].
 
-Fix this issue by simply set object to close if its id < 0 in copen.
+Link: https://lore.kernel.org/all/87wmn8mocd.fsf@metaspace.dk/
 
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240522114308.2402121-11-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240603192645.977968-1-nmi@metaspace.dk
+[axboe: remove unnecessary braces and != 0 check]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/ondemand.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/block/null_blk/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index c3241cede5289..37489ca2e8571 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -182,6 +182,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 	xas_store(&xas, NULL);
- 	xa_unlock(&cache->reqs);
- 
-+	info = req->object->ondemand;
- 	/* fail OPEN request if copen format is invalid */
- 	ret = kstrtol(psize, 0, &size);
- 	if (ret) {
-@@ -201,7 +202,6 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 		goto out;
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 220cedda2ca7d..4d78b5583dc6a 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -1958,8 +1958,8 @@ static int null_validate_conf(struct nullb_device *dev)
+ 		return -EINVAL;
  	}
  
--	info = req->object->ondemand;
- 	spin_lock(&info->lock);
- 	/*
- 	 * The anonymous fd was closed before copen ? Fail the request.
-@@ -241,6 +241,11 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 	wake_up_all(&cache->daemon_pollwq);
+-	dev->blocksize = round_down(dev->blocksize, 512);
+-	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
++	if (blk_validate_block_size(dev->blocksize))
++		return -EINVAL;
  
- out:
-+	spin_lock(&info->lock);
-+	/* Need to set object close to avoid reopen status continuing */
-+	if (info->ondemand_id == CACHEFILES_ONDEMAND_ID_CLOSED)
-+		cachefiles_ondemand_set_object_close(req->object);
-+	spin_unlock(&info->lock);
- 	complete(&req->done);
- 	return ret;
- }
+ 	if (dev->queue_mode == NULL_Q_MQ && dev->use_per_node_hctx) {
+ 		if (dev->submit_queues != nr_online_nodes)
 -- 
 2.43.0
 
