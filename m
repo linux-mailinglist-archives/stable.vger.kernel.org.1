@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62A293A706
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE0093A64F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:34:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81B1E1F238F9
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76C11B232DB
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECE31586F5;
-	Tue, 23 Jul 2024 18:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6B8158A3E;
+	Tue, 23 Jul 2024 18:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mLR10uYs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuvBGbvX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD21A13D896;
-	Tue, 23 Jul 2024 18:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99494158A13;
+	Tue, 23 Jul 2024 18:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760080; cv=none; b=oiFctEe8qGOE0je+0TjwXyS58GEUBOkPdlZ3ox5Oja8RtsqSuOfxZ9W2yEixQabyj5zy3ixlCdqxkxXd7xv6ayhzm1DymHJPYIdZmMeNc7Y/6oSG9m+QADU4W3BY0vU2OFNgNVhfmxy/tEcJwDHf8qfcG9QzLFMj3f/9TSZqRbk=
+	t=1721759635; cv=none; b=oeg7pD7k6OpZMl5b7XcoxZ3P7tApVO7l1tcIXj59QX1cte0G2V5bZtV0/azk7J4hlVKX5SjFCSk9pgaQggwRvuSU2eMXhfkPhjI2eCDqjO6KPOY+8hnm4AFiFzgDic72jEeql5p54gTUcRzQUbeyWQJGj7mAJJVceI/AyRqoPHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760080; c=relaxed/simple;
-	bh=cwg/q7JMuwy163i+NnV3gJYUodWlaM0ghUg65i4HYSg=;
+	s=arc-20240116; t=1721759635; c=relaxed/simple;
+	bh=ZYFpaCYd7/pocIJd8kzgQXHmhL/JIDnO8ytdvhRItw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCqpldB25n8txozDdXCWlu9/eL/zEM6CQQ6HWn3xrTOGyQl29l71JKr1w9Qvxi5r/jEiYSd3NrY0GyhM82bTAMI091PqW3L6k0UoFg5dg2ZNZZ01lyOJvH6Rdas1dcLimKKokOfK4UpXaMU+pTL8zgTLA2TQSAI8EF3T+63vW98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mLR10uYs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57553C4AF0A;
-	Tue, 23 Jul 2024 18:41:20 +0000 (UTC)
+	 MIME-Version; b=uJdL+tKqfnXg+E9Ba1kSyr5I2AGFlikoN88+zzrrOMmC1n/P959E7SypA98J4rkoMOeXAEf2UV6VP9yyjToInNGTYxtJPi0VQ2MUQXA6kgI2ZzyZOqCmkYqc2x6zXlVoFwV3UJg82u/rdAUtAKsMVsDLD4PSbjDGHAUolXstMKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuvBGbvX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE99DC4AF09;
+	Tue, 23 Jul 2024 18:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760080;
-	bh=cwg/q7JMuwy163i+NnV3gJYUodWlaM0ghUg65i4HYSg=;
+	s=korg; t=1721759635;
+	bh=ZYFpaCYd7/pocIJd8kzgQXHmhL/JIDnO8ytdvhRItw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mLR10uYs/xneeDMaIbi38kOv68e6rrPf0oBvfO7/eSNv8P6ABzv+oG2c64seEMbZz
-	 Qd+VOwncA8ZMM2DEkG/LefB3qGLnxgU4fU4gf4Hj8wvq9od/g0dycwWaVUv9PiFJld
-	 gl2XRQ+JXV8djROhs8zKQNmTzIaSag71uQE5F4M4=
+	b=FuvBGbvXNfX+KDRdQn2y4FmNh/ZK687+17rU+B+n45Y7V+IxVG3pkse4JCJg6SOlx
+	 mFUBonGW4buBJUxTbEtejCzCt06l2ruHAUSQ0ICMdjbtu2cQH4sfv7MBUoUhWJ0MBZ
+	 nLNlxDv+0+nwXPtEq1g+OHts1CqEmRRWbh3kb34c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Jai Luthra <j-luthra@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 096/163] ALSA: dmaengine: Synchronize dma channel after drop()
+Subject: [PATCH 6.6 077/129] can: kvaser_usb: fix return value for hif_usb_send_regout
 Date: Tue, 23 Jul 2024 20:23:45 +0200
-Message-ID: <20240723180147.187279218@linuxfoundation.org>
+Message-ID: <20240723180407.758172582@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jai Luthra <j-luthra@ti.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit e8343410ddf08fc36a9b9cc7c51a4e53a262d4c6 ]
+[ Upstream commit 0d34d8163fd87978a6abd792e2d8ad849f4c3d57 ]
 
-Sometimes the stream may be stopped due to XRUN events, in which case
-the userspace can call snd_pcm_drop() and snd_pcm_prepare() to stop and
-start the stream again.
+As the potential failure of usb_submit_urb(), it should be better to
+return the err variable to catch the error.
 
-In these cases, we must wait for the DMA channel to synchronize before
-marking the stream as prepared for playback, as the DMA channel gets
-stopped by drop() without any synchronization. Make sure the ALSA core
-synchronizes the DMA channel by adding a sync_stop() hook.
-
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240611-asoc_next-v3-1-fcfd84b12164@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://lore.kernel.org/all/20240521041020.1519416-1-nichen@iscas.ac.cn
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/dmaengine_pcm.h         |  1 +
- sound/core/pcm_dmaengine.c            | 10 ++++++++++
- sound/soc/soc-generic-dmaengine-pcm.c |  8 ++++++++
- 3 files changed, 19 insertions(+)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/sound/dmaengine_pcm.h b/include/sound/dmaengine_pcm.h
-index d70c55f17df7c..94dbb23580f2f 100644
---- a/include/sound/dmaengine_pcm.h
-+++ b/include/sound/dmaengine_pcm.h
-@@ -36,6 +36,7 @@ snd_pcm_uframes_t snd_dmaengine_pcm_pointer_no_residue(struct snd_pcm_substream
- int snd_dmaengine_pcm_open(struct snd_pcm_substream *substream,
- 	struct dma_chan *chan);
- int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream);
-+int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream);
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+index 387edc8f89bfb..15f28b6fe758e 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -292,7 +292,7 @@ int kvaser_usb_send_cmd_async(struct kvaser_usb_net_priv *priv, void *cmd,
+ 	}
+ 	usb_free_urb(urb);
  
- int snd_dmaengine_pcm_open_request_chan(struct snd_pcm_substream *substream,
- 	dma_filter_fn filter_fn, void *filter_data);
-diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
-index 494ec0c207fad..d142609570347 100644
---- a/sound/core/pcm_dmaengine.c
-+++ b/sound/core/pcm_dmaengine.c
-@@ -349,6 +349,16 @@ int snd_dmaengine_pcm_open_request_chan(struct snd_pcm_substream *substream,
- }
- EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_open_request_chan);
- 
-+int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream)
-+{
-+	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
-+
-+	dmaengine_synchronize(prtd->dma_chan);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_sync_stop);
-+
- /**
-  * snd_dmaengine_pcm_close - Close a dmaengine based PCM substream
-  * @substream: PCM substream
-diff --git a/sound/soc/soc-generic-dmaengine-pcm.c b/sound/soc/soc-generic-dmaengine-pcm.c
-index 092ca09f36319..7fa75b55c65e2 100644
---- a/sound/soc/soc-generic-dmaengine-pcm.c
-+++ b/sound/soc/soc-generic-dmaengine-pcm.c
-@@ -318,6 +318,12 @@ static int dmaengine_copy(struct snd_soc_component *component,
- 	return 0;
+-	return 0;
++	return err;
  }
  
-+static int dmaengine_pcm_sync_stop(struct snd_soc_component *component,
-+				   struct snd_pcm_substream *substream)
-+{
-+	return snd_dmaengine_pcm_sync_stop(substream);
-+}
-+
- static const struct snd_soc_component_driver dmaengine_pcm_component = {
- 	.name		= SND_DMAENGINE_PCM_DRV_NAME,
- 	.probe_order	= SND_SOC_COMP_ORDER_LATE,
-@@ -327,6 +333,7 @@ static const struct snd_soc_component_driver dmaengine_pcm_component = {
- 	.trigger	= dmaengine_pcm_trigger,
- 	.pointer	= dmaengine_pcm_pointer,
- 	.pcm_construct	= dmaengine_pcm_new,
-+	.sync_stop	= dmaengine_pcm_sync_stop,
- };
- 
- static const struct snd_soc_component_driver dmaengine_pcm_component_process = {
-@@ -339,6 +346,7 @@ static const struct snd_soc_component_driver dmaengine_pcm_component_process = {
- 	.pointer	= dmaengine_pcm_pointer,
- 	.copy		= dmaengine_copy,
- 	.pcm_construct	= dmaengine_pcm_new,
-+	.sync_stop	= dmaengine_pcm_sync_stop,
- };
- 
- static const char * const dmaengine_pcm_dma_channel_names[] = {
+ int kvaser_usb_can_rx_over_error(struct net_device *netdev)
 -- 
 2.43.0
 
