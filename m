@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-61097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78FE93A6DB
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B75393A620
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68A26283C8F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53B571F23689
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819FC158A13;
-	Tue, 23 Jul 2024 18:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0244D1586E7;
+	Tue, 23 Jul 2024 18:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoJNQbWL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxR6g5ab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F870158215;
-	Tue, 23 Jul 2024 18:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38BA42067;
+	Tue, 23 Jul 2024 18:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759965; cv=none; b=t27LQgkfh4Uz23RC5Gso431hDx/ijmJ19K0aLg7pGvkvzrMwg+c5tR1z/uo1TcNywEqMELTFC51Zb1AXexaZYZWLQEdk+ieC9F+pZDLPETOSQB/fqR/gEY6OXd3WPZScJZgtdFlXrhNIAbTT+JnJNzuz/zGjSFukpyfxGYqwZB4=
+	t=1721759518; cv=none; b=UIDbPlMUtINN0VqrT+KyDnr8BCdy196tRNaAqM4iGYNeouYr/mP8v+SoRhh0ov8xuLU5r21IrF7lNDL42JE8LnZTrIQXlKJJRxFLMbqIccDZ9dfYYT4tAvvrWLD8KpdMotVCZKQqJEYeKw6YokA/t9kKUS6joocxRzAc0EJhcIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759965; c=relaxed/simple;
-	bh=wyBUmk9iNSLA29Lw46PcLNqwfRstyY17srtl6osxQ6A=;
+	s=arc-20240116; t=1721759518; c=relaxed/simple;
+	bh=/a9DLCo0WcWIr3M4XIq7yyVqOQY+F2RTukaz21+uIDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hATgON7QeeVzMHygx3Sn6wyXT59yeAAJFftBk33kZ04Yvo0ZiT6zMIAIch6X2hELooHO2LVGQDuq1+GeDQav6zTrt9wN2ki9u8OnuJ/hor1veL2iyDRiBG1H1IzqTqk5K/caWYylkJczPGVQSnoxo3XIr93xe4QjRbOawD7xKEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoJNQbWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA601C4AF09;
-	Tue, 23 Jul 2024 18:39:24 +0000 (UTC)
+	 MIME-Version; b=O5XQw9ER4vescUWFXLi3efkZtmipWW6b9UA3WpmRm9Qs9NX01Yg2ksGLq+iBO1F9O8xZRFxzkgBAWLMCHTp7S1RY0TK6nk5OxKNpYsavj8T2PK7dLQDWeHb0eQJkU7DMyXza9dpPpAL3qmp/9t+TRRoYXI71zaFvFEZTVXrI/ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxR6g5ab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395B7C4AF09;
+	Tue, 23 Jul 2024 18:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759965;
-	bh=wyBUmk9iNSLA29Lw46PcLNqwfRstyY17srtl6osxQ6A=;
+	s=korg; t=1721759518;
+	bh=/a9DLCo0WcWIr3M4XIq7yyVqOQY+F2RTukaz21+uIDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LoJNQbWLi/lgCB0GNoS5Vfh3i0IO4dNfU1caSGcCW/HZ2eXoyG7My8o0LepV72Rpb
-	 qqUSq8ARNMTL74XvVlsepNF+0dr6o1r2A7p0ME3ZFNBBxEgxBHH7YRtamMXakSwKrs
-	 MHlwGJ5n8FPsmFFJwW3PzvvPLzHQL9uYUPFxAeLg=
+	b=cxR6g5abT1yMCpqnsGnFqrDimFiIknfmmenr3I/iZP6kSsHPoQ3Oi5BtATI7UFvqk
+	 WPH0vFdLi0Pr9IGiuTviyq6ej1tvqIxsCkmm3SyaYgJeyJW0drdyqpIIInTraPSOiI
+	 1jDGOIiXIAO9Bdcf2DNmWLSaOZNy5tJIbahCesME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
 	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 057/163] iomap: Fix iomap_adjust_read_range for plen calculation
+Subject: [PATCH 6.6 038/129] nfs: Avoid flushing many pages with NFS_FILE_SYNC
 Date: Tue, 23 Jul 2024 20:23:06 +0200
-Message-ID: <20240723180145.677380240@linuxfoundation.org>
+Message-ID: <20240723180406.261727331@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,57 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit f5ceb1bbc98c69536d4673a97315e8427e67de1b ]
+[ Upstream commit a527c3ba41c4c61e2069bfce4091e5515f06a8dd ]
 
-If the extent spans the block that contains i_size, we need to handle
-both halves separately so that we properly zero data in the page cache
-for blocks that are entirely outside of i_size. But this is needed only
-when i_size is within the current folio under processing.
-"orig_pos + length > isize" can be true for all folios if the mapped
-extent length is greater than the folio size. That is making plen to
-break for every folio instead of only the last folio.
+When we are doing WB_SYNC_ALL writeback, nfs submits write requests with
+NFS_FILE_SYNC flag to the server (which then generally treats it as an
+O_SYNC write). This helps to reduce latency for single requests but when
+submitting more requests, additional fsyncs on the server side hurt
+latency. NFS generally avoids this additional overhead by not setting
+NFS_FILE_SYNC if desc->pg_moreio is set.
 
-So use orig_plen for checking if "orig_pos + orig_plen > isize".
+However this logic doesn't always work. When we do random 4k writes to a huge
+file and then call fsync(2), each page writeback is going to be sent with
+NFS_FILE_SYNC because after preparing one page for writeback, we start writing
+back next, nfs_do_writepage() will call nfs_pageio_cond_complete() which finds
+the page is not contiguous with previously prepared IO and submits is *without*
+setting desc->pg_moreio.  Hence NFS_FILE_SYNC is used resulting in poor
+performance.
 
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Link: https://lore.kernel.org/r/a32e5f9a4fcfdb99077300c4020ed7ae61d6e0f9.1715067055.git.ritesh.list@gmail.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fix the problem by setting desc->pg_moreio in nfs_pageio_cond_complete() before
+submitting outstanding IO. This improves throughput of
+fsync-after-random-writes on my test SSD from ~70MB/s to ~250MB/s.
+
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfs/pagelist.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 4ac6c8c403c26..248e615270ff7 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -241,6 +241,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
- 	unsigned block_size = (1 << block_bits);
- 	size_t poff = offset_in_folio(folio, *pos);
- 	size_t plen = min_t(loff_t, folio_size(folio) - poff, length);
-+	size_t orig_plen = plen;
- 	unsigned first = poff >> block_bits;
- 	unsigned last = (poff + plen - 1) >> block_bits;
- 
-@@ -277,7 +278,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
- 	 * handle both halves separately so that we properly zero data in the
- 	 * page cache for blocks that are entirely outside of i_size.
- 	 */
--	if (orig_pos <= isize && orig_pos + length > isize) {
-+	if (orig_pos <= isize && orig_pos + orig_plen > isize) {
- 		unsigned end = offset_in_folio(folio, isize - 1) >> block_bits;
- 
- 		if (first <= end && last > end)
+diff --git a/fs/nfs/pagelist.c b/fs/nfs/pagelist.c
+index 6efb5068c116e..040b6b79c75e5 100644
+--- a/fs/nfs/pagelist.c
++++ b/fs/nfs/pagelist.c
+@@ -1545,6 +1545,11 @@ void nfs_pageio_cond_complete(struct nfs_pageio_descriptor *desc, pgoff_t index)
+ 					continue;
+ 			} else if (index == prev->wb_index + 1)
+ 				continue;
++			/*
++			 * We will submit more requests after these. Indicate
++			 * this to the underlying layers.
++			 */
++			desc->pg_moreio = 1;
+ 			nfs_pageio_complete(desc);
+ 			break;
+ 		}
 -- 
 2.43.0
 
