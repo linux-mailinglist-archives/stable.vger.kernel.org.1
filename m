@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-60861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782DD93A5C2
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A78FE93A6DB
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E20B8B2275E
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68A26283C8F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1B2158A03;
-	Tue, 23 Jul 2024 18:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819FC158A13;
+	Tue, 23 Jul 2024 18:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yn9XAZvN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoJNQbWL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC77158879;
-	Tue, 23 Jul 2024 18:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F870158215;
+	Tue, 23 Jul 2024 18:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759270; cv=none; b=ju+ZkWHP3j1/gLPvaEZEbQCKKk/TmZmaD1Gm5N8Lb05YLexi5g9EsLy9NwVHl+u0p9DHoqmuy9eRSQC8I8twvIUEmx96d44KmE9JR/VxJbdDKvQFDS22S5NCD9EieVDgTG0w4UITBWMLA3vnnScVNDmS/TOy2RC69np7zIxT73Y=
+	t=1721759965; cv=none; b=t27LQgkfh4Uz23RC5Gso431hDx/ijmJ19K0aLg7pGvkvzrMwg+c5tR1z/uo1TcNywEqMELTFC51Zb1AXexaZYZWLQEdk+ieC9F+pZDLPETOSQB/fqR/gEY6OXd3WPZScJZgtdFlXrhNIAbTT+JnJNzuz/zGjSFukpyfxGYqwZB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759270; c=relaxed/simple;
-	bh=aqGKMW5xI7a1uF/lqkx9UcAlchdMdG/rKLbmMgfIFhk=;
+	s=arc-20240116; t=1721759965; c=relaxed/simple;
+	bh=wyBUmk9iNSLA29Lw46PcLNqwfRstyY17srtl6osxQ6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWmg17PPS1xdrt7XwyOuSKv87i0uypoimCdiTmFo5pcpYwY1/GgSgZWXrwgpDJgn1PLiPt7rQTDNjqzYKNer4Pw29KyJqECzPVEuCexA63gJAKdDUxcrjL+w8kG/P/onYbJx9PrpXDnH9APbhWT2SCpAFQIiHv8EvITlLCJc4ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yn9XAZvN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AD5C4AF0A;
-	Tue, 23 Jul 2024 18:27:49 +0000 (UTC)
+	 MIME-Version; b=hATgON7QeeVzMHygx3Sn6wyXT59yeAAJFftBk33kZ04Yvo0ZiT6zMIAIch6X2hELooHO2LVGQDuq1+GeDQav6zTrt9wN2ki9u8OnuJ/hor1veL2iyDRiBG1H1IzqTqk5K/caWYylkJczPGVQSnoxo3XIr93xe4QjRbOawD7xKEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoJNQbWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA601C4AF09;
+	Tue, 23 Jul 2024 18:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759270;
-	bh=aqGKMW5xI7a1uF/lqkx9UcAlchdMdG/rKLbmMgfIFhk=;
+	s=korg; t=1721759965;
+	bh=wyBUmk9iNSLA29Lw46PcLNqwfRstyY17srtl6osxQ6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yn9XAZvNesf2HJLwPSGKszyWdDHa2Ls021G0yg00TF6SgHxwO0IIKv85d0tnZ9xPF
-	 7QoZ9zRgOwA6WVG4DssRo4ilKQpa7XsPv3R2CNmPLZznyCH5sjhf733iX4Tn86z++K
-	 1Tec45OcwPh+28Gh2oUlHwSfA7Se/qH/ahlmxOwo=
+	b=LoJNQbWLi/lgCB0GNoS5Vfh3i0IO4dNfU1caSGcCW/HZ2eXoyG7My8o0LepV72Rpb
+	 qqUSq8ARNMTL74XvVlsepNF+0dr6o1r2A7p0ME3ZFNBBxEgxBHH7YRtamMXakSwKrs
+	 MHlwGJ5n8FPsmFFJwW3PzvvPLzHQL9uYUPFxAeLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Anup Patel <apatel@ventanamicro.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/105] of/irq: Factor out parsing of interrupt-map parent phandle+args from of_irq_parse_raw()
+Subject: [PATCH 6.9 057/163] iomap: Fix iomap_adjust_read_range for plen calculation
 Date: Tue, 23 Jul 2024 20:23:06 +0200
-Message-ID: <20240723180404.256791066@linuxfoundation.org>
+Message-ID: <20240723180145.677380240@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,242 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 935df1bd40d43c4ee91838c42a20e9af751885cc ]
+[ Upstream commit f5ceb1bbc98c69536d4673a97315e8427e67de1b ]
 
-Factor out the parsing of interrupt-map interrupt parent phandle and its
-arg cells to a separate function, of_irq_parse_imap_parent(), so that it
-can be used in other parsing scenarios (e.g. fw_devlink).
+If the extent spans the block that contains i_size, we need to handle
+both halves separately so that we properly zero data in the page cache
+for blocks that are entirely outside of i_size. But this is needed only
+when i_size is within the current folio under processing.
+"orig_pos + length > isize" can be true for all folios if the mapped
+extent length is greater than the folio size. That is making plen to
+break for every folio instead of only the last folio.
 
-There was a refcount leak on non-matching entries when iterating thru
-"interrupt-map" which is fixed.
+So use orig_plen for checking if "orig_pos + orig_plen > isize".
 
-Tested-by: Marc Zyngier <maz@kernel.org>
-Tested-by: Anup Patel <apatel@ventanamicro.com>
-Link: https://lore.kernel.org/r/20240529-dt-interrupt-map-fix-v2-1-ef86dc5bcd2a@kernel.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/a32e5f9a4fcfdb99077300c4020ed7ae61d6e0f9.1715067055.git.ritesh.list@gmail.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/irq.c        | 125 ++++++++++++++++++++++++----------------
- drivers/of/of_private.h |   3 +
- 2 files changed, 77 insertions(+), 51 deletions(-)
+ fs/iomap/buffered-io.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-index 2bac44f09554b..38ceb29b15f5e 100644
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -25,6 +25,8 @@
- #include <linux/string.h>
- #include <linux/slab.h>
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 4ac6c8c403c26..248e615270ff7 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -241,6 +241,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 	unsigned block_size = (1 << block_bits);
+ 	size_t poff = offset_in_folio(folio, *pos);
+ 	size_t plen = min_t(loff_t, folio_size(folio) - poff, length);
++	size_t orig_plen = plen;
+ 	unsigned first = poff >> block_bits;
+ 	unsigned last = (poff + plen - 1) >> block_bits;
  
-+#include "of_private.h"
-+
- /**
-  * irq_of_parse_and_map - Parse and map an interrupt into linux virq space
-  * @dev: Device node of the device whose interrupt is to be mapped
-@@ -96,6 +98,57 @@ static const char * const of_irq_imap_abusers[] = {
- 	NULL,
- };
+@@ -277,7 +278,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 	 * handle both halves separately so that we properly zero data in the
+ 	 * page cache for blocks that are entirely outside of i_size.
+ 	 */
+-	if (orig_pos <= isize && orig_pos + length > isize) {
++	if (orig_pos <= isize && orig_pos + orig_plen > isize) {
+ 		unsigned end = offset_in_folio(folio, isize - 1) >> block_bits;
  
-+const __be32 *of_irq_parse_imap_parent(const __be32 *imap, int len, struct of_phandle_args *out_irq)
-+{
-+	u32 intsize, addrsize;
-+	struct device_node *np;
-+
-+	/* Get the interrupt parent */
-+	if (of_irq_workarounds & OF_IMAP_NO_PHANDLE)
-+		np = of_node_get(of_irq_dflt_pic);
-+	else
-+		np = of_find_node_by_phandle(be32_to_cpup(imap));
-+	imap++;
-+
-+	/* Check if not found */
-+	if (!np) {
-+		pr_debug(" -> imap parent not found !\n");
-+		return NULL;
-+	}
-+
-+	/* Get #interrupt-cells and #address-cells of new parent */
-+	if (of_property_read_u32(np, "#interrupt-cells",
-+					&intsize)) {
-+		pr_debug(" -> parent lacks #interrupt-cells!\n");
-+		of_node_put(np);
-+		return NULL;
-+	}
-+	if (of_property_read_u32(np, "#address-cells",
-+					&addrsize))
-+		addrsize = 0;
-+
-+	pr_debug(" -> intsize=%d, addrsize=%d\n",
-+		intsize, addrsize);
-+
-+	/* Check for malformed properties */
-+	if (WARN_ON(addrsize + intsize > MAX_PHANDLE_ARGS)
-+		|| (len < (addrsize + intsize))) {
-+		of_node_put(np);
-+		return NULL;
-+	}
-+
-+	pr_debug(" -> imaplen=%d\n", len);
-+
-+	imap += addrsize + intsize;
-+
-+	out_irq->np = np;
-+	for (int i = 0; i < intsize; i++)
-+		out_irq->args[i] = be32_to_cpup(imap - intsize + i);
-+	out_irq->args_count = intsize;
-+
-+	return imap;
-+}
-+
- /**
-  * of_irq_parse_raw - Low level interrupt tree parsing
-  * @addr:	address specifier (start of "reg" property of the device) in be32 format
-@@ -112,12 +165,12 @@ static const char * const of_irq_imap_abusers[] = {
-  */
- int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- {
--	struct device_node *ipar, *tnode, *old = NULL, *newpar = NULL;
-+	struct device_node *ipar, *tnode, *old = NULL;
- 	__be32 initial_match_array[MAX_PHANDLE_ARGS];
- 	const __be32 *match_array = initial_match_array;
--	const __be32 *tmp, *imap, *imask, dummy_imask[] = { [0 ... MAX_PHANDLE_ARGS] = cpu_to_be32(~0) };
--	u32 intsize = 1, addrsize, newintsize = 0, newaddrsize = 0;
--	int imaplen, match, i, rc = -EINVAL;
-+	const __be32 *tmp, dummy_imask[] = { [0 ... MAX_PHANDLE_ARGS] = cpu_to_be32(~0) };
-+	u32 intsize = 1, addrsize;
-+	int i, rc = -EINVAL;
- 
- #ifdef DEBUG
- 	of_print_phandle_args("of_irq_parse_raw: ", out_irq);
-@@ -176,6 +229,9 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- 
- 	/* Now start the actual "proper" walk of the interrupt tree */
- 	while (ipar != NULL) {
-+		int imaplen, match;
-+		const __be32 *imap, *oldimap, *imask;
-+		struct device_node *newpar;
- 		/*
- 		 * Now check if cursor is an interrupt-controller and
- 		 * if it is then we are done, unless there is an
-@@ -216,7 +272,7 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- 
- 		/* Parse interrupt-map */
- 		match = 0;
--		while (imaplen > (addrsize + intsize + 1) && !match) {
-+		while (imaplen > (addrsize + intsize + 1)) {
- 			/* Compare specifiers */
- 			match = 1;
- 			for (i = 0; i < (addrsize + intsize); i++, imaplen--)
-@@ -224,48 +280,17 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- 
- 			pr_debug(" -> match=%d (imaplen=%d)\n", match, imaplen);
- 
--			/* Get the interrupt parent */
--			if (of_irq_workarounds & OF_IMAP_NO_PHANDLE)
--				newpar = of_node_get(of_irq_dflt_pic);
--			else
--				newpar = of_find_node_by_phandle(be32_to_cpup(imap));
--			imap++;
--			--imaplen;
--
--			/* Check if not found */
--			if (newpar == NULL) {
--				pr_debug(" -> imap parent not found !\n");
--				goto fail;
--			}
--
--			if (!of_device_is_available(newpar))
--				match = 0;
--
--			/* Get #interrupt-cells and #address-cells of new
--			 * parent
--			 */
--			if (of_property_read_u32(newpar, "#interrupt-cells",
--						 &newintsize)) {
--				pr_debug(" -> parent lacks #interrupt-cells!\n");
--				goto fail;
--			}
--			if (of_property_read_u32(newpar, "#address-cells",
--						 &newaddrsize))
--				newaddrsize = 0;
--
--			pr_debug(" -> newintsize=%d, newaddrsize=%d\n",
--			    newintsize, newaddrsize);
--
--			/* Check for malformed properties */
--			if (WARN_ON(newaddrsize + newintsize > MAX_PHANDLE_ARGS)
--			    || (imaplen < (newaddrsize + newintsize))) {
--				rc = -EFAULT;
-+			oldimap = imap;
-+			imap = of_irq_parse_imap_parent(oldimap, imaplen, out_irq);
-+			if (!imap)
- 				goto fail;
--			}
- 
--			imap += newaddrsize + newintsize;
--			imaplen -= newaddrsize + newintsize;
-+			match &= of_device_is_available(out_irq->np);
-+			if (match)
-+				break;
- 
-+			of_node_put(out_irq->np);
-+			imaplen -= imap - oldimap;
- 			pr_debug(" -> imaplen=%d\n", imaplen);
- 		}
- 		if (!match) {
-@@ -287,11 +312,11 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- 		 * Successfully parsed an interrupt-map translation; copy new
- 		 * interrupt specifier into the out_irq structure
- 		 */
--		match_array = imap - newaddrsize - newintsize;
--		for (i = 0; i < newintsize; i++)
--			out_irq->args[i] = be32_to_cpup(imap - newintsize + i);
--		out_irq->args_count = intsize = newintsize;
--		addrsize = newaddrsize;
-+		match_array = oldimap + 1;
-+
-+		newpar = out_irq->np;
-+		intsize = out_irq->args_count;
-+		addrsize = (imap - match_array) - intsize;
- 
- 		if (ipar == newpar) {
- 			pr_debug("%pOF interrupt-map entry to self\n", ipar);
-@@ -300,7 +325,6 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- 
- 	skiplevel:
- 		/* Iterate again with new parent */
--		out_irq->np = newpar;
- 		pr_debug(" -> new parent: %pOF\n", newpar);
- 		of_node_put(ipar);
- 		ipar = newpar;
-@@ -310,7 +334,6 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- 
-  fail:
- 	of_node_put(ipar);
--	of_node_put(newpar);
- 
- 	return rc;
- }
-diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
-index fb6792d381a6b..ee09d7141bcf8 100644
---- a/drivers/of/of_private.h
-+++ b/drivers/of/of_private.h
-@@ -151,6 +151,9 @@ extern void __of_sysfs_remove_bin_file(struct device_node *np,
- extern int of_bus_n_addr_cells(struct device_node *np);
- extern int of_bus_n_size_cells(struct device_node *np);
- 
-+const __be32 *of_irq_parse_imap_parent(const __be32 *imap, int len,
-+				       struct of_phandle_args *out_irq);
-+
- struct bus_dma_region;
- #if defined(CONFIG_OF_ADDRESS) && defined(CONFIG_HAS_DMA)
- int of_dma_get_range(struct device_node *np,
+ 		if (first <= end && last > end)
 -- 
 2.43.0
 
