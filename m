@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-60869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE5793A5C8
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D62A293A706
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE2F41F232D1
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81B1E1F238F9
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B426156F29;
-	Tue, 23 Jul 2024 18:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECE31586F5;
+	Tue, 23 Jul 2024 18:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZLgRnlk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mLR10uYs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A60E155351;
-	Tue, 23 Jul 2024 18:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD21A13D896;
+	Tue, 23 Jul 2024 18:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759294; cv=none; b=CaIiFu8B2eK5SBANltabasdB5D0L8hPmSvT9ZE21/MwIwSJQzEmz/ZHG5qHxpI/9K0m6jSVbpuQRTK3BGgh4BtXOm2oUXH5+YOI/+eUjwn7AMPKWAC7kIrspXj6YY7orwHtHfA8HFVDFN5m+lvfji8zrfQRgIG5toIXjP3uzpdg=
+	t=1721760080; cv=none; b=oiFctEe8qGOE0je+0TjwXyS58GEUBOkPdlZ3ox5Oja8RtsqSuOfxZ9W2yEixQabyj5zy3ixlCdqxkxXd7xv6ayhzm1DymHJPYIdZmMeNc7Y/6oSG9m+QADU4W3BY0vU2OFNgNVhfmxy/tEcJwDHf8qfcG9QzLFMj3f/9TSZqRbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759294; c=relaxed/simple;
-	bh=Xml8rrKY3WqCCmpE7gB+1cSjXwErRziL/e4M5wZCppg=;
+	s=arc-20240116; t=1721760080; c=relaxed/simple;
+	bh=cwg/q7JMuwy163i+NnV3gJYUodWlaM0ghUg65i4HYSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RHgpy1EVKkU1rapv0KerTacAMiTirels+6yPL0X059tiPxVsVTd/0M8MU8koLSsKf2rZ+REObnnInvGetGSaj+pZs5pUcbAxjOVQDH3GUEDKUc4LRqTXPLhPU6SYyaha5F/CB2+k4r25UkRh6C7xDRTutqj51DNEnFIU9AbLv9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZLgRnlk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06DDC4AF0A;
-	Tue, 23 Jul 2024 18:28:13 +0000 (UTC)
+	 MIME-Version; b=bCqpldB25n8txozDdXCWlu9/eL/zEM6CQQ6HWn3xrTOGyQl29l71JKr1w9Qvxi5r/jEiYSd3NrY0GyhM82bTAMI091PqW3L6k0UoFg5dg2ZNZZ01lyOJvH6Rdas1dcLimKKokOfK4UpXaMU+pTL8zgTLA2TQSAI8EF3T+63vW98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mLR10uYs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57553C4AF0A;
+	Tue, 23 Jul 2024 18:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759294;
-	bh=Xml8rrKY3WqCCmpE7gB+1cSjXwErRziL/e4M5wZCppg=;
+	s=korg; t=1721760080;
+	bh=cwg/q7JMuwy163i+NnV3gJYUodWlaM0ghUg65i4HYSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZLgRnlk8elk1vLcx/bzgTv8DIf6RjvPNuUWCTJy8i+Ve4f+lxzzRvR5mdka0dlX2
-	 PACnSg/3OL6i8jy/Q/Ov8XOvs+msJ0R9xM5eFtQPxU0CjBCeUYf19m//BS0K5H/x2j
-	 7ku3h2J5hFh99qYl/ZrpuZHUhre6+m4sq9n9dXvk=
+	b=mLR10uYs/xneeDMaIbi38kOv68e6rrPf0oBvfO7/eSNv8P6ABzv+oG2c64seEMbZz
+	 Qd+VOwncA8ZMM2DEkG/LefB3qGLnxgU4fU4gf4Hj8wvq9od/g0dycwWaVUv9PiFJld
+	 gl2XRQ+JXV8djROhs8zKQNmTzIaSag71uQE5F4M4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Agathe Boutmy <agathe@boutmy.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Jai Luthra <j-luthra@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/105] platform/x86: lg-laptop: Remove LGEX0815 hotkey handling
+Subject: [PATCH 6.9 096/163] ALSA: dmaengine: Synchronize dma channel after drop()
 Date: Tue, 23 Jul 2024 20:23:45 +0200
-Message-ID: <20240723180405.866106655@linuxfoundation.org>
+Message-ID: <20240723180147.187279218@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Jai Luthra <j-luthra@ti.com>
 
-[ Upstream commit 413c204595ca98a4f33414a948c18d7314087342 ]
+[ Upstream commit e8343410ddf08fc36a9b9cc7c51a4e53a262d4c6 ]
 
-The rfkill hotkey handling is already provided by the wireless-hotkey
-driver. Remove the now unnecessary rfkill hotkey handling to avoid
-duplicating functionality.
+Sometimes the stream may be stopped due to XRUN events, in which case
+the userspace can call snd_pcm_drop() and snd_pcm_prepare() to stop and
+start the stream again.
 
-The ACPI notify handler still prints debugging information when
-receiving ACPI notifications to aid in reverse-engineering.
+In these cases, we must wait for the DMA channel to synchronize before
+marking the stream as prepared for playback, as the DMA channel gets
+stopped by drop() without any synchronization. Make sure the ALSA core
+synchronizes the DMA channel by adding a sync_stop() hook.
 
-Tested-by: Agathe Boutmy <agathe@boutmy.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240606233540.9774-3-W_Armin@gmx.de
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Link: https://lore.kernel.org/r/20240611-asoc_next-v3-1-fcfd84b12164@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lg-laptop.c | 8 --------
- 1 file changed, 8 deletions(-)
+ include/sound/dmaengine_pcm.h         |  1 +
+ sound/core/pcm_dmaengine.c            | 10 ++++++++++
+ sound/soc/soc-generic-dmaengine-pcm.c |  8 ++++++++
+ 3 files changed, 19 insertions(+)
 
-diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
-index 332868b140ed5..aa063c3c935b5 100644
---- a/drivers/platform/x86/lg-laptop.c
-+++ b/drivers/platform/x86/lg-laptop.c
-@@ -84,7 +84,6 @@ static const struct key_entry wmi_keymap[] = {
- 					  * this key both sends an event and
- 					  * changes backlight level.
- 					  */
--	{KE_KEY, 0x80, {KEY_RFKILL} },
- 	{KE_END, 0}
- };
+diff --git a/include/sound/dmaengine_pcm.h b/include/sound/dmaengine_pcm.h
+index d70c55f17df7c..94dbb23580f2f 100644
+--- a/include/sound/dmaengine_pcm.h
++++ b/include/sound/dmaengine_pcm.h
+@@ -36,6 +36,7 @@ snd_pcm_uframes_t snd_dmaengine_pcm_pointer_no_residue(struct snd_pcm_substream
+ int snd_dmaengine_pcm_open(struct snd_pcm_substream *substream,
+ 	struct dma_chan *chan);
+ int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream);
++int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream);
  
-@@ -272,14 +271,7 @@ static void wmi_input_setup(void)
+ int snd_dmaengine_pcm_open_request_chan(struct snd_pcm_substream *substream,
+ 	dma_filter_fn filter_fn, void *filter_data);
+diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
+index 494ec0c207fad..d142609570347 100644
+--- a/sound/core/pcm_dmaengine.c
++++ b/sound/core/pcm_dmaengine.c
+@@ -349,6 +349,16 @@ int snd_dmaengine_pcm_open_request_chan(struct snd_pcm_substream *substream,
+ }
+ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_open_request_chan);
  
- static void acpi_notify(struct acpi_device *device, u32 event)
- {
--	struct key_entry *key;
--
- 	acpi_handle_debug(device->handle, "notify: %d\n", event);
--	if (inited & INIT_SPARSE_KEYMAP) {
--		key = sparse_keymap_entry_from_scancode(wmi_input_dev, 0x80);
--		if (key && key->type == KE_KEY)
--			sparse_keymap_report_entry(wmi_input_dev, key, 1, true);
--	}
++int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream)
++{
++	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++
++	dmaengine_synchronize(prtd->dma_chan);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_sync_stop);
++
+ /**
+  * snd_dmaengine_pcm_close - Close a dmaengine based PCM substream
+  * @substream: PCM substream
+diff --git a/sound/soc/soc-generic-dmaengine-pcm.c b/sound/soc/soc-generic-dmaengine-pcm.c
+index 092ca09f36319..7fa75b55c65e2 100644
+--- a/sound/soc/soc-generic-dmaengine-pcm.c
++++ b/sound/soc/soc-generic-dmaengine-pcm.c
+@@ -318,6 +318,12 @@ static int dmaengine_copy(struct snd_soc_component *component,
+ 	return 0;
  }
  
- static ssize_t fan_mode_store(struct device *dev,
++static int dmaengine_pcm_sync_stop(struct snd_soc_component *component,
++				   struct snd_pcm_substream *substream)
++{
++	return snd_dmaengine_pcm_sync_stop(substream);
++}
++
+ static const struct snd_soc_component_driver dmaengine_pcm_component = {
+ 	.name		= SND_DMAENGINE_PCM_DRV_NAME,
+ 	.probe_order	= SND_SOC_COMP_ORDER_LATE,
+@@ -327,6 +333,7 @@ static const struct snd_soc_component_driver dmaengine_pcm_component = {
+ 	.trigger	= dmaengine_pcm_trigger,
+ 	.pointer	= dmaengine_pcm_pointer,
+ 	.pcm_construct	= dmaengine_pcm_new,
++	.sync_stop	= dmaengine_pcm_sync_stop,
+ };
+ 
+ static const struct snd_soc_component_driver dmaengine_pcm_component_process = {
+@@ -339,6 +346,7 @@ static const struct snd_soc_component_driver dmaengine_pcm_component_process = {
+ 	.pointer	= dmaengine_pcm_pointer,
+ 	.copy		= dmaengine_copy,
+ 	.pcm_construct	= dmaengine_pcm_new,
++	.sync_stop	= dmaengine_pcm_sync_stop,
+ };
+ 
+ static const char * const dmaengine_pcm_dma_channel_names[] = {
 -- 
 2.43.0
 
