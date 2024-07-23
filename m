@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-60782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D15B93A14B
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 15:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B43893A198
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 15:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EAF8282287
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 13:25:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 077F5282DDE
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 13:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58C41534E1;
-	Tue, 23 Jul 2024 13:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEE3153820;
+	Tue, 23 Jul 2024 13:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXmmQiEO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTHxvJf7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAE3152DF7;
-	Tue, 23 Jul 2024 13:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F421208A0;
+	Tue, 23 Jul 2024 13:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721741149; cv=none; b=jaKzVawhupg0we0/nf+X/VM0jKqw1vRYEOjPfSHSxUNP7SNx4MTUe2uutohrHdIEdS0CtZtm6h2hyoTyzGk1BpvbleMymKoad/x7szHlHo4nb567gAFX5tXfv/sv4j/oRxe7fkFOMJKAOFJ5Q4MmNTEo+Bgu2M/ruIW3BJv2bCY=
+	t=1721741592; cv=none; b=IBASSslf9H33WFxkG0tDpDXOD81O7LVQ4I0SHhDWsT/RC3V/8goxkhj0pG87yWkMMjGdNppDEbCjGZNB/Bqr/85OVFXZmD6mYk4YPuAFQmXMD2wCTQRicwEAp84I81hYnJmS0wXuVbhYcFlB4M384Ut0KxQsEUldC/p6rkOwa5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721741149; c=relaxed/simple;
-	bh=0YqhicWkmzNBzus6pCfJrx9d2DR/3cD7roHpnNuVkmQ=;
+	s=arc-20240116; t=1721741592; c=relaxed/simple;
+	bh=BHxbtpXYINWUUlpOGlyc6yectBbC1j0hOWiHMJY2K2o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pu5PEcGzuDciYeh6snHXJHZvXBrYr4PK41zxfYOedi0ZlWafOb+y5iBVoCN5KASQzq2su5wbN6lvtMFxofX/LZ4VuuqUY2p94EEBmnLDuSrbxABOTNYfrjNlEEwQpHVPxtxeeYWUYJMCFPsk1Leg6BMRPd1SLxHPFpTlaKXq6WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXmmQiEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73BEC4AF0A;
-	Tue, 23 Jul 2024 13:25:48 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dlf2jErl4TTFG3yK6ZYk3rsrNsK+KRol1sMXBBYY1AabQNOHd8OQZ3/RGDE+zoX3hQnxS3mi/OEAS+xykFdrIuokA0HXxKEAwM4GSBFsJrkMdlvifxdVdzRK3PBjRFAOIQMZ1Yk0V7Dt98vKOzLWT6ydpgFw7XalSpDG9TJXZXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTHxvJf7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CACC4AF09;
+	Tue, 23 Jul 2024 13:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721741149;
-	bh=0YqhicWkmzNBzus6pCfJrx9d2DR/3cD7roHpnNuVkmQ=;
+	s=korg; t=1721741591;
+	bh=BHxbtpXYINWUUlpOGlyc6yectBbC1j0hOWiHMJY2K2o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tXmmQiEOzF1FScIhterw/8LMYibCAmnMrhCFItoFE2DMBRsyYTVla0zBODKyVm5+A
-	 JUMAoFq+2Dx502hsIgReYlsU5NoE3kMUgPv9sNmrBPnLMlnM3OuzZy/qZSQ+GgQcLy
-	 DBma1FdOtQxKbAf8az2QWeBFCrSj+1FMIhYSd29Q=
-Date: Tue, 23 Jul 2024 15:25:43 +0200
+	b=LTHxvJf7L6IOFN0icPzKHuq/LCXLGvxnpWIaHt+1I4ARdsb+ghxBQn/HLcInGoLxq
+	 X3o7THfPt/K0CprYzh45rpuW7IOGa3xz1HI/PaFv8vDcqKWnXP8LwGZW4r6c6PZl9F
+	 9MdWa+oY8aQb4jaRTPLuyjn9pofl8Nhs9DgWUXjQ=
+Date: Tue, 23 Jul 2024 15:33:09 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Ashwin Kamat <ashwin.kamat@broadcom.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	john.fastabend@gmail.com, jakub@cloudflare.com,
-	daniel@iogearbox.net, ast@kernel.org, netdev@vger.kernel.org,
-	bpf@vger.kernel.org, ajay.kaher@broadcom.com,
-	vasavi.sirnapalli@broadcom.com, tapas.kundu@broadcom.com,
-	Jason Xing <kernelxing@tencent.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v5.10] bpf, skmsg: Fix NULL pointer dereference in
- sk_psock_skb_ingress_enqueue
-Message-ID: <2024072329-sapling-jarring-bd2b@gregkh>
-References: <1721196416-13046-1-git-send-email-ashwin.kamat@broadcom.com>
+To: Maximilian Heyne <mheyne@amazon.de>
+Cc: Bart Van Assche <bvanassche@acm.org>, Ming Lei <ming.lei@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Mike Christie <michael.christie@oracle.com>,
+	Hannes Reinecke <hare@suse.de>, John Garry <john.garry@huawei.com>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	stable@vger.kernel.org, "James E.J. Bottomley" <jejb@linux.ibm.com>,
+	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5.10] scsi: core: Fix a use-after-free
+Message-ID: <2024072358-eleven-etching-1988@gregkh>
+References: <20240723115047.13092-1-mheyne@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,88 +60,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1721196416-13046-1-git-send-email-ashwin.kamat@broadcom.com>
+In-Reply-To: <20240723115047.13092-1-mheyne@amazon.de>
 
-On Wed, Jul 17, 2024 at 11:36:56AM +0530, Ashwin Kamat wrote:
-> From: Jason Xing <kernelxing@tencent.com>
+On Tue, Jul 23, 2024 at 11:50:46AM +0000, Maximilian Heyne wrote:
+> From: Bart Van Assche <bvanassche@acm.org>
 > 
-> [ Upstream commit 6648e613226e18897231ab5e42ffc29e63fa3365 ]
+> [ Upstream commit 8fe4ce5836e932f5766317cb651c1ff2a4cd0506 ]
 > 
-> Fix NULL pointer data-races in sk_psock_skb_ingress_enqueue() which
-> syzbot reported [1].
+> There are two .exit_cmd_priv implementations. Both implementations use
+> resources associated with the SCSI host. Make sure that these resources are
+> still available when .exit_cmd_priv is called by waiting inside
+> scsi_remove_host() until the tag set has been freed.
 > 
-> [1]
-> BUG: KCSAN: data-race in sk_psock_drop / sk_psock_skb_ingress_enqueue
+> This commit fixes the following use-after-free:
 > 
-> write to 0xffff88814b3278b8 of 8 bytes by task 10724 on cpu 1:
->  sk_psock_stop_verdict net/core/skmsg.c:1257 [inline]
->  sk_psock_drop+0x13e/0x1f0 net/core/skmsg.c:843
->  sk_psock_put include/linux/skmsg.h:459 [inline]
->  sock_map_close+0x1a7/0x260 net/core/sock_map.c:1648
->  unix_release+0x4b/0x80 net/unix/af_unix.c:1048
->  __sock_release net/socket.c:659 [inline]
->  sock_close+0x68/0x150 net/socket.c:1421
->  __fput+0x2c1/0x660 fs/file_table.c:422
->  __fput_sync+0x44/0x60 fs/file_table.c:507
->  __do_sys_close fs/open.c:1556 [inline]
->  __se_sys_close+0x101/0x1b0 fs/open.c:1541
->  __x64_sys_close+0x1f/0x30 fs/open.c:1541
->  do_syscall_64+0xd3/0x1d0
->  entry_SYSCALL_64_after_hwframe+0x6d/0x75
+> ==================================================================
+> BUG: KASAN: use-after-free in srp_exit_cmd_priv+0x27/0xd0 [ib_srp]
+> Read of size 8 at addr ffff888100337000 by task multipathd/16727
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x34/0x44
+>  print_report.cold+0x5e/0x5db
+>  kasan_report+0xab/0x120
+>  srp_exit_cmd_priv+0x27/0xd0 [ib_srp]
+>  scsi_mq_exit_request+0x4d/0x70
+>  blk_mq_free_rqs+0x143/0x410
+>  __blk_mq_free_map_and_rqs+0x6e/0x100
+>  blk_mq_free_tag_set+0x2b/0x160
+>  scsi_host_dev_release+0xf3/0x1a0
+>  device_release+0x54/0xe0
+>  kobject_put+0xa5/0x120
+>  device_release+0x54/0xe0
+>  kobject_put+0xa5/0x120
+>  scsi_device_dev_release_usercontext+0x4c1/0x4e0
+>  execute_in_process_context+0x23/0x90
+>  device_release+0x54/0xe0
+>  kobject_put+0xa5/0x120
+>  scsi_disk_release+0x3f/0x50
+>  device_release+0x54/0xe0
+>  kobject_put+0xa5/0x120
+>  disk_release+0x17f/0x1b0
+>  device_release+0x54/0xe0
+>  kobject_put+0xa5/0x120
+>  dm_put_table_device+0xa3/0x160 [dm_mod]
+>  dm_put_device+0xd0/0x140 [dm_mod]
+>  free_priority_group+0xd8/0x110 [dm_multipath]
+>  free_multipath+0x94/0xe0 [dm_multipath]
+>  dm_table_destroy+0xa2/0x1e0 [dm_mod]
+>  __dm_destroy+0x196/0x350 [dm_mod]
+>  dev_remove+0x10c/0x160 [dm_mod]
+>  ctl_ioctl+0x2c2/0x590 [dm_mod]
+>  dm_ctl_ioctl+0x5/0x10 [dm_mod]
+>  __x64_sys_ioctl+0xb4/0xf0
+>  dm_ctl_ioctl+0x5/0x10 [dm_mod]
+>  __x64_sys_ioctl+0xb4/0xf0
+>  do_syscall_64+0x3b/0x90
+>  entry_SYSCALL_64_after_hwframe+0x46/0xb0
 > 
-> read to 0xffff88814b3278b8 of 8 bytes by task 10713 on cpu 0:
->  sk_psock_data_ready include/linux/skmsg.h:464 [inline]
->  sk_psock_skb_ingress_enqueue+0x32d/0x390 net/core/skmsg.c:555
->  sk_psock_skb_ingress_self+0x185/0x1e0 net/core/skmsg.c:606
->  sk_psock_verdict_apply net/core/skmsg.c:1008 [inline]
->  sk_psock_verdict_recv+0x3e4/0x4a0 net/core/skmsg.c:1202
->  unix_read_skb net/unix/af_unix.c:2546 [inline]
->  unix_stream_read_skb+0x9e/0xf0 net/unix/af_unix.c:2682
->  sk_psock_verdict_data_ready+0x77/0x220 net/core/skmsg.c:1223
->  unix_stream_sendmsg+0x527/0x860 net/unix/af_unix.c:2339
->  sock_sendmsg_nosec net/socket.c:730 [inline]
->  __sock_sendmsg+0x140/0x180 net/socket.c:745
->  ____sys_sendmsg+0x312/0x410 net/socket.c:2584
->  ___sys_sendmsg net/socket.c:2638 [inline]
->  __sys_sendmsg+0x1e9/0x280 net/socket.c:2667
->  __do_sys_sendmsg net/socket.c:2676 [inline]
->  __se_sys_sendmsg net/socket.c:2674 [inline]
->  __x64_sys_sendmsg+0x46/0x50 net/socket.c:2674
->  do_syscall_64+0xd3/0x1d0
->  entry_SYSCALL_64_after_hwframe+0x6d/0x75
-> 
-> value changed: 0xffffffff83d7feb0 -> 0x0000000000000000
-> 
-> Reported by Kernel Concurrency Sanitizer on:
-> CPU: 0 PID: 10713 Comm: syz-executor.4 Tainted: G        W          6.8.0-syzkaller-08951-gfe46a7dd189e #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
-> 
-> Prior to this, commit 4cd12c6065df ("bpf, sockmap: Fix NULL pointer
-> dereference in sk_psock_verdict_data_ready()") fixed one NULL pointer
-> similarly due to no protection of saved_data_ready. Here is another
-> different caller causing the same issue because of the same reason. So
-> we should protect it with sk_callback_lock read lock because the writer
-> side in the sk_psock_drop() uses "write_lock_bh(&sk->sk_callback_lock);".
-> 
-> To avoid errors that could happen in future, I move those two pairs of
-> lock into the sk_psock_data_ready(), which is suggested by John Fastabend.
-> 
-> Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-> Reported-by: syzbot+aa8c8ec2538929f18f2d@syzkaller.appspotmail.com
-> Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-> Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-> Closes: https://syzkaller.appspot.com/bug?extid=aa8c8ec2538929f18f2d
-> Link: https://lore.kernel.org/all/20240329134037.92124-1-kerneljasonxing@gmail.com
-> Link: https://lore.kernel.org/bpf/20240404021001.94815-1-kerneljasonxing@gmail.com
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> [Ashwin: Regenerated the patch for v5.10]
-> Signed-off-by: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-> ---
->  include/linux/skmsg.h | 2 ++
->  1 file changed, 2 insertions(+)
+> Link: https://lore.kernel.org/r/20220826002635.919423-1-bvanassche@acm.org
+> Fixes: 65ca846a5314 ("scsi: core: Introduce {init,exit}_cmd_priv()")
+> Cc: Ming Lei <ming.lei@redhat.com>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Mike Christie <michael.christie@oracle.com>
+> Cc: Hannes Reinecke <hare@suse.de>
+> Cc: John Garry <john.garry@huawei.com>
+> Cc: Li Zhijian <lizhijian@fujitsu.com>
+> Reported-by: Li Zhijian <lizhijian@fujitsu.com>
+> Tested-by: Li Zhijian <lizhijian@fujitsu.com>
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+> [mheyne: fixed contextual conflicts:
+>   - drivers/scsi/hosts.c: due to missing commit 973dac8a8a14 ("scsi: core: Refine how we set tag_set NUMA node")
+>   - drivers/scsi/scsi_sysfs.c: due to missing commit 6f8191fdf41d ("block: simplify disk shutdown")
+>   - drivers/scsi/scsi_scan.c: due to missing commit 59506abe5e34 ("scsi: core: Inline scsi_mq_alloc_queue()")]
+> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+> Cc: stable@vger.kernel.org # v5.10
 
-Now queued up, thanks.
+Both now backported, thanks.
 
 greg k-h
 
