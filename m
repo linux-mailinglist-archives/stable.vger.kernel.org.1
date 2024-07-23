@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-61036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175F093A693
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B4093A5DB
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:29:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99D51B22B19
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 357DC1C20E81
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645DE158A22;
-	Tue, 23 Jul 2024 18:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99218158848;
+	Tue, 23 Jul 2024 18:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wp4RgNVM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h51Zbmqd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DF51586F5;
-	Tue, 23 Jul 2024 18:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527C9156F29;
+	Tue, 23 Jul 2024 18:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759787; cv=none; b=CGIIPcJBdbEZJ1VUmOELgMSor5bFPMZ2ufOfQvA5MlFizkjArnphYrXv3mNlyy8q5yMBEPRyLxcL81OrIPJHHg/xfvoSzl0ndaWknGqUqBRK9G2QXzRURslEQco3HM1PuAsTCdTGWMP5bqt2f3XFUrS1Osf8qgp5S3z1SJjQp4I=
+	t=1721759350; cv=none; b=VNxX0TUUvTsYIp/mdg1Cmzt+2fL/qwR5NFWpkynjPavITHohjVAcTmYQGeSFJ9izEloZPPGB6SYWelrQZ42Ixh8GPFIuKVibsPZ39LbVMXadKk+TITc/Gpl5hsBHDbxJL6hr+sN6fY3atGE7mNot6GG+WR3Z6fhHt0sMxoHOWT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759787; c=relaxed/simple;
-	bh=r1btFnsIuatzO3U7z4zxJjmRfX20BAnO5SMCq1b6bVo=;
+	s=arc-20240116; t=1721759350; c=relaxed/simple;
+	bh=OUv0dZTQPVeC2dX+6/F0+qtPReBl0/Ra2fD+TIu5nWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0Vnm5bMFeKGuEfTkaIqCAtgs5ATVhE61A+s2PEiLQ/sVmF775FMq2lLXbljJmt7O/gMDjGVo3r2uQGs309WWk/11yZ6FFrdio+JPOqpqe7Ds+URYGfzBatWpOdM9djOY7/3MMLePURFitWlXAU4d9wm02qXqNzx3xw1vapdRGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wp4RgNVM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A119C4AF0A;
-	Tue, 23 Jul 2024 18:36:23 +0000 (UTC)
+	 MIME-Version; b=MX7K91C3PzQ/HFo4XNG5x3kddTVjFbSnuQTjz6jdVmdeJN+4/EKf4n8/pISdiAJ0+hNE3B1WkuUQS56SVq8Jm3g4RKCz3gR1TA6CQpdeBwB9eckTc1TSobE7ljoDmfZnQfpRcg9q50XCFB/5fdO4tdEuVy7Vpv1FBXHwUEm1cCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h51Zbmqd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C887EC4AF0A;
+	Tue, 23 Jul 2024 18:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759783;
-	bh=r1btFnsIuatzO3U7z4zxJjmRfX20BAnO5SMCq1b6bVo=;
+	s=korg; t=1721759350;
+	bh=OUv0dZTQPVeC2dX+6/F0+qtPReBl0/Ra2fD+TIu5nWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wp4RgNVMVy53dUck2aVePN9CAXbcEy975coAAGN+fBjDrAcYkNRsuWRjBM0qbDl9v
-	 HOKobweNBzZfkFVcs2KZzUh7F1YftfaBCHD7bHw9xqThoSDrMec/jAMRXCbc82Ug4o
-	 snk7o2j4iGg9fWArXM2F8GP6ONrsSmxZE5qvOC48=
+	b=h51Zbmqdl8LwkcGH+Q4sNS2HuivsyKJ2lX0Txjz6oOtBZUaP93WAlO0xapOqNyKpW
+	 MXcwkCAxPQAktArcSApkTZMctFNAMh+aUKANGgXCPlkUl9ar1nZSqydbbhWESJievz
+	 TYuhYkRPh3FQaroK0pTHckPBO9tivGVqMoiMOniM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ganesh Goudar <ganeshgr@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Chaitanya Dhere <chaitanya.dhere@amd.com>,
+	Nevenko Stupar <nevenko.stupar@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/129] powerpc/eeh: avoid possible crash when edev->pdev changes
+Subject: [PATCH 6.1 086/105] drm/amd/display: Account for cursor prefetch BW in DML1 mode support
 Date: Tue, 23 Jul 2024 20:24:03 +0200
-Message-ID: <20240723180408.457727275@linuxfoundation.org>
+Message-ID: <20240723180406.558910759@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +66,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
+From: Alvin Lee <alvin.lee2@amd.com>
 
-[ Upstream commit a1216e62d039bf63a539bbe718536ec789a853dd ]
+[ Upstream commit 074b3a886713f69d98d30bb348b1e4cb3ce52b22 ]
 
-If a PCI device is removed during eeh_pe_report_edev(), edev->pdev
-will change and can cause a crash, hold the PCI rescan/remove lock
-while taking a copy of edev->pdev->bus.
+[Description]
+We need to ensure to take into account cursor prefetch BW in
+mode support or we may pass ModeQuery but fail an actual flip
+which will cause a hang. Flip may fail because the cursor_pre_bw
+is populated during mode programming (and mode programming is
+never called prior to ModeQuery).
 
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240617140240.580453-1-ganeshgr@linux.ibm.com
+Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
+Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh_pe.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
-index e0ce812796241..7d1b50599dd6c 100644
---- a/arch/powerpc/kernel/eeh_pe.c
-+++ b/arch/powerpc/kernel/eeh_pe.c
-@@ -849,6 +849,7 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
- {
- 	struct eeh_dev *edev;
- 	struct pci_dev *pdev;
-+	struct pci_bus *bus = NULL;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+index cc8c1a48c5c4d..76df036fb2f34 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+@@ -3338,6 +3338,9 @@ void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
+ 							&mode_lib->vba.UrgentBurstFactorLumaPre[k],
+ 							&mode_lib->vba.UrgentBurstFactorChromaPre[k],
+ 							&mode_lib->vba.NotUrgentLatencyHidingPre[k]);
++
++					v->cursor_bw_pre[k] = mode_lib->vba.NumberOfCursors[k] * mode_lib->vba.CursorWidth[k][0] * mode_lib->vba.CursorBPP[k][0] /
++							8.0 / (mode_lib->vba.HTotal[k] / mode_lib->vba.PixelClock[k]) * v->VRatioPreY[i][j][k];
+ 				}
  
- 	if (pe->type & EEH_PE_PHB)
- 		return pe->phb->bus;
-@@ -859,9 +860,11 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
- 
- 	/* Retrieve the parent PCI bus of first (top) PCI device */
- 	edev = list_first_entry_or_null(&pe->edevs, struct eeh_dev, entry);
-+	pci_lock_rescan_remove();
- 	pdev = eeh_dev_to_pci_dev(edev);
- 	if (pdev)
--		return pdev->bus;
-+		bus = pdev->bus;
-+	pci_unlock_rescan_remove();
- 
--	return NULL;
-+	return bus;
- }
+ 				{
 -- 
 2.43.0
 
