@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-60998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05EDD93A664
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB51B93A5D5
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5B34282DA4
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BA841F212A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990E0158A2C;
-	Tue, 23 Jul 2024 18:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B32158859;
+	Tue, 23 Jul 2024 18:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEjdj8SG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tl+6w25U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58513158878;
-	Tue, 23 Jul 2024 18:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B629315821A;
+	Tue, 23 Jul 2024 18:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759674; cv=none; b=dLvYWxtgejL1jXjFMdxH+F68jwdJg5nL0GGye2+mdVugN1rZ3RjMdKdbZzBToWCQ6Y8XZpDS6xWOzLlNDfmlVyG10UOR7yARLiar4vtoW9opLXnxS3QJS1KJ3RAzEI4TOEjTOdAwrqqG69FF3X26jjRxZJxNQ0dE00/9gTPq+5w=
+	t=1721759332; cv=none; b=pecCX5eP9o2ESb9Z/Uw61jiKHOqWTlcI90mo5T/mrtdYpBWyCf5ZIzwQzOl9fat9zLn9i4g1tTcBrLyTkUcrIeQ2Kh3Pm3z6iR7Nhwf14iKiaKCGeqCxrx4wjBN5kG9eLcK7xE3VlLTejKAcDeUEU31nlgH9i0/DOYECMIoUg54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759674; c=relaxed/simple;
-	bh=y1SFZgK7rAu9Enmgf7Gqd/oovAy10sDpekUq12s7XIw=;
+	s=arc-20240116; t=1721759332; c=relaxed/simple;
+	bh=/mRR6KUqQtGRMwJ3vqJsLPbEnsFeKrfG6dnk9V2UQLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VxU3M48lD8/Vqpk+3PMOWR0lXAL3T8B8CX37EOsXJx+Crq9oDo8sBRHiVYGDJ4ZTBHYeblRrNRJqctgSK2yQpfuHNfCcGSLKgvxdvyZWbWIe2URdrms+ZtWQz4X1NtUfr58QmqpHRAxR9yyKFRrytwQGaNnbEnmzqO+Q7sdGLFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEjdj8SG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3394C4AF09;
-	Tue, 23 Jul 2024 18:34:33 +0000 (UTC)
+	 MIME-Version; b=tQJ5zNB9VeNkXl/y+15Akm98jXYBXnLMGNI/cgl0JSqGmz926jEua3Rca8+3i4ZPIKYOzD1D7I+w7ntzYhdq0PBJdOWKAi/WyAVYgQnd/PRtgAWIr0OHJaEovVA9iZd9Daef4OhxgOtOxm6ipl0thcdA/yZq/LS1oE4eEh/VHzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tl+6w25U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394D2C4AF0A;
+	Tue, 23 Jul 2024 18:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759674;
-	bh=y1SFZgK7rAu9Enmgf7Gqd/oovAy10sDpekUq12s7XIw=;
+	s=korg; t=1721759332;
+	bh=/mRR6KUqQtGRMwJ3vqJsLPbEnsFeKrfG6dnk9V2UQLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEjdj8SGOZgQm6lmwnQDcc5AUnoes9z8qNezkM344SAPpBa1XaYceUKJ/MQFnjl+4
-	 I7gipBjdeCSJlm6rYbgn3gB3o7zK/D68VdPvMnFyDU/1yN3x0pK9hkVs/AFo6CErC1
-	 Gs/P0gKU+ciYtPqkv9sivWqd79/2YzigieOkU9No=
+	b=Tl+6w25UtGOj7LN8HQ9RSSizOg8rX343ot6zTcCcnCtBV3p+QW9irmf6Hysl+8Hze
+	 1hn8bvS9va0pD5HDZxMplTUDtEyUfoKPm4y9AokxfJ8xITxLWq2djNIZyKh0eW4TRt
+	 AK4byC42VTcGnQFznxI5CM1NmDLrgXj9g1f1zaWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Ganesh Goudar <ganeshgr@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/129] ALSA: PCM: Allow resume only for suspended streams
-Date: Tue, 23 Jul 2024 20:23:56 +0200
-Message-ID: <20240723180408.187076142@linuxfoundation.org>
+Subject: [PATCH 6.1 080/105] powerpc/eeh: avoid possible crash when edev->pdev changes
+Date: Tue, 23 Jul 2024 20:23:57 +0200
+Message-ID: <20240723180406.329129613@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
 
-[ Upstream commit 1225675ca74c746f09211528588e83b3def1ff6a ]
+[ Upstream commit a1216e62d039bf63a539bbe718536ec789a853dd ]
 
-snd_pcm_resume() should bail out if the stream isn't in a suspended
-state.  Otherwise it'd allow doubly resume.
+If a PCI device is removed during eeh_pe_report_edev(), edev->pdev
+will change and can cause a crash, hold the PCI rescan/remove lock
+while taking a copy of edev->pdev->bus.
 
-Link: https://patch.msgid.link/20240624125443.27808-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240617140240.580453-1-ganeshgr@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_native.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/kernel/eeh_pe.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index bd9ddf412b465..cc21c483c4a57 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -1783,6 +1783,8 @@ static int snd_pcm_pre_resume(struct snd_pcm_substream *substream,
- 			      snd_pcm_state_t state)
+diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
+index d2873d17d2b15..e4624d7896294 100644
+--- a/arch/powerpc/kernel/eeh_pe.c
++++ b/arch/powerpc/kernel/eeh_pe.c
+@@ -850,6 +850,7 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
  {
- 	struct snd_pcm_runtime *runtime = substream->runtime;
-+	if (runtime->state != SNDRV_PCM_STATE_SUSPENDED)
-+		return -EBADFD;
- 	if (!(runtime->info & SNDRV_PCM_INFO_RESUME))
- 		return -ENOSYS;
- 	runtime->trigger_master = substream;
+ 	struct eeh_dev *edev;
+ 	struct pci_dev *pdev;
++	struct pci_bus *bus = NULL;
+ 
+ 	if (pe->type & EEH_PE_PHB)
+ 		return pe->phb->bus;
+@@ -860,9 +861,11 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
+ 
+ 	/* Retrieve the parent PCI bus of first (top) PCI device */
+ 	edev = list_first_entry_or_null(&pe->edevs, struct eeh_dev, entry);
++	pci_lock_rescan_remove();
+ 	pdev = eeh_dev_to_pci_dev(edev);
+ 	if (pdev)
+-		return pdev->bus;
++		bus = pdev->bus;
++	pci_unlock_rescan_remove();
+ 
+-	return NULL;
++	return bus;
+ }
 -- 
 2.43.0
 
