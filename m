@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-61010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A473B93A674
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA9393A722
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 593E71F21525
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 976311F239AA
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC46D15746B;
-	Tue, 23 Jul 2024 18:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195E7158878;
+	Tue, 23 Jul 2024 18:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STFCtCgT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOzOPLMC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2F813C3F5;
-	Tue, 23 Jul 2024 18:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF341586CB;
+	Tue, 23 Jul 2024 18:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759709; cv=none; b=EahBS5LeAQDYmu7PeVMuMn7G6XpCv0K7L+eyMI+ARyMvHXs1dpLWZGq+gnf1ctE4kAiiCQ9F2aULIZ01AlnORc1YTUGdBlovA26VKmmx+oRTdknEGnV3cgG7qskYElJazPejDRpXX0W/UXSFdyfrdA18TPWzn2xblpkmMg2fH9w=
+	t=1721760157; cv=none; b=RjRDruMj4Gl2sIzMkBsNjA4DitWpaCncuOcwljnW78VH2ERU2fH0xFHMALAxcf5WXsFxiToZ7HRpJSzRFVhy5Gpue7H5qgbKvXvSSURilWCOmC6xORGFqLKuAeYbsgA3naZbF8kY+TKCbUv5TeZ+wgWwYc0aFGfZenF0/SAy/b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759709; c=relaxed/simple;
-	bh=C4FYKxEv9HmipJxO3zXAwIeNrGgnRCX8MIWblZzeovQ=;
+	s=arc-20240116; t=1721760157; c=relaxed/simple;
+	bh=UMC3RyjnmA1VOMzl7ZFycIIGEsDuX1NhaM+mGi9wvgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRAU5u3kDObJdw1y9r8iogIr0cDIj9x59+mmE3rY3D+NGQOZQlO26bAxR5x7Fv6AAhEvUDEUm+okG2XUGo4qeNDJ9rtnVgoiiwSDLrBTxzjKVlei2gwCrpR4JDQoB80DlEVafENSf6FRY9EgcQ7jQKpc1tSg3OO1Hm94Im5kZXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STFCtCgT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1250DC4AF0E;
-	Tue, 23 Jul 2024 18:35:08 +0000 (UTC)
+	 MIME-Version; b=oYuiMUdRMWYfpJI/i3I1k90II8UDvArgm0KqtQFqGzixQVFhxf5Ejgje2CMaE1HbDgwxePMjZeWFOgEsNCeRN2+y/If4EEBbjr6qh44s9EymX8PUpSRk4syB8r/3fyHeXrxEZ954XoreznHyLm56b8Ddx+YV0jdMIRmeDDOTHDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOzOPLMC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545D7C4AF0A;
+	Tue, 23 Jul 2024 18:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759709;
-	bh=C4FYKxEv9HmipJxO3zXAwIeNrGgnRCX8MIWblZzeovQ=;
+	s=korg; t=1721760157;
+	bh=UMC3RyjnmA1VOMzl7ZFycIIGEsDuX1NhaM+mGi9wvgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STFCtCgT17T7d3vqMJK19mbjhF8mYsW8I7DBZbXDNxa1MES6TI8sTxNs/nsBwUZ5s
-	 +wBxQYFmo0KDiX/tGyQleaJpPtX9iZB4KZuh72hqGmKcrfLCpxbPmLhAdeTtmY2Yod
-	 ydXunyrZI0b33nKLu4e1pYDrg6b0+oD6FVVadCWA=
+	b=QOzOPLMCJ1yhti0rKH3/qk4qwPxrJhpgCEiqi+SQRnQmXS4tpze/rnRbJvWXJoFWI
+	 aDyyLAzRshc1c9gb66S611aU3XaHILz9BpPgf/3OT9Og5T1Q+gxJy8WrAOHa4JfR/u
+	 dir2fh/LE/s8DPRq1HlY0jOGmQlPxtbnWAHSCsFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Vyacheslav Frantsishko <itmymaill@gmail.com>,
 	Mario Limonciello <mario.limonciello@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/129] drm/amd/display: Add refresh rate range check
+Subject: [PATCH 6.9 121/163] ASoC: amd: yc: Fix non-functional mic on ASUS M5602RA
 Date: Tue, 23 Jul 2024 20:24:10 +0200
-Message-ID: <20240723180408.733929320@linuxfoundation.org>
+Message-ID: <20240723180148.147945675@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Vyacheslav Frantsishko <itmymaill@gmail.com>
 
-[ Upstream commit 74ad26b36d303ac233eccadc5c3a8d7ee4709f31 ]
+[ Upstream commit 63b47f026cc841bd3d3438dd6fccbc394dfead87 ]
 
-[Why]
-We only enable the VRR while monitor usable refresh rate range
-is greater than 10 Hz.
-But we did not check the range in DRM_EDID_FEATURE_CONTINUOUS_FREQ
-case.
+The Vivobook S 16X IPS needs a quirks-table entry for the internal microphone to function properly.
 
-[How]
-Add a refresh rate range check before set the freesync_capable flag
-in DRM_EDID_FEATURE_CONTINUOUS_FREQ case.
-
+Signed-off-by: Vyacheslav Frantsishko <itmymaill@gmail.com>
 Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://patch.msgid.link/20240626070334.45633-1-itmymaill@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index c1a0fd47802a0..6e5ca0c755c3b 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10759,9 +10759,11 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
- 		if (is_dp_capable_without_timing_msa(adev->dm.dc,
- 						     amdgpu_dm_connector)) {
- 			if (edid->features & DRM_EDID_FEATURE_CONTINUOUS_FREQ) {
--				freesync_capable = true;
- 				amdgpu_dm_connector->min_vfreq = connector->display_info.monitor_range.min_vfreq;
- 				amdgpu_dm_connector->max_vfreq = connector->display_info.monitor_range.max_vfreq;
-+				if (amdgpu_dm_connector->max_vfreq -
-+				    amdgpu_dm_connector->min_vfreq > 10)
-+					freesync_capable = true;
- 			} else {
- 				edid_check_required = edid->version > 1 ||
- 						      (edid->version == 1 &&
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 1760b5d42460a..4e3a8ce690a45 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -283,6 +283,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "M5402RA"),
+ 		}
+ 	},
++        {
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "M5602RA"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
