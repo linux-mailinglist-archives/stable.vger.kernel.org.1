@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-61156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A501893A71D
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 233E693A694
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FC9C283CBC
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD0E41F233B3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53792158A04;
-	Tue, 23 Jul 2024 18:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9240415887F;
+	Tue, 23 Jul 2024 18:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUPPjfHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+BYeNvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F34F158211;
-	Tue, 23 Jul 2024 18:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E8613D600;
+	Tue, 23 Jul 2024 18:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760143; cv=none; b=Hh+6pNm44TnKAY+U+EKgJ4bYjPA0IuJf3bO13HfFXBzsw1l4UH9VhD5BJIp39rt2NkZyrMbES9x3G5W+1w8o40Gq/2oyB4xDeXVHLscb0fwfyQrD9IogLtAGDYQ2nLNE9DJ6rAEI5FT4clwrdyq19vcpJawHFAxQMMRnVQwhSXU=
+	t=1721759793; cv=none; b=JFoOColrU1FXAObZhZ5+ug+4yulcWt9xuz8UhIOTfvHEJ4Cuzl877nLzPA/U8IVy2NDHQgGYJD2KusBoyWMbyC+5RI0CPOOnwM7Ee1mq+4A8FU3mBXklwl+V+bmdpKiw5LA+Rr8OLWQHcpp3TvdymEiVi+TjEtGVoV12DxsCG8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760143; c=relaxed/simple;
-	bh=SyHGg2pHXrZ8oQ045QrH/XNtloxJCXM+XncNaBKXM+A=;
+	s=arc-20240116; t=1721759793; c=relaxed/simple;
+	bh=o0aFCpupDaM1y/wy0q6VgaFOBOb48S+lTsS611ulrR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Grw2Vdzi2mh03T6cNpFrJEvpmFvUoY3RF7JnQ8NbnpVjpar5TfYVHA08DqLf2wHXvre4kLIHsfmpQ4ui6Goq8qBJ15B6Lf1QFr4li3MtJv7kt4iUo+FKUK8IcI3Tm78DH526u2JJBV/+6Fkb0eqSm1ReTE8fLqapbDAW286mmrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUPPjfHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A731C4AF09;
-	Tue, 23 Jul 2024 18:42:22 +0000 (UTC)
+	 MIME-Version; b=FzaqMCUlFIlhkAYFAvhicas3mpcnD2OMpp9Wu8msxTr+acE2BG8AzkmuIIGIpzVNowCSJ6auz5Z83YbfZRHew5ma9Jv3UT59lgZZOaW9UE4G+X93BZofebxoIfF4rf7oVNmyEpS7xiNUrUmezXuzdpzjX0PK53otZGT/0eHSAi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+BYeNvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65559C4AF0A;
+	Tue, 23 Jul 2024 18:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760142;
-	bh=SyHGg2pHXrZ8oQ045QrH/XNtloxJCXM+XncNaBKXM+A=;
+	s=korg; t=1721759792;
+	bh=o0aFCpupDaM1y/wy0q6VgaFOBOb48S+lTsS611ulrR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUPPjfHtFCKtYVOCz65EZCtlUcSA8nZmC2f8U8nFyc/4OVZJFzQTgO4Ox2hRo6Uqr
-	 unEusG1B9kmO7w2iOYzAADGtxzE6X+9RzH86VjzNLBjmqc1dxFywpg5yqdzeCS9Vot
-	 WFDoL6QSxHPEID7ZVXbXr2hZYriB8YfG2qHUUNiA=
+	b=B+BYeNvKyKWU0na2b0TW0ijkSem+JL6Wu3fgX/9/zTRnePl8cpgY8AS1yWNr8yg5G
+	 0An9eIXJDQczyd1KTw5I/vCanr8Zq5jkh4LglJx0h/NupzTRs+shBbpVUbPt5VCV0z
+	 dvu2vxTD5fGcXYsXfaIjRZ/ZsAWIoxyU9xN4CzJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 117/163] ALSA: PCM: Allow resume only for suspended streams
+Subject: [PATCH 6.6 098/129] Bluetooth: hci_core: cancel all works upon hci_unregister_dev()
 Date: Tue, 23 Jul 2024 20:24:06 +0200
-Message-ID: <20240723180147.994909668@linuxfoundation.org>
+Message-ID: <20240723180408.575182340@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 1225675ca74c746f09211528588e83b3def1ff6a ]
+[ Upstream commit 0d151a103775dd9645c78c97f77d6e2a5298d913 ]
 
-snd_pcm_resume() should bail out if the stream isn't in a suspended
-state.  Otherwise it'd allow doubly resume.
+syzbot is reporting that calling hci_release_dev() from hci_error_reset()
+due to hci_dev_put() from hci_error_reset() can cause deadlock at
+destroy_workqueue(), for hci_error_reset() is called from
+hdev->req_workqueue which destroy_workqueue() needs to flush.
 
-Link: https://patch.msgid.link/20240624125443.27808-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+We need to make sure that hdev->{rx_work,cmd_work,tx_work} which are
+queued into hdev->workqueue and hdev->{power_on,error_reset} which are
+queued into hdev->req_workqueue are no longer running by the moment
+
+       destroy_workqueue(hdev->workqueue);
+       destroy_workqueue(hdev->req_workqueue);
+
+are called from hci_release_dev().
+
+Call cancel_work_sync() on these work items from hci_unregister_dev()
+as soon as hdev->list is removed from hci_dev_list.
+
+Reported-by: syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=da0a9c9721e36db712e8
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_native.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/hci_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index 0b76e76823d28..353ecd960a1f5 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -1775,6 +1775,8 @@ static int snd_pcm_pre_resume(struct snd_pcm_substream *substream,
- 			      snd_pcm_state_t state)
- {
- 	struct snd_pcm_runtime *runtime = substream->runtime;
-+	if (runtime->state != SNDRV_PCM_STATE_SUSPENDED)
-+		return -EBADFD;
- 	if (!(runtime->info & SNDRV_PCM_INFO_RESUME))
- 		return -ENOSYS;
- 	runtime->trigger_master = substream;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 3817d6369f0cc..b4d5b7200ff9c 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2704,7 +2704,11 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	list_del(&hdev->list);
+ 	write_unlock(&hci_dev_list_lock);
+ 
++	cancel_work_sync(&hdev->rx_work);
++	cancel_work_sync(&hdev->cmd_work);
++	cancel_work_sync(&hdev->tx_work);
+ 	cancel_work_sync(&hdev->power_on);
++	cancel_work_sync(&hdev->error_reset);
+ 
+ 	hci_cmd_sync_clear(hdev);
+ 
 -- 
 2.43.0
 
