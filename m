@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-60805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3B093A526
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 19:56:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E4D93A529
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 19:57:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ACC51C21094
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 17:56:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2A0E1C21B8E
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 17:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CAC158211;
-	Tue, 23 Jul 2024 17:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8141B158847;
+	Tue, 23 Jul 2024 17:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wtn1PZvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRPP7v3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B522C381B1;
-	Tue, 23 Jul 2024 17:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B35A158203;
+	Tue, 23 Jul 2024 17:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721757357; cv=none; b=Xc420LIZ6XSl0MTVdR5tITNctXujiN9o2CpmCvlZ7cdMh+xRJXcbULYlyHrC97hZfVPwJX6EGMuKspbRD67dJ34/gwC1exCczKYNRWLozC8CYeLjkGMomBRLI8dQpgRovMN38BuXLsToWEy+Ke34vTuk/GXCkGyoBF+SyfQhYE8=
+	t=1721757413; cv=none; b=X4CfmmEKaSBgmuOM4b1Bsl9MV5ThqhtXUXn5rSPiOMDD2WL2QRF+iitoxtOrOTfW3NuSHd6wZtKtA6Mu8A5E4IPIchCeQsouV1UAcnT2fxxyALq8Ueqgc0KhY0PJg4RuAbXz/vKIsw/Sdqv1i2uu0Z2Tznc/YFUcYLC9Kuczne8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721757357; c=relaxed/simple;
-	bh=u5xGKZobgp6DBTYDE5ebYCAj53cT/WQp/xakcr338eo=;
+	s=arc-20240116; t=1721757413; c=relaxed/simple;
+	bh=8KHrMM7tUfw/84uOBUst7fOhws3TvhmkqeU9juK5RBQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PsCvuyW14XdCBaWB33lt5e4asAUc3XKARE2UB2VLhMD5R/pLYmRmOURtDC8Zf3qlEkz1iP/3w7eO9K9oANacOz+OePzvOVlhS8Xqw/CsAHS4lj+O9Ojdi9Bhxo8DqHhKVXJU+AWKJqFoZtaUjg5xm+FQzuxz3Y5aG2YK27aPXrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wtn1PZvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31584C4AF09;
-	Tue, 23 Jul 2024 17:55:57 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=lmMzeo+GRapZqcbjny2MP+qlSwFbnN5qJE3SxKfPtZa7jMG3t8DYvZmjxcBMPVzZtKTKxG2iPDXfyXIwcp3beiV6m2s9KKk7XeTMjKJ5Bh4iEhVwD/9ErxQmNSVW3k3iTNDJU7knC0ZcQAUYXdC54NBdz1JWLM9FUaSDiqgc+/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRPP7v3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5EBC4AF09;
+	Tue, 23 Jul 2024 17:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721757357;
-	bh=u5xGKZobgp6DBTYDE5ebYCAj53cT/WQp/xakcr338eo=;
+	s=korg; t=1721757413;
+	bh=8KHrMM7tUfw/84uOBUst7fOhws3TvhmkqeU9juK5RBQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wtn1PZvgNO2h+HkQ+EwvEF+qOrxqb2uF6bofWCslGzQv0Ugtl+S8LFRsjE78bWrgb
-	 dUPkW7y8Yg954d40wBy4NEAruS5losQQGa5mpYxNKaoS4kh1MOfeqZqdME+Qw5ODBg
-	 3ujTX8ldNURdOMmosWhCQIfj71tlsdWy8/nXBi2E=
-Date: Tue, 23 Jul 2024 19:55:54 +0200
+	b=bRPP7v3GCrNH59DIoBLWcUxEoyuv6pzKIeDkz81CMroBIe6+Fq9cxS9BiNOHyRfNi
+	 nf3fd4QnCKCyVpNfJcjRh2UJRvzgpSNY8/GJsBRtdHowoE+wSsuQ8OUa/1+XG3qNU7
+	 TSxvDiOGx4WyGxKolMenWoAQj2raC0q2tJqLgQWM=
+Date: Tue, 23 Jul 2024 19:56:50 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: libaokun@huaweicloud.com
-Cc: stable@vger.kernel.org, sashal@kernel.org, patches@lists.linux.dev,
-	hsiangkao@linux.alibaba.com, yangerkun@huawei.com,
-	libaokun1@huawei.com, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH 6.1 1/3] netfs, fscache: export fscache_put_volume() and
- add fscache_try_get_volume()
-Message-ID: <2024072345-glitter-emboss-29a1@gregkh>
-References: <20240719134338.1642739-1-libaokun@huaweicloud.com>
+To: WangYuli <wangyuli@uniontech.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org, yi.zhang@huawei.com,
+	jack@suse.cz, tytso@mit.edu, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+	yukuai3@huawei.com, niecheng1@uniontech.com,
+	zhangdandan@uniontech.com, guanwentao@uniontech.com
+Subject: Re: [PATCH v2 4.19 1/4] ext4: check and update i_disksize properly
+Message-ID: <2024072308-hanky-oat-838d@gregkh>
+References: <20240720160420.578940-1-wangyuli@uniontech.com>
+ <CBA4773FBA840F79+20240720160420.578940-2-wangyuli@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,30 +58,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240719134338.1642739-1-libaokun@huaweicloud.com>
+In-Reply-To: <CBA4773FBA840F79+20240720160420.578940-2-wangyuli@uniontech.com>
 
-On Fri, Jul 19, 2024 at 09:43:36PM +0800, libaokun@huaweicloud.com wrote:
-> From: Baokun Li <libaokun1@huawei.com>
+On Sun, Jul 21, 2024 at 12:04:07AM +0800, WangYuli wrote:
+> From: Zhang Yi <yi.zhang@huawei.com>
 > 
-> [ Upstream commit 85b08b31a22b481ec6528130daf94eee4452e23f ]
-> 
-> Export fscache_put_volume() and add fscache_try_get_volume()
-> helper function to allow cachefiles to get/put fscache_volume
-> via linux/fscache-cache.h.
-> 
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> Link: https://lore.kernel.org/r/20240628062930.2467993-2-libaokun@huaweicloud.com
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-> Stable-dep-of: 522018a0de6b ("cachefiles: fix slab-use-after-free in fscache_withdraw_volume()")
-> Stable-dep-of: 5d8f80578907 ("cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()")
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> ---
->  fs/fscache/internal.h         |  2 --
->  fs/fscache/volume.c           | 14 ++++++++++++++
->  include/linux/fscache-cache.h |  6 ++++++
->  3 files changed, 20 insertions(+), 2 deletions(-)
+> commit 4df031ff5876d94b48dd9ee486ba5522382a06b2 upstream
 
-All now queued up, thanks.
+As this commit is not in 5.4.y, we can't take it for 4.19.y as that
+would cause a regression when you upgrade.
 
+Please fix this up and submit a 5.4.y set of patches and then submit
+this series again so that we can consider them.
+
+thanks,
 greg k-h
 
