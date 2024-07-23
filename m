@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-60993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBEA93A65D
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:34:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E66D93A72B
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 330CB1F22CF0
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:34:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 041231F2397C
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC178158A29;
-	Tue, 23 Jul 2024 18:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934E513D896;
+	Tue, 23 Jul 2024 18:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2g8qkPj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IB5fY6M8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A52A158D97;
-	Tue, 23 Jul 2024 18:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AF91586F5;
+	Tue, 23 Jul 2024 18:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759659; cv=none; b=FY8C/DEfmf0c0bDa97oCuLd2bQCgv99S0tbnZlPTuppKaUhb7HKGV+L6l/I0rsahjSe2f3MugGHoT9in58OuSIoPdt92YoupvRSP7zp06/hbUAUiR/Jo7by+GD6F0fnbz7mQpBYkIKOGS+py9tCizKldhrbknLTpX9oSRivVZMg=
+	t=1721760184; cv=none; b=sqZmarSTr/MnCBko6k4dTbn2varaax88QLSvUIOr3sDZ+OZDc3lwCvBceiD3UgHtf/zz9Sew+UvIbBrh6iYlN0Q51cwMbCimx0NHqxE2aZFWdXilmuKc0ayFsa7oNvbFRf9BDREt53H25xk62rt6vJtW5m5TfWKpR8ZNyymD/gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759659; c=relaxed/simple;
-	bh=yv6kftk0itiZMDLS7s+uW3YaeaDAY/GpFCxui8JHF+I=;
+	s=arc-20240116; t=1721760184; c=relaxed/simple;
+	bh=FKPYFm7xEaa6lZu0snh9Bw0PaifgWe3WE0mIlVlL8q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OpZR2K9yezA56R6YAEuBsoCBp3zo771pdIiJvSjmMQ30Q68JXu2fnI8YEmm6NGjQancJRvoMFXtQeEMn3u5ysp9ucQd2kQtI/OQom5LepJQdXh2SGmsmRmDdiPDBPb/hcOumXyAyq+MrPwhuY4KRYMqpJQI9a/ygziHn0ESSn60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2g8qkPj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D207CC4AF0F;
-	Tue, 23 Jul 2024 18:34:18 +0000 (UTC)
+	 MIME-Version; b=kh+neNY1WuGyQcnbvb1+3ti2K0jKRmuq4+iMI267mu1tSXH0+tSmeiIRCdo8gtefOq0gXSO3kSjpTv0N9uKGBAiERpfZxUUyP1dDJSa402BHrKozaj2/YFLvhHu5PuUIOoD7yZ+K6BDQV2APmxR9941zZuhva2uOO0Lj09LTCFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IB5fY6M8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D67C4AF09;
+	Tue, 23 Jul 2024 18:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759659;
-	bh=yv6kftk0itiZMDLS7s+uW3YaeaDAY/GpFCxui8JHF+I=;
+	s=korg; t=1721760184;
+	bh=FKPYFm7xEaa6lZu0snh9Bw0PaifgWe3WE0mIlVlL8q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e2g8qkPjBm7e8RWEHyeKJ+iYkBtjBvN2MYqaumkFn0o8lbXbg2LrdUHrUZqKA9e5j
-	 mJ7V9o5QC+3j1ZmAkrAS7V8Ot3bWkH6yi2nSG78yWVcxHZT2a/ga3PDFQuAtRpqHlc
-	 rcFHXKJ6ukrIPONj70527lGeXRg7vd50s6L0lLeg=
+	b=IB5fY6M8E/3J09CJ3JtIguqU+MVAXw7gVHb7nbPfKf4aVUAISRPXV0cAf3jJC4HKJ
+	 OnIBaaenbrRnTO8dvSUjhK3NeJd+HZNjVbsy/C5NI8BZY9tmrCUoRtuqyDvkO1n2K5
+	 MYm/YUXNzDrMNkONJUb5KcCbXCMsZlpGajEOpxh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Agathe Boutmy <agathe@boutmy.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/129] platform/x86: lg-laptop: Change ACPI device id
+Subject: [PATCH 6.9 103/163] Input: ads7846 - use spi_device_id table
 Date: Tue, 23 Jul 2024 20:23:52 +0200
-Message-ID: <20240723180408.030665251@linuxfoundation.org>
+Message-ID: <20240723180147.456081600@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 58a54f27a0dac81f7fd3514be01012635219a53c ]
+[ Upstream commit 7c7b1be19b228b450c2945ec379d7fc6bfef9852 ]
 
-The LGEX0815 ACPI device id is used for handling hotkey events, but
-this functionality is already handled by the wireless-hotkey driver.
+As the driver supports more devices over time the single MODULE_ALIAS
+is complete and raises several warnings:
+SPI driver ads7846 has no spi_device_id for ti,tsc2046
+SPI driver ads7846 has no spi_device_id for ti,ads7843
+SPI driver ads7846 has no spi_device_id for ti,ads7845
+SPI driver ads7846 has no spi_device_id for ti,ads7873
 
-The LGEX0820 ACPI device id however is used to manage various
-platform features using the WMAB/WMBB ACPI methods. Use this ACPI
-device id to avoid blocking the wireless-hotkey driver from probing.
+Fix this by adding a spi_device_id table and removing the manual
+MODULE_ALIAS.
 
-Tested-by: Agathe Boutmy <agathe@boutmy.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240606233540.9774-4-W_Armin@gmx.de
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20240619122703.2081476-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lg-laptop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/touchscreen/ads7846.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
-index 545872adbc52a..8f8eb13b2a6b2 100644
---- a/drivers/platform/x86/lg-laptop.c
-+++ b/drivers/platform/x86/lg-laptop.c
-@@ -768,7 +768,7 @@ static void acpi_remove(struct acpi_device *device)
- }
- 
- static const struct acpi_device_id device_ids[] = {
--	{"LGEX0815", 0},
-+	{"LGEX0820", 0},
- 	{"", 0}
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index d2bbb436a77df..4d13db13b9e57 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -1111,6 +1111,16 @@ static const struct of_device_id ads7846_dt_ids[] = {
  };
- MODULE_DEVICE_TABLE(acpi, device_ids);
+ MODULE_DEVICE_TABLE(of, ads7846_dt_ids);
+ 
++static const struct spi_device_id ads7846_spi_ids[] = {
++	{ "tsc2046", 7846 },
++	{ "ads7843", 7843 },
++	{ "ads7845", 7845 },
++	{ "ads7846", 7846 },
++	{ "ads7873", 7873 },
++	{ },
++};
++MODULE_DEVICE_TABLE(spi, ads7846_spi_ids);
++
+ static const struct ads7846_platform_data *ads7846_get_props(struct device *dev)
+ {
+ 	struct ads7846_platform_data *pdata;
+@@ -1386,10 +1396,10 @@ static struct spi_driver ads7846_driver = {
+ 	},
+ 	.probe		= ads7846_probe,
+ 	.remove		= ads7846_remove,
++	.id_table	= ads7846_spi_ids,
+ };
+ 
+ module_spi_driver(ads7846_driver);
+ 
+ MODULE_DESCRIPTION("ADS7846 TouchScreen Driver");
+ MODULE_LICENSE("GPL");
+-MODULE_ALIAS("spi:ads7846");
 -- 
 2.43.0
 
