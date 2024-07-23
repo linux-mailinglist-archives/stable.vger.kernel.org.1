@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-61172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E820293A72D
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA7E93A683
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 257911C220D0
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D2091C21CB6
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8796C158878;
-	Tue, 23 Jul 2024 18:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475CE158D9F;
+	Tue, 23 Jul 2024 18:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d33MBMFq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtvENZgo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468041586CB;
-	Tue, 23 Jul 2024 18:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CE8158D94;
+	Tue, 23 Jul 2024 18:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760190; cv=none; b=SQ62iGtETaaxjiyYWr1OPj0Mzd/+h2qR6no08wsFaPWhgNFxO0/FvsF1QVVkB8VooFUr86oehZEZh9IUZbV0mesCWZu/FLE61qjQNTt93iVpiVP99a57fxqd9rrXTL/x2CbVdtpp+ndrNxlWbQ5dxxYRpueOTHxyLconBTxvgbc=
+	t=1721759745; cv=none; b=f5aY9QLiCpW/AkpUnq5jUenYJtJ6V9c3oM60riMZt71aLyssIQqP8LAFvPJxUTQeChEQagYw2lTM2eCOYTnaHTRyvr6u1b9HKQgkUoxz1LgfXv3OqWI4KUFqCPB37YEz5GMmY5VntPDqqfe10POEj8lBq5Hb2FDAG6N5ehj3YBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760190; c=relaxed/simple;
-	bh=7t4ujiBHxitu7RZQ1ZabEcPN+PYpltrpKlAe2aXw+BM=;
+	s=arc-20240116; t=1721759745; c=relaxed/simple;
+	bh=sUMwFW6DALRbMOFTjYoNZhLGIkM5SJVTkXJuekALt4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KLfcqLCCL+NNz3zoxn2DLca+4g0PIIpgX5SJQsiG9a+Rwokp3akQuPtabhiFHfMZvlUHLUmplW1U4Khz+XgvmlczjB4Fg0X3y9PQStq/exJNR5fMfTtoMMSt48AVt4SRrTNrBtK1ot5Qpdznizn8HIej6SEO9zgAD8041q+tvv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d33MBMFq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59CFC4AF0A;
-	Tue, 23 Jul 2024 18:43:09 +0000 (UTC)
+	 MIME-Version; b=RWSoJTotxiOUKRWoFvpRqMi3TuNFFuZVgIk849UtA9DR0Iz9oRsir/kmehqUVMzfNj69dxvDUKyGMLUWWxlKZdxuqqDJG5hQCE2TzEn1QuwDwiD+WS17JvBSuIP7zts4Zmu6GZDyP8Wd7IDpMTr5vz2IJmDuIho2YaVw1icn6NU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtvENZgo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D887C4AF0B;
+	Tue, 23 Jul 2024 18:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760190;
-	bh=7t4ujiBHxitu7RZQ1ZabEcPN+PYpltrpKlAe2aXw+BM=;
+	s=korg; t=1721759744;
+	bh=sUMwFW6DALRbMOFTjYoNZhLGIkM5SJVTkXJuekALt4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d33MBMFqZ4Ptxrr7uUoq00mfnDV11dzeu6r9VcVeQ0xwz+v0nTxP7uClcRTLqLHB4
-	 wxAst4dpVuaef2YlkBUhCSTUG9wfE/HBOcRCJevb7C2xlKga/MvaWlVxltOVOgqglr
-	 Nnn1+hwPBS9DI0Am3RxPGtknuStJuYxd0KIuUH/U=
+	b=WtvENZgo0BwIG2VfeG173liFlocsi++zkXLK2jkVc5sDr9j37Zyc9tVnNZYf9Oyhq
+	 lC8ejyME+oZJcnWVUcxrhYoGNT8XIAcGhRq+9NvTD/fzr7vIMRsjMKVZR2iFChY2k2
+	 6jDpR/BYdikg6ZDpal/8nAeRM0+EFJ6inrZINk5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
-Subject: [PATCH 6.9 131/163] bluetooth/l2cap: sync sock recv cb and release
-Date: Tue, 23 Jul 2024 20:24:20 +0200
-Message-ID: <20240723180148.535102307@linuxfoundation.org>
+	Dmitry Safonov <dima@arista.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Andrei Vagin <avagin@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 113/129] selftest/timerns: fix clang build failures for abs() calls
+Date: Tue, 23 Jul 2024 20:24:21 +0200
+Message-ID: <20240723180409.157527210@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +65,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 89e856e124f9ae548572c56b1b70c2255705f8fe ]
+[ Upstream commit f76f9bc616b7320df6789241ca7d26cedcf03cf3 ]
 
-The problem occurs between the system call to close the sock and hci_rx_work,
-where the former releases the sock and the latter accesses it without lock protection.
+When building with clang, via:
 
-           CPU0                       CPU1
-           ----                       ----
-           sock_close                 hci_rx_work
-	   l2cap_sock_release         hci_acldata_packet
-	   l2cap_sock_kill            l2cap_recv_frame
-	   sk_free                    l2cap_conless_channel
-	                              l2cap_sock_recv_cb
+    make LLVM=1 -C tools/testing/selftests
 
-If hci_rx_work processes the data that needs to be received before the sock is
-closed, then everything is normal; Otherwise, the work thread may access the
-released sock when receiving data.
+...clang warns about mismatches between the expected and required
+integer length being supplied to abs(3).
 
-Add a chan mutex in the rx callback of the sock to achieve synchronization between
-the sock release and recv cb.
+Fix this by using the correct variant of abs(3): labs(3) or llabs(3), in
+these cases.
 
-Sock is dead, so set chan data to NULL, avoid others use invalid sock pointer.
-
-Reported-and-tested-by: syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Dmitry Safonov <dima@arista.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Acked-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ tools/testing/selftests/timens/exec.c       | 6 +++---
+ tools/testing/selftests/timens/timer.c      | 2 +-
+ tools/testing/selftests/timens/timerfd.c    | 2 +-
+ tools/testing/selftests/timens/vfork_exec.c | 4 ++--
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 8645461d45e81..64827e553d638 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1239,6 +1239,10 @@ static void l2cap_sock_kill(struct sock *sk)
+diff --git a/tools/testing/selftests/timens/exec.c b/tools/testing/selftests/timens/exec.c
+index e40dc5be2f668..d12ff955de0d8 100644
+--- a/tools/testing/selftests/timens/exec.c
++++ b/tools/testing/selftests/timens/exec.c
+@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
  
- 	BT_DBG("sk %p state %s", sk, state_to_string(sk->sk_state));
+ 		for (i = 0; i < 2; i++) {
+ 			_gettime(CLOCK_MONOTONIC, &tst, i);
+-			if (abs(tst.tv_sec - now.tv_sec) > 5)
++			if (labs(tst.tv_sec - now.tv_sec) > 5)
+ 				return pr_fail("%ld %ld\n", now.tv_sec, tst.tv_sec);
+ 		}
+ 		return 0;
+@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
  
-+	/* Sock is dead, so set chan data to NULL, avoid other task use invalid
-+	 * sock pointer.
-+	 */
-+	l2cap_pi(sk)->chan->data = NULL;
- 	/* Kill poor orphan */
+ 	for (i = 0; i < 2; i++) {
+ 		_gettime(CLOCK_MONOTONIC, &tst, i);
+-		if (abs(tst.tv_sec - now.tv_sec) > 5)
++		if (labs(tst.tv_sec - now.tv_sec) > 5)
+ 			return pr_fail("%ld %ld\n",
+ 					now.tv_sec, tst.tv_sec);
+ 	}
+@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
+ 		/* Check that a child process is in the new timens. */
+ 		for (i = 0; i < 2; i++) {
+ 			_gettime(CLOCK_MONOTONIC, &tst, i);
+-			if (abs(tst.tv_sec - now.tv_sec - OFFSET) > 5)
++			if (labs(tst.tv_sec - now.tv_sec - OFFSET) > 5)
+ 				return pr_fail("%ld %ld\n",
+ 						now.tv_sec + OFFSET, tst.tv_sec);
+ 		}
+diff --git a/tools/testing/selftests/timens/timer.c b/tools/testing/selftests/timens/timer.c
+index 5e7f0051bd7be..5b939f59dfa4d 100644
+--- a/tools/testing/selftests/timens/timer.c
++++ b/tools/testing/selftests/timens/timer.c
+@@ -56,7 +56,7 @@ int run_test(int clockid, struct timespec now)
+ 			return pr_perror("timerfd_gettime");
  
- 	l2cap_chan_put(l2cap_pi(sk)->chan);
-@@ -1481,12 +1485,25 @@ static struct l2cap_chan *l2cap_sock_new_connection_cb(struct l2cap_chan *chan)
+ 		elapsed = new_value.it_value.tv_sec;
+-		if (abs(elapsed - 3600) > 60) {
++		if (llabs(elapsed - 3600) > 60) {
+ 			ksft_test_result_fail("clockid: %d elapsed: %lld\n",
+ 					      clockid, elapsed);
+ 			return 1;
+diff --git a/tools/testing/selftests/timens/timerfd.c b/tools/testing/selftests/timens/timerfd.c
+index 9edd43d6b2c13..a4196bbd6e33f 100644
+--- a/tools/testing/selftests/timens/timerfd.c
++++ b/tools/testing/selftests/timens/timerfd.c
+@@ -61,7 +61,7 @@ int run_test(int clockid, struct timespec now)
+ 			return pr_perror("timerfd_gettime(%d)", clockid);
  
- static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
- {
--	struct sock *sk = chan->data;
--	struct l2cap_pinfo *pi = l2cap_pi(sk);
-+	struct sock *sk;
-+	struct l2cap_pinfo *pi;
- 	int err;
+ 		elapsed = new_value.it_value.tv_sec;
+-		if (abs(elapsed - 3600) > 60) {
++		if (llabs(elapsed - 3600) > 60) {
+ 			ksft_test_result_fail("clockid: %d elapsed: %lld\n",
+ 					      clockid, elapsed);
+ 			return 1;
+diff --git a/tools/testing/selftests/timens/vfork_exec.c b/tools/testing/selftests/timens/vfork_exec.c
+index beb7614941fb1..5b8907bf451dd 100644
+--- a/tools/testing/selftests/timens/vfork_exec.c
++++ b/tools/testing/selftests/timens/vfork_exec.c
+@@ -32,7 +32,7 @@ static void *tcheck(void *_args)
  
--	lock_sock(sk);
-+	/* To avoid race with sock_release, a chan lock needs to be added here
-+	 * to synchronize the sock.
-+	 */
-+	l2cap_chan_hold(chan);
-+	l2cap_chan_lock(chan);
-+	sk = chan->data;
+ 	for (i = 0; i < 2; i++) {
+ 		_gettime(CLOCK_MONOTONIC, &tst, i);
+-		if (abs(tst.tv_sec - now->tv_sec) > 5) {
++		if (labs(tst.tv_sec - now->tv_sec) > 5) {
+ 			pr_fail("%s: in-thread: unexpected value: %ld (%ld)\n",
+ 				args->tst_name, tst.tv_sec, now->tv_sec);
+ 			return (void *)1UL;
+@@ -64,7 +64,7 @@ static int check(char *tst_name, struct timespec *now)
  
-+	if (!sk) {
-+		l2cap_chan_unlock(chan);
-+		l2cap_chan_put(chan);
-+		return -ENXIO;
-+	}
-+
-+	pi = l2cap_pi(sk);
-+	lock_sock(sk);
- 	if (chan->mode == L2CAP_MODE_ERTM && !list_empty(&pi->rx_busy)) {
- 		err = -ENOMEM;
- 		goto done;
-@@ -1535,6 +1552,8 @@ static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
- 
- done:
- 	release_sock(sk);
-+	l2cap_chan_unlock(chan);
-+	l2cap_chan_put(chan);
- 
- 	return err;
- }
+ 	for (i = 0; i < 2; i++) {
+ 		_gettime(CLOCK_MONOTONIC, &tst, i);
+-		if (abs(tst.tv_sec - now->tv_sec) > 5)
++		if (labs(tst.tv_sec - now->tv_sec) > 5)
+ 			return pr_fail("%s: unexpected value: %ld (%ld)\n",
+ 					tst_name, tst.tv_sec, now->tv_sec);
+ 	}
 -- 
 2.43.0
 
