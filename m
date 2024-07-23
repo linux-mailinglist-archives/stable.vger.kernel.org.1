@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-60909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F095B93A5F6
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0F793A724
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A1532842F1
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9969C282A66
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187B4158871;
-	Tue, 23 Jul 2024 18:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B739158873;
+	Tue, 23 Jul 2024 18:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deGenAU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTAsPEqo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8B4158215;
-	Tue, 23 Jul 2024 18:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5851581F4;
+	Tue, 23 Jul 2024 18:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759410; cv=none; b=d8MQkLUBdQL0M+ycy+GeZJhiRdXdpi7loDXJytiqHQsEnF/op1dcteirJSlOCN+6TKapX8V0tAXuZLw3AAWsZJQs+2cOn2Wbx/JTHn1D4H9I6U9KnoaRfAHB7Yz8bDd3ngNDy6KMnxzWPMX7PgjQGzV85ngqOGCMivydtakRHYg=
+	t=1721760164; cv=none; b=lBryyTa/XtBEYtmr05YYuew3uBDFoJu8DY/+qpCKI45QbF4/gJCTW3UbDuwFQGLdpu+NqGpxsyQyLO7S3yk9Y7uhrwciXs4Pxyu32xOGGy6NtjTyHXAIvqAZtMIZdGJnAoqtfVvio8vQGgOtUqZ3B3o8B63ueHDsbZcRSoBKPJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759410; c=relaxed/simple;
-	bh=m7QTEDlB9o21GxVDx5oaMa1qt/Yp6L9iot7UmE7pDcs=;
+	s=arc-20240116; t=1721760164; c=relaxed/simple;
+	bh=2wKien1XtKTYrTP7ZpuigxqTAUntQwoHcYzffovaZ64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmPvIApSvddmeAp6PBc3zCc+HJhnixaPsRgKvj2vUBfOsP8nM2fR3zcDkmdQKuuSGQDKIZ2RsBkoSZHifnpvyvDxXn5kiwFQ9PRffNWOWFjsZfG2a90OxXeEjviOGFyVH9PEV6LR3uRoy8Z89kBUMaCLEjusXV5kf7ww2YWRW3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deGenAU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01351C4AF0A;
-	Tue, 23 Jul 2024 18:30:08 +0000 (UTC)
+	 MIME-Version; b=s17SukM/wkdnZASZ3s+GC7O3/SnGJjVG++Zb3AepuHlmra7yLIjxCOmMfXDUTQFKYhOxj/rwb4rSBvGgiz6GdDSfBDEOI09eV7fqwX65mxu9vd9DzBjYr4tQUWzUah+vBfgYT78jvCABLxj41thpYZxtlCnZOUy6lxOTbNUirS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTAsPEqo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E0CC4AF0B;
+	Tue, 23 Jul 2024 18:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759409;
-	bh=m7QTEDlB9o21GxVDx5oaMa1qt/Yp6L9iot7UmE7pDcs=;
+	s=korg; t=1721760163;
+	bh=2wKien1XtKTYrTP7ZpuigxqTAUntQwoHcYzffovaZ64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deGenAU5cOuq35DD9N1lQ6cq7JtV8BV0pxcqbc1EaW21halWvaGXyZLJLdXSlgjCx
-	 3owxufsK+GIAKXwIoVeOIqAumfwZCJPBD56/zUkWexkG1goLWR8SmsdMKgj/bnR6tN
-	 YboZwQD688zdqPu8gl4xGe1dYBpCwP96MOn1cVj0=
+	b=yTAsPEqoRX48qBClDpGESli+tpQngNOF+xkbIXs36ntEa77jIOQT5nY1Jl2N/EZHz
+	 yPD5SJrSKSBTRRyfFKqH91j+kjigvxXssXBcoKgDOWPQu4r1r27+2/pT0zX9I+C+5N
+	 XqlcCyhaBcNZPyz9hV4L2GQLPfsuE53zmZ7ncqM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com,
-	syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 095/105] hfsplus: fix uninit-value in copy_name
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 123/163] clk: qcom: apss-ipq-pll: remove config_ctl_hi_val from Stromer pll configs
 Date: Tue, 23 Jul 2024 20:24:12 +0200
-Message-ID: <20240723180406.907144237@linuxfoundation.org>
+Message-ID: <20240723180148.225170400@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 0570730c16307a72f8241df12363f76600baf57d ]
+[ Upstream commit 2ba8425678af422da37b6c9b50e9ce66f0f55cae ]
 
-[syzbot reported]
-BUG: KMSAN: uninit-value in sized_strscpy+0xc4/0x160
- sized_strscpy+0xc4/0x160
- copy_name+0x2af/0x320 fs/hfsplus/xattr.c:411
- hfsplus_listxattr+0x11e9/0x1a50 fs/hfsplus/xattr.c:750
- vfs_listxattr fs/xattr.c:493 [inline]
- listxattr+0x1f3/0x6b0 fs/xattr.c:840
- path_listxattr fs/xattr.c:864 [inline]
- __do_sys_listxattr fs/xattr.c:876 [inline]
- __se_sys_listxattr fs/xattr.c:873 [inline]
- __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
- x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Since the CONFIG_CTL register is only 32 bits wide in the Stromer
+and Stromer Plus PLLs , the 'config_ctl_hi_val' values from the
+IPQ5018 and IPQ5332 configurations are not used so remove those.
 
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:3877 [inline]
- slab_alloc_node mm/slub.c:3918 [inline]
- kmalloc_trace+0x57b/0xbe0 mm/slub.c:4065
- kmalloc include/linux/slab.h:628 [inline]
- hfsplus_listxattr+0x4cc/0x1a50 fs/hfsplus/xattr.c:699
- vfs_listxattr fs/xattr.c:493 [inline]
- listxattr+0x1f3/0x6b0 fs/xattr.c:840
- path_listxattr fs/xattr.c:864 [inline]
- __do_sys_listxattr fs/xattr.c:876 [inline]
- __se_sys_listxattr fs/xattr.c:873 [inline]
- __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
- x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[Fix]
-When allocating memory to strbuf, initialize memory to 0.
+No functional changes.
 
-Reported-and-tested-by: syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://lore.kernel.org/r/tencent_8BBB6433BC9E1C1B7B4BDF1BF52574BA8808@qq.com
-Reported-and-tested-by: syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240509-stromer-config-ctl-v1-1-6034e17b28d5@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/xattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/apss-ipq-pll.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
-index 49891b12c4156..2b0e0ba58139b 100644
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -699,7 +699,7 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
- 		return err;
- 	}
- 
--	strbuf = kmalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
-+	strbuf = kzalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
- 			XATTR_MAC_OSX_PREFIX_LEN + 1, GFP_KERNEL);
- 	if (!strbuf) {
- 		res = -ENOMEM;
+diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
+index d7ab5bd5d4b41..e12bb9abf6b6a 100644
+--- a/drivers/clk/qcom/apss-ipq-pll.c
++++ b/drivers/clk/qcom/apss-ipq-pll.c
+@@ -100,7 +100,6 @@ static struct clk_alpha_pll ipq_pll_stromer_plus = {
+ static const struct alpha_pll_config ipq5018_pll_config = {
+ 	.l = 0x2a,
+ 	.config_ctl_val = 0x4001075b,
+-	.config_ctl_hi_val = 0x304,
+ 	.main_output_mask = BIT(0),
+ 	.aux_output_mask = BIT(1),
+ 	.early_output_mask = BIT(3),
+@@ -114,7 +113,6 @@ static const struct alpha_pll_config ipq5018_pll_config = {
+ static const struct alpha_pll_config ipq5332_pll_config = {
+ 	.l = 0x2d,
+ 	.config_ctl_val = 0x4001075b,
+-	.config_ctl_hi_val = 0x304,
+ 	.main_output_mask = BIT(0),
+ 	.aux_output_mask = BIT(1),
+ 	.early_output_mask = BIT(3),
 -- 
 2.43.0
 
