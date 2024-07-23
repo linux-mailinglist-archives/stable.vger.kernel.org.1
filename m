@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-61175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDAD93A72F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 749DF93A661
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC0A6283A3A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6BA71C22396
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0F2158871;
-	Tue, 23 Jul 2024 18:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53D5158D6D;
+	Tue, 23 Jul 2024 18:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ift4vosh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xe/LwfGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE9B13D896;
-	Tue, 23 Jul 2024 18:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930BC158A2C;
+	Tue, 23 Jul 2024 18:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760199; cv=none; b=AoNStOKGzuyBxIQourtCc4hDNTzg2uiU/VeMnY46JoaOKlxRcwsoHTe5S92ODuYUgln2sAcrAURQhNv5u3KIvhlbC2Q/vBGo50v1HqoN4YjcMHbfoVy6u++V9+e0g+LrmdTR2uJrO7cZJiKHDOF9n2L5vH6K9QMMB2VwyihT+q4=
+	t=1721759665; cv=none; b=JB325dIBx/SPnVt0alNjyiMl28ChkEGuZnm/LAqnelPup+nMXVLhlgHNWCAci9wDQjyVRgQDzskddd+KYSXu4mjN1R3rmugpklIFT/kIhPS+WP15XJHXfx6gHsjp5PsuMNGE578h9fXnDMjRWruKTa4ajpKhZZe0D/xOPEizchE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760199; c=relaxed/simple;
-	bh=srLQwZ8iV59k4UgLhl0v7iVY32mAETWZ4nym1D/LgVE=;
+	s=arc-20240116; t=1721759665; c=relaxed/simple;
+	bh=vWzjn/kp3gTaQJ2b7Cc99StA9rYMnKbb8OJd6EDlhZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBlM2gQong2cj2jx4wKXbMcXZQu/06WnTO+Gx2bfP/pYCxK5dG3ivyvt5weEdkwGY4+v1xClbWQDRJkXuzCn9bxCQMAwVe6HjE9D11oDx3FOpNT5tEuCY/vttY/unfHNNKZuGU37V7d8ZjSWyzE7FkXTv6wLTCTgx1zwJnJRo2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ift4vosh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A543C4AF09;
-	Tue, 23 Jul 2024 18:43:18 +0000 (UTC)
+	 MIME-Version; b=ubIQoKHCc1QIDGDQbPMXgS6CTKrpVMTTNZDGh2ZamTNYuyH9MnoGtEmNY21CtxqWju/RGMkCe73eEcxYMOWmnAUJDRjeLoNEi41DO4+hSQ2LeAJAZ4PaqztL8VQlSooOTSWizrwP58KnYR5PEHgfALKSWGpKSU1inB3pfJkmWMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xe/LwfGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B8FC4AF0A;
+	Tue, 23 Jul 2024 18:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760198;
-	bh=srLQwZ8iV59k4UgLhl0v7iVY32mAETWZ4nym1D/LgVE=;
+	s=korg; t=1721759665;
+	bh=vWzjn/kp3gTaQJ2b7Cc99StA9rYMnKbb8OJd6EDlhZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ift4voshyJ0qJZvbWRB6LmLcAiln2NUiy/nUYw+4mBQ/HEHQSbaL9LU+wy7TP5c0z
-	 sH/CN10KLx1cY8cD2ovJHYIGvC7ctf+wrwZBn8zcMcOY+zQ+yKAX0/w/g9Hund1jVX
-	 QNFWk+P9S8rD3XeTqSesipE7bb4BB11LHaLGt2hY=
+	b=Xe/LwfGsNXNrAxZ9IOimhxO/12emDRrk7zNhrrDkaRQje4barfFFbV2PE5m0wXWTu
+	 4vXKrVzE6ty2jSW6VyOJLgLjKY1HTtRYyb5BAyuKIaDgomnXPdiF90uzvjjXDKy0Pq
+	 u3zJith0JXpnl53gKF/4RrdyFL7CXq3CUYcc0iUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>,
-	"David S. Miller" <davem@davemloft.net>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 105/163] net: mvpp2: fill-in dev_port attribute
+Subject: [PATCH 6.6 086/129] btrfs: qgroup: fix quota root leak after quota disable failure
 Date: Tue, 23 Jul 2024 20:23:54 +0200
-Message-ID: <20240723180147.532353889@linuxfoundation.org>
+Message-ID: <20240723180408.108771753@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 00418d5530ca1f42d8721fe0a3e73d1ae477c223 ]
+[ Upstream commit a7e4c6a3031c74078dba7fa36239d0f4fe476c53 ]
 
-Fill this in so user-space can identify multiple ports on the same CP
-unit.
+If during the quota disable we fail when cleaning the quota tree or when
+deleting the root from the root tree, we jump to the 'out' label without
+ever dropping the reference on the quota root, resulting in a leak of the
+root since fs_info->quota_root is no longer pointing to the root (we have
+set it to NULL just before those steps).
 
-Signed-off-by: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix this by always doing a btrfs_put_root() call under the 'out' label.
+This is a problem that exists since qgroups were first added in 2012 by
+commit bed92eae26cc ("Btrfs: qgroup implementation and prototypes"), but
+back then we missed a kfree on the quota root and free_extent_buffer()
+calls on its root and commit root nodes, since back then roots were not
+yet reference counted.
+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/qgroup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index cebc79a710ec2..6340e5e61a7da 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -6906,6 +6906,7 @@ static int mvpp2_port_probe(struct platform_device *pdev,
- 	/* 9704 == 9728 - 20 and rounding to 8 */
- 	dev->max_mtu = MVPP2_BM_JUMBO_PKT_SIZE;
- 	device_set_node(&dev->dev, port_fwnode);
-+	dev->dev_port = port->id;
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 99ea2c6d31944..223dfbf009938 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1228,7 +1228,7 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info)
  
- 	port->pcs_gmac.ops = &mvpp2_phylink_gmac_pcs_ops;
- 	port->pcs_gmac.neg_mode = true;
+ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ {
+-	struct btrfs_root *quota_root;
++	struct btrfs_root *quota_root = NULL;
+ 	struct btrfs_trans_handle *trans = NULL;
+ 	int ret = 0;
+ 
+@@ -1323,9 +1323,9 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 	btrfs_free_tree_block(trans, btrfs_root_id(quota_root),
+ 			      quota_root->node, 0, 1);
+ 
+-	btrfs_put_root(quota_root);
+ 
+ out:
++	btrfs_put_root(quota_root);
+ 	mutex_unlock(&fs_info->qgroup_ioctl_lock);
+ 	if (ret && trans)
+ 		btrfs_end_transaction(trans);
 -- 
 2.43.0
 
