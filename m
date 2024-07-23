@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-61163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0F793A724
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B4E93A676
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9969C282A66
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 720812836E8
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B739158873;
-	Tue, 23 Jul 2024 18:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43EF158A06;
+	Tue, 23 Jul 2024 18:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTAsPEqo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J9dJdt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5851581F4;
-	Tue, 23 Jul 2024 18:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72ABF158878;
+	Tue, 23 Jul 2024 18:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760164; cv=none; b=lBryyTa/XtBEYtmr05YYuew3uBDFoJu8DY/+qpCKI45QbF4/gJCTW3UbDuwFQGLdpu+NqGpxsyQyLO7S3yk9Y7uhrwciXs4Pxyu32xOGGy6NtjTyHXAIvqAZtMIZdGJnAoqtfVvio8vQGgOtUqZ3B3o8B63ueHDsbZcRSoBKPJc=
+	t=1721759715; cv=none; b=j+LKGDs0tXcWl+/o9UIMkUxys1xX4r+cjUBUBWHWK2Lzncwb2F5LA3uXYXPwCu/f5MJLmRWpTAdz7jW0ZPlAL1809atC9QxTDRufcXT7EXXjVsWDaZYrq69iorGFuOjH64MfMpiVGe1hRlQeY4qCaUnsIcSRBIcxLWcq9kNQelE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760164; c=relaxed/simple;
-	bh=2wKien1XtKTYrTP7ZpuigxqTAUntQwoHcYzffovaZ64=;
+	s=arc-20240116; t=1721759715; c=relaxed/simple;
+	bh=gBePPhEsOwOuTgw9Km9DtlH1QOBvaW3LxpYZxlLelPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s17SukM/wkdnZASZ3s+GC7O3/SnGJjVG++Zb3AepuHlmra7yLIjxCOmMfXDUTQFKYhOxj/rwb4rSBvGgiz6GdDSfBDEOI09eV7fqwX65mxu9vd9DzBjYr4tQUWzUah+vBfgYT78jvCABLxj41thpYZxtlCnZOUy6lxOTbNUirS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTAsPEqo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E0CC4AF0B;
-	Tue, 23 Jul 2024 18:42:43 +0000 (UTC)
+	 MIME-Version; b=izfhBmgUYiZ4ZGTeV5xvTCHpLlSXgsgNZv0Y0nG1Gcu8FyE0M/EU+51wbHOC6/maMIioubCc+Fm9UaryZIrffmU2uVXqawgbwRD6XzHGfuoWldHkOc5+qeDoy/iIKNWvdmPiZUsGH+WR9TKi6m8VwUYi82oVObsk1KYor7fz7YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J9dJdt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C55C4AF09;
+	Tue, 23 Jul 2024 18:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760163;
-	bh=2wKien1XtKTYrTP7ZpuigxqTAUntQwoHcYzffovaZ64=;
+	s=korg; t=1721759715;
+	bh=gBePPhEsOwOuTgw9Km9DtlH1QOBvaW3LxpYZxlLelPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTAsPEqoRX48qBClDpGESli+tpQngNOF+xkbIXs36ntEa77jIOQT5nY1Jl2N/EZHz
-	 yPD5SJrSKSBTRRyfFKqH91j+kjigvxXssXBcoKgDOWPQu4r1r27+2/pT0zX9I+C+5N
-	 XqlcCyhaBcNZPyz9hV4L2GQLPfsuE53zmZ7ncqM0=
+	b=1J9dJdt6kWA9VVGqLajb4ACNSfxcdl1gVlt/s7aSTxKTKZLhf4GzPwW//o2VTipr2
+	 a79oOmG02/wIp3/zxR6ycwI4EX8vkHWL0sY6E4nR0Y0yZDbu9VVW3EDeLYFDRmHZV7
+	 2cwkb2WH+6oEy6tmsCAeYZO0LhQ6sUOQYXgTlwe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Sun peng Li <sunpeng.li@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 123/163] clk: qcom: apss-ipq-pll: remove config_ctl_hi_val from Stromer pll configs
+Subject: [PATCH 6.6 104/129] drm/amd/display: Fix refresh rate range for some panel
 Date: Tue, 23 Jul 2024 20:24:12 +0200
-Message-ID: <20240723180148.225170400@linuxfoundation.org>
+Message-ID: <20240723180408.811967822@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit 2ba8425678af422da37b6c9b50e9ce66f0f55cae ]
+[ Upstream commit 9ef1548aeaa8858e7aee2152bf95cc71cdcd6dff ]
 
-Since the CONFIG_CTL register is only 32 bits wide in the Stromer
-and Stromer Plus PLLs , the 'config_ctl_hi_val' values from the
-IPQ5018 and IPQ5332 configurations are not used so remove those.
+[Why]
+Some of the panels does not have the refresh rate range info
+in base EDID and only have the refresh rate range info in
+DisplayID block.
+It will cause the max/min freesync refresh rate set to 0.
 
-No functional changes.
+[How]
+Try to parse the refresh rate range info from DisplayID if the
+max/min refresh rate is 0.
 
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240509-stromer-config-ctl-v1-1-6034e17b28d5@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/apss-ipq-pll.c | 2 --
- 1 file changed, 2 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 48 +++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
-index d7ab5bd5d4b41..e12bb9abf6b6a 100644
---- a/drivers/clk/qcom/apss-ipq-pll.c
-+++ b/drivers/clk/qcom/apss-ipq-pll.c
-@@ -100,7 +100,6 @@ static struct clk_alpha_pll ipq_pll_stromer_plus = {
- static const struct alpha_pll_config ipq5018_pll_config = {
- 	.l = 0x2a,
- 	.config_ctl_val = 0x4001075b,
--	.config_ctl_hi_val = 0x304,
- 	.main_output_mask = BIT(0),
- 	.aux_output_mask = BIT(1),
- 	.early_output_mask = BIT(3),
-@@ -114,7 +113,6 @@ static const struct alpha_pll_config ipq5018_pll_config = {
- static const struct alpha_pll_config ipq5332_pll_config = {
- 	.l = 0x2d,
- 	.config_ctl_val = 0x4001075b,
--	.config_ctl_hi_val = 0x304,
- 	.main_output_mask = BIT(0),
- 	.aux_output_mask = BIT(1),
- 	.early_output_mask = BIT(3),
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 6e5ca0c755c3b..60db3800666ec 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10630,6 +10630,49 @@ static bool parse_edid_cea(struct amdgpu_dm_connector *aconnector,
+ 	return ret;
+ }
+ 
++static void parse_edid_displayid_vrr(struct drm_connector *connector,
++		struct edid *edid)
++{
++	u8 *edid_ext = NULL;
++	int i;
++	int j = 0;
++	u16 min_vfreq;
++	u16 max_vfreq;
++
++	if (edid == NULL || edid->extensions == 0)
++		return;
++
++	/* Find DisplayID extension */
++	for (i = 0; i < edid->extensions; i++) {
++		edid_ext = (void *)(edid + (i + 1));
++		if (edid_ext[0] == DISPLAYID_EXT)
++			break;
++	}
++
++	if (edid_ext == NULL)
++		return;
++
++	while (j < EDID_LENGTH) {
++		/* Get dynamic video timing range from DisplayID if available */
++		if (EDID_LENGTH - j > 13 && edid_ext[j] == 0x25	&&
++		    (edid_ext[j+1] & 0xFE) == 0 && (edid_ext[j+2] == 9)) {
++			min_vfreq = edid_ext[j+9];
++			if (edid_ext[j+1] & 7)
++				max_vfreq = edid_ext[j+10] + ((edid_ext[j+11] & 3) << 8);
++			else
++				max_vfreq = edid_ext[j+10];
++
++			if (max_vfreq && min_vfreq) {
++				connector->display_info.monitor_range.max_vfreq = max_vfreq;
++				connector->display_info.monitor_range.min_vfreq = min_vfreq;
++
++				return;
++			}
++		}
++		j++;
++	}
++}
++
+ static int parse_amd_vsdb(struct amdgpu_dm_connector *aconnector,
+ 			  struct edid *edid, struct amdgpu_hdmi_vsdb_info *vsdb_info)
+ {
+@@ -10752,6 +10795,11 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
+ 	if (!adev->dm.freesync_module)
+ 		goto update;
+ 
++	/* Some eDP panels only have the refresh rate range info in DisplayID */
++	if ((connector->display_info.monitor_range.min_vfreq == 0 ||
++	     connector->display_info.monitor_range.max_vfreq == 0))
++		parse_edid_displayid_vrr(connector, edid);
++
+ 	if (edid && (sink->sink_signal == SIGNAL_TYPE_DISPLAY_PORT ||
+ 		     sink->sink_signal == SIGNAL_TYPE_EDP)) {
+ 		bool edid_check_required = false;
 -- 
 2.43.0
 
