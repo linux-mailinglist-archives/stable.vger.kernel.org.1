@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1206D93A720
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E74193A5E0
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 917D5B22B21
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAAC21F233F0
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7812158A06;
-	Tue, 23 Jul 2024 18:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B291586F6;
+	Tue, 23 Jul 2024 18:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwCC50Zc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nvkg2EJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B2813D896;
-	Tue, 23 Jul 2024 18:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32897156F29;
+	Tue, 23 Jul 2024 18:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760146; cv=none; b=hZ2rJbzEbD635SBvmMLUlOlgvMADhAhY5nfFDgTsXfOoBtX46cokPTUJD2lWOgFcT0DXnr9kL1PaDatxoPItPR5XyzltfYHkMnhtPc1k3e3GT2YVx4026t1TqiW6AKDbOXdRWHLN2YqTk3ml2A3poQDWPAI0ywmpl95eIATJ3eg=
+	t=1721759365; cv=none; b=adKgmGFx1v9boExWGX5t6gpCQJZE044TrUrvqJmBCNC2WSG8iqfjzTyhrYyAfLsHGrBcX9q8vFq/9QHgLbILqFNYceWKsoCAqfLAmfNptlMvPih0Gz+TMp3ViAEOBy5NtKmsVZ18X1/J+QmVBwZNX9eh23uQSxY6S/Q3zTcdYls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760146; c=relaxed/simple;
-	bh=zA72B/I5cSMOGzJMPuQXB0tYnfmzyd1MWT4SFJLrvD0=;
+	s=arc-20240116; t=1721759365; c=relaxed/simple;
+	bh=PjJMY0fQ8BFhTMRpsQD2lhNC3Xi2b4Sl+qKWkP0vLq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKtaHhWInWEs0g4xe7GD5U4TqUua2P8NsSR4lhj+8FO0UC7WKeOyPgWktXtN41fewFtKqmEj0x3rBaNkXe7no+fK50nTYGQyfqbSVRErpUCNfOgPYoN30hDNR9cOvfjhpFs1Bmob3PcQc3Y4N5YfwVpDyx8ICIAscb0RtCIO3J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwCC50Zc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DF7C4AF0A;
-	Tue, 23 Jul 2024 18:42:25 +0000 (UTC)
+	 MIME-Version; b=CiMndijS+TTTGOkkJYLeOcGkTxTNdwPnuE+lMa8yusRNxoej1yRcLcdMsi3hlMgiGTczd0mwetcCPSpWCUBug24iKzLNtxOnYZ/skhnlh+CBJt8OZSeJ0NTWAbXXRSfcNnB1TA6Ll+Me4O5n2fkScbUe7K5acmeuFT2VGsxzerw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nvkg2EJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6A1C4AF0B;
+	Tue, 23 Jul 2024 18:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760146;
-	bh=zA72B/I5cSMOGzJMPuQXB0tYnfmzyd1MWT4SFJLrvD0=;
+	s=korg; t=1721759365;
+	bh=PjJMY0fQ8BFhTMRpsQD2lhNC3Xi2b4Sl+qKWkP0vLq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwCC50ZcVt8qlRje/+TVhI75vl6iOTCmxG40/J8ggcG5KigSNDc+4P7D0Foe7ucXo
-	 qjRY4UpAgAIunuqAHu+dNrMNfFOmciyxtotJi8tqet5Bq2BRwVODmc7Vm33vcYrrBZ
-	 cLuF6yhH8QcMIkWarzigq+5WX9eUkG7dUZ5Q+i7k=
+	b=Nvkg2EJBSRedvMdr+XToel0UCv6x+b/9ZQ9D+/7G4LxDd/s8L2f5AzAb5h3rKWhnV
+	 bJgd8gJVDLipiviqF7llYnYC1/ccAma7OOvaUwLXFuLPHkbOx8Y1YexCLuNRFSk5tq
+	 brceQydWTPpHno+BS44QVP0cuYzyvHCtxe1hzAlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aivaz Latypov <reichaivaz@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 118/163] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15-gw0xxx
+Subject: [PATCH 6.1 090/105] drivers/perf: riscv: Reset the counter to hpmevent mapping while starting cpus
 Date: Tue, 23 Jul 2024 20:24:07 +0200
-Message-ID: <20240723180148.033276247@linuxfoundation.org>
+Message-ID: <20240723180406.712237667@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aivaz Latypov <reichaivaz@gmail.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit 1d091a98c399c17d0571fa1d91a7123a698446e4 ]
+[ Upstream commit 7dd646cf745c34d31e7ed2a52265e9ca8308f58f ]
 
-This HP Laptop uses ALC236 codec with COEF 0x07 controlling
-the mute LED. Enable existing quirk for this device.
+Currently, we stop all the counters while a new cpu is brought online.
+However, the hpmevent to counter mappings are not reset. The firmware may
+have some stale encoding in their mapping structure which may lead to
+undesirable results. We have not encountered such scenario though.
 
-Signed-off-by: Aivaz Latypov <reichaivaz@gmail.com>
-Link: https://patch.msgid.link/20240625081217.1049-1-reichaivaz@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
+Link: https://lore.kernel.org/r/20240628-misc_perf_fixes-v4-2-e01cfddcf035@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/perf/riscv_pmu_sbi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index a260dfb7fde0c..8a52ed9aa465c 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10039,6 +10039,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87e7, "HP ProBook 450 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87f1, "HP ProBook 630 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
+index 382fe5ee6100b..5aab43a3ffb92 100644
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -502,7 +502,7 @@ static inline void pmu_sbi_stop_all(struct riscv_pmu *pmu)
+ 	 * which may include counters that are not enabled yet.
+ 	 */
+ 	sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_STOP,
+-		  0, pmu->cmask, 0, 0, 0, 0);
++		  0, pmu->cmask, SBI_PMU_STOP_FLAG_RESET, 0, 0, 0);
+ }
+ 
+ static inline void pmu_sbi_stop_hw_ctrs(struct riscv_pmu *pmu)
 -- 
 2.43.0
 
