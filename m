@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-60850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40B293A5B2
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CAD693A670
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D48341C20B63
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6CDC2826C1
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132EF158848;
-	Tue, 23 Jul 2024 18:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9D8158D9C;
+	Tue, 23 Jul 2024 18:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvjbgpJe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K94J/Ct8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C776E157A4F;
-	Tue, 23 Jul 2024 18:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C87513D600;
+	Tue, 23 Jul 2024 18:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759237; cv=none; b=CDhAMHlhBeFky4/vgyXLcSZziuKULQ7jifJqjT5cgxIldub43hIuGsCLnstWJe7alKPKFzX+kG745rYXtpgwfdLlX7uiZCZztPPY+cer5OVG+trRjYEXNhxUCb9dol9UQIrazCVomidlVU21i0GNOL8Lv9krFdLZ0dgqS6FFxNU=
+	t=1721759701; cv=none; b=Zh/2ySvl2M31BnGB4dXtfnUxVfJ4PY6V2hYKSYU8v6sJ9qARsBAUQLG9SIXAy4nRcrn2A6lBAVpDmKWao8oiK02t1UE1APJK40R/Qah7ko6ygFkZIW8jtquJtDpSAuJQjT2PrDFMk8dVwO/BT9vTjkQJBVi8I77REaaG64tpSY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759237; c=relaxed/simple;
-	bh=3nEuDfQLd/l+QGOmEFvmI950u9HE8wV8xddd0p+J2xo=;
+	s=arc-20240116; t=1721759701; c=relaxed/simple;
+	bh=IVxorn6x0MQokyVuKm9pQc+8wuskafIaqx9A+/iWGjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8/L/o5oITzWEevOK2+sPZGG9uQyDMTxgizi6EF4dn4b0VkYNw9asRfhp+NB+KsrIzsW4Q9xzQbeWk7J7RTLvMcMnCyEmKQS+5qDZw1EPX+12CKsIxMnNFNWwsIHT767Wz8wvKIKQicDHRTJO9lTZ5lY0Q/5gwg3DDv36yb/0wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvjbgpJe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC6DC4AF09;
-	Tue, 23 Jul 2024 18:27:17 +0000 (UTC)
+	 MIME-Version; b=GHVMKdHBvmYX1hdpsKLf403V8Od7GR6jD8KbNqYKZFyXvxwqNho/tcz5tFTQU6wWgchEquavsIsSZCMEji8Qb3k3r71rTMANge/VKrf411Z0vkDBArEhdrut4P+CBYJONzXyFKze6Q5VjqWt/dQf3jakCLzNsdnpJabTT7cfxPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K94J/Ct8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DC4C4AF0B;
+	Tue, 23 Jul 2024 18:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759237;
-	bh=3nEuDfQLd/l+QGOmEFvmI950u9HE8wV8xddd0p+J2xo=;
+	s=korg; t=1721759700;
+	bh=IVxorn6x0MQokyVuKm9pQc+8wuskafIaqx9A+/iWGjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GvjbgpJeXqylVzuFWkuJPGDlltIiZynmqQ9ueF1IVnMP8QvbEdDU0K2Sb6qOGPLsD
-	 OX594gigY4lgS15gb55hMOc6/Qgzq5KGibT7d23pkQvVjoScIpu04LtjPpD0mFD/Xy
-	 DBpDdYbvkPLtgMGdqIEaywcVYzaTBq7QHbxFD8ss=
+	b=K94J/Ct8kyTr926FWSOKhrNoxr+yhEoIntFnzW+7dEyoYPPvSJjRBPE41ja3VU+4c
+	 CtKUIKPlRw2sr6oCnb+B3iFb1zI370Jr/iEBO0zgpd64Mos8R4xNyxodYhxoxgyeMm
+	 rp54uPSz83AFugJfijvK4OzZwZt8I3UqVo/7YQaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <dwagner@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Paul McKenney <paulmck@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Yury Norov <yury.norov@gmail.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/105] nvmet: always initialize cqe.result
-Date: Tue, 23 Jul 2024 20:23:25 +0200
-Message-ID: <20240723180405.103597278@linuxfoundation.org>
+Subject: [PATCH 6.6 058/129] cpumask: limit FORCE_NR_CPUS to just the UP case
+Date: Tue, 23 Jul 2024 20:23:26 +0200
+Message-ID: <20240723180407.028991113@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +69,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit cd0c1b8e045a8d2785342b385cb2684d9b48e426 ]
+[ Upstream commit 5d272dd1b3430bb31fa30042490fa081512424e4 ]
 
-The spec doesn't mandate that the first two double words (aka results)
-for the command queue entry need to be set to 0 when they are not
-used (not specified). Though, the target implemention returns 0 for TCP
-and FC but not for RDMA.
+Hardcoding the number of CPUs at compile time does improve code
+generation, but if you get it wrong the result will be confusion.
 
-Let's make RDMA behave the same and thus explicitly initializing the
-result field. This prevents leaking any data from the stack.
+We already limited this earlier to only "experts" (see commit
+fe5759d5bfda "cpumask: limit visibility of FORCE_NR_CPUS"), but with
+distro kernel configs often having EXPERT enabled, that turns out to not
+be much of a limit.
 
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+To quote the philosophers at Disney: "Everyone can be an expert. And
+when everyone's an expert, no one will be".
+
+There's a runtime warning if you then set nr_cpus to anything but the
+forced number, but apparently that can be ignored too [1] and by then
+it's pretty much too late anyway.
+
+If we had some real way to limit this to "embedded only", maybe it would
+be worth it, but let's see if anybody even notices that the option is
+gone.  We need to simplify kernel configuration anyway.
+
+Link: https://lore.kernel.org/all/20240618105036.208a8860@rorschach.local.home/ [1]
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Paul McKenney <paulmck@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/core.c             | 1 +
- drivers/nvme/target/fabrics-cmd-auth.c | 3 ---
- drivers/nvme/target/fabrics-cmd.c      | 6 ------
- 3 files changed, 1 insertion(+), 9 deletions(-)
+ lib/Kconfig | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index d2954406b2297..a68e7b1606da5 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -944,6 +944,7 @@ bool nvmet_req_init(struct nvmet_req *req, struct nvmet_cq *cq,
- 	req->metadata_sg_cnt = 0;
- 	req->transfer_len = 0;
- 	req->metadata_len = 0;
-+	req->cqe->result.u64 = 0;
- 	req->cqe->status = 0;
- 	req->cqe->sq_head = 0;
- 	req->ns = NULL;
-diff --git a/drivers/nvme/target/fabrics-cmd-auth.c b/drivers/nvme/target/fabrics-cmd-auth.c
-index fbae76cdc2546..e0dc22fea086d 100644
---- a/drivers/nvme/target/fabrics-cmd-auth.c
-+++ b/drivers/nvme/target/fabrics-cmd-auth.c
-@@ -336,7 +336,6 @@ void nvmet_execute_auth_send(struct nvmet_req *req)
- 		pr_debug("%s: ctrl %d qid %d nvme status %x error loc %d\n",
- 			 __func__, ctrl->cntlid, req->sq->qid,
- 			 status, req->error_loc);
--	req->cqe->result.u64 = 0;
- 	if (req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2 &&
- 	    req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_FAILURE2) {
- 		unsigned long auth_expire_secs = ctrl->kato ? ctrl->kato : 120;
-@@ -528,8 +527,6 @@ void nvmet_execute_auth_receive(struct nvmet_req *req)
- 	status = nvmet_copy_to_sgl(req, 0, d, al);
- 	kfree(d);
- done:
--	req->cqe->result.u64 = 0;
--
- 	if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2)
- 		nvmet_auth_sq_free(req->sq);
- 	else if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_FAILURE1) {
-diff --git a/drivers/nvme/target/fabrics-cmd.c b/drivers/nvme/target/fabrics-cmd.c
-index d8da840a1c0ed..fa9e8dc921539 100644
---- a/drivers/nvme/target/fabrics-cmd.c
-+++ b/drivers/nvme/target/fabrics-cmd.c
-@@ -225,9 +225,6 @@ static void nvmet_execute_admin_connect(struct nvmet_req *req)
- 	if (status)
- 		goto out;
+diff --git a/lib/Kconfig b/lib/Kconfig
+index c686f4adc1246..ee365b7402f19 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -539,13 +539,7 @@ config CPUMASK_OFFSTACK
+ 	  stack overflow.
  
--	/* zero out initial completion result, assign values as needed */
--	req->cqe->result.u32 = 0;
--
- 	if (c->recfmt != 0) {
- 		pr_warn("invalid connect version (%d).\n",
- 			le16_to_cpu(c->recfmt));
-@@ -305,9 +302,6 @@ static void nvmet_execute_io_connect(struct nvmet_req *req)
- 	if (status)
- 		goto out;
+ config FORCE_NR_CPUS
+-       bool "Set number of CPUs at compile time"
+-       depends on SMP && EXPERT && !COMPILE_TEST
+-       help
+-         Say Yes if you have NR_CPUS set to an actual number of possible
+-         CPUs in your system, not to a default value. This forces the core
+-         code to rely on compile-time value and optimize kernel routines
+-         better.
++	def_bool !SMP
  
--	/* zero out initial completion result, assign values as needed */
--	req->cqe->result.u32 = 0;
--
- 	if (c->recfmt != 0) {
- 		pr_warn("invalid connect version (%d).\n",
- 			le16_to_cpu(c->recfmt));
+ config CPU_RMAP
+ 	bool
 -- 
 2.43.0
 
