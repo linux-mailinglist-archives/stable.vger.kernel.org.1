@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-61139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DDE93A709
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7CE93A5CB
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DF32282A66
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB24F281802
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBDD158871;
-	Tue, 23 Jul 2024 18:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DC2158858;
+	Tue, 23 Jul 2024 18:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIEYOrgB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fj9NN614"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9E91581F4;
-	Tue, 23 Jul 2024 18:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3403B155351;
+	Tue, 23 Jul 2024 18:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760092; cv=none; b=nU68mixMk9peB69kuM2JpNYW4xWHehSKBllx20Ss4d1SmSZPNhRl9Nx15QO1kxdScKK2YeSmwnJbR6MS80y2V0z8/s0cQfWKn9T7TvzNRdTi70SfjhzXRqtp5ZuCtr+P+1cBZ3X1JfrxEs63tr26q68SgA+1/Ny73QZksxBt24U=
+	t=1721759303; cv=none; b=iAyVUT9o5heFdMxPJz7g+1bmofDQNIrrFyajIKYCP3t2Fl0Opg6VfYyL+jB3XV3GIHu+ALTeIxLiT8obzJZpVC2lIprhmRhCBB9LXUAbGm0HsIMiYvM2ioA+aX4UofbqjSsq8SWdmgCyx6y6AP3qyxGw6IPBsw6PUPlYwh3LMNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760092; c=relaxed/simple;
-	bh=lsi2m4nyDQY5CuEyW/gps6XPJDAAQqj+jGGKOpTH35c=;
+	s=arc-20240116; t=1721759303; c=relaxed/simple;
+	bh=iWt3vCesViiahLxPypjaO0nblPpb2ft1LVAXtSZoK7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgB9x+5vOPegseEYpR06WS/D+18lj/u+6jbndikPDhpW7UUyY3Vi/2ETen8Pv6hblyPbmmzKYRAb8xFyT9t1N4TbzmO6zOutza6APJK/6MyaQDYBcj/BTlvMQqwDc3BGZGArg5n6Wf2qPREZ0XXU1zU9mvVubYmJnTJuI+JiVN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIEYOrgB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C15C4AF09;
-	Tue, 23 Jul 2024 18:41:31 +0000 (UTC)
+	 MIME-Version; b=i42Vne80JyEKiwBXcvx3NDuUYw6KTCkdUkAVGLj7Xdd/b44elW7A2jvJstBriBGmANZYgU/gt7njKnXT+wYCoF37zh2klzSE5mixq4s6zZQN4FOxweA5BSN93yte43ycGz16UfGOg8RZ7E3YVQsN/Is/yOExksBC1FalJIg5jko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fj9NN614; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4F9C4AF09;
+	Tue, 23 Jul 2024 18:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760092;
-	bh=lsi2m4nyDQY5CuEyW/gps6XPJDAAQqj+jGGKOpTH35c=;
+	s=korg; t=1721759303;
+	bh=iWt3vCesViiahLxPypjaO0nblPpb2ft1LVAXtSZoK7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIEYOrgB4pyjfNOZn6mdIJ1n3TLOrnD3SJhq8iSi7xl844if184mkv1oAR+MLlQeq
-	 qd9RhxenYcpzHhuqPeawRhh7HdK5dyoKbSt2fMYS8+Ex/e0E9G83VDZDSIi78lK97u
-	 TlQULlzNKq0M8Fu1nrtknBSTOynTF8bhVMBpjquE=
+	b=Fj9NN614c/kbtn/mLF6EVlwd9S7kCfR+2kUaIlFss26aCDEvysq1zbEjyGLFi6wsX
+	 2JbszRs0yJRabTqIOaoogaZX+HcJkxByloCKr1gWfJetZCjSKgzCyXoBHZi7Q8IB7Z
+	 VHPRolMfAa+IUmJrdSG0nWhn7+GLbl+m8vbICVh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Primoz Fiser <primoz.fiser@norik.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 098/163] ASoC: ti: omap-hdmi: Fix too long driver name
-Date: Tue, 23 Jul 2024 20:23:47 +0200
-Message-ID: <20240723180147.262972021@linuxfoundation.org>
+Subject: [PATCH 6.1 071/105] btrfs: qgroup: fix quota root leak after quota disable failure
+Date: Tue, 23 Jul 2024 20:23:48 +0200
+Message-ID: <20240723180405.982257088@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Primoz Fiser <primoz.fiser@norik.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 524d3f126362b6033e92cbe107ae2158d7fbff94 ]
+[ Upstream commit a7e4c6a3031c74078dba7fa36239d0f4fe476c53 ]
 
-Set driver name to "HDMI". This simplifies the code and gets rid of
-the following error messages:
+If during the quota disable we fail when cleaning the quota tree or when
+deleting the root from the root tree, we jump to the 'out' label without
+ever dropping the reference on the quota root, resulting in a leak of the
+root since fs_info->quota_root is no longer pointing to the root (we have
+set it to NULL just before those steps).
 
-  ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
+Fix this by always doing a btrfs_put_root() call under the 'out' label.
+This is a problem that exists since qgroups were first added in 2012 by
+commit bed92eae26cc ("Btrfs: qgroup implementation and prototypes"), but
+back then we missed a kfree on the quota root and free_extent_buffer()
+calls on its root and commit root nodes, since back then roots were not
+yet reference counted.
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20240610125847.773394-1-primoz.fiser@norik.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/omap-hdmi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/btrfs/qgroup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index 4513b527ab970..ad8925b6481ca 100644
---- a/sound/soc/ti/omap-hdmi.c
-+++ b/sound/soc/ti/omap-hdmi.c
-@@ -354,11 +354,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
- 	if (!card)
- 		return -ENOMEM;
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 80ca7b435b0d1..e482889667ec9 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1222,7 +1222,7 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info)
  
--	card->name = devm_kasprintf(dev, GFP_KERNEL,
--				    "HDMI %s", dev_name(ad->dssdev));
--	if (!card->name)
--		return -ENOMEM;
--
-+	card->name = "HDMI";
- 	card->owner = THIS_MODULE;
- 	card->dai_link =
- 		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
+ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ {
+-	struct btrfs_root *quota_root;
++	struct btrfs_root *quota_root = NULL;
+ 	struct btrfs_trans_handle *trans = NULL;
+ 	int ret = 0;
+ 
+@@ -1317,9 +1317,9 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 	btrfs_free_tree_block(trans, btrfs_root_id(quota_root),
+ 			      quota_root->node, 0, 1);
+ 
+-	btrfs_put_root(quota_root);
+ 
+ out:
++	btrfs_put_root(quota_root);
+ 	mutex_unlock(&fs_info->qgroup_ioctl_lock);
+ 	if (ret && trans)
+ 		btrfs_end_transaction(trans);
 -- 
 2.43.0
 
