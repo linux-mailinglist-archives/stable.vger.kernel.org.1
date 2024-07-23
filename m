@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-60894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3898393A5E1
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:29:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171D793A695
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D722D1F232BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:29:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 487491C21B6B
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68DB8158858;
-	Tue, 23 Jul 2024 18:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5DC13D600;
+	Tue, 23 Jul 2024 18:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIJjMaYH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTm8zzDD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2819D156F29;
-	Tue, 23 Jul 2024 18:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE5A158215;
+	Tue, 23 Jul 2024 18:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759368; cv=none; b=bDhdCYdcfXlu54zoa/lhLFCHGXrvZXj2ugBCLHaHPolrvfuj6+10QAAgQ8z4bi8nT70MMYZ9gQKiltw+eD1AiHoFjJnC2iVUZcwWs9dXTPPvfqC63bswDjtEqkXmKRd+lq2tsg7ZH8hxSYYnnaAcO0+N4694cbcKZx4JNqZ9oww=
+	t=1721759798; cv=none; b=ai1LS8pkJI49fw2uK7jLSiifK1ob0NN63ciB5rlxxQ/J2b6ChengxCEOhbkAqmw5Gb7x+xpz+95/a6iQar2Ol68dO/bBoGUC5KHUKvi5jmU3/oaPCnM7SL4MGptZzuPnvt72X8e6J5DYJL7RYwZ20BShD4hEsRCYhjnkM3YESLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759368; c=relaxed/simple;
-	bh=vg//bSqi8TBZRi+wQUkSkT82AI8LbWCSWhAqT1CdkZo=;
+	s=arc-20240116; t=1721759798; c=relaxed/simple;
+	bh=oC1R5fQlRceJwFYgly/bHKrz+IOH+wXTzosOQ1yWtz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ad5vGOUYNNxdrZw2ZUzfEcTm6pufSUuKlYORIV7ZQuLXUihbAz4MdfIIZMpgOg/2yI4F55imbyZhtdNinv4CepwtLPRDSAkOBO5dlFapmirs+4n5HLtpeIyrzxft/1HPTPOlMl1UWYRiHD38PZwt7NIYPMpVtcYdGjjH8LIibns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIJjMaYH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A372CC4AF0A;
-	Tue, 23 Jul 2024 18:29:27 +0000 (UTC)
+	 MIME-Version; b=Z9lsh2PJ9CZQpCrkRmk79ZHyZ/mNvmyrvgq8NNa4XRptPYduQQg9jURG56iRndja7G25ldaGg/ipTR2HAHatl0porsPcErGr8vfBDK4qpBzPvC4JLLNKOMGpuE7zJCoWOiAEpj1Y51a5jUL0CkTss+Hm1vqH/ciw0Chte7gOILk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTm8zzDD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D64C4AF09;
+	Tue, 23 Jul 2024 18:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759368;
-	bh=vg//bSqi8TBZRi+wQUkSkT82AI8LbWCSWhAqT1CdkZo=;
+	s=korg; t=1721759798;
+	bh=oC1R5fQlRceJwFYgly/bHKrz+IOH+wXTzosOQ1yWtz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xIJjMaYHEbXuzExADA0c5mNvO2dTJYRRYKAMORG19b/vzAMhm/xBeuE1RfCQHEfy4
-	 t/2gxbPeEfyBRJXOEFha5zxTPAqDV0QHNMhcq5beavc4rfnU7G4sNO3oPF17ZmhGUP
-	 CyCHPEVsYEN3Mx2eXeCdCjWiDIEyonMrmP0KSSpA=
+	b=rTm8zzDDJ6N5wmoD2OwaB+5h6AnHpfDcR2eVrZlGsdTNcx1hfKf3V8BuZarx9kFyE
+	 H0iVlOSjoftLNtmsO7btiHRf3EVI0aHZdlNA52XRg1YkNmBO9WUK6glp8CRYsTiwhr
+	 8gfH6XwhMwINfTv9x/bl/RN8I3qvBuvZpknaKuKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/105] riscv: stacktrace: fix usage of ftrace_graph_ret_addr()
+	Edward Adam Davis <eadavis@qq.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 100/129] bluetooth/l2cap: sync sock recv cb and release
 Date: Tue, 23 Jul 2024 20:24:08 +0200
-Message-ID: <20240723180406.754408918@linuxfoundation.org>
+Message-ID: <20240723180408.656852465@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 393da6cbb2ff89aadc47683a85269f913aa1c139 ]
+[ Upstream commit 89e856e124f9ae548572c56b1b70c2255705f8fe ]
 
-ftrace_graph_ret_addr() takes an `idx` integer pointer that is used to
-optimize the stack unwinding. Pass it a valid pointer to utilize the
-optimizations that might be available in the future.
+The problem occurs between the system call to close the sock and hci_rx_work,
+where the former releases the sock and the latter accesses it without lock protection.
 
-The commit is making riscv's usage of ftrace_graph_ret_addr() match
-x86_64.
+           CPU0                       CPU1
+           ----                       ----
+           sock_close                 hci_rx_work
+	   l2cap_sock_release         hci_acldata_packet
+	   l2cap_sock_kill            l2cap_recv_frame
+	   sk_free                    l2cap_conless_channel
+	                              l2cap_sock_recv_cb
 
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/r/20240618145820.62112-1-puranjay@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+If hci_rx_work processes the data that needs to be received before the sock is
+closed, then everything is normal; Otherwise, the work thread may access the
+released sock when receiving data.
+
+Add a chan mutex in the rx callback of the sock to achieve synchronization between
+the sock release and recv cb.
+
+Sock is dead, so set chan data to NULL, avoid others use invalid sock pointer.
+
+Reported-and-tested-by: syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/stacktrace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bluetooth/l2cap_sock.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
-index 0d3f00eb0baee..10e311b2759d3 100644
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -32,6 +32,7 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			     bool (*fn)(void *, unsigned long), void *arg)
- {
- 	unsigned long fp, sp, pc;
-+	int graph_idx = 0;
- 	int level = 0;
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index 97d0a0f5829a6..ae19d5deba3ae 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1250,6 +1250,10 @@ static void l2cap_sock_kill(struct sock *sk)
  
- 	if (regs) {
-@@ -68,7 +69,7 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			pc = regs->ra;
- 		} else {
- 			fp = frame->fp;
--			pc = ftrace_graph_ret_addr(current, NULL, frame->ra,
-+			pc = ftrace_graph_ret_addr(current, &graph_idx, frame->ra,
- 						   &frame->ra);
- 			if (pc == (unsigned long)ret_from_exception) {
- 				if (unlikely(!__kernel_text_address(pc) || !fn(arg, pc)))
+ 	BT_DBG("sk %p state %s", sk, state_to_string(sk->sk_state));
+ 
++	/* Sock is dead, so set chan data to NULL, avoid other task use invalid
++	 * sock pointer.
++	 */
++	l2cap_pi(sk)->chan->data = NULL;
+ 	/* Kill poor orphan */
+ 
+ 	l2cap_chan_put(l2cap_pi(sk)->chan);
+@@ -1492,12 +1496,25 @@ static struct l2cap_chan *l2cap_sock_new_connection_cb(struct l2cap_chan *chan)
+ 
+ static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
+ {
+-	struct sock *sk = chan->data;
+-	struct l2cap_pinfo *pi = l2cap_pi(sk);
++	struct sock *sk;
++	struct l2cap_pinfo *pi;
+ 	int err;
+ 
+-	lock_sock(sk);
++	/* To avoid race with sock_release, a chan lock needs to be added here
++	 * to synchronize the sock.
++	 */
++	l2cap_chan_hold(chan);
++	l2cap_chan_lock(chan);
++	sk = chan->data;
+ 
++	if (!sk) {
++		l2cap_chan_unlock(chan);
++		l2cap_chan_put(chan);
++		return -ENXIO;
++	}
++
++	pi = l2cap_pi(sk);
++	lock_sock(sk);
+ 	if (chan->mode == L2CAP_MODE_ERTM && !list_empty(&pi->rx_busy)) {
+ 		err = -ENOMEM;
+ 		goto done;
+@@ -1546,6 +1563,8 @@ static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
+ 
+ done:
+ 	release_sock(sk);
++	l2cap_chan_unlock(chan);
++	l2cap_chan_put(chan);
+ 
+ 	return err;
+ }
 -- 
 2.43.0
 
