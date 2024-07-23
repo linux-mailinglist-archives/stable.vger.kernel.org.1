@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B145B93A6B2
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C9293A613
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E314C1C22388
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:37:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B4331C22343
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B8A157A61;
-	Tue, 23 Jul 2024 18:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A28E156C6C;
+	Tue, 23 Jul 2024 18:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWwf9ccf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+yxEdtP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB29813D896;
-	Tue, 23 Jul 2024 18:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0759042067;
+	Tue, 23 Jul 2024 18:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759864; cv=none; b=uy1JXoLl8sS8F7ahFeZZdWzX80JQNmgbsHDmIP0p2Eivf4z8AcfBkmcoJKRqTen0wcmd5/xjjtaaWJ61MJI7CDEp2o31z2BJE4gg+bA9HqNfT3D8QRrvCQkbrLrHtgUxIBCsgMuQhGn8n/6NIE/XI8ZcYq9P308LLa/yu5RjlzM=
+	t=1721759486; cv=none; b=sjXiMozSxVaaOxgkJToT8yS7Sdc047YCPiZ6jf8Pt/oH2vMJCjxH44LA+L/IHYDBRrw6tPWbl7VkQLRYBZ6Mr8dlqUQ0olfj7Pwz8mI12BYIl8exXP8d1ItsmxQ+BnwO69LRtECkWTW3+7HAwffgKzU5vbr+z3oK1XwW0lOHRzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759864; c=relaxed/simple;
-	bh=YOEm3XpObDPfufk9rg+IayPaynQTRlQlM6iPTO6FZVg=;
+	s=arc-20240116; t=1721759486; c=relaxed/simple;
+	bh=WpO/tfxzZbbpkuTsZsxY+9g/jFnhLbs3ZfEEMZqrIiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcdoLdjd59IxfyCB41xWuqiWx+5T6E7agJnZXXcTihUR32LmsNDLvOk44qaoqXZz7s8GEpl+HXxSsh2YNV9vG2Bi9yGYADS28X2uhsg/X5WezRQEdHlV040rmTOWlhBSSIwX9UoM8W3TAXaTnBdb9C6DXifXPTDNXDrF0tTjNJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWwf9ccf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C3AC4AF0B;
-	Tue, 23 Jul 2024 18:37:43 +0000 (UTC)
+	 MIME-Version; b=N1MtzLs9VcMCGop4MEwlWzYPcVUzwic37jUvlKSDKlIkR523OeV+Ky9SsrY+/4vRIc9OFOEVN4IFA8AxiZs3/fNv6eDu1mpFmoQjzMteUJXATTyw1TO43WRdUaZ1vPsYPvqGi1VM5IiJho4WeOWjb/Jpz1REnxH/0Mkj4ovhgd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+yxEdtP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E519C4AF0A;
+	Tue, 23 Jul 2024 18:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759863;
-	bh=YOEm3XpObDPfufk9rg+IayPaynQTRlQlM6iPTO6FZVg=;
+	s=korg; t=1721759485;
+	bh=WpO/tfxzZbbpkuTsZsxY+9g/jFnhLbs3ZfEEMZqrIiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pWwf9ccfezGw7HVeEyuDaebEQIr/0Gz8b9JVqelCEjwtPa4lMNzC4C7niXq1eS2dg
-	 fBysz8edcag14FCoRHlhhdl3bnh+F9fdrX0UTq83He0MNNerzsoSd6E3JSU4FZ+LOs
-	 WcK55h9atFOaZbS0AeR5GzTbYXgIBWCUCdLCw21Q=
+	b=z+yxEdtPfcrmy/S2sdZZS3FH2/6TQuD/ubUM4HB5FuhqT69wVEUS+x+RaQQO9VCbP
+	 WIr7iXj8f6xx0mytDTBX+xyi919DqJNwQdvh7TQBghUAT94wXnRoPuxdYJbqTJV6Hp
+	 nUD1UJENYqThooUib8CW8OMhoJYb70jXKazGN798=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 023/163] wifi: iwlwifi: mvm: Fix scan abort handling with HW rfkill
+Subject: [PATCH 6.6 004/129] scsi: qedf: Dont process stag work during unload and recovery
 Date: Tue, 23 Jul 2024 20:22:32 +0200
-Message-ID: <20240723180144.365812682@linuxfoundation.org>
+Message-ID: <20240723180404.937709370@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-[ Upstream commit e6dd2936ce7ce94a1915b799f8af8193ec628e87 ]
+[ Upstream commit 51071f0831ea975fc045526dd7e17efe669dc6e1 ]
 
-When HW rfkill is toggled to disable the RF, the flow to stop scan is
-called. When trying to send the command to abort the scan, since
-HW rfkill is toggled, the command is not sent due to rfkill being
-asserted, and -ERFKILL is returned from iwl_trans_send_cmd(), but this
-is silently ignored in iwl_mvm_send_cmd() and thus the scan abort flow
-continues to wait for scan complete notification and fails. Since it
-fails, the UID to type mapping is not cleared, and thus a warning is
-later fired when trying to stop the interface.
+Stag work can cause issues during unload and recovery, hence don't process
+it.
 
-To fix this, modify the UMAC scan abort flow to force sending the
-scan abort command even when in rfkill, so stop the FW from accessing
-the radio etc.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.8cbe2f8c1a97.Iffe235c12a919dafec88eef399eb1f7bae2c5bdb@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240515091101.18754-2-skashyap@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/qedf/qedf_main.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index e8d40e4a2f2ff..aa5fa6c657c02 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -3254,10 +3254,11 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index 91f3f1d7098eb..c27e27cff0790 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -3996,6 +3996,22 @@ void qedf_stag_change_work(struct work_struct *work)
+ 	struct qedf_ctx *qedf =
+ 	    container_of(work, struct qedf_ctx, stag_work.work);
  
- 	ret = iwl_mvm_send_cmd_pdu(mvm,
- 				   WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
--				   0, sizeof(cmd), &cmd);
-+				   CMD_SEND_IN_RFKILL, sizeof(cmd), &cmd);
- 	if (!ret)
- 		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
- 
-+	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d\n", ret);
- 	return ret;
- }
- 
++	if (!qedf) {
++		QEDF_ERR(&qedf->dbg_ctx, "qedf is NULL");
++		return;
++	}
++
++	if (test_bit(QEDF_IN_RECOVERY, &qedf->flags)) {
++		QEDF_ERR(&qedf->dbg_ctx,
++			 "Already is in recovery, hence not calling software context reset.\n");
++		return;
++	}
++
++	if (test_bit(QEDF_UNLOADING, &qedf->flags)) {
++		QEDF_ERR(&qedf->dbg_ctx, "Driver unloading\n");
++		return;
++	}
++
+ 	printk_ratelimited("[%s]:[%s:%d]:%d: Performing software context reset.",
+ 			dev_name(&qedf->pdev->dev), __func__, __LINE__,
+ 			qedf->dbg_ctx.host_no);
 -- 
 2.43.0
 
