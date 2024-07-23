@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-61177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5F993A732
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A77593A5D4
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3DCC283A09
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D5931F2123E
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D423158871;
-	Tue, 23 Jul 2024 18:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0919E1586CB;
+	Tue, 23 Jul 2024 18:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odBAbNFJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJtNicRv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4581581F4;
-	Tue, 23 Jul 2024 18:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5D0157A4F;
+	Tue, 23 Jul 2024 18:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760205; cv=none; b=S6GieM7H8/BZRopnNQq+b54sDEuxpGNi/uxUNqxpwv0WA36EzREU5KRii6sWsiPBGq1QpOvmlzQwoaRjgd5i1MXAb5pmaCf6hrllTLkihXDdLczlwpG9xrMG3o41FdD6vzUwLk2TtO6RPrZ0RAFSyIIw+4arqgaLsUqz3JcF7YU=
+	t=1721759329; cv=none; b=tMm5hNupxKdRW0ogQnJL7X9CLunoX11XzfurHkjIMb4fIlZum7mq7pHH4zWSFkjWtQ5r5gs6Wu6fmNRHhn0hj8EdyQb3Z3K2GSGTBjKTDDeabhpIp/uBZg495fzoJey0/2WnA2KiTkNR4kVge5L8ntE+zHd/MNLTVJ22VDM1j64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760205; c=relaxed/simple;
-	bh=cOIkqL0SAKEwAJ0JRvXYmB86Y+XJwOUmLpO4V9cwpgs=;
+	s=arc-20240116; t=1721759329; c=relaxed/simple;
+	bh=hNp7qL4mf8nn/c3Oq69Qak3h04pmnyUo561OoZA97Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aS1XWqn0eSmU/X9eaJInJBLXUSuQ+BWTnS2+THe0HM583vIGpoEhNpvH4jGPsHtCSru1iGbgu2xWZr02ILYVKxodJkZ2H8yhxOpohy4CZS7TfaC2AR7D3g4+X7xe1xurpd8PhuxH/d8ndN+vJk2Ky4/mHalQV9zlOLX/Nk18RO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odBAbNFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74390C4AF09;
-	Tue, 23 Jul 2024 18:43:24 +0000 (UTC)
+	 MIME-Version; b=T8mjbVHoVRwJjWx7V2M+DWI+K3Xgj/2wFxrb5h+9WxYNj3BPx7BtRTprZQbuprL9YW9s4pzR2z5dF0XSuweyeWfFepjq12tWEYZFoJ4uKrEv1Pn+HsuldD+hA0JVYTttOOQfbczmMynBS4xlpH0hkfrLVrBTHdFFLwlGDAedeQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJtNicRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44025C4AF0A;
+	Tue, 23 Jul 2024 18:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760204;
-	bh=cOIkqL0SAKEwAJ0JRvXYmB86Y+XJwOUmLpO4V9cwpgs=;
+	s=korg; t=1721759329;
+	bh=hNp7qL4mf8nn/c3Oq69Qak3h04pmnyUo561OoZA97Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=odBAbNFJ2OvPEcpiHhQsn6R8sJw6rakmTCJnv5+BBg7rvAmNTlSjXpBm/44tIYRT7
-	 xo47DGmYdIa9Xap6E4+SxDvDTFqd8XfcCK+5Sun6v7+XpF26I2JdwRpRzxDT7NnvF5
-	 GXVWmCjQ7Fr10fklEPdubcHH8QKLGiiGlO9oknk4=
+	b=XJtNicRvQt6oCFHEs5DtGLCwNf+FvF2f3W1DHoBqqtAcTVvwfFvrfRorZJ2xdmmP2
+	 HN9FpGnBWKc50J1Ooo0Hui6cN8nJCBqg8zL1v0z7vZHmRv6rwh7t2NIFI+1raPQihP
+	 uWCJlsf2pmhhbu2zzW2TGVivNgdTxXP0XXZyV8Zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Suman Ghosh <sumang@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Vishal Chourasia <vishalc@linux.ibm.com>,
+	Anjali K <anjalik@linux.ibm.com>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 107/163] octeontx2-pf: Fix coverity and klockwork issues in octeon PF driver
+Subject: [PATCH 6.1 079/105] powerpc/pseries: Whitelist dtl slub object for copying to userspace
 Date: Tue, 23 Jul 2024 20:23:56 +0200
-Message-ID: <20240723180147.608530389@linuxfoundation.org>
+Message-ID: <20240723180406.291137782@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,172 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Anjali K <anjalik@linux.ibm.com>
 
-[ Upstream commit 02ea312055da84e08e3e5bce2539c1ff11c8b5f2 ]
+[ Upstream commit 1a14150e1656f7a332a943154fc486504db4d586 ]
 
-Fix unintended sign extension and klockwork issues. These are not real
-issue but for sanity checks.
+Reading the dispatch trace log from /sys/kernel/debug/powerpc/dtl/cpu-*
+results in a BUG() when the config CONFIG_HARDENED_USERCOPY is enabled as
+shown below.
 
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+    kernel BUG at mm/usercopy.c:102!
+    Oops: Exception in kernel mode, sig: 5 [#1]
+    LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+    Modules linked in: xfs libcrc32c dm_service_time sd_mod t10_pi sg ibmvfc
+    scsi_transport_fc ibmveth pseries_wdt dm_multipath dm_mirror dm_region_hash dm_log dm_mod fuse
+    CPU: 27 PID: 1815 Comm: python3 Not tainted 6.10.0-rc3 #85
+    Hardware name: IBM,9040-MRX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NM1060_042) hv:phyp pSeries
+    NIP:  c0000000005d23d4 LR: c0000000005d23d0 CTR: 00000000006ee6f8
+    REGS: c000000120c078c0 TRAP: 0700   Not tainted  (6.10.0-rc3)
+    MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2828220f  XER: 0000000e
+    CFAR: c0000000001fdc80 IRQMASK: 0
+    [ ... GPRs omitted ... ]
+    NIP [c0000000005d23d4] usercopy_abort+0x78/0xb0
+    LR [c0000000005d23d0] usercopy_abort+0x74/0xb0
+    Call Trace:
+     usercopy_abort+0x74/0xb0 (unreliable)
+     __check_heap_object+0xf8/0x120
+     check_heap_object+0x218/0x240
+     __check_object_size+0x84/0x1a4
+     dtl_file_read+0x17c/0x2c4
+     full_proxy_read+0x8c/0x110
+     vfs_read+0xdc/0x3a0
+     ksys_read+0x84/0x144
+     system_call_exception+0x124/0x330
+     system_call_vectored_common+0x15c/0x2ec
+    --- interrupt: 3000 at 0x7fff81f3ab34
+
+Commit 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
+requires that only whitelisted areas in slab/slub objects can be copied to
+userspace when usercopy hardening is enabled using CONFIG_HARDENED_USERCOPY.
+Dtl contains hypervisor dispatch events which are expected to be read by
+privileged users. Hence mark this safe for user access.
+Specify useroffset=0 and usersize=DISPATCH_LOG_BYTES to whitelist the
+entire object.
+
+Co-developed-by: Vishal Chourasia <vishalc@linux.ibm.com>
+Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
+Signed-off-by: Anjali K <anjalik@linux.ibm.com>
+Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240614173844.746818-1-anjalik@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../marvell/octeontx2/nic/otx2_common.c       | 10 ++--
- .../ethernet/marvell/octeontx2/nic/otx2_reg.h | 55 ++++++++++---------
- .../marvell/octeontx2/nic/otx2_txrx.c         |  2 +-
- .../net/ethernet/marvell/octeontx2/nic/qos.c  |  3 +-
- 4 files changed, 35 insertions(+), 35 deletions(-)
+ arch/powerpc/platforms/pseries/setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index a85ac039d779b..87d5776e3b88e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -648,14 +648,14 @@ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for
- 	} else if (lvl == NIX_TXSCH_LVL_TL4) {
- 		parent = schq_list[NIX_TXSCH_LVL_TL3][prio];
- 		req->reg[0] = NIX_AF_TL4X_PARENT(schq);
--		req->regval[0] = parent << 16;
-+		req->regval[0] = (u64)parent << 16;
- 		req->num_regs++;
- 		req->reg[1] = NIX_AF_TL4X_SCHEDULE(schq);
- 		req->regval[1] = dwrr_val;
- 	} else if (lvl == NIX_TXSCH_LVL_TL3) {
- 		parent = schq_list[NIX_TXSCH_LVL_TL2][prio];
- 		req->reg[0] = NIX_AF_TL3X_PARENT(schq);
--		req->regval[0] = parent << 16;
-+		req->regval[0] = (u64)parent << 16;
- 		req->num_regs++;
- 		req->reg[1] = NIX_AF_TL3X_SCHEDULE(schq);
- 		req->regval[1] = dwrr_val;
-@@ -670,11 +670,11 @@ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for
- 	} else if (lvl == NIX_TXSCH_LVL_TL2) {
- 		parent = schq_list[NIX_TXSCH_LVL_TL1][prio];
- 		req->reg[0] = NIX_AF_TL2X_PARENT(schq);
--		req->regval[0] = parent << 16;
-+		req->regval[0] = (u64)parent << 16;
- 
- 		req->num_regs++;
- 		req->reg[1] = NIX_AF_TL2X_SCHEDULE(schq);
--		req->regval[1] = TXSCH_TL1_DFLT_RR_PRIO << 24 | dwrr_val;
-+		req->regval[1] = (u64)hw->txschq_aggr_lvl_rr_prio << 24 | dwrr_val;
- 
- 		if (lvl == hw->txschq_link_cfg_lvl) {
- 			req->num_regs++;
-@@ -698,7 +698,7 @@ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for
- 
- 		req->num_regs++;
- 		req->reg[1] = NIX_AF_TL1X_TOPOLOGY(schq);
--		req->regval[1] = (TXSCH_TL1_DFLT_RR_PRIO << 1);
-+		req->regval[1] = hw->txschq_aggr_lvl_rr_prio << 1;
- 
- 		req->num_regs++;
- 		req->reg[2] = NIX_AF_TL1X_CIR(schq);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
-index 45a32e4b49d1c..e3aee6e362151 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
-@@ -139,33 +139,34 @@
- #define	NIX_LF_CINTX_ENA_W1C(a)		(NIX_LFBASE | 0xD50 | (a) << 12)
- 
- /* NIX AF transmit scheduler registers */
--#define NIX_AF_SMQX_CFG(a)		(0x700 | (a) << 16)
--#define NIX_AF_TL1X_SCHEDULE(a)		(0xC00 | (a) << 16)
--#define NIX_AF_TL1X_CIR(a)		(0xC20 | (a) << 16)
--#define NIX_AF_TL1X_TOPOLOGY(a)		(0xC80 | (a) << 16)
--#define NIX_AF_TL2X_PARENT(a)		(0xE88 | (a) << 16)
--#define NIX_AF_TL2X_SCHEDULE(a)		(0xE00 | (a) << 16)
--#define NIX_AF_TL2X_TOPOLOGY(a)		(0xE80 | (a) << 16)
--#define NIX_AF_TL2X_CIR(a)              (0xE20 | (a) << 16)
--#define NIX_AF_TL2X_PIR(a)              (0xE30 | (a) << 16)
--#define NIX_AF_TL3X_PARENT(a)		(0x1088 | (a) << 16)
--#define NIX_AF_TL3X_SCHEDULE(a)		(0x1000 | (a) << 16)
--#define NIX_AF_TL3X_SHAPE(a)		(0x1010 | (a) << 16)
--#define NIX_AF_TL3X_CIR(a)		(0x1020 | (a) << 16)
--#define NIX_AF_TL3X_PIR(a)		(0x1030 | (a) << 16)
--#define NIX_AF_TL3X_TOPOLOGY(a)		(0x1080 | (a) << 16)
--#define NIX_AF_TL4X_PARENT(a)		(0x1288 | (a) << 16)
--#define NIX_AF_TL4X_SCHEDULE(a)		(0x1200 | (a) << 16)
--#define NIX_AF_TL4X_SHAPE(a)		(0x1210 | (a) << 16)
--#define NIX_AF_TL4X_CIR(a)		(0x1220 | (a) << 16)
--#define NIX_AF_TL4X_PIR(a)		(0x1230 | (a) << 16)
--#define NIX_AF_TL4X_TOPOLOGY(a)		(0x1280 | (a) << 16)
--#define NIX_AF_MDQX_SCHEDULE(a)		(0x1400 | (a) << 16)
--#define NIX_AF_MDQX_SHAPE(a)		(0x1410 | (a) << 16)
--#define NIX_AF_MDQX_CIR(a)		(0x1420 | (a) << 16)
--#define NIX_AF_MDQX_PIR(a)		(0x1430 | (a) << 16)
--#define NIX_AF_MDQX_PARENT(a)		(0x1480 | (a) << 16)
--#define NIX_AF_TL3_TL2X_LINKX_CFG(a, b)	(0x1700 | (a) << 16 | (b) << 3)
-+#define NIX_AF_SMQX_CFG(a)		(0x700 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_SDP_LINK_CFG(a)	(0xB10 | (u64)(a) << 16)
-+#define NIX_AF_TL1X_SCHEDULE(a)		(0xC00 | (u64)(a) << 16)
-+#define NIX_AF_TL1X_CIR(a)		(0xC20 | (u64)(a) << 16)
-+#define NIX_AF_TL1X_TOPOLOGY(a)		(0xC80 | (u64)(a) << 16)
-+#define NIX_AF_TL2X_PARENT(a)		(0xE88 | (u64)(a) << 16)
-+#define NIX_AF_TL2X_SCHEDULE(a)		(0xE00 | (u64)(a) << 16)
-+#define NIX_AF_TL2X_TOPOLOGY(a)		(0xE80 | (u64)(a) << 16)
-+#define NIX_AF_TL2X_CIR(a)		(0xE20 | (u64)(a) << 16)
-+#define NIX_AF_TL2X_PIR(a)		(0xE30 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_PARENT(a)		(0x1088 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_SCHEDULE(a)		(0x1000 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_SHAPE(a)		(0x1010 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_CIR(a)		(0x1020 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_PIR(a)		(0x1030 | (u64)(a) << 16)
-+#define NIX_AF_TL3X_TOPOLOGY(a)		(0x1080 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_PARENT(a)		(0x1288 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_SCHEDULE(a)		(0x1200 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_SHAPE(a)		(0x1210 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_CIR(a)		(0x1220 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_PIR(a)		(0x1230 | (u64)(a) << 16)
-+#define NIX_AF_TL4X_TOPOLOGY(a)		(0x1280 | (u64)(a) << 16)
-+#define NIX_AF_MDQX_SCHEDULE(a)		(0x1400 | (u64)(a) << 16)
-+#define NIX_AF_MDQX_SHAPE(a)		(0x1410 | (u64)(a) << 16)
-+#define NIX_AF_MDQX_CIR(a)		(0x1420 | (u64)(a) << 16)
-+#define NIX_AF_MDQX_PIR(a)		(0x1430 | (u64)(a) << 16)
-+#define NIX_AF_MDQX_PARENT(a)		(0x1480 | (u64)(a) << 16)
-+#define NIX_AF_TL3_TL2X_LINKX_CFG(a, b)	(0x1700 | (u64)(a) << 16 | (b) << 3)
- 
- /* LMT LF registers */
- #define LMT_LFBASE			BIT_ULL(RVU_FUNC_BLKADDR_SHIFT)
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index 04a49b9b545f3..0ca9f2ffd932d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -510,7 +510,7 @@ static int otx2_tx_napi_handler(struct otx2_nic *pfvf,
- 
- static void otx2_adjust_adaptive_coalese(struct otx2_nic *pfvf, struct otx2_cq_poll *cq_poll)
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index df07726192000..c2e6b3a0469d1 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -342,8 +342,8 @@ static int alloc_dispatch_log_kmem_cache(void)
  {
--	struct dim_sample dim_sample;
-+	struct dim_sample dim_sample = { 0 };
- 	u64 rx_frames, rx_bytes;
- 	u64 tx_frames, tx_bytes;
+ 	void (*ctor)(void *) = get_dtl_cache_ctor();
  
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 6cddb4da85b71..4995a2d54d7d0 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -153,7 +153,6 @@ static void __otx2_qos_txschq_cfg(struct otx2_nic *pfvf,
- 		num_regs++;
- 
- 		otx2_config_sched_shaping(pfvf, node, cfg, &num_regs);
--
- 	} else if (level == NIX_TXSCH_LVL_TL4) {
- 		otx2_config_sched_shaping(pfvf, node, cfg, &num_regs);
- 	} else if (level == NIX_TXSCH_LVL_TL3) {
-@@ -176,7 +175,7 @@ static void __otx2_qos_txschq_cfg(struct otx2_nic *pfvf,
- 		/* check if node is root */
- 		if (node->qid == OTX2_QOS_QID_INNER && !node->parent) {
- 			cfg->reg[num_regs] = NIX_AF_TL2X_SCHEDULE(node->schq);
--			cfg->regval[num_regs] =  TXSCH_TL1_DFLT_RR_PRIO << 24 |
-+			cfg->regval[num_regs] =  (u64)hw->txschq_aggr_lvl_rr_prio << 24 |
- 						 mtu_to_dwrr_weight(pfvf,
- 								    pfvf->tx_max_pktlen);
- 			num_regs++;
+-	dtl_cache = kmem_cache_create("dtl", DISPATCH_LOG_BYTES,
+-						DISPATCH_LOG_BYTES, 0, ctor);
++	dtl_cache = kmem_cache_create_usercopy("dtl", DISPATCH_LOG_BYTES,
++						DISPATCH_LOG_BYTES, 0, 0, DISPATCH_LOG_BYTES, ctor);
+ 	if (!dtl_cache) {
+ 		pr_warn("Failed to create dispatch trace log buffer cache\n");
+ 		pr_warn("Stolen time statistics will be unreliable\n");
 -- 
 2.43.0
 
