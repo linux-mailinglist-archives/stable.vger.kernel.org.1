@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D6F93A67B
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A003D93A728
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AA7C1F234B9
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D22DF1C2247C
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB9D158D6D;
-	Tue, 23 Jul 2024 18:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A5E158871;
+	Tue, 23 Jul 2024 18:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwwTrFCp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5MBeKAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D327158A3F;
-	Tue, 23 Jul 2024 18:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C842113D896;
+	Tue, 23 Jul 2024 18:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759727; cv=none; b=NWT1Q/uvoa4dGyJkpY+pBQ4iVj1uGAyMql1uwxHtiQNQcPFI9ZlJ9wHMlpmN8ThGtuhC/L6RK4kBj6BWNmnjoiqIH0XygbyLD7LuYOJxxikZ/SDc6kYcFNl1QYyTJa7J1+uXD26Tr8QV3G+lXFPJRoKhvhc6SQpyIpgemwiikc4=
+	t=1721760175; cv=none; b=mUvWLTuYPjoeUkLMDvzFeev+C1BObH1VjAdzAXL3yFUPNaNA004U+niz5e1o4lqxhb2G7lsrw+NaWFA0wnZjfJ25CH3aM76+IBNZuzSEJKEf3R5ozh79yJ2adP9Y3pP9JrnMg2J+Rw28Dfezzt0ij4+elRAodPaCCS8iu2SS9kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759727; c=relaxed/simple;
-	bh=dYJG8hlj1Lk1mq4u4OgOZ7fZdCzmoEZaF4pckbBpj9c=;
+	s=arc-20240116; t=1721760175; c=relaxed/simple;
+	bh=XNBbCZx8lMrufk1LSrBrC+JUdmbHFOITuaHNCFfb0sk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tb5n113cdOi8DDh2I/zvmDaHApFdl3AF9B6MKcsoy6ZxJDNKrpD1cWpLE/jKRiqgBCtc9vl/sOIx9W6GFr+PUto6yZWX4Lb0jkcLP51owaPPRzWCbbUXzblHzPwqDJLq3Epl81Jshwor/wfwbr6eScsXaKYBMAVokZsB7dhp+q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwwTrFCp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3804C4AF0B;
-	Tue, 23 Jul 2024 18:35:26 +0000 (UTC)
+	 MIME-Version; b=GyptHqXMr3YXgSYmV6tkqEyNLkZJBwf1zxpDr18Wbsztino5FmAadXh/zClgjldo/OTdn2cOkSQBX50+jlLHBMICY7Y9lsfljZPbNgARuW4Fbv01B/DeqiQ91FcG3kNa1KVCRfTpaMS8hMMj8FkmMIdN7Qww85dxpeGMUp92Gl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5MBeKAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A279C4AF0A;
+	Tue, 23 Jul 2024 18:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759727;
-	bh=dYJG8hlj1Lk1mq4u4OgOZ7fZdCzmoEZaF4pckbBpj9c=;
+	s=korg; t=1721760175;
+	bh=XNBbCZx8lMrufk1LSrBrC+JUdmbHFOITuaHNCFfb0sk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwwTrFCp8zJ7JPC0SCMnu2QcHHoMgMy76WkGAbu2jkWw+GqvyywwAKyMCc3G7l7YR
-	 CyoBcyBea7csD7vxfYNt4T8bPsnBYj1O0e4oRQjeUG3DFFBgiulmq7iufLWhZZrCUS
-	 Bhh2AL1BhuEMgCeM3mgCoBvLxSYZ2x+ifvmHYq7Y=
+	b=c5MBeKAzMWkWjulU26qSfNn+X6W5ItgS6W2QzHaGNEHAad9TnbxtO3d53dVXORszr
+	 ww2sb1E0fTreMjAwrhMfYVlmMv97GfTXEhpqZvHrV0cvoUjV5+dnSXP3EwFmBMIMou
+	 HBE67Gxti6hxRUx1eLH5o2nVrT1svDJiggOKslZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Xingui Yang <yangxingui@huawei.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/129] drivers/perf: riscv: Reset the counter to hpmevent mapping while starting cpus
+Subject: [PATCH 6.9 127/163] scsi: libsas: Fix exp-attached device scan after probe failure scanned in again after probe failed
 Date: Tue, 23 Jul 2024 20:24:16 +0200
-Message-ID: <20240723180408.963698306@linuxfoundation.org>
+Message-ID: <20240723180148.380473308@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-[ Upstream commit 7dd646cf745c34d31e7ed2a52265e9ca8308f58f ]
+[ Upstream commit ab2068a6fb84751836a84c26ca72b3beb349619d ]
 
-Currently, we stop all the counters while a new cpu is brought online.
-However, the hpmevent to counter mappings are not reset. The firmware may
-have some stale encoding in their mapping structure which may lead to
-undesirable results. We have not encountered such scenario though.
+The expander phy will be treated as broadcast flutter in the next
+revalidation after the exp-attached end device probe failed, as follows:
 
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Signed-off-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/r/20240628-misc_perf_fixes-v4-2-e01cfddcf035@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+[78779.654026] sas: broadcast received: 0
+[78779.654037] sas: REVALIDATING DOMAIN on port 0, pid:10
+[78779.654680] sas: ex 500e004aaaaaaa1f phy05 change count has changed
+[78779.662977] sas: ex 500e004aaaaaaa1f phy05 originated BROADCAST(CHANGE)
+[78779.662986] sas: ex 500e004aaaaaaa1f phy05 new device attached
+[78779.663079] sas: ex 500e004aaaaaaa1f phy05:U:8 attached: 500e004aaaaaaa05 (stp)
+[78779.693542] hisi_sas_v3_hw 0000:b4:02.0: dev[16:5] found
+[78779.701155] sas: done REVALIDATING DOMAIN on port 0, pid:10, res 0x0
+[78779.707864] sas: Enter sas_scsi_recover_host busy: 0 failed: 0
+...
+[78835.161307] sas: --- Exit sas_scsi_recover_host: busy: 0 failed: 0 tries: 1
+[78835.171344] sas: sas_probe_sata: for exp-attached device 500e004aaaaaaa05 returned -19
+[78835.180879] hisi_sas_v3_hw 0000:b4:02.0: dev[16:5] is gone
+[78835.187487] sas: broadcast received: 0
+[78835.187504] sas: REVALIDATING DOMAIN on port 0, pid:10
+[78835.188263] sas: ex 500e004aaaaaaa1f phy05 change count has changed
+[78835.195870] sas: ex 500e004aaaaaaa1f phy05 originated BROADCAST(CHANGE)
+[78835.195875] sas: ex 500e004aaaaaaa1f rediscovering phy05
+[78835.196022] sas: ex 500e004aaaaaaa1f phy05:U:A attached: 500e004aaaaaaa05 (stp)
+[78835.196026] sas: ex 500e004aaaaaaa1f phy05 broadcast flutter
+[78835.197615] sas: done REVALIDATING DOMAIN on port 0, pid:10, res 0x0
+
+The cause of the problem is that the related ex_phy's attached_sas_addr was
+not cleared after the end device probe failed, so reset it.
+
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Link: https://lore.kernel.org/r/20240619091742.25465-1-yangxingui@huawei.com
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/riscv_pmu_sbi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/libsas/sas_internal.h | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
-index d80b4b09152df..ae16ecb15f2d9 100644
---- a/drivers/perf/riscv_pmu_sbi.c
-+++ b/drivers/perf/riscv_pmu_sbi.c
-@@ -611,7 +611,7 @@ static inline void pmu_sbi_stop_all(struct riscv_pmu *pmu)
- 	 * which may include counters that are not enabled yet.
- 	 */
- 	sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_STOP,
--		  0, pmu->cmask, 0, 0, 0, 0);
-+		  0, pmu->cmask, SBI_PMU_STOP_FLAG_RESET, 0, 0, 0);
+diff --git a/drivers/scsi/libsas/sas_internal.h b/drivers/scsi/libsas/sas_internal.h
+index 3804aef165adb..164086c5824ec 100644
+--- a/drivers/scsi/libsas/sas_internal.h
++++ b/drivers/scsi/libsas/sas_internal.h
+@@ -145,6 +145,20 @@ static inline void sas_fail_probe(struct domain_device *dev, const char *func, i
+ 		func, dev->parent ? "exp-attached" :
+ 		"direct-attached",
+ 		SAS_ADDR(dev->sas_addr), err);
++
++	/*
++	 * If the device probe failed, the expander phy attached address
++	 * needs to be reset so that the phy will not be treated as flutter
++	 * in the next revalidation
++	 */
++	if (dev->parent && !dev_is_expander(dev->dev_type)) {
++		struct sas_phy *phy = dev->phy;
++		struct domain_device *parent = dev->parent;
++		struct ex_phy *ex_phy = &parent->ex_dev.ex_phy[phy->number];
++
++		memset(ex_phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
++	}
++
+ 	sas_unregister_dev(dev->port, dev);
  }
  
- static inline void pmu_sbi_stop_hw_ctrs(struct riscv_pmu *pmu)
 -- 
 2.43.0
 
