@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-60854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A2C93A5B6
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1852793A6F2
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B678B1F231C1
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 494671C20DD5
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE7B158858;
-	Tue, 23 Jul 2024 18:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F681586F5;
+	Tue, 23 Jul 2024 18:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugoCIlzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ueoq/cuh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB990157A4F;
-	Tue, 23 Jul 2024 18:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548A413D896;
+	Tue, 23 Jul 2024 18:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759249; cv=none; b=Sg+cLsWe31Jxpn2m6XYbz5adKXzn+5EnjmEBrda2sTClreS8Xd+RivXncWgPOajuGxjh+Qw01/jzwVy7o3mfpxxzC+4qNXAga9hmq4y94CBpMyVYCBOWvWA1rxTbMuxBAGhBI14y2EY+yOY51H7GdDXf+ZYUelavpZA7JkBDIJ8=
+	t=1721760030; cv=none; b=uyrsjC0RxTJ6Hluf1hhtVGLnzvyJtsEwmCCVJbPi37dEqfx07akmRJRvWYsWkvTsEStGL+e/ZHRClCjV99tpBWdZA0dMg5AGSOCe932ZspRD5wzz/xe+EUHnCEGbKeJ5ricnfZ9Ym9W1fKowXq9QY9/pmIwcUF62RtpzKsUhJWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759249; c=relaxed/simple;
-	bh=Lfp4MMIcETNvcAogfgVLrQuPWnpiyjBlqNr+W7yzR4U=;
+	s=arc-20240116; t=1721760030; c=relaxed/simple;
+	bh=JfiT0Sg8s71c7gNZR4MUQiRAk0duQRq0P329BR0Wgus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wng/ZplYyY1d6LPVM71nLM+fvCVVsA1ZWlEEUV8ggB/CLTIOoVgA5f/jZ3QxMiVNbmIj1pxmUDzA4nakJzDQoCT+qCPNvP6DRb/55MoWWWn8J4sF27OrGV/n8bDWhHeh1GCEtv+e3v0aOILSl5oh0SV/dJ+2wZKD5Xg3bInE0Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugoCIlzC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407CAC4AF0A;
-	Tue, 23 Jul 2024 18:27:29 +0000 (UTC)
+	 MIME-Version; b=ZkuKhqFtsAXSID4NRZ54HBIX7KXdP6zudIMueGkOZAwz70gS09r7FfaWUx9tO6wWRbVcRcjlzMWoN33RJAY/V5hznwfE8ULhM1KgnRjvUm+PfgKdxG4iBInUl99ojcRRq0Ohcbd7MgdJbORK57nvCKAuqpXnlADy+pCfYajgsuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ueoq/cuh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4974C4AF0A;
+	Tue, 23 Jul 2024 18:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759249;
-	bh=Lfp4MMIcETNvcAogfgVLrQuPWnpiyjBlqNr+W7yzR4U=;
+	s=korg; t=1721760030;
+	bh=JfiT0Sg8s71c7gNZR4MUQiRAk0duQRq0P329BR0Wgus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ugoCIlzCdw4I8EHAQh+NZfKAK4vJHa+N3Ty7ivaWh0EJyTa5SbOUacMnnfhAFUzIR
-	 98Co8gjvQBO7fjHK5gCoAivsou6uTKt+DqaM241LFYI00owNQ3MUmfrgEruLjX2FPw
-	 w3P8jZPbT/qPBIVQPzlXksvk6ows2pknKdT52DJo=
+	b=Ueoq/cuhDWOx5ZHrw2EUefg+xoS6cuWecM3NKd8rzPkT35WHrQhI5LyPfwzPuihdY
+	 4veDDOLg1C8LPMlKkENOBhJvQBCZSnpv/fP42uFwXGpXWZpmIbTj3caAF+Qvn0498G
+	 lF16a4FLYdAmriDsVU3aY7CYkdRniLeyJdepl7o4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Miess <daniel.miess@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/105] ALSA: hda/realtek: Add more codec ID to no shutup pins list
+Subject: [PATCH 6.9 080/163] drm/amd/display: Change dram_clock_latency to 34us for dcn351
 Date: Tue, 23 Jul 2024 20:23:29 +0200
-Message-ID: <20240723180405.256210479@linuxfoundation.org>
+Message-ID: <20240723180146.560987665@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Daniel Miess <daniel.miess@amd.com>
 
-[ Upstream commit 70794b9563fe011988bcf6a081af9777e63e8d37 ]
+[ Upstream commit c60e20f13c27662de36cd5538d6299760780db52 ]
 
-If it enter to runtime D3 state, it didn't shutup Headset MIC pin.
+[Why]
+Intermittent underflow observed when using 4k144 display on
+dcn351
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/r/8d86f61e7d6f4a03b311e4eb4e5caaef@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[How]
+Update dram_clock_change_latency_us from 11.72us to 34us
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: Daniel Miess <daniel.miess@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 06f00819d1a8a..8852c0b429fd7 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -583,10 +583,14 @@ static void alc_shutup_pins(struct hda_codec *codec)
- 	switch (codec->core.vendor_id) {
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 	case 0x10ec0283:
-+	case 0x10ec0285:
- 	case 0x10ec0286:
-+	case 0x10ec0287:
- 	case 0x10ec0288:
-+	case 0x10ec0295:
- 	case 0x10ec0298:
- 		alc_headset_mic_no_shutup(codec);
- 		break;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c
+index b3ffab77cf889..40ca38dd1b23e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c
+@@ -215,7 +215,7 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_51_soc = {
+ 	.urgent_latency_pixel_data_only_us = 4.0,
+ 	.urgent_latency_pixel_mixed_with_vm_data_us = 4.0,
+ 	.urgent_latency_vm_data_only_us = 4.0,
+-	.dram_clock_change_latency_us = 11.72,
++	.dram_clock_change_latency_us = 34,
+ 	.urgent_out_of_order_return_per_channel_pixel_only_bytes = 4096,
+ 	.urgent_out_of_order_return_per_channel_pixel_and_vm_bytes = 4096,
+ 	.urgent_out_of_order_return_per_channel_vm_only_bytes = 4096,
 -- 
 2.43.0
 
