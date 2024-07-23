@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-60837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A521193A5A4
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7172493A62A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59FBC1F22C85
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 267221F23427
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6AC158873;
-	Tue, 23 Jul 2024 18:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293DA156F29;
+	Tue, 23 Jul 2024 18:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nG2p9rX7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmXoXFZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCD31586CB;
-	Tue, 23 Jul 2024 18:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA93813D896;
+	Tue, 23 Jul 2024 18:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759199; cv=none; b=hsQFOH5l49rSueEVtqfihL+W8sUQR2pOlo9Huj5lY/88Bb4dy2PtpSI8lNJlvPeo0mIbbAt5EBUglJvvcVuuGq81s4W92CN8cIQcUEzCt8tlW5dasSMosz5y22206BmuOd0PIk+pWK+GSSr6ni0Gwf4acpXtuw8MgVJdokSKFBc=
+	t=1721759542; cv=none; b=EDaGtYOFlrJ0HzY4q17+xenjLTHEq4MZC94icD5J3DoPqLAlzSarojP7KVi7sqCFdWlp4ZQfkFv3nwv+A5xS2BCEPi62AgUZVJj6njGA/lIjX/M/eKwCQopOVFq7tcCO+dEf/9aeDq0A7pX8oHAbi1WtnACCgiCgNic+zXm+SWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759199; c=relaxed/simple;
-	bh=q50vgRLVNif/qPLDP5YbB3+h0+Y5OZ6Kg3dGcerB/MY=;
+	s=arc-20240116; t=1721759542; c=relaxed/simple;
+	bh=vQKwhpGc0RFCe7fsMJOLRUFWTPzB7/W96JDgVqcZWjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxTogGqAAC3XOdvGM7+XHj4nRFJVrFv/BD1XW7HOfRRFYHbjhc/Cb+jWw175yV6umj4n7+YFhMOuufVxIjHUtfgqvwXBaB1zCbyEt/+akYrXYKvPPtcloJps+qTx3rEhNrim8qErBTRDLmeRxTQiLToYNYjGuhPovM+l/hTR56s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nG2p9rX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E2EC4AF0A;
-	Tue, 23 Jul 2024 18:26:38 +0000 (UTC)
+	 MIME-Version; b=IQ0IWRP7sUIM+yPd1leWdxdTIepYmTY2YgTTC+FDxZxoSHnb4y42wctipkSKyTpDOkWmdYaCUS7IuWHEdJ3i/c7mwDSPTIBxAPJnkB6jFVc2v0abMpbg92kXKzcYG+Hw8Nb9coaLF63pxG1MdzOUDqQhlx0vBH6NJS7dAY70ZJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmXoXFZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B81EC4AF0A;
+	Tue, 23 Jul 2024 18:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759199;
-	bh=q50vgRLVNif/qPLDP5YbB3+h0+Y5OZ6Kg3dGcerB/MY=;
+	s=korg; t=1721759542;
+	bh=vQKwhpGc0RFCe7fsMJOLRUFWTPzB7/W96JDgVqcZWjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nG2p9rX799FUZV6ctEPHGDACOFacYgDJvH4W0WZGXZbwn9RXr1AnjkFCJWW8tVUx5
-	 XJ96+hD3tl/byof0mPgA2/N84+0wN9DJH1KTHstD+/a09X+PqFLnPTXq4Swak0sknF
-	 QxcGTn7s8NdAL/j84QMRZ3+eaFyRKXSMNHlz2tiY=
+	b=FmXoXFZXlniua7ddkQ13vOMj0UdhM5LIdTgUrtbDR2wAbIxZiWJEBqY8025Fwuk93
+	 O/nouITrZwx+6Hc+eATIuzJTXz3hNx5Mv+Z+fYjJ9ZG89BkD0d4Hb0SI8chSwVvmX/
+	 6uRkRrNU5cd6Rg3+DXuAl3aW9HkQTUoBeRM6obOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis Dalibard <ontake@ontake.dev>,
-	Jiri Kosina <jkosina@suse.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/105] HID: Ignore battery for ELAN touchscreens 2F2C and 4116
+Subject: [PATCH 6.6 045/129] iomap: Fix iomap_adjust_read_range for plen calculation
 Date: Tue, 23 Jul 2024 20:23:13 +0200
-Message-ID: <20240723180404.630076459@linuxfoundation.org>
+Message-ID: <20240723180406.529898226@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis Dalibard <ontake@ontake.dev>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit a3a5a37efba11b7cf1a86abe7bccfbcdb521764e ]
+[ Upstream commit f5ceb1bbc98c69536d4673a97315e8427e67de1b ]
 
-At least ASUS Zenbook 14 (2023) and ASUS Zenbook 14 Pro (2023) are affected.
+If the extent spans the block that contains i_size, we need to handle
+both halves separately so that we properly zero data in the page cache
+for blocks that are entirely outside of i_size. But this is needed only
+when i_size is within the current folio under processing.
+"orig_pos + length > isize" can be true for all folios if the mapped
+extent length is greater than the folio size. That is making plen to
+break for every folio instead of only the last folio.
 
-The touchscreen reports a battery status of 0% and jumps to 1% when a
-stylus is used.
+So use orig_plen for checking if "orig_pos + orig_plen > isize".
 
-The device ID was added and the battery ignore quirk was enabled for it.
-
-[jkosina@suse.com: reformatted changelog a bit]
-Signed-off-by: Louis Dalibard <ontake@ontake.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/a32e5f9a4fcfdb99077300c4020ed7ae61d6e0f9.1715067055.git.ritesh.list@gmail.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h   | 2 ++
- drivers/hid/hid-input.c | 4 ++++
- 2 files changed, 6 insertions(+)
+ fs/iomap/buffered-io.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 97745a1f9c6f1..0e5b2b3dea4d0 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -417,6 +417,8 @@
- #define I2C_DEVICE_ID_HP_SPECTRE_X360_13_AW0020NG  0x29DF
- #define I2C_DEVICE_ID_ASUS_TP420IA_TOUCHSCREEN 0x2BC8
- #define I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN 0x2C82
-+#define I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN 0x2F2C
-+#define I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN 0x4116
- #define USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN	0x2544
- #define USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN	0x2706
- #define I2C_DEVICE_ID_SURFACE_GO_TOUCHSCREEN	0x261A
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index 4ba5df3c1e039..b0091819fd58a 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -374,6 +374,10 @@ static const struct hid_device_id hid_battery_quirks[] = {
- 	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN),
- 	  HID_BATTERY_QUIRK_IGNORE },
-+	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN),
-+	  HID_BATTERY_QUIRK_IGNORE },
-+	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN),
-+	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN),
- 	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN),
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 129a85633797a..975fd88c1f0f4 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -201,6 +201,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 	unsigned block_size = (1 << block_bits);
+ 	size_t poff = offset_in_folio(folio, *pos);
+ 	size_t plen = min_t(loff_t, folio_size(folio) - poff, length);
++	size_t orig_plen = plen;
+ 	unsigned first = poff >> block_bits;
+ 	unsigned last = (poff + plen - 1) >> block_bits;
+ 
+@@ -237,7 +238,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 	 * handle both halves separately so that we properly zero data in the
+ 	 * page cache for blocks that are entirely outside of i_size.
+ 	 */
+-	if (orig_pos <= isize && orig_pos + length > isize) {
++	if (orig_pos <= isize && orig_pos + orig_plen > isize) {
+ 		unsigned end = offset_in_folio(folio, isize - 1) >> block_bits;
+ 
+ 		if (first <= end && last > end)
 -- 
 2.43.0
 
