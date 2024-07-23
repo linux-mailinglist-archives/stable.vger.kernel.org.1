@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9469893A736
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D9193A741
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C296B1C223A3
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24A381C224E3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDB5158871;
-	Tue, 23 Jul 2024 18:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77847158878;
+	Tue, 23 Jul 2024 18:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoxBjtdb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3wa5Nbu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF32B13D896;
-	Tue, 23 Jul 2024 18:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D231581F4;
+	Tue, 23 Jul 2024 18:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760216; cv=none; b=VEgNVZso6p3s3dmw5CpAt9Yy2DntBUe/3DpS1vYphMBFRHcq/kO06OujCnBDikxuQ+AmeU8jGkJIW2pznMoAXSd0NuNoZPPc5W60naNVhUqEQzWS9X5DgBMHN25lOhXO2PlXNRdoepYrSRJZdt782Y/lCU74CHX6gzuzdw38+BY=
+	t=1721760249; cv=none; b=TC6YVVMF7k6Ug3erBC+oKDqPZ4Yv1qju5TLfSDUvylpi/z1sBSMVqO/sQENSJI4UFd54lEQMTWAERSI+xTEmi6RUFQcwTPwUFF04VgH0ZNjYlOnDJO4IQUQdTyaw9BSX6lwd3mBVVEZHxdfNae4boQnWTDTVxdtavbTgX6WW/70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760216; c=relaxed/simple;
-	bh=Kkbc8PzlEaeqcadowVGwaCpxnc5OKwd5s15lzhu2UnI=;
+	s=arc-20240116; t=1721760249; c=relaxed/simple;
+	bh=Ab/ckbKXdoHHO96ikXxjtDgzYym3UU7Q+Mmj4oed5aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3k76KFwnhctWsBaRCk1Jf9NC/8vJFqkIgjKN2LSKEpi+qQwkUJEL+r0RAxenpd3HuWnXczgsQ97Zoomd3egrqZlCRmbC3ENS2zJRnKZDEH6JBv4lBXjnC2w6eq693BRpX/aHNwxLl0hiW0IimYB/M+NImMPaOnO20CyTALYRco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoxBjtdb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3899BC4AF09;
-	Tue, 23 Jul 2024 18:43:36 +0000 (UTC)
+	 MIME-Version; b=ocus+khZa5OxkQU9LTad/9xKQHXw98QDWShFYbE84hwsgy+U9rdS9FjlLl8+xQOflLXiZ2NLZwktcxLPlNbS1UHlDCVzOUsbaSUoErJjedyrUgNW4EGrflUJ4cn1Mj+crzMmcvUtTz7fN2Xaes0ljZkZ5UlITj8m/T6N6g2uYEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3wa5Nbu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD86DC4AF09;
+	Tue, 23 Jul 2024 18:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760216;
-	bh=Kkbc8PzlEaeqcadowVGwaCpxnc5OKwd5s15lzhu2UnI=;
+	s=korg; t=1721760249;
+	bh=Ab/ckbKXdoHHO96ikXxjtDgzYym3UU7Q+Mmj4oed5aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QoxBjtdbIBBl7vLQQWaGEGExDvpxlYxQEucV2DIL/I+qTEJTi+N55Ia0Jj8B/OfhW
-	 DTJ7dbRsdrZwucWXg83sUbH1A6iQtAqEEdGdKVA7/tqBlrdFFvYwbZZE6Xf8y+b7/J
-	 Im6ewx4a5y20qygXEiBXsmhRikjnmJ7XiH3/o7/4=
+	b=q3wa5Nbufygem8/nFNPTRMs17kfVwIqlyoK/EWk+KRqDlHtQB70aIx0IRrthk94d1
+	 in0NWAb3xQju2XHBJf7H92xoS+FhmuDnj4+1MPTnVyqRW6FckBkii9X6C6MM92PRCC
+	 CrgnHld5pjWDxQfGSPrHPRD8VvgpCt2EccCsEtnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chaitanya Dhere <chaitanya.dhere@amd.com>,
-	Nevenko Stupar <nevenko.stupar@amd.com>,
+	Sun peng Li <sunpeng.li@amd.com>,
 	Jerry Zuo <jerry.zuo@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 134/163] drm/amd/display: Account for cursor prefetch BW in DML1 mode support
-Date: Tue, 23 Jul 2024 20:24:23 +0200
-Message-ID: <20240723180148.651115110@linuxfoundation.org>
+Subject: [PATCH 6.9 135/163] drm/amd/display: Fix refresh rate range for some panel
+Date: Tue, 23 Jul 2024 20:24:24 +0200
+Message-ID: <20240723180148.689822587@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
 References: <20240723180143.461739294@linuxfoundation.org>
@@ -70,42 +69,96 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit 074b3a886713f69d98d30bb348b1e4cb3ce52b22 ]
+[ Upstream commit 9ef1548aeaa8858e7aee2152bf95cc71cdcd6dff ]
 
-[Description]
-We need to ensure to take into account cursor prefetch BW in
-mode support or we may pass ModeQuery but fail an actual flip
-which will cause a hang. Flip may fail because the cursor_pre_bw
-is populated during mode programming (and mode programming is
-never called prior to ModeQuery).
+[Why]
+Some of the panels does not have the refresh rate range info
+in base EDID and only have the refresh rate range info in
+DisplayID block.
+It will cause the max/min freesync refresh rate set to 0.
 
-Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
-Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
+[How]
+Try to parse the refresh rate range info from DisplayID if the
+max/min refresh rate is 0.
+
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
 Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 48 +++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-index 6c84b0fa40f44..0782a34689a00 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-@@ -3364,6 +3364,9 @@ void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
- 							&mode_lib->vba.UrgentBurstFactorLumaPre[k],
- 							&mode_lib->vba.UrgentBurstFactorChromaPre[k],
- 							&mode_lib->vba.NotUrgentLatencyHidingPre[k]);
-+
-+					v->cursor_bw_pre[k] = mode_lib->vba.NumberOfCursors[k] * mode_lib->vba.CursorWidth[k][0] * mode_lib->vba.CursorBPP[k][0] /
-+							8.0 / (mode_lib->vba.HTotal[k] / mode_lib->vba.PixelClock[k]) * v->VRatioPreY[i][j][k];
- 				}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 087d7aad8e6b4..c29d271579ad3 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -11161,6 +11161,49 @@ static bool parse_edid_cea(struct amdgpu_dm_connector *aconnector,
+ 	return ret;
+ }
  
- 				{
++static void parse_edid_displayid_vrr(struct drm_connector *connector,
++		struct edid *edid)
++{
++	u8 *edid_ext = NULL;
++	int i;
++	int j = 0;
++	u16 min_vfreq;
++	u16 max_vfreq;
++
++	if (edid == NULL || edid->extensions == 0)
++		return;
++
++	/* Find DisplayID extension */
++	for (i = 0; i < edid->extensions; i++) {
++		edid_ext = (void *)(edid + (i + 1));
++		if (edid_ext[0] == DISPLAYID_EXT)
++			break;
++	}
++
++	if (edid_ext == NULL)
++		return;
++
++	while (j < EDID_LENGTH) {
++		/* Get dynamic video timing range from DisplayID if available */
++		if (EDID_LENGTH - j > 13 && edid_ext[j] == 0x25	&&
++		    (edid_ext[j+1] & 0xFE) == 0 && (edid_ext[j+2] == 9)) {
++			min_vfreq = edid_ext[j+9];
++			if (edid_ext[j+1] & 7)
++				max_vfreq = edid_ext[j+10] + ((edid_ext[j+11] & 3) << 8);
++			else
++				max_vfreq = edid_ext[j+10];
++
++			if (max_vfreq && min_vfreq) {
++				connector->display_info.monitor_range.max_vfreq = max_vfreq;
++				connector->display_info.monitor_range.min_vfreq = min_vfreq;
++
++				return;
++			}
++		}
++		j++;
++	}
++}
++
+ static int parse_amd_vsdb(struct amdgpu_dm_connector *aconnector,
+ 			  struct edid *edid, struct amdgpu_hdmi_vsdb_info *vsdb_info)
+ {
+@@ -11282,6 +11325,11 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
+ 	if (!adev->dm.freesync_module)
+ 		goto update;
+ 
++	/* Some eDP panels only have the refresh rate range info in DisplayID */
++	if ((connector->display_info.monitor_range.min_vfreq == 0 ||
++	     connector->display_info.monitor_range.max_vfreq == 0))
++		parse_edid_displayid_vrr(connector, edid);
++
+ 	if (edid && (sink->sink_signal == SIGNAL_TYPE_DISPLAY_PORT ||
+ 		     sink->sink_signal == SIGNAL_TYPE_EDP)) {
+ 		bool edid_check_required = false;
 -- 
 2.43.0
 
