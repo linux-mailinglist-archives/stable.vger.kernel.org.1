@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-60857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 581A493A5BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81AE993A6DA
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E0261F232B1
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33D9E2820AA
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D478F158872;
-	Tue, 23 Jul 2024 18:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88672158A19;
+	Tue, 23 Jul 2024 18:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIJ0eQNy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JuUNoJs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887A715885A;
-	Tue, 23 Jul 2024 18:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4570315821E;
+	Tue, 23 Jul 2024 18:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759258; cv=none; b=X+Zxkj6Xp9E4ULeyOFU22DlL56QVjNo5Y5CbyDRJNLnF4SthxDgWO0CJGsAt5YRAGLHjKSE7ZZBgRc0YT3TJmKExBj+Y2X0WePIlI0fhuOFB/YPG4pZ/TUlKhI6f1qfnxevpPX4JxgK2YY0v4w3iiX8+FOlmFMN9z7T0LnkGEBs=
+	t=1721759962; cv=none; b=CtOx4hMl1z/VE5T9JOIGwKzBnW5h3gT5K/UiDTZxDJyFnP046gSw5swZ6p2rTni9oPVnjZh5Oyz40ForQc8USaEoA1O2Ose86qh+n3MYkoxw/WHlN9dZY9FaCoDDhoWVWd0ZvFdh7qk/bUb0yHht2v+tJhebZ5EKnRi0yyMPit0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759258; c=relaxed/simple;
-	bh=zT83hDoe6CNq6S5F2LjQM6Ji7XgN5FAxTkLTB22BXCU=;
+	s=arc-20240116; t=1721759962; c=relaxed/simple;
+	bh=GaIQt3WTqgci55cYJ+wEeCyNOi/nt8/ug05s6Ll6VXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GEbCxrNhGspHYkbxQXQf7O96+0lSYpmD2N9ksMevI3U+R4m4JyjOcpuYshXa7KGGz9d4XlfRrIHCTqIgHXeBcXzJddv4Fx40em7Ws7u8M/831EHKHJzQ6il2lGCejev0DxKO/PqvLBbgGZKxcT7j25gsVawG05x6ik9ztBA2OXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIJ0eQNy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1101FC4AF09;
-	Tue, 23 Jul 2024 18:27:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F6pmr0zjQsMu4LVO6+ijcDfLP8cVKkRD0I7VWAudogSZP9XgIWxq6oUUwlc6Fin6zMR7xBO3Sypxhd2EmQnTdqTIzaWVee/nfp0aINMey5O8jQfjXdAjsRpyGtSaSjkVTePoQB6byKOs41lQKRuOtGb4Cv9U6KFaWhaHImbwh1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JuUNoJs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F7CC4AF09;
+	Tue, 23 Jul 2024 18:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759258;
-	bh=zT83hDoe6CNq6S5F2LjQM6Ji7XgN5FAxTkLTB22BXCU=;
+	s=korg; t=1721759962;
+	bh=GaIQt3WTqgci55cYJ+wEeCyNOi/nt8/ug05s6Ll6VXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XIJ0eQNyZUuCUvdaEcECkPWo0jcQidDC6aJYZgI51+NZiYmes4+rcfCw0fQyMR3qD
-	 t9NBZaWFTAyhyziqcx6yEd7qB5vM3j+TGyQc+bKM99hMYQ9ooetEVyMK30dB1vOII3
-	 6jU+XkaXRGyNYVOyT1XHjPtizmFefnLz+xhD2j0Y=
+	b=0JuUNoJsg5bRkCwaoOcHANfyxhrntCqTOADVpbGzRSHajKtK6C3dhkJvF8BN9o7rR
+	 xrdtkZFNXfgwtbFdzlD5IwMB3Z03IMyJ9aVlWY/BPY6+0ME5bSKAwNnCE/8aNiPbaf
+	 ihbckuvBC3SMFE3ldCA6nIdOumpzJo0vO716TFS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Liaw <edliaw@google.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/105] selftests/futex: pass _GNU_SOURCE without a value to the compiler
+Subject: [PATCH 6.9 056/163] parport: amiga: Mark driver struct with __refdata to prevent section mismatch
 Date: Tue, 23 Jul 2024 20:23:05 +0200
-Message-ID: <20240723180404.197959883@linuxfoundation.org>
+Message-ID: <20240723180145.640244686@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit cb708ab9f584f159798b60853edcf0c8b67ce295 ]
+[ Upstream commit 73fedc31fed38cb6039fd8a7efea1774143b68b0 ]
 
-It's slightly better to set _GNU_SOURCE in the source code, but if one
-must do it via the compiler invocation, then the best way to do so is
-this:
+As described in the added code comment, a reference to .exit.text is ok
+for drivers registered via module_platform_driver_probe(). Make this
+explicit to prevent the following section mismatch warning
 
-    $(CC) -D_GNU_SOURCE=
+	WARNING: modpost: drivers/parport/parport_amiga: section mismatch in reference: amiga_parallel_driver+0x8 (section: .data) -> amiga_parallel_remove (section: .exit.text)
 
-...because otherwise, if this form is used:
+that triggers on an allmodconfig W=1 build.
 
-    $(CC) -D_GNU_SOURCE
-
-...then that leads the compiler to set a value, as if you had passed in:
-
-    $(CC) -D_GNU_SOURCE=1
-
-That, in turn, leads to warnings under both gcc and clang, like this:
-
-    futex_requeue_pi.c:20: warning: "_GNU_SOURCE" redefined
-
-Fix this by using the "-D_GNU_SOURCE=" form.
-
-Reviewed-by: Edward Liaw <edliaw@google.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20240513075206.2337310-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/futex/functional/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/parport/parport_amiga.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/futex/functional/Makefile b/tools/testing/selftests/futex/functional/Makefile
-index a392d0917b4e5..994fa3468f170 100644
---- a/tools/testing/selftests/futex/functional/Makefile
-+++ b/tools/testing/selftests/futex/functional/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- INCLUDES := -I../include -I../../ $(KHDR_INCLUDES)
--CFLAGS := $(CFLAGS) -g -O2 -Wall -D_GNU_SOURCE -pthread $(INCLUDES) $(KHDR_INCLUDES)
-+CFLAGS := $(CFLAGS) -g -O2 -Wall -D_GNU_SOURCE= -pthread $(INCLUDES) $(KHDR_INCLUDES)
- LDLIBS := -lpthread -lrt
+diff --git a/drivers/parport/parport_amiga.c b/drivers/parport/parport_amiga.c
+index e6dc857aac3fe..e06c7b2aac5c4 100644
+--- a/drivers/parport/parport_amiga.c
++++ b/drivers/parport/parport_amiga.c
+@@ -229,7 +229,13 @@ static void __exit amiga_parallel_remove(struct platform_device *pdev)
+ 	parport_put_port(port);
+ }
  
- LOCAL_HDRS := \
+-static struct platform_driver amiga_parallel_driver = {
++/*
++ * amiga_parallel_remove() lives in .exit.text. For drivers registered via
++ * module_platform_driver_probe() this is ok because they cannot get unbound at
++ * runtime. So mark the driver struct with __refdata to prevent modpost
++ * triggering a section mismatch warning.
++ */
++static struct platform_driver amiga_parallel_driver __refdata = {
+ 	.remove_new = __exit_p(amiga_parallel_remove),
+ 	.driver   = {
+ 		.name	= "amiga-parallel",
 -- 
 2.43.0
 
