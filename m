@@ -1,138 +1,76 @@
-Return-Path: <stable+bounces-60750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F168A93A004
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 13:37:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 178E193A008
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 13:38:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A307C1F231D0
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:37:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13271F2319F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800A21509BD;
-	Tue, 23 Jul 2024 11:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649A11509BC;
+	Tue, 23 Jul 2024 11:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="W+YMj2sv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1H/C62pm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD64813D8B3;
-	Tue, 23 Jul 2024 11:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F27A13D8B3;
+	Tue, 23 Jul 2024 11:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721734648; cv=none; b=a+SEpWb/1fHejqJv7hGz3GGMjigr/1P6nMFCWCmECWcPVPs8ev7SJGF5PuoR/NDtgT67GXOJ6TUKLgs1mWxxHMJXcM3XB0ynl0AbD3hpTcDxi+QVdU8JdMRxHCssu143WvpsbKkD2Cb5Z+slGaxl/9qA0FKbhb5IDe54uOmaTvM=
+	t=1721734678; cv=none; b=i7NtCH0SlXFLVRtmrWQDcm8KyMaMgp5fB556Q27kaq01kVY7lWVPL/D5a+d4rrqucqh2mXBywGUsdVDsiVGh/C9qoXPJaAf2LeoYBvwx7hWx1g770PfHTl0CTsVUequgx+Hta3Kd0PnFk3zKsiseW2M7ogZ+GncxDJA6Tbsmujk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721734648; c=relaxed/simple;
-	bh=21f6vTa4pMdaybeLwFSTCxfsREuOEw/KDAqXUGIyD9M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=NkSJXybAe6dyla2YpF2ZS3Irz141FDM2GrPiWdclBN5U1PpTp/IELLOTZ+xRiO3cjFDRqsmQcNvIQ04YCkV+O/LcfqbEQBtyNpCDpzDEH00gOJZf1xQAQk4hKs835KrlXE8nsWIgFsD9y0DsB85ZhDu4RN5rflZF8uWd/0MGARg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=W+YMj2sv; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46NAXuks027111;
-	Tue, 23 Jul 2024 11:37:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	d5w51NTxkPijfWjcV+ypUl8aK0UhUtMWK45h0l7YIeU=; b=W+YMj2svoxP8uMej
-	PT377oMfKi1G4YOEOp1ParCvUu3SZRVOH8JrrCgVyk7hPRDBADc6rvtsPf/f1pMG
-	/8snfawT8QPcg20YhI1nU7P5LrsVhWhnJKAzI0gt6BpavKkQnlyb3wQW4gHE6+wF
-	DpkUFDVQWgarnONmv9dVwKVquJ+J9SLqb+lLUfgYQtiL0rUTSODI8wP4Y0XqGw2i
-	c+5JJHpUpnBLqGnfADIXsoD+fYjLr6mdc5p1O6pqRqITz6Y0F8AN8WCXm1HM1gGd
-	RzVOrtNhY8EKGlaXLGigzHO2RZfB6FWWBHxVtb5MYG6+iLIAHlcGbgLi6arEZupM
-	itPqnw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40gurtna39-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Jul 2024 11:37:16 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46NBbFPO015688
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Jul 2024 11:37:15 GMT
-Received: from [10.218.19.46] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 23 Jul
- 2024 04:37:12 -0700
-Message-ID: <8dfc5456-861b-e01a-d2d2-1bb9adea1984@quicinc.com>
-Date: Tue, 23 Jul 2024 17:07:07 +0530
+	s=arc-20240116; t=1721734678; c=relaxed/simple;
+	bh=9fp/JUizxS5IqkIRscjC1V5D08luobHz0+npLcTNzR8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ljB/V02OLXP9gCZqhgVCkOMqtPhUSq7Ml9/aRllvnnOPH5rieHkPRZLsbS1dXAol2vh2R6NVh3HivWM4XOyEvvmBvFmnSfYtWyQU1vGo0JDQPSKf6RLTQZN0k8ktdkRgVzmrYZ4SDGCh6AwHbQzhZa5PsN30IvGXPtZWiQxXQG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1H/C62pm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1A4C4AF0A;
+	Tue, 23 Jul 2024 11:37:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1721734677;
+	bh=9fp/JUizxS5IqkIRscjC1V5D08luobHz0+npLcTNzR8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=1H/C62pmK7q/CUr62Ib5rGt192NvwRBGHg1EgQf/EmZsCW9vFZWGRCFvMUH6i3mt5
+	 9kesfOyx8TYh2pr1zhlqGEccxFaSVP/kDy3qd33eG1hh5DtAsKLK8QtDpl6P+4yPrg
+	 LlETAt6y6A0eC3dUCmME3TIm8ouFrlCLvmi141u8=
+Date: Tue, 23 Jul 2024 13:37:53 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Richard Fitzgerald <rf@opensource.cirrus.com>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org, alsa-devel@alsa-project.org,
+	patches@opensource.cirrus.com
+Subject: Re: [PATCH for-6.10 0/2] ASoC: cs35l56: Set correct upper volume
+ limit
+Message-ID: <2024072342-recall-dedicator-98d5@gregkh>
+References: <20240722102600.37931-1-rf@opensource.cirrus.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH] clk: qcom: camcc-sc8280xp: Remove always-on GDSC
- hard-coding
-Content-Language: en-US
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Bjorn Andersson
-	<andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen
- Boyd <sboyd@kernel.org>
-CC: <dmitry.baryshkov@linaro.org>, <stable@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20240715-linux-next-24-07-13-sc8280xp-camcc-fixes-v1-1-fadb5d9445c1@linaro.org>
- <f0d4b7a3-2b61-3d42-a430-34b30eeaa644@quicinc.com>
- <86068581-0ce7-47b5-b1c6-fda4f7d1037f@linaro.org>
- <02679111-1a35-b931-fecd-01c952553652@quicinc.com>
- <ce14800d-7411-47c5-ad46-6baa6fb678f4@linaro.org>
- <dd588276-8f1c-4389-7b3a-88f483b7072e@quicinc.com>
- <610efa39-e476-45ae-bd2b-3a0b8ea485dc@linaro.org>
- <6055cb14-de80-97bc-be23-7af8ffc89fcc@quicinc.com>
- <a0ac4c3b-3c46-4c89-9947-d91ba06309f4@linaro.org>
-From: "Satya Priya Kakitapalli (Temp)" <quic_skakitap@quicinc.com>
-In-Reply-To: <a0ac4c3b-3c46-4c89-9947-d91ba06309f4@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: feZzptoJ232DaBSYKX7Pn_7nbtgtKDDp
-X-Proofpoint-ORIG-GUID: feZzptoJ232DaBSYKX7Pn_7nbtgtKDDp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-22_18,2024-07-23_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- phishscore=0 adultscore=0 priorityscore=1501 suspectscore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0 mlxlogscore=999
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407230082
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240722102600.37931-1-rf@opensource.cirrus.com>
 
+On Mon, Jul 22, 2024 at 11:25:58AM +0100, Richard Fitzgerald wrote:
+> Patch series to limit the upper range of the CS35L56 volume control to
+> +12 dB.
+> 
+> These commits were not marked 'Fixes' because they were thought to be only
+> a cosmetic issue. The user could reduce the volume to a usable value.
+> 
+> But for some complex audio topologies with SOF Audio DSP + CS42L43 +
+> multiple CS35L56 it has turned out to be not obvious to the user what the
+> problem actually is and what to do to fix it. As support for these
+> topologies went into 6.10 we would like this series to be applied to 6.10.
 
-On 7/23/2024 2:59 PM, Bryan O'Donoghue wrote:
-> On 22/07/2024 09:57, Satya Priya Kakitapalli (Temp) wrote:
->>> I have no idea. Why does it matter ?
->>>
->>
->> This clock expected to be kept always ON, as per design, or else the 
->> GDSC transition form ON to OFF (vice versa) wont work.
->
-> Yes, parking to XO per this patch works for me. So I guess its already 
-> on and is left in that state by the park.
->
+Now queued up, thanks.
 
-Parking RCG to XO doesn't keep the branch clock always-on. It just keeps 
-the parent RCG at 19.2MHz, branch can still be disabled by clearing 
-bit(0). So during late init, the CCF will disable this clock(in 
-clk_disable_unused API) if modelled. Hence this clock shouldn't be modelled.
-
-
->> Want to know the clock status after bootup, to understand if the 
->> clock got turned off during the late init. May I know exactly what 
->> you have tested? Did you test the camera usecases as well?
->
-> Of course.
->
-> The camera works on x13s with this patch. That's what I mean by tested.
->
-> ---
-> bod
+greg k-h
 
