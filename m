@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 897E993A59F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF9993A60A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B7E0B21B80
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AC202842B6
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BB21586E7;
-	Tue, 23 Jul 2024 18:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42D415821E;
+	Tue, 23 Jul 2024 18:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZ1+UaBY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0sUhJKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE4A157A4F;
-	Tue, 23 Jul 2024 18:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8329213D24D;
+	Tue, 23 Jul 2024 18:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759187; cv=none; b=mEnyGNnv1EQK4wbNxmgNzvxojQ6JoLkfe0mhUP3fML+4OxyMlXm5D68ISW+FxGWELOBwNuzSfLwlrR9ME0y2y50apalEGTdGikJ4nT5PQ2FdD4h5FBULXtPp5uAO1GfvraQUhsqJCPVNK+VrVNgiHGp6AQj7GuxNG9WbvVGqLII=
+	t=1721759459; cv=none; b=I8S4xgHmkSQbrvJJ+q9/UpJXczCqjfhQiEBw9vnlhQ31q9seHj5BSDmK+TqTnD+Og/ZEUraV+uAE8YCdlf0fuER1uG26YXxhqnAaja/eu7xxxad8MD9NvOhTbU5L+HGdnNKSFe4CVPPDRK8+H/tbMrIRxSidVp848c5VZtDcLgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759187; c=relaxed/simple;
-	bh=XoxLOClTQ+dgc3yZLAvWJ9d+71pOnVt8mqD9ep6YE58=;
+	s=arc-20240116; t=1721759459; c=relaxed/simple;
+	bh=2DUAmdR7tip+bjFRousSxhvFqwjZ4N2T1GvTeb/L3yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDFy7Sn6T+aeshLQrpd5XVzGXHY664KWofO5D+PHHCLMUAzzwP8myxAjFl1lSHysYnJca4Dy9sI1p99bDyOc+1NnizYgTwTdczawdYt3Exyh3s+bQIwiIRdEsZjbMj0Udd79ztN8zOMtAMJMMoKAfv2/r1KM2p/rcF0LDKZqhD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZ1+UaBY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F99C4AF09;
-	Tue, 23 Jul 2024 18:26:26 +0000 (UTC)
+	 MIME-Version; b=mcXl5lQual95b+lvfkghN8wwRT7yD+NJH3+Jjvdh9cgXx5WZMI+hGUT0VOcCoEomlgzPpoFM81u46bwNrRjIhJfHU5Voc1w3Ut8KuJjPHT3plooVL3WiLMqgA/FgohWBeZIzVo2Qiqu2wYtlMG1GA56fJnOknSFOL2VqV1GkrrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0sUhJKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E18C4AF0A;
+	Tue, 23 Jul 2024 18:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759187;
-	bh=XoxLOClTQ+dgc3yZLAvWJ9d+71pOnVt8mqD9ep6YE58=;
+	s=korg; t=1721759459;
+	bh=2DUAmdR7tip+bjFRousSxhvFqwjZ4N2T1GvTeb/L3yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZ1+UaBYMZnsgmvxUpOWfUQuyVvXFRHxAZQLCBkgqF3WUObQAj9zKUDXTj9Rc3mk2
-	 vndLeTvUsSA6aEJOiCNrXDiypuVV9PVFlRxZA7b+VNJ26I9PxgYdiBey/AAxLTDX5z
-	 skrnpBuD+jsuR6BlnD12oCoczN9oozus0mrAXeYg=
+	b=F0sUhJKarjPxmzqUSsAJ4N+TAvwrFM5GmDD5XVT58I0F9r2BaRncenz1VoLlXzSkC
+	 5pZQvs4/leT8NPWqZgIVCknS0buOAZkGYredT8aXK/V1qMUmprw3DZcUiLCrFDuQY6
+	 9pluxTLKqaX3UHBIqEklyOpD/K/Le8/oXeFFIvow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 009/105] filelock: Remove locks reliably when fcntl/close race is detected
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 018/129] wifi: iwlwifi: mvm: handle BA session teardown in RF-kill
 Date: Tue, 23 Jul 2024 20:22:46 +0200
-Message-ID: <20240723180403.059233132@linuxfoundation.org>
+Message-ID: <20240723180405.490818934@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 3cad1bc010416c6dd780643476bc59ed742436b9 upstream.
+[ Upstream commit 4d08c0b3357cba0aeffaf3abc62cae0c154f2816 ]
 
-When fcntl_setlk() races with close(), it removes the created lock with
-do_lock_file_wait().
-However, LSMs can allow the first do_lock_file_wait() that created the lock
-while denying the second do_lock_file_wait() that tries to remove the lock.
-In theory (but AFAIK not in practice), posix_lock_file() could also fail to
-remove a lock due to GFP_KERNEL allocation failure (when splitting a range
-in the middle).
+When entering RF-kill, mac80211 tears down BA sessions, but
+due to RF-kill the commands aren't sent to the device. As a
+result, there can be frames pending on the reorder buffer or
+perhaps even received while doing so, leading to warnings.
 
-After the bug has been triggered, use-after-free reads will occur in
-lock_get_status() when userspace reads /proc/locks. This can likely be used
-to read arbitrary kernel memory, but can't corrupt kernel memory.
-This only affects systems with SELinux / Smack / AppArmor / BPF-LSM in
-enforcing mode and only works from some security contexts.
+Avoid the warnings by doing the BA session teardown normally
+even in RF-kill, which also requires queue sync.
 
-Fix it by calling locks_remove_posix() instead, which is designed to
-reliably get rid of POSIX locks associated with the given file and
-files_struct and is also used by filp_flush().
-
-Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
-Cc: stable@kernel.org
-Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240702-fs-lock-recover-2-v1-1-edd456f63789@google.com
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[stable fixup: ->c.flc_type was ->fl_type in older kernels]
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.0762cd80fb3d.I43c5877f3b546159b2db4f36d6d956b333c41cf0@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/locks.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c  |  3 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c      | 12 ++++++++----
+ 3 files changed, 11 insertions(+), 6 deletions(-)
 
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2394,8 +2394,9 @@ int fcntl_setlk(unsigned int fd, struct
- 	error = do_lock_file_wait(filp, cmd, file_lock);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index e281e07be73fc..37f628a9b8115 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -6069,7 +6069,7 @@ void iwl_mvm_sync_rx_queues_internal(struct iwl_mvm *mvm,
+ 		.len[0] = sizeof(cmd),
+ 		.data[1] = data,
+ 		.len[1] = size,
+-		.flags = sync ? 0 : CMD_ASYNC,
++		.flags = CMD_SEND_IN_RFKILL | (sync ? 0 : CMD_ASYNC),
+ 	};
+ 	int ret;
  
- 	/*
--	 * Attempt to detect a close/fcntl race and recover by releasing the
--	 * lock that was just acquired. There is no need to do that when we're
-+	 * Detect close/fcntl races and recover by zapping all POSIX locks
-+	 * associated with this file and our files_struct, just like on
-+	 * filp_flush(). There is no need to do that when we're
- 	 * unlocking though, or for OFD locks.
- 	 */
- 	if (!error && file_lock->fl_type != F_UNLCK &&
-@@ -2410,9 +2411,7 @@ int fcntl_setlk(unsigned int fd, struct
- 		f = files_lookup_fd_locked(files, fd);
- 		spin_unlock(&files->file_lock);
- 		if (f != filp) {
--			file_lock->fl_type = F_UNLCK;
--			error = do_lock_file_wait(filp, cmd, file_lock);
--			WARN_ON_ONCE(error);
-+			locks_remove_posix(filp, files);
- 			error = -EBADF;
- 		}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+index 2dcc13d4a4a79..e87cc1ddb9c2f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+@@ -1007,7 +1007,8 @@ static int iwl_mvm_mld_update_sta_baids(struct iwl_mvm *mvm,
+ 
+ 		cmd.modify.tid = cpu_to_le32(data->tid);
+ 
+-		ret = iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0, sizeof(cmd), &cmd);
++		ret = iwl_mvm_send_cmd_pdu(mvm, cmd_id, CMD_SEND_IN_RFKILL,
++					   sizeof(cmd), &cmd);
+ 		data->sta_mask = new_sta_mask;
+ 		if (ret)
+ 			return ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index 2c231f4623893..84f4a9576cbda 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -2819,7 +2819,12 @@ static int iwl_mvm_fw_baid_op_cmd(struct iwl_mvm *mvm,
+ 		.action = start ? cpu_to_le32(IWL_RX_BAID_ACTION_ADD) :
+ 				  cpu_to_le32(IWL_RX_BAID_ACTION_REMOVE),
+ 	};
+-	u32 cmd_id = WIDE_ID(DATA_PATH_GROUP, RX_BAID_ALLOCATION_CONFIG_CMD);
++	struct iwl_host_cmd hcmd = {
++		.id = WIDE_ID(DATA_PATH_GROUP, RX_BAID_ALLOCATION_CONFIG_CMD),
++		.flags = CMD_SEND_IN_RFKILL,
++		.len[0] = sizeof(cmd),
++		.data[0] = &cmd,
++	};
+ 	int ret;
+ 
+ 	BUILD_BUG_ON(sizeof(struct iwl_rx_baid_cfg_resp) != sizeof(baid));
+@@ -2831,7 +2836,7 @@ static int iwl_mvm_fw_baid_op_cmd(struct iwl_mvm *mvm,
+ 		cmd.alloc.ssn = cpu_to_le16(ssn);
+ 		cmd.alloc.win_size = cpu_to_le16(buf_size);
+ 		baid = -EIO;
+-	} else if (iwl_fw_lookup_cmd_ver(mvm->fw, cmd_id, 1) == 1) {
++	} else if (iwl_fw_lookup_cmd_ver(mvm->fw, hcmd.id, 1) == 1) {
+ 		cmd.remove_v1.baid = cpu_to_le32(baid);
+ 		BUILD_BUG_ON(sizeof(cmd.remove_v1) > sizeof(cmd.remove));
+ 	} else {
+@@ -2840,8 +2845,7 @@ static int iwl_mvm_fw_baid_op_cmd(struct iwl_mvm *mvm,
+ 		cmd.remove.tid = cpu_to_le32(tid);
  	}
+ 
+-	ret = iwl_mvm_send_cmd_pdu_status(mvm, cmd_id, sizeof(cmd),
+-					  &cmd, &baid);
++	ret = iwl_mvm_send_cmd_status(mvm, &hcmd, &baid);
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.43.0
+
 
 
 
