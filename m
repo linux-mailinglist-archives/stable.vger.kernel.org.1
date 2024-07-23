@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-60906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CBB493A5F2
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D35A93A75A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92CD3B226DA
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 490521F23A84
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56671586F6;
-	Tue, 23 Jul 2024 18:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A894514286;
+	Tue, 23 Jul 2024 18:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDLhmxvQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqQ9Iu/i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AB7158859;
-	Tue, 23 Jul 2024 18:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6793B49634;
+	Tue, 23 Jul 2024 18:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759400; cv=none; b=cI2DA+yuWj8yTEs8GmkD8zJen06BRSN+WQsVAcWhFJFb/yqReRt77u8SVxo07JxZlLtMmz51zqKNIdO1G2L7Vdn+dpNnfCBaABtc/B5zG3t6Bw+mLLV+rCRZzRBbyjDH3ORDb+O3FW3jZJp6FzQW6LbNyg1cX1LlisyInoD2nr8=
+	t=1721760305; cv=none; b=fSvbGrMy+i840WDcRgqiBR9PrC8hM5WQjOvAx6L3NPorExK7JtuDsLg7pzv8BqVZ/5c6jqCbg/CVmIkfe56EvxryNhztIXMpo00dvE8eskAw41U1taLYHDmx/lfLAKSErTwky4K6HafStaHfrbjH5aRn9EqQ950kntYjwunfFqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759400; c=relaxed/simple;
-	bh=0qkIClXWD6MiUD8uke1lKzEg6NguS0CE9Y0+3hz4JGU=;
+	s=arc-20240116; t=1721760305; c=relaxed/simple;
+	bh=lOgOjc/UxxLu6aUMefGMRWWnximUpo/wVPU0R0A73Cw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEFZbNs5I+nS1f/GDcabLaGTP1ptID2SL3y3Hd/QHMUY5uaMvrF8QRkZFZB4GUiBcqIS80fOhxkBt5exXqqh+ufORVq4uWsyImuQJXJO2bW38CIAOerEUCnxRVIGOoqhTPnuS0dlyOd60JjWkvEqNE4U0b5i0fU9XEqBJG8PPgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDLhmxvQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC034C4AF0B;
-	Tue, 23 Jul 2024 18:29:59 +0000 (UTC)
+	 MIME-Version; b=c5ZHzmldIhx9oIU7DySCLHS0T81AnF2Gs2tIKafTjEQGiKWxi2ZbCYBVeQsuR/SNh3tE8opmTWpQwdVTfFF6MVQZUVh1rU61W5cvnp34l5U34QIYgM2BQ7j4GoJNc7wHOvr42iV2baNfEt9le6MGzaQL1nXPwBLeTakl/lcDCSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqQ9Iu/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11A9C4AF0A;
+	Tue, 23 Jul 2024 18:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759400;
-	bh=0qkIClXWD6MiUD8uke1lKzEg6NguS0CE9Y0+3hz4JGU=;
+	s=korg; t=1721760305;
+	bh=lOgOjc/UxxLu6aUMefGMRWWnximUpo/wVPU0R0A73Cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDLhmxvQhXdLd5YRgCOQxXKnTJg9Ol4r7TNpORaX8xN7bGDcaQtc55fgR68p9d7EJ
-	 +2h3rDwwYMAcEqIeAUuJhdvZXByCktpGS2gVsqKOSol8GjS4qNlT4+oEzoyA4qICSr
-	 iUKmEtXP+kBz3c+7qoaAfIoaDyEcgeEYDcG3Th/c=
+	b=XqQ9Iu/ifD/IFd7Br4bNcGjPOtDJ1N9tgT6in68PjV4q+01dwDLan7RvbU950eNrk
+	 koOSGOUB0IRZ2Z0L+wCBUGSoHh7rpnTD1V+QzUuKRZ0w8xSYMB5sn7K/gXIVMWDdd6
+	 uFOJEMIxHCl14rRcuePaptezaNyObpCJybZUPU0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 104/105] cachefiles: fix slab-use-after-free in fscache_withdraw_volume()
-Date: Tue, 23 Jul 2024 20:24:21 +0200
-Message-ID: <20240723180407.249750312@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 133/163] drm/amd/display: Add refresh rate range check
+Date: Tue, 23 Jul 2024 20:24:22 +0200
+Message-ID: <20240723180148.613332848@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,173 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit 522018a0de6b6fcce60c04f86dfc5f0e4b6a1b36 ]
+[ Upstream commit 74ad26b36d303ac233eccadc5c3a8d7ee4709f31 ]
 
-We got the following issue in our fault injection stress test:
+[Why]
+We only enable the VRR while monitor usable refresh rate range
+is greater than 10 Hz.
+But we did not check the range in DRM_EDID_FEATURE_CONTINUOUS_FREQ
+case.
 
-==================================================================
-BUG: KASAN: slab-use-after-free in fscache_withdraw_volume+0x2e1/0x370
-Read of size 4 at addr ffff88810680be08 by task ondemand-04-dae/5798
+[How]
+Add a refresh rate range check before set the freesync_capable flag
+in DRM_EDID_FEATURE_CONTINUOUS_FREQ case.
 
-CPU: 0 PID: 5798 Comm: ondemand-04-dae Not tainted 6.8.0-dirty #565
-Call Trace:
- kasan_check_range+0xf6/0x1b0
- fscache_withdraw_volume+0x2e1/0x370
- cachefiles_withdraw_volume+0x31/0x50
- cachefiles_withdraw_cache+0x3ad/0x900
- cachefiles_put_unbind_pincount+0x1f6/0x250
- cachefiles_daemon_release+0x13b/0x290
- __fput+0x204/0xa00
- task_work_run+0x139/0x230
-
-Allocated by task 5820:
- __kmalloc+0x1df/0x4b0
- fscache_alloc_volume+0x70/0x600
- __fscache_acquire_volume+0x1c/0x610
- erofs_fscache_register_volume+0x96/0x1a0
- erofs_fscache_register_fs+0x49a/0x690
- erofs_fc_fill_super+0x6c0/0xcc0
- vfs_get_super+0xa9/0x140
- vfs_get_tree+0x8e/0x300
- do_new_mount+0x28c/0x580
- [...]
-
-Freed by task 5820:
- kfree+0xf1/0x2c0
- fscache_put_volume.part.0+0x5cb/0x9e0
- erofs_fscache_unregister_fs+0x157/0x1b0
- erofs_kill_sb+0xd9/0x1c0
- deactivate_locked_super+0xa3/0x100
- vfs_get_super+0x105/0x140
- vfs_get_tree+0x8e/0x300
- do_new_mount+0x28c/0x580
- [...]
-==================================================================
-
-Following is the process that triggers the issue:
-
-        mount failed         |         daemon exit
-------------------------------------------------------------
- deactivate_locked_super        cachefiles_daemon_release
-  erofs_kill_sb
-   erofs_fscache_unregister_fs
-    fscache_relinquish_volume
-     __fscache_relinquish_volume
-      fscache_put_volume(fscache_volume, fscache_volume_put_relinquish)
-       zero = __refcount_dec_and_test(&fscache_volume->ref, &ref);
-                                 cachefiles_put_unbind_pincount
-                                  cachefiles_daemon_unbind
-                                   cachefiles_withdraw_cache
-                                    cachefiles_withdraw_volumes
-                                     list_del_init(&volume->cache_link)
-       fscache_free_volume(fscache_volume)
-        cache->ops->free_volume
-         cachefiles_free_volume
-          list_del_init(&cachefiles_volume->cache_link);
-        kfree(fscache_volume)
-                                     cachefiles_withdraw_volume
-                                      fscache_withdraw_volume
-                                       fscache_volume->n_accesses
-                                       // fscache_volume UAF !!!
-
-The fscache_volume in cache->volumes must not have been freed yet, but its
-reference count may be 0. So use the new fscache_try_get_volume() helper
-function try to get its reference count.
-
-If the reference count of fscache_volume is 0, fscache_put_volume() is
-freeing it, so wait for it to be removed from cache->volumes.
-
-If its reference count is not 0, call cachefiles_withdraw_volume() with
-reference count protection to avoid the above issue.
-
-Fixes: fe2140e2f57f ("cachefiles: Implement volume support")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240628062930.2467993-3-libaokun@huaweicloud.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/cache.c          |   10 ++++++++++
- include/trace/events/fscache.h |    4 ++++
- 2 files changed, 14 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/cachefiles/cache.c
-+++ b/fs/cachefiles/cache.c
-@@ -8,6 +8,7 @@
- #include <linux/slab.h>
- #include <linux/statfs.h>
- #include <linux/namei.h>
-+#include <trace/events/fscache.h>
- #include "internal.h"
- 
- /*
-@@ -319,12 +320,20 @@ static void cachefiles_withdraw_volumes(
- 	_enter("");
- 
- 	for (;;) {
-+		struct fscache_volume *vcookie = NULL;
- 		struct cachefiles_volume *volume = NULL;
- 
- 		spin_lock(&cache->object_list_lock);
- 		if (!list_empty(&cache->volumes)) {
- 			volume = list_first_entry(&cache->volumes,
- 						  struct cachefiles_volume, cache_link);
-+			vcookie = fscache_try_get_volume(volume->vcookie,
-+							 fscache_volume_get_withdraw);
-+			if (!vcookie) {
-+				spin_unlock(&cache->object_list_lock);
-+				cpu_relax();
-+				continue;
-+			}
- 			list_del_init(&volume->cache_link);
- 		}
- 		spin_unlock(&cache->object_list_lock);
-@@ -332,6 +341,7 @@ static void cachefiles_withdraw_volumes(
- 			break;
- 
- 		cachefiles_withdraw_volume(volume);
-+		fscache_put_volume(vcookie, fscache_volume_put_withdraw);
- 	}
- 
- 	_leave("");
---- a/include/trace/events/fscache.h
-+++ b/include/trace/events/fscache.h
-@@ -35,12 +35,14 @@ enum fscache_volume_trace {
- 	fscache_volume_get_cookie,
- 	fscache_volume_get_create_work,
- 	fscache_volume_get_hash_collision,
-+	fscache_volume_get_withdraw,
- 	fscache_volume_free,
- 	fscache_volume_new_acquire,
- 	fscache_volume_put_cookie,
- 	fscache_volume_put_create_work,
- 	fscache_volume_put_hash_collision,
- 	fscache_volume_put_relinquish,
-+	fscache_volume_put_withdraw,
- 	fscache_volume_see_create_work,
- 	fscache_volume_see_hash_wake,
- 	fscache_volume_wait_create_work,
-@@ -120,12 +122,14 @@ enum fscache_access_trace {
- 	EM(fscache_volume_get_cookie,		"GET cook ")		\
- 	EM(fscache_volume_get_create_work,	"GET creat")		\
- 	EM(fscache_volume_get_hash_collision,	"GET hcoll")		\
-+	EM(fscache_volume_get_withdraw,		"GET withd")            \
- 	EM(fscache_volume_free,			"FREE     ")		\
- 	EM(fscache_volume_new_acquire,		"NEW acq  ")		\
- 	EM(fscache_volume_put_cookie,		"PUT cook ")		\
- 	EM(fscache_volume_put_create_work,	"PUT creat")		\
- 	EM(fscache_volume_put_hash_collision,	"PUT hcoll")		\
- 	EM(fscache_volume_put_relinquish,	"PUT relnq")		\
-+	EM(fscache_volume_put_withdraw,		"PUT withd")            \
- 	EM(fscache_volume_see_create_work,	"SEE creat")		\
- 	EM(fscache_volume_see_hash_wake,	"SEE hwake")		\
- 	E_(fscache_volume_wait_create_work,	"WAIT crea")
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 2152e40ee1c27..087d7aad8e6b4 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -11289,9 +11289,11 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
+ 		if (is_dp_capable_without_timing_msa(adev->dm.dc,
+ 						     amdgpu_dm_connector)) {
+ 			if (edid->features & DRM_EDID_FEATURE_CONTINUOUS_FREQ) {
+-				freesync_capable = true;
+ 				amdgpu_dm_connector->min_vfreq = connector->display_info.monitor_range.min_vfreq;
+ 				amdgpu_dm_connector->max_vfreq = connector->display_info.monitor_range.max_vfreq;
++				if (amdgpu_dm_connector->max_vfreq -
++				    amdgpu_dm_connector->min_vfreq > 10)
++					freesync_capable = true;
+ 			} else {
+ 				edid_check_required = edid->version > 1 ||
+ 						      (edid->version == 1 &&
+-- 
+2.43.0
+
 
 
 
