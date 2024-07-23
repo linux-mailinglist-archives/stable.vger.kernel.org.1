@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-60943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B4E93A61F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0572293A6D8
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92BBD1F23626
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2921A1C209E2
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA4D158D63;
-	Tue, 23 Jul 2024 18:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06602158871;
+	Tue, 23 Jul 2024 18:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfLaKdSd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnJtAhaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED074158A2C;
-	Tue, 23 Jul 2024 18:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F49158215;
+	Tue, 23 Jul 2024 18:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759510; cv=none; b=F/Oqy2iVy9yA0O4J99qu7B16olWUhn+cuI76AlDuFDxj3T8PsOrjT8v9Nq6Z8YMMdY7ZuhcUi06b/uGaQ87M1bSEvW2Q0I33NMMwncyiXFwb16AKPg/MXBW+99wQCGLrgEvnMEHY66od6q9z22uEcaQrhyQgcoGNrpb0EgeSPP4=
+	t=1721759955; cv=none; b=MX+Gb0Mk7+MDm0B2/GF+udroAfcAPoGtEDDILiLg4/kTUDrK5vUxkhXkXlTEJgC2rc9s52m9xjfiQgNcuCsubOMtsJst24P/KSyj8c88uBPW9fT+I02sJd1eZwJOTMICuthHkjiautALjalhj4VKJ+44tSefFGL4NG4Hv3bxUAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759510; c=relaxed/simple;
-	bh=HMBk9q87Wf1cojHoS1ZtjPj1i/cZfUMa6WN3mqz4zHc=;
+	s=arc-20240116; t=1721759955; c=relaxed/simple;
+	bh=88Myv/ESlGIRA6yMKgK/hC089psOgyWfmQqnxVr8YVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rw7AGrx19wy2Ukgbkn/623Cf/R2L8p5iX763MOr5qYnVCfEumnqKGsu7yiQDumAJq7CLxaBKtWEszRvVAMRYyKqBeexmdu7c7ukGP/supsIUOYewj1RlSOU5hUj/2BHuxGgzKfwwvy3ePwRoD9NzvnyaX//laqpGlwZpWLs08ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfLaKdSd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8A5C4AF0A;
-	Tue, 23 Jul 2024 18:31:49 +0000 (UTC)
+	 MIME-Version; b=BVKMfuqFqt+F5FR4YmPoeuU7w6AUpZdVJAhIF/saIGhU9huAbQSOxlkUrdz2J1YLF5cwXNgPz0ukWE11N16JSdrgeTL8uHzBM89aL41C+NwdiiArw8tVa8+83HQxJMOeJkWh3aQzQvanu683UC7NKd3gPMRlv3TKJ8HDFxgAZW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnJtAhaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECFAC4AF09;
+	Tue, 23 Jul 2024 18:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759509;
-	bh=HMBk9q87Wf1cojHoS1ZtjPj1i/cZfUMa6WN3mqz4zHc=;
+	s=korg; t=1721759955;
+	bh=88Myv/ESlGIRA6yMKgK/hC089psOgyWfmQqnxVr8YVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DfLaKdSdixRTjyvsnfw67lVYmGA25QGgvYbEjIVTrXPOddNNZX55M8x0OQFHmq56+
-	 L8B8qrLQwNAbqTHZQNkois8NqxYSrxZb3XgOeUcVAv23BDT7nQCAzeFNT5yEAnTYO/
-	 FXMtJtTj3mY0XHdF2jlo8TZSeOihnnaujMWi4nYU=
+	b=lnJtAhaC4k+5KlvXVZKeUNVaARpxSfXzrVSxVc0ILmdbkLzsVqQsBdUKSsPlqPCUa
+	 gs4/+Lq/fh7OqwEU2mM7XQ8SJmryZG821U+IupNVBusj3rgzVQAGd/vBP23qAYXvHf
+	 hpeGNvm5cej9k2hWBgoRAYEBRUVo96sweCjYNH/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis Dalibard <ontake@ontake.dev>,
-	Jiri Kosina <jkosina@suse.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/129] HID: Ignore battery for ELAN touchscreens 2F2C and 4116
+Subject: [PATCH 6.9 054/163] vfio/pci: Use unmap_mapping_range()
 Date: Tue, 23 Jul 2024 20:23:03 +0200
-Message-ID: <20240723180406.146580713@linuxfoundation.org>
+Message-ID: <20240723180145.562046373@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,448 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis Dalibard <ontake@ontake.dev>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit a3a5a37efba11b7cf1a86abe7bccfbcdb521764e ]
+[ Upstream commit aac6db75a9fc2c7a6f73e152df8f15101dda38e6 ]
 
-At least ASUS Zenbook 14 (2023) and ASUS Zenbook 14 Pro (2023) are affected.
+With the vfio device fd tied to the address space of the pseudo fs
+inode, we can use the mm to track all vmas that might be mmap'ing
+device BARs, which removes our vma_list and all the complicated lock
+ordering necessary to manually zap each related vma.
 
-The touchscreen reports a battery status of 0% and jumps to 1% when a
-stylus is used.
+Note that we can no longer store the pfn in vm_pgoff if we want to use
+unmap_mapping_range() to zap a selective portion of the device fd
+corresponding to BAR mappings.
 
-The device ID was added and the battery ignore quirk was enabled for it.
+This also converts our mmap fault handler to use vmf_insert_pfn()
+because we no longer have a vma_list to avoid the concurrency problem
+with io_remap_pfn_range().  The goal is to eventually use the vm_ops
+huge_fault handler to avoid the additional faulting overhead, but
+vmf_insert_pfn_{pmd,pud}() need to learn about pfnmaps first.
 
-[jkosina@suse.com: reformatted changelog a bit]
-Signed-off-by: Louis Dalibard <ontake@ontake.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Also, Jason notes that a race exists between unmap_mapping_range() and
+the fops mmap callback if we were to call io_remap_pfn_range() to
+populate the vma on mmap.  Specifically, mmap_region() does call_mmap()
+before it does vma_link_file() which gives a window where the vma is
+populated but invisible to unmap_mapping_range().
+
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20240530045236.1005864-3-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h   | 2 ++
- drivers/hid/hid-input.c | 4 ++++
- 2 files changed, 6 insertions(+)
+ drivers/vfio/pci/vfio_pci_core.c | 264 +++++++------------------------
+ include/linux/vfio_pci_core.h    |   2 -
+ 2 files changed, 55 insertions(+), 211 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 89aef5874202c..4246348ca16e9 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -418,6 +418,8 @@
- #define I2C_DEVICE_ID_HP_SPECTRE_X360_13_AW0020NG  0x29DF
- #define I2C_DEVICE_ID_ASUS_TP420IA_TOUCHSCREEN 0x2BC8
- #define I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN 0x2C82
-+#define I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN 0x2F2C
-+#define I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN 0x4116
- #define USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN	0x2544
- #define USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN	0x2706
- #define I2C_DEVICE_ID_SURFACE_GO_TOUCHSCREEN	0x261A
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index 8bb16e9b94aa5..c9094a4f281e9 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -377,6 +377,10 @@ static const struct hid_device_id hid_battery_quirks[] = {
- 	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN),
- 	  HID_BATTERY_QUIRK_IGNORE },
-+	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN),
-+	  HID_BATTERY_QUIRK_IGNORE },
-+	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN),
-+	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN),
- 	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN),
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index ea36d2139590f..727a51ce9ad71 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1607,100 +1607,20 @@ ssize_t vfio_pci_core_write(struct vfio_device *core_vdev, const char __user *bu
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_write);
+ 
+-/* Return 1 on zap and vma_lock acquired, 0 on contention (only with @try) */
+-static int vfio_pci_zap_and_vma_lock(struct vfio_pci_core_device *vdev, bool try)
++static void vfio_pci_zap_bars(struct vfio_pci_core_device *vdev)
+ {
+-	struct vfio_pci_mmap_vma *mmap_vma, *tmp;
++	struct vfio_device *core_vdev = &vdev->vdev;
++	loff_t start = VFIO_PCI_INDEX_TO_OFFSET(VFIO_PCI_BAR0_REGION_INDEX);
++	loff_t end = VFIO_PCI_INDEX_TO_OFFSET(VFIO_PCI_ROM_REGION_INDEX);
++	loff_t len = end - start;
+ 
+-	/*
+-	 * Lock ordering:
+-	 * vma_lock is nested under mmap_lock for vm_ops callback paths.
+-	 * The memory_lock semaphore is used by both code paths calling
+-	 * into this function to zap vmas and the vm_ops.fault callback
+-	 * to protect the memory enable state of the device.
+-	 *
+-	 * When zapping vmas we need to maintain the mmap_lock => vma_lock
+-	 * ordering, which requires using vma_lock to walk vma_list to
+-	 * acquire an mm, then dropping vma_lock to get the mmap_lock and
+-	 * reacquiring vma_lock.  This logic is derived from similar
+-	 * requirements in uverbs_user_mmap_disassociate().
+-	 *
+-	 * mmap_lock must always be the top-level lock when it is taken.
+-	 * Therefore we can only hold the memory_lock write lock when
+-	 * vma_list is empty, as we'd need to take mmap_lock to clear
+-	 * entries.  vma_list can only be guaranteed empty when holding
+-	 * vma_lock, thus memory_lock is nested under vma_lock.
+-	 *
+-	 * This enables the vm_ops.fault callback to acquire vma_lock,
+-	 * followed by memory_lock read lock, while already holding
+-	 * mmap_lock without risk of deadlock.
+-	 */
+-	while (1) {
+-		struct mm_struct *mm = NULL;
+-
+-		if (try) {
+-			if (!mutex_trylock(&vdev->vma_lock))
+-				return 0;
+-		} else {
+-			mutex_lock(&vdev->vma_lock);
+-		}
+-		while (!list_empty(&vdev->vma_list)) {
+-			mmap_vma = list_first_entry(&vdev->vma_list,
+-						    struct vfio_pci_mmap_vma,
+-						    vma_next);
+-			mm = mmap_vma->vma->vm_mm;
+-			if (mmget_not_zero(mm))
+-				break;
+-
+-			list_del(&mmap_vma->vma_next);
+-			kfree(mmap_vma);
+-			mm = NULL;
+-		}
+-		if (!mm)
+-			return 1;
+-		mutex_unlock(&vdev->vma_lock);
+-
+-		if (try) {
+-			if (!mmap_read_trylock(mm)) {
+-				mmput(mm);
+-				return 0;
+-			}
+-		} else {
+-			mmap_read_lock(mm);
+-		}
+-		if (try) {
+-			if (!mutex_trylock(&vdev->vma_lock)) {
+-				mmap_read_unlock(mm);
+-				mmput(mm);
+-				return 0;
+-			}
+-		} else {
+-			mutex_lock(&vdev->vma_lock);
+-		}
+-		list_for_each_entry_safe(mmap_vma, tmp,
+-					 &vdev->vma_list, vma_next) {
+-			struct vm_area_struct *vma = mmap_vma->vma;
+-
+-			if (vma->vm_mm != mm)
+-				continue;
+-
+-			list_del(&mmap_vma->vma_next);
+-			kfree(mmap_vma);
+-
+-			zap_vma_ptes(vma, vma->vm_start,
+-				     vma->vm_end - vma->vm_start);
+-		}
+-		mutex_unlock(&vdev->vma_lock);
+-		mmap_read_unlock(mm);
+-		mmput(mm);
+-	}
++	unmap_mapping_range(core_vdev->inode->i_mapping, start, len, true);
+ }
+ 
+ void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device *vdev)
+ {
+-	vfio_pci_zap_and_vma_lock(vdev, false);
+ 	down_write(&vdev->memory_lock);
+-	mutex_unlock(&vdev->vma_lock);
++	vfio_pci_zap_bars(vdev);
+ }
+ 
+ u16 vfio_pci_memory_lock_and_enable(struct vfio_pci_core_device *vdev)
+@@ -1722,99 +1642,41 @@ void vfio_pci_memory_unlock_and_restore(struct vfio_pci_core_device *vdev, u16 c
+ 	up_write(&vdev->memory_lock);
+ }
+ 
+-/* Caller holds vma_lock */
+-static int __vfio_pci_add_vma(struct vfio_pci_core_device *vdev,
+-			      struct vm_area_struct *vma)
+-{
+-	struct vfio_pci_mmap_vma *mmap_vma;
+-
+-	mmap_vma = kmalloc(sizeof(*mmap_vma), GFP_KERNEL_ACCOUNT);
+-	if (!mmap_vma)
+-		return -ENOMEM;
+-
+-	mmap_vma->vma = vma;
+-	list_add(&mmap_vma->vma_next, &vdev->vma_list);
+-
+-	return 0;
+-}
+-
+-/*
+- * Zap mmaps on open so that we can fault them in on access and therefore
+- * our vma_list only tracks mappings accessed since last zap.
+- */
+-static void vfio_pci_mmap_open(struct vm_area_struct *vma)
+-{
+-	zap_vma_ptes(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+-}
+-
+-static void vfio_pci_mmap_close(struct vm_area_struct *vma)
++static unsigned long vma_to_pfn(struct vm_area_struct *vma)
+ {
+ 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
+-	struct vfio_pci_mmap_vma *mmap_vma;
++	int index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
++	u64 pgoff;
+ 
+-	mutex_lock(&vdev->vma_lock);
+-	list_for_each_entry(mmap_vma, &vdev->vma_list, vma_next) {
+-		if (mmap_vma->vma == vma) {
+-			list_del(&mmap_vma->vma_next);
+-			kfree(mmap_vma);
+-			break;
+-		}
+-	}
+-	mutex_unlock(&vdev->vma_lock);
++	pgoff = vma->vm_pgoff &
++		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
++
++	return (pci_resource_start(vdev->pdev, index) >> PAGE_SHIFT) + pgoff;
+ }
+ 
+ static vm_fault_t vfio_pci_mmap_fault(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
+-	struct vfio_pci_mmap_vma *mmap_vma;
+-	vm_fault_t ret = VM_FAULT_NOPAGE;
++	unsigned long pfn, pgoff = vmf->pgoff - vma->vm_pgoff;
++	vm_fault_t ret = VM_FAULT_SIGBUS;
+ 
+-	mutex_lock(&vdev->vma_lock);
+-	down_read(&vdev->memory_lock);
++	pfn = vma_to_pfn(vma);
+ 
+-	/*
+-	 * Memory region cannot be accessed if the low power feature is engaged
+-	 * or memory access is disabled.
+-	 */
+-	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev)) {
+-		ret = VM_FAULT_SIGBUS;
+-		goto up_out;
+-	}
++	down_read(&vdev->memory_lock);
+ 
+-	/*
+-	 * We populate the whole vma on fault, so we need to test whether
+-	 * the vma has already been mapped, such as for concurrent faults
+-	 * to the same vma.  io_remap_pfn_range() will trigger a BUG_ON if
+-	 * we ask it to fill the same range again.
+-	 */
+-	list_for_each_entry(mmap_vma, &vdev->vma_list, vma_next) {
+-		if (mmap_vma->vma == vma)
+-			goto up_out;
+-	}
++	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
++		goto out_disabled;
+ 
+-	if (io_remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
+-			       vma->vm_end - vma->vm_start,
+-			       vma->vm_page_prot)) {
+-		ret = VM_FAULT_SIGBUS;
+-		zap_vma_ptes(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+-		goto up_out;
+-	}
++	ret = vmf_insert_pfn(vma, vmf->address, pfn + pgoff);
+ 
+-	if (__vfio_pci_add_vma(vdev, vma)) {
+-		ret = VM_FAULT_OOM;
+-		zap_vma_ptes(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+-	}
+-
+-up_out:
++out_disabled:
+ 	up_read(&vdev->memory_lock);
+-	mutex_unlock(&vdev->vma_lock);
++
+ 	return ret;
+ }
+ 
+ static const struct vm_operations_struct vfio_pci_mmap_ops = {
+-	.open = vfio_pci_mmap_open,
+-	.close = vfio_pci_mmap_close,
+ 	.fault = vfio_pci_mmap_fault,
+ };
+ 
+@@ -1877,11 +1739,12 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
+ 
+ 	vma->vm_private_data = vdev;
+ 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+-	vma->vm_pgoff = (pci_resource_start(pdev, index) >> PAGE_SHIFT) + pgoff;
++	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
+ 
+ 	/*
+-	 * See remap_pfn_range(), called from vfio_pci_fault() but we can't
+-	 * change vm_flags within the fault handler.  Set them now.
++	 * Set vm_flags now, they should not be changed in the fault handler.
++	 * We want the same flags and page protection (decrypted above) as
++	 * io_remap_pfn_range() would set.
+ 	 *
+ 	 * VM_ALLOW_ANY_UNCACHED: The VMA flag is implemented for ARM64,
+ 	 * allowing KVM stage 2 device mapping attributes to use Normal-NC
+@@ -2199,8 +2062,6 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+ 	mutex_init(&vdev->ioeventfds_lock);
+ 	INIT_LIST_HEAD(&vdev->dummy_resources_list);
+ 	INIT_LIST_HEAD(&vdev->ioeventfds_list);
+-	mutex_init(&vdev->vma_lock);
+-	INIT_LIST_HEAD(&vdev->vma_list);
+ 	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
+ 	init_rwsem(&vdev->memory_lock);
+ 	xa_init(&vdev->ctx);
+@@ -2216,7 +2077,6 @@ void vfio_pci_core_release_dev(struct vfio_device *core_vdev)
+ 
+ 	mutex_destroy(&vdev->igate);
+ 	mutex_destroy(&vdev->ioeventfds_lock);
+-	mutex_destroy(&vdev->vma_lock);
+ 	kfree(vdev->region);
+ 	kfree(vdev->pm_save);
+ }
+@@ -2494,26 +2354,15 @@ static int vfio_pci_dev_set_pm_runtime_get(struct vfio_device_set *dev_set)
+ 	return ret;
+ }
+ 
+-/*
+- * We need to get memory_lock for each device, but devices can share mmap_lock,
+- * therefore we need to zap and hold the vma_lock for each device, and only then
+- * get each memory_lock.
+- */
+ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ 				      struct vfio_pci_group_info *groups,
+ 				      struct iommufd_ctx *iommufd_ctx)
+ {
+-	struct vfio_pci_core_device *cur_mem;
+-	struct vfio_pci_core_device *cur_vma;
+-	struct vfio_pci_core_device *cur;
++	struct vfio_pci_core_device *vdev;
+ 	struct pci_dev *pdev;
+-	bool is_mem = true;
+ 	int ret;
+ 
+ 	mutex_lock(&dev_set->lock);
+-	cur_mem = list_first_entry(&dev_set->device_list,
+-				   struct vfio_pci_core_device,
+-				   vdev.dev_set_list);
+ 
+ 	pdev = vfio_pci_dev_set_resettable(dev_set);
+ 	if (!pdev) {
+@@ -2530,7 +2379,7 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ 	if (ret)
+ 		goto err_unlock;
+ 
+-	list_for_each_entry(cur_vma, &dev_set->device_list, vdev.dev_set_list) {
++	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list) {
+ 		bool owned;
+ 
+ 		/*
+@@ -2554,38 +2403,38 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ 		 * Otherwise, reset is not allowed.
+ 		 */
+ 		if (iommufd_ctx) {
+-			int devid = vfio_iommufd_get_dev_id(&cur_vma->vdev,
++			int devid = vfio_iommufd_get_dev_id(&vdev->vdev,
+ 							    iommufd_ctx);
+ 
+ 			owned = (devid > 0 || devid == -ENOENT);
+ 		} else {
+-			owned = vfio_dev_in_groups(&cur_vma->vdev, groups);
++			owned = vfio_dev_in_groups(&vdev->vdev, groups);
+ 		}
+ 
+ 		if (!owned) {
+ 			ret = -EINVAL;
+-			goto err_undo;
++			break;
+ 		}
+ 
+ 		/*
+-		 * Locking multiple devices is prone to deadlock, runaway and
+-		 * unwind if we hit contention.
++		 * Take the memory write lock for each device and zap BAR
++		 * mappings to prevent the user accessing the device while in
++		 * reset.  Locking multiple devices is prone to deadlock,
++		 * runaway and unwind if we hit contention.
+ 		 */
+-		if (!vfio_pci_zap_and_vma_lock(cur_vma, true)) {
++		if (!down_write_trylock(&vdev->memory_lock)) {
+ 			ret = -EBUSY;
+-			goto err_undo;
++			break;
+ 		}
++
++		vfio_pci_zap_bars(vdev);
+ 	}
+-	cur_vma = NULL;
+ 
+-	list_for_each_entry(cur_mem, &dev_set->device_list, vdev.dev_set_list) {
+-		if (!down_write_trylock(&cur_mem->memory_lock)) {
+-			ret = -EBUSY;
+-			goto err_undo;
+-		}
+-		mutex_unlock(&cur_mem->vma_lock);
++	if (!list_entry_is_head(vdev,
++				&dev_set->device_list, vdev.dev_set_list)) {
++		vdev = list_prev_entry(vdev, vdev.dev_set_list);
++		goto err_undo;
+ 	}
+-	cur_mem = NULL;
+ 
+ 	/*
+ 	 * The pci_reset_bus() will reset all the devices in the bus.
+@@ -2596,25 +2445,22 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ 	 * cause the PCI config space reset without restoring the original
+ 	 * state (saved locally in 'vdev->pm_save').
+ 	 */
+-	list_for_each_entry(cur, &dev_set->device_list, vdev.dev_set_list)
+-		vfio_pci_set_power_state(cur, PCI_D0);
++	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
++		vfio_pci_set_power_state(vdev, PCI_D0);
+ 
+ 	ret = pci_reset_bus(pdev);
+ 
++	vdev = list_last_entry(&dev_set->device_list,
++			       struct vfio_pci_core_device, vdev.dev_set_list);
++
+ err_undo:
+-	list_for_each_entry(cur, &dev_set->device_list, vdev.dev_set_list) {
+-		if (cur == cur_mem)
+-			is_mem = false;
+-		if (cur == cur_vma)
+-			break;
+-		if (is_mem)
+-			up_write(&cur->memory_lock);
+-		else
+-			mutex_unlock(&cur->vma_lock);
+-	}
++	list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
++					 vdev.dev_set_list)
++		up_write(&vdev->memory_lock);
++
++	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
++		pm_runtime_put(&vdev->pdev->dev);
+ 
+-	list_for_each_entry(cur, &dev_set->device_list, vdev.dev_set_list)
+-		pm_runtime_put(&cur->pdev->dev);
+ err_unlock:
+ 	mutex_unlock(&dev_set->lock);
+ 	return ret;
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index a2c8b8bba7119..f87067438ed48 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -93,8 +93,6 @@ struct vfio_pci_core_device {
+ 	struct list_head		sriov_pfs_item;
+ 	struct vfio_pci_core_device	*sriov_pf_core_dev;
+ 	struct notifier_block	nb;
+-	struct mutex		vma_lock;
+-	struct list_head	vma_list;
+ 	struct rw_semaphore	memory_lock;
+ };
+ 
 -- 
 2.43.0
 
