@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-60991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE6A93A656
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:34:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8E493A712
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 506711C21D4F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:34:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 142B31F238D3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80246158A07;
-	Tue, 23 Jul 2024 18:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925B51586CB;
+	Tue, 23 Jul 2024 18:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLE+iJRS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJnDH9Or"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECAB158A02;
-	Tue, 23 Jul 2024 18:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6B113D896;
+	Tue, 23 Jul 2024 18:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759653; cv=none; b=gGzw8Qcl+VxOA4eOxHHCs5nTQkFWN4sE9WDy8W0Ce/IdoaAAJC+ew0HtQ09j4EV7SoDqf2UmdxzN7RlKcXE15VWURwus8RDm5Tb34T4XbVM6/F65TZyJVbvonUMeQ3G8qfAh/DUicuWFcSu8a/lXgNBCYVwO4yzqMK+JB++W9rk=
+	t=1721760119; cv=none; b=ibghSNPHlQKdna2Q9v5/uyElrVZbHpkhrXq5yj6MNd+0nqHTrwVTDWCDYen3ew12BDUdzav5gMzlMyIVxTlbpgW57+ogH+8f15ATJQtNGhYBsO4APHwo52vtmKGIHXaqpbHTGfy2cIf89myXK1ro+Z3roE+ce4Hz8EGRFbllf+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759653; c=relaxed/simple;
-	bh=I4+LwafH7gSzLnAUPQ2o0AWLET+NgNOymU25uX3d0lg=;
+	s=arc-20240116; t=1721760119; c=relaxed/simple;
+	bh=9YGCwCbwaRakJjLLMCmvfSS9d6m51xSUpBb0clOG7/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rqrM8f9VR7Jdd5urcQLM1a71DLHjDjDUAOPIVuhV7hlRmmAmJRQ2NEfTPpqC2hAt4tXmYoOfdcrWSo5MWkbA0zh4E56KcwtewmqimggHgie3tG0bm30gIHR+qA9CHHVsBGW2XEeaoALjEYK9+iW+uISr2n53U6G/AT+6yP8QFAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLE+iJRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2608C4AF0A;
-	Tue, 23 Jul 2024 18:34:12 +0000 (UTC)
+	 MIME-Version; b=b9HF00iAWz8/Jq1Ek7rVkgBcqaG/E3pWG42FEIIxle3q7nPp+eUi2fIShjZ4Pl6CMIGIcJZEYRFW0CpgqN/uYLNdEu5aZfqbLBTVypjIFik/aB3bbqEjfPLZaHU/+uOVRZ00ylOjMak7eatpUsDhZLQzJpeHLaLmT1zDwEy6/3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJnDH9Or; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D84C4AF0A;
+	Tue, 23 Jul 2024 18:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759653;
-	bh=I4+LwafH7gSzLnAUPQ2o0AWLET+NgNOymU25uX3d0lg=;
+	s=korg; t=1721760119;
+	bh=9YGCwCbwaRakJjLLMCmvfSS9d6m51xSUpBb0clOG7/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gLE+iJRSn6zg5aGwH/Oux+tACNjcc6xph5CY6hsl87HTUdjheygvD2+6r/83To4RJ
-	 CEjIbm21MQsChOWNKIJZu8kQvbBIv2/O28UicaEbVQJFNzia1HbRm4a4634jhTbpR2
-	 tdYq9CsZg+TapOj6AEkw3IEyd+JXVIJ8D1yrkR0M=
+	b=PJnDH9Or69FzNMgYxuyUh8uTVqC49+E4m6LorGYUwvue7ILwfT5UWC/+2N64YaG+M
+	 p6dnyVd0cVs1uN8pY9eP5f+hrUqGCiLZ2ZcpbKYm6uggfZ2K8hEzJmh2+HpFkoDxZ3
+	 YUlah44W4DF2zibbPsMomAFRrSByN+wHQCBLdTP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Agathe Boutmy <agathe@boutmy.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/129] platform/x86: wireless-hotkey: Add support for LG Airplane Button
+Subject: [PATCH 6.9 101/163] ASoC: cs35l56: Disconnect ASP1 TX sources when ASP1 DAI is hooked up
 Date: Tue, 23 Jul 2024 20:23:50 +0200
-Message-ID: <20240723180407.953207757@linuxfoundation.org>
+Message-ID: <20240723180147.379633251@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 151e78a0b89ee6dec93382dbdf5b1ef83f9c4716 ]
+[ Upstream commit 8af49868e51ed1ba117b74728af12abe1eda82e5 ]
 
-The LGEX0815 ACPI device is used by the "LG Airplane Mode Button"
-Windows driver for handling rfkill requests. When the ACPI device
-receives an 0x80 ACPI notification, an rfkill event is to be
-send to userspace.
+If the ASP1 DAI is hooked up by the machine driver the ASP TX mixer
+sources should be initialized to disconnected. There aren't currently
+any available products using the ASP so this doesn't affect any
+existing systems.
 
-Add support for the LGEX0815 ACPI device to the driver.
+The cs35l56 does not have any fixed default for the mixer source
+registers. When the cs35l56 boots, its firmware patches these registers
+to setup a system-specific routing; this is so that Windows can use
+generic SDCA drivers instead of needing knowledge of chip-specific
+registers. The setup varies between end-products, which each have
+customized firmware, and so the default register state varies between
+end-products. It can also change if the firmware on an end-product is
+upgraded - for example if a change was needed to the routing for Windows
+use-cases. It must be emphasized that the settings applied by the
+firmware are not internal magic tuning; they are statically implementing
+use-case setup that on Linux would be done via ALSA controls.
 
-Tested-by: Agathe Boutmy <agathe@boutmy.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240606233540.9774-2-W_Armin@gmx.de
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+The driver is currently syncing the mixer controls with whatever
+initial state the firmware wrote to the registers, so that they report
+the actual audio routing. But if the ASP DAI is hooked up this can create
+a powered-up DAPM graph without anything intentionally setting up a path.
+This can lead to parts of the audio system powering up unexpectedly.
+
+For example when cs35l56 is connected to cs42l43 using a codec-codec link,
+this can create a complete DAPM graph which then powers-up cs42l43. But
+the cs42l43 can only be clocked from its SoundWire bus so this causes a
+bunch of errors in the kernel log where cs42l43 is unexpectedly powered-up
+without a clock.
+
+If the host is taking ownership of the ASP (either directly or as a
+codec-to-codec link) there is no need to keep the mixer settings that the
+firmware wrote. The driver has ALSA controls for setting these using
+standard Linux mechanisms. So if the machine driver hooks up the ASP the
+ASP mixers are initialized to "None" (no input). This prevents unintended
+DAPM-graph power-ups, and means the initial state of the mixers is
+always going to be None.
+
+Since the initial state of the mixers can vary from system to system and
+potentially between firmware upgrades, no use-case manager can currently
+assume that cs35l56 has a known initial state. The firmware could just as
+easily default them to "None" as to any input source. So defaulting them
+to "None" in the driver is not increasing the entropy of the system.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20240613132527.46537-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/wireless-hotkey.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/cs35l56-shared.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/platform/x86/wireless-hotkey.c b/drivers/platform/x86/wireless-hotkey.c
-index 4422863f47bbe..01feb6e6787f2 100644
---- a/drivers/platform/x86/wireless-hotkey.c
-+++ b/drivers/platform/x86/wireless-hotkey.c
-@@ -19,6 +19,7 @@ MODULE_AUTHOR("Alex Hung");
- MODULE_ALIAS("acpi*:HPQ6001:*");
- MODULE_ALIAS("acpi*:WSTADEF:*");
- MODULE_ALIAS("acpi*:AMDI0051:*");
-+MODULE_ALIAS("acpi*:LGEX0815:*");
- 
- struct wl_button {
- 	struct input_dev *input_dev;
-@@ -29,6 +30,7 @@ static const struct acpi_device_id wl_ids[] = {
- 	{"HPQ6001", 0},
- 	{"WSTADEF", 0},
- 	{"AMDI0051", 0},
-+	{"LGEX0815", 0},
- 	{"", 0},
+diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
+index fd02b621da52c..d29878af2a80d 100644
+--- a/sound/soc/codecs/cs35l56-shared.c
++++ b/sound/soc/codecs/cs35l56-shared.c
+@@ -214,6 +214,10 @@ static const struct reg_sequence cs35l56_asp1_defaults[] = {
+ 	REG_SEQ0(CS35L56_ASP1_FRAME_CONTROL5,	0x00020100),
+ 	REG_SEQ0(CS35L56_ASP1_DATA_CONTROL1,	0x00000018),
+ 	REG_SEQ0(CS35L56_ASP1_DATA_CONTROL5,	0x00000018),
++	REG_SEQ0(CS35L56_ASP1TX1_INPUT,		0x00000000),
++	REG_SEQ0(CS35L56_ASP1TX2_INPUT,		0x00000000),
++	REG_SEQ0(CS35L56_ASP1TX3_INPUT,		0x00000000),
++	REG_SEQ0(CS35L56_ASP1TX4_INPUT,		0x00000000),
  };
  
+ /*
 -- 
 2.43.0
 
