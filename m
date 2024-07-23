@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-60924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E9893A606
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D47893A59C
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D22091F2160B
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEA291C20AD9
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDE915884E;
-	Tue, 23 Jul 2024 18:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B119D1586F6;
+	Tue, 23 Jul 2024 18:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0BsOOz7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWjmNn+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A581586CB;
-	Tue, 23 Jul 2024 18:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7E0157A4F;
+	Tue, 23 Jul 2024 18:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759453; cv=none; b=aa6XgQCO03vU/Su0lOXZhSrj2debAz4N0WKzH68LOmI04wL2k7SMd7Te5AMEOPneEdrC1Ee5L+2fYg9af8tVHNw0B2NXmk8+aaosfMfWRkfgswimt/tDcJlHa+buTY1cHuC16JLWg7EGixD4tjToZ/8QPFdddFncCYnwrKO280E=
+	t=1721759181; cv=none; b=mBuGf7EJ/Zb3lB3rVr9jaqMjPbLfoDkXWfgSR8kQb/ni3TR5bNJEZSI/hMEreSxN1wzgVEMPr25ekzusomCC0dnzi0jg82aquOKP8gGTRKejvS7VGS158KoX1ctKF1yAleorOTBNyCHcD8fcsCfKixCPqLxKNHerQYQBjtsOCJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759453; c=relaxed/simple;
-	bh=cO+icFwINLUFbrEnXI5x06sZBUV4JgDFhwe9bqJyz2U=;
+	s=arc-20240116; t=1721759181; c=relaxed/simple;
+	bh=sWXUf5VvJYNZ7tEbi2ZmMi9NXx9DWdIfFRWf8ZMHras=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHhBK0mGXKxazuZeRVrp76wfPk/DhH1b+fGFkYzrq0AMARrWqPnkXvtIZuoifqIBK+FkV/TkSzgENjuJx6WtlknObgipC6RNlDQfTE+rwztzXi+TTnXMjZBvZrZVsUE0OnOv1SHBkApnhdCXiglQp99F8vXRVlM/WANil260qqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0BsOOz7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E0FC4AF0E;
-	Tue, 23 Jul 2024 18:30:52 +0000 (UTC)
+	 MIME-Version; b=E9Q3iKgxIVXAKiU2bIRtrCCZxp22wJWrjmwRw/AWfj64iJHo1J6cfloWxqM54NWBQdDMEc9QN9AdOvEQdefQP1JQmPNGLObY0xWafrqJ97bR+PnPu9nH+FtTmlJX3/Df/gIm/vgSVEJ+QgdJeMFVZQPkBnaArUo0cQNbBNIEy0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWjmNn+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF40EC4AF09;
+	Tue, 23 Jul 2024 18:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759453;
-	bh=cO+icFwINLUFbrEnXI5x06sZBUV4JgDFhwe9bqJyz2U=;
+	s=korg; t=1721759181;
+	bh=sWXUf5VvJYNZ7tEbi2ZmMi9NXx9DWdIfFRWf8ZMHras=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u0BsOOz72ufsTGRPe76mXo6ZkYo5FZvVc7uOv56ZX/aNol3+elC3KEaOEoBpdxCew
-	 T/gXapuKJwRRU1RKVFxY1CYyA1gdeXX+KQwobKdrT0mJiMvEbmTu68SwBF5K3R7LsZ
-	 63pgctNfX3JIULqxfa0kOSJAmwvW0pRVys8SHeOg=
+	b=dWjmNn+gseugDQ9BgLBpa+YLUWtALTTYmxKkobsgiY31anPObBfGYHhyTldE5TqC0
+	 60IKH+xcwOI3a+5/OC54MMrY5INLTJb97DwHX7VihyQm2YKsuK0rL5FZBqMdRWBqRt
+	 OgHNbkMOlWwqYqSbkcOsBPsBgOzqjZG4tlSZCrH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/129] wifi: iwlwifi: mvm: remove stale STA link data during restart
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 007/105] mm/damon/core: merge regions aggressively when max_nr_regions is unmet
 Date: Tue, 23 Jul 2024 20:22:44 +0200
-Message-ID: <20240723180405.413844437@linuxfoundation.org>
+Message-ID: <20240723180402.944675581@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit cc3ba78f202de9752aceb16342ab62bdfbffac7e ]
+commit 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6 upstream.
 
-If pre-recovery mac80211 tried to disable a link but this disablement
-failed, then there might be a mismatch between mac80211 assuming the
-link has been disabled and the driver still having the data around.
-During recover itself, that is not a problem, but should the link be
-activated again at a later point, iwlwifi will refuse the activation as
-it detects the inconsistent state.
+DAMON keeps the number of regions under max_nr_regions by skipping regions
+split operations when doing so can make the number higher than the limit.
+It works well for preventing violation of the limit.  But, if somehow the
+violation happens, it cannot recovery well depending on the situation.  In
+detail, if the real number of regions having different access pattern is
+higher than the limit, the mechanism cannot reduce the number below the
+limit.  In such a case, the system could suffer from high monitoring
+overhead of DAMON.
 
-Solve this corner-case by iterating the station in the restart cleanup
-handler.
+The violation can actually happen.  For an example, the user could reduce
+max_nr_regions while DAMON is running, to be lower than the current number
+of regions.  Fix the problem by repeating the merge operations with
+increasing aggressiveness in kdamond_merge_regions() for the case, until
+the limit is met.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.d2fd60338055.I840d4fdce5fd49fe69896d928b071067e3730259@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[sj@kernel.org: increase regions merge aggressiveness while respecting min_nr_regions]
+  Link: https://lkml.kernel.org/r/20240626164753.46270-1-sj@kernel.org
+[sj@kernel.org: ensure max threshold attempt for max_nr_regions violation]
+  Link: https://lkml.kernel.org/r/20240627163153.75969-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20240624175814.89611-1-sj@kernel.org
+Fixes: b9a6ac4e4ede ("mm/damon: adaptively adjust regions")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 310d6c15e9104c99d5d9d0ff8e5383a79da7d5e6)
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 37 +++++++++++++++++++
- .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  | 10 ++---
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  5 +++
- 3 files changed, 47 insertions(+), 5 deletions(-)
+ mm/damon/core.c |   21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 375f401b14535..e281e07be73fc 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1051,6 +1051,39 @@ static void iwl_mvm_cleanup_iterator(void *data, u8 *mac,
- 	RCU_INIT_POINTER(mvmvif->deflink.probe_resp_data, NULL);
- }
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -921,14 +921,31 @@ static void damon_merge_regions_of(struc
+  * access frequencies are similar.  This is for minimizing the monitoring
+  * overhead under the dynamically changeable access pattern.  If a merge was
+  * unnecessarily made, later 'kdamond_split_regions()' will revert it.
++ *
++ * The total number of regions could be higher than the user-defined limit,
++ * max_nr_regions for some cases.  For example, the user can update
++ * max_nr_regions to a number that lower than the current number of regions
++ * while DAMON is running.  For such a case, repeat merging until the limit is
++ * met while increasing @threshold up to possible maximum level.
+  */
+ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
+ 				  unsigned long sz_limit)
+ {
+ 	struct damon_target *t;
++	unsigned int nr_regions;
++	unsigned int max_thres;
  
-+static void iwl_mvm_cleanup_sta_iterator(void *data, struct ieee80211_sta *sta)
-+{
-+	struct iwl_mvm *mvm = data;
-+	struct iwl_mvm_sta *mvm_sta;
-+	struct ieee80211_vif *vif;
-+	int link_id;
-+
-+	mvm_sta = iwl_mvm_sta_from_mac80211(sta);
-+	vif = mvm_sta->vif;
-+
-+	if (!sta->valid_links)
-+		return;
-+
-+	for (link_id = 0; link_id < ARRAY_SIZE((sta)->link); link_id++) {
-+		struct iwl_mvm_link_sta *mvm_link_sta;
-+
-+		mvm_link_sta =
-+			rcu_dereference_check(mvm_sta->link[link_id],
-+					      lockdep_is_held(&mvm->mutex));
-+		if (mvm_link_sta && !(vif->active_links & BIT(link_id))) {
-+			/*
-+			 * We have a link STA but the link is inactive in
-+			 * mac80211. This will happen if we failed to
-+			 * deactivate the link but mac80211 roll back the
-+			 * deactivation of the link.
-+			 * Delete the stale data to avoid issues later on.
-+			 */
-+			iwl_mvm_mld_free_sta_link(mvm, mvm_sta, mvm_link_sta,
-+						  link_id, false);
+-	damon_for_each_target(t, c)
+-		damon_merge_regions_of(t, threshold, sz_limit);
++	max_thres = c->attrs.aggr_interval /
++		(c->attrs.sample_interval ?  c->attrs.sample_interval : 1);
++	do {
++		nr_regions = 0;
++		damon_for_each_target(t, c) {
++			damon_merge_regions_of(t, threshold, sz_limit);
++			nr_regions += damon_nr_regions(t);
 +		}
-+	}
-+}
-+
- static void iwl_mvm_restart_cleanup(struct iwl_mvm *mvm)
- {
- 	iwl_mvm_stop_device(mvm);
-@@ -1073,6 +1106,10 @@ static void iwl_mvm_restart_cleanup(struct iwl_mvm *mvm)
- 	 */
- 	ieee80211_iterate_interfaces(mvm->hw, 0, iwl_mvm_cleanup_iterator, mvm);
- 
-+	/* cleanup stations as links may be gone after restart */
-+	ieee80211_iterate_stations_atomic(mvm->hw,
-+					  iwl_mvm_cleanup_sta_iterator, mvm);
-+
- 	mvm->p2p_device_vif = NULL;
- 
- 	iwl_mvm_reset_phy_ctxts(mvm);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-index 121da93e99c6a..2dcc13d4a4a79 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -515,11 +515,11 @@ static int iwl_mvm_mld_cfg_sta(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 	return iwl_mvm_mld_send_sta_cmd(mvm, &cmd);
++		threshold = max(1, threshold * 2);
++	} while (nr_regions > c->attrs.max_nr_regions &&
++			threshold / 2 < max_thres);
  }
  
--static void iwl_mvm_mld_free_sta_link(struct iwl_mvm *mvm,
--				      struct iwl_mvm_sta *mvm_sta,
--				      struct iwl_mvm_link_sta *mvm_sta_link,
--				      unsigned int link_id,
--				      bool is_in_fw)
-+void iwl_mvm_mld_free_sta_link(struct iwl_mvm *mvm,
-+			       struct iwl_mvm_sta *mvm_sta,
-+			       struct iwl_mvm_link_sta *mvm_sta_link,
-+			       unsigned int link_id,
-+			       bool is_in_fw)
- {
- 	RCU_INIT_POINTER(mvm->fw_id_to_mac_id[mvm_sta_link->sta_id],
- 			 is_in_fw ? ERR_PTR(-EINVAL) : NULL);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-index 7364346a1209f..95ef60daa62f0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-@@ -642,6 +642,11 @@ int iwl_mvm_mld_update_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta);
- int iwl_mvm_mld_rm_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 		       struct ieee80211_sta *sta);
-+void iwl_mvm_mld_free_sta_link(struct iwl_mvm *mvm,
-+			       struct iwl_mvm_sta *mvm_sta,
-+			       struct iwl_mvm_link_sta *mvm_sta_link,
-+			       unsigned int link_id,
-+			       bool is_in_fw);
- int iwl_mvm_mld_rm_sta_id(struct iwl_mvm *mvm, u8 sta_id);
- int iwl_mvm_mld_update_sta_links(struct iwl_mvm *mvm,
- 				 struct ieee80211_vif *vif,
--- 
-2.43.0
-
+ /*
 
 
 
