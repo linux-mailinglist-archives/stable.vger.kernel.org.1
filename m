@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-60842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0F193A5A9
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1707893A6FC
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C8D51C21B6B
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9C381F238C9
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A5C158862;
-	Tue, 23 Jul 2024 18:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380B21586CB;
+	Tue, 23 Jul 2024 18:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unET76vt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t93Cmeyz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF601586F6;
-	Tue, 23 Jul 2024 18:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB64D13D600;
+	Tue, 23 Jul 2024 18:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759214; cv=none; b=HKqFsBE3m0WkEDQpyU6EzyS7/zlNoLubMHQXyZ8UtkwvVR4i5Ha+RspgJk65oYDCswnKSgAYxxp8KjCWyMKi0jss9G5WIj/b4BYRk+7WKQr/Wdd+7JEOyIzrMxhEn+gFikqcWQDYzvi0rzb7xWxHTAOmOsirZg1TF5O7Gi3adE4=
+	t=1721760051; cv=none; b=ikPHO+Rbn9Tr0QLdMHNg90QhHObn4osOn+E8X/yo8UKWrMOW0OaSw6Kx24RxIyvEEmAOhVGanoDBFNFvuHImWPLtrcIpcoRYQAJ4vRoUzV0ZB2uLKV90kcwklRNLxeMg7lg8mtDeFee/R9M36/cDzDwzdu6Jru6pdcrjAGuUhYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759214; c=relaxed/simple;
-	bh=P/gaEr8gX37TJAkm0tnBSi5xtthmyxROUiGfjZZmrkQ=;
+	s=arc-20240116; t=1721760051; c=relaxed/simple;
+	bh=iIXzWbgeWj70E8lpCvoFF6bQLniZ1vgCwOyGbBOOu6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1QIOpeNIshXDPtAzBzj5867V1LXdxK0bxoVevionxO9Fpc8oSeBQRvH2RUNIE+csAd0i8nzraifOq9ZJBIxKyr1zkZIq7VO1iQ5kzeDC9R3z0PBj1iqsrUVZdMCJOn4KcdeSOUQLQHjgFOx3ert2jI7+oYvnMIuqvxZMMtQJ5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unET76vt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BB4C4AF0E;
-	Tue, 23 Jul 2024 18:26:53 +0000 (UTC)
+	 MIME-Version; b=j/v+4Bub+mB4+7GSBYgWPw9BIDBsSgXsd9Hz36pJGPeUAm7gd/7dswIJkErAEmZoCPAOmlVqhB0fxURvdUo6kypa+vJ7ipjqsabXTOBdmeNqHeBWlZe8aOut/4iB07PIxFod4OiX7fXp7lv/dOQonU1otgo1NNQrvfBKqmTdurw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t93Cmeyz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73326C4AF09;
+	Tue, 23 Jul 2024 18:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759214;
-	bh=P/gaEr8gX37TJAkm0tnBSi5xtthmyxROUiGfjZZmrkQ=;
+	s=korg; t=1721760050;
+	bh=iIXzWbgeWj70E8lpCvoFF6bQLniZ1vgCwOyGbBOOu6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=unET76vt+q0FJdVa9AmfYR1Wxab46eON9xA4lKrzJYCZz891SFFlZRAywhXbp41cH
-	 eB0bsFn7jzgzm9eUHluBzg7iHt97bYl2mgBJVHCN/5gdCbnthoglxAH1IT1Hj8RwLB
-	 dQPYF0IfZTbv6J8CY7lqQaaEPQotcQIIrtcIL+l8=
+	b=t93CmeyzL1dVqOQsR3qi/XCHMRuGONHpA47OCOIhMjysK40AW966Drcn06xQKFQSA
+	 J50PED+RqLPZS3B9/SLs9fhLirYbWhoSugC1Hl63h4aLMfm4/3wGAjZ0UJetnkxHye
+	 mT7UbcFynR4m2or2H966aJoqoSij8RjcILSbucw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zizhi Wo <wozizhi@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/105] cachefiles: Set object to close if ondemand_id < 0 in copen
+Subject: [PATCH 6.9 069/163] ALSA: hda: cs35l41: Support Lenovo Thinkbook 13x Gen 4
 Date: Tue, 23 Jul 2024 20:23:18 +0200
-Message-ID: <20240723180404.827978796@linuxfoundation.org>
+Message-ID: <20240723180146.135372160@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 4f8703fb3482f92edcfd31661857b16fec89c2c0 ]
+[ Upstream commit b32f92d1af3789038f03c2899e3be0d00b43faf2 ]
 
-If copen is maliciously called in the user mode, it may delete the request
-corresponding to the random id. And the request may have not been read yet.
+This laptop does not contain _DSD so needs to be supported using the
+configuration table.
 
-Note that when the object is set to reopen, the open request will be done
-with the still reopen state in above case. As a result, the request
-corresponding to this object is always skipped in select_req function, so
-the read request is never completed and blocks other process.
-
-Fix this issue by simply set object to close if its id < 0 in copen.
-
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240522114308.2402121-11-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240606130351.333495-3-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/ondemand.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/pci/hda/cs35l41_hda_property.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index c3241cede5289..37489ca2e8571 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -182,6 +182,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 	xas_store(&xas, NULL);
- 	xa_unlock(&cache->reqs);
- 
-+	info = req->object->ondemand;
- 	/* fail OPEN request if copen format is invalid */
- 	ret = kstrtol(psize, 0, &size);
- 	if (ret) {
-@@ -201,7 +202,6 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 		goto out;
- 	}
- 
--	info = req->object->ondemand;
- 	spin_lock(&info->lock);
- 	/*
- 	 * The anonymous fd was closed before copen ? Fail the request.
-@@ -241,6 +241,11 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 	wake_up_all(&cache->daemon_pollwq);
- 
- out:
-+	spin_lock(&info->lock);
-+	/* Need to set object close to avoid reopen status continuing */
-+	if (info->ondemand_id == CACHEFILES_ONDEMAND_ID_CLOSED)
-+		cachefiles_ondemand_set_object_close(req->object);
-+	spin_unlock(&info->lock);
- 	complete(&req->done);
- 	return ret;
- }
+diff --git a/sound/pci/hda/cs35l41_hda_property.c b/sound/pci/hda/cs35l41_hda_property.c
+index e034828df4452..6ad6cb176d43a 100644
+--- a/sound/pci/hda/cs35l41_hda_property.c
++++ b/sound/pci/hda/cs35l41_hda_property.c
+@@ -118,6 +118,8 @@ static const struct cs35l41_config cs35l41_config_table[] = {
+ 	{ "17AA38B5", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+ 	{ "17AA38B6", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+ 	{ "17AA38B7", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
++	{ "17AA38C7", 4, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, CS35L41_LEFT, CS35L41_RIGHT }, 0, 2, -1, 1000, 4500, 24 },
++	{ "17AA38C8", 4, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, CS35L41_LEFT, CS35L41_RIGHT }, 0, 2, -1, 1000, 4500, 24 },
+ 	{ "17AA38F9", 2, EXTERNAL, { CS35L41_RIGHT, CS35L41_LEFT, 0, 0 }, 0, 2, -1, 0, 0, 0 },
+ 	{ "17AA38FA", 2, EXTERNAL, { CS35L41_RIGHT, CS35L41_LEFT, 0, 0 }, 0, 2, -1, 0, 0, 0 },
+ 	{}
+@@ -511,6 +513,8 @@ static const struct cs35l41_prop_model cs35l41_prop_model_table[] = {
+ 	{ "CSC3551", "17AA38B5", generic_dsd_config },
+ 	{ "CSC3551", "17AA38B6", generic_dsd_config },
+ 	{ "CSC3551", "17AA38B7", generic_dsd_config },
++	{ "CSC3551", "17AA38C7", generic_dsd_config },
++	{ "CSC3551", "17AA38C8", generic_dsd_config },
+ 	{ "CSC3551", "17AA38F9", generic_dsd_config },
+ 	{ "CSC3551", "17AA38FA", generic_dsd_config },
+ 	{}
 -- 
 2.43.0
 
