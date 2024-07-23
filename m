@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-60932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD2593A610
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AEC493A58B
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:25:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A18C7281414
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B858282F05
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487B0158A00;
-	Tue, 23 Jul 2024 18:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D69E1586E7;
+	Tue, 23 Jul 2024 18:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glXMekr5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQ6n6+5c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F397D42067;
-	Tue, 23 Jul 2024 18:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE03156F37;
+	Tue, 23 Jul 2024 18:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759477; cv=none; b=Hcbo25VXbj/PA9AIeUxXqhTrEFD7ojL7ykTFFG0dRH1NcdFXdakL0q0OY7Jv3+mCYYTFV26H+K2VhYCJu10eTLW5D5XjACTYBlKdnLGkF54YB1xWd06nHRq+asn4gwhxZMRj+jWPN0W6vPy/NY/nDzkMGUGsaPD34DBan8I2Aos=
+	t=1721759134; cv=none; b=gVqZo7/xWeZGVL60R9hrQMKq1XYbU/WyACKZf+t/Nfqz5gnOZH26rMjyEDy9dSXixZCw2LfslJlf17cOoKqUeXk6T+oYlxfpbNFCkCQijrto7fZ1kXaS/QmZ9Zq69eKqrc2bjH3yQ9SxyV7OFFlWvQaeVVykSh/Mm4lZ44cTdUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759477; c=relaxed/simple;
-	bh=56ZOs9AdXaD0oxFhaJpZCx/1/LWgDbblDIU7zRnxZpo=;
+	s=arc-20240116; t=1721759134; c=relaxed/simple;
+	bh=c5LE65l48i9KKdNsMEkqW0EIQfR2kgQeA+d0KsnU5D0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gtQj9mC9gsRw459amIfd/PAfpGM5i4XYZPq4I27WCARbGWqjhl6elSlt/422fE5WI+ybMoUxhQdOvoHNyufPOTqkLPCZgWRSR8JTvBFNS7QrePKZ911UvzFhlbwVYxJwvRKCB9nmBfzwuyJHgEDbNfQaqwXCHnVxe6IxK2W0ZgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glXMekr5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A150C4AF0A;
-	Tue, 23 Jul 2024 18:31:16 +0000 (UTC)
+	 MIME-Version; b=e9fZIelnQcWnbrQsxFGliRFzvHSV1dlNT8Dm5HgJxPrJdhjOOyJ52CqcGku2njmQH90QuPkraGkXjrRUSETv3Y7vhP7YRTnolSn9K5fnDtdT0/poswkSCRYvjY1VnlW2qXI+HeTwoepRO+smeTKlmdO5kVsMAez556LXMA1bhaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQ6n6+5c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3A2C4AF09;
+	Tue, 23 Jul 2024 18:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759476;
-	bh=56ZOs9AdXaD0oxFhaJpZCx/1/LWgDbblDIU7zRnxZpo=;
+	s=korg; t=1721759134;
+	bh=c5LE65l48i9KKdNsMEkqW0EIQfR2kgQeA+d0KsnU5D0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glXMekr5pXYeljdCS+RlLt9/XYc2ybGQimf34vVNNTs682lHu/QD93aHL4h2qimtU
-	 AkrDry3O7yqHVYdNwKwLTDUvPGVBz135T6Jy9d2BGTO3SenoDx/B4XJjS0ChogbNJ5
-	 zYNP2qMvCNYYIIpz33R7TPpW5WHPlpw8/MTTcT2I=
+	b=wQ6n6+5cGa7Bk4xnU0PLCpfYuldsHTf15R2YZN4DOnsYXzVsjChmFrQ/sIgR0M2S3
+	 FLTZzA2gOdDY/ZNl/l2oeclM0CF01Y3QzGROsbB/OIln8/S1n2Lns5x69LYEmi+N31
+	 RPKrsjWlv16aIpPfyXfyA0zY9fPUyGzDIj5K+wUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/129] selftests/openat2: Fix build warnings on ppc64
+Subject: [PATCH 6.1 014/105] efi/libstub: zboot.lds: Discard .discard sections
 Date: Tue, 23 Jul 2024 20:22:51 +0200
-Message-ID: <20240723180405.686196483@linuxfoundation.org>
+Message-ID: <20240723180403.357681228@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 84b6df4c49a1cc2854a16937acd5fd3e6315d083 ]
+[ Upstream commit 5134acb15d9ef27aa2b90aad46d4e89fcef79fdc ]
 
-Fix warnings like:
+When building ARCH=loongarch defconfig + CONFIG_UNWINDER_ORC=y using
+LLVM, there is a warning from ld.lld when linking the EFI zboot image
+due to the use of unreachable() in number() in vsprintf.c:
 
-  openat2_test.c: In function ‘test_openat2_flags’:
-  openat2_test.c:303:73: warning: format ‘%llX’ expects argument of type
-  ‘long long unsigned int’, but argument 5 has type ‘__u64’ {aka ‘long
-  unsigned int’} [-Wformat=]
+  ld.lld: warning: drivers/firmware/efi/libstub/lib.a(vsprintf.stub.o):(.discard.unreachable+0x0): has non-ABS relocation R_LARCH_32_PCREL against symbol ''
 
-By switching to unsigned long long for u64 for ppc64 builds.
+If the compiler cannot eliminate the default case for any reason, the
+.discard.unreachable section will remain in the final binary but the
+entire point of any section prefixed with .discard is that it is only
+used at compile time, so it can be discarded via /DISCARD/ in a linker
+script. The asm-generic vmlinux.lds.h includes .discard and .discard.*
+in the COMMON_DISCARDS macro but that is not used for zboot.lds, as it
+is not a kernel image linker script.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Add .discard and .discard.* to /DISCARD/ in zboot.lds, so that any
+sections meant to be discarded at link time are not included in the
+final zboot image. This issue is not specific to LoongArch, it is just
+the first architecture to select CONFIG_OBJTOOL, which defines
+annotate_unreachable() as an asm statement to add the
+.discard.unreachable section, and use the EFI stub.
+
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2023
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/openat2/openat2_test.c | 1 +
+ drivers/firmware/efi/libstub/zboot.lds | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/openat2/openat2_test.c b/tools/testing/selftests/openat2/openat2_test.c
-index 7fb902099de45..f9d2b0ec77564 100644
---- a/tools/testing/selftests/openat2/openat2_test.c
-+++ b/tools/testing/selftests/openat2/openat2_test.c
-@@ -5,6 +5,7 @@
-  */
+diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
+index 93d33f68333b2..a7fffbad6d46a 100644
+--- a/drivers/firmware/efi/libstub/zboot.lds
++++ b/drivers/firmware/efi/libstub/zboot.lds
+@@ -34,6 +34,7 @@ SECTIONS
+ 	}
  
- #define _GNU_SOURCE
-+#define __SANE_USERSPACE_TYPES__ // Use ll64
- #include <fcntl.h>
- #include <sched.h>
- #include <sys/stat.h>
+ 	/DISCARD/ : {
++		*(.discard .discard.*)
+ 		*(.modinfo .init.modinfo)
+ 	}
+ }
 -- 
 2.43.0
 
