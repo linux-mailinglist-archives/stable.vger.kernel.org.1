@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-61182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53ACB93A737
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7984093A6A2
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84CC01C223C6
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0606AB22C70
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75E11586F5;
-	Tue, 23 Jul 2024 18:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5DE158D76;
+	Tue, 23 Jul 2024 18:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQtlMh2O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vsfY3lQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9653513D896;
-	Tue, 23 Jul 2024 18:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC205158D6D;
+	Tue, 23 Jul 2024 18:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760219; cv=none; b=VDJ01hUVBU1x+Y00W4dZpVRVdQ3aQLss8f37pRv6HBfvcCQ+W3oVJW0JEC1SoIWUwQLYX/VNcYiOTXkLGSgkKc0ScWvwCkLp3W9T4cs+wBc7MqYXzEhKZ//BUqGJMuV/V9orZKKwD9sriP+dV2Kq/e0GV8p0mv5wXNSFn1p3RIQ=
+	t=1721759817; cv=none; b=TRq+V5GMh5xLZxqq88xAalPttfd6NP0Tdki8a0z1US83rSVZVzwYbhWeNsKZ2s/sppmAIBvtLUQXpPDTgt1GGarbx9iXMmfX4UGvZqawtDPCQ94FRpHiJWu+5E/h8JkhPIcvtENhE4rYQnIUZWX625HERrPqJRxadyNvwpkxOlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760219; c=relaxed/simple;
-	bh=8H7mSN8x085vq+Ek2PZP388bJHoQxyuzoE4yPj8hsIw=;
+	s=arc-20240116; t=1721759817; c=relaxed/simple;
+	bh=8gigvSYBzTW6IOa33CAnXIMzWIlcG/8Nft+mfXEio4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IDW4NJvq2cOEtdfjvlo2LV/xB7WAx5y/YpRW01ocse+y30pfAH0pzFnV8adjcS8+/sb/lZL9RldXEv4NPKAf7+LrAlTsUA9OOZI0yr82Ja0hqTGwhgDBCqD367i2XLXNoB2KbSz9D4jEztpR3V7xIbNPjQGuB+sc68PT1ISiCwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQtlMh2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE40C4AF09;
-	Tue, 23 Jul 2024 18:43:38 +0000 (UTC)
+	 MIME-Version; b=QkCbQML/zI2LLnFCyyn/OYZUsdI9VDz090YqUSv5GKFoJpOFabH3tsYqGam84GZRP5tQiu0+Auwcf3xo0qWg7vW9VeEcjeSkKpc37G4IsCl5JOpvYGywyp659I1ncSe22r2OuWYzaPXwQLTZnc2LXgkkKRVn+hKLgSR/A+Ys9QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vsfY3lQU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C66EC4AF0A;
+	Tue, 23 Jul 2024 18:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760219;
-	bh=8H7mSN8x085vq+Ek2PZP388bJHoQxyuzoE4yPj8hsIw=;
+	s=korg; t=1721759816;
+	bh=8gigvSYBzTW6IOa33CAnXIMzWIlcG/8Nft+mfXEio4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQtlMh2OIPaEuD9JEwD2K+aQxZLeMBnlq03aCqxHW2W1ErAIafsUMC13AfxIq32A7
-	 peQX23usx9xM9OlqEGaeOFdatq1YocQ2HWq408VsH6Bb6czYDTluubz2xXorXCfSq5
-	 Ghpn1kbWl5dGolkxFa2UhI/j0OqSt4iSjRfGTtoc=
+	b=vsfY3lQUTwHNpmKlaxq7fiXcTRGNmqcM6JUs1PnF6P9GLemEArE6MU5p0qqcNehpo
+	 uJRU/j1VPfw2vTTTRqEtHB92rwRKLrwB50A2PMrqVgRQ/r0FVJKzvhJT59j0QSzkcI
+	 0WHrHECKLGA8kIPFppf9j3x/P1Rzr6lBhBnmUllQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 143/163] riscv: stacktrace: fix usage of ftrace_graph_ret_addr()
-Date: Tue, 23 Jul 2024 20:24:32 +0200
-Message-ID: <20240723180148.997680334@linuxfoundation.org>
+	syzbot+1d516edf1e74469ba5d3@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 125/129] wifi: mac80211: disable softirqs for queued frame handling
+Date: Tue, 23 Jul 2024 20:24:33 +0200
+Message-ID: <20240723180409.622445622@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 393da6cbb2ff89aadc47683a85269f913aa1c139 ]
+commit 321028bc45f01edb9e57b0ae5c11c5c3600d00ca upstream.
 
-ftrace_graph_ret_addr() takes an `idx` integer pointer that is used to
-optimize the stack unwinding. Pass it a valid pointer to utilize the
-optimizations that might be available in the future.
+As noticed by syzbot, calling ieee80211_handle_queued_frames()
+(and actually handling frames there) requires softirqs to be
+disabled, since we call into the RX code. Fix that in the case
+of cleaning up frames left over during shutdown.
 
-The commit is making riscv's usage of ftrace_graph_ret_addr() match
-x86_64.
-
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/r/20240618145820.62112-1-puranjay@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 177c6ae9725d ("wifi: mac80211: handle tasklet frames before stopping")
+Reported-by: syzbot+1d516edf1e74469ba5d3@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/20240626091559.cd6f08105a6e.I74778610a5ff2cf8680964698131099d2960352a@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/stacktrace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/main.c |    1 +
+ net/mac80211/util.c |    2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
-index 0d3f00eb0baee..10e311b2759d3 100644
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -32,6 +32,7 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			     bool (*fn)(void *, unsigned long), void *arg)
- {
- 	unsigned long fp, sp, pc;
-+	int graph_idx = 0;
- 	int level = 0;
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -301,6 +301,7 @@ u64 ieee80211_reset_erp_info(struct ieee
+ 	       BSS_CHANGED_ERP_SLOT;
+ }
  
- 	if (regs) {
-@@ -68,7 +69,7 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			pc = regs->ra;
- 		} else {
- 			fp = frame->fp;
--			pc = ftrace_graph_ret_addr(current, NULL, frame->ra,
-+			pc = ftrace_graph_ret_addr(current, &graph_idx, frame->ra,
- 						   &frame->ra);
- 			if (pc == (unsigned long)ret_from_exception) {
- 				if (unlikely(!__kernel_text_address(pc) || !fn(arg, pc)))
--- 
-2.43.0
-
++/* context: requires softirqs disabled */
+ void ieee80211_handle_queued_frames(struct ieee80211_local *local)
+ {
+ 	struct sk_buff *skb;
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2313,7 +2313,9 @@ u32 ieee80211_sta_get_rates(struct ieee8
+ 
+ void ieee80211_stop_device(struct ieee80211_local *local)
+ {
++	local_bh_disable();
+ 	ieee80211_handle_queued_frames(local);
++	local_bh_enable();
+ 
+ 	ieee80211_led_radio(local, false);
+ 	ieee80211_mod_tpt_led_trig(local, 0, IEEE80211_TPT_LEDTRIG_FL_RADIO);
 
 
 
