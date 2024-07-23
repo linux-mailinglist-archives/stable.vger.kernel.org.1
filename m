@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-61120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5273593A6F4
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:40:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C45A93A5BB
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D1B3283E2A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:40:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E984B1F2323F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F701581F4;
-	Tue, 23 Jul 2024 18:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C31158A31;
+	Tue, 23 Jul 2024 18:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyW7svDG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmIXKBbk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5259413D600;
-	Tue, 23 Jul 2024 18:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A460A157A4F;
+	Tue, 23 Jul 2024 18:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760033; cv=none; b=l/e19cYVtKxEMpjAPaoA6RahwNZ1wESDk2I6iMhSVebO9n6+xadkmeCAsUMfHgXOLcJempod9rcehNjYCvmHSrSului+5Il0EivMirZKa3vJHDo/MT+iyfMknTuGTS88dFeJELlLFnbR18Db2pSfahZsBd+Vep1GwbF96x1k6wI=
+	t=1721759255; cv=none; b=rSiRkbrLblrJawq3xrOcdKl6TYo3mkFbpcqaMRWUPMbopDGEF2Q1LhCuxAWKLKhiEt9o61jwUDwRicrxpvSO5KcQS/jKjQ7s3h5HdB+Ig3DZ4DEdlADLbr+/Pg/s2B8HxDE4UqqpWf6w2/29K6HR4kNKh5HZuQjlpnvJATgK6Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760033; c=relaxed/simple;
-	bh=1qlIWpgVtBUtOUY3B0G9ms6o0U2loS3WvnKfYDOXWUE=;
+	s=arc-20240116; t=1721759255; c=relaxed/simple;
+	bh=4X3NEhgq5VaQx8Cv9iamxQd9+5J7GAaiAlfYr8bzZe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ay+9o9/ewxibMryx/AThSOYDgVszK9wEqK9ATdGX7EWl40+TLjUSLG6dSuNwK7lT7JVnm1OaLFy/O4Avo7KS6w1BqVyD7GfpTtCQcjLZuce/QgfSktpmLsgytPrHHEINk2jtl0PoHvcIKc/3NH3WWp021SGc6vKr9ry/yK2yh1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyW7svDG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C302CC4AF0A;
-	Tue, 23 Jul 2024 18:40:32 +0000 (UTC)
+	 MIME-Version; b=EdHvqwd+SacotsCPgLCmVLa/xO9QOMEDNHIv3W6u8OOGBOzps2pjuiqfaCM9RLNI7QvaxRfQsSrXYIzsl0zw1No8iCcZ0b+WfRSWMSWTMgU4HafxBDYJI3wxck/MPjocpDxa5oslBAuR4GsHlxHZ+4r9Hds87bJ9PRDAUrgKgig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmIXKBbk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0C7C4AF0B;
+	Tue, 23 Jul 2024 18:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760033;
-	bh=1qlIWpgVtBUtOUY3B0G9ms6o0U2loS3WvnKfYDOXWUE=;
+	s=korg; t=1721759255;
+	bh=4X3NEhgq5VaQx8Cv9iamxQd9+5J7GAaiAlfYr8bzZe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HyW7svDGtqvWJNqE/LwSy27FbQ2eMh8x99UWwXyKcziZIBe4fhzmCxuTMkl+cp2Bv
-	 TEll5uafr7L6qKOKYGKtztMq3xvev3Gg9QUOrjRQwgv7ZOoHHx5yO/Jo+4DlJ1hNVL
-	 Eq+DnG0LuCYlyG8eZwyozOPnDhyQ/u0HckOiCJsM=
+	b=RmIXKBbkkn5pz/Enw4GCb8R1OOVzDDHy6cK/WZ1gl5Q2TzGYsuXvegzVlCSyAzdjr
+	 zxIwgvitN9iG0eMZkZyDtGQ2Z6SbGogPd/b2Zi6Ik6eTKA65FiUw6ruDkZiVJZDKjr
+	 65tlLPj9DHJmoCbZcLwoKbUYh7CjtjMMeRu8g/YQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Paul Hsieh <paul.hsieh@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jonathan Denose <jdenose@google.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 081/163] drm/amd/display: change dram_clock_latency to 34us for dcn35
-Date: Tue, 23 Jul 2024 20:23:30 +0200
-Message-ID: <20240723180146.599614174@linuxfoundation.org>
+Subject: [PATCH 6.1 054/105] Input: elantech - fix touchpad state on resume for Lenovo N24
+Date: Tue, 23 Jul 2024 20:23:31 +0200
+Message-ID: <20240723180405.333166918@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Hsieh <paul.hsieh@amd.com>
+From: Jonathan Denose <jdenose@google.com>
 
-[ Upstream commit 6071607bfefefc50a3907c0ba88878846960d29a ]
+[ Upstream commit a69ce592cbe0417664bc5a075205aa75c2ec1273 ]
 
-[Why & How]
-Current DRAM setting would cause underflow on customer platform.
-Modify dram_clock_change_latency_us from 11.72 to 34.0 us as per recommendation from HW team
+The Lenovo N24 on resume becomes stuck in a state where it
+sends incorrect packets, causing elantech_packet_check_v4 to fail.
+The only way for the device to resume sending the correct packets is for
+it to be disabled and then re-enabled.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Signed-off-by: Paul Hsieh <paul.hsieh@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This change adds a dmi check to trigger this behavior on resume.
+
+Signed-off-by: Jonathan Denose <jdenose@google.com>
+Link: https://lore.kernel.org/r/20240503155020.v2.1.Ifa0e25ebf968d8f307f58d678036944141ab17e6@changeid
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/mouse/elantech.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
-index 53e40d3c48d4b..6716696df7719 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
-@@ -177,7 +177,7 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_5_soc = {
- 	.urgent_latency_pixel_data_only_us = 4.0,
- 	.urgent_latency_pixel_mixed_with_vm_data_us = 4.0,
- 	.urgent_latency_vm_data_only_us = 4.0,
--	.dram_clock_change_latency_us = 11.72,
-+	.dram_clock_change_latency_us = 34.0,
- 	.urgent_out_of_order_return_per_channel_pixel_only_bytes = 4096,
- 	.urgent_out_of_order_return_per_channel_pixel_and_vm_bytes = 4096,
- 	.urgent_out_of_order_return_per_channel_vm_only_bytes = 4096,
+diff --git a/drivers/input/mouse/elantech.c b/drivers/input/mouse/elantech.c
+index 4e38229404b4b..b4723ea395eb9 100644
+--- a/drivers/input/mouse/elantech.c
++++ b/drivers/input/mouse/elantech.c
+@@ -1476,16 +1476,47 @@ static void elantech_disconnect(struct psmouse *psmouse)
+ 	psmouse->private = NULL;
+ }
+ 
++/*
++ * Some hw_version 4 models fail to properly activate absolute mode on
++ * resume without going through disable/enable cycle.
++ */
++static const struct dmi_system_id elantech_needs_reenable[] = {
++#if defined(CONFIG_DMI) && defined(CONFIG_X86)
++	{
++		/* Lenovo N24 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "81AF"),
++		},
++	},
++#endif
++	{ }
++};
++
+ /*
+  * Put the touchpad back into absolute mode when reconnecting
+  */
+ static int elantech_reconnect(struct psmouse *psmouse)
+ {
++	int err;
++
+ 	psmouse_reset(psmouse);
+ 
+ 	if (elantech_detect(psmouse, 0))
+ 		return -1;
+ 
++	if (dmi_check_system(elantech_needs_reenable)) {
++		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_DISABLE);
++		if (err)
++			psmouse_warn(psmouse, "failed to deactivate mouse on %s: %d\n",
++				     psmouse->ps2dev.serio->phys, err);
++
++		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_ENABLE);
++		if (err)
++			psmouse_warn(psmouse, "failed to reactivate mouse on %s: %d\n",
++				     psmouse->ps2dev.serio->phys, err);
++	}
++
+ 	if (elantech_set_absolute_mode(psmouse)) {
+ 		psmouse_err(psmouse,
+ 			    "failed to put touchpad back into absolute mode.\n");
 -- 
 2.43.0
 
