@@ -1,122 +1,140 @@
-Return-Path: <stable+bounces-60721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9269397A1
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 02:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA629397DD
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 03:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C7221C20D3E
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 00:51:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4D9A1C21A40
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 01:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25934131BAF;
-	Tue, 23 Jul 2024 00:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DEB1339B1;
+	Tue, 23 Jul 2024 01:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="esModib6"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="fV/J4p9b"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462D853376;
-	Tue, 23 Jul 2024 00:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9367433A0;
+	Tue, 23 Jul 2024 01:24:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721695888; cv=none; b=ft9B7NG4g4bkybv/M1w6MICCMQejnxYSIwX58xqb3wzwIJmzxf601C7wNxTo3kZckPGRmUgFB+1NvANoafygnOZ4fqU+3xSDxMeWEl0ncC4GdSC16tOuhBrCHBcJj0AVQHtW/AONJer/zW0anYuZIWBJaYgWb8fNYcopy9h3CDY=
+	t=1721697862; cv=none; b=JEzj0OVaF7Uqhy0iD9rbxPAc9o7rg0ZaF1vKb2sYMf1yQrcPMIwxbdAE0h47LqThcCJ0ePQGcYA5HI5cWS/g6Bwtjn1sO+zP5rpdyZkpUGZdEbExFg9kXACtQcd6WPRLQ7bjB1jpOxyIN/KDnD5U2AkIjRj0XXAXSJTiexwN+6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721695888; c=relaxed/simple;
-	bh=I80HJJ0uWLSCDX0+f3gDi4OoFh5QNskt1isnchAx8kU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kJwxgSueZEsGz53C7/uyvS7P3NYiNBWDVTEuUJoDgUVJQBwzqV1owxx5xmKEDc2juDuChf6CUZy3kbrc1+cGPoENgGuUf97h36ZOBgmfo7LbtfOcM/qlhCyKHhrIhJ4Bl7OybRiVwk6oevVJMnk8e5zZXNJVfTzT9NvRcjbx3v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=esModib6; arc=none smtp.client-ip=52.95.48.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1721695887; x=1753231887;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8upgokxXsouhrUx6bkYmKhiOfAsG7NKO2JmhE0OOTtM=;
-  b=esModib6kcAwu2UC+U7AkTjrqQmfASU+1KFsZg40pDSlYq7dZIsogFAn
-   gM5lOdFz1zttMEF5QaBg8AZekolh7nGJQ8d5gzyzJMUjezxsf+O2Dk41f
-   Xe+x9sjpVCoFCn8fx/h9P6USUH1S+DDZsDyLYz5praZ6kBcB67aW8vlSv
-   0=;
-X-IronPort-AV: E=Sophos;i="6.09,229,1716249600"; 
-   d="scan'208";a="412592983"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2024 00:51:24 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [10.0.43.254:38811]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.42.47:2525] with esmtp (Farcaster)
- id 8632a391-44c4-41ee-9546-d1ec88e94edf; Tue, 23 Jul 2024 00:51:23 +0000 (UTC)
-X-Farcaster-Flow-ID: 8632a391-44c4-41ee-9546-d1ec88e94edf
-Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 23 Jul 2024 00:51:23 +0000
-Received: from 3c06303d853a.ant.amazon.com (10.187.170.41) by
- EX19D026EUB004.ant.amazon.com (10.252.61.64) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 23 Jul 2024 00:51:19 +0000
-Date: Mon, 22 Jul 2024 17:51:14 -0700
-From: Andrew Paniakin <apanyaki@amazon.com>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-CC: Christian Heusel <christian@heusel.eu>, <pc@cjr.nz>,
-	<stfrench@microsoft.com>, <sashal@kernel.org>, <pc@manguebit.com>,
-	<stable@vger.kernel.org>, <linux-cifs@vger.kernel.org>,
-	<abuehaze@amazon.com>, <simbarb@amazon.com>, <benh@amazon.com>,
-	<gregkh@linuxfoundation.org>
-Subject: Re: [REGRESSION][BISECTED][STABLE] Commit 60e3318e3e900 in
- stable/linux-6.1.y breaks cifs client failover to another server in DFS
- namespace
-Message-ID: <Zp7-gl5mMFCb4UWa@3c06303d853a.ant.amazon.com>
-References: <ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com>
- <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
- <210b1da5-6b22-4dd9-a25f-8b24ba4723d4@heusel.eu>
- <ZnyRlEUqgZ_m_pu-@3c06303d853a>
- <a58625e7-8245-4963-b589-ad69621cb48a@heusel.eu>
- <7c8d1ec1-7913-45ff-b7e2-ea58d2f04857@leemhuis.info>
- <ZpHy4V6P-pawTG2f@3c06303d853a.ant.amazon.com>
+	s=arc-20240116; t=1721697862; c=relaxed/simple;
+	bh=SFW+0OXE9t3+5aLgsQ5MJaDTqKs+8l5jK8dGDsbeEKs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BH1XMcd917TfVIh3G4bnDiQyn5/5C51ULKV3LYhbKDiNta/LsARZ4h93HeG/mAKJxGorBf1VinJPassGI8HTKLs0JKEmmclPTqPSXPsGePsHAZ4KY6e00vswp3TqBDfiarbCMLIWSeJ/mb/exP2DmtSeuSGk4upzdYyncgjvvPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=fV/J4p9b; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46MKtVic023808;
+	Tue, 23 Jul 2024 01:24:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	from:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-type:content-transfer-encoding; s=
+	corp-2023-11-20; bh=KNAjVtIqDfrC56Q8qhfNYmn0NMygk+muEkuMqdsJ15w=; b=
+	fV/J4p9bzSozIafa9O9NcfhWAxAdUDqiXwNd2WYX1/E1NSEZ54CjAl7asGR7eKQg
+	ERHUIBptpLkuNZMCUNld525YzFeo54N1fYHHIOhLaWZ/XbRN24iNoN5N6D/kigBe
+	zWASGoj6dVdni+eudb65IW9rsz4fbKmElc8/hWAQzh5IXRyP/Y5c3wYqx+vt3JaY
+	77wPvu4WjFKG1OofeJ8VUz9/qHHIjllsfdnASqINDTsRV+wDnBVA99pzMIL+DyuB
+	IA7c4OL6godPX3fClnC74vPGvyDRoFl4WraDVPIsI0jo/kRjTS+sT5DO4vhYtSeq
+	tyZIB8U24j057kMNPgWdNQ==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40hfxpcg2b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 23 Jul 2024 01:24:12 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 46N0nRcP018975;
+	Tue, 23 Jul 2024 01:24:11 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 40h27xysrb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 23 Jul 2024 01:24:11 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46N1O685005270;
+	Tue, 23 Jul 2024 01:24:11 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 40h27xysph-3;
+	Tue, 23 Jul 2024 01:24:11 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: linux-scsi@vger.kernel.org, avri.altman@wdc.com, alim.akhtar@samsung.com,
+        jejb@linux.ibm.com, peter.wang@mediatek.com
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+        wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
+        chun-hung.wu@mediatek.com, alice.chao@mediatek.com,
+        cc.chou@mediatek.com, chaotian.jing@mediatek.com,
+        jiajie.hao@mediatek.com, powen.kao@mediatek.com,
+        qilin.tan@mediatek.com, lin.gui@mediatek.com, tun-yu.yu@mediatek.com,
+        eddie.huang@mediatek.com, naomi.chu@mediatek.com,
+        chu.stanley@gmail.com, huobean@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] ufs: core: fix deadlock when rtc update
+Date: Mon, 22 Jul 2024 21:23:22 -0400
+Message-ID: <172168235254.1161648.725788349992465796.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240715063831.29792-1-peter.wang@mediatek.com>
+References: <20240715063831.29792-1-peter.wang@mediatek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ZpHy4V6P-pawTG2f@3c06303d853a.ant.amazon.com>
-X-ClientProxiedBy: EX19D035UWB001.ant.amazon.com (10.13.138.33) To
- EX19D026EUB004.ant.amazon.com (10.252.61.64)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-22_18,2024-07-22_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0
+ mlxlogscore=999 adultscore=0 phishscore=0 spamscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2407110000 definitions=main-2407230008
+X-Proofpoint-GUID: kglc_b6RXsbeUm-z8cUI3UkV97Fpgso1
+X-Proofpoint-ORIG-GUID: kglc_b6RXsbeUm-z8cUI3UkV97Fpgso1
 
-On 12/07/2024, Andrew Paniakin wrote:
-> On 11/07/2024, Linux regression tracking (Thorsten Leemhuis) wrote:
-> > On 27.06.24 22:16, Christian Heusel wrote:
-> > > On 24/06/26 03:09PM, Andrew Paniakin wrote:
-> > >> On 25/06/2024, Christian Heusel wrote:
-> > >>> On 24/06/24 10:59AM, Andrew Paniakin wrote:
-> > >>>> On 19/06/2024, Andrew Paniakin wrote:
-> > >>>>> Commit 60e3318e3e900 ("cifs: use fs_context for automounts") was
-> 
-> [snip]
-> 
-> > Hmmm, unless I'm missing something it seems nobody did so. Andrew, could
-> > you take care of that to get this properly fixed to prevent others from
-> > running into the same problem?
-> > 
-> > Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> > --
-> > Everything you wanna know about Linux kernel regression tracking:
-> > https://linux-regtracking.leemhuis.info/about/#tldr
-> > If I did something stupid, please tell me, as explained on that page.
-> > 
-> > #regzbot poke
-> 
-> We got the confirmation from requesters that the kernel with this patch
-> works properly, our regression tests also passed, so I submitted
-> backport request:
-> https://lore.kernel.org/stable/20240713031147.20332-1-apanyaki@amazon.com/
+On Mon, 15 Jul 2024 14:38:31 +0800, peter.wang@mediatek.com wrote:
 
-There was an issue with backporting the follow-up fix for this patch:
-https://lore.kernel.org/all/20240716152749.667492414@linuxfoundation.org/
-I'll work on fixing this issue and send new patches again for the next cycle.
+> There is a deadlock when runtime suspend waits for the flush of RTC work,
+> and the RTC work calls ufshcd_rpm_get_sync to wait for runtime resume.
+> 
+> Here is deadlock backtrace
+> kworker/0:1     D 4892.876354 10 10971 4859 0x4208060 0x8 10 0 120 670730152367
+> ptr            f0ffff80c2e40000 0 1 0x00000001 0x000000ff 0x000000ff 0x000000ff
+> <ffffffee5e71ddb0> __switch_to+0x1a8/0x2d4
+> <ffffffee5e71e604> __schedule+0x684/0xa98
+> <ffffffee5e71ea60> schedule+0x48/0xc8
+> <ffffffee5e725f78> schedule_timeout+0x48/0x170
+> <ffffffee5e71fb74> do_wait_for_common+0x108/0x1b0
+> <ffffffee5e71efe0> wait_for_completion+0x44/0x60
+> <ffffffee5d6de968> __flush_work+0x39c/0x424
+> <ffffffee5d6decc0> __cancel_work_sync+0xd8/0x208
+> <ffffffee5d6dee2c> cancel_delayed_work_sync+0x14/0x28
+> <ffffffee5e2551b8> __ufshcd_wl_suspend+0x19c/0x480
+> <ffffffee5e255fb8> ufshcd_wl_runtime_suspend+0x3c/0x1d4
+> <ffffffee5dffd80c> scsi_runtime_suspend+0x78/0xc8
+> <ffffffee5df93580> __rpm_callback+0x94/0x3e0
+> <ffffffee5df90b0c> rpm_suspend+0x2d4/0x65c
+> <ffffffee5df91448> __pm_runtime_suspend+0x80/0x114
+> <ffffffee5dffd95c> scsi_runtime_idle+0x38/0x6c
+> <ffffffee5df912f4> rpm_idle+0x264/0x338
+> <ffffffee5df90f14> __pm_runtime_idle+0x80/0x110
+> <ffffffee5e24ce44> ufshcd_rtc_work+0x128/0x1e4
+> <ffffffee5d6e3a40> process_one_work+0x26c/0x650
+> <ffffffee5d6e65c8> worker_thread+0x260/0x3d8
+> <ffffffee5d6edec8> kthread+0x110/0x134
+> <ffffffee5d616b18> ret_from_fork+0x10/0x20
+> 
+> [...]
+
+Applied to 6.11/scsi-queue, thanks!
+
+[1/1] ufs: core: fix deadlock when rtc update
+      https://git.kernel.org/mkp/scsi/c/3911af778f20
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
 
