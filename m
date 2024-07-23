@@ -1,132 +1,126 @@
-Return-Path: <stable+bounces-60793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54DC093A296
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 16:21:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27DAF93A2D4
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 16:34:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D465BB24977
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 14:21:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F4D9B23CA7
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 14:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379A1153BFC;
-	Tue, 23 Jul 2024 14:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B951015251C;
+	Tue, 23 Jul 2024 14:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Dt/xtDZC"
+	dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b="Wo7UBGfY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from uho.ysoft.cz (uho.ysoft.cz [81.19.3.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EE8153561
-	for <stable@vger.kernel.org>; Tue, 23 Jul 2024 14:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E718414C59A;
+	Tue, 23 Jul 2024 14:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.3.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721744486; cv=none; b=MPpQfAUAp16soGo3ZDbccFwzBG+JSbJmmWaCdeZxR9Vltkfph2c0ANXYn1DduzaVI8SvIPcgY8PZf3prbf8D5KI3Qo5lVQQudqIv7x0bUqnrAxR8Gs8TkBpuiDXJgI1Gna9wzIsgSzEJ+ytFdnRwKTE9iNIYjK/L1z3f/M93+/4=
+	t=1721745250; cv=none; b=ffB4KrJGi4Oo20wDLu+mWmu7l7xKPJmpo5kLpPJSZ4iZK2rN7zmVwYCSSLdzpDrl+W73FAG7aKnhVRll9Q0adVALbUtbsrrSuK2lgoLWNCmB/df1WnPq8EkUc1coc18nECUKQ7TAF1xtWxgBw2AC+QuYrv8QFlQOVgFwnpbFL78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721744486; c=relaxed/simple;
-	bh=DNGKRnq6yefqDwFq4dLFSptbWIrv/56iYPZ/WODQ1aI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eakbZRsw41cuBjkHLSuK2UstV3ATXV0ZaCbPs3ve+Y+oHLEA3nHo7fElqP1f0btRSpfFJNrRALT2MIqWTHNpk0WVlfCAPbyaRqSwYLmQeqF0yeb0O/0tmFRInN/LuQV9ND1xSdTGyD8/kjZAkKwlrxG19/ZLUTM65aTU1BuPkas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Dt/xtDZC; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52efabf5d7bso3311563e87.1
-        for <stable@vger.kernel.org>; Tue, 23 Jul 2024 07:21:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721744482; x=1722349282; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yBuLRu+sHV1exWh6bc0Ae4uSAoiJuU9OudmglQ3Nm9M=;
-        b=Dt/xtDZC1T8TmUocqyRdmEvNZJb0i7He/RaLEhTk3gkfOOWIwAJIM/meuFsgrKcdQM
-         1IXfViZ6BIOvfkNEqDPgbDIVT45KbWmuB57+3MQaN4hmob0ROC9jmyy86w26frchD35/
-         i5a5wKBf7s55kAMk/dgelxlArcS9FwzdDeZC+SXisQ6igDN9mYc0OAjkp5Y1JCmdl8MH
-         fdYLj/peGVqCtkvwdJ0FLjcX5j7WDTS9hSWbjJNnBM6UwoF4NBYxMV/no6h/CtGRws2j
-         wTjvlHTYcGq4bk6dBQOVKCVT01klBka+nQoBYYRHSb802+XX5UHLnn+fLt0nVwxE7TGZ
-         oHKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721744482; x=1722349282;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yBuLRu+sHV1exWh6bc0Ae4uSAoiJuU9OudmglQ3Nm9M=;
-        b=wG/fBIT5H37BF7AZS24qnqIRW9iwd1WnvXrZjX1Ql5bwW8FOjQ5ivpIoYM9nys96Mp
-         WsdBpyNkkJ7SdT4e+Ceh+pMS4UP0+McNsfqy48meKgHqMS2iZ89ZHzO0doExLOwmpfi7
-         cg0bpMevotleX7s6XxtXX7lfxwzQYfiNJD5Pxnmgkh+Fcqcmq1M425h0NrKjE+Cq2Fu0
-         /AM09jlSvLLVVXRN2nEFSbWFl5DO5/Rc1JmJAcLfQi5wSNpYNe1zjeOnyMNQmozbvXlp
-         v9woKzZ/qvjLubginX7sirodOG/6gcLmQTJC0ISo/OzJ/y7toyKg8gFtHrX62Mr7yUhT
-         tiZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWUjcUJq7r7Rxneo6AXKyO0GOUlbN3FLcquBj2CAIR17z4bT1gWgU+WnJv0d1eSDZUe8+oNq62lsNP7Ay7QH4rFVVsSQvVf
-X-Gm-Message-State: AOJu0YzfETIczjmPdavd2uDdVqBAs6cwfWxiD3y51rfyPK+Zla/N/Fb3
-	VjPI8oxSbGzq2/sOO0m63ZFc9QQ6QajUA2Nr6+XteO92dPNLZG2LUvpm5Vj2/lk=
-X-Google-Smtp-Source: AGHT+IFxHwfhLi/9n7Rf6nSVfmpgHMm3WiEWbHO874AANBpqTHNp5aTg7Ckn1tENldoqD+expnN1yA==
-X-Received: by 2002:a05:6512:1281:b0:52f:214:79b0 with SMTP id 2adb3069b0e04-52f02147b57mr5060911e87.13.1721744482286;
-        Tue, 23 Jul 2024 07:21:22 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ef553c8c6sm1616527e87.76.2024.07.23.07.21.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jul 2024 07:21:21 -0700 (PDT)
-Date: Tue, 23 Jul 2024 17:21:20 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, 
-	utkarsh.h.patel@intel.com, abhishekpandit@chromium.org, andriy.shevchenko@linux.intel.com, 
-	kyletso@google.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	s=arc-20240116; t=1721745250; c=relaxed/simple;
+	bh=75GRhItwcVfF6+PhFRKfBxniuEzzQfAL1uhTyz+xRns=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JlGFCrGXA0/qC3jlEAwbzzl7j6yidVrYW5cXRFd5nn4JphuhroljGC6L7M1lmj3SRM2E2nIfLvkC0XxhrPWeNAwf3pVtaPx5/b6YPVYukhJsBnD804xkIIkEEaiO9wypFH6PCiN0yncZo+NTuy0XROFFZtqADg8zm3MV5MrGVTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com; spf=pass smtp.mailfrom=ysoft.com; dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b=Wo7UBGfY; arc=none smtp.client-ip=81.19.3.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ysoft.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ysoft.com;
+	s=20160406-ysoft-com; t=1721744728;
+	bh=OX/Gd4MFPxCKqZe87BS/KG6ALl+pygGDpsu0MExr26A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Wo7UBGfYVfcctO8yVTMcaBzr6ULCBOn7rlO/BKrEUiicXaSuU1Xvx7LE5X82Iz0a6
+	 yYX3VZXjpeGUUldnYVcZ6QHhtzfex6eL35/fFV1+5n1KeB56/y/bHEE2ZUPz22QAQ8
+	 0qoHBPPERxC8d65Y/Y+hatPIlW1C7RqRWn4d3f8o=
+Received: from vokac-nb.ysoft.local (unknown [10.1.8.111])
+	by uho.ysoft.cz (Postfix) with ESMTP id 4AD59A0454;
+	Tue, 23 Jul 2024 16:25:28 +0200 (CEST)
+From: =?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] usb: typec: ucsi: Fix NULL pointer dereference in
- ucsi_displayport_vdm()
-Message-ID: <pva5d2tl2zxeaugahq7rih6o2w64pr5kuu2yyhdvcb264t3uyf@42whgfttylzb>
-References: <20240723141344.1331641-1-make24@iscas.ac.cn>
+Subject: [PATCH] ARM: dts: imx6dl-yapp43: Increase LED current to match the yapp4 HW design
+Date: Tue, 23 Jul 2024 16:25:19 +0200
+Message-ID: <20240723142519.134083-1-michal.vokac@ysoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240723141344.1331641-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 23, 2024 at 10:13:44PM GMT, Ma Ke wrote:
-> When dp->con->partner is an error, a NULL pointer dereference may occur.
-> Add a check for dp->con->partner to avoid dereferencing a NULL pointer.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 372adf075a43 ("usb: typec: ucsi: Determine common SVDM Version")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - added Cc stable line;
-> - fixed a typo.
-> ---
->  drivers/usb/typec/ucsi/displayport.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/usb/typec/ucsi/displayport.c b/drivers/usb/typec/ucsi/displayport.c
-> index 420af5139c70..ecc706e0800d 100644
-> --- a/drivers/usb/typec/ucsi/displayport.c
-> +++ b/drivers/usb/typec/ucsi/displayport.c
-> @@ -222,6 +222,8 @@ static int ucsi_displayport_vdm(struct typec_altmode *alt,
->  	switch (cmd_type) {
->  	case CMDT_INIT:
->  		if (PD_VDO_SVDM_VER(header) < svdm_version) {
-> +			if (IS_ERR_OR_NULL(dp->con->partner))
+On the imx6dl-yapp4 revision based boards, the RGB LED is not driven
+directly by the LP5562 driver but through FET transistors. Hence the LED
+current is not determined by the driver but by the LED series resistors.
 
-Usually IS_ERR_OR_NULL is one of the red flags. It is either IS_ERR or
-NULL, but not both.
+On the imx6dl-yapp43 revision based boards, we removed the FET transistors
+to drive the LED directly from the LP5562 but forgot to tune the output
+current to match the previous HW design.
 
-Also could you please describe the path how we can end up here without a
-proper dp->con->partner.
+Set the LED current on imx6dl-yapp43 based boards to the same values
+measured on the imx6dl-yapp4 boards and limit the maximum current to 20mA.
 
-> +				break;
->  			typec_partner_set_svdm_version(dp->con->partner, PD_VDO_SVDM_VER(header));
->  			svdm_version = PD_VDO_SVDM_VER(header);
->  		}
-> -- 
-> 2.25.1
-> 
+Fixes: 7da4734751e0 ("ARM: dts: imx6dl-yapp43: Add support for new HW revision of the IOTA board")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
+---
+ arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi
+index 8cfb553a4db3..208356c7d355 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi
+@@ -274,24 +274,24 @@ leds: led-controller@30 {
+ 
+ 		led@0 {
+ 			chan-name = "R";
+-			led-cur = /bits/ 8 <0x20>;
+-			max-cur = /bits/ 8 <0x60>;
++			led-cur = /bits/ 8 <0x6e>;
++			max-cur = /bits/ 8 <0xc8>;
+ 			reg = <0>;
+ 			color = <LED_COLOR_ID_RED>;
+ 		};
+ 
+ 		led@1 {
+ 			chan-name = "G";
+-			led-cur = /bits/ 8 <0x20>;
+-			max-cur = /bits/ 8 <0x60>;
++			led-cur = /bits/ 8 <0xbe>;
++			max-cur = /bits/ 8 <0xc8>;
+ 			reg = <1>;
+ 			color = <LED_COLOR_ID_GREEN>;
+ 		};
+ 
+ 		led@2 {
+ 			chan-name = "B";
+-			led-cur = /bits/ 8 <0x20>;
+-			max-cur = /bits/ 8 <0x60>;
++			led-cur = /bits/ 8 <0xbe>;
++			max-cur = /bits/ 8 <0xc8>;
+ 			reg = <2>;
+ 			color = <LED_COLOR_ID_BLUE>;
+ 		};
 -- 
-With best wishes
-Dmitry
+2.43.0
+
 
