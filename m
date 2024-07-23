@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870B893A5AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8981193A633
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CD421F23098
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 442F6281AC4
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B551C1586E7;
-	Tue, 23 Jul 2024 18:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DA4155351;
+	Tue, 23 Jul 2024 18:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7+hhjEU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyqbxh6X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71818157A4F;
-	Tue, 23 Jul 2024 18:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A105142067;
+	Tue, 23 Jul 2024 18:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759223; cv=none; b=UvIYDSzE1RsytFK8RX1CMRFabSVh9Yszg/CUExfog85Co1wBn3aKieTeEUrSpq2Z+BJ2m6QVM/79pw89/fwHHl5beBusPaEzky6Hz63dwlqGLpF8azLDw8gCiA3hD5/f1x3oKGp1vdzKAWFgo75SW314zYD/nzxyaWHsgPn2FmQ=
+	t=1721759569; cv=none; b=gfIeSMU2k4rwaUtzrAy7vjMfWDfW45qwtrf5LfT9bvlh078lcQr+FqOVJY0+K/n5ZMo5LSoLKXNV+8TBN6VTo0Qa0LWbxAfkWoZmTFe1O5QNAKygWBNQzctI7Io/a+3XK2gizoGp8GrjZ0RTHHPMjlhmSSOoqvCcaMtHzWeniUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759223; c=relaxed/simple;
-	bh=oi5qokBAovkjGOTihvU33+rLVi4LzO21L+/ivPxuV6Q=;
+	s=arc-20240116; t=1721759569; c=relaxed/simple;
+	bh=sX2MMAJs+R8KKazn3rrX2k6woN0KQPeFW+ip2dJccPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGNT6Sf39xl82wHMXR/Vh0Cy44KPdOYUYGYB94KznlVda0lUMakztMJArFExdzg8EcnGn+HIu6hqYzzEl+7u+BWiHTgzH9jcG2qn4XCjZKVzphfMbysed9rKy72vyv0sdByYoXIZQrzE7CSiqSQNIx8SKJ9d9LaKCMgw5gf54kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7+hhjEU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FC0C4AF0A;
-	Tue, 23 Jul 2024 18:27:02 +0000 (UTC)
+	 MIME-Version; b=sLe3bjF/sv/ObeDk+Gl9KqPZFOrFyO1QFaYrmI6A71QK9drODiSB94cJ5J+EhzeHWjOFoRVbDoM/3oNoZbs5SNlSx4MYiMOKYpW/wNkDWNoHXI751IS9zakjitXGUdZKBMg/fYAbRsEIEqp3t5IWQnJEJzbCrJQF//ee8+9RSOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyqbxh6X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF412C4AF0B;
+	Tue, 23 Jul 2024 18:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759223;
-	bh=oi5qokBAovkjGOTihvU33+rLVi4LzO21L+/ivPxuV6Q=;
+	s=korg; t=1721759569;
+	bh=sX2MMAJs+R8KKazn3rrX2k6woN0KQPeFW+ip2dJccPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c7+hhjEURyhptoyI38qU3GpToMi/0oBdpaF+AtZrKxgj9jb0JhvIPH7w16wr2KHkT
-	 UV1xpPytGQaJvAoXPRppeBqC7SY/+W28Zb5CEGuZACscaHa8u6L/orw3VARZ+FnTqJ
-	 4Yy3TCIdRd2F2SBPtrCr7H9dTRHTX38j+Tvm85K4=
+	b=kyqbxh6XZDytW0YiwZKjuEm+m4EPfbFqU/gHHSFeXDx0aCPk1mPVY3hPqSyIyjXz8
+	 ExrqEv1JZ4TtDymkeQrk7OAZq8xXD7WC4RiAZct5bgcb03mshyAaNFbPI3RBJ9IBCU
+	 CyBPpgfrn1fbCGOWTC20nyf6xmARde5H3mcK95QI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/105] mei: demote client disconnect warning on suspend to debug
-Date: Tue, 23 Jul 2024 20:23:21 +0200
-Message-ID: <20240723180404.944567678@linuxfoundation.org>
+Subject: [PATCH 6.6 054/129] KVM: PPC: Book3S HV: Prevent UAF in kvm_spapr_tce_attach_iommu_group()
+Date: Tue, 23 Jul 2024 20:23:22 +0200
+Message-ID: <20240723180406.875977694@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
+[ Upstream commit a986fa57fd81a1430e00b3c6cf8a325d6f894a63 ]
 
-Change level for the "not connected" client message in the write
-callback from error to debug.
+Al reported a possible use-after-free (UAF) in kvm_spapr_tce_attach_iommu_group().
 
-The MEI driver currently disconnects all clients upon system suspend.
-This behavior is by design and user-space applications with
-open connections before the suspend are expected to handle errors upon
-resume, by reopening their handles, reconnecting,
-and retrying their operations.
+It looks up `stt` from tablefd, but then continues to use it after doing
+fdput() on the returned fd. After the fdput() the tablefd is free to be
+closed by another thread. The close calls kvm_spapr_tce_release() and
+then release_spapr_tce_table() (via call_rcu()) which frees `stt`.
 
-However, the current driver implementation logs an error message every
-time a write operation is attempted on a disconnected client.
-Since this is a normal and expected flow after system resume
-logging this as an error can be misleading.
+Although there are calls to rcu_read_lock() in
+kvm_spapr_tce_attach_iommu_group() they are not sufficient to prevent
+the UAF, because `stt` is used outside the locked regions.
 
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With an artifcial delay after the fdput() and a userspace program which
+triggers the race, KASAN detects the UAF:
+
+  BUG: KASAN: slab-use-after-free in kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
+  Read of size 4 at addr c000200027552c30 by task kvm-vfio/2505
+  CPU: 54 PID: 2505 Comm: kvm-vfio Not tainted 6.10.0-rc3-next-20240612-dirty #1
+  Hardware name: 8335-GTH POWER9 0x4e1202 opal:skiboot-v6.5.3-35-g1851b2a06 PowerNV
+  Call Trace:
+    dump_stack_lvl+0xb4/0x108 (unreliable)
+    print_report+0x2b4/0x6ec
+    kasan_report+0x118/0x2b0
+    __asan_load4+0xb8/0xd0
+    kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
+    kvm_vfio_set_attr+0x524/0xac0 [kvm]
+    kvm_device_ioctl+0x144/0x240 [kvm]
+    sys_ioctl+0x62c/0x1810
+    system_call_exception+0x190/0x440
+    system_call_vectored_common+0x15c/0x2ec
+  ...
+  Freed by task 0:
+   ...
+   kfree+0xec/0x3e0
+   release_spapr_tce_table+0xd4/0x11c [kvm]
+   rcu_core+0x568/0x16a0
+   handle_softirqs+0x23c/0x920
+   do_softirq_own_stack+0x6c/0x90
+   do_softirq_own_stack+0x58/0x90
+   __irq_exit_rcu+0x218/0x2d0
+   irq_exit+0x30/0x80
+   arch_local_irq_restore+0x128/0x230
+   arch_local_irq_enable+0x1c/0x30
+   cpuidle_enter_state+0x134/0x5cc
+   cpuidle_enter+0x6c/0xb0
+   call_cpuidle+0x7c/0x100
+   do_idle+0x394/0x410
+   cpu_startup_entry+0x60/0x70
+   start_secondary+0x3fc/0x410
+   start_secondary_prolog+0x10/0x14
+
+Fix it by delaying the fdput() until `stt` is no longer in use, which
+is effectively the entire function. To keep the patch minimal add a call
+to fdput() at each of the existing return paths. Future work can convert
+the function to goto or __cleanup style cleanup.
+
+With the fix in place the test case no longer triggers the UAF.
+
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Closes: https://lore.kernel.org/all/20240610024437.GA1464458@ZenIV/
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240614122910.3499489-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kvm/book3s_64_vio.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
-index 930887e7e38d6..615fafb0366a8 100644
---- a/drivers/misc/mei/main.c
-+++ b/drivers/misc/mei/main.c
-@@ -327,7 +327,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
+diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
+index 93b695b289e99..395659f2f4c8e 100644
+--- a/arch/powerpc/kvm/book3s_64_vio.c
++++ b/arch/powerpc/kvm/book3s_64_vio.c
+@@ -129,14 +129,16 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 	}
+ 	rcu_read_unlock();
+ 
+-	fdput(f);
+-
+-	if (!found)
++	if (!found) {
++		fdput(f);
+ 		return -EINVAL;
++	}
+ 
+ 	table_group = iommu_group_get_iommudata(grp);
+-	if (WARN_ON(!table_group))
++	if (WARN_ON(!table_group)) {
++		fdput(f);
+ 		return -EFAULT;
++	}
+ 
+ 	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
+ 		struct iommu_table *tbltmp = table_group->tables[i];
+@@ -157,8 +159,10 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 			break;
+ 		}
+ 	}
+-	if (!tbl)
++	if (!tbl) {
++		fdput(f);
+ 		return -EINVAL;
++	}
+ 
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(stit, &stt->iommu_tables, next) {
+@@ -169,6 +173,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 			/* stit is being destroyed */
+ 			iommu_tce_table_put(tbl);
+ 			rcu_read_unlock();
++			fdput(f);
+ 			return -ENOTTY;
+ 		}
+ 		/*
+@@ -176,6 +181,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 		 * its KVM reference counter and can return.
+ 		 */
+ 		rcu_read_unlock();
++		fdput(f);
+ 		return 0;
+ 	}
+ 	rcu_read_unlock();
+@@ -183,6 +189,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 	stit = kzalloc(sizeof(*stit), GFP_KERNEL);
+ 	if (!stit) {
+ 		iommu_tce_table_put(tbl);
++		fdput(f);
+ 		return -ENOMEM;
  	}
  
- 	if (!mei_cl_is_connected(cl)) {
--		cl_err(dev, cl, "is not connected");
-+		cl_dbg(dev, cl, "is not connected");
- 		rets = -ENODEV;
- 		goto out;
- 	}
+@@ -191,6 +198,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 
+ 	list_add_rcu(&stit->next, &stt->iommu_tables);
+ 
++	fdput(f);
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
