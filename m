@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-60832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BA593A59E
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5927493A609
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A08421F22E25
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E02328427C
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92166158862;
-	Tue, 23 Jul 2024 18:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9EA0158A2E;
+	Tue, 23 Jul 2024 18:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eK3JbMAb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbWf01X7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B40B1586F6;
-	Tue, 23 Jul 2024 18:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873E6158A22;
+	Tue, 23 Jul 2024 18:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759184; cv=none; b=SSA6PyVTtD+7KON+XA+gKskELB+4T6wSO6iui8KrIrufr9S7P6K+gMtOBIUxzzDE9uu4CSk3/8NMrGbf3xoFshxTSJtOSUrn5svn5Ir+EuZkculL3i1DA/pvU0i/1Fn0bDDNRqha5mbvv2ghOsOF4vdSN5zYzhd1xcIjJJrn/AY=
+	t=1721759456; cv=none; b=NFqoBe3r/tFUOy5zqPf4yf+6P0zvBvGM/I5qv9UULS9yfEfKIWL/OMgNVN8lqrYALrWAu9Lbp7rhpPNrRxWfUY9OIJXeEP8p/Uz0WKFGc2SJxD3Ngo4iiO/I7zF8OCYfCZOx8/mdjEImloRKpVglx7zYyG7I0Z0OZEaJoeLTpmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759184; c=relaxed/simple;
-	bh=81OUEri3GPnAfaX8GRTdmu/HoPa7IYPp3W6DyT+GV9s=;
+	s=arc-20240116; t=1721759456; c=relaxed/simple;
+	bh=qn40qDMluWAsf1wkyMxm7fdEd/BMK8KYFUj1ANYKU9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bku6o4g9xZgQjqZxZXYg6vXjnv95RKJaLxGcv+gJElg2pIpn4OqeOzhQRSut7Y7zDa8nRG+CNtqqHgnkmQcnWvH64ScoimSeREYqlim/zF4DzXbuZoURUuT8ZOENikSzuicT9ZsIMLURiJ8XXRC38VIVfyV7N/4GIGzV+Wht09I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eK3JbMAb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4824C4AF09;
-	Tue, 23 Jul 2024 18:26:23 +0000 (UTC)
+	 MIME-Version; b=DXHlxrezExHQbLLDMMpI11Nzj00xUAtGkMhJcmJjy5Q1kiStsCFS/N75hulQFhl6uvcZq7Q9AutDwGmeq8HL3s+kTMXLxcdlJHLD2jpmjISt+ZjPnKAF568z+mORTtcJPff7rJCRRZcy7KBFlmsqEoq+YN8rMwQ2krO0IK9YU8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbWf01X7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBB6C4AF0B;
+	Tue, 23 Jul 2024 18:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759184;
-	bh=81OUEri3GPnAfaX8GRTdmu/HoPa7IYPp3W6DyT+GV9s=;
+	s=korg; t=1721759456;
+	bh=qn40qDMluWAsf1wkyMxm7fdEd/BMK8KYFUj1ANYKU9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eK3JbMAbvB4A9WUiIvEhR/gnAHzwKo9msCS+mcrT+I6pyC/Pm1SPWNMi6Me17v8Jg
-	 OwtW6UEPgkOmdTVVHbFfIW6QhxOP9+H/JmDj0peYdqJtZrfGbvRyyEOY33HjlPrM8P
-	 XOy83IOyJk751LiCjcXr5zPeTizZuQZELWlWUHRo=
+	b=jbWf01X7CsBgXYjX3B+bc4g3HiXc6gTyrmI3s5NXJe7JlJvax/pCRJ0U5uuCY7B67
+	 TaQzgx1/C5nhhxPOVuuH5rSf+DOm608Iiqs2DFX99+aaBqbhtp3DHP2p89oZhxdptX
+	 oRzmKJFLkeUaFO0Bd5EvQCPcTZEb2ZgqCwzjkfLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-hardening@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>,
-	Thomas Meyer <thomas@m3y3r.de>
-Subject: [PATCH 6.1 008/105] gcc-plugins: Rename last_stmt() for GCC 14+
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 017/129] wifi: iwlwifi: mvm: Handle BIGTK cipher in kek_kck cmd
 Date: Tue, 23 Jul 2024 20:22:45 +0200
-Message-ID: <20240723180403.003699933@linuxfoundation.org>
+Message-ID: <20240723180405.451884808@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 
-commit 2e3f65ccfe6b0778b261ad69c9603ae85f210334 upstream.
+[ Upstream commit 08b16d1b5997dc378533318e2a9cd73c7a898284 ]
 
-In GCC 14, last_stmt() was renamed to last_nondebug_stmt(). Add a helper
-macro to handle the renaming.
+The BIGTK cipher field was added to the kek_kck_material_cmd
+but wasn't assigned. Fix that by differentiating between the
+IGTK/BIGTK keys and assign the ciphers fields accordingly.
 
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Cc: Thomas Meyer <thomas@m3y3r.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.7fd0b22b7267.Ie9b581652b74bd7806980364d59e1b2e78e682c0@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gcc-plugins/gcc-common.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/scripts/gcc-plugins/gcc-common.h
-+++ b/scripts/gcc-plugins/gcc-common.h
-@@ -440,4 +440,8 @@ static inline void debug_gimple_stmt(con
- #define SET_DECL_MODE(decl, mode)	DECL_MODE(decl) = (mode)
- #endif
- 
-+#if BUILDING_GCC_VERSION >= 14000
-+#define last_stmt(x)			last_nondebug_stmt(x)
-+#endif
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 66aed6635d92c..9c89f0dd69c86 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -595,6 +595,12 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
+ 					 void *_data)
+ {
+ 	struct wowlan_key_gtk_type_iter *data = _data;
++	__le32 *cipher = NULL;
 +
- #endif
++	if (key->keyidx == 4 || key->keyidx == 5)
++		cipher = &data->kek_kck_cmd->igtk_cipher;
++	if (key->keyidx == 6 || key->keyidx == 7)
++		cipher = &data->kek_kck_cmd->bigtk_cipher;
+ 
+ 	switch (key->cipher) {
+ 	default:
+@@ -606,10 +612,13 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
+ 		return;
+ 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
+ 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
+-		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
++		if (cipher)
++			*cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
+ 		return;
+ 	case WLAN_CIPHER_SUITE_AES_CMAC:
+-		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_CCM);
++	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
++		if (cipher)
++			*cipher = cpu_to_le32(STA_KEY_FLG_CCM);
+ 		return;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 		if (!sta)
+-- 
+2.43.0
+
 
 
 
