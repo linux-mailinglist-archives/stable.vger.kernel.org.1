@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-61223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A52E93A9FC
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 01:40:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3232393A9FD
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 01:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8B0C283CEB
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 23:40:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C840B229A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 23:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D62149C61;
-	Tue, 23 Jul 2024 23:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF6E149C40;
+	Tue, 23 Jul 2024 23:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="klIjDxWh"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FqJdwF7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C3A149C59;
-	Tue, 23 Jul 2024 23:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C062913BAD5;
+	Tue, 23 Jul 2024 23:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721778043; cv=none; b=cM2uY6/wsbc67i96QjYbL+12IXQBBeSx0VTbN/7/RAXwRWZV+vJXZgtlpuFFa93JigOUbpMUM+vT5X8lD6C/odNuT2ucOiHZ8pcPrH3kw9e/QiHc5empKu2D7iktVvXhlaDzZHw3xCZF1TMHSRi/ALrJ/YlR9bSJvyIiFJll1ps=
+	t=1721778130; cv=none; b=L2CgSct8Fz3HvFoVeH0KnVSTNKbEHNDnXUVJ6lwb/m4GlOsoiEKEe/7FRJnUZ4wR8IB7+XCEQaEwm3euuI+h2jg0Uo8+z59DTV3YRJzdu6UDTBG7LghYaxkNaIkwAKaNK1b3RkMaGB8alFZ6k8cDbc/NUfeo2b8/yrgJKjdzXfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721778043; c=relaxed/simple;
-	bh=yogXOnZVei3qScDWNcCWXJVDUacfjuJ5ODTBn3C1/W0=;
-	h=Date:To:From:Subject:Message-Id; b=TBNb+fnMgWUZ/bSNekgQSpeCJk/lX0jFEggQbHthJGfvbIjZcPX87+vgRjYYHoi4haCJy6AoeXrzMIRofrh3mMoVbTvM7o6UBYgDHHpiSHlzvbe0wXhnUWyL9XfbCBKLAiPstqepM0VsTOHrrsKIswRUbnWCOwef1RyOR2q/n+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=klIjDxWh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C787C4AF0A;
-	Tue, 23 Jul 2024 23:40:42 +0000 (UTC)
+	s=arc-20240116; t=1721778130; c=relaxed/simple;
+	bh=Rs4LiG21LvaC+228rMu8nD6v4wr0Ti8neyhdM1Yppu4=;
+	h=Date:To:From:Subject:Message-Id; b=NMGCihyRa0+7tmjBTqAiLAmMcMD/KQt3REp1oxwxG8krQaFZWM3zxk+TQ0EEShmpPToQRtmwsr4bEneQZetkGp7W5fNHYAorAu72Gx+A3u0S77byVMyR7GWNWvTJdXfSAYBTXP/o9qrZKKpLVb/t7nNsApZ8ezS7TF1Iidl9VSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FqJdwF7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD18C4AF09;
+	Tue, 23 Jul 2024 23:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1721778042;
-	bh=yogXOnZVei3qScDWNcCWXJVDUacfjuJ5ODTBn3C1/W0=;
+	s=korg; t=1721778130;
+	bh=Rs4LiG21LvaC+228rMu8nD6v4wr0Ti8neyhdM1Yppu4=;
 	h=Date:To:From:Subject:From;
-	b=klIjDxWhohoxRWlTQM+JWFgh1qqto8U9NGyJ0wKN+IKclZb4PqZIKI/LJQ6qBDYpe
-	 pRslPOVRi9tw1FDIJa2irk/BBFS5nge5Hm2tG47ATeEQkcVZYGR8DC+eyfktp6XyLS
-	 56Wu/47GbebdkSq+nI+KTFh2MnuQXs73EZRADWQg=
-Date: Tue, 23 Jul 2024 16:40:42 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kbingham@kernel.org,jan.kiszka@siemens.com,kuan-ying.lee@canonical.com,akpm@linux-foundation.org
+	b=FqJdwF7F/hf+YoYPHnYacENKoAoW4vydRmhJ+nQDfyp4RuGwGijZD4WPjOUsdk8k8
+	 Jni7mo5GyC7tFWAdOa0e9y9MgYgmAmbtM3tBSSg4hChg+U6kRyQxu5Y9hlaGZxqV7z
+	 2Vles0aQ7K/9FfBae3MOgXRRSe8bI6dimbgy04So=
+Date: Tue, 23 Jul 2024 16:42:09 -0700
+To: mm-commits@vger.kernel.org,yaoxt.fnst@fujitsu.com,vbabka@suse.cz,stable@vger.kernel.org,david@redhat.com,lizhijian@fujitsu.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + scripts-gdb-fix-lx-mounts-command-error.patch added to mm-nonmm-unstable branch
-Message-Id: <20240723234042.9C787C4AF0A@smtp.kernel.org>
+Subject: + mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240723234210.3DD18C4AF09@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,14 +50,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: scripts/gdb: fix lx-mounts command error
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     scripts-gdb-fix-lx-mounts-command-error.patch
+     Subject: mm/page_alloc: fix pcp->count race between drain_pages_zone() vs __rmqueue_pcplist()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/scripts-gdb-fix-lx-mounts-command-error.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist.patch
 
-This patch will later appear in the mm-nonmm-unstable branch at
+This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 Before you just go and hit "reply", please:
@@ -73,61 +73,98 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
-Subject: scripts/gdb: fix lx-mounts command error
-Date: Tue, 23 Jul 2024 14:48:59 +0800
+From: Li Zhijian <lizhijian@fujitsu.com>
+Subject: mm/page_alloc: fix pcp->count race between drain_pages_zone() vs __rmqueue_pcplist()
+Date: Tue, 23 Jul 2024 14:44:28 +0800
 
-(gdb) lx-mounts
-      mount          super_block     devname pathname fstype options
-Python Exception <class 'gdb.error'>: There is no member named list.
-Error occurred in Python: There is no member named list.
+It's expected that no page should be left in pcp_list after calling
+zone_pcp_disable() in offline_pages().  Previously, it's observed that
+offline_pages() gets stuck [1] due to some pages remaining in pcp_list.
 
-We encounter the above issue after commit 2eea9ce4310d ("mounts: keep
-list of mounts in an rbtree"). The commit move a mount from list into
-rbtree.
+Cause:
+There is a race condition between drain_pages_zone() and __rmqueue_pcplist()
+involving the pcp->count variable. See below scenario:
 
-So we can instead use rbtree to iterate all mounts information.
+         CPU0                              CPU1
+    ----------------                    ---------------
+                                      spin_lock(&pcp->lock);
+                                      __rmqueue_pcplist() {
+zone_pcp_disable() {
+                                        /* list is empty */
+                                        if (list_empty(list)) {
+                                          /* add pages to pcp_list */
+                                          alloced = rmqueue_bulk()
+  mutex_lock(&pcp_batch_high_lock)
+  ...
+  __drain_all_pages() {
+    drain_pages_zone() {
+      /* read pcp->count, it's 0 here */
+      count = READ_ONCE(pcp->count)
+      /* 0 means nothing to drain */
+                                          /* update pcp->count */
+                                          pcp->count += alloced << order;
+      ...
+                                      ...
+                                      spin_unlock(&pcp->lock);
 
-Link: https://lkml.kernel.org/r/20240723064902.124154-4-kuan-ying.lee@canonical.com
-Fixes: 2eea9ce4310d ("mounts: keep list of mounts in an rbtree")
-Signed-off-by: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
+In this case, after calling zone_pcp_disable() though, there are still some
+pages in pcp_list. And these pages in pcp_list are neither movable nor
+isolated, offline_pages() gets stuck as a result.
+
+Solution:
+Expand the scope of the pcp->lock to also protect pcp->count in
+drain_pages_zone(), to ensure no pages are left in the pcp list after
+zone_pcp_disable()
+
+[1] https://lore.kernel.org/linux-mm/6a07125f-e720-404c-b2f9-e55f3f166e85@fujitsu.com/
+
+Link: https://lkml.kernel.org/r/20240723064428.1179519-1-lizhijian@fujitsu.com
+Fixes: 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reported-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: David Hildenbrand <david@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- scripts/gdb/linux/proc.py |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/page_alloc.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
---- a/scripts/gdb/linux/proc.py~scripts-gdb-fix-lx-mounts-command-error
-+++ a/scripts/gdb/linux/proc.py
-@@ -18,6 +18,7 @@ from linux import utils
- from linux import tasks
- from linux import lists
- from linux import vfs
-+from linux import rbtree
- from struct import *
+--- a/mm/page_alloc.c~mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist
++++ a/mm/page_alloc.c
+@@ -2343,16 +2343,20 @@ void drain_zone_pages(struct zone *zone,
+ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
+ {
+ 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
+-	int count = READ_ONCE(pcp->count);
+-
+-	while (count) {
+-		int to_drain = min(count, pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
+-		count -= to_drain;
++	int count;
  
++	do {
+ 		spin_lock(&pcp->lock);
+-		free_pcppages_bulk(zone, to_drain, pcp, 0);
++		count = pcp->count;
++		if (count) {
++			int to_drain = min(count,
++				pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
++
++			free_pcppages_bulk(zone, to_drain, pcp, 0);
++			count -= to_drain;
++		}
+ 		spin_unlock(&pcp->lock);
+-	}
++	} while (count);
+ }
  
-@@ -172,8 +173,7 @@ values of that process namespace"""
-         gdb.write("{:^18} {:^15} {:>9} {} {} options\n".format(
-                   "mount", "super_block", "devname", "pathname", "fstype"))
- 
--        for mnt in lists.list_for_each_entry(namespace['list'],
--                                             mount_ptr_type, "mnt_list"):
-+        for mnt in rbtree.rb_inorder_for_each_entry(namespace['mounts'], mount_ptr_type, "mnt_node"):
-             devname = mnt['mnt_devname'].string()
-             devname = devname if devname else "none"
- 
+ /*
 _
 
-Patches currently in -mm which might be from kuan-ying.lee@canonical.com are
+Patches currently in -mm which might be from lizhijian@fujitsu.com are
 
-scripts-gdb-fix-timerlist-parsing-issue.patch
-scripts-gdb-add-iteration-function-for-rbtree.patch
-scripts-gdb-fix-lx-mounts-command-error.patch
-scripts-gdb-add-lx-stack_depot_lookup-command.patch
-scripts-gdb-add-lx-kasan_mem_to_shadow-command.patch
+mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist.patch
 
 
