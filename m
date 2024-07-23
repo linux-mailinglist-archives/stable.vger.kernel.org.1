@@ -1,227 +1,82 @@
-Return-Path: <stable+bounces-61204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CBC593A753
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:44:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C0693A5E8
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C09D1C22599
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:44:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C1AB283588
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1322A158A01;
-	Tue, 23 Jul 2024 18:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B6A15887F;
+	Tue, 23 Jul 2024 18:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpSZIaxV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pe3Hf/vm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4CAF15884E;
-	Tue, 23 Jul 2024 18:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BD6158858;
+	Tue, 23 Jul 2024 18:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760284; cv=none; b=cHhaINhwQsbywHlt5AbCe7CRDIvDnOjTNWXzVm7G+q+DVQENiHYyvSmVQfaL62VgIi5U9Vx4agc6bQwy6wDdiuaTliki22W3dfUGMBXA6TqFtQzszkznx5URfcSi332WKvfue7vI6uq7Wk8FLYmcftn/S8zwRt9aP/Y0kHNnIw0=
+	t=1721759380; cv=none; b=TqQChhcuIXyXU04l1pgOgchqy5rgQQ9nqqnnKX1XTF5UB/2oLU8hICizNQbzYGECvBviGrdJ7nfe/bBgTwZoybnIx57YIy7MGQQ9dJVqF+9vh0DvbxtPZZ5ErEXO7KQT1U2J/9ydxLCzupN8EHGNS8JyGky9fal2xW5MMDdi3HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760284; c=relaxed/simple;
-	bh=XT7emBviASMS8lP1BfGZFxR4oD4vM6bbpAMsIeOqx3E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5YS2DTrMx6eLm9jEj48ORcXvw2ZjbmepkleGuJgqIScs56TrleN/lf3PzpOr79GvRNZnH9jUQzRbG7cGKDoNgalU9BbpDzrt1uNXHuGSq8ULUinOrOwgY/MFOP5BQwjRKCuwoQNk4a7t0lbJ6fODDFCLesBKxBdEG7uE9p3p7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpSZIaxV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B022C4AF0A;
-	Tue, 23 Jul 2024 18:44:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760284;
-	bh=XT7emBviASMS8lP1BfGZFxR4oD4vM6bbpAMsIeOqx3E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LpSZIaxVm5jABFNSa/+KbdUOoa6UO7Dezg6P+8dNeFI8X2GuEhaBvo0Ad0Jqn2EXZ
-	 iGSzRgGp48JbBAcZdD9LHXdXu4+G/ldhNOFIu2qEUTxYWuOS7a2J2NO2QW+EUKWCVN
-	 5TptAm3Er49Qcz3Jtmf3xGmE9iPE6Glaige/SEq4=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.9 163/163] cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()
-Date: Tue, 23 Jul 2024 20:24:52 +0200
-Message-ID: <20240723180149.766533439@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1721759380; c=relaxed/simple;
+	bh=4u5YSN2hcaCst37P8Vgp49+pWvdyei/yGShNl4vfJBg=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=R0jBc8jsymu8uErRfvxlXnjW+CKBZzfGP9oQk2uxp2oBp6BH/Qbi4vENDkfWCzD469ZdMD+snGMnKhRjy2GWiLIvYzrmDt/fR8nsTOX7CO+B7Y7yuMcLZRJQcls8sj7sWd8811wGtLEXvqBEKcMAJ21sBh9m7V3MYIHAb0986IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pe3Hf/vm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD941C4AF0B;
+	Tue, 23 Jul 2024 18:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721759379;
+	bh=4u5YSN2hcaCst37P8Vgp49+pWvdyei/yGShNl4vfJBg=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=Pe3Hf/vmwj+ATt3V8Sc17DFMY+tfBKdMhgY52OvNhy+4pPvcpmo97o+lOCqAzIv31
+	 KqUz+IeoU9H9mQMF+D9IIHcZ9BqF/ZoKW8LY38CBoK3Y2cHymnAWhQtLsX2AE2V3A8
+	 9K8wQYvkUUBzFy0JTM5zVk8Yf/zC3Y60YOH05HI/UN7NHFtx3uzGQ/MNdcbrLSVB1m
+	 uLYNDA9K2dNzVAUZRnkkq1vRGOnrmiks5JWe75jLHzujUCx691qYTaJlDJK+MtH7F+
+	 APPCCMNS8fckE2tntkGfH8ZGBFknbhiu417m732BHeKvcnl3BGG5khg/1tEM5Gy52P
+	 xfcMYhezitB7Q==
+Message-ID: <9f94278d72b54071490e8c08aa9a1dff.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240722063309.60054-1-krzysztof.kozlowski@linaro.org>
+References: <20240722063309.60054-1-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH] clk: samsung: fix getting Exynos4 fin_pll rate from external clocks
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Artur Weber <aweber.kernel@gmail.com>, stable@vger.kernel.org
+To: Alim Akhtar <alim.akhtar@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Marek Szyprowski <m.szyprowski@samsung.com>, Michael Turquette <mturquette@baylibre.com>, Sam Protsenko <semen.protsenko@linaro.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org
+Date: Tue, 23 Jul 2024 11:29:37 -0700
+User-Agent: alot/0.10
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+Quoting Krzysztof Kozlowski (2024-07-21 23:33:09)
+> Commit 0dc83ad8bfc9 ("clk: samsung: Don't register clkdev lookup for the
+> fixed rate clocks") claimed registering clkdev lookup is not necessary
+> anymore, but that was not entirely true: Exynos4210/4212/4412 clock code
+> still relied on it to get the clock rate of xxti or xusbxti external
+> clocks.
+>=20
+> Drop that requirement by accessing already registered clk_hw when
+> looking up the xxti/xusbxti rate.
+>=20
+> Reported-by: Artur Weber <aweber.kernel@gmail.com>
+> Closes: https://lore.kernel.org/all/6227c1fb-d769-462a-b79b-abcc15d3db8e@=
+gmail.com/
+> Fixes: 0dc83ad8bfc9 ("clk: samsung: Don't register clkdev lookup for the =
+fixed rate clocks")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
 
-------------------
-
-From: Baokun Li <libaokun1@huawei.com>
-
-[ Upstream commit 5d8f805789072ea7fd39504694b7bd17e5f751c4 ]
-
-We got the following issue in our fault injection stress test:
-
-==================================================================
-BUG: KASAN: slab-use-after-free in cachefiles_withdraw_cookie+0x4d9/0x600
-Read of size 8 at addr ffff888118efc000 by task kworker/u78:0/109
-
-CPU: 13 PID: 109 Comm: kworker/u78:0 Not tainted 6.8.0-dirty #566
-Call Trace:
- <TASK>
- kasan_report+0x93/0xc0
- cachefiles_withdraw_cookie+0x4d9/0x600
- fscache_cookie_state_machine+0x5c8/0x1230
- fscache_cookie_worker+0x91/0x1c0
- process_one_work+0x7fa/0x1800
- [...]
-
-Allocated by task 117:
- kmalloc_trace+0x1b3/0x3c0
- cachefiles_acquire_volume+0xf3/0x9c0
- fscache_create_volume_work+0x97/0x150
- process_one_work+0x7fa/0x1800
- [...]
-
-Freed by task 120301:
- kfree+0xf1/0x2c0
- cachefiles_withdraw_cache+0x3fa/0x920
- cachefiles_put_unbind_pincount+0x1f6/0x250
- cachefiles_daemon_release+0x13b/0x290
- __fput+0x204/0xa00
- task_work_run+0x139/0x230
- do_exit+0x87a/0x29b0
- [...]
-==================================================================
-
-Following is the process that triggers the issue:
-
-           p1                |             p2
-------------------------------------------------------------
-                              fscache_begin_lookup
-                               fscache_begin_volume_access
-                                fscache_cache_is_live(fscache_cache)
-cachefiles_daemon_release
- cachefiles_put_unbind_pincount
-  cachefiles_daemon_unbind
-   cachefiles_withdraw_cache
-    fscache_withdraw_cache
-     fscache_set_cache_state(cache, FSCACHE_CACHE_IS_WITHDRAWN);
-    cachefiles_withdraw_objects(cache)
-    fscache_wait_for_objects(fscache)
-      atomic_read(&fscache_cache->object_count) == 0
-                              fscache_perform_lookup
-                               cachefiles_lookup_cookie
-                                cachefiles_alloc_object
-                                 refcount_set(&object->ref, 1);
-                                 object->volume = volume
-                                 fscache_count_object(vcookie->cache);
-                                  atomic_inc(&fscache_cache->object_count)
-    cachefiles_withdraw_volumes
-     cachefiles_withdraw_volume
-      fscache_withdraw_volume
-      __cachefiles_free_volume
-       kfree(cachefiles_volume)
-                              fscache_cookie_state_machine
-                               cachefiles_withdraw_cookie
-                                cache = object->volume->cache;
-                                // cachefiles_volume UAF !!!
-
-After setting FSCACHE_CACHE_IS_WITHDRAWN, wait for all the cookie lookups
-to complete first, and then wait for fscache_cache->object_count == 0 to
-avoid the cookie exiting after the volume has been freed and triggering
-the above issue. Therefore call fscache_withdraw_volume() before calling
-cachefiles_withdraw_objects().
-
-This way, after setting FSCACHE_CACHE_IS_WITHDRAWN, only the following two
-cases will occur:
-1) fscache_begin_lookup fails in fscache_begin_volume_access().
-2) fscache_withdraw_volume() will ensure that fscache_count_object() has
-   been executed before calling fscache_wait_for_objects().
-
-Fixes: fe2140e2f57f ("cachefiles: Implement volume support")
-Suggested-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240628062930.2467993-4-libaokun@huaweicloud.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/cachefiles/cache.c  |   35 ++++++++++++++++++++++++++++++++++-
- fs/cachefiles/volume.c |    1 -
- 2 files changed, 34 insertions(+), 2 deletions(-)
-
---- a/fs/cachefiles/cache.c
-+++ b/fs/cachefiles/cache.c
-@@ -313,7 +313,39 @@ static void cachefiles_withdraw_objects(
- }
- 
- /*
-- * Withdraw volumes.
-+ * Withdraw fscache volumes.
-+ */
-+static void cachefiles_withdraw_fscache_volumes(struct cachefiles_cache *cache)
-+{
-+	struct list_head *cur;
-+	struct cachefiles_volume *volume;
-+	struct fscache_volume *vcookie;
-+
-+	_enter("");
-+retry:
-+	spin_lock(&cache->object_list_lock);
-+	list_for_each(cur, &cache->volumes) {
-+		volume = list_entry(cur, struct cachefiles_volume, cache_link);
-+
-+		if (atomic_read(&volume->vcookie->n_accesses) == 0)
-+			continue;
-+
-+		vcookie = fscache_try_get_volume(volume->vcookie,
-+						 fscache_volume_get_withdraw);
-+		if (vcookie) {
-+			spin_unlock(&cache->object_list_lock);
-+			fscache_withdraw_volume(vcookie);
-+			fscache_put_volume(vcookie, fscache_volume_put_withdraw);
-+			goto retry;
-+		}
-+	}
-+	spin_unlock(&cache->object_list_lock);
-+
-+	_leave("");
-+}
-+
-+/*
-+ * Withdraw cachefiles volumes.
-  */
- static void cachefiles_withdraw_volumes(struct cachefiles_cache *cache)
- {
-@@ -381,6 +413,7 @@ void cachefiles_withdraw_cache(struct ca
- 	pr_info("File cache on %s unregistering\n", fscache->name);
- 
- 	fscache_withdraw_cache(fscache);
-+	cachefiles_withdraw_fscache_volumes(cache);
- 
- 	/* we now have to destroy all the active objects pertaining to this
- 	 * cache - which we do by passing them off to thread pool to be
---- a/fs/cachefiles/volume.c
-+++ b/fs/cachefiles/volume.c
-@@ -133,7 +133,6 @@ void cachefiles_free_volume(struct fscac
- 
- void cachefiles_withdraw_volume(struct cachefiles_volume *volume)
- {
--	fscache_withdraw_volume(volume->vcookie);
- 	cachefiles_set_volume_xattr(volume);
- 	__cachefiles_free_volume(volume);
- }
-
-
+Applied to clk-next
 
