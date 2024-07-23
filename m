@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E613893A6F8
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:40:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB9693A66A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AB541F2384D
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:40:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CDFA281DE0
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703B91586F5;
-	Tue, 23 Jul 2024 18:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42726158A06;
+	Tue, 23 Jul 2024 18:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keJ3iOGN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kh308vnw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E53E13D600;
-	Tue, 23 Jul 2024 18:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F341E13D600;
+	Tue, 23 Jul 2024 18:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760039; cv=none; b=OzjpR33F+TEUm/PAjISRDE84O5qR5D6Uu7hoTwj2aHDpqgqYK6nHwOd5NqUdvI/xTk8nZ3GE++J3FJUfRfJeNs+k6ZdVDY7JxrmwKGuP2Sr3jRwjUFyIuKw+2W2wdyqip0h+Zar/dkQ5K6DARdUFhhYbveBlQ7QP58MCcPmp93U=
+	t=1721759692; cv=none; b=AgiRTSIRp1vjWdKEzm/eSUfoGyB5tFu5Rmw3DPTtRnlt/z6t1FJTSrX9FcltX4Bz12lrHaQVtgpBv1muokULNvU6pAGt9rvjGjfpylvOnEBDUWy+9flVdKVNOno9wNpvqLxc7uw/DnFg5m7s6vGAh0ZG8aWAT1m2R/3mA3yKhw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760039; c=relaxed/simple;
-	bh=QJWEm6CqPo9EXOSKBMS8J+0nKCvA1BiVSlLQqHRipcw=;
+	s=arc-20240116; t=1721759692; c=relaxed/simple;
+	bh=1B11/NAhkpqSYyYQCIWkXNnusz1pvACc6phGIWHEiEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjqSfamS1ZSvGwZ8UoWVLeVgAWb+5UgSy9OGhR7kEvxvz2tr6zRhKVs1oG4eUYFBoTJQOupvVC6uu/0nghsk62ZsufhmLzUsi9xigIIHMhtVyufBB2j8nFTod9uJFZApZOLz6WuMVxHeSRedmYgyX6tV5YqriUF/ykIRyTwS46U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keJ3iOGN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B95C4AF0A;
-	Tue, 23 Jul 2024 18:40:38 +0000 (UTC)
+	 MIME-Version; b=B2R3Y6K6maMiDNWKwZJK//34fJgjYYxw6RE0Ybf5jMByTMMwfKYFgCBe/YUqIn+oCoOJ/3P6j2Q05/AW6+YH5gAuuni1efSZgZWoZyfppxRLAg0NnM3aJFW9wGM/EmPIJpZRG7ADhomYXI/LaawGQd2Jz1a3EOlWJyzD4cpDl+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kh308vnw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796BCC4AF09;
+	Tue, 23 Jul 2024 18:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760039;
-	bh=QJWEm6CqPo9EXOSKBMS8J+0nKCvA1BiVSlLQqHRipcw=;
+	s=korg; t=1721759691;
+	bh=1B11/NAhkpqSYyYQCIWkXNnusz1pvACc6phGIWHEiEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=keJ3iOGNTu2lDGiIqKKt9k13p3Y5mqQLl4ud/5ZWLrlIx5BXT7GLeN81CBpb2eYCj
-	 c8n7jaeztz49AguncSUtBQ58OPoR3maiehP1SFLcfOBlg7407pU2mZEm4M7blBA8E/
-	 nBo/GM02eY13n34x1vVAm+SVmuPc5tp+OBLALIPk=
+	b=Kh308vnwxnjJlzlRSwyBBG5gx37cuRDmn35kCOrO9Ro6T8X4LtR+OCoyKhqH7BJan
+	 bm90pvO4EZFvxeMo0bOOtN99+94tyJPyibdeRG9aZEsUw3mSmLviFkT5nw7LUk7ARW
+	 /BCy5k+08ndQjYFsX91YFXCeX4l+wptbQTymKbfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jack Yu <jack.yu@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 083/163] ALSA: hda: cs35l56: Select SERIAL_MULTI_INSTANTIATE
-Date: Tue, 23 Jul 2024 20:23:32 +0200
-Message-ID: <20240723180146.679529179@linuxfoundation.org>
+Subject: [PATCH 6.6 065/129] ASoC: rt722-sdca-sdw: add silence detection register as volatile
+Date: Tue, 23 Jul 2024 20:23:33 +0200
+Message-ID: <20240723180407.297307207@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Jack Yu <jack.yu@realtek.com>
 
-[ Upstream commit 9b1effff19cdf2230d3ecb07ff4038a0da32e9cc ]
+[ Upstream commit 968c974c08106fcf911d8d390d0f049af855d348 ]
 
-The ACPI IDs used in the CS35L56 HDA drivers are all handled by the
-serial multi-instantiate driver which starts multiple Linux device
-instances from a single ACPI Device() node.
+Including silence detection register as volatile.
 
-As serial multi-instantiate is not an optional part of the system add it
-as a dependency in Kconfig so that it is not overlooked.
-
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Link: https://lore.kernel.org/20240619161602.117452-1-simont@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Jack Yu <jack.yu@realtek.com>
+Link: https://msgid.link/r/c66a6bd6d220426793096b42baf85437@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/Kconfig | 2 ++
+ sound/soc/codecs/rt722-sdca-sdw.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/sound/pci/hda/Kconfig b/sound/pci/hda/Kconfig
-index f806636242ee9..9f560a8186802 100644
---- a/sound/pci/hda/Kconfig
-+++ b/sound/pci/hda/Kconfig
-@@ -160,6 +160,7 @@ config SND_HDA_SCODEC_CS35L56_I2C
- 	depends on ACPI || COMPILE_TEST
- 	depends on SND_SOC
- 	select FW_CS_DSP
-+	select SERIAL_MULTI_INSTANTIATE
- 	select SND_HDA_GENERIC
- 	select SND_SOC_CS35L56_SHARED
- 	select SND_HDA_SCODEC_CS35L56
-@@ -176,6 +177,7 @@ config SND_HDA_SCODEC_CS35L56_SPI
- 	depends on ACPI || COMPILE_TEST
- 	depends on SND_SOC
- 	select FW_CS_DSP
-+	select SERIAL_MULTI_INSTANTIATE
- 	select SND_HDA_GENERIC
- 	select SND_SOC_CS35L56_SHARED
- 	select SND_HDA_SCODEC_CS35L56
+diff --git a/sound/soc/codecs/rt722-sdca-sdw.c b/sound/soc/codecs/rt722-sdca-sdw.c
+index 43a4e79e56966..cf2feb41c8354 100644
+--- a/sound/soc/codecs/rt722-sdca-sdw.c
++++ b/sound/soc/codecs/rt722-sdca-sdw.c
+@@ -68,6 +68,7 @@ static bool rt722_sdca_mbq_readable_register(struct device *dev, unsigned int re
+ 	case 0x200007f:
+ 	case 0x2000082 ... 0x200008e:
+ 	case 0x2000090 ... 0x2000094:
++	case 0x3110000:
+ 	case 0x5300000 ... 0x5300002:
+ 	case 0x5400002:
+ 	case 0x5600000 ... 0x5600007:
+@@ -125,6 +126,7 @@ static bool rt722_sdca_mbq_volatile_register(struct device *dev, unsigned int re
+ 	case 0x2000067:
+ 	case 0x2000084:
+ 	case 0x2000086:
++	case 0x3110000:
+ 		return true;
+ 	default:
+ 		return false;
 -- 
 2.43.0
 
