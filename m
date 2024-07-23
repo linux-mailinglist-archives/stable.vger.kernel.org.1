@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171D793A695
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE85593A71E
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 487491C21B6B
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89F16283A4A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5DC13D600;
-	Tue, 23 Jul 2024 18:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9337D158A15;
+	Tue, 23 Jul 2024 18:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTm8zzDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQV0EPVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE5A158215;
-	Tue, 23 Jul 2024 18:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5163215884E;
+	Tue, 23 Jul 2024 18:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759798; cv=none; b=ai1LS8pkJI49fw2uK7jLSiifK1ob0NN63ciB5rlxxQ/J2b6ChengxCEOhbkAqmw5Gb7x+xpz+95/a6iQar2Ol68dO/bBoGUC5KHUKvi5jmU3/oaPCnM7SL4MGptZzuPnvt72X8e6J5DYJL7RYwZ20BShD4hEsRCYhjnkM3YESLM=
+	t=1721760149; cv=none; b=Ha1+NNmHBfedmBYC6iKm0ycnI7TACHA/gU9W0cOG/+AJhApxMjTAJxbRSQAjsQcvWV5BOUYO5EJKJcGgjvybPWuE0FAUMr4E1bGey2Na6e+bdZvfmvHoX/AToCVKi7qK9KT/BS1yBCTPuD7lkCGz2yv0wpIwubEdslRerQvHyew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759798; c=relaxed/simple;
-	bh=oC1R5fQlRceJwFYgly/bHKrz+IOH+wXTzosOQ1yWtz8=;
+	s=arc-20240116; t=1721760149; c=relaxed/simple;
+	bh=SvprlJsL9akMLfQJcHosGbjnC0JhyKY6KCa2ae/Tc6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9lsh2PJ9CZQpCrkRmk79ZHyZ/mNvmyrvgq8NNa4XRptPYduQQg9jURG56iRndja7G25ldaGg/ipTR2HAHatl0porsPcErGr8vfBDK4qpBzPvC4JLLNKOMGpuE7zJCoWOiAEpj1Y51a5jUL0CkTss+Hm1vqH/ciw0Chte7gOILk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTm8zzDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D64C4AF09;
-	Tue, 23 Jul 2024 18:36:38 +0000 (UTC)
+	 MIME-Version; b=S50Ci6T44+flWA2lCmiET3gIbEpOUKasHhe83ZmKzXRh7HhZ5I3mBJdLGJ+pMCpGs6hs5vLd6JgHAguBIV7lTPR0H4RyoniYSbYH/4/DZ/vMCAuvX+gcUTa+/O8Pg0OU7Xx4IWYLzeILcag/44lf88k0GSSNHNT7fpjeE0bqj8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQV0EPVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B8CC4AF09;
+	Tue, 23 Jul 2024 18:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759798;
-	bh=oC1R5fQlRceJwFYgly/bHKrz+IOH+wXTzosOQ1yWtz8=;
+	s=korg; t=1721760148;
+	bh=SvprlJsL9akMLfQJcHosGbjnC0JhyKY6KCa2ae/Tc6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTm8zzDDJ6N5wmoD2OwaB+5h6AnHpfDcR2eVrZlGsdTNcx1hfKf3V8BuZarx9kFyE
-	 H0iVlOSjoftLNtmsO7btiHRf3EVI0aHZdlNA52XRg1YkNmBO9WUK6glp8CRYsTiwhr
-	 8gfH6XwhMwINfTv9x/bl/RN8I3qvBuvZpknaKuKs=
+	b=MQV0EPVkpRSp0QMrbQpOSOZ7hUS9YbVlLWSBvFN0a/UWSsAQ88PY121/1p4wzl5/7
+	 JCWog1DeSorhSrC2Mm4qafk8tiLbZF5qFKtJoigBpl2A3KcwskSBquwDY+Op1uADdU
+	 OBAbky+n5GAYKHLAm9qcXMEI4lVHwlcPToylET6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 100/129] bluetooth/l2cap: sync sock recv cb and release
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 119/163] ALSA: dmaengine_pcm: terminate dmaengine before synchronize
 Date: Tue, 23 Jul 2024 20:24:08 +0200
-Message-ID: <20240723180408.656852465@linuxfoundation.org>
+Message-ID: <20240723180148.072500332@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 89e856e124f9ae548572c56b1b70c2255705f8fe ]
+[ Upstream commit 6a7db25aad8ce6512b366d2ce1d0e60bac00a09d ]
 
-The problem occurs between the system call to close the sock and hci_rx_work,
-where the former releases the sock and the latter accesses it without lock protection.
+When dmaengine supports pause function, in suspend state,
+dmaengine_pause() is called instead of dmaengine_terminate_async(),
 
-           CPU0                       CPU1
-           ----                       ----
-           sock_close                 hci_rx_work
-	   l2cap_sock_release         hci_acldata_packet
-	   l2cap_sock_kill            l2cap_recv_frame
-	   sk_free                    l2cap_conless_channel
-	                              l2cap_sock_recv_cb
+In end of playback stream, the runtime->state will go to
+SNDRV_PCM_STATE_DRAINING, if system suspend & resume happen
+at this time, application will not resume playback stream, the
+stream will be closed directly, the dmaengine_terminate_async()
+will not be called before the dmaengine_synchronize(), which
+violates the call sequence for dmaengine_synchronize().
 
-If hci_rx_work processes the data that needs to be received before the sock is
-closed, then everything is normal; Otherwise, the work thread may access the
-released sock when receiving data.
+This behavior also happens for capture streams, but there is no
+SNDRV_PCM_STATE_DRAINING state for capture. So use
+dmaengine_tx_status() to check the DMA status if the status is
+DMA_PAUSED, then call dmaengine_terminate_async() to terminate
+dmaengine before dmaengine_synchronize().
 
-Add a chan mutex in the rx callback of the sock to achieve synchronization between
-the sock release and recv cb.
-
-Sock is dead, so set chan data to NULL, avoid others use invalid sock pointer.
-
-Reported-and-tested-by: syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/1718851218-27803-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ sound/core/pcm_dmaengine.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 97d0a0f5829a6..ae19d5deba3ae 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1250,6 +1250,10 @@ static void l2cap_sock_kill(struct sock *sk)
- 
- 	BT_DBG("sk %p state %s", sk, state_to_string(sk->sk_state));
- 
-+	/* Sock is dead, so set chan data to NULL, avoid other task use invalid
-+	 * sock pointer.
-+	 */
-+	l2cap_pi(sk)->chan->data = NULL;
- 	/* Kill poor orphan */
- 
- 	l2cap_chan_put(l2cap_pi(sk)->chan);
-@@ -1492,12 +1496,25 @@ static struct l2cap_chan *l2cap_sock_new_connection_cb(struct l2cap_chan *chan)
- 
- static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
+diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
+index d142609570347..e299e8634751f 100644
+--- a/sound/core/pcm_dmaengine.c
++++ b/sound/core/pcm_dmaengine.c
+@@ -368,6 +368,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_sync_stop);
+ int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream)
  {
--	struct sock *sk = chan->data;
--	struct l2cap_pinfo *pi = l2cap_pi(sk);
-+	struct sock *sk;
-+	struct l2cap_pinfo *pi;
- 	int err;
- 
--	lock_sock(sk);
-+	/* To avoid race with sock_release, a chan lock needs to be added here
-+	 * to synchronize the sock.
-+	 */
-+	l2cap_chan_hold(chan);
-+	l2cap_chan_lock(chan);
-+	sk = chan->data;
- 
-+	if (!sk) {
-+		l2cap_chan_unlock(chan);
-+		l2cap_chan_put(chan);
-+		return -ENXIO;
-+	}
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
 +
-+	pi = l2cap_pi(sk);
-+	lock_sock(sk);
- 	if (chan->mode == L2CAP_MODE_ERTM && !list_empty(&pi->rx_busy)) {
- 		err = -ENOMEM;
- 		goto done;
-@@ -1546,6 +1563,8 @@ static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status == DMA_PAUSED)
++		dmaengine_terminate_async(prtd->dma_chan);
  
- done:
- 	release_sock(sk);
-+	l2cap_chan_unlock(chan);
-+	l2cap_chan_put(chan);
+ 	dmaengine_synchronize(prtd->dma_chan);
+ 	kfree(prtd);
+@@ -388,6 +394,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_close);
+ int snd_dmaengine_pcm_close_release_chan(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
++
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status == DMA_PAUSED)
++		dmaengine_terminate_async(prtd->dma_chan);
  
- 	return err;
- }
+ 	dmaengine_synchronize(prtd->dma_chan);
+ 	dma_release_channel(prtd->dma_chan);
 -- 
 2.43.0
 
