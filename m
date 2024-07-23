@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-60979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EFE93A643
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:33:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B70093A5E2
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E2D41F227C8
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:33:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E7BAB20517
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95E3158215;
-	Tue, 23 Jul 2024 18:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6759F158862;
+	Tue, 23 Jul 2024 18:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utdvf/2i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvUzQuST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A661D14C5B0;
-	Tue, 23 Jul 2024 18:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C01157A4F;
+	Tue, 23 Jul 2024 18:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759617; cv=none; b=U9kP9BMUd/qzNGLn4Nse5oT6aL1U7V3rBVFNhU0muwIkUC3FDW9HDYWlnVhKUmBM65Ad+0+RIqgWeNtKem/zQfJdbWnFGXqB6bfg5VQcnzUXfZLY/WQc7EzmWaqlAy2vUXOjI/CrAXWQugzdFwXY8tB8wza533NUNd8sXDOX2B4=
+	t=1721759371; cv=none; b=lkluJ/OGoD/u6J8iB7QtpKLkITV0Te882U60iQPOtMn+Hqa3P0G7suvRp73a+XaA2+G67sGTaxq5Y4JaMp0pfQhrHQl8vCE1AffiflP9oMaLbYhdtuB865BoY01xy0B0/WEEGCZsS6uS98GWLiC5c4WofUTA0xPWZlCy+xeKiXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759617; c=relaxed/simple;
-	bh=X/zAo/zLOLsfYqIZeRw3G/UJkKUju1UkSlVx+nLuJAc=;
+	s=arc-20240116; t=1721759371; c=relaxed/simple;
+	bh=azEYriXkMdquOW9xTWWs2kqzyYOanGb0xpPuxFX+G1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSTaK3m8evvnKTGbMqvffMEzUlv7Bdyq4Csw7+EQtftXpTc/ooVD8cL1MHix1ubaznQbM4hb403HBGHkIDYAQMWNOC1Q40fxipJthJYArcLC6wkWxiWs9AEFn8tp1P6Qyr2QzVE90nWWv9cwGAF0skkmKQEe0e8rOheoJkpwXEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utdvf/2i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8A4C4AF09;
-	Tue, 23 Jul 2024 18:33:36 +0000 (UTC)
+	 MIME-Version; b=swSupo46eaDDKb5SBv+r9NguQCcoJmd1orEjpxhB8d+sbAakkc54CUxw2BsPYy+6m2D7G2DFms8eCdkL4hfCM9fG7mZbVa7817BfJw7LPQ3JeN9lAoXK1fb7DtKGavsPV/M3t/0IZ6SY4k6MUfkI/WDNmgRBNXbduV6YvPE7b68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvUzQuST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FBF6C4AF0B;
+	Tue, 23 Jul 2024 18:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759617;
-	bh=X/zAo/zLOLsfYqIZeRw3G/UJkKUju1UkSlVx+nLuJAc=;
+	s=korg; t=1721759371;
+	bh=azEYriXkMdquOW9xTWWs2kqzyYOanGb0xpPuxFX+G1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=utdvf/2ikIfoycmZs+UVmTtszVLvDRm6WnRrZDl3oFHaNbf/cqcwI44J3T7pv1brI
-	 vf8m1Z0zPkoGzU4Q840aZQncmLsp1c6Ny7VzJny36BgEX7jpsoYTeMYcBM/JtxQetW
-	 nnLXgF3m1nLyoSi9qULQ9iS+mM4Hd8V6r+CRAKwY=
+	b=wvUzQuST+AoH0UGw5aaeImTxG0YZ+qTclv3s46Yq+syFK+1Vqx3FqUbKNfwTNwNal
+	 UdvqExj7i7AC3dramvCsauSnBw9L8MwGUblwyT/1pZJ3uUU5xK+2O2xcYVVEyjTZXX
+	 84lilsPhls68MfcriR58kRNKbf2QbT/yKrucWwLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Jai Luthra <j-luthra@ti.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/129] ASoC: ti: davinci-mcasp: Set min period size using FIFO config
+Subject: [PATCH 6.1 062/105] ASoC: SOF: sof-audio: Skip unprepare for in-use widgets on error rollback
 Date: Tue, 23 Jul 2024 20:23:39 +0200
-Message-ID: <20240723180407.526646755@linuxfoundation.org>
+Message-ID: <20240723180405.637541902@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jai Luthra <j-luthra@ti.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit c5dcf8ab10606e76c1d8a0ec77f27d84a392e874 ]
+[ Upstream commit 6f2a43e3d14f6e31a3b041a1043195d02c54d615 ]
 
-The minimum period size was enforced to 64 as older devices integrating
-McASP with EDMA used an internal FIFO of 64 samples.
+If the ipc_prepare() callback fails for a module instance, on error rewind
+we must skip the ipc_unprepare() call for ones that has positive use count.
 
-With UDMA based platforms this internal McASP FIFO is optional, as the
-DMA engine internally does some buffering which is already accounted for
-when registering the platform. So we should read the actual FIFO
-configuration (txnumevt/rxnumevt) instead of hardcoding frames.min to
-64.
+The positive use count means that the module instance is in active use, it
+cannot be unprepared.
 
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240611-asoc_next-v3-2-fcfd84b12164@ti.com
+The issue affects capture direction paths with branches (single dai with
+multiple PCMs), the affected widgets are in the shared part of the paths.
+
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://lore.kernel.org/r/20240612121203.15468-1-peter.ujfalusi@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/davinci-mcasp.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ sound/soc/sof/sof-audio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-index a5c2cca38d01a..8c8b2a2f6f862 100644
---- a/sound/soc/ti/davinci-mcasp.c
-+++ b/sound/soc/ti/davinci-mcasp.c
-@@ -1474,10 +1474,11 @@ static int davinci_mcasp_hw_rule_min_periodsize(
- {
- 	struct snd_interval *period_size = hw_param_interval(params,
- 						SNDRV_PCM_HW_PARAM_PERIOD_SIZE);
-+	u8 numevt = *((u8 *)rule->private);
- 	struct snd_interval frames;
- 
- 	snd_interval_any(&frames);
--	frames.min = 64;
-+	frames.min = numevt;
- 	frames.integer = 1;
- 
- 	return snd_interval_refine(period_size, &frames);
-@@ -1492,6 +1493,7 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
- 	u32 max_channels = 0;
- 	int i, dir, ret;
- 	int tdm_slots = mcasp->tdm_slots;
-+	u8 *numevt;
- 
- 	/* Do not allow more then one stream per direction */
- 	if (mcasp->substreams[substream->stream])
-@@ -1591,9 +1593,12 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
- 			return ret;
- 	}
- 
-+	numevt = (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) ?
-+			 &mcasp->txnumevt :
-+			 &mcasp->rxnumevt;
- 	snd_pcm_hw_rule_add(substream->runtime, 0,
- 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE,
--			    davinci_mcasp_hw_rule_min_periodsize, NULL,
-+			    davinci_mcasp_hw_rule_min_periodsize, numevt,
- 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE, -1);
- 
- 	return 0;
+diff --git a/sound/soc/sof/sof-audio.c b/sound/soc/sof/sof-audio.c
+index 061ab7289a6c3..b1141f4478168 100644
+--- a/sound/soc/sof/sof-audio.c
++++ b/sound/soc/sof/sof-audio.c
+@@ -328,7 +328,7 @@ sof_prepare_widgets_in_path(struct snd_sof_dev *sdev, struct snd_soc_dapm_widget
+ 			if (ret < 0) {
+ 				/* unprepare the source widget */
+ 				if (widget_ops[widget->id].ipc_unprepare &&
+-				    swidget && swidget->prepared) {
++				    swidget && swidget->prepared && swidget->use_count == 0) {
+ 					widget_ops[widget->id].ipc_unprepare(swidget);
+ 					swidget->prepared = false;
+ 				}
 -- 
 2.43.0
 
