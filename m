@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2026B93A758
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E35F693A68A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9F76B20E99
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:45:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5441EB22B25
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D921A158A2F;
-	Tue, 23 Jul 2024 18:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884521586E7;
+	Tue, 23 Jul 2024 18:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQOivvag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvtkUbQI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9437C158A29;
-	Tue, 23 Jul 2024 18:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436DC158215;
+	Tue, 23 Jul 2024 18:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760293; cv=none; b=OIYz8YCXmLpqseZxO6Kgf+2KOuvf+K3nnTNFPN874n9QRWMW+7xzdxmZFng/g1Mztmw28zyLRKG8p8yrpkAT5ooiOvRrbYdTwrWo9zLqjhHCbzKrh5cofeYM4wDaPJc/ooKGHNMx0GQbJicK1gZln4RfvwrHJO7GC5L9tOvZm0M=
+	t=1721759766; cv=none; b=p9dyVPtjlxTvenDjg5njNnAua/inG8IWKOG8Ns4uxLzUKr3dYlmJhIH3ibMhrkXRmUD+S0gxsEqw6Ag/LVZfF2UryU3B6+onytyJ6GJ6BEil4ezK5kK83MK4kg18bmZw2B2x64jz/QTDtdfp8xyBsY3vL+Vvp+h1DIO/Cm8OkIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760293; c=relaxed/simple;
-	bh=WtS5zO7AZbzOfg0rYHRvOlQGXikce4Irk+prG6LpDN0=;
+	s=arc-20240116; t=1721759766; c=relaxed/simple;
+	bh=XKMdenBcGs14TaNFKTy2CtecZgJ3MZYe4Mpye/WlVXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmzqav5g7tOGGd/lRm0FZ7oZiFPGmzg+8Ca17TAQS0jzf3QWgLMbMk9o3jiAS74pbN6A1aXroIgkCrSSHuAfbAod8tgicEdmD/OAwbkaVmhJmzeyMmh1JZ5Ix5jTHYMd4YlViNCFgIdBQ5ZQEWOwuK/6Lt1FJTwP7Olyw5YopuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQOivvag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1627AC4AF0F;
-	Tue, 23 Jul 2024 18:44:52 +0000 (UTC)
+	 MIME-Version; b=h8PXRRjoMdx3ZHadLMN/1RUVtBZ8Z9QKxvAxbNz5Vw1h4aqPTxCzhqEV0dGQ2B7PTrh3Nn6lb6enJDBeX+EEwZQ4V8M6kGcCeyA/iRgBP+2j6xQi10TEd4mOGQxYtTeYOKIXGj0M6VkYrrAgANAi9zCdtLAu85zqGUoN4LHE6PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvtkUbQI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15BFC4AF0A;
+	Tue, 23 Jul 2024 18:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760293;
-	bh=WtS5zO7AZbzOfg0rYHRvOlQGXikce4Irk+prG6LpDN0=;
+	s=korg; t=1721759766;
+	bh=XKMdenBcGs14TaNFKTy2CtecZgJ3MZYe4Mpye/WlVXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQOivvagKEKMR0SMxz4IGC/mUz9+NtnshGRlEJRphRMb1YH3C4h0K0GD976bcsyeo
-	 LYrrdy59erq0Xcweqho8kRE6cJ3ehYbs/n3ze1HXpga/P3qq+xK44cochE92vPPqxH
-	 0tT9b4e+nDaaTYJ7RFL+ZdRvZEkyQohhGiuAaRDE=
+	b=PvtkUbQIhjs0LZGIfXCWA2rnr3cKjNHf5RCfItU9fwTJIAAftmhX5afZfwjCQ504p
+	 2FTz4bIOpycH5XkXQjfzYMkQ55sjDHdrruFCp4jMoho5bFDQZHTzo7177MVsBA/eOt
+	 CVcad4oJixu5Mbvhk2h3766JhLF/PZX0l5h9Nw+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 139/163] btrfs: fix uninitialized return value in the ref-verify tool
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	John Stultz <jstultz@google.com>
+Subject: [PATCH 6.6 120/129] ARM: 9324/1: fix get_user() broken with veneer
 Date: Tue, 23 Jul 2024 20:24:28 +0200
-Message-ID: <20240723180148.843728351@linuxfoundation.org>
+Message-ID: <20240723180409.426694227@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 9da45c88e124f13a3c4d480b89b298e007fbb9e4 ]
+commit 24d3ba0a7b44c1617c27f5045eecc4f34752ab03 upstream.
 
-In the ref-verify tool, when processing the inline references of an extent
-item, we may end up returning with uninitialized return value, because:
+The 32-bit ARM kernel stops working if the kernel grows to the point
+where veneers for __get_user_* are created.
 
-1) The 'ret' variable is not initialized if there are no inline extent
-   references ('ptr' == 'end' before the while loop starts);
+AAPCS32 [1] states, "Register r12 (IP) may be used by a linker as a
+scratch register between a routine and any subroutine it calls. It
+can also be used within a routine to hold intermediate values between
+subroutine calls."
 
-2) If we find an extent owner inline reference we don't initialize 'ret'.
+However, bl instructions buried within the inline asm are unpredictable
+for compilers; hence, "ip" must be added to the clobber list.
 
-So fix these cases by initializing 'ret' to 0 when declaring the variable
-and set it to -EINVAL if we find an extent owner inline references and
-simple quotas are not enabled (as well as print an error message).
+This becomes critical when veneers for __get_user_* are created because
+veneers use the ip register since commit 02e541db0540 ("ARM: 8323/1:
+force linker to use PIC veneers").
 
-Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/59b40ebe-c824-457d-8b24-0bbca69d472b@gmail.com/
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]: https://github.com/ARM-software/abi-aa/blob/2023Q1/aapcs32/aapcs32.rst
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: John Stultz <jstultz@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ref-verify.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/arm/include/asm/uaccess.h |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/fs/btrfs/ref-verify.c b/fs/btrfs/ref-verify.c
-index 8c4fc98ca9ce7..aa7ddc09c55fa 100644
---- a/fs/btrfs/ref-verify.c
-+++ b/fs/btrfs/ref-verify.c
-@@ -441,7 +441,8 @@ static int process_extent_item(struct btrfs_fs_info *fs_info,
- 	u32 item_size = btrfs_item_size(leaf, slot);
- 	unsigned long end, ptr;
- 	u64 offset, flags, count;
--	int type, ret;
-+	int type;
-+	int ret = 0;
+--- a/arch/arm/include/asm/uaccess.h
++++ b/arch/arm/include/asm/uaccess.h
+@@ -109,16 +109,6 @@ extern int __get_user_64t_1(void *);
+ extern int __get_user_64t_2(void *);
+ extern int __get_user_64t_4(void *);
  
- 	ei = btrfs_item_ptr(leaf, slot, struct btrfs_extent_item);
- 	flags = btrfs_extent_flags(leaf, ei);
-@@ -486,7 +487,11 @@ static int process_extent_item(struct btrfs_fs_info *fs_info,
- 						  key->objectid, key->offset);
- 			break;
- 		case BTRFS_EXTENT_OWNER_REF_KEY:
--			WARN_ON(!btrfs_fs_incompat(fs_info, SIMPLE_QUOTA));
-+			if (!btrfs_fs_incompat(fs_info, SIMPLE_QUOTA)) {
-+				btrfs_err(fs_info,
-+			  "found extent owner ref without simple quotas enabled");
-+				ret = -EINVAL;
-+			}
- 			break;
- 		default:
- 			btrfs_err(fs_info, "invalid key type in iref");
--- 
-2.43.0
-
+-#define __GUP_CLOBBER_1	"lr", "cc"
+-#ifdef CONFIG_CPU_USE_DOMAINS
+-#define __GUP_CLOBBER_2	"ip", "lr", "cc"
+-#else
+-#define __GUP_CLOBBER_2 "lr", "cc"
+-#endif
+-#define __GUP_CLOBBER_4	"lr", "cc"
+-#define __GUP_CLOBBER_32t_8 "lr", "cc"
+-#define __GUP_CLOBBER_8	"lr", "cc"
+-
+ #define __get_user_x(__r2, __p, __e, __l, __s)				\
+ 	   __asm__ __volatile__ (					\
+ 		__asmeq("%0", "r0") __asmeq("%1", "r2")			\
+@@ -126,7 +116,7 @@ extern int __get_user_64t_4(void *);
+ 		"bl	__get_user_" #__s				\
+ 		: "=&r" (__e), "=r" (__r2)				\
+ 		: "0" (__p), "r" (__l)					\
+-		: __GUP_CLOBBER_##__s)
++		: "ip", "lr", "cc")
+ 
+ /* narrowing a double-word get into a single 32bit word register: */
+ #ifdef __ARMEB__
+@@ -148,7 +138,7 @@ extern int __get_user_64t_4(void *);
+ 		"bl	__get_user_64t_" #__s				\
+ 		: "=&r" (__e), "=r" (__r2)				\
+ 		: "0" (__p), "r" (__l)					\
+-		: __GUP_CLOBBER_##__s)
++		: "ip", "lr", "cc")
+ #else
+ #define __get_user_x_64t __get_user_x
+ #endif
 
 
 
