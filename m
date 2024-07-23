@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-61211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D35A93A75A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:45:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED6F93A684
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 490521F23A84
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:45:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4525D281093
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A894514286;
-	Tue, 23 Jul 2024 18:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9064D158A1F;
+	Tue, 23 Jul 2024 18:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqQ9Iu/i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qwp6KqwJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6793B49634;
-	Tue, 23 Jul 2024 18:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E36A1586C4;
+	Tue, 23 Jul 2024 18:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760305; cv=none; b=fSvbGrMy+i840WDcRgqiBR9PrC8hM5WQjOvAx6L3NPorExK7JtuDsLg7pzv8BqVZ/5c6jqCbg/CVmIkfe56EvxryNhztIXMpo00dvE8eskAw41U1taLYHDmx/lfLAKSErTwky4K6HafStaHfrbjH5aRn9EqQ950kntYjwunfFqY=
+	t=1721759748; cv=none; b=I9RIJA8LYDuqx0gQudqNwe2NHC031ksVhkxmvMsYXndDWls6eVUqNFvXnI03nf2px2h35YutGvAVCdvIZqAM/69zFrt68crtXltb5198AacyODiUjF7jtq5IOiFmxELIAc9QnYcUDV6HGDPvxhD76ExzlnuZ9cSNnUsAjAnQL9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760305; c=relaxed/simple;
-	bh=lOgOjc/UxxLu6aUMefGMRWWnximUpo/wVPU0R0A73Cw=;
+	s=arc-20240116; t=1721759748; c=relaxed/simple;
+	bh=x1LEW/5MMyos1GIeWmGYqewTL2S7xvfnAD/SxX9yNwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5ZHzmldIhx9oIU7DySCLHS0T81AnF2Gs2tIKafTjEQGiKWxi2ZbCYBVeQsuR/SNh3tE8opmTWpQwdVTfFF6MVQZUVh1rU61W5cvnp34l5U34QIYgM2BQ7j4GoJNc7wHOvr42iV2baNfEt9le6MGzaQL1nXPwBLeTakl/lcDCSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqQ9Iu/i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11A9C4AF0A;
-	Tue, 23 Jul 2024 18:45:04 +0000 (UTC)
+	 MIME-Version; b=K0IeSE0Voik7pSRAAawR6o6ubyxLFXLUG9R9xaANbWfLKkarSayAI9hPXtXLSkYzEi+NT/Ht56DUeBNVqbdaV2A/cMIo9YCM9K/cdQKYnAfXmBNa4hSl90Di9ChfoPsDELswvQRertW82a5x8Php8NkSTVW7EoUQ5hoRg3xoeeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qwp6KqwJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7575FC4AF0A;
+	Tue, 23 Jul 2024 18:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760305;
-	bh=lOgOjc/UxxLu6aUMefGMRWWnximUpo/wVPU0R0A73Cw=;
+	s=korg; t=1721759747;
+	bh=x1LEW/5MMyos1GIeWmGYqewTL2S7xvfnAD/SxX9yNwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XqQ9Iu/ifD/IFd7Br4bNcGjPOtDJ1N9tgT6in68PjV4q+01dwDLan7RvbU950eNrk
-	 koOSGOUB0IRZ2Z0L+wCBUGSoHh7rpnTD1V+QzUuKRZ0w8xSYMB5sn7K/gXIVMWDdd6
-	 uFOJEMIxHCl14rRcuePaptezaNyObpCJybZUPU0Q=
+	b=Qwp6KqwJaZQMsc8lWSAwJe57JR/5xC9iqix4vOfV2SLLctxmpn3XkOCtJTeXYk8fa
+	 MOAgtIs+WJJ3FPLkXyl9X4mBTMrul8/R2vow1w/0HQzcSXhuxMYXwD/qyv7v19HFIY
+	 t1Ovpr5DhlF8BNlrrgWCiJFFsS+bpyFhbVHyz1qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	Edward Liaw <edliaw@google.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 133/163] drm/amd/display: Add refresh rate range check
+Subject: [PATCH 6.6 114/129] selftests/vDSO: fix clang build errors and warnings
 Date: Tue, 23 Jul 2024 20:24:22 +0200
-Message-ID: <20240723180148.613332848@linuxfoundation.org>
+Message-ID: <20240723180409.195789139@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +65,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 74ad26b36d303ac233eccadc5c3a8d7ee4709f31 ]
+[ Upstream commit 73810cd45b99c6c418e1c6a487b52c1e74edb20d ]
 
-[Why]
-We only enable the VRR while monitor usable refresh rate range
-is greater than 10 Hz.
-But we did not check the range in DRM_EDID_FEATURE_CONTINUOUS_FREQ
-case.
+When building with clang, via:
 
-[How]
-Add a refresh rate range check before set the freesync_capable flag
-in DRM_EDID_FEATURE_CONTINUOUS_FREQ case.
+    make LLVM=1 -C tools/testing/selftests
 
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+...there are several warnings, and an error. This fixes all of those and
+allows these tests to run and pass.
+
+1. Fix linker error (undefined reference to memcpy) by providing a local
+   version of memcpy.
+
+2. clang complains about using this form:
+
+    if (g = h & 0xf0000000)
+
+...so factor out the assignment into a separate step.
+
+3. The code is passing a signed const char* to elf_hash(), which expects
+   a const unsigned char *. There are several callers, so fix this at
+   the source by allowing the function to accept a signed argument, and
+   then converting to unsigned operations, once inside the function.
+
+4. clang doesn't have __attribute__((externally_visible)) and generates
+   a warning to that effect. Fortunately, gcc 12 and gcc 13 do not seem
+   to require that attribute in order to build, run and pass tests here,
+   so remove it.
+
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/vDSO/parse_vdso.c      | 16 +++++++++++-----
+ .../selftests/vDSO/vdso_standalone_test_x86.c  | 18 ++++++++++++++++--
+ 2 files changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 2152e40ee1c27..087d7aad8e6b4 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -11289,9 +11289,11 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
- 		if (is_dp_capable_without_timing_msa(adev->dm.dc,
- 						     amdgpu_dm_connector)) {
- 			if (edid->features & DRM_EDID_FEATURE_CONTINUOUS_FREQ) {
--				freesync_capable = true;
- 				amdgpu_dm_connector->min_vfreq = connector->display_info.monitor_range.min_vfreq;
- 				amdgpu_dm_connector->max_vfreq = connector->display_info.monitor_range.max_vfreq;
-+				if (amdgpu_dm_connector->max_vfreq -
-+				    amdgpu_dm_connector->min_vfreq > 10)
-+					freesync_capable = true;
- 			} else {
- 				edid_check_required = edid->version > 1 ||
- 						      (edid->version == 1 &&
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index 413f75620a35b..4ae417372e9eb 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -55,14 +55,20 @@ static struct vdso_info
+ 	ELF(Verdef) *verdef;
+ } vdso_info;
+ 
+-/* Straight from the ELF specification. */
+-static unsigned long elf_hash(const unsigned char *name)
++/*
++ * Straight from the ELF specification...and then tweaked slightly, in order to
++ * avoid a few clang warnings.
++ */
++static unsigned long elf_hash(const char *name)
+ {
+ 	unsigned long h = 0, g;
+-	while (*name)
++	const unsigned char *uch_name = (const unsigned char *)name;
++
++	while (*uch_name)
+ 	{
+-		h = (h << 4) + *name++;
+-		if (g = h & 0xf0000000)
++		h = (h << 4) + *uch_name++;
++		g = h & 0xf0000000;
++		if (g)
+ 			h ^= g >> 24;
+ 		h &= ~g;
+ 	}
+diff --git a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
+index 8a44ff973ee17..27f6fdf119691 100644
+--- a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
++++ b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
+@@ -18,7 +18,7 @@
+ 
+ #include "parse_vdso.h"
+ 
+-/* We need a libc functions... */
++/* We need some libc functions... */
+ int strcmp(const char *a, const char *b)
+ {
+ 	/* This implementation is buggy: it never returns -1. */
+@@ -34,6 +34,20 @@ int strcmp(const char *a, const char *b)
+ 	return 0;
+ }
+ 
++/*
++ * The clang build needs this, although gcc does not.
++ * Stolen from lib/string.c.
++ */
++void *memcpy(void *dest, const void *src, size_t count)
++{
++	char *tmp = dest;
++	const char *s = src;
++
++	while (count--)
++		*tmp++ = *s++;
++	return dest;
++}
++
+ /* ...and two syscalls.  This is x86-specific. */
+ static inline long x86_syscall3(long nr, long a0, long a1, long a2)
+ {
+@@ -70,7 +84,7 @@ void to_base10(char *lastdig, time_t n)
+ 	}
+ }
+ 
+-__attribute__((externally_visible)) void c_main(void **stack)
++void c_main(void **stack)
+ {
+ 	/* Parse the stack */
+ 	long argc = (long)*stack;
 -- 
 2.43.0
 
