@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-60852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DC893A5B4
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19BE493A63F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFDB6B207A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AB39B22BC0
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADA3158858;
-	Tue, 23 Jul 2024 18:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00769155351;
+	Tue, 23 Jul 2024 18:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4bodCpL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShvTf2nX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0871586CB;
-	Tue, 23 Jul 2024 18:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B350742067;
+	Tue, 23 Jul 2024 18:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759243; cv=none; b=dQLvvQbDmcXB86PRaZhxdN28ytlv74gBqtpBzYtpn5L/gR669MBrkXPK781IZyHsqc0GwbPCHXP167XOmGQCPyNFeYy+w8khY95JYOqrf3vOe4qoYqq/3qaDV5sbkiKwAuxsgNiji/tHx6GT7nudEycYuxe1uaaKPedH/OKKsYc=
+	t=1721759605; cv=none; b=DRSCMluKKq52BCglL6ybwPpYLzhYVEtz5XTMdRoFQVgKs1ZOaazdRc68iXjo5hQMG1U5GTXGt4MEd2mFx+Hwa/QkvFi7E8O6FQt7htXIwOgMxDanfiVp17sOLC0z1oL2W9eL3badQltvzmF29txOIDkVrVJxnhwP9lafv/TFMH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759243; c=relaxed/simple;
-	bh=p5yQ08mFimmVH6/GmA2ziHAthdD1JMxw6exOiDRgGvg=;
+	s=arc-20240116; t=1721759605; c=relaxed/simple;
+	bh=5b564QTNxdzAkhhCubPTK8Z94PyWQe0mlYRwMgeh3oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMZDxh28hVi/u5i7u8PSNRlP3KFwU1U13ntyirRO76Gny10rWRtpQeyRiqa8bFOhzmDnjBrpsFpm555CMHsKRU0ynplR+bsyiJYPieZxA0sFfD8dzgoqTFwUnbjAyu7RrRPpMfpZAz1OC+arRSa1NMj4CxnRAi0gfzgvh+n90ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4bodCpL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD85C4AF0A;
-	Tue, 23 Jul 2024 18:27:23 +0000 (UTC)
+	 MIME-Version; b=b1ZvjfWJBb4lpdF6/nuX1evBZPhsPvJDjqcNlJhIhtLaIU/aNxhjf0+9yYJlnfVGQnvDtbz0ZmbhBWN/73PaLd7yGCBpGmGa/QRtEtMg5OlJI+u9l6p/7SIxyhmvRqusA7QSYapR8HmWiOjsXuYEtsLnQKCyRBCIlPNIa7dnhGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShvTf2nX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B198C4AF09;
+	Tue, 23 Jul 2024 18:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759243;
-	bh=p5yQ08mFimmVH6/GmA2ziHAthdD1JMxw6exOiDRgGvg=;
+	s=korg; t=1721759605;
+	bh=5b564QTNxdzAkhhCubPTK8Z94PyWQe0mlYRwMgeh3oI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b4bodCpLIyaUj5FPc5Syv3Ov64VsIvtt55GnCheStRHT0Xx+F9BVzwaIWibADe1kS
-	 jxtwpL3srKnvvpfrT8xh7F//q3Y2kI6fx8E0CvI3c+LZIprnO6EQOzusvDSW6/f6a2
-	 AREdZGkbcFhEZ010p8dU1OXa17XgJRfzTHIY5sHw=
+	b=ShvTf2nXiicEn8U7XgeayyQ7aGxP9e8p44eYZqLYFQVtEUiEpUUbEjGeRKDpPPoO8
+	 A+0bvt/2qsGQOBz0pmnanV3rZVYUi4tJELgUdROLnTHIPk4iWLV2tQ+72sPS/2pxWV
+	 6mX2DxVLE2UWSTNe5B1NyqCUAsATC+Jw7Dy0tehg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Adrian Moreno <amorenoz@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/105] KVM: PPC: Book3S HV: Prevent UAF in kvm_spapr_tce_attach_iommu_group()
+Subject: [PATCH 6.6 059/129] selftests: openvswitch: Set value to nla flags.
 Date: Tue, 23 Jul 2024 20:23:27 +0200
-Message-ID: <20240723180405.179930969@linuxfoundation.org>
+Message-ID: <20240723180407.067208493@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Adrian Moreno <amorenoz@redhat.com>
 
-[ Upstream commit a986fa57fd81a1430e00b3c6cf8a325d6f894a63 ]
+[ Upstream commit a8763466669d21b570b26160d0a5e0a2ee529d22 ]
 
-Al reported a possible use-after-free (UAF) in kvm_spapr_tce_attach_iommu_group().
+Netlink flags, although they don't have payload at the netlink level,
+are represented as having "True" as value in pyroute2.
 
-It looks up `stt` from tablefd, but then continues to use it after doing
-fdput() on the returned fd. After the fdput() the tablefd is free to be
-closed by another thread. The close calls kvm_spapr_tce_release() and
-then release_spapr_tce_table() (via call_rcu()) which frees `stt`.
+Without it, trying to add a flow with a flag-type action (e.g: pop_vlan)
+fails with the following traceback:
 
-Although there are calls to rcu_read_lock() in
-kvm_spapr_tce_attach_iommu_group() they are not sufficient to prevent
-the UAF, because `stt` is used outside the locked regions.
+Traceback (most recent call last):
+  File "[...]/ovs-dpctl.py", line 2498, in <module>
+    sys.exit(main(sys.argv))
+             ^^^^^^^^^^^^^^
+  File "[...]/ovs-dpctl.py", line 2487, in main
+    ovsflow.add_flow(rep["dpifindex"], flow)
+  File "[...]/ovs-dpctl.py", line 2136, in add_flow
+    reply = self.nlm_request(
+            ^^^^^^^^^^^^^^^^^
+  File "[...]/pyroute2/netlink/nlsocket.py", line 822, in nlm_request
+    return tuple(self._genlm_request(*argv, **kwarg))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[...]/pyroute2/netlink/generic/__init__.py", line 126, in
+nlm_request
+    return tuple(super().nlm_request(*argv, **kwarg))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[...]/pyroute2/netlink/nlsocket.py", line 1124, in nlm_request
+    self.put(msg, msg_type, msg_flags, msg_seq=msg_seq)
+  File "[...]/pyroute2/netlink/nlsocket.py", line 389, in put
+    self.sendto_gate(msg, addr)
+  File "[...]/pyroute2/netlink/nlsocket.py", line 1056, in sendto_gate
+    msg.encode()
+  File "[...]/pyroute2/netlink/__init__.py", line 1245, in encode
+    offset = self.encode_nlas(offset)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[...]/pyroute2/netlink/__init__.py", line 1560, in encode_nlas
+    nla_instance.setvalue(cell[1])
+  File "[...]/pyroute2/netlink/__init__.py", line 1265, in setvalue
+    nlv.setvalue(nla_tuple[1])
+                 ~~~~~~~~~^^^
+IndexError: list index out of range
 
-With an artifcial delay after the fdput() and a userspace program which
-triggers the race, KASAN detects the UAF:
-
-  BUG: KASAN: slab-use-after-free in kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
-  Read of size 4 at addr c000200027552c30 by task kvm-vfio/2505
-  CPU: 54 PID: 2505 Comm: kvm-vfio Not tainted 6.10.0-rc3-next-20240612-dirty #1
-  Hardware name: 8335-GTH POWER9 0x4e1202 opal:skiboot-v6.5.3-35-g1851b2a06 PowerNV
-  Call Trace:
-    dump_stack_lvl+0xb4/0x108 (unreliable)
-    print_report+0x2b4/0x6ec
-    kasan_report+0x118/0x2b0
-    __asan_load4+0xb8/0xd0
-    kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
-    kvm_vfio_set_attr+0x524/0xac0 [kvm]
-    kvm_device_ioctl+0x144/0x240 [kvm]
-    sys_ioctl+0x62c/0x1810
-    system_call_exception+0x190/0x440
-    system_call_vectored_common+0x15c/0x2ec
-  ...
-  Freed by task 0:
-   ...
-   kfree+0xec/0x3e0
-   release_spapr_tce_table+0xd4/0x11c [kvm]
-   rcu_core+0x568/0x16a0
-   handle_softirqs+0x23c/0x920
-   do_softirq_own_stack+0x6c/0x90
-   do_softirq_own_stack+0x58/0x90
-   __irq_exit_rcu+0x218/0x2d0
-   irq_exit+0x30/0x80
-   arch_local_irq_restore+0x128/0x230
-   arch_local_irq_enable+0x1c/0x30
-   cpuidle_enter_state+0x134/0x5cc
-   cpuidle_enter+0x6c/0xb0
-   call_cpuidle+0x7c/0x100
-   do_idle+0x394/0x410
-   cpu_startup_entry+0x60/0x70
-   start_secondary+0x3fc/0x410
-   start_secondary_prolog+0x10/0x14
-
-Fix it by delaying the fdput() until `stt` is no longer in use, which
-is effectively the entire function. To keep the patch minimal add a call
-to fdput() at each of the existing return paths. Future work can convert
-the function to goto or __cleanup style cleanup.
-
-With the fix in place the test case no longer triggers the UAF.
-
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Closes: https://lore.kernel.org/all/20240610024437.GA1464458@ZenIV/
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240614122910.3499489-1-mpe@ellerman.id.au
+Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_64_vio.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/openvswitch/ovs-dpctl.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-index 40864373ef876..549e33d4ecd62 100644
---- a/arch/powerpc/kvm/book3s_64_vio.c
-+++ b/arch/powerpc/kvm/book3s_64_vio.c
-@@ -129,14 +129,16 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 	}
- 	rcu_read_unlock();
- 
--	fdput(f);
--
--	if (!found)
-+	if (!found) {
-+		fdput(f);
- 		return -EINVAL;
-+	}
- 
- 	table_group = iommu_group_get_iommudata(grp);
--	if (WARN_ON(!table_group))
-+	if (WARN_ON(!table_group)) {
-+		fdput(f);
- 		return -EFAULT;
-+	}
- 
- 	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
- 		struct iommu_table *tbltmp = table_group->tables[i];
-@@ -157,8 +159,10 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 			break;
- 		}
- 	}
--	if (!tbl)
-+	if (!tbl) {
-+		fdput(f);
- 		return -EINVAL;
-+	}
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(stit, &stt->iommu_tables, next) {
-@@ -169,6 +173,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 			/* stit is being destroyed */
- 			iommu_tce_table_put(tbl);
- 			rcu_read_unlock();
-+			fdput(f);
- 			return -ENOTTY;
- 		}
- 		/*
-@@ -176,6 +181,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 		 * its KVM reference counter and can return.
- 		 */
- 		rcu_read_unlock();
-+		fdput(f);
- 		return 0;
- 	}
- 	rcu_read_unlock();
-@@ -183,6 +189,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 	stit = kzalloc(sizeof(*stit), GFP_KERNEL);
- 	if (!stit) {
- 		iommu_tce_table_put(tbl);
-+		fdput(f);
- 		return -ENOMEM;
- 	}
- 
-@@ -191,6 +198,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 
- 	list_add_rcu(&stit->next, &stt->iommu_tables);
- 
-+	fdput(f);
- 	return 0;
- }
+diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+index 5e0e539a323d5..8b120718768ec 100644
+--- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
++++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+@@ -531,7 +531,7 @@ class ovsactions(nla):
+             for flat_act in parse_flat_map:
+                 if parse_starts_block(actstr, flat_act[0], False):
+                     actstr = actstr[len(flat_act[0]):]
+-                    self["attrs"].append([flat_act[1]])
++                    self["attrs"].append([flat_act[1], True])
+                     actstr = actstr[strspn(actstr, ", ") :]
+                     parsed = True
  
 -- 
 2.43.0
