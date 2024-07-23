@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-60967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4776993A637
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:33:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A7993A710
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0D5A1F235AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:33:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F096128271F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737EC158215;
-	Tue, 23 Jul 2024 18:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A208D1586C8;
+	Tue, 23 Jul 2024 18:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8Zahl7D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDGJ8+FH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3320513D896;
-	Tue, 23 Jul 2024 18:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA7113D600;
+	Tue, 23 Jul 2024 18:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759581; cv=none; b=d6v8AySocHkL6epUqeL/9uLewqyk7IqnE9FTjMJaGTGZ4EZ0IPvFdR5wk5rYbMKLUDwEGoFSEG2igDHE5Ue/z0UJOYD9XQaD7hYaIYdqv8HkQwuDIqmlGui4BsLJ9DTfvIURXIpoMMifXVsE+JkRLPNIO5fEkQr0JxBK1F5vY3Y=
+	t=1721760113; cv=none; b=u+CTV+hCYeoeeidQYfiMF5mbkgfgV/AZW9UybxMJtz0a+m1S8yl0IYfGJ/M1pvbcyfKdB6F6tond07GpZsEmXEsEWyvjjJ3ZYfaD4Ig0cOk9Txjr0XDOnIbg4GfKRM64boOlwo5xjX5MctmoYQcyQyLWpPPndfkDx2AZwRqDCT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759581; c=relaxed/simple;
-	bh=BLQXfJ5hGkwBcZG5VH8mSm4g8AGcoUTtw80fnaMKOYQ=;
+	s=arc-20240116; t=1721760113; c=relaxed/simple;
+	bh=5UqoxbDwXx2VcIXdoyjujmD3orObj+ivKX2DgFvtDnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abmUywuZnP8GTWJbXqpIP2nrANqUbZHc7vYYGX/yhzsYo3Zh6oF03vlX4RPQdOFWJgl3RRc4wivZIrEmK0uGOJEvnnWpq7EbZOKHY3ExbRZfQ+k66Y1C3xK7WypSZJXekIWVGsLlu8pQfO+pzRwI78Sldy0cYQvRoWP56X49qR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8Zahl7D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDDEC4AF0A;
-	Tue, 23 Jul 2024 18:33:00 +0000 (UTC)
+	 MIME-Version; b=B+a0e4dEb1uejh4geX18ZTucNwjkYgJ2skszMCLaLxFA/Ii2OOsdcMa+otLFRMrG4ySf4DrTCnUBRu1sKBG4yxxDETjr9uqRzkViDyrHtW7PF2hNMMgcGG5KgoEdrtWb9nrg/eBa89BdCLO31ys6wnqtOhNFHFv+smBYH6qG2WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDGJ8+FH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C2FC4AF09;
+	Tue, 23 Jul 2024 18:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759581;
-	bh=BLQXfJ5hGkwBcZG5VH8mSm4g8AGcoUTtw80fnaMKOYQ=;
+	s=korg; t=1721760113;
+	bh=5UqoxbDwXx2VcIXdoyjujmD3orObj+ivKX2DgFvtDnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8Zahl7DSO2A5yb6MRydEPXhSv+BHZ5iAd8m3AVUPBYuop0BfEHBsCIivkdjtQhZ2
-	 9t5ZHQms7DTlf47O8XBxF862iEIYHlApFOB3nCZqnLJXk+ir1EdZ6hisw/TSq3U+Ju
-	 6y3lYWeEYfTSZnm0xmmQjWpAEVaCZ1zaaB0I9jAw=
+	b=KDGJ8+FHqwa3AamvnUPOhYqb0K2UWnR0hmG+9a/5Emb7PzWNggp/jIBOhl+028scl
+	 TFVirNT/0ppEi0sWv2fHWs7JZLQck7oXROTYd+hpfUnoZSGG41ExIRVcSnMPIwzx6i
+	 gBJSTw0lGYOkvI338XnyvgDJ+WXlp5X8a+bBlLbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Patrice Chotard <patrice.chotard@foss.st.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/129] spi: Fix OCTAL mode support
+Subject: [PATCH 6.9 076/163] spi: Fix OCTAL mode support
 Date: Tue, 23 Jul 2024 20:23:25 +0200
-Message-ID: <20240723180406.991030682@linuxfoundation.org>
+Message-ID: <20240723180146.405595558@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -83,10 +83,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index da15c3f388d1f..5c57c7378ee70 100644
+index 9304fd03bf764..fcc39523d6857 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -4000,7 +4000,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+@@ -4152,7 +4152,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
  				return -EINVAL;
  			if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
  				xfer->tx_nbits != SPI_NBITS_DUAL &&
@@ -96,7 +96,7 @@ index da15c3f388d1f..5c57c7378ee70 100644
  				return -EINVAL;
  			if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
  				!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
-@@ -4015,7 +4016,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+@@ -4167,7 +4168,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
  				return -EINVAL;
  			if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
  				xfer->rx_nbits != SPI_NBITS_DUAL &&
@@ -107,10 +107,10 @@ index da15c3f388d1f..5c57c7378ee70 100644
  			if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
  				!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 8cc7a99927f95..e5baf43bcfbb6 100644
+index 64a4deb18dd00..afe6631da1bc6 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -1049,12 +1049,13 @@ struct spi_transfer {
+@@ -1089,12 +1089,13 @@ struct spi_transfer {
  	unsigned	dummy_data:1;
  	unsigned	cs_off:1;
  	unsigned	cs_change:1;
