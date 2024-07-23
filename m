@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E5393A67C
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 388E893A729
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B703E283539
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A44E1C20AF0
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7787D158D76;
-	Tue, 23 Jul 2024 18:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A4A158878;
+	Tue, 23 Jul 2024 18:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVepRU6y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgMB/4ly"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36ADE158A29;
-	Tue, 23 Jul 2024 18:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D4B13D896;
+	Tue, 23 Jul 2024 18:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759730; cv=none; b=qN2DL9Gr7jZyc5EWnF0S9uJtI/cSsdcOXieCQ5qp9ZxpfzKa4Ae+eg0StSQWWZrcQTYKphvDUGdwatAcfDF8LAgx38wGuUzg4nNnWqh6JMw1rzNvmLTiPwA93QHIQbLJS0meWXPFVwRTICQRsH0Uku6WIgT4p1XGrpcHYsOLZWE=
+	t=1721760178; cv=none; b=XFuSAQkjoEU1Z0Gew33LNGE7BCOcP1qWtQS3lKUqi4vXca8fuCwhjO/42gPS8eeb1H957tblD8KXIf6oBqZEf/5p4aLJZBCvzz8cKGiYh14p1aeDlB8FDzXgpyYx8VWkNbk/x80JIKsFPta+a3rZkRP/YgZr+uGrQ6I8GQgUuXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759730; c=relaxed/simple;
-	bh=cQa7tbb0fSxRIZOLNwPie7exu9PtJ7zMpDDMdb062Q8=;
+	s=arc-20240116; t=1721760178; c=relaxed/simple;
+	bh=js9362GxM1g7OGNHkT6w/U2nutVMwTjNI8lr2u9mXow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SB2IwA2iBba//YXzKHhVBbo6GIzl8Y6O0U+UbBNpBwifXrSiH34ELoebHQnhCJ35gYI94l18VuNFT9oJZ9i0JQwC0BL3MOpR7Io/L3N/JjGORFBkQVeRAOf7+6YuggBYheKjxVAmLxOEEaU/QqtVVcDuzurM9fQee0PQvbt0H5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVepRU6y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3FEC4AF0B;
-	Tue, 23 Jul 2024 18:35:29 +0000 (UTC)
+	 MIME-Version; b=NulgoLsBiA1bH73KwOa9F+2NPKqN0t2U3X4rfRsrjW5N/a4LjMyEofXvTElLaTq1B1SGygN82f+psj/osEHtWhpd5fx8RRWmjgranzehL9fSIVkZJCMT+PuEFjDNR+ScyOlHdoW8tbPp6H+UdTx7gRr3Z0r0BJcrxBWln3xS2gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgMB/4ly; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3A4C4AF0A;
+	Tue, 23 Jul 2024 18:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759730;
-	bh=cQa7tbb0fSxRIZOLNwPie7exu9PtJ7zMpDDMdb062Q8=;
+	s=korg; t=1721760178;
+	bh=js9362GxM1g7OGNHkT6w/U2nutVMwTjNI8lr2u9mXow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVepRU6yoz3wnbroUwyAvyLla6XW5b8pDGYGXAU6ygtRsh2KEsxqdTU1diqm0+i3V
-	 FLwOeJYoa95MSMaE+ocsY+S2ipSo3R3DabJRnfms6YaI4TZ8mw8kXeXWFC5CZb4YVt
-	 y/frnRboH9Hmexhk8Goi3q/5apDaR0tiusV0gomM=
+	b=xgMB/4lyOmxElrDezXmqaFdn9AnA1scDBQQVW92Dzc6oiiXIc2OCLT6dvk+SVScva
+	 eY0eDJXb9w8PbpcE+uR7+tFGOB0ct9/04QU5aznKZc7zF8xHQZpn3wyckPza9S75bl
+	 HSqeElZ4v/yqKa+C2PeTxrXqF7ogFSxYmOVHFdy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	"ming-jen.chang" <ming-jen.chang@mediatek.com>,
+	Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 109/129] riscv: stacktrace: fix usage of ftrace_graph_ret_addr()
+Subject: [PATCH 6.9 128/163] tee: optee: ffa: Fix missing-field-initializers warning
 Date: Tue, 23 Jul 2024 20:24:17 +0200
-Message-ID: <20240723180409.001944425@linuxfoundation.org>
+Message-ID: <20240723180148.418333178@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
 
-[ Upstream commit 393da6cbb2ff89aadc47683a85269f913aa1c139 ]
+[ Upstream commit e0556255a53d6d3d406a28362dffd972018a997c ]
 
-ftrace_graph_ret_addr() takes an `idx` integer pointer that is used to
-optimize the stack unwinding. Pass it a valid pointer to utilize the
-optimizations that might be available in the future.
+The 'missing-field-initializers' warning was reported
+when building with W=2.
+This patch use designated initializers for
+'struct ffa_send_direct_data' to suppress the warning
+and clarify the initialization intent.
 
-The commit is making riscv's usage of ftrace_graph_ret_addr() match
-x86_64.
-
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/r/20240618145820.62112-1-puranjay@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: ming-jen.chang <ming-jen.chang@mediatek.com>
+Signed-off-by: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/stacktrace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tee/optee/ffa_abi.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
-index 0d3f00eb0baee..10e311b2759d3 100644
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -32,6 +32,7 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			     bool (*fn)(void *, unsigned long), void *arg)
+diff --git a/drivers/tee/optee/ffa_abi.c b/drivers/tee/optee/ffa_abi.c
+index ecb5eb079408e..c5a3e25c55dab 100644
+--- a/drivers/tee/optee/ffa_abi.c
++++ b/drivers/tee/optee/ffa_abi.c
+@@ -660,7 +660,9 @@ static bool optee_ffa_api_is_compatbile(struct ffa_device *ffa_dev,
+ 					const struct ffa_ops *ops)
  {
- 	unsigned long fp, sp, pc;
-+	int graph_idx = 0;
- 	int level = 0;
+ 	const struct ffa_msg_ops *msg_ops = ops->msg_ops;
+-	struct ffa_send_direct_data data = { OPTEE_FFA_GET_API_VERSION };
++	struct ffa_send_direct_data data = {
++		.data0 = OPTEE_FFA_GET_API_VERSION,
++	};
+ 	int rc;
  
- 	if (regs) {
-@@ -68,7 +69,7 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			pc = regs->ra;
- 		} else {
- 			fp = frame->fp;
--			pc = ftrace_graph_ret_addr(current, NULL, frame->ra,
-+			pc = ftrace_graph_ret_addr(current, &graph_idx, frame->ra,
- 						   &frame->ra);
- 			if (pc == (unsigned long)ret_from_exception) {
- 				if (unlikely(!__kernel_text_address(pc) || !fn(arg, pc)))
+ 	msg_ops->mode_32bit_set(ffa_dev);
+@@ -677,7 +679,9 @@ static bool optee_ffa_api_is_compatbile(struct ffa_device *ffa_dev,
+ 		return false;
+ 	}
+ 
+-	data = (struct ffa_send_direct_data){ OPTEE_FFA_GET_OS_VERSION };
++	data = (struct ffa_send_direct_data){
++		.data0 = OPTEE_FFA_GET_OS_VERSION,
++	};
+ 	rc = msg_ops->sync_send_receive(ffa_dev, &data);
+ 	if (rc) {
+ 		pr_err("Unexpected error %d\n", rc);
+@@ -698,7 +702,9 @@ static bool optee_ffa_exchange_caps(struct ffa_device *ffa_dev,
+ 				    unsigned int *rpc_param_count,
+ 				    unsigned int *max_notif_value)
+ {
+-	struct ffa_send_direct_data data = { OPTEE_FFA_EXCHANGE_CAPABILITIES };
++	struct ffa_send_direct_data data = {
++		.data0 = OPTEE_FFA_EXCHANGE_CAPABILITIES,
++	};
+ 	int rc;
+ 
+ 	rc = ops->msg_ops->sync_send_receive(ffa_dev, &data);
 -- 
 2.43.0
 
