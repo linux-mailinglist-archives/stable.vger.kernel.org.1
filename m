@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-61041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E07193A696
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3B793A713
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FEC01C2096C
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B5E71C221FD
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010461586CB;
-	Tue, 23 Jul 2024 18:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD66E158873;
+	Tue, 23 Jul 2024 18:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6sej9GH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MS7gTiVI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4769157A61;
-	Tue, 23 Jul 2024 18:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B38F13D896;
+	Tue, 23 Jul 2024 18:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759801; cv=none; b=r35eQDUoQV/R5XyUTLSU7zI34rpiQxXVNM+WPBW56REjG96o5g8YRr+O7loZW9YPzYtnwsKGRQDV6Q42mx0VEWIX2nQCItcM5swd33ec3fCiPG7SIFVS0XGEtodlGy/JNhWZDpr9YPUTOij4sgAJwsYbCWcsR5K4saVA14dqvkU=
+	t=1721760122; cv=none; b=DXxJLPx1quPXLt1oal1hiZKqkNpVgkqXaRCXIez3xi2c93smNopMu+SmEDaR1rC7zg9eHcZL8NbO5DhfodZeftFTubOcDzamlh6R2WCXYwes4AuxePH9/GDbv/oQnY10fg1Qyh2PiYB4SdTpIwBgBLtrzxDtjXSzXZ434EzIkL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759801; c=relaxed/simple;
-	bh=g0+J7jJFjO/x163BM0p6EPm/gwY1+75CQzkiWlp1nvA=;
+	s=arc-20240116; t=1721760122; c=relaxed/simple;
+	bh=DOgjrKG7dukDLS5ih/LuM2PSEXI9ovlY+8U3/TqPQbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FegMso2MpAqSs2lFvJ+5fp/YUdbwaV2p5MTkUv3k6I3iktOwLvYOTvwxesjl4spXlopSGbg7jvj63dK4vGhxFeSXxofleR4cdWNcxVUvajTPvwXN6sDMe1qG9KYhtlOI6gcDxaKGUTBrNBSZQ+GrHHp6TSv4FdG+CrLjWd+FEa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6sej9GH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C31DC4AF09;
-	Tue, 23 Jul 2024 18:36:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DGCZscTLohwDWm+Kz+UwZhAfrmJGM3Z0wKtMAxEYYxh4RX8Spm2HCjDUoFvs0ejGmbMg0klYb7EJSIlqcaRgmfA2XBuf+KkHibrB9669xqh/u7Osr6936d4MP4M/5R1o5omXk5dxng+LnWtQtZqSsVfGKDrZPVJAU8Yky+5ZylE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MS7gTiVI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB7AC4AF09;
+	Tue, 23 Jul 2024 18:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759801;
-	bh=g0+J7jJFjO/x163BM0p6EPm/gwY1+75CQzkiWlp1nvA=;
+	s=korg; t=1721760122;
+	bh=DOgjrKG7dukDLS5ih/LuM2PSEXI9ovlY+8U3/TqPQbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6sej9GHAw1WeZlS0DZQXt5PiNLR4l9lOW1X9aaoxIOauFx5FKyPNIN7U8btDOgQ/
-	 HnLxi548HDr4OBMWmzW9KPicAGpBV59/hIZweYgUKMIZMFsbVYC77LoleUPEwJPpOD
-	 ra3P0gKnaAehrGZ3x5fc5g+NA8tFOf93jmIQURAc=
+	b=MS7gTiVIWIo96uQ6ea3y6tuL4fBscosg5k96evuhSePYO/ZO4ynGcjw2cOlnbyG9s
+	 7VLVISAyxf1TF2ot8ogOZAM5KwrKdLOhMDfakXVuEvBoQTd8o2p4tbBDFBCPGjCpp4
+	 /A4OSu4C+iOv+W/Pq6K88WrZlCl/RXw4ozAESyrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vyacheslav Frantsishko <itmymaill@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Agathe Boutmy <agathe@boutmy.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/129] ASoC: amd: yc: Fix non-functional mic on ASUS M5602RA
+Subject: [PATCH 6.9 110/163] platform/x86: wireless-hotkey: Add support for LG Airplane Button
 Date: Tue, 23 Jul 2024 20:23:59 +0200
-Message-ID: <20240723180408.302224849@linuxfoundation.org>
+Message-ID: <20240723180147.725159850@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vyacheslav Frantsishko <itmymaill@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 63b47f026cc841bd3d3438dd6fccbc394dfead87 ]
+[ Upstream commit 151e78a0b89ee6dec93382dbdf5b1ef83f9c4716 ]
 
-The Vivobook S 16X IPS needs a quirks-table entry for the internal microphone to function properly.
+The LGEX0815 ACPI device is used by the "LG Airplane Mode Button"
+Windows driver for handling rfkill requests. When the ACPI device
+receives an 0x80 ACPI notification, an rfkill event is to be
+send to userspace.
 
-Signed-off-by: Vyacheslav Frantsishko <itmymaill@gmail.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20240626070334.45633-1-itmymaill@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Add support for the LGEX0815 ACPI device to the driver.
+
+Tested-by: Agathe Boutmy <agathe@boutmy.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606233540.9774-2-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/platform/x86/wireless-hotkey.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 1760b5d42460a..4e3a8ce690a45 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -283,6 +283,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M5402RA"),
- 		}
- 	},
-+        {
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "M5602RA"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/drivers/platform/x86/wireless-hotkey.c b/drivers/platform/x86/wireless-hotkey.c
+index 4422863f47bbe..01feb6e6787f2 100644
+--- a/drivers/platform/x86/wireless-hotkey.c
++++ b/drivers/platform/x86/wireless-hotkey.c
+@@ -19,6 +19,7 @@ MODULE_AUTHOR("Alex Hung");
+ MODULE_ALIAS("acpi*:HPQ6001:*");
+ MODULE_ALIAS("acpi*:WSTADEF:*");
+ MODULE_ALIAS("acpi*:AMDI0051:*");
++MODULE_ALIAS("acpi*:LGEX0815:*");
+ 
+ struct wl_button {
+ 	struct input_dev *input_dev;
+@@ -29,6 +30,7 @@ static const struct acpi_device_id wl_ids[] = {
+ 	{"HPQ6001", 0},
+ 	{"WSTADEF", 0},
+ 	{"AMDI0051", 0},
++	{"LGEX0815", 0},
+ 	{"", 0},
+ };
+ 
 -- 
 2.43.0
 
