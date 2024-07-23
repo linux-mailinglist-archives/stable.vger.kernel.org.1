@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-60830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9C393A59D
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C2B93A6D6
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DB84B21FD2
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6E651F232ED
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED12C1581EB;
-	Tue, 23 Jul 2024 18:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67901586CB;
+	Tue, 23 Jul 2024 18:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNKl0s5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWD62B1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D681586CB;
-	Tue, 23 Jul 2024 18:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AA314EC58;
+	Tue, 23 Jul 2024 18:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759178; cv=none; b=lmNjU/cQiL1/wBGExAZEpHKx2kQzh643QnoYXg8p4QW72wgPF82jwj4TcLizZRf011HhzMSd3R/tyPKPLR8jtdHeTQ57p9Hy8p0zO77gASXhSm15WEFPjHUDsb53dDALPEc59C/DujNLNJChF7q5VapCMp6Rg3qBKkz2NbOF8dg=
+	t=1721759949; cv=none; b=oH2VH0FyqeP26zLTLVxR4rVYKQmygSi0/+l2D4ovJnwAeVPtN97kxg+H2SDwk/N+4OXFi10zL/evYGr/0o6CS6I1nJMBj5AfATMfv8THV8zPKjgmWQvsNikxcV354w8cbn79D6zjIMCrKEeMYWVM57m+t8UsR66nSZw4Jtop5vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759178; c=relaxed/simple;
-	bh=MLw3swk3ayFTb2HJHkEIZ0uaiBlfyTfy+y8lIBwORjk=;
+	s=arc-20240116; t=1721759949; c=relaxed/simple;
+	bh=EsfnKMT8x3Xon3ved2L0AYWpLQX/eDHoLiMOcaoeOv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mVVaAaTtBiFE/qAPwOL9wt/NZaieGd9AkYUXhfo5cPwGY3A2JiFRS5XPdpxhrZfKPIq+oXaCIw18/Q8Pb38VWoF4CxJdKNv0AwOcLFgAbGC7Es+dif9FYA89B/ye1QN0gS1Vv2g4s+LlXKnpKlMjc4OEIy3222+h4t9KXmtWBp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNKl0s5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A40C4AF0A;
-	Tue, 23 Jul 2024 18:26:17 +0000 (UTC)
+	 MIME-Version; b=aZ5WdgJDxsrwyoBDzoP1NkcYHU9WINaIbdry85W4HB/6R91IqY7W3rL7PSYGwmIH/iakkZZZuo8VkFDUQemiyl1SpfUOpniBipSOkhz4WV7ojZBebTZSkGI1pUWL3vV2Dt08hYZEuJLn8K9WH3HmDEpDfN9nYoiUQNkwws3ETIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWD62B1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9665C4AF0A;
+	Tue, 23 Jul 2024 18:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759178;
-	bh=MLw3swk3ayFTb2HJHkEIZ0uaiBlfyTfy+y8lIBwORjk=;
+	s=korg; t=1721759949;
+	bh=EsfnKMT8x3Xon3ved2L0AYWpLQX/eDHoLiMOcaoeOv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNKl0s5ibc5RVxSgtab9CkYB4ojxcDWY3RRWCchBIRNX/XN65tYTJ9hjyTshk75K/
-	 dr/i8prbyngvLLebp8A0YO2EXklH6txSKjM5fZ4lq4k0X2prwa0HKWjmqmMAG9LmJ+
-	 VA0d/R0Iz63BpONPi58zalOqmzhgK9tmfxaHVu/Y=
+	b=ZWD62B1FOYz1xKwwLdEJ2jT3VAwV1zn3oKge9DFjt5h4zdPKnAYuGOq7U4f6W5zlm
+	 TRHN2SmGwlLcEqclKMVV3VbfJc1EDQtZqztiTiQfUYzsqEO5hLPZPizoEYzxYrQ2wp
+	 44Ar2iWVUCiC8VsvXiolUfgMLWxDzdgW2MxMCWQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	SeongJae Park <sj@kernel.org>
-Subject: [PATCH 6.1 006/105] minmax: relax check to allow comparison between unsigned arguments and signed constants
-Date: Tue, 23 Jul 2024 20:22:43 +0200
-Message-ID: <20240723180402.882777652@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 035/163] ila: block BH in ila_output()
+Date: Tue, 23 Jul 2024 20:22:44 +0200
+Message-ID: <20240723180144.828557935@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,79 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 867046cc7027703f60a46339ffde91a1970f2901 upstream.
+[ Upstream commit cf28ff8e4c02e1ffa850755288ac954b6ff0db8c ]
 
-Allow (for example) min(unsigned_var, 20).
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-The opposite min(signed_var, 20u) is still errored.
+ila_output() is called from lwtunnel_output()
+possibly from process context, and under rcu_read_lock().
 
-Since a comparison between signed and unsigned never makes the unsigned
-value negative it is only necessary to adjust the __types_ok() test.
+We might be interrupted by a softirq, re-enter ila_output()
+and corrupt dst_cache data structures.
 
-Link: https://lkml.kernel.org/r/633b64e2f39e46bb8234809c5595b8c7@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 867046cc7027703f60a46339ffde91a1970f2901)
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the race by using local_bh_disable().
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ net/ipv6/ila/ila_lwt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -9,13 +9,18 @@
- /*
-  * min()/max()/clamp() macros must accomplish three things:
-  *
-- * - avoid multiple evaluations of the arguments (so side-effects like
-+ * - Avoid multiple evaluations of the arguments (so side-effects like
-  *   "x++" happen only once) when non-constant.
-- * - perform signed v unsigned type-checking (to generate compile
-- *   errors instead of nasty runtime surprises).
-- * - retain result as a constant expressions when called with only
-+ * - Retain result as a constant expressions when called with only
-  *   constant expressions (to avoid tripping VLA warnings in stack
-  *   allocation usage).
-+ * - Perform signed v unsigned type-checking (to generate compile
-+ *   errors instead of nasty runtime surprises).
-+ * - Unsigned char/short are always promoted to signed int and can be
-+ *   compared against signed or unsigned arguments.
-+ * - Unsigned arguments can be compared against non-negative signed constants.
-+ * - Comparison of a signed argument against an unsigned constant fails
-+ *   even if the constant is below __INT_MAX__ and could be cast to int.
-  */
- #define __typecheck(x, y) \
- 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
-@@ -25,9 +30,14 @@
- 	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
- 		is_signed_type(typeof(x)), 0)
+diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
+index 0601bad798221..ff7e734e335b0 100644
+--- a/net/ipv6/ila/ila_lwt.c
++++ b/net/ipv6/ila/ila_lwt.c
+@@ -58,7 +58,9 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		return orig_dst->lwtstate->orig_output(net, sk, skb);
+ 	}
  
--#define __types_ok(x, y) 			\
--	(__is_signed(x) == __is_signed(y) ||	\
--		__is_signed((x) + 0) == __is_signed((y) + 0))
-+/* True for a non-negative signed int constant */
-+#define __is_noneg_int(x)	\
-+	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
-+
-+#define __types_ok(x, y) 					\
-+	(__is_signed(x) == __is_signed(y) ||			\
-+		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
-+		__is_noneg_int(x) || __is_noneg_int(y))
++	local_bh_disable();
+ 	dst = dst_cache_get(&ilwt->dst_cache);
++	local_bh_enable();
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *ip6h = ipv6_hdr(skb);
+ 		struct flowi6 fl6;
+@@ -86,8 +88,11 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
  
- #define __cmp_op_min <
- #define __cmp_op_max >
+-		if (ilwt->connected)
++		if (ilwt->connected) {
++			local_bh_disable();
+ 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
++			local_bh_enable();
++		}
+ 	}
+ 
+ 	skb_dst_set(skb, dst);
+-- 
+2.43.0
+
 
 
 
