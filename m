@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C50293A62C
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C814F93A6E8
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C20DB1F23626
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5644BB2240E
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F18155351;
-	Tue, 23 Jul 2024 18:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F03158878;
+	Tue, 23 Jul 2024 18:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9VizqDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7Z9/O7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F1613D600;
-	Tue, 23 Jul 2024 18:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FFA14EC58;
+	Tue, 23 Jul 2024 18:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759548; cv=none; b=NY49W8FmPM6HRHvvMD/AgIXf8wbFSfL37MQ+tlfvgoeNzHD5z4AXoIaiF936vQyDMbbNHKyar0AL+M2wiStIGyxh/g6kt0LHGT9I0z89RgbEGdQoX8QJ2/hVf2niPe7fzB82Ds+aXqPRX32Xt2jYbQM27xY7IeczaBeSnV7RcxI=
+	t=1721759995; cv=none; b=G0/UTh9jFjl567El5/Emlw1l7kW9fEDSXCDYTABx9nVloubtFrlojWtiDY+bB1FknBzSPmkyLL5QUgwN5Ie+4mipuman3N7Nfa0O4wVvUt3dibd4BrO3tb0iZCD0MmcMpL5psLo8RDbRm3dW1o4CzE4x3aAiGWQFxAE9alNCX7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759548; c=relaxed/simple;
-	bh=NNGOolRMCoLA2TUQVRFTSR0phagT9PUkZKtgq8xHNqs=;
+	s=arc-20240116; t=1721759995; c=relaxed/simple;
+	bh=O62zmvb8+rJkeLa5jUterfr7QonZ6LarYTvltJaBQ8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OtDe1zzOCj5x2kQHkIKPiO8Cfo7Jo7XPgUrdKYdIeLX5zb/HbhXGyMmXyE+hwhj9cvCNXlKZPYaCMNm43dFj7/hUdSlaHIUwzpRxEYMFn4u/oNaQOEcMrKYAycu7dyCYA+hcdrU8b5WDZMxv761XPtWafjjGAjt4JRlP4R+use4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9VizqDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462E8C4AF0A;
-	Tue, 23 Jul 2024 18:32:28 +0000 (UTC)
+	 MIME-Version; b=QT6arXjqiYalImmR51aaMYi66cC0WvedEgafr4Bn110PU1b057C+m/QKs8xBkdx7ZIAosXdbhgYuKTafFgNwo7IA3h3BVlV1FccBPzitK9ijhTE/DhFFPWWjINR8JpEhRIgAFbDxL0WO9QXyJsY1hoGxgjyKwIfB4pJEhhkbnj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7Z9/O7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75DF9C4AF0A;
+	Tue, 23 Jul 2024 18:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759548;
-	bh=NNGOolRMCoLA2TUQVRFTSR0phagT9PUkZKtgq8xHNqs=;
+	s=korg; t=1721759994;
+	bh=O62zmvb8+rJkeLa5jUterfr7QonZ6LarYTvltJaBQ8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G9VizqDD6RwYdx+aGuVof0dII986LFjGfx0C+WSm7V6NFurXU8khcXGkuwiWOO6vm
-	 bOmIsvPnuv3lHRUQXBA9iPpVgPuISNsEQKqK6RFAT5KErW/IN94NPzO52MNW84DaZa
-	 h1WmT9tMeKMz82d4sYhXgJHlqbP/lxrmTp/YRW2k=
+	b=v7Z9/O7TEx5ktAXY+iXo15hnSA9RsWSryws7ZbPNUGwF3Y/c4PGQkv6xP9WjndKri
+	 QVGNXlp9w0T+mM6/obgu5OiHsm1ONYJl2ZHRHTnN54P8VA8hdhoNmDsHN2oZXOgo3M
+	 FW+U5928s4S417wfNsJU7lptMwWlNZ1kQ34ODtGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/129] drm: panel-orientation-quirks: Add quirk for Aya Neo KUN
+Subject: [PATCH 6.9 066/163] ALSA: hda: cs35l56: Fix lifecycle of codec pointer
 Date: Tue, 23 Jul 2024 20:23:15 +0200
-Message-ID: <20240723180406.606212247@linuxfoundation.org>
+Message-ID: <20240723180146.021934297@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit f74fb5df429ebc6a614dc5aa9e44d7194d402e5a ]
+[ Upstream commit d339131bf02d4ed918415574082caf5e8af6e664 ]
 
-Similar to the other Aya Neo devices this one features
-again a portrait screen, here with a native resolution
-of 1600x2560.
+The codec should be cleared when the amp driver is unbound and when
+resuming it should be tested to prevent loading firmware into the device
+and ALSA in a partially configured system state.
 
-Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240310220401.895591-1-tjakobi@math.uni-bielefeld.de
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20240531112716.25323-1-simont@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/pci/hda/cs35l56_hda.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 426bbee2d9f5e..5db52d6c5c35c 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -202,6 +202,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_MATCH(DMI_BOARD_NAME, "NEXT"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
-+	}, {	/* AYA NEO KUN */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
-+		  DMI_MATCH(DMI_BOARD_NAME, "KUN"),
-+		},
-+		.driver_data = (void *)&lcd1600x2560_rightside_up,
- 	}, {	/* Chuwi HiBook (CWI514) */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "Hampoo"),
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index 6b77c38a0e155..e134ede6c5aa5 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -735,6 +735,8 @@ static void cs35l56_hda_unbind(struct device *dev, struct device *master, void *
+ 	if (comps[cs35l56->index].dev == dev)
+ 		memset(&comps[cs35l56->index], 0, sizeof(*comps));
+ 
++	cs35l56->codec = NULL;
++
+ 	dev_dbg(cs35l56->base.dev, "Unbound\n");
+ }
+ 
+@@ -840,6 +842,9 @@ static int cs35l56_hda_system_resume(struct device *dev)
+ 
+ 	cs35l56->suspended = false;
+ 
++	if (!cs35l56->codec)
++		return 0;
++
+ 	ret = cs35l56_is_fw_reload_needed(&cs35l56->base);
+ 	dev_dbg(cs35l56->base.dev, "fw_reload_needed: %d\n", ret);
+ 	if (ret > 0) {
 -- 
 2.43.0
 
