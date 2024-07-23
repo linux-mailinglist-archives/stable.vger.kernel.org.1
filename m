@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-61082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA4493A6CA
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF2893A611
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9650A1F2385E
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:38:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07E751F235F3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F95158D66;
-	Tue, 23 Jul 2024 18:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7076313D24D;
+	Tue, 23 Jul 2024 18:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlfidJQf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SryRe8GO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A59158D60;
-	Tue, 23 Jul 2024 18:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBC342067;
+	Tue, 23 Jul 2024 18:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759920; cv=none; b=QOXrNbjqUtrxUi/MfVr17fK67LvJx9cHogtnPA75UxH/mfBLtwqxSlntTj6m1zCYYI0yK9efioaUD88nCxANizfD0lcDPOVA1pZ6rcwJcAEovEZmpEVbDOKxBWEBuqYvYbotEpxtfjvL3DDr+lPYeglXV87CDioGvyNKw4a9Z/Y=
+	t=1721759480; cv=none; b=NM9kJU3KYF7RiN6p2t9VvlHm/e3c3mvFOu1iM1uMI3P+41QlCT6ukWUiEbe/xrGX3+d/tM8OgmtDgYcu9CVtY+1R5wqtWt6i570Z+2QGUBRfq0vjZmZid2PcJalS6Dm123aelkdhgMcUYfj67MPrD4G110o28SBY0LnRA79zOnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759920; c=relaxed/simple;
-	bh=QUnOx8/lgzoH7GAV+Z5uJGmp6Elnig44NNqiEEBuTlE=;
+	s=arc-20240116; t=1721759480; c=relaxed/simple;
+	bh=WQAL4eiz1s+Lr8kKq0vKlRbJwpLa1ZicUctWnqFNInI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kuPKnmk+A2HVNFVSnS3R46KYGNUrWhQXGwTzn7xxoh4JxL+iv0dqh5evjG1OgtfD0aMSnNMrR369hbLjW5XcmnHAIDCSJyjZToExHyvPIwC3JNVT9/IRm/urnrwO+eqyMvPb1TE320+72FhBiT3BZG9y/vFvF/m/DaSgJmVYlWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlfidJQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F748C4AF09;
-	Tue, 23 Jul 2024 18:38:39 +0000 (UTC)
+	 MIME-Version; b=aTtKehDHQkaSO9ZH9HMaNWWa8ksOIuJh6r5kBWZrksP2Dq6Q3C4/5sk2maQHeE1r8Co89pKKkmmLBNnUxLM4sVgzOYKyaWHga9Ag0+ze0mrIijhmUHdSaXHY4W4pNzEZ0ZnQ+PHyyKZHP7H662FT329qhzO4Q5IAegue7v609Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SryRe8GO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E784C4AF0A;
+	Tue, 23 Jul 2024 18:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759919;
-	bh=QUnOx8/lgzoH7GAV+Z5uJGmp6Elnig44NNqiEEBuTlE=;
+	s=korg; t=1721759480;
+	bh=WQAL4eiz1s+Lr8kKq0vKlRbJwpLa1ZicUctWnqFNInI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YlfidJQfER+fVuQxSIAE43UB75zW6fP5EycDZ/zJcgjhJDd38mJSVNvJUWNJhaZL4
-	 9fmnQlF7gFAbDL4W2cszz299gYTvv51PYh/nyyRkGfjuaBwn6xNuqv8Hkj5sVnUrIe
-	 9m7XJ8XMYiJYAaaBZ/xmG8nXp38zH3ofNhvr3Vf8=
+	b=SryRe8GOADhMG8oVzM8CN90BgyKKxpqdRhInKd2Eari87QRG7Ir3mOravVDM1RDOm
+	 KmWKmU0zdGUGt0Jfqu9G6WdtVj0/E7onaI8v6CR+l7Ge80XN0BkX5w7PAXhvNRTuDk
+	 THbpWkyV80j4GWs+BezD95rLzOfgP+MKLxRJWs7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aseda Aboagye <aaboagye@chromium.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Edward Liaw <edliaw@google.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 043/163] input: Add support for "Do Not Disturb"
+Subject: [PATCH 6.6 024/129] selftests/futex: pass _GNU_SOURCE without a value to the compiler
 Date: Tue, 23 Jul 2024 20:22:52 +0200
-Message-ID: <20240723180145.136646096@linuxfoundation.org>
+Message-ID: <20240723180405.723937486@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aseda Aboagye <aaboagye@chromium.org>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 22d6d060ac77955291deb43efc2f3f4f9632c6cb ]
+[ Upstream commit cb708ab9f584f159798b60853edcf0c8b67ce295 ]
 
-HUTRR94 added support for a new usage titled "System Do Not Disturb"
-which toggles a system-wide Do Not Disturb setting. This commit simply
-adds a new event code for the usage.
+It's slightly better to set _GNU_SOURCE in the source code, but if one
+must do it via the compiler invocation, then the best way to do so is
+this:
 
-Signed-off-by: Aseda Aboagye <aaboagye@chromium.org>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/Zl-gUHE70s7wCAoB@google.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+    $(CC) -D_GNU_SOURCE=
+
+...because otherwise, if this form is used:
+
+    $(CC) -D_GNU_SOURCE
+
+...then that leads the compiler to set a value, as if you had passed in:
+
+    $(CC) -D_GNU_SOURCE=1
+
+That, in turn, leads to warnings under both gcc and clang, like this:
+
+    futex_requeue_pi.c:20: warning: "_GNU_SOURCE" redefined
+
+Fix this by using the "-D_GNU_SOURCE=" form.
+
+Reviewed-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-debug.c                | 1 +
- drivers/hid/hid-input.c                | 8 ++++++++
- include/uapi/linux/input-event-codes.h | 1 +
- 3 files changed, 10 insertions(+)
+ tools/testing/selftests/futex/functional/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-debug.c b/drivers/hid/hid-debug.c
-index c629ab161d5b2..5302bfd527d86 100644
---- a/drivers/hid/hid-debug.c
-+++ b/drivers/hid/hid-debug.c
-@@ -975,6 +975,7 @@ static const char *keys[KEY_MAX + 1] = {
- 	[KEY_CAMERA_ACCESS_DISABLE] = "CameraAccessDisable",
- 	[KEY_CAMERA_ACCESS_TOGGLE] = "CameraAccessToggle",
- 	[KEY_ACCESSIBILITY] = "Accessibility",
-+	[KEY_DO_NOT_DISTURB] = "DoNotDisturb",
- 	[KEY_DICTATE] = "Dictate",
- 	[KEY_MICMUTE] = "MicrophoneMute",
- 	[KEY_BRIGHTNESS_MIN] = "BrightnessMin",
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index d5a6e89c3086e..8bb16e9b94aa5 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -833,6 +833,14 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
- 			break;
- 		}
+diff --git a/tools/testing/selftests/futex/functional/Makefile b/tools/testing/selftests/futex/functional/Makefile
+index a392d0917b4e5..994fa3468f170 100644
+--- a/tools/testing/selftests/futex/functional/Makefile
++++ b/tools/testing/selftests/futex/functional/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ INCLUDES := -I../include -I../../ $(KHDR_INCLUDES)
+-CFLAGS := $(CFLAGS) -g -O2 -Wall -D_GNU_SOURCE -pthread $(INCLUDES) $(KHDR_INCLUDES)
++CFLAGS := $(CFLAGS) -g -O2 -Wall -D_GNU_SOURCE= -pthread $(INCLUDES) $(KHDR_INCLUDES)
+ LDLIBS := -lpthread -lrt
  
-+		if ((usage->hid & 0xf0) == 0x90) { /* SystemControl*/
-+			switch (usage->hid & 0xf) {
-+			case 0xb: map_key_clear(KEY_DO_NOT_DISTURB); break;
-+			default: goto ignore;
-+			}
-+			break;
-+		}
-+
- 		if ((usage->hid & 0xf0) == 0xa0) {	/* SystemControl */
- 			switch (usage->hid & 0xf) {
- 			case 0x9: map_key_clear(KEY_MICMUTE); break;
-diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
-index 39f11ec676fae..a4206723f5033 100644
---- a/include/uapi/linux/input-event-codes.h
-+++ b/include/uapi/linux/input-event-codes.h
-@@ -619,6 +619,7 @@
- #define KEY_CAMERA_ACCESS_DISABLE	0x24c	/* Disables programmatic access to camera devices. (HUTRR72) */
- #define KEY_CAMERA_ACCESS_TOGGLE	0x24d	/* Toggles the current state of the camera access control. (HUTRR72) */
- #define KEY_ACCESSIBILITY		0x24e	/* Toggles the system bound accessibility UI/command (HUTRR116) */
-+#define KEY_DO_NOT_DISTURB		0x24f	/* Toggles the system-wide "Do Not Disturb" control (HUTRR94)*/
- 
- #define KEY_BRIGHTNESS_MIN		0x250	/* Set Brightness to Minimum */
- #define KEY_BRIGHTNESS_MAX		0x251	/* Set Brightness to Maximum */
+ LOCAL_HDRS := \
 -- 
 2.43.0
 
