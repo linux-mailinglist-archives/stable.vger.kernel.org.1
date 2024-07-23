@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-61067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B2A93A6B7
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:38:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF13593A61B
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BA551F23807
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:38:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878CA1F2135D
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50E7157A61;
-	Tue, 23 Jul 2024 18:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46622158879;
+	Tue, 23 Jul 2024 18:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aB7NFa/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/Q/AkaB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844F113C3F5;
-	Tue, 23 Jul 2024 18:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051E242067;
+	Tue, 23 Jul 2024 18:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759878; cv=none; b=u8MKZbhcfVOjx1oEpWLB24yKgBX1yOt2i2iLrAYpttrajMEeOINnSYOLdATobPAspxx7pQnW1MXFEroZoeesV+Sx7ZIRAcMMoDY0JHBhalfOY8eblwMwcHlu5vsTd+PW5cgaNnVyWUlMlXRAl2ybvHscj+Cqwk1VnZximq5/EpI=
+	t=1721759501; cv=none; b=YpXiuf4admEICHv3fzUMd8cR7q/7GaNZdWtPpKgAhmGeR8yee2Bw+91/mGYzc5y65FvwmSMzAa/LIxtrCvD8JfFNY1ICTwHG9vpAm8FVwsLtZGVe0BdhI1WZR0McJ/t7agKV3BgNA/grkK1jFNMyRXKlYG0HZl3Fb4dFu+M0/DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759878; c=relaxed/simple;
-	bh=BvqoXcM2NMOeBZdTsz5jCGUlhX78bACRrVJXko4sFBI=;
+	s=arc-20240116; t=1721759501; c=relaxed/simple;
+	bh=RNnHHuz+WUKxCaFCyVRQ2tuU/1LVW2/NFIbgF2XAbX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vCXNTzsl8ud6ygGXQ7agBD1D0DYPIq+dAvaYgsJ+gcyyADgCtTt+7TZc3Bn5qBvfM55FosukCBstVKE8q3HWRezH44wxTharM71zaLibCRBJarJ5BX8sL1yyyOs5AntZkFU7kFIfOcN/V8+mN5kGc+SMnV6IIojK2g4wa4VeK/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aB7NFa/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09053C4AF0A;
-	Tue, 23 Jul 2024 18:37:57 +0000 (UTC)
+	 MIME-Version; b=npknZSp+MhRmFwyMep71KMBb3mUegUT8LYIswPDjGgjCjk7IuV9gf5Q6nk9L7uYCC9BEW4cTZ6BHfXXBeDdZwEP5xt4L1T7gPv+brn3rESrALrpwUq67iHBSmIJRM+Zq9fA6E6AZbyLtC2X3rAFlalQfQi0cv8QRyJ/sdrM/G6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/Q/AkaB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D862C4AF0A;
+	Tue, 23 Jul 2024 18:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759878;
-	bh=BvqoXcM2NMOeBZdTsz5jCGUlhX78bACRrVJXko4sFBI=;
+	s=korg; t=1721759500;
+	bh=RNnHHuz+WUKxCaFCyVRQ2tuU/1LVW2/NFIbgF2XAbX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aB7NFa/nrWxTdt4uzDhLNwG9VKPXT/HWLyIwc9gEWcc90BL85FQhFp61Ur1CwX9NH
-	 eytwaFPHMqnGS9fP9PsSa7MzOXTxG3xz/DyHSzfmaeG0ekRcnxsyqLZ2TVKMKS23yw
-	 HPJkxZIFio8/AUIhgSxcN8XCJpJKWSc92ZfRLFEE=
+	b=S/Q/AkaBY4oqjNt0UhxwwdWlq3DUvimSo3pQd/11r/1aFR7msJhKwWykXGJs5B/YA
+	 PczK+GmUCFMd+RIedAi8rQcMVcZFAyOywOeiBv6DQp2NGK+yyre6C4/vq3qSAzV6O5
+	 Q2Uev/kW6Roz/UJgjAn9qurvhwWLjEebR/u/YmJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Liaw <edliaw@google.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 028/163] selftests/futex: pass _GNU_SOURCE without a value to the compiler
+Subject: [PATCH 6.6 009/129] ACPI: EC: Avoid returning AE_OK on errors in address space handler
 Date: Tue, 23 Jul 2024 20:22:37 +0200
-Message-ID: <20240723180144.560077169@linuxfoundation.org>
+Message-ID: <20240723180405.140365616@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit cb708ab9f584f159798b60853edcf0c8b67ce295 ]
+[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
 
-It's slightly better to set _GNU_SOURCE in the source code, but if one
-must do it via the compiler invocation, then the best way to do so is
-this:
+If an error code other than EINVAL, ENODEV or ETIME is returned
+by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
+returned by acpi_ec_space_handler().
 
-    $(CC) -D_GNU_SOURCE=
+Fix this by only returning AE_OK on success, and return AE_ERROR
+otherwise.
 
-...because otherwise, if this form is used:
-
-    $(CC) -D_GNU_SOURCE
-
-...then that leads the compiler to set a value, as if you had passed in:
-
-    $(CC) -D_GNU_SOURCE=1
-
-That, in turn, leads to warnings under both gcc and clang, like this:
-
-    futex_requeue_pi.c:20: warning: "_GNU_SOURCE" redefined
-
-Fix this by using the "-D_GNU_SOURCE=" form.
-
-Reviewed-by: Edward Liaw <edliaw@google.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/futex/functional/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/ec.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/futex/functional/Makefile b/tools/testing/selftests/futex/functional/Makefile
-index a392d0917b4e5..994fa3468f170 100644
---- a/tools/testing/selftests/futex/functional/Makefile
-+++ b/tools/testing/selftests/futex/functional/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- INCLUDES := -I../include -I../../ $(KHDR_INCLUDES)
--CFLAGS := $(CFLAGS) -g -O2 -Wall -D_GNU_SOURCE -pthread $(INCLUDES) $(KHDR_INCLUDES)
-+CFLAGS := $(CFLAGS) -g -O2 -Wall -D_GNU_SOURCE= -pthread $(INCLUDES) $(KHDR_INCLUDES)
- LDLIBS := -lpthread -lrt
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 3a2103da6a21c..4e3a4d96797e0 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1351,8 +1351,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 		return AE_NOT_FOUND;
+ 	case -ETIME:
+ 		return AE_TIME;
+-	default:
++	case 0:
+ 		return AE_OK;
++	default:
++		return AE_ERROR;
+ 	}
+ }
  
- LOCAL_HDRS := \
 -- 
 2.43.0
 
