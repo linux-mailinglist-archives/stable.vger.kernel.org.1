@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CBA93A655
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:34:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386AA93A5CC
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 317501C20A43
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:34:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7073282518
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85737158A15;
-	Tue, 23 Jul 2024 18:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F4C1586F6;
+	Tue, 23 Jul 2024 18:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwTy2xH/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="We/W+QHA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F0C158A06;
-	Tue, 23 Jul 2024 18:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D2E155351;
+	Tue, 23 Jul 2024 18:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759650; cv=none; b=uM73jmj7a5kQ/grifeH9efUjuE4eeuPOW9RyLXMN6fYP5NIbv/e45gvQULUIlggG1Jjwul7/LCMSgTdCG87RyZ8cKeBKRkacuRqdyNzzkravmG37puxp030EykDhlo+tunOAVHwxULr1XVk6QW1sx9QG7tymbLBUmjcn2lOdIw0=
+	t=1721759306; cv=none; b=SoYNyKlvnb9DiTW5l/4OUgV3qYYDglNSM3fO2drde4oWCR9W10e09uPjgLVI0F07JOWfLFr69FOf4WhSswaA+3rTRITDiteAQDhLkfF2aenIFkRdrekBHjmabbPIAyL9EptMHwTwqEbGGiz+3YEJBzhioZRnI56kK218ND06/jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759650; c=relaxed/simple;
-	bh=USAQkLOQiQW6Kd0aQhc5LzJ8EI1MIY4ZJDWBIUjGt18=;
+	s=arc-20240116; t=1721759306; c=relaxed/simple;
+	bh=o1Z+9KAjkp+D6DoWfMDKwVKGS/kjRmWYDNz0+zgRJtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBN5pzxBUm1N4vXZwCycBviwYr53IG7/sYvtXoW5fvnfN7iAZBJ9QynAboJic7NMNHvYiYC1lP6q9yjM17NSDDUG0Ic92cpldM/NA2Z/c6gLz0y+7TNla12M1VfVo4/OEiyPhFuIfVg+z7XL9LusJ+zji8MyjKMYcoqYYC8B1bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwTy2xH/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4726C4AF0A;
-	Tue, 23 Jul 2024 18:34:09 +0000 (UTC)
+	 MIME-Version; b=jFifvB9dS6TDZ3ZLULc+5SpnEotZviBSFGLpUiEQHJWlFQGsgv5Ayb3C8TykR7VKcKfI4FEYcP0tWEASyn3xwClUoHGqFR1DMdeyR1Siz+HYAPxSmhuMgXq1plEBZJ8BAbe17bcjjreatV0HfUA4ktvGsQdps8s/K4S9/uMddZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=We/W+QHA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9722BC4AF0A;
+	Tue, 23 Jul 2024 18:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759650;
-	bh=USAQkLOQiQW6Kd0aQhc5LzJ8EI1MIY4ZJDWBIUjGt18=;
+	s=korg; t=1721759306;
+	bh=o1Z+9KAjkp+D6DoWfMDKwVKGS/kjRmWYDNz0+zgRJtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DwTy2xH/MiA3OVJhXlWk78hAk2wj5seda08GBfv2FHSB0xvJPrSNv0FlIXk2YHShi
-	 5BL+H1dAbV/cjDo/uATDOLAYwWy2FDZRxNQn4hQUDXet4D9wbNjmGgnBSyVAk721z2
-	 ELj5Jpxw7olN72zs0Mz2kNhThIfEUWW2PbCt6Kwo=
+	b=We/W+QHAOOCvva1kZzRE6ZAz4F6rTSMsfvaB+qbxqQuz1/XMzFTPEjH96eyOQsGe8
+	 /R80Vq39+fS6FoyG/6TDw2/Dt/za9jYolvO1BFPNKCKm8Xizk1PDoqw6o2VtX7p6zM
+	 JDrQR+V4U3uLTUKHNKZB1ghEzFShs3mgTLYtFLOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/129] platform/mellanox: nvsw-sn2201: Add check for platform_device_add_resources
+Subject: [PATCH 6.1 072/105] ibmvnic: Add tx check to prevent skb leak
 Date: Tue, 23 Jul 2024 20:23:49 +0200
-Message-ID: <20240723180407.914116402@linuxfoundation.org>
+Message-ID: <20240723180406.020576878@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Nick Child <nnac123@linux.ibm.com>
 
-[ Upstream commit d56fbfbaf592a115b2e11c1044829afba34069d2 ]
+[ Upstream commit 0983d288caf984de0202c66641577b739caad561 ]
 
-Add check for the return value of platform_device_add_resources() and
-return the error if it fails in order to catch the error.
+Below is a summary of how the driver stores a reference to an skb during
+transmit:
+    tx_buff[free_map[consumer_index]]->skb = new_skb;
+    free_map[consumer_index] = IBMVNIC_INVALID_MAP;
+    consumer_index ++;
+Where variable data looks like this:
+    free_map == [4, IBMVNIC_INVALID_MAP, IBMVNIC_INVALID_MAP, 0, 3]
+                                               	consumer_index^
+    tx_buff == [skb=null, skb=<ptr>, skb=<ptr>, skb=null, skb=null]
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20240605032745.2916183-1-nichen@iscas.ac.cn
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+The driver has checks to ensure that free_map[consumer_index] pointed to
+a valid index but there was no check to ensure that this index pointed
+to an unused/null skb address. So, if, by some chance, our free_map and
+tx_buff lists become out of sync then we were previously risking an
+skb memory leak. This could then cause tcp congestion control to stop
+sending packets, eventually leading to ETIMEDOUT.
+
+Therefore, add a conditional to ensure that the skb address is null. If
+not then warn the user (because this is still a bug that should be
+patched) and free the old pointer to prevent memleak/tcp problems.
+
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/nvsw-sn2201.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/platform/mellanox/nvsw-sn2201.c b/drivers/platform/mellanox/nvsw-sn2201.c
-index 75b699676ca6d..1a7c45aa41bbf 100644
---- a/drivers/platform/mellanox/nvsw-sn2201.c
-+++ b/drivers/platform/mellanox/nvsw-sn2201.c
-@@ -1198,6 +1198,7 @@ static int nvsw_sn2201_config_pre_init(struct nvsw_sn2201 *nvsw_sn2201)
- static int nvsw_sn2201_probe(struct platform_device *pdev)
- {
- 	struct nvsw_sn2201 *nvsw_sn2201;
-+	int ret;
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 8f377d0a80fe6..6d17738c1c536 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -2288,6 +2288,18 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	    (tx_pool->consumer_index + 1) % tx_pool->num_buffers;
  
- 	nvsw_sn2201 = devm_kzalloc(&pdev->dev, sizeof(*nvsw_sn2201), GFP_KERNEL);
- 	if (!nvsw_sn2201)
-@@ -1205,8 +1206,10 @@ static int nvsw_sn2201_probe(struct platform_device *pdev)
- 
- 	nvsw_sn2201->dev = &pdev->dev;
- 	platform_set_drvdata(pdev, nvsw_sn2201);
--	platform_device_add_resources(pdev, nvsw_sn2201_lpc_io_resources,
-+	ret = platform_device_add_resources(pdev, nvsw_sn2201_lpc_io_resources,
- 				      ARRAY_SIZE(nvsw_sn2201_lpc_io_resources));
-+	if (ret)
-+		return ret;
- 
- 	nvsw_sn2201->main_mux_deferred_nr = NVSW_SN2201_MAIN_MUX_DEFER_NR;
- 	nvsw_sn2201->main_mux_devs = nvsw_sn2201_main_mux_brdinfo;
+ 	tx_buff = &tx_pool->tx_buff[bufidx];
++
++	/* Sanity checks on our free map to make sure it points to an index
++	 * that is not being occupied by another skb. If skb memory is
++	 * not freed then we see congestion control kick in and halt tx.
++	 */
++	if (unlikely(tx_buff->skb)) {
++		dev_warn_ratelimited(dev, "TX free map points to untracked skb (%s %d idx=%d)\n",
++				     skb_is_gso(skb) ? "tso_pool" : "tx_pool",
++				     queue_num, bufidx);
++		dev_kfree_skb_any(tx_buff->skb);
++	}
++
+ 	tx_buff->skb = skb;
+ 	tx_buff->index = bufidx;
+ 	tx_buff->pool_index = queue_num;
 -- 
 2.43.0
 
