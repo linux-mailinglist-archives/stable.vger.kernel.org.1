@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-60925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5927493A609
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 897E993A59F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E02328427C
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B7E0B21B80
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9EA0158A2E;
-	Tue, 23 Jul 2024 18:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BB21586E7;
+	Tue, 23 Jul 2024 18:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbWf01X7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZ1+UaBY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873E6158A22;
-	Tue, 23 Jul 2024 18:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE4A157A4F;
+	Tue, 23 Jul 2024 18:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759456; cv=none; b=NFqoBe3r/tFUOy5zqPf4yf+6P0zvBvGM/I5qv9UULS9yfEfKIWL/OMgNVN8lqrYALrWAu9Lbp7rhpPNrRxWfUY9OIJXeEP8p/Uz0WKFGc2SJxD3Ngo4iiO/I7zF8OCYfCZOx8/mdjEImloRKpVglx7zYyG7I0Z0OZEaJoeLTpmg=
+	t=1721759187; cv=none; b=mEnyGNnv1EQK4wbNxmgNzvxojQ6JoLkfe0mhUP3fML+4OxyMlXm5D68ISW+FxGWELOBwNuzSfLwlrR9ME0y2y50apalEGTdGikJ4nT5PQ2FdD4h5FBULXtPp5uAO1GfvraQUhsqJCPVNK+VrVNgiHGp6AQj7GuxNG9WbvVGqLII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759456; c=relaxed/simple;
-	bh=qn40qDMluWAsf1wkyMxm7fdEd/BMK8KYFUj1ANYKU9U=;
+	s=arc-20240116; t=1721759187; c=relaxed/simple;
+	bh=XoxLOClTQ+dgc3yZLAvWJ9d+71pOnVt8mqD9ep6YE58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXHlxrezExHQbLLDMMpI11Nzj00xUAtGkMhJcmJjy5Q1kiStsCFS/N75hulQFhl6uvcZq7Q9AutDwGmeq8HL3s+kTMXLxcdlJHLD2jpmjISt+ZjPnKAF568z+mORTtcJPff7rJCRRZcy7KBFlmsqEoq+YN8rMwQ2krO0IK9YU8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbWf01X7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBB6C4AF0B;
-	Tue, 23 Jul 2024 18:30:55 +0000 (UTC)
+	 MIME-Version; b=KDFy7Sn6T+aeshLQrpd5XVzGXHY664KWofO5D+PHHCLMUAzzwP8myxAjFl1lSHysYnJca4Dy9sI1p99bDyOc+1NnizYgTwTdczawdYt3Exyh3s+bQIwiIRdEsZjbMj0Udd79ztN8zOMtAMJMMoKAfv2/r1KM2p/rcF0LDKZqhD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZ1+UaBY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F99C4AF09;
+	Tue, 23 Jul 2024 18:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759456;
-	bh=qn40qDMluWAsf1wkyMxm7fdEd/BMK8KYFUj1ANYKU9U=;
+	s=korg; t=1721759187;
+	bh=XoxLOClTQ+dgc3yZLAvWJ9d+71pOnVt8mqD9ep6YE58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jbWf01X7CsBgXYjX3B+bc4g3HiXc6gTyrmI3s5NXJe7JlJvax/pCRJ0U5uuCY7B67
-	 TaQzgx1/C5nhhxPOVuuH5rSf+DOm608Iiqs2DFX99+aaBqbhtp3DHP2p89oZhxdptX
-	 oRzmKJFLkeUaFO0Bd5EvQCPcTZEb2ZgqCwzjkfLI=
+	b=nZ1+UaBYMZnsgmvxUpOWfUQuyVvXFRHxAZQLCBkgqF3WUObQAj9zKUDXTj9Rc3mk2
+	 vndLeTvUsSA6aEJOiCNrXDiypuVV9PVFlRxZA7b+VNJ26I9PxgYdiBey/AAxLTDX5z
+	 skrnpBuD+jsuR6BlnD12oCoczN9oozus0mrAXeYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/129] wifi: iwlwifi: mvm: Handle BIGTK cipher in kek_kck cmd
-Date: Tue, 23 Jul 2024 20:22:45 +0200
-Message-ID: <20240723180405.451884808@linuxfoundation.org>
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 009/105] filelock: Remove locks reliably when fcntl/close race is detected
+Date: Tue, 23 Jul 2024 20:22:46 +0200
+Message-ID: <20240723180403.059233132@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 08b16d1b5997dc378533318e2a9cd73c7a898284 ]
+commit 3cad1bc010416c6dd780643476bc59ed742436b9 upstream.
 
-The BIGTK cipher field was added to the kek_kck_material_cmd
-but wasn't assigned. Fix that by differentiating between the
-IGTK/BIGTK keys and assign the ciphers fields accordingly.
+When fcntl_setlk() races with close(), it removes the created lock with
+do_lock_file_wait().
+However, LSMs can allow the first do_lock_file_wait() that created the lock
+while denying the second do_lock_file_wait() that tries to remove the lock.
+In theory (but AFAIK not in practice), posix_lock_file() could also fail to
+remove a lock due to GFP_KERNEL allocation failure (when splitting a range
+in the middle).
 
-Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.7fd0b22b7267.Ie9b581652b74bd7806980364d59e1b2e78e682c0@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After the bug has been triggered, use-after-free reads will occur in
+lock_get_status() when userspace reads /proc/locks. This can likely be used
+to read arbitrary kernel memory, but can't corrupt kernel memory.
+This only affects systems with SELinux / Smack / AppArmor / BPF-LSM in
+enforcing mode and only works from some security contexts.
+
+Fix it by calling locks_remove_posix() instead, which is designed to
+reliably get rid of POSIX locks associated with the given file and
+files_struct and is also used by filp_flush().
+
+Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
+Cc: stable@kernel.org
+Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20240702-fs-lock-recover-2-v1-1-edd456f63789@google.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[stable fixup: ->c.flc_type was ->fl_type in older kernels]
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/locks.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 66aed6635d92c..9c89f0dd69c86 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -595,6 +595,12 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
- 					 void *_data)
- {
- 	struct wowlan_key_gtk_type_iter *data = _data;
-+	__le32 *cipher = NULL;
-+
-+	if (key->keyidx == 4 || key->keyidx == 5)
-+		cipher = &data->kek_kck_cmd->igtk_cipher;
-+	if (key->keyidx == 6 || key->keyidx == 7)
-+		cipher = &data->kek_kck_cmd->bigtk_cipher;
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2394,8 +2394,9 @@ int fcntl_setlk(unsigned int fd, struct
+ 	error = do_lock_file_wait(filp, cmd, file_lock);
  
- 	switch (key->cipher) {
- 	default:
-@@ -606,10 +612,13 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
- 		return;
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
--		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
-+		if (cipher)
-+			*cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
- 		return;
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_CCM);
-+	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
-+		if (cipher)
-+			*cipher = cpu_to_le32(STA_KEY_FLG_CCM);
- 		return;
- 	case WLAN_CIPHER_SUITE_CCMP:
- 		if (!sta)
--- 
-2.43.0
-
+ 	/*
+-	 * Attempt to detect a close/fcntl race and recover by releasing the
+-	 * lock that was just acquired. There is no need to do that when we're
++	 * Detect close/fcntl races and recover by zapping all POSIX locks
++	 * associated with this file and our files_struct, just like on
++	 * filp_flush(). There is no need to do that when we're
+ 	 * unlocking though, or for OFD locks.
+ 	 */
+ 	if (!error && file_lock->fl_type != F_UNLCK &&
+@@ -2410,9 +2411,7 @@ int fcntl_setlk(unsigned int fd, struct
+ 		f = files_lookup_fd_locked(files, fd);
+ 		spin_unlock(&files->file_lock);
+ 		if (f != filp) {
+-			file_lock->fl_type = F_UNLCK;
+-			error = do_lock_file_wait(filp, cmd, file_lock);
+-			WARN_ON_ONCE(error);
++			locks_remove_posix(filp, files);
+ 			error = -EBADF;
+ 		}
+ 	}
 
 
 
