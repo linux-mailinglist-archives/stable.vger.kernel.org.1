@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-60963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8981193A633
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D533B93A70D
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 442F6281AC4
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B64F1F23467
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DA4155351;
-	Tue, 23 Jul 2024 18:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DA61586F5;
+	Tue, 23 Jul 2024 18:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyqbxh6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imE2ves5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A105142067;
-	Tue, 23 Jul 2024 18:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BEC13D896;
+	Tue, 23 Jul 2024 18:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759569; cv=none; b=gfIeSMU2k4rwaUtzrAy7vjMfWDfW45qwtrf5LfT9bvlh078lcQr+FqOVJY0+K/n5ZMo5LSoLKXNV+8TBN6VTo0Qa0LWbxAfkWoZmTFe1O5QNAKygWBNQzctI7Io/a+3XK2gizoGp8GrjZ0RTHHPMjlhmSSOoqvCcaMtHzWeniUg=
+	t=1721760104; cv=none; b=KjXybEVNtEvCJWh9nyoR4LzqbdfB1Pa8tfTLNuC8V+rUyx0nlE+kRyK2ZsbPNeD1dFSq46Fc2cxxez5uRF+If071mKN6VqT5zvobkQu/j7o+Fs+G9cNG/vRSd07wtStTfsH5vyEPGrOjqiPdcZJ6PY3E/mnuFi1u29y/SFQ5R+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759569; c=relaxed/simple;
-	bh=sX2MMAJs+R8KKazn3rrX2k6woN0KQPeFW+ip2dJccPw=;
+	s=arc-20240116; t=1721760104; c=relaxed/simple;
+	bh=mZPjkiwws9hk7QgffD6XPP9CKtlbVOy0qi3tEZwRgbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sLe3bjF/sv/ObeDk+Gl9KqPZFOrFyO1QFaYrmI6A71QK9drODiSB94cJ5J+EhzeHWjOFoRVbDoM/3oNoZbs5SNlSx4MYiMOKYpW/wNkDWNoHXI751IS9zakjitXGUdZKBMg/fYAbRsEIEqp3t5IWQnJEJzbCrJQF//ee8+9RSOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyqbxh6X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF412C4AF0B;
-	Tue, 23 Jul 2024 18:32:48 +0000 (UTC)
+	 MIME-Version; b=rC4j9+GXKUsqNMUGb5zHnv6aO2yX+/BNazTQA9pEH9YVAq8fkM3QAJWBndnXUj/3soMIyvy0SqY/qsr4AqMAsJ/TMjjWs3yEEQCiGoJxSiQjsWfW2Is0MuP2mSIEJqc2Og+cToQrQFrGjIKa0xjqDbopnkyzdKlvqtkO8scvcKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imE2ves5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F88C4AF0A;
+	Tue, 23 Jul 2024 18:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759569;
-	bh=sX2MMAJs+R8KKazn3rrX2k6woN0KQPeFW+ip2dJccPw=;
+	s=korg; t=1721760104;
+	bh=mZPjkiwws9hk7QgffD6XPP9CKtlbVOy0qi3tEZwRgbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kyqbxh6XZDytW0YiwZKjuEm+m4EPfbFqU/gHHSFeXDx0aCPk1mPVY3hPqSyIyjXz8
-	 ExrqEv1JZ4TtDymkeQrk7OAZq8xXD7WC4RiAZct5bgcb03mshyAaNFbPI3RBJ9IBCU
-	 CyBPpgfrn1fbCGOWTC20nyf6xmARde5H3mcK95QI=
+	b=imE2ves5Kw0MdGAyPVaRGPXByJz0IiMadDByLXku7QklwHdsT65RlIkng4E+AJKPd
+	 QD9b1Gacy88gu3hyIL+IQW0HVMv28okUb+jVpQ+fV564CjtJ0tPDmRpGm5SDZdVNWy
+	 SFttDdXPZFW/yWDqJOZTs5UEwZ+qtJgfgreSmM2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Al Viro <viro@zeniv.linux.org.uk>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/129] KVM: PPC: Book3S HV: Prevent UAF in kvm_spapr_tce_attach_iommu_group()
+Subject: [PATCH 6.9 073/163] KVM: PPC: Book3S HV: Prevent UAF in kvm_spapr_tce_attach_iommu_group()
 Date: Tue, 23 Jul 2024 20:23:22 +0200
-Message-ID: <20240723180406.875977694@linuxfoundation.org>
+Message-ID: <20240723180146.290437500@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -137,10 +137,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 13 insertions(+), 5 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-index 93b695b289e99..395659f2f4c8e 100644
+index b569ebaa590e2..3ff3de9a52acf 100644
 --- a/arch/powerpc/kvm/book3s_64_vio.c
 +++ b/arch/powerpc/kvm/book3s_64_vio.c
-@@ -129,14 +129,16 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+@@ -130,14 +130,16 @@ long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
  	}
  	rcu_read_unlock();
  
@@ -161,7 +161,7 @@ index 93b695b289e99..395659f2f4c8e 100644
  
  	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
  		struct iommu_table *tbltmp = table_group->tables[i];
-@@ -157,8 +159,10 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+@@ -158,8 +160,10 @@ long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
  			break;
  		}
  	}
@@ -173,7 +173,7 @@ index 93b695b289e99..395659f2f4c8e 100644
  
  	rcu_read_lock();
  	list_for_each_entry_rcu(stit, &stt->iommu_tables, next) {
-@@ -169,6 +173,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+@@ -170,6 +174,7 @@ long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
  			/* stit is being destroyed */
  			iommu_tce_table_put(tbl);
  			rcu_read_unlock();
@@ -181,7 +181,7 @@ index 93b695b289e99..395659f2f4c8e 100644
  			return -ENOTTY;
  		}
  		/*
-@@ -176,6 +181,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+@@ -177,6 +182,7 @@ long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
  		 * its KVM reference counter and can return.
  		 */
  		rcu_read_unlock();
@@ -189,7 +189,7 @@ index 93b695b289e99..395659f2f4c8e 100644
  		return 0;
  	}
  	rcu_read_unlock();
-@@ -183,6 +189,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+@@ -184,6 +190,7 @@ long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
  	stit = kzalloc(sizeof(*stit), GFP_KERNEL);
  	if (!stit) {
  		iommu_tce_table_put(tbl);
@@ -197,7 +197,7 @@ index 93b695b289e99..395659f2f4c8e 100644
  		return -ENOMEM;
  	}
  
-@@ -191,6 +198,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+@@ -192,6 +199,7 @@ long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
  
  	list_add_rcu(&stit->next, &stt->iommu_tables);
  
