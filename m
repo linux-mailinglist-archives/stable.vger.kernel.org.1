@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-60950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857E193A626
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4294993A5C5
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4348028224F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBACA1F22C5A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E734E156F3A;
-	Tue, 23 Jul 2024 18:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826281586CB;
+	Tue, 23 Jul 2024 18:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qrf2ET+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpmgBmIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A439613D600;
-	Tue, 23 Jul 2024 18:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40450156F29;
+	Tue, 23 Jul 2024 18:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759530; cv=none; b=sXZqHqwGTK1KkOeCSbOjTKE7kyzpQq2bLAm+yVevY4gpgDxlH9wWETvICcJRX7wHFJPVJF9kwDfModeR3kWaMNCvLUmyH0DErbyJIh/E5TerY9nV3XprVnEU7sovuUhSCEw1kgb3FFm2lhBfLQXenyBs94DUfE5D/M6PsxfAYQQ=
+	t=1721759285; cv=none; b=h4gRVrERsCNJTOOAxmHB47YRxGzWuaCMv8W8DTp9uLveoQhP0ZTvj0TPv6otEAA3JpWB4+8+SzmIxVyBKBY9pG2fa94y5Rdfw9RoiwIfuz/leY7SS2L1Sl/SlgamDWsZ8IEVAE19IBqhBuK/UNC2OYkJbthkkcwyW2J18uBxLBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759530; c=relaxed/simple;
-	bh=H9b8+UR1u/LwoDrpdEIm7urzQnAoZJeF2BcJivxBqE8=;
+	s=arc-20240116; t=1721759285; c=relaxed/simple;
+	bh=8LPSiDZI/m2fBKDqzWJmeHIsZqPr3iNMErmQImxD27g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yw3Oa11Bu6l5MT5bxJHQvpnoATYIyjh82XutXxcGOTySeDnlOvHMm999288HJS1bxOutWN9s5wiCPBisa4ffNJ0a762CKiMopvXzEQH0ORYZUnyVrT7Kx+Uopn4iSgsKRy8poRQWYfFqrSqeZuG/xQ3v8T38TvbPBmBB3KXYIRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qrf2ET+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08C0C4AF0A;
-	Tue, 23 Jul 2024 18:32:09 +0000 (UTC)
+	 MIME-Version; b=bITyT2Hn/S3AMFAIhFtt0fYXwI/A7oJixKo2loedJ9PJMvJX7LihvRnnC45hs7OJiXTxlkuXQmOFdmx+i/s4f7Jp8gQplH/X6JeZbOK9WiOeDBDjmmwV/nOXoH/Xo/e7Gd5t2uIie3eAovQ/C/oC3Is81ct7x2yokm37Asra67E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpmgBmIt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93AEC4AF0A;
+	Tue, 23 Jul 2024 18:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759530;
-	bh=H9b8+UR1u/LwoDrpdEIm7urzQnAoZJeF2BcJivxBqE8=;
+	s=korg; t=1721759285;
+	bh=8LPSiDZI/m2fBKDqzWJmeHIsZqPr3iNMErmQImxD27g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qrf2ET+fxnVV4354qE9y7IeC5FM38aMEKv4ix4dLDhg1Hi7IX9oO2JMfsz2rmea+5
-	 oglHQQ+WsDEV2Q5bqfBMEiOueyKnHKfEbujYLnyjLFA90aws3Vi5vHmMMoKair7ImI
-	 JcnWK5dfPApi1D4TTg+mF/8xL/hI5iDwDVDnckMc=
+	b=SpmgBmItgrrdPTZn8/7+6WckYqazJfNecXFQ+6SE+xZkLDDFdzvTTBhaAxElYTlUX
+	 37tyRgRpX5XkcK7bcuvJ8aDb6kwfF8CC8MTDKxNPPU+p8gTRsPap+If38siXg9ET4m
+	 ivR0/e6OGRUcrwRovSbOYTfHAUgOrQ9h+JRKNJuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/129] cachefiles: make on-demand read killable
-Date: Tue, 23 Jul 2024 20:23:10 +0200
-Message-ID: <20240723180406.414498340@linuxfoundation.org>
+Subject: [PATCH 6.1 034/105] kconfig: gconf: give a proper initial state to the Save button
+Date: Tue, 23 Jul 2024 20:23:11 +0200
+Message-ID: <20240723180404.549822646@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit bc9dde6155464e906e630a0a5c17a4cab241ffbb ]
+[ Upstream commit 46edf4372e336ef3a61c3126e49518099d2e2e6d ]
 
-Replacing wait_for_completion() with wait_for_completion_killable() in
-cachefiles_ondemand_send_req() allows us to kill processes that might
-trigger a hunk_task if the daemon is abnormal.
+Currently, the initial state of the "Save" button is always active.
 
-But now only CACHEFILES_OP_READ is killable, because OP_CLOSE and OP_OPEN
-is initiated from kworker context and the signal is prohibited in these
-kworker.
+If none of the CONFIG options are changed while loading the .config
+file, the "Save" button should be greyed out.
 
-Note that when the req in xas changes, i.e. xas_load(&xas) != req, it
-means that a process will complete the current request soon, so wait
-again for the request to be completed.
+This can be fixed by calling conf_read() after widget initialization.
 
-In addition, add the cachefiles_ondemand_finish_req() helper function to
-simplify the code.
-
-Suggested-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240522114308.2402121-13-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/ondemand.c | 40 ++++++++++++++++++++++++++++------------
- 1 file changed, 28 insertions(+), 12 deletions(-)
+ scripts/kconfig/gconf.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 37489ca2e8571..2185e2908dba8 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -380,6 +380,20 @@ static struct cachefiles_req *cachefiles_ondemand_select_req(struct xa_state *xa
- 	return NULL;
- }
+diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
+index 17adabfd6e6bf..5d1404178e482 100644
+--- a/scripts/kconfig/gconf.c
++++ b/scripts/kconfig/gconf.c
+@@ -1481,7 +1481,6 @@ int main(int ac, char *av[])
  
-+static inline bool cachefiles_ondemand_finish_req(struct cachefiles_req *req,
-+						  struct xa_state *xas, int err)
-+{
-+	if (unlikely(!xas || !req))
-+		return false;
-+
-+	if (xa_cmpxchg(xas->xa, xas->xa_index, req, NULL, 0) != req)
-+		return false;
-+
-+	req->error = err;
-+	complete(&req->done);
-+	return true;
-+}
-+
- ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 					char __user *_buffer, size_t buflen)
- {
-@@ -443,16 +457,8 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- out:
- 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
- 	/* Remove error request and CLOSE request has no reply */
--	if (ret || msg->opcode == CACHEFILES_OP_CLOSE) {
--		xas_reset(&xas);
--		xas_lock(&xas);
--		if (xas_load(&xas) == req) {
--			req->error = ret;
--			complete(&req->done);
--			xas_store(&xas, NULL);
--		}
--		xas_unlock(&xas);
--	}
-+	if (ret || msg->opcode == CACHEFILES_OP_CLOSE)
-+		cachefiles_ondemand_finish_req(req, &xas, ret);
- 	cachefiles_req_put(req);
- 	return ret ? ret : n;
- }
-@@ -557,8 +563,18 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
- 		goto out;
+ 	conf_parse(name);
+ 	fixup_rootmenu(&rootmenu);
+-	conf_read(NULL);
  
- 	wake_up_all(&cache->daemon_pollwq);
--	wait_for_completion(&req->done);
--	ret = req->error;
-+wait:
-+	ret = wait_for_completion_killable(&req->done);
-+	if (!ret) {
-+		ret = req->error;
-+	} else {
-+		ret = -EINTR;
-+		if (!cachefiles_ondemand_finish_req(req, &xas, ret)) {
-+			/* Someone will complete it soon. */
-+			cpu_relax();
-+			goto wait;
-+		}
-+	}
- 	cachefiles_req_put(req);
- 	return ret;
- out:
+ 	/* Load the interface and connect signals */
+ 	init_main_window(glade_file);
+@@ -1489,6 +1488,8 @@ int main(int ac, char *av[])
+ 	init_left_tree();
+ 	init_right_tree();
+ 
++	conf_read(NULL);
++
+ 	switch (view_mode) {
+ 	case SINGLE_VIEW:
+ 		display_tree_part();
 -- 
 2.43.0
 
