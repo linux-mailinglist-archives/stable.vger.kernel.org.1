@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-61085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3631B93A6CE
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C5393A58F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:25:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5FE3B2185D
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF8B1282ED4
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1495B158A08;
-	Tue, 23 Jul 2024 18:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8255A1586E7;
+	Tue, 23 Jul 2024 18:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvsJe1NC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scENhZqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75481586CB;
-	Tue, 23 Jul 2024 18:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3B7156F37;
+	Tue, 23 Jul 2024 18:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759928; cv=none; b=pq5q1No717cv5SpaR8efDGMlt9GAgorcytssOhcp4KtPuqf3xfNbchbC8DanR6tYnDzKgpQZAx6n4mYndZBBuGH+COJRUqeHn2zieW3h43KucaSSksVO2mgdY+3s8LUeHCo9YM7ko0CSglsuJUE/I1Exw0GYizCmnYgw1csSrZw=
+	t=1721759146; cv=none; b=ZqoNOLgwzgbMFSvnE8FYlhQ14H/JdzxTtWdNr81R8QBIJI1sSy4Ee5LSSUjFaB4YTgv+u13it8HCjdc3iTDtQKgd+Y0xGVlZxuHoz8F0seJrWMInxzek0PmECXXcALuUp51BJ1um0Ife170zBPKm+HuCYZv/L/rGjppyl8uHkx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759928; c=relaxed/simple;
-	bh=7Kb6fA3FhOkCE1X2AH1vXxPO5OacMg5tLa4I2APKoMM=;
+	s=arc-20240116; t=1721759146; c=relaxed/simple;
+	bh=WPsgS43AEmgRXpiIPAo7KEEIMA9pH7hZuqSJcAnWbrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oi6yM5azF5OxM6oiEluxDtarkdzyko10DA3lTbkOBYLqUesH5pwy5bnpPnJtTw5RHFA5LEDizRtDpzHYdSZucWKEmMcATxsNCalUmq/XmOab1c9Ibp/LsCPYEl3L9sGSr3bGikf9k2OHYGQ7xDIIi18Fnt2nvj3UBtvET7Rc7yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvsJe1NC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487ECC4AF09;
-	Tue, 23 Jul 2024 18:38:48 +0000 (UTC)
+	 MIME-Version; b=udlss+Xq09a0I7e6FPFDvrfEo3+m9zEkamZAP9QTmJaq2+NKobILerNHFwAAvgasc8qjRR4LqME4FXxPa+/UN1OZAReZB0kziceZk6CCKp+DkGRU7JZ7L1unls9i9x8K6VOI2cTvwLgUT5UP3EmILtDmIYnEBUyZR/nNi3cIHRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scENhZqO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E96C4AF09;
+	Tue, 23 Jul 2024 18:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759928;
-	bh=7Kb6fA3FhOkCE1X2AH1vXxPO5OacMg5tLa4I2APKoMM=;
+	s=korg; t=1721759146;
+	bh=WPsgS43AEmgRXpiIPAo7KEEIMA9pH7hZuqSJcAnWbrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvsJe1NCmTErrCIwAux4Gi44Pryc4ZO2cqQLu9AAftYyZucauYNHGFztG93M+DNSF
-	 F1qE8vTaaq3n1/HNCPpEZJpOCkI2xBSq0FyAkllsq97KazdcmCt1aiJXbmRQF1zldv
-	 Lxuq9T4ADQbWNVWP6nSxLqXZCDWsDp2zuChBpMfs=
+	b=scENhZqOST3J1evelDvnS0MPSdIUcwOKLDnw+xJ5TliVJCLTOpdlyXpjrMbTXGVIj
+	 vvgbDuRBiTjB4FBoSx7q0Pz3g27E7/a7jEtAdBurFvgG9HrAS7TlgedLHyO0NeWMZW
+	 Hg8x2V4eRNORd1TSQgUaO3lir64jHQaJdL1lLmIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Aloni <dan.aloni@vastdata.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 046/163] nfs: propagate readlink errors in nfs_symlink_filler
+Subject: [PATCH 6.1 018/105] wifi: mac80211: mesh: init nonpeer_pm to active by default in mesh sdata
 Date: Tue, 23 Jul 2024 20:22:55 +0200
-Message-ID: <20240723180145.251569344@linuxfoundation.org>
+Message-ID: <20240723180403.595234119@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit 134d0b3f2440cdddd12fc3444c9c0f62331ce6fc ]
+[ Upstream commit 6f6291f09a322c1c1578badac8072d049363f4e6 ]
 
-There is an inherent race where a symlink file may have been overriden
-(by a different client) between lookup and readlink, resulting in a
-spurious EIO error returned to userspace. Fix this by propagating back
-ESTALE errors such that the vfs will retry the lookup/get_link (similar
-to nfs4_file_open) at least once.
+With a ath9k device I can see that:
+	iw phy phy0 interface add mesh0 type mp
+	ip link set mesh0 up
+	iw dev mesh0 scan
 
-Cc: Dan Aloni <dan.aloni@vastdata.com>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Will start a scan with the Power Management bit set in the Frame Control Field.
+This is because we set this bit depending on the nonpeer_pm variable of the mesh
+iface sdata and when there are no active links on the interface it remains to
+NL80211_MESH_POWER_UNKNOWN.
+
+As soon as links starts to be established, it wil switch to
+NL80211_MESH_POWER_ACTIVE as it is the value set by befault on the per sta
+nonpeer_pm field.
+As we want no power save by default, (as expressed with the per sta ini values),
+lets init it to the expected default value of NL80211_MESH_POWER_ACTIVE.
+
+Also please note that we cannot change the default value from userspace prior to
+establishing a link as using NL80211_CMD_SET_MESH_CONFIG will not work before
+NL80211_CMD_JOIN_MESH has been issued. So too late for our initial scan.
+
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Link: https://msgid.link/20240527141759.299411-1-nico.escande@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/symlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/mesh.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/symlink.c b/fs/nfs/symlink.c
-index 0e27a2e4e68b8..13818129d268f 100644
---- a/fs/nfs/symlink.c
-+++ b/fs/nfs/symlink.c
-@@ -41,7 +41,7 @@ static int nfs_symlink_filler(struct file *file, struct folio *folio)
- error:
- 	folio_set_error(folio);
- 	folio_unlock(folio);
--	return -EIO;
-+	return error;
- }
- 
- static const char *nfs_get_link(struct dentry *dentry,
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index 5a99b8f6e465f..9c9b47d153c28 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -1625,6 +1625,7 @@ void ieee80211_mesh_init_sdata(struct ieee80211_sub_if_data *sdata)
+ 	ifmsh->last_preq = jiffies;
+ 	ifmsh->next_perr = jiffies;
+ 	ifmsh->csa_role = IEEE80211_MESH_CSA_ROLE_NONE;
++	ifmsh->nonpeer_pm = NL80211_MESH_POWER_ACTIVE;
+ 	/* Allocate all mesh structures when creating the first mesh interface. */
+ 	if (!mesh_allocated)
+ 		ieee80211s_init();
 -- 
 2.43.0
 
