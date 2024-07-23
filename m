@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FEDB93A624
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F9B93A6DC
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CA35B2261A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 857D8284161
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0506D158858;
-	Tue, 23 Jul 2024 18:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C613513D600;
+	Tue, 23 Jul 2024 18:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKlGIP5W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9m8Z+6M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E681586CB;
-	Tue, 23 Jul 2024 18:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9EC1581F4;
+	Tue, 23 Jul 2024 18:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759521; cv=none; b=Yex2BJpUiKEI4V2p1pQ9LXbykvZ+ew/2mqdvX/OWm9o/hIz3JW3LzQIjiuc67ec5AVSe+hjhokmZUjJZnXHRciSEA0XgxeMeMj5uvtKZ1zhmv/b8hurYRyVmjliWzDznJzQsBpwWeqAbS549EPAv5cpyDvivLpnOg/iusD1FeVc=
+	t=1721759968; cv=none; b=CvyYihOLOu8WNxpYzkB3R9s364X1XoguAl8+D6czvOTyInysf+w235D77qtKGLQgvL86SqCGRjAxS5J+HX2JBxa49QMhpc1CSbffydXRX5LGbNqkGdCem6IMONHPeYIHuFhqSLmPEoRGfux0HjALVZ6lOfsACjrNQhLtkdL5I88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759521; c=relaxed/simple;
-	bh=sW9DboHZtV6ehGxJtSolLHOiYKhmcieDyYUQ0HGsh9E=;
+	s=arc-20240116; t=1721759968; c=relaxed/simple;
+	bh=C9MfPwGaFsn8T1lWUqC3cnKpd9Kk3T3/MmPnifMJnM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKNLQnb+V5rglwkEnCDJrYDEJiyuvQ1AvS4+wt7cTnMW22cel07w6afpO/0+E/797OU/BB3Uk2Rfk5MgqDrWDACUqkLrBUsraltqJILEK0Cpw3fe9hsKMybUtPkziAOuz2wBPqIeCMK9F3d3jzSANAnAqL+dwTsX+Yq8unY329k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKlGIP5W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C27AC4AF09;
-	Tue, 23 Jul 2024 18:32:00 +0000 (UTC)
+	 MIME-Version; b=B3w9Kik/lgIGUV8iXUQwSQAIKFsObCN43SXHAOiH2fAIE6Pcrw67SKU/wgs4Miv7MfcRooCCn9M25wiG7CAvFQqxL+c9ZmXUUBELOrqb/brCAD+kjl+41o+hgD0jDBX+VVuq5bVEckPe4tdwbx0ICN9UOSqfBqoAbYXuGTAZfDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9m8Z+6M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3F1C4AF0A;
+	Tue, 23 Jul 2024 18:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759521;
-	bh=sW9DboHZtV6ehGxJtSolLHOiYKhmcieDyYUQ0HGsh9E=;
+	s=korg; t=1721759968;
+	bh=C9MfPwGaFsn8T1lWUqC3cnKpd9Kk3T3/MmPnifMJnM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xKlGIP5Wwx3hxwcDt2m4iTe1797RApHkXabwNSf14T5ILTQ186UXC5Dd4FgFmdgIC
-	 vIQjxLw3ARczg4VDApAzt34FcZ+9vqUc9cZyS2ioxY9NJNa+DruMgfQDl61KbVYlge
-	 XT1gmIy5q8APFge5CFFwvFZmQAO3dIl8LIAxLugA=
+	b=l9m8Z+6MPDo9DnnsP2kFE7bPpaf3hlrY0S77wuZrut3yJnLaa8bha75rG4s5JCcAG
+	 x8U9uBZNFZCbJVZLdOq5NOkI8wcSxi4D24URI0z3XDWT+VAY+q9jBDroU83XY/Ho4o
+	 dRkX86FZhy3aYOhDcH26UI7UZvRh74SyIINIvAfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mayhew <smayhew@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/129] nfs: dont invalidate dentries on transient errors
+Subject: [PATCH 6.9 058/163] drm/exynos: dp: drop driver owner initialization
 Date: Tue, 23 Jul 2024 20:23:07 +0200
-Message-ID: <20240723180406.300009651@linuxfoundation.org>
+Message-ID: <20240723180145.716171367@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 0c8c7c559740d2d8b66048162af6c4dba8f0c88c ]
+[ Upstream commit 1f3512cdf8299f9edaea9046d53ea324a7730bab ]
 
-This is a slight variation on a patch previously proposed by Neil Brown
-that never got merged.
+Core in platform_driver_register() already sets the .owner, so driver
+does not need to.  Whatever is set here will be anyway overwritten by
+main driver calling platform_driver_register().
 
-Prior to commit 5ceb9d7fdaaf ("NFS: Refactor nfs_lookup_revalidate()"),
-any error from nfs_lookup_verify_inode() other than -ESTALE would result
-in nfs_lookup_revalidate() returning that error (-ESTALE is mapped to
-zero).
-
-Since that commit, all errors result in nfs_lookup_revalidate()
-returning zero, resulting in dentries being invalidated where they
-previously were not (particularly in the case of -ERESTARTSYS).
-
-Fix it by passing the actual error code to nfs_lookup_revalidate_done(),
-and leaving the decision on whether to  map the error code to zero or
-one to nfs_lookup_revalidate_done().
-
-A simple reproducer is to run the following python code in a
-subdirectory of an NFS mount (not in the root of the NFS mount):
-
----8<---
-import os
-import multiprocessing
-import time
-
-if __name__=="__main__":
-    multiprocessing.set_start_method("spawn")
-
-    count = 0
-    while True:
-        try:
-            os.getcwd()
-            pool = multiprocessing.Pool(10)
-            pool.close()
-            pool.terminate()
-            count += 1
-        except Exception as e:
-            print(f"Failed after {count} iterations")
-            print(e)
-            break
----8<---
-
-Prior to commit 5ceb9d7fdaaf, the above code would run indefinitely.
-After commit 5ceb9d7fdaaf, it fails almost immediately with -ENOENT.
-
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/exynos/exynos_dp.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 2a0f069d5a096..39f7549afcf5b 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -1625,7 +1625,16 @@ nfs_lookup_revalidate_done(struct inode *dir, struct dentry *dentry,
- 	switch (error) {
- 	case 1:
- 		break;
--	case 0:
-+	case -ETIMEDOUT:
-+		if (inode && (IS_ROOT(dentry) ||
-+			      NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL))
-+			error = 1;
-+		break;
-+	case -ESTALE:
-+	case -ENOENT:
-+		error = 0;
-+		fallthrough;
-+	default:
- 		/*
- 		 * We can't d_drop the root of a disconnected tree:
- 		 * its d_hash is on the s_anon list and d_drop() would hide
-@@ -1680,18 +1689,8 @@ static int nfs_lookup_revalidate_dentry(struct inode *dir,
- 
- 	dir_verifier = nfs_save_change_attribute(dir);
- 	ret = NFS_PROTO(dir)->lookup(dir, dentry, fhandle, fattr);
--	if (ret < 0) {
--		switch (ret) {
--		case -ESTALE:
--		case -ENOENT:
--			ret = 0;
--			break;
--		case -ETIMEDOUT:
--			if (NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL)
--				ret = 1;
--		}
-+	if (ret < 0)
- 		goto out;
--	}
- 
- 	/* Request help from readdirplus */
- 	nfs_lookup_advise_force_readdirplus(dir, flags);
-@@ -1735,7 +1734,7 @@ nfs_do_lookup_revalidate(struct inode *dir, struct dentry *dentry,
- 			 unsigned int flags)
- {
- 	struct inode *inode;
--	int error;
-+	int error = 0;
- 
- 	nfs_inc_stats(dir, NFSIOS_DENTRYREVALIDATE);
- 	inode = d_inode(dentry);
-@@ -1780,7 +1779,7 @@ nfs_do_lookup_revalidate(struct inode *dir, struct dentry *dentry,
- out_bad:
- 	if (flags & LOOKUP_RCU)
- 		return -ECHILD;
--	return nfs_lookup_revalidate_done(dir, dentry, inode, 0);
-+	return nfs_lookup_revalidate_done(dir, dentry, inode, error);
- }
- 
- static int
+diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
+index f48c4343f4690..3e6d4c6aa877e 100644
+--- a/drivers/gpu/drm/exynos/exynos_dp.c
++++ b/drivers/gpu/drm/exynos/exynos_dp.c
+@@ -285,7 +285,6 @@ struct platform_driver dp_driver = {
+ 	.remove_new	= exynos_dp_remove,
+ 	.driver		= {
+ 		.name	= "exynos-dp",
+-		.owner	= THIS_MODULE,
+ 		.pm	= pm_ptr(&exynos_dp_pm_ops),
+ 		.of_match_table = exynos_dp_match,
+ 	},
 -- 
 2.43.0
 
