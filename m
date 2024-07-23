@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B9293A727
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 803C193A67A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9712A1F238ED
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3574B1F221FE
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACA2158873;
-	Tue, 23 Jul 2024 18:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8019E158A3E;
+	Tue, 23 Jul 2024 18:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qd7F1cm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S8ShobKH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF951581F4;
-	Tue, 23 Jul 2024 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F45915887F;
+	Tue, 23 Jul 2024 18:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760173; cv=none; b=TMgQ13EMBU1mGon1PytxZfei5/GUwGVmHR1+/iiMfYwjFvc9QqRlX/lxu70HLFJhe/byO4SOfVh76lvvdCWQ6kaY05VMJCHzye3sEgH990+8X2IWkR9A6QZ6bqnX5LbGORN6oa7tFTe5rKqyK2+iZF1+wtJgq/Wcv8gVth/8wFc=
+	t=1721759724; cv=none; b=byZKwVb1vP5N1WccHEZ8mNLH/un1TBU8Tkx1uJpcvMc7HzL13KLaHPZIRoGa46lEBqdfqncmS42tNU6m6qLmay6vATlFepjjMpIcmQi7OjRh/LXyxDNZ3Yq/E4pL6ewAA/G6i1MDGDBibLupYEiIByzKbBL8vOGvU76tzww2m8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760173; c=relaxed/simple;
-	bh=iYiB4xWqepMs0J5fwrFKRDCBEhWQgkZhWIhKRB2W+rY=;
+	s=arc-20240116; t=1721759724; c=relaxed/simple;
+	bh=/K9urH5O2G+uikkcUXfBSpPi7X75JwH5gBsezKkpKIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LqRW4YcC/K/tnqsIfreHwv4qeFNoGz5S2jfpEbk2EHIW4eIwUehQTYzUx3JC7Ei4yLF/g+FNHNS/kKVZ0DaiG0qxcf1J4vwexyVW2I4fcCmyKEUrTgSdpEzEjrtUWHdKkEzE6bYfti00FokDVqOovIFRymFwxf+bTU51Jzy52ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qd7F1cm6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA1BC4AF0A;
-	Tue, 23 Jul 2024 18:42:51 +0000 (UTC)
+	 MIME-Version; b=XukhRoST8LBr5WzKOF+HoCUDFuFresa3BCvvYIHnvuIucHNhjX42KblONyfw9xKimsFSkxT2iJoDTj5bN8fSUj+FKaj7HxnhueXnbUjnDyvCMS77lb88D6145d/hySyKiKe6NokJQcHvQvJfj3TEZL02b+fXW+8KNyAKkiyskC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S8ShobKH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD24C4AF0A;
+	Tue, 23 Jul 2024 18:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760172;
-	bh=iYiB4xWqepMs0J5fwrFKRDCBEhWQgkZhWIhKRB2W+rY=;
+	s=korg; t=1721759724;
+	bh=/K9urH5O2G+uikkcUXfBSpPi7X75JwH5gBsezKkpKIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qd7F1cm6flH78rx+rqOHZZOvdX1vJRyQ7pUb2pTpJnQEyFg4sBGK0/seAhL2DWAnB
-	 IRyWyzJLQWB6eC4IxSWG/XjnwJDNOZY7Ur8R2+ILbkoJWPpHCWSwpmbjmA9B+xIGP8
-	 L6Z+2gTUyfQtg/9vyQN0q7IPCrJkIP6p3nWIF8oE=
+	b=S8ShobKHK+RYVQBejgmNCC5e5X6CoZqP2pslAjKp4rmmh7aV1ELTK5vd6ErP7krBd
+	 OqjV2DBzuflFi32gFqCn+rEneVNd8OySGh0c220G3JW0ipDD7o0t5Ax8XrCFBKe34o
+	 onGkUO2VjjntCqiJP71wTQn3+ifKF8uZ5lgyqiVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ganesh Goudar <ganeshgr@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 126/163] powerpc/eeh: avoid possible crash when edev->pdev changes
+Subject: [PATCH 6.6 107/129] wifi: iwlwifi: properly set WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK
 Date: Tue, 23 Jul 2024 20:24:15 +0200
-Message-ID: <20240723180148.340889144@linuxfoundation.org>
+Message-ID: <20240723180408.926142603@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit a1216e62d039bf63a539bbe718536ec789a853dd ]
+[ Upstream commit 4ec17ce716bdaf680288ce680b4621b52483cc96 ]
 
-If a PCI device is removed during eeh_pe_report_edev(), edev->pdev
-will change and can cause a crash, hold the PCI rescan/remove lock
-while taking a copy of edev->pdev->bus.
+The WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK should be set based on the
+WOWLAN_KEK_KCK_MATERIAL command version. Currently, the command
+version in the firmware has advanced to 4, which prevents the
+flag from being set correctly, fix that.
 
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240617140240.580453-1-ganeshgr@linux.ibm.com
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240703064026.a0f162108575.If1a9785727d2a1b0197a396680965df1b53d4096@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh_pe.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
-index e0ce812796241..7d1b50599dd6c 100644
---- a/arch/powerpc/kernel/eeh_pe.c
-+++ b/arch/powerpc/kernel/eeh_pe.c
-@@ -849,6 +849,7 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
- {
- 	struct eeh_dev *edev;
- 	struct pci_dev *pdev;
-+	struct pci_bus *bus = NULL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 37f628a9b8115..7d0032a51f2d3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -600,7 +600,7 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 		hw->wiphy->features |= NL80211_FEATURE_WFA_TPC_IE_IN_PROBES;
  
- 	if (pe->type & EEH_PE_PHB)
- 		return pe->phb->bus;
-@@ -859,9 +860,11 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
+ 	if (iwl_fw_lookup_cmd_ver(mvm->fw, WOWLAN_KEK_KCK_MATERIAL,
+-				  IWL_FW_CMD_VER_UNKNOWN) == 3)
++				  IWL_FW_CMD_VER_UNKNOWN) >= 3)
+ 		hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK;
  
- 	/* Retrieve the parent PCI bus of first (top) PCI device */
- 	edev = list_first_entry_or_null(&pe->edevs, struct eeh_dev, entry);
-+	pci_lock_rescan_remove();
- 	pdev = eeh_dev_to_pci_dev(edev);
- 	if (pdev)
--		return pdev->bus;
-+		bus = pdev->bus;
-+	pci_unlock_rescan_remove();
- 
--	return NULL;
-+	return bus;
- }
+ 	if (fw_has_api(&mvm->fw->ucode_capa,
 -- 
 2.43.0
 
