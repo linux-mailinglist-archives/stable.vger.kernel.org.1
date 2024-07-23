@@ -1,121 +1,206 @@
-Return-Path: <stable+bounces-60740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6441939DD6
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:32:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE1A939E3A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8934A1F230F5
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 09:32:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD6B11C2096B
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 09:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2E0150987;
-	Tue, 23 Jul 2024 09:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D9414D6FE;
+	Tue, 23 Jul 2024 09:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Vn1U5ZZs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nligh5b3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B209414F102
-	for <stable@vger.kernel.org>; Tue, 23 Jul 2024 09:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D585014B94E;
+	Tue, 23 Jul 2024 09:49:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721727001; cv=none; b=j1fV4DDPKpMbUOduf/eLM7m0pJtZKFvcxN8x46xUD17ioCbfq6aKZWbNG1/XBX0RiqWQHREBzpaOlHaLbjr8KWCPC0aeeFoPolVhu8Z1d04BqMD2UxcN8almTGwDGdnv0MUJsu2W7hjHfzCjSaTUPQeHmREjK/bMz59MATp2wXw=
+	t=1721728188; cv=none; b=AZ3mV/I8mSTBJ9noTMFZ0svxeNfGAtWgR0gb4HfMYRWrIPIi1m4mZ9X2WgMYjw11zKUTF7vZIUeLMLap2mIX/lwPnBNiPcxBwGL79XOlhC8HqTgOCaMNra3EpFgIM9W5lmSOREEGD+eR8S0vJ/+cwmmhgNpl/su/cG8MWuRE1CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721727001; c=relaxed/simple;
-	bh=FAuZ0UAD+vdkUjJ0UlsabJSfZQUX4W2wFDKeefUEpgY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HpHfo/1veWjCOmOZNBb33YT9slOKqtQay3UkE0Wz+r00J8xknw8wra41SU07g/FwnQVNl8SeFh8FUu1Law6hrlTHBSchu3fyVBdUjSD3u3N7d6ypNyi8JjFIW3FyMP7fKV61w5fuGGT9LDSlLlkjtKYOp2ghOMKQLRhxY7DXC/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Vn1U5ZZs; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a7a8a4f21aeso112218966b.2
-        for <stable@vger.kernel.org>; Tue, 23 Jul 2024 02:29:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721726998; x=1722331798; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+vEOkvbFbp3f9Cjx9et2nB6QuzkeXuOLLdhC4BThQFM=;
-        b=Vn1U5ZZsU9hWnaEzg8S6MRZrUZQ167gaEgEawz6E19Vmj5QL9k5h8ZnP0oBYF5yY2o
-         5lpxJslsC0+ZhYLh7SUCP7MsW9hriP0gg1f6C6UBa5I7tjNel724WwW+PGhj+Swwimsh
-         iJnZ920wbB2NW/MJCma5Vpz0+K2hz0cvr6PgeilDzauW/e+2NLgGGjo/diqkEPRU0dOe
-         k8GPWOp2GZ4G7NBCKDTP6WduDrHB5KAzhY/u/JgqICIaGZWdTH85A2F9VCZeMWSo/prh
-         mRS3CJ9DHr7R/uUqIvzUJTbeu+pp/VdDMlAIPgyQ3hQ8vuYyhx+o89lKMnBZ/wCZdXON
-         lAUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721726998; x=1722331798;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+vEOkvbFbp3f9Cjx9et2nB6QuzkeXuOLLdhC4BThQFM=;
-        b=ny7G/q1ZE5u/pkv/urx7rckIRBBSCB6bDaLu4+2ISZjxb49/SNzyZRF8TmX40QX+j7
-         4xjLR9jc7v357/uswp1WdCar7JpgTSuqRrc1oM0ieSf1i2HfyyFlL7ReLzWZK4PSUnJ4
-         XU12RNVlZjFOjnME6xDrnRXYYETs4WcTmARJfaSBQUx5e4XHmM1xoM0mYbj0Xk6tUVzd
-         /xwY0LloGiBVen8CFrQA03KBfqDGeXPbgY5pzCrAaw3pzaqrR0MoE+RnkhhP2l9djrp9
-         6wH7bsv+CGW0ZtTF0t8u91anW9HtomdtJ5h24XxLi28eEKVUQ1iq6kFLFoeFmFTCS04i
-         cPYA==
-X-Forwarded-Encrypted: i=1; AJvYcCXo8uu2bFjcjbg56AuYoW72I+46wWis7zL6ir7xWc1vecGhLe+wBWwjEJjjgT6ZGnehSDLtn+1hNDdMlJ9aVrtwVVjXT1t/
-X-Gm-Message-State: AOJu0YzX6Wzr7PntaJtSo3ZphYREd4mK0D/0CthUDxfn3wLPUpw5acKa
-	dvUaxWW29aRyi8b/FYnvSmidbL5puRyuD4pGxMqXta00+U/YnZIAmWt6WKzF1HQ=
-X-Google-Smtp-Source: AGHT+IGrHFX9JiQx/Eykl83Z2R2uBLLYPpx8qq7c7tKOtjvgIyTkMQ510ZsluMgEq+if+UaXKvMqgg==
-X-Received: by 2002:a17:907:9408:b0:a6f:1ad5:20e0 with SMTP id a640c23a62f3a-a7a4c2a3323mr642854066b.45.1721726998064;
-        Tue, 23 Jul 2024 02:29:58 -0700 (PDT)
-Received: from [192.168.0.3] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7a8a4de922sm84336066b.56.2024.07.23.02.29.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jul 2024 02:29:57 -0700 (PDT)
-Message-ID: <a0ac4c3b-3c46-4c89-9947-d91ba06309f4@linaro.org>
-Date: Tue, 23 Jul 2024 10:29:56 +0100
+	s=arc-20240116; t=1721728188; c=relaxed/simple;
+	bh=J7B57AhsYu2mlW6Prap8g6w5QYT11RX/aKaEuAJH0jg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VivEg27niFZtcC0iHeG/zQhLcOCAt1F8FQ+nWsHXvntr3mUm7FFhI66OXF0Qf+h9jk40sInvuRw9f62RvLf4Io8G8jzv6NPnqsxdtjZyo/Ty8UY3PKbwP73j+VZw+PMviX24a2I9KrACzISpfrF7LUinXG1qkDMZ4F8/P/QHqTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nligh5b3; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721728187; x=1753264187;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=J7B57AhsYu2mlW6Prap8g6w5QYT11RX/aKaEuAJH0jg=;
+  b=nligh5b33MPcgfOHFGQ/5Rv86Esy+9PDgrc+d1Rhxfdr6lR4dnA1trDa
+   yM5tKRJYoTj9wYMYSXVUt28g7oPjH5gTx5sbI9WQf0zkpoTGj215Gm69h
+   nslIC686iDceb4f+yc+GDZrxc5ww1/UYiZZ6E4DcLVsWqA+2nKEG8B9i6
+   /esxG5K74zzbhYB/6Ot1FwOL1gsWCuZkNkWzd+Lp2sgvnAoDMWD+tTr3O
+   wz9bmaW2qVmxoqUMeuy5riB6vylevAswPZM/r2507GAgVPsn/fa+oqjnO
+   LhT/rwzZyqhouraR6qHnRfIREKSsrWeJTj3GqCMkKlPf3ijc7sG2/Isrl
+   w==;
+X-CSE-ConnectionGUID: cOrCzIKqTbacxXJtJX65Rg==
+X-CSE-MsgGUID: 6uWo/WKhRQ2nws774q7h9A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11141"; a="23144342"
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; 
+   d="scan'208";a="23144342"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2024 02:49:46 -0700
+X-CSE-ConnectionGUID: +hxMdSabT9iOXv0AKysMLw==
+X-CSE-MsgGUID: 8UC81fLbQTCbkfSv8LEFig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; 
+   d="scan'208";a="56480785"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa005.fm.intel.com with ESMTP; 23 Jul 2024 02:49:42 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 6C554178; Tue, 23 Jul 2024 12:49:41 +0300 (EEST)
+Date: Tue, 23 Jul 2024 12:49:41 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Michal Hocko <mhocko@suse.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Borislav Petkov (AMD)" <bp@alien8.de>, 
+	Mel Gorman <mgorman@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Jianxiong Gao <jxgao@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: Fix endless reclaim on machines with unaccepted
+ memory.
+Message-ID: <dili5kn3xjjzamwmyxjgdkf5vvh6sqftm7qk4f2vbxuizfzlb2@xrtxlvlqaos5>
+References: <20240716130013.1997325-1-kirill.shutemov@linux.intel.com>
+ <ZpdwcOv9WiILZNvz@tiehlicka>
+ <xtcmz6b66wayqxzfio4funmrja7ezgmp3mvudjodt5xfx64rot@s6whj735oimb>
+ <Zpez1rkIQzVWxi7q@tiehlicka>
+ <brjw4kb3x4wohs4a6y5lqxr6a5zlz3m45hiyyyht5mgrqcryk7@m7mdyojo4h6a>
+ <564ff8e4-42c9-4a00-8799-eaa1bef9c338@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] clk: qcom: camcc-sc8280xp: Remove always-on GDSC
- hard-coding
-To: "Satya Priya Kakitapalli (Temp)" <quic_skakitap@quicinc.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
-Cc: dmitry.baryshkov@linaro.org, stable@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240715-linux-next-24-07-13-sc8280xp-camcc-fixes-v1-1-fadb5d9445c1@linaro.org>
- <f0d4b7a3-2b61-3d42-a430-34b30eeaa644@quicinc.com>
- <86068581-0ce7-47b5-b1c6-fda4f7d1037f@linaro.org>
- <02679111-1a35-b931-fecd-01c952553652@quicinc.com>
- <ce14800d-7411-47c5-ad46-6baa6fb678f4@linaro.org>
- <dd588276-8f1c-4389-7b3a-88f483b7072e@quicinc.com>
- <610efa39-e476-45ae-bd2b-3a0b8ea485dc@linaro.org>
- <6055cb14-de80-97bc-be23-7af8ffc89fcc@quicinc.com>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <6055cb14-de80-97bc-be23-7af8ffc89fcc@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <564ff8e4-42c9-4a00-8799-eaa1bef9c338@suse.cz>
 
-On 22/07/2024 09:57, Satya Priya Kakitapalli (Temp) wrote:
->> I have no idea. Why does it matter ?
->>
+On Tue, Jul 23, 2024 at 09:30:27AM +0200, Vlastimil Babka wrote:
+> On 7/22/24 4:07 PM, Kirill A. Shutemov wrote:
+> > On Wed, Jul 17, 2024 at 02:06:46PM +0200, Michal Hocko wrote:
+> >> Please try to investigate this further. The patch as is looks rather
+> >> questionable to me TBH. Spilling unaccepted memory into the reclaim
+> >> seems like something we should avoid if possible as this is something
+> > 
+> > Okay, I believe I have a better understanding of the situation:
+> > 
+> > - __alloc_pages_bulk() takes pages from the free list without accepting
+> >   more memory. This can cause number of free pages to fall below the
+> >   watermark.
+> > 
+> >   This issue can be resolved by accepting more memory in
+> >   __alloc_pages_bulk() if the watermark check fails.
+> > 
+> >   The problem is not only related to unallocated memory. I think the
+> >   deferred page initialization mechanism could result in premature OOM if
+> >   __alloc_pages_bulk() allocates pages faster than deferred page
+> >   initialization can add them to the free lists. However, this scenario is
+> >   unlikely.
+> > 
+> > - There is nothing that compels the kernel to accept more memory after the
+> >   watermarks have been calculated in __setup_per_zone_wmarks(). This can
+> >   put us under the watermark.
+> > 
+> >   This issue can be resolved by accepting memory up to the watermark after
+> >   the watermarks have been initialized.
+> > 
+> > - Once kswapd is started, it will begin spinning if we are below the
+> >   watermark and there is no memory that can be reclaimed. Once the above
+> >   problems are fixed, the issue will be resolved.
+> > 
+> > - The kernel needs to accept memory up to the PROMO watermark. This will
+> >   prevent unaccepted memory from interfering with NUMA balancing.
 > 
-> This clock expected to be kept always ON, as per design, or else the 
-> GDSC transition form ON to OFF (vice versa) wont work.
+> So do we still assume all memory is eventually accepted and it's just a
+> initialization phase thing? And the only reason we don't do everything in a
+> kthread like the deferred struct page init, is to spread out some potential
+> contention on the host side?
+> 
+> If yes, do we need NUMA balancing even to be already active during that phase?
 
-Yes, parking to XO per this patch works for me. So I guess its already 
-on and is left in that state by the park.
+No, there is nothing that requires guests to accept all of the memory. If
+the working set of a workload within the guest only requires a portion of
+the memory, the rest will remain unallocated and available to the host for
+other tasks.
 
-> Want to know the clock status after bootup, to understand if the clock 
-> got turned off during the late init. May I know exactly what you have 
-> tested? Did you test the camera usecases as well?
+I think accepting memory up to the PROMO watermark would not hurt
+anybody.
 
-Of course.
+> > The patch below addresses the issues I listed earlier. It is not yet ready
+> > for application. Please see the issues listed below.
+> > 
+> > Andrew, please drop the current patch.
+> > 
+> > There are a few more things I am worried about:
+> > 
+> > - The current get_page_from_freelist() and patched __alloc_pages_bulk()
+> >   only try to accept memory if the requested (alloc_flags & ALLOC_WMARK_MASK)
+> >   watermark check fails. For example, if a requested allocation with
+> >   ALLOC_WMARK_MIN is called, we will not try to accept more memory, which
+> >   could potentially put us under the high/promo watermark and cause the
+> >   following kswapd start to get us into an endless loop.
+> > 
+> >   Do we want to make memory acceptance in these paths independent of
+> >   alloc_flags?
+> 
+> Hm ALLOC_WMARK_MIN will proceed, but with a watermark below the low
+> watermark will still wake up kswapd, right? Isn't that another scenario
+> where kswapd can start spinning?
 
-The camera works on x13s with this patch. That's what I mean by tested.
+Yes, that is the concern.
 
----
-bod
+> > - __isolate_free_page() removes a page from the free list without
+> >   accepting new memory. The function is called with the zone lock taken.
+> >   It is bad idea to accept memory while holding the zone lock, but
+> >   the alternative of pushing the accept to the caller is not much better.
+> > 
+> >   I have not observed any issues caused by __isolate_free_page() in
+> >   practice, but there is no reason why it couldn't potentially cause
+> >   problems.
+> >  
+> > - The function take_pages_off_buddy() also removes pages from the free
+> >   list without accepting new memory. Unlike the function
+> >   __isolate_free_page(), it is called without the zone lock being held, so
+> >   we can accept memory there. I believe we should do so.
+> > 
+> > I understand why adding unaccepted memory handling into the reclaim path
+> > is questionable. However, it may be the best way to handle cases like
+> > __isolate_free_page() and possibly others in the future that directly take
+> > memory from free lists.
+> 
+> Yes seems it might be not that bad solution, otherwise it could be hopeless
+> whack-a-mole to prevent all corner cases where reclaim can be triggered
+> without accepting memory first.
+> 
+> Although just removing the lazy accept mode would be much more appealing
+> solution than this :)
+
+:P
+
+Not really an option for big VMs. It might add many minutes to boot time.
+
+> > Any thoughts?
+> 
+> Wonder if deferred struct page init has many of the same problems, i.e. with
+> __isolate_free_page() and take_pages_off_buddy(), and if not, why?
+
+Even if deferred struct page init would trigger reclaim, kswapd will not
+spin forever. The background thread will add more free memory, so forward
+progress is guaranteed. And deferred struct page init is done before init
+starts.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
