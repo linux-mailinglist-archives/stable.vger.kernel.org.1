@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8610E93A697
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1206D93A720
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EDE0B22C82
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 917D5B22B21
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288D015884E;
-	Tue, 23 Jul 2024 18:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7812158A06;
+	Tue, 23 Jul 2024 18:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySgeGLJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwCC50Zc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7601586C4;
-	Tue, 23 Jul 2024 18:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B2813D896;
+	Tue, 23 Jul 2024 18:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759795; cv=none; b=fAHpBkScvl72/9YCI/nXLoc+VKVnCj5O5SbcDJ6JTei8pcd6jchAAm9ii+Yn+6B6RSa/Vn6/fNQpQF+eAmWSCSkQwxZ1TnGjbE4XRgBSlzm1m7Y7nqeFD3lseT1d3vThsnV6V3tu1DtZQvayns3ZAC/qYHR9tPUqU0Nee2hUAjI=
+	t=1721760146; cv=none; b=hZ2rJbzEbD635SBvmMLUlOlgvMADhAhY5nfFDgTsXfOoBtX46cokPTUJD2lWOgFcT0DXnr9kL1PaDatxoPItPR5XyzltfYHkMnhtPc1k3e3GT2YVx4026t1TqiW6AKDbOXdRWHLN2YqTk3ml2A3poQDWPAI0ywmpl95eIATJ3eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759795; c=relaxed/simple;
-	bh=zpuHKN5NaXH7kcqs9oNIDi9Bq6VWt1dA2glWst8KrV0=;
+	s=arc-20240116; t=1721760146; c=relaxed/simple;
+	bh=zA72B/I5cSMOGzJMPuQXB0tYnfmzyd1MWT4SFJLrvD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kr+X5e/fEnsgCt/s3ZuWchQiee7DqYkjqQF3LBnZA5FptuQfK4KqFO2bGzPHjHMtwssNkXqZ1UJ3vRv5wNko9qTa/9VOrZGH38KSuxHAIsq+C+c1qELR5/Mcdpp8LY/a3LHPgNJD5BHMJylvNwT7o2hEN4JAn45EOuBuqPAQjiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySgeGLJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C34FC4AF0A;
-	Tue, 23 Jul 2024 18:36:35 +0000 (UTC)
+	 MIME-Version; b=AKtaHhWInWEs0g4xe7GD5U4TqUua2P8NsSR4lhj+8FO0UC7WKeOyPgWktXtN41fewFtKqmEj0x3rBaNkXe7no+fK50nTYGQyfqbSVRErpUCNfOgPYoN30hDNR9cOvfjhpFs1Bmob3PcQc3Y4N5YfwVpDyx8ICIAscb0RtCIO3J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwCC50Zc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DF7C4AF0A;
+	Tue, 23 Jul 2024 18:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759795;
-	bh=zpuHKN5NaXH7kcqs9oNIDi9Bq6VWt1dA2glWst8KrV0=;
+	s=korg; t=1721760146;
+	bh=zA72B/I5cSMOGzJMPuQXB0tYnfmzyd1MWT4SFJLrvD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ySgeGLJwtRodDjVFUFo9PrGpNMl53Ry88UwN1IWUqWXPwZqXvNcuPmC4ESJgSqtgY
-	 BZ87t0DEFa/cDbSJyjn+n7UD6wm9oUZPIihvp9z8sgqNbLq0KeWSO3MObcfzlsqoug
-	 rwGydMWxGlH23yiE8V5K8qQTDGlaBK8a7oPTmz+I=
+	b=JwCC50ZcVt8qlRje/+TVhI75vl6iOTCmxG40/J8ggcG5KigSNDc+4P7D0Foe7ucXo
+	 qjRY4UpAgAIunuqAHu+dNrMNfFOmciyxtotJi8tqet5Bq2BRwVODmc7Vm33vcYrrBZ
+	 cLuF6yhH8QcMIkWarzigq+5WX9eUkG7dUZ5Q+i7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Aivaz Latypov <reichaivaz@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/129] Bluetooth: btnxpuart: Enable Power Save feature on startup
+Subject: [PATCH 6.9 118/163] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15-gw0xxx
 Date: Tue, 23 Jul 2024 20:24:07 +0200
-Message-ID: <20240723180408.614035237@linuxfoundation.org>
+Message-ID: <20240723180148.033276247@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
+From: Aivaz Latypov <reichaivaz@gmail.com>
 
-[ Upstream commit 4183a7be77009fc31c5760429fe095f163bf96a9 ]
+[ Upstream commit 1d091a98c399c17d0571fa1d91a7123a698446e4 ]
 
-This sets the default power save mode setting to enabled.
+This HP Laptop uses ALC236 codec with COEF 0x07 controlling
+the mute LED. Enable existing quirk for this device.
 
-The power save feature is now stable and stress test issues, such as the
-TX timeout error, have been resolved.
-commit c7ee0bc8db32 ("Bluetooth: btnxpuart: Resolve TX timeout error in
-power save stress test")
-
-With this setting, the driver will send the vendor command to FW at
-startup, to enable power save feature.
-
-User can disable this feature using the following vendor command:
-hcitool cmd 3f 23 03 00 00 (HCI_NXP_AUTO_SLEEP_MODE)
-
-Signed-off-by: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Aivaz Latypov <reichaivaz@gmail.com>
+Link: https://patch.msgid.link/20240625081217.1049-1-reichaivaz@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btnxpuart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
-index abccd571cf3ee..5c5a5b752419e 100644
---- a/drivers/bluetooth/btnxpuart.c
-+++ b/drivers/bluetooth/btnxpuart.c
-@@ -280,7 +280,7 @@ static u8 crc8_table[CRC8_TABLE_SIZE];
- 
- /* Default configurations */
- #define DEFAULT_H2C_WAKEUP_MODE	WAKEUP_METHOD_BREAK
--#define DEFAULT_PS_MODE		PS_MODE_DISABLE
-+#define DEFAULT_PS_MODE		PS_MODE_ENABLE
- #define FW_INIT_BAUDRATE	HCI_NXP_PRI_BAUDRATE
- 
- static struct sk_buff *nxp_drv_send_cmd(struct hci_dev *hdev, u16 opcode,
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index a260dfb7fde0c..8a52ed9aa465c 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10039,6 +10039,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87e7, "HP ProBook 450 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87f1, "HP ProBook 630 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 -- 
 2.43.0
 
