@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-61024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FEB93A685
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9469893A736
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96A481C22333
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C296B1C223A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF0F158A08;
-	Tue, 23 Jul 2024 18:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDB5158871;
+	Tue, 23 Jul 2024 18:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgAltcKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoxBjtdb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0739914EC58;
-	Tue, 23 Jul 2024 18:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF32B13D896;
+	Tue, 23 Jul 2024 18:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759751; cv=none; b=T3C5UbLh2HtmWu3r13OoV6pFhhsLYJR5AIM8DDJFvf+ycnjlFCx9BiRLr+2Xi0ZWuEmRvM1QX/fyhBA6TeiDc99VU7w2fCdXGZVc7lMpFLKiMuZLYFKXsSQSQK6Lp6g7x+LdA/qcPFW+34EYrM4PqKN6HmFaWHvMeIyH6/rsHBw=
+	t=1721760216; cv=none; b=VEgNVZso6p3s3dmw5CpAt9Yy2DntBUe/3DpS1vYphMBFRHcq/kO06OujCnBDikxuQ+AmeU8jGkJIW2pznMoAXSd0NuNoZPPc5W60naNVhUqEQzWS9X5DgBMHN25lOhXO2PlXNRdoepYrSRJZdt782Y/lCU74CHX6gzuzdw38+BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759751; c=relaxed/simple;
-	bh=k5SBSaOukJOZOrhCD/7NaXCwoDAqvJYu8aWCviFQVas=;
+	s=arc-20240116; t=1721760216; c=relaxed/simple;
+	bh=Kkbc8PzlEaeqcadowVGwaCpxnc5OKwd5s15lzhu2UnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0VIEJzBNHzgcMnDUj83aQehNz+j8fguWmS5EFlqC2VbxCooa6lzCECtQZ88VlnCUPDhBwn2IS5rN4RyuEQSFkMRnW2bd+yP6t/xcUJ/OSrG+GJOv9UUV5+aLsAX1fJMHbzWHMZjtONiuco+RrKR5WQkS1BBH3AFC3FbimdmdFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgAltcKS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7022BC4AF09;
-	Tue, 23 Jul 2024 18:35:50 +0000 (UTC)
+	 MIME-Version; b=l3k76KFwnhctWsBaRCk1Jf9NC/8vJFqkIgjKN2LSKEpi+qQwkUJEL+r0RAxenpd3HuWnXczgsQ97Zoomd3egrqZlCRmbC3ENS2zJRnKZDEH6JBv4lBXjnC2w6eq693BRpX/aHNwxLl0hiW0IimYB/M+NImMPaOnO20CyTALYRco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoxBjtdb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3899BC4AF09;
+	Tue, 23 Jul 2024 18:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759750;
-	bh=k5SBSaOukJOZOrhCD/7NaXCwoDAqvJYu8aWCviFQVas=;
+	s=korg; t=1721760216;
+	bh=Kkbc8PzlEaeqcadowVGwaCpxnc5OKwd5s15lzhu2UnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgAltcKSIuZdrfOjcIEnHIeeCETyI+qPOQhjd419LHylsFUgNDEp0ixqKbnHwSKYQ
-	 5w00wSMSDWmZRbiiZKIo2c5mya57u+rw4+kQn4ftScVmuX9bjabVEnALcL+psfTFT1
-	 8+xNZMOBW0avfwnhlKy0tdIofgXhqPIum3R3I5/U=
+	b=QoxBjtdbIBBl7vLQQWaGEGExDvpxlYxQEucV2DIL/I+qTEJTi+N55Ia0Jj8B/OfhW
+	 DTJ7dbRsdrZwucWXg83sUbH1A6iQtAqEEdGdKVA7/tqBlrdFFvYwbZZE6Xf8y+b7/J
+	 Im6ewx4a5y20qygXEiBXsmhRikjnmJ7XiH3/o7/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com,
-	syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 115/129] hfsplus: fix uninit-value in copy_name
+	Chaitanya Dhere <chaitanya.dhere@amd.com>,
+	Nevenko Stupar <nevenko.stupar@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 134/163] drm/amd/display: Account for cursor prefetch BW in DML1 mode support
 Date: Tue, 23 Jul 2024 20:24:23 +0200
-Message-ID: <20240723180409.233398470@linuxfoundation.org>
+Message-ID: <20240723180148.651115110@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +66,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Alvin Lee <alvin.lee2@amd.com>
 
-[ Upstream commit 0570730c16307a72f8241df12363f76600baf57d ]
+[ Upstream commit 074b3a886713f69d98d30bb348b1e4cb3ce52b22 ]
 
-[syzbot reported]
-BUG: KMSAN: uninit-value in sized_strscpy+0xc4/0x160
- sized_strscpy+0xc4/0x160
- copy_name+0x2af/0x320 fs/hfsplus/xattr.c:411
- hfsplus_listxattr+0x11e9/0x1a50 fs/hfsplus/xattr.c:750
- vfs_listxattr fs/xattr.c:493 [inline]
- listxattr+0x1f3/0x6b0 fs/xattr.c:840
- path_listxattr fs/xattr.c:864 [inline]
- __do_sys_listxattr fs/xattr.c:876 [inline]
- __se_sys_listxattr fs/xattr.c:873 [inline]
- __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
- x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[Description]
+We need to ensure to take into account cursor prefetch BW in
+mode support or we may pass ModeQuery but fail an actual flip
+which will cause a hang. Flip may fail because the cursor_pre_bw
+is populated during mode programming (and mode programming is
+never called prior to ModeQuery).
 
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:3877 [inline]
- slab_alloc_node mm/slub.c:3918 [inline]
- kmalloc_trace+0x57b/0xbe0 mm/slub.c:4065
- kmalloc include/linux/slab.h:628 [inline]
- hfsplus_listxattr+0x4cc/0x1a50 fs/hfsplus/xattr.c:699
- vfs_listxattr fs/xattr.c:493 [inline]
- listxattr+0x1f3/0x6b0 fs/xattr.c:840
- path_listxattr fs/xattr.c:864 [inline]
- __do_sys_listxattr fs/xattr.c:876 [inline]
- __se_sys_listxattr fs/xattr.c:873 [inline]
- __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
- x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[Fix]
-When allocating memory to strbuf, initialize memory to 0.
-
-Reported-and-tested-by: syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://lore.kernel.org/r/tencent_8BBB6433BC9E1C1B7B4BDF1BF52574BA8808@qq.com
-Reported-and-tested-by: syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
+Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/xattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
-index 58021e73c00bf..f7f9d0889df34 100644
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -698,7 +698,7 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
- 		return err;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+index 6c84b0fa40f44..0782a34689a00 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+@@ -3364,6 +3364,9 @@ void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
+ 							&mode_lib->vba.UrgentBurstFactorLumaPre[k],
+ 							&mode_lib->vba.UrgentBurstFactorChromaPre[k],
+ 							&mode_lib->vba.NotUrgentLatencyHidingPre[k]);
++
++					v->cursor_bw_pre[k] = mode_lib->vba.NumberOfCursors[k] * mode_lib->vba.CursorWidth[k][0] * mode_lib->vba.CursorBPP[k][0] /
++							8.0 / (mode_lib->vba.HTotal[k] / mode_lib->vba.PixelClock[k]) * v->VRatioPreY[i][j][k];
+ 				}
  
--	strbuf = kmalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
-+	strbuf = kzalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
- 			XATTR_MAC_OSX_PREFIX_LEN + 1, GFP_KERNEL);
- 	if (!strbuf) {
- 		res = -ENOMEM;
+ 				{
 -- 
 2.43.0
 
