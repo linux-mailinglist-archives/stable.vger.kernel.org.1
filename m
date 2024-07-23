@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-60992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FCAD93A657
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:34:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA90B93A71F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DB7D1F216D0
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:34:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85A142820D3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C1B158A36;
-	Tue, 23 Jul 2024 18:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFA3158871;
+	Tue, 23 Jul 2024 18:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZ4UbY2x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuNsW5mY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C663158879;
-	Tue, 23 Jul 2024 18:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9E31581F4;
+	Tue, 23 Jul 2024 18:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759656; cv=none; b=WH2it5gxHCMStRHh69c4S4Ll9Xysy5jT4aaRrbMUCJOZBlPb38fP/U5yxkwmBS10LD1XZq54HvngptAQM6X0Sb6jK03HNpPn8z09JpkMNoMT5bJ0f+QoL/cfKFIvSX5bOPl0lBfqBC9dsEHWmmhu2Qf949i/9d0tzTmchAzTXfs=
+	t=1721760152; cv=none; b=UAQUIurlx2VGuEg2EntUifqACatACN3S2wP8fsx3qfNCF0s41FaOi8Fz+RqSIBJeUgxx7da7Os6cbTpKc/ikyEfj5ce1RraQs2tQcJbFaSZBmiz092TQ80OAk4Ar35YNutfkdkAUfEPOTSWnjOF9ExB2he6v/2rH989uA5LTkxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759656; c=relaxed/simple;
-	bh=3csEJ2eqwiTIi67gIOlcF/kiT+FZ596xm5hyuKTv2Gk=;
+	s=arc-20240116; t=1721760152; c=relaxed/simple;
+	bh=igZJJG5b608FNv/W6tVMzLQ6Z6xzfJRgIv3UmO63eZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dajVor5KXRLacnRODBfk7BkQveZeGxrUSQJ83ys+bgq/BjetFWL61axwPRdyb0ecslfy2VHiBvkvQyx7qEKTNG3QwSgmwO2o+d5QgpcdoHwMEsrNMv6EKkhq74sZt0iCbXo9AEEH6IqEzN7hMChn0QtDKvoAmRL5LVI285DiQbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZ4UbY2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7450C4AF09;
-	Tue, 23 Jul 2024 18:34:15 +0000 (UTC)
+	 MIME-Version; b=suFZWoof1IMhrKwbF5bqEINUoT9aodskr7sSvEvijHnBE4uSdwfN8itDkQ99vCVWCyHsNEx1SJU1K3YQzez7iSpxudqkVy9CHcWM0phYxdwH8CHLM4zw+mztxKxG64wzjKocf/GHJgHOU2zmu6docS9/P4cVk+yoaftoY7L6+m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuNsW5mY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FB8C4AF09;
+	Tue, 23 Jul 2024 18:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759656;
-	bh=3csEJ2eqwiTIi67gIOlcF/kiT+FZ596xm5hyuKTv2Gk=;
+	s=korg; t=1721760151;
+	bh=igZJJG5b608FNv/W6tVMzLQ6Z6xzfJRgIv3UmO63eZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wZ4UbY2xnqq8AfjFPpxE3RgnsbxbpfoRtpZvb4UeacxAljbu9mdgtTxSopESqv4Lp
-	 sypPgTST9Wqpva9wUjGOQ7oOku1hS+v1JzLmiw7+0QF63ylUjHteVCr10nEJ1ktqtF
-	 OPY3qhTyosqkH/rw8yZdujk3l8CwmyVAvLtHI9tw=
+	b=EuNsW5mYRfb90vUXhSMVGYfiFaxtNnMLxF4Gxe8bQCu7HZgcAtzj267I2JT10XIfj
+	 ZZnXMgzJTVCw7MQgfiRO7hL50CF/+2wbR+Rl1JPCybr/LBPVFj9sCgXAz3O6Sw5+3F
+	 XCu+8ED93egFHXR/U33sfaydkdq5E2aQs9rzFPb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Agathe Boutmy <agathe@boutmy.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Boyang Yu <yuboyang@dapustor.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/129] platform/x86: lg-laptop: Remove LGEX0815 hotkey handling
+Subject: [PATCH 6.9 102/163] nvme: fix NVME_NS_DEAC may incorrectly identifying the disk as EXT_LBA.
 Date: Tue, 23 Jul 2024 20:23:51 +0200
-Message-ID: <20240723180407.991833685@linuxfoundation.org>
+Message-ID: <20240723180147.417642011@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Boyang Yu <yuboyang@dapustor.com>
 
-[ Upstream commit 413c204595ca98a4f33414a948c18d7314087342 ]
+[ Upstream commit 9570a48847e3acfa1a741cef431c923325ddc637 ]
 
-The rfkill hotkey handling is already provided by the wireless-hotkey
-driver. Remove the now unnecessary rfkill hotkey handling to avoid
-duplicating functionality.
+The value of NVME_NS_DEAC is 3,
+which means NVME_NS_METADATA_SUPPORTED | NVME_NS_EXT_LBAS. Provide a
+unique value for this feature flag.
 
-The ACPI notify handler still prints debugging information when
-receiving ACPI notifications to aid in reverse-engineering.
-
-Tested-by: Agathe Boutmy <agathe@boutmy.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240606233540.9774-3-W_Armin@gmx.de
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes 1b96f862eccc ("nvme: implement the DEAC bit for the Write Zeroes command")
+Signed-off-by: Boyang Yu <yuboyang@dapustor.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lg-laptop.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/nvme/host/nvme.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
-index ad3c39e9e9f58..545872adbc52a 100644
---- a/drivers/platform/x86/lg-laptop.c
-+++ b/drivers/platform/x86/lg-laptop.c
-@@ -84,7 +84,6 @@ static const struct key_entry wmi_keymap[] = {
- 					  * this key both sends an event and
- 					  * changes backlight level.
- 					  */
--	{KE_KEY, 0x80, {KEY_RFKILL} },
- 	{KE_END, 0}
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index d7bcc6d51e84e..3f2b0d41e4819 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -503,7 +503,7 @@ static inline bool nvme_ns_head_multipath(struct nvme_ns_head *head)
+ enum nvme_ns_features {
+ 	NVME_NS_EXT_LBAS = 1 << 0, /* support extended LBA format */
+ 	NVME_NS_METADATA_SUPPORTED = 1 << 1, /* support getting generated md */
+-	NVME_NS_DEAC,		/* DEAC bit in Write Zeores supported */
++	NVME_NS_DEAC = 1 << 2,		/* DEAC bit in Write Zeores supported */
  };
  
-@@ -272,14 +271,7 @@ static void wmi_input_setup(void)
- 
- static void acpi_notify(struct acpi_device *device, u32 event)
- {
--	struct key_entry *key;
--
- 	acpi_handle_debug(device->handle, "notify: %d\n", event);
--	if (inited & INIT_SPARSE_KEYMAP) {
--		key = sparse_keymap_entry_from_scancode(wmi_input_dev, 0x80);
--		if (key && key->type == KE_KEY)
--			sparse_keymap_report_entry(wmi_input_dev, key, 1, true);
--	}
- }
- 
- static ssize_t fan_mode_store(struct device *dev,
+ struct nvme_ns {
 -- 
 2.43.0
 
