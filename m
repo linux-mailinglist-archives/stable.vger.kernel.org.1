@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C5E93A71C
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2E593A692
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A722B1C22504
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 951A42810A6
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF18158A01;
-	Tue, 23 Jul 2024 18:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48062158A26;
+	Tue, 23 Jul 2024 18:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yq1Nf9Lo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCjq1CsD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AA2158211;
-	Tue, 23 Jul 2024 18:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048C41586CB;
+	Tue, 23 Jul 2024 18:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760141; cv=none; b=oUQkdEwSRgwM/VZUJ/Vhxmj9/tnRvJkYhyJZk9dxU5//EHo0BqtfiKcDXiHngXUgGmCW8SfaqWYfeo07IvlkGWocX2aoPkOrfSlK1LRDZ8HZEzu35mKSY19po06ggyaLmUykASnw0QscAZYHeLEHkL2aNrB0yN/fi4e1FYryBIo=
+	t=1721759790; cv=none; b=tdzeZb4goZ/3/9mUar26GMWdslZdynLrKeWuX7LwGlaLVlTbXOSVbLEr9OHAQq7Sf6oG60PbDmy3KPU/cIEtk8aWOwY85tNi4UxQG2WrzhVnqxTXSLMHhWw1wUlH9gxzk4yxwQJb/x2gdiPBnUIcUNw2eOFcS+ZM8DC4wUbSWRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760141; c=relaxed/simple;
-	bh=fFKaFPv0Yy3vPAEbBoS3fthdkkseHbnz3BexOvS8lz0=;
+	s=arc-20240116; t=1721759790; c=relaxed/simple;
+	bh=xMcfVUjrZRL1M8hP+DTBnrxNiV1UaUe1yoa0JJk8dDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BA2J0DX+XL37jzbhB+LGo9tukbgYig4trQXqxI32bs+R4cKhBo0D0mgSYthmucT9rJQl1l3242xwcMReMqU9ZePU/E/WxZQisnh4fpgPT/M9lPtCN9aMW8nQJODVeMSDY9MnOJVd92ANz1sAXdua3wfQiSjdDmyqXybgQ3MFhL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yq1Nf9Lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798F8C4AF09;
-	Tue, 23 Jul 2024 18:42:19 +0000 (UTC)
+	 MIME-Version; b=pGdLY/RJhADTPbjkOvfOgNzqny6URaToXJYhr3aDNMuC9d6+yO/gHnekH9LI0aQxoUdc2vTFt8EjNJJWR8Fc2I4BNKH2DMeLWH2vbUGoJfSrXTZZEmX/OT9QvNoEOQ2qUZYxuygXPOVN02Xcgxtukwa95/PBQU2SQtABpCv4Sfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCjq1CsD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F53C4AF0A;
+	Tue, 23 Jul 2024 18:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760139;
-	bh=fFKaFPv0Yy3vPAEbBoS3fthdkkseHbnz3BexOvS8lz0=;
+	s=korg; t=1721759789;
+	bh=xMcfVUjrZRL1M8hP+DTBnrxNiV1UaUe1yoa0JJk8dDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yq1Nf9LouEuu2qxw7/m8LXuxvtuHbvcERp+wNDV/N3FTXiIUHLx9ja4NftHt4z4cP
-	 N8F0PyJWd7psbXNl8YSH4TbvM7QzpQ3lzvZjRJkA4ugrjCyGThRvfXgXUcXP7fVb/O
-	 9j5b4JtuIOmCJyedFiPfLMXV8e5f6YjjiXB2PF2M=
+	b=yCjq1CsDHESLG7jVYebEP0h5I9oeaMya9KHwByABnfx9p5rjL8NYpTqaI5/5Blxkb
+	 0jX1ubO3/Qm5o2ZFFcVEYxiHBe5CiULED6pFeHhhUGTVgS+GO79eEmv9MqJoSWC7sI
+	 4sVzRP+Sua11rHQTHD+GGck7umDskd8WG4r8iLAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Child <nnac123@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"ming-jen.chang" <ming-jen.chang@mediatek.com>,
+	Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 116/163] ibmvnic: Add tx check to prevent skb leak
+Subject: [PATCH 6.6 097/129] tee: optee: ffa: Fix missing-field-initializers warning
 Date: Tue, 23 Jul 2024 20:24:05 +0200
-Message-ID: <20240723180147.955677193@linuxfoundation.org>
+Message-ID: <20240723180408.536566322@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
 
-[ Upstream commit 0983d288caf984de0202c66641577b739caad561 ]
+[ Upstream commit e0556255a53d6d3d406a28362dffd972018a997c ]
 
-Below is a summary of how the driver stores a reference to an skb during
-transmit:
-    tx_buff[free_map[consumer_index]]->skb = new_skb;
-    free_map[consumer_index] = IBMVNIC_INVALID_MAP;
-    consumer_index ++;
-Where variable data looks like this:
-    free_map == [4, IBMVNIC_INVALID_MAP, IBMVNIC_INVALID_MAP, 0, 3]
-                                               	consumer_index^
-    tx_buff == [skb=null, skb=<ptr>, skb=<ptr>, skb=null, skb=null]
+The 'missing-field-initializers' warning was reported
+when building with W=2.
+This patch use designated initializers for
+'struct ffa_send_direct_data' to suppress the warning
+and clarify the initialization intent.
 
-The driver has checks to ensure that free_map[consumer_index] pointed to
-a valid index but there was no check to ensure that this index pointed
-to an unused/null skb address. So, if, by some chance, our free_map and
-tx_buff lists become out of sync then we were previously risking an
-skb memory leak. This could then cause tcp congestion control to stop
-sending packets, eventually leading to ETIMEDOUT.
-
-Therefore, add a conditional to ensure that the skb address is null. If
-not then warn the user (because this is still a bug that should be
-patched) and free the old pointer to prevent memleak/tcp problems.
-
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: ming-jen.chang <ming-jen.chang@mediatek.com>
+Signed-off-by: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/tee/optee/ffa_abi.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 722bb724361c2..664baedfe7d13 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2478,6 +2478,18 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	    (tx_pool->consumer_index + 1) % tx_pool->num_buffers;
+diff --git a/drivers/tee/optee/ffa_abi.c b/drivers/tee/optee/ffa_abi.c
+index 0828240f27e62..b8ba360e863ed 100644
+--- a/drivers/tee/optee/ffa_abi.c
++++ b/drivers/tee/optee/ffa_abi.c
+@@ -657,7 +657,9 @@ static bool optee_ffa_api_is_compatbile(struct ffa_device *ffa_dev,
+ 					const struct ffa_ops *ops)
+ {
+ 	const struct ffa_msg_ops *msg_ops = ops->msg_ops;
+-	struct ffa_send_direct_data data = { OPTEE_FFA_GET_API_VERSION };
++	struct ffa_send_direct_data data = {
++		.data0 = OPTEE_FFA_GET_API_VERSION,
++	};
+ 	int rc;
  
- 	tx_buff = &tx_pool->tx_buff[bufidx];
-+
-+	/* Sanity checks on our free map to make sure it points to an index
-+	 * that is not being occupied by another skb. If skb memory is
-+	 * not freed then we see congestion control kick in and halt tx.
-+	 */
-+	if (unlikely(tx_buff->skb)) {
-+		dev_warn_ratelimited(dev, "TX free map points to untracked skb (%s %d idx=%d)\n",
-+				     skb_is_gso(skb) ? "tso_pool" : "tx_pool",
-+				     queue_num, bufidx);
-+		dev_kfree_skb_any(tx_buff->skb);
-+	}
-+
- 	tx_buff->skb = skb;
- 	tx_buff->index = bufidx;
- 	tx_buff->pool_index = queue_num;
+ 	msg_ops->mode_32bit_set(ffa_dev);
+@@ -674,7 +676,9 @@ static bool optee_ffa_api_is_compatbile(struct ffa_device *ffa_dev,
+ 		return false;
+ 	}
+ 
+-	data = (struct ffa_send_direct_data){ OPTEE_FFA_GET_OS_VERSION };
++	data = (struct ffa_send_direct_data){
++		.data0 = OPTEE_FFA_GET_OS_VERSION,
++	};
+ 	rc = msg_ops->sync_send_receive(ffa_dev, &data);
+ 	if (rc) {
+ 		pr_err("Unexpected error %d\n", rc);
+@@ -694,7 +698,9 @@ static bool optee_ffa_exchange_caps(struct ffa_device *ffa_dev,
+ 				    u32 *sec_caps,
+ 				    unsigned int *rpc_param_count)
+ {
+-	struct ffa_send_direct_data data = { OPTEE_FFA_EXCHANGE_CAPABILITIES };
++	struct ffa_send_direct_data data = {
++		.data0 = OPTEE_FFA_EXCHANGE_CAPABILITIES,
++	};
+ 	int rc;
+ 
+ 	rc = ops->msg_ops->sync_send_receive(ffa_dev, &data);
 -- 
 2.43.0
 
