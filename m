@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-60895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B70093A5E2
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C3993A701
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E7BAB20517
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:29:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DC70B210A8
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6759F158862;
-	Tue, 23 Jul 2024 18:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EFC158878;
+	Tue, 23 Jul 2024 18:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvUzQuST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiBMYGMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C01157A4F;
-	Tue, 23 Jul 2024 18:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BC61581F4;
+	Tue, 23 Jul 2024 18:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759371; cv=none; b=lkluJ/OGoD/u6J8iB7QtpKLkITV0Te882U60iQPOtMn+Hqa3P0G7suvRp73a+XaA2+G67sGTaxq5Y4JaMp0pfQhrHQl8vCE1AffiflP9oMaLbYhdtuB865BoY01xy0B0/WEEGCZsS6uS98GWLiC5c4WofUTA0xPWZlCy+xeKiXs=
+	t=1721760065; cv=none; b=s8rYUKI/O6PSNCDxvOYZOYC5GLcD2vnaPJawapsttmTQLihDi3bpPkQgsTqvGQWfCMoj6Y+/ENeKPcgX9bo02pBv3y7h9thR6pKXhmDTb9QIi+GMyLHl0lrfgZVq0y9Lndr6Au+tfeiFAxLuoar0Q64VOsdLazQbtva/mwmz5DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759371; c=relaxed/simple;
-	bh=azEYriXkMdquOW9xTWWs2kqzyYOanGb0xpPuxFX+G1w=;
+	s=arc-20240116; t=1721760065; c=relaxed/simple;
+	bh=Fk57PMR3DLlt20LOsfQlr0ycBOm3xPLzDZa50oana1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swSupo46eaDDKb5SBv+r9NguQCcoJmd1orEjpxhB8d+sbAakkc54CUxw2BsPYy+6m2D7G2DFms8eCdkL4hfCM9fG7mZbVa7817BfJw7LPQ3JeN9lAoXK1fb7DtKGavsPV/M3t/0IZ6SY4k6MUfkI/WDNmgRBNXbduV6YvPE7b68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvUzQuST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FBF6C4AF0B;
-	Tue, 23 Jul 2024 18:29:30 +0000 (UTC)
+	 MIME-Version; b=qNkZgjONsANyOAaS8eI1q2p2ZXcG13paiVOfGreul1+3KzXmnzhvu74HbwUza+nl4qr5mfLBj02moOMroEBRlESUe/IjKvRhJckZSJ+B51qLaVRONpqgD+8YcGQaihzKNsIs50WtvBkAcLnHXhbzVM5xUogzX7FNbCJ/rQVt+nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiBMYGMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FAF1C4AF09;
+	Tue, 23 Jul 2024 18:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759371;
-	bh=azEYriXkMdquOW9xTWWs2kqzyYOanGb0xpPuxFX+G1w=;
+	s=korg; t=1721760065;
+	bh=Fk57PMR3DLlt20LOsfQlr0ycBOm3xPLzDZa50oana1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wvUzQuST+AoH0UGw5aaeImTxG0YZ+qTclv3s46Yq+syFK+1Vqx3FqUbKNfwTNwNal
-	 UdvqExj7i7AC3dramvCsauSnBw9L8MwGUblwyT/1pZJ3uUU5xK+2O2xcYVVEyjTZXX
-	 84lilsPhls68MfcriR58kRNKbf2QbT/yKrucWwLs=
+	b=QiBMYGMR9dCXKXLvH/64TnEBCRKDmnl/Xmlgxm0KB2w1+kL4te4Zp92j1rTkqKTbL
+	 +YmUOvuGMC3atd6TsO5JqdQf5uen5/SXGbN+x8pDF56Y+S51yLQLiWxZwo5tqPSFB+
+	 /bep4Gii+ohw9ka5bziiYPT3e8QCsFbY6VyFGim8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/105] ASoC: SOF: sof-audio: Skip unprepare for in-use widgets on error rollback
-Date: Tue, 23 Jul 2024 20:23:39 +0200
-Message-ID: <20240723180405.637541902@linuxfoundation.org>
+Subject: [PATCH 6.9 091/163] Input: xpad - add support for ASUS ROG RAIKIRI PRO
+Date: Tue, 23 Jul 2024 20:23:40 +0200
+Message-ID: <20240723180146.993156643@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit 6f2a43e3d14f6e31a3b041a1043195d02c54d615 ]
+[ Upstream commit cee77149ebe9cd971ba238d87aa10e09bd98f1c9 ]
 
-If the ipc_prepare() callback fails for a module instance, on error rewind
-we must skip the ipc_unprepare() call for ones that has positive use count.
+Add the VID/PID for ASUS ROG RAIKIRI PRO to the list of known devices.
 
-The positive use count means that the module instance is in active use, it
-cannot be unprepared.
-
-The issue affects capture direction paths with branches (single dai with
-multiple PCMs), the affected widgets are in the shared part of the paths.
-
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://lore.kernel.org/r/20240612121203.15468-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Link: https://lore.kernel.org/r/20240607223722.1170776-1-luke@ljones.dev
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/sof-audio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/joystick/xpad.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/sof/sof-audio.c b/sound/soc/sof/sof-audio.c
-index 061ab7289a6c3..b1141f4478168 100644
---- a/sound/soc/sof/sof-audio.c
-+++ b/sound/soc/sof/sof-audio.c
-@@ -328,7 +328,7 @@ sof_prepare_widgets_in_path(struct snd_sof_dev *sdev, struct snd_soc_dapm_widget
- 			if (ret < 0) {
- 				/* unprepare the source widget */
- 				if (widget_ops[widget->id].ipc_unprepare &&
--				    swidget && swidget->prepared) {
-+				    swidget && swidget->prepared && swidget->use_count == 0) {
- 					widget_ops[widget->id].ipc_unprepare(swidget);
- 					swidget->prepared = false;
- 				}
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index 6fadaddb2b908..3a5af0909233a 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -209,6 +209,7 @@ static const struct xpad_device {
+ 	{ 0x0738, 0xf738, "Super SFIV FightStick TE S", 0, XTYPE_XBOX360 },
+ 	{ 0x07ff, 0xffff, "Mad Catz GamePad", 0, XTYPE_XBOX360 },
+ 	{ 0x0b05, 0x1a38, "ASUS ROG RAIKIRI", 0, XTYPE_XBOXONE },
++	{ 0x0b05, 0x1abb, "ASUS ROG RAIKIRI PRO", 0, XTYPE_XBOXONE },
+ 	{ 0x0c12, 0x0005, "Intec wireless", 0, XTYPE_XBOX },
+ 	{ 0x0c12, 0x8801, "Nyko Xbox Controller", 0, XTYPE_XBOX },
+ 	{ 0x0c12, 0x8802, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
 -- 
 2.43.0
 
