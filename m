@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-61026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2083793A687
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A3293A752
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFEB91F22713
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20EEC28461F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC1A158A19;
-	Tue, 23 Jul 2024 18:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24005158A02;
+	Tue, 23 Jul 2024 18:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nH6xHJFU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDIXPvQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213DD1586C4;
-	Tue, 23 Jul 2024 18:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B18158211;
+	Tue, 23 Jul 2024 18:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759757; cv=none; b=QWd90KOuAu5f/vIKuiENjIrlK1ZoaOHic0HYnTjttJKFrhvH4mRyN70r71PqJRxqx0Tt9Lm8ngEG9urC4E5a0VpQxBt+iYXjI65NI6Pb/mGNVKXJ4BGdvsl39ukfBjV2xiy5fezBHl8i7FdYQI2znYyS6y0QNMD7yKUKf7svWkI=
+	t=1721760281; cv=none; b=XUJzgOeACZ/Z0K+F1lJsxnixnZzH9gZNu+KIc9MpOw8O2QQYqS1pwEvX+/LAlGDBZTQBEMEKKV23AK3s9PxH6/XnrYlNrADvc7vfSrt+uSAqEYNxBs77Ujl4p9l+1IznaCEK7tL7t4LaGe5Iboz47qWR+OhKgbdRKtuT/uhgHsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759757; c=relaxed/simple;
-	bh=wJHvLNt6UPO2UkMJCC3pjLN0Za4G4JxifFJ7F3uui4A=;
+	s=arc-20240116; t=1721760281; c=relaxed/simple;
+	bh=uvk5+bAdHKthUjIVeKQAW198mf+EPGVSu6Wzz7Z27Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWXz88IFNj0f9bSuq8cRlV0I5v8ozcdcxBaOwNd8fmxfQvQLKRHX3W9M65BI2sCmPM4wmwz+9x5q/PIqeQJ/oZw3erQX72xdduEICu6hvwyaR1MOuZ1fBN1v3naaCWNjXs3W8ccvf6KFnSkH3molTEfxiVbKtCmMbok+KlEvkas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nH6xHJFU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9C2C4AF0A;
-	Tue, 23 Jul 2024 18:35:56 +0000 (UTC)
+	 MIME-Version; b=uI2XM7vfU9cAxSyMG6pCGGOVCflZAA12ShOGyoYY3HzIF5nV+k4zfv986TPHOw2oNTFVQgeD/pYdf0rAg2a5NgfsH3o/mLKZPmUnJwlDx+lE0gCoW1FzZa0OgsmrvEvQSEfwPWF49UogtS4vKVwiP/5uCta8fCaOo1ycqkMbfAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDIXPvQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564B0C4AF09;
+	Tue, 23 Jul 2024 18:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759757;
-	bh=wJHvLNt6UPO2UkMJCC3pjLN0Za4G4JxifFJ7F3uui4A=;
+	s=korg; t=1721760281;
+	bh=uvk5+bAdHKthUjIVeKQAW198mf+EPGVSu6Wzz7Z27Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nH6xHJFU+gbZuLl2AUqWnsgcrtiTE1+yyx2vLH5IjAig/dvn86KK6mfx/KUUqdFh3
-	 kTFLOmZX610yNFgD7BMGxmA0ZCO+u5QW/ZkhewH5iifNVOl9szpNR4N0phB83PCCQa
-	 fNhgGqjWymaoVmwMFVWduBVmbAki31yNCDfNpJJY=
+	b=ZDIXPvQaFH0e6XLyDlJ7sw5fDZSE965j7aoc9wIlsKg47DVbb8Sq/edosh0n4MRrI
+	 JJ1gLh6u1pLXFJFrJ344XiN3s4Lk+IStRzlyfwu5/Tc6fVNabxrT2yKyF1PXQT5bWP
+	 EK2aYjBF1WUsuwMpeXQG28fuGP6hNA2HuJ/gc4Bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Fangzhi Zuo <Jerry.Zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/129] spi: mux: set ctlr->bits_per_word_mask
+Subject: [PATCH 6.9 136/163] drm/amd/display: Update efficiency bandwidth for dcn351
 Date: Tue, 23 Jul 2024 20:24:25 +0200
-Message-ID: <20240723180409.309572281@linuxfoundation.org>
+Message-ID: <20240723180148.727612258@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Fangzhi Zuo <Jerry.Zuo@amd.com>
 
-[ Upstream commit c8bd922d924bb4ab6c6c488310157d1a27996f31 ]
+[ Upstream commit 7ae37db29a8bc4d3d116a409308dd98fc3a0b1b3 ]
 
-Like other SPI controller flags, bits_per_word_mask may be used by a
-peripheral driver, so it needs to reflect the capabilities of the
-underlying controller.
+Fix 4k240 underflow on dcn351
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20240708-spi-mux-fix-v1-3-6c8845193128@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mux.c | 1 +
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
-index fa8c1f740c702..804b911f2baf1 100644
---- a/drivers/spi/spi-mux.c
-+++ b/drivers/spi/spi-mux.c
-@@ -156,6 +156,7 @@ static int spi_mux_probe(struct spi_device *spi)
- 	/* supported modes are the same as our parent's */
- 	ctlr->mode_bits = spi->controller->mode_bits;
- 	ctlr->flags = spi->controller->flags;
-+	ctlr->bits_per_word_mask = spi->controller->bits_per_word_mask;
- 	ctlr->transfer_one_message = spi_mux_transfer_one_message;
- 	ctlr->setup = spi_mux_setup;
- 	ctlr->num_chipselect = mux_control_states(priv->mux);
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+index a20f28a5d2e7b..3af759dca6ebf 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+@@ -233,6 +233,7 @@ void dml2_init_socbb_params(struct dml2_context *dml2, const struct dc *in_dc, s
+ 		out->round_trip_ping_latency_dcfclk_cycles = 106;
+ 		out->smn_latency_us = 2;
+ 		out->dispclk_dppclk_vco_speed_mhz = 3600;
++		out->pct_ideal_dram_bw_after_urgent_pixel_only = 65.0;
+ 		break;
+ 
+ 	}
 -- 
 2.43.0
 
