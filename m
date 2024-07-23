@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-60923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBEBA93A604
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9C393A59D
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71F162832EC
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DB84B21FD2
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67FD15445E;
-	Tue, 23 Jul 2024 18:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED12C1581EB;
+	Tue, 23 Jul 2024 18:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFFk22xP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNKl0s5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A270142067;
-	Tue, 23 Jul 2024 18:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D681586CB;
+	Tue, 23 Jul 2024 18:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759450; cv=none; b=Rwp0nmf+WhcLaIZRHb3Z1ZJcNIzlIsVdebg93SPC1S4dtSvO1RfzFlrnAt/PDQSv1PhSVhLSfcGsvdkyb9rE/c2zaiAmPme9bolYquOuty6Ako8F5fTESwORUwsYkQnhVz2E+fzm/FwO3p1TpxRfaLk8TV8Zptw5lKozwDBELgQ=
+	t=1721759178; cv=none; b=lmNjU/cQiL1/wBGExAZEpHKx2kQzh643QnoYXg8p4QW72wgPF82jwj4TcLizZRf011HhzMSd3R/tyPKPLR8jtdHeTQ57p9Hy8p0zO77gASXhSm15WEFPjHUDsb53dDALPEc59C/DujNLNJChF7q5VapCMp6Rg3qBKkz2NbOF8dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759450; c=relaxed/simple;
-	bh=Yg7YOpk9+iITyybdKsRnHDUj8tegKbcFSeW0EZRSyQU=;
+	s=arc-20240116; t=1721759178; c=relaxed/simple;
+	bh=MLw3swk3ayFTb2HJHkEIZ0uaiBlfyTfy+y8lIBwORjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZS8SX76kNq5V4cEUYBCwTZrGk2qnlO0PA27ZolOSOK9MrNqhgK5WKkDUBWW4GXmg33hoTjBOrxsi2oVQxBWj8qpYf0+R7nCPBMVlWEWdt2BLosvWcPkQ1TFxI/J6dL1IeS0S0+AKxxLQhvPeVvchE3XPR5/vC6/WRoZ+CdvxUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFFk22xP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B31BC4AF0A;
-	Tue, 23 Jul 2024 18:30:49 +0000 (UTC)
+	 MIME-Version; b=mVVaAaTtBiFE/qAPwOL9wt/NZaieGd9AkYUXhfo5cPwGY3A2JiFRS5XPdpxhrZfKPIq+oXaCIw18/Q8Pb38VWoF4CxJdKNv0AwOcLFgAbGC7Es+dif9FYA89B/ye1QN0gS1Vv2g4s+LlXKnpKlMjc4OEIy3222+h4t9KXmtWBp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNKl0s5i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A40C4AF0A;
+	Tue, 23 Jul 2024 18:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759450;
-	bh=Yg7YOpk9+iITyybdKsRnHDUj8tegKbcFSeW0EZRSyQU=;
+	s=korg; t=1721759178;
+	bh=MLw3swk3ayFTb2HJHkEIZ0uaiBlfyTfy+y8lIBwORjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFFk22xPiDS2DnUo2X8rJ+DJs0VBegHLK0fxwquRaKghkSYoWZqQ6LIGPNZM4iPd4
-	 7NkJF3OpoDRtUjRBp0eSv/6XnJav6OnEl5BCnzMXPCelm4P7GbFpPnH+P30OoL5im2
-	 v3BEjHIiMReL1e7tF/vyJ8rAe3pAbPK2RwE3v5MI=
+	b=aNKl0s5ibc5RVxSgtab9CkYB4ojxcDWY3RRWCchBIRNX/XN65tYTJ9hjyTshk75K/
+	 dr/i8prbyngvLLebp8A0YO2EXklH6txSKjM5fZ4lq4k0X2prwa0HKWjmqmMAG9LmJ+
+	 VA0d/R0Iz63BpONPi58zalOqmzhgK9tmfxaHVu/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/129] wifi: iwlwifi: mvm: d3: fix WoWLAN command version lookup
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	SeongJae Park <sj@kernel.org>
+Subject: [PATCH 6.1 006/105] minmax: relax check to allow comparison between unsigned arguments and signed constants
 Date: Tue, 23 Jul 2024 20:22:43 +0200
-Message-ID: <20240723180405.374502642@linuxfoundation.org>
+Message-ID: <20240723180402.882777652@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +67,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit b7ffca99313d856f7d1cc89038d9061b128e8e97 ]
+commit 867046cc7027703f60a46339ffde91a1970f2901 upstream.
 
-After moving from commands to notificaitons in the d3 resume flow,
-removing the WOWLAN_GET_STATUSES and REPLY_OFFLOADS_QUERY_CMD causes
-the return of the default value when looking up their version.
-Returning zero here results in the driver sending the not supported
-NON_QOS_TX_COUNTER_CMD.
+Allow (for example) min(unsigned_var, 20).
 
-Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.8cabfd580614.If3a0db9851f56041f8f5360959354abd5379224a@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The opposite min(signed_var, 20u) is still errored.
+
+Since a comparison between signed and unsigned never makes the unsigned
+value negative it is only necessary to adjust the __types_ok() test.
+
+Link: https://lkml.kernel.org/r/633b64e2f39e46bb8234809c5595b8c7@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 867046cc7027703f60a46339ffde91a1970f2901)
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/minmax.h |   24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index cfc239b272eb7..66aed6635d92c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2102,7 +2102,8 @@ static bool iwl_mvm_setup_connection_keep(struct iwl_mvm *mvm,
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -9,13 +9,18 @@
+ /*
+  * min()/max()/clamp() macros must accomplish three things:
+  *
+- * - avoid multiple evaluations of the arguments (so side-effects like
++ * - Avoid multiple evaluations of the arguments (so side-effects like
+  *   "x++" happen only once) when non-constant.
+- * - perform signed v unsigned type-checking (to generate compile
+- *   errors instead of nasty runtime surprises).
+- * - retain result as a constant expressions when called with only
++ * - Retain result as a constant expressions when called with only
+  *   constant expressions (to avoid tripping VLA warnings in stack
+  *   allocation usage).
++ * - Perform signed v unsigned type-checking (to generate compile
++ *   errors instead of nasty runtime surprises).
++ * - Unsigned char/short are always promoted to signed int and can be
++ *   compared against signed or unsigned arguments.
++ * - Unsigned arguments can be compared against non-negative signed constants.
++ * - Comparison of a signed argument against an unsigned constant fails
++ *   even if the constant is below __INT_MAX__ and could be cast to int.
+  */
+ #define __typecheck(x, y) \
+ 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+@@ -25,9 +30,14 @@
+ 	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
+ 		is_signed_type(typeof(x)), 0)
  
- out:
- 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP,
--				    WOWLAN_GET_STATUSES, 0) < 10) {
-+				    WOWLAN_GET_STATUSES,
-+				    IWL_FW_CMD_VER_UNKNOWN) < 10) {
- 		mvmvif->seqno_valid = true;
- 		/* +0x10 because the set API expects next-to-use, not last-used */
- 		mvmvif->seqno = status->non_qos_seq_ctr + 0x10;
--- 
-2.43.0
-
+-#define __types_ok(x, y) 			\
+-	(__is_signed(x) == __is_signed(y) ||	\
+-		__is_signed((x) + 0) == __is_signed((y) + 0))
++/* True for a non-negative signed int constant */
++#define __is_noneg_int(x)	\
++	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
++
++#define __types_ok(x, y) 					\
++	(__is_signed(x) == __is_signed(y) ||			\
++		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
++		__is_noneg_int(x) || __is_noneg_int(y))
+ 
+ #define __cmp_op_min <
+ #define __cmp_op_max >
 
 
 
