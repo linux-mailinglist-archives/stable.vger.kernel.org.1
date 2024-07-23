@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-60910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CD193A5F7
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4100A93A679
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 944AE283A01
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00079282B0C
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6513158868;
-	Tue, 23 Jul 2024 18:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A83E13D896;
+	Tue, 23 Jul 2024 18:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vv+hBWcC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiI/RsdQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FBD14C5B0;
-	Tue, 23 Jul 2024 18:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B80158A17;
+	Tue, 23 Jul 2024 18:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759412; cv=none; b=Dhm/t1/kj45GJedzofWuRkAZagm7V6Ovrz1S6C1BnkLDTUrh5ZVI65Uj+yMFZ5vrWn7EaOeOIi4sDBCMRoelcLvvwXKBRPtyFGfiTTOFeQEw+9aqzpySAfCUmdekzHLuIrFIeBqOk4PE4cpq3mw9txBKFpJaTzvsD5UzYbQZcBU=
+	t=1721759721; cv=none; b=htCsjbqlIODlAK6QNqA1R9LnAZyXg58qRldZHB1DmKomNXPAw21gzFefZpyRGbqbBRkk/FIIrvGbMRFchja4PDdh6xJDK7n3ZWuqBOodg9rKkDuJ7rIM5NDZHDqTknE/BCZxyvZQ37CWZYQn9fC75aVs6lBlHSj85RQaPq5CYj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759412; c=relaxed/simple;
-	bh=aR6faF6fL6Tg4MZl4dofDXeOlIU1i1FgTifl3LwrRbk=;
+	s=arc-20240116; t=1721759721; c=relaxed/simple;
+	bh=3tcheC7OIYNwFeGHN7EQ+nUrLqcgCxodaT9TbUun2uQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDsHm69TIX2uWnyVJWhEV3JkVS1opf8WKZqopyyTZHUCgAO5cXCqcXOC3fT4umYRMBd+89qvwMb5BOXb94MHlRToEc3J1543kv2l64pTqbE9Javib1JY/UuiUPvLLM1+MWClOfJ7MhaHKyV/1LNTSIvFT3ZQo3HY1tFKyE3XD80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vv+hBWcC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB85CC4AF09;
-	Tue, 23 Jul 2024 18:30:11 +0000 (UTC)
+	 MIME-Version; b=poiRYCmR6Bqxq0Q37mRqgc0cle1r0jEGY2ima6KSfC9TDtISiN/aCcJuVox8tYbWKLevNrt3cu7Y23pAcB/0wX65nwV9aqF+4kcfLIJ6glCPf6WlSGoZ/cIUZKr5BW5NLkOnbFqib/J+qiO3MAKNEzBC0o0ydmpxQWD2W9SP6oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiI/RsdQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33D5C4AF09;
+	Tue, 23 Jul 2024 18:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759412;
-	bh=aR6faF6fL6Tg4MZl4dofDXeOlIU1i1FgTifl3LwrRbk=;
+	s=korg; t=1721759721;
+	bh=3tcheC7OIYNwFeGHN7EQ+nUrLqcgCxodaT9TbUun2uQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vv+hBWcCcK/Rp0FTwKQaBqPyVyYeL34ep5YTapiQCjTzqlISK/BGki6/EZeqRWWEJ
-	 rShheMVo9N/sivWQfQ5mAId1FT2P0lWiopRJff/lMa/Qqp8pLnHwC0sZlSyPu4qC/q
-	 4Yi7owSiUADdaMWE6FWS55IZDMroilUm5GXVrZog=
+	b=MiI/RsdQALArLkObGVyX+HKT7F3sgCOx4YfECqxFAPAoYryu/mesolbIDsnK5yura
+	 9HtGavpUpQzLBmeanVfKLcSdJbKALHFuUom/f9J7o3oK9oJp2Xn1s9oUk/yIGdNXdg
+	 JAJTaEzSuYOd7nMHZvItFtS9jQ4QiXOWHquQSmms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/105] spi: mux: set ctlr->bits_per_word_mask
-Date: Tue, 23 Jul 2024 20:24:13 +0200
-Message-ID: <20240723180406.945141598@linuxfoundation.org>
+Subject: [PATCH 6.6 106/129] fs: better handle deep ancestor chains in is_subdir()
+Date: Tue, 23 Jul 2024 20:24:14 +0200
+Message-ID: <20240723180408.887681255@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit c8bd922d924bb4ab6c6c488310157d1a27996f31 ]
+[ Upstream commit 391b59b045004d5b985d033263ccba3e941a7740 ]
 
-Like other SPI controller flags, bits_per_word_mask may be used by a
-peripheral driver, so it needs to reflect the capabilities of the
-underlying controller.
+Jan reported that 'cd ..' may take a long time in deep directory
+hierarchies under a bind-mount. If concurrent renames happen it is
+possible to livelock in is_subdir() because it will keep retrying.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20240708-spi-mux-fix-v1-3-6c8845193128@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Change is_subdir() from simply retrying over and over to retry once and
+then acquire the rename lock to handle deep ancestor chains better. The
+list of alternatives to this approach were less then pleasant. Change
+the scope of rcu lock to cover the whole walk while at it.
+
+A big thanks to Jan and Linus. Both Jan and Linus had proposed
+effectively the same thing just that one version ended up being slightly
+more elegant.
+
+Reported-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mux.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/dcache.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
-index 0709e987bd5ab..465d5b0e1d1a9 100644
---- a/drivers/spi/spi-mux.c
-+++ b/drivers/spi/spi-mux.c
-@@ -156,6 +156,7 @@ static int spi_mux_probe(struct spi_device *spi)
- 	/* supported modes are the same as our parent's */
- 	ctlr->mode_bits = spi->controller->mode_bits;
- 	ctlr->flags = spi->controller->flags;
-+	ctlr->bits_per_word_mask = spi->controller->bits_per_word_mask;
- 	ctlr->transfer_one_message = spi_mux_transfer_one_message;
- 	ctlr->setup = spi_mux_setup;
- 	ctlr->num_chipselect = mux_control_states(priv->mux);
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 186c0e1b5713f..4030c010a7682 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -3208,28 +3208,25 @@ EXPORT_SYMBOL(d_splice_alias);
+   
+ bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
+ {
+-	bool result;
++	bool subdir;
+ 	unsigned seq;
+ 
+ 	if (new_dentry == old_dentry)
+ 		return true;
+ 
+-	do {
+-		/* for restarting inner loop in case of seq retry */
+-		seq = read_seqbegin(&rename_lock);
+-		/*
+-		 * Need rcu_readlock to protect against the d_parent trashing
+-		 * due to d_move
+-		 */
+-		rcu_read_lock();
+-		if (d_ancestor(old_dentry, new_dentry))
+-			result = true;
+-		else
+-			result = false;
+-		rcu_read_unlock();
+-	} while (read_seqretry(&rename_lock, seq));
+-
+-	return result;
++	/* Access d_parent under rcu as d_move() may change it. */
++	rcu_read_lock();
++	seq = read_seqbegin(&rename_lock);
++	subdir = d_ancestor(old_dentry, new_dentry);
++	 /* Try lockless once... */
++	if (read_seqretry(&rename_lock, seq)) {
++		/* ...else acquire lock for progress even on deep chains. */
++		read_seqlock_excl(&rename_lock);
++		subdir = d_ancestor(old_dentry, new_dentry);
++		read_sequnlock_excl(&rename_lock);
++	}
++	rcu_read_unlock();
++	return subdir;
+ }
+ EXPORT_SYMBOL(is_subdir);
+ 
 -- 
 2.43.0
 
