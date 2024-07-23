@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-60867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF17793A5C6
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F060D93A63D
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F8FF1F22DB4
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACB29280F63
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EB6158859;
-	Tue, 23 Jul 2024 18:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F04814C5B0;
+	Tue, 23 Jul 2024 18:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yTuApvn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/GWfxSY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80573157A4F;
-	Tue, 23 Jul 2024 18:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AE742067;
+	Tue, 23 Jul 2024 18:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759288; cv=none; b=lkP5HEPvL2B8i5C/nJEWMLiIm9p7DCv3yjLXe7O24Dl6SumzzPTxzZUCX/oEE3qN4iOe8w742nYgkascttFiRu56Yq/KSam4VtB/86RcOpcnMLK9nppwy4f1hZv4o5vUeGk0pQaSJ7Pzt33iwXIZg92c+Hm04+KnfHlyjKm4GLc=
+	t=1721759600; cv=none; b=JOjLlbICE8Zgy98FnXMdEllrOVwgn0FgOse7AN4dcf1ThrLz5nDq67VZq/hiSk2Q3uoE2hQSVKXoVw47XXu/oZXwRydCYcuUvn9qA1CwfqGTV8dEV8VtxztdKoFsGnu+Gf9T0/BjsDXTY6S81GKSbzS8mL9MLTC4S6JJ8U2xvL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759288; c=relaxed/simple;
-	bh=lfOAuYV+nkmjF3euaVadx2qu27vSrGaW6Yxx/OQx9oQ=;
+	s=arc-20240116; t=1721759600; c=relaxed/simple;
+	bh=rHuOlTxVgndy27aErhGvuEFE5xqoZEUOazd+Wb4QzEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZCI0eQgH5WvGlSm+Fd7x5WFVcVEwLFQykwRl+fMGLH6vRJ+55tRVXWi7mF+96a2l/HCyDroIn8fnON1jPyI+5a7sGUEFHiFtWQcZXpRpQTUdMxCp2rkFoz64P1oAyYZwnip9sjcCM31sfp07hkyQaK6u1Ogd7o1wIAHrRMlaQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yTuApvn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1799C4AF09;
-	Tue, 23 Jul 2024 18:28:07 +0000 (UTC)
+	 MIME-Version; b=JMaSUwde9Llongl/382j1cX378EHxFRdpkyatfCFt21F49hsN+/yyM0Cif30CG+zFUeWbfbw8bWmBQFkj5GQ2rJz4LULIDCLC6z2myQqmIf6p6G2qZ4dqZr8hGIZ2hyaoPh5atV9XCNlEuTHvYw+5f/ogbiVKYVVOcqd0u6YKV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/GWfxSY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A90C4AF09;
+	Tue, 23 Jul 2024 18:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759288;
-	bh=lfOAuYV+nkmjF3euaVadx2qu27vSrGaW6Yxx/OQx9oQ=;
+	s=korg; t=1721759599;
+	bh=rHuOlTxVgndy27aErhGvuEFE5xqoZEUOazd+Wb4QzEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yTuApvnqv9l5FEdtBjcgLyfJxzHuZVOroXpe16rbiC/JAsSCtK0+GSDeZI9VJTEz
-	 UeVdX4+LnJvi/pHu+mhsOpOh6UilngRzEx7umkbSoyCfdsN0Rr/OVhhoYfShrqURRU
-	 mMHh2m4R/IcNoWQ3BxcenMQo4/muJst+N6EcA2u4=
+	b=X/GWfxSYksu8nWHQIWtnrSNUWZP1to9Dwma8UyyD39ms2+3a2Pe27RwSFcQEwyKPd
+	 C5OgwzRRbtHIgl2oRA8vMqb4Sd93ZZK0YjyVHF5sM/6SJOLJkft0Wni5esnbVLNu8y
+	 FgyNZRHRlbJ3O+he2j9a261DIkDbsDjnspJoLq1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Aseda Aboagye <aaboagye@chromium.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/105] wifi: iwlwifi: mvm: Fix scan abort handling with HW rfkill
+Subject: [PATCH 6.6 034/129] input: Add support for "Do Not Disturb"
 Date: Tue, 23 Jul 2024 20:23:02 +0200
-Message-ID: <20240723180404.020953597@linuxfoundation.org>
+Message-ID: <20240723180406.107919556@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Aseda Aboagye <aaboagye@chromium.org>
 
-[ Upstream commit e6dd2936ce7ce94a1915b799f8af8193ec628e87 ]
+[ Upstream commit 22d6d060ac77955291deb43efc2f3f4f9632c6cb ]
 
-When HW rfkill is toggled to disable the RF, the flow to stop scan is
-called. When trying to send the command to abort the scan, since
-HW rfkill is toggled, the command is not sent due to rfkill being
-asserted, and -ERFKILL is returned from iwl_trans_send_cmd(), but this
-is silently ignored in iwl_mvm_send_cmd() and thus the scan abort flow
-continues to wait for scan complete notification and fails. Since it
-fails, the UID to type mapping is not cleared, and thus a warning is
-later fired when trying to stop the interface.
+HUTRR94 added support for a new usage titled "System Do Not Disturb"
+which toggles a system-wide Do Not Disturb setting. This commit simply
+adds a new event code for the usage.
 
-To fix this, modify the UMAC scan abort flow to force sending the
-scan abort command even when in rfkill, so stop the FW from accessing
-the radio etc.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.8cbe2f8c1a97.Iffe235c12a919dafec88eef399eb1f7bae2c5bdb@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Aseda Aboagye <aaboagye@chromium.org>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/Zl-gUHE70s7wCAoB@google.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/hid-debug.c                | 1 +
+ drivers/hid/hid-input.c                | 8 ++++++++
+ include/uapi/linux/input-event-codes.h | 1 +
+ 3 files changed, 10 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 838ab08e68c6b..069bac72117fe 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -3057,10 +3057,11 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
+diff --git a/drivers/hid/hid-debug.c b/drivers/hid/hid-debug.c
+index c629ab161d5b2..5302bfd527d86 100644
+--- a/drivers/hid/hid-debug.c
++++ b/drivers/hid/hid-debug.c
+@@ -975,6 +975,7 @@ static const char *keys[KEY_MAX + 1] = {
+ 	[KEY_CAMERA_ACCESS_DISABLE] = "CameraAccessDisable",
+ 	[KEY_CAMERA_ACCESS_TOGGLE] = "CameraAccessToggle",
+ 	[KEY_ACCESSIBILITY] = "Accessibility",
++	[KEY_DO_NOT_DISTURB] = "DoNotDisturb",
+ 	[KEY_DICTATE] = "Dictate",
+ 	[KEY_MICMUTE] = "MicrophoneMute",
+ 	[KEY_BRIGHTNESS_MIN] = "BrightnessMin",
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index d5a6e89c3086e..8bb16e9b94aa5 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -833,6 +833,14 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
+ 			break;
+ 		}
  
- 	ret = iwl_mvm_send_cmd_pdu(mvm,
- 				   WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
--				   0, sizeof(cmd), &cmd);
-+				   CMD_SEND_IN_RFKILL, sizeof(cmd), &cmd);
- 	if (!ret)
- 		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
++		if ((usage->hid & 0xf0) == 0x90) { /* SystemControl*/
++			switch (usage->hid & 0xf) {
++			case 0xb: map_key_clear(KEY_DO_NOT_DISTURB); break;
++			default: goto ignore;
++			}
++			break;
++		}
++
+ 		if ((usage->hid & 0xf0) == 0xa0) {	/* SystemControl */
+ 			switch (usage->hid & 0xf) {
+ 			case 0x9: map_key_clear(KEY_MICMUTE); break;
+diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
+index 39f11ec676fae..a4206723f5033 100644
+--- a/include/uapi/linux/input-event-codes.h
++++ b/include/uapi/linux/input-event-codes.h
+@@ -619,6 +619,7 @@
+ #define KEY_CAMERA_ACCESS_DISABLE	0x24c	/* Disables programmatic access to camera devices. (HUTRR72) */
+ #define KEY_CAMERA_ACCESS_TOGGLE	0x24d	/* Toggles the current state of the camera access control. (HUTRR72) */
+ #define KEY_ACCESSIBILITY		0x24e	/* Toggles the system bound accessibility UI/command (HUTRR116) */
++#define KEY_DO_NOT_DISTURB		0x24f	/* Toggles the system-wide "Do Not Disturb" control (HUTRR94)*/
  
-+	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d\n", ret);
- 	return ret;
- }
- 
+ #define KEY_BRIGHTNESS_MIN		0x250	/* Set Brightness to Minimum */
+ #define KEY_BRIGHTNESS_MAX		0x251	/* Set Brightness to Maximum */
 -- 
 2.43.0
 
