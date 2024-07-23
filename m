@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-60952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D5093A628
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7A093A5A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2A131C22054
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1DE6283652
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71EC1586F5;
-	Tue, 23 Jul 2024 18:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0242157A4F;
+	Tue, 23 Jul 2024 18:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAt4RNpa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AE3/fbAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7563213D600;
-	Tue, 23 Jul 2024 18:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D309156F37;
+	Tue, 23 Jul 2024 18:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759536; cv=none; b=Eht5oB9uiYdqXuGnz7IDRH5jIesTUE2fdw8P0ppnqjwYRu2cPxraxs6VruuAeRLONaZk1DmXNrYwHiHCo7+OVruvGzU0rN5ckFV2G9TiN4zgkOgVDwClyhYVYazjQ6O7xUYi1tAoJW84RZnG35zHw3OB9E2zP9zGSv3FG/ST004=
+	t=1721759196; cv=none; b=BLJulVu23r/EW6xkSY5bgqok6xBEkbIirhp2H9J6uchrcrQdk/NLQRx2NXCn4/wOF6TiolhZaEPgRonyDcBMY577qH51aJgKh9tj6BSRkctJlLr2ehy6irSsgDRcQLeh4/zAHcUXbuI7pbWvuiPfPksTrNZjxvStRHpqiU+54HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759536; c=relaxed/simple;
-	bh=aaHOqgRnvMPiDqpGUTIqjvBPtC8apTIbUgAVzlUhLMg=;
+	s=arc-20240116; t=1721759196; c=relaxed/simple;
+	bh=XV7Wpo3eKvAU7Kdwobz7AxVm+eVUSQiC9zHvjAbBX5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8kxuw8w9l9O/oDAAhhRsrWD7wWr2L6Zu2EV2TAF6REc4e/1RhD5Qhlhr8IsImQCFzMHAUiRPZKEd+q5/VPVoYuxVDdgCRWB0yH7Iw0QLwoeG+scTFPo4+l9vRoYWTtXecpRHQf0Eh/N8rdByYfixaHVFHGq3vvTjsAep4TJVyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAt4RNpa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E8AC4AF09;
-	Tue, 23 Jul 2024 18:32:15 +0000 (UTC)
+	 MIME-Version; b=ij3S8j0r7qUNcZn4kGAswPGqSGy0cXDr8HlKsF1BBq0523ZaLG2toqH1byM57xK8aKl7S03nGMZveqNHLEaXlBhXjCOVD82+krilhm6Q4itGCn1x1uZLkuS62emJCwlQnxaprhCjzKpbfOOjquACf6oQ3z8lh3/Smp8uUudkK+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AE3/fbAV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEB0C4AF0E;
+	Tue, 23 Jul 2024 18:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759536;
-	bh=aaHOqgRnvMPiDqpGUTIqjvBPtC8apTIbUgAVzlUhLMg=;
+	s=korg; t=1721759196;
+	bh=XV7Wpo3eKvAU7Kdwobz7AxVm+eVUSQiC9zHvjAbBX5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QAt4RNpamLSWJ8Pg3Lw+IIk/rmxZHCrWDPfXxofP4Wme8Hxq5zHlAUn3InCf7c2YP
-	 mDzG9rZ8CA8UXMivKNqcqNZPNsYoHAkB7E19nZCL+2tBRSG33wXD8me3B3esb0VCJM
-	 Qhn9fKgEDQdeojoG/kfMd4vz7djGHW7W2uD0ZhC8=
+	b=AE3/fbAV6pUIEcI1xAZ8R2RY5OJ4yMlA0UzRC6odNQeoPKATQ9l5fUWv01CmQj6NS
+	 hHdI+jStUf4FDiRWjDyazGDjPiQ+UW75ds51SNetfhcZYL00hsLf3qTiTo8mdbaolK
+	 83Z5iWyjorGkObEd9dVEA7HP1fG429lyMSpnLlBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/129] mei: demote client disconnect warning on suspend to debug
+Subject: [PATCH 6.1 035/105] kconfig: remove wrong expr_trans_bool()
 Date: Tue, 23 Jul 2024 20:23:12 +0200
-Message-ID: <20240723180406.491482847@linuxfoundation.org>
+Message-ID: <20240723180404.590294595@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
+[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
 
-Change level for the "not connected" client message in the write
-callback from error to debug.
+expr_trans_bool() performs an incorrect transformation.
 
-The MEI driver currently disconnects all clients upon system suspend.
-This behavior is by design and user-space applications with
-open connections before the suspend are expected to handle errors upon
-resume, by reopening their handles, reconnecting,
-and retrying their operations.
+[Test Code]
 
-However, the current driver implementation logs an error message every
-time a write operation is attempted on a disconnected client.
-Since this is a normal and expected flow after system resume
-logging this as an error can be misleading.
+    config MODULES
+            def_bool y
+            modules
 
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    config A
+            def_bool y
+            select C if B != n
+
+    config B
+            def_tristate m
+
+    config C
+            tristate
+
+[Result]
+
+    CONFIG_MODULES=y
+    CONFIG_A=y
+    CONFIG_B=m
+    CONFIG_C=m
+
+This output is incorrect because CONFIG_C=y is expected.
+
+Documentation/kbuild/kconfig-language.rst clearly explains the function
+of the '!=' operator:
+
+    If the values of both symbols are equal, it returns 'n',
+    otherwise 'y'.
+
+Therefore, the statement:
+
+    select C if B != n
+
+should be equivalent to:
+
+    select C if y
+
+Or, more simply:
+
+    select C
+
+Hence, the symbol C should be selected by the value of A, which is 'y'.
+
+However, expr_trans_bool() wrongly transforms it to:
+
+    select C if B
+
+Therefore, the symbol C is selected by (A && B), which is 'm'.
+
+The comment block of expr_trans_bool() correctly explains its intention:
+
+  * bool FOO!=n => FOO
+    ^^^^
+
+If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
+
+However, the actual code performs this transformation when FOO is
+tristate:
+
+    if (e->left.sym->type == S_TRISTATE) {
+                             ^^^^^^^^^^
+
+While it can be fixed to S_BOOLEAN, there is no point in doing so
+because expr_tranform() already transforms FOO!=n to FOO when FOO is
+bool. (see the "case E_UNEQUAL" part)
+
+expr_trans_bool() is wrong and unnecessary.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/kconfig/expr.c | 29 -----------------------------
+ scripts/kconfig/expr.h |  1 -
+ scripts/kconfig/menu.c |  2 --
+ 3 files changed, 32 deletions(-)
 
-diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
-index bb4e9eabda978..c018534c780f9 100644
---- a/drivers/misc/mei/main.c
-+++ b/drivers/misc/mei/main.c
-@@ -329,7 +329,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
- 	}
+diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
+index 81ebf8108ca74..81dfdf4470f75 100644
+--- a/scripts/kconfig/expr.c
++++ b/scripts/kconfig/expr.c
+@@ -396,35 +396,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
+ 	return e;
+ }
  
- 	if (!mei_cl_is_connected(cl)) {
--		cl_err(dev, cl, "is not connected");
-+		cl_dbg(dev, cl, "is not connected");
- 		rets = -ENODEV;
- 		goto out;
- 	}
+-/*
+- * bool FOO!=n => FOO
+- */
+-struct expr *expr_trans_bool(struct expr *e)
+-{
+-	if (!e)
+-		return NULL;
+-	switch (e->type) {
+-	case E_AND:
+-	case E_OR:
+-	case E_NOT:
+-		e->left.expr = expr_trans_bool(e->left.expr);
+-		e->right.expr = expr_trans_bool(e->right.expr);
+-		break;
+-	case E_UNEQUAL:
+-		// FOO!=n -> FOO
+-		if (e->left.sym->type == S_TRISTATE) {
+-			if (e->right.sym == &symbol_no) {
+-				e->type = E_SYMBOL;
+-				e->right.sym = NULL;
+-			}
+-		}
+-		break;
+-	default:
+-		;
+-	}
+-	return e;
+-}
+-
+ /*
+  * e1 || e2 -> ?
+  */
+diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
+index 9c9caca5bd5f2..c91060e19e477 100644
+--- a/scripts/kconfig/expr.h
++++ b/scripts/kconfig/expr.h
+@@ -296,7 +296,6 @@ void expr_free(struct expr *e);
+ void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
+ int expr_eq(struct expr *e1, struct expr *e2);
+ tristate expr_calc_value(struct expr *e);
+-struct expr *expr_trans_bool(struct expr *e);
+ struct expr *expr_eliminate_dups(struct expr *e);
+ struct expr *expr_transform(struct expr *e);
+ int expr_contains_symbol(struct expr *dep, struct symbol *sym);
+diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
+index 109325f31bef3..9d4c3f366a061 100644
+--- a/scripts/kconfig/menu.c
++++ b/scripts/kconfig/menu.c
+@@ -380,8 +380,6 @@ void menu_finalize(struct menu *parent)
+ 				dep = expr_transform(dep);
+ 				dep = expr_alloc_and(expr_copy(basedep), dep);
+ 				dep = expr_eliminate_dups(dep);
+-				if (menu->sym && menu->sym->type != S_TRISTATE)
+-					dep = expr_trans_bool(dep);
+ 				prop->visible.expr = dep;
+ 
+ 				/*
 -- 
 2.43.0
 
