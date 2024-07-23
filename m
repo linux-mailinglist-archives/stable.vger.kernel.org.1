@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-60820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA9D93A590
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:25:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C2B93A638
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8EF7B21897
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:25:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC479B22917
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672541586F6;
-	Tue, 23 Jul 2024 18:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D4514C5B0;
+	Tue, 23 Jul 2024 18:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PypYa6uz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAH20u53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26776156F37;
-	Tue, 23 Jul 2024 18:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECD242067;
+	Tue, 23 Jul 2024 18:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759149; cv=none; b=gwCSl763L/8OatSNBX+sPOhNuwYUoS7l2mt5pRlLZM3Gnw7EokeXXNBM1eRBbFcCDHRvgAeHYWwFR8DwSdtpuZDQ1DmrgTeZ13U/NtgE9spQeOyXbfbAt00NLma/4+PjAYyfZPHIDQx5HTv6oiTU6sHbuTZL2+3+cxJwZlJy1H8=
+	t=1721759584; cv=none; b=KBNWAwYX8F3XozOFqxJTVgLCTtkUfwd2u5Hq04PvtCAUvpBSnTD2Qb5FGmnINYIrFZZ0dkwiKxlhAZVKpldOB71OwVYciyc4o9XeEj/FDvbrkBReKvMPKdFec01pfFP79CJkTUDRTHnV7sucqtpHFtTxFLifYBcggld4ij7lKLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759149; c=relaxed/simple;
-	bh=Dyynr/zrwPY+G+agNMizkLzg3KQDFIGX3GhgCwKZ2Ic=;
+	s=arc-20240116; t=1721759584; c=relaxed/simple;
+	bh=F8SSD433S/nShTLDfCxy9bBVlMLqjWUyDsqD1jxOel8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l8YOmxpzUc5tdZnx3ZLIxoCbHHiIMelF/OVQkYCv+xAc+07We2WbraQYRrftHLmmET7ha80cVzx78Ya2K01q0VhjZk9QAsgkPRpUdefQWObxPk8dhrmdoMKnwbMWhgu+Zl1JT4RDm5TAwXZ3n7YdmLDsGjJ67BAXHRufykbnbuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PypYa6uz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1366C4AF0B;
-	Tue, 23 Jul 2024 18:25:48 +0000 (UTC)
+	 MIME-Version; b=oDee78N2x/535WDJftf1flId9BgykEEWHsh5u6DkLONS7LaEryBNkkQJ0DlTVBNrKFyr3Hgai7wrRRfjrpESYCCOKk4c8JcnvDqUhgihZqoZejC8nOhgHKpgtn/TXIHU3k62+VXtOAkvMB1QoGyJ+mNru7FtubTGa6y/REOpbng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAH20u53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E96C4AF09;
+	Tue, 23 Jul 2024 18:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759149;
-	bh=Dyynr/zrwPY+G+agNMizkLzg3KQDFIGX3GhgCwKZ2Ic=;
+	s=korg; t=1721759584;
+	bh=F8SSD433S/nShTLDfCxy9bBVlMLqjWUyDsqD1jxOel8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PypYa6uz2ejrQZt3CwWsaycSXqtT/ZSWjdCZ+HaI88yPzWa0LbisRsCR3WdUx43X/
-	 hUtVqi7VmHDvSMhVreNMIpXztvV3MzZ9njaALL3b3DQ/oWaT7PO98L3XrfbJqT7qt1
-	 g4zjVDgsthmJu9Z1aWFetZT5U9qR0dgQkbWNEjmg=
+	b=jAH20u53LWOILlLHM5DdfYZbGeEZqhREbNMX3WD5VaRHe+VA2x5LJMkXJQ+o6xbr4
+	 bMUt8rC1uLwQHyhwVa2VDl6lxD2Wi7+x5LZJaNmKXb03GLuq/SHgSHbViMKCV/cf61
+	 fiUVb0dcct5VhwGKf6NhixmyPu9IZZhbMTMICyjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+	Wei Li <liwei391@huawei.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/105] wifi: mac80211: apply mcast rate only if interface is up
-Date: Tue, 23 Jul 2024 20:22:56 +0200
-Message-ID: <20240723180403.658148693@linuxfoundation.org>
+Subject: [PATCH 6.6 029/129] arm64: armv8_deprecated: Fix warning in isndep cpuhp starting process
+Date: Tue, 23 Jul 2024 20:22:57 +0200
+Message-ID: <20240723180405.916432459@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Wei Li <liwei391@huawei.com>
 
-[ Upstream commit 02c665f048a439c0d58cc45334c94634bd7c18e6 ]
+[ Upstream commit 14951beaec93696b092a906baa0f29322cf34004 ]
 
-If the interface isn't enabled, don't apply multicast
-rate changes immediately.
+The function run_all_insn_set_hw_mode() is registered as startup callback
+of 'CPUHP_AP_ARM64_ISNDEP_STARTING', it invokes set_hw_mode() methods of
+all emulated instructions.
 
-Reported-by: syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com
-Link: https://msgid.link/20240515133410.d6cffe5756cc.I47b624a317e62bdb4609ff7fa79403c0c444d32d@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+As the STARTING callbacks are not expected to fail, if one of the
+set_hw_mode() fails, e.g. due to el0 mixed-endian is not supported for
+'setend', it will report a warning:
+
+```
+CPU[2] cannot support the emulation of setend
+CPU 2 UP state arm64/isndep:starting (136) failed (-22)
+CPU2: Booted secondary processor 0x0000000002 [0x414fd0c1]
+```
+
+To fix it, add a check for INSN_UNAVAILABLE status and skip the process.
+
+Signed-off-by: Wei Li <liwei391@huawei.com>
+Tested-by: Huisong Li <lihuisong@huawei.com>
+Link: https://lore.kernel.org/r/20240423093501.3460764-1-liwei391@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/armv8_deprecated.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 1e57027da2913..2c60fc165801c 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2838,8 +2838,9 @@ static int ieee80211_set_mcast_rate(struct wiphy *wiphy, struct net_device *dev,
- 	memcpy(sdata->vif.bss_conf.mcast_rate, rate,
- 	       sizeof(int) * NUM_NL80211_BANDS);
- 
--	ieee80211_link_info_change_notify(sdata, &sdata->deflink,
--					  BSS_CHANGED_MCAST_RATE);
-+	if (ieee80211_sdata_running(sdata))
-+		ieee80211_link_info_change_notify(sdata, &sdata->deflink,
-+						  BSS_CHANGED_MCAST_RATE);
- 
- 	return 0;
- }
+diff --git a/arch/arm64/kernel/armv8_deprecated.c b/arch/arm64/kernel/armv8_deprecated.c
+index e459cfd337117..d6b711e56df97 100644
+--- a/arch/arm64/kernel/armv8_deprecated.c
++++ b/arch/arm64/kernel/armv8_deprecated.c
+@@ -464,6 +464,9 @@ static int run_all_insn_set_hw_mode(unsigned int cpu)
+ 	for (int i = 0; i < ARRAY_SIZE(insn_emulations); i++) {
+ 		struct insn_emulation *insn = insn_emulations[i];
+ 		bool enable = READ_ONCE(insn->current_mode) == INSN_HW;
++		if (insn->status == INSN_UNAVAILABLE)
++			continue;
++
+ 		if (insn->set_hw_mode && insn->set_hw_mode(enable)) {
+ 			pr_warn("CPU[%u] cannot support the emulation of %s",
+ 				cpu, insn->name);
 -- 
 2.43.0
 
