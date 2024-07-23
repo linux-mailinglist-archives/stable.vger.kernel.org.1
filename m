@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D4993A6CF
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E97C93A592
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:25:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F74C1F22DFD
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F4B11C20A64
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F250F158A01;
-	Tue, 23 Jul 2024 18:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C0E158859;
+	Tue, 23 Jul 2024 18:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCPb/y8B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3d/3oTJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05AF157A55;
-	Tue, 23 Jul 2024 18:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61A7157A4F;
+	Tue, 23 Jul 2024 18:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759934; cv=none; b=anXRRFx0eHo8z6smhQfp2UOBwb/tLFpt71VUqLV58YZpasxSJhuFbYOKLeqE+dGonmDc783ToCoSyoUAoM8Izvhdc2d8v0LSya5Mtmhk+eg1PJSAxO7+WaK9cKW87AI4n34Rr27Fze2nrKDItLs/quVUeKBj5oUUdMiYqXzXhLA=
+	t=1721759155; cv=none; b=IvSIIFuz2T5sD6WixMSizxmEdPCJzEAn/oclADVVrn/UVD7x1oeQ7a2qPl+XIfnVguGel8zPA5BJ4r+LwP9OuuR70dbZyp1BATA/VTbROUwWP9QDEX+BMygF82ZaNT6YkW4KMxyGCibvFAUtP1pFwuLwtqs95/48E+YYXe1vZcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759934; c=relaxed/simple;
-	bh=OoSybKS6Vwx9iyp24vsKx1EBkSAh/FNDSIanUCKmxU0=;
+	s=arc-20240116; t=1721759155; c=relaxed/simple;
+	bh=Pb68iZpRwqGfZAIN3fSfMpXDfL66gOP2BhOP/y30DIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9JYLKAEJFOuqXskrf4+bm7rR694nOW+y3BEtkfb/ii5hMvaAgS+7bMTnveEuFzS04ffV2fBCMaVPk2uTVjq50Zg8Q3t3+QhEPqsTvNjxpCp2HHZyQJ0uRr8/hzHMVbcIcYVw0mBXn0Ngs0SOJkU92s4JQpS0Nu0l1CTaV3d9Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCPb/y8B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38881C4AF09;
-	Tue, 23 Jul 2024 18:38:54 +0000 (UTC)
+	 MIME-Version; b=VGOvyAIB/Pkjv0PhS6EOBXEz3AaYw5z8hyL5712e9z7k5RQMLBjjOe4BhYTllcA2F3JgDMdIQVDQOeiA9crE8ba2MBAW01lzWMOqVg6EHc54c69vEqzi7gWSC3aSuS8aN72BT1R48jU1Ab15UtXMZf1tlBvxcepEDimNo/R/hJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3d/3oTJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D868C4AF0B;
+	Tue, 23 Jul 2024 18:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759934;
-	bh=OoSybKS6Vwx9iyp24vsKx1EBkSAh/FNDSIanUCKmxU0=;
+	s=korg; t=1721759154;
+	bh=Pb68iZpRwqGfZAIN3fSfMpXDfL66gOP2BhOP/y30DIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCPb/y8BnFZaRlt85cFoK0aDbGzGl37t6wzEiRCv/9Rmm+dwu5owyjzKWPIiah/Cm
-	 Mo+LVsFyUWZHfie10Hv/edB9NJ852ayBo/yyThIp99IoKdpJYGD+1L18BiZGH2VCvj
-	 q/wmlvGKwdBRtD0n9dgShNJNXD8f145Qeqi1XBHo=
+	b=L3d/3oTJZqxGw1gWVpQhU+zA2LzYobzwLQdmL4792aQv+6/ke/LfqLiJkpUJ9ETWI
+	 r01sxpUJmE1AlvgKwIboZzBUsV0Epv+nS6pjI3eCapbKyoDPROCkQhFURwFa/N3FG0
+	 GIs2kaBpsdRSS/6jy5itXNEIFwocyApSUzY/XJE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mayhew <smayhew@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 048/163] nfs: dont invalidate dentries on transient errors
+Subject: [PATCH 6.1 020/105] wifi: mac80211: handle tasklet frames before stopping
 Date: Tue, 23 Jul 2024 20:22:57 +0200
-Message-ID: <20240723180145.327715795@linuxfoundation.org>
+Message-ID: <20240723180403.715499434@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 0c8c7c559740d2d8b66048162af6c4dba8f0c88c ]
+[ Upstream commit 177c6ae9725d783f9e96f02593ce8fb2639be22f ]
 
-This is a slight variation on a patch previously proposed by Neil Brown
-that never got merged.
+The code itself doesn't want to handle frames from the driver
+if it's already stopped, but if the tasklet was queued before
+and runs after the stop, then all bets are off. Flush queues
+before actually stopping, RX should be off at this point since
+all the interfaces are removed already, etc.
 
-Prior to commit 5ceb9d7fdaaf ("NFS: Refactor nfs_lookup_revalidate()"),
-any error from nfs_lookup_verify_inode() other than -ESTALE would result
-in nfs_lookup_revalidate() returning that error (-ESTALE is mapped to
-zero).
-
-Since that commit, all errors result in nfs_lookup_revalidate()
-returning zero, resulting in dentries being invalidated where they
-previously were not (particularly in the case of -ERESTARTSYS).
-
-Fix it by passing the actual error code to nfs_lookup_revalidate_done(),
-and leaving the decision on whether to  map the error code to zero or
-one to nfs_lookup_revalidate_done().
-
-A simple reproducer is to run the following python code in a
-subdirectory of an NFS mount (not in the root of the NFS mount):
-
----8<---
-import os
-import multiprocessing
-import time
-
-if __name__=="__main__":
-    multiprocessing.set_start_method("spawn")
-
-    count = 0
-    while True:
-        try:
-            os.getcwd()
-            pool = multiprocessing.Pool(10)
-            pool.close()
-            pool.terminate()
-            count += 1
-        except Exception as e:
-            print(f"Failed after {count} iterations")
-            print(e)
-            break
----8<---
-
-Prior to commit 5ceb9d7fdaaf, the above code would run indefinitely.
-After commit 5ceb9d7fdaaf, it fails almost immediately with -ENOENT.
-
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reported-by: syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com
+Link: https://msgid.link/20240515135318.b05f11385c9a.I41c1b33a2e1814c3a7ef352cd7f2951b91785617@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ net/mac80211/ieee80211_i.h |  2 ++
+ net/mac80211/main.c        | 10 ++++++++--
+ net/mac80211/util.c        |  2 ++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index bdd6cb33a3708..375c08fdcf2f3 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -1625,7 +1625,16 @@ nfs_lookup_revalidate_done(struct inode *dir, struct dentry *dentry,
- 	switch (error) {
- 	case 1:
- 		break;
--	case 0:
-+	case -ETIMEDOUT:
-+		if (inode && (IS_ROOT(dentry) ||
-+			      NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL))
-+			error = 1;
-+		break;
-+	case -ESTALE:
-+	case -ENOENT:
-+		error = 0;
-+		fallthrough;
-+	default:
- 		/*
- 		 * We can't d_drop the root of a disconnected tree:
- 		 * its d_hash is on the s_anon list and d_drop() would hide
-@@ -1680,18 +1689,8 @@ static int nfs_lookup_revalidate_dentry(struct inode *dir,
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 3e14d5c9aa1b4..0d8a9bb925384 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1782,6 +1782,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ void ieee80211_configure_filter(struct ieee80211_local *local);
+ u32 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata);
  
- 	dir_verifier = nfs_save_change_attribute(dir);
- 	ret = NFS_PROTO(dir)->lookup(dir, dentry, fhandle, fattr);
--	if (ret < 0) {
--		switch (ret) {
--		case -ESTALE:
--		case -ENOENT:
--			ret = 0;
--			break;
--		case -ETIMEDOUT:
--			if (NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL)
--				ret = 1;
--		}
-+	if (ret < 0)
- 		goto out;
--	}
- 
- 	/* Request help from readdirplus */
- 	nfs_lookup_advise_force_readdirplus(dir, flags);
-@@ -1735,7 +1734,7 @@ nfs_do_lookup_revalidate(struct inode *dir, struct dentry *dentry,
- 			 unsigned int flags)
- {
- 	struct inode *inode;
--	int error;
-+	int error = 0;
- 
- 	nfs_inc_stats(dir, NFSIOS_DENTRYREVALIDATE);
- 	inode = d_inode(dentry);
-@@ -1780,7 +1779,7 @@ nfs_do_lookup_revalidate(struct inode *dir, struct dentry *dentry,
- out_bad:
- 	if (flags & LOOKUP_RCU)
- 		return -ECHILD;
--	return nfs_lookup_revalidate_done(dir, dentry, inode, 0);
-+	return nfs_lookup_revalidate_done(dir, dentry, inode, error);
++void ieee80211_handle_queued_frames(struct ieee80211_local *local);
++
+ u64 ieee80211_mgmt_tx_cookie(struct ieee80211_local *local);
+ int ieee80211_attach_ack_skb(struct ieee80211_local *local, struct sk_buff *skb,
+ 			     u64 *cookie, gfp_t gfp);
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 6faba47b7b0ea..89771f0e0ae70 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -300,9 +300,8 @@ u32 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata)
+ 	       BSS_CHANGED_ERP_SLOT;
  }
  
- static int
+-static void ieee80211_tasklet_handler(struct tasklet_struct *t)
++void ieee80211_handle_queued_frames(struct ieee80211_local *local)
+ {
+-	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
+ 	struct sk_buff *skb;
+ 
+ 	while ((skb = skb_dequeue(&local->skb_queue)) ||
+@@ -327,6 +326,13 @@ static void ieee80211_tasklet_handler(struct tasklet_struct *t)
+ 	}
+ }
+ 
++static void ieee80211_tasklet_handler(struct tasklet_struct *t)
++{
++	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
++
++	ieee80211_handle_queued_frames(local);
++}
++
+ static void ieee80211_restart_work(struct work_struct *work)
+ {
+ 	struct ieee80211_local *local =
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 1088d90e355ba..08e6691cdc4a4 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2207,6 +2207,8 @@ u32 ieee80211_sta_get_rates(struct ieee80211_sub_if_data *sdata,
+ 
+ void ieee80211_stop_device(struct ieee80211_local *local)
+ {
++	ieee80211_handle_queued_frames(local);
++
+ 	ieee80211_led_radio(local, false);
+ 	ieee80211_mod_tpt_led_trig(local, 0, IEEE80211_TPT_LEDTRIG_FL_RADIO);
+ 
 -- 
 2.43.0
 
