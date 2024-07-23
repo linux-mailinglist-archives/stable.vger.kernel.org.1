@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-60984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17B593A64A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:34:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE5793A5C8
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4790E1F22DD5
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:34:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE2F41F232D1
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DF91586F5;
-	Tue, 23 Jul 2024 18:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B426156F29;
+	Tue, 23 Jul 2024 18:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcmhVU06"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZLgRnlk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843F313D896;
-	Tue, 23 Jul 2024 18:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A60E155351;
+	Tue, 23 Jul 2024 18:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759632; cv=none; b=DkHAYBlebu67qIz64l6JUJQpTjea0dXfT/6Bf11zAqg8KQ8KLorwZbDcseQ0JeUsDq2fP48MhFhpvdDzcbKPcTXSzr9lLmOSe2JSZM9F+CxYfDMdpim6kiWUFctBNbPaAwrmfYvBcKZvPQrcmWQbqyrDnCMwAavE/0/uWjoxJiU=
+	t=1721759294; cv=none; b=CaIiFu8B2eK5SBANltabasdB5D0L8hPmSvT9ZE21/MwIwSJQzEmz/ZHG5qHxpI/9K0m6jSVbpuQRTK3BGgh4BtXOm2oUXH5+YOI/+eUjwn7AMPKWAC7kIrspXj6YY7orwHtHfA8HFVDFN5m+lvfji8zrfQRgIG5toIXjP3uzpdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759632; c=relaxed/simple;
-	bh=9S8gtc/ORiHW/GgrDuiHlNoNccelNSobC9bAqRkuEYw=;
+	s=arc-20240116; t=1721759294; c=relaxed/simple;
+	bh=Xml8rrKY3WqCCmpE7gB+1cSjXwErRziL/e4M5wZCppg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQQkiIGj9Zro4UrX92Mbd+HI10EGq/oWS5BJ+zaQDveun8ZGuPuS/DqIgeeao0QCn68uW+C0KMlUVZCBwoEp5NbPuxx0i8t0Kstj8un2LR9jrd2FW3G6FADajKzxMR031ZaZ/uvMMeR+zFHr4QB71hRXyJIOkp68/4dph3zLDzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcmhVU06; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F2AC4AF0A;
-	Tue, 23 Jul 2024 18:33:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RHgpy1EVKkU1rapv0KerTacAMiTirels+6yPL0X059tiPxVsVTd/0M8MU8koLSsKf2rZ+REObnnInvGetGSaj+pZs5pUcbAxjOVQDH3GUEDKUc4LRqTXPLhPU6SYyaha5F/CB2+k4r25UkRh6C7xDRTutqj51DNEnFIU9AbLv9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZLgRnlk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06DDC4AF0A;
+	Tue, 23 Jul 2024 18:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759632;
-	bh=9S8gtc/ORiHW/GgrDuiHlNoNccelNSobC9bAqRkuEYw=;
+	s=korg; t=1721759294;
+	bh=Xml8rrKY3WqCCmpE7gB+1cSjXwErRziL/e4M5wZCppg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FcmhVU0624SjzS/ohZv/RBcIkNSFRdfdzIn1Dfh93aKy2Mv1xXVuCIdmM5oEjt6S/
-	 sAEHYaPMufxkSK34sX7VYpkqQHDD2IFs/fwvbuZh3QoeXIW714awA2VrEZK+8B5Zcm
-	 eY2p8LUiMp2rarElR9lYOhLRYs0ATmEIlwedY8HM=
+	b=fZLgRnlk8elk1vLcx/bzgTv8DIf6RjvPNuUWCTJy8i+Ve4f+lxzzRvR5mdka0dlX2
+	 PACnSg/3OL6i8jy/Q/Ov8XOvs+msJ0R9xM5eFtQPxU0CjBCeUYf19m//BS0K5H/x2j
+	 7ku3h2J5hFh99qYl/ZrpuZHUhre6+m4sq9n9dXvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Agathe Boutmy <agathe@boutmy.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/129] Input: ads7846 - use spi_device_id table
-Date: Tue, 23 Jul 2024 20:23:44 +0200
-Message-ID: <20240723180407.719509275@linuxfoundation.org>
+Subject: [PATCH 6.1 068/105] platform/x86: lg-laptop: Remove LGEX0815 hotkey handling
+Date: Tue, 23 Jul 2024 20:23:45 +0200
+Message-ID: <20240723180405.866106655@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 7c7b1be19b228b450c2945ec379d7fc6bfef9852 ]
+[ Upstream commit 413c204595ca98a4f33414a948c18d7314087342 ]
 
-As the driver supports more devices over time the single MODULE_ALIAS
-is complete and raises several warnings:
-SPI driver ads7846 has no spi_device_id for ti,tsc2046
-SPI driver ads7846 has no spi_device_id for ti,ads7843
-SPI driver ads7846 has no spi_device_id for ti,ads7845
-SPI driver ads7846 has no spi_device_id for ti,ads7873
+The rfkill hotkey handling is already provided by the wireless-hotkey
+driver. Remove the now unnecessary rfkill hotkey handling to avoid
+duplicating functionality.
 
-Fix this by adding a spi_device_id table and removing the manual
-MODULE_ALIAS.
+The ACPI notify handler still prints debugging information when
+receiving ACPI notifications to aid in reverse-engineering.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20240619122703.2081476-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Tested-by: Agathe Boutmy <agathe@boutmy.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606233540.9774-3-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/ads7846.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/platform/x86/lg-laptop.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
-index faea40dd66d01..a66375700a630 100644
---- a/drivers/input/touchscreen/ads7846.c
-+++ b/drivers/input/touchscreen/ads7846.c
-@@ -1114,6 +1114,16 @@ static const struct of_device_id ads7846_dt_ids[] = {
+diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
+index 332868b140ed5..aa063c3c935b5 100644
+--- a/drivers/platform/x86/lg-laptop.c
++++ b/drivers/platform/x86/lg-laptop.c
+@@ -84,7 +84,6 @@ static const struct key_entry wmi_keymap[] = {
+ 					  * this key both sends an event and
+ 					  * changes backlight level.
+ 					  */
+-	{KE_KEY, 0x80, {KEY_RFKILL} },
+ 	{KE_END, 0}
  };
- MODULE_DEVICE_TABLE(of, ads7846_dt_ids);
  
-+static const struct spi_device_id ads7846_spi_ids[] = {
-+	{ "tsc2046", 7846 },
-+	{ "ads7843", 7843 },
-+	{ "ads7845", 7845 },
-+	{ "ads7846", 7846 },
-+	{ "ads7873", 7873 },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(spi, ads7846_spi_ids);
-+
- static const struct ads7846_platform_data *ads7846_get_props(struct device *dev)
+@@ -272,14 +271,7 @@ static void wmi_input_setup(void)
+ 
+ static void acpi_notify(struct acpi_device *device, u32 event)
  {
- 	struct ads7846_platform_data *pdata;
-@@ -1392,10 +1402,10 @@ static struct spi_driver ads7846_driver = {
- 	},
- 	.probe		= ads7846_probe,
- 	.remove		= ads7846_remove,
-+	.id_table	= ads7846_spi_ids,
- };
+-	struct key_entry *key;
+-
+ 	acpi_handle_debug(device->handle, "notify: %d\n", event);
+-	if (inited & INIT_SPARSE_KEYMAP) {
+-		key = sparse_keymap_entry_from_scancode(wmi_input_dev, 0x80);
+-		if (key && key->type == KE_KEY)
+-			sparse_keymap_report_entry(wmi_input_dev, key, 1, true);
+-	}
+ }
  
- module_spi_driver(ads7846_driver);
- 
- MODULE_DESCRIPTION("ADS7846 TouchScreen Driver");
- MODULE_LICENSE("GPL");
--MODULE_ALIAS("spi:ads7846");
+ static ssize_t fan_mode_store(struct device *dev,
 -- 
 2.43.0
 
