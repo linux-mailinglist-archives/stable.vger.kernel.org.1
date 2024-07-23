@@ -1,215 +1,166 @@
-Return-Path: <stable+bounces-61220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A22193A9ED
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 01:32:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9244B93A9FA
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 01:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7992D1F23547
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 23:32:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10A6CB22A54
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 23:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52055149C55;
-	Tue, 23 Jul 2024 23:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D816D1494DF;
+	Tue, 23 Jul 2024 23:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MoWjQ2Qp"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tFNC4olP"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE8D1494B1;
-	Tue, 23 Jul 2024 23:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795041494D6;
+	Tue, 23 Jul 2024 23:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721777570; cv=none; b=MTB+HspOHAXXi6lGuylBNK0McrgkQwMyg+OTSD33Pmp2j7Qe4cLObeRAuWXMS2shKdGlGfkpBMhz8C6qmJTb6k1gep0gwsanWWZif5RgGMZOOqXjrzqCguoGiW+uyvmEgiPZGjFjw4K23A+MfVYv7sZ7XNsxl/6tA4iE4cTQkF8=
+	t=1721778039; cv=none; b=Ue9XLIsQ8m86A+xCCGPMLpg3vb1kv+wdxFfah+rNSN8oot7ZmBVg4HNZLgdm6yfBHM7obWorcPzzjvA7BnnQlUJy6sS6aT6ZIpo7kBCRAZg5sb2eGl9oEofR+sgylhEv7cp9ZTpU8+XUKjh1OEipEEaLODT/3kiHvRoeh8BYDYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721777570; c=relaxed/simple;
-	bh=eKog2Ep3dti5ZCaAkQIODl65EVfABP7KbitPd02YmDg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWGhASewGaiNg1xxdyhvQaP7U4pQQfvPwsdV7BSKMm8yKVIGh161mwzE5J/ngQsYcH/pBqp6wiXxOKl0koYqplbYqbxU52kq5jtdpccXDycShAWuchuKn2/CZ3f+9R5IDHRFlvYNp6YsIfST9jd7okG/WAbXtcnD4BrN6rd/v/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MoWjQ2Qp; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721777569; x=1753313569;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=eKog2Ep3dti5ZCaAkQIODl65EVfABP7KbitPd02YmDg=;
-  b=MoWjQ2Qp/kIqD6mUwbWp/ftlonf8xTiILrIj/6Im9dFN8benRa3TVg4V
-   V4alse0imLN0117roV2Mi7ZBbB5k8y8e1xFztSz9GpTi0CgOpb4vAuMoL
-   7dg7IRISZ3t/9nKThELWzM7LfDQ7FlFubdDRxrG/e819gvePjetWtVN2/
-   J8LT81LBCupz8Q6BT/7+C5r82+Q5QteBtUx+PDjQts50HYaL6BhD6sgoV
-   i2/oEUGqR7QX7Uf9po0XRV3ct71FPQIPqRtb6lFv2/+ZY7eADy8m4WvJN
-   gSgV3LhxJuq1Q9A4aFMKI2y+meXB3PM+ovaz+r5feHZvzu18f7+/XyRIe
-   Q==;
-X-CSE-ConnectionGUID: kTr0XR/pRq64r4NuFh/oTQ==
-X-CSE-MsgGUID: IzcHURH2S4WPyfiZVKiVdg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11142"; a="30049074"
-X-IronPort-AV: E=Sophos;i="6.09,231,1716274800"; 
-   d="scan'208";a="30049074"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2024 16:32:46 -0700
-X-CSE-ConnectionGUID: AoIF7R08RaencD5z7N4/hQ==
-X-CSE-MsgGUID: XebpQBRzSYa4fJTBt56PNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,231,1716274800"; 
-   d="scan'208";a="89847952"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa001.jf.intel.com with ESMTP; 23 Jul 2024 16:32:46 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	netdev@vger.kernel.org
-Cc: Ahmed Zaki <ahmed.zaki@intel.com>,
-	anthony.l.nguyen@intel.com,
-	stable@vger.kernel.org,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net 1/2] ice: Add a per-VF limit on number of FDIR filters
-Date: Tue, 23 Jul 2024 16:32:39 -0700
-Message-ID: <20240723233242.3146628-2-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240723233242.3146628-1-anthony.l.nguyen@intel.com>
-References: <20240723233242.3146628-1-anthony.l.nguyen@intel.com>
+	s=arc-20240116; t=1721778039; c=relaxed/simple;
+	bh=FKAxem+pnGcx+D/lyPGm78QGoUagqEr9ao35pFOmuIU=;
+	h=Date:To:From:Subject:Message-Id; b=Y4i9/hmcJzipPOAhmHkJWSn9ovZqjMfS79F/EwPLwJCeIszSw9p8mcEWpNPgoTukfiPhelSegCfaPp56EDQ+rdaOqzeKNpzsfzeId83VY9yy0m6eY9n0VAdOlWxDQ50RLKq8m7v5Ii17Pmy5NSPTp2pSQEyg5n5EeyFt8UFoIzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tFNC4olP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CFEC4AF0A;
+	Tue, 23 Jul 2024 23:40:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1721778039;
+	bh=FKAxem+pnGcx+D/lyPGm78QGoUagqEr9ao35pFOmuIU=;
+	h=Date:To:From:Subject:From;
+	b=tFNC4olPhOiI040JHZwceVBluiX89f+PU0+ed8vHx1ge766zadNYuwT2hCCnTnzCI
+	 +isoM8i2K8Vxshq9A06/umqUpOq8BoyrLP4NUpC7SSpAcV1D5J0NPgjue0zV0QWCOm
+	 3FmoZEsZtWJ3J8bYdeVWAMlzcFdq8qKteJgys4wM=
+Date: Tue, 23 Jul 2024 16:40:38 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kbingham@kernel.org,jan.kiszka@siemens.com,kuan-ying.lee@canonical.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + scripts-gdb-fix-timerlist-parsing-issue.patch added to mm-nonmm-unstable branch
+Message-Id: <20240723234038.F1CFEC4AF0A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-While the iavf driver adds a s/w limit (128) on the number of FDIR
-filters that the VF can request, a malicious VF driver can request more
-than that and exhaust the resources for other VFs.
+The patch titled
+     Subject: scripts/gdb: fix timerlist parsing issue
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     scripts-gdb-fix-timerlist-parsing-issue.patch
 
-Add a similar limit in ice.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/scripts-gdb-fix-timerlist-parsing-issue.patch
 
-CC: stable@vger.kernel.org
-Fixes: 1f7ea1cd6a37 ("ice: Enable FDIR Configure for AVF")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Suggested-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
+Subject: scripts/gdb: fix timerlist parsing issue
+Date: Tue, 23 Jul 2024 14:48:57 +0800
+
+Patch series "Fix some GDB command error and add some GDB commands", v3.
+
+Fix some GDB command errors and add some useful GDB commands.
+
+
+This patch (of 5):
+
+Commit 7988e5ae2be7 ("tick: Split nohz and highres features from
+nohz_mode") and commit 7988e5ae2be7 ("tick: Split nohz and highres
+features from nohz_mode") move 'tick_stopped' and 'nohz_mode' to flags
+field which will break the gdb lx-mounts command:
+
+(gdb) lx-timerlist
+Python Exception <class 'gdb.error'>: There is no member named nohz_mode.
+Error occurred in Python: There is no member named nohz_mode.
+
+(gdb) lx-timerlist
+Python Exception <class 'gdb.error'>: There is no member named tick_stopped.
+Error occurred in Python: There is no member named tick_stopped.
+
+We move 'tick_stopped' and 'nohz_mode' to flags field instead.
+
+Link: https://lkml.kernel.org/r/20240723064902.124154-1-kuan-ying.lee@canonical.com
+Link: https://lkml.kernel.org/r/20240723064902.124154-2-kuan-ying.lee@canonical.com
+Fixes: a478ffb2ae23 ("tick: Move individual bit features to debuggable mask accesses")
+Fixes: 7988e5ae2be7 ("tick: Split nohz and highres features from nohz_mode")
+Signed-off-by: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- .../net/ethernet/intel/ice/ice_ethtool_fdir.c    |  2 +-
- drivers/net/ethernet/intel/ice/ice_fdir.h        |  3 +++
- .../net/ethernet/intel/ice/ice_virtchnl_fdir.c   | 16 ++++++++++++++++
- .../net/ethernet/intel/ice/ice_virtchnl_fdir.h   |  1 +
- 4 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-index e3cab8e98f52..5412eff8ef23 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-@@ -534,7 +534,7 @@ ice_parse_rx_flow_user_data(struct ethtool_rx_flow_spec *fsp,
-  *
-  * Returns the number of available flow director filters to this VSI
-  */
--static int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
-+int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
- {
- 	u16 vsi_num = ice_get_hw_vsi_num(hw, vsi->idx);
- 	u16 num_guar;
-diff --git a/drivers/net/ethernet/intel/ice/ice_fdir.h b/drivers/net/ethernet/intel/ice/ice_fdir.h
-index 021ecbac7848..ab5b118daa2d 100644
---- a/drivers/net/ethernet/intel/ice/ice_fdir.h
-+++ b/drivers/net/ethernet/intel/ice/ice_fdir.h
-@@ -207,6 +207,8 @@ struct ice_fdir_base_pkt {
- 	const u8 *tun_pkt;
- };
+ scripts/gdb/linux/timerlist.py |   31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
+
+--- a/scripts/gdb/linux/timerlist.py~scripts-gdb-fix-timerlist-parsing-issue
++++ a/scripts/gdb/linux/timerlist.py
+@@ -87,21 +87,22 @@ def print_cpu(hrtimer_bases, cpu, max_cl
+             text += "\n"
  
-+struct ice_vsi;
-+
- int ice_alloc_fd_res_cntr(struct ice_hw *hw, u16 *cntr_id);
- int ice_free_fd_res_cntr(struct ice_hw *hw, u16 cntr_id);
- int ice_alloc_fd_guar_item(struct ice_hw *hw, u16 *cntr_id, u16 num_fltr);
-@@ -218,6 +220,7 @@ int
- ice_fdir_get_gen_prgm_pkt(struct ice_hw *hw, struct ice_fdir_fltr *input,
- 			  u8 *pkt, bool frag, bool tun);
- int ice_get_fdir_cnt_all(struct ice_hw *hw);
-+int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi);
- bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_fdir_fltr *input);
- bool ice_fdir_has_frag(enum ice_fltr_ptype flow);
- struct ice_fdir_fltr *
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-index 8e4ff3af86c6..b4feb0927687 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-@@ -536,6 +536,8 @@ static void ice_vc_fdir_reset_cnt_all(struct ice_vf_fdir *fdir)
- 		fdir->fdir_fltr_cnt[flow][0] = 0;
- 		fdir->fdir_fltr_cnt[flow][1] = 0;
- 	}
-+
-+	fdir->fdir_fltr_cnt_total = 0;
- }
+         if constants.LX_CONFIG_TICK_ONESHOT:
+-            fmts = [("  .{}      : {}", 'nohz_mode'),
+-                    ("  .{}      : {} nsecs", 'last_tick'),
+-                    ("  .{}   : {}", 'tick_stopped'),
+-                    ("  .{}   : {}", 'idle_jiffies'),
+-                    ("  .{}     : {}", 'idle_calls'),
+-                    ("  .{}    : {}", 'idle_sleeps'),
+-                    ("  .{} : {} nsecs", 'idle_entrytime'),
+-                    ("  .{}  : {} nsecs", 'idle_waketime'),
+-                    ("  .{}  : {} nsecs", 'idle_exittime'),
+-                    ("  .{} : {} nsecs", 'idle_sleeptime'),
+-                    ("  .{}: {} nsecs", 'iowait_sleeptime'),
+-                    ("  .{}   : {}", 'last_jiffies'),
+-                    ("  .{}     : {}", 'next_timer'),
+-                    ("  .{}   : {} nsecs", 'idle_expires')]
+-            text += "\n".join([s.format(f, ts[f]) for s, f in fmts])
++            TS_FLAG_STOPPED = 1 << 1
++            TS_FLAG_NOHZ = 1 << 4
++            text += f"  .{'nohz':15s}: {int(bool(ts['flags'] & TS_FLAG_NOHZ))}\n"
++            text += f"  .{'last_tick':15s}: {ts['last_tick']}\n"
++            text += f"  .{'tick_stopped':15s}: {int(bool(ts['flags'] & TS_FLAG_STOPPED))}\n"
++            text += f"  .{'idle_jiffies':15s}: {ts['idle_jiffies']}\n"
++            text += f"  .{'idle_calls':15s}: {ts['idle_calls']}\n"
++            text += f"  .{'idle_sleeps':15s}: {ts['idle_sleeps']}\n"
++            text += f"  .{'idle_entrytime':15s}: {ts['idle_entrytime']} nsecs\n"
++            text += f"  .{'idle_waketime':15s}: {ts['idle_waketime']} nsecs\n"
++            text += f"  .{'idle_exittime':15s}: {ts['idle_exittime']} nsecs\n"
++            text += f"  .{'idle_sleeptime':15s}: {ts['idle_sleeptime']} nsecs\n"
++            text += f"  .{'iowait_sleeptime':15s}: {ts['iowait_sleeptime']} nsecs\n"
++            text += f"  .{'last_jiffies':15s}: {ts['last_jiffies']}\n"
++            text += f"  .{'next_timer':15s}: {ts['next_timer']}\n"
++            text += f"  .{'idle_expires':15s}: {ts['idle_expires']} nsecs\n"
+             text += "\njiffies: {}\n".format(jiffies)
  
- /**
-@@ -1560,6 +1562,7 @@ ice_vc_add_fdir_fltr_post(struct ice_vf *vf, struct ice_vf_fdir_ctx *ctx,
- 	resp->status = status;
- 	resp->flow_id = conf->flow_id;
- 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]++;
-+	vf->fdir.fdir_fltr_cnt_total++;
- 
- 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
- 				    (u8 *)resp, len);
-@@ -1624,6 +1627,7 @@ ice_vc_del_fdir_fltr_post(struct ice_vf *vf, struct ice_vf_fdir_ctx *ctx,
- 	resp->status = status;
- 	ice_vc_fdir_remove_entry(vf, conf, conf->flow_id);
- 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]--;
-+	vf->fdir.fdir_fltr_cnt_total--;
- 
- 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
- 				    (u8 *)resp, len);
-@@ -1790,6 +1794,7 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
- 	struct virtchnl_fdir_add *stat = NULL;
- 	struct virtchnl_fdir_fltr_conf *conf;
- 	enum virtchnl_status_code v_ret;
-+	struct ice_vsi *vf_vsi;
- 	struct device *dev;
- 	struct ice_pf *pf;
- 	int is_tun = 0;
-@@ -1798,6 +1803,17 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
- 
- 	pf = vf->pf;
- 	dev = ice_pf_to_dev(pf);
-+	vf_vsi = ice_get_vf_vsi(vf);
-+
-+#define ICE_VF_MAX_FDIR_FILTERS	128
-+	if (!ice_fdir_num_avail_fltr(&pf->hw, vf_vsi) ||
-+	    vf->fdir.fdir_fltr_cnt_total >= ICE_VF_MAX_FDIR_FILTERS) {
-+		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
-+		dev_err(dev, "Max number of FDIR filters for VF %d is reached\n",
-+			vf->vf_id);
-+		goto err_exit;
-+	}
-+
- 	ret = ice_vc_fdir_param_check(vf, fltr->vsi_id);
- 	if (ret) {
- 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
-index c5bcc8d7481c..ac6dcab454b4 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
-@@ -29,6 +29,7 @@ struct ice_vf_fdir_ctx {
- struct ice_vf_fdir {
- 	u16 fdir_fltr_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
- 	int prof_entry_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
-+	u16 fdir_fltr_cnt_total;
- 	struct ice_fd_hw_prof **fdir_prof;
- 
- 	struct idr fdir_rule_idr;
--- 
-2.41.0
+         text += "\n"
+_
+
+Patches currently in -mm which might be from kuan-ying.lee@canonical.com are
+
+scripts-gdb-fix-timerlist-parsing-issue.patch
+scripts-gdb-add-iteration-function-for-rbtree.patch
+scripts-gdb-fix-lx-mounts-command-error.patch
+scripts-gdb-add-lx-stack_depot_lookup-command.patch
+scripts-gdb-add-lx-kasan_mem_to_shadow-command.patch
 
 
