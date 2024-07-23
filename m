@@ -1,111 +1,238 @@
-Return-Path: <stable+bounces-61199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3830993A74E
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 888DC93A583
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E78C4284727
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:44:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40D11282C29
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8C3158A3F;
-	Tue, 23 Jul 2024 18:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7940158858;
+	Tue, 23 Jul 2024 18:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbCFcjos"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OnQ0Dnby"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B86F15884E;
-	Tue, 23 Jul 2024 18:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71601586E7
+	for <stable@vger.kernel.org>; Tue, 23 Jul 2024 18:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760270; cv=none; b=ZrjrMPfektphIIXdRNWWKYK1Xv8VK/LlFWlTv73dPtRmjcttfyfBWw1jpZqC+suIWhllIkS0E+Ee66xoo567kJx7o9lpCRX/TKNLRSSotG6plCL9xbpjq8HUdOG3uybMjDhtTK911hdqNKwlw8cZE/r5VdJvt4P/OntaIszaJFs=
+	t=1721759097; cv=none; b=YyO5tIEG4hW3WWybk/1BAS481U9rCrWpax8gj0tp7I+IvRrZphNT9L7YlROvQDlNEp2atPZ3acNNTuq/dG6LtFbSiZBLprsmY2K22rrVm7GIwZPGLdil1MNuDwgQv7ZwywzbhSsg484IzXfmeGpIxOiXUQJ6BmX2iiEVDwdrqTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760270; c=relaxed/simple;
-	bh=k4Mg9wH6SmTEHTiRsq5IY/pxnryYO8IoOosqylJ4O/o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kw5RtxLcabk3mJ0Sk15j4vleldmHrea2TDoMNClITx7rf6IYO2uRg41nTZH/3L/lOGR6YPrQhEtSsP5Ao0f3bq2tyCh2E/WOUSmm7ROtoXAjQrviv4J2jq3SK6lum35v23Je/zXcboJ/QtkmrXMYC6CkVO9knjlW641PEGkjhfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbCFcjos; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856BDC4AF0A;
-	Tue, 23 Jul 2024 18:44:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760269;
-	bh=k4Mg9wH6SmTEHTiRsq5IY/pxnryYO8IoOosqylJ4O/o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CbCFcjos3KA3b8w1XOqRuBolVm/wd36pZHou9x/vvzdmJgNsrb2khgb9Z5iiVkXqy
-	 PCZ5TavGRiH24JTvbINQjykaoUDPCgF5J9BxKCn8D4121j8ei1bx1UOU1KluhC5t4r
-	 avcVTIFRRkeOP7pCOZSfOQVWgpVOgEadoAY1JQ7A=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	syzbot+1d516edf1e74469ba5d3@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.9 159/163] wifi: mac80211: disable softirqs for queued frame handling
-Date: Tue, 23 Jul 2024 20:24:48 +0200
-Message-ID: <20240723180149.614472179@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1721759097; c=relaxed/simple;
+	bh=z4klGlA66rZwp0B0TEsP74siGqi9zdcPyuDjYgQCAcY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=SL3/P84+0bKdRa3INIeFFD+2AmNPdsHCkwfR4dX4BYe+cmkpMHUfUUZexccz4N1YXCsaaodvZ9b7KvjbQimiSHhmawxtfzysMniPbLRw6qF6ufjTGnQn6f5hxoh3n1hOoFS2XNrXZ62e/POhAsIyBU+y/lUw3/vTXvj8A1HbQ+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OnQ0Dnby; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721759094;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mlSldsjWGkt137rHxqPtPFE0Ch/bG3EUj3dygNmEleA=;
+	b=OnQ0Dnby7ZkD7DUBzGe4ZLwiXPAB1UNfZ95jmD5ZpIBeX/dGBF9tvVMsg28Eack9z1DEzr
+	BZ55M7RGuiVXMC00e6j/PsYW9mmaJQcih2DxuJKdfxhn3yxIMBrXrl706c5/hSfcqdAvMq
+	xwwlnm+2N9e3XmvZSVMI1m0TLx7b3Ec=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-320-t3CwybTtOCWErLC3dP10Sw-1; Tue, 23 Jul 2024 14:24:53 -0400
+X-MC-Unique: t3CwybTtOCWErLC3dP10Sw-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4279c75c44dso41619375e9.2
+        for <stable@vger.kernel.org>; Tue, 23 Jul 2024 11:24:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721759092; x=1722363892;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:from:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mlSldsjWGkt137rHxqPtPFE0Ch/bG3EUj3dygNmEleA=;
+        b=X3RPtK1S0pY2lpjfKkbK6VgXdMyohR9E6LmvkLJZYp5Mn+88gVIb+WE7jz2Jcs5wAE
+         g4ep3dqJIFf5TVUqHPfHexE6CFWWUI2cqdm2Bl4gkGcq8GxXdhuAh4jHojhhE5V697tS
+         6wdvGj+tjCNbTXVX4MLOj2iPgKEeiEF4kgv+0hFIDMrHtXkSZK+TgRsPQd0Glb9K2XvV
+         cyhYSCJcw0Tfoxz+enpT9zkL38Sc9eQcVFdCdyC4mzYAcJ5ujSjuANx9f814420L7Udl
+         Lmetehn9KkrvWxulz8v4RkzbowQ5ozv5BxcG0OoQbNMHT24gM42KraIV26u5XNgTX5jQ
+         HWvw==
+X-Forwarded-Encrypted: i=1; AJvYcCXPq86ZGKux/x8dCS968Swp180qVxpeIRpRNKsdCY4koaeFndnv4Yk4FY8UjPqVU7IDVGdGJkA+Q3m3kikiog0yjMCkd7yL
+X-Gm-Message-State: AOJu0YyIyX/n+zvVpHHcrC1tDSFXPpmuId88of30PAC1Obcvp8Q9w4pd
+	smW/DujPeIU6v1T430jj7lthWsChjpj4eHDnbCHTEH33vFDiby6xeVQOjdYEhOm0o5tXEZ0furs
+	x4mgvFI8D9wyh/YqtNh5+iI5iUw3HiX3AYMmav9Jf+eX/ltrrKaDruA==
+X-Received: by 2002:a05:600c:1c13:b0:426:5ef5:bcb1 with SMTP id 5b1f17b1804b1-427f7a15278mr2493735e9.6.1721759091945;
+        Tue, 23 Jul 2024 11:24:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHq7GXtYAKFTz+qGMMS1RUEa8XcH1p15cy6QfGw/2Plhyb1cls798ESEkmZL12VE1vSOh74Nw==
+X-Received: by 2002:a05:600c:1c13:b0:426:5ef5:bcb1 with SMTP id 5b1f17b1804b1-427f7a15278mr2493625e9.6.1721759091497;
+        Tue, 23 Jul 2024 11:24:51 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c72f:ed00:9dc2:1adb:d133:4434? (p200300cbc72fed009dc21adbd1334434.dip0.t-ipconnect.de. [2003:cb:c72f:ed00:9dc2:1adb:d133:4434])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427d6901781sm182893445e9.14.2024.07.23.11.24.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Jul 2024 11:24:51 -0700 (PDT)
+Message-ID: <f8661706-0ae5-46e6-a30a-5c32159cfc96@redhat.com>
+Date: Tue, 23 Jul 2024 20:24:49 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: fix maxnode for mbind(), set_mempolicy() and
+ migrate_pages()
+From: David Hildenbrand <david@redhat.com>
+To: Jerome Glisse <jglisse@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Andi Kleen <ak@linux.intel.com>
+References: <20240720173543.897972-1-jglisse@google.com>
+ <0c390494-e6ba-4cde-aace-cd726f2409a1@redhat.com>
+ <CAPTQFZSgNHEE0Ub17=kfF-W64bbfRc4wYijTkG==+XxfgcocOQ@mail.gmail.com>
+ <6be6453a-15ce-4305-9a7c-a66e57564785@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <6be6453a-15ce-4305-9a7c-a66e57564785@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+On 23.07.24 19:37, David Hildenbrand wrote:
+> On 23.07.24 18:33, Jerome Glisse wrote:
+>> On Mon, 22 Jul 2024 at 06:09, David Hildenbrand <david@redhat.com> wrote:
+>>>
+>>> On 20.07.24 19:35, Jerome Glisse wrote:
+>>>> Because maxnode bug there is no way to bind or migrate_pages to the
+>>>> last node in multi-node NUMA system unless you lie about maxnodes
+>>>> when making the mbind, set_mempolicy or migrate_pages syscall.
+>>>>
+>>>> Manpage for those syscall describe maxnodes as the number of bits in
+>>>> the node bitmap ("bit mask of nodes containing up to maxnode bits").
+>>>> Thus if maxnode is n then we expect to have a n bit(s) bitmap which
+>>>> means that the mask of valid bits is ((1 << n) - 1). The get_nodes()
+>>>> decrement lead to the mask being ((1 << (n - 1)) - 1).
+>>>>
+>>>> The three syscalls use a common helper get_nodes() and first things
+>>>> this helper do is decrement maxnode by 1 which leads to using n-1 bits
+>>>> in the provided mask of nodes (see get_bitmap() an helper function to
+>>>> get_nodes()).
+>>>>
+>>>> The lead to two bugs, either the last node in the bitmap provided will
+>>>> not be use in either of the three syscalls, or the syscalls will error
+>>>> out and return EINVAL if the only bit set in the bitmap was the last
+>>>> bit in the mask of nodes (which is ignored because of the bug and an
+>>>> empty mask of nodes is an invalid argument).
+>>>>
+>>>> I am surprised this bug was never caught ... it has been in the kernel
+>>>> since forever.
+>>>
+>>> Let's look at QEMU: backends/hostmem.c
+>>>
+>>>        /*
+>>>         * We can have up to MAX_NODES nodes, but we need to pass maxnode+1
+>>>         * as argument to mbind() due to an old Linux bug (feature?) which
+>>>         * cuts off the last specified node. This means backend->host_nodes
+>>>         * must have MAX_NODES+1 bits available.
+>>>         */
+>>>
+>>> Which means that it's been known for a long time, and the workaround
+>>> seems to be pretty easy.
+>>>
+>>> So I wonder if we rather want to update the documentation to match reality.
+>>
+>> [Sorry resending as text ... gmail insanity]
+>>
+>> I think it is kind of weird if we ask to supply maxnodes+1 to work
+>> around the bug. If we apply this patch qemu would continue to work as
+>> is while fixing users that were not aware of that bug. So I would say
+>> applying this patch does more good. Long term qemu can drop its
+>> workaround or keep it for backward compatibility with old kernel.
+> 
+> Not really, unfortunately. The thing is that it requires a lot more
+> effort to sense support than simply pass maxnodes+1. So unless you know
+> exactly on which minimum kernel version your software runs (barely
+> happens), you will simply apply the workaround.
+> 
+> I would assume that each and every sane user out there does that
+> already, judging that even that QEMU code is 10 years old (!).
+> 
+> In any case, we have to document that behavior that existed since the
+> very beginning. Because it would be even *worse* if someone would
+> develop against a new kernel and would get a bunch of bug reports when
+> running on literally every old kernel out there :)
+> 
+> So my best guess is that long-term it will create more issues when we
+> change the behavior ... but in any case we have to update the man pages.
 
-------------------
+I'll add a pointer to a discussion from 20 (!) year ago [1].
 
-From: Johannes Berg <johannes.berg@intel.com>
+The conclusion [2] / request from Andi there was that N65 is the right 
+thing to do, and we (re)added the --maxnode. This was when this code was 
+introduced.
 
-commit 321028bc45f01edb9e57b0ae5c11c5c3600d00ca upstream.
+Assuming MAX_NODES is 128, we have to pass in 129 -- one more than the 
+number of bits.
 
-As noticed by syzbot, calling ieee80211_handle_queued_frames()
-(and actually handling frames there) requires softirqs to be
-disabled, since we call into the RX code. Fix that in the case
-of cleaning up frames left over during shutdown.
+So the man page might be actively misleading (unless I misinterpret it): 
+"nodemask points to a bit mask of nodes containing up to maxnode bits. 
+The bit mask size is rounded to the next multiple of sizeof(unsigned 
+long), but the kernel will use bits only up to maxnode."
 
-Fixes: 177c6ae9725d ("wifi: mac80211: handle tasklet frames before stopping")
-Reported-by: syzbot+1d516edf1e74469ba5d3@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20240626091559.cd6f08105a6e.I74778610a5ff2cf8680964698131099d2960352a@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- net/mac80211/main.c |    1 +
- net/mac80211/util.c |    2 ++
- 2 files changed, 3 insertions(+)
+That documentation should be fixed.
 
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -423,6 +423,7 @@ u64 ieee80211_reset_erp_info(struct ieee
- 	       BSS_CHANGED_ERP_SLOT;
- }
- 
-+/* context: requires softirqs disabled */
- void ieee80211_handle_queued_frames(struct ieee80211_local *local)
- {
- 	struct sk_buff *skb;
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1567,7 +1567,9 @@ u32 ieee80211_sta_get_rates(struct ieee8
- 
- void ieee80211_stop_device(struct ieee80211_local *local)
- {
-+	local_bh_disable();
- 	ieee80211_handle_queued_frames(local);
-+	local_bh_enable();
- 
- 	ieee80211_led_radio(local, false);
- 	ieee80211_mod_tpt_led_trig(local, 0, IEEE80211_TPT_LEDTRIG_FL_RADIO);
+[1] https://lkml.indiana.edu/hypermail/linux/kernel/0409.1/1538.html
+[2] https://lkml.indiana.edu/hypermail/linux/kernel/0409.1/1569.html
 
+-- 
+Cheers,
+
+David / dhildenb
 
 
