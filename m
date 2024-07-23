@@ -1,149 +1,115 @@
-Return-Path: <stable+bounces-60755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F31093A03F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 13:52:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0450793A03E
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 13:52:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CF96B21D42
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:52:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4BE62835BC
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095541514DE;
-	Tue, 23 Jul 2024 11:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3457415098E;
+	Tue, 23 Jul 2024 11:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w79mWa0T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gj4s7LtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C0613D609;
-	Tue, 23 Jul 2024 11:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0CA13D609;
+	Tue, 23 Jul 2024 11:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721735530; cv=none; b=cEwBydD0WwZQYzqAsilmQgjHYQ3RQkCg6AsBdGs9SA5Q7ZtFVt5LHIaWC/DfiFC8vtutP3xR9V+7KVTmaxhkEq57NBJStzNwNEpOgGAc0VwWo4HbxVnNyLaf+fnpwPEwfpZ83vJ3XFfOXnzpDide6wU2iwCiXldlmEzGoklBKzk=
+	t=1721735528; cv=none; b=pPmR4kpqYh7fjV5m6+7NezjrYMXsnA8zejDwClQnnXZslD5hFdoQIH+UdKWAt2Lvi2plfeVwuiOVRAYT/IRoI7zaA4YlHrsiEb16rK79RLgEffIJgG3UponFV1zBb58UUESeVAysUF9cIHkAoRt0sb17aCR15aSMFisXXOBIXe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721735530; c=relaxed/simple;
-	bh=mwasLmA3UqDoqZDlD7yKei2JQ2hx5htgK1//Ltn4O+E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FtWITfq55UfMdjmMJcJM0Vka00uy4xckLD4zf7+YKc63+mc+XAyA42tF9KJKW+VjU3zzDO0qUynhrXa1oROGRd/+Bz20o7hj9/EpvwpPUu9uJx5RclxM+uljeHuGnGNPN5bHTlLSSDl7ggE0j2AAAFUuiI8CxQaptIig0YW0LDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w79mWa0T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62F9C4AF0A;
-	Tue, 23 Jul 2024 11:52:09 +0000 (UTC)
+	s=arc-20240116; t=1721735528; c=relaxed/simple;
+	bh=RlR5xEXAj844xVXxfIqAzbJkTPPfMZAlfsf1HJKSRd8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZIpqo72R3b4SOTT3CfVkbVSenyWYUMJoWad/b4CP3+lSIfSgP+ji31T8wQehfQVuAUqTGvfgjBmCW9ZzAapRWhY+kAfi7GMxsm/EvovQzqKKe6CN81ihdmKRCqDQSdfzWkeU6ibHkM/SNW0rZPAUrU8eNDKWGplL4MFBQIEjejc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gj4s7LtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023B0C4AF09;
+	Tue, 23 Jul 2024 11:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721735530;
-	bh=mwasLmA3UqDoqZDlD7yKei2JQ2hx5htgK1//Ltn4O+E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=w79mWa0Ts7zSA1IydzkU52uptj7dfdfyOg+XcHZYxz/IAyGEtp3E6n6W6lJRmgMip
-	 ifCZpJ1BHVG3/v1W1+CPevUVnEkThVsz4MuzO54Vs/U3AGriQRPo44nxVJnzpnw9gO
-	 Q7FxIbsLdQ6iCWSvuREBDOXvFe0VW4hO+jpetzUc=
+	s=korg; t=1721735527;
+	bh=RlR5xEXAj844xVXxfIqAzbJkTPPfMZAlfsf1HJKSRd8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gj4s7LtXgWRjILs8HfFQAyKARVyiJw+qx3/4PQgVkBlU2lk9jm3YkAokyzr4XOmkK
+	 /P9y70ikWIICWvWjymmo9dDnVGnmfR2TqmImWs98cpAhfn2RuhOTZ4pjyodHIOwsvU
+	 IurpjWAJkJCT2kcqcovZK55YElwUUWEnueZQ4HIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org
-Subject: [PATCH 6.10 0/9] 6.10.1-rc1 review
-Date: Tue, 23 Jul 2024 13:51:54 +0200
-Message-ID: <20240723114047.281580960@linuxfoundation.org>
+	syzbot+50835f73143cc2905b9e@syzkaller.appspotmail.com,
+	Kees Cook <keescook@chromium.org>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.10 1/9] ext4: use memtostr_pad() for s_volume_name
+Date: Tue, 23 Jul 2024 13:51:55 +0200
+Message-ID: <20240723114047.348582037@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240723114047.281580960@linuxfoundation.org>
+References: <20240723114047.281580960@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.1-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.10.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.10.1-rc1
-X-KernelTest-Deadline: 2024-07-25T11:40+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.10.1 release.
-There are 9 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Thu, 25 Jul 2024 11:40:39 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.1-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
-and the diffstat can be found below.
+From: Kees Cook <keescook@chromium.org>
 
-thanks,
+commit be27cd64461c45a6088a91a04eba5cd44e1767ef upstream.
 
-greg k-h
+As with the other strings in struct ext4_super_block, s_volume_name is
+not NUL terminated. The other strings were marked in commit 072ebb3bffe6
+("ext4: add nonstring annotations to ext4.h"). Using strscpy() isn't
+the right replacement for strncpy(); it should use memtostr_pad()
+instead.
 
--------------
-Pseudo-Shortlog of commits:
+Reported-by: syzbot+50835f73143cc2905b9e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/00000000000019f4c00619192c05@google.com/
+Fixes: 744a56389f73 ("ext4: replace deprecated strncpy with alternatives")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://patch.msgid.link/20240523225408.work.904-kees@kernel.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/ext4/ext4.h  |    2 +-
+ fs/ext4/ioctl.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.10.1-rc1
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    ASoC: cs35l56: Limit Speaker Volume to +12dB maximum
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    ASoC: cs35l56: Use header defines for Speaker Volume control definition
-
-Hao Ge <gehao@kylinos.cn>
-    tpm: Use auth only after NULL check in tpm_buf_check_hmac_response()
-
-David Howells <dhowells@redhat.com>
-    cifs: Fix setting of zero_point after DIO write
-
-David Howells <dhowells@redhat.com>
-    cifs: Fix server re-repick on subrequest retry
-
-Steve French <stfrench@microsoft.com>
-    cifs: fix noisy message on copy_file_range
-
-David Howells <dhowells@redhat.com>
-    cifs: Fix missing fscache invalidation
-
-David Howells <dhowells@redhat.com>
-    cifs: Fix missing error code set
-
-Kees Cook <kees@kernel.org>
-    ext4: use memtostr_pad() for s_volume_name
-
-
--------------
-
-Diffstat:
-
- Makefile                         |  4 ++--
- drivers/char/tpm/tpm2-sessions.c |  5 +++--
- fs/ext4/ext4.h                   |  2 +-
- fs/ext4/ioctl.c                  |  2 +-
- fs/smb/client/cifsfs.c           |  2 +-
- fs/smb/client/file.c             | 21 +++++++++++++++++----
- fs/smb/client/smb2pdu.c          |  3 ---
- include/sound/cs35l56.h          |  2 +-
- sound/soc/codecs/cs35l56.c       |  6 +++++-
- 9 files changed, 31 insertions(+), 16 deletions(-)
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1347,7 +1347,7 @@ struct ext4_super_block {
+ /*60*/	__le32	s_feature_incompat;	/* incompatible feature set */
+ 	__le32	s_feature_ro_compat;	/* readonly-compatible feature set */
+ /*68*/	__u8	s_uuid[16];		/* 128-bit uuid for volume */
+-/*78*/	char	s_volume_name[EXT4_LABEL_MAX];	/* volume name */
++/*78*/	char	s_volume_name[EXT4_LABEL_MAX] __nonstring; /* volume name */
+ /*88*/	char	s_last_mounted[64] __nonstring;	/* directory where last mounted */
+ /*C8*/	__le32	s_algorithm_usage_bitmap; /* For compression */
+ 	/*
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -1151,7 +1151,7 @@ static int ext4_ioctl_getlabel(struct ex
+ 	BUILD_BUG_ON(EXT4_LABEL_MAX >= FSLABEL_MAX);
+ 
+ 	lock_buffer(sbi->s_sbh);
+-	strscpy_pad(label, sbi->s_es->s_volume_name);
++	memtostr_pad(label, sbi->s_es->s_volume_name);
+ 	unlock_buffer(sbi->s_sbh);
+ 
+ 	if (copy_to_user(user_label, label, sizeof(label)))
 
 
 
