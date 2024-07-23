@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2C193A698
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E995593A739
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D6731C2096C
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EDF11F23332
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03CE3158211;
-	Tue, 23 Jul 2024 18:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E47158A01;
+	Tue, 23 Jul 2024 18:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdOjoZCU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4c4Y/pQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E3E13C3F5;
-	Tue, 23 Jul 2024 18:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812051581F4;
+	Tue, 23 Jul 2024 18:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759804; cv=none; b=akqtK7EGuYxDzVUcHOZnu7VmWEFUSaN2elf5EazlcUR4KNZ19ul5J5AICjt2XCdP7NSxEs5RhYkYzTF4yiqt+xUADAiSx/C84C7A7BsALEe13BbX7IL63ROVxKpVCjQK9aCXXqCwBgYORi9t27UNP2i+criIH36u9uoJm0Odu9M=
+	t=1721760225; cv=none; b=cAtwY6ApmierQZC68zIqtWBLN62txAJkHrn4d8wpBiHyJBzrKv58BWKXl0fg3dMuU2mZwu44naTiNQbvbDRTIBBI1cdp1hmTQzy3Whv/26Sa6/GAGCukWw0Akml0tBsvkTsZtreS3K93tYuz2e18/bwgz5kAIdJQFz5AO0W++bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759804; c=relaxed/simple;
-	bh=6ZsVrjUYIsjw1LcUckp120ziog8bI9TMDypFtj2IXCk=;
+	s=arc-20240116; t=1721760225; c=relaxed/simple;
+	bh=79YrUNLwj3hIx1ZD+m7wuXOxeKqMb/JnuktrVgBmpOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgoSa8fMi4SxN/AkrA1xrTdYeQeeDgScEptmd4CZRtZzLW4FCFqitZcymyYEV6jw34ep+yLAMom3cs1juBWuvrHzrQVDj/1UaXAN81OMcgGkHeZ2rXHCyXWkpUOUDo0yTUp18xtbrd/IwjYWEQMKz1zDnulX1oRjYEQueiU/R9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdOjoZCU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E0CC4AF09;
-	Tue, 23 Jul 2024 18:36:44 +0000 (UTC)
+	 MIME-Version; b=hxChfnWwkZ3zNu8p2r4cwC4QSr0L6EjvLexwV16Ch43n+6Hy/D1I6ovGtocZqg9fGL53xMKOljhPX/NMQoSusoeyy1BNxwmbb8v0sOppEFl059Q5FMTt5onAjY72x8iaElLTg8fBaphoq4KE9U2xO3zo/fO1uV1RQnVSHVbYLGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4c4Y/pQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB39C4AF09;
+	Tue, 23 Jul 2024 18:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759804;
-	bh=6ZsVrjUYIsjw1LcUckp120ziog8bI9TMDypFtj2IXCk=;
+	s=korg; t=1721760225;
+	bh=79YrUNLwj3hIx1ZD+m7wuXOxeKqMb/JnuktrVgBmpOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OdOjoZCUDssPE2jHhZ4OaApnRcatUIC7QiDS8Po+srbb4g4chH79AM6AvsfReEoYz
-	 iT3TL2iHS9wtCVZk0MB6JnSmu5jfCtmhX+M63Va+32IcE5L4KRj6r2/6vtrCuJImXE
-	 QVwZT4/xAOBLvnTlFikLChitJOy959tu5iTLc1Y0=
+	b=B4c4Y/pQb7QgSrsQivjfBp/mvDqmwS2HleKJdI9Ct0shnhDPE+tHrCcxSxg4rAOwV
+	 kphIT0BZBNY3lHN+Xz2fL4Afcp9AnsDysgfKSCXZH5w2yxIDhIFgLn/kx+Df+bjkxl
+	 jHdFO9Y/pDksurEQjL306JiaEVbqWM0r39DKICb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 126/129] wifi: iwlwifi: mvm: dont wake up rx_sync_waitq upon RFKILL
+	Bastien Curutchet <bastien.curutchet@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 145/163] spi: davinci: Unset POWERDOWN bit when releasing resources
 Date: Tue, 23 Jul 2024 20:24:34 +0200
-Message-ID: <20240723180409.665586638@linuxfoundation.org>
+Message-ID: <20240723180149.074162992@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
 
-commit e715c9302b1c6fae990b9898a80fac855549d1f0 upstream.
+[ Upstream commit 1762dc01fc78ef5f19693e9317eae7491c6c7e1b ]
 
-Since we now want to sync the queues even when we're in RFKILL, we
-shouldn't wake up the wait queue since we still expect to get all the
-notifications from the firmware.
+On the OMAPL138, the SPI reference clock is provided by the Power and
+Sleep Controller (PSC). The PSC's datasheet says that 'some peripherals
+have special programming requirements and additional recommended steps
+you must take before you can invoke the PSC module state transition'. I
+didn't find more details in documentation but it appears that PSC needs
+the SPI to clear the POWERDOWN bit before disabling the clock. Indeed,
+when this bit is set, the PSC gets stuck in transitions from enable to
+disable state.
 
-Fixes: 4d08c0b3357c ("wifi: iwlwifi: mvm: handle BA session teardown in RF-kill")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240703064027.be7a9dbeacde.I5586cb3ca8d6e44f79d819a48a0c22351ff720c9@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Clear the POWERDOWN bit when releasing driver's resources
+
+Signed-off-by: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Link: https://patch.msgid.link/20240624071745.17409-1-bastien.curutchet@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-davinci.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -6094,11 +6094,9 @@ void iwl_mvm_sync_rx_queues_internal(str
- 	if (sync) {
- 		lockdep_assert_held(&mvm->mutex);
- 		ret = wait_event_timeout(mvm->rx_sync_waitq,
--					 READ_ONCE(mvm->queue_sync_state) == 0 ||
--					 iwl_mvm_is_radio_killed(mvm),
-+					 READ_ONCE(mvm->queue_sync_state) == 0,
- 					 HZ);
--		WARN_ONCE(!ret && !iwl_mvm_is_radio_killed(mvm),
--			  "queue sync: failed to sync, state is 0x%lx\n",
-+		WARN_ONCE(!ret, "queue sync: failed to sync, state is 0x%lx\n",
- 			  mvm->queue_sync_state);
- 	}
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index be3998104bfbb..f7e8b5efa50e5 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -984,6 +984,9 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	return ret;
  
+ free_dma:
++	/* This bit needs to be cleared to disable dpsi->clk */
++	clear_io_bits(dspi->base + SPIGCR1, SPIGCR1_POWERDOWN_MASK);
++
+ 	if (dspi->dma_rx) {
+ 		dma_release_channel(dspi->dma_rx);
+ 		dma_release_channel(dspi->dma_tx);
+@@ -1013,6 +1016,9 @@ static void davinci_spi_remove(struct platform_device *pdev)
+ 
+ 	spi_bitbang_stop(&dspi->bitbang);
+ 
++	/* This bit needs to be cleared to disable dpsi->clk */
++	clear_io_bits(dspi->base + SPIGCR1, SPIGCR1_POWERDOWN_MASK);
++
+ 	if (dspi->dma_rx) {
+ 		dma_release_channel(dspi->dma_rx);
+ 		dma_release_channel(dspi->dma_tx);
+-- 
+2.43.0
+
 
 
 
