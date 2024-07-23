@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-61191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D351893A740
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:44:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615DB93A745
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 118931C221DB
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:44:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22937284372
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D7213D896;
-	Tue, 23 Jul 2024 18:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675F9158D63;
+	Tue, 23 Jul 2024 18:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rb9nrsmY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gj619XEB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A9915884E;
-	Tue, 23 Jul 2024 18:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A73158A3C;
+	Tue, 23 Jul 2024 18:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760246; cv=none; b=MO8hEfVQ0NyonmQNfgSPa8lSHn3VRM+7WbFDd7V/wY7Ric2Szrt9vhO5aKMMPIN6XjnWVDphAXBVphnyX+jvb4w47CdGt62zDVm4LeyN7Yd1fQ9d0A8GyeH9L06QVLy8Du7bWJbMBUn61Sdm2Cc9fR0EjPIdJcNTcOxYq6GclP8=
+	t=1721760252; cv=none; b=Z0SdCI7t1kruM0S512L5Ry7ZhRplSYLltAIsnzfFVE+qHs7XwsjYvrqxS+DHeIvVfxS6yOFwj4MFqPbnXBwi9t0cWnI0MbeqTffrgXoS3lChnQILFccTWOynvyxWWNYUq6Zgkz8XvH2vnDD7nWv0MPNzgKM3r29FsJHgIYi4/LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760246; c=relaxed/simple;
-	bh=ATC2w5OPHN2rgs9QIptE2loHYNhxGWzOAuZk/6h/4Lg=;
+	s=arc-20240116; t=1721760252; c=relaxed/simple;
+	bh=Joc6j0ndcT26eKPQqMPXXMmfYBj5D0hb435YAQrgXWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4HLdWJP9uqMaybzm2BwfuXmjHqr0gq4ZrHW1RysJjg/zdcnNHtBIkhAfI91IajDgxEQcCpL6zbHsodMRf49lWuuXuEQT1HLDh7GRDAxJeN069fiERhtlvU7LqaftYFnfjTWiG4JQ/WIiJhCrWoizuN8SShDg0ikoWKm/UtZPwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rb9nrsmY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B234AC4AF0A;
-	Tue, 23 Jul 2024 18:44:05 +0000 (UTC)
+	 MIME-Version; b=LttK0DZ6ruEMOFJABps7qDbiWCjWLSBNwu0q8XYQdDVI9x3xctKzky1WgPr+Cd+C3xBCnBRNSSKs9Xh7SZzgNVtKLJQTV2wUaNKwDQxpDYzEX3V773+uFL3EehX29rjhd6zEFHLuib66Js6/uYPAtLlsMtOqhf0/pOfk1WTBO7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gj619XEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F93DC4AF0A;
+	Tue, 23 Jul 2024 18:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760246;
-	bh=ATC2w5OPHN2rgs9QIptE2loHYNhxGWzOAuZk/6h/4Lg=;
+	s=korg; t=1721760252;
+	bh=Joc6j0ndcT26eKPQqMPXXMmfYBj5D0hb435YAQrgXWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rb9nrsmY07KTEB4gNx1mkbvKh7DQU0fpM/9mLYyPaaFRggx/ChA7P4kHgNwm6+3bO
-	 ATwfsPYtPCun5HJhP3KJ3LDL15yFNHaQ5LKAGCry08kt6axO+sNmwGff0G2L4IMjQz
-	 0zD55DU43rBtq4iindjVdDufP+2cGbSeLVmrrVgI=
+	b=Gj619XEBDtv0l1mtPRF+p0YD1fDeLlARzYuojnNttaA2oaj0dGHWAxNS9dOXbbeaA
+	 ApO5Iu4o39tJ28tXUB1g1e8F0O/7fHcvYh0gifVEU7AICN8lnVIUw2DTJ8qxoOvDR0
+	 PIvYwFK7AULC2UaPy0WWQPer+lBuNKP2d2xQow2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 152/163] spi: mux: set ctlr->bits_per_word_mask
-Date: Tue, 23 Jul 2024 20:24:41 +0200
-Message-ID: <20240723180149.342933642@linuxfoundation.org>
+Subject: [PATCH 6.9 153/163] ALSA: hda: Use imply for suggesting CONFIG_SERIAL_MULTI_INSTANTIATE
+Date: Tue, 23 Jul 2024 20:24:42 +0200
+Message-ID: <20240723180149.380687323@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
 References: <20240723180143.461739294@linuxfoundation.org>
@@ -66,34 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit c8bd922d924bb4ab6c6c488310157d1a27996f31 ]
+[ Upstream commit 17563b4a19d1844bdbccc7a82d2f31c28ca9cfae ]
 
-Like other SPI controller flags, bits_per_word_mask may be used by a
-peripheral driver, so it needs to reflect the capabilities of the
-underlying controller.
+The recent fix introduced a reverse selection of
+CONFIG_SERIAL_MULTI_INSTANTIATE, but its condition isn't always met.
+Use a weak reverse selection to suggest the config for avoiding such
+inconsistencies, instead.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20240708-spi-mux-fix-v1-3-6c8845193128@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 9b1effff19cd ("ALSA: hda: cs35l56: Select SERIAL_MULTI_INSTANTIATE")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202406210732.ozgk8IMK-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202406211244.oLhoF3My-lkp@intel.com/
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20240621073915.19576-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mux.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
-index 031b5795d1060..a8bb07b38ec64 100644
---- a/drivers/spi/spi-mux.c
-+++ b/drivers/spi/spi-mux.c
-@@ -156,6 +156,7 @@ static int spi_mux_probe(struct spi_device *spi)
- 	/* supported modes are the same as our parent's */
- 	ctlr->mode_bits = spi->controller->mode_bits;
- 	ctlr->flags = spi->controller->flags;
-+	ctlr->bits_per_word_mask = spi->controller->bits_per_word_mask;
- 	ctlr->transfer_one_message = spi_mux_transfer_one_message;
- 	ctlr->setup = spi_mux_setup;
- 	ctlr->num_chipselect = mux_control_states(priv->mux);
+diff --git a/sound/pci/hda/Kconfig b/sound/pci/hda/Kconfig
+index 9f560a8186802..b6869fe019f29 100644
+--- a/sound/pci/hda/Kconfig
++++ b/sound/pci/hda/Kconfig
+@@ -160,7 +160,7 @@ config SND_HDA_SCODEC_CS35L56_I2C
+ 	depends on ACPI || COMPILE_TEST
+ 	depends on SND_SOC
+ 	select FW_CS_DSP
+-	select SERIAL_MULTI_INSTANTIATE
++	imply SERIAL_MULTI_INSTANTIATE
+ 	select SND_HDA_GENERIC
+ 	select SND_SOC_CS35L56_SHARED
+ 	select SND_HDA_SCODEC_CS35L56
+@@ -177,7 +177,7 @@ config SND_HDA_SCODEC_CS35L56_SPI
+ 	depends on ACPI || COMPILE_TEST
+ 	depends on SND_SOC
+ 	select FW_CS_DSP
+-	select SERIAL_MULTI_INSTANTIATE
++	imply SERIAL_MULTI_INSTANTIATE
+ 	select SND_HDA_GENERIC
+ 	select SND_SOC_CS35L56_SHARED
+ 	select SND_HDA_SCODEC_CS35L56
 -- 
 2.43.0
 
