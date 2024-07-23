@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-61100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F6893A6DD
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B70293A625
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03A641C2240B
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 130961F23350
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8693714EC58;
-	Tue, 23 Jul 2024 18:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEE9158A06;
+	Tue, 23 Jul 2024 18:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQqmlwJL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gshtk9C0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B27157A61;
-	Tue, 23 Jul 2024 18:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE9F15887F;
+	Tue, 23 Jul 2024 18:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759974; cv=none; b=BsS0AWYN/4oV4gQ2nvUn6zLtdIYzqCE2LaEQu7CLJtN8m1cwd97oryuLnIM7aas60NTJ/R3L3MmqNBU4Smh2I8Oc8UgluV9a4H4YDtMo190Skj07r8zYwlkSiY8ZfDUDAWzjPu9lwrwijfJYjkzJ8gu7Bj62QK1rDosLSqZdc3Q=
+	t=1721759527; cv=none; b=IN5+0s3jYl0s7TGW6ox1hbsmyLZwpVt+kfaACSCEsrn50rFuTJ675Z+xpeIBF3MB9LRjQoCLC6lp8fK0zPbJRBYkrMtBBZm+YIdHzDoC0MUgL4yer8i5jiC2AHbic04LuDSPx4VzuIui3Ze1iptkavi7G34KVvV712TdqC3G3NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759974; c=relaxed/simple;
-	bh=e9KMmS60aeg7zo8Vp/a2pWOo1O9rQXutc/fDRhCJplo=;
+	s=arc-20240116; t=1721759527; c=relaxed/simple;
+	bh=z4Py9DUoBC2gvOmYX3RMdmHx8z+G+1r9A1n+DmFEJQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBOwHr6yb/6HUnXqUhTi5v9EFB+sbJdvKzrpbtyLZIBCJDtpFSzOBb17fA+9kUDl3etp5aaUB6kIw8VV2KJmUIxaZD15JJqkX8o161v0f8XdRcLmJf9C0NZDiSd9zVtOgwoZRFUbyClFDhwXi6W9YLssHJXHwFDN69l8IctXcYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQqmlwJL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91499C4AF0A;
-	Tue, 23 Jul 2024 18:39:33 +0000 (UTC)
+	 MIME-Version; b=maKjSV3aVXw10uoDOBGDxOq7AZjifVXcHRneVlz2k6SM0KkEZTpgZslnKVVc4z8agf0GfoVZzTYBm+QsDyW7v39PjRiH4rSHG/sjgK5KSSfrmbLzLiiZqpAkhikn5xCg+vLJWXb450J51iT36GGnCkMdWrv6g292dx4UC+Tv4Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gshtk9C0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04351C4AF0A;
+	Tue, 23 Jul 2024 18:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759974;
-	bh=e9KMmS60aeg7zo8Vp/a2pWOo1O9rQXutc/fDRhCJplo=;
+	s=korg; t=1721759527;
+	bh=z4Py9DUoBC2gvOmYX3RMdmHx8z+G+1r9A1n+DmFEJQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQqmlwJLChAW/iGc9VBLPoCqAIrTWlks1prtlDTEd2FBfh6tGhTaMAS5uEOclr+pf
-	 reJJZm29kUMsPTJ56e5CJepYfUhDdInN7Hq+4mZvIee73abNxmBVhitl7+CHI2KOTS
-	 jhdFli8XGRjp5wb+9asY2eyYbE5k7L4c1mD67x0Y=
+	b=gshtk9C08ES8Snw6hZpiC+64ov8Q1VGorAvhyTry6i5/SfEVG8Dz9P4B213S/tIDE
+	 BJ93L7BUj5HAxv0By8veHIujg7R3qtnuO9VDvvDGgP7urShiFUgCg2N3peLSa4FEW/
+	 g3ycelgxXTJ/h9lLaKcDtHywiWki9UkWGGpAty58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Zizhi Wo <wozizhi@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 060/163] drm: renesas: shmobile: Call drm_atomic_helper_shutdown() at shutdown time
+Subject: [PATCH 6.6 041/129] cachefiles: Set object to close if ondemand_id < 0 in copen
 Date: Tue, 23 Jul 2024 20:23:09 +0200
-Message-ID: <20240723180145.791880560@linuxfoundation.org>
+Message-ID: <20240723180406.375892482@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Zizhi Wo <wozizhi@huawei.com>
 
-[ Upstream commit 0320ca14c6fb68ad19aa72e55a1a21c061b2946b ]
+[ Upstream commit 4f8703fb3482f92edcfd31661857b16fec89c2c0 ]
 
-Based on grepping through the source code, this driver appears to be
-missing a call to drm_atomic_helper_shutdown() at system shutdown time.
-This is important because drm_atomic_helper_shutdown() will cause
-panels to get disabled cleanly which may be important for their power
-sequencing.  Future changes will remove any custom powering off in
-individual panel drivers so the DRM drivers need to start getting this
-right.
+If copen is maliciously called in the user mode, it may delete the request
+corresponding to the random id. And the request may have not been read yet.
 
-The fact that we should call drm_atomic_helper_shutdown() in the case of
-OS shutdown comes straight out of the kernel doc "driver instance
-overview" in drm_drv.c.
+Note that when the object is set to reopen, the open request will be done
+with the still reopen state in above case. As a result, the request
+corresponding to this object is always skipped in select_req function, so
+the read request is never completed and blocks other process.
 
-[geert: shmob_drm_remove() already calls drm_atomic_helper_shutdown]
+Fix this issue by simply set object to close if its id < 0 in copen.
 
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20230901164111.RFT.15.Iaf638a1d4c8b3c307a6192efabb4cbb06b195f15@changeid
-[geert: s/drm_helper_force_disable_all/drm_atomic_helper_shutdown/]
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/17c6a5a668e5975f871b77fb1fca6711a0799d9e.1718176895.git.geert+renesas@glider.be
+Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240522114308.2402121-11-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/renesas/shmobile/shmob_drm_drv.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/cachefiles/ondemand.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/renesas/shmobile/shmob_drm_drv.c b/drivers/gpu/drm/renesas/shmobile/shmob_drm_drv.c
-index e83c3e52251de..0250d5f00bf10 100644
---- a/drivers/gpu/drm/renesas/shmobile/shmob_drm_drv.c
-+++ b/drivers/gpu/drm/renesas/shmobile/shmob_drm_drv.c
-@@ -171,6 +171,13 @@ static void shmob_drm_remove(struct platform_device *pdev)
- 	drm_kms_helper_poll_fini(ddev);
- }
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index c3241cede5289..37489ca2e8571 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -182,6 +182,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 	xas_store(&xas, NULL);
+ 	xa_unlock(&cache->reqs);
  
-+static void shmob_drm_shutdown(struct platform_device *pdev)
-+{
-+	struct shmob_drm_device *sdev = platform_get_drvdata(pdev);
-+
-+	drm_atomic_helper_shutdown(&sdev->ddev);
-+}
-+
- static int shmob_drm_probe(struct platform_device *pdev)
- {
- 	struct shmob_drm_platform_data *pdata = pdev->dev.platform_data;
-@@ -273,6 +280,7 @@ static const struct of_device_id shmob_drm_of_table[] __maybe_unused = {
- static struct platform_driver shmob_drm_platform_driver = {
- 	.probe		= shmob_drm_probe,
- 	.remove_new	= shmob_drm_remove,
-+	.shutdown	= shmob_drm_shutdown,
- 	.driver		= {
- 		.name	= "shmob-drm",
- 		.of_match_table = of_match_ptr(shmob_drm_of_table),
++	info = req->object->ondemand;
+ 	/* fail OPEN request if copen format is invalid */
+ 	ret = kstrtol(psize, 0, &size);
+ 	if (ret) {
+@@ -201,7 +202,6 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 		goto out;
+ 	}
+ 
+-	info = req->object->ondemand;
+ 	spin_lock(&info->lock);
+ 	/*
+ 	 * The anonymous fd was closed before copen ? Fail the request.
+@@ -241,6 +241,11 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 	wake_up_all(&cache->daemon_pollwq);
+ 
+ out:
++	spin_lock(&info->lock);
++	/* Need to set object close to avoid reopen status continuing */
++	if (info->ondemand_id == CACHEFILES_ONDEMAND_ID_CLOSED)
++		cachefiles_ondemand_set_object_close(req->object);
++	spin_unlock(&info->lock);
+ 	complete(&req->done);
+ 	return ret;
+ }
 -- 
 2.43.0
 
