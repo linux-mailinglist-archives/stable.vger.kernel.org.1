@@ -1,365 +1,238 @@
-Return-Path: <stable+bounces-60732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A84939BBC
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 09:30:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8FD939BCA
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 09:33:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FBE7281B3A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 07:30:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BAD81C219D0
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 07:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4199F14AD10;
-	Tue, 23 Jul 2024 07:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B11014AD10;
+	Tue, 23 Jul 2024 07:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="tp0Zvpek";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="VItdnO17";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="bcgkBsQ8";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="4Hd4G4DE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iRrIKm5K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C961613C9A3;
-	Tue, 23 Jul 2024 07:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721719832; cv=none; b=VttAbYRKUGoU7iSJ2UNphHTdgD4TxywD+J5CMayIOm6zwVKKS674emFnArbZk9/jUr9rl9ZpOYDfI034SQxTetifp1mITHtwe6GKzPj43a/D4/+5fABor+M7Wrf0L5pWCZ74Mc06fFCf/TzgJDuYdK+0r0HE9JsvUdRRIgJUs2k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721719832; c=relaxed/simple;
-	bh=AQRK9JorHGccGY6Uz4ipS2eUcLhaUPkpT+wrRxYmcaA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WFHhtGSk2OLL698IhKoLOAa6Inh9AnAHfXllofzV9nLCoYjragABozQzevBY2Oh+r5AqCllUlWZRiyBBSp1QMaFEufgCpv6eYni9+rykMZXWzvmdTnyjy2VZOlH0V0iy+op05456s12fvtNFzbniaSJUEsRHWLWLm6EvRBSGSzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=tp0Zvpek; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=VItdnO17; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=bcgkBsQ8; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=4Hd4G4DE; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EC53B21AB3;
-	Tue, 23 Jul 2024 07:30:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1721719828; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fG4EbjWGNqFXRR6ZQnIuAvzoJK16ltpj5WMaolGqCe8=;
-	b=tp0ZvpekPuBQx0xah3rl6Eme61oaWDJ0sfC9n9j4fkq2u7gyIrSnPchrao6iUtAl6fpS2i
-	VW2vYmKWYbvBeDrmRB0ktSjymSIOl8QvFWpCuvegYL4aXr5nh/8yzkDGjVCjK0Pl37Ngx8
-	WCSpqWL3HgnLjzrKTBD/umL9e2E73ic=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1721719828;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fG4EbjWGNqFXRR6ZQnIuAvzoJK16ltpj5WMaolGqCe8=;
-	b=VItdnO17LdABIMZ3ZPbJ81uFQi/g7vWX/nyvCl7z2HFMUZqRRWeO2aN1K8w4fC8q+h06L8
-	whFYuNyX6dcAiVCg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1721719827; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fG4EbjWGNqFXRR6ZQnIuAvzoJK16ltpj5WMaolGqCe8=;
-	b=bcgkBsQ8DJTrLtQVisPsaX4tm7wkC9154CMg9wWh0sbw/zQeJ2jPPD6Fzyel9iBVmnmS2J
-	NZ4rLO/cDCHGpEHRqPEWf1vYXFjakLGq0QuV/R3bBoPjNxgO4Z+IKh/EamEsjDWNtDwMlo
-	y5eq17ncatR8x0pDbs9cT99JsR75TO4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1721719827;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fG4EbjWGNqFXRR6ZQnIuAvzoJK16ltpj5WMaolGqCe8=;
-	b=4Hd4G4DE9LfCBaaoJbxC7zXaTJLMNa1Qbta/DBQ7AsHpo84y+p1Im33hX7Av0PoAXzN++P
-	p4Ep8KfUxKwFpSDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CECDF13874;
-	Tue, 23 Jul 2024 07:30:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dVV7MRNcn2ZlVgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 23 Jul 2024 07:30:27 +0000
-Message-ID: <564ff8e4-42c9-4a00-8799-eaa1bef9c338@suse.cz>
-Date: Tue, 23 Jul 2024 09:30:27 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BB213B5A6;
+	Tue, 23 Jul 2024 07:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721720012; cv=fail; b=Y/cdbOEcN5QX9/yHwwIqLzpVqmKe2xRwoDM/PiVa37q2TE1m7h5m1QOiTmmvel01sCzZibN941GbtYeIFJGcZ3hPtQi8IYK2wwOb8lIXcM7eynQy5AIej4K23SePl33zsw5gKWxuOlst5fuUkroChChmwIWvX3PbDF09+LTTGa4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721720012; c=relaxed/simple;
+	bh=Hex9szuY7HnoHC0gM3CW5z/Mznvd3mtNbI6eQUUOKdI=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=A5VmAGgqjkFaktwNsyy4LQJSE2DESoge+Dq0+2c0MGX18k6JcpevLs/VwmyrF+16U4NOx3heExX9CAR0eAPSBLT/G2Dn3ejg5CF7s+nI4NFIKUXxzrGJZQmzt0EkZoR1gZiEUokBgox+7X4O2w0boG36JvWCLa2wR0MG3mLArss=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iRrIKm5K; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721720010; x=1753256010;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Hex9szuY7HnoHC0gM3CW5z/Mznvd3mtNbI6eQUUOKdI=;
+  b=iRrIKm5KdUoJyF7wuVvlwqTEl6FDijkvsNVzwusPgGHujgxHOcIDPbs8
+   f53JkagDAmXsh3yCyIu5v1AYzJDHcHyx98JRGRbqx6t5k281Kj4OJYZY4
+   OwTh5feylnbfDSX4tere2Qwd5z9GuhSAHVfXZSPCDQTcrSqVcQBgg8ogL
+   a+HVg7dXxzH8SZx69+OxZ4oAZsn48pPQCZR680ONYJnRk+vuQkA72qYjj
+   KDs+7wWOEukAMnlzxBnmgc8RmCnt4D9zC+/aNa65rxN1RhFf4QeI9DlJe
+   3zTlXAs4L0b5bSKZz1z+B1uqYf/Km+2o/QxeJjJkHqEZ/qIzNAxq/j5nO
+   A==;
+X-CSE-ConnectionGUID: 3v+U4Sw7SjKTfu9BHhpInQ==
+X-CSE-MsgGUID: eMHEPilaR26CoHMvU+D6aQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11141"; a="19028796"
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; 
+   d="scan'208";a="19028796"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2024 00:33:30 -0700
+X-CSE-ConnectionGUID: t/BCmM3cR7OAnFI7QLEdTg==
+X-CSE-MsgGUID: OfdAANTiReKWC/KAh8mLqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; 
+   d="scan'208";a="52890995"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Jul 2024 00:33:30 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 23 Jul 2024 00:33:29 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 23 Jul 2024 00:33:28 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 23 Jul 2024 00:33:28 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.172)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 23 Jul 2024 00:33:28 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=R4ZfdgSrXbZiZG7Qu7+gy3/HwTDp99wlJOr1JZE5UecMegbp/v1KOvo3Uxdhk/kKWmhEoUkhYUoHadRk4hoeVjwz2K1wAyA5OVtgMQeOdtPU/TRLFJ4OeSXG1VFrz5HFEk4vq71pgPqmFbny4cx4Zd+n0ymnBx+D40xqle8aHgoloH+DP4xlxE56sUw57mgfywSWuyyZTOD6ai+puZSBL6U2dn802HxCjME29/pagd1u1DL5FQgMaeZCH5Gqv8ALV31cBA56bT+ssn3sYNmoaxlLtoBHVMw60SkeWtUxxV3gCmN2Z1gkUvrebFADEI/p1ODUO1PvjM5icOZLXXNCiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0WLhlUHF8oRpAS/s73nKSwIKwPvPIlKpn6CHHjJdzHE=;
+ b=ryjxGwmKU9YD81M5GdpKuz4aqt+DJCBS5x4hJ9MjGSNn6ZmwTGEtBcfLBM+dqpyAuhxRKzftQ/gE3dog2gyY1Y/NbQtk2iO03SOuVHgSFmzcxsrTATg7MAaOc2tQt1kJG+LyBkGxGWhIHpKzfKGRR6bMiGuB9Ja3rTO5fOp/iqc4oPIDykfzkneNSoRmtnfxx/iTkulTgoQNNB8VmTc8Rmqd40kEjMj6zRtGTLYTZ4bBzeHji2zCg0xs7Pbep5iunZrDKthQi7fuYF0U8Vzi4XakFh58jCDywadbQr1yJYsueSRuA4IOrkQp426O/ZFV3h/tlI7XaqAvUx2MuqK13g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB5803.namprd11.prod.outlook.com (2603:10b6:806:23e::8)
+ by SA2PR11MB5113.namprd11.prod.outlook.com (2603:10b6:806:113::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.20; Tue, 23 Jul
+ 2024 07:33:26 +0000
+Received: from SA1PR11MB5803.namprd11.prod.outlook.com
+ ([fe80::e976:5d63:d66e:7f9a]) by SA1PR11MB5803.namprd11.prod.outlook.com
+ ([fe80::e976:5d63:d66e:7f9a%4]) with mapi id 15.20.7762.027; Tue, 23 Jul 2024
+ 07:33:26 +0000
+Message-ID: <c979896c-f281-4d05-bda1-4d172597b69f@intel.com>
+Date: Tue, 23 Jul 2024 10:33:19 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH net 1/1] igc: Fix double reset adapter
+ triggered from a single taprio cmd
+To: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jesse Brandeburg
+	<jesse.brandeburg@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>
+CC: <netdev@vger.kernel.org>, <intel-wired-lan@lists.osuosl.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20240625082656.2702440-1-faizal.abdul.rahim@linux.intel.com>
+Content-Language: en-US
+From: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+In-Reply-To: <20240625082656.2702440-1-faizal.abdul.rahim@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TL2P290CA0010.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:2::8)
+ To SA1PR11MB5803.namprd11.prod.outlook.com (2603:10b6:806:23e::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Fix endless reclaim on machines with unaccepted
- memory.
-Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Mel Gorman <mgorman@suse.de>,
- Tom Lendacky <thomas.lendacky@amd.com>, Mike Rapoport <rppt@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Jianxiong Gao <jxgao@google.com>, stable@vger.kernel.org
-References: <20240716130013.1997325-1-kirill.shutemov@linux.intel.com>
- <ZpdwcOv9WiILZNvz@tiehlicka>
- <xtcmz6b66wayqxzfio4funmrja7ezgmp3mvudjodt5xfx64rot@s6whj735oimb>
- <Zpez1rkIQzVWxi7q@tiehlicka>
- <brjw4kb3x4wohs4a6y5lqxr6a5zlz3m45hiyyyht5mgrqcryk7@m7mdyojo4h6a>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- EP+ylKVEKb0Q2A==
-In-Reply-To: <brjw4kb3x4wohs4a6y5lqxr6a5zlz3m45hiyyyht5mgrqcryk7@m7mdyojo4h6a>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.09
-X-Spamd-Result: default: False [-4.09 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
-X-Spam-Flag: NO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB5803:EE_|SA2PR11MB5113:EE_
+X-MS-Office365-Filtering-Correlation-Id: 041df91d-cfa0-40b1-89e9-08dcaae9bd61
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Q2ltcDY5MXVlWXVOT1hDZ0pmV2EySit6dW5RWVlTS1FoMkdKSnlmSUhsY3ZB?=
+ =?utf-8?B?YmZpSG1HMGJQMFRCZHIyeGhKdFI3WUVyTkpGZFB1b1hCVkw1QkVRR3p2WTFJ?=
+ =?utf-8?B?eTI2YXhiZFJMdlhycWdKYkYzaURYL0RWZU9KcEZyRlM0TDFKWnhyMzZsaW0z?=
+ =?utf-8?B?M1c5c0sxVmh1YWM4NzdyZ2g2ZmpwRHBlNXE2eElKc0pKVDZOT3JjTk9JV3RG?=
+ =?utf-8?B?NVJTbDhwd21nbkp0SElNVDBWTjRMNE9RS0FWZU1UOW9ueVVoVmV3NktEdGJy?=
+ =?utf-8?B?dVJ6WjFZUmgrSGZpUUZsU1hGdGJzdk1xUHNjbC9VSzV5T01NVVY2Qk9CR0ZV?=
+ =?utf-8?B?eEt3VGtnSkkwT0hZeDY0QkphbTNvWi80dElyenFmM1NTM1JnRS9taDV6VWQ5?=
+ =?utf-8?B?ZXFSYTlYMWp3WHpuM2hyRlNLZ3c3RGpMeFNrM0x0SXJueUh1RlJJdnpxY3JF?=
+ =?utf-8?B?SzNxN0drYWM5d3FOYWZRSTRzamZMYlM0RnlnNnFKN2xmWFozMEVXNWp5VitH?=
+ =?utf-8?B?bEVkdXFTa3pXQUdUcGFoNEd0MERHZVhMcTBwU0ErRUlSV2FYdzgwdk1ZNHFK?=
+ =?utf-8?B?Q1pJUFZEc1BGdEhQVFNneHNjeU90SmwzcXByaXViNDBvYTNCZ2U3OWhFYU5l?=
+ =?utf-8?B?QVBMb2FYR203QllGK0h2dWtKSG9tNlNLM3pYNURWaGk3WlA4OXNHb1ZCaUhI?=
+ =?utf-8?B?V1FrdXRGalN2cmJsVWhRN2E2ZmE2cFJKS3Z0YjNLak9SWFh5UjA0N3lKVkYr?=
+ =?utf-8?B?OFZ4VDhNRE9hRFFTK3pHSk53a3M0WWh1NWJkZllXU2o4ZFRzSEJJZlhaY1dE?=
+ =?utf-8?B?Sm8rOGc2TjU0cGU1MG91OG0vTnZPM01kY1dvQWVvOUV6eDkrUjZlTUo4dEoy?=
+ =?utf-8?B?d0dRdmRuU25tVXViTkdoY1FQMUQrZ3hwV1BrZkw3clR6akF4eGlsaEFpWit1?=
+ =?utf-8?B?WE0yRVQxQm1ZWG5iUkVKN2hSaUd2T0F1VEM0ZTd5Q0h3N25jTjd1bEJkeERP?=
+ =?utf-8?B?akxBVWFJTThlcERjbmVQWnZMYVAxM05nTEFVZ3IzODY1NGxGSE1DU3lsaUpz?=
+ =?utf-8?B?TEphY2pZeHRBUXpKdGdRY0VwOFF1NEdTMXE0QVlpYk1IL1ZmSklXN1FVejNR?=
+ =?utf-8?B?dEtMQWI3R3d3MG5DS3Z6RHhzQ216RlM4WFB0TndURHV3UThad2RRU2NqdUFZ?=
+ =?utf-8?B?cktldy9teXRodkpwOUpLODIzSlNQZ1RDNUx3WWhyQkZIM2NneGFHSUhQTzlz?=
+ =?utf-8?B?dG8rNzVRUFNJOHJHcHBNQWhPZHg3aTZtMVdsWHhMRm50K2cxd3VuclRpQWdV?=
+ =?utf-8?B?R0FkSDRNMmpPaGhqMEVHUGJZOE56TzdqMVhtb3R5Y1gvYTV2VWMvZ1Q4WjVk?=
+ =?utf-8?B?SVJBRmNKc3dwbWtlb2xOUkQ4TXdibUo1dVNnaDBmenNzQ0g4dEhYOFlLTWtK?=
+ =?utf-8?B?Rm9pUzBlWEFLVTNRMm9uSVBWKzh6NWNpZ0R0MkwyVmFpekdUVVhKMkl4bnNX?=
+ =?utf-8?B?TGZORUhOOEdYZ0xMUnNaUERiNmJOOG5qZU1rTzdyRXFLSW54R3ZiTENCK2Zt?=
+ =?utf-8?B?WUpnbyt4cm1PRDdLZkRNU3MrckhyNDhBMTJ2TlMrTGl2TmxNUXI3VG1qR3FQ?=
+ =?utf-8?B?bHdaRFZ5YzZvQ3NLaVYzOWdWQUUwclBGdHN1dEVVVHRrekVBMUZYSTZsd09H?=
+ =?utf-8?B?NXhzakc4c21GaERqYTVUZndsWC9BSHhiMDllVFhvNlUwdm1wSFBVdXJkWHFC?=
+ =?utf-8?B?S0V0UEJiQnM5YjEzT1lpYzc4U2NERWdtck9ubVh1ZVJUNWZtdjF0clpJUDlM?=
+ =?utf-8?B?RjVPclMxVEtYTXZITDhjUT09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB5803.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dnVIRzdsbkNuYTlTUlVoRTVzMEphbzk4SGE2a3QwVGhUbFdvRm9pUUF4WUtv?=
+ =?utf-8?B?bEF0YXFwaUpNVjJVa2JZR2I0akw2YTVPTHFSNGZlUkZndGZBdEk4aXpMVTlr?=
+ =?utf-8?B?QjBqaGRBN2pmQWRQZHJQWG5WQVY1Z1VyYjNDVFlxaGFzOVY4ZlRaaURrWVU5?=
+ =?utf-8?B?YkQ4Qk1wTTZ6VEZVNlZvU1RXckl0cHU4SkxJdjcxNllESVpGejJjekp3ZGkw?=
+ =?utf-8?B?UG9QZi91QXgxdjhxdDNxNHMrMmZEeStiQTl2RzV2SnNaVFhHaVo4ZGFOY3d0?=
+ =?utf-8?B?cnEvSEVCVEpsaHcwbVBVQkhhMU1hTWppM2Nvc1Z4WktQMkY3T1FZWTRCTGY5?=
+ =?utf-8?B?emtQTWZRdm1XYXo1VUR2UW5hK1QwM0NCeTMzTW9hMktzVWpzL096a29abFkw?=
+ =?utf-8?B?c2R1VWZNV1VhZVZFOGxDdnNHMVVpN2VWSVl0WFBKV005RDltYXhEWjR6QjU3?=
+ =?utf-8?B?UEM4Q0VMWWx1YlJpYVFCNndvZEtyZjhGTkNUQThEK0RweDRheXRZQ29JVitN?=
+ =?utf-8?B?QW1DMk4vUzRsK2djZitmS3ExYnk0SkZxVkUwVnA3YjZqOHlNTlhvSmNXQm9p?=
+ =?utf-8?B?cWMvbHVvYkk4SlRBM3p5L1RhdUtyRXRWSytBdDI1YzRMUkRtMUxsb1hRTEhS?=
+ =?utf-8?B?UENNbzgzR3l3RjdNN3UxZ1I2Rmo5RHRrUnhNMVY5SEJhdG9mWUU0dmxVVVcx?=
+ =?utf-8?B?OFZ6Z3BKOWFsdFJvV3FWUGJORmVhUkRNNmpqTmYzajdXeDZlNWh3NExOT24x?=
+ =?utf-8?B?ZmVhQWpOcG5NK0hSbktjRWVkY2lDMStLK1hlVm8ycVA5ZGFTeGtpMm5uRzhp?=
+ =?utf-8?B?bWh0UVBHYmxUVDkzREVIbW42K0pldmQzOFEwdDJxOXNWOTRVbFN6WGNJL1Fj?=
+ =?utf-8?B?OC91RjVSb2ZrYlNibmMrOW1rMXJKemJaRnBXQ2xrb3REdGpwKzY3czMyWDRC?=
+ =?utf-8?B?S0I0cURuamlnMGtmMS9kMm9SL2Z1WGtHbWdGRmxvK3VzMWcvSko5cjBWMjhj?=
+ =?utf-8?B?YndiQmhlS1dJWGwwSWRmQmNMNWFWc1BCTVNLdDNhL20xT3J3d2ZCUHRWTUpK?=
+ =?utf-8?B?czhtRWhmTWQ2aTQwc00vRlZkZUVLTU1UcDVjT0pSb2hlenQ3SElsalpXRURt?=
+ =?utf-8?B?cXJGTkpuMFE0U01yTmNFbVhDSUtYeExZcW5SZVlycm5mVHJNNmlMQ2RhekVZ?=
+ =?utf-8?B?enJ6cWpGbTYvZTFnVVN4NXB6MG82UklCYmxsdVFiVDRaUGtobncrZUdndFBM?=
+ =?utf-8?B?UEl0YkdwTjdIdXZ4dUJPYjMzV2toV3FPTXMrdXAwdjZCM2dsUnFEc1RFR1VS?=
+ =?utf-8?B?ZDNwK05mczA5WmdBNVN4QWZZdzZDazd6bW5MZ3JreGdiV2RtbExscTRHeW1R?=
+ =?utf-8?B?WjZreXk2OGphejFlTDQycjlia2RIdnNSVmUzb1JUcE0rWXFtMFU3Y2Q2N0Yz?=
+ =?utf-8?B?bTQ0NFI2bHQ3THZVMG5tcVFIZVlFMzBVSE1TbW9qamczT1BWK0ZvSGpiQlha?=
+ =?utf-8?B?bTVOYVBzUVdIZHYwelpnN2FJemNtdElwcmdxRUxsVHVidnZZTklBRUNzcitl?=
+ =?utf-8?B?VExNYk1wa05KaW1GVW1BS2J1Z1RjRDBiQnA2MTJld0Q3NnljeGhBUERwYi9N?=
+ =?utf-8?B?Vk9rUGZJZlBtZm04bGlDQ25KYi9zVHhlVm1lVkI3ZDROOVRMczF3Y2RmdTV5?=
+ =?utf-8?B?cFJSejNvekNlUndmRDFvQnFjRnVwYms0Wis1K0UzaUp2Z1l1b1Q4Yk5HRXJ2?=
+ =?utf-8?B?bm0ybnZrWTltekFxTGIvakRQaXA1YjR4dlAzVUl1VmRnNFBJYXZINWw1bjRz?=
+ =?utf-8?B?UWloNGorVU5nMjZ5a3hsT2lQUk93bFYzM1JEeFBvN2J6ZnhPWklGYXErUWI1?=
+ =?utf-8?B?alNaNFVNaEVJSmRsR1RFa3U1OUZYd29tYzJMelllYkk4Qm9aRHZybVBJUjhC?=
+ =?utf-8?B?QU5JWFFkQVNDSUUwVWgzZ1B6R09tUmpsY3FSbHk4NlFJQWlTbVhsUE5uZjls?=
+ =?utf-8?B?OUFoWGgyUWd4ZGYyalBBdGY0aFI5alQwbXpWUU9Bb2ZaUTc5and5MjlGeDJ3?=
+ =?utf-8?B?WUNVU0ZNdDN1akd3ejJyN1d1OFFXNFdnZHNndWFWN1JxcWFqRHlZR3JVamlL?=
+ =?utf-8?B?cUt3cTJkQkptZjk3SHViZk5WbFRxbHBuS3JKTEZBZlN1L0ZMVVQyMDd1bVd5?=
+ =?utf-8?B?R3c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 041df91d-cfa0-40b1-89e9-08dcaae9bd61
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB5803.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2024 07:33:26.3570
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RJ7Hj/r92F8beZRJ/BW1dVXV9R7rVivx6u9VufGFTCOjqDLyx5FUexfZACnKaAsaPPCA2IPqjoKfwGZLbvSw2AVIVpmenLco6iuu4qB/1cg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5113
+X-OriginatorOrg: intel.com
 
-On 7/22/24 4:07 PM, Kirill A. Shutemov wrote:
-> On Wed, Jul 17, 2024 at 02:06:46PM +0200, Michal Hocko wrote:
->> Please try to investigate this further. The patch as is looks rather
->> questionable to me TBH. Spilling unaccepted memory into the reclaim
->> seems like something we should avoid if possible as this is something
+On 25/06/2024 11:26, Faizal Rahim wrote:
+> Following the implementation of "igc: Add TransmissionOverrun counter"
+> patch, when a taprio command is triggered by user, igc processes two
+> commands: TAPRIO_CMD_REPLACE followed by TAPRIO_CMD_STATS. However, both
+> commands unconditionally pass through igc_tsn_offload_apply() which
+> evaluates and triggers reset adapter. The double reset causes issues in
+> the calculation of adapter->qbv_count in igc.
 > 
-> Okay, I believe I have a better understanding of the situation:
+> TAPRIO_CMD_REPLACE command is expected to reset the adapter since it
+> activates qbv. It's unexpected for TAPRIO_CMD_STATS to do the same
+> because it doesn't configure any driver-specific TSN settings. So, the
+> evaluation in igc_tsn_offload_apply() isn't needed for TAPRIO_CMD_STATS.
 > 
-> - __alloc_pages_bulk() takes pages from the free list without accepting
->   more memory. This can cause number of free pages to fall below the
->   watermark.
+> To address this, commands parsing are relocated to
+> igc_tsn_enable_qbv_scheduling(). Commands that don't require an adapter
+> reset will exit after processing, thus avoiding igc_tsn_offload_apply().
 > 
->   This issue can be resolved by accepting more memory in
->   __alloc_pages_bulk() if the watermark check fails.
+> Fixes: d3750076d464 ("igc: Add TransmissionOverrun counter")
+> Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+> Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+> Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> ---
+>   drivers/net/ethernet/intel/igc/igc_main.c | 33 ++++++++++++-----------
+>   1 file changed, 17 insertions(+), 16 deletions(-)
 > 
->   The problem is not only related to unallocated memory. I think the
->   deferred page initialization mechanism could result in premature OOM if
->   __alloc_pages_bulk() allocates pages faster than deferred page
->   initialization can add them to the free lists. However, this scenario is
->   unlikely.
-> 
-> - There is nothing that compels the kernel to accept more memory after the
->   watermarks have been calculated in __setup_per_zone_wmarks(). This can
->   put us under the watermark.
-> 
->   This issue can be resolved by accepting memory up to the watermark after
->   the watermarks have been initialized.
-> 
-> - Once kswapd is started, it will begin spinning if we are below the
->   watermark and there is no memory that can be reclaimed. Once the above
->   problems are fixed, the issue will be resolved.
-> 
-> - The kernel needs to accept memory up to the PROMO watermark. This will
->   prevent unaccepted memory from interfering with NUMA balancing.
-
-So do we still assume all memory is eventually accepted and it's just a
-initialization phase thing? And the only reason we don't do everything in a
-kthread like the deferred struct page init, is to spread out some potential
-contention on the host side?
-
-If yes, do we need NUMA balancing even to be already active during that phase?
-
-> The patch below addresses the issues I listed earlier. It is not yet ready
-> for application. Please see the issues listed below.
-> 
-> Andrew, please drop the current patch.
-> 
-> There are a few more things I am worried about:
-> 
-> - The current get_page_from_freelist() and patched __alloc_pages_bulk()
->   only try to accept memory if the requested (alloc_flags & ALLOC_WMARK_MASK)
->   watermark check fails. For example, if a requested allocation with
->   ALLOC_WMARK_MIN is called, we will not try to accept more memory, which
->   could potentially put us under the high/promo watermark and cause the
->   following kswapd start to get us into an endless loop.
-> 
->   Do we want to make memory acceptance in these paths independent of
->   alloc_flags?
-
-Hm ALLOC_WMARK_MIN will proceed, but with a watermark below the low
-watermark will still wake up kswapd, right? Isn't that another scenario
-where kswapd can start spinning?
-
-> - __isolate_free_page() removes a page from the free list without
->   accepting new memory. The function is called with the zone lock taken.
->   It is bad idea to accept memory while holding the zone lock, but
->   the alternative of pushing the accept to the caller is not much better.
-> 
->   I have not observed any issues caused by __isolate_free_page() in
->   practice, but there is no reason why it couldn't potentially cause
->   problems.
->  
-> - The function take_pages_off_buddy() also removes pages from the free
->   list without accepting new memory. Unlike the function
->   __isolate_free_page(), it is called without the zone lock being held, so
->   we can accept memory there. I believe we should do so.
-> 
-> I understand why adding unaccepted memory handling into the reclaim path
-> is questionable. However, it may be the best way to handle cases like
-> __isolate_free_page() and possibly others in the future that directly take
-> memory from free lists.
-
-Yes seems it might be not that bad solution, otherwise it could be hopeless
-whack-a-mole to prevent all corner cases where reclaim can be triggered
-without accepting memory first.
-
-Although just removing the lazy accept mode would be much more appealing
-solution than this :)
-
-> Any thoughts?
-
-Wonder if deferred struct page init has many of the same problems, i.e. with
-__isolate_free_page() and take_pages_off_buddy(), and if not, why?
-
-> I am still new to reclaim code and may be overlooking something
-> significant. Please correct any misconceptions you see.
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index c11b7cde81ef..5e0bdfbe2f1f 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -667,6 +667,7 @@ enum zone_watermarks {
->  #define min_wmark_pages(z) (z->_watermark[WMARK_MIN] + z->watermark_boost)
->  #define low_wmark_pages(z) (z->_watermark[WMARK_LOW] + z->watermark_boost)
->  #define high_wmark_pages(z) (z->_watermark[WMARK_HIGH] + z->watermark_boost)
-> +#define promo_wmark_pages(z) (z->_watermark[WMARK_PROMO] + z->watermark_boost)
->  #define wmark_pages(z, i) (z->_watermark[i] + z->watermark_boost)
->  
->  /*
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index c62805dbd608..d537c633c6e9 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -1748,7 +1748,7 @@ static bool pgdat_free_space_enough(struct pglist_data *pgdat)
->  			continue;
->  
->  		if (zone_watermark_ok(zone, 0,
-> -				      wmark_pages(zone, WMARK_PROMO) + enough_wmark,
-> +				      promo_wmark_pages(zone) + enough_wmark,
->  				      ZONE_MOVABLE, 0))
->  			return true;
->  	}
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 14d39f34d336..b744743d14a2 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4462,6 +4462,22 @@ unsigned long __alloc_pages_bulk(gfp_t gfp, int preferred_nid,
->  				alloc_flags, gfp)) {
->  			break;
->  		}
-> +
-> +		if (has_unaccepted_memory()) {
-> +			if (try_to_accept_memory(zone, 0))
-> +				break;
-> +		}
-> +
-> +#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-> +		/*
-> +		 * Watermark failed for this zone, but see if we can
-> +		 * grow this zone if it contains deferred pages.
-> +		 */
-> +		if (deferred_pages_enabled()) {
-> +			if (_deferred_grow_zone(zone, 0))
-> +				break;
-> +		}
-> +#endif
->  	}
->  
->  	/*
-> @@ -5899,6 +5915,9 @@ static void __setup_per_zone_wmarks(void)
->  		zone->_watermark[WMARK_PROMO] = high_wmark_pages(zone) + tmp;
->  
->  		spin_unlock_irqrestore(&zone->lock, flags);
-> +
-> +		if (managed_zone(zone))
-> +			try_to_accept_memory(zone, 0);
->  	}
->  
->  	/* update totalreserve_pages */
-> @@ -6866,8 +6885,8 @@ static bool try_to_accept_memory(struct zone *zone, unsigned int order)
->  	long to_accept;
->  	int ret = false;
->  
-> -	/* How much to accept to get to high watermark? */
-> -	to_accept = high_wmark_pages(zone) -
-> +	/* How much to accept to get to promo watermark? */
-> +	to_accept = wmark_pages(zone, WMARK_PROMO) -
->  		    (zone_page_state(zone, NR_FREE_PAGES) -
->  		    __zone_watermark_unusable_free(zone, order, 0));
->  
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 3ef654addd44..d20242e36904 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -6607,7 +6607,7 @@ static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)
->  			continue;
->  
->  		if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
-> -			mark = wmark_pages(zone, WMARK_PROMO);
-> +			mark = promo_wmark_pages(zone);
->  		else
->  			mark = high_wmark_pages(zone);
->  		if (zone_watermark_ok_safe(zone, order, mark, highest_zoneidx))
-
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
 
