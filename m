@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-61009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6595E93A673
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5050893A5EF
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F9062831ED
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1080B225AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF42315821A;
-	Tue, 23 Jul 2024 18:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FF5158A00;
+	Tue, 23 Jul 2024 18:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cM2cJ2hh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgwTBY1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E06F13C3F5;
-	Tue, 23 Jul 2024 18:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35EA15821A;
+	Tue, 23 Jul 2024 18:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759706; cv=none; b=Uvygyzg65el+y8+W9EX0JmFnKSrBCKGbJ10gTa8Ea6j7pyyhlkWJfUdZ/NUdzWB2pSPIzHvWGO30/QDa6r7N/yx8AdIP45T8PezLPBNGHPxiLIZImemRX5P/10k1gMj8hgH4ZQEE+2xU0AEmO8fm0g+pfdHCv+qUkYAvMldqmEg=
+	t=1721759391; cv=none; b=lqyVAKvO3T3e0XnatsXi57LHS3rhOhZV1BwOJ/b9phEuqg3OTwjSUU/57xG4eZ4aGJHyPWQvClS2YKx6gXaRq6Xh/IkxeVAxDPTNT4NTEPAKVhTmBX1zY0YNmAs8PWLDLVZkiMkeKtal3y/X9bg29tpyLygVXbEJfjykMThG3+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759706; c=relaxed/simple;
-	bh=3eZUOTGOJJASQTMKVWJKw3OkHNqOs3iCP/qIejn+bEo=;
+	s=arc-20240116; t=1721759391; c=relaxed/simple;
+	bh=F+E/4IrXdAX8SXJnUKjoa97KYGcAXWaIh+AyV+3tRUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCU0wvBUrXezYS11uvoOF5Us8xj3v91ZLFFfKLYXQefJavcZj9043EbDIEy8l67LCqOFBPO1nF1dwD6eUZHKVGSKEXvogaAHPnH4cJkX6BsRW+UQRmJ/NKcaR0U6PsEdgdy1E2BbnjNSLe+zEsZ2I0+Yy/DvMidNri+4zFp6rn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cM2cJ2hh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2393BC4AF09;
-	Tue, 23 Jul 2024 18:35:05 +0000 (UTC)
+	 MIME-Version; b=LMkypUfoYVa4XBuYntHeb7P2JfNZJ7W05KCppI7Bm/G8zVCxjSaSUkoJMvtqYnfJKfxdcBjxpFyi1v/WI5t2wtmlUkZI+rtJozpXqEGQ2iXBKB9JQS45+kxA7QOzE9TO2H/2N3WeWdBTxj2jRZf7lApmhwU5bjXKePovcO17Szo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgwTBY1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38883C4AF09;
+	Tue, 23 Jul 2024 18:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759706;
-	bh=3eZUOTGOJJASQTMKVWJKw3OkHNqOs3iCP/qIejn+bEo=;
+	s=korg; t=1721759391;
+	bh=F+E/4IrXdAX8SXJnUKjoa97KYGcAXWaIh+AyV+3tRUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cM2cJ2hhyEC4T6GuTZTc0khxUDCoCkbMP714jCoGVzgHMRovzUt8nnimho6a4Il/K
-	 GQ8cEVUyfl212Fei+207z+PO+QLVF5AOylFVKmRogYyfkgTgzmwoGOS4n43073A0DA
-	 lOHdh5qSYnqkEzcwDVi9mHmUUIYwnNRjVE4zSVn4=
+	b=qgwTBY1ZAoSi+HS5mqPdeUbA8UDQZkxPwVSSJsYibkr/YSNyOmYw1FjpOhuvOYqji
+	 Wkx7oNaHxp92/cGcEIUOmcoHyrud9KHtO/l/hWG8JGklEs5RQ0zUNu9sU38OvLp56j
+	 /ZtrSpfD0e5Oxo81RVgzolnUbOwA39yqOrPJXuQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/129] erofs: ensure m_llen is reset to 0 if metadata is invalid
-Date: Tue, 23 Jul 2024 20:24:09 +0200
-Message-ID: <20240723180408.695154854@linuxfoundation.org>
+Subject: [PATCH 6.1 093/105] ksmbd: return FILE_DEVICE_DISK instead of super magic
+Date: Tue, 23 Jul 2024 20:24:10 +0200
+Message-ID: <20240723180406.829595443@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 9b32b063be1001e322c5f6e01f2a649636947851 ]
+[ Upstream commit 25a6e135569b3901452e4863c94560df7c11c492 ]
 
-Sometimes, the on-disk metadata might be invalid due to user
-interrupts, storage failures, or other unknown causes.
+MS-SMB2 specification describes setting ->DeviceType to FILE_DEVICE_DISK
+or FILE_DEVICE_CD_ROM. Set FILE_DEVICE_DISK instead of super magic in
+FS_DEVICE_INFORMATION. And Set FILE_READ_ONLY_DEVICE for read-only share.
 
-In that case, z_erofs_map_blocks_iter() may still return a valid
-m_llen while other fields remain invalid (e.g., m_plen can be 0).
-
-Due to the return value of z_erofs_scan_folio() in some path will
-be ignored on purpose, the following z_erofs_scan_folio() could
-then use the invalid value by accident.
-
-Let's reset m_llen to 0 to prevent this.
-
-Link: https://lore.kernel.org/r/20240629185743.2819229-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zmap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/common/smb2pdu.h | 34 ++++++++++++++++++++++++++++++++++
+ fs/smb/server/smb2pdu.c |  9 +++++++--
+ 2 files changed, 41 insertions(+), 2 deletions(-)
 
-diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index e313c936351d5..6bd435a565f61 100644
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -723,6 +723,8 @@ int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
+diff --git a/fs/smb/common/smb2pdu.h b/fs/smb/common/smb2pdu.h
+index 25383b11d01b9..7d69a2a1d3ba4 100644
+--- a/fs/smb/common/smb2pdu.h
++++ b/fs/smb/common/smb2pdu.h
+@@ -905,6 +905,40 @@ struct smb2_query_directory_rsp {
+ 	__u8   Buffer[];
+ } __packed;
  
- 	err = z_erofs_do_map_blocks(inode, map, flags);
- out:
-+	if (err)
-+		map->m_llen = 0;
- 	trace_z_erofs_map_blocks_iter_exit(inode, map, flags, err);
- 	return err;
- }
++/* DeviceType Flags */
++#define FILE_DEVICE_CD_ROM              0x00000002
++#define FILE_DEVICE_CD_ROM_FILE_SYSTEM  0x00000003
++#define FILE_DEVICE_DFS                 0x00000006
++#define FILE_DEVICE_DISK                0x00000007
++#define FILE_DEVICE_DISK_FILE_SYSTEM    0x00000008
++#define FILE_DEVICE_FILE_SYSTEM         0x00000009
++#define FILE_DEVICE_NAMED_PIPE          0x00000011
++#define FILE_DEVICE_NETWORK             0x00000012
++#define FILE_DEVICE_NETWORK_FILE_SYSTEM 0x00000014
++#define FILE_DEVICE_NULL                0x00000015
++#define FILE_DEVICE_PARALLEL_PORT       0x00000016
++#define FILE_DEVICE_PRINTER             0x00000018
++#define FILE_DEVICE_SERIAL_PORT         0x0000001b
++#define FILE_DEVICE_STREAMS             0x0000001e
++#define FILE_DEVICE_TAPE                0x0000001f
++#define FILE_DEVICE_TAPE_FILE_SYSTEM    0x00000020
++#define FILE_DEVICE_VIRTUAL_DISK        0x00000024
++#define FILE_DEVICE_NETWORK_REDIRECTOR  0x00000028
++
++/* Device Characteristics */
++#define FILE_REMOVABLE_MEDIA			0x00000001
++#define FILE_READ_ONLY_DEVICE			0x00000002
++#define FILE_FLOPPY_DISKETTE			0x00000004
++#define FILE_WRITE_ONCE_MEDIA			0x00000008
++#define FILE_REMOTE_DEVICE			0x00000010
++#define FILE_DEVICE_IS_MOUNTED			0x00000020
++#define FILE_VIRTUAL_VOLUME			0x00000040
++#define FILE_DEVICE_SECURE_OPEN			0x00000100
++#define FILE_CHARACTERISTIC_TS_DEVICE		0x00001000
++#define FILE_CHARACTERISTIC_WEBDAV_DEVICE	0x00002000
++#define FILE_PORTABLE_DEVICE			0x00004000
++#define FILE_DEVICE_ALLOW_APPCONTAINER_TRAVERSAL 0x00020000
++
+ /*
+  * Maximum number of iovs we need for a set-info request.
+  * The largest one is rename/hardlink
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 6344bc81736c0..4ba6bf1535da1 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -5048,8 +5048,13 @@ static int smb2_get_info_filesystem(struct ksmbd_work *work,
+ 
+ 		info = (struct filesystem_device_info *)rsp->Buffer;
+ 
+-		info->DeviceType = cpu_to_le32(stfs.f_type);
+-		info->DeviceCharacteristics = cpu_to_le32(0x00000020);
++		info->DeviceType = cpu_to_le32(FILE_DEVICE_DISK);
++		info->DeviceCharacteristics =
++			cpu_to_le32(FILE_DEVICE_IS_MOUNTED);
++		if (!test_tree_conn_flag(work->tcon,
++					 KSMBD_TREE_CONN_FLAG_WRITABLE))
++			info->DeviceCharacteristics |=
++				cpu_to_le32(FILE_READ_ONLY_DEVICE);
+ 		rsp->OutputBufferLength = cpu_to_le32(8);
+ 		break;
+ 	}
 -- 
 2.43.0
 
