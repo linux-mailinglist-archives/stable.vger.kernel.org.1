@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FEE93A666
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF12093A734
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:43:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10F751F232AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88A9D1F22CE9
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D251581F4;
-	Tue, 23 Jul 2024 18:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220EB1586F5;
+	Tue, 23 Jul 2024 18:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7iX+CHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZneiGxKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855E7155351;
-	Tue, 23 Jul 2024 18:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43FF13D896;
+	Tue, 23 Jul 2024 18:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759680; cv=none; b=gDfzB1aqQJ+SqQJLmFpOT+J50iCUPOOuG3tWBL+hAoLvIf35JyfFNssDcuC+JKmfdQsOuCce2grdFf7KjYr32DLs5NFggOtRgYi7uXVi0smtBXWpUpHk+2fWOUhjvd8IPGVmha7ObOTOGylZUAoUQrMPk0tFTG1cNwBer8LCtfY=
+	t=1721760210; cv=none; b=P0934E6jPi/HikaCNK0SXimfcRBv9AbR0h3Iko+zfZyNLJxQYCCquOhrWZXpy2YW4KmmKb9ZuzDOwHXss6/1YggfTlQ81YOEXZWAMNDi5+cTCwuVLBNbxpMcbG8Bgr1c+nvzVpdruis42kOXpx63MDtK5sXCeZq6tUqtPsmDfrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759680; c=relaxed/simple;
-	bh=Gmo9vaGQGcymIBeD+oFghrpKbQXizMwmEJcMfzwFgZ8=;
+	s=arc-20240116; t=1721760210; c=relaxed/simple;
+	bh=72bQl3bUXkbBAUun1GksGmaKq1qVEF6ykMCnOGGIUOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oqAkRz4jL5ga5Ogzl+Z2+SLwBN6mpltbRNEnHEAl3iMHIyjM9PJGnYA4cN5u9dXOPdojMYhYRW2J7jdulQGL7YOYr/gSEi3gDkIRMFJi/nUgrgJZG51DoiJ+RIB3s0rh7Knx83vYgPeolzRqCsy0DKa+WGdMtHoV1AznEAN6UA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7iX+CHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37F4C4AF09;
-	Tue, 23 Jul 2024 18:34:39 +0000 (UTC)
+	 MIME-Version; b=IGhuHYKsz1js1YhQQTv0m6sxNyVnJ6OaQUDOyWHnflsuU1IX7sqai1rjoZW3FgzLEgBLZXVtJvibwU3U6/ZuHZKtdSChu7lezXGCu6tbL4N2/0+37lBvmHHa8Qcn7CGbqkNAEYQBTEFp5+yh4PUaau7yVrfbxIEMITmUAj44QO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZneiGxKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE1EC4AF09;
+	Tue, 23 Jul 2024 18:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759680;
-	bh=Gmo9vaGQGcymIBeD+oFghrpKbQXizMwmEJcMfzwFgZ8=;
+	s=korg; t=1721760210;
+	bh=72bQl3bUXkbBAUun1GksGmaKq1qVEF6ykMCnOGGIUOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w7iX+CHSl9neMdT0JwPcpwrdnd4lxtOALgxX1l5dWkEV+bMg5Ch/LIueoaf7/ftqS
-	 k58wswadahidky6m2rOm1ohd0BTDditj8APlumPr7Ocd15+aHIrPcLiW3J7kx1EY3w
-	 ZZbVfhTjhpXGgrFZsIoYPTAOHz6mzH79camwtt9c=
+	b=ZneiGxKU3GtKRA4zQ0ONOSYzZwnwYd60c8uAQhObnFY5v5aiJMEFTDNzK0iaj1MU0
+	 VgSiKHX1iyGwyYvkRmcJwzbO39U6T+SBf2Jh3tL8UZkjBaJT2HGPiO46EY19AoIhiO
+	 XRRJPFSpuYTPY/a0QOEOf5dmuPpCLFOaQ6nVz1qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/129] ALSA: dmaengine_pcm: terminate dmaengine before synchronize
+Subject: [PATCH 6.9 109/163] platform/mellanox: nvsw-sn2201: Add check for platform_device_add_resources
 Date: Tue, 23 Jul 2024 20:23:58 +0200
-Message-ID: <20240723180408.263226673@linuxfoundation.org>
+Message-ID: <20240723180147.686055074@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 6a7db25aad8ce6512b366d2ce1d0e60bac00a09d ]
+[ Upstream commit d56fbfbaf592a115b2e11c1044829afba34069d2 ]
 
-When dmaengine supports pause function, in suspend state,
-dmaengine_pause() is called instead of dmaengine_terminate_async(),
+Add check for the return value of platform_device_add_resources() and
+return the error if it fails in order to catch the error.
 
-In end of playback stream, the runtime->state will go to
-SNDRV_PCM_STATE_DRAINING, if system suspend & resume happen
-at this time, application will not resume playback stream, the
-stream will be closed directly, the dmaengine_terminate_async()
-will not be called before the dmaengine_synchronize(), which
-violates the call sequence for dmaengine_synchronize().
-
-This behavior also happens for capture streams, but there is no
-SNDRV_PCM_STATE_DRAINING state for capture. So use
-dmaengine_tx_status() to check the DMA status if the status is
-DMA_PAUSED, then call dmaengine_terminate_async() to terminate
-dmaengine before dmaengine_synchronize().
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/1718851218-27803-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20240605032745.2916183-1-nichen@iscas.ac.cn
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_dmaengine.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/platform/mellanox/nvsw-sn2201.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
-index d142609570347..e299e8634751f 100644
---- a/sound/core/pcm_dmaengine.c
-+++ b/sound/core/pcm_dmaengine.c
-@@ -368,6 +368,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_sync_stop);
- int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream)
+diff --git a/drivers/platform/mellanox/nvsw-sn2201.c b/drivers/platform/mellanox/nvsw-sn2201.c
+index 3ef655591424c..abe7be602f846 100644
+--- a/drivers/platform/mellanox/nvsw-sn2201.c
++++ b/drivers/platform/mellanox/nvsw-sn2201.c
+@@ -1198,6 +1198,7 @@ static int nvsw_sn2201_config_pre_init(struct nvsw_sn2201 *nvsw_sn2201)
+ static int nvsw_sn2201_probe(struct platform_device *pdev)
  {
- 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
-+	struct dma_tx_state state;
-+	enum dma_status status;
-+
-+	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
-+	if (status == DMA_PAUSED)
-+		dmaengine_terminate_async(prtd->dma_chan);
+ 	struct nvsw_sn2201 *nvsw_sn2201;
++	int ret;
  
- 	dmaengine_synchronize(prtd->dma_chan);
- 	kfree(prtd);
-@@ -388,6 +394,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_close);
- int snd_dmaengine_pcm_close_release_chan(struct snd_pcm_substream *substream)
- {
- 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
-+	struct dma_tx_state state;
-+	enum dma_status status;
-+
-+	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
-+	if (status == DMA_PAUSED)
-+		dmaengine_terminate_async(prtd->dma_chan);
+ 	nvsw_sn2201 = devm_kzalloc(&pdev->dev, sizeof(*nvsw_sn2201), GFP_KERNEL);
+ 	if (!nvsw_sn2201)
+@@ -1205,8 +1206,10 @@ static int nvsw_sn2201_probe(struct platform_device *pdev)
  
- 	dmaengine_synchronize(prtd->dma_chan);
- 	dma_release_channel(prtd->dma_chan);
+ 	nvsw_sn2201->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, nvsw_sn2201);
+-	platform_device_add_resources(pdev, nvsw_sn2201_lpc_io_resources,
++	ret = platform_device_add_resources(pdev, nvsw_sn2201_lpc_io_resources,
+ 				      ARRAY_SIZE(nvsw_sn2201_lpc_io_resources));
++	if (ret)
++		return ret;
+ 
+ 	nvsw_sn2201->main_mux_deferred_nr = NVSW_SN2201_MAIN_MUX_DEFER_NR;
+ 	nvsw_sn2201->main_mux_devs = nvsw_sn2201_main_mux_brdinfo;
 -- 
 2.43.0
 
