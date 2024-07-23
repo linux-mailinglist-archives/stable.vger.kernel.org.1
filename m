@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-60920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF77493A600
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:30:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4F793A6BB
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:38:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A2741F234AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:30:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDE2A1F23820
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2560A15746B;
-	Tue, 23 Jul 2024 18:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6866C13D896;
+	Tue, 23 Jul 2024 18:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJk6f9o2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9TP6rKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF01D14C5B0;
-	Tue, 23 Jul 2024 18:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2605C13C3F5;
+	Tue, 23 Jul 2024 18:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759441; cv=none; b=udUHynhMF/Uu+qs7uvBDC8eemAl/fToTazB7eEeDcn2UMXA5ZU7gw/V5mFEWOgdBgXOda/zVO6vJphUN6xAQ/+PGZTRwJbTu3Z4UNQU+oL/e9df8AAk+S/Z1t94WpSOlJbZNNpgTOX8yHBSpN/WCoJ9InPA6wX6HX7q5YjKWZmg=
+	t=1721759890; cv=none; b=ckqZjUwFw01dOkS8+rlOYYa5lmxy078XfLgnra9gcEqb0YIw1c3DputnZ/4A89ssYoX8m55bcOO6fDYQBn1tejS7nmKBXaoPGtS8LJNpRW/gFbE104ChQrzawPZJnpVPxf/37Dp2LOxDwxTOOk6QdzX7BsPaZvCzTIHW7rpRl64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759441; c=relaxed/simple;
-	bh=Nedcz0RiOzowIdUZuJkfKmd+DFUcEc/f5D2FISmPGZI=;
+	s=arc-20240116; t=1721759890; c=relaxed/simple;
+	bh=q4SkxXtfY4PeETKlI6OpeIfeXQ1xbBv0Wz8HVpF+3AI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CoxZy41+l5UCN+D9mci/i0fT6RQk5CFAK/MFWVf4+4mSlouQB4H3ZnCZlEapws9fNJlbdCOGAEP3AzKhDZ46H2tUQcYjgbGsPF4xlpXn2dEGV1djF2iNQoPlgNsyumBO8ctH17bAnUbkembrXlhtVKbC4A1j3+Zvq71kLLcCBXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJk6f9o2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA47C4AF0A;
-	Tue, 23 Jul 2024 18:30:41 +0000 (UTC)
+	 MIME-Version; b=Wadq5/uMuAGLmbfP/H8E7D1mBSUrM0kLsVH6Kyc0OekNzfVkDqLY6Gnn9NajlHxhUA5zLxqY1bcAxcZ6VdGwMZPyfUk1ztDKVb1EX9fmbmYYYnvcIaDzTaPB9qpvKcXGBeP3HP40c/i+B4qmzbrVEU4dEgOMK0IiZMH7zCCMb2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9TP6rKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F9DC4AF0A;
+	Tue, 23 Jul 2024 18:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759441;
-	bh=Nedcz0RiOzowIdUZuJkfKmd+DFUcEc/f5D2FISmPGZI=;
+	s=korg; t=1721759890;
+	bh=q4SkxXtfY4PeETKlI6OpeIfeXQ1xbBv0Wz8HVpF+3AI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eJk6f9o2sVg8XPATAJnMjbHk3/eoSt/h4GiQr554iBMIglugVfj+hEs6FeyUwthld
-	 yfiZ6ABUmmluPullU/xJlbCmJcvOmFgNjxxHdWTpJyyeLhjJwgfE5tPouP6hIZZql0
-	 +rOJxLv/N4ULHgRgtP3xnMCY4XCm9D6o2StK4BkA=
+	b=l9TP6rKKImi/HUiSxectNbsFFmUo5eI04bpdNU8o8PTdzShZALMiE66UQ9QRqPRct
+	 plSHrEShdIXpWa8hXu7bhPNeO1ryFJ/McaNqLc32ZopCh2B0lZU24rQeM0IUo0Q3Xi
+	 GDLOpeCBDsNgoeF/NsbQLbo7IsXrKTaNNpyEu5FU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/129] wifi: mac80211: apply mcast rate only if interface is up
+Subject: [PATCH 6.9 031/163] LoongArch: Fix GMACs phy-mode definitions in dts
 Date: Tue, 23 Jul 2024 20:22:40 +0200
-Message-ID: <20240723180405.256952806@linuxfoundation.org>
+Message-ID: <20240723180144.673573994@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 02c665f048a439c0d58cc45334c94634bd7c18e6 ]
+[ Upstream commit eb36e520f4f1b690fd776f15cbac452f82ff7bfa ]
 
-If the interface isn't enabled, don't apply multicast
-rate changes immediately.
+The GMAC of Loongson chips cannot insert the correct 1.5-2ns delay. So
+we need the PHY to insert internal delays for both transmit and receive
+data lines from/to the PHY device. Fix this by changing the "phy-mode"
+from "rgmii" to "rgmii-id" in dts.
 
-Reported-by: syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com
-Link: https://msgid.link/20240515133410.d6cffe5756cc.I47b624a317e62bdb4609ff7fa79403c0c444d32d@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/loongarch/boot/dts/loongson-2k0500-ref.dts | 4 ++--
+ arch/loongarch/boot/dts/loongson-2k1000-ref.dts | 4 ++--
+ arch/loongarch/boot/dts/loongson-2k2000-ref.dts | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 505f1d6ccd16c..f3fc0be9d8eac 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2953,8 +2953,9 @@ static int ieee80211_set_mcast_rate(struct wiphy *wiphy, struct net_device *dev,
- 	memcpy(sdata->vif.bss_conf.mcast_rate, rate,
- 	       sizeof(int) * NUM_NL80211_BANDS);
+diff --git a/arch/loongarch/boot/dts/loongson-2k0500-ref.dts b/arch/loongarch/boot/dts/loongson-2k0500-ref.dts
+index 8aefb0c126722..a34734a6c3ce8 100644
+--- a/arch/loongarch/boot/dts/loongson-2k0500-ref.dts
++++ b/arch/loongarch/boot/dts/loongson-2k0500-ref.dts
+@@ -44,14 +44,14 @@ linux,cma {
+ &gmac0 {
+ 	status = "okay";
  
--	ieee80211_link_info_change_notify(sdata, &sdata->deflink,
--					  BSS_CHANGED_MCAST_RATE);
-+	if (ieee80211_sdata_running(sdata))
-+		ieee80211_link_info_change_notify(sdata, &sdata->deflink,
-+						  BSS_CHANGED_MCAST_RATE);
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-id";
+ 	bus_id = <0x0>;
+ };
  
- 	return 0;
- }
+ &gmac1 {
+ 	status = "okay";
+ 
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-id";
+ 	bus_id = <0x1>;
+ };
+ 
+diff --git a/arch/loongarch/boot/dts/loongson-2k1000-ref.dts b/arch/loongarch/boot/dts/loongson-2k1000-ref.dts
+index ed4d324340411..aaf41b565805a 100644
+--- a/arch/loongarch/boot/dts/loongson-2k1000-ref.dts
++++ b/arch/loongarch/boot/dts/loongson-2k1000-ref.dts
+@@ -43,7 +43,7 @@ linux,cma {
+ &gmac0 {
+ 	status = "okay";
+ 
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-id";
+ 	phy-handle = <&phy0>;
+ 	mdio {
+ 		compatible = "snps,dwmac-mdio";
+@@ -58,7 +58,7 @@ phy0: ethernet-phy@0 {
+ &gmac1 {
+ 	status = "okay";
+ 
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-id";
+ 	phy-handle = <&phy1>;
+ 	mdio {
+ 		compatible = "snps,dwmac-mdio";
+diff --git a/arch/loongarch/boot/dts/loongson-2k2000-ref.dts b/arch/loongarch/boot/dts/loongson-2k2000-ref.dts
+index 74b99bd234cc3..ea9e6985d0e9f 100644
+--- a/arch/loongarch/boot/dts/loongson-2k2000-ref.dts
++++ b/arch/loongarch/boot/dts/loongson-2k2000-ref.dts
+@@ -92,7 +92,7 @@ phy1: ethernet-phy@1 {
+ &gmac2 {
+ 	status = "okay";
+ 
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-id";
+ 	phy-handle = <&phy2>;
+ 	mdio {
+ 		compatible = "snps,dwmac-mdio";
 -- 
 2.43.0
 
