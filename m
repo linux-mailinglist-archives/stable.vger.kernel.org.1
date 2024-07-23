@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402B093A5AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF3493A6D9
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2584281E93
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27FA728405F
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA60158858;
-	Tue, 23 Jul 2024 18:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CC8158A06;
+	Tue, 23 Jul 2024 18:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fsPba0Zk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hISyNH2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC2A156F37;
-	Tue, 23 Jul 2024 18:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C3015821E;
+	Tue, 23 Jul 2024 18:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759226; cv=none; b=jzFaH6w+i66MWw1jUGr7/P4n4I3WjrsltiCbVJ8hIM/BxIyInmjwHNxTdcOqzJEJa3KfXvctdVvbBIfY+0zC3qlazu4bIaCK5nqRUoXnz4TQI1nnBUsu5Nt3qF0rZ1uH3Xm11jJ/AeXkpKOpa7TeqySgFxKXjJsTQIfXBHAVmyw=
+	t=1721759958; cv=none; b=SkXZ4/hGnO9sFFyFL/wV0IukJfK8iyMUysNES6vSoY2eRK8eaZ9l37vzauTjxasziewDM71It8FInU8srH09OPkOAiWIM3BD9g931BicmsdZCFFEZ3fo4rUhzdm+ITJ59LUBMfOSz60dK2afm5yjYE364NXA0Tj0N/kDZhkGkbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759226; c=relaxed/simple;
-	bh=NO6cEAmVC/c/3s0ZHb+wNk6oMa4/guCMX7EsluFAHeg=;
+	s=arc-20240116; t=1721759958; c=relaxed/simple;
+	bh=1Q7qtXJcivNIlqW5z10uGWViFqeoZXd8hAlNNiyUnT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qX/x2/4wbF9yVg8PX6/d6DOwslKVzLcEFL87pga3+KMey3bZAtrblMBYFrg8cLby6Bt3BcZgj9uRSUTB01csg4rRY7zbGZ8JTZSfNEpbvkJ+8sr+RlZIPRf7tI9YCmdKUNxJXfHn7qRgTzzphKDIlXKqWDZ0Rlf/7hna8f4yGJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fsPba0Zk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B47EC4AF0A;
-	Tue, 23 Jul 2024 18:27:05 +0000 (UTC)
+	 MIME-Version; b=MHBRySzNC5i9Zb63vNZGf00DIB5TiF1EOhHU72B8fAnGHqbdeNS2G9d6gGQtW4xX7jh36WYB9NEJLtjBHhZB42DOcfQhaEOl9gmn71VEejBuh8Wi6mxC0RrxUkXyUgkMe8BSRivJV2hsetvwwFuw/gdlEO0xlUx0MGW35j+z+5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hISyNH2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F40C4AF09;
+	Tue, 23 Jul 2024 18:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759225;
-	bh=NO6cEAmVC/c/3s0ZHb+wNk6oMa4/guCMX7EsluFAHeg=;
+	s=korg; t=1721759958;
+	bh=1Q7qtXJcivNIlqW5z10uGWViFqeoZXd8hAlNNiyUnT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fsPba0ZkOXZkCJuNZWaMU15wT1NqhdzNsBsXV1j0KS1WIoMt0IQCG3dCYCsTrbkrx
-	 bHNdmk+vxDaW3gvieELwH/f/1ypxUQT6FZX/gM8jI3/kGLktq+vJ5MxBPNDOtMM766
-	 mSC8EnWRX57Jra9U6n0DgU0Sg2+goaFi56R0uSYE=
+	b=hISyNH2t7NA/soNarJXane2fhB4Mf8bK0kVcQGG2CfJO1WxO0AxvwlkJ4c8QaS2hV
+	 QGo/QsmvpdqEq/kq01REHsBWkLq3fW0qjqopWSM5C2CUiVxXvRK/PvZvSgmM/d+gq2
+	 vkuYDSlSY9QburnVW4lgSJundH8Bhnxs7+4gQ/Qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/105] selftests/openat2: Fix build warnings on ppc64
+Subject: [PATCH 6.9 055/163] mei: demote client disconnect warning on suspend to debug
 Date: Tue, 23 Jul 2024 20:23:04 +0200
-Message-ID: <20240723180404.138393644@linuxfoundation.org>
+Message-ID: <20240723180145.602062055@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 84b6df4c49a1cc2854a16937acd5fd3e6315d083 ]
+[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
 
-Fix warnings like:
+Change level for the "not connected" client message in the write
+callback from error to debug.
 
-  openat2_test.c: In function ‘test_openat2_flags’:
-  openat2_test.c:303:73: warning: format ‘%llX’ expects argument of type
-  ‘long long unsigned int’, but argument 5 has type ‘__u64’ {aka ‘long
-  unsigned int’} [-Wformat=]
+The MEI driver currently disconnects all clients upon system suspend.
+This behavior is by design and user-space applications with
+open connections before the suspend are expected to handle errors upon
+resume, by reopening their handles, reconnecting,
+and retrying their operations.
 
-By switching to unsigned long long for u64 for ppc64 builds.
+However, the current driver implementation logs an error message every
+time a write operation is attempted on a disconnected client.
+Since this is a normal and expected flow after system resume
+logging this as an error can be misleading.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/openat2/openat2_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/mei/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/openat2/openat2_test.c b/tools/testing/selftests/openat2/openat2_test.c
-index 7fb902099de45..f9d2b0ec77564 100644
---- a/tools/testing/selftests/openat2/openat2_test.c
-+++ b/tools/testing/selftests/openat2/openat2_test.c
-@@ -5,6 +5,7 @@
-  */
+diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
+index 79e6f3c1341fe..40c3fe26f76df 100644
+--- a/drivers/misc/mei/main.c
++++ b/drivers/misc/mei/main.c
+@@ -329,7 +329,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
+ 	}
  
- #define _GNU_SOURCE
-+#define __SANE_USERSPACE_TYPES__ // Use ll64
- #include <fcntl.h>
- #include <sched.h>
- #include <sys/stat.h>
+ 	if (!mei_cl_is_connected(cl)) {
+-		cl_err(dev, cl, "is not connected");
++		cl_dbg(dev, cl, "is not connected");
+ 		rets = -ENODEV;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
