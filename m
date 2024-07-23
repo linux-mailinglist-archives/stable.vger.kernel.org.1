@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB9693A66A
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:35:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC0993A6F9
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CDFA281DE0
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:35:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D09DB1C20969
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42726158A06;
-	Tue, 23 Jul 2024 18:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EF5158215;
+	Tue, 23 Jul 2024 18:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kh308vnw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEQktTKv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F341E13D600;
-	Tue, 23 Jul 2024 18:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2638413D600;
+	Tue, 23 Jul 2024 18:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759692; cv=none; b=AgiRTSIRp1vjWdKEzm/eSUfoGyB5tFu5Rmw3DPTtRnlt/z6t1FJTSrX9FcltX4Bz12lrHaQVtgpBv1muokULNvU6pAGt9rvjGjfpylvOnEBDUWy+9flVdKVNOno9wNpvqLxc7uw/DnFg5m7s6vGAh0ZG8aWAT1m2R/3mA3yKhw0=
+	t=1721760042; cv=none; b=U2txkRPbetvoAXFgXS8OVF1rIE5QYwPaQoIl9nFTzrXQCAWMj4YntBY3uKSE42eV7WpnivgynsaD/GTdZiGORvJXkvHYAsrNyAKObCTFmEtfLSQlWOcKx9SlbK59vlfE7jMph2gVNN14/HpL55s2fp3uEUnR8SBA2CAejqU+Ch4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759692; c=relaxed/simple;
-	bh=1B11/NAhkpqSYyYQCIWkXNnusz1pvACc6phGIWHEiEk=;
+	s=arc-20240116; t=1721760042; c=relaxed/simple;
+	bh=p0rbzBoXSR5H/yW/GnckVWg+Mi/T9+/dvxD0HI8b/6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2R3Y6K6maMiDNWKwZJK//34fJgjYYxw6RE0Ybf5jMByTMMwfKYFgCBe/YUqIn+oCoOJ/3P6j2Q05/AW6+YH5gAuuni1efSZgZWoZyfppxRLAg0NnM3aJFW9wGM/EmPIJpZRG7ADhomYXI/LaawGQd2Jz1a3EOlWJyzD4cpDl+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kh308vnw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796BCC4AF09;
-	Tue, 23 Jul 2024 18:34:51 +0000 (UTC)
+	 MIME-Version; b=H74MmK1rPLDloovCYE2PZHmtqHavy0FcMoNCUzubjWAwAqOdTqSzh4ys6nCJYMRk3RFfnqEpSXMRkeYrPRYrN2l4C9N7u33h+4AnFruYB8SubG85B7enmtD0xYGPBoOua07Npi0ktbiqkkHYjAFWIlKpyaq5rtstvf5RbGUal6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEQktTKv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0ADC4AF09;
+	Tue, 23 Jul 2024 18:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759691;
-	bh=1B11/NAhkpqSYyYQCIWkXNnusz1pvACc6phGIWHEiEk=;
+	s=korg; t=1721760042;
+	bh=p0rbzBoXSR5H/yW/GnckVWg+Mi/T9+/dvxD0HI8b/6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kh308vnwxnjJlzlRSwyBBG5gx37cuRDmn35kCOrO9Ro6T8X4LtR+OCoyKhqH7BJan
-	 bm90pvO4EZFvxeMo0bOOtN99+94tyJPyibdeRG9aZEsUw3mSmLviFkT5nw7LUk7ARW
-	 /BCy5k+08ndQjYFsX91YFXCeX4l+wptbQTymKbfM=
+	b=YEQktTKvaOE/IN7MZVjDN9p7cz+9O+8t/cSi33wvcJ6VYGprfX9TT+iiN/4I3u04y
+	 rKtjC1E4ULELRzA8K0Iu6QjpAsBAcyPEUxBHdQV85PNjFkASmTw7LLhkw+XPa1T4XJ
+	 V9ZonqdDijhFkLzhMXc48MTgSJ1l+h1xrpJDB464=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Yu <jack.yu@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/129] ASoC: rt722-sdca-sdw: add silence detection register as volatile
+Subject: [PATCH 6.9 084/163] mips: fix compat_sys_lseek syscall
 Date: Tue, 23 Jul 2024 20:23:33 +0200
-Message-ID: <20240723180407.297307207@linuxfoundation.org>
+Message-ID: <20240723180146.721214504@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Yu <jack.yu@realtek.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 968c974c08106fcf911d8d390d0f049af855d348 ]
+[ Upstream commit 0d5679a0aae2d8cda72169452c32e5cb88a7ab33 ]
 
-Including silence detection register as volatile.
+This is almost compatible, but passing a negative offset should result
+in a EINVAL error, but on mips o32 compat mode would seek to a large
+32-bit byte offset.
 
-Signed-off-by: Jack Yu <jack.yu@realtek.com>
-Link: https://msgid.link/r/c66a6bd6d220426793096b42baf85437@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Use compat_sys_lseek() to correctly sign-extend the argument.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt722-sdca-sdw.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/kernel/syscalls/syscall_o32.tbl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt722-sdca-sdw.c b/sound/soc/codecs/rt722-sdca-sdw.c
-index 43a4e79e56966..cf2feb41c8354 100644
---- a/sound/soc/codecs/rt722-sdca-sdw.c
-+++ b/sound/soc/codecs/rt722-sdca-sdw.c
-@@ -68,6 +68,7 @@ static bool rt722_sdca_mbq_readable_register(struct device *dev, unsigned int re
- 	case 0x200007f:
- 	case 0x2000082 ... 0x200008e:
- 	case 0x2000090 ... 0x2000094:
-+	case 0x3110000:
- 	case 0x5300000 ... 0x5300002:
- 	case 0x5400002:
- 	case 0x5600000 ... 0x5600007:
-@@ -125,6 +126,7 @@ static bool rt722_sdca_mbq_volatile_register(struct device *dev, unsigned int re
- 	case 0x2000067:
- 	case 0x2000084:
- 	case 0x2000086:
-+	case 0x3110000:
- 		return true;
- 	default:
- 		return false;
+diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
+index 0352c07c608e9..fe76282a353f5 100644
+--- a/arch/mips/kernel/syscalls/syscall_o32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+@@ -27,7 +27,7 @@
+ 17	o32	break				sys_ni_syscall
+ # 18 was sys_stat
+ 18	o32	unused18			sys_ni_syscall
+-19	o32	lseek				sys_lseek
++19	o32	lseek				sys_lseek			compat_sys_lseek
+ 20	o32	getpid				sys_getpid
+ 21	o32	mount				sys_mount
+ 22	o32	umount				sys_oldumount
 -- 
 2.43.0
 
