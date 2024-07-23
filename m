@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E65193A5AB
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:27:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A7593A70B
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 033671F23098
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:27:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B692A1C21CDC
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853BB15885A;
-	Tue, 23 Jul 2024 18:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0201586F5;
+	Tue, 23 Jul 2024 18:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eY95dyvM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2bB9LAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4490B1586CB;
-	Tue, 23 Jul 2024 18:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFD513D600;
+	Tue, 23 Jul 2024 18:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759220; cv=none; b=Xrypd6uu/NzNuAGjejmZDBFm4nwrs6+ZAsOX3CRRuS+6CXBvgiw8tHMEwCiAAgC0xy+gZ4uMBtGmpO91mjSWO+wMWygu9V2NCbB+f0AhwFzaSF0S8s1kAsoQAmZED8o3Ts0yPwtgEr/a+DXdaYNO1QX7+0YZsWsRlhgrGlvsfZ8=
+	t=1721760098; cv=none; b=MP6O2mNHo4yjsbvzB+3PLFwBlGmujhLheJv5xiZlSyVoKg8WIqhy8GC6AeQVQlASJCYhTWIpT0tws7c6VYkqDqkCOHYqFBJVy+xriNWztEHNsc8492xVCihGCsNcZjibgDO1yuKbe0qAGmh2n84Pabk+6QEvS6kUR6lxFszJ7ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759220; c=relaxed/simple;
-	bh=WXJQ59vAu5JY7ZAewRDA3y4ZoWwio9SUeudWC+amk9M=;
+	s=arc-20240116; t=1721760098; c=relaxed/simple;
+	bh=VRdmSo0BbVbDJ+1BEsdHXI88+I6TfzpHedwOrizvGk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z5xZNLPjT9jUz2s6PaKJclXItthEee4yQIlHs4u0bRN7xVdWsp6EBB0sIqCMBrskgjSTf0XGlFkQJO/CVHkHv92reCpaiPN0ApJoMtmj0QIqbyUL3MF4PfXeKk2BeWz+ZTVmfg3ZH5YGWFITLijxhdBiDV8fmLmnTxAArnoMV34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eY95dyvM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A295AC4AF09;
-	Tue, 23 Jul 2024 18:26:59 +0000 (UTC)
+	 MIME-Version; b=WorXgXwUy73h9c4mngCWXJiJhHz0aIztopsNxRAcC211kpUJYAlZUkmZ7CtjqUCatyAk0g0+Ey/9MzYeRzGieZEX4CuOrLG578jFbA/JqKbMiQJXrmCB1qWdeaDxGkB4sja9XDSFcLNRIrsJnnV7ce6Zh8rUZqbicfh0WtGVorw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2bB9LAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4596AC4AF09;
+	Tue, 23 Jul 2024 18:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759220;
-	bh=WXJQ59vAu5JY7ZAewRDA3y4ZoWwio9SUeudWC+amk9M=;
+	s=korg; t=1721760098;
+	bh=VRdmSo0BbVbDJ+1BEsdHXI88+I6TfzpHedwOrizvGk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eY95dyvMQ17f5OZUuwRFjA+5j/ahkWXarOhPjHPmL3TosafnI9XJqy33AsKBbSb+r
-	 8aEcI4HSTQ+dGBDnliJnAD/aGm2UdUBlF7Q66Uee7Vpr3mTTFDsRRKnbJYoC+ELew+
-	 BQD69HD7vAm1F5hMccNCY1HZ9YkPN4ReoKGuXq8c=
+	b=Z2bB9LAqSXZxVkdZvyZ+oU3dyKpf+wsg2hHKH/od23J9VtnS9w8miwmsYqMrFJNU0
+	 VQtAXuFg8aJ8txYJenJNN8DBhzu8joYMQLhw1YioBvLyFYWuyphh7FLCFGuLVeLRUO
+	 +wKCkQCFqbyIpYbaNS3e99fWjRI+uuWX/EzYm9Qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <yuntao.wang@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/105] fs/file: fix the check in find_next_fd()
+Subject: [PATCH 6.9 071/163] ALSA: hda/realtek: Support Lenovo Thinkbook 13x Gen 4
 Date: Tue, 23 Jul 2024 20:23:20 +0200
-Message-ID: <20240723180404.906145919@linuxfoundation.org>
+Message-ID: <20240723180146.212365278@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+References: <20240723180143.461739294@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit ed8c7fbdfe117abbef81f65428ba263118ef298a ]
+[ Upstream commit 4ecb16d9250e6fcf8818572bf317b6adae16515b ]
 
-The maximum possible return value of find_next_zero_bit(fdt->full_fds_bits,
-maxbit, bitbit) is maxbit. This return value, multiplied by BITS_PER_LONG,
-gives the value of bitbit, which can never be greater than maxfd, it can
-only be equal to maxfd at most, so the following check 'if (bitbit > maxfd)'
-will never be true.
+Add support for this laptop, which uses CS35L41 HDA amps.
+The laptop does not contain valid _DSD for these amps, so requires
+entries into the CS35L41 configuration table to function correctly.
 
-Moreover, when bitbit equals maxfd, it indicates that there are no unused
-fds, and the function can directly return.
-
-Fix this check.
-
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://lore.kernel.org/r/20240529160656.209352-1-yuntao.wang@linux.dev
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240606130351.333495-5-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/file.c b/fs/file.c
-index dbca26ef7a01a..69386c2e37c50 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -481,12 +481,12 @@ struct files_struct init_files = {
- 
- static unsigned int find_next_fd(struct fdtable *fdt, unsigned int start)
- {
--	unsigned int maxfd = fdt->max_fds;
-+	unsigned int maxfd = fdt->max_fds; /* always multiple of BITS_PER_LONG */
- 	unsigned int maxbit = maxfd / BITS_PER_LONG;
- 	unsigned int bitbit = start / BITS_PER_LONG;
- 
- 	bitbit = find_next_zero_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
--	if (bitbit > maxfd)
-+	if (bitbit >= maxfd)
- 		return maxfd;
- 	if (bitbit > start)
- 		start = bitbit;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index db28547f3c637..9a326e66b0b19 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10538,6 +10538,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x38be, "Yoga S980-14.5 proX YC Dual", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38bf, "Yoga S980-14.5 proX LX Dual", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38c3, "Y980 DUAL", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x38c7, "Thinkbook 13x Gen 4", ALC287_FIXUP_CS35L41_I2C_4),
++	SND_PCI_QUIRK(0x17aa, 0x38c8, "Thinkbook 13x Gen 4", ALC287_FIXUP_CS35L41_I2C_4),
+ 	SND_PCI_QUIRK(0x17aa, 0x38cb, "Y790 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38cd, "Y790 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38d2, "Lenovo Yoga 9 14IMH9", ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN),
 -- 
 2.43.0
 
