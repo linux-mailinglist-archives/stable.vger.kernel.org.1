@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-61151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6223393A716
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:42:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B9893A67E
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E2532837FB
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:42:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 830481C20A9D
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26741586CB;
-	Tue, 23 Jul 2024 18:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6130C158D81;
+	Tue, 23 Jul 2024 18:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRQVkcFU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhPKr6/C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8219B13D600;
-	Tue, 23 Jul 2024 18:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECFC158D7C;
+	Tue, 23 Jul 2024 18:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721760128; cv=none; b=s6cvPt0yGDx0qadx/eBzLc54bOcq8ocjkcXSXlktCEqUV/IsDX3A6xKNYrCinifpSo8VzS7c8e3dIgmM/agNo3+A0WGfQuGY8bWjrmq/NQVwYFdWUQprIVOsIeE+1oas7+ow1BD2EQQroKx2iROwH4JjrwRuzc6T2v80WX0QMwE=
+	t=1721759736; cv=none; b=dUtODwKcb7m6OMw6nPjZc4HLKhVHDC4bdN4wCVJwvVpRzflzwomdoELKSnl/SaADDvmF3QK2dnLPgS/aTw59ZkKG5KJh654hK620PmEyqFcevYFSZ4e4FNXBfsvrOvsFh0hrmV6n4o0yPxoJr5q2ZbnmE5zDlKNZYJPcZrjZNo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721760128; c=relaxed/simple;
-	bh=sF4hHDH9A9WsTTV1cZcWrwLhUvuf093V4a8lAFC1rMk=;
+	s=arc-20240116; t=1721759736; c=relaxed/simple;
+	bh=4onan6z6o6r40FKnRLOLHf9xsoR4T8WaUX048dWsGIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KdXTa1oFUB+OjKzMSDsm5Sy6nHYtdaAZ1rC58TfRS66NtkZPmvKvFdqfNYwyVWlvWzMHT0/tHxfp66RzZ6hmtIVn8b0PSODIQDSULYNgu/ra+Y0Ep2n73ImhANPjXljKxNg5K0kaHxrszLtlkr0vyoo56CKa9vEZtolHDGFgfAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRQVkcFU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E2DC4AF0B;
-	Tue, 23 Jul 2024 18:42:07 +0000 (UTC)
+	 MIME-Version; b=hbcPCRw5O2BEbmcZsBYFHC/KEBfglTdaDJnRmZqBtBXxA12RNFyZeCw9B58S2tgYQChx2y2Nt9e6U1p/oiVg849p0l67jq5zQCk8HAQdP4cbolSKXPLn6JfRg/dNxFYIWk0sx++pucdgFL/mQhzWgMLDR2o5gWit7WvJdnvNJRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhPKr6/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A99FC4AF09;
+	Tue, 23 Jul 2024 18:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721760128;
-	bh=sF4hHDH9A9WsTTV1cZcWrwLhUvuf093V4a8lAFC1rMk=;
+	s=korg; t=1721759736;
+	bh=4onan6z6o6r40FKnRLOLHf9xsoR4T8WaUX048dWsGIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRQVkcFU4EqxoOqsWgTFG6fVk73z4pVLTnvezJ5MJ2hXc93c5qvtkQlOBi2xlJD+h
-	 1jGBpM/hJJjlPW9E17Yy9gUVGgNP6X1YYARcnspFL4EZg4tXL3X/VcYqYTpaxESLNZ
-	 DSFA1946TpQbt0IMS4leV9g/t0kt0uVbiKQVKoIs=
+	b=AhPKr6/CshrMB5Jasv/iFJUW3T3KuhKirwFIHCYYtDk5Ov0aswBIC/AG+YNcTNygv
+	 DvIQcURcM5QU0N+yX79HoQtGfJMIqbmh26T1rAw+bXUF9yeGp2PSPlE4PLbH4rC8j1
+	 5CMNs+MiXjmoqSB6BS3kqcmYor/SqFK5HHi+yAeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Agathe Boutmy <agathe@boutmy.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Yunshui Jiang <jiangyunshui@kylinos.cn>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 112/163] platform/x86: lg-laptop: Change ACPI device id
+Subject: [PATCH 6.6 093/129] net: mac802154: Fix racy device stats updates by DEV_STATS_INC() and DEV_STATS_ADD()
 Date: Tue, 23 Jul 2024 20:24:01 +0200
-Message-ID: <20240723180147.803294941@linuxfoundation.org>
+Message-ID: <20240723180408.380836688@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Yunshui Jiang <jiangyunshui@kylinos.cn>
 
-[ Upstream commit 58a54f27a0dac81f7fd3514be01012635219a53c ]
+[ Upstream commit b8ec0dc3845f6c9089573cb5c2c4b05f7fc10728 ]
 
-The LGEX0815 ACPI device id is used for handling hotkey events, but
-this functionality is already handled by the wireless-hotkey driver.
+mac802154 devices update their dev->stats fields locklessly. Therefore
+these counters should be updated atomically. Adopt SMP safe DEV_STATS_INC()
+and DEV_STATS_ADD() to achieve this.
 
-The LGEX0820 ACPI device id however is used to manage various
-platform features using the WMAB/WMBB ACPI methods. Use this ACPI
-device id to avoid blocking the wireless-hotkey driver from probing.
-
-Tested-by: Agathe Boutmy <agathe@boutmy.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240606233540.9774-4-W_Armin@gmx.de
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Yunshui Jiang <jiangyunshui@kylinos.cn>
+Message-ID: <20240531080739.2608969-1-jiangyunshui@kylinos.cn>
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lg-laptop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac802154/tx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
-index 5d4df782ce8e1..c19c866361beb 100644
---- a/drivers/platform/x86/lg-laptop.c
-+++ b/drivers/platform/x86/lg-laptop.c
-@@ -768,7 +768,7 @@ static void acpi_remove(struct acpi_device *device)
- }
+diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
+index 2a6f1ed763c9b..6fbed5bb5c3e0 100644
+--- a/net/mac802154/tx.c
++++ b/net/mac802154/tx.c
+@@ -34,8 +34,8 @@ void ieee802154_xmit_sync_worker(struct work_struct *work)
+ 	if (res)
+ 		goto err_tx;
  
- static const struct acpi_device_id device_ids[] = {
--	{"LGEX0815", 0},
-+	{"LGEX0820", 0},
- 	{"", 0}
- };
- MODULE_DEVICE_TABLE(acpi, device_ids);
+-	dev->stats.tx_packets++;
+-	dev->stats.tx_bytes += skb->len;
++	DEV_STATS_INC(dev, tx_packets);
++	DEV_STATS_ADD(dev, tx_bytes, skb->len);
+ 
+ 	ieee802154_xmit_complete(&local->hw, skb, false);
+ 
+@@ -90,8 +90,8 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
+ 		if (ret)
+ 			goto err_wake_netif_queue;
+ 
+-		dev->stats.tx_packets++;
+-		dev->stats.tx_bytes += len;
++		DEV_STATS_INC(dev, tx_packets);
++		DEV_STATS_ADD(dev, tx_bytes, len);
+ 	} else {
+ 		local->tx_skb = skb;
+ 		queue_work(local->workqueue, &local->sync_tx_work);
 -- 
 2.43.0
 
