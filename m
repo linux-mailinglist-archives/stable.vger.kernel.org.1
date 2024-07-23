@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-60783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B43893A198
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 15:33:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A2F93A19E
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 15:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 077F5282DDE
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 13:33:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA6B11C22366
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 13:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEE3153820;
-	Tue, 23 Jul 2024 13:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1011534EC;
+	Tue, 23 Jul 2024 13:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTHxvJf7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGRRlWtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F421208A0;
-	Tue, 23 Jul 2024 13:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1B7208A0;
+	Tue, 23 Jul 2024 13:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721741592; cv=none; b=IBASSslf9H33WFxkG0tDpDXOD81O7LVQ4I0SHhDWsT/RC3V/8goxkhj0pG87yWkMMjGdNppDEbCjGZNB/Bqr/85OVFXZmD6mYk4YPuAFQmXMD2wCTQRicwEAp84I81hYnJmS0wXuVbhYcFlB4M384Ut0KxQsEUldC/p6rkOwa5I=
+	t=1721741732; cv=none; b=UMFCHNRQzNWA/BlgkBP4lyI+wMduldC/pSesl+i5Ja4Pstui0eetXbhlkwbyp6clZORYxMmBlz1nkukAhjd62yOhq5eJWXo0jGXjVI/Bi3hHFOnMIx/L1JrmansqKiaKDbRpG4lA03NBKL2hs17L71DyqKgcboFmBBH5oSEfTBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721741592; c=relaxed/simple;
-	bh=BHxbtpXYINWUUlpOGlyc6yectBbC1j0hOWiHMJY2K2o=;
+	s=arc-20240116; t=1721741732; c=relaxed/simple;
+	bh=RjIL2LaXMSllEH0B9rwmL7zMAvde7nwWWDixazHouUE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dlf2jErl4TTFG3yK6ZYk3rsrNsK+KRol1sMXBBYY1AabQNOHd8OQZ3/RGDE+zoX3hQnxS3mi/OEAS+xykFdrIuokA0HXxKEAwM4GSBFsJrkMdlvifxdVdzRK3PBjRFAOIQMZ1Yk0V7Dt98vKOzLWT6ydpgFw7XalSpDG9TJXZXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTHxvJf7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CACC4AF09;
-	Tue, 23 Jul 2024 13:33:11 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=PIOHS1PtiS8Fi36iZ1ayKOpFc2JeDAi5lySlC2OpdXTY4iv40cz5bbfMUmO3+37E9b9RAPuXZfVWeY4tstXXUmWZbpJqJgmEm5RwQRSouKVnWr6UnoC0eQeUCT0xadnYaPDgDGCjuxuhiD3LKoJuVGf9TT/N945pWPycRg4+EMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGRRlWtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47691C4AF09;
+	Tue, 23 Jul 2024 13:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721741591;
-	bh=BHxbtpXYINWUUlpOGlyc6yectBbC1j0hOWiHMJY2K2o=;
+	s=korg; t=1721741731;
+	bh=RjIL2LaXMSllEH0B9rwmL7zMAvde7nwWWDixazHouUE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LTHxvJf7L6IOFN0icPzKHuq/LCXLGvxnpWIaHt+1I4ARdsb+ghxBQn/HLcInGoLxq
-	 X3o7THfPt/K0CprYzh45rpuW7IOGa3xz1HI/PaFv8vDcqKWnXP8LwGZW4r6c6PZl9F
-	 9MdWa+oY8aQb4jaRTPLuyjn9pofl8Nhs9DgWUXjQ=
-Date: Tue, 23 Jul 2024 15:33:09 +0200
+	b=EGRRlWtrHqHJmMai0F/2gk8tt+q+wx6T1YGDlPYJig9HcTlIOxTG53BebLUzQZLA4
+	 mlnILR6xY/zHFJeaAsf6fXxpU+PHo1DyLO93LX9XjNZlPKSmChUjFFfm0ASNmyq3a2
+	 meq3s7D/PxPC4r93Znl4RWXssT5/7T7KXAu2NAIE=
+Date: Tue, 23 Jul 2024 15:35:29 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Maximilian Heyne <mheyne@amazon.de>
-Cc: Bart Van Assche <bvanassche@acm.org>, Ming Lei <ming.lei@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Mike Christie <michael.christie@oracle.com>,
-	Hannes Reinecke <hare@suse.de>, John Garry <john.garry@huawei.com>,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	stable@vger.kernel.org, "James E.J. Bottomley" <jejb@linux.ibm.com>,
-	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5.10] scsi: core: Fix a use-after-free
-Message-ID: <2024072358-eleven-etching-1988@gregkh>
-References: <20240723115047.13092-1-mheyne@amazon.de>
+To: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: stable@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+	alexey.makhalov@broadcom.com, vasavi.sirnapalli@broadcom.com,
+	florian.fainelli@broadcom.com,
+	Gabriel Krisman Bertazi <krisman@collabora.com>,
+	Theodore Ts'o <tytso@mit.edu>
+Subject: Re: [PATCH v5.10] ext4: fix error code saved on super block during
+ file system abort
+Message-ID: <2024072323-cone-mustard-94b0@gregkh>
+References: <1721717240-8786-1-git-send-email-ajay.kaher@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,83 +59,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240723115047.13092-1-mheyne@amazon.de>
+In-Reply-To: <1721717240-8786-1-git-send-email-ajay.kaher@broadcom.com>
 
-On Tue, Jul 23, 2024 at 11:50:46AM +0000, Maximilian Heyne wrote:
-> From: Bart Van Assche <bvanassche@acm.org>
+On Tue, Jul 23, 2024 at 12:17:19PM +0530, Ajay Kaher wrote:
+> From: Gabriel Krisman Bertazi <krisman@collabora.com>
 > 
-> [ Upstream commit 8fe4ce5836e932f5766317cb651c1ff2a4cd0506 ]
+> [ Upstream commit 124e7c61deb27d758df5ec0521c36cf08d417f7a ]
 > 
-> There are two .exit_cmd_priv implementations. Both implementations use
-> resources associated with the SCSI host. Make sure that these resources are
-> still available when .exit_cmd_priv is called by waiting inside
-> scsi_remove_host() until the tag set has been freed.
+> ext4_abort will eventually call ext4_errno_to_code, which translates the
+> errno to an EXT4_ERR specific error.  This means that ext4_abort expects
+> an errno.  By using EXT4_ERR_ here, it gets misinterpreted (as an errno),
+> and ends up saving EXT4_ERR_EBUSY on the superblock during an abort,
+> which makes no sense.
 > 
-> This commit fixes the following use-after-free:
+> ESHUTDOWN will get properly translated to EXT4_ERR_SHUTDOWN, so use that
+> instead.
 > 
-> ==================================================================
-> BUG: KASAN: use-after-free in srp_exit_cmd_priv+0x27/0xd0 [ib_srp]
-> Read of size 8 at addr ffff888100337000 by task multipathd/16727
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x34/0x44
->  print_report.cold+0x5e/0x5db
->  kasan_report+0xab/0x120
->  srp_exit_cmd_priv+0x27/0xd0 [ib_srp]
->  scsi_mq_exit_request+0x4d/0x70
->  blk_mq_free_rqs+0x143/0x410
->  __blk_mq_free_map_and_rqs+0x6e/0x100
->  blk_mq_free_tag_set+0x2b/0x160
->  scsi_host_dev_release+0xf3/0x1a0
->  device_release+0x54/0xe0
->  kobject_put+0xa5/0x120
->  device_release+0x54/0xe0
->  kobject_put+0xa5/0x120
->  scsi_device_dev_release_usercontext+0x4c1/0x4e0
->  execute_in_process_context+0x23/0x90
->  device_release+0x54/0xe0
->  kobject_put+0xa5/0x120
->  scsi_disk_release+0x3f/0x50
->  device_release+0x54/0xe0
->  kobject_put+0xa5/0x120
->  disk_release+0x17f/0x1b0
->  device_release+0x54/0xe0
->  kobject_put+0xa5/0x120
->  dm_put_table_device+0xa3/0x160 [dm_mod]
->  dm_put_device+0xd0/0x140 [dm_mod]
->  free_priority_group+0xd8/0x110 [dm_multipath]
->  free_multipath+0x94/0xe0 [dm_multipath]
->  dm_table_destroy+0xa2/0x1e0 [dm_mod]
->  __dm_destroy+0x196/0x350 [dm_mod]
->  dev_remove+0x10c/0x160 [dm_mod]
->  ctl_ioctl+0x2c2/0x590 [dm_mod]
->  dm_ctl_ioctl+0x5/0x10 [dm_mod]
->  __x64_sys_ioctl+0xb4/0xf0
->  dm_ctl_ioctl+0x5/0x10 [dm_mod]
->  __x64_sys_ioctl+0xb4/0xf0
->  do_syscall_64+0x3b/0x90
->  entry_SYSCALL_64_after_hwframe+0x46/0xb0
-> 
-> Link: https://lore.kernel.org/r/20220826002635.919423-1-bvanassche@acm.org
-> Fixes: 65ca846a5314 ("scsi: core: Introduce {init,exit}_cmd_priv()")
-> Cc: Ming Lei <ming.lei@redhat.com>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Mike Christie <michael.christie@oracle.com>
-> Cc: Hannes Reinecke <hare@suse.de>
-> Cc: John Garry <john.garry@huawei.com>
-> Cc: Li Zhijian <lizhijian@fujitsu.com>
-> Reported-by: Li Zhijian <lizhijian@fujitsu.com>
-> Tested-by: Li Zhijian <lizhijian@fujitsu.com>
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-> [mheyne: fixed contextual conflicts:
->   - drivers/scsi/hosts.c: due to missing commit 973dac8a8a14 ("scsi: core: Refine how we set tag_set NUMA node")
->   - drivers/scsi/scsi_sysfs.c: due to missing commit 6f8191fdf41d ("block: simplify disk shutdown")
->   - drivers/scsi/scsi_scan.c: due to missing commit 59506abe5e34 ("scsi: core: Inline scsi_mq_alloc_queue()")]
-> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
-> Cc: stable@vger.kernel.org # v5.10
+> Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
+> Link: https://lore.kernel.org/r/20211026173302.84000-1-krisman@collabora.com
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+> ---
 
-Both now backported, thanks.
+Both now queued up, thanks.
 
 greg k-h
 
