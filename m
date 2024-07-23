@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-60840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD8493A5A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:26:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D1AD93A62D
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1505E1C2214F
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:26:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4865D2817AA
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E0815886B;
-	Tue, 23 Jul 2024 18:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA714156F29;
+	Tue, 23 Jul 2024 18:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRXONjC/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DN9NJLEl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6BF156F37;
-	Tue, 23 Jul 2024 18:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A754913D896;
+	Tue, 23 Jul 2024 18:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759208; cv=none; b=LulJvuggyKCyOT2F/JTaOcYyAauxXwapGPFhZ6tJcd71y7a8MFJegnkZ1wAnqQEk7OdULPwKRO/RuZeN/Yosj0hr+nHCeXECLTyS9++415DYn54Ltz5G+zMNaI5u+1zjQIfH9a7QKT19Dw7jC2Rd54u3O9MCsI+ExEojDHpbJwY=
+	t=1721759551; cv=none; b=hZQ1taKKZfUne2x06Jn7FjRavSd2b6UMchD2vENMx0SZanJ6V2hAG8YWUrKZi+PBT8pzKLEXvNlGrYRCs8lto/uj9qp2foEZsUAf9mKaO8S8vyx7hRGQDnJPNezuifOSoRRe59dSp4VAZfvCCDQ4kYlOv2rK47CrIjpeVEsF7Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759208; c=relaxed/simple;
-	bh=BETKXisDMwTL1JparBljnPqP+onBZJJ11rjJASxxpJE=;
+	s=arc-20240116; t=1721759551; c=relaxed/simple;
+	bh=Ccmj0teDDw54MtA7n6IN3cT7ywP5amKDD878cXtkB7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BCxkbFTCkgmJV3eV75So9TImciuo4Ppb6VHzqrua89TPW7cIb1hV7kILIP6GxUsoVjM7DOg+RBH+We8eVUauVpafnH9T7nT2hBS0is/+Xv0nGSemWLToSLFDvZjFb1DA6rWjFrimqqV7BEN+ATQpX9njoYw4p7erBusYdL0MFco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRXONjC/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A5EC4AF09;
-	Tue, 23 Jul 2024 18:26:47 +0000 (UTC)
+	 MIME-Version; b=onY9Z02lYmJmbxU94Er3UTOpWh3XS6VBofWvXCuQPZxEqwgj5Zaygrd94PeERLRitB6Rvjwt5fTspKjmFYRm+5VtqbxcWI71RhTvxHAjiCeDow3GR//yi3KpK9aJ0RiGOCex28WSp4NdrZYCE6bTV90ccjtOT/aMJdUsLTLCVME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DN9NJLEl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310F5C4AF0A;
+	Tue, 23 Jul 2024 18:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759208;
-	bh=BETKXisDMwTL1JparBljnPqP+onBZJJ11rjJASxxpJE=;
+	s=korg; t=1721759551;
+	bh=Ccmj0teDDw54MtA7n6IN3cT7ywP5amKDD878cXtkB7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRXONjC/CHJof+Q2vbiIog/yjK43rTo8dkx7b+Df0/v2G4eUwcGElMCiGAnsYHF0a
-	 dIzDtnhek97f45kTTlz7Ez2r6wVDCNKL+9XU3vqrnVVQKEOFYzTLU9c1TwSIoRDL/2
-	 N4HGkpEl+luVM9vZrapYTSM4ahBa/FOiQJ1Ng+MQ=
+	b=DN9NJLEl7zDDanHOCOb5NOMDw3LTy/yMRMkUvt7pNiGv2DzqFKFr1d2BiWzrOUnDG
+	 5p3TNz9th4fVzD8zcULvEcFWowlKkilTxZ8jEHWODTeD9zlC72n8nkMCvlCayrHeUu
+	 Iz++92WpYurGVw1GRx3TjtUjh4DfmsG2y3sWQ6vU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mayhew <smayhew@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Fei Shao <fshao@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/105] nfs: dont invalidate dentries on transient errors
+Subject: [PATCH 6.6 048/129] drm/mediatek: Call drm_atomic_helper_shutdown() at shutdown time
 Date: Tue, 23 Jul 2024 20:23:16 +0200
-Message-ID: <20240723180404.747884564@linuxfoundation.org>
+Message-ID: <20240723180406.645133573@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-References: <20240723180402.490567226@linuxfoundation.org>
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
+References: <20240723180404.759900207@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 0c8c7c559740d2d8b66048162af6c4dba8f0c88c ]
+[ Upstream commit c38896ca6318c2df20bbe6c8e3f633e071fda910 ]
 
-This is a slight variation on a patch previously proposed by Neil Brown
-that never got merged.
+Based on grepping through the source code this driver appears to be
+missing a call to drm_atomic_helper_shutdown() at system shutdown
+time. Among other things, this means that if a panel is in use that it
+won't be cleanly powered off at system shutdown time.
 
-Prior to commit 5ceb9d7fdaaf ("NFS: Refactor nfs_lookup_revalidate()"),
-any error from nfs_lookup_verify_inode() other than -ESTALE would result
-in nfs_lookup_revalidate() returning that error (-ESTALE is mapped to
-zero).
+The fact that we should call drm_atomic_helper_shutdown() in the case
+of OS shutdown/restart comes straight out of the kernel doc "driver
+instance overview" in drm_drv.c.
 
-Since that commit, all errors result in nfs_lookup_revalidate()
-returning zero, resulting in dentries being invalidated where they
-previously were not (particularly in the case of -ERESTARTSYS).
+This driver users the component model and shutdown happens in the base
+driver. The "drvdata" for this driver will always be valid if
+shutdown() is called and as of commit 2a073968289d
+("drm/atomic-helper: drm_atomic_helper_shutdown(NULL) should be a
+noop") we don't need to confirm that "drm" is non-NULL.
 
-Fix it by passing the actual error code to nfs_lookup_revalidate_done(),
-and leaving the decision on whether to  map the error code to zero or
-one to nfs_lookup_revalidate_done().
-
-A simple reproducer is to run the following python code in a
-subdirectory of an NFS mount (not in the root of the NFS mount):
-
----8<---
-import os
-import multiprocessing
-import time
-
-if __name__=="__main__":
-    multiprocessing.set_start_method("spawn")
-
-    count = 0
-    while True:
-        try:
-            os.getcwd()
-            pool = multiprocessing.Pool(10)
-            pool.close()
-            pool.terminate()
-            count += 1
-        except Exception as e:
-            print(f"Failed after {count} iterations")
-            print(e)
-            break
----8<---
-
-Prior to commit 5ceb9d7fdaaf, the above code would run indefinitely.
-After commit 5ceb9d7fdaaf, it fails almost immediately with -ENOENT.
-
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Tested-by: Fei Shao <fshao@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240611102744.v2.1.I2b014f90afc4729b6ecc7b5ddd1f6dedcea4625b@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index a5a4d9422d6ed..70660ff248b79 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -1615,7 +1615,16 @@ nfs_lookup_revalidate_done(struct inode *dir, struct dentry *dentry,
- 	switch (error) {
- 	case 1:
- 		break;
--	case 0:
-+	case -ETIMEDOUT:
-+		if (inode && (IS_ROOT(dentry) ||
-+			      NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL))
-+			error = 1;
-+		break;
-+	case -ESTALE:
-+	case -ENOENT:
-+		error = 0;
-+		fallthrough;
-+	default:
- 		/*
- 		 * We can't d_drop the root of a disconnected tree:
- 		 * its d_hash is on the s_anon list and d_drop() would hide
-@@ -1670,18 +1679,8 @@ static int nfs_lookup_revalidate_dentry(struct inode *dir,
- 
- 	dir_verifier = nfs_save_change_attribute(dir);
- 	ret = NFS_PROTO(dir)->lookup(dir, dentry, fhandle, fattr);
--	if (ret < 0) {
--		switch (ret) {
--		case -ESTALE:
--		case -ENOENT:
--			ret = 0;
--			break;
--		case -ETIMEDOUT:
--			if (NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL)
--				ret = 1;
--		}
-+	if (ret < 0)
- 		goto out;
--	}
- 
- 	/* Request help from readdirplus */
- 	nfs_lookup_advise_force_readdirplus(dir, flags);
-@@ -1725,7 +1724,7 @@ nfs_do_lookup_revalidate(struct inode *dir, struct dentry *dentry,
- 			 unsigned int flags)
- {
- 	struct inode *inode;
--	int error;
-+	int error = 0;
- 
- 	nfs_inc_stats(dir, NFSIOS_DENTRYREVALIDATE);
- 	inode = d_inode(dentry);
-@@ -1770,7 +1769,7 @@ nfs_do_lookup_revalidate(struct inode *dir, struct dentry *dentry,
- out_bad:
- 	if (flags & LOOKUP_RCU)
- 		return -ECHILD;
--	return nfs_lookup_revalidate_done(dir, dentry, inode, 0);
-+	return nfs_lookup_revalidate_done(dir, dentry, inode, error);
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index cdd506c803733..37d8113ba92f0 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -926,6 +926,13 @@ static void mtk_drm_remove(struct platform_device *pdev)
+ 		of_node_put(private->comp_node[i]);
  }
  
- static int
++static void mtk_drm_shutdown(struct platform_device *pdev)
++{
++	struct mtk_drm_private *private = platform_get_drvdata(pdev);
++
++	drm_atomic_helper_shutdown(private->drm);
++}
++
+ static int mtk_drm_sys_prepare(struct device *dev)
+ {
+ 	struct mtk_drm_private *private = dev_get_drvdata(dev);
+@@ -957,6 +964,7 @@ static const struct dev_pm_ops mtk_drm_pm_ops = {
+ static struct platform_driver mtk_drm_platform_driver = {
+ 	.probe	= mtk_drm_probe,
+ 	.remove_new = mtk_drm_remove,
++	.shutdown = mtk_drm_shutdown,
+ 	.driver	= {
+ 		.name	= "mediatek-drm",
+ 		.pm     = &mtk_drm_pm_ops,
 -- 
 2.43.0
 
