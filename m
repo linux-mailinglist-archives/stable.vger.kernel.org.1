@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-60930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB3B93A60E
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:31:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2080F93A588
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 20:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D44F1C20D6D
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:31:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0921282CB8
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 18:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919101586F5;
-	Tue, 23 Jul 2024 18:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17071586CB;
+	Tue, 23 Jul 2024 18:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itgMiK0U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsBAqoBx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF4C13D24D;
-	Tue, 23 Jul 2024 18:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F94C13D521;
+	Tue, 23 Jul 2024 18:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721759471; cv=none; b=qcyWDLizNPCgDDOeSEuvCAk+kTSl5oc49PmczXBawG0QPd/KV05v5m7gpXWbnciwNsii2D0mTuHk6uSIhMIXZs4OavxQSkbdue4Tp27o8+BqpsZaIXbfepdkKkB8/fcX3Jxe5XpCy5MAOSJAJfH8S8j2mvwhMYyJdarNygWPUMY=
+	t=1721759128; cv=none; b=tEi1Ds1/IBmhXL2Ip3QzGYHUJHZNSK1VgXqvI+Ld4rHDcrXXFgh9/XQxJ98o2kIBsWWj7oFXWyfwEMwQEMFNc4kilmljU3QQQXUoDAFslMS66dSBNBwwGd77Gej9uZ1o1oFYG0JjwTtOclxOpKIOLOwiGO1yccWgnFfvM9fNBiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721759471; c=relaxed/simple;
-	bh=cyCz7Wo+42RanSiBCU0ADLSEeQrI4tnMKT1zbRMxGMs=;
+	s=arc-20240116; t=1721759128; c=relaxed/simple;
+	bh=Nrmqblvs/KllwcjryegEJGAtR8SF4EM3u9JazgOTdXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SNV/yNZZSWq3Rj5Jw+wwbCWot3LdY2KLdH12pRrZhEKzIY3bbFf6wL3sjVjJRdE1zOWvlCqJ2uaXwZ/qsaM5hfQxYSqmxqZnnkrvLPKgk3PPGqk430qBBjtWQf2lfVLGxVjwdN0w1ElWko4FvDIPy7yiJi6b778wnUb24K9Sgeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itgMiK0U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD53C4AF0A;
-	Tue, 23 Jul 2024 18:31:10 +0000 (UTC)
+	 MIME-Version; b=p9o490F/cgK3mtNbrRQjNfmmlWdLeVqInaZ7K1scVfpbBakQDFasr8QpdeTzjdC9ccSSgpvIHCZp3vGoRGD4NOXqaH/kZJhtpPthA+HoedJR9MrfesMmmc4glMG4jmC8+ldmyzrdGRAjsjyOxzPgg+keLOSkv+AQovclhmugOoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsBAqoBx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E737EC4AF0A;
+	Tue, 23 Jul 2024 18:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721759471;
-	bh=cyCz7Wo+42RanSiBCU0ADLSEeQrI4tnMKT1zbRMxGMs=;
+	s=korg; t=1721759128;
+	bh=Nrmqblvs/KllwcjryegEJGAtR8SF4EM3u9JazgOTdXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=itgMiK0ULvVq70QEjIBN1wAs1BDPev4u7JCk+KuaMKEc9zDiwXPKmJ3uDZtYOmv4Z
-	 aodlHeBWtoCP85cASDEszE/6p23rGKSgjDt9wyrVNj9Nx/mn6uPgexNXj/zAWGYQCQ
-	 vdPEmxjlFEWX/NseGvlHNvp3wCIZurUIK4X+pBF0=
+	b=NsBAqoBx3ivqxO4OP7eJylLBNMGo8ajYsFVksQXr77IZ8IagHvZ4X4U2eTlXNMuhL
+	 wtP9PXm0Q2RNxAbmUzXTU61e9dVkfLxLzKQk5OfNX2S7DNLam/P5bOLa5UOQkWpjli
+	 s9c0JpJ6v8EKmNJmjdeMIMCaFZOVcR/+ODHjJIH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/129] wifi: mac80211: fix UBSAN noise in ieee80211_prep_hw_scan()
+Subject: [PATCH 6.1 012/105] scsi: qedf: Wait for stag work during unload
 Date: Tue, 23 Jul 2024 20:22:49 +0200
-Message-ID: <20240723180405.609374985@linuxfoundation.org>
+Message-ID: <20240723180403.241222776@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-References: <20240723180404.759900207@linuxfoundation.org>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+References: <20240723180402.490567226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-[ Upstream commit 92ecbb3ac6f3fe8ae9edf3226c76aa17b6800699 ]
+[ Upstream commit 78e88472b60936025b83eba57cffa59d3501dc07 ]
 
-When testing the previous patch with CONFIG_UBSAN_BOUNDS, I've
-noticed the following:
+If stag work is already scheduled and unload is called, it can lead to
+issues as unload cleans up the work element. Wait for stag work to get
+completed before cleanup during unload.
 
-UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:372:4
-index 0 is out of range for type 'struct ieee80211_channel *[]'
-CPU: 0 PID: 1435 Comm: wpa_supplicant Not tainted 6.9.0+ #1
-Hardware name: LENOVO 20UN005QRT/20UN005QRT <...BIOS details...>
-Call Trace:
- <TASK>
- dump_stack_lvl+0x2d/0x90
- __ubsan_handle_out_of_bounds+0xe7/0x140
- ? timerqueue_add+0x98/0xb0
- ieee80211_prep_hw_scan+0x2db/0x480 [mac80211]
- ? __kmalloc+0xe1/0x470
- __ieee80211_start_scan+0x541/0x760 [mac80211]
- rdev_scan+0x1f/0xe0 [cfg80211]
- nl80211_trigger_scan+0x9b6/0xae0 [cfg80211]
- ...<the rest is not too useful...>
-
-Since '__ieee80211_start_scan()' leaves 'hw_scan_req->req.n_channels'
-uninitialized, actual boundaries of 'hw_scan_req->req.channels' can't
-be checked in 'ieee80211_prep_hw_scan()'. Although an initialization
-of 'hw_scan_req->req.n_channels' introduces some confusion around
-allocated vs. used VLA members, this shouldn't be a problem since
-everything is correctly adjusted soon in 'ieee80211_prep_hw_scan()'.
-
-Cleanup 'kmalloc()' math in '__ieee80211_start_scan()' by using the
-convenient 'struct_size()' as well.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://msgid.link/20240517153332.18271-2-dmantipov@yandex.ru
-[improve (imho) indentation a bit]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240515091101.18754-3-skashyap@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/scan.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/scsi/qedf/qedf.h      |  1 +
+ drivers/scsi/qedf/qedf_main.c | 30 +++++++++++++++++++++++++++---
+ 2 files changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index b68214f159838..3d68db738cde4 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -722,15 +722,21 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
- 			local->hw_scan_ies_bufsize *= n_bands;
- 		}
- 
--		local->hw_scan_req = kmalloc(
--				sizeof(*local->hw_scan_req) +
--				req->n_channels * sizeof(req->channels[0]) +
--				local->hw_scan_ies_bufsize, GFP_KERNEL);
-+		local->hw_scan_req = kmalloc(struct_size(local->hw_scan_req,
-+							 req.channels,
-+							 req->n_channels) +
-+					     local->hw_scan_ies_bufsize,
-+					     GFP_KERNEL);
- 		if (!local->hw_scan_req)
- 			return -ENOMEM;
- 
- 		local->hw_scan_req->req.ssids = req->ssids;
- 		local->hw_scan_req->req.n_ssids = req->n_ssids;
-+		/* None of the channels are actually set
-+		 * up but let UBSAN know the boundaries.
-+		 */
-+		local->hw_scan_req->req.n_channels = req->n_channels;
+diff --git a/drivers/scsi/qedf/qedf.h b/drivers/scsi/qedf/qedf.h
+index c5c0bbdafc4ea..81b84757faae0 100644
+--- a/drivers/scsi/qedf/qedf.h
++++ b/drivers/scsi/qedf/qedf.h
+@@ -362,6 +362,7 @@ struct qedf_ctx {
+ #define QEDF_IN_RECOVERY		5
+ #define QEDF_DBG_STOP_IO		6
+ #define QEDF_PROBING			8
++#define QEDF_STAG_IN_PROGRESS		9
+ 	unsigned long flags; /* Miscellaneous state flags */
+ 	int fipvlan_retries;
+ 	u8 num_queues;
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index 27f4028bff3bf..524807f9f4eb1 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -318,11 +318,18 @@ static struct fc_seq *qedf_elsct_send(struct fc_lport *lport, u32 did,
+ 	 */
+ 	if (resp == fc_lport_flogi_resp) {
+ 		qedf->flogi_cnt++;
++		qedf->flogi_pending++;
 +
- 		ies = (u8 *)local->hw_scan_req +
- 			sizeof(*local->hw_scan_req) +
- 			req->n_channels * sizeof(req->channels[0]);
++		if (test_bit(QEDF_UNLOADING, &qedf->flags)) {
++			QEDF_ERR(&qedf->dbg_ctx, "Driver unloading\n");
++			qedf->flogi_pending = 0;
++		}
++
+ 		if (qedf->flogi_pending >= QEDF_FLOGI_RETRY_CNT) {
+ 			schedule_delayed_work(&qedf->stag_work, 2);
+ 			return NULL;
+ 		}
+-		qedf->flogi_pending++;
++
+ 		return fc_elsct_send(lport, did, fp, op, qedf_flogi_resp,
+ 		    arg, timeout);
+ 	}
+@@ -911,13 +918,14 @@ void qedf_ctx_soft_reset(struct fc_lport *lport)
+ 	struct qedf_ctx *qedf;
+ 	struct qed_link_output if_link;
+ 
++	qedf = lport_priv(lport);
++
+ 	if (lport->vport) {
++		clear_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
+ 		printk_ratelimited("Cannot issue host reset on NPIV port.\n");
+ 		return;
+ 	}
+ 
+-	qedf = lport_priv(lport);
+-
+ 	qedf->flogi_pending = 0;
+ 	/* For host reset, essentially do a soft link up/down */
+ 	atomic_set(&qedf->link_state, QEDF_LINK_DOWN);
+@@ -937,6 +945,7 @@ void qedf_ctx_soft_reset(struct fc_lport *lport)
+ 	if (!if_link.link_up) {
+ 		QEDF_INFO(&qedf->dbg_ctx, QEDF_LOG_DISC,
+ 			  "Physical link is not up.\n");
++		clear_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
+ 		return;
+ 	}
+ 	/* Flush and wait to make sure link down is processed */
+@@ -949,6 +958,7 @@ void qedf_ctx_soft_reset(struct fc_lport *lport)
+ 		  "Queue link up work.\n");
+ 	queue_delayed_work(qedf->link_update_wq, &qedf->link_update,
+ 	    0);
++	clear_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
+ }
+ 
+ /* Reset the host by gracefully logging out and then logging back in */
+@@ -3725,6 +3735,7 @@ static void __qedf_remove(struct pci_dev *pdev, int mode)
+ {
+ 	struct qedf_ctx *qedf;
+ 	int rc;
++	int cnt = 0;
+ 
+ 	if (!pdev) {
+ 		QEDF_ERR(NULL, "pdev is NULL.\n");
+@@ -3742,6 +3753,17 @@ static void __qedf_remove(struct pci_dev *pdev, int mode)
+ 		return;
+ 	}
+ 
++stag_in_prog:
++	if (test_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags)) {
++		QEDF_ERR(&qedf->dbg_ctx, "Stag in progress, cnt=%d.\n", cnt);
++		cnt++;
++
++		if (cnt < 5) {
++			msleep(500);
++			goto stag_in_prog;
++		}
++	}
++
+ 	if (mode != QEDF_MODE_RECOVERY)
+ 		set_bit(QEDF_UNLOADING, &qedf->flags);
+ 
+@@ -4017,6 +4039,8 @@ void qedf_stag_change_work(struct work_struct *work)
+ 		return;
+ 	}
+ 
++	set_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
++
+ 	printk_ratelimited("[%s]:[%s:%d]:%d: Performing software context reset.",
+ 			dev_name(&qedf->pdev->dev), __func__, __LINE__,
+ 			qedf->dbg_ctx.host_no);
 -- 
 2.43.0
 
