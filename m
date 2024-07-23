@@ -1,164 +1,146 @@
-Return-Path: <stable+bounces-60737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-60738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB1F939D5B
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:16:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40931939D6A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 11:21:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF58F1F22D73
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 09:16:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF194B2243A
+	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 09:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42AA14D420;
-	Tue, 23 Jul 2024 09:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAC461FE1;
+	Tue, 23 Jul 2024 09:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="OE5TaDbs";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jPxibuab"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X4/Ko+ji"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh2-smtp.messagingengine.com (fhigh2-smtp.messagingengine.com [103.168.172.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D44914D2BD;
-	Tue, 23 Jul 2024 09:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232E814A639;
+	Tue, 23 Jul 2024 09:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721726157; cv=none; b=kKlYiUKXv2K9Y0NrG2Xl7ZtUP0ZxCIGRWDgA2BezLzT+ANvhNUW7HtVPSuEI3QSEFA+JLoL/bCPP1+yWyoZQpZzKOlr1DMCx1FZVKEg7aBrbvhL2pKGYCzrA3ScjU8kQZHYIfxe6baOYs00Ib25q8yD5xzzm/YHSwIEK/AvQeug=
+	t=1721726453; cv=none; b=ellbX/Amimp0Bh9RiBC+aIA8JYQvhxxvjDJSyFWzRQ0/FbcndjNLUQZJM9GYEXytozRwdll+E2EKpLrW6yD9VxkEbZvYmg2jVKeVHoJiSsL2UmpaZ4iSQfyClbGQP+A8Wp5iKWZ29XX2kZxhQ6RShjxnVKTs1dXmplq747Taveo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721726157; c=relaxed/simple;
-	bh=mROYaCllljLDe6KGxHnovReLJUhId6M0dmLIG9l0n0Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ayCwo+tRHPnniEXaOfsqZZXqwO3s7E9Kz6wDIUkjlH1kEvAPea9SGU5dseuCbkDLXdJ+bTULD4zK1+BBtezemu2SenkTIspDuCQdLWnRQjm1M/mK6Rjr+kOfT3L4O7fv2q16LorkaGUQcAh2YXsw5ZHMjgIOo8QS+dlKF0dNe0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=OE5TaDbs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jPxibuab; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 8FE8B11403DB;
-	Tue, 23 Jul 2024 05:15:54 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Tue, 23 Jul 2024 05:15:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm1; t=1721726154; x=1721812554; bh=tD
-	qMYLk9bvSzGB4EmLXkD24mybY+SdczVkc8SGPEb44=; b=OE5TaDbsaJ0dv3+rnd
-	aHwOimBlMGy+0kmbC8+x2nrm13rwZRIDDrTtoGvFN0eNrbnnITlxjD3DqDFv0h8M
-	VTowhflMyqvL59fJiHhSZb5fc0r49kIgnBnEKDE2Tb4qR4qsxaJUTTS3VD/T3f6m
-	JXuo8hOa0evvC2r468Sv881AD5/qWYAZD3Nl2OOMbQvZ6KePC5yhHdia3Qw6DboG
-	VjZRJCPlm7NNgfHBD2WuGtaA01pkuV+lRbn6cVwcbOP+ELk3eyO8zUPWTs1yfBsT
-	PQ04dCjHRPuPt9ssc6sOQYbL47o22NLl8uc1EEpouSKv6hOLhB17PDR3E1A+y0t0
-	z/MQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm3; t=1721726154; x=1721812554; bh=tDqMYLk9bvSzG
-	B4EmLXkD24mybY+SdczVkc8SGPEb44=; b=jPxibuabEJpcgYzDEf1fDBcNdeWdH
-	WDsLQbYLHSUKnEppzfABOOyc4u16WO3Ef9cAKwRj2ENkDRDDJz1CRCRyTjhGaOvU
-	umtlr8xyQU4wc+Argm8dPuOm+e7FErOmQxqrgqwCwyO6jlfIWYcfNkIdjbHxQ8Sd
-	g/uGr81et/38DzkVg9VactOT6MN75tByb5xPPhCJG1uJJsgX+LM2isa2TH3gJ0ZL
-	jK0uV+blDlRsBLqreWY+WPVXUf2V8TQWEmZHTmrkkKG+AfT6atNSP9PCM27Px5if
-	AtTsrtTOEL6iuAL9QEr7/c+TxgPQUN9QQkFr9J2Vvs/rbKfJUrrqGaIug==
-X-ME-Sender: <xms:ynSfZtq4fXBzjzBv8rpGUrOHppXNRzLJR17HUkRiW2YOH4GiV0kvbw>
-    <xme:ynSfZvqsiZbDYiULVM_NcKnuDn8wBK6D5KRb47oaq9mlbGcqyJ_pTAFkXMS8r4kON
-    -G3UrpfMVf0LAZoV4c>
-X-ME-Received: <xmr:ynSfZqOa3wME0Ke0ciBvOQyX2p8YPxfLyojqO2a3VkodWkEquGo2_eelXlhAE7Zir0c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrheelgddufecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomheplfhirgiguhhn
-    ucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeffteeugeektdfgjeevuedvgffhgedtvdfghedugefhgeehteeuudeh
-    udevjeethfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthho
-    pedt
-X-ME-Proxy: <xmx:ynSfZo61SrhzKxsvWEPiLH28jSwoxonpBceqSBMdcJPRzsxggo8O8w>
-    <xmx:ynSfZs6lGFazHS_VS9E3DJP-6IzbVRpi2WoNlY8EYxmWeRT6L5ItyQ>
-    <xmx:ynSfZghJRMxHiDnYxxVZHu9Cjcb1gL5qEiAHqV5yzofbBgUsFNT0rw>
-    <xmx:ynSfZu7ZrQiaZflbo4LJdEYK1w8iy-LiM8YDhjRdCTWps7Ae21qCZw>
-    <xmx:ynSfZmSRd7omp1SFrWzOBEH1p_sMscpE4uWZ7ONzRHz8Rf7geINUM6qE>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 23 Jul 2024 05:15:51 -0400 (EDT)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Tue, 23 Jul 2024 17:15:44 +0800
-Subject: [PATCH] MIPS: Loongson64: Set timer mode in cpu-probe
+	s=arc-20240116; t=1721726453; c=relaxed/simple;
+	bh=8yy+rbLTVl1v9LEfxIdWFqrtokzsNG6TszVLeKeZsIY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EF0ymJ8go0UoUp8NgOsG8XY2tzNR0by3T96aZ51mn+Bf6g7yHped77Gjxe2uTgv4G0oDowlZkzNFA2PW3MBir51WDfuwxP1NIVwg0syO5ylfkXdLXQ8/D1hkkT3LlysTsNXvRsrcFmVmFfOIa00cjxeztiojif2es/Ok4Zh9yQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X4/Ko+ji; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7a1a6af9401so208968685a.0;
+        Tue, 23 Jul 2024 02:20:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721726451; x=1722331251; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8yy+rbLTVl1v9LEfxIdWFqrtokzsNG6TszVLeKeZsIY=;
+        b=X4/Ko+jiRpXSBVhdYAx3gl7tmu3zYEIE7LrVDUKWHbjYlQGt8c7RTE9V9naF9yguM+
+         NuClXUQjSj2G/vXBSPJ8W5+DXwMhh3NKAq2u/DugT5NsL3L8E4nEUdOD6g/p41Rwd2rD
+         rr3hV7fs9KXvPapE8M4UBEjrBl+wB8pdgf+S1xeQkYZW/0HO9Vq0lUNyCn/Jn/ezPUmj
+         StY8WebmznejTBH5mkIBU1gmYW25/gz+8m+oMZzegskte2EHev6W8aJyQ+HtEqRjsUej
+         LY6ie5zljeTAhpAkMHjYieAvaUQ1ln//V0ttEDTtyjjBsLr8UfKcmlhkbwqoOWDaZ3+v
+         RuwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721726451; x=1722331251;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8yy+rbLTVl1v9LEfxIdWFqrtokzsNG6TszVLeKeZsIY=;
+        b=let+bpZYg2WeSkR2arJC7mHts1k+JDz7rewOptG0DIb4OjRgXMC8S4PyGX1BMSTzEf
+         mtawuoqUWA0PtQVHNKMD6EQuVzuGg4nEFRPbQTh7zm2F0Qk6fRbxI1V2vEgtMxDhpveo
+         H1i+fnHRdAKapf36F7SNDk2b3ndcooKHc1ncTOhdg+LEU+TOZTiiVAsP9WFqXAuLAyA0
+         B2FWGCpCF48PvWBtxUCAMzqofZlW13P24kOpJ7UPLSFnTApHQlOAH585ZF6n/SKP97SC
+         lU2G4wL8cGX1vm/i4RGYKle8JXPRQyIlo/ZI6ccRRNcC2VDmxD6yLqkwbymvwWPMiyIH
+         wAFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGQLTbtWJbbW8RbmDX5KGK9RfeB7uMt0m3yFXaPAUv63HUPWdQaue3cZdMKrtuShbyU/xxCn+om4bcXtIz12WJuiFUtDWgkR1mgJAVPDOqLkkg98YpK5SqeTF/tW1O+FF8yQ==
+X-Gm-Message-State: AOJu0YyDca00qDHjpv8rgXgXfqBqmdROHkInDcBZwbg4nBNkuUcRzWx/
+	xDLnD0HKasok1GlD6XagwnwepGcdk6ytaOgZVSVVvzGl8HfimhH1K5GhKHiyy8YW4gZvmVXSw1n
+	SvstSaUxK+v/s+vIval20kEKB4jo=
+X-Google-Smtp-Source: AGHT+IE73OAgH4DfytlYjeMKjbOMoaZbFZgeGl+saAzlAJ6H2jd5JojFCpwiV/nEV8aexgs+whhuuutVBJ34sBHNlb8=
+X-Received: by 2002:a05:620a:29ce:b0:79f:1860:5629 with SMTP id
+ af79cd13be357-7a1a13a8992mr1223374485a.55.1721726450830; Tue, 23 Jul 2024
+ 02:20:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240723-loongson-exttimer-v1-1-974bef8c2f88@flygoat.com>
-X-B4-Tracking: v=1; b=H4sIAL90n2YC/x3MQQqAIBBA0avErBPULKOrRAvLyQZKQyWC6O5Jy
- 7f4/4GEkTDBUD0Q8aJEwReIuoJlM94hI1sMkkvFtWzYHoJ3KXiGd850YGRCzapHbWxrOyjdGXG
- l+3+O0/t+FyovMmMAAAA=
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1810;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=mROYaCllljLDe6KGxHnovReLJUhId6M0dmLIG9l0n0Q=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhrT5JccPX0q4anrDnd+rS4NbSdEunVU2c31PSSKvkZfhu
- j0TL5R3lLIwiHExyIopsoQIKPVtaLy44PqDrD8wc1iZQIYwcHEKwETCPzIynLda4ezFki39vTZP
- vzDtEHvtlo8H+9aHJrt2OLbNuPHmBcP/yODzyZanJK/I1uTMP/PveFoaZ+SUmtlxqfFLnvAHHbT
- hAgA=
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
+References: <20240618123422.213844892@linuxfoundation.org> <1721718387-9038-1-git-send-email-ajay.kaher@broadcom.com>
+In-Reply-To: <1721718387-9038-1-git-send-email-ajay.kaher@broadcom.com>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Tue, 23 Jul 2024 12:20:39 +0300
+Message-ID: <CAOQ4uxgz4Gq2Yg4upLWrOf15FaDuAPppRVsLbYvMxrLbpHJE1g@mail.gmail.com>
+Subject: Re: [PATCH 5.10 387/770] fanotify: Allow users to request
+ FAN_FS_ERROR events
+To: Ajay Kaher <ajay.kaher@broadcom.com>, chuck.lever@oracle.com
+Cc: gregkh@linuxfoundation.org, jack@suse.cz, krisman@collabora.com, 
+	patches@lists.linux.dev, sashal@kernel.org, stable@vger.kernel.org, 
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, tytso@mit.edu, 
+	alexey.makhalov@broadcom.com, vasavi.sirnapalli@broadcom.com, 
+	florian.fainelli@broadcom.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Loongson64 C and G processors have EXTIMER feature which
-is conflicting with CP0 counter.
+On Tue, Jul 23, 2024 at 10:06=E2=80=AFAM Ajay Kaher <ajay.kaher@broadcom.co=
+m> wrote:
+>
+> > [ Upstream commit 9709bd548f11a092d124698118013f66e1740f9b ]
+> >
+> > Wire up the FAN_FS_ERROR event in the fanotify_mark syscall, allowing
+> > user space to request the monitoring of FAN_FS_ERROR events.
+> >
+> > These events are limited to filesystem marks, so check it is the
+> > case in the syscall handler.
+>
+> Greg,
+>
+> Without 9709bd548f11 in v5.10.y skips LTP fanotify22 test case, as:
+> fanotify22.c:312: TCONF: FAN_FS_ERROR not supported in kernel
+>
+> With 9709bd548f11 in v5.10.220, LTP fanotify22 is failing because of
+> timeout as no notification. To fix need to merge following two upstream
+> commit to v5.10:
+>
+> 124e7c61deb27d758df5ec0521c36cf08d417f7a:
+> 0001-ext4_fix_error_code_saved_on_super_block_during_file_system.patch
+> https://lore.kernel.org/stable/1721717240-8786-1-git-send-email-ajay.kahe=
+r@broadcom.com/T/#mf76930487697d8c1383ed5d21678fe504e8e2305
+>
+> 9a089b21f79b47eed240d4da7ea0d049de7c9b4d:
+> 0001-ext4_Send_notifications_on_error.patch
+> Link: https://lore.kernel.org/stable/1721717240-8786-1-git-send-email-aja=
+y.kaher@broadcom.com/T/#md1be98e0ecafe4f92d7b61c048e15bcf286cbd53
+>
+> -Ajay
 
-Although the processor resets in EXTIMER disabled & INTIMER
-enabled mode, which is compatible with MIPS CP0 compare, firmware
-may attempt to enable EXTIMER and interfere CP0 compare.
+I agree that this is the best approach, because the test has no other
+way to test
+if ext4 specifically supports FAN_FS_ERROR.
 
-Set timer mode back to MIPS compatible mode to fix booting on
-systems with such firmware before we have an actual driver for
-EXTIMER.
+Chuck,
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
-Please take this patch via fixes (or second 6.11 PR) tree so it can
-reach stable faster.
+I wonder how those patches end up in 5.15.y but not in 5.10.y?
 
-Thansks!
----
- arch/mips/kernel/cpu-probe.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Also, since you backported *most* of this series:
+https://lore.kernel.org/all/20211025192746.66445-1-krisman@collabora.com/
 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index bda7f193baab..af7412549e6e 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1724,12 +1724,16 @@ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
- 		c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
- 			MIPS_ASE_LOONGSON_EXT | MIPS_ASE_LOONGSON_EXT2);
- 		c->ases &= ~MIPS_ASE_VZ; /* VZ of Loongson-3A2000/3000 is incomplete */
-+		change_c0_config6(LOONGSON_CONF6_EXTIMER | LOONGSON_CONF6_INTIMER,
-+				  LOONGSON_CONF6_INTIMER);
- 		break;
- 	case PRID_IMP_LOONGSON_64G:
- 		__cpu_name[cpu] = "ICT Loongson-3";
- 		set_elf_platform(cpu, "loongson3a");
- 		set_isa(c, MIPS_CPU_ISA_M64R2);
- 		decode_cpucfg(c);
-+		change_c0_config6(LOONGSON_CONF6_EXTIMER | LOONGSON_CONF6_INTIMER,
-+				  LOONGSON_CONF6_INTIMER);
- 		break;
- 	default:
- 		panic("Unknown Loongson Processor ID!");
+I think it would be wise to also backport the sample code and documentation
+patches to 5.15.y and 5.10.y.
 
----
-base-commit: dee7f101b64219f512bb2f842227bd04c14efe30
-change-id: 20240723-loongson-exttimer-14b48e7ad5d6
+9abeae5d4458 docs: Fix formatting of literal sections in fanotify docs
+8fc70b3a142f samples: Make fs-monitor depend on libc and headers
+c0baf9ac0b05 docs: Document the FAN_FS_ERROR event
+5451093081db samples: Add fs error monitoring example.
 
-Best regards,
--- 
-Jiaxun Yang <jiaxun.yang@flygoat.com>
+Gabriel, if 9abeae5d4458 has a Fixes: tag it may have been auto seleced
+for 5.15.y after c0baf9ac0b05 was picked up...
 
+Thanks,
+Amir.
 
