@@ -1,100 +1,109 @@
-Return-Path: <stable+bounces-61325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DD693B733
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 21:07:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AF793B82E
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 22:44:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D22831C2143F
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 19:07:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BFBB2843CC
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 20:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1C9161915;
-	Wed, 24 Jul 2024 19:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDOhogHA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B4D137772;
+	Wed, 24 Jul 2024 20:44:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4D315667B;
-	Wed, 24 Jul 2024 19:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E510D132494;
+	Wed, 24 Jul 2024 20:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721848032; cv=none; b=RmYy7z8r8WeiAjtZ96gRyVh8hqLhTs7R82Jy9h1D4zvU5D6fgLHNjG4maYUIrBWdAZzP0Yw10kvZKyRdxscTsZE3onMwzRh7dQQGba0O2awz2q4O9aomYRbC6lOmo424IE+AqvFdBq+X3up/00r9vAofEgHVFCiKkWoigfpbwXc=
+	t=1721853863; cv=none; b=paABuBCNpo75+bsERX8Uy2B11Z0lx9+upv2moZMIe1Hu3GrTHe6MlQs76Z1qH0EWZU9z2+qffxXcCP8L+Teqc2r0zv64FyTtPfylf0RqL4ckQbYQM/pUF9/aGx0yuFQdxT4eXEW2p+RQdobUF6fCPicY33t6O/efvPtIIDNjbvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721848032; c=relaxed/simple;
-	bh=KuUPeMyDvwC7MuSmAeXi/1iMqP7uEsayTyngz5IKoIs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNJLzb20KsqUd/0ZW+Ou8bRcLpr5wTnJBPkHqDyAeS4AixHk0enLdQLklbdkvrS4v6YpCYqdlg6btB9mhupLqzRfb3p5Tj/uLe1Ehbu6S7zpAhF1lmJ0hoGDBEUYtFa0vAaX0pVTx9psPHlgMmjKUeztbxU7ovXD9wjG30gnzD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDOhogHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B13C32781;
-	Wed, 24 Jul 2024 19:07:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721848032;
-	bh=KuUPeMyDvwC7MuSmAeXi/1iMqP7uEsayTyngz5IKoIs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HDOhogHAl9egr+v/I6d5wMOJp80fa4Vv451537jEgr4G/XyrOabLvVqD9PRWipMKJ
-	 tYEt0B4c5frX5jdk3xklrkjI9sXuf8YpJYq2QBOQfS+AaOh+qTjNISJRsrt6lnc216
-	 /QeOUG8IS/X1P7u+SY6ddXQDAMcKMc/R9GWxZfVXRvpwHxWZx5OWjd5todDYA+nNXE
-	 sjF/M4rX7Pxq9ihgmyG0ko5oKTwQkieFwGeK5UpX+K3tQtacbBg8jtOFHYwsH5WMG2
-	 jLNIT1eEzS8K8A2t5LlSCGMhA6ZPMhKNxKvXSrututDBlDNJON71xbO+PcItcG3o9/
-	 UR+Jp5ATQlTuA==
-From: cel@kernel.org
-To: amir73il@gmail.com,
-	krisman@collabora.com
-Cc: gregkh@linuxfoundation.org,
-	jack@suse.cz,
-	sashal@kernel.org,
-	stable@vger.kernel.org,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org,
-	tytso@mit.edu,
-	alexey.makhalov@broadcom.com,
-	vasavi.sirnapalli@broadcom.com,
-	florian.fainelli@broadcom.com,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH v5.15.y 4/4] Add gitignore file for samples/fanotify/ subdirectory
-Date: Wed, 24 Jul 2024 15:06:23 -0400
-Message-ID: <20240724190623.8948-5-cel@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240724190623.8948-1-cel@kernel.org>
-References: <20240724190623.8948-1-cel@kernel.org>
+	s=arc-20240116; t=1721853863; c=relaxed/simple;
+	bh=tRFFpnNkFTCn6F9hWRoxPuhAwvFwiDH3vXBp30TlnJg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dEou8qNvXaVK7bTAyhx/6m861Th8UT3iOlVpBVoWyqOUEjdzE/pwCgWAUax5i8iFHmAWg5vSbVOvxNCkr2hSCy4jjqqxCH8U1K839Og4KmT+YcriG1axkgm+NejX5zdub/7kFRWV+PYbVwn9G62s54+WUjxJYIEjGbf1TCxS364=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 42A9D1C0082; Wed, 24 Jul 2024 22:44:14 +0200 (CEST)
+Date: Wed, 24 Jul 2024 22:44:13 +0200
+From: Pavel Machek <pavel@denx.de>
+To: DAVIETTE <sevend@ecolauricella.com>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"allen.lkml@gmail.com" <allen.lkml@gmail.com>,
+	"broonie@kernel.org" <broonie@kernel.org>,
+	"conor@kernel.org" <conor@kernel.org>,
+	"f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+	"jonathanh@nvidia.com" <jonathanh@nvidia.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux@roeck-us.net" <linux@roeck-us.net>,
+	"lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>,
+	"patches@kernelci.org" <patches@kernelci.org>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>,
+	"pavel@denx.de" <pavel@denx.de>, "rwarsow@gmx.de" <rwarsow@gmx.de>,
+	"shuah@kernel.org" <shuah@kernel.org>,
+	"srw@sladewatkins.net" <srw@sladewatkins.net>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"sudipm.mukherjee@gmail.com" <sudipm.mukherjee@gmail.com>,
+	"torvalds@linux-foundation.org" <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 6.9 000/250] 6.9.7-rc1 review
+Message-ID: <ZqFnnVWNuouT83r+@duo.ucw.cz>
+References: <BYAPR17MB20541144DDD717F5A48E5E5DD7AA2@BYAPR17MB2054.namprd17.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="1FSJMhHn9SwfI8ay"
+Content-Disposition: inline
+In-Reply-To: <BYAPR17MB20541144DDD717F5A48E5E5DD7AA2@BYAPR17MB2054.namprd17.prod.outlook.com>
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit c107fb9b4f8338375b3e865c3d2c1d98ccb3a95a ]
+--1FSJMhHn9SwfI8ay
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Commit 5451093081db ("samples: Add fs error monitoring example") added a
-new sample program, but didn't teach git to ignore the new generated
-files, causing unnecessary noise from 'git status' after a full build.
+On Wed 2024-07-24 18:48:20, DAVIETTE wrote:
+> Afternoon:
+>=20
+> Has any test on incorporation of muti platform data been seen using the P=
+ATCH file ?
+>=20
+> Will the install cause support default models to reset.
+>=20
+> Any other information is welcomed and appreciated, Thanks.
+>=20
+> D.Lauricella
 
-Add the 'fs-monitor' sample executable to the .gitignore for this
-subdirectory to silence it all again.
+Has spam gotten smart with use of AI, or is this real?
 
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
----
- samples/fanotify/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 samples/fanotify/.gitignore
+Can you fix your mailer to to generate in-reply-to headers and try
+again stating your question?
 
-diff --git a/samples/fanotify/.gitignore b/samples/fanotify/.gitignore
-new file mode 100644
-index 000000000000..d74593e8b2de
---- /dev/null
-+++ b/samples/fanotify/.gitignore
-@@ -0,0 +1 @@
-+fs-monitor
--- 
-2.45.2
+BR,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
+--1FSJMhHn9SwfI8ay
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZqFnnQAKCRAw5/Bqldv6
+8rfJAJ0Q02nfe0QeU5bfe8BTBMXgv7bBYgCgu1HMRgTknNvji/43xUrIsFCd9tM=
+=g0nH
+-----END PGP SIGNATURE-----
+
+--1FSJMhHn9SwfI8ay--
 
