@@ -1,109 +1,181 @@
-Return-Path: <stable+bounces-61242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF27493ACD5
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C260B93ACD7
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 736031F23859
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:52:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 420AE1F236EB
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C7E53368;
-	Wed, 24 Jul 2024 06:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB26955E48;
+	Wed, 24 Jul 2024 06:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A3Q8C8wS"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055FED29E;
-	Wed, 24 Jul 2024 06:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF26D29E;
+	Wed, 24 Jul 2024 06:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721803942; cv=none; b=QQxGr1JZ33lyASV7hgzCwngLWYe7PPw/5FMKQQ0v+PUJgNs6SQJ2xJ41w+kUfi1zici/zeqHQVrFawqxJKhFAQf3ymA8CfywN2Fvct5lvnhEP/s6iB+qTdQotLKE1TAIv/J6eiKHw56rDyLt8xJBT29giO/z6Ed+/pck+NNv6mw=
+	t=1721803961; cv=none; b=BEACeLJLoaQ2tt3roJweyY/K9pqxRPpA+38JF7MO9aUaDAKCH2OZQ/o9R3tlVI5pI1ik8d+AXUsnIIqA/YAWyJtqfKBmahPrqb8WrXc9U1VKmBPndJAtgOer9dsDND6Sq48ajCtOZu4Dh3gziULFJkSq9jx2p1BWx85xIhnb1FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721803942; c=relaxed/simple;
-	bh=BvITnZGwrv0DcMi9+rbLEpK9pqpsSHIG6x1UYrJpaw0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SjYl+c3ykdmAAzO6SU0KzsmUuCloplprZzfvMdBSCUSCWVLcNhknjkSXr3C/mgPjI7luhem5kB2Olyq5ST9zEaTdEyx1H+8mqEYxeRk6gkXTKOkn3ahRTCiN3RMU+0aoICKNgiT1G7g2AGtuTsI5pzE+fQ0nXXImqUbzkrSGIHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowAB3XjmMpKBmcKe0AA--.12072S2;
-	Wed, 24 Jul 2024 14:52:04 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	noralf@tronnes.org,
-	sam@ravnborg.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 RESEND] drm/client: fix null pointer dereference in drm_client_modeset_probe
-Date: Wed, 24 Jul 2024 14:51:55 +0800
-Message-Id: <20240724065155.1491111-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1721803961; c=relaxed/simple;
+	bh=Bfx5l7uwGafxxKFg8g544NeKdX/OJ82VNbHROmOPw5M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FA580erEKOmyxnu+6i+U8sLWxuo8AkJZ692rPhfh33kJ1VaVxDe4lZFn5oXHq46lfh4N4lgbbkVnvZua/vjEGpldtvQf8RclwEK6xZzVj0ye89oePhBkitCkrA0Fg1HwC3qdZX6FXsHqLodhf91ThtxA+6qLseltusHC6FYrLGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A3Q8C8wS; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-79f15e7c879so437082685a.1;
+        Tue, 23 Jul 2024 23:52:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721803959; x=1722408759; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bfx5l7uwGafxxKFg8g544NeKdX/OJ82VNbHROmOPw5M=;
+        b=A3Q8C8wSHTLjn9T6tTCCJaIErKOz9ThUiIwUM9LodnuJXEPORCV2MvOoROjpbniqR4
+         RCW1QHEgyT47rPUHMqTZxKtHCZn3W4pMe+G2qyzQOkgzlikhIddLvFMFqM7HZcq3TkhD
+         kSsP8OJr5MIsNn7gL1BL8UnVZfR9pqfsSVTbcdmhm9q0gClJ4gXmrCQFEnEjmozfDB5o
+         X8muNZF40G51tRoL43YO1EfkUpEBK3AQx3wyUt2+gRV4X3cJGUpvUN0MbuBdLVYbG8qk
+         f8vvuI4nFFArgvSsxMPnsvD57io1DQhQgv4WirW33NbQXeYdmapbE4ENpgstV+aG6tYS
+         6aFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721803959; x=1722408759;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Bfx5l7uwGafxxKFg8g544NeKdX/OJ82VNbHROmOPw5M=;
+        b=SyfmVbHlU36AiNlhRm9600p0/zzW7UFcVsvy4BF/451hD/Q3FM3shBFLJg8CQHbz18
+         LBR9lZP+obKZvTKyzaw0p8K07Sf7z26hjSAcFgJkJjBxHQlBvQ3z6vr8GtZNr9YrQyeA
+         mu/X62CQEfHebkMq1k9uFOej6iauStxRXJCJ/0Y7IM19vHyhDIAkqNO7Q2woEZRXC0xK
+         9Yjfz903LZ4chZ7buWUT7HKSjXR+aHdD1ScHvVn/eGEnh2w94oJA8WzpwyFZ7cK7XVHD
+         XKs3jbuJuarhVBSXiDOQIhwygX4UpW07Zdj+jrtWLOUaukANdYOsw0zwd7oAaxqfPcfL
+         5ClQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEYV14wiV7F1MwMkdKBQJKY6wzy0pKQUqjp0JPlthDuRH5s++lnBdk7F1Z5uUDGjcKGK5fIruzb2RM5ru2Y5Xkc1+ZbehlBnxof2GecJVJIrQtQUwxk+sjQcqXsd8/1jbAYg==
+X-Gm-Message-State: AOJu0Yyvztsktb2T2nF7XTyi+t/Dbog7p3hfVKEx+OY94uh67jkMcoLT
+	fPZNikfumdNIhvmcTr+edAN7+aZeYNjIYvc/QGQCN8EipPFTZjik2ZmOCru8bDfC96k5GI6pxlR
+	F/FMXZTft4P38VriabUQ0/nenwBs=
+X-Google-Smtp-Source: AGHT+IFfEqKfp851TI5GZPpKydt1I9aSw9uQDJMX+tizWj/bXIso7OPQLfv/VqnOOQ/0D4vxzeFCclLX2uexl3AmuU4=
+X-Received: by 2002:a05:620a:400a:b0:79f:b34:9edc with SMTP id
+ af79cd13be357-7a1cbd35be0mr139400485a.66.1721803958898; Tue, 23 Jul 2024
+ 23:52:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAB3XjmMpKBmcKe0AA--.12072S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrtr4DZw13CFy5urW7urW5trb_yoW8Jr18pr
-	43JF90yF4jvrZrKFs2va97CF17A3W3JF48G3W7Aan3u3Z0qry2vryYvr13WFy7Gry3JF1U
-	JrnIyFW2qF18CaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU122NtUUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+References: <20240618123422.213844892@linuxfoundation.org> <1721718387-9038-1-git-send-email-ajay.kaher@broadcom.com>
+ <CAOQ4uxgz4Gq2Yg4upLWrOf15FaDuAPppRVsLbYvMxrLbpHJE1g@mail.gmail.com> <1C4B79C7-D88F-4664-AA99-4C9A39A32934@oracle.com>
+In-Reply-To: <1C4B79C7-D88F-4664-AA99-4C9A39A32934@oracle.com>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Wed, 24 Jul 2024 09:52:27 +0300
+Message-ID: <CAOQ4uxiWttnpLBbFzVjQLKbeubbwWG35pn3Ve_majuV9a0mPJQ@mail.gmail.com>
+Subject: Re: [PATCH 5.10 387/770] fanotify: Allow users to request
+ FAN_FS_ERROR events
+To: Chuck Lever III <chuck.lever@oracle.com>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "jack@suse.cz" <jack@suse.cz>, 
+	"krisman@collabora.com" <krisman@collabora.com>, "patches@lists.linux.dev" <patches@lists.linux.dev>, 
+	"sashal@kernel.org" <sashal@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"adilger.kernel@dilger.ca" <adilger.kernel@dilger.ca>, 
+	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>, "tytso@mit.edu" <tytso@mit.edu>, 
+	"alexey.makhalov@broadcom.com" <alexey.makhalov@broadcom.com>, 
+	"vasavi.sirnapalli@broadcom.com" <vasavi.sirnapalli@broadcom.com>, 
+	"florian.fainelli@broadcom.com" <florian.fainelli@broadcom.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In drm_client_modeset_probe(), the return value of drm_mode_duplicate() is
-assigned to modeset->mode, which will lead to a possible NULL pointer
-dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
+On Tue, Jul 23, 2024 at 4:48=E2=80=AFPM Chuck Lever III <chuck.lever@oracle=
+.com> wrote:
+>
+>
+>
+> > On Jul 23, 2024, at 5:20=E2=80=AFAM, Amir Goldstein <amir73il@gmail.com=
+> wrote:
+> >
+> > On Tue, Jul 23, 2024 at 10:06=E2=80=AFAM Ajay Kaher <ajay.kaher@broadco=
+m.com> wrote:
+> >>
+> >>> [ Upstream commit 9709bd548f11a092d124698118013f66e1740f9b ]
+> >>>
+> >>> Wire up the FAN_FS_ERROR event in the fanotify_mark syscall, allowing
+> >>> user space to request the monitoring of FAN_FS_ERROR events.
+> >>>
+> >>> These events are limited to filesystem marks, so check it is the
+> >>> case in the syscall handler.
+> >>
+> >> Greg,
+> >>
+> >> Without 9709bd548f11 in v5.10.y skips LTP fanotify22 test case, as:
+> >> fanotify22.c:312: TCONF: FAN_FS_ERROR not supported in kernel
+> >>
+> >> With 9709bd548f11 in v5.10.220, LTP fanotify22 is failing because of
+> >> timeout as no notification. To fix need to merge following two upstrea=
+m
+> >> commit to v5.10:
+> >>
+> >> 124e7c61deb27d758df5ec0521c36cf08d417f7a:
+> >> 0001-ext4_fix_error_code_saved_on_super_block_during_file_system.patch
+> >> https://lore.kernel.org/stable/1721717240-8786-1-git-send-email-ajay.k=
+aher@broadcom.com/T/#mf76930487697d8c1383ed5d21678fe504e8e2305
+> >>
+> >> 9a089b21f79b47eed240d4da7ea0d049de7c9b4d:
+> >> 0001-ext4_Send_notifications_on_error.patch
+> >> Link: https://lore.kernel.org/stable/1721717240-8786-1-git-send-email-=
+ajay.kaher@broadcom.com/T/#md1be98e0ecafe4f92d7b61c048e15bcf286cbd53
+> >>
+> >> -Ajay
+> >
+> > I agree that this is the best approach, because the test has no other
+> > way to test
+> > if ext4 specifically supports FAN_FS_ERROR.
+> >
+> > Chuck,
+> >
+> > I wonder how those patches end up in 5.15.y but not in 5.10.y?
+>
+> The process was by hand. I tried to copy the same
+> commit ID set from 5.15 to 5.10, but some patches
+> did not apply to 5.10, or may have been omitted
+> unintentionally.
+>
+>
+> > Also, since you backported *most* of this series:
+> > https://lore.kernel.org/all/20211025192746.66445-1-krisman@collabora.co=
+m/
+> >
+> > I think it would be wise to also backport the sample code and documenta=
+tion
+> > patches to 5.15.y and 5.10.y.
+> >
+> > 9abeae5d4458 docs: Fix formatting of literal sections in fanotify docs
+> > 8fc70b3a142f samples: Make fs-monitor depend on libc and headers
+> > c0baf9ac0b05 docs: Document the FAN_FS_ERROR event
+> > 5451093081db samples: Add fs error monitoring example.
+> >
+> > Gabriel, if 9abeae5d4458 has a Fixes: tag it may have been auto seleced
+> > for 5.15.y after c0baf9ac0b05 was picked up...
+>
+> Or this... I might not have backported those at all
+> to 5.15, and they got pulled in by another process.
+>
+> In any event, do you want me to backport these to
+> 5.10, or would you like to do it yourself?
+>
 
-Cc: stable@vger.kernel.org
-Fixes: cf13909aee05 ("drm/fb-helper: Move out modeset config code")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v2:
-- added the recipient's email address, due to the prolonged absence of a 
-response from the recipients.
-- added Cc stable.
----
- drivers/gpu/drm/drm_client_modeset.c | 3 +++
- 1 file changed, 3 insertions(+)
+Please backport the docs and sample patches above to 5.15 and 5.10
+for completion of the backport.
 
-diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
-index 31af5cf37a09..cca37b225385 100644
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -880,6 +880,9 @@ int drm_client_modeset_probe(struct drm_client_dev *client, unsigned int width,
- 
- 			kfree(modeset->mode);
- 			modeset->mode = drm_mode_duplicate(dev, mode);
-+			if (!modeset->mode)
-+				continue;
-+
- 			drm_connector_get(connector);
- 			modeset->connectors[modeset->num_connectors++] = connector;
- 			modeset->x = offset->x;
--- 
-2.25.1
+I do not expect you should have any major conflicts with these standalone
+document and sample code.
 
+Thanks,
+Amir.
 
