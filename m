@@ -1,70 +1,52 @@
-Return-Path: <stable+bounces-61241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDE4893ACD2
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:52:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF27493ACD5
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:52:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E76E2834DC
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:52:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 736031F23859
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E131A53368;
-	Wed, 24 Jul 2024 06:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="R9kQEeSt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C7E53368;
+	Wed, 24 Jul 2024 06:52:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2DFD29E;
-	Wed, 24 Jul 2024 06:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055FED29E;
+	Wed, 24 Jul 2024 06:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721803924; cv=none; b=RApfP0jx9vfM/x89xCvv8FScd+FmVPGMmtSAbszFsDqCOQXfjROBGMOfJ0EGvcFmAbsTs0rzULjsVmvNndjlcFmMUXuUGS9RsBxlg5QKFv45haJ1WtP1e7XCRQGiedmKk9EMYfveWASVYVwYtGbo/s1f4Hqfa1r/8YqExpnTTIQ=
+	t=1721803942; cv=none; b=QQxGr1JZ33lyASV7hgzCwngLWYe7PPw/5FMKQQ0v+PUJgNs6SQJ2xJ41w+kUfi1zici/zeqHQVrFawqxJKhFAQf3ymA8CfywN2Fvct5lvnhEP/s6iB+qTdQotLKE1TAIv/J6eiKHw56rDyLt8xJBT29giO/z6Ed+/pck+NNv6mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721803924; c=relaxed/simple;
-	bh=BKJYkElVdsyTz+MpTbuIrQNslbwroEkRjhC7/2y1VaM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U9SKfaA4rYyMKFMS//A2DCXjSIERtP7xi0heL94iVlF8todZhYhOIYqn3HDV1HX96kg/XBCXzAQ6EKG1O0sYfcRZnVURYCD2BG+xSfO+E1bpfE134CBk7pWWmTRerw3YLUHrTIKVD4tZCeK3FOYG/TjwfxSYBX6H8Y7eLKrlGEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=R9kQEeSt; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 46O6or1x108730;
-	Wed, 24 Jul 2024 01:50:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1721803853;
-	bh=5zKtgi31JMulsen7u4BdGoizzwd/ypkXhdtnrLehHH4=;
-	h=From:To:CC:Subject:Date;
-	b=R9kQEeStn5qFzjwdoTKuoydTgDH5MPkPNt/cVYAdxa1OvlmN1+a6WGdUxDd+MbcCq
-	 bw76yLGgYgMXGyAKXLKJFPhTl5PU5zXMSQck+ktm30v9IoiK/WHb/Q/H+sVsmZE1Ts
-	 m6ZeYo5wG9fHw+Ps+M6eu5kudZ1nMfUl9XwVD/DQ=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 46O6orV7079908
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 24 Jul 2024 01:50:53 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 24
- Jul 2024 01:50:52 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 24 Jul 2024 01:50:52 -0500
-Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.81])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 46O6omlk070009;
-	Wed, 24 Jul 2024 01:50:49 -0500
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: <bhelgaas@google.com>, <lpieralisi@kernel.org>, <kw@linux.com>,
-        <robh@kernel.org>, <vigneshr@ti.com>, <kishon@kernel.org>
-CC: <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <stable@vger.kernel.org>,
-        <ahalaney@redhat.com>, <srk@ti.com>, <s-vadapalli@ti.com>
-Subject: [PATCH] PCI: j721e: Set .map_irq and .swizzle_irq to NULL
-Date: Wed, 24 Jul 2024 12:20:48 +0530
-Message-ID: <20240724065048.285838-1-s-vadapalli@ti.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1721803942; c=relaxed/simple;
+	bh=BvITnZGwrv0DcMi9+rbLEpK9pqpsSHIG6x1UYrJpaw0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SjYl+c3ykdmAAzO6SU0KzsmUuCloplprZzfvMdBSCUSCWVLcNhknjkSXr3C/mgPjI7luhem5kB2Olyq5ST9zEaTdEyx1H+8mqEYxeRk6gkXTKOkn3ahRTCiN3RMU+0aoICKNgiT1G7g2AGtuTsI5pzE+fQ0nXXImqUbzkrSGIHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowAB3XjmMpKBmcKe0AA--.12072S2;
+	Wed, 24 Jul 2024 14:52:04 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	noralf@tronnes.org,
+	sam@ravnborg.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 RESEND] drm/client: fix null pointer dereference in drm_client_modeset_probe
+Date: Wed, 24 Jul 2024 14:51:55 +0800
+Message-Id: <20240724065155.1491111-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,50 +54,56 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-CM-TRANSID:zQCowAB3XjmMpKBmcKe0AA--.12072S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrtr4DZw13CFy5urW7urW5trb_yoW8Jr18pr
+	43JF90yF4jvrZrKFs2va97CF17A3W3JF48G3W7Aan3u3Z0qry2vryYvr13WFy7Gry3JF1U
+	JrnIyFW2qF18CaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
+	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
+	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
+	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
+	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU122NtUUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Since the configuration of Legacy Interrupts (INTx) is not supported, set
-the .map_irq and .swizzle_irq callbacks to NULL. This fixes the error:
-  of_irq_parse_pci: failed with rc=-22
-due to the absence of Legacy Interrupts in the device-tree.
+In drm_client_modeset_probe(), the return value of drm_mode_duplicate() is
+assigned to modeset->mode, which will lead to a possible NULL pointer
+dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
-Reported-by: Andrew Halaney <ahalaney@redhat.com>
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: stable@vger.kernel.org
+Fixes: cf13909aee05 ("drm/fb-helper: Move out modeset config code")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
+Changes in v2:
+- added the recipient's email address, due to the prolonged absence of a 
+response from the recipients.
+- added Cc stable.
+---
+ drivers/gpu/drm/drm_client_modeset.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Hello,
-
-This patch is based on commit
-786c8248dbd3 Merge tag 'perf-tools-fixes-for-v6.11-2024-07-23' of git://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools
-of Mainline Linux.
-
-Patch has been tested on J784S4-EVM and J721e-EVM, both of which have
-the PCIe Controller configured by the pci-j721e.c driver.
-
-Regards,
-Siddharth.
-
- drivers/pci/controller/cadence/pci-j721e.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index 85718246016b..5372218849a8 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -417,6 +417,10 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 		if (!bridge)
- 			return -ENOMEM;
+diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
+index 31af5cf37a09..cca37b225385 100644
+--- a/drivers/gpu/drm/drm_client_modeset.c
++++ b/drivers/gpu/drm/drm_client_modeset.c
+@@ -880,6 +880,9 @@ int drm_client_modeset_probe(struct drm_client_dev *client, unsigned int width,
  
-+		/* Legacy interrupts are not supported */
-+		bridge->map_irq = NULL;
-+		bridge->swizzle_irq = NULL;
+ 			kfree(modeset->mode);
+ 			modeset->mode = drm_mode_duplicate(dev, mode);
++			if (!modeset->mode)
++				continue;
 +
- 		if (!data->byte_access_allowed)
- 			bridge->ops = &cdns_ti_pcie_host_ops;
- 		rc = pci_host_bridge_priv(bridge);
+ 			drm_connector_get(connector);
+ 			modeset->connectors[modeset->num_connectors++] = connector;
+ 			modeset->x = offset->x;
 -- 
-2.40.1
+2.25.1
 
 
