@@ -1,108 +1,138 @@
-Return-Path: <stable+bounces-61230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3000B93AC12
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:56:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A6E93AC1F
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 07:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA52A1F22945
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 04:56:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B22791F238F3
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 05:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC5C3EA98;
-	Wed, 24 Jul 2024 04:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7FED2D030;
+	Wed, 24 Jul 2024 05:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="l4Zfhmjv"
 X-Original-To: stable@vger.kernel.org
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.62.65])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3751FDF5B;
-	Wed, 24 Jul 2024 04:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.62.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E782572;
+	Wed, 24 Jul 2024 05:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721796992; cv=none; b=Cam0l+VgP2IbpGFZpTPko/16JPH9xbjbROh4f/lfztO/38uNicrQtCqzq7o8PAEXjhwtHW6cz623SafdpEWBqqMtC/JgyMrSegINqgBlxgzflvSSyL/gi2qouk5DhEtHbj+jZEdfAF6yc0Ds4FpA0ZRj3CYF/PJcB4BVQ9Fw0e0=
+	t=1721797343; cv=none; b=D87WkD2OmSEEK5+/1Jl84P4SSQOWdLuQzl8+bGviNUM48hjhqTNcRxQ0R+nxglFWdqJ3yK4XwDxqfC0rpNQmtNcDbEi7ocPuvrUA6Y4DjVuxh0zEydTZOEpgCZZW2TJKcL1HtMSJO1Q+g05OGASa7JbHF4vNgBadQRb7FDdCHGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721796992; c=relaxed/simple;
-	bh=ojRQbAahHTByEAfI1eOYOni1gIRLm26bkB+y4at/GTg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n2xoCCtM/oq84UMe4R7aKS/a2mHFwmk8prUxrwp86xulIbQdUDkSAx8BvVaH+ip2SGYpq3ilTDqPYTrTfQVEpWDY+fjMZcmDlY0mfSkNOO5chk4zCUsUVZ4VzI6q6/zThxoB3KbRG0NufytH1OfU6JKqlA61WukUUBzhBh/FnNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=114.132.62.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-X-QQ-mid: bizesmtpip1t1721796955tn1j07u
-X-QQ-Originating-IP: ngYma45+Uyq6qWUH9KZ71PKZU1IDMA1Xub2T+rMrxJ4=
-Received: from [IPV6:240e:36c:d5d:2c00:58c6:db ( [255.146.199.5])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 24 Jul 2024 12:55:53 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 17571171907496050409
-Message-ID: <206F8E88DD4C4DD9+5197bc65-d440-4ad5-8b19-e1f83f4a1c7a@uniontech.com>
-Date: Wed, 24 Jul 2024 12:55:52 +0800
+	s=arc-20240116; t=1721797343; c=relaxed/simple;
+	bh=XznGPAWH1LE+KdN7UzH3hCTk1TDPC7ZWm715rJxS5W0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AVHHZUGtL4OIF5QnV4IfislY3w7gc+FcbI/HoK2scgXNCqFGN06gw2MjG8Nkl62WlbiK4I8u2Td1R2vTXoB3Kd/oarrCz5hSYAnryUu9vzeY8Z4PWM0wABudR5XtuG2dhlC3W7djwNIOvEmtqzeahX5fklsx+J7QXaMBGcbiQOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=l4Zfhmjv; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46NKtgx7031494;
+	Wed, 24 Jul 2024 05:02:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=sSkacKMONTrzkrrMYc0qr0K3
+	kPoP3yT+LTuiwdNb9wQ=; b=l4ZfhmjvvmNmDJcwh+zONHP+JFxBNECGyfqOlQln
+	Z5mdPgpQ19xTjwu2sonjJxYWZ3KbbsXMVDhij4bLPIifbXNJwgzUsQjZ64sniQNk
+	Wk4vpk+EyK2N9GI+9K9cq/ve5kNFaqPA373TdoXH56UtzGCinQ/y/9xKMJFF7ju9
+	BQLG4xIWNhr0b5Xy1ubZc0dTLUzZKYwJx/CzfLeloPxmK5byuqnppCU389USoyvX
+	V1SDteLmYsoZ5Fvn5jhvlRnpm4QtUEFAWBgtNao/u06ru3QcN0Xees60vBlZL41/
+	85ZdpGXcXoc0nj1yGDE+oD/eIchNibyeB2nW0B1Z/tz4Gw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40g46s9015-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jul 2024 05:02:00 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46O51xdc013138
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jul 2024 05:01:59 GMT
+Received: from hu-pkondeti-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 23 Jul 2024 22:01:54 -0700
+Date: Wed, 24 Jul 2024 10:31:51 +0530
+From: Pavan Kondeti <quic_pkondeti@quicinc.com>
+To: Caleb Connolly <caleb.connolly@linaro.org>,
+        Bjorn Andersson
+	<andersson@kernel.org>
+CC: Maulik Shah <quic_mkshah@quicinc.com>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>, <stephan@gerhold.net>,
+        <swboyd@chromium.org>, <dianders@chromium.org>, <robdclark@gmail.com>,
+        <nikita@trvn.ru>, <quic_eberman@quicinc.com>,
+        <quic_pkondeti@quicinc.com>, <quic_lsrao@quicinc.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Volodymyr
+ Babchuk" <Volodymyr_Babchuk@epam.com>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] soc: qcom: cmd-db: Map shared memory as WC, not WB
+Message-ID: <93c41b18-2280-496b-8328-9f46a68a6220@quicinc.com>
+References: <20240718-cmd_db_uncached-v2-1-f6cf53164c90@quicinc.com>
+ <d17e7e6d-12dd-475d-80ae-fa48178d6cf2@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4.19 0/4] ext4: improve delalloc buffer write
- performance
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, sashal@kernel.org, yi.zhang@huawei.com,
- jack@suse.cz, tytso@mit.edu, adilger.kernel@dilger.ca,
- linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
- yukuai3@huawei.com, niecheng1@uniontech.com, zhangdandan@uniontech.com,
- guanwentao@uniontech.com, chenyichong@uniontech.com, wentao@uniontech.com
-References: <78C2D546AD199A57+20240720160420.578940-1-wangyuli@uniontech.com>
- <2024072316-thirty-cytoplasm-2b81@gregkh>
-From: WangYuli <wangyuli@uniontech.com>
-In-Reply-To: <2024072316-thirty-cytoplasm-2b81@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <d17e7e6d-12dd-475d-80ae-fa48178d6cf2@linaro.org>
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: SCHjLmbyun9BotGvVvxjTkQjNLrpgA2Y
+X-Proofpoint-ORIG-GUID: SCHjLmbyun9BotGvVvxjTkQjNLrpgA2Y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-24_02,2024-07-23_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 malwarescore=0
+ priorityscore=1501 phishscore=0 adultscore=0 suspectscore=0 spamscore=0
+ mlxlogscore=832 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407240035
 
-Hi greg k-h,
+Hi Bjorn,
 
-As a commercial Linux distribution maintainer, we understand that
+On Thu, Jul 18, 2024 at 09:41:34AM +0200, Caleb Connolly wrote:
+> 
+> 
+> On 18/07/2024 08:03, Maulik Shah wrote:
+> > From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+> > 
+> > Linux does not write into cmd-db region. This region of memory is write
+> > protected by XPU. XPU may sometime falsely detect clean cache eviction
+> > as "write" into the write protected region leading to secure interrupt
+> > which causes an endless loop somewhere in Trust Zone.
+> > 
+> > The only reason it is working right now is because Qualcomm Hypervisor
+> > maps the same region as Non-Cacheable memory in Stage 2 translation
+> > tables. The issue manifests if we want to use another hypervisor (like
+> > Xen or KVM), which does not know anything about those specific mappings.
+> > 
+> > Changing the mapping of cmd-db memory from MEMREMAP_WB to MEMREMAP_WT/WC
+> > removes dependency on correct mappings in Stage 2 tables. This patch
+> > fixes the issue by updating the mapping to MEMREMAP_WC.
+> > 
+> > I tested this on SA8155P with Xen.
+> > 
+> > Fixes: 312416d9171a ("drivers: qcom: add command DB driver")
+> > Cc: stable@vger.kernel.org # 5.4+
+> > Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+> > Tested-by: Nikita Travkin <nikita@trvn.ru> # sc7180 WoA in EL2
+> > Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+> 
+> Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
 
-even though upstream support for linux-4.19.y is ending, our users'
+Is it possible to include it in v6.11-rc?
 
-reliance on this kernel version will not cease immediately.
-
-
-They often lack the time or resources to promptly migrate all their
-
-devices to a newer kernel, due to considerations such as stability,
-
-operational costs, and other factors.
-
-
-Therefore, to provide a more graceful conclusion to the linux-4.19.y
-
-lifecycle, we propose backporting these performance optimizations
-
-to extend its useful life  and ensure a smooth transition for commercial
-
-users by the way.
-
-
-Of course, we appreciate your suggestion and will prioritize backporting
-
-these optimizations to linux-5.10.y and linux 5.4.y first.
-
-
-Stay tuned for updates. We are committed to staying informed about kernel
-
-updates and community trends. Thanks.
-
-
-Sincerely,
-
-
---
-
-WangYuli
-
+Thanks,
+Pavan
 
