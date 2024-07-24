@@ -1,170 +1,134 @@
-Return-Path: <stable+bounces-61224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3232393A9FD
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 01:42:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C2F93AAD7
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 03:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C840B229A3
-	for <lists+stable@lfdr.de>; Tue, 23 Jul 2024 23:42:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D29601C22C74
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 01:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF6E149C40;
-	Tue, 23 Jul 2024 23:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FqJdwF7F"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A666DF5B;
+	Wed, 24 Jul 2024 01:58:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C062913BAD5;
-	Tue, 23 Jul 2024 23:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C90BA47;
+	Wed, 24 Jul 2024 01:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721778130; cv=none; b=L2CgSct8Fz3HvFoVeH0KnVSTNKbEHNDnXUVJ6lwb/m4GlOsoiEKEe/7FRJnUZ4wR8IB7+XCEQaEwm3euuI+h2jg0Uo8+z59DTV3YRJzdu6UDTBG7LghYaxkNaIkwAKaNK1b3RkMaGB8alFZ6k8cDbc/NUfeo2b8/yrgJKjdzXfc=
+	t=1721786303; cv=none; b=CWSxNhoyzMKY/1uGF7dL4GxKik72EXbEM/QwvckO+palZwvs5Pj0BJs7bKMUSTd/AOzIpnXXA13hXmiNe0ELV9Do0a0KvcTWhh562zo2NWh0ngfgsa8jMb8sEypB8Ba5QFrRWdSUsJQAEmK20MDkayWr6MS7zlgpbutf6gWaTjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721778130; c=relaxed/simple;
-	bh=Rs4LiG21LvaC+228rMu8nD6v4wr0Ti8neyhdM1Yppu4=;
-	h=Date:To:From:Subject:Message-Id; b=NMGCihyRa0+7tmjBTqAiLAmMcMD/KQt3REp1oxwxG8krQaFZWM3zxk+TQ0EEShmpPToQRtmwsr4bEneQZetkGp7W5fNHYAorAu72Gx+A3u0S77byVMyR7GWNWvTJdXfSAYBTXP/o9qrZKKpLVb/t7nNsApZ8ezS7TF1Iidl9VSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FqJdwF7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD18C4AF09;
-	Tue, 23 Jul 2024 23:42:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1721778130;
-	bh=Rs4LiG21LvaC+228rMu8nD6v4wr0Ti8neyhdM1Yppu4=;
-	h=Date:To:From:Subject:From;
-	b=FqJdwF7F/hf+YoYPHnYacENKoAoW4vydRmhJ+nQDfyp4RuGwGijZD4WPjOUsdk8k8
-	 Jni7mo5GyC7tFWAdOa0e9y9MgYgmAmbtM3tBSSg4hChg+U6kRyQxu5Y9hlaGZxqV7z
-	 2Vles0aQ7K/9FfBae3MOgXRRSe8bI6dimbgy04So=
-Date: Tue, 23 Jul 2024 16:42:09 -0700
-To: mm-commits@vger.kernel.org,yaoxt.fnst@fujitsu.com,vbabka@suse.cz,stable@vger.kernel.org,david@redhat.com,lizhijian@fujitsu.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240723234210.3DD18C4AF09@smtp.kernel.org>
+	s=arc-20240116; t=1721786303; c=relaxed/simple;
+	bh=zTI/9lOgKmgqllYrdOynyvXw5CkyrdYdZJmnrTzc4vI=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=UhLfd6tUnwmjJ26D4WULqBOxf7iWV8r4/pQ8+obgLdREMvP6AFs28ehRb1qFuZS35iSu6iRKV73JWEfQUJjOQ9AfKmB7zMDGJSc2xXnQX62H2NXQQ9WaibHuWSVS92lJoK+VAmJflsTsWzppkO8ayZp9nBH0sURTnEtFwa5s0nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [111.207.111.194])
+	by gateway (Coremail) with SMTP id _____8Cxruu6X6BmkMYAAA--.3159S3;
+	Wed, 24 Jul 2024 09:58:18 +0800 (CST)
+Received: from [10.180.13.176] (unknown [111.207.111.194])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8AxBMW4X6Bm8ppWAA--.50447S3;
+	Wed, 24 Jul 2024 09:58:17 +0800 (CST)
+Subject: Re: [PATCH v3] PCI: pci_call_probe: call local_pci_probe() when
+ selected cpu is offline
+To: Ethan Zhao <haifeng.zhao@linux.intel.com>,
+ Markus Elfring <Markus.Elfring@web.de>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: Alex Belits <abelits@marvell.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Nitesh Narayan Lal <nitesh@redhat.com>,
+ Frederic Weisbecker <frederic@kernel.org>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ stable@vger.kernel.org, Huacai Chen <chenhuacai@loongson.cn>
+References: <20240613074258.4124603-1-zhanghongchen@loongson.cn>
+ <a50b3865-8a04-4a9a-8d27-b317619a75c0@linux.intel.com>
+From: Hongchen Zhang <zhanghongchen@loongson.cn>
+Message-ID: <7340a27e-67c1-c0c3-9304-77710dc44f7f@loongson.cn>
+Date: Wed, 24 Jul 2024 09:58:16 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+In-Reply-To: <a50b3865-8a04-4a9a-8d27-b317619a75c0@linux.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAf8AxBMW4X6Bm8ppWAA--.50447S3
+X-CM-SenderInfo: x2kd0w5krqwupkhqwqxorr0wxvrqhubq/1tbiAQAIB2agXhkAJQABsr
+X-Coremail-Antispam: 1Uk129KBj93XoW7trW3Jw4kZFW7XF18Jr17CFX_yoW8Cw4kpF
+	WkJayFkrWvqF48CasFqa18uFyFgwsrJa4Ikw4xA3W5ZFW3AF1Iqr47WwnIgr1UGrWkZr1I
+	y3WUXrykuFW5ZFbCm3ZEXasCq-sJn29KB7ZKAUJUUUU3529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4j6r4UJwAaw2AFwI0_JF0_Jw1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
+	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_
+	Jw1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
+	CYjI0SjxkI62AI1cAE67vIY487MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48J
+	MxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUcbAwUUUUU
+
+Hi Ethan,
+On 2024/7/22 PM 3:39, Ethan Zhao wrote:
+> 
+> On 6/13/2024 3:42 PM, Hongchen Zhang wrote:
+>> Call work_on_cpu(cpu, fn, arg) in pci_call_probe() while the argument
+>> @cpu is a offline cpu would cause system stuck forever.
+>>
+>> This can be happen if a node is online while all its CPUs are
+>> offline (We can use "maxcpus=1" without "nr_cpus=1" to reproduce it).
+>>
+>> So, in the above case, let pci_call_probe() call local_pci_probe()
+>> instead of work_on_cpu() when the best selected cpu is offline.
+>>
+>> Fixes: 69a18b18699b ("PCI: Restrict probe functions to housekeeping 
+>> CPUs")
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>> Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+>> ---
+>> v2 -> v3: Modify commit message according to Markus's suggestion
+>> v1 -> v2: Add a method to reproduce the problem
+>> ---
+>>   drivers/pci/pci-driver.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+>> index af2996d0d17f..32a99828e6a3 100644
+>> --- a/drivers/pci/pci-driver.c
+>> +++ b/drivers/pci/pci-driver.c
+>> @@ -386,7 +386,7 @@ static int pci_call_probe(struct pci_driver *drv, 
+>> struct pci_dev *dev,
+>>           free_cpumask_var(wq_domain_mask);
+>>       }
+>> -    if (cpu < nr_cpu_ids)
+> 
+> Why not choose the right cpu to callwork_on_cpu() ? the one that is 
+> online. Thanks, Ethan
+Yes, let housekeeping_cpumask() return online cpu is a good idea, but it 
+may be changed by command line. so the simplest way is to call 
+local_pci_probe when the best selected cpu is offline.
+> 
+>> +    if ((cpu < nr_cpu_ids) && cpu_online(cpu))
+>>           error = work_on_cpu(cpu, local_pci_probe, &ddi);
+>>       else
+>>           error = local_pci_probe(&ddi);
 
 
-The patch titled
-     Subject: mm/page_alloc: fix pcp->count race between drain_pages_zone() vs __rmqueue_pcplist()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Li Zhijian <lizhijian@fujitsu.com>
-Subject: mm/page_alloc: fix pcp->count race between drain_pages_zone() vs __rmqueue_pcplist()
-Date: Tue, 23 Jul 2024 14:44:28 +0800
-
-It's expected that no page should be left in pcp_list after calling
-zone_pcp_disable() in offline_pages().  Previously, it's observed that
-offline_pages() gets stuck [1] due to some pages remaining in pcp_list.
-
-Cause:
-There is a race condition between drain_pages_zone() and __rmqueue_pcplist()
-involving the pcp->count variable. See below scenario:
-
-         CPU0                              CPU1
-    ----------------                    ---------------
-                                      spin_lock(&pcp->lock);
-                                      __rmqueue_pcplist() {
-zone_pcp_disable() {
-                                        /* list is empty */
-                                        if (list_empty(list)) {
-                                          /* add pages to pcp_list */
-                                          alloced = rmqueue_bulk()
-  mutex_lock(&pcp_batch_high_lock)
-  ...
-  __drain_all_pages() {
-    drain_pages_zone() {
-      /* read pcp->count, it's 0 here */
-      count = READ_ONCE(pcp->count)
-      /* 0 means nothing to drain */
-                                          /* update pcp->count */
-                                          pcp->count += alloced << order;
-      ...
-                                      ...
-                                      spin_unlock(&pcp->lock);
-
-In this case, after calling zone_pcp_disable() though, there are still some
-pages in pcp_list. And these pages in pcp_list are neither movable nor
-isolated, offline_pages() gets stuck as a result.
-
-Solution:
-Expand the scope of the pcp->lock to also protect pcp->count in
-drain_pages_zone(), to ensure no pages are left in the pcp list after
-zone_pcp_disable()
-
-[1] https://lore.kernel.org/linux-mm/6a07125f-e720-404c-b2f9-e55f3f166e85@fujitsu.com/
-
-Link: https://lkml.kernel.org/r/20240723064428.1179519-1-lizhijian@fujitsu.com
-Fixes: 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reported-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/page_alloc.c |   18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
-
---- a/mm/page_alloc.c~mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist
-+++ a/mm/page_alloc.c
-@@ -2343,16 +2343,20 @@ void drain_zone_pages(struct zone *zone,
- static void drain_pages_zone(unsigned int cpu, struct zone *zone)
- {
- 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
--	int count = READ_ONCE(pcp->count);
--
--	while (count) {
--		int to_drain = min(count, pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
--		count -= to_drain;
-+	int count;
- 
-+	do {
- 		spin_lock(&pcp->lock);
--		free_pcppages_bulk(zone, to_drain, pcp, 0);
-+		count = pcp->count;
-+		if (count) {
-+			int to_drain = min(count,
-+				pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
-+
-+			free_pcppages_bulk(zone, to_drain, pcp, 0);
-+			count -= to_drain;
-+		}
- 		spin_unlock(&pcp->lock);
--	}
-+	} while (count);
- }
- 
- /*
-_
-
-Patches currently in -mm which might be from lizhijian@fujitsu.com are
-
-mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist.patch
+-- 
+Best Regards
+Hongchen Zhang
 
 
