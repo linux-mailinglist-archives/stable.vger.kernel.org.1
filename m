@@ -1,153 +1,93 @@
-Return-Path: <stable+bounces-61265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDA893B005
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 12:56:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1649A93B020
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 13:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CFD31C21B9A
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 10:56:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84500B236FA
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 11:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D65156861;
-	Wed, 24 Jul 2024 10:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8F9156C69;
+	Wed, 24 Jul 2024 11:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="psh+PebM"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE03B1BF38;
-	Wed, 24 Jul 2024 10:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75D12595;
+	Wed, 24 Jul 2024 11:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721818572; cv=none; b=vC9pANMIZb5oXx1nSeN1n50dfxVe58EiKxnyRH4YJeSemHEL0K8ikH6H58VMzM5rfXR+MBigeYqI1OTBqC9yhNNBGSBfLVlPthRaDP1UxYciFSWoqQnlezGGxbLyqErEJxc0tSN+XZEZGk9lytpua0GEVc2rWUpBAJjywsafB7w=
+	t=1721819417; cv=none; b=qlLwdzPXc0tFMfcHaZudoGy3x/raw6gQcxtoIvKGsFHu+owuAMcvHKSgPAmJTnPrGe1BeXqbN7zXktb6nX0xl8jRJT65pBZFNb94pifVES7G5UgZMPkzKyB/HcaXX8526kHlv0GZKyD7coZZEhJJ8p0JPwr66eIEfCLpFOtj4Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721818572; c=relaxed/simple;
-	bh=PCullMsOCoMNGFE9jXzB692xZEYtdQh263JkaEU16zc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kXlUN4jHWw3BNXP6U++qsbZ0RwDQHAEI1tOmRKYHgCRMQtGVYx4gwqu4ao/HgVyIa6ayWgRAZQMWQRRSEo1+ofuez7hb3ZTr6FXgMUOMGc3FiIKNI0K8DWUjbvQaEf3RZ5E4eiNydr1VdMwHLMtvyL6tmYF6n56IuYzf457uyBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowAB3XTin3aBmvIa8AA--.42398S2;
-	Wed, 24 Jul 2024 18:55:45 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: jani.nikula@linux.intel.com
-Cc: airlied@gmail.com,
-	daniel@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	make24@iscas.ac.cn,
-	mripard@kernel.org,
-	noralf@tronnes.org,
-	sam@ravnborg.org,
-	stable@vger.kernel.org,
-	tzimmermann@suse.de
-Subject: Re: [PATCH v3] drm/client: fix null pointer dereference in drm_client_modeset_probe
-Date: Wed, 24 Jul 2024 18:55:35 +0800
-Message-Id: <20240724105535.1524294-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <87ikwvf6ol.fsf@intel.com>
-References: <87ikwvf6ol.fsf@intel.com>
+	s=arc-20240116; t=1721819417; c=relaxed/simple;
+	bh=x8t9NJOWQeOg+i1fCluInEfANgGNE+EVU7axhsmh+4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uOZTa2ckLl7wGKuPOFd3hiR3NeZB9TqTEXbIgeTS39jh9GNrDxeFqY6R4x82FY14DLimSo+rxoBwaZcfePuqYI2JFrLrANDBIShHXFl+cws30f+GV9o3C9cRRUcFb6VWkwNoc2P/46KHKUQiGq0rpt5+itcwUY78EtCVnZB0Upg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=psh+PebM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DF3C4AF0C;
+	Wed, 24 Jul 2024 11:10:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721819417;
+	bh=x8t9NJOWQeOg+i1fCluInEfANgGNE+EVU7axhsmh+4w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=psh+PebM1ZjbRsJBHDv9p/19JcX5p8e4nZhKfbK4IywdOlBd3wOI5E/8Ya+9IznWR
+	 aGOjernpBrxVJLIO6jjRK874mgR0Pgpyi60lvb/S//dLXTSP51wOUGv/C2fg5KboRI
+	 rF1kaid2NTMQUqPet6KT+QkMUib92ARDlmuWu3hA/7hVD3phiGX2uyaz2+3RKqfScb
+	 vCDyF93GiDyHiS6AFzntj3Uu10No/ahuUeMiFFefItnAcR6VTeVwOJ6IDw+UI9NeQM
+	 EmNTTeKCBCTwlfruWlvOxYCQG0BhwaJ6Lij0Ii+VSO0usUQFQs70hV3v8OHeDl1S7c
+	 xB+8p7t8sbx5Q==
+Date: Wed, 24 Jul 2024 12:10:11 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.6 000/129] 6.6.42-rc1 review
+Message-ID: <20240724-dollop-dares-dacb2a8838a5@spud>
+References: <20240723180404.759900207@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:zQCowAB3XTin3aBmvIa8AA--.42398S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7WF1xtF4DWr4ruw43KFWkXrb_yoW8tw4xpr
-	s8GF90yFW0qF9rKFs2v3WxuF13Z3W3Jr48GF17J3Z3C3Z0gry5tryYvr15WF9rCr13KF10
-	qF12yFW3XF4qyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBF14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x
-	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
-	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
-	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
-	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
-	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUQvtAUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="uIbSGgagEDmYS7/N"
+Content-Disposition: inline
+In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
 
-On Wed, 24 Jul 2024, Jani Nikula <jani.nikula@linux.intel.com> wrote:=0D
-> On Wed, 24 Jul 2024, Ma Ke <make24@iscas.ac.cn> wrote:=0D
-> > In drm_client_modeset_probe(), the return value of drm_mode_duplicate()=
- is=0D
-> > assigned to modeset->mode, which will lead to a possible NULL pointer=0D
-> > dereference on failure of drm_mode_duplicate(). Add a check to avoid np=
-d.=0D
-> >=0D
-> > Cc: stable@vger.kernel.org=0D
-> > Fixes: cf13909aee05 ("drm/fb-helper: Move out modeset config code")=0D
-> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>=0D
-> > ---=0D
-> > Changes in v3:=0D
-> > - modified patch as suggestions, returned error directly when failing t=
-o =0D
-> > get modeset->mode.=0D
-> =0D
-> This is not what I suggested, and you can't just return here either.=0D
-> =0D
-> BR,=0D
-> Jani.=0D
-> =0D
-=0D
-I have carefully read through your comments. Based on your comments on the =
-=0D
-patchs I submitted, I am uncertain about the appropriate course of action =
-=0D
-following the return value check(whether to continue or to return directly,=
-=0D
-as both are common approaches in dealing with function drm_mode_duplicate()=
-=0D
-in Linux kernel, and such handling has received 'acked-by' in similar =0D
-vulnerabilities). Could you provide some advice on this matter? Certainly, =
-=0D
-adding a return value check is essential, the reasons for which have been =
-=0D
-detailed in the vulnerability description. I am looking forward to your =0D
-guidance and response. Thank you!=0D
-=0D
-Best regards,=0D
-=0D
-Ma Ke=0D
-=0D
-> =0D
-> > Changes in v2:=0D
-> > - added the recipient's email address, due to the prolonged absence of =
-a =0D
-> > response from the recipients.=0D
-> > - added Cc stable.=0D
-> > ---=0D
-> >  drivers/gpu/drm/drm_client_modeset.c | 3 +++=0D
-> >  1 file changed, 3 insertions(+)=0D
-> >=0D
-> > diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm=
-_client_modeset.c=0D
-> > index 31af5cf37a09..750b8dce0f90 100644=0D
-> > --- a/drivers/gpu/drm/drm_client_modeset.c=0D
-> > +++ b/drivers/gpu/drm/drm_client_modeset.c=0D
-> > @@ -880,6 +880,9 @@ int drm_client_modeset_probe(struct drm_client_dev =
-*client, unsigned int width,=0D
-> >  =0D
-> >  			kfree(modeset->mode);=0D
-> >  			modeset->mode =3D drm_mode_duplicate(dev, mode);=0D
-> > +			if (!modeset->mode)=0D
-> > +				return 0;=0D
-> > +=0D
-> >  			drm_connector_get(connector);=0D
-> >  			modeset->connectors[modeset->num_connectors++] =3D connector;=0D
-> >  			modeset->x =3D offset->x;=0D
-> =0D
-> -- =0D
-> Jani Nikula, Intel=
 
+--uIbSGgagEDmYS7/N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Jul 23, 2024 at 08:22:28PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.42 release.
+> There are 129 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+
+--uIbSGgagEDmYS7/N
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZqDhEwAKCRB4tDGHoIJi
+0rHDAQDOV5kiR+qBRvGzreeok/G8wDoXtf9awtzOIVsl/DNUMwD/djOY2nc8H6f+
+3n1kRbVj8IU/FHxwQAb8oRz02SAaVQ0=
+=/mhP
+-----END PGP SIGNATURE-----
+
+--uIbSGgagEDmYS7/N--
 
