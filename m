@@ -1,234 +1,218 @@
-Return-Path: <stable+bounces-61316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C51C93B62A
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 19:52:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFDF93B657
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 19:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E38C32856CE
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 17:52:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DC2E1C20D8A
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 17:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7875616A938;
-	Wed, 24 Jul 2024 17:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B313416A395;
+	Wed, 24 Jul 2024 17:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cylgMJ7g"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="pyBWyRKq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2061.outbound.protection.outlook.com [40.107.244.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914A515F3E2
-	for <stable@vger.kernel.org>; Wed, 24 Jul 2024 17:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721843534; cv=none; b=JYjMR51EIk+blU00MrMt4K1c7S5aOHyXOPHBu47YNzltfFZ13Ttix4LAOKiv5br0CFKOI76dM4WYTldXLWzraHGWS7wZ7EfpeoOKcY7YhlCvMqv4UdKv+GX8qfDtnts6wCIa+/n8bcPgHZ8LsZOroyfMzSC2v2nUdXTYR7nJANg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721843534; c=relaxed/simple;
-	bh=sDqEtWlJep7UpmEpWBsJ6/EhrdvHDu2nMmYUG7ZwuPY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n6sIX4or+xDPl9xzDwcgsQQop18BWjVCRaSQgnXiZ9w70+KKDkL6agmkYQuIOMyy7qvlkerh2ANVuwQi0UB+iwUkoRTog66e4UrzNqLont55vEUkiHpQr2onYQi4yNQ2RjOuA0oT8ypiGM+ZFoLiZpJqYJQtow1cyqMKujyW3cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cylgMJ7g; arc=none smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-4e1c721c040so35281e0c.3
-        for <stable@vger.kernel.org>; Wed, 24 Jul 2024 10:52:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721843531; x=1722448331; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3adP2UhJX5T3M5okoFY956EupvDoXGJ8C47+StOUW2A=;
-        b=cylgMJ7gVWClhMVjrYpnKqYr8HlqTUt5fNGn50vcPreaznMQ5f5mxR8J0APeVl6ix2
-         /P1R6hBnsLtuaZDUN3nyQs8P0Ibxhr7Kili0Cok7vxGc3X26sEmp9cflpAvdI+Al1LjJ
-         M3zNDtFv+v4K+EeI3aE6di+TOAFI8CpXgEezy6F3rOgEHYB9A62H3R0Q+fJGhn6esj7s
-         AFkq7CqxHJakyjVVywoFxpwAjponz6/uf0fWnRQaf3TNChGYIPUlFJQSYdX3pyvwkvgu
-         UEkOfI6QS8QRQLK1R423hNy/ENUQsNVSiecxdtYenHjNfymb6/2d5MDM3xmQPx8r0iZo
-         OShA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721843531; x=1722448331;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3adP2UhJX5T3M5okoFY956EupvDoXGJ8C47+StOUW2A=;
-        b=g3pSWVsOdZsayH94OOPA4nVUsb1IozrDxvp8/w4FrlYF8fze7f9SK2FiPwEouPydYz
-         hm++dbPllcEray5ICbI8DwYXpNKpHu0i8Fege1Ro9cg9ssQfzfIC+Wf3fwnAfJ5GOM7f
-         w8bjVPfrsLFf99+4IekUPNpJqwmCLKSrr4B6Kc+JwoPix6reDGH8q5c0LQn3MN2kNs+Y
-         w2sAvwbgOCHkelSAqtlrVx82mnJRysgN+gzaTIXRxwMWwdA4AMfrchj1rhiifyUhjZ+n
-         n6h8Of+pGMuqhqBuPBtMv9ZIvKsTqJ6aJTsLoI00CboiJy2kPNaNAjfYSYlDfAs1dYq+
-         vOhw==
-X-Gm-Message-State: AOJu0Yy2kzdoy2lUFIUDg9L7D1gng/JHpKi1lpmKgTe7l/inEzKWcAAf
-	vZJ0EEcBCFeLtb8C2YN833o8gCT75aQ8lsZUTj0vW0mrFC7Y7S1x0pstSNyPVV3XDiXbncnB/fE
-	w1D+sWPADBgLVeWet2NcJp3ZTFYXCxw725wq6rQ==
-X-Google-Smtp-Source: AGHT+IHDm4xN+JjWbVMfPd/q71cCC0mZwVm59ulmwBR9BIVHJjfHQ8SmfOsC5ukZRzHyTX2Y4vFe6RWDk3SgDvFSXQI=
-X-Received: by 2002:a05:6122:4599:b0:4f5:1363:845b with SMTP id
- 71dfb90a1353d-4f6c5c49043mr948024e0c.9.1721843531425; Wed, 24 Jul 2024
- 10:52:11 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1A215F3FB;
+	Wed, 24 Jul 2024 17:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721843969; cv=fail; b=l/RBsKV5bpt50nRUFV8S2ewLKDaoblOqVBgV17cgHELtSs9mXorMQUCQ7zScSLiJbP1AB78cVPFwGTyUV6s4miPnGCE3CI2QK0fLc418CvSbJk4A7mf9O1L9vFAKDigB/Ya/KfjIXjCBnfwFQQMnquoVG84+ohpgvTsfYLqfhs4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721843969; c=relaxed/simple;
+	bh=oVKI2YCXuvIcU9t0MANss6ed6btaCf75KFAB+D+V1aE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=AxK+AOXpjqvN3rRSunU97sTuJfpP8TOyPZi4AZk3HOF8Jrg+b2jCXOrj89jXNvaxc5HNmo12H1zrRXva4UpF+G4GJnRwzgdGOqjgQKRCcuyme3vv6ikRMH4rnIooP45XYdOMMQMK8GiX7KBTblh0FiVq/yOR6ck4iNcZiVZKJ2Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=pyBWyRKq; arc=fail smtp.client-ip=40.107.244.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=i8+kaStuY6cYArtGbcBEAFwWYVBrh37XR/No2AegQ7FtXIMuMmWL5jvt0VDKoS72uw/2J+90w0IiWv968ZXJb+wy0NaL4/7FHCAcUbdanBLogrn52kFboJb8KvA7Zz8L9V2GUwclwkz8tORquVm9IAPrhKYSa3ujLRafmBhHBlpTqblENkuHXgx8TOZmV95jnAJNwndQbnxhln4E+ftK/Br/B0nNc9Ticm1ftw30R1krwzcuhTZRIuD/gnqUElSd+xpYVAyn3DbUgIzIIyS1wcMqgzV0OfdGPPL/46S+L7vlLPqePXtdhQ1/oa39dgAb5P/GQegLi4X9ogLORJpg/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QpSiVPduP+XmjvjT2pLoRKf9qXnQc9B1SQECSYxhD3w=;
+ b=SQOvwgyHDjoPtX5HSIn8SOqyI8TX1jmqH4gtDzUGlyGXTBtFNxbG4LsfM/fFtfeAU+jH1z6LfnH0GOOjBdZRBWQpEy9vOOKEPz0SOuiw849R94PrVGSr3wd2s3tg7LIQ87t1nGGU6AbBb07QH26csf9HliMJ7HMei79o5y8596n8KYKqDYVamZNIMyb7aNQXNBVYUWP3RjqHCUHlJA3ombkpwpPzejMDjfimHOKkmcDCdxdQVg/GMCnwsSP0liQA9sqAbgURriWEwMKUyka8rAz9dD9r7pJSA9ZkIqfudp6U9GuJsaJfrf0VRU3T0n/NAMArHv5sL9BOdM7dsRPsNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QpSiVPduP+XmjvjT2pLoRKf9qXnQc9B1SQECSYxhD3w=;
+ b=pyBWyRKqIO6vMERfey9dR6HYWF7hH3+Rej/tOmxsmdy2dq/azZdAGuoO00+lH3K3zyoJbj2WgLM/gkjPaVBZdHQuWtOL6Rja8ZCBfQbN1Y9rFXu85f5RlsZLV1dIZPwMslo4boTkKwo0jF2sJ++nebU1guWLac4tv8iiocMLaAE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH0PR12MB5388.namprd12.prod.outlook.com (2603:10b6:610:d7::15)
+ by PH7PR12MB9222.namprd12.prod.outlook.com (2603:10b6:510:2ef::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.18; Wed, 24 Jul
+ 2024 17:59:23 +0000
+Received: from CH0PR12MB5388.namprd12.prod.outlook.com
+ ([fe80::a363:f18a:cdd1:9607]) by CH0PR12MB5388.namprd12.prod.outlook.com
+ ([fe80::a363:f18a:cdd1:9607%5]) with mapi id 15.20.7784.017; Wed, 24 Jul 2024
+ 17:59:23 +0000
+Message-ID: <cf486746-6f96-4f09-bacb-8019e7f33756@amd.com>
+Date: Wed, 24 Jul 2024 12:59:21 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 RESEND] EDAC/ti: Fix possible null pointer dereference
+ in _emif_get_id()
+To: Ma Ke <make24@iscas.ac.cn>, kristo@kernel.org, bp@alien8.de,
+ tony.luck@intel.com, james.morse@arm.com, mchehab@kernel.org, rric@kernel.org
+Cc: linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240724071042.1493917-1-make24@iscas.ac.cn>
+Content-Language: en-US
+From: Avadhut Naik <avadnaik@amd.com>
+In-Reply-To: <20240724071042.1493917-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA0PR11CA0071.namprd11.prod.outlook.com
+ (2603:10b6:806:d2::16) To CH0PR12MB5388.namprd12.prod.outlook.com
+ (2603:10b6:610:d7::15)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240723180404.759900207@linuxfoundation.org>
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 24 Jul 2024 23:21:59 +0530
-Message-ID: <CA+G9fYv0KBij75t=mCJ82C8-Mzv_gFXTEqUFUZvtvCzA4D2d5Q@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/129] 6.6.42-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR12MB5388:EE_|PH7PR12MB9222:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0ffafa67-7500-49c6-5138-08dcac0a59be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZVhsQ3dlMHk0cldOekV0QUx4cHdKb1RrNllYek5IbWtjMElyVkhQM2taeGtW?=
+ =?utf-8?B?VG9xZXFJZ3dMUW8xN1lldmhMTmtRV00xTFZoUGdocHZXM2xNMHhoNFprVmc1?=
+ =?utf-8?B?cVVlSjJabjRyMzV1SVlaMXVyaTVGOE9iL1FNOHNxU21PRW9NRXNKUDhyQ0Jv?=
+ =?utf-8?B?SG5LbXJ4NVRKc3dROGtwRXl3THliNnIvWkhlVm5lRUxGNlVRckk1dVVONW9U?=
+ =?utf-8?B?aUczSk5Dd3NkdkwvaCtEQmVyMk9mWUFpWThIczdqd3RTK3RLeUFmbzhxOUxG?=
+ =?utf-8?B?ZlJDTnFiMFVsTDdRN0tFdFFkWi8rT1FGSDFZZDFIQ3k2UHBnRmFjWDNrczlS?=
+ =?utf-8?B?NXp4OUNMZTZwTTVTZDFNdXlRTkZJM1dJSVZNTmE5L1ovQjJWNktlMDI5T1pP?=
+ =?utf-8?B?TU03ZWlNTnFyMDhiYlN6Tyt2U3JSU0VRQlc5R3FVRnpkSWZ2ekd1SGxRSmd0?=
+ =?utf-8?B?ckc0c2JSS2JoSlU5NXVCK0FJdHJmUFVhYlpjNnZuNXR4V3k0ZnZxOEhLb20w?=
+ =?utf-8?B?TFFsTjJ2NEd3a0JpQmFtWkNhRGtoNUlDak9xNGgrWUJINGtXcm5QTkdYODRF?=
+ =?utf-8?B?NUpaTGdvRGsycG5OeW9wOE1mOHpVZThaRDNLTjdZRGZoVmFpQllqSUlERG5i?=
+ =?utf-8?B?ZnQ5L1U4U1doUkdBLzlwNGZzU3hxWm1lZVRXY3dmRmdzSFZLekVIbDI5Lyts?=
+ =?utf-8?B?WnJidDZXRU1WMkgrRDEwYis4MFQ1b0JLQ2FUdkFHRWxnd2dkTXloWVpJcHJ0?=
+ =?utf-8?B?aXZvbGdWb3FJTnM3a3c2a2tGcWdTdG85WHJ3R2ZQK0ZPNksyVkpGODlqTXFP?=
+ =?utf-8?B?TGgvMlZsK0pJRWtpbkVtMS9kRi9sMnVXcW9HMlVLWUU3WlBkVGZWcHBsbWxl?=
+ =?utf-8?B?YVM3aUpQQkRLR1M2KzNwSGJrRlJVM0NCQkNnQVNHWjI1V09mT2QrK2dCMzdO?=
+ =?utf-8?B?RHpZeWQyODVDa1BVOWp3bUZnQzZ0N1FxRWxQL29reHBGZmlDWDVNbVdXOGxO?=
+ =?utf-8?B?SnYzRmE2YzBjQlR5TlVSRkJ4MkR3NXcxVDNhdW02Zm5mNFlXZlYwVGhLZjdK?=
+ =?utf-8?B?UnZPY3VRS0NXTjE5Qzk2RTZrSkZCZjJ1SmxZdFpRV2I4ZkowNGJwaGJGNTg2?=
+ =?utf-8?B?eFp1bmg0Q0Jvb0hDZUE0UlZkdEsvZjJIYkQrOU9rakgzMUhzVFNSWkgrSWRj?=
+ =?utf-8?B?QldxdGdRVFlHZVJMTXNCL2lQdUJrR0Q0UGtwdXdTSmNTa2JFaExPQlltZzZS?=
+ =?utf-8?B?bEVhQ0ZhR0Q0MXM2aS85OXNQamRxcnRYQWRxWjdRTjcwY0g3NTNvclhWd3ov?=
+ =?utf-8?B?MFo5S3FXcUxkUjBxbkVUV1ZxNTJtdXZnMlc1Z04wTUptOHU1TUpiSXlCRTJ6?=
+ =?utf-8?B?cERGbk15MnFpRWNUTnZIOXNPcmpLWnlXOVExR05yZ082VTBlb3FZakdERXU3?=
+ =?utf-8?B?dmxkdHlCeTRWcm8vVmdldkJ5Q1E3cjA2WTBxMW1aQVlmYVNjVWxVNXd5b1dD?=
+ =?utf-8?B?V09XTENON20zUTVxWEpKMHloWGhRRksrclYyZFl0SENsNkVoZ1FVcGZyREVI?=
+ =?utf-8?B?ZWlBazlnQmN0emZPOGkzWmZTQmFzZmh5V1FBaExraWhtSWw3QUE1RmdwUGts?=
+ =?utf-8?B?M3ZXVFhBL2FXMldXd1QzREYydTlDbGc0K1VnY1Y3OWRMVzVtaFVqSWlMSE15?=
+ =?utf-8?B?SjZ4SUZTaWJtRXVORlF6R1kwL1hCZVJGUUVJV0xBRHNHNDBsS3V4OG5RV3Fs?=
+ =?utf-8?Q?ut3zU3Qdd3hOFooMnI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR12MB5388.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SlVPd2VXbGV2NFlucDZZbjhzbFYvdXV3eHlSRDN1SVdac3YwL1BIYzBMTmRy?=
+ =?utf-8?B?UDlGMllKVDNsQlQ4L3JpNXMyK3ZERWRveE9pbC9qQU11ZEhBTG1qQXZBdlZ2?=
+ =?utf-8?B?RlphZmlab0ZNSFE5SVdTQW11VE5SdjBvZHFZQXFJK2wwMmhsSjFjaERuMU9B?=
+ =?utf-8?B?Q01uVHZ1QisxWWxBZ2kyZE03dzNiS0pNSVI3SkY4cVpIeVZPTzBKbWhQYVl3?=
+ =?utf-8?B?NllQUDRuRDlUeDZHUzVSbXFWaDQwTFU3c2dKV1V0TkRKVGZFakZEeDBmUUFK?=
+ =?utf-8?B?M2Nic0lTZTBkSUZ3eHNaT20vL0dQMDFNenNvdDc5eW1FZ0dHSDNUTVh3VU5L?=
+ =?utf-8?B?UDdodlVXaFU0Z3pIelordm8xemEwMHcvZVBsUmVMMlZVcHZLVFJKV2ZKeXVF?=
+ =?utf-8?B?ajg4T0VCMjV2K3BFbGZhSHlYNVJSdFk5NlRrOHhxZjFCcjJkTnRIRXhCRWxJ?=
+ =?utf-8?B?dmVqdVUzaDR5SlVvRXNWSkhHNlZDdkpuNFV3QXBVRklGcEFURWR4WGZhMlpS?=
+ =?utf-8?B?Nmo3ZjJrcWIyWmsvSEZEbWlKVnpmdHZodXF5a2VnSThONTRzSnNFL3diMzJG?=
+ =?utf-8?B?dVlrRTlWZTJ2a0haTG16WjFxV1p1UEpSSkpRODhJZ0JKN1JhMGh6Z1hTZEhY?=
+ =?utf-8?B?SHJyUndqZ2hsQ1NDWVhySGVpQWg0QWYweUgwb2ZVcTU2aGFVazc4bUI4VTMz?=
+ =?utf-8?B?Sjljb1hBRG9DK25uUEFoVUYrT2pIc0ZuZlRtcU84aUc5a20wOWFlbitDZ3pN?=
+ =?utf-8?B?QVU4Tng5d3o3a1Qwbk5vdExlZUc2Q1Y0RDc0V0x0WW8wNU5RSWpzWHdpSEZX?=
+ =?utf-8?B?cStja3lhZ3JWQjVLUjZGUG1razRkZnVBYTF4QjdUMTA0R2ppVm0yNXBhbmZi?=
+ =?utf-8?B?VVdZdW5yZFhkbkJhS0w5d1kvSmZkMjVBaU5vVWxsZ001bDNIQytycDhvcVZr?=
+ =?utf-8?B?TDJvMHpkdzhnNFF4ZWR5S0I1cTZaRWxwMGM0WTFkYURwd09tRW5Bbks2cUh3?=
+ =?utf-8?B?QXowbUNZRk16bC9veHRhTnJrN01vTTJWZWtMUjYySWI2aXJqdldhb1JCNUJq?=
+ =?utf-8?B?YzVCaUZKb1VTREtHTU1WUzhWQS9rWWxtYm9NMUpuOUIrRVJjbldYMHQxN3Q0?=
+ =?utf-8?B?bkpjMTdGK0xiaHZSWXNKUWRrSVNxZkx4SW5aODZua05QSHJUc2JXQkdKZE0y?=
+ =?utf-8?B?Q3IxK3kxK00vczFFOEVLaGFDc1BDR3FqMyt4dFNCQWdPOGJTZVVUTDZ4Ry9O?=
+ =?utf-8?B?bnNUbXAwQjhOTTFvMS8ySTlvQS9OdHRyTjZWb0J4TkdZTS9LeVFUV1lsb25o?=
+ =?utf-8?B?dlZWWjhpelluV1JZZ25OK2lCTis4Z2pvNHJlQjFaTGFjNnl5OTkzSUlpU1lT?=
+ =?utf-8?B?UXY5Vm1pOWZpRUdMN0ErQk5hTmo2YTVLeGxoOVYyalRSU2Z6N2N3K3JCSFBF?=
+ =?utf-8?B?d1c2VTFWZ003N3hHMVZNa3hCUnVKdUFqSUxPcFpNam5DdWxZZ2Z5MS8xN0dZ?=
+ =?utf-8?B?R3lrWFU2eTRxV3g4eWQzVm1jMkhkUWl6bFhSTTZWN2FOWHI0SGV1b1RZTkFY?=
+ =?utf-8?B?TWNFaTZKT3BKeWFjRUcwUVRPL2pQZEV4M3J0ajFhaEpxcCthMzBqdW0veVF3?=
+ =?utf-8?B?RjVHNGtuMXk2R3NZQXpkbW1laFNqSmRuZWQ1SXpHdEdWR1Ixa2hQQUlKTDFl?=
+ =?utf-8?B?aHlPdDUrWUxqMnE4d1I3YSsvRjJiU24xUTg4NjRlLzJrcng5M1hZN0o4NE1N?=
+ =?utf-8?B?ZTU2WFQrNDU1Nm1JeTlaNVhHcVU1Zkp0Vmw4WFhwRmpudnlUZ1l6MU5HZjF6?=
+ =?utf-8?B?RENncERHMnkxRFp1OC96QUgxWDg4VmpwcE9jdWZzVFVtZlFkQnU3a28vY2hu?=
+ =?utf-8?B?bUZoRllHeDVCRGRIck5VVStzM0tFejRaSUZQamZUNVRXUWRtUDhsMFJhcTB3?=
+ =?utf-8?B?ODdvMTQ3MzdsdkZsaEJnUVc0cTYweTVVZ1NsdTdBSkhYVEJBV3VCNTZsNXNv?=
+ =?utf-8?B?YlNmSWwzSndLZHJ0a3FtK3o2aDNXVEdOUmZ3RnNFZFZXeUFyNXRZTERKM2JJ?=
+ =?utf-8?B?V1cxelpoVzIwRENRdmc0TDEyWE9sbll2MGFjNlV0UXlueVYzZFQrUmx3Q1pv?=
+ =?utf-8?Q?Fa3Malo3WWJiDQTdY7nwMO1WA?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ffafa67-7500-49c6-5138-08dcac0a59be
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR12MB5388.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2024 17:59:23.6565
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: F+v71RzUO/GJ5xB7VIXDpP57XroaLnrYGoCP8UQOVnj+6J/tVxdXbsjUvZW+KYhGtZlHXK7pyIiKxRpqfJr9kQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9222
 
-On Wed, 24 Jul 2024 at 00:01, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.42 release.
-> There are 129 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 25 Jul 2024 18:03:23 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.42-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 7/24/24 02:10, Ma Ke wrote:
+> In _emif_get_id(), of_get_address() may return NULL which is later
+> dereferenced. Fix this bug by adding NULL check.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 86a18ee21e5e ("EDAC, ti: Add support for TI keystone and DRA7xx EDAC")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+> Changes in v2:
+> - added Cc stable line.
+> ---
+>  drivers/edac/ti_edac.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/edac/ti_edac.c b/drivers/edac/ti_edac.c
+> index 29723c9592f7..db23887b2d81 100644
+> --- a/drivers/edac/ti_edac.c
+> +++ b/drivers/edac/ti_edac.c
+> @@ -207,6 +207,9 @@ static int _emif_get_id(struct device_node *node)
+>  	int my_id = 0;
+>  
+>  	addrp = of_get_address(node, 0, NULL, NULL);
+> +	if (!addrp)
+> +		return -EINVAL;
+> +
+>  	my_addr = (u32)of_translate_address(node, addrp);
+>  
+>  	for_each_matching_node(np, ti_edac_of_match) {
 
+IIUC, the original v2 submitted seems to differ from this RESEND patch
+https://lore.kernel.org/linux-edac/20240718134834.826890-1-make24@iscas.ac.cn/
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Snippet from submitting-patches:
+Don’t add “RESEND” when you are submitting a modified version of your patch or patch series - “RESEND” only applies to resubmission of a patch or patch series which have not been modified in any way from the previous submission.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Any specific reason for this change?
 
-## Build
-* kernel: 6.6.42-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: c74fd6c58fb18e0bab49dfb540cb0a9b3bbddc7e
-* git describe: v6.6.41-130-gc74fd6c58fb1
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.4=
-1-130-gc74fd6c58fb1
+From a brief look, it seems that the original v2 was correct.
+Check for NULL pointer deference might be required in both places
+in _emif_get_id().
 
-## Test Regressions (compared to v6.6.38-261-g6b4f5445e6e6)
+Also, some more context on how this was noticed might help.
+Was it through mere observation?
 
-## Metric Regressions (compared to v6.6.38-261-g6b4f5445e6e6)
-
-## Test Fixes (compared to v6.6.38-261-g6b4f5445e6e6)
-
-## Metric Fixes (compared to v6.6.38-261-g6b4f5445e6e6)
-
-## Test result summary
-total: 220969, pass: 191018, fail: 3225, skip: 26302, xfail: 424
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 127 total, 127 passed, 0 failed
-* arm64: 36 total, 36 passed, 0 failed
-* i386: 27 total, 27 passed, 0 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 34 total, 34 passed, 0 failed
-* riscv: 17 total, 17 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 31 total, 30 passed, 1 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Thanks,
+Avadhut Naik
 
