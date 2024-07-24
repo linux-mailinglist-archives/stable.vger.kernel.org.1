@@ -1,145 +1,236 @@
-Return-Path: <stable+bounces-61239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FCD93ACC2
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:43:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7730193ACC7
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23D4BB235E4
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:43:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE66E1F23235
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDE4535A3;
-	Wed, 24 Jul 2024 06:43:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m5bNTarp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5016535A3;
+	Wed, 24 Jul 2024 06:44:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1554CE05;
-	Wed, 24 Jul 2024 06:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCC52D030;
+	Wed, 24 Jul 2024 06:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721803392; cv=none; b=PI5Qpc17p8BPs3cjj5EjOEDYWzFbGc2aIfOBDYTtwPM7NmLnDgjtA/ojbqBM1/fTAxgiWoi23nN9mSBeQBmaSfZ45d1g9KzsXHjWTGm6MDvwAYMYe5B/KdhPBgmn55Eggq7mGrUzV75IuVWFAsthArlPNABvZ12bMa6pRKNjJas=
+	t=1721803461; cv=none; b=OBkSvbKsqH7nw7ChCHscJPV6DTOFM4ukUfokySmEIQ4vin5ajSr37xi6lX/1sBPzc/XqDEmiRGbH1fWItiNLySs3Vp1JNxSo6YtWrHjVpeDQFy5wOcNrso2DAZFUHzx+1OrzF6052e3fz2Ps/X7mDfrMM0lWqmsn59AKOSppz9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721803392; c=relaxed/simple;
-	bh=BvzaEa7+Inuxhazq34ZT0aKl1U9tc8B8v6hfHoXQy7M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZHiZfI8jwwHCFOsI1zfyUU1Q/RU02AW74VNG0lw7+kquqFxwSMjst3MrdSvWegcbx9kynzZHHCiVCU6RoyXp8jaPPwkzeawy85DHmLgs747+j3ZrqKLyUstTIe+V97imdJXQM9EYyknHjo9bVGxRi8uen4L+7ywhYbjE1Yr37rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m5bNTarp; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7a05b7c8e38so345909485a.0;
-        Tue, 23 Jul 2024 23:43:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721803389; x=1722408189; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MPFAXHpcpNHosyuWGUHU07Blzo9gAD1mlcK+fpP4HNc=;
-        b=m5bNTarpeowY/CAJnJnsrWkOQzlp++WPARTUOu2MjeFx3ZHGCykpaQcQ9LAVieZPXQ
-         R4UMUflXB6haaqTtmdKKvVhz0DV1SlZPUVk7FFkcbqZQJ08oZ3zlK4trmnZBBqVWzVQl
-         O+ksMu/O7xDnoY87Q5wEaD1qoeOFKwn6/DYzMjI/jqQkmnn9xYGmxF22XNfmhDmsYchp
-         ujh8pkAusyR+0g1lcvRkNFe7PzBf9prqRAzXIEqXUglK/rnf4UPvPMp5b9YL+H2Dl5n3
-         ybWwpsrmePqaIjMBHhofozNBEsN28wamir6ud0ucQD78M9vEYZwVbc3jBxXTgX+2a8/1
-         x/2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721803389; x=1722408189;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MPFAXHpcpNHosyuWGUHU07Blzo9gAD1mlcK+fpP4HNc=;
-        b=l/L2+aZRVuIJoKoXMwPAvOP/I91tX1NBdSXuklUmIanQ/FQYzsBZ/Qixl05d0/omOl
-         vxdkeALw5DRBxQIVriixrmGwFLv/C2NDasbTagJY2nVUJzQ9/GxrktMTs8kr9g4P+AK3
-         cZuKkYA5ohWsnXazfXtItUeZZwFRkNd+9yj8LH89W35J6ZxSavtq0h0ZLMnX5XQSRT5N
-         V6RR5fu14ZHX5fFpIfsZrk95X5mzgq6dU85OCu6lET3z8FsXPulXcrLh7kibmtJoKtvJ
-         tFB+0l6/tk6TUTCLP9kWz6wju8hfAbRYaArwVdh4M0HVncjc5ae8U+Psf+3BGoPLcbwZ
-         LiwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUscHKJl7QNJFoiW5WJp8Di6gmAT6dMxTObrmXgayWGcUFnrz1Jnk3RQfhw0md67saGhLeiy80wVBdQ1Xm1mr95SBkSD0gvziDLb7l5vsz/Nmff6WvWsypejSjQLiHfuAk5yg==
-X-Gm-Message-State: AOJu0Yxctwv3pgDZj7gq57RbsQ+CfAMpZgPLLDOq9wVOlHo/YtZedZPW
-	YfEarJUdjPP2Qe5ZgRa86LNtWlY5bN6d6tq2rTaB1GUUobc8rzRJhyaorS1j4EJ85VBDTCLoT1+
-	AU8n8FOIIL9XH8QtCdQ2wT01x4FU=
-X-Google-Smtp-Source: AGHT+IEMBaGnSfDJ+jEEftZgDyBW5iYKL7A7JIFxgVqqv7Bb4un3LnmVYMP0aw97+OgVNLOg+E1P8hqc78x1IQXaz7U=
-X-Received: by 2002:a05:620a:2681:b0:79d:8d21:4571 with SMTP id
- af79cd13be357-7a1cbcda79dmr149727185a.22.1721803388911; Tue, 23 Jul 2024
- 23:43:08 -0700 (PDT)
+	s=arc-20240116; t=1721803461; c=relaxed/simple;
+	bh=R8ZYgkfN7SOS0zuMxrlYUYT78BQBgHfKcQ0wc5czGtc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=eiU9jB3dPCHbvFe2/33j9t9sGFWXerR/QcWAmdqXcEo4YGsSSt+ILmKJ2sANDDFNw7Nzd7kqkwiM0XuYqJ1DR6YS6+SH0+KELqZumf/Ex6HhUrqqL+86FjIJe8mSEK3yqnkeQ4nSWDzBBHRq2O/kUlg3ft/oDZrFjMWrVxRmzJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4WTPX34KwXzQml8;
+	Wed, 24 Jul 2024 14:40:03 +0800 (CST)
+Received: from kwepemi100008.china.huawei.com (unknown [7.221.188.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9ACF914035E;
+	Wed, 24 Jul 2024 14:44:14 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ kwepemi100008.china.huawei.com (7.221.188.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 24 Jul 2024 14:44:13 +0800
+Message-ID: <7898c0c5-45b6-9795-74a0-f70904dd077c@huawei.com>
+Date: Wed, 24 Jul 2024 14:44:12 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <875xswtbxb.fsf@mailhost.krisman.be> <20240723214246.4010-1-cel@kernel.org>
- <87jzhbsncw.fsf@mailhost.krisman.be>
-In-Reply-To: <87jzhbsncw.fsf@mailhost.krisman.be>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Wed, 24 Jul 2024 09:42:57 +0300
-Message-ID: <CAOQ4uxjDM00vuQfw4m3+eph4iSxqrvFu7-WNfuZ4BApv58gQ-g@mail.gmail.com>
-Subject: Re: [PATCH v5.15.y] Revert "fanotify: Allow users to request
- FAN_FS_ERROR events"
-To: Gabriel Krisman Bertazi <gabriel@krisman.be>
-Cc: cel@kernel.org, gregkh@linuxfoundation.org, jack@suse.cz, 
-	sashal@kernel.org, stable@vger.kernel.org, adilger.kernel@dilger.ca, 
-	linux-ext4@vger.kernel.org, tytso@mit.edu, alexey.makhalov@broadcom.com, 
-	vasavi.sirnapalli@broadcom.com, florian.fainelli@broadcom.com, 
-	Chuck Lever <chuck.lever@oracle.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: + crash-fix-x86_32-crash-memory-reserve-dead-loop-bug.patch added
+ to mm-nonmm-unstable branch
+Content-Language: en-US
+To: Andrew Morton <akpm@linux-foundation.org>, <mm-commits@vger.kernel.org>,
+	<will@kernel.org>, <vgoyal@redhat.com>, <thunder.leizhen@huawei.com>,
+	<tglx@linutronix.de>, <stable@vger.kernel.org>, <robh@kernel.org>,
+	<paul.walmsley@sifive.com>, <palmer@dabbelt.com>, <mingo@redhat.com>,
+	<linux@armlinux.org.uk>, <linus.walleij@linaro.org>, <javierm@redhat.com>,
+	<hpa@zytor.com>, <hbathini@linux.ibm.com>, <gregkh@linuxfoundation.org>,
+	<eric.devolder@oracle.com>, <dyoung@redhat.com>, <deller@gmx.de>,
+	<dave.hansen@linux.intel.com>, <chenjiahao16@huawei.com>,
+	<catalin.marinas@arm.com>, <bp@alien8.de>, <bhe@redhat.com>, <arnd@arndb.de>,
+	<aou@eecs.berkeley.edu>, <afd@ti.com>
+References: <20240724053727.28397C32782@smtp.kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <20240724053727.28397C32782@smtp.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi100008.china.huawei.com (7.221.188.57)
 
-On Wed, Jul 24, 2024 at 2:24=E2=80=AFAM Gabriel Krisman Bertazi
-<gabriel@krisman.be> wrote:
->
-> cel@kernel.org writes:
->
-> > From: Chuck Lever <chuck.lever@oracle.com>
-> >
-> > Gabriel says:
-> >> 9709bd548f11 just enabled a new feature -
-> >> which seems against stable rules.  Considering that "anything is
-> >> a CVE", we really need to be cautious about this kind of stuff in
-> >> stable kernels.
-> >>
-> >> Is it possible to drop 9709bd548f11 from stable instead?
-> >
-> > The revert wasn't clean, but adjusting it to fit was straightforward.
-> > This passes NFSD CI, and adds no new failures to the fanotify ltp
-> > tests.
-> >
-> > Reported-by: Gabriel Krisman Bertazi <gabriel@krisman.be>
-> > Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-> > ---
-> >  fs/notify/fanotify/fanotify_user.c | 4 ----
-> >  include/linux/fanotify.h           | 6 +-----
-> >  2 files changed, 1 insertion(+), 9 deletions(-)
-> >
-> > Gabriel, is this what you were thinking?
->
-> Thanks Chuck.
->
-> This looks good to me as a way to disable it in stable and prevent
-> userspace from trying to use it. Up to fanotify maintainers to decide
-> whether to bring the rest of the series or merge this,
 
-First of all, the "rest of the series" is already queued for 5.10.y.
 
-I too was a bit surprised from willingness of stable tree maintainers
-to allow backports of entire features along with Chuck's nfsd backports.
-I understand the logic, I was just not aware when this shift in stable ideo=
-logy
-had happened.
+On 2024/7/24 13:37, Andrew Morton wrote:
+> 
+> The patch titled
+>      Subject: crash: fix x86_32 crash memory reserve dead loop bug
+> has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+>      crash-fix-x86_32-crash-memory-reserve-dead-loop-bug.patch
+> 
+> This patch will shortly appear at
+>      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/crash-fix-x86_32-crash-memory-reserve-dead-loop-bug.patch
+> 
+> This patch will later appear in the mm-nonmm-unstable branch at
+>     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> 
+> Before you just go and hit "reply", please:
+>    a) Consider who else should be cc'ed
+>    b) Prefer to cc a suitable mailing list as well
+>    c) Ideally: find the original patch on the mailing list and do a
+>       reply-to-all to that, adding suitable additional cc's
+> 
+> *** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+> 
+> The -mm tree is included into linux-next via the mm-everything
+> branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> and is updated there every 2-3 working days
+> 
+> ------------------------------------------------------
+> From: Jinjie Ruan <ruanjinjie@huawei.com>
+> Subject: crash: fix x86_32 crash memory reserve dead loop bug
+> Date: Thu, 18 Jul 2024 11:54:42 +0800
+> 
+> Patch series "crash: Fix x86_32 memory reserve dead loop bug", v3.
 
-But having backported the entire fanotify 6.1 code as is to 5.15 and 5.10
-I see no reason to make an exception for FAN_FS_ERROR.
-Certainly not because two patches were left out of 5.10.y (and are now queu=
-ed).
+It seems that the newest is v4, and the loongarch is missing.
 
-I think that the benefits of fanotify code parity across 6.1 5.15 5.10
-outweigh the risk of regressions introduced by this specific feature.
-
-So please do not revert.
-
-Thanks,
-Amir.
+> 
+> Fix two bugs for x86_32 crash memory reserve, and prepare to apply generic
+> crashkernel reservation to 32bit system.  Then use generic interface to
+> simplify crashkernel reservation for ARM32.
+> 
+> 
+> This patch (of 3):
+> 
+> On x86_32 Qemu machine with 1GB memory, the cmdline "crashkernel=1G,high"
+> will cause system stall as below:
+> 
+> 	ACPI: Reserving FACP table memory at [mem 0x3ffe18b8-0x3ffe192b]
+> 	ACPI: Reserving DSDT table memory at [mem 0x3ffe0040-0x3ffe18b7]
+> 	ACPI: Reserving FACS table memory at [mem 0x3ffe0000-0x3ffe003f]
+> 	ACPI: Reserving APIC table memory at [mem 0x3ffe192c-0x3ffe19bb]
+> 	ACPI: Reserving HPET table memory at [mem 0x3ffe19bc-0x3ffe19f3]
+> 	ACPI: Reserving WAET table memory at [mem 0x3ffe19f4-0x3ffe1a1b]
+> 	143MB HIGHMEM available.
+> 	879MB LOWMEM available.
+> 	  mapped low ram: 0 - 36ffe000
+> 	  low ram: 0 - 36ffe000
+> 	 (stall here)
+> 
+> The reason is that the CRASH_ADDR_LOW_MAX is equal to CRASH_ADDR_HIGH_MAX
+> on x86_32, the first high crash kernel memory reservation will fail, then
+> go into the "retry" loop and never came out as below.
+> 
+> -> reserve_crashkernel_generic() and high is true
+>  -> alloc at [CRASH_ADDR_LOW_MAX, CRASH_ADDR_HIGH_MAX] fail
+>     -> alloc at [0, CRASH_ADDR_LOW_MAX] fail and repeatedly
+>        (because CRASH_ADDR_LOW_MAX = CRASH_ADDR_HIGH_MAX).
+> 
+> Fix it by prevent crashkernel=,high from being parsed successfully on 32bit
+> system with a architecture-defined macro.
+> 
+> After this patch, the 'crashkernel=,high' for 32bit system can't succeed,
+> and it has no chance to call reserve_crashkernel_generic(), therefore this
+> issue on x86_32 is solved.
+> 
+> Link: https://lkml.kernel.org/r/20240718035444.2977105-1-ruanjinjie@huawei.com
+> Link: https://lkml.kernel.org/r/20240718035444.2977105-2-ruanjinjie@huawei.com
+> Fixes: 9c08a2a139fe ("x86: kdump: use generic interface to simplify crashkernel reservation code")
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> Signed-off-by: Baoquan He <bhe@redhat.com>
+> Tested-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> Cc: Albert Ou <aou@eecs.berkeley.edu>
+> Cc: Andrew Davis <afd@ti.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Chen Jiahao <chenjiahao16@huawei.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Dave Young <dyoung@redhat.com>
+> Cc: Eric DeVolder <eric.devolder@oracle.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Vivek Goyal <vgoyal@redhat.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Zhen Lei <thunder.leizhen@huawei.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+> 
+>  arch/arm64/include/asm/crash_reserve.h |    2 ++
+>  arch/riscv/include/asm/crash_reserve.h |    2 ++
+>  arch/x86/include/asm/crash_reserve.h   |    1 +
+>  kernel/crash_reserve.c                 |    2 +-
+>  4 files changed, 6 insertions(+), 1 deletion(-)
+> 
+> --- a/arch/arm64/include/asm/crash_reserve.h~crash-fix-x86_32-crash-memory-reserve-dead-loop-bug
+> +++ a/arch/arm64/include/asm/crash_reserve.h
+> @@ -7,4 +7,6 @@
+>  
+>  #define CRASH_ADDR_LOW_MAX              arm64_dma_phys_limit
+>  #define CRASH_ADDR_HIGH_MAX             (PHYS_MASK + 1)
+> +
+> +#define HAVE_ARCH_CRASHKERNEL_RESERVATION_HIGH
+>  #endif
+> --- a/arch/riscv/include/asm/crash_reserve.h~crash-fix-x86_32-crash-memory-reserve-dead-loop-bug
+> +++ a/arch/riscv/include/asm/crash_reserve.h
+> @@ -7,5 +7,7 @@
+>  #define CRASH_ADDR_LOW_MAX		dma32_phys_limit
+>  #define CRASH_ADDR_HIGH_MAX		memblock_end_of_DRAM()
+>  
+> +#define HAVE_ARCH_CRASHKERNEL_RESERVATION_HIGH
+> +
+>  extern phys_addr_t memblock_end_of_DRAM(void);
+>  #endif
+> --- a/arch/x86/include/asm/crash_reserve.h~crash-fix-x86_32-crash-memory-reserve-dead-loop-bug
+> +++ a/arch/x86/include/asm/crash_reserve.h
+> @@ -26,6 +26,7 @@ extern unsigned long swiotlb_size_or_def
+>  #else
+>  # define CRASH_ADDR_LOW_MAX     SZ_4G
+>  # define CRASH_ADDR_HIGH_MAX    SZ_64T
+> +#define HAVE_ARCH_CRASHKERNEL_RESERVATION_HIGH
+>  #endif
+>  
+>  # define DEFAULT_CRASH_KERNEL_LOW_SIZE crash_low_size_default()
+> --- a/kernel/crash_reserve.c~crash-fix-x86_32-crash-memory-reserve-dead-loop-bug
+> +++ a/kernel/crash_reserve.c
+> @@ -305,7 +305,7 @@ int __init parse_crashkernel(char *cmdli
+>  	/* crashkernel=X[@offset] */
+>  	ret = __parse_crashkernel(cmdline, system_ram, crash_size,
+>  				crash_base, NULL);
+> -#ifdef CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
+> +#ifdef HAVE_ARCH_CRASHKERNEL_RESERVATION_HIGH
+>  	/*
+>  	 * If non-NULL 'high' passed in and no normal crashkernel
+>  	 * setting detected, try parsing crashkernel=,high|low.
+> _
+> 
+> Patches currently in -mm which might be from ruanjinjie@huawei.com are
+> 
+> crash-fix-x86_32-crash-memory-reserve-dead-loop-bug.patch
+> crash-fix-x86_32-crash-memory-reserve-dead-loop-bug-at-high.patch
+> arm-use-generic-interface-to-simplify-crashkernel-reservation.patch
+> 
 
