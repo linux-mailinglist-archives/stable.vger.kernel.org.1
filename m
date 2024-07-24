@@ -1,234 +1,152 @@
-Return-Path: <stable+bounces-61310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F59193B594
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 19:08:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5DD93B59F
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 19:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D76E8281198
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 17:08:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79E822849B8
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 17:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BE315EFBF;
-	Wed, 24 Jul 2024 17:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AC715F308;
+	Wed, 24 Jul 2024 17:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rG8w+07a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gu0vtcwl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6061C693
-	for <stable@vger.kernel.org>; Wed, 24 Jul 2024 17:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6925B15ECEC;
+	Wed, 24 Jul 2024 17:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721840895; cv=none; b=Le4BuMLupWGA8dlKq2Hrx6OCyetJtGqxyPLARHx4frzIs6AsAHexsi7EcErmWzykCl7Z/wnKkfDamowWbXOASNzYRVcRFpWgboppmOd4Hlf58TUwczqIQiCWn2jeKmzr5Q/qIkuXyIHZuHOWI648lYjW0pD0Y8pcbODmIu6n+C8=
+	t=1721841237; cv=none; b=r2bumrolDuz75BoVQMvvsHSbLNtklwNG6ZBlgVuU4kA81DZwNQTQ5b2u28RYtEmmFYb87Pw8UMp5prhyzUS00z4gjr/+4ioZtpHp1WLvJNwvMRTk2P/I7NVpntignoYXZhDyxQEjbn6MwmUXaoqy3pUb0fVvW9UVxb/G0ACEE0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721840895; c=relaxed/simple;
-	bh=6OXkMxIEm2fLUnUXSlhOBoRPgnTXPTENE4Ni0gXYjo8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E20LzK2V967K2MGVCDBjBkjDeThagFQoKUBYB6pA0le7q7GYhP9K5fc/MK9Zm1qbjT7Jt2UODZyBzUSyEZJiUCYawjPfbSBNX9MT6iRWLQeMcGh0+/8wjIPDisgiAUpr9C++470wxmu3OTStdqnM55RbC+hsTK9Y0ZNVyB1nYqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rG8w+07a; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7036e383089so3423284a34.2
-        for <stable@vger.kernel.org>; Wed, 24 Jul 2024 10:08:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721840892; x=1722445692; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nAeC3wapegNfnIubwZRA6G+kpfogXPVXYiQWD+CBY5Y=;
-        b=rG8w+07aRyrx3Qi7smzPEhUlLYQJ3vFcACRvkPJqPpGPREDQPjArIpNUgz7CfBtzWG
-         G1c4gqBSUTTylEzWSBLxLaExGV2AJ0+dj9nr/Ek0cw4gdt1/W9kPwyLl8N/Rzo2sg2bd
-         Ezol2ivQNcZj9trlv3QKsqKVRRHWUu07ZH20MX3rzPQ/v+KwsYCfXcUED37+rzLmEUOx
-         mk4UjnmuOPWHWU4M3VF2+YlDoXqlwcAHvjVN67/5ndwLEZm2nSJBTTiuZCgLlYxj4f94
-         WrL7M0RYBSzDltkEVgJNeCG5ThNbDE+oQ4E3x+vwUZf/9vHBP0FIo/Z/NgJZdoV4T1jk
-         3sBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721840892; x=1722445692;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nAeC3wapegNfnIubwZRA6G+kpfogXPVXYiQWD+CBY5Y=;
-        b=ahmmlqxijPdeHF4NN3z4MlISFbz93Megu2YiHFHafSoUq63vrhLUZUv6QODyDy1c5E
-         M/tAMEIk3rX2PIP8CzXuQWlRE6GaEsyp/UAxfIkKMXj8BFV3/xW5LfB42jIr5MOZstS1
-         wnUrOSHyFfqXFjUd+PBzg6RnoGwtlWQhV+QcahO6VraCFY6cd53aLduvmZVqMpFFzdKX
-         YapV8rMO4n6Qv7WOCXYY3WYAzIc8+gYyGrXvjB8Xi4QcNVRgUSbOVnBTVe6hVm+AAKDN
-         TMY4dUUOj1cRndxoRmCCDeRmVgVsKQ7qzkkS32YuedRb5wEqTnMAZCEAf6/wrkYQbMgx
-         XPWA==
-X-Gm-Message-State: AOJu0YzBS0mgrAZX1yuwRv2G1idWzDgw+5b0SeX+FZ0ZwJtYO2bNop0n
-	CrSSKWQ7GzaE4dJ7SDB9xromvezc5hmq2AxfG0lO6/5GhPcGWz/tiRM0a9l9YQaLt60y8Wr5sEG
-	D2FmsEG90TREWyqAFoAqHvGQRmSADnW28pUwMlQ==
-X-Google-Smtp-Source: AGHT+IFjXVMJi8GOpKtVfaEYslxea1ursmT4lQUWSzvqfWXuAR71kzhnpZtlb2EUm0ApMvmE7jWKrCSoDqtwJLl1Mm4=
-X-Received: by 2002:a05:6830:6d17:b0:704:494e:fa1f with SMTP id
- 46e09a7af769-7092e76e4cemr457972a34.29.1721840892453; Wed, 24 Jul 2024
- 10:08:12 -0700 (PDT)
+	s=arc-20240116; t=1721841237; c=relaxed/simple;
+	bh=oa4BYzZy3kq1pbLBpJsb1owa8AeGXnIShl4WHE1XK7I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IpaVBYxD6V0uwANP/8vAnzteNAcFIcJImAhFhnqIBGjmDfKB9dSWbtAS1zR/20UyWE8rnQ674ztjQOowB7YzOQUYaOV5GoKEEvZXDc0vSarFsygLhgvKtSceQI/BDZaBO7PjgWnCNM3Bqr6Zt5faubuKE3BZw57k2/Dg7AkQEKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gu0vtcwl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E45C32781;
+	Wed, 24 Jul 2024 17:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721841237;
+	bh=oa4BYzZy3kq1pbLBpJsb1owa8AeGXnIShl4WHE1XK7I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gu0vtcwliOaEFO9TQNOi8tIiHqSeJjdQ6j2SxxiNpd5k44RXf7PIXWgRMud8uXVw9
+	 nkmdIt8VFqFuUcYc2446tfUM3jl/6V6w6kMI4JgB6f918SmVTxKrUQe1NieMoZa04D
+	 fXCcajwz8+0QlyxOGe0fsiFw+yVpl4haL+cw+LzbDYOJunwe/q4MsFrEwsEtTm+yuh
+	 TbDgzqEP8i45IpTgkvq9SeRDFwGB5EfjJbLNIi9XZzO9QyGTVYZ6BvEk19IBT75kBp
+	 UtGA5LOnyo3xpZXwQBOqHAUl5MYsYpVt18lnkisTgsQG9DM7OoFtm0QpYl9PotjNzg
+	 uIpqjEbU81oNA==
+Date: Wed, 24 Jul 2024 18:13:51 +0100
+From: Simon Horman <horms@kernel.org>
+To: Yunseong Kim <yskelg@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Subject: Re: [PATCH] Bluetooth: hci_core: fix suspicious RCU usage in
+ hci_conn_drop()
+Message-ID: <20240724171351.GD97837@kernel.org>
+References: <20240723171756.13755-2-yskelg@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240723180143.461739294@linuxfoundation.org>
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 24 Jul 2024 22:38:00 +0530
-Message-ID: <CA+G9fYv+=8YWS=Mqoawbrw1yCDgZ36wO_NMbg81HdVNykGOu3Q@mail.gmail.com>
-Subject: Re: [PATCH 6.9 000/163] 6.9.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240723171756.13755-2-yskelg@gmail.com>
 
-On Wed, 24 Jul 2024 at 00:08, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.9.11 release.
-> There are 163 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 25 Jul 2024 18:01:03 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.9.11-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.9.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
++ Handa-san
 
+On Wed, Jul 24, 2024 at 02:17:57AM +0900, Yunseong Kim wrote:
+> Protection from the queuing operation is achieved with an RCU read lock
+> to avoid calling 'queue_delayed_work()' after 'cancel_delayed_work()',
+> but this does not apply to 'hci_conn_drop()'.
+> 
+> commit deee93d13d38 ("Bluetooth: use hdev->workqueue when queuing
+>  hdev->{cmd,ncmd}_timer works")
+> 
+> The situation described raises concerns about suspicious RCU usage in a
+> corrupted context.
+> 
+> CPU 1                   CPU 2
+>  hci_dev_do_reset()
+>   synchronize_rcu()      hci_conn_drop()
+>   drain_workqueue()       <-- no RCU read protection during queuing. -->
+>                            queue_delayed_work()
+> 
+> It displays a warning message like the following
+> 
+> Bluetooth: hci0: unexpected cc 0x0c38 length: 249 > 2
+> =============================
+> WARNING: suspicious RCU usage
+> 6.10.0-rc6-01340-gf14c0bb78769 #5 Not tainted
+> -----------------------------
+> net/mac80211/util.c:4000 RCU-list traversed in non-reader section!!
+> 
+> other info that might help us debug this:
+> 
+> rcu_scheduler_active = 2, debug_locks = 1
+> 2 locks held by syz-executor/798:
+>  #0: ffff800089a3de50 (rtnl_mutex){+.+.}-{4:4},
+>     at: rtnl_lock+0x28/0x40 net/core/rtnetlink.c:79
+> 
+> stack backtrace:
+> CPU: 0 PID: 798 Comm: syz-executor Not tainted
+>   6.10.0-rc6-01340-gf14c0bb78769 #5
+> Hardware name: linux,dummy-virt (DT)
+> Call trace:
+>  dump_backtrace.part.0+0x1b8/0x1d0 arch/arm64/kernel/stacktrace.c:317
+>  dump_backtrace arch/arm64/kernel/stacktrace.c:323 [inline]
+>  show_stack+0x34/0x50 arch/arm64/kernel/stacktrace.c:324
+>  __dump_stack lib/dump_stack.c:88 [inline]
+>  dump_stack_lvl+0xf0/0x170 lib/dump_stack.c:114
+>  dump_stack+0x20/0x30 lib/dump_stack.c:123
+>  lockdep_rcu_suspicious+0x204/0x2f8 kernel/locking/lockdep.c:6712
+>  ieee80211_check_combinations+0x71c/0x828 [mac80211]
+>  ieee80211_check_concurrent_iface+0x494/0x700 [mac80211]
+>  ieee80211_open+0x140/0x238 [mac80211]
+>  __dev_open+0x270/0x498 net/core/dev.c:1474
+>  __dev_change_flags+0x47c/0x610 net/core/dev.c:8837
+>  dev_change_flags+0x98/0x170 net/core/dev.c:8909
+>  devinet_ioctl+0xdf0/0x18d0 net/ipv4/devinet.c:1177
+>  inet_ioctl+0x34c/0x388 net/ipv4/af_inet.c:1003
+>  sock_do_ioctl+0xe4/0x240 net/socket.c:1222
+>  sock_ioctl+0x4cc/0x740 net/socket.c:1341
+>  vfs_ioctl fs/ioctl.c:51 [inline]
+>  __do_sys_ioctl fs/ioctl.c:907 [inline]
+>  __se_sys_ioctl fs/ioctl.c:893 [inline]
+>  __arm64_sys_ioctl+0x184/0x218 fs/ioctl.c:893
+>  __invoke_syscall arch/arm64/kernel/syscall.c:34 [inline]
+>  invoke_syscall+0x90/0x2e8 arch/arm64/kernel/syscall.c:48
+>  el0_svc_common.constprop.0+0x200/0x2a8 arch/arm64/kernel/syscall.c:131
+>  el0_svc+0x48/0xc0 arch/arm64/kernel/entry-common.c:712
+>  el0t_64_sync_handler+0x120/0x130 arch/arm64/kernel/entry-common.c:730
+>  el0t_64_sync+0x190/0x198 arch/arm64/kernel/entry.S:598
+> 
+> This patch attempts to fix that issue with the same convention.
+> 
+> Cc: stable@vger.kernel.org # v6.1+
+> Fixes: deee93d13d38 ("Bluetooth: use hdev->workqueue when queuing hdev->
+> {cmd,ncmd}_timer works")
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+nit: Fixes tags should not be line-wrapped.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> Tested-by: Yunseong Kim <yskelg@gmail.com>
+> Signed-off-by: Yunseong Kim <yskelg@gmail.com>
 
-## Build
-* kernel: 6.9.11-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: ebb35f61e5d39f0baaca27b0bf8aa63f2c135ba5
-* git describe: v6.9.10-164-gebb35f61e5d3
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.9.y/build/v6.9.1=
-0-164-gebb35f61e5d3
-
-## Test Regressions (compared to v6.9.8-338-g61dff5687633)
-
-## Metric Regressions (compared to v6.9.8-338-g61dff5687633)
-
-## Test Fixes (compared to v6.9.8-338-g61dff5687633)
-
-## Metric Fixes (compared to v6.9.8-338-g61dff5687633)
-
-## Test result summary
-total: 258631, pass: 223032, fail: 4979, skip: 30112, xfail: 508
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 127 total, 127 passed, 0 failed
-* arm64: 36 total, 36 passed, 0 failed
-* i386: 27 total, 27 passed, 0 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 34 total, 34 passed, 0 failed
-* riscv: 17 total, 17 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 31 total, 31 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+...
 
