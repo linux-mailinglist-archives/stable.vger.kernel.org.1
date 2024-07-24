@@ -1,126 +1,117 @@
-Return-Path: <stable+bounces-61256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDE893ADE3
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 10:18:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B47793ADE6
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 10:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE9D4282738
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:18:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E8FE1C20D96
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDD614B968;
-	Wed, 24 Jul 2024 08:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F3914A606;
+	Wed, 24 Jul 2024 08:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PUDpyGnh"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Zxs88aWs"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC64140397;
-	Wed, 24 Jul 2024 08:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E11AD23;
+	Wed, 24 Jul 2024 08:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721809128; cv=none; b=Wwgo4VYlPFTuGW1RAqJQxFOITeYuzoFK2TpayqDaUDPBLFsbhF6hozu7paSqbxlNB0ahXMKCMJt0LmIXTpCUbZsIPXfXFakUHDVenstCxEf6dm/mvbdFss+qW1YJtjX0sw0aLtl98ZU1TA/RyNA927bpc/hXirEMQInohaigPhA=
+	t=1721809403; cv=none; b=hWUuPbB/206UvTGG4rxZqvvfX9YLhh7+YTyZLZKLnDoQaTegMngH7TxV4HkXM71sSA0ceqlZ/Rf2T8tDSJ1EkoeumKebg5Dl0OI2U9iLF8r2eQxTh9gLJ3SFsv7MGNJ9jvDGrEYWNYW/SqkthEjIp8ztbSNQKRdhxMi29xhHdbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721809128; c=relaxed/simple;
-	bh=GVTqlhzIWAsTGoZvbf/CafZ28PBBGs54WSfwVjChil8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uOUvVcJH+ykhct4rdv+Pd/5a6j6Kun8DO9z8Kqwf6uyDWl2bhyXMnNLRBWvybrG1wFoDGkAuoNp3PekTn3/dNP6vRGdBIiCqWfYMdRBn0bfELD7iunzBjdrSplJU6fCx0AihAVRk+aeGxYDjLMiBlXrpRCdA3eInDnvKuOCg318=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PUDpyGnh; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721809127; x=1753345127;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=GVTqlhzIWAsTGoZvbf/CafZ28PBBGs54WSfwVjChil8=;
-  b=PUDpyGnhcTNy41wqopPUpBkvaQyVpts5OFYR7xtruFUoAo6rybnC1eVT
-   VMsgTMxCB6utYs1yE8MIuyF/4zFBzNzqwDF+fdp5bW7wSI/Obr6Hk8xhQ
-   u3WpgkUaAxpWvNi+aR3AeKtWeTK4tJ71QGgakizxx8VJK+vy0NYWWVny7
-   CmctpsehDJzDZ2rHXk+B55lEGc+f759x0RHQ/tphKGivt1VYa+tZ4a+El
-   y+KBKdRL7mxphfyBihGMZ/JjsHgYNl1wBmLlVJf7RQbM29ds2HyKTuqqy
-   P1KfT3Mll/bNuhR6WebCTCbWc9Pjl8qR8mQ/a0yPDP3cEd1/Wg0szmlvS
-   g==;
-X-CSE-ConnectionGUID: KChGDK9FSKiDHqBfv0LSRg==
-X-CSE-MsgGUID: ihkE9i0ITGKpEvmukmDJKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11142"; a="19166185"
-X-IronPort-AV: E=Sophos;i="6.09,232,1716274800"; 
-   d="scan'208";a="19166185"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2024 01:18:46 -0700
-X-CSE-ConnectionGUID: LZjPVV5eR+SXXOwNJ1ABdw==
-X-CSE-MsgGUID: uO7LKwuBS5agCfttjtUDFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,232,1716274800"; 
-   d="scan'208";a="52221769"
-Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.244.68])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2024 01:18:44 -0700
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-To: lgirdwood@gmail.com,
-	broonie@kernel.org
-Cc: linux-sound@vger.kernel.org,
-	pierre-louis.bossart@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] ASoC: SOF: ipc4-topology: Preserve the DMA Link ID for ChainDMA on unprepare
-Date: Wed, 24 Jul 2024 11:19:32 +0300
-Message-ID: <20240724081932.24542-3-peter.ujfalusi@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240724081932.24542-1-peter.ujfalusi@linux.intel.com>
-References: <20240724081932.24542-1-peter.ujfalusi@linux.intel.com>
+	s=arc-20240116; t=1721809403; c=relaxed/simple;
+	bh=s6AH41qmCRagNHJVLWAEWXkuwGW3PBip+cWwm6AKaLs=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=DlO0GKaS6B7l4HDBWVEVKPQqof273qQEv2cYI5cZX6OF1qBaZiamg9Oyu8pd1A9sTNp6wNP0Tv/XDAc+nQWLidMO3xz80kSrYeS/xmuOUrD0KFOZm+zUZkGer9aVDW23MyQD3349k6f3vewF419JpeK+wB9Eb723TzfNkgIGGho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Zxs88aWs; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1721809369; x=1722414169; i=markus.elfring@web.de;
+	bh=AUfhg0RIs62oOdn6dwn9X3BXKwMPFuwRHSPTvaF4wUk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Zxs88aWsKKvdQQvzZsAmPyvKmfIqcyxTlvZ+1NfS3/j5dUXTzmrNr26VHLwCjdQT
+	 H/VHvfMeKjgwNyE45Vn+lung44K8pxm3EiCmxah4ITZEMzn4s/NzkA7wpghFAeuPA
+	 HboA7CUt87YgT2xQEc6achd8HI1JZ1zMCnfm9tFAlx3f4MTq5o4bGaPLp5EVz+/mg
+	 6A/JgkrLW5QucLOEOITZSwsqQvCSYsfzduETDm94IK2Mwq+ilkS039/XUaD82EoIo
+	 E4CmrdJkGrgUF73WnG1pbtVOQX1mdw7Yxv+tyuUseXtoq+O96ZyxqflM6un2AhYx2
+	 iuvtH5K2cNmaqLRy5Q==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.89.95]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MCGWe-1sOFoZ0H7i-00CEVw; Wed, 24
+ Jul 2024 10:22:49 +0200
+Message-ID: <22b7c0fe-df71-48a0-bb80-1ec5c52bce2c@web.de>
+Date: Wed, 24 Jul 2024 10:22:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Mark Brown <broonie@kernel.org>, make24@iscas.ac.cn,
+ linux-spi@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Stefan Roese <sr@denx.de>
+References: <6234dbfd-c153-4f67-a828-342919d41de6@sirena.org.uk>
+Subject: Re: [PATCH v2] spi: ppc4xx: handle irq_of_parse_and_map() errors
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <6234dbfd-c153-4f67-a828-342919d41de6@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:LlgikOoZ13trhpbe44hcZcpKHM9A9Dwwrop3zA8ZIw6hiivVBCY
+ er+w0ufgryZLK9vHpIpxn3Ke/IuLm0dl1K79KAcX6dzJMTc3JY5CAnFigVBKmImeHbDJAWe
+ 5EHBsCcq2AXHiCThuloZcvcsAs8ipBDes8/0yusDQEqQojoPFCkDg2cC8LMUReVXtqpJ3r1
+ Z1zq7eX72Eido0W/avfcg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:w57jh+J3j94=;BwBb5AHKwBMVOEuXKM99xo5Gk9a
+ vYVDUZ9FIlyNMuqF2vghLRqu3mnE+t9eCQji6bm+cMCyc+BaJckmbNSiTovBc0at0ZG6iH7wf
+ P3xPdmK/+mjfxQjwx3Pj8tnlRz/kZW6DAxixPHRNiMidREbzbb7Q6yxyoF48SsqEkOOjSLhGS
+ 9ktId+hoVIDDl2psbL6Jen5ORQWVaZtM85sHKmnOqL9MmuBgWfCkAxHlS6G1XjlopxTLbDRpc
+ yz3r8OFjcwpV3bK+3pxjowhHgJZ9XPo9Jiw3qedErIChuMkGyqMqGHydMfB/1q1ADeziGxxV7
+ jyB4XSt4MBIN7wlUIoXUuwCzIkd0ZeBOT/IGBIcbbcitCgFMTVEJR8oSRxIiqhIx7FRaL9jfu
+ uRZf6+eldNrWm0XH2ZMp2+OGzn3ElAb1taAsLL0LeWFLSfqqo1DhT3qnx/8XuKNnOQ/UklcKG
+ SADcHudD2QYeLGGF2hjQCVJ5cOIVoEbLBAWXiuGVUa2Tnkr7AGP66Q127krv5+D6AJto6p9WR
+ T2irs0CElLRzKE62Wu8eXq9t/ksmLPnXcMkDqKXozf3MxyyYiKvqBfvL4cEKxmRHiWDsrvZZA
+ KmWuClPm3xnYr3cB4hve4AczDRPTWgjZrHNkWRtfCy7t/Xqoi5p7YijXoAq5SlSLmz6SruTRM
+ Xyv4U4Y0GgbJoZ+SJztqlR4simaPMcnyguVtpJPvrK7xGHiHJkPiTd1gey34LtHXV3Xb6nqbc
+ cfQvV28x4n5SnzKBJwbdnqNXNm38jI0EnYAq9Amiqkc+W5v0f9XsJA9qbwcTTicOQ7VH1UDvR
+ rXJGCIr7M6P8LBGhBMdqNcKw==
 
-The DMA Link ID is set to the IPC message's primary during dai_config,
-which is only during hw_params.
-During xrun handling the hw_params is not called and the DMA Link ID
-information will be lost.
+> > Zero and negative number is not a valid IRQ for in-kernel code and the
+> > irq_of_parse_and_map() function returns zero on error.  So this check =
+for
+> > valid IRQs should only accept values > 0.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 44dab88e7cc9 ("spi: add spi_ppc4xx driver")
+> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> > ---
+> > Changes in v2:
+> > - added Cc stable line;
+> > - added Fixes line.
+>
+> The Cc stable seems clearly disproportionate here.
 
-All other fields in the message expected to be 0 for re-configuration, only
-the DMA Link ID needs to be preserved and the in case of repeated
-dai_config, it is correctly updated (masked and then set).
+I wonder a bit about such a feedback (according to a commit from 2009-09-2=
+3).
 
-Cc: stable@vger.kernel.org
-Fixes: ca5ce0caa67f ("ASoC: SOF: ipc4/intel: Add support for chained DMA")
-Link: https://github.com/thesofproject/linux/issues/5116
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
----
- sound/soc/sof/ipc4-topology.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Greg Kroah-Hartman configured a patch email bot in other ways.
 
-diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
-index 4a4234d5c941..87be7f16e8c2 100644
---- a/sound/soc/sof/ipc4-topology.c
-+++ b/sound/soc/sof/ipc4-topology.c
-@@ -1358,7 +1358,13 @@ static void sof_ipc4_unprepare_copier_module(struct snd_sof_widget *swidget)
- 		ipc4_copier = dai->private;
- 
- 		if (pipeline->use_chain_dma) {
--			pipeline->msg.primary = 0;
-+			/*
-+			 * Preserve the DMA Link ID and clear other bits since
-+			 * the DMA Link ID is only configured once during
-+			 * dai_config, other fields are expected to be 0 for
-+			 * re-configuration
-+			 */
-+			pipeline->msg.primary &= SOF_IPC4_GLB_CHAIN_DMA_LINK_ID_MASK;
- 			pipeline->msg.extension = 0;
- 		}
- 
--- 
-2.45.2
+Another example:
+Re: [PATCH] usb: typec: ucsi: Fix NULL pointer dereference in ucsi_display=
+port_vdm()
+https://lore.kernel.org/linux-usb/2024072333-popcorn-detached-f399@gregkh/
 
+Regards,
+Markus
 
