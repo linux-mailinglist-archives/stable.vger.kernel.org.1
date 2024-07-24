@@ -1,123 +1,206 @@
-Return-Path: <stable+bounces-61237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EB4F93ACB8
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:38:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4EBC93ACBE
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CC32B21CD5
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:38:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D93EB22113
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B545336B;
-	Wed, 24 Jul 2024 06:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB6353389;
+	Wed, 24 Jul 2024 06:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aLCk4Y33"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15C7481CD;
-	Wed, 24 Jul 2024 06:37:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6C346B91;
+	Wed, 24 Jul 2024 06:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721803084; cv=none; b=XcNzjn3brahAKWjiPuztCOKMMx2UjK9dbOoKsKnwAS79ATI6PJdYc7GxaV73l8gnK5A/dgukOPxKIZBn9Z1SW9pMrHICi0blScUC4xrbddZuLSMY8jOHPRtDTu3ebNbfg6M+/aewMJYlYWvk0RoOKtpNZqcAseWj2rC2oYdYOnw=
+	t=1721803267; cv=none; b=boBN0SZsxZMtQ+OiH2VTd7dNge341dWSBJceZsgBrsgtCbwitHyxE70VLp8BKqGtQnMApO/WEcqYw4QuYPVilNrcZvvX3Kg1vzRgCi4zto2cTLgLuXKgut7Uf9W7p8HFqHaTLLDE1xGYAwGW3SsHoUs5K8aY/1C/fWaq8N47AFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721803084; c=relaxed/simple;
-	bh=3vjVBC564vfur4duYDr2L+pfHn61WMoVTgMxs7YsY7g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UBRAp6HviuTUm4WEuO4los/6VSfkECBj15zVt+rLhhXJNIh5FyRrw/1WIG/wj0cCfvzHZhf+jt8/+SJQQ+FgFNUebdRA2dRVwFdeT8oTb59SIQ0Qhcgi5txnGdyCXqnsB+Nqud+6myuuHc9oI1Ku/7gQKfspkYtYjc420QTA2D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowAAH8DotoaBmUTq0AA--.47674S2;
-	Wed, 24 Jul 2024 14:37:46 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	make24@iscas.ac.cn,
-	liujunliang_ljl@163.com
-Cc: linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v3] net: usb: sr9700: fix uninitialized variable use in sr_mdio_read
-Date: Wed, 24 Jul 2024 14:37:31 +0800
-Message-Id: <20240724063731.1489034-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1721803267; c=relaxed/simple;
+	bh=x0vOYeXeNX/sHfD9cAYNNJaVPjQFSeiii2czopLm0ho=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SnMF4fqG57RYRGy+D9k8Z8xjqaiPEsD5PvsheKfKjsy/YgZ9TQkUpu8+dYpOJiWueGefSojCUDBnyDEhnf4oLIthDE7JlphVHxqYVs4J8Wmv4tq7YL5pvlQSknvJDeprDE7udBezZ63gzCOQE2QV6Xa50fMUQHmvRZ72T8dFLsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aLCk4Y33; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721803265; x=1753339265;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=x0vOYeXeNX/sHfD9cAYNNJaVPjQFSeiii2czopLm0ho=;
+  b=aLCk4Y33LroLW5COoZ7sPYyIP09ZiwAsjMYx8d4AoQzrSVMK6VL6enwW
+   h3Dnc8WkyTr4teulsESg3jl6vRg+8eV3ephfgmjG716fVh8MbG6rV8vVe
+   2QqG6VcvoGeP+GdJ7L2LPZEgUw+XhciHKfhUmbyTcY+SjZtg/18aKIfn0
+   Fj//REClZILCrsXDCRmV0USTjHo6arxmYmRTKauz/c2gmEZ3RGDoz8PVp
+   9OwvZ3h1QqXX3IZCds/b8OQEIgLTmbqoWT+U6+HstPLOMrqWOv2Th2U3C
+   9GZ0IqgY8kLAIT8LXFoEoRNu/7TEsLIr3Y+IeImij79TFcgMNhH6Pp0h6
+   A==;
+X-CSE-ConnectionGUID: ARqp8582S+KLx9FRyu23bg==
+X-CSE-MsgGUID: QtHKWT6BTdOuojhFqXlMXA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11142"; a="19608702"
+X-IronPort-AV: E=Sophos;i="6.09,232,1716274800"; 
+   d="scan'208";a="19608702"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2024 23:41:03 -0700
+X-CSE-ConnectionGUID: 6sZo2mh6Thi8omSxy5kUFQ==
+X-CSE-MsgGUID: ilJjkpEYTNGqVKU+ks5eIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,232,1716274800"; 
+   d="scan'208";a="52168604"
+Received: from zhaohaif-mobl.ccr.corp.intel.com (HELO [10.125.241.20]) ([10.125.241.20])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2024 23:40:59 -0700
+Message-ID: <db628499-6faf-43c8-93e5-c24208ca0578@linux.intel.com>
+Date: Wed, 24 Jul 2024 14:40:57 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] PCI: pci_call_probe: call local_pci_probe() when
+ selected cpu is offline
+To: Hongchen Zhang <zhanghongchen@loongson.cn>,
+ Markus Elfring <Markus.Elfring@web.de>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: Alex Belits <abelits@marvell.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Nitesh Narayan Lal <nitesh@redhat.com>,
+ Frederic Weisbecker <frederic@kernel.org>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ stable@vger.kernel.org, Huacai Chen <chenhuacai@loongson.cn>
+References: <20240613074258.4124603-1-zhanghongchen@loongson.cn>
+ <a50b3865-8a04-4a9a-8d27-b317619a75c0@linux.intel.com>
+ <7340a27e-67c1-c0c3-9304-77710dc44f7f@loongson.cn>
+ <670927f1-42d8-40bc-bd79-55e178bd907a@linux.intel.com>
+ <0052b62b-aafe-e2eb-6d66-4ad0178bdae1@loongson.cn>
+From: Ethan Zhao <haifeng.zhao@linux.intel.com>
+In-Reply-To: <0052b62b-aafe-e2eb-6d66-4ad0178bdae1@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAH8DotoaBmUTq0AA--.47674S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CF15XFyrCr4kZr4DuF45Jrb_yoW8XryUpr
-	47Ga9YyrWUJa47Z3ykXwn7W3WFkws5GFy3GFW8Gw1fZ395Jrn5C34FgFyjgw1UGrW5Ja1j
-	vF4qyFW3Xa1FvaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-It could lead to error happen because the variable res is not updated if
-the call to sr_share_read_word returns an error. In this particular case
-error code was returned and res stayed uninitialized.
+On 7/24/2024 11:09 AM, Hongchen Zhang wrote:
+> Hi Ethan,
+>
+> On 2024/7/24 上午10:47, Ethan Zhao wrote:
+>> On 7/24/2024 9:58 AM, Hongchen Zhang wrote:
+>>> Hi Ethan,
+>>> On 2024/7/22 PM 3:39, Ethan Zhao wrote:
+>>>>
+>>>> On 6/13/2024 3:42 PM, Hongchen Zhang wrote:
+>>>>> Call work_on_cpu(cpu, fn, arg) in pci_call_probe() while the argument
+>>>>> @cpu is a offline cpu would cause system stuck forever.
+>>>>>
+>>>>> This can be happen if a node is online while all its CPUs are
+>>>>> offline (We can use "maxcpus=1" without "nr_cpus=1" to reproduce it).
+>>>>>
+>>>>> So, in the above case, let pci_call_probe() call local_pci_probe()
+>>>>> instead of work_on_cpu() when the best selected cpu is offline.
+>>>>>
+>>>>> Fixes: 69a18b18699b ("PCI: Restrict probe functions to 
+>>>>> housekeeping CPUs")
+>>>>> Cc: <stable@vger.kernel.org>
+>>>>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>>>>> Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+>>>>> ---
+>>>>> v2 -> v3: Modify commit message according to Markus's suggestion
+>>>>> v1 -> v2: Add a method to reproduce the problem
+>>>>> ---
+>>>>>   drivers/pci/pci-driver.c | 2 +-
+>>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+>>>>> index af2996d0d17f..32a99828e6a3 100644
+>>>>> --- a/drivers/pci/pci-driver.c
+>>>>> +++ b/drivers/pci/pci-driver.c
+>>>>> @@ -386,7 +386,7 @@ static int pci_call_probe(struct pci_driver 
+>>>>> *drv, struct pci_dev *dev,
+>>>>>           free_cpumask_var(wq_domain_mask);
+>>>>>       }
+>>>>> -    if (cpu < nr_cpu_ids)
+>>>>
+>>>> Why not choose the right cpu to callwork_on_cpu() ? the one that is 
+>>>> online. Thanks, Ethan
+>>> Yes, let housekeeping_cpumask() return online cpu is a good idea, 
+>>> but it may be changed by command line. so the simplest way is to 
+>>> call local_pci_probe when the best selected cpu is offline.
+>>
+>> Hmm..... housekeeping_cpumask() should never return offline CPU, so
+>> I guess you didn't hit issue with the CPU isolation, but the following
+>> code seems not good.
+> The issue is the dev node is online but the best selected cpu is 
+> offline, so it seems that there is no better way to directly set the 
+> cpu to nr_cpu_ids.
 
-This can be avoided by checking the return value of sr_share_read_word
-and propagating the error if the read operation failed.
+I mean where the bug is ? you should debug more about that.
+just add one cpu_online(cpu) check there might suggest there
+is bug in the cpu selection stage.
 
-Found by code review.
 
-Cc: stable@vger.kernel.org
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v3:
-- added Cc stable line as suggestions.
-Changes in v2:
-- modified the subject as suggestions.
----
- drivers/net/usb/sr9700.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+if (node < 0 || node >= MAX_NUMNODES || !node_online(node) ||
+	    pci_physfn_is_probed(dev)) {
+		cpu = nr_cpu_ids; // <----- if you hit here, then local_pci_probe() should be called.
+             
+	} else {
+		cpumask_var_t wq_domain_mask;
 
-diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
-index 0a662e42ed96..d5bc596f4521 100644
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -179,6 +179,7 @@ static int sr_mdio_read(struct net_device *netdev, int phy_id, int loc)
- 	struct usbnet *dev = netdev_priv(netdev);
- 	__le16 res;
- 	int rc = 0;
-+	int err;
- 
- 	if (phy_id) {
- 		netdev_dbg(netdev, "Only internal phy supported\n");
-@@ -193,7 +194,10 @@ static int sr_mdio_read(struct net_device *netdev, int phy_id, int loc)
- 		if (value & NSR_LINKST)
- 			rc = 1;
- 	}
--	sr_share_read_word(dev, 1, loc, &res);
-+	err = sr_share_read_word(dev, 1, loc, &res);
-+	if (err < 0)
-+		return err;
-+
- 	if (rc == 1)
- 		res = le16_to_cpu(res) | BMSR_LSTATUS;
- 	else
--- 
-2.25.1
+		if (!zalloc_cpumask_var(&wq_domain_mask, GFP_KERNEL)) {
+			error = -ENOMEM;
+			goto out;
+		}
+		cpumask_and(wq_domain_mask,
+			    housekeeping_cpumask(HK_TYPE_WQ),
+			    housekeeping_cpumask(HK_TYPE_DOMAIN));
 
+		cpu = cpumask_any_and(cpumask_of_node(node),
+				      wq_domain_mask);
+		free_cpumask_var(wq_domain_mask);
+                 // <----- if you hit here, then work_on_cpu(cpu, local_pci_probe, &ddi) should be called.
+                 // do you mean there one offline cpu is selected ?
+
+	}
+
+	if (cpu < nr_cpu_ids)
+		error = work_on_cpu(cpu, local_pci_probe, &ddi);
+	else
+		error = local_pci_probe(&ddi);
+
+
+Thanks,
+Ethan
+
+>>
+>> ...
+>>
+>> if (node < 0 || node >= MAX_NUMNODES || !node_online(node) ||
+>>          pci_physfn_is_probed(dev)) {
+>>          cpu = nr_cpu_ids;
+>>      } else {
+>>
+>> ....
+>>
+>> perhaps you could change the logic there and fix it  ?
+>>
+>> Thanks
+>> Ethan
+>>
+>>
+>>
+>>>>
+>>>>> +    if ((cpu < nr_cpu_ids) && cpu_online(cpu))
+>>>>>           error = work_on_cpu(cpu, local_pci_probe, &ddi);
+>>>>>       else
+>>>>>           error = local_pci_probe(&ddi);
+>>>
+>>>
+>
+>
 
