@@ -1,236 +1,121 @@
-Return-Path: <stable+bounces-61240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7730193ACC7
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:44:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE4893ACD2
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:52:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE66E1F23235
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:44:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E76E2834DC
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5016535A3;
-	Wed, 24 Jul 2024 06:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E131A53368;
+	Wed, 24 Jul 2024 06:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="R9kQEeSt"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCC52D030;
-	Wed, 24 Jul 2024 06:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2DFD29E;
+	Wed, 24 Jul 2024 06:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721803461; cv=none; b=OBkSvbKsqH7nw7ChCHscJPV6DTOFM4ukUfokySmEIQ4vin5ajSr37xi6lX/1sBPzc/XqDEmiRGbH1fWItiNLySs3Vp1JNxSo6YtWrHjVpeDQFy5wOcNrso2DAZFUHzx+1OrzF6052e3fz2Ps/X7mDfrMM0lWqmsn59AKOSppz9A=
+	t=1721803924; cv=none; b=RApfP0jx9vfM/x89xCvv8FScd+FmVPGMmtSAbszFsDqCOQXfjROBGMOfJ0EGvcFmAbsTs0rzULjsVmvNndjlcFmMUXuUGS9RsBxlg5QKFv45haJ1WtP1e7XCRQGiedmKk9EMYfveWASVYVwYtGbo/s1f4Hqfa1r/8YqExpnTTIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721803461; c=relaxed/simple;
-	bh=R8ZYgkfN7SOS0zuMxrlYUYT78BQBgHfKcQ0wc5czGtc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=eiU9jB3dPCHbvFe2/33j9t9sGFWXerR/QcWAmdqXcEo4YGsSSt+ILmKJ2sANDDFNw7Nzd7kqkwiM0XuYqJ1DR6YS6+SH0+KELqZumf/Ex6HhUrqqL+86FjIJe8mSEK3yqnkeQ4nSWDzBBHRq2O/kUlg3ft/oDZrFjMWrVxRmzJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4WTPX34KwXzQml8;
-	Wed, 24 Jul 2024 14:40:03 +0800 (CST)
-Received: from kwepemi100008.china.huawei.com (unknown [7.221.188.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9ACF914035E;
-	Wed, 24 Jul 2024 14:44:14 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- kwepemi100008.china.huawei.com (7.221.188.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 24 Jul 2024 14:44:13 +0800
-Message-ID: <7898c0c5-45b6-9795-74a0-f70904dd077c@huawei.com>
-Date: Wed, 24 Jul 2024 14:44:12 +0800
+	s=arc-20240116; t=1721803924; c=relaxed/simple;
+	bh=BKJYkElVdsyTz+MpTbuIrQNslbwroEkRjhC7/2y1VaM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U9SKfaA4rYyMKFMS//A2DCXjSIERtP7xi0heL94iVlF8todZhYhOIYqn3HDV1HX96kg/XBCXzAQ6EKG1O0sYfcRZnVURYCD2BG+xSfO+E1bpfE134CBk7pWWmTRerw3YLUHrTIKVD4tZCeK3FOYG/TjwfxSYBX6H8Y7eLKrlGEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=R9kQEeSt; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 46O6or1x108730;
+	Wed, 24 Jul 2024 01:50:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1721803853;
+	bh=5zKtgi31JMulsen7u4BdGoizzwd/ypkXhdtnrLehHH4=;
+	h=From:To:CC:Subject:Date;
+	b=R9kQEeStn5qFzjwdoTKuoydTgDH5MPkPNt/cVYAdxa1OvlmN1+a6WGdUxDd+MbcCq
+	 bw76yLGgYgMXGyAKXLKJFPhTl5PU5zXMSQck+ktm30v9IoiK/WHb/Q/H+sVsmZE1Ts
+	 m6ZeYo5wG9fHw+Ps+M6eu5kudZ1nMfUl9XwVD/DQ=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 46O6orV7079908
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 24 Jul 2024 01:50:53 -0500
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 24
+ Jul 2024 01:50:52 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 24 Jul 2024 01:50:52 -0500
+Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.81])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 46O6omlk070009;
+	Wed, 24 Jul 2024 01:50:49 -0500
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <bhelgaas@google.com>, <lpieralisi@kernel.org>, <kw@linux.com>,
+        <robh@kernel.org>, <vigneshr@ti.com>, <kishon@kernel.org>
+CC: <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <stable@vger.kernel.org>,
+        <ahalaney@redhat.com>, <srk@ti.com>, <s-vadapalli@ti.com>
+Subject: [PATCH] PCI: j721e: Set .map_irq and .swizzle_irq to NULL
+Date: Wed, 24 Jul 2024 12:20:48 +0530
+Message-ID: <20240724065048.285838-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: + crash-fix-x86_32-crash-memory-reserve-dead-loop-bug.patch added
- to mm-nonmm-unstable branch
-Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>, <mm-commits@vger.kernel.org>,
-	<will@kernel.org>, <vgoyal@redhat.com>, <thunder.leizhen@huawei.com>,
-	<tglx@linutronix.de>, <stable@vger.kernel.org>, <robh@kernel.org>,
-	<paul.walmsley@sifive.com>, <palmer@dabbelt.com>, <mingo@redhat.com>,
-	<linux@armlinux.org.uk>, <linus.walleij@linaro.org>, <javierm@redhat.com>,
-	<hpa@zytor.com>, <hbathini@linux.ibm.com>, <gregkh@linuxfoundation.org>,
-	<eric.devolder@oracle.com>, <dyoung@redhat.com>, <deller@gmx.de>,
-	<dave.hansen@linux.intel.com>, <chenjiahao16@huawei.com>,
-	<catalin.marinas@arm.com>, <bp@alien8.de>, <bhe@redhat.com>, <arnd@arndb.de>,
-	<aou@eecs.berkeley.edu>, <afd@ti.com>
-References: <20240724053727.28397C32782@smtp.kernel.org>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <20240724053727.28397C32782@smtp.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemi100008.china.huawei.com (7.221.188.57)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
+Since the configuration of Legacy Interrupts (INTx) is not supported, set
+the .map_irq and .swizzle_irq callbacks to NULL. This fixes the error:
+  of_irq_parse_pci: failed with rc=-22
+due to the absence of Legacy Interrupts in the device-tree.
 
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+Reported-by: Andrew Halaney <ahalaney@redhat.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+---
 
-On 2024/7/24 13:37, Andrew Morton wrote:
-> 
-> The patch titled
->      Subject: crash: fix x86_32 crash memory reserve dead loop bug
-> has been added to the -mm mm-nonmm-unstable branch.  Its filename is
->      crash-fix-x86_32-crash-memory-reserve-dead-loop-bug.patch
-> 
-> This patch will shortly appear at
->      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/crash-fix-x86_32-crash-memory-reserve-dead-loop-bug.patch
-> 
-> This patch will later appear in the mm-nonmm-unstable branch at
->     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> 
-> Before you just go and hit "reply", please:
->    a) Consider who else should be cc'ed
->    b) Prefer to cc a suitable mailing list as well
->    c) Ideally: find the original patch on the mailing list and do a
->       reply-to-all to that, adding suitable additional cc's
-> 
-> *** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-> 
-> The -mm tree is included into linux-next via the mm-everything
-> branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> and is updated there every 2-3 working days
-> 
-> ------------------------------------------------------
-> From: Jinjie Ruan <ruanjinjie@huawei.com>
-> Subject: crash: fix x86_32 crash memory reserve dead loop bug
-> Date: Thu, 18 Jul 2024 11:54:42 +0800
-> 
-> Patch series "crash: Fix x86_32 memory reserve dead loop bug", v3.
+Hello,
 
-It seems that the newest is v4, and the loongarch is missing.
+This patch is based on commit
+786c8248dbd3 Merge tag 'perf-tools-fixes-for-v6.11-2024-07-23' of git://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools
+of Mainline Linux.
 
-> 
-> Fix two bugs for x86_32 crash memory reserve, and prepare to apply generic
-> crashkernel reservation to 32bit system.  Then use generic interface to
-> simplify crashkernel reservation for ARM32.
-> 
-> 
-> This patch (of 3):
-> 
-> On x86_32 Qemu machine with 1GB memory, the cmdline "crashkernel=1G,high"
-> will cause system stall as below:
-> 
-> 	ACPI: Reserving FACP table memory at [mem 0x3ffe18b8-0x3ffe192b]
-> 	ACPI: Reserving DSDT table memory at [mem 0x3ffe0040-0x3ffe18b7]
-> 	ACPI: Reserving FACS table memory at [mem 0x3ffe0000-0x3ffe003f]
-> 	ACPI: Reserving APIC table memory at [mem 0x3ffe192c-0x3ffe19bb]
-> 	ACPI: Reserving HPET table memory at [mem 0x3ffe19bc-0x3ffe19f3]
-> 	ACPI: Reserving WAET table memory at [mem 0x3ffe19f4-0x3ffe1a1b]
-> 	143MB HIGHMEM available.
-> 	879MB LOWMEM available.
-> 	  mapped low ram: 0 - 36ffe000
-> 	  low ram: 0 - 36ffe000
-> 	 (stall here)
-> 
-> The reason is that the CRASH_ADDR_LOW_MAX is equal to CRASH_ADDR_HIGH_MAX
-> on x86_32, the first high crash kernel memory reservation will fail, then
-> go into the "retry" loop and never came out as below.
-> 
-> -> reserve_crashkernel_generic() and high is true
->  -> alloc at [CRASH_ADDR_LOW_MAX, CRASH_ADDR_HIGH_MAX] fail
->     -> alloc at [0, CRASH_ADDR_LOW_MAX] fail and repeatedly
->        (because CRASH_ADDR_LOW_MAX = CRASH_ADDR_HIGH_MAX).
-> 
-> Fix it by prevent crashkernel=,high from being parsed successfully on 32bit
-> system with a architecture-defined macro.
-> 
-> After this patch, the 'crashkernel=,high' for 32bit system can't succeed,
-> and it has no chance to call reserve_crashkernel_generic(), therefore this
-> issue on x86_32 is solved.
-> 
-> Link: https://lkml.kernel.org/r/20240718035444.2977105-1-ruanjinjie@huawei.com
-> Link: https://lkml.kernel.org/r/20240718035444.2977105-2-ruanjinjie@huawei.com
-> Fixes: 9c08a2a139fe ("x86: kdump: use generic interface to simplify crashkernel reservation code")
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> Tested-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> Cc: Albert Ou <aou@eecs.berkeley.edu>
-> Cc: Andrew Davis <afd@ti.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Chen Jiahao <chenjiahao16@huawei.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Dave Young <dyoung@redhat.com>
-> Cc: Eric DeVolder <eric.devolder@oracle.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Javier Martinez Canillas <javierm@redhat.com>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Vivek Goyal <vgoyal@redhat.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Zhen Lei <thunder.leizhen@huawei.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> 
->  arch/arm64/include/asm/crash_reserve.h |    2 ++
->  arch/riscv/include/asm/crash_reserve.h |    2 ++
->  arch/x86/include/asm/crash_reserve.h   |    1 +
->  kernel/crash_reserve.c                 |    2 +-
->  4 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> --- a/arch/arm64/include/asm/crash_reserve.h~crash-fix-x86_32-crash-memory-reserve-dead-loop-bug
-> +++ a/arch/arm64/include/asm/crash_reserve.h
-> @@ -7,4 +7,6 @@
->  
->  #define CRASH_ADDR_LOW_MAX              arm64_dma_phys_limit
->  #define CRASH_ADDR_HIGH_MAX             (PHYS_MASK + 1)
-> +
-> +#define HAVE_ARCH_CRASHKERNEL_RESERVATION_HIGH
->  #endif
-> --- a/arch/riscv/include/asm/crash_reserve.h~crash-fix-x86_32-crash-memory-reserve-dead-loop-bug
-> +++ a/arch/riscv/include/asm/crash_reserve.h
-> @@ -7,5 +7,7 @@
->  #define CRASH_ADDR_LOW_MAX		dma32_phys_limit
->  #define CRASH_ADDR_HIGH_MAX		memblock_end_of_DRAM()
->  
-> +#define HAVE_ARCH_CRASHKERNEL_RESERVATION_HIGH
-> +
->  extern phys_addr_t memblock_end_of_DRAM(void);
->  #endif
-> --- a/arch/x86/include/asm/crash_reserve.h~crash-fix-x86_32-crash-memory-reserve-dead-loop-bug
-> +++ a/arch/x86/include/asm/crash_reserve.h
-> @@ -26,6 +26,7 @@ extern unsigned long swiotlb_size_or_def
->  #else
->  # define CRASH_ADDR_LOW_MAX     SZ_4G
->  # define CRASH_ADDR_HIGH_MAX    SZ_64T
-> +#define HAVE_ARCH_CRASHKERNEL_RESERVATION_HIGH
->  #endif
->  
->  # define DEFAULT_CRASH_KERNEL_LOW_SIZE crash_low_size_default()
-> --- a/kernel/crash_reserve.c~crash-fix-x86_32-crash-memory-reserve-dead-loop-bug
-> +++ a/kernel/crash_reserve.c
-> @@ -305,7 +305,7 @@ int __init parse_crashkernel(char *cmdli
->  	/* crashkernel=X[@offset] */
->  	ret = __parse_crashkernel(cmdline, system_ram, crash_size,
->  				crash_base, NULL);
-> -#ifdef CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
-> +#ifdef HAVE_ARCH_CRASHKERNEL_RESERVATION_HIGH
->  	/*
->  	 * If non-NULL 'high' passed in and no normal crashkernel
->  	 * setting detected, try parsing crashkernel=,high|low.
-> _
-> 
-> Patches currently in -mm which might be from ruanjinjie@huawei.com are
-> 
-> crash-fix-x86_32-crash-memory-reserve-dead-loop-bug.patch
-> crash-fix-x86_32-crash-memory-reserve-dead-loop-bug-at-high.patch
-> arm-use-generic-interface-to-simplify-crashkernel-reservation.patch
-> 
+Patch has been tested on J784S4-EVM and J721e-EVM, both of which have
+the PCIe Controller configured by the pci-j721e.c driver.
+
+Regards,
+Siddharth.
+
+ drivers/pci/controller/cadence/pci-j721e.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index 85718246016b..5372218849a8 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -417,6 +417,10 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 		if (!bridge)
+ 			return -ENOMEM;
+ 
++		/* Legacy interrupts are not supported */
++		bridge->map_irq = NULL;
++		bridge->swizzle_irq = NULL;
++
+ 		if (!data->byte_access_allowed)
+ 			bridge->ops = &cdns_ti_pcie_host_ops;
+ 		rc = pci_host_bridge_priv(bridge);
+-- 
+2.40.1
+
 
