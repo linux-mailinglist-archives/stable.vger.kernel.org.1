@@ -1,733 +1,192 @@
-Return-Path: <stable+bounces-61228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8281493AB97
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 05:28:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C86AC93ABE2
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A597E1C22DFF
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 03:28:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57A581F2389E
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 04:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43671BC53;
-	Wed, 24 Jul 2024 03:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746C21C6A7;
+	Wed, 24 Jul 2024 04:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="NwXWGjtW"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UF+AEkt6"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D670E17E9
-	for <stable@vger.kernel.org>; Wed, 24 Jul 2024 03:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B273FE4A
+	for <stable@vger.kernel.org>; Wed, 24 Jul 2024 04:16:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721791706; cv=none; b=onXOEJF975r4U+/mkFZ2iT2qEK9A1lR3UtqFCaKCmWZCN0OHtvOA9h60kGznWRBXbQQ3/xjELDinRrgD4m/srAfmNAlfUlv34nnk598EZOt8r4S1ULqDuDuKKv8gyopXbb1jjdAaxJdfdnRxPEsSq2dEXOPgvpYZ1lKQ1928amw=
+	t=1721794576; cv=none; b=uvnBMkJChbaWN58wbGyGvXI3S+y8KoRrmOs4YIIU9tNBOW78yQ6bCa6dKOK+xq5B3CqgWzE4Po6MLuk9JIK27Zk73KGFYTACfCcK+e3M1y3L/pELW6KhMpuzrTScRJ7EeKEnp6LdkLcvI4XH8/aifVjgM5V+iBrfXTPDE+9OFxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721791706; c=relaxed/simple;
-	bh=/z3T6UIm9pC9Gtbj1xqVH4RttMd5bS12RiZkriAnKsU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Axvn3B7FH442bKcQY7uzcA6GYL45KzdYGG4LGqR/KFkr8b/OtyOqFW6cu1bUersJOjSyMCW88GHaZqM/CpaD3+jBvU9dcKlPfJhKhgxS3b5n+d8KXj/6X91DVEvaoByOZaDo+Tz2MoRRJy4KxoWpv6HxTbXCh9l+Sb7VmhVyvAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=NwXWGjtW; arc=none smtp.client-ip=220.197.31.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=mGnWVYuj9aslAnTyRtFtRdc7stgveDij0eUz8NBYPrc=;
-	b=NwXWGjtWc3rx1eKVRBmLdEaB43grCE/jJHH1Rcryyp/bF8r9YMl4TasMvhwSoO
-	A4ognShInTixg0gwDvL1rAfXRwKwE1aHGRqKYbai6ZnIyCFeONg1ciY1lvsdA5O6
-	sZRwHHi7X5qSLxarA7mwJlcyY7Qs79EZLp3+SQhMyef6Q=
-Received: from [172.21.22.210] (unknown [118.242.3.34])
-	by gzga-smtp-mta-g0-5 (Coremail) with SMTP id _____wD3n3J1cKBmoMtXAg--.12563S2;
-	Wed, 24 Jul 2024 11:10:01 +0800 (CST)
-Message-ID: <818aa2e9-924f-41c4-bb5c-dd07fd07dbc0@126.com>
-Date: Wed, 24 Jul 2024 11:09:41 +0800
+	s=arc-20240116; t=1721794576; c=relaxed/simple;
+	bh=RN3gny0RM+0+kGKt+d45Q48PUb3VYnpxhylDlgCjtwA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FeDdK03QhvLF4kh/q4J9fdR2Vr/j4SJ0qbpxAurchdOc1OjwXwh5YGmV59Nlzhj0rdQIl0o0+bBnBEMAC+9abguLBPz15Bu5DN56YNiB80s+YOUvePBk8fjmEV7Pvz36xM8tK50TQekSUXQGeYF47w6QXZxRqQYAoGfCiuPoE3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UF+AEkt6; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5a28b61b880so7734a12.1
+        for <stable@vger.kernel.org>; Tue, 23 Jul 2024 21:16:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721794573; x=1722399373; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iwS1/cFeNKL22fZ+xHmBTjWUvBFhF8oHEUfTzIr+zi8=;
+        b=UF+AEkt6iqmTKd/3AXD1UMuy5ugJxXYmw3zg7AW1unxfQPQ8t4ydJLdXx/3FLe3G2m
+         xkrNleoMl5f8pkIy9UX4xtJ4mL7vjMIp5uy/sXAFRlwnmVPyeVpZ3dKNxEp00z7XXos1
+         aqhNbc2+tf+9dovwy8VEqfe9x1MmEDVG2TOTyqIOCoDPi2IIqL2vOAaII102MV+I4CQi
+         r9AV4Z3e5h6MNpgJZHk6B5xVi/ckAsyRf40402d4IhsXWRchhhKsLfuJQhZC3xRkLJrS
+         IzqkW7VU/u5cN0kWNgAvbE0ZTm/+8XxnzRNWDehJGTiOPj2Esq1BehGAR4R+ihnT7h0e
+         utzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721794573; x=1722399373;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iwS1/cFeNKL22fZ+xHmBTjWUvBFhF8oHEUfTzIr+zi8=;
+        b=Qs8U3yGL5dIa1kMC8Mb8AZursKxWpkAjBx/n9oHPSGZRRTfaFuMKVYr8kme6MEMe3j
+         tdt1QFEPlOTZRKMPhpc5OcvYclUW7w2kmzTm2a6RKEUO6H8kHL8eOt8dIS6sCGSkwJrH
+         Xou0Y2bYuPRp8jW7pmAxlBUpkBlAI2aPNCZsUrCnouVH2Vvd6Kz9/Z2fBrfLjYmx3WiR
+         pwcnR08z1KXoyQgPnIDRjjN+YSXE5DgsIpOxkAWTsQnfCMKp26efz3h+xv0s5AknO2pd
+         owwaB54jVUzFvLaZLxwuGLTifa0EAfd971CDYz8f1sGCwO6FRAckR8l35EtNKmZmTkHu
+         IvWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVNSo4pQQXZGJVd8FfBQ0Mc5pltTSqPcOl+iDBThnoN01rqqo1nBAWWB2VZmruC3JK4Ig4cA/STF1wf8m/MdJqlKC0s3Ubt
+X-Gm-Message-State: AOJu0YyHQVpinG5OmDf+xHKmAaiY/ia0k0fhzySxAssAyxH6RTOs5J58
+	3E5+isiN23q9gDDZK+kHqYq7Jtxbfje2PJo5KyrrLl6gGqsecGiKsG9ly61hfgWRVK+yb9GKtJI
+	DaazR+yj/U06kGJc0F0OHau02o648AcwiKqK7ILW3ZuGoQEQd2ecn
+X-Google-Smtp-Source: AGHT+IGIyuI1/PYRmlck9vsU+FOC6p3INSYuEJHv/pe5uy6Gyvsvi7ks77SqXqU8Zd6gSPAF7BiO8luHqSfZLyd6PHc=
+X-Received: by 2002:a05:6402:5211:b0:57c:c3a7:dab6 with SMTP id
+ 4fb4d7f45d1cf-5aacbacdc15mr162980a12.3.1721794572376; Tue, 23 Jul 2024
+ 21:16:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] mm: gup: stop abusing try_grab_folio"
- failed to apply to 6.6-stable tree
-To: gregkh@linuxfoundation.org, yang@os.amperecomputing.com,
- akpm@linux-foundation.org, david@redhat.com, hch@infradead.org,
- peterx@redhat.com, stable@vger.kernel.org
-References: <2024071541-observing-landline-c9ec@gregkh>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <2024071541-observing-landline-c9ec@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3n3J1cKBmoMtXAg--.12563S2
-X-Coremail-Antispam: 1Uf129KBjvAXoWfXryDuryrXF17tr1kCw15Jwb_yoW5JF1rGo
-	WfCw43tw1S9r13AFs3KF10qFyfu3Z0v34fGF4fCrs8ZF9rZ345Wr47W34DWrn8Wrn8JF4f
-	Cr93Z3W7tFZ7trn3n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUcnmiDUUUU
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiWREmG2VLbp3a-gAAsM
+References: <20240720173543.897972-1-jglisse@google.com> <0c390494-e6ba-4cde-aace-cd726f2409a1@redhat.com>
+ <CAPTQFZSgNHEE0Ub17=kfF-W64bbfRc4wYijTkG==+XxfgcocOQ@mail.gmail.com> <6be6453a-15ce-4305-9a7c-a66e57564785@redhat.com>
+In-Reply-To: <6be6453a-15ce-4305-9a7c-a66e57564785@redhat.com>
+From: Jerome Glisse <jglisse@google.com>
+Date: Tue, 23 Jul 2024 21:15:59 -0700
+Message-ID: <CAPTQFZS7KTTor+CHyzwE8hVVZo04haWsyTHhN9+Hy35PVZ6O1w@mail.gmail.com>
+Subject: Re: [PATCH] mm: fix maxnode for mbind(), set_mempolicy() and migrate_pages()
+To: David Hildenbrand <david@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi yang,
+On Tue, 23 Jul 2024 at 10:37, David Hildenbrand <david@redhat.com> wrote:
+>
+> On 23.07.24 18:33, Jerome Glisse wrote:
+> > On Mon, 22 Jul 2024 at 06:09, David Hildenbrand <david@redhat.com> wrot=
+e:
+> >>
+> >> On 20.07.24 19:35, Jerome Glisse wrote:
+> >>> Because maxnode bug there is no way to bind or migrate_pages to the
+> >>> last node in multi-node NUMA system unless you lie about maxnodes
+> >>> when making the mbind, set_mempolicy or migrate_pages syscall.
+> >>>
+> >>> Manpage for those syscall describe maxnodes as the number of bits in
+> >>> the node bitmap ("bit mask of nodes containing up to maxnode bits").
+> >>> Thus if maxnode is n then we expect to have a n bit(s) bitmap which
+> >>> means that the mask of valid bits is ((1 << n) - 1). The get_nodes()
+> >>> decrement lead to the mask being ((1 << (n - 1)) - 1).
+> >>>
+> >>> The three syscalls use a common helper get_nodes() and first things
+> >>> this helper do is decrement maxnode by 1 which leads to using n-1 bit=
+s
+> >>> in the provided mask of nodes (see get_bitmap() an helper function to
+> >>> get_nodes()).
+> >>>
+> >>> The lead to two bugs, either the last node in the bitmap provided wil=
+l
+> >>> not be use in either of the three syscalls, or the syscalls will erro=
+r
+> >>> out and return EINVAL if the only bit set in the bitmap was the last
+> >>> bit in the mask of nodes (which is ignored because of the bug and an
+> >>> empty mask of nodes is an invalid argument).
+> >>>
+> >>> I am surprised this bug was never caught ... it has been in the kerne=
+l
+> >>> since forever.
+> >>
+> >> Let's look at QEMU: backends/hostmem.c
+> >>
+> >>       /*
+> >>        * We can have up to MAX_NODES nodes, but we need to pass maxnod=
+e+1
+> >>        * as argument to mbind() due to an old Linux bug (feature?) whi=
+ch
+> >>        * cuts off the last specified node. This means backend->host_no=
+des
+> >>        * must have MAX_NODES+1 bits available.
+> >>        */
+> >>
+> >> Which means that it's been known for a long time, and the workaround
+> >> seems to be pretty easy.
+> >>
+> >> So I wonder if we rather want to update the documentation to match rea=
+lity.
+> >
+> > [Sorry resending as text ... gmail insanity]
+> >
+> > I think it is kind of weird if we ask to supply maxnodes+1 to work
+> > around the bug. If we apply this patch qemu would continue to work as
+> > is while fixing users that were not aware of that bug. So I would say
+> > applying this patch does more good. Long term qemu can drop its
+> > workaround or keep it for backward compatibility with old kernel.
+>
+> Not really, unfortunately. The thing is that it requires a lot more
+> effort to sense support than simply pass maxnodes+1. So unless you know
+> exactly on which minimum kernel version your software runs (barely
+> happens), you will simply apply the workaround.
 
-May I ask if there is any plan to backport the patch to 6.6-stable tree?
+The point I was trying to make is that working applications do not
+need to change
+their code; a patched or unpatched kernel will not change their behavior in=
+ any
+way and thus they will continue working regardless of whether the kernel as
+the patch.
 
-thanks,
+While applications that are not as smart will keep miss-behaving until some=
+one
+fixes the application. So to me it looks like the patch brings good to
+people without
+arming any existing folks.
 
-yangge
+Fix in one place versus wait for people to fix their code ...
 
-在 2024/7/15 17:15, gregkh@linuxfoundation.org 写道:
-> 
-> The patch below does not apply to the 6.6-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x f442fa6141379a20b48ae3efabee827a3d260787
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024071541-observing-landline-c9ec@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-> 
-> Possible dependencies:
-> 
-> f442fa614137 ("mm: gup: stop abusing try_grab_folio")
-> 01d89b93e176 ("mm/gup: fix hugepd handling in hugetlb rework")
-> 9cbe4954c6d9 ("gup: use folios for gup_devmap")
-> 53e45c4f6d4f ("mm: convert put_devmap_managed_page_refs() to put_devmap_managed_folio_refs()")
-> 6785c54a1b43 ("mm: remove put_devmap_managed_page()")
-> 25176ad09ca3 ("mm/treewide: rename CONFIG_HAVE_FAST_GUP to CONFIG_HAVE_GUP_FAST")
-> 23babe1934d7 ("mm/gup: consistently name GUP-fast functions")
-> a12083d721d7 ("mm/gup: handle hugepd for follow_page()")
-> 4418c522f683 ("mm/gup: handle huge pmd for follow_pmd_mask()")
-> 1b1676180246 ("mm/gup: handle huge pud for follow_pud_mask()")
-> caf8cab79857 ("mm/gup: cache *pudp in follow_pud_mask()")
-> 878b0c451621 ("mm/gup: handle hugetlb for no_page_table()")
-> f3c94c625fe3 ("mm/gup: refactor record_subpages() to find 1st small page")
-> 607c63195d63 ("mm/gup: drop gup_fast_folio_allowed() in hugepd processing")
-> f002882ca369 ("mm: merge folio_is_secretmem() and folio_fast_pin_allowed() into gup_fast_folio_allowed()")
-> 1965e933ddeb ("mm/treewide: replace pXd_huge() with pXd_leaf()")
-> 7db86dc389aa ("mm/gup: merge pXd huge mapping checks")
-> 089f92141ed0 ("mm/gup: check p4d presence before going on")
-> e6fd5564c07c ("mm/gup: cache p4d in follow_p4d_mask()")
-> 65291dcfcf89 ("mm/secretmem: fix GUP-fast succeeding on secretmem folios")
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> ------------------ original commit in Linus's tree ------------------
-> 
->  From f442fa6141379a20b48ae3efabee827a3d260787 Mon Sep 17 00:00:00 2001
-> From: Yang Shi <yang@os.amperecomputing.com>
-> Date: Fri, 28 Jun 2024 12:14:58 -0700
-> Subject: [PATCH] mm: gup: stop abusing try_grab_folio
-> 
-> A kernel warning was reported when pinning folio in CMA memory when
-> launching SEV virtual machine.  The splat looks like:
-> 
-> [  464.325306] WARNING: CPU: 13 PID: 6734 at mm/gup.c:1313 __get_user_pages+0x423/0x520
-> [  464.325464] CPU: 13 PID: 6734 Comm: qemu-kvm Kdump: loaded Not tainted 6.6.33+ #6
-> [  464.325477] RIP: 0010:__get_user_pages+0x423/0x520
-> [  464.325515] Call Trace:
-> [  464.325520]  <TASK>
-> [  464.325523]  ? __get_user_pages+0x423/0x520
-> [  464.325528]  ? __warn+0x81/0x130
-> [  464.325536]  ? __get_user_pages+0x423/0x520
-> [  464.325541]  ? report_bug+0x171/0x1a0
-> [  464.325549]  ? handle_bug+0x3c/0x70
-> [  464.325554]  ? exc_invalid_op+0x17/0x70
-> [  464.325558]  ? asm_exc_invalid_op+0x1a/0x20
-> [  464.325567]  ? __get_user_pages+0x423/0x520
-> [  464.325575]  __gup_longterm_locked+0x212/0x7a0
-> [  464.325583]  internal_get_user_pages_fast+0xfb/0x190
-> [  464.325590]  pin_user_pages_fast+0x47/0x60
-> [  464.325598]  sev_pin_memory+0xca/0x170 [kvm_amd]
-> [  464.325616]  sev_mem_enc_register_region+0x81/0x130 [kvm_amd]
-> 
-> Per the analysis done by yangge, when starting the SEV virtual machine, it
-> will call pin_user_pages_fast(..., FOLL_LONGTERM, ...) to pin the memory.
-> But the page is in CMA area, so fast GUP will fail then fallback to the
-> slow path due to the longterm pinnalbe check in try_grab_folio().
-> 
-> The slow path will try to pin the pages then migrate them out of CMA area.
-> But the slow path also uses try_grab_folio() to pin the page, it will
-> also fail due to the same check then the above warning is triggered.
-> 
-> In addition, the try_grab_folio() is supposed to be used in fast path and
-> it elevates folio refcount by using add ref unless zero.  We are guaranteed
-> to have at least one stable reference in slow path, so the simple atomic add
-> could be used.  The performance difference should be trivial, but the
-> misuse may be confusing and misleading.
-> 
-> Redefined try_grab_folio() to try_grab_folio_fast(), and try_grab_page()
-> to try_grab_folio(), and use them in the proper paths.  This solves both
-> the abuse and the kernel warning.
-> 
-> The proper naming makes their usecase more clear and should prevent from
-> abusing in the future.
-> 
-> peterx said:
-> 
-> : The user will see the pin fails, for gpu-slow it further triggers the WARN
-> : right below that failure (as in the original report):
-> :
-> :         folio = try_grab_folio(page, page_increm - 1,
-> :                                 foll_flags);
-> :         if (WARN_ON_ONCE(!folio)) { <------------------------ here
-> :                 /*
-> :                         * Release the 1st page ref if the
-> :                         * folio is problematic, fail hard.
-> :                         */
-> :                 gup_put_folio(page_folio(page), 1,
-> :                                 foll_flags);
-> :                 ret = -EFAULT;
-> :                 goto out;
-> :         }
-> 
-> [1] https://lore.kernel.org/linux-mm/1719478388-31917-1-git-send-email-yangge1116@126.com/
-> 
-> [shy828301@gmail.com: fix implicit declaration of function try_grab_folio_fast]
->    Link: https://lkml.kernel.org/r/CAHbLzkowMSso-4Nufc9hcMehQsK9PNz3OSu-+eniU-2Mm-xjhA@mail.gmail.com
-> Link: https://lkml.kernel.org/r/20240628191458.2605553-1-yang@os.amperecomputing.com
-> Fixes: 57edfcfd3419 ("mm/gup: accelerate thp gup even for "pages != NULL"")
-> Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-> Reported-by: yangge <yangge1116@126.com>
-> Cc: Christoph Hellwig <hch@infradead.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: <stable@vger.kernel.org>	[6.6+]
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 469799f805f1..f1d6bc06eb52 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -97,95 +97,6 @@ static inline struct folio *try_get_folio(struct page *page, int refs)
->   	return folio;
->   }
->   
-> -/**
-> - * try_grab_folio() - Attempt to get or pin a folio.
-> - * @page:  pointer to page to be grabbed
-> - * @refs:  the value to (effectively) add to the folio's refcount
-> - * @flags: gup flags: these are the FOLL_* flag values.
-> - *
-> - * "grab" names in this file mean, "look at flags to decide whether to use
-> - * FOLL_PIN or FOLL_GET behavior, when incrementing the folio's refcount.
-> - *
-> - * Either FOLL_PIN or FOLL_GET (or neither) must be set, but not both at the
-> - * same time. (That's true throughout the get_user_pages*() and
-> - * pin_user_pages*() APIs.) Cases:
-> - *
-> - *    FOLL_GET: folio's refcount will be incremented by @refs.
-> - *
-> - *    FOLL_PIN on large folios: folio's refcount will be incremented by
-> - *    @refs, and its pincount will be incremented by @refs.
-> - *
-> - *    FOLL_PIN on single-page folios: folio's refcount will be incremented by
-> - *    @refs * GUP_PIN_COUNTING_BIAS.
-> - *
-> - * Return: The folio containing @page (with refcount appropriately
-> - * incremented) for success, or NULL upon failure. If neither FOLL_GET
-> - * nor FOLL_PIN was set, that's considered failure, and furthermore,
-> - * a likely bug in the caller, so a warning is also emitted.
-> - */
-> -struct folio *try_grab_folio(struct page *page, int refs, unsigned int flags)
-> -{
-> -	struct folio *folio;
-> -
-> -	if (WARN_ON_ONCE((flags & (FOLL_GET | FOLL_PIN)) == 0))
-> -		return NULL;
-> -
-> -	if (unlikely(!(flags & FOLL_PCI_P2PDMA) && is_pci_p2pdma_page(page)))
-> -		return NULL;
-> -
-> -	if (flags & FOLL_GET)
-> -		return try_get_folio(page, refs);
-> -
-> -	/* FOLL_PIN is set */
-> -
-> -	/*
-> -	 * Don't take a pin on the zero page - it's not going anywhere
-> -	 * and it is used in a *lot* of places.
-> -	 */
-> -	if (is_zero_page(page))
-> -		return page_folio(page);
-> -
-> -	folio = try_get_folio(page, refs);
-> -	if (!folio)
-> -		return NULL;
-> -
-> -	/*
-> -	 * Can't do FOLL_LONGTERM + FOLL_PIN gup fast path if not in a
-> -	 * right zone, so fail and let the caller fall back to the slow
-> -	 * path.
-> -	 */
-> -	if (unlikely((flags & FOLL_LONGTERM) &&
-> -		     !folio_is_longterm_pinnable(folio))) {
-> -		if (!put_devmap_managed_folio_refs(folio, refs))
-> -			folio_put_refs(folio, refs);
-> -		return NULL;
-> -	}
-> -
-> -	/*
-> -	 * When pinning a large folio, use an exact count to track it.
-> -	 *
-> -	 * However, be sure to *also* increment the normal folio
-> -	 * refcount field at least once, so that the folio really
-> -	 * is pinned.  That's why the refcount from the earlier
-> -	 * try_get_folio() is left intact.
-> -	 */
-> -	if (folio_test_large(folio))
-> -		atomic_add(refs, &folio->_pincount);
-> -	else
-> -		folio_ref_add(folio,
-> -				refs * (GUP_PIN_COUNTING_BIAS - 1));
-> -	/*
-> -	 * Adjust the pincount before re-checking the PTE for changes.
-> -	 * This is essentially a smp_mb() and is paired with a memory
-> -	 * barrier in folio_try_share_anon_rmap_*().
-> -	 */
-> -	smp_mb__after_atomic();
-> -
-> -	node_stat_mod_folio(folio, NR_FOLL_PIN_ACQUIRED, refs);
-> -
-> -	return folio;
-> -}
-> -
->   static void gup_put_folio(struct folio *folio, int refs, unsigned int flags)
->   {
->   	if (flags & FOLL_PIN) {
-> @@ -203,58 +114,59 @@ static void gup_put_folio(struct folio *folio, int refs, unsigned int flags)
->   }
->   
->   /**
-> - * try_grab_page() - elevate a page's refcount by a flag-dependent amount
-> - * @page:    pointer to page to be grabbed
-> - * @flags:   gup flags: these are the FOLL_* flag values.
-> + * try_grab_folio() - add a folio's refcount by a flag-dependent amount
-> + * @folio:    pointer to folio to be grabbed
-> + * @refs:     the value to (effectively) add to the folio's refcount
-> + * @flags:    gup flags: these are the FOLL_* flag values
->    *
->    * This might not do anything at all, depending on the flags argument.
->    *
->    * "grab" names in this file mean, "look at flags to decide whether to use
-> - * FOLL_PIN or FOLL_GET behavior, when incrementing the page's refcount.
-> + * FOLL_PIN or FOLL_GET behavior, when incrementing the folio's refcount.
->    *
->    * Either FOLL_PIN or FOLL_GET (or neither) may be set, but not both at the same
-> - * time. Cases: please see the try_grab_folio() documentation, with
-> - * "refs=1".
-> + * time.
->    *
->    * Return: 0 for success, or if no action was required (if neither FOLL_PIN
->    * nor FOLL_GET was set, nothing is done). A negative error code for failure:
->    *
-> - *   -ENOMEM		FOLL_GET or FOLL_PIN was set, but the page could not
-> + *   -ENOMEM		FOLL_GET or FOLL_PIN was set, but the folio could not
->    *			be grabbed.
-> + *
-> + * It is called when we have a stable reference for the folio, typically in
-> + * GUP slow path.
->    */
-> -int __must_check try_grab_page(struct page *page, unsigned int flags)
-> +int __must_check try_grab_folio(struct folio *folio, int refs,
-> +				unsigned int flags)
->   {
-> -	struct folio *folio = page_folio(page);
-> -
->   	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
->   		return -ENOMEM;
->   
-> -	if (unlikely(!(flags & FOLL_PCI_P2PDMA) && is_pci_p2pdma_page(page)))
-> +	if (unlikely(!(flags & FOLL_PCI_P2PDMA) && is_pci_p2pdma_page(&folio->page)))
->   		return -EREMOTEIO;
->   
->   	if (flags & FOLL_GET)
-> -		folio_ref_inc(folio);
-> +		folio_ref_add(folio, refs);
->   	else if (flags & FOLL_PIN) {
->   		/*
->   		 * Don't take a pin on the zero page - it's not going anywhere
->   		 * and it is used in a *lot* of places.
->   		 */
-> -		if (is_zero_page(page))
-> +		if (is_zero_folio(folio))
->   			return 0;
->   
->   		/*
-> -		 * Similar to try_grab_folio(): be sure to *also*
-> -		 * increment the normal page refcount field at least once,
-> +		 * Increment the normal page refcount field at least once,
->   		 * so that the page really is pinned.
->   		 */
->   		if (folio_test_large(folio)) {
-> -			folio_ref_add(folio, 1);
-> -			atomic_add(1, &folio->_pincount);
-> +			folio_ref_add(folio, refs);
-> +			atomic_add(refs, &folio->_pincount);
->   		} else {
-> -			folio_ref_add(folio, GUP_PIN_COUNTING_BIAS);
-> +			folio_ref_add(folio, refs * GUP_PIN_COUNTING_BIAS);
->   		}
->   
-> -		node_stat_mod_folio(folio, NR_FOLL_PIN_ACQUIRED, 1);
-> +		node_stat_mod_folio(folio, NR_FOLL_PIN_ACQUIRED, refs);
->   	}
->   
->   	return 0;
-> @@ -515,6 +427,102 @@ static int record_subpages(struct page *page, unsigned long sz,
->   
->   	return nr;
->   }
-> +
-> +/**
-> + * try_grab_folio_fast() - Attempt to get or pin a folio in fast path.
-> + * @page:  pointer to page to be grabbed
-> + * @refs:  the value to (effectively) add to the folio's refcount
-> + * @flags: gup flags: these are the FOLL_* flag values.
-> + *
-> + * "grab" names in this file mean, "look at flags to decide whether to use
-> + * FOLL_PIN or FOLL_GET behavior, when incrementing the folio's refcount.
-> + *
-> + * Either FOLL_PIN or FOLL_GET (or neither) must be set, but not both at the
-> + * same time. (That's true throughout the get_user_pages*() and
-> + * pin_user_pages*() APIs.) Cases:
-> + *
-> + *    FOLL_GET: folio's refcount will be incremented by @refs.
-> + *
-> + *    FOLL_PIN on large folios: folio's refcount will be incremented by
-> + *    @refs, and its pincount will be incremented by @refs.
-> + *
-> + *    FOLL_PIN on single-page folios: folio's refcount will be incremented by
-> + *    @refs * GUP_PIN_COUNTING_BIAS.
-> + *
-> + * Return: The folio containing @page (with refcount appropriately
-> + * incremented) for success, or NULL upon failure. If neither FOLL_GET
-> + * nor FOLL_PIN was set, that's considered failure, and furthermore,
-> + * a likely bug in the caller, so a warning is also emitted.
-> + *
-> + * It uses add ref unless zero to elevate the folio refcount and must be called
-> + * in fast path only.
-> + */
-> +static struct folio *try_grab_folio_fast(struct page *page, int refs,
-> +					 unsigned int flags)
-> +{
-> +	struct folio *folio;
-> +
-> +	/* Raise warn if it is not called in fast GUP */
-> +	VM_WARN_ON_ONCE(!irqs_disabled());
-> +
-> +	if (WARN_ON_ONCE((flags & (FOLL_GET | FOLL_PIN)) == 0))
-> +		return NULL;
-> +
-> +	if (unlikely(!(flags & FOLL_PCI_P2PDMA) && is_pci_p2pdma_page(page)))
-> +		return NULL;
-> +
-> +	if (flags & FOLL_GET)
-> +		return try_get_folio(page, refs);
-> +
-> +	/* FOLL_PIN is set */
-> +
-> +	/*
-> +	 * Don't take a pin on the zero page - it's not going anywhere
-> +	 * and it is used in a *lot* of places.
-> +	 */
-> +	if (is_zero_page(page))
-> +		return page_folio(page);
-> +
-> +	folio = try_get_folio(page, refs);
-> +	if (!folio)
-> +		return NULL;
-> +
-> +	/*
-> +	 * Can't do FOLL_LONGTERM + FOLL_PIN gup fast path if not in a
-> +	 * right zone, so fail and let the caller fall back to the slow
-> +	 * path.
-> +	 */
-> +	if (unlikely((flags & FOLL_LONGTERM) &&
-> +		     !folio_is_longterm_pinnable(folio))) {
-> +		if (!put_devmap_managed_folio_refs(folio, refs))
-> +			folio_put_refs(folio, refs);
-> +		return NULL;
-> +	}
-> +
-> +	/*
-> +	 * When pinning a large folio, use an exact count to track it.
-> +	 *
-> +	 * However, be sure to *also* increment the normal folio
-> +	 * refcount field at least once, so that the folio really
-> +	 * is pinned.  That's why the refcount from the earlier
-> +	 * try_get_folio() is left intact.
-> +	 */
-> +	if (folio_test_large(folio))
-> +		atomic_add(refs, &folio->_pincount);
-> +	else
-> +		folio_ref_add(folio,
-> +				refs * (GUP_PIN_COUNTING_BIAS - 1));
-> +	/*
-> +	 * Adjust the pincount before re-checking the PTE for changes.
-> +	 * This is essentially a smp_mb() and is paired with a memory
-> +	 * barrier in folio_try_share_anon_rmap_*().
-> +	 */
-> +	smp_mb__after_atomic();
-> +
-> +	node_stat_mod_folio(folio, NR_FOLL_PIN_ACQUIRED, refs);
-> +
-> +	return folio;
-> +}
->   #endif	/* CONFIG_ARCH_HAS_HUGEPD || CONFIG_HAVE_GUP_FAST */
->   
->   #ifdef CONFIG_ARCH_HAS_HUGEPD
-> @@ -535,7 +543,7 @@ static unsigned long hugepte_addr_end(unsigned long addr, unsigned long end,
->    */
->   static int gup_hugepte(struct vm_area_struct *vma, pte_t *ptep, unsigned long sz,
->   		       unsigned long addr, unsigned long end, unsigned int flags,
-> -		       struct page **pages, int *nr)
-> +		       struct page **pages, int *nr, bool fast)
->   {
->   	unsigned long pte_end;
->   	struct page *page;
-> @@ -558,9 +566,15 @@ static int gup_hugepte(struct vm_area_struct *vma, pte_t *ptep, unsigned long sz
->   	page = pte_page(pte);
->   	refs = record_subpages(page, sz, addr, end, pages + *nr);
->   
-> -	folio = try_grab_folio(page, refs, flags);
-> -	if (!folio)
-> -		return 0;
-> +	if (fast) {
-> +		folio = try_grab_folio_fast(page, refs, flags);
-> +		if (!folio)
-> +			return 0;
-> +	} else {
-> +		folio = page_folio(page);
-> +		if (try_grab_folio(folio, refs, flags))
-> +			return 0;
-> +	}
->   
->   	if (unlikely(pte_val(pte) != pte_val(ptep_get(ptep)))) {
->   		gup_put_folio(folio, refs, flags);
-> @@ -588,7 +602,7 @@ static int gup_hugepte(struct vm_area_struct *vma, pte_t *ptep, unsigned long sz
->   static int gup_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
->   		      unsigned long addr, unsigned int pdshift,
->   		      unsigned long end, unsigned int flags,
-> -		      struct page **pages, int *nr)
-> +		      struct page **pages, int *nr, bool fast)
->   {
->   	pte_t *ptep;
->   	unsigned long sz = 1UL << hugepd_shift(hugepd);
-> @@ -598,7 +612,8 @@ static int gup_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
->   	ptep = hugepte_offset(hugepd, addr, pdshift);
->   	do {
->   		next = hugepte_addr_end(addr, end, sz);
-> -		ret = gup_hugepte(vma, ptep, sz, addr, end, flags, pages, nr);
-> +		ret = gup_hugepte(vma, ptep, sz, addr, end, flags, pages, nr,
-> +				  fast);
->   		if (ret != 1)
->   			return ret;
->   	} while (ptep++, addr = next, addr != end);
-> @@ -625,7 +640,7 @@ static struct page *follow_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
->   	ptep = hugepte_offset(hugepd, addr, pdshift);
->   	ptl = huge_pte_lock(h, vma->vm_mm, ptep);
->   	ret = gup_hugepd(vma, hugepd, addr, pdshift, addr + PAGE_SIZE,
-> -			 flags, &page, &nr);
-> +			 flags, &page, &nr, false);
->   	spin_unlock(ptl);
->   
->   	if (ret == 1) {
-> @@ -642,7 +657,7 @@ static struct page *follow_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
->   static inline int gup_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
->   			     unsigned long addr, unsigned int pdshift,
->   			     unsigned long end, unsigned int flags,
-> -			     struct page **pages, int *nr)
-> +			     struct page **pages, int *nr, bool fast)
->   {
->   	return 0;
->   }
-> @@ -729,7 +744,7 @@ static struct page *follow_huge_pud(struct vm_area_struct *vma,
->   	    gup_must_unshare(vma, flags, page))
->   		return ERR_PTR(-EMLINK);
->   
-> -	ret = try_grab_page(page, flags);
-> +	ret = try_grab_folio(page_folio(page), 1, flags);
->   	if (ret)
->   		page = ERR_PTR(ret);
->   	else
-> @@ -806,7 +821,7 @@ static struct page *follow_huge_pmd(struct vm_area_struct *vma,
->   	VM_BUG_ON_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
->   			!PageAnonExclusive(page), page);
->   
-> -	ret = try_grab_page(page, flags);
-> +	ret = try_grab_folio(page_folio(page), 1, flags);
->   	if (ret)
->   		return ERR_PTR(ret);
->   
-> @@ -968,8 +983,8 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
->   	VM_BUG_ON_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
->   		       !PageAnonExclusive(page), page);
->   
-> -	/* try_grab_page() does nothing unless FOLL_GET or FOLL_PIN is set. */
-> -	ret = try_grab_page(page, flags);
-> +	/* try_grab_folio() does nothing unless FOLL_GET or FOLL_PIN is set. */
-> +	ret = try_grab_folio(page_folio(page), 1, flags);
->   	if (unlikely(ret)) {
->   		page = ERR_PTR(ret);
->   		goto out;
-> @@ -1233,7 +1248,7 @@ static int get_gate_page(struct mm_struct *mm, unsigned long address,
->   			goto unmap;
->   		*page = pte_page(entry);
->   	}
-> -	ret = try_grab_page(*page, gup_flags);
-> +	ret = try_grab_folio(page_folio(*page), 1, gup_flags);
->   	if (unlikely(ret))
->   		goto unmap;
->   out:
-> @@ -1636,20 +1651,19 @@ static long __get_user_pages(struct mm_struct *mm,
->   			 * pages.
->   			 */
->   			if (page_increm > 1) {
-> -				struct folio *folio;
-> +				struct folio *folio = page_folio(page);
->   
->   				/*
->   				 * Since we already hold refcount on the
->   				 * large folio, this should never fail.
->   				 */
-> -				folio = try_grab_folio(page, page_increm - 1,
-> -						       foll_flags);
-> -				if (WARN_ON_ONCE(!folio)) {
-> +				if (try_grab_folio(folio, page_increm - 1,
-> +						   foll_flags)) {
->   					/*
->   					 * Release the 1st page ref if the
->   					 * folio is problematic, fail hard.
->   					 */
-> -					gup_put_folio(page_folio(page), 1,
-> +					gup_put_folio(folio, 1,
->   						      foll_flags);
->   					ret = -EFAULT;
->   					goto out;
-> @@ -2797,7 +2811,6 @@ EXPORT_SYMBOL(get_user_pages_unlocked);
->    * This code is based heavily on the PowerPC implementation by Nick Piggin.
->    */
->   #ifdef CONFIG_HAVE_GUP_FAST
-> -
->   /*
->    * Used in the GUP-fast path to determine whether GUP is permitted to work on
->    * a specific folio.
-> @@ -2962,7 +2975,7 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
->   		VM_BUG_ON(!pfn_valid(pte_pfn(pte)));
->   		page = pte_page(pte);
->   
-> -		folio = try_grab_folio(page, 1, flags);
-> +		folio = try_grab_folio_fast(page, 1, flags);
->   		if (!folio)
->   			goto pte_unmap;
->   
-> @@ -3049,7 +3062,7 @@ static int gup_fast_devmap_leaf(unsigned long pfn, unsigned long addr,
->   			break;
->   		}
->   
-> -		folio = try_grab_folio(page, 1, flags);
-> +		folio = try_grab_folio_fast(page, 1, flags);
->   		if (!folio) {
->   			gup_fast_undo_dev_pagemap(nr, nr_start, flags, pages);
->   			break;
-> @@ -3138,7 +3151,7 @@ static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
->   	page = pmd_page(orig);
->   	refs = record_subpages(page, PMD_SIZE, addr, end, pages + *nr);
->   
-> -	folio = try_grab_folio(page, refs, flags);
-> +	folio = try_grab_folio_fast(page, refs, flags);
->   	if (!folio)
->   		return 0;
->   
-> @@ -3182,7 +3195,7 @@ static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
->   	page = pud_page(orig);
->   	refs = record_subpages(page, PUD_SIZE, addr, end, pages + *nr);
->   
-> -	folio = try_grab_folio(page, refs, flags);
-> +	folio = try_grab_folio_fast(page, refs, flags);
->   	if (!folio)
->   		return 0;
->   
-> @@ -3222,7 +3235,7 @@ static int gup_fast_pgd_leaf(pgd_t orig, pgd_t *pgdp, unsigned long addr,
->   	page = pgd_page(orig);
->   	refs = record_subpages(page, PGDIR_SIZE, addr, end, pages + *nr);
->   
-> -	folio = try_grab_folio(page, refs, flags);
-> +	folio = try_grab_folio_fast(page, refs, flags);
->   	if (!folio)
->   		return 0;
->   
-> @@ -3276,7 +3289,8 @@ static int gup_fast_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr,
->   			 * pmd format and THP pmd format
->   			 */
->   			if (gup_hugepd(NULL, __hugepd(pmd_val(pmd)), addr,
-> -				       PMD_SHIFT, next, flags, pages, nr) != 1)
-> +				       PMD_SHIFT, next, flags, pages, nr,
-> +				       true) != 1)
->   				return 0;
->   		} else if (!gup_fast_pte_range(pmd, pmdp, addr, next, flags,
->   					       pages, nr))
-> @@ -3306,7 +3320,8 @@ static int gup_fast_pud_range(p4d_t *p4dp, p4d_t p4d, unsigned long addr,
->   				return 0;
->   		} else if (unlikely(is_hugepd(__hugepd(pud_val(pud))))) {
->   			if (gup_hugepd(NULL, __hugepd(pud_val(pud)), addr,
-> -				       PUD_SHIFT, next, flags, pages, nr) != 1)
-> +				       PUD_SHIFT, next, flags, pages, nr,
-> +				       true) != 1)
->   				return 0;
->   		} else if (!gup_fast_pmd_range(pudp, pud, addr, next, flags,
->   					       pages, nr))
-> @@ -3333,7 +3348,8 @@ static int gup_fast_p4d_range(pgd_t *pgdp, pgd_t pgd, unsigned long addr,
->   		BUILD_BUG_ON(p4d_leaf(p4d));
->   		if (unlikely(is_hugepd(__hugepd(p4d_val(p4d))))) {
->   			if (gup_hugepd(NULL, __hugepd(p4d_val(p4d)), addr,
-> -				       P4D_SHIFT, next, flags, pages, nr) != 1)
-> +				       P4D_SHIFT, next, flags, pages, nr,
-> +				       true) != 1)
->   				return 0;
->   		} else if (!gup_fast_pud_range(p4dp, p4d, addr, next, flags,
->   					       pages, nr))
-> @@ -3362,7 +3378,8 @@ static void gup_fast_pgd_range(unsigned long addr, unsigned long end,
->   				return;
->   		} else if (unlikely(is_hugepd(__hugepd(pgd_val(pgd))))) {
->   			if (gup_hugepd(NULL, __hugepd(pgd_val(pgd)), addr,
-> -				       PGDIR_SHIFT, next, flags, pages, nr) != 1)
-> +				       PGDIR_SHIFT, next, flags, pages, nr,
-> +				       true) != 1)
->   				return;
->   		} else if (!gup_fast_p4d_range(pgdp, pgd, addr, next, flags,
->   					       pages, nr))
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index db7946a0a28c..2120f7478e55 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1331,7 +1331,7 @@ struct page *follow_devmap_pmd(struct vm_area_struct *vma, unsigned long addr,
->   	if (!*pgmap)
->   		return ERR_PTR(-EFAULT);
->   	page = pfn_to_page(pfn);
-> -	ret = try_grab_page(page, flags);
-> +	ret = try_grab_folio(page_folio(page), 1, flags);
->   	if (ret)
->   		page = ERR_PTR(ret);
->   
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 6902b7dd8509..cc2c5e07fad3 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1182,8 +1182,8 @@ int migrate_device_coherent_page(struct page *page);
->   /*
->    * mm/gup.c
->    */
-> -struct folio *try_grab_folio(struct page *page, int refs, unsigned int flags);
-> -int __must_check try_grab_page(struct page *page, unsigned int flags);
-> +int __must_check try_grab_folio(struct folio *folio, int refs,
-> +				unsigned int flags);
->   
->   /*
->    * mm/huge_memory.c
 
+> I would assume that each and every sane user out there does that
+> already, judging that even that QEMU code is 10 years old (!).
+
+I took a look at some code I have access to and it is not the case
+everywhere ...
+
+>
+> In any case, we have to document that behavior that existed since the
+> very beginning. Because it would be even *worse* if someone would
+> develop against a new kernel and would get a bunch of bug reports when
+> running on literally every old kernel out there :)
+>
+> So my best guess is that long-term it will create more issues when we
+> change the behavior ... but in any case we have to update the man pages.
+
+No it would not, if you had the fix and did not modify applications
+that are smart about it then nothing would change. Applications that
+are smart will work the same on both patched and unpatched kernels
+while applications that have the bug will suddenly have the behaviour
+they would have expected from the documentation.
+
+Thank you,
+J=C3=A9r=C3=B4me
 
