@@ -1,133 +1,117 @@
-Return-Path: <stable+bounces-61276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03E3993B0EC
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 14:25:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7F993B101
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 14:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 853C4B23241
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 12:25:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 774861F21B9C
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 12:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340AB158A09;
-	Wed, 24 Jul 2024 12:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DCD6A039;
+	Wed, 24 Jul 2024 12:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="GN987aRs"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="JFYbrJkQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAF3158875
-	for <stable@vger.kernel.org>; Wed, 24 Jul 2024 12:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085AE148FFA;
+	Wed, 24 Jul 2024 12:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721823923; cv=none; b=K9TgEq85OHVNOGcD3CuggJQIuHX6AozGs+cvdqEcQgKUMVD8/7B8/wSooHSDM+CCJmz3DA071qGaDX8XDePdC2jddQNEZwWwDb3sko83HcIrNZpeNsXdotRtYNzRDIAC9gcxfOvA4ASrzCOwm8Vf37tvqps30tHqiiGx/EfjMdo=
+	t=1721825048; cv=none; b=uVrEVmFpfmVokXAU+m5rKc+9jGALf8HJLJRlm3FPa+ByQ/hIAel54lr4oj4lRcqyZ6CHBbTc8aYz1k1anH/AnGuW9ZvF6nLwg8q0MOJD765unmjzC3mKy3luzz+BT35cZlfyAUArZ63xo80PMn8gkpkujZ0RtoabVZS+k5YuaH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721823923; c=relaxed/simple;
-	bh=m+AY9XXCbeFV3aqKY9wXH1NrnIVbO8URw+wWbywIXT0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uvUWxkJio4uKU7/pSC+EkrUBouheJtUbOrjKi111HDe6clrU4vuPSfElXK66oxGhJaJrK5nwP7EkMf1Xl0e23KJK1MtciJPJ1nvcuCfv98kgoUtd0D9z/H2krsRQE6SBi75ovoySp+KyHnjQwoZb4VBbZJcsIuEc/syGG3SLX0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=GN987aRs; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-71871d5e087so1317726a12.1
-        for <stable@vger.kernel.org>; Wed, 24 Jul 2024 05:25:21 -0700 (PDT)
+	s=arc-20240116; t=1721825048; c=relaxed/simple;
+	bh=yv5/QFhFAPb65M4s7ugL3tGNyxlTw74LY9qjyiedrP4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bT5YHHTmx8Rq15tN1cC7ugVTQzSLURP0SeJjDXdcU1rSD9TSRg4iWJi9FkIGbFOhfU1JXCeLQrQlyiE1KJWf6wJmslS/Zc9cWP10FabG4ma62PkgPUEp3dU0fEidOTsC3VUGMNrInjQQqcPYbY3hbIxRVuAyalEDKaJudMFa9V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=JFYbrJkQ; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5a3458bf989so5389236a12.0;
+        Wed, 24 Jul 2024 05:44:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1721823921; x=1722428721; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rR1NOFGImD8V01Eylz118awkhJ4FlI17uyTTajCNlVU=;
-        b=GN987aRsXtxCgATbtnBCs5/+KBXU4SdZYhfeLAXPtNRm503+558UievFP483fyi2yk
-         bp6vdIrLJjf1I+ZkBdAu+ENe4Mw+ntevjjIxCVntZ4IaUr3GI+2m1S7GB75Ybx7QhOIm
-         an3soS3wk7mriL8UBjjNyIvmFTMIMioRqimmYO8oBFSUp7Vpwv0ko1/POvxb38V9jHrF
-         e79kZ3mDDiv3y5SzqeR8V4xozPR/G9NBjVIwjiujhvQNFnKYVr5oRNKaZ6fmURy8763D
-         8qB+wc6nHZEROwbLA01+pEozQ5ozQGxGYZ+l4kj5opiwBc7I2inQeIo093MBCuj/uCTx
-         o+0g==
+        d=googlemail.com; s=20230601; t=1721825045; x=1722429845; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ljAWzXfJkg/wQZiKSeXe2JJNOkrb9s8c+erMRLk0VVk=;
+        b=JFYbrJkQM9XAUFLWMUU1IztjQpGl3lyvX5Sf8hgRX8uUplL4WPE3nJqQ9F2QVvONh+
+         fnJ5E5ylr35HZ58F+IFMH/vuQ2ZISZxKJGy5NqDuJKiy727fkHdfCcjs5Sx5xD6yYu0E
+         7rccKG7VkbNG7/eQfFFqaMQqCneuhjlRRC6NvECnQvlvJBmhBDCcXcLryKj+bFBq/NgZ
+         HJLAWikEkBh7aJSFCCNqfP/XbPPEkm1y+6F3ZT89yKFL9+f59yeCd2/TdqAC9yjElxVx
+         nBlJOzajDRcRDvlwSAgymAVu3BZczZPWfYQkckJwXe8TEqR3AR2sdyHd0IGy7xq2fzNv
+         hudg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721823921; x=1722428721;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rR1NOFGImD8V01Eylz118awkhJ4FlI17uyTTajCNlVU=;
-        b=mm/fUrtrvjP7nXq0yZ2uhKEUQkMmRRBfkSU+J/Ih7UHb0m65JIHlW1glHFW41PclEZ
-         Bxr+pzxxFr6WfDUzDWzK5J7CuVv5bw56K8oulhDW98r6zwu2dQ/6ugrGZgQnJUFK1xk+
-         sXG7WPlrrWF8MKzUd2wkBoT6YhoS8YUMu0n2SVtVpYMTKnzjXkVH06JPqE4FbhIZdGM8
-         K1ZQHoOsqKmIAWIDUghj8kTrMfirJda7NW8ZLg5rOpmQXviZ0DaeEdMq5gqW6+35yn72
-         xfi4GBA/hBMQacysJVAHuC3KrFl54MsFk9bGuvn31Xm6REX4boNG/dCEgddBzQxDTFn6
-         59hw==
-X-Gm-Message-State: AOJu0YyxLeMKOy+cplptJJQy1gPmRTMbwbXRBf0C9eq8UQ4KdxpJ2fCo
-	e5ScZrwaXtBQGcFEMa/dpyuXCjhaSwCnUTGDDQ30LakUtYmRI/k3qFNuYiAP5msXUIHdwC1gGdV
-	OD+bIEyB0ufM5+sPHwSLuHQJV3U4s/1hhOVigCA==
-X-Google-Smtp-Source: AGHT+IFNrhLEu6zYUQrWi8eM5KK85j2ewBswZa1CUWGuWeU1O+O24u56JMEDx1yShrt3gYrIIBoDz527FwfqqAbpOIo=
-X-Received: by 2002:a05:6a21:328f:b0:1c0:e54b:5651 with SMTP id
- adf61e73a8af0-1c461963cefmr2258455637.24.1721823920681; Wed, 24 Jul 2024
- 05:25:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1721825045; x=1722429845;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ljAWzXfJkg/wQZiKSeXe2JJNOkrb9s8c+erMRLk0VVk=;
+        b=pDlcuOA/euZiK3ni3ppIl4t8VXIzpGnkn6Q2PChnY1t0bHmj5FqkBNiiu+yB0WZhl0
+         lVLEPfL5bdBHm1nkJSAkaZN3hBLEdg4iAcXDtEzzey7rBwkg6QG1Xl5inXYvbp4dGgEQ
+         ew7EKmaJgeobxSBQydRutxxK6Lm6HdxCrJqjwUsU92WAMyr/3dSZoLxKhzHIyUC48AHL
+         m9nSyNkvGx9dGrnN5F5RgaP1fTPn8Eo98xWoarGWOafq7K6bYDvp5kB05yX3JkIiZC5K
+         2kUOCDdFqx82lBNssuQOqoOnBMEa1eYNRZlP+FDNUFiyVqWCR+qJ27Fm5Qf4yxeD26vs
+         3fow==
+X-Forwarded-Encrypted: i=1; AJvYcCUKe7pRUZgqOA5IlX8IQ9xTtvB1yc4+RL7vTDtHwY/yQKaP1na0TxJLOG7BNK+qKnnDqMR8MDhGQNrVhZyojGakA4fBi8/ZcjGLoVsaug5OlkHdITJPanlFEvIopOut4zq6Ztce
+X-Gm-Message-State: AOJu0YwNwf8fJ2FJcRz4+RuhbcGb/5mHPTNG4yvNOSfzUTOmLYykWaYQ
+	l6uJetilZA2hBTFK/8GS7m2rh9ejCq0QqmR3/XObHnsDkcPi11Y=
+X-Google-Smtp-Source: AGHT+IFVd6T5XYoTUmgpbHhyW2avvsdaGGLt+mZ1T0qM4LuFCMsIW8oLboKrmG0yXmG1GTZOf9q/dA==
+X-Received: by 2002:a50:cc97:0:b0:5a2:597:748e with SMTP id 4fb4d7f45d1cf-5aaec1608b7mr1359251a12.2.1721825045039;
+        Wed, 24 Jul 2024 05:44:05 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057b1e.dip0.t-ipconnect.de. [91.5.123.30])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5a30a4d6c17sm8934583a12.5.2024.07.24.05.44.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Jul 2024 05:44:04 -0700 (PDT)
+Message-ID: <42fcb54b-c50f-4a4f-8248-e0e4f8ebf539@googlemail.com>
+Date: Wed, 24 Jul 2024 14:44:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240723180404.759900207@linuxfoundation.org>
-In-Reply-To: <20240723180404.759900207@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Wed, 24 Jul 2024 21:25:09 +0900
-Message-ID: <CAKL4bV4Y=P1zn19bKnxDzF=brsZP_YscAUOWPopbsi0zeLHTsg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/129] 6.6.42-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 000/105] 6.1.101-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240723180402.490567226@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Greg
-
-On Wed, Jul 24, 2024 at 3:32=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.42 release.
-> There are 129 patches in this series, all will be posted as a response
+Am 23.07.2024 um 20:22 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.101 release.
+> There are 105 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->
-> Responses should be made by Thu, 25 Jul 2024 18:03:23 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.42-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
 
-6.6.42-rc1 tested.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+Beste Grüße,
+Peter Schneider
 
-[    0.000000] Linux version 6.6.42-rc1rv
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.1.1 20240720, GNU ld (GNU
-Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Wed Jul 24 20:33:24 JST 2024
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
