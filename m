@@ -1,218 +1,220 @@
-Return-Path: <stable+bounces-61317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AFDF93B657
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 19:59:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 485F593B6D1
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 20:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DC2E1C20D8A
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 17:59:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2C08280F57
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 18:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B313416A395;
-	Wed, 24 Jul 2024 17:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49B216E870;
+	Wed, 24 Jul 2024 18:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="pyBWyRKq"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="tvB8c3zb"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2061.outbound.protection.outlook.com [40.107.244.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1A215F3FB;
-	Wed, 24 Jul 2024 17:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721843969; cv=fail; b=l/RBsKV5bpt50nRUFV8S2ewLKDaoblOqVBgV17cgHELtSs9mXorMQUCQ7zScSLiJbP1AB78cVPFwGTyUV6s4miPnGCE3CI2QK0fLc418CvSbJk4A7mf9O1L9vFAKDigB/Ya/KfjIXjCBnfwFQQMnquoVG84+ohpgvTsfYLqfhs4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721843969; c=relaxed/simple;
-	bh=oVKI2YCXuvIcU9t0MANss6ed6btaCf75KFAB+D+V1aE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=AxK+AOXpjqvN3rRSunU97sTuJfpP8TOyPZi4AZk3HOF8Jrg+b2jCXOrj89jXNvaxc5HNmo12H1zrRXva4UpF+G4GJnRwzgdGOqjgQKRCcuyme3vv6ikRMH4rnIooP45XYdOMMQMK8GiX7KBTblh0FiVq/yOR6ck4iNcZiVZKJ2Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=pyBWyRKq; arc=fail smtp.client-ip=40.107.244.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=i8+kaStuY6cYArtGbcBEAFwWYVBrh37XR/No2AegQ7FtXIMuMmWL5jvt0VDKoS72uw/2J+90w0IiWv968ZXJb+wy0NaL4/7FHCAcUbdanBLogrn52kFboJb8KvA7Zz8L9V2GUwclwkz8tORquVm9IAPrhKYSa3ujLRafmBhHBlpTqblENkuHXgx8TOZmV95jnAJNwndQbnxhln4E+ftK/Br/B0nNc9Ticm1ftw30R1krwzcuhTZRIuD/gnqUElSd+xpYVAyn3DbUgIzIIyS1wcMqgzV0OfdGPPL/46S+L7vlLPqePXtdhQ1/oa39dgAb5P/GQegLi4X9ogLORJpg/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QpSiVPduP+XmjvjT2pLoRKf9qXnQc9B1SQECSYxhD3w=;
- b=SQOvwgyHDjoPtX5HSIn8SOqyI8TX1jmqH4gtDzUGlyGXTBtFNxbG4LsfM/fFtfeAU+jH1z6LfnH0GOOjBdZRBWQpEy9vOOKEPz0SOuiw849R94PrVGSr3wd2s3tg7LIQ87t1nGGU6AbBb07QH26csf9HliMJ7HMei79o5y8596n8KYKqDYVamZNIMyb7aNQXNBVYUWP3RjqHCUHlJA3ombkpwpPzejMDjfimHOKkmcDCdxdQVg/GMCnwsSP0liQA9sqAbgURriWEwMKUyka8rAz9dD9r7pJSA9ZkIqfudp6U9GuJsaJfrf0VRU3T0n/NAMArHv5sL9BOdM7dsRPsNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QpSiVPduP+XmjvjT2pLoRKf9qXnQc9B1SQECSYxhD3w=;
- b=pyBWyRKqIO6vMERfey9dR6HYWF7hH3+Rej/tOmxsmdy2dq/azZdAGuoO00+lH3K3zyoJbj2WgLM/gkjPaVBZdHQuWtOL6Rja8ZCBfQbN1Y9rFXu85f5RlsZLV1dIZPwMslo4boTkKwo0jF2sJ++nebU1guWLac4tv8iiocMLaAE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH0PR12MB5388.namprd12.prod.outlook.com (2603:10b6:610:d7::15)
- by PH7PR12MB9222.namprd12.prod.outlook.com (2603:10b6:510:2ef::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.18; Wed, 24 Jul
- 2024 17:59:23 +0000
-Received: from CH0PR12MB5388.namprd12.prod.outlook.com
- ([fe80::a363:f18a:cdd1:9607]) by CH0PR12MB5388.namprd12.prod.outlook.com
- ([fe80::a363:f18a:cdd1:9607%5]) with mapi id 15.20.7784.017; Wed, 24 Jul 2024
- 17:59:23 +0000
-Message-ID: <cf486746-6f96-4f09-bacb-8019e7f33756@amd.com>
-Date: Wed, 24 Jul 2024 12:59:21 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 RESEND] EDAC/ti: Fix possible null pointer dereference
- in _emif_get_id()
-To: Ma Ke <make24@iscas.ac.cn>, kristo@kernel.org, bp@alien8.de,
- tony.luck@intel.com, james.morse@arm.com, mchehab@kernel.org, rric@kernel.org
-Cc: linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240724071042.1493917-1-make24@iscas.ac.cn>
-Content-Language: en-US
-From: Avadhut Naik <avadnaik@amd.com>
-In-Reply-To: <20240724071042.1493917-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA0PR11CA0071.namprd11.prod.outlook.com
- (2603:10b6:806:d2::16) To CH0PR12MB5388.namprd12.prod.outlook.com
- (2603:10b6:610:d7::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D3C16DC06
+	for <stable@vger.kernel.org>; Wed, 24 Jul 2024 18:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721846194; cv=none; b=dctcv6VIkqMLU3pNkSYLIOtRe1FB1suhFO5OLq49JOAgDSblXdFEzSIa/Hj/vDnDC2AeAnh/kNOqk4UM/v0w3iNMdtqHaQUw2LRooY4iVyfiqhbjvT+WNSeyl6kEbJzPOgt8XbXs6nZR+O2V+TEFAYwAwq/+M1beLfD2eGhPYG0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721846194; c=relaxed/simple;
+	bh=BTGuRnJBK3Oigxg1jdb0UP186IwJIzg9BxFmK5k9rss=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N01THSkHTPOW9N8GnwNFjt/a9nyWxsxbuCAjmUCR+OujUTxGsM4HC3tjuF8YREkgmLQYd4jXRQvH6Q5lnMp9/9OGb9ieW0f2Wl9oJb/do+Ra5OGr9gPkMZ8hXRoMvEH+3dnaAzvewBOUhy79W1ldeaOePsiHSynFqASa/1u6lck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=tvB8c3zb; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2cb5789297eso88232a91.3
+        for <stable@vger.kernel.org>; Wed, 24 Jul 2024 11:36:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1721846192; x=1722450992; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mYP7xs8KQ8UlOorfc/c0GIJsDnh+9Fq8OTNkNhrnP8w=;
+        b=tvB8c3zbc5rsBt2zkXR1DgkOopC7JW+pGR9AU2e2LYujioLTlfqPL1olinNk9zIHjE
+         RZ/Gowk4B53cXlLeDJBKBnSBE2EomQFzBvxhIXzYwJDsa15zC6euNxWPsJ+s6axyG6im
+         BhZlHpqSNUfXlpiC8HAWLD7vo3lIJV4yFGJvwmTFFgUBtjG2tpOS2EeEQ2z/Kf4ox8hU
+         U3lvxvU+bmyw+RScGiU0dnEnF+JI1lDOq9ctNXrvhMpm071FBT1TZutb7v1Zdn210D+n
+         ijVsBVJIKnfGqSgWNTVzNtS7p/1rAK38ks0NWEaumAycg/d0wWSXo4HHrVqtE1jyvbi7
+         5Y0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721846192; x=1722450992;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mYP7xs8KQ8UlOorfc/c0GIJsDnh+9Fq8OTNkNhrnP8w=;
+        b=m4J4uWrVwhoKi6DrJHCm5TdJu0SxmKbDJhEI5y0Yo0ThSyCSanB9NNbW9WZ1PwY6rv
+         gWwffQ/nhpI9R1+5ahnJRQUP/axLvrcJ2uE6mfnpBzMDqGvzBfWlzHU2ACb+VK/O0WLb
+         yjAWZ3bK69Uuvm+gGz63mGOHf7jQqwIjcz61Y8GeRxp98xRiTS2Gpx5a1R/85ZusBPlt
+         +bR7x/M6UNz3WgTZPdn7dSjBmstQtsYHlnaCYdQH/55oH5m1tKSGH17rKh98ZRpG+jO0
+         oSS7dHiZgC8naQV1eGKq/eP7udXd1g1Hrky+3AdRlpm8/Udcg/6JOsTfCdPGFQb2Skic
+         ZIAw==
+X-Forwarded-Encrypted: i=1; AJvYcCXsTwyuYOYwanwk2ElSYbD1PHk8772fcIUvh5B8kpEpYl8b5YGwKpc57gS2AQsRTFfX79if/ocQ+Ba7kwcj35CE6zFpfu3r
+X-Gm-Message-State: AOJu0YyA5JE1t9x61kk3GZ/Wrk90PXnu3QtbivlEEO50iAsJ/GyxPKPd
+	BkOD08MZf94nG42WemroEE5rnw57XmuRDwzxsRgKI3zurukivCK+jdYyTZVgFWE=
+X-Google-Smtp-Source: AGHT+IFvJVIwefWPwY3LJ2hABodFiikz+9p5bBm+mCKKnjhELb3r4ifGsWvkDb/N6P75mqebfr/kVg==
+X-Received: by 2002:a17:90b:4b0d:b0:2cb:1563:ccd1 with SMTP id 98e67ed59e1d1-2cf23a0308dmr400986a91.38.1721846187719;
+        Wed, 24 Jul 2024 11:36:27 -0700 (PDT)
+Received: from jesse-desktop.ba.rivosinc.com (pool-108-26-179-17.bstnma.fios.verizon.net. [108.26.179.17])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cdb73a189esm1997830a91.2.2024.07.24.11.36.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jul 2024 11:36:27 -0700 (PDT)
+From: Jesse Taube <jesse@rivosinc.com>
+To: linux-riscv@lists.infradead.org
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Conor Dooley <conor@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Evan Green <evan@rivosinc.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Jesse Taube <jesse@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Xiao Wang <xiao.w.wang@intel.com>,
+	Andy Chiu <andy.chiu@sifive.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Greentime Hu <greentime.hu@sifive.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Costa Shulyupin <costa.shul@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Zong Li <zong.li@sifive.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Ben Dooks <ben.dooks@codethink.co.uk>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Erick Archer <erick.archer@gmx.com>,
+	Joel Granados <j.granados@samsung.com>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v6 3/8] RISC-V: Check scalar unaligned access on all CPUs
+Date: Wed, 24 Jul 2024 14:36:00 -0400
+Message-ID: <20240724183605.4038597-4-jesse@rivosinc.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240724183605.4038597-1-jesse@rivosinc.com>
+References: <20240724183605.4038597-1-jesse@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR12MB5388:EE_|PH7PR12MB9222:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ffafa67-7500-49c6-5138-08dcac0a59be
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZVhsQ3dlMHk0cldOekV0QUx4cHdKb1RrNllYek5IbWtjMElyVkhQM2taeGtW?=
- =?utf-8?B?VG9xZXFJZ3dMUW8xN1lldmhMTmtRV00xTFZoUGdocHZXM2xNMHhoNFprVmc1?=
- =?utf-8?B?cVVlSjJabjRyMzV1SVlaMXVyaTVGOE9iL1FNOHNxU21PRW9NRXNKUDhyQ0Jv?=
- =?utf-8?B?SG5LbXJ4NVRKc3dROGtwRXl3THliNnIvWkhlVm5lRUxGNlVRckk1dVVONW9U?=
- =?utf-8?B?aUczSk5Dd3NkdkwvaCtEQmVyMk9mWUFpWThIczdqd3RTK3RLeUFmbzhxOUxG?=
- =?utf-8?B?ZlJDTnFiMFVsTDdRN0tFdFFkWi8rT1FGSDFZZDFIQ3k2UHBnRmFjWDNrczlS?=
- =?utf-8?B?NXp4OUNMZTZwTTVTZDFNdXlRTkZJM1dJSVZNTmE5L1ovQjJWNktlMDI5T1pP?=
- =?utf-8?B?TU03ZWlNTnFyMDhiYlN6Tyt2U3JSU0VRQlc5R3FVRnpkSWZ2ekd1SGxRSmd0?=
- =?utf-8?B?ckc0c2JSS2JoSlU5NXVCK0FJdHJmUFVhYlpjNnZuNXR4V3k0ZnZxOEhLb20w?=
- =?utf-8?B?TFFsTjJ2NEd3a0JpQmFtWkNhRGtoNUlDak9xNGgrWUJINGtXcm5QTkdYODRF?=
- =?utf-8?B?NUpaTGdvRGsycG5OeW9wOE1mOHpVZThaRDNLTjdZRGZoVmFpQllqSUlERG5i?=
- =?utf-8?B?ZnQ5L1U4U1doUkdBLzlwNGZzU3hxWm1lZVRXY3dmRmdzSFZLekVIbDI5Lyts?=
- =?utf-8?B?WnJidDZXRU1WMkgrRDEwYis4MFQ1b0JLQ2FUdkFHRWxnd2dkTXloWVpJcHJ0?=
- =?utf-8?B?aXZvbGdWb3FJTnM3a3c2a2tGcWdTdG85WHJ3R2ZQK0ZPNksyVkpGODlqTXFP?=
- =?utf-8?B?TGgvMlZsK0pJRWtpbkVtMS9kRi9sMnVXcW9HMlVLWUU3WlBkVGZWcHBsbWxl?=
- =?utf-8?B?YVM3aUpQQkRLR1M2KzNwSGJrRlJVM0NCQkNnQVNHWjI1V09mT2QrK2dCMzdO?=
- =?utf-8?B?RHpZeWQyODVDa1BVOWp3bUZnQzZ0N1FxRWxQL29reHBGZmlDWDVNbVdXOGxO?=
- =?utf-8?B?SnYzRmE2YzBjQlR5TlVSRkJ4MkR3NXcxVDNhdW02Zm5mNFlXZlYwVGhLZjdK?=
- =?utf-8?B?UnZPY3VRS0NXTjE5Qzk2RTZrSkZCZjJ1SmxZdFpRV2I4ZkowNGJwaGJGNTg2?=
- =?utf-8?B?eFp1bmg0Q0Jvb0hDZUE0UlZkdEsvZjJIYkQrOU9rakgzMUhzVFNSWkgrSWRj?=
- =?utf-8?B?QldxdGdRVFlHZVJMTXNCL2lQdUJrR0Q0UGtwdXdTSmNTa2JFaExPQlltZzZS?=
- =?utf-8?B?bEVhQ0ZhR0Q0MXM2aS85OXNQamRxcnRYQWRxWjdRTjcwY0g3NTNvclhWd3ov?=
- =?utf-8?B?MFo5S3FXcUxkUjBxbkVUV1ZxNTJtdXZnMlc1Z04wTUptOHU1TUpiSXlCRTJ6?=
- =?utf-8?B?cERGbk15MnFpRWNUTnZIOXNPcmpLWnlXOVExR05yZ082VTBlb3FZakdERXU3?=
- =?utf-8?B?dmxkdHlCeTRWcm8vVmdldkJ5Q1E3cjA2WTBxMW1aQVlmYVNjVWxVNXd5b1dD?=
- =?utf-8?B?V09XTENON20zUTVxWEpKMHloWGhRRksrclYyZFl0SENsNkVoZ1FVcGZyREVI?=
- =?utf-8?B?ZWlBazlnQmN0emZPOGkzWmZTQmFzZmh5V1FBaExraWhtSWw3QUE1RmdwUGts?=
- =?utf-8?B?M3ZXVFhBL2FXMldXd1QzREYydTlDbGc0K1VnY1Y3OWRMVzVtaFVqSWlMSE15?=
- =?utf-8?B?SjZ4SUZTaWJtRXVORlF6R1kwL1hCZVJGUUVJV0xBRHNHNDBsS3V4OG5RV3Fs?=
- =?utf-8?Q?ut3zU3Qdd3hOFooMnI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR12MB5388.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SlVPd2VXbGV2NFlucDZZbjhzbFYvdXV3eHlSRDN1SVdac3YwL1BIYzBMTmRy?=
- =?utf-8?B?UDlGMllKVDNsQlQ4L3JpNXMyK3ZERWRveE9pbC9qQU11ZEhBTG1qQXZBdlZ2?=
- =?utf-8?B?RlphZmlab0ZNSFE5SVdTQW11VE5SdjBvZHFZQXFJK2wwMmhsSjFjaERuMU9B?=
- =?utf-8?B?Q01uVHZ1QisxWWxBZ2kyZE03dzNiS0pNSVI3SkY4cVpIeVZPTzBKbWhQYVl3?=
- =?utf-8?B?NllQUDRuRDlUeDZHUzVSbXFWaDQwTFU3c2dKV1V0TkRKVGZFakZEeDBmUUFK?=
- =?utf-8?B?M2Nic0lTZTBkSUZ3eHNaT20vL0dQMDFNenNvdDc5eW1FZ0dHSDNUTVh3VU5L?=
- =?utf-8?B?UDdodlVXaFU0Z3pIelordm8xemEwMHcvZVBsUmVMMlZVcHZLVFJKV2ZKeXVF?=
- =?utf-8?B?ajg4T0VCMjV2K3BFbGZhSHlYNVJSdFk5NlRrOHhxZjFCcjJkTnRIRXhCRWxJ?=
- =?utf-8?B?dmVqdVUzaDR5SlVvRXNWSkhHNlZDdkpuNFV3QXBVRklGcEFURWR4WGZhMlpS?=
- =?utf-8?B?Nmo3ZjJrcWIyWmsvSEZEbWlKVnpmdHZodXF5a2VnSThONTRzSnNFL3diMzJG?=
- =?utf-8?B?dVlrRTlWZTJ2a0haTG16WjFxV1p1UEpSSkpRODhJZ0JKN1JhMGh6Z1hTZEhY?=
- =?utf-8?B?SHJyUndqZ2hsQ1NDWVhySGVpQWg0QWYweUgwb2ZVcTU2aGFVazc4bUI4VTMz?=
- =?utf-8?B?Sjljb1hBRG9DK25uUEFoVUYrT2pIc0ZuZlRtcU84aUc5a20wOWFlbitDZ3pN?=
- =?utf-8?B?QVU4Tng5d3o3a1Qwbk5vdExlZUc2Q1Y0RDc0V0x0WW8wNU5RSWpzWHdpSEZX?=
- =?utf-8?B?cStja3lhZ3JWQjVLUjZGUG1razRkZnVBYTF4QjdUMTA0R2ppVm0yNXBhbmZi?=
- =?utf-8?B?VVdZdW5yZFhkbkJhS0w5d1kvSmZkMjVBaU5vVWxsZ001bDNIQytycDhvcVZr?=
- =?utf-8?B?TDJvMHpkdzhnNFF4ZWR5S0I1cTZaRWxwMGM0WTFkYURwd09tRW5Bbks2cUh3?=
- =?utf-8?B?QXowbUNZRk16bC9veHRhTnJrN01vTTJWZWtMUjYySWI2aXJqdldhb1JCNUJq?=
- =?utf-8?B?YzVCaUZKb1VTREtHTU1WUzhWQS9rWWxtYm9NMUpuOUIrRVJjbldYMHQxN3Q0?=
- =?utf-8?B?bkpjMTdGK0xiaHZSWXNKUWRrSVNxZkx4SW5aODZua05QSHJUc2JXQkdKZE0y?=
- =?utf-8?B?Q3IxK3kxK00vczFFOEVLaGFDc1BDR3FqMyt4dFNCQWdPOGJTZVVUTDZ4Ry9O?=
- =?utf-8?B?bnNUbXAwQjhOTTFvMS8ySTlvQS9OdHRyTjZWb0J4TkdZTS9LeVFUV1lsb25o?=
- =?utf-8?B?dlZWWjhpelluV1JZZ25OK2lCTis4Z2pvNHJlQjFaTGFjNnl5OTkzSUlpU1lT?=
- =?utf-8?B?UXY5Vm1pOWZpRUdMN0ErQk5hTmo2YTVLeGxoOVYyalRSU2Z6N2N3K3JCSFBF?=
- =?utf-8?B?d1c2VTFWZ003N3hHMVZNa3hCUnVKdUFqSUxPcFpNam5DdWxZZ2Z5MS8xN0dZ?=
- =?utf-8?B?R3lrWFU2eTRxV3g4eWQzVm1jMkhkUWl6bFhSTTZWN2FOWHI0SGV1b1RZTkFY?=
- =?utf-8?B?TWNFaTZKT3BKeWFjRUcwUVRPL2pQZEV4M3J0ajFhaEpxcCthMzBqdW0veVF3?=
- =?utf-8?B?RjVHNGtuMXk2R3NZQXpkbW1laFNqSmRuZWQ1SXpHdEdWR1Ixa2hQQUlKTDFl?=
- =?utf-8?B?aHlPdDUrWUxqMnE4d1I3YSsvRjJiU24xUTg4NjRlLzJrcng5M1hZN0o4NE1N?=
- =?utf-8?B?ZTU2WFQrNDU1Nm1JeTlaNVhHcVU1Zkp0Vmw4WFhwRmpudnlUZ1l6MU5HZjF6?=
- =?utf-8?B?RENncERHMnkxRFp1OC96QUgxWDg4VmpwcE9jdWZzVFVtZlFkQnU3a28vY2hu?=
- =?utf-8?B?bUZoRllHeDVCRGRIck5VVStzM0tFejRaSUZQamZUNVRXUWRtUDhsMFJhcTB3?=
- =?utf-8?B?ODdvMTQ3MzdsdkZsaEJnUVc0cTYweTVVZ1NsdTdBSkhYVEJBV3VCNTZsNXNv?=
- =?utf-8?B?YlNmSWwzSndLZHJ0a3FtK3o2aDNXVEdOUmZ3RnNFZFZXeUFyNXRZTERKM2JJ?=
- =?utf-8?B?V1cxelpoVzIwRENRdmc0TDEyWE9sbll2MGFjNlV0UXlueVYzZFQrUmx3Q1pv?=
- =?utf-8?Q?Fa3Malo3WWJiDQTdY7nwMO1WA?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ffafa67-7500-49c6-5138-08dcac0a59be
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR12MB5388.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2024 17:59:23.6565
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: F+v71RzUO/GJ5xB7VIXDpP57XroaLnrYGoCP8UQOVnj+6J/tVxdXbsjUvZW+KYhGtZlHXK7pyIiKxRpqfJr9kQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9222
+Content-Transfer-Encoding: 8bit
 
-On 7/24/24 02:10, Ma Ke wrote:
-> In _emif_get_id(), of_get_address() may return NULL which is later
-> dereferenced. Fix this bug by adding NULL check.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 86a18ee21e5e ("EDAC, ti: Add support for TI keystone and DRA7xx EDAC")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - added Cc stable line.
-> ---
->  drivers/edac/ti_edac.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/edac/ti_edac.c b/drivers/edac/ti_edac.c
-> index 29723c9592f7..db23887b2d81 100644
-> --- a/drivers/edac/ti_edac.c
-> +++ b/drivers/edac/ti_edac.c
-> @@ -207,6 +207,9 @@ static int _emif_get_id(struct device_node *node)
->  	int my_id = 0;
->  
->  	addrp = of_get_address(node, 0, NULL, NULL);
-> +	if (!addrp)
-> +		return -EINVAL;
-> +
->  	my_addr = (u32)of_translate_address(node, addrp);
->  
->  	for_each_matching_node(np, ti_edac_of_match) {
+Originally, the check_unaligned_access_emulated_all_cpus function
+only checked the boot hart. This fixes the function to check all
+harts.
 
-IIUC, the original v2 submitted seems to differ from this RESEND patch
-https://lore.kernel.org/linux-edac/20240718134834.826890-1-make24@iscas.ac.cn/
+Fixes: 71c54b3d169d ("riscv: report misaligned accesses emulation to hwprobe")
+Signed-off-by: Jesse Taube <jesse@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Cc: stable@vger.kernel.org
+---
+V1 -> V2:
+ - New patch
+V2 -> V3:
+ - Split patch
+V3 -> V4:
+ - Re-add check for a system where a heterogeneous
+    CPU is hotplugged into a previously homogenous
+    system.
+V4 -> V5:
+ - Change work_struct *unused to work_struct *work __always_unused
+V5 -> V6:
+ - Change check_unaligned_access_emulated to extern
+---
+ arch/riscv/include/asm/cpufeature.h  |  2 ++
+ arch/riscv/kernel/traps_misaligned.c | 14 +++++++-------
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-Snippet from submitting-patches:
-Don’t add “RESEND” when you are submitting a modified version of your patch or patch series - “RESEND” only applies to resubmission of a patch or patch series which have not been modified in any way from the previous submission.
+diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
+index 347805446151..3b24342c7d2a 100644
+--- a/arch/riscv/include/asm/cpufeature.h
++++ b/arch/riscv/include/asm/cpufeature.h
+@@ -8,6 +8,7 @@
+ 
+ #include <linux/bitmap.h>
+ #include <linux/jump_label.h>
++#include <linux/workqueue.h>
+ #include <asm/hwcap.h>
+ #include <asm/alternative-macros.h>
+ #include <asm/errno.h>
+@@ -35,6 +36,7 @@ void riscv_user_isa_enable(void);
+ 
+ #if defined(CONFIG_RISCV_MISALIGNED)
+ bool check_unaligned_access_emulated_all_cpus(void);
++void check_unaligned_access_emulated(struct work_struct *work __always_unused);
+ void unaligned_emulation_finish(void);
+ bool unaligned_ctl_available(void);
+ DECLARE_PER_CPU(long, misaligned_access_speed);
+diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+index b62d5a2f4541..bb09357778c5 100644
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -526,11 +526,11 @@ int handle_misaligned_store(struct pt_regs *regs)
+ 	return 0;
+ }
+ 
+-static bool check_unaligned_access_emulated(int cpu)
++void check_unaligned_access_emulated(struct work_struct *work __always_unused)
+ {
++	int cpu = smp_processor_id();
+ 	long *mas_ptr = per_cpu_ptr(&misaligned_access_speed, cpu);
+ 	unsigned long tmp_var, tmp_val;
+-	bool misaligned_emu_detected;
+ 
+ 	*mas_ptr = RISCV_HWPROBE_MISALIGNED_UNKNOWN;
+ 
+@@ -538,19 +538,16 @@ static bool check_unaligned_access_emulated(int cpu)
+ 		"       "REG_L" %[tmp], 1(%[ptr])\n"
+ 		: [tmp] "=r" (tmp_val) : [ptr] "r" (&tmp_var) : "memory");
+ 
+-	misaligned_emu_detected = (*mas_ptr == RISCV_HWPROBE_MISALIGNED_EMULATED);
+ 	/*
+ 	 * If unaligned_ctl is already set, this means that we detected that all
+ 	 * CPUS uses emulated misaligned access at boot time. If that changed
+ 	 * when hotplugging the new cpu, this is something we don't handle.
+ 	 */
+-	if (unlikely(unaligned_ctl && !misaligned_emu_detected)) {
++	if (unlikely(unaligned_ctl && (*mas_ptr != RISCV_HWPROBE_MISALIGNED_EMULATED))) {
+ 		pr_crit("CPU misaligned accesses non homogeneous (expected all emulated)\n");
+ 		while (true)
+ 			cpu_relax();
+ 	}
+-
+-	return misaligned_emu_detected;
+ }
+ 
+ bool check_unaligned_access_emulated_all_cpus(void)
+@@ -562,8 +559,11 @@ bool check_unaligned_access_emulated_all_cpus(void)
+ 	 * accesses emulated since tasks requesting such control can run on any
+ 	 * CPU.
+ 	 */
++	schedule_on_each_cpu(check_unaligned_access_emulated);
++
+ 	for_each_online_cpu(cpu)
+-		if (!check_unaligned_access_emulated(cpu))
++		if (per_cpu(misaligned_access_speed, cpu)
++		    != RISCV_HWPROBE_MISALIGNED_EMULATED)
+ 			return false;
+ 
+ 	unaligned_ctl = true;
+-- 
+2.45.2
 
-Any specific reason for this change?
-
-From a brief look, it seems that the original v2 was correct.
-Check for NULL pointer deference might be required in both places
-in _emif_get_id().
-
-Also, some more context on how this was noticed might help.
-Was it through mere observation?
-
-Thanks,
-Avadhut Naik
 
