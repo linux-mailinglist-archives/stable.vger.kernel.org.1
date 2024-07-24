@@ -1,198 +1,370 @@
-Return-Path: <stable+bounces-61252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DBF93AD41
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 09:36:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E826A93ADDD
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 10:17:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9589B1C21BD4
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 07:36:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16E581C20CAB
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B88C1CAAF;
-	Wed, 24 Jul 2024 07:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C9F14A09C;
+	Wed, 24 Jul 2024 08:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pDkzHCeu"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="h84mPW0O"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2080.outbound.protection.outlook.com [40.107.237.80])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57903D97A;
-	Wed, 24 Jul 2024 07:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721806588; cv=fail; b=N5UV0UxLNliFUX4Y3EXvGyknQCVeNpKp6QYMaKJw0iGoMHq+0h7hQa/kxK3SkFk60mLMUnd9s3lc5/syWMZip9I77brVxomVvXhi9D7C1xmZQ2v7aG4c2pM3tpS1RBVktQyFsbMci0nOw+8dp3DP8yGs6aKuAgP4iTzPZx+ql2I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721806588; c=relaxed/simple;
-	bh=lsvV+XBgNWu9nd9S/MID1gyszxki2gD0bHRFXYcOllk=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=q3GX74qpkRPcGT5wPswxAQSHhRxHF2WdZ974fZMCDhiK6O/HC8ww3q9HUAM43z1Wrv46xpDOeOkGbh12P8UErZJwSGX9AA9BOQI3tEy4PBdTpyaDIUSmwMO1zlOvp7VMbiCiMs4vg/8AengA289RRyFuL/ED6JMW6AUK+VBgvAY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pDkzHCeu; arc=fail smtp.client-ip=40.107.237.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Au5PePMpJCPjVUU/eoDDLl1XKkfxxObULtrw7FhC+p4zsjJwqg8BDQ6wUBPpzbmkv6xKLh8z0uQSNfqrKfJs5XouD0xfyrE97Fp+cwZpN8SBFq8BCrVyxgvnSNLY/4f6KzUB+SPp4xwKwOMU0Q4Qpzk7gKNnhGU74n3FU2lplPtkOXPfxkGcJ+Tq7DqYqiEm51TGSXtcV3JsS/R+aD2YRbA0IzpxeLfmPY5xK8eSWylYGYznr2DAliwpjVkLBdeMvkVcft4fhdPPF0oxwF9WrY1PwIWxY1z2MFobmczNGZlUq2JmYim89klXsnNrpbLLtRp4OdUfwuchEyN5pgB08Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P4V8Fdvge/kRWL9bnCJdBeZdbzCJemJ8RPEwdQZ5TX4=;
- b=R0Cy7i845QAVXu8VVgXspIXR+QwOxl2A6rCbff/MSpP3h9321A4vcpvAFjRQIRZ0aGKzhdxOV1PdmzO9KZBMFmkbjUqfKk57A88SnB3GfrK4iaDcFpeemwaHRei9IpBnWbhDu3j4LFy8do7E6GtO5I/M45eRWCAiXe+/kABl7GUT0O4YZ2TXYvqoq6ceWkFg82Nsg3s17jDDsp+3T1RzTdRBzM5gT7hPlRHITUHuMdUDWlGcTnVwAGuF10ZCt05oanE9rIJyH7EI2WmD+Xz+XmHbqn39k0z9YVggVVM8pVxWQ5ceBrt/ZlAsjvvh1HTlEo22DujNWOIg+IgSLuRhGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P4V8Fdvge/kRWL9bnCJdBeZdbzCJemJ8RPEwdQZ5TX4=;
- b=pDkzHCeubbCrZzRO0iWE6875kCwsjqS1nyWgHrw7jKquAfAH5ySRj9w1Ht3VIu+xLQFc3uQnOXApvOeJtTDtz70wIGoHtQRFSJspAYUbDjlw7uZJkdIhU1WggulAykP/hMy+x+niXf1MLw0gPk8I/LKoJRCrASunS77A73k1Cpo8U25jhnWYIYEyTuaW2k/1B3BkIPKuLeCDiEkxELlsV7avaRbJegr8e/AELvlTuMzq5ztsSF2EJkdxgBTaSLEO7Z+0q/llaTt3HfrL8LQB53686VgIbKQfDRZ0qPf1I+01z2VTUEeJftueOn3JWV7saeJr4ZvUqbXQH9nrsWcFNg==
-Received: from CYXPR03CA0058.namprd03.prod.outlook.com (2603:10b6:930:d1::16)
- by CH3PR12MB9456.namprd12.prod.outlook.com (2603:10b6:610:1c2::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.19; Wed, 24 Jul
- 2024 07:36:21 +0000
-Received: from CY4PEPF0000EE36.namprd05.prod.outlook.com
- (2603:10b6:930:d1:cafe::f4) by CYXPR03CA0058.outlook.office365.com
- (2603:10b6:930:d1::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.20 via Frontend
- Transport; Wed, 24 Jul 2024 07:36:21 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CY4PEPF0000EE36.mail.protection.outlook.com (10.167.242.42) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7784.11 via Frontend Transport; Wed, 24 Jul 2024 07:36:21 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 24 Jul
- 2024 00:36:05 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 24 Jul
- 2024 00:36:05 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Wed, 24 Jul 2024 00:36:04 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.10 00/11] 6.10.1-rc2 review
-In-Reply-To: <20240723122838.406690588@linuxfoundation.org>
-References: <20240723122838.406690588@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B7A1CAA1
+	for <stable@vger.kernel.org>; Wed, 24 Jul 2024 08:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721809044; cv=none; b=IaEU5nns/icGEKF9xRW5SlNbM09/UnlgrR9LoRqaRP+ChsNm/lwhgjQyoTmDs1u8OTcAQ/1cdGy3XeIkPORd78CyRjsprBaOItiPDPI+yGCNmAo6qJiOB9U2QisKDEsgu/SKmRZ3/DCiu9vQ8o75aklxvvXo+udfP8bkrJSsDvU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721809044; c=relaxed/simple;
+	bh=gPjNQWLWSWxO/hghO8UgufqIdCMTT0lX7zyRXRjjI0w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UDz0bV+w7OwjXj0JOYF5ho0Yp2scHPSgQ90jyp1H2VLIH9AE79iQ1calstE15mBTz4cNYoVhdOmY/LpxmKmkE+ddSttC4mju37a6Qj1aimllreB0oXZpYPXr0/NI+zNkmA+uIJszGOzURmxa3pNOo+Swr2AvnBL1gj5AZAkHFeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=h84mPW0O; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=k+eCM4giXZ30XEioe7+Fgj54F6YI8rOam69609kXZJE=; b=h84mPW0O+1sa4cl70QAXVsxvcf
+	Us7NL+zL/Ibd2TauzmJld9qDuqUQMMvyqviGLKXAy4DulimtIK+3iTefLmlbpT5bpFsa2LAk1mdKz
+	5h2QvSYPxwcVV7IGE8wof+7XqsfrUOKR1Fif6FG7nlcrrDA3NIxtfoMfu+qx750YRDzGCKEnxkf0W
+	w9uNPgq9aaB83/XNnIXybHpuYKbgUE/1Bg5P/6PLU5mDSiQpMQdNxjht3bFFtEPqHFzlgqhpsXZED
+	kQN4dfnUBNYpZJ/McC3pxl994YOfF7G1Rbdhtza4m0XS0gYkpge6pZTeJ8EpHV+TLpU1ROLH5OH/p
+	TtSX5oDA==;
+Received: from [84.69.19.168] (helo=[192.168.0.101])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1sWXBC-001OZd-RA; Wed, 24 Jul 2024 10:16:58 +0200
+Message-ID: <ecc032cd-d595-4f4d-a96a-bee51f290547@igalia.com>
+Date: Wed, 24 Jul 2024 09:16:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <a868725b-6a80-4764-9289-e70e7ffa8f35@rnnvmail203.nvidia.com>
-Date: Wed, 24 Jul 2024 00:36:04 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE36:EE_|CH3PR12MB9456:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ef6edff-ba3b-4d6b-6a43-08dcabb35039
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Mll3MjB3NjJ4R0FYZEN3TmczYVAwU1JzUm1HdCt4aE02MFpTR0hiYURSMnBZ?=
- =?utf-8?B?aVVmUTBGMVlzZHlwLzhDZ2pVUTFmZFIyYjlJRXo5NHB4TFg2SHFRbGxJQUZh?=
- =?utf-8?B?WWxXMTNZWi9SL1QxNy94TjluU01SbC83WmtSZzJmRkFuZGNLMy9Ed1N1Uk1z?=
- =?utf-8?B?MkFEVkVNbUJTWGZ4c3N6RHRTb3QxK0ZBSDg0S0M5WHJQT0Z1QlF2b3BuYkZL?=
- =?utf-8?B?ZWZoK293Tjd0dGV3eWQ4V1dFQXNvcklUNVhpZElXRTR1bTBUUmVDb0l1Tjhk?=
- =?utf-8?B?Y3R2ZTNXd2Jrek1lUVI3RVdVcFhNWGJsbnBYbWFWUE1lMDZQelI1QTBhUXJV?=
- =?utf-8?B?eGxiUUlaY2k0RURWcmRuVm8xeE9ENmg0ZzN2b0RZZUtmY3BTZWIralBaWFNo?=
- =?utf-8?B?KzFLbHRhVHNxSVhTRWY0NEFHbWh5cHZ1MUZSOURKRnVxM0F3elNsSWxrMnI1?=
- =?utf-8?B?VllwN2NiZ3NWTmRibUErSS9qNkxnNWxnVkVOU3dlaDlwdk9UUlRZYll4NjFr?=
- =?utf-8?B?Mm1LcVNsMHpiS0FtV0lWdEk2UGFqNmFLSXBCUWs2NmVscklTMWNIbEJabzZE?=
- =?utf-8?B?TGZaOGZPVE9RaHdtYm53UXJqZEdvWFVVQXYwVmNzK0ZZREJMc0RvZnU1eEZF?=
- =?utf-8?B?OGI3ZFZXL1MzSElkSi9OZFptSEhXSWtaMTFmcVVPWmgvK3MxcWQzTjkxVHBP?=
- =?utf-8?B?Q3hSYmt6ZkdTZVl1Nml0ZVFoeSt2Qm91VmxKS2VGZ2ZOdlh1NWtJY01UVUth?=
- =?utf-8?B?SXBObXZhck5QYWVBT1lKVHB0Um5xaWVGNVYxWTVtNDRzTGg2ajZGZFdsekhU?=
- =?utf-8?B?V1pEeGxDWHlRYUdEUUpRdnJXd25rVm9aNGgwM0RjNEFvMkI4NDZFMWpwMm5w?=
- =?utf-8?B?MWFXMmVIdkNBU290OVlxZ1MzUy9CcXl2OHJCSExPWjVoUS83Tzhtc3AvRWVl?=
- =?utf-8?B?VC9wejFzOENHbHlwbGdiTEFQSkhvUmVQWHBEQm9JSFhuUXNoTjQxOFgybncv?=
- =?utf-8?B?d25BZEpzOXVqR2tLd3BFbmZXNDBpN3pkdkFvSHhMdTM1MzdoaURMQmF3OG92?=
- =?utf-8?B?Y3NnS2dNdDh1QVFseUtpMEQ0UU1xdEpYM3d0VS9oMjdzcXppMlBXUjljU0U4?=
- =?utf-8?B?V0tXaUpnY3ZRZk5uNDd0dWx5Tm9vL2FHeVFPQ0pILy83dlQ4a21EYVdvUklR?=
- =?utf-8?B?NEFmckZybk02dkgrdGlZc2VENWN0Q1hvSFdmb2lxdkFoYUd5NnVPTHlPN2dJ?=
- =?utf-8?B?eVNiNm4wRTdMaUYzdlErd2FYbm9PdVhZZkF4by9xdmhwcTk0NU1MRERDUXdD?=
- =?utf-8?B?R2c1c1lvTktkOW4wc0t2VVNhc2NHb2VPVEcvNmhTWFd0OWZaZmxWOG1SYUdy?=
- =?utf-8?B?NUdYR0xaV3ZkV3FYS0FwUzdBVit0Wnh3N1oxVkpuNllzTHIrRkdKZnFzdjNl?=
- =?utf-8?B?Qml5QUUyZkFvak4wRE84UXJPNmtJc0FtT1ltSlRKTDN1enVkMHBvWEkrQnJ5?=
- =?utf-8?B?d1hDNEdJSkd4eUExRmNEc29UMTRKQVYzSlUzckZ1OEVFTlRmNnJURHA5QjhD?=
- =?utf-8?B?RndwMlY1UGExMFJZbzhZTmRFK09TZFFlK3VQWEJLTHozZlNSbmR1aS9KT1Bm?=
- =?utf-8?B?MEtYL2lpbVRmRGp3SVI5Z2k0SVZjMi9HT3ZaMGF3WDlzZzJSK1QyeTlBYUVH?=
- =?utf-8?B?dGF6UlBiNE5TQkx4T0F2UVlNMFlDWWl6SUpaTVhJYlhqSTM4SWFTY0ExNzZK?=
- =?utf-8?B?VkdhdXRHZ1pMKzBoK2hzUVNXeG51VFJBSnJ5Y2hMdzQybTdGRVdOS1B4ZEpv?=
- =?utf-8?B?ejRrSUU0bGNjTW1tNi9JMlhCb2JJdXdRZTZ6TU51S0JkTHhtenJkYzI2TWxx?=
- =?utf-8?B?MWVCQXE1NlM0VnFpTjVXNlJBOFNCRDlpTUdkMUVSa1FtdFdxSlE1RWdFNDVU?=
- =?utf-8?Q?Cs8GmHfeYZjQf0CDBhXG3uiOkphH67/y?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2024 07:36:21.2109
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ef6edff-ba3b-4d6b-6a43-08dcabb35039
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE36.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9456
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/scheduler: Fix drm_sched_entity_set_priority()
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
+ Tvrtko Ursulin <tursulin@igalia.com>, dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com, Alex Deucher <alexander.deucher@amd.com>,
+ Luben Tuikov <ltuikov89@gmail.com>, Matthew Brost <matthew.brost@intel.com>,
+ Daniel Vetter <daniel.vetter@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+ stable@vger.kernel.org
+References: <20240719094730.55301-1-tursulin@igalia.com>
+ <61bd1b84-a7f3-46fd-8511-27e306806c8d@gmail.com>
+ <bd1f203f-d8c4-4c93-8074-79c3df4fe159@gmail.com>
+ <8f977694-eb15-4b64-97f7-f2b8921de5cf@igalia.com>
+ <eb8a2ce7-223f-4518-8d72-fac875a51f98@amd.com>
+ <9867a2b2-6729-424f-abc9-e1d1b81bab41@igalia.com>
+ <6b254b3d-a6d9-4b12-9a5e-dacb32d41ee9@amd.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <6b254b3d-a6d9-4b12-9a5e-dacb32d41ee9@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, 23 Jul 2024 14:28:51 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.10.1 release.
-> There are 11 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+
+
+On 22/07/2024 16:13, Christian König wrote:
+> Am 22.07.24 um 16:43 schrieb Tvrtko Ursulin:
+>>
+>> On 22/07/2024 15:06, Christian König wrote:
+>>> Am 22.07.24 um 15:52 schrieb Tvrtko Ursulin:
+>>>>
+>>>> On 19/07/2024 16:18, Christian König wrote:
+>>>>> Am 19.07.24 um 15:02 schrieb Christian König:
+>>>>>> Am 19.07.24 um 11:47 schrieb Tvrtko Ursulin:
+>>>>>>> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>>>>>>>
+>>>>>>> Long time ago in commit b3ac17667f11 ("drm/scheduler: rework entity
+>>>>>>> creation") a change was made which prevented priority changes for 
+>>>>>>> entities
+>>>>>>> with only one assigned scheduler.
+>>>>>>>
+>>>>>>> The commit reduced drm_sched_entity_set_priority() to simply 
+>>>>>>> update the
+>>>>>>> entities priority, but the run queue selection logic in
+>>>>>>> drm_sched_entity_select_rq() was never able to actually change the
+>>>>>>> originally assigned run queue.
+>>>>>>>
+>>>>>>> In practice that only affected amdgpu, being the only driver 
+>>>>>>> which can do
+>>>>>>> dynamic priority changes. And that appears was attempted to be 
+>>>>>>> rectified
+>>>>>>> there in 2316a86bde49 ("drm/amdgpu: change hw sched list on ctx 
+>>>>>>> priority
+>>>>>>> override").
+>>>>>>>
+>>>>>>> A few unresolved problems however were that this only fixed
+>>>>>>> drm_sched_entity_set_priority() *if* 
+>>>>>>> drm_sched_entity_modify_sched() was
+>>>>>>> called first. That was not documented anywhere.
+>>>>>>>
+>>>>>>> Secondly, this only works if drm_sched_entity_modify_sched() is 
+>>>>>>> actually
+>>>>>>> called, which in amdgpu's case today is true only for gfx and 
+>>>>>>> compute.
+>>>>>>> Priority changes for other engines with only one scheduler 
+>>>>>>> assigned, such
+>>>>>>> as jpeg and video decode will still not work.
+>>>>>>>
+>>>>>>> Note that this was also noticed in 981b04d96856 ("drm/sched: 
+>>>>>>> improve docs
+>>>>>>> around drm_sched_entity").
+>>>>>>>
+>>>>>>> Completely different set of non-obvious confusion was that whereas
+>>>>>>> drm_sched_entity_init() was not keeping the passed in list of 
+>>>>>>> schedulers
+>>>>>>> (courtesy of 8c23056bdc7a ("drm/scheduler: do not keep a copy of 
+>>>>>>> sched
+>>>>>>> list")), drm_sched_entity_modify_sched() was disagreeing with 
+>>>>>>> that and
+>>>>>>> would simply assign the single item list.
+>>>>>>>
+>>>>>>> That incosistency appears to be semi-silently fixed in ac4eb83ab255
+>>>>>>> ("drm/sched: select new rq even if there is only one v3").
+>>>>>>>
+>>>>>>> What was also not documented is why it was important to not keep the
+>>>>>>> list of schedulers when there is only one. I suspect it could have
+>>>>>>> something to do with the fact the passed in array is on stack for 
+>>>>>>> many
+>>>>>>> callers with just one scheduler. With more than one scheduler 
+>>>>>>> amdgpu is
+>>>>>>> the only caller, and there the container is not on the stack. 
+>>>>>>> Keeping a
+>>>>>>> stack backed list in the entity would obviously be undefined 
+>>>>>>> behaviour
+>>>>>>> *if* the list was kept.
+>>>>>>>
+>>>>>>> Amdgpu however did only stop passing in stack backed container 
+>>>>>>> for the more
+>>>>>>> than one scheduler case in 977f7e1068be ("drm/amdgpu: allocate 
+>>>>>>> entities on
+>>>>>>> demand"). Until then I suspect dereferencing freed stack from
+>>>>>>> drm_sched_entity_select_rq() was still present.
+>>>>>>>
+>>>>>>> In order to untangle all that and fix priority changes this patch is
+>>>>>>> bringing back the entity owned container for storing the passed in
+>>>>>>> scheduler list.
+>>>>>>
+>>>>>> Please don't. That makes the mess just more horrible.
+>>>>>>
+>>>>>> The background of not keeping the array is to intentionally 
+>>>>>> prevent the priority override from working.
+>>>>>>
+>>>>>> The bug is rather that adding drm_sched_entity_modify_sched() 
+>>>>>> messed this up.
+>>>>>
+>>>>> To give more background: Amdgpu has two different ways of handling 
+>>>>> priority:
+>>>>> 1. The priority in the DRM scheduler.
+>>>>> 2. Different HW rings with different priorities.
+>>>>>
+>>>>> Your analysis is correct that drm_sched_entity_init() initially 
+>>>>> dropped the scheduler list to avoid using a stack allocated list, 
+>>>>> and that functionality is still used in amdgpu_ctx_init_entity() 
+>>>>> for example.
+>>>>>
+>>>>> Setting the scheduler priority was basically just a workaround 
+>>>>> because we didn't had the hw priorities at that time. Since that is 
+>>>>> no longer the case I suggest to just completely drop the 
+>>>>> drm_sched_entity_set_priority() function instead.
+>>>>
+>>>> Removing drm_sched_entity_set_priority() is one thing, but we also 
+>>>> need to clear up the sched_list container ownership issue. It is 
+>>>> neither documented, nor robustly handled in the code. The 
+>>>> "num_scheds == 1" special casing throughout IMHO has to go too.
+>>>
+>>> I disagree. Keeping the scheduler list in the entity is only useful 
+>>> for load balancing.
+>>>
+>>> As long as only one scheduler is provided and we don't load balance 
+>>> the entity doesn't needs the scheduler list in the first place.
+>>
+>> Once set_priority is removed then it indeed it doesn't. But even when 
+>> it is removed it needs documenting who owns the passed in container. 
+>> Today drivers are okay to pass a stack array when it is one element, 
+>> but if they did it with more than one they would be in for a nasty 
+>> surprise.
 > 
-> Responses should be made by Thu, 25 Jul 2024 12:28:30 +0000.
-> Anything received after that time might be too late.
+> Yes, completely agree. But instead of copying the array  I would rather 
+> go into the direction to cleanup all callers and make the scheduler list 
+> mandatory to stay around as long as the scheduler lives.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.1-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
-> and the diffstat can be found below.
+> The whole thing of one calling convention there and another one at a 
+> different place really sucks.
+
+Ok, lets scroll a bit down to formulate a plan.
+
+>>>> Another thing if you want to get rid of frontend priority handling 
+>>>> is to stop configuring scheduler instances with 
+>>>> DRM_SCHED_PRIORITY_COUNT priority levels, to avoid wasting memory on 
+>>>> pointless run queues.
+>>>
+>>> I would rather like to completely drop the RR with the runlists 
+>>> altogether and keep only the FIFO approach around. This way priority 
+>>> can be implemented by boosting the score of submissions by a certain 
+>>> degree.
+>>
+>> You mean larger refactoring of the scheduler removing the 1:N between 
+>> drm_sched and drm_sched_rq?
 > 
-> thanks,
+> Yes, exactly that.
 > 
-> greg k-h
+>>
+>>>> And final thing is to check whether the locking in 
+>>>> drm_sched_entity_modify_sched() is okay. Because according to 
+>>>> kerneldoc:
+>>>>
+>>>>  * Note that this must be called under the same common lock for 
+>>>> @entity as
+>>>>  * drm_sched_job_arm() and drm_sched_entity_push_job(), or the 
+>>>> driver needs to
+>>>>  * guarantee through some other means that this is never called 
+>>>> while new jobs
+>>>>  * can be pushed to @entity.
+>>>>
+>>>> I don't see that is the case. Priority override is under 
+>>>> amdgpu_ctx_mgr->lock, while job arm and push appear not. I also 
+>>>> cannot spot anything else preventing amdgpu_sched_ioctl() running in 
+>>>> parallel to everything else.
+>>>
+>>> Yeah that's certainly incorrect as well. 
+>>> drm_sched_entity_modify_sched() should grab entity->rq_lock instead.
+>>
+>> Ah cool. Well not cool, but good problem has been identified. Are you 
+>> going to work in it or should I? Once we agree the correct fix for all 
+>> this I am happy to write more patches if you are too busy.
+> 
+> Absolutely.
 
-All tests passing for Tegra ...
+Absolutely good and absolutely me, or absolutely you? :)
 
-Test results for stable-v6.10:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+These are the TODO points and their opens:
 
-Linux version:	6.10.1-rc2-ge89ad42bf499
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
+- Adjust amdgpu_ctx_set_entity_priority() to call 
+drm_sched_entity_modify_sched() regardless of the hw_type - to fix 
+priority changes on a single sched other than gfx or compute.
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+- Document sched_list array lifetime must align with the entity and 
+adjust the callers.
 
-Jon
+Open:
+
+Do you still oppose keeping sched_list for num_scheds == 1? If so do you 
+propose drm_sched_entity_modify_sched() keeps disagreeing with 
+drm_sched_entity_init() on this detail? And keep the "one shot single 
+sched_list" quirk in? Why is that nicer than simply keeping the list and 
+remove that quirk? Once lifetime rules are clear it IMO is okay to 
+always keep the list.
+
+- Remove drm_sched_entity_set_priority().
+
+Open:
+
+Should we at this point also modify amdgpu_device_init_schedulers() to 
+stop initialising schedulers with DRM_SCHED_PRIORITY_COUNT run queues?
+
+Once drm_sched_entity_set_priority() is gone there is little point. 
+Unless there are some non-obvious games with the kernel priority or 
+something.
+
+>>>>> In general scheduler priorities were meant to be used for things 
+>>>>> like kernel queues which would always have higher priority than 
+>>>>> user space submissions and using them for userspace turned out to 
+>>>>> be not such a good idea.
+>>>>
+>>>> Out of curiousity what were the problems? I cannot think of anything 
+>>>> fundamental since there are priorities at the backend level after 
+>>>> all, just fewer levels.
+>>>
+>>> A higher level queue can starve lower level queues to the point that 
+>>> they never get a chance to get anything running.
+>>
+>> Oh that.. well I call that implementation details. :) Because nowhere 
+>> in the uapi is I think guaranteed execution ordering needs to be 
+>> strictly in descending priority. This potentially goes back to what 
+>> you said above that a potential larger rewrite might be beneficial. 
+>> Implementing some smarter scheduling. Although the issue will be it is 
+>> just frontend scheduling after all. So a bit questionable to invest in 
+>> making it too smart.
+> 
+> +1 and we have a bug report complaining that RR is in at least one 
+> situation better than FIFO. So it is actually quite hard to remove.
+> 
+> On the other hand FIFO has some really nice properties as well. E.g. try 
+> to run >100 glxgears instances (on weaker hw) and just visually compare 
+> the result differences between RR and FIFO. FIFO is baby smooth and RR 
+> is basically stuttering all the time.
+> 
+>> I think this goes more back to what I was suggesting during early xe 
+>> days, that potentially drm scheduler should be split into dependency 
+>> handling part and the scheduler part. Drivers with 1:1 
+>> entity:scheduler and full hardware/firmware scheduling do not really 
+>> need neither fifo or rr.
+> 
+> Yeah that's my thinking as well and I also suggested that multiple times 
+> in discussions with Sima and others.
+> 
+>>
+>>> This basically means that userspace gets a chance to submit infinity 
+>>> fences with all the bad consequences.
+>>>
+>>>>
+>>>> I mean one problem unrelated to this discussion is this:
+>>>>
+>>>> void drm_sched_entity_select_rq(struct drm_sched_entity *entity)
+>>>> {
+>>>>     struct dma_fence *fence;
+>>>>     struct drm_gpu_scheduler *sched;
+>>>>     struct drm_sched_rq *rq;
+>>>>
+>>>>     /* queue non-empty, stay on the same engine */
+>>>>     if (spsc_queue_count(&entity->job_queue))
+>>>>         return;
+>>>>
+>>>> Which makes it look like the entity with a constant trickle of jobs 
+>>>> will never actually manage to change it's run queue. Neither today, 
+>>>> nor after the potential drm_sched_entity_set_priority() removal.
+>>>
+>>> That's intentional and based on how the scheduler load balancing works.
+>>
+>> I see that it is intentional but if it can silently prevent priority 
+>> changes (even hw priority) it is not very solid. Unless I am missing 
+>> something here.
+> 
+> IIRC the GSoC student who implemented this (with me as mentor) actually 
+> documented that behavior somewhere.
+> 
+> And to be honest it kind of makes sense because switching priorities 
+> would otherwise be disruptive, e.g. you have a moment were you need to 
+> drain all previous submissions with the old priority before you can do 
+> new ones with the new priority.
+
+Hmmm I don't see how it makes sense. Perhaps a test case for 
+AMDGPU_SCHED_OP_*_PRIORITY_OVERRIDE is missing to show how it doesn't 
+work. Or at least how easy it can be defeated with callers none the wiser.
+
+For context I am kind of interested because I wired up amdgpu to the DRM 
+cgroup controller and use priority override to de-prioritize certain 
+cgroups and it kind of works. But again, it will not be great if a 
+client with a constant trickle of submissions can just defeat it.
+
+Regards,
+
+Tvrtko
 
