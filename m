@@ -1,169 +1,101 @@
-Return-Path: <stable+bounces-61234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62FBB93AC45
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 07:37:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2053493AC61
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 08:01:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFEDEB21DA3
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 05:37:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2A00284B79
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 06:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183E647F64;
-	Wed, 24 Jul 2024 05:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oYv7Ocsj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF484643B;
+	Wed, 24 Jul 2024 06:01:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB9F2572;
-	Wed, 24 Jul 2024 05:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1669623BF;
+	Wed, 24 Jul 2024 06:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721799450; cv=none; b=LaYMYv43c9wOvhbPJjwLckd6HZsunt6z7BsJpwFtVTxyfoq7UT/mOROEevOWA1hgghDATuJC5dM5xEzbm86bWpGZ0qk6i/i4OfPwUFWIqmqc7xl1A1Ee0JUEDnmix+iXjTNx7LZPk4ioKCFdd4ALaAUGG//JsH0XG0buwuNbMgc=
+	t=1721800871; cv=none; b=VgpttiQd2u/AEk4ifg9IFWhMa87/d1MJTGZryY/KXjN3gFSh1M5Q633/cpNz87BwCoyl9p76WmzChO34niIQHo0IAk5ac5aiXnJ3hZhF7sBoxGuvmgKB4BV6zsA7bVo5c8hjSNQooX20iy6kIpM755dejBbXCNjZSVrMlJKDzLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721799450; c=relaxed/simple;
-	bh=MGKgHD/OE58tQ4rPCaykkKNJ9dxTuVo5pFk3AWkXGFw=;
-	h=Date:To:From:Subject:Message-Id; b=FlDLszHLuBgolsPGnPLYgQkW414llWFDqVUfK3LzoR4vK61McEq+O4KT+F9S45Do5ZVJEnvQbinjmuVcevGQx0Q5fZoJKrf4q7Pl1ZiypQ1KqzY4dW3/VO1v9esYej3oZ/UREzxdGBTrqfZdMYqpsQqkK1Mqskvby9OtlOsJXCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oYv7Ocsj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E352C32782;
-	Wed, 24 Jul 2024 05:37:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1721799450;
-	bh=MGKgHD/OE58tQ4rPCaykkKNJ9dxTuVo5pFk3AWkXGFw=;
-	h=Date:To:From:Subject:From;
-	b=oYv7OcsjhQf+XpJo7fse6wncENBPU6r8yiyXirFUUlgvp/CayIvUpTu3BOOQsKLqJ
-	 k82Zj8GZ9V2jeSUVUk92R76/ql0g6hmfKXl4LnJRAD2am/4nrLkt5oUXQgBZmEhHQB
-	 ojazt9QowBW97eRuBzJILAM84ln16V44jJ4BKNwk=
-Date: Tue, 23 Jul 2024 22:37:30 -0700
-To: mm-commits@vger.kernel.org,will@kernel.org,vgoyal@redhat.com,thunder.leizhen@huawei.com,tglx@linutronix.de,stable@vger.kernel.org,robh@kernel.org,paul.walmsley@sifive.com,palmer@dabbelt.com,mingo@redhat.com,linux@armlinux.org.uk,linus.walleij@linaro.org,javierm@redhat.com,hpa@zytor.com,hbathini@linux.ibm.com,gregkh@linuxfoundation.org,eric.devolder@oracle.com,dyoung@redhat.com,deller@gmx.de,dave.hansen@linux.intel.com,chenjiahao16@huawei.com,catalin.marinas@arm.com,bp@alien8.de,bhe@redhat.com,arnd@arndb.de,aou@eecs.berkeley.edu,afd@ti.com,ruanjinjie@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + crash-fix-x86_32-crash-memory-reserve-dead-loop-bug-at-high.patch added to mm-nonmm-unstable branch
-Message-Id: <20240724053730.7E352C32782@smtp.kernel.org>
+	s=arc-20240116; t=1721800871; c=relaxed/simple;
+	bh=pVYRbbf669wNRKAoGCCyM5jD3NVuv+jVryjtv1tk/Bk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VCJ6zp+bRUClTL/POnCuYSm6BK8ICndngo6ahhqGd5ZXsTOGiKvdna87xMExIu5njBR/IB8jyJ/nm8kTH/8kv0vBbFlBQT6j7wFZ6VS79z4kDiFxkl+JEtRaudkJOSyNar02BC6IAUWcUbLYDy59AamxGsAWPiKMXuAlNgNDdHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=ucw.cz; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id DCB731C0082; Wed, 24 Jul 2024 08:01:05 +0200 (CEST)
+Date: Wed, 24 Jul 2024 08:01:05 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.9 000/163] 6.9.11-rc1 review
+Message-ID: <ZqCYodrxetiXGi3u@duo.ucw.cz>
+References: <20240723180143.461739294@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="QiJ3GPm5U9mN+hWa"
+Content-Disposition: inline
+In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
 
 
-The patch titled
-     Subject: crash: fix x86_32 crash memory reserve dead loop bug at high
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     crash-fix-x86_32-crash-memory-reserve-dead-loop-bug-at-high.patch
+--QiJ3GPm5U9mN+hWa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/crash-fix-x86_32-crash-memory-reserve-dead-loop-bug-at-high.patch
+Hi!
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> This is the start of the stable review cycle for the 6.9.11 release.
+> There are 163 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+CIP testing did not find any problems here:
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.9.y
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+6.6 passes our testing, too:
 
-------------------------------------------------------
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-Subject: crash: fix x86_32 crash memory reserve dead loop bug at high
-Date: Thu, 18 Jul 2024 11:54:43 +0800
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.6.y
 
-On x86_32 Qemu machine with 1GB memory, the cmdline "crashkernel=512M" will
-also cause system stall as below:
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
-	ACPI: Reserving FACP table memory at [mem 0x3ffe18b8-0x3ffe192b]
-	ACPI: Reserving DSDT table memory at [mem 0x3ffe0040-0x3ffe18b7]
-	ACPI: Reserving FACS table memory at [mem 0x3ffe0000-0x3ffe003f]
-	ACPI: Reserving APIC table memory at [mem 0x3ffe192c-0x3ffe19bb]
-	ACPI: Reserving HPET table memory at [mem 0x3ffe19bc-0x3ffe19f3]
-	ACPI: Reserving WAET table memory at [mem 0x3ffe19f4-0x3ffe1a1b]
-	143MB HIGHMEM available.
-	879MB LOWMEM available.
-	  mapped low ram: 0 - 36ffe000
-	  low ram: 0 - 36ffe000
-	  (stall here)
+Best regards,
+                                                                Pavel
 
-The reason is that the CRASH_ADDR_LOW_MAX is equal to CRASH_ADDR_HIGH_MAX
-on x86_32, the first "low" crash kernel memory reservation for 512M fails,
-then it go into the "retry" loop and never came out as below (consider
-CRASH_ADDR_LOW_MAX = CRASH_ADDR_HIGH_MAX = 512M):
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
--> reserve_crashkernel_generic() and high is false
-   -> alloc at [0, 0x20000000] fail
-      -> alloc at [0x20000000, 0x20000000] fail and repeatedly
-      (because CRASH_ADDR_LOW_MAX = CRASH_ADDR_HIGH_MAX).
+--QiJ3GPm5U9mN+hWa
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Fix it by skipping meaningless calls of memblock_phys_alloc_range() with
-`start = end`
+-----BEGIN PGP SIGNATURE-----
 
-After this patch, the retry dead loop is avoided and print below info:
-	cannot allocate crashkernel (size:0x20000000)
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZqCYoQAKCRAw5/Bqldv6
+8tHPAJ9Ix3+qmfriVFNFTiqmoCed7sA++wCdEsg7c99UgMeNEnLiVEuMyChRdgE=
+=bcAm
+-----END PGP SIGNATURE-----
 
-And apply generic crashkernel reservation to 32bit system will be ready.
-
-Link: https://lkml.kernel.org/r/20240718035444.2977105-3-ruanjinjie@huawei.com
-Fixes: 9c08a2a139fe ("x86: kdump: use generic interface to simplify crashkernel reservation code")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Tested-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Andrew Davis <afd@ti.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Chen Jiahao <chenjiahao16@huawei.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Eric DeVolder <eric.devolder@oracle.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Zhen Lei <thunder.leizhen@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- kernel/crash_reserve.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/kernel/crash_reserve.c~crash-fix-x86_32-crash-memory-reserve-dead-loop-bug-at-high
-+++ a/kernel/crash_reserve.c
-@@ -413,7 +413,8 @@ retry:
- 			search_end = CRASH_ADDR_HIGH_MAX;
- 			search_base = CRASH_ADDR_LOW_MAX;
- 			crash_low_size = DEFAULT_CRASH_KERNEL_LOW_SIZE;
--			goto retry;
-+			if (search_base != search_end)
-+				goto retry;
- 		}
- 
- 		/*
-_
-
-Patches currently in -mm which might be from ruanjinjie@huawei.com are
-
-crash-fix-x86_32-crash-memory-reserve-dead-loop-bug.patch
-crash-fix-x86_32-crash-memory-reserve-dead-loop-bug-at-high.patch
-arm-use-generic-interface-to-simplify-crashkernel-reservation.patch
-
+--QiJ3GPm5U9mN+hWa--
 
