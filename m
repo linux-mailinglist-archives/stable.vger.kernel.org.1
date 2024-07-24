@@ -1,54 +1,63 @@
-Return-Path: <stable+bounces-61320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DEA93B6FF
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 20:49:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5AE93B72B
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 21:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FB48B236C7
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 18:49:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A37EE28567D
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 19:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A637015F3E2;
-	Wed, 24 Jul 2024 18:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A5915F403;
+	Wed, 24 Jul 2024 19:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFt1JwOC"
 X-Original-To: stable@vger.kernel.org
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B36E22089;
-	Wed, 24 Jul 2024 18:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AE965E20;
+	Wed, 24 Jul 2024 19:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721846967; cv=none; b=Pm/ATBtTOkBulsGjp1hpo7/77MbS0rVE9nlhFyryEu5vej60fnBNzNdmpiBqDQwIjzN/xFYuHINFEjR/XNC7Wn/vjuFqhISD3KqSGntdGeWXhhHNqXXUkKp7E6649OkvNkN4+KPjCx6ayPja07N7rfasOTt2hhagxxG0JVNXIfk=
+	t=1721847997; cv=none; b=VzBsvmcENFTnFg6/j3S5wuY5r2f7lew6CuRNIPWrR+D9eNysutavSMXdk8kpOmbJvp6DnqbJIHf0qx1vLP+b3d+92c4Xm7TadALDReRMQVtGW0zriaTlGeep48KywRzpNbgTZ01w/hGuExcxcfiLk6IMYUUVMcxDGj7MOMwzfmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721846967; c=relaxed/simple;
-	bh=GHqDnOOaXb1hN1zGoqyJvvqNbxshNBgSd6R+hDYVavM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Yarp62yaW1NJp+0GruokQGvt9CcmH6F7xIKo4tTSVT5nmwVJkSzBB5xS/vuLpeSL6D2CmSLb+mCUsGlV5i8X3MROuNTvshO8iwOW03mpbXU1zQqrv0zsCHxKTynhWFpsMjen8F8X5i2eL1vc7igvt0YzVBAhKAn1PnEe8Wl4+cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.169) with Microsoft SMTP Server (TLS) id 14.3.498.0; Wed, 24 Jul
- 2024 21:49:20 +0300
-Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Wed, 24 Jul
- 2024 21:49:20 +0300
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-To: Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi
-	<rodrigo.vivi@intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Tvrtko Ursulin
-	<tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, Daniel Vetter
-	<daniel@ffwll.ch>, =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?=
-	<ville.syrjala@linux.intel.com>, <intel-gfx@lists.freedesktop.org>,
-	<intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] drm/i915: Fix possible int overflow in skl_ddi_calculate_wrpll()
-Date: Wed, 24 Jul 2024 11:49:11 -0700
-Message-ID: <20240724184911.12250-1-n.zhandarovich@fintech.ru>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1721847997; c=relaxed/simple;
+	bh=TJjdOHWTy2BrZ1KELRq5REFg1fcjDZ4jpfvlukHdK5A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DoFHZ6Wl0tBFQ+e5a7ne2eE+pbvAcMJxh2ToYO5bUMXR6FytemLuyMO888mFL/ik3jXLf2Zwd2eIX5/YSVwELzglcijlPIxxOLhKCj1nNdCy94+gkgL7qw7Gsa2RsSjDUvxkdjuSednqeuAV8rRNBx3EUwT+AlSKuK43Zb3KeKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IFt1JwOC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C2DC32781;
+	Wed, 24 Jul 2024 19:06:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721847996;
+	bh=TJjdOHWTy2BrZ1KELRq5REFg1fcjDZ4jpfvlukHdK5A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IFt1JwOC1T6WZGTcLdTikzWhoINOTYK9L5VSd3EnjC6KGv0kTYdfFDhFYXnm6pWcJ
+	 v6kTr3LFUthJkqCSEAQY7B4dFg3n2lp0F+Bd3oISjCCO3i0d460NN8M5c+IfxH9un8
+	 CQs8Loy930pzfYPlbHe5u0D8hK4gBe6ZYEJbFOOmRS4MkUy7Yu9Eh8NjUnUaxiKotp
+	 Z+jo81NT1Wl5RRNgJXAxmOGUT7uqpdWOJSijZc2eB2RzQ0tpYEI+hkZKJDOGcTl2FW
+	 gmAqs3oJX8FiYd85MiJPulcwS5jGnNrJFjBCzEIzVrz0DvWo7Uz/EcTNNXMYN0lPpJ
+	 PdCYqwGwtHvbg==
+From: cel@kernel.org
+To: amir73il@gmail.com,
+	krisman@collabora.com
+Cc: gregkh@linuxfoundation.org,
+	jack@suse.cz,
+	sashal@kernel.org,
+	stable@vger.kernel.org,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
+	tytso@mit.edu,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	florian.fainelli@broadcom.com,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH v5.15.y 0/4] Apply fanotify-related documentation changes
+Date: Wed, 24 Jul 2024 15:06:19 -0400
+Message-ID: <20240724190623.8948-1-cel@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,43 +65,33 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
 
-On the off chance that clock value ends up being too high (by means
-of skl_ddi_calculate_wrpll() having benn called with big enough
-value of crtc_state->port_clock * 1000), one possible consequence
-may be that the result will not be able to fit into signed int.
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Fix this, albeit unlikely, issue by first casting one of the operands
-to u32, then to u64, and thus avoid causing an integer overflow.
+These extra commits were requested by Amir Goldstein
+<amir73il@gmail.com>. Note that c0baf9ac0b05 ("docs: Document the
+FAN_FS_ERROR event") is already applied to v5.15.y.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+Gabriel Krisman Bertazi (3):
+  samples: Add fs error monitoring example
+  samples: Make fs-monitor depend on libc and headers
+  docs: Fix formatting of literal sections in fanotify docs
 
-Fixes: fe70b262e781 ("drm/i915: Move a bunch of stuff into rodata from the stack")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
----
-Fixes: tag is not entirely correct, as I can't properly identify the
-origin with all the code movement. I opted out for using the most
-recent topical commit instead.
+Linus Torvalds (1):
+  Add gitignore file for samples/fanotify/ subdirectory
 
- drivers/gpu/drm/i915/display/intel_dpll_mgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../admin-guide/filesystem-monitoring.rst     |  20 ++-
+ samples/Kconfig                               |   9 ++
+ samples/Makefile                              |   1 +
+ samples/fanotify/.gitignore                   |   1 +
+ samples/fanotify/Makefile                     |   5 +
+ samples/fanotify/fs-monitor.c                 | 142 ++++++++++++++++++
+ 6 files changed, 170 insertions(+), 8 deletions(-)
+ create mode 100644 samples/fanotify/.gitignore
+ create mode 100644 samples/fanotify/Makefile
+ create mode 100644 samples/fanotify/fs-monitor.c
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-index 90998b037349..46d4dac6c491 100644
---- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-+++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-@@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in Hz */,
- 	};
- 	unsigned int dco, d, i;
- 	unsigned int p0, p1, p2;
--	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
-+	u64 afe_clock = (u64)(u32)clock * 5; /* AFE Clock is 5x Pixel clock */
- 
- 	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
- 		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
+-- 
+2.45.2
+
 
