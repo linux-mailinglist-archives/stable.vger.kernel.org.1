@@ -1,114 +1,176 @@
-Return-Path: <stable+bounces-61307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFED793B536
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 18:43:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DC493B548
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 18:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 728E21F2234A
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 16:43:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D69AB21EF9
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 16:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2507915ECDA;
-	Wed, 24 Jul 2024 16:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B43C158A09;
+	Wed, 24 Jul 2024 16:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="aVvCsBJ1"
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="yzVreoqU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp96.iad3b.emailsrvr.com (smtp96.iad3b.emailsrvr.com [146.20.161.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3143B15D5C5
-	for <stable@vger.kernel.org>; Wed, 24 Jul 2024 16:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1088829CA
+	for <stable@vger.kernel.org>; Wed, 24 Jul 2024 16:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=146.20.161.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721839386; cv=none; b=XCZ6dmPfpnq7Q5PCgwNVArc93E5MyH3iwih5hbhYfQI6fbaGUZbEzHz9G4eChpYTfEB7Rjf5tZ9VwkRG+BNadis+LDx5WzsLbsxj7yAI/BGWqmuPCkCzy0+cO1Op/Nci4G7nHnYWxoDRvd/1sln9Wh2yYOdiWPuKfACsQmncmlg=
+	t=1721839929; cv=none; b=LIjzJwT8nEuXtIWvJlbMkM0szjVHt+T/1+x1us7Ti5J/1AEeIxCd7WiZ7hAFA18A42uN8N6n0jWZ50k0nvMEtUnWbDzbwwendRz2XXWJ2rbmhu809TJYy++NxkrSXV5TO6Cop4MhewX2aqHg29A8+MknwouSyJ63WtlhOGEX27Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721839386; c=relaxed/simple;
-	bh=XnBSi4lJYwqPS7JvayepIZdhilljl7iydbSuuQDgHeQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qEbK00Qo26ExZQIth0ai5qpdpOz9LB1rWV+NHP9kmuQprs9IGW8OjkgXhM/b0fE9EexwNeclj+mN+ZFmbycOoL6u6BzJqha9j0lSvexVb5CHiem19f1JA0OI8ocjXcksKqOV9TlTdPLlVX9ic+zO7bC0mESaQbyXK93JIAFXhrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=aVvCsBJ1; arc=none smtp.client-ip=209.85.166.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-7fb93b2e2a3so159939f.1
-        for <stable@vger.kernel.org>; Wed, 24 Jul 2024 09:43:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1721839383; x=1722444183; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sEJs/m1LfDi05lj71qThBLJVfg82KFHAF0JSUzDWDf0=;
-        b=aVvCsBJ1nn4Je1cCQAi3Q2bYum94d7ga0tFJF7/xUH6l5cbmgeM5oUNki5nO2FdBqs
-         FowoKQEuNX9P9c/1IOUoHRdJPwmDBm15VHUDry8E0t/qDZTBrRcohToNd6Zpfp4Kb/Tu
-         ya8CXIcMbjEu9dbY7WxSA5GHXxj+ltjc0+XrE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721839383; x=1722444183;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sEJs/m1LfDi05lj71qThBLJVfg82KFHAF0JSUzDWDf0=;
-        b=NE91d3sgt9UBqv8fixIw/PTiBKPpZvTrdo1hvdN0lE4qJ9TmeSwyPqJ1ZoU2n7EAsz
-         rqxornJyJmYLsjoPmD6Q9VVuGzM1bPrj8YtyyXfS/z+r5TlaGAo7rJt3QchuyzXMrPSj
-         xTFMNj93Jp/l/zqRGk3dV6JxdwPltE1/dc0zyMxWG3E7P1GNnWUI1NYk0v1+fXHnQVIP
-         S1pkvdB+Xdp5E5O7VtSCbRkUE9Nicyj2airFkd0VoAmsBNa4mDao0kx8g2WNfKw0PqeD
-         78oLYQ20rHqUklgQ1zA+OtRd/VhPxQYpC3eTn/vVgWgYr1HNVJllJ4fEsQwsDp71XTpN
-         2iJA==
-X-Gm-Message-State: AOJu0Yxx9z3txLIk5rkeQFktdIAgrTIO6ZeC1FIisYvW4MltlJ9clo1I
-	eXLpf/OkNddQwm5lazQi6STzLAKq5KHgsrL7hRWp1xR3BdHH/jQE/bc9gQdQqx74goITNmem6CO
-	4GA==
-X-Google-Smtp-Source: AGHT+IEOh68yrb3+/ES/BDsvfk4lSOZpn9NTCMqLMBdmSacZPA1m1SxGq6eHvO1XgEDls8X7NMrdrA==
-X-Received: by 2002:a05:6602:6417:b0:816:ec51:f415 with SMTP id ca18e2360f4ac-81f7ba78fb7mr63172139f.0.1721839383230;
-        Wed, 24 Jul 2024 09:43:03 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([72.42.103.171])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-81f7158d719sm56744939f.8.2024.07.24.09.43.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jul 2024 09:43:02 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Wed, 24 Jul 2024 10:43:00 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.9 000/163] 6.9.11-rc1 review
-Message-ID: <ZqEvFNTOyOEgyAl4@fedora64.linuxtx.org>
-References: <20240723180143.461739294@linuxfoundation.org>
+	s=arc-20240116; t=1721839929; c=relaxed/simple;
+	bh=p8MHJqgFJTHWju+ZY7FnEi6FhVkz7AcqLJ0K66xW1pA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HfVHL+LwT0hYlbpyEMccaMxpPS+fCcO4tFh+9Z/whh02Pq4bbGT1K9Eu+1djc8/1AnLb3SYW/HQzztr7/h19Hh3v4A/fFQbTe+Z+DccYfRCC+E9H1/8tu60yczbyla9a4uRE+BAVam3m+ZGHpi0wxezzCA+Wte5auuam3JLM6yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=yzVreoqU; arc=none smtp.client-ip=146.20.161.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1721839600;
+	bh=p8MHJqgFJTHWju+ZY7FnEi6FhVkz7AcqLJ0K66xW1pA=;
+	h=Date:Subject:To:From:From;
+	b=yzVreoqUx4GpGVMpHmpmAJhohhrCegMzxXBs6hVqNzP16evAOHqYL585PWA5LdXmM
+	 ztjO/H64aE1etWC4L1nFQ4PNt5M/4b0BYfkMuZ9USwEaNyB06c9jEIVP89NnqBU4AA
+	 JPt/sUJrDvB2QUGQHbK/YauAZ+6oKyiVke2bE6Rc=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp5.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 12F6D402F8;
+	Wed, 24 Jul 2024 12:46:39 -0400 (EDT)
+Message-ID: <128fc360-39c6-49d7-ba48-66914b1bfe06@mev.co.uk>
+Date: Wed, 24 Jul 2024 17:46:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240723180143.461739294@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH] rtc: ds1343: Force SPI chip select to be active
+ high
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
+ Mark Brown <broonie@kernel.org>
+References: <20240710175246.3560207-1-abbotti@mev.co.uk>
+ <20240710184053c34201f0@mail.local>
+Content-Language: en-GB
+From: Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+In-Reply-To: <20240710184053c34201f0@mail.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Classification-ID: 691722cb-01d0-4a2a-a931-9818d622def5-1-1
 
-On Tue, Jul 23, 2024 at 08:22:09PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.11 release.
-> There are 163 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 25 Jul 2024 18:01:03 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.11-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Greetings,
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+On 10/07/2024 19:40, Alexandre Belloni wrote:
+> Hello,
+> 
+> On 10/07/2024 18:52:07+0100, Ian Abbott wrote:
+>> Commit 3b52093dc917 ("rtc: ds1343: Do not hardcode SPI mode flags")
+>> bit-flips (^=) the existing SPI_CS_HIGH setting in the SPI mode during
+>> device probe.  This will set it to the wrong value if the spi-cs-high
+>> property has been set in the devicetree node.  Just force it to be set
+>> active high and get rid of some commentary that attempted to explain why
+>> flipping the bit was the correct choice.
+>>
+>> Fixes: 3b52093dc917 ("rtc: ds1343: Do not hardcode SPI mode flags")
+>> Cc: <stable@vger.kernel.org> # 5.6+
+>> Cc: Linus Walleij <linus.walleij@linaro.org>
+>> Cc: Mark Brown <broonie@kernel.org>
+>> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+>> ---
+>>   drivers/rtc/rtc-ds1343.c | 9 +++------
+>>   1 file changed, 3 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/rtc/rtc-ds1343.c b/drivers/rtc/rtc-ds1343.c
+>> index ed5a6ba89a3e..484b5756b55c 100644
+>> --- a/drivers/rtc/rtc-ds1343.c
+>> +++ b/drivers/rtc/rtc-ds1343.c
+>> @@ -361,13 +361,10 @@ static int ds1343_probe(struct spi_device *spi)
+>>   	if (!priv)
+>>   		return -ENOMEM;
+>>   
+>> -	/* RTC DS1347 works in spi mode 3 and
+>> -	 * its chip select is active high. Active high should be defined as
+>> -	 * "inverse polarity" as GPIO-based chip selects can be logically
+>> -	 * active high but inverted by the GPIO library.
+>> +	/*
+>> +	 * RTC DS1347 works in spi mode 3 and its chip select is active high.
+>>   	 */
+>> -	spi->mode |= SPI_MODE_3;
+>> -	spi->mode ^= SPI_CS_HIGH;
+>> +	spi->mode |= SPI_MODE_3 | SPI_CS_HIGH;
+> 
+> Linus being the gpio maintainer and Mark being the SPI maintainer, I'm
+> pretty sure this was correct at the time.
+> 
+> Are you sure you are not missing an active high/low flag on a gpio
+> definition?
+> 
+>>   	spi->bits_per_word = 8;
+>>   	res = spi_setup(spi);
+>>   	if (res)
+>> -- 
+>> 2.43.0
+>>
+> 
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+I now have an actual SPI controller using cs-gpios with a DS1343 
+connected.  I have tested all 8 combinations of: 
+GPIO_ACTIVE_LOW/GPIO_ACTIVE_HIGH, with/without spi-cs-high, without/with 
+my patch.  Here are my results and observations:
+
+                                  Final        Final
+GPIO_ACTIVE  spi-cs-high  Patcb  GPIO active  CS high  Works?
+===========  ===========  =====  ===========  =======  =======
+    LOW           No        No      LOW         Yes      No
+    LOW           No        Yes     LOW         Yes      No
+    LOW           Yes       No      HIGH(1)     No       Yes(3)
+    LOW           Yes       Yes     HIGH(1)     Yes      Yes
+    HIGH          No        No      LOW(2)      Yes      No
+    HIGH          No        Yes     LOW(2)      Yes      No
+    HIGH          Yes       No      HIGH        No       Yes(3)
+    HIGH          Yes       Yes     HIGH        Yes      Yes
+
+The "Final GPIO active" column refers to the GPIO active state after any 
+quirks have been applied.  The "Final CS High" column refers to whether 
+SPI_CS_HIGH is set in spi->mode when spi_setup() is called.
+
+Notes:
+
+(1) GPIO was forced active high by of_gpio_flags_quirks() before RTC 
+device probed.
+
+(2) GPIO was forced active low by of_gpio_flags_quirks() before RTC 
+device probed.
+
+(3) Works if cs-gpios being used, but probably will not work for SPI 
+controllers that do not use cs-gpios because SPI_CS_HIGH is not set.
+
+In summary:
+
+1. Without the patch, the RTC device node requires the spi-cs-high 
+property to be present if the SPI controller uses cs-gpios, and requires 
+the spi-cs-high property to be omitted if the SPI controller does not 
+use cs-gpios.  (I think that is a confusing situation.)
+
+2. With the patch, the RTC device node requires the spi-cs-high property 
+to be present if the SPI controller uses cs-gpios, and it does not care 
+about the spi-cs-high property if the SPI controller does not use 
+cs-gpios.  (I therefore think that the patch should be applied so that 
+the device node can just set spi-cs-high without caring whether ht SPI 
+controller uses cs-gpios or not.)
+
+-- 
+-=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
+-=( registered in England & Wales.  Regd. number: 02862268.  )=-
+-=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
+-=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
+
 
