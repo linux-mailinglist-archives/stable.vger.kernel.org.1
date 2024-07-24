@@ -1,405 +1,274 @@
-Return-Path: <stable+bounces-61291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD2A93B242
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 16:08:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5C393B257
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 16:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E86A1284C7C
-	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 14:08:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F0DD1C2362B
+	for <lists+stable@lfdr.de>; Wed, 24 Jul 2024 14:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D30159217;
-	Wed, 24 Jul 2024 14:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E45E1591E0;
+	Wed, 24 Jul 2024 14:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmANyIPg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OfPYr6Ej"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6521591FC;
-	Wed, 24 Jul 2024 14:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C20157E6C
+	for <stable@vger.kernel.org>; Wed, 24 Jul 2024 14:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721830095; cv=none; b=j5OI8WMoRSx72hkEn2XAZMVRQzvQvAiFLrO3uxGynlN2yv6ZbMvBHFhSNjUp6eGcXPyfX2tsqPByMWIWGbIDYMuz/vcrvSXXSjw2w7mOlbP/lsiRxj8cKNclWzfu+20omMXq6mS0SdLiv160Iwk6KrOfSxDbFGkiNo9MNz4p9/M=
+	t=1721830165; cv=none; b=eK83vi4Kp+X/ng4DDONG/Vu3jxiBxsZmEBtRVq86PAHY2jR1uqW9jo+vio+pEZBWxolxafYgnUg/+VaRFtf8b1OXZMZz5RuKOPBYa26t+/VxvPyxViYRxvst0MX0oV9928HQyNx8umeDIHTaX+I2cJuiwPWhs7ng0c3x2BkDIYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721830095; c=relaxed/simple;
-	bh=QmQE3RANXAxwAPFq3hm3fsYTfUNnvB67NIGWJNKqD5M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plx6WlYeOOVnVu61TZXNmsmdXiFfiUBK1F6TgeDxfrYvn0AX3hXr/RHODrAyi30v4iLpWqs1OFg/t0qxnrnnQlpRJHILZomLat0OjYw4q0vf6CC8i9y8/b3B/Cl2gEMrexE4rYtQTcPmESFCVpSG7zfC727r/OCQBvMyijThSl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmANyIPg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6081C32781;
-	Wed, 24 Jul 2024 14:08:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721830094;
-	bh=QmQE3RANXAxwAPFq3hm3fsYTfUNnvB67NIGWJNKqD5M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qmANyIPgH5FTA0r5hXz5M2QWdfj6T8k3NslfhXbXSs47eAydKpvdCw8sZzy2ctuZ9
-	 2slgG5RSND+V9tyYDyeX6xjl2JMxikGPJ9qkc7jGORiNHXbgkccMOf7xWTaBC7S8Bb
-	 /eD8UQy+WyYj0SFWyssQz67FEg5cQftghrxy1Tho=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	torvalds@linux-foundation.org,
-	stable@vger.kernel.org
-Cc: lwn@lwn.net,
-	jslaby@suse.cz,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.10.1
-Date: Wed, 24 Jul 2024 16:08:01 +0200
-Message-ID: <2024072401-facecloth-partly-ecc8@gregkh>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024072401-barmaid-profusely-6d62@gregkh>
-References: <2024072401-barmaid-profusely-6d62@gregkh>
+	s=arc-20240116; t=1721830165; c=relaxed/simple;
+	bh=PYV5lhPmqLRL19fbEfAOyqWqOecSAE6KiZa+m3JmkRo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jAqIm/WLozejMtljoe/l73KOtqFvT15vGYKATgG1Z//FznK6iuJI53oQKC0ewmGT0UDsJudR8HcD8xswHXCjxi+JsC8JyUUIAwPmTGzsQhj/3rInQx5Z+meJWA0VBiJqAFqiD1yKNi3oPBMd8vabOFAB33hlsrHw73qQMXHxlJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OfPYr6Ej; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721830162;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MDHigb5F/TsnifZT7SnQvoF553EWIMT0YbdI6vMem8I=;
+	b=OfPYr6EjN/ColVDYAU2o46me4saVWKFUUXmzxATYgbKjtN45aYnS9uFYiO5SCqztArYRgK
+	sZzPzPMiMwT4AhcDlBSU36lL7kpc0o9RCvTfTK5tPhPxUcDP5XSEAzVQ/ilXMwL9fZGyJq
+	ORiMFtN0yceboi33vfnOh/7htu84sI8=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-375-910OXt7cNZO6Ygh2MClyTw-1; Wed, 24 Jul 2024 10:09:17 -0400
+X-MC-Unique: 910OXt7cNZO6Ygh2MClyTw-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a7abaf0aecdso32156566b.3
+        for <stable@vger.kernel.org>; Wed, 24 Jul 2024 07:09:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721830157; x=1722434957;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MDHigb5F/TsnifZT7SnQvoF553EWIMT0YbdI6vMem8I=;
+        b=qL5FUkwNHTniVdPTPgwXz6P/NCtoFYUHQSI+w0pCiJ4fqi1xkDDZruQFb1wJRfrxgC
+         /9F8Dh9TJLZYr9tp4oBSLOhvpwKoD0fhyCBUSe+9CrMCQkpK1kdOQhQ4m8MrpscpcV+b
+         MmW0b6Brr5e2gPE0yjJ6+HHn0fwg0hwijcDtlQff18DVOdlUrqjF+pw7g32xtHr1Nv39
+         g6BEIIcN8W38kU4rOkvj8FnRvOtbVPP8kaYXKkXNCrTdNtmWx4ug7ZLvxq0iqI4j8PFI
+         MoJHSCJxb2EvN4DsIrWta4bWO892fonZ1WRgF2oLa5mnfAdon1nqNTh79icH6yHDHL5J
+         7+zw==
+X-Forwarded-Encrypted: i=1; AJvYcCVEAURcavw/eXCgTocgoVjYeVmIy7oqWlC5VpEOFzI5oooqaKsoMieDmAx/hT4BFWmwACHfs/qSJZX303yu6pAt9O7btQTl
+X-Gm-Message-State: AOJu0YwkWYYo2oe+DfjAX95HAQiVcIgBksTy+s9xxYOAsh/AUoBaKIfe
+	xy6LmIrP4l4MsytrHM3y3abUTzDkcbAAWgDNz5XmOJkW6b+ObTPh/wJIAf2Ohf7JMgK10b+o3KD
+	C6UPOklT7WMkip5yVy+ZOc2isd00obpbi/gUEt2t9m1IP6a3MNDJgTmOVdESY+smB2pJzRx9mBy
+	k1glZyrki9T+V0Dp1uPcjWZaPgeJEG
+X-Received: by 2002:a17:907:94c8:b0:a7a:ab8a:380 with SMTP id a640c23a62f3a-a7aab8a05c1mr231385666b.69.1721830156642;
+        Wed, 24 Jul 2024 07:09:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH9odWhsd2Dkm18F2IhcinS3V5BVXwbYtWkcruc4uBcFXK/DTbVcXDn5y0ufSPw/QBpTS8musV4ohDKn0fxDbg=
+X-Received: by 2002:a17:907:94c8:b0:a7a:ab8a:380 with SMTP id
+ a640c23a62f3a-a7aab8a05c1mr231383366b.69.1721830156157; Wed, 24 Jul 2024
+ 07:09:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240716120724.134512-1-xiubli@redhat.com>
+In-Reply-To: <20240716120724.134512-1-xiubli@redhat.com>
+From: Venky Shankar <vshankar@redhat.com>
+Date: Wed, 24 Jul 2024 19:38:39 +0530
+Message-ID: <CACPzV1kqN49AW4ihgd0yDvmaujMWKr+4B7tonnUpn=dPPs6Nhw@mail.gmail.com>
+Subject: Re: [PATCH v3] ceph: force sending a cap update msg back to MDS for
+ revoke op
+To: xiubli@redhat.com
+Cc: ceph-devel@vger.kernel.org, idryomov@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Makefile b/Makefile
-index 3d10e3aadeda..9ae12a6c0ece 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 10
--SUBLEVEL = 0
-+SUBLEVEL = 1
- EXTRAVERSION =
- NAME = Baby Opossum Posse
- 
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index 2281d55df545..d3521aadd43e 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -746,15 +746,16 @@ int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
- 	struct tpm2_auth *auth = chip->auth;
- 	off_t offset_s, offset_p;
- 	u8 rphash[SHA256_DIGEST_SIZE];
--	u32 attrs;
-+	u32 attrs, cc;
- 	struct sha256_state sctx;
- 	u16 tag = be16_to_cpu(head->tag);
--	u32 cc = be32_to_cpu(auth->ordinal);
- 	int parm_len, len, i, handles;
- 
- 	if (!auth)
- 		return rc;
- 
-+	cc = be32_to_cpu(auth->ordinal);
-+
- 	if (auth->session >= TPM_HEADER_SIZE) {
- 		WARN(1, "tpm session not filled correctly\n");
- 		goto out;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-index 61a4638d1be2..237cb1ef7975 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-@@ -622,7 +622,12 @@ static int iwl_mvm_tzone_get_temp(struct thermal_zone_device *device,
- 
- 	if (!iwl_mvm_firmware_running(mvm) ||
- 	    mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
--		ret = -ENODATA;
-+		/*
-+		 * Tell the core that there is no valid temperature value to
-+		 * return, but it need not worry about this.
-+		 */
-+		*temperature = THERMAL_TEMP_INVALID;
-+		ret = 0;
- 		goto out;
- 	}
- 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index ecc748d15eb7..4e7fec406ee5 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -300,8 +300,6 @@ static void monitor_thermal_zone(struct thermal_zone_device *tz)
- 		thermal_zone_device_set_polling(tz, tz->passive_delay_jiffies);
- 	else if (tz->polling_delay_jiffies)
- 		thermal_zone_device_set_polling(tz, tz->polling_delay_jiffies);
--	else if (tz->temperature == THERMAL_TEMP_INVALID)
--		thermal_zone_device_set_polling(tz, msecs_to_jiffies(THERMAL_RECHECK_DELAY_MS));
- }
- 
- static struct thermal_governor *thermal_get_tz_governor(struct thermal_zone_device *tz)
-@@ -382,7 +380,7 @@ static void handle_thermal_trip(struct thermal_zone_device *tz,
- 	td->threshold = trip->temperature;
- 
- 	if (tz->last_temperature >= old_threshold &&
--	    tz->last_temperature != THERMAL_TEMP_INVALID) {
-+	    tz->last_temperature != THERMAL_TEMP_INIT) {
- 		/*
- 		 * Mitigation is under way, so it needs to stop if the zone
- 		 * temperature falls below the low temperature of the trip.
-@@ -417,27 +415,6 @@ static void handle_thermal_trip(struct thermal_zone_device *tz,
- 	}
- }
- 
--static void update_temperature(struct thermal_zone_device *tz)
--{
--	int temp, ret;
--
--	ret = __thermal_zone_get_temp(tz, &temp);
--	if (ret) {
--		if (ret != -EAGAIN)
--			dev_warn(&tz->device,
--				 "failed to read out thermal zone (%d)\n",
--				 ret);
--		return;
--	}
--
--	tz->last_temperature = tz->temperature;
--	tz->temperature = temp;
--
--	trace_thermal_temperature(tz);
--
--	thermal_genl_sampling_temp(tz->id, temp);
--}
--
- static void thermal_zone_device_check(struct work_struct *work)
- {
- 	struct thermal_zone_device *tz = container_of(work, struct
-@@ -452,7 +429,7 @@ static void thermal_zone_device_init(struct thermal_zone_device *tz)
- 
- 	INIT_DELAYED_WORK(&tz->poll_queue, thermal_zone_device_check);
- 
--	tz->temperature = THERMAL_TEMP_INVALID;
-+	tz->temperature = THERMAL_TEMP_INIT;
- 	tz->passive = 0;
- 	tz->prev_low_trip = -INT_MAX;
- 	tz->prev_high_trip = INT_MAX;
-@@ -501,6 +478,7 @@ void __thermal_zone_device_update(struct thermal_zone_device *tz,
- 	struct thermal_trip_desc *td;
- 	LIST_HEAD(way_down_list);
- 	LIST_HEAD(way_up_list);
-+	int temp, ret;
- 
- 	if (tz->suspended)
- 		return;
-@@ -508,10 +486,29 @@ void __thermal_zone_device_update(struct thermal_zone_device *tz,
- 	if (!thermal_zone_device_is_enabled(tz))
- 		return;
- 
--	update_temperature(tz);
-+	ret = __thermal_zone_get_temp(tz, &temp);
-+	if (ret) {
-+		if (ret != -EAGAIN)
-+			dev_info(&tz->device, "Temperature check failed (%d)\n", ret);
- 
--	if (tz->temperature == THERMAL_TEMP_INVALID)
-+		thermal_zone_device_set_polling(tz, msecs_to_jiffies(THERMAL_RECHECK_DELAY_MS));
-+		return;
-+	} else if (temp <= THERMAL_TEMP_INVALID) {
-+		/*
-+		 * Special case: No valid temperature value is available, but
-+		 * the zone owner does not want the core to do anything about
-+		 * it.  Continue regular zone polling if needed, so that this
-+		 * function can be called again, but skip everything else.
-+		 */
- 		goto monitor;
-+	}
-+
-+	tz->last_temperature = tz->temperature;
-+	tz->temperature = temp;
-+
-+	trace_thermal_temperature(tz);
-+
-+	thermal_genl_sampling_temp(tz->id, temp);
- 
- 	__thermal_zone_set_trips(tz);
- 
-diff --git a/drivers/thermal/thermal_core.h b/drivers/thermal/thermal_core.h
-index 94eeb4011a48..5afd541d54b0 100644
---- a/drivers/thermal/thermal_core.h
-+++ b/drivers/thermal/thermal_core.h
-@@ -133,6 +133,9 @@ struct thermal_zone_device {
- 	struct thermal_trip_desc trips[] __counted_by(num_trips);
- };
- 
-+/* Initial thermal zone temperature. */
-+#define THERMAL_TEMP_INIT	INT_MIN
-+
- /*
-  * Default delay after a failing thermal zone temperature check before
-  * attempting to check it again.
-diff --git a/drivers/thermal/thermal_helpers.c b/drivers/thermal/thermal_helpers.c
-index d9f4e26ec125..36f872b840ba 100644
---- a/drivers/thermal/thermal_helpers.c
-+++ b/drivers/thermal/thermal_helpers.c
-@@ -140,6 +140,8 @@ int thermal_zone_get_temp(struct thermal_zone_device *tz, int *temp)
- 	}
- 
- 	ret = __thermal_zone_get_temp(tz, temp);
-+	if (!ret && *temp <= THERMAL_TEMP_INVALID)
-+		ret = -ENODATA;
- 
- unlock:
- 	mutex_unlock(&tz->lock);
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 983dad8c07ec..efed7f09876d 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1347,7 +1347,7 @@ struct ext4_super_block {
- /*60*/	__le32	s_feature_incompat;	/* incompatible feature set */
- 	__le32	s_feature_ro_compat;	/* readonly-compatible feature set */
- /*68*/	__u8	s_uuid[16];		/* 128-bit uuid for volume */
--/*78*/	char	s_volume_name[EXT4_LABEL_MAX];	/* volume name */
-+/*78*/	char	s_volume_name[EXT4_LABEL_MAX] __nonstring; /* volume name */
- /*88*/	char	s_last_mounted[64] __nonstring;	/* directory where last mounted */
- /*C8*/	__le32	s_algorithm_usage_bitmap; /* For compression */
- 	/*
-diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
-index dab7acd49709..e8bf5972dd47 100644
---- a/fs/ext4/ioctl.c
-+++ b/fs/ext4/ioctl.c
-@@ -1151,7 +1151,7 @@ static int ext4_ioctl_getlabel(struct ext4_sb_info *sbi, char __user *user_label
- 	BUILD_BUG_ON(EXT4_LABEL_MAX >= FSLABEL_MAX);
- 
- 	lock_buffer(sbi->s_sbh);
--	strscpy_pad(label, sbi->s_es->s_volume_name);
-+	memtostr_pad(label, sbi->s_es->s_volume_name);
- 	unlock_buffer(sbi->s_sbh);
- 
- 	if (copy_to_user(user_label, label, sizeof(label)))
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 6397fdefd876..c92937bed133 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -1359,7 +1359,7 @@ ssize_t cifs_file_copychunk_range(unsigned int xid,
- 	target_tcon = tlink_tcon(smb_file_target->tlink);
- 
- 	if (src_tcon->ses != target_tcon->ses) {
--		cifs_dbg(VFS, "source and target of copy not on same server\n");
-+		cifs_dbg(FYI, "source and target of copy not on same server\n");
- 		goto out;
- 	}
- 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 1374635e89fa..04ec1b9737a8 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -123,6 +123,11 @@ static void cifs_issue_write(struct netfs_io_subrequest *subreq)
- 	goto out;
- }
- 
-+static void cifs_netfs_invalidate_cache(struct netfs_io_request *wreq)
-+{
-+	cifs_invalidate_cache(wreq->inode, 0);
-+}
-+
- /*
-  * Split the read up according to how many credits we can get for each piece.
-  * It's okay to sleep here if we need to wait for more credit to become
-@@ -307,6 +312,7 @@ const struct netfs_request_ops cifs_req_ops = {
- 	.begin_writeback	= cifs_begin_writeback,
- 	.prepare_write		= cifs_prepare_write,
- 	.issue_write		= cifs_issue_write,
-+	.invalidate_cache	= cifs_netfs_invalidate_cache,
- };
- 
- /*
-@@ -2358,13 +2364,18 @@ void cifs_write_subrequest_terminated(struct cifs_io_subrequest *wdata, ssize_t
- 				      bool was_async)
- {
- 	struct netfs_io_request *wreq = wdata->rreq;
--	loff_t new_server_eof;
-+	struct netfs_inode *ictx = netfs_inode(wreq->inode);
-+	loff_t wrend;
- 
- 	if (result > 0) {
--		new_server_eof = wdata->subreq.start + wdata->subreq.transferred + result;
-+		wrend = wdata->subreq.start + wdata->subreq.transferred + result;
- 
--		if (new_server_eof > netfs_inode(wreq->inode)->remote_i_size)
--			netfs_resize_file(netfs_inode(wreq->inode), new_server_eof, true);
-+		if (wrend > ictx->zero_point &&
-+		    (wdata->rreq->origin == NETFS_UNBUFFERED_WRITE ||
-+		     wdata->rreq->origin == NETFS_DIO_WRITE))
-+			ictx->zero_point = wrend;
-+		if (wrend > ictx->remote_i_size)
-+			netfs_resize_file(ictx, wrend, true);
- 	}
- 
- 	netfs_write_subrequest_terminated(&wdata->subreq, result, was_async);
-@@ -2877,6 +2888,7 @@ cifs_strict_readv(struct kiocb *iocb, struct iov_iter *to)
- 		rc = netfs_start_io_direct(inode);
- 		if (rc < 0)
- 			goto out;
-+		rc = -EACCES;
- 		down_read(&cinode->lock_sem);
- 		if (!cifs_find_lock_conflict(
- 			    cfile, iocb->ki_pos, iov_iter_count(to),
-@@ -2889,6 +2901,7 @@ cifs_strict_readv(struct kiocb *iocb, struct iov_iter *to)
- 		rc = netfs_start_io_read(inode);
- 		if (rc < 0)
- 			goto out;
-+		rc = -EACCES;
- 		down_read(&cinode->lock_sem);
- 		if (!cifs_find_lock_conflict(
- 			    cfile, iocb->ki_pos, iov_iter_count(to),
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 2ae2dbb6202b..bb84a89e5905 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4859,9 +4859,6 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
- 	struct cifs_io_parms *io_parms = NULL;
- 	int credit_request;
- 
--	if (!wdata->server || test_bit(NETFS_SREQ_RETRYING, &wdata->subreq.flags))
--		server = wdata->server = cifs_pick_channel(tcon->ses);
--
- 	/*
- 	 * in future we may get cifs_io_parms passed in from the caller,
- 	 * but for now we construct it here...
-diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
-index 1a3c6f66f620..dc627ebf01df 100644
---- a/include/sound/cs35l56.h
-+++ b/include/sound/cs35l56.h
-@@ -209,7 +209,7 @@
- 
- /* CS35L56_MAIN_RENDER_USER_VOLUME */
- #define CS35L56_MAIN_RENDER_USER_VOLUME_MIN		-400
--#define CS35L56_MAIN_RENDER_USER_VOLUME_MAX		400
-+#define CS35L56_MAIN_RENDER_USER_VOLUME_MAX		48
- #define CS35L56_MAIN_RENDER_USER_VOLUME_MASK		0x0000FFC0
- #define CS35L56_MAIN_RENDER_USER_VOLUME_SHIFT		6
- #define CS35L56_MAIN_RENDER_USER_VOLUME_SIGNBIT		9
-diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
-index d2945c9c812b..c95dc1736dd9 100644
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -657,8 +657,10 @@ static int io_alloc_pbuf_ring(struct io_ring_ctx *ctx,
- 	ring_size = reg->ring_entries * sizeof(struct io_uring_buf_ring);
- 
- 	bl->buf_ring = io_pages_map(&bl->buf_pages, &bl->buf_nr_pages, ring_size);
--	if (!bl->buf_ring)
-+	if (IS_ERR(bl->buf_ring)) {
-+		bl->buf_ring = NULL;
- 		return -ENOMEM;
-+	}
- 
- 	bl->is_buf_ring = 1;
- 	bl->is_mmap = 1;
-diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
-index 758dfdf9d3ea..7f2f2f8c13fa 100644
---- a/sound/soc/codecs/cs35l56.c
-+++ b/sound/soc/codecs/cs35l56.c
-@@ -196,7 +196,11 @@ static const struct snd_kcontrol_new cs35l56_controls[] = {
- 		       cs35l56_dspwait_get_volsw, cs35l56_dspwait_put_volsw),
- 	SOC_SINGLE_S_EXT_TLV("Speaker Volume",
- 			     CS35L56_MAIN_RENDER_USER_VOLUME,
--			     6, -400, 400, 9, 0,
-+			     CS35L56_MAIN_RENDER_USER_VOLUME_SHIFT,
-+			     CS35L56_MAIN_RENDER_USER_VOLUME_MIN,
-+			     CS35L56_MAIN_RENDER_USER_VOLUME_MAX,
-+			     CS35L56_MAIN_RENDER_USER_VOLUME_SIGNBIT,
-+			     0,
- 			     cs35l56_dspwait_get_volsw,
- 			     cs35l56_dspwait_put_volsw,
- 			     vol_tlv),
+Hi Xiubo,
+
+On Tue, Jul 16, 2024 at 5:37=E2=80=AFPM <xiubli@redhat.com> wrote:
+>
+> From: Xiubo Li <xiubli@redhat.com>
+>
+> If a client sends out a cap update dropping caps with the prior 'seq'
+> just before an incoming cap revoke request, then the client may drop
+> the revoke because it believes it's already released the requested
+> capabilities.
+>
+> This causes the MDS to wait indefinitely for the client to respond
+> to the revoke. It's therefore always a good idea to ack the cap
+> revoke request with the bumped up 'seq'.
+>
+> Currently if the cap->issued equals to the newcaps the check_caps()
+> will do nothing, we should force flush the caps.
+>
+> Cc: stable@vger.kernel.org
+> Link: https://tracker.ceph.com/issues/61782
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> ---
+>
+> V3:
+> - Move the force check earlier
+>
+> V2:
+> - Improved the patch to force send the cap update only when no caps
+> being used.
+>
+>
+>  fs/ceph/caps.c  | 35 ++++++++++++++++++++++++-----------
+>  fs/ceph/super.h |  7 ++++---
+>  2 files changed, 28 insertions(+), 14 deletions(-)
+>
+> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+> index 24c31f795938..672c6611d749 100644
+> --- a/fs/ceph/caps.c
+> +++ b/fs/ceph/caps.c
+> @@ -2024,6 +2024,8 @@ bool __ceph_should_report_size(struct ceph_inode_in=
+fo *ci)
+>   *  CHECK_CAPS_AUTHONLY - we should only check the auth cap
+>   *  CHECK_CAPS_FLUSH - we should flush any dirty caps immediately, witho=
+ut
+>   *    further delay.
+> + *  CHECK_CAPS_FLUSH_FORCE - we should flush any caps immediately, witho=
+ut
+> + *    further delay.
+>   */
+>  void ceph_check_caps(struct ceph_inode_info *ci, int flags)
+>  {
+> @@ -2105,7 +2107,7 @@ void ceph_check_caps(struct ceph_inode_info *ci, in=
+t flags)
+>         }
+>
+>         doutc(cl, "%p %llx.%llx file_want %s used %s dirty %s "
+> -             "flushing %s issued %s revoking %s retain %s %s%s%s\n",
+> +             "flushing %s issued %s revoking %s retain %s %s%s%s%s\n",
+>              inode, ceph_vinop(inode), ceph_cap_string(file_wanted),
+>              ceph_cap_string(used), ceph_cap_string(ci->i_dirty_caps),
+>              ceph_cap_string(ci->i_flushing_caps),
+> @@ -2113,7 +2115,8 @@ void ceph_check_caps(struct ceph_inode_info *ci, in=
+t flags)
+>              ceph_cap_string(retain),
+>              (flags & CHECK_CAPS_AUTHONLY) ? " AUTHONLY" : "",
+>              (flags & CHECK_CAPS_FLUSH) ? " FLUSH" : "",
+> -            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "");
+> +            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "",
+> +            (flags & CHECK_CAPS_FLUSH_FORCE) ? " FLUSH_FORCE" : "");
+>
+>         /*
+>          * If we no longer need to hold onto old our caps, and we may
+> @@ -2188,6 +2191,11 @@ void ceph_check_caps(struct ceph_inode_info *ci, i=
+nt flags)
+>                                 queue_writeback =3D true;
+>                 }
+>
+> +               if (flags & CHECK_CAPS_FLUSH_FORCE) {
+> +                       doutc(cl, "force to flush caps\n");
+> +                       goto ack;
+> +               }
+> +
+>                 if (cap =3D=3D ci->i_auth_cap &&
+>                     (cap->issued & CEPH_CAP_FILE_WR)) {
+>                         /* request larger max_size from MDS? */
+> @@ -3518,6 +3526,8 @@ static void handle_cap_grant(struct inode *inode,
+>         bool queue_invalidate =3D false;
+>         bool deleted_inode =3D false;
+>         bool fill_inline =3D false;
+> +       bool revoke_wait =3D false;
+> +       int flags =3D 0;
+>
+>         /*
+>          * If there is at least one crypto block then we'll trust
+> @@ -3713,16 +3723,18 @@ static void handle_cap_grant(struct inode *inode,
+>                       ceph_cap_string(cap->issued), ceph_cap_string(newca=
+ps),
+>                       ceph_cap_string(revoking));
+>                 if (S_ISREG(inode->i_mode) &&
+> -                   (revoking & used & CEPH_CAP_FILE_BUFFER))
+> +                   (revoking & used & CEPH_CAP_FILE_BUFFER)) {
+>                         writeback =3D true;  /* initiate writeback; will =
+delay ack */
+> -               else if (queue_invalidate &&
+> +                       revoke_wait =3D true;
+> +               } else if (queue_invalidate &&
+>                          revoking =3D=3D CEPH_CAP_FILE_CACHE &&
+> -                        (newcaps & CEPH_CAP_FILE_LAZYIO) =3D=3D 0)
+> -                       ; /* do nothing yet, invalidation will be queued =
+*/
+> -               else if (cap =3D=3D ci->i_auth_cap)
+> +                        (newcaps & CEPH_CAP_FILE_LAZYIO) =3D=3D 0) {
+> +                       revoke_wait =3D true; /* do nothing yet, invalida=
+tion will be queued */
+> +               } else if (cap =3D=3D ci->i_auth_cap) {
+>                         check_caps =3D 1; /* check auth cap only */
+> -               else
+> +               } else {
+>                         check_caps =3D 2; /* check all caps */
+> +               }
+>                 /* If there is new caps, try to wake up the waiters */
+>                 if (~cap->issued & newcaps)
+>                         wake =3D true;
+> @@ -3749,8 +3761,9 @@ static void handle_cap_grant(struct inode *inode,
+>         BUG_ON(cap->issued & ~cap->implemented);
+>
+>         /* don't let check_caps skip sending a response to MDS for revoke=
+ msgs */
+> -       if (le32_to_cpu(grant->op) =3D=3D CEPH_CAP_OP_REVOKE) {
+> +       if (!revoke_wait && le32_to_cpu(grant->op) =3D=3D CEPH_CAP_OP_REV=
+OKE) {
+>                 cap->mds_wanted =3D 0;
+> +               flags |=3D CHECK_CAPS_FLUSH_FORCE;
+>                 if (cap =3D=3D ci->i_auth_cap)
+>                         check_caps =3D 1; /* check auth cap only */
+>                 else
+> @@ -3806,9 +3819,9 @@ static void handle_cap_grant(struct inode *inode,
+>
+>         mutex_unlock(&session->s_mutex);
+>         if (check_caps =3D=3D 1)
+> -               ceph_check_caps(ci, CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOIN=
+VAL);
+> +               ceph_check_caps(ci, flags | CHECK_CAPS_AUTHONLY | CHECK_C=
+APS_NOINVAL);
+>         else if (check_caps =3D=3D 2)
+> -               ceph_check_caps(ci, CHECK_CAPS_NOINVAL);
+> +               ceph_check_caps(ci, flags | CHECK_CAPS_NOINVAL);
+>  }
+>
+>  /*
+> diff --git a/fs/ceph/super.h b/fs/ceph/super.h
+> index b0b368ed3018..831e8ec4d5da 100644
+> --- a/fs/ceph/super.h
+> +++ b/fs/ceph/super.h
+> @@ -200,9 +200,10 @@ struct ceph_cap {
+>         struct list_head caps_item;
+>  };
+>
+> -#define CHECK_CAPS_AUTHONLY   1  /* only check auth cap */
+> -#define CHECK_CAPS_FLUSH      2  /* flush any dirty caps */
+> -#define CHECK_CAPS_NOINVAL    4  /* don't invalidate pagecache */
+> +#define CHECK_CAPS_AUTHONLY     1  /* only check auth cap */
+> +#define CHECK_CAPS_FLUSH        2  /* flush any dirty caps */
+> +#define CHECK_CAPS_NOINVAL      4  /* don't invalidate pagecache */
+> +#define CHECK_CAPS_FLUSH_FORCE  8  /* force flush any caps */
+>
+>  struct ceph_cap_flush {
+>         u64 tid;
+> --
+> 2.45.1
+>
+
+Unfortunately, the test run using this change has unrelated issues,
+therefore, the tests have to be rerun. I'll schedule a fs suite run on
+priority so that we get the results by tomorrow.
+
+Will update once done. Apologies!
+
+--=20
+Cheers,
+Venky
+
 
