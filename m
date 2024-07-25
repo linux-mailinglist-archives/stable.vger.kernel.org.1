@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-61680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E86193C573
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C5593C4C5
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC1FA1F25D48
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EF49283D94
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E86019B5B5;
-	Thu, 25 Jul 2024 14:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F1619D06D;
+	Thu, 25 Jul 2024 14:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJMkTnd0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Np7dBXd6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B83B8468;
-	Thu, 25 Jul 2024 14:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529B0199E9F;
+	Thu, 25 Jul 2024 14:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919097; cv=none; b=OO5QBR71z4GSc7mJ3pmHPSp9tgs7wqcIuJZPg2GeWwmT67a3bzW+phvqN2HwwQqfZBS110TWu0M/VHu9wBQHBM5HHl8y7lw+FGdzj0dTnF0JrvTjv8wG+BNzkkjSjK/gtVCWZ9D+LJG25atkriYVsH+x2QQc3pDYHohXOgyoHq0=
+	t=1721918595; cv=none; b=PBqQ7uAx9DXx6YB1/v/JUj5uXWnSPIRI532BmujK9tyPHdeurMKFrZq8oIee2ropj/rBbmtSt9ZxOFikNzW+f9brjeJE9L6hTILiiDDpEGYrvVMnfvOp5JXR2nXEp+/HmMMfzP3tv+OAOqgz7baK5dBczcxXzovd2nRefsHHTQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919097; c=relaxed/simple;
-	bh=hxx3i4PLqYngsHiP+IW8JlnwKhRw5X55yHtrW8OC0M4=;
+	s=arc-20240116; t=1721918595; c=relaxed/simple;
+	bh=Gth+mzlgr3bAYrKlYnKx6PhuvPzCkAQDotdRSY/NoBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/bDo1AEZ5wKm2FUlg6i5QflhaNxPuVZ5zgQqJWuQP4Wp4jQvzio8C+1as0+UkS3m/AJSw/+zRTH1hyenlNk8zVYvR0CkzBSK0OFgGFadbu0VhXHgFXIPIYksu7F8fcFCwtMkLxJU1/QnYL3jd9GykGamfvBEh6qA7Qi+JE2ymo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJMkTnd0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F03CC116B1;
-	Thu, 25 Jul 2024 14:51:36 +0000 (UTC)
+	 MIME-Version; b=kUCKkarAp48qS5uA1xWfEBBiMgt+5KLXwvzNxAkh+f1nft+EAriewOC+XIDceAm8KeiYbAGHmXhp49eLZB35QfCSnuZt2wwnVF9lgSyPYfTrW2ZMPrs3Vun2bUiskOZvzFfXc2G/P/pUduYPEV+su8ELmHIpe5zE/MDPPFg60Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Np7dBXd6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E87C116B1;
+	Thu, 25 Jul 2024 14:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919097;
-	bh=hxx3i4PLqYngsHiP+IW8JlnwKhRw5X55yHtrW8OC0M4=;
+	s=korg; t=1721918595;
+	bh=Gth+mzlgr3bAYrKlYnKx6PhuvPzCkAQDotdRSY/NoBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJMkTnd03Vts/SdqWyiL4vDxQfLb0GFDsbrq8C/ChX/HKmDsNddVufVziUl8Q8Zfz
-	 nSlKgKpvVQIbLpFIdYvCbHeZpmibJvUX9AKq7CjUjnN8oEhS5j0b9p5iVxm6wIHP9T
-	 yUAZC1VUMTZTmOYXSnimpPmGALJKWkYmHhWo8EYU=
+	b=Np7dBXd6SFeAayW3BAS7MDKq8/g0dZsUTNohDp0BJyios6Hdoz4Jhb8iuEV2rN+Vd
+	 sQGTg47wThOLUtIjRvkY4q71FharZd2dMSePYCWUfpvXEACfQChvAQWTv5FM8giqvU
+	 gboiGKwNffFAqqerFoRlSw8ngSxpTMjQEfegKqfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Alexander Aring <aahringo@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 22/87] net: ipv6: rpl_iptunnel: block BH in rpl_output() and rpl_input()
+Subject: [PATCH 5.4 32/43] fs: better handle deep ancestor chains in is_subdir()
 Date: Thu, 25 Jul 2024 16:36:55 +0200
-Message-ID: <20240725142739.270222444@linuxfoundation.org>
+Message-ID: <20240725142731.684955510@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit db0090c6eb12c31246438b7fe2a8f1b833e7a653 ]
+[ Upstream commit 391b59b045004d5b985d033263ccba3e941a7740 ]
 
-As explained in commit 1378817486d6 ("tipc: block BH
-before using dst_cache"), net/core/dst_cache.c
-helpers need to be called with BH disabled.
+Jan reported that 'cd ..' may take a long time in deep directory
+hierarchies under a bind-mount. If concurrent renames happen it is
+possible to livelock in is_subdir() because it will keep retrying.
 
-Disabling preemption in rpl_output() is not good enough,
-because rpl_output() is called from process context,
-lwtunnel_output() only uses rcu_read_lock().
+Change is_subdir() from simply retrying over and over to retry once and
+then acquire the rename lock to handle deep ancestor chains better. The
+list of alternatives to this approach were less then pleasant. Change
+the scope of rcu lock to cover the whole walk while at it.
 
-We might be interrupted by a softirq, re-enter rpl_output()
-and corrupt dst_cache data structures.
+A big thanks to Jan and Linus. Both Jan and Linus had proposed
+effectively the same thing just that one version ended up being slightly
+more elegant.
 
-Fix the race by using local_bh_disable() instead of
-preempt_disable().
-
-Apply a similar change in rpl_input().
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Alexander Aring <aahringo@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240531132636.2637995-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/rpl_iptunnel.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ fs/dcache.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
-index ff691d9f4a04f..26adbe7f8a2f0 100644
---- a/net/ipv6/rpl_iptunnel.c
-+++ b/net/ipv6/rpl_iptunnel.c
-@@ -212,9 +212,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	if (unlikely(err))
- 		goto drop;
+diff --git a/fs/dcache.c b/fs/dcache.c
+index c58b5e5cb045d..78081bdc49311 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -3073,28 +3073,25 @@ EXPORT_SYMBOL(d_splice_alias);
+   
+ bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
+ {
+-	bool result;
++	bool subdir;
+ 	unsigned seq;
  
--	preempt_disable();
-+	local_bh_disable();
- 	dst = dst_cache_get(&rlwt->cache);
--	preempt_enable();
-+	local_bh_enable();
+ 	if (new_dentry == old_dentry)
+ 		return true;
  
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *hdr = ipv6_hdr(skb);
-@@ -234,9 +234,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
+-	do {
+-		/* for restarting inner loop in case of seq retry */
+-		seq = read_seqbegin(&rename_lock);
+-		/*
+-		 * Need rcu_readlock to protect against the d_parent trashing
+-		 * due to d_move
+-		 */
+-		rcu_read_lock();
+-		if (d_ancestor(old_dentry, new_dentry))
+-			result = true;
+-		else
+-			result = false;
+-		rcu_read_unlock();
+-	} while (read_seqretry(&rename_lock, seq));
+-
+-	return result;
++	/* Access d_parent under rcu as d_move() may change it. */
++	rcu_read_lock();
++	seq = read_seqbegin(&rename_lock);
++	subdir = d_ancestor(old_dentry, new_dentry);
++	 /* Try lockless once... */
++	if (read_seqretry(&rename_lock, seq)) {
++		/* ...else acquire lock for progress even on deep chains. */
++		read_seqlock_excl(&rename_lock);
++		subdir = d_ancestor(old_dentry, new_dentry);
++		read_sequnlock_excl(&rename_lock);
++	}
++	rcu_read_unlock();
++	return subdir;
+ }
+ EXPORT_SYMBOL(is_subdir);
  
--		preempt_disable();
-+		local_bh_disable();
- 		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
--		preempt_enable();
-+		local_bh_enable();
- 	}
- 
- 	skb_dst_drop(skb);
-@@ -268,9 +268,8 @@ static int rpl_input(struct sk_buff *skb)
- 		return err;
- 	}
- 
--	preempt_disable();
-+	local_bh_disable();
- 	dst = dst_cache_get(&rlwt->cache);
--	preempt_enable();
- 
- 	skb_dst_drop(skb);
- 
-@@ -278,14 +277,13 @@ static int rpl_input(struct sk_buff *skb)
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
- 		if (!dst->error) {
--			preempt_disable();
- 			dst_cache_set_ip6(&rlwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
--			preempt_enable();
- 		}
- 	} else {
- 		skb_dst_set(skb, dst);
- 	}
-+	local_bh_enable();
- 
- 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
- 	if (unlikely(err))
 -- 
 2.43.0
 
