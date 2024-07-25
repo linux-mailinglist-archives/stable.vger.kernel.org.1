@@ -1,165 +1,132 @@
-Return-Path: <stable+bounces-61548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A3693C4DE
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA28893C5AF
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3A98284608
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18D841C21EFB
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34D019AA5F;
-	Thu, 25 Jul 2024 14:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB5119D069;
+	Thu, 25 Jul 2024 14:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+uFvZsZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXz3J65B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFA819D066;
-	Thu, 25 Jul 2024 14:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E030E1DFF7;
+	Thu, 25 Jul 2024 14:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918670; cv=none; b=ornfZXXEJaJZaHBn7NZe5+dW9V/dyO1aomqGrXwAvGiwktkAkQgvqudExsm1Br0Kk8jdCniveuPD6Z6+oPDV7mGGOD2MFLd+icOpiudm2FBZxAbrKJBkkfkhg6KGWGpr4h8FA1mMrBafuwhzfYRwsCEvwImcDcjZLVoZuN+Nm6I=
+	t=1721919247; cv=none; b=MTQtYKGV6LQqjIR8O6UAQR9O6K+Bjgzf7QXrZUZUkrEUnois3UnWmW5HpGoAKX1dJ+CWZtnjCfSEfliF4CgAzk4IJFBdX3ApHR7ylKyS4tXnXo6tKQDbUbcxoqWlXTbHxUTh9O25bx96S4m3F57A6lqqYsiMv/XnZAgJcOsNnZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918670; c=relaxed/simple;
-	bh=pjN/m4ScIOKWRLZR1SP7MoVIpqpQ4u+iEJXDzQUotho=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J2xknN9xAM+QU/crYLN6tousXSOHFuu8H5iKZm4T7o9ZS3DEaezLHHfsvxEkDpXTQEKMp8azmvDo8boR9MaZS4YXv2u3HqWEf+HqtfKzovxRTzcZZNq/hiFRyRfNfXynRlXm2g+q3+pS77vrQIJ0XwSsXJyEs2KCQlySuHDOZ1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+uFvZsZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93C0C116B1;
-	Thu, 25 Jul 2024 14:44:29 +0000 (UTC)
+	s=arc-20240116; t=1721919247; c=relaxed/simple;
+	bh=avZCrDm35zfY6HNhqCuArGYMRHsSe8GzN+1L/6dQZ4U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VW63bemKLq9Ju6pDjphFi8tSTa/5jaUWhW30O5TXijPtEXxXaDQ+D6+NA+Djj/DvYECd4QroZhW4xox/xMCRDJzsMHr9DwsCbed3VmZuGJUZjscJ7L8fwlnHWMe4xCBkG4Lgg1OsECzUK0siUvX2YR1rzoAifq98fyXi5tWuhIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXz3J65B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E896C116B1;
+	Thu, 25 Jul 2024 14:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918670;
-	bh=pjN/m4ScIOKWRLZR1SP7MoVIpqpQ4u+iEJXDzQUotho=;
-	h=From:To:Cc:Subject:Date:From;
-	b=t+uFvZsZpKELrJC0kUKOvNbSjsgMJQ8yqkUZ/Y6QC6MH9aRteZhqsG2Zj1yE+LSgM
-	 bsl0S82B/MJ1LxR2CWfG4jDys5whxBxLJG3IrdwklA+4zO5ZUJ28i2BVwcLE/rdJ5G
-	 HEo6LVqpulxIaWKBk9QrHHJgB95utI5fQCSVpjhg=
+	s=korg; t=1721919246;
+	bh=avZCrDm35zfY6HNhqCuArGYMRHsSe8GzN+1L/6dQZ4U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AXz3J65BDPl2KitbQ1Ed7X829mY8cO9xtG8El9JpS4E23BLb0HAgNzaRB2BrVN2B3
+	 xTTWiJl5SOawHo1hpNK4fBORkYnynhYAvzF7GCgNzfUZ+YKPD19umzsgumM/G0Udr0
+	 XmspyrrxVgTrjo8KXWFHqRVY5SUfxHjVjDfbL6wA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org
-Subject: [PATCH 6.1 00/13] 6.1.102-rc1 review
-Date: Thu, 25 Jul 2024 16:37:09 +0200
-Message-ID: <20240725142728.029052310@linuxfoundation.org>
+	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 37/87] Input: i8042 - add Ayaneo Kun to i8042 quirk table
+Date: Thu, 25 Jul 2024 16:37:10 +0200
+Message-ID: <20240725142739.834140795@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.102-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.1.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.1.102-rc1
-X-KernelTest-Deadline: 2024-07-27T14:27+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.1.102 release.
-There are 13 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.102-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-and the diffstat can be found below.
+From: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
 
-thanks,
+[ Upstream commit 955af6355ddfe35140f9706a635838212a32513b ]
 
-greg k-h
+See the added comment for details. Also fix a typo in the
+quirk's define.
 
--------------
-Pseudo-Shortlog of commits:
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Link: https://lore.kernel.org/r/20240531190100.3874731-1-tjakobi@math.uni-bielefeld.de
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/input/serio/i8042-acpipnpio.h | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.1.102-rc1
+diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
+index d4792950bcffd..49d87f56cb909 100644
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -75,7 +75,7 @@ static inline void i8042_write_command(int val)
+ #define SERIO_QUIRK_PROBE_DEFER		BIT(5)
+ #define SERIO_QUIRK_RESET_ALWAYS	BIT(6)
+ #define SERIO_QUIRK_RESET_NEVER		BIT(7)
+-#define SERIO_QUIRK_DIECT		BIT(8)
++#define SERIO_QUIRK_DIRECT		BIT(8)
+ #define SERIO_QUIRK_DUMBKBD		BIT(9)
+ #define SERIO_QUIRK_NOLOOP		BIT(10)
+ #define SERIO_QUIRK_NOTIMEOUT		BIT(11)
+@@ -1295,6 +1295,20 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	{
++		/*
++		 * The Ayaneo Kun is a handheld device where some the buttons
++		 * are handled by an AT keyboard. The keyboard is usually
++		 * detected as raw, but sometimes, usually after a cold boot,
++		 * it is detected as translated. Make sure that the keyboard
++		 * is always in raw mode.
++		 */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
++			DMI_MATCH(DMI_BOARD_NAME, "KUN"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_DIRECT)
++	},
+ 	{ }
+ };
+ 
+@@ -1613,7 +1627,7 @@ static void __init i8042_check_quirks(void)
+ 		if (quirks & SERIO_QUIRK_RESET_NEVER)
+ 			i8042_reset = I8042_RESET_NEVER;
+ 	}
+-	if (quirks & SERIO_QUIRK_DIECT)
++	if (quirks & SERIO_QUIRK_DIRECT)
+ 		i8042_direct = true;
+ 	if (quirks & SERIO_QUIRK_DUMBKBD)
+ 		i8042_dumbkbd = true;
+-- 
+2.43.0
 
-Filipe Manana <fdmanana@suse.com>
-    btrfs: do not BUG_ON on failure to get dir index for new snapshot
-
-Jann Horn <jannh@google.com>
-    filelock: Fix fcntl/close race recovery compat path
-
-Shengjiu Wang <shengjiu.wang@nxp.com>
-    ALSA: pcm_dmaengine: Don't synchronize DMA channel when DMA is paused
-
-Krishna Kurapati <quic_kriskura@quicinc.com>
-    arm64: dts: qcom: sdm630: Disable SS instance in Parkmode for USB
-
-Krishna Kurapati <quic_kriskura@quicinc.com>
-    arm64: dts: qcom: ipq6018: Disable SS instance in Parkmode for USB
-
-Krishna Kurapati <quic_kriskura@quicinc.com>
-    arm64: dts: qcom: msm8996: Disable SS instance in Parkmode for USB
-
-Seunghun Han <kkamagui@gmail.com>
-    ALSA: hda/realtek: Fix the speaker output on Samsung Galaxy Book Pro 360
-
-Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-    ALSA: hda/realtek: Enable headset mic on Positivo SU C1400
-
-lei lu <llfamsec@gmail.com>
-    fs/ntfs3: Validate ff offset
-
-lei lu <llfamsec@gmail.com>
-    jfs: don't walk off the end of ealist
-
-lei lu <llfamsec@gmail.com>
-    ocfs2: add bounds checking to ocfs2_check_dir_entry()
-
-Chao Yu <chao@kernel.org>
-    f2fs: avoid dead loop in f2fs_issue_checkpoint()
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    drm/amdgpu: Fix signedness bug in sdma_v4_0_process_trap_irq()
-
-
--------------
-
-Diffstat:
-
- Makefile                               |  4 +--
- arch/arm64/boot/dts/qcom/ipq6018.dtsi  |  1 +
- arch/arm64/boot/dts/qcom/msm8996.dtsi  |  1 +
- arch/arm64/boot/dts/qcom/sdm630.dtsi   |  1 +
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |  2 +-
- fs/btrfs/transaction.c                 |  5 +++-
- fs/f2fs/super.c                        | 15 +++++++++--
- fs/jfs/xattr.c                         | 23 ++++++++++++++---
- fs/locks.c                             |  9 +++----
- fs/ntfs3/fslog.c                       |  6 ++++-
- fs/ocfs2/dir.c                         | 46 +++++++++++++++++++++-------------
- sound/core/pcm_dmaengine.c             |  6 ++++-
- sound/pci/hda/patch_realtek.c          |  2 ++
- 13 files changed, 87 insertions(+), 34 deletions(-)
 
 
 
