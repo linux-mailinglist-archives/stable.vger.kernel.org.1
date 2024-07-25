@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66E693C4DB
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C83E593C52F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7206428245D
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E49E1F25337
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237FB19D087;
-	Thu, 25 Jul 2024 14:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3123E13C816;
+	Thu, 25 Jul 2024 14:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krVa2jul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1z5HNrQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D681A19AA5F;
-	Thu, 25 Jul 2024 14:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E328DFC19;
+	Thu, 25 Jul 2024 14:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918660; cv=none; b=nDQagG+azOiU3+d6FrRBUkbRraPuYH2LyYDP1xgNX280CVabHSWRp1027F2anL+iO5eulc/sV86hT2DjN2Z9JxLf/sy70YW7y6HcRaWbcMTibPSmO/KhBLkf0Uc/hD9nIvfsxWqHE4kTP08fwn4G+3pxT9wzWJEDwYJEFWdxq+o=
+	t=1721918893; cv=none; b=Lb09bwtsniVw5qG7my9rbbPZ1XKHaXyBHSzan3dXQWbuMZbO41w2fePB7YZjNhi/MuQP+K0nufG23haWXY1VjwXhEScL21JxS6GphTIMhHb7DWGKiuNgHRPZlvAnLsOmDidxcISmKXeu6/hjvI1h8Rly7kNY184SBfLLmGGhoRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918660; c=relaxed/simple;
-	bh=bfnSJhCtwOVyJG+jgpRU6YDG+NZCuFIuSND9LN6pws8=;
+	s=arc-20240116; t=1721918893; c=relaxed/simple;
+	bh=3TK13e+SVkhw8E/KGnTENazwPWIkS/Ez/4wWVtR0j7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j83gZCiKb/QAZycq6jqCyvJajO4FAHDwBi3B1GPrRLtkWJHE36t9aB3cQ/m++gr3FhzJHGp8ZIkOrGofjBfvHrYClFPucqLjSCpO7BknuQ18bB+W5BIGNntMoBGVhSHlWq4QOeJUx1fqpVLkX+/sPc9q1wDAL5KSwAL9ZJBTQxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krVa2jul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53794C4AF0C;
-	Thu, 25 Jul 2024 14:44:20 +0000 (UTC)
+	 MIME-Version; b=Ls7VkCX4ZYzk7CNE+nk8f2uC1aLu1g54TR/ivJ4BfEF+XWI2oZFGUke4+21IVIdSca8xOcfyzlPTRUa7Px7ZLeepUZSgBTU1WwbPd3WUhFy4mdkZquft+PdAvUxXzknXEx6tb2OHLIqm8H3UWrh6H3ERnsm8z1flQk2d7sUCt9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1z5HNrQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53295C116B1;
+	Thu, 25 Jul 2024 14:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918660;
-	bh=bfnSJhCtwOVyJG+jgpRU6YDG+NZCuFIuSND9LN6pws8=;
+	s=korg; t=1721918892;
+	bh=3TK13e+SVkhw8E/KGnTENazwPWIkS/Ez/4wWVtR0j7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=krVa2julr5Gm9+oFiJUJo3s/ovvZiS4MijL+2uf0TVgsgF6bPJ6oTfHyeQRycJ5Ge
-	 1NyRsgTvVML4CyJvxCwxQk9vo4RM+C++9LmO/cV7DxTewhu7voF/CoQCpPMAGkjsz7
-	 uXZZdoPnpEcOMnjsrajgujwXVGijOWM9cEV/Rmwg=
+	b=1z5HNrQ1PVxv2C6wqhJ8kPjWZLxbyjYe7NezHydYhKvsYM3btVhSYLQzSpH+8E1Fy
+	 KvXR5hT8ojCIyREWlpLeiQbeDVgiRk/2gBcz0t1slvukTE1EoeEipFgy+ULNbo2Mjl
+	 0fhoU79vAQ0gsv6WV6cPCOxwH8HA1BIP3ziOiGxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Zhou <bob.zhou@amd.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Subject: [PATCH 6.1 01/13] drm/amdgpu: Fix signedness bug in sdma_v4_0_process_trap_irq()
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 20/59] ALSA: hda/realtek: Add more codec ID to no shutup pins list
 Date: Thu, 25 Jul 2024 16:37:10 +0200
-Message-ID: <20240725142728.087209261@linuxfoundation.org>
+Message-ID: <20240725142734.026562706@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.029052310@linuxfoundation.org>
-References: <20240725142728.029052310@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 6769a23697f17f9bf9365ca8ed62fe37e361a05a upstream.
+[ Upstream commit 70794b9563fe011988bcf6a081af9777e63e8d37 ]
 
-The "instance" variable needs to be signed for the error handling to work.
+If it enter to runtime D3 state, it didn't shutup Headset MIC pin.
 
-Fixes: 8b2faf1a4f3b ("drm/amdgpu: add error handle to avoid out-of-bounds")
-Reviewed-by: Bob Zhou <bob.zhou@amd.com>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/r/8d86f61e7d6f4a03b311e4eb4e5caaef@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -2045,7 +2045,7 @@ static int sdma_v4_0_process_trap_irq(st
- 				      struct amdgpu_irq_src *source,
- 				      struct amdgpu_iv_entry *entry)
- {
--	uint32_t instance;
-+	int instance;
- 
- 	DRM_DEBUG("IH: SDMA trap\n");
- 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 669937bae570e..fdbc76eaf233e 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -578,10 +578,14 @@ static void alc_shutup_pins(struct hda_codec *codec)
+ 	switch (codec->core.vendor_id) {
+ 	case 0x10ec0236:
+ 	case 0x10ec0256:
++	case 0x10ec0257:
+ 	case 0x19e58326:
+ 	case 0x10ec0283:
++	case 0x10ec0285:
+ 	case 0x10ec0286:
++	case 0x10ec0287:
+ 	case 0x10ec0288:
++	case 0x10ec0295:
+ 	case 0x10ec0298:
+ 		alc_headset_mic_no_shutup(codec);
+ 		break;
+-- 
+2.43.0
+
 
 
 
