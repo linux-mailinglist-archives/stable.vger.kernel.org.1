@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ADD093C516
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B9993C59D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26592849FF
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:47:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BFD61F21533
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137E819D8B8;
-	Thu, 25 Jul 2024 14:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E9219CD0C;
+	Thu, 25 Jul 2024 14:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONdYOAHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9V6ELYy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C265919D8AE;
-	Thu, 25 Jul 2024 14:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C0613C816;
+	Thu, 25 Jul 2024 14:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918818; cv=none; b=pL1t6uUP0pn6moh1flOZHctXEHUDCQry0G5yuY8c5CZrMjahMB0Dm2FBdsG+DNlTWssOL/MXPLGQTri21iirUWZd4uV/O2M9ZJLu7AbLQZIIWRBZ6ClK/nyOm4Rwb/usHDMKVfukd1Cg6CfYUHoug+Ilovo6qDiUFEuYKK220AY=
+	t=1721919210; cv=none; b=LrbAkigaZXiMHJzj71YlrVQvDHgyQIfzm1leuydGY0DiNqCEGNp8iNRI7/mBJDkdYF6bCcSCM78SoKvhLZfOIc600i11IL63vUyhpzaxYJ6kOe+r3E0cyXepYLjmi79FNScA13z/0S+BxMOq1R1AB4HBmuykkIhID7gglDU3jBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918818; c=relaxed/simple;
-	bh=MVI5+D1U77I5nOO3J3CwNC3FVZNfxRh9UmXVuTZN/Fo=;
+	s=arc-20240116; t=1721919210; c=relaxed/simple;
+	bh=FAau1rtoTUoRMuqIE0Q/8K47DxNmISvynfd+rRzQXXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5tXenp9xQnif0eaVi1H+ujuQb1WIgfsj3ZhWRTr0bxZiJShSuJtwyYh5xhrs0EblKgeBjxmqKwHpDCI0BVDEJSrEBsfG/xIAwm8RRNvPig6DrKwWWgCZRl91kTVq3C+k/DqGQPgkaeTp+GuR3Mpob0H6tQ+mEHO2voWULlgHgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONdYOAHW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D44C4AF07;
-	Thu, 25 Jul 2024 14:46:57 +0000 (UTC)
+	 MIME-Version; b=V8KH1TMZTNx0/YXwFZyG4NBILxyn/sig9ifYWKwDz89yvi4Hh55u3abucHA/S7xxn8bnkv9k3l+gPnqRNq7SIShaQ2CtAifWMyDBCWpctTfbr0d7OpWlUATFuLAJHd3qXS5lf0XLFFcNxhL+zp4SqT28tgM0e/Pfbl1nYAAuLHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9V6ELYy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C6FC116B1;
+	Thu, 25 Jul 2024 14:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918818;
-	bh=MVI5+D1U77I5nOO3J3CwNC3FVZNfxRh9UmXVuTZN/Fo=;
+	s=korg; t=1721919210;
+	bh=FAau1rtoTUoRMuqIE0Q/8K47DxNmISvynfd+rRzQXXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ONdYOAHWbAVwiQTCoBieSLTrUwWPZAq5wfpQqaBHA1Qcn1Q4i607fLAVkWzyLUI6s
-	 YgvPMnqc5expE6IHtHOzm/ro/Td/gMGVZN0ualJny0V/7V/yQVffNLr+qOO289C6HP
-	 PIDVx/kSNCF2jMavelaXMSoj/XCcgB44WiwNmAlA=
+	b=J9V6ELYy8TO0k7fR1nEBJx8EQFpGQI2uDkf1UXlH38w6do4Mp2wQ9st+axPEgpSd9
+	 BuH1jAerPqvLCnOH1Yw9ybamabK89Wz5cJTi93f7WX/HZx2mt1jxtlKVRXwVIVaUz0
+	 Ig17H83+JqUBrDgyk8a5JUWs1JzpvemRdKcFXIEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.9 20/29] arm64: dts: qcom: sm6350: Disable SS instance in Parkmode for USB
+	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 57/87] drm/radeon: check bo_va->bo is non-NULL before using it
 Date: Thu, 25 Jul 2024 16:37:30 +0200
-Message-ID: <20240725142732.438300228@linuxfoundation.org>
+Message-ID: <20240725142740.582569911@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
-References: <20240725142731.678993846@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
 
-commit c5d57eb7d06df16c07037cea5dacfd74d49d1833 upstream.
+[ Upstream commit 6fb15dcbcf4f212930350eaee174bb60ed40a536 ]
 
-For Gen-1 targets like SM6350, it is seen that stressing out the
-controller in host mode results in HC died error:
+The call to radeon_vm_clear_freed might clear bo_va->bo, so
+we have to check it before dereferencing it.
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
-
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for SM6350 to mitigate this issue.
-
-Cc: stable@vger.kernel.org
-Fixes: 23737b9557fe ("arm64: dts: qcom: sm6350: Add USB1 nodes")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-7-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm6350.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/radeon/radeon_gem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -1859,6 +1859,7 @@
- 				snps,dis_enblslpm_quirk;
- 				snps,has-lpm-erratum;
- 				snps,hird-threshold = /bits/ 8 <0x10>;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 			};
+diff --git a/drivers/gpu/drm/radeon/radeon_gem.c b/drivers/gpu/drm/radeon/radeon_gem.c
+index 57218263ef3b1..277a313432b28 100644
+--- a/drivers/gpu/drm/radeon/radeon_gem.c
++++ b/drivers/gpu/drm/radeon/radeon_gem.c
+@@ -653,7 +653,7 @@ static void radeon_gem_va_update_vm(struct radeon_device *rdev,
+ 	if (r)
+ 		goto error_unlock;
+ 
+-	if (bo_va->it.start)
++	if (bo_va->it.start && bo_va->bo)
+ 		r = radeon_vm_bo_update(rdev, bo_va, bo_va->bo->tbo.resource);
+ 
+ error_unlock:
+-- 
+2.43.0
+
 
 
 
