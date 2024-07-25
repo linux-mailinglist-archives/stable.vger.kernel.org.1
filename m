@@ -1,262 +1,133 @@
-Return-Path: <stable+bounces-61368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BAA093BDE5
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 10:24:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC3F93BDFD
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 10:32:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 883AC1C20D4C
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 08:24:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02383B219E6
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 08:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B4D1741E6;
-	Thu, 25 Jul 2024 08:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0771D175579;
+	Thu, 25 Jul 2024 08:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="tbn/p/R8"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="kf9kEF9u"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2978E1741D4;
-	Thu, 25 Jul 2024 08:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9D8172BAA;
+	Thu, 25 Jul 2024 08:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721895853; cv=none; b=jbLNJ0eQn+QPRiTxdra8F2ULVx6XU89sGoG/PuZdPAeByjtr9F/A58q7lnuHsPGBgqSkVqNG45iRwYxGPgctQ5lolUR7HHourvw3Dx9Yx/jNkGCKO1wHGQnIhI+ygaGbtKZwrNo4dqCpNE+isfmGWziW58wJVTmNYNqduvxqByY=
+	t=1721896338; cv=none; b=uAGlrbNasgURFDtFWfQexYfleYekiYtxBj49dsu/82/nlnu/NUS39Adj6S+/JukNbAzu9FmEPI6xmafx5kU9FFAvH8H7aJWQHRZKRwvGrH7xRoAnweefQju0MivpMUy2+X6cyGPiBmMigrXmnUI/baWQcgHukH31PwKzdNUOCik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721895853; c=relaxed/simple;
-	bh=aeaap9eclPL9FbQj5ZdIDNseDkr5CpARzOP9GtSFEsg=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=NgYRVVv6opHpkNWzPrAPNOJ7oM8zlU1BaHr/H+hKDtnsKXpK3Xw6ofIAoLUYxDfG2+Hy+BdX0T2P457eoQKWvcLVHm1/bs6y3WCTy7+9fUtMJGyt5FjuncY3EQ8m+aajUxbatK1TP9Y1DPPYaHHmkXBzr21zbmr8m0rznMO3c1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=tbn/p/R8; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1721896338; c=relaxed/simple;
+	bh=jkkYI2hNRj4z5bkegjNxXjlklXFj0UNk4Tq3OvLzprQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mq408cRYgT+brMk+MFoIchjVKBnSVAfAtFPArPkdTFs+VBirM1Z11pOw/jKgkbKeaNOpm/DUvCT2WG/OYYe/aIvitN7ZddHmgEbg4dvwwTod/JULlNaErluFR6MiBxWe9MwmYRl67JMdkTIiTFDXaxs4BsjFA1msvuQ/jQsmyOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=kf9kEF9u; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 46P8VoqG109964;
+	Thu, 25 Jul 2024 03:31:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1721896310;
+	bh=TMDBni4n2ZZTbe6c4uAGB3NZ5xWs5BgH9TnNeQjviu8=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=kf9kEF9ubiIsx6Gk3gFvF4+KGGx6H5XjGRYNZI3UUsL+m9zuQhMiW67h0dld/wu+g
+	 7UX+Ae9Yl4J1kSYb0pcjk2rrYzj6JbXRFCFCJ7UaNmHHdHEG9fE/IUmkPLKWNYY+BC
+	 4rhQwDZREmSmwygsloDi3NDa+v87dRyaX8gBwAvg=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 46P8VoHJ004080
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 25 Jul 2024 03:31:50 -0500
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 25
+ Jul 2024 03:31:50 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 25 Jul 2024 03:31:50 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 46P8Vm6R068514;
+	Thu, 25 Jul 2024 03:31:49 -0500
+Date: Thu, 25 Jul 2024 14:01:48 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <bhelgaas@google.com>,
+        <lpieralisi@kernel.org>, <kw@linux.com>, <robh@kernel.org>,
+        <vigneshr@ti.com>, <kishon@kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <stable@vger.kernel.org>, <ahalaney@redhat.com>, <srk@ti.com>
+Subject: Re: [PATCH] PCI: j721e: Set .map_irq and .swizzle_irq to NULL
+Message-ID: <5f7328f8-eabc-4a8c-87a3-b27e2f6c0c1f@ti.com>
+References: <20240724065048.285838-1-s-vadapalli@ti.com>
+ <20240724161916.GG3349@thinkpad>
+ <69f8c45c-29b4-4090-8034-8c5a19efa4f8@ti.com>
+ <20240725074708.GB2770@thinkpad>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1721895847;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7HYnW+Nl3MdFFOY14aJKMCJCcy27SKGZVNUgmyKfR2g=;
-	b=tbn/p/R8JTZFUnBu1wXhDtIlzH5W150mmBC4FE3EjcRhwKYB+4Si8Lua2Kv3d+r/cNDYzJ
-	7ry8f/lIty0BTc6GuOH88/5y1e6GI/txt6HkjKvoDYnbNM/PUIighd5lTHI1N7AXA3KeL1
-	mvgULOdczJREgDujGZFEpYSCkfXlk0i0JXTiM70jgL1bTxT3W5uCY2+PIysqC7opAjINT0
-	U72CMW0r+WVJmTJKAkGdJY1tMqes3yBl//SUqVv6JZawPp2bxjyk704L9WniSCuB9Jd7oS
-	mOJgfEzQCic6MhMmaOrp8izt0DQ43BgjTEpDDPyyUu91+fN0MB8WovUayTZafw==
-Date: Thu, 25 Jul 2024 10:24:07 +0200
-From: Dragan Simic <dsimic@manjaro.org>
-To: Steven Price <steven.price@arm.com>
-Cc: dri-devel@lists.freedesktop.org, boris.brezillon@collabora.com,
- robh@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
- linux-kernel@vger.kernel.org, Diederik de Haas <didi.debian@cknow.org>,
- Furkan Kardame <f.kardame@manjaro.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/panfrost: Mark simple_ondemand governor as softdep
-In-Reply-To: <192dbcd968dfebf825a3a759701bf381@manjaro.org>
-References: <4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org>
- <f672e7460c92bc9e0c195804f7e99d0b@manjaro.org>
- <e42a55ba-cbb5-47a4-bec6-9c3067040970@arm.com>
- <192dbcd968dfebf825a3a759701bf381@manjaro.org>
-Message-ID: <d20667e76aa56fb69c91ef327d467d4a@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240725074708.GB2770@thinkpad>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-Hello Steven and Boris,
-
-On 2024-07-03 16:52, Dragan Simic wrote:
-> On 2024-07-03 15:20, Steven Price wrote:
->> On 03/07/2024 13:42, Dragan Simic wrote:
->>> On 2024-06-17 22:17, Dragan Simic wrote:
->>>> Panfrost DRM driver uses devfreq to perform DVFS, while using
->>>> simple_ondemand
->>>> devfreq governor by default.  This causes driver initialization to
->>>> fail on
->>>> boot when simple_ondemand governor isn't built into the kernel
->>>> statically,
->>>> as a result of the missing module dependency and, consequently, the
->>>> required
->>>> governor module not being included in the initial ramdisk.  Thus,
->>>> let's mark
->>>> simple_ondemand governor as a softdep for Panfrost, to have its 
->>>> kernel
->>>> module
->>>> included in the initial ramdisk.
->>>> 
->>>> This is a rather longstanding issue that has forced distributions to
->>>> build
->>>> devfreq governors statically into their kernels, [1][2] or has 
->>>> forced
->>>> users
->>>> to introduce some unnecessary workarounds. [3]
->>>> 
->>>> For future reference, not having support for the simple_ondemand
->>>> governor in
->>>> the initial ramdisk produces errors in the kernel log similar to 
->>>> these
->>>> below,
->>>> which were taken from a Pine64 RockPro64:
->>>> 
->>>>   panfrost ff9a0000.gpu: [drm:panfrost_devfreq_init [panfrost]]
->>>> *ERROR* Couldn't initialize GPU devfreq
->>>>   panfrost ff9a0000.gpu: Fatal error during GPU init
->>>>   panfrost: probe of ff9a0000.gpu failed with error -22
->>>> 
->>>> Having simple_ondemand marked as a softdep for Panfrost may not
->>>> resolve this
->>>> issue for all Linux distributions.  In particular, it will remain
->>>> unresolved
->>>> for the distributions whose utilities for the initial ramdisk
->>>> generation do
->>>> not handle the available softdep information [4] properly yet. 
->>>> However, some
->>>> Linux distributions already handle softdeps properly while 
->>>> generating
->>>> their
->>>> initial ramdisks, [5] and this is a prerequisite step in the right
->>>> direction
->>>> for the distributions that don't handle them properly yet.
->>>> 
->>>> [1] 
->>>> https://gitlab.manjaro.org/manjaro-arm/packages/core/linux/-/blob/linux61/config?ref_type=heads#L8180
->>>> [2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/1066
->>>> [3] https://forum.pine64.org/showthread.php?tid=15458
->>>> [4] 
->>>> https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
->>>> [5] 
->>>> https://github.com/archlinux/mkinitcpio/commit/97ac4d37aae084a050be512f6d8f4489054668ad
->>>> 
->>>> Cc: Diederik de Haas <didi.debian@cknow.org>
->>>> Cc: Furkan Kardame <f.kardame@manjaro.org>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
->>>> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
->> 
->> Reviewed-by: Steven Price <steven.price@arm.com>
+On Thu, Jul 25, 2024 at 01:17:08PM +0530, Manivannan Sadhasivam wrote:
+> On Thu, Jul 25, 2024 at 10:50:13AM +0530, Siddharth Vadapalli wrote:
+> > On Wed, Jul 24, 2024 at 09:49:16PM +0530, Manivannan Sadhasivam wrote:
+> > > On Wed, Jul 24, 2024 at 12:20:48PM +0530, Siddharth Vadapalli wrote:
+> > > > Since the configuration of Legacy Interrupts (INTx) is not supported, set
+> > > > the .map_irq and .swizzle_irq callbacks to NULL. This fixes the error:
+> > > >   of_irq_parse_pci: failed with rc=-22
+> > > > due to the absence of Legacy Interrupts in the device-tree.
+> > > > 
+> > > 
+> > > Do you really need to set 'swizzle_irq' to NULL? pci_assign_irq() will bail out
+> > > if 'map_irq' is set to NULL.
+> > 
+> > While 'swizzle_irq' won't be invoked if 'map_irq' is NULL, having a
+> > non-NULL 'swizzle_irq' (pci_common_swizzle in this case) with a NULL
+> > 'map_irq' seems inconsistent to me though the code-path may never invoke
+> > it. Wouldn't a non-NULL 'swizzle_irq' imply that Legacy Interrupts are
+> > supported, while a NULL 'map_irq' indicates that they aren't? Since they
+> > are always described in pairs, whether it is in the initial commit that
+> > added support for the Cadence PCIe Host controller (used by pci-j721e.c):
+> > https://github.com/torvalds/linux/commit/1b79c5284439
+> > OR the commit which moved the shared 'map_irq' and 'swizzle_irq' defaults
+> > from all the host drivers into the common 'devm_of_pci_bridge_init()'
+> > function:
+> > https://github.com/torvalds/linux/commit/b64aa11eb2dd
+> > I have set both of them to NULL for the sake of consistency.
+> > 
 > 
-> Thanks!
-> 
->>> Just checking, could this patch be accepted, please?  The Lima 
->>> counterpart
->>> has already been accepted. [6]
->> 
->> Thanks for the prod - I have to admit I saw there was discussion about
->> the Lima patch and so just put this on my list to look again later 
->> after
->> the discussion had reached a conclusion.
->> 
->>> The approach in this patch is far from perfect, but it's still fine 
->>> until
->>> there's a better solution, such as harddeps.  I'll continue my 
->>> research
->>> about the possibility for introducing harddeps, which would hopefully
->>> replace quite a few instances of the softdep (ab)use that already 
->>> extend
->>> rather far.  For example, have a look at the commit d5178578bcd4 
->>> (btrfs:
->>> directly call into crypto framework for checksumming) [7] and the 
->>> lines
->>> containing MODULE_SOFTDEP() at the very end of fs/btrfs/super.c. [8]
->> 
->> I agree - it's not perfect, but it's the best we have for now. I hope
->> sometime we'll have a cleaner solution to express dependencies like 
->> this
->> (good luck! ;) ).
-> 
-> Thanks. :)  Implementing harddeps is _relatively_ straightforward, but
-> getting full support for harddeps reach various Linux distributions is
-> going to be an uphill battle without doubt. :)
+> Since both callbacks are populated in the pci/of driver, this consistency won't
+> be visible in the controller drivers. From the functionality pov, setting both
+> callbacks to NULL is *not* required to disable INTx, right?
 
-Another option has become available for expressing additional module
-dependencies, weakdeps. [1][2]  Long story short, weakdeps are similar
-to softdeps, in the sense of telling the initial ramdisk utilities to
-include additional kernel modules, but weakdeps result in no module
-loading being performed by userspace.
+Yes, setting 'swizzle_irq' to NULL isn't required. The execution sequence
+with 'swizzle_irq' set to 'pci_common_swizzle()' is as follows:
 
-Maybe "weak" isn't the best possible word choice (arguably, "soft" also
-wasn't the best word choice), but weakdeps should be a better choice for
-use with Panfrost and governor_simpleondemand, because weakdeps provide
-the required information to the utilities used to generate initial 
-ramdisks,
-while the actual module loading is left to the kernel.
+pci_assign_irq()
+  if (pin) {
+    if (hbrg->swizzle_irq)
+      slot = (*(hbrg->swizzle_irq))(dev, &pin);
+        pci_common_swizzle()
+	  while (!pci_is_root_bus(dev->bus)) <= NOT entered
+	..continue execution similar to 'swizzle_irq' being NULL.
 
-The recent addition of weakdeps renders the previously mentioned 
-harddeps
-obsolete, because weakdeps actually do what we need.  Obviously, "weak"
-doesn't go along very well with the actual nature of the dependency 
-between
-Panfrost and governor_simpleondemand, but it's pretty much just the 
-somewhat
-unfortunate word choice.
+Having 'swizzle_irq' set to 'pci_common_swizzle()' will only result
+in a no-op which could have been avoided by setting it to NULL. So there
+is no difference w.r.t. functionality.
 
-The support for weakdeps has been already added to the kmod [3][4] and
-Dracut [5] userspace utilities.  I'll hopefully add support for weakdeps
-to mkinitcpio [6] rather soon.
-
-Maybe we could actually add MODULE_HARDDEP() as some kind of syntactic
-sugar, which would currently be an alias for MODULE_WEAKDEP(), so the
-actual hard module dependencies could be expressed properly, and 
-possibly
-handled differently in the future, with no need to go back and track all
-such instances of hard module dependencies.
-
-With all this in mind, here's what I'm going to do:
-
-1) Submit a patch that adds MODULE_HARDDEP() as syntactic sugar
-2) Implement support for weakdeps in Arch Linux's mkinitcpio [6]
-3) Depending on what kind of feedback the MODULE_HARDDEP() patch 
-receives,
-    I'll submit follow-up patches for Lima and Panfrost, which will swap
-    uses of MODULE_SOFTDEP() with MODULE_HARDDEP() or MODULE_WEAKDEP()
-
-Looking forward to your thoughts.
-
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/linux/module.h?id=61842868de13aa7fd7391c626e889f4d6f1450bf
-[2] 
-https://lore.kernel.org/linux-kernel/20240724102349.430078-1-jtornosm@redhat.com/T/#u
-[3] 
-https://github.com/kmod-project/kmod/commit/05828b4a6e9327a63ef94df544a042b5e9ce4fe7
-[4] 
-https://github.com/kmod-project/kmod/commit/d06712b51404061eef92cb275b8303814fca86ec
-[5] 
-https://github.com/dracut-ng/dracut-ng/commit/8517a6be5e20f4a6d87e55fce35ee3e29e2a1150
-[6] https://gitlab.archlinux.org/archlinux/mkinitcpio/mkinitcpio
-
->>> If a filesystem driver can rely on the (ab)use of softdeps, which may 
->>> be
->>> fragile or seen as a bit wrong, I think we can follow the same 
->>> approach,
->>> at least until a better solution is available.
->>> 
->>> [6] 
->>> https://cgit.freedesktop.org/drm/drm-misc/commit/?id=0c94f58cef319ad054fd909b3bf4b7d09c03e11c
->>> [7] 
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5178578bcd4
->>> [8] 
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/super.c#n2593
->>> 
->>>> ---
->>>>  drivers/gpu/drm/panfrost/panfrost_drv.c | 1 +
->>>>  1 file changed, 1 insertion(+)
->>>> 
->>>> diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>> b/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>> index ef9f6c0716d5..149737d7a07e 100644
->>>> --- a/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>> +++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>> @@ -828,3 +828,4 @@ module_platform_driver(panfrost_driver);
->>>>  MODULE_AUTHOR("Panfrost Project Developers");
->>>>  MODULE_DESCRIPTION("Panfrost DRM Driver");
->>>>  MODULE_LICENSE("GPL v2");
->>>> +MODULE_SOFTDEP("pre: governor_simpleondemand");
+Regards,
+Siddharth.
 
