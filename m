@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-61740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C112193C5BD
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E44CB93C5BE
 	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D4D1B23BC4
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 213151C21F4D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5438D19CD0C;
-	Thu, 25 Jul 2024 14:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B7219D082;
+	Thu, 25 Jul 2024 14:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0Ojen9Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvUxaiJU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116EC13C816;
-	Thu, 25 Jul 2024 14:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1454519CCF7;
+	Thu, 25 Jul 2024 14:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919290; cv=none; b=V54nWuCIQqVzxLs61GcbjQt4JZgZt1CJyjSFi/cy7TDq957kqZQ/wwVHrDh0aLIpW99+LXvTQ8ZqTZL2/DWXZuenmY9tfHxSNk8Lh2rX6/FDDzauunpER9qzJabX/HINKCt29giXthEN963hzkiuExYryiDgsJHdmkEMTMtProU=
+	t=1721919296; cv=none; b=J4/gwjSvQysEWyeyh1QUXJPy4WBfUyWu20JwqzUQaYfRpKkDkUtXoUPmbohZkw0CB0RtVrbZ7W+R0aD8zX1t/aXgHNL3k9cOtYuar/D+f+qGUaQ5rI/Ga/LManOsElEQta1r/AbwqowWdJX/ukg+TI390vpyX8CMLOYqoIzHDPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919290; c=relaxed/simple;
-	bh=W1TWfIPaOcamgjDQSqFor/TxZNYXXO+pKZspNDlO6P8=;
+	s=arc-20240116; t=1721919296; c=relaxed/simple;
+	bh=GTiSRRhSt3XaeT0J/CLWykICNBRlR2O3uvp3mFToY2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6opeNcm2s4t2XfESoCs3/vwxQAvln5yAKLsBYydHwBkoj4u1LSMycLuAPcB7jEjo9ooJXqJYn4PUfYn89rVRJ/4EUUhlr5RXnjM6Bg03ThjfPfSZQDtT3PD4lUKsGl2047XN3NYN/uEqLWpAlgYAxLqe9WWAPH6bWP74fvq3/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0Ojen9Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFE5C116B1;
-	Thu, 25 Jul 2024 14:54:49 +0000 (UTC)
+	 MIME-Version; b=Dp2238bDU/Rn9mzZ0/vJpguF4Q1bF8kvyofnmJQxZRtZhjDq/DG7NFkbYx7ux1RkgURACpivgFn4/rMcFikSDo248qDZerd1nSLZ+PU7F17uolJGODTwWnhhvws5eHfPdtuKJI8xtH0cLzUkbbskCW/ffsy9K2njKkR7lrWuC/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvUxaiJU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA9FC116B1;
+	Thu, 25 Jul 2024 14:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919289;
-	bh=W1TWfIPaOcamgjDQSqFor/TxZNYXXO+pKZspNDlO6P8=;
+	s=korg; t=1721919296;
+	bh=GTiSRRhSt3XaeT0J/CLWykICNBRlR2O3uvp3mFToY2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u0Ojen9ZyCqVy5qZSDRkAgJeCF3T8Ss830to2pKM6WHgFhjQvznwLP4Ns7+U6ImVE
-	 XhKKa7nXYnSl/T2UUCtUPvhQM3OKsT+WN2pS4qpeEqUblc6RcgkOemJ1q06d35YFHG
-	 MEJdbbf5lMOS7XVzZeVmYoXzFp/84dLwucdQhiNg=
+	b=wvUxaiJUmHr3LDJ12JHEGjZlvQRvvqZzErt35nF0QkRilH3eJ6Jo+Etmyqv8iLbJu
+	 dpqsVbl0JMXa6MLZG84o6pxUl4IRBOuGavWCZUhtTWyXvarmt4wnRULqHZ6eVSKNzL
+	 xbP/vbtLRStlLw04eTbtIjdG5nThZbXN1Ykqy4NI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Seunghun Han <kkamagui@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 82/87] ALSA: hda/realtek: Enable headset mic on Positivo SU C1400
-Date: Thu, 25 Jul 2024 16:37:55 +0200
-Message-ID: <20240725142741.532059031@linuxfoundation.org>
+Subject: [PATCH 5.15 83/87] ALSA: hda/realtek: Fix the speaker output on Samsung Galaxy Book Pro 360
+Date: Thu, 25 Jul 2024 16:37:56 +0200
+Message-ID: <20240725142741.569335318@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
 References: <20240725142738.422724252@linuxfoundation.org>
@@ -65,16 +65,17 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Seunghun Han <kkamagui@gmail.com>
 
-commit 8fc1e8b230771442133d5cf5fa4313277aa2bb8b upstream.
+commit d7063c08738573fc2f3296da6d31a22fa8aa843a upstream.
 
-Positivo SU C1400 is equipped with ALC256, and it needs
-ALC269_FIXUP_ASPIRE_HEADSET_MIC quirk to make its headset mic work.
+Samsung Galaxy Book Pro 360 (13" 2022 NT935QDB-KC71S) with codec SSID
+144d:c1a4 requires the same workaround to enable the speaker amp
+as other Samsung models with the ALC298 codec.
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Signed-off-by: Seunghun Han <kkamagui@gmail.com>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240712180642.22564-1-edson.drosdeck@gmail.com
+Link: https://patch.msgid.link/20240718080908.8677-1-kkamagui@gmail.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -83,14 +84,14 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -9273,6 +9273,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
- 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
- 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x10ec, 0x119e, "Positivo SU C1400", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+@@ -9286,6 +9286,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x144d, 0xc189, "Samsung Galaxy Flex Book (NT950QCG-X716)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc18a, "Samsung Galaxy Book Ion (NP930XCJ-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc1a3, "Samsung Galaxy Book Pro (NP935XDB-KC1SE)", ALC298_FIXUP_SAMSUNG_AMP),
++	SND_PCI_QUIRK(0x144d, 0xc1a4, "Samsung Galaxy Book Pro 360 (NT935QBD)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc1a6, "Samsung Galaxy Book Pro 360 (NP930QBD)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc740, "Samsung Ativ book 8 (NP870Z5G)", ALC269_FIXUP_ATIV_BOOK_8),
+ 	SND_PCI_QUIRK(0x144d, 0xc812, "Samsung Notebook Pen S (NT950SBE-X58)", ALC298_FIXUP_SAMSUNG_AMP),
 
 
 
