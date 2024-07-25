@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FBE93C4F8
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC45293C53C
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DCBE1F232AA
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19A081C21EB8
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101101E89C;
-	Thu, 25 Jul 2024 14:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B9619B5B5;
+	Thu, 25 Jul 2024 14:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9z+4taE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iv0SUQim"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7368468;
-	Thu, 25 Jul 2024 14:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6A413A409;
+	Thu, 25 Jul 2024 14:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918747; cv=none; b=ltQ8qRUk6uWFzalWQURx63CZrhKbFgFV5cUeGqZDiPgkUsQKvCLSfenw1YO91Qvvc7+mHl2PpAdlGhF9L5SbGVQ99o3Uu0KVQARMNd0FzRN1kXsnsm7Rnfo0FNYK21euMzMUnGmNm8N26G5HLEkwE2OY9BXHSPq1bwMD/jgI5hU=
+	t=1721918932; cv=none; b=bhL2j992HrSmDjRCxkmW/T/KZuk8SGhhBBhxiud0r8kpKeZXDN5DPWTOdvn7sqet4vsK/VePjfhLVEx0JbhvaoqRGDrnOn2fLdMjn1hKUsrtnLXwZJNg66Nut33+4I/yXh9g5k+OyJykNixG8gAZFN/jv1w3oXfITN2kH6lcXcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918747; c=relaxed/simple;
-	bh=lnguMXchgzAt07WoGtEhMN0vhfHIK3jWwkl0wvinrWA=;
+	s=arc-20240116; t=1721918932; c=relaxed/simple;
+	bh=LOfQMc+vSpelZIohb9VXq+gGDw1HbMsMTHjkzEabjNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxYwP7YB8wp+3N0k5JLmW6n1wfNeuFPtlPBN8+XofnadVB3vChO1PttQ+pwdKUaeTUfjQcHJE9EwJrQuj/uEJ26M9egBckfVMJCYVExfh2KteoPeyOEK89bxoRCvcjJUWdICN2K+IQnSxTkbiRmrI+P+ECs/IZMiOTSkb5MD5VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9z+4taE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F94C116B1;
-	Thu, 25 Jul 2024 14:45:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ihG4ZcteVQLOVFjWjQB2WzxB+htoHh3/3HMXhmW1BRxGbSQcVYQYTt/YJZvbhiq6chV2C9/XyQhq5770NYcxb+IGkXxQKmnBTCBblV2sGCLBBr0elzSc019rUn0rpYnSAyN1oOYGfJfBV+yG4S36irDjs65sfLLg4zE8kNytWGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iv0SUQim; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34BCC116B1;
+	Thu, 25 Jul 2024 14:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918747;
-	bh=lnguMXchgzAt07WoGtEhMN0vhfHIK3jWwkl0wvinrWA=;
+	s=korg; t=1721918932;
+	bh=LOfQMc+vSpelZIohb9VXq+gGDw1HbMsMTHjkzEabjNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S9z+4taEAd9nPRueiaTk46NcSRpa16PpRJDM6XVWm99dJils+eWQW4z9WU1BzPrJX
-	 hdzISyhSh2QcDjcKtxE4smgQJdxv0OLv95JAeMcayqxx1GzU+3Fz/cYS0MxwsnrhHn
-	 7IaeQBXFVGySnPcTj73uWa5AjwVgdw1Xec6pFnUg=
+	b=Iv0SUQimI46mHvRyaMUf6mOOViaDT1ZxIIAMmubV73c9VPiUp88ePdpuBW7R2cnSo
+	 tPagKGbpxjVzikaW1mD2t+7JpKifqs5Wt0XtaCHvcImADs8KF2Efv7jxD/UdCsW55F
+	 IYo1jXnvwF3QZA6+4PwK6Wf85RfeY6IqFk1jLmww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 10/16] arm64: dts: qcom: msm8996: Disable SS instance in Parkmode for USB
+	Daniele Palmas <dnlplm@gmail.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 33/59] net: usb: qmi_wwan: add Telit FN912 compositions
 Date: Thu, 25 Jul 2024 16:37:23 +0200
-Message-ID: <20240725142729.292177176@linuxfoundation.org>
+Message-ID: <20240725142734.516763620@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.905379352@linuxfoundation.org>
-References: <20240725142728.905379352@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-commit 44ea1ae3cf95db97e10d6ce17527948121f1dd4b upstream.
+[ Upstream commit 77453e2b015b5ced5b3f45364dd5a72dfc3bdecb ]
 
-For Gen-1 targets like MSM8996, it is seen that stressing out the
-controller in host mode results in HC died error:
+Add the following Telit FN912 compositions:
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
+0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3000 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for MSM8996 to mitigate this issue.
+0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3001 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Cc: stable@vger.kernel.org
-Fixes: 1e39255ed29d ("arm64: dts: msm8996: Add device node for qcom,dwc3")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-8-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Link: https://patch.msgid.link/20240625102236.69539-1-dnlplm@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/qmi_wwan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -3082,6 +3082,7 @@
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
- 				snps,is-utmi-l1-suspend;
-+				snps,parkmode-disable-ss-quirk;
- 				tx-fifo-resize;
- 			};
- 		};
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 4dd1a9fb4c8a0..d2a8238e144a6 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1312,6 +1312,8 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1260, 2)},	/* Telit LE910Cx */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1261, 2)},	/* Telit LE910Cx */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1900, 1)},	/* Telit LN940 series */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3000, 0)},	/* Telit FN912 series */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3001, 0)},	/* Telit FN912 series */
+ 	{QMI_FIXED_INTF(0x1c9e, 0x9801, 3)},	/* Telewell TW-3G HSPA+ */
+ 	{QMI_FIXED_INTF(0x1c9e, 0x9803, 4)},	/* Telewell TW-3G HSPA+ */
+ 	{QMI_FIXED_INTF(0x1c9e, 0x9b01, 3)},	/* XS Stick W100-2 from 4G Systems */
+-- 
+2.43.0
+
 
 
 
