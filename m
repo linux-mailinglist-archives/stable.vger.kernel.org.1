@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B3093C567
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 554C593C48A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 115B01F2161C
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00DED1F219A7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FF14315F;
-	Thu, 25 Jul 2024 14:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9569619D084;
+	Thu, 25 Jul 2024 14:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUTTXmZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVVHYdYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504418468;
-	Thu, 25 Jul 2024 14:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D1019A29C;
+	Thu, 25 Jul 2024 14:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919058; cv=none; b=YPhJQNI3IcxjvfihSOhZfcVoJwLiZ5Vce6hnilSfsheXppQZtNhEZw0XsMSIMcVWXTErptsHcn6qWLCe4Pj6afz9pDDU2crc8MmaK/kS+mbkkDdlM1mSapr3eu1f5QzJEvq9acy0NhZeNLncfmbGKqZqxuQQfIEwbImva4Uhl0Y=
+	t=1721918445; cv=none; b=pnT30Slp4VsX+y+CzYpSW3Ta77nTN5ExNnyr5itO0jZcckFNItWzMxI2T12+h2vf42v5mO5AhqLJpZYziJyOKJ8Kxu0K/6e/K7c5AIc0ccp2lPzd13QmE1L05WyD3qlsnBtPKC9k6Ih5BBxu73aZz3TVOtxWnvoU0whgc8oQg6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919058; c=relaxed/simple;
-	bh=tGiSg8O/kx7c8knuE6+RgYpQds0VhpRXEruzbJobg5M=;
+	s=arc-20240116; t=1721918445; c=relaxed/simple;
+	bh=ueuv5fCSIT6F09ofOwlxSZ0Y16U2VBd8Cpcjke/XqYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sv1TDPn8t3mzFy3VE9WdWy4jJ8n/qPQrvvJmJ6Gkzt6GnkNK4yGJd4LR8f3PmkXFKfo5QD34WOKJjhx4ZSxZjneqjDC1/0FcRrITFZP73lZMxPtkZ6updQxORB258jM76Hd/hj9tBIKZhM3kvIH/bm8OzmaiMCGZchMkVJdFhdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUTTXmZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD591C32782;
-	Thu, 25 Jul 2024 14:50:57 +0000 (UTC)
+	 MIME-Version; b=MCxdeTS9PMSIo5DxSaMWtChcskNPkbIeU41fxLPNFYB77+wFGn4o146xHPEGVZM/DuB/CL9EquQgRKeqY8oom3Yf65noEK04J35b6hryasPWY275h9bcAQ+7d1B8n4NMkdLzyedM2ZYdYxFIGMl8tINUbt2Dmv6h2YqlvI0m540=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVVHYdYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED88C116B1;
+	Thu, 25 Jul 2024 14:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919058;
-	bh=tGiSg8O/kx7c8knuE6+RgYpQds0VhpRXEruzbJobg5M=;
+	s=korg; t=1721918444;
+	bh=ueuv5fCSIT6F09ofOwlxSZ0Y16U2VBd8Cpcjke/XqYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUTTXmZVMsE1enityW1JHH+iy6WiwEdbFLQU8k+g2Q4WvCSCy5D7SMGM21GbU1CIX
-	 eqMzlgdzS0G7bJM2Rkns6FnJhusRo5/+8tTJqlHUQnMucVM/xP/dTgjMXsqMJnHouL
-	 0rR0lJCRlreRmF3/pwKqUpG/slhgFIIA7geICB2o=
+	b=oVVHYdYz81mXyFmwUGBRuYuBWM2yICXbXuSGe/F0tfTPjftuYgWENZxmyrBanUisj
+	 kSekRtt0DhC/j7Ckt9cy6zWwBJamCh+II3W1HNAWz0xOFf+qNKjZYM2U6V5UKgmoJw
+	 8CQRJqPzeHbvtP4QWvTsg81WogooZxV/16GsUI1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Yunshui Jiang <jiangyunshui@kylinos.cn>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 11/87] ACPI: EC: Abort address space access upon error
+Subject: [PATCH 4.19 21/33] net: mac802154: Fix racy device stats updates by DEV_STATS_INC() and DEV_STATS_ADD()
 Date: Thu, 25 Jul 2024 16:36:44 +0200
-Message-ID: <20240725142738.856495273@linuxfoundation.org>
+Message-ID: <20240725142729.316208523@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Yunshui Jiang <jiangyunshui@kylinos.cn>
 
-[ Upstream commit f6f172dc6a6d7775b2df6adfd1350700e9a847ec ]
+[ Upstream commit b8ec0dc3845f6c9089573cb5c2c4b05f7fc10728 ]
 
-When a multi-byte address space access is requested, acpi_ec_read()/
-acpi_ec_write() is being called multiple times.
+mac802154 devices update their dev->stats fields locklessly. Therefore
+these counters should be updated atomically. Adopt SMP safe DEV_STATS_INC()
+and DEV_STATS_ADD() to achieve this.
 
-Abort such operations if a single call to acpi_ec_read() /
-acpi_ec_write() fails, as the data read from / written to the EC
-might be incomplete.
-
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Yunshui Jiang <jiangyunshui@kylinos.cn>
+Message-ID: <20240531080739.2608969-1-jiangyunshui@kylinos.cn>
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/mac802154/tx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 472418a0e0cab..1896ec78e88c7 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1303,10 +1303,13 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 	if (ec->busy_polling || bits > 8)
- 		acpi_ec_burst_enable(ec);
+diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
+index 2f873a0dc5836..0f192174a5693 100644
+--- a/net/mac802154/tx.c
++++ b/net/mac802154/tx.c
+@@ -42,8 +42,8 @@ void ieee802154_xmit_worker(struct work_struct *work)
+ 	if (res)
+ 		goto err_tx;
  
--	for (i = 0; i < bytes; ++i, ++address, ++value)
-+	for (i = 0; i < bytes; ++i, ++address, ++value) {
- 		result = (function == ACPI_READ) ?
- 			acpi_ec_read(ec, address, value) :
- 			acpi_ec_write(ec, address, *value);
-+		if (result < 0)
-+			break;
-+	}
+-	dev->stats.tx_packets++;
+-	dev->stats.tx_bytes += skb->len;
++	DEV_STATS_INC(dev, tx_packets);
++	DEV_STATS_ADD(dev, tx_bytes, skb->len);
  
- 	if (ec->busy_polling || bits > 8)
- 		acpi_ec_burst_disable(ec);
+ 	ieee802154_xmit_complete(&local->hw, skb, false);
+ 
+@@ -94,8 +94,8 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
+ 			goto err_tx;
+ 		}
+ 
+-		dev->stats.tx_packets++;
+-		dev->stats.tx_bytes += len;
++		DEV_STATS_INC(dev, tx_packets);
++		DEV_STATS_ADD(dev, tx_bytes, len);
+ 	} else {
+ 		local->tx_skb = skb;
+ 		queue_work(local->workqueue, &local->tx_work);
 -- 
 2.43.0
 
