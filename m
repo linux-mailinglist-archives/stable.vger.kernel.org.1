@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-61549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537C993C4E2
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA5093C50E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:46:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF647B25972
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C964028220F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D9319D893;
-	Thu, 25 Jul 2024 14:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BA5198A2C;
+	Thu, 25 Jul 2024 14:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdaYaOoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCDZbnwm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D868819D066;
-	Thu, 25 Jul 2024 14:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7FB19D082;
+	Thu, 25 Jul 2024 14:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918673; cv=none; b=cnceyaBUqmrYhZ0jxz+LeJADVAkf7uiBAeYTBBZeax9htPD4jgIsEZpVRt6EUXar45iVzfAeXJHoQPSh8l64ba/xMejd6xHZ0Ia4UmM5PMBZn0ixr83/Y+tT4EtzMu+xiKjYSJNv+DZn1oWXtqc6P4Ui7Nl2CO/HtJNcsOxwAO8=
+	t=1721918800; cv=none; b=uc/h8WmlRwifxib0uutThWzIpUn9QndSvuAUN1TcZ7VlHKgxL5n272HtZud3U1sMk9mxipiPiBrH5UhPUr0lMDL2jakMA0UMQQlU3H9Cuwo6Ff8E66ooqFWxTUtltXlZdiYtvNY+UfWMBe/hLMvq1q4jO/VPFgsvTgCwxakhJgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918673; c=relaxed/simple;
-	bh=gyPSBdlcGnzyUZ8h9gqSW1CMV3vL26Es2ZE79N72KB8=;
+	s=arc-20240116; t=1721918800; c=relaxed/simple;
+	bh=UUsdFs6PsQVSMbKkaswn2Js4nJ9Q+tUxEGjvZiZoFEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lgwQyLSsetPpE0fCu4ZTgoBMUII1HASlbQsU92dWDQMUo17t+0F9aORNJpvQO4u/NsIB7TEAildgC3zYZtKwLVuni1WXnpmi9ayCKsGnAu/Q6T9XD2vUprk0fPyBk/NaqORLvZnVDdi+ajD8JSY/zbS5kWx0CELtAtcnsG4fqP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdaYaOoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D3CC116B1;
-	Thu, 25 Jul 2024 14:44:33 +0000 (UTC)
+	 MIME-Version; b=EzDQeE8qzdqGXXvlEsdms5JSfNxHCIfqpUZroSVCX3+hmG4C6AraH7gl1oNpk/QYeES+XNWyXQzvwl9CDUZKN/753NGqB4dXd48nwHfyR0pbwAlSlrJLq6e0EbH5VFhWWFDbl1D3P9K9To1EHSRsItTpYutkVF3vT9a/nej+iN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCDZbnwm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41E7C116B1;
+	Thu, 25 Jul 2024 14:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918673;
-	bh=gyPSBdlcGnzyUZ8h9gqSW1CMV3vL26Es2ZE79N72KB8=;
+	s=korg; t=1721918800;
+	bh=UUsdFs6PsQVSMbKkaswn2Js4nJ9Q+tUxEGjvZiZoFEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OdaYaOoLuAa/CDJ+9QlQnRXiIKvyHXyDGrXaSIFKWd0N4Qw0HWcS8WXHwoQikVVjs
-	 Xvql+Ge5pgD4m0VunuHU+nklARBtJDoofPEQ23ZrZcDJA51cNyu27uk5xRbvaFgh7X
-	 omDI+3LzMs/IBAlkxtYEotIXvxa3S59w2Xe72La0=
+	b=kCDZbnwmKVYpFgLqylLRpAvteBVHr8NcT9S+Ecel0CPAc97p+xk3EyWo/2oV1VIqi
+	 U6iBzRpnBM9oeIBDccrwcOZB6ifb9fEpshWAFvB9z3xVJRt6CmRsnUFM2VFJggE4bx
+	 NnS4JsdV1GVdr+kkrBDF1H3Nk5Y1Qg7OntsYTgts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	lei lu <llfamsec@gmail.com>,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.1 05/13] fs/ntfs3: Validate ff offset
-Date: Thu, 25 Jul 2024 16:37:14 +0200
-Message-ID: <20240725142728.239628989@linuxfoundation.org>
+Subject: [PATCH 6.9 05/29] fs/ntfs3: Add a check for attr_names and oatbl
+Date: Thu, 25 Jul 2024 16:37:15 +0200
+Message-ID: <20240725142731.884686984@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.029052310@linuxfoundation.org>
-References: <20240725142728.029052310@linuxfoundation.org>
+In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
+References: <20240725142731.678993846@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: lei lu <llfamsec@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 50c47879650b4c97836a0086632b3a2e300b0f06 upstream.
+commit 702d4930eb06dcfda85a2fa67e8a1a27bfa2a845 upstream.
 
-This adds sanity checks for ff offset. There is a check
-on rt->first_free at first, but walking through by ff
-without any check. If the second ff is a large offset.
-We may encounter an out-of-bound read.
+Added out-of-bound checking for *ane (ATTR_NAME_ENTRY).
 
-Signed-off-by: lei lu <llfamsec@gmail.com>
+Reported-by: lei lu <llfamsec@gmail.com>
+Fixes: 865e7a7700d93 ("fs/ntfs3: Reduce stack usage")
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/fslog.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ntfs3/fslog.c |   38 ++++++++++++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
 --- a/fs/ntfs3/fslog.c
 +++ b/fs/ntfs3/fslog.c
-@@ -724,7 +724,8 @@ static bool check_rstbl(const struct RES
+@@ -3722,6 +3722,8 @@ int log_replay(struct ntfs_inode *ni, bo
  
- 	if (!rsize || rsize > bytes ||
- 	    rsize + sizeof(struct RESTART_TABLE) > bytes || bytes < ts ||
--	    le16_to_cpu(rt->total) > ne || ff > ts || lf > ts ||
-+	    le16_to_cpu(rt->total) > ne ||
-+			ff > ts - sizeof(__le32) || lf > ts - sizeof(__le32) ||
- 	    (ff && ff < sizeof(struct RESTART_TABLE)) ||
- 	    (lf && lf < sizeof(struct RESTART_TABLE))) {
- 		return false;
-@@ -754,6 +755,9 @@ static bool check_rstbl(const struct RES
- 			return false;
+ 	u64 rec_lsn, checkpt_lsn = 0, rlsn = 0;
+ 	struct ATTR_NAME_ENTRY *attr_names = NULL;
++	u32 attr_names_bytes = 0;
++	u32 oatbl_bytes = 0;
+ 	struct RESTART_TABLE *dptbl = NULL;
+ 	struct RESTART_TABLE *trtbl = NULL;
+ 	const struct RESTART_TABLE *rt;
+@@ -3736,6 +3738,7 @@ int log_replay(struct ntfs_inode *ni, bo
+ 	struct NTFS_RESTART *rst = NULL;
+ 	struct lcb *lcb = NULL;
+ 	struct OPEN_ATTR_ENRTY *oe;
++	struct ATTR_NAME_ENTRY *ane;
+ 	struct TRANSACTION_ENTRY *tr;
+ 	struct DIR_PAGE_ENTRY *dp;
+ 	u32 i, bytes_per_attr_entry;
+@@ -4314,17 +4317,40 @@ check_attr_table:
+ 	lcb = NULL;
  
- 		off = le32_to_cpu(*(__le32 *)Add2Ptr(rt, off));
+ check_attribute_names2:
+-	if (rst->attr_names_len && oatbl) {
+-		struct ATTR_NAME_ENTRY *ane = attr_names;
+-		while (ane->off) {
++	if (attr_names && oatbl) {
++		off = 0;
++		for (;;) {
++			/* Check we can use attribute name entry 'ane'. */
++			static_assert(sizeof(*ane) == 4);
++			if (off + sizeof(*ane) > attr_names_bytes) {
++				/* just ignore the rest. */
++				break;
++			}
 +
-+		if (off > ts - sizeof(__le32))
-+			return false;
++			ane = Add2Ptr(attr_names, off);
++			t16 = le16_to_cpu(ane->off);
++			if (!t16) {
++				/* this is the only valid exit. */
++				break;
++			}
++
++			/* Check we can use open attribute entry 'oe'. */
++			if (t16 + sizeof(*oe) > oatbl_bytes) {
++				/* just ignore the rest. */
++				break;
++			}
++
+ 			/* TODO: Clear table on exit! */
+-			oe = Add2Ptr(oatbl, le16_to_cpu(ane->off));
++			oe = Add2Ptr(oatbl, t16);
+ 			t16 = le16_to_cpu(ane->name_bytes);
++			off += t16 + sizeof(*ane);
++			if (off > attr_names_bytes) {
++				/* just ignore the rest. */
++				break;
++			}
+ 			oe->name_len = t16 / sizeof(short);
+ 			oe->ptr = ane->name;
+ 			oe->is_attr_name = 2;
+-			ane = Add2Ptr(ane,
+-				      sizeof(struct ATTR_NAME_ENTRY) + t16);
+ 		}
  	}
  
- 	return true;
 
 
 
