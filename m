@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2475593C4A1
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8AD093C453
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56CA31C21D40
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EE551F21EFA
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB07819D085;
-	Thu, 25 Jul 2024 14:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EC819CD17;
+	Thu, 25 Jul 2024 14:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TucTU+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGIJU2pS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895E219AA5F;
-	Thu, 25 Jul 2024 14:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CCF199E9F;
+	Thu, 25 Jul 2024 14:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918489; cv=none; b=n87VjBZSc/9ifQEiZXK7MH+TZSZtN77g2oJZ+KjkFeAKlck1SekWY3mz0v6NUvjveV3IbHUTN88xlO/AzwnnlYCkSluZLjMq5Wb/K7sqt9MLau1N7otzzi5nYjr8OUy0oztSnWcK+ymH2Gc9TxRlxfa/nPwbMxgYV8mYzB6QbLQ=
+	t=1721918314; cv=none; b=LWTHMAT2g5hl15oj6oRg1KXJpk2A+94GzPH4WbWBh/yBVBYLe/mLovB13XyHvPnZvZmRT7OtKupDKwrZb8i5DUtmXtVjd+Nh+DzKAKuhw0XgRB6D7YDtBe1x8N6BY72bV9A+NoglgjZfANSkqDJPjQZzAEcvW3vgqMYet9NO+AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918489; c=relaxed/simple;
-	bh=/x/48g2TsdmPwd7NEnVz8eFobsrW4l5Gcg4Zkg8Gq4w=;
+	s=arc-20240116; t=1721918314; c=relaxed/simple;
+	bh=JSlUaw2LzySg5kC8NJvXS759zktC8iz4ESpV8mpACmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cHcVfGMI3kiFldYlW+Z3NSAM9fS7Wfl5LxY2OrV3wfwVS/Akm96DaPLJ5/sf/8WKqBe+aR0b9x0O6E5iaQnBCjab2DyuhGMw1+/w060Jkozk+/7Vm+MBMNd2N9pwg3u+PCBixaTWUsyPpdW0hi5aLPxSX0JArLWyb9w1W5uL6X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TucTU+U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF88C116B1;
-	Thu, 25 Jul 2024 14:41:28 +0000 (UTC)
+	 MIME-Version; b=tVTaXI9Op+mXqCYhfUkOBOzlDdRbn8lF2EPhMGGvPKq59K72OTgIfvvRlNGYDIBqrQyYLWZZV/OC6Y1YSjjhCBRtpUYLOMC3REVdvkzyvdarlMSpqQpSg2Sar3R3RpYOMSzrJqbS+935kdxZDZoTUI8YR5j1p+zSZXQS5ZVASZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGIJU2pS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A73C116B1;
+	Thu, 25 Jul 2024 14:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918489;
-	bh=/x/48g2TsdmPwd7NEnVz8eFobsrW4l5Gcg4Zkg8Gq4w=;
+	s=korg; t=1721918313;
+	bh=JSlUaw2LzySg5kC8NJvXS759zktC8iz4ESpV8mpACmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0TucTU+UiucmdhBDmR6mZGXZAiheAb8O/j8dYP8NFE/erDuxfjOC8EYgnYfgM8yoG
-	 6H2LJWAemCSKaG8LdLijVcilBeRiXh51ZMBpgYPbVUzk0OTYGvnjOK9U2WQcLdRbx5
-	 n9V9Nug2itcN4KPyRDQb5+H86Zs6UpgRA9VHcZA4=
+	b=UGIJU2pSt/haLOaa5meA2WNCcRN7Dcp5TXNvysItAb4Y//6atDfPDgsB+ianexhr4
+	 0mgiRTfn/ke9+zr/Y2VvQs5fSSENm66PMGCY2HFbA4YKz3wV9bvhcAB078abGKg2Oz
+	 t3+FWy2DYB8Skx+a955eqN9JJwa3vDlGJJF8fddc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 05/33] wifi: mac80211: mesh: init nonpeer_pm to active by default in mesh sdata
+	Doug Anderson <dianders@google.com>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 12/29] arm64: dts: qcom: sc7280: Disable SuperSpeed instances in park mode
 Date: Thu, 25 Jul 2024 16:36:28 +0200
-Message-ID: <20240725142728.721654222@linuxfoundation.org>
+Message-ID: <20240725142732.277640941@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit 6f6291f09a322c1c1578badac8072d049363f4e6 ]
+commit 3d930f1750ce30a6c36dbc71f8ff7e20322b94d7 upstream.
 
-With a ath9k device I can see that:
-	iw phy phy0 interface add mesh0 type mp
-	ip link set mesh0 up
-	iw dev mesh0 scan
+On SC7280, in host mode, it is observed that stressing out controller
+results in HC died error:
 
-Will start a scan with the Power Management bit set in the Frame Control Field.
-This is because we set this bit depending on the nonpeer_pm variable of the mesh
-iface sdata and when there are no active links on the interface it remains to
-NL80211_MESH_POWER_UNKNOWN.
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
 
-As soon as links starts to be established, it wil switch to
-NL80211_MESH_POWER_ACTIVE as it is the value set by befault on the per sta
-nonpeer_pm field.
-As we want no power save by default, (as expressed with the per sta ini values),
-lets init it to the expected default value of NL80211_MESH_POWER_ACTIVE.
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instances in park mode for SC7280 to mitigate this issue.
 
-Also please note that we cannot change the default value from userspace prior to
-establishing a link as using NL80211_CMD_SET_MESH_CONFIG will not work before
-NL80211_CMD_JOIN_MESH has been issued. So too late for our initial scan.
-
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Link: https://msgid.link/20240527141759.299411-1-nico.escande@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Doug Anderson <dianders@google.com>
+Cc: stable@vger.kernel.org
+Fixes: bb9efa59c665 ("arm64: dts: qcom: sc7280: Add USB related nodes")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240604060659.1449278-3-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/mesh.c | 1 +
+ arch/arm64/boot/dts/qcom/sc7280.dtsi |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 3162f955f3ae2..c9a5271d9b59d 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1454,6 +1454,7 @@ void ieee80211_mesh_init_sdata(struct ieee80211_sub_if_data *sdata)
- 	ifmsh->last_preq = jiffies;
- 	ifmsh->next_perr = jiffies;
- 	ifmsh->csa_role = IEEE80211_MESH_CSA_ROLE_NONE;
-+	ifmsh->nonpeer_pm = NL80211_MESH_POWER_ACTIVE;
- 	/* Allocate all mesh structures when creating the first mesh interface. */
- 	if (!mesh_allocated)
- 		ieee80211s_init();
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -4150,6 +4150,7 @@
+ 				iommus = <&apps_smmu 0xe0 0x0>;
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
++				snps,parkmode-disable-ss-quirk;
+ 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 				maximum-speed = "super-speed";
 
 
 
