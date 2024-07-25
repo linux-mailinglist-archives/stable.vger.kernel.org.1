@@ -1,271 +1,145 @@
-Return-Path: <stable+bounces-61381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C3593C109
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 13:42:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FE793C20E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA9D9B21AF5
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 11:42:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76FFF1C21541
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 12:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D0C199393;
-	Thu, 25 Jul 2024 11:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B6F1993A4;
+	Thu, 25 Jul 2024 12:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OEhC+VbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDTZGL0Z"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6888819925A
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 11:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B821991DC
+	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721907752; cv=none; b=XyPo5iWOYWg6nbh23tV3dLY+a5KmYz1U63gNBJteJ59S82AsSoi1A0tAbAv7b92jwk0kx2fVK2+lTiO0NVzdE/IX+u2afn1t2WrWMNhBclSdPAnyJ/o/B9gyDf0Bru9qN089/8lgoZE5S3Dl9gAo5FcGukXvSs5DVxTd+I2B0QY=
+	t=1721910519; cv=none; b=VdPO+dLEE8N4IhkCf76VPYFeQZuRfsHLy+tGDsTVxyp3do20P1NKGUIgGi5vDpVXygOdH+e2CwUhJdJUFuc0a+0io7HiHE9Sr9GfO2GAOTbgcvDxU75AHkM+KX86OFDM3b540Z7P4R+4xuy7UD8KX0KHs+CKB/JJMEXFfqhOMVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721907752; c=relaxed/simple;
-	bh=y8Tzkjt3WEFzvpKh9C7Qb8XLQEz4aUjZ0wIgoulmCOU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bpd4EPFSaYsOY5Cfk7WabDKdhDSZtDXiC6rqklk2wh6ONoC99SF4C697u8C6BoL9SUvK5YgRFBIhZoXqvOQSvRw1k6/wBt4pGtEFu9ZVJ+r61g88MIHDC47AwzMzE1mN34zzV69VCM09EUxjGfoVguKIz0R88jv6OKNdekCpoeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OEhC+VbS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721907749;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n5omChVN0d3O1VEI9wuk2MqAV/WoccHrIriVgLmhRRE=;
-	b=OEhC+VbSpkxZ577ZRLwtKs7i/2qXHDT5AJCT7PQZzS/zRA1UhClH+VCxc93ZeNu9ZcDTVV
-	fDryunI1bR2uZu+9y8QRKJ5pTAqTnoYiJc+pho9PhwxPoI4FAWmBPNkOfk5crqybN2/vv/
-	IgucBqXYx5KIgUZpcjQpwbTLcQN9m6A=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-oQ576cPmOgW30bLs2DQMTg-1; Thu, 25 Jul 2024 07:42:28 -0400
-X-MC-Unique: oQ576cPmOgW30bLs2DQMTg-1
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a7ab4817f34so37681466b.2
-        for <stable@vger.kernel.org>; Thu, 25 Jul 2024 04:42:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721907747; x=1722512547;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n5omChVN0d3O1VEI9wuk2MqAV/WoccHrIriVgLmhRRE=;
-        b=nzcT2mrzIKuywMPdnWPHGpMTc1ijitEnOGRjbcbQprcMZa2xqKX7mFI9uOqllCL6jC
-         Ek48YMRm2ii8Oj5BwxVwjhymusFXWvhXrrzzBbgiZ2jc5I64+aVtnSsI3mdcB3bPCO7p
-         URyBPJTCQ0IXG0K2upE+StrKfvN1jFBQHTWObp8K/8pmxx+QUrna9oGdk9c6Y8KTpUNE
-         FvEPNBKGy7ht1bOSCVAItvnW8EogjCjgi9dp32SEhupL9vWylL2QsK5vdEhkhq3llHsK
-         YDdxwKIhvxvB6p12PB2FdoshWc7K5s11xrwmeLqCRsDQGxWUvvzPPuGxyPySDlM7lTo7
-         f1kA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/sa9qcRnhMsBE90pncIFvleCUb55QOc3Y+yCIEP7LKAiTyoRoFO4p8bTohcT8Nc4IIWRxnTRjMcFA0PXJtdbuCFyXpSoG
-X-Gm-Message-State: AOJu0YyxZ/T6h5v7PCtzSAK4djWLZefp8PkWcbyeimy/o6gKCH9iOpI/
-	3Cz475zcFkzbx9E3jd9a92ZQHelHV8gFfaKMlmWvgwqqhfA4U8Rpf/Xn1A956kJ0Ac35uf+WGOV
-	zXHuVFG0A+sgne3ilPigql1/3flJyLS00k1J47rupOAvlkF87kryvnJNk8dGXG+dasSJDJAuHw2
-	ViBeMbXZH4X4V/cx+QJa9f4y4VNn5e
-X-Received: by 2002:a17:906:3919:b0:a72:633d:5fd6 with SMTP id a640c23a62f3a-a7ac51c32e7mr125613066b.32.1721907746848;
-        Thu, 25 Jul 2024 04:42:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEmadhxxx575qyx8hqVbxwuDtzxrO4Wi+b1xdVgOFO4thCx7wcJ83rXORBI0bEPquJCJWR0cI3H8T0sD2M942g=
-X-Received: by 2002:a17:906:3919:b0:a72:633d:5fd6 with SMTP id
- a640c23a62f3a-a7ac51c32e7mr125611566b.32.1721907746257; Thu, 25 Jul 2024
- 04:42:26 -0700 (PDT)
+	s=arc-20240116; t=1721910519; c=relaxed/simple;
+	bh=O1/5TZ4r319GSiuyybINOsR+FG0zuqV8OLhKc+3f3uE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i/gFw5hiJNswbeN61kL9x98FyHFxLpapW5RSXsf7H/tcXY+noDpnyRbDvtYKyqGuhrRc/X1QX1nXmUYmMe8ztDEbqDOAwUM3qaMtYMOEIkjHWuPBKSbV61tYDtVSgp16OPs/ub5EbSjCuE1zdtWTqLMcwVCC8TjY3l6kkI3kkdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDTZGL0Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B1AC116B1;
+	Thu, 25 Jul 2024 12:28:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1721910519;
+	bh=O1/5TZ4r319GSiuyybINOsR+FG0zuqV8OLhKc+3f3uE=;
+	h=Subject:To:Cc:From:Date:From;
+	b=uDTZGL0ZfVIAIvXdY9pXs6LLZHpy+w3DZUx0dFyT9tNjPmlhviOa1XWUH9WFsPY+0
+	 bKrv6EiDU6IcxlDIntBNdVdXjqfywTO9GoNY5uf4Dl3aqefJhtHt6y5e/FhxPoyehI
+	 pxfIA5lBRhrR+7wUTWCSupqZJNCkSdd3gtEkkm3Q=
+Subject: FAILED: patch "[PATCH] s390/mm: Fix VM_FAULT_HWPOISON handling in do_exception()" failed to apply to 6.6-stable tree
+To: gerald.schaefer@linux.ibm.com,agordeev@linux.ibm.com,gor@linux.ibm.com,yskelg@gmail.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 25 Jul 2024 14:28:35 +0200
+Message-ID: <2024072535-synergy-struggle-8ecc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240716120724.134512-1-xiubli@redhat.com>
-In-Reply-To: <20240716120724.134512-1-xiubli@redhat.com>
-From: Venky Shankar <vshankar@redhat.com>
-Date: Thu, 25 Jul 2024 17:11:49 +0530
-Message-ID: <CACPzV1=3m3zKcBuUKTYD6JfkSvo9dTuPU_8shrNBOEdBeSZDuA@mail.gmail.com>
-Subject: Re: [PATCH v3] ceph: force sending a cap update msg back to MDS for
- revoke op
-To: xiubli@redhat.com
-Cc: ceph-devel@vger.kernel.org, idryomov@gmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 16, 2024 at 5:37=E2=80=AFPM <xiubli@redhat.com> wrote:
->
-> From: Xiubo Li <xiubli@redhat.com>
->
-> If a client sends out a cap update dropping caps with the prior 'seq'
-> just before an incoming cap revoke request, then the client may drop
-> the revoke because it believes it's already released the requested
-> capabilities.
->
-> This causes the MDS to wait indefinitely for the client to respond
-> to the revoke. It's therefore always a good idea to ack the cap
-> revoke request with the bumped up 'seq'.
->
-> Currently if the cap->issued equals to the newcaps the check_caps()
-> will do nothing, we should force flush the caps.
->
-> Cc: stable@vger.kernel.org
-> Link: https://tracker.ceph.com/issues/61782
-> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> ---
->
-> V3:
-> - Move the force check earlier
->
-> V2:
-> - Improved the patch to force send the cap update only when no caps
-> being used.
->
->
->  fs/ceph/caps.c  | 35 ++++++++++++++++++++++++-----------
->  fs/ceph/super.h |  7 ++++---
->  2 files changed, 28 insertions(+), 14 deletions(-)
->
-> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-> index 24c31f795938..672c6611d749 100644
-> --- a/fs/ceph/caps.c
-> +++ b/fs/ceph/caps.c
-> @@ -2024,6 +2024,8 @@ bool __ceph_should_report_size(struct ceph_inode_in=
-fo *ci)
->   *  CHECK_CAPS_AUTHONLY - we should only check the auth cap
->   *  CHECK_CAPS_FLUSH - we should flush any dirty caps immediately, witho=
-ut
->   *    further delay.
-> + *  CHECK_CAPS_FLUSH_FORCE - we should flush any caps immediately, witho=
-ut
-> + *    further delay.
->   */
->  void ceph_check_caps(struct ceph_inode_info *ci, int flags)
->  {
-> @@ -2105,7 +2107,7 @@ void ceph_check_caps(struct ceph_inode_info *ci, in=
-t flags)
->         }
->
->         doutc(cl, "%p %llx.%llx file_want %s used %s dirty %s "
-> -             "flushing %s issued %s revoking %s retain %s %s%s%s\n",
-> +             "flushing %s issued %s revoking %s retain %s %s%s%s%s\n",
->              inode, ceph_vinop(inode), ceph_cap_string(file_wanted),
->              ceph_cap_string(used), ceph_cap_string(ci->i_dirty_caps),
->              ceph_cap_string(ci->i_flushing_caps),
-> @@ -2113,7 +2115,8 @@ void ceph_check_caps(struct ceph_inode_info *ci, in=
-t flags)
->              ceph_cap_string(retain),
->              (flags & CHECK_CAPS_AUTHONLY) ? " AUTHONLY" : "",
->              (flags & CHECK_CAPS_FLUSH) ? " FLUSH" : "",
-> -            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "");
-> +            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "",
-> +            (flags & CHECK_CAPS_FLUSH_FORCE) ? " FLUSH_FORCE" : "");
->
->         /*
->          * If we no longer need to hold onto old our caps, and we may
-> @@ -2188,6 +2191,11 @@ void ceph_check_caps(struct ceph_inode_info *ci, i=
-nt flags)
->                                 queue_writeback =3D true;
->                 }
->
-> +               if (flags & CHECK_CAPS_FLUSH_FORCE) {
-> +                       doutc(cl, "force to flush caps\n");
-> +                       goto ack;
-> +               }
-> +
->                 if (cap =3D=3D ci->i_auth_cap &&
->                     (cap->issued & CEPH_CAP_FILE_WR)) {
->                         /* request larger max_size from MDS? */
-> @@ -3518,6 +3526,8 @@ static void handle_cap_grant(struct inode *inode,
->         bool queue_invalidate =3D false;
->         bool deleted_inode =3D false;
->         bool fill_inline =3D false;
-> +       bool revoke_wait =3D false;
-> +       int flags =3D 0;
->
->         /*
->          * If there is at least one crypto block then we'll trust
-> @@ -3713,16 +3723,18 @@ static void handle_cap_grant(struct inode *inode,
->                       ceph_cap_string(cap->issued), ceph_cap_string(newca=
-ps),
->                       ceph_cap_string(revoking));
->                 if (S_ISREG(inode->i_mode) &&
-> -                   (revoking & used & CEPH_CAP_FILE_BUFFER))
-> +                   (revoking & used & CEPH_CAP_FILE_BUFFER)) {
->                         writeback =3D true;  /* initiate writeback; will =
-delay ack */
-> -               else if (queue_invalidate &&
-> +                       revoke_wait =3D true;
-> +               } else if (queue_invalidate &&
->                          revoking =3D=3D CEPH_CAP_FILE_CACHE &&
-> -                        (newcaps & CEPH_CAP_FILE_LAZYIO) =3D=3D 0)
-> -                       ; /* do nothing yet, invalidation will be queued =
-*/
-> -               else if (cap =3D=3D ci->i_auth_cap)
-> +                        (newcaps & CEPH_CAP_FILE_LAZYIO) =3D=3D 0) {
-> +                       revoke_wait =3D true; /* do nothing yet, invalida=
-tion will be queued */
-> +               } else if (cap =3D=3D ci->i_auth_cap) {
->                         check_caps =3D 1; /* check auth cap only */
-> -               else
-> +               } else {
->                         check_caps =3D 2; /* check all caps */
-> +               }
->                 /* If there is new caps, try to wake up the waiters */
->                 if (~cap->issued & newcaps)
->                         wake =3D true;
-> @@ -3749,8 +3761,9 @@ static void handle_cap_grant(struct inode *inode,
->         BUG_ON(cap->issued & ~cap->implemented);
->
->         /* don't let check_caps skip sending a response to MDS for revoke=
- msgs */
-> -       if (le32_to_cpu(grant->op) =3D=3D CEPH_CAP_OP_REVOKE) {
-> +       if (!revoke_wait && le32_to_cpu(grant->op) =3D=3D CEPH_CAP_OP_REV=
-OKE) {
->                 cap->mds_wanted =3D 0;
-> +               flags |=3D CHECK_CAPS_FLUSH_FORCE;
->                 if (cap =3D=3D ci->i_auth_cap)
->                         check_caps =3D 1; /* check auth cap only */
->                 else
-> @@ -3806,9 +3819,9 @@ static void handle_cap_grant(struct inode *inode,
->
->         mutex_unlock(&session->s_mutex);
->         if (check_caps =3D=3D 1)
-> -               ceph_check_caps(ci, CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOIN=
-VAL);
-> +               ceph_check_caps(ci, flags | CHECK_CAPS_AUTHONLY | CHECK_C=
-APS_NOINVAL);
->         else if (check_caps =3D=3D 2)
-> -               ceph_check_caps(ci, CHECK_CAPS_NOINVAL);
-> +               ceph_check_caps(ci, flags | CHECK_CAPS_NOINVAL);
->  }
->
->  /*
-> diff --git a/fs/ceph/super.h b/fs/ceph/super.h
-> index b0b368ed3018..831e8ec4d5da 100644
-> --- a/fs/ceph/super.h
-> +++ b/fs/ceph/super.h
-> @@ -200,9 +200,10 @@ struct ceph_cap {
->         struct list_head caps_item;
->  };
->
-> -#define CHECK_CAPS_AUTHONLY   1  /* only check auth cap */
-> -#define CHECK_CAPS_FLUSH      2  /* flush any dirty caps */
-> -#define CHECK_CAPS_NOINVAL    4  /* don't invalidate pagecache */
-> +#define CHECK_CAPS_AUTHONLY     1  /* only check auth cap */
-> +#define CHECK_CAPS_FLUSH        2  /* flush any dirty caps */
-> +#define CHECK_CAPS_NOINVAL      4  /* don't invalidate pagecache */
-> +#define CHECK_CAPS_FLUSH_FORCE  8  /* force flush any caps */
->
->  struct ceph_cap_flush {
->         u64 tid;
-> --
-> 2.45.1
->
 
-v3 pathset looks good.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Reviewed-by: Venky Shankar <vshankar@redhat.com>
-Tested-by: Venky Shankar <vshankar@redhat.com>
+To reproduce the conflict and resubmit, you may use the following commands:
 
---=20
-Cheers,
-Venky
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x df39038cd89525d465c2c8827eb64116873f141a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072535-synergy-struggle-8ecc@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+df39038cd895 ("s390/mm: Fix VM_FAULT_HWPOISON handling in do_exception()")
+b20c8216c1e0 ("s390/mm,fault: move VM_FAULT_ERROR handling to do_exception()")
+7c194d84a9ce ("s390/mm,fault: remove VM_FAULT_BADMAP and VM_FAULT_BADACCESS")
+b61a0922b6dc ("s390/mm,fault: remove VM_FAULT_SIGNAL")
+0f86ac4ba713 ("s390/mm,fault: remove VM_FAULT_BADCONTEXT")
+0f1a14e0348e ("s390/mm,fault: simplify kfence fault handling")
+64ea33fb09f8 ("s390/mm,fault: call do_fault_error() only from do_exception()")
+5db06565cad6 ("s390/mm,fault: get rid of do_low_address()")
+cca12b427d43 ("s390/mm,fault: remove VM_FAULT_PFAULT")
+5be05c35e72f ("s390/mm,fault: improve readability by using teid union")
+4416d2ed8166 ("s390/mm,fault: use static key for store indication")
+9641613f48bb ("s390/mm,fault: use get_fault_address() everywhere")
+5c845de331d9 ("s390/mm,fault: remove noinline attribute from all functions")
+8dbc33dc8163 ("s390/mm,fault: have balanced braces, remove unnecessary blanks")
+7c915a84e5e2 ("s390/mm,fault: reverse x-mas tree coding style")
+3aad8c044297 ("s390/mm,fault: remove and improve comments, adjust whitespace")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From df39038cd89525d465c2c8827eb64116873f141a Mon Sep 17 00:00:00 2001
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Date: Mon, 15 Jul 2024 20:04:16 +0200
+Subject: [PATCH] s390/mm: Fix VM_FAULT_HWPOISON handling in do_exception()
+
+There is no support for HWPOISON, MEMORY_FAILURE, or ARCH_HAS_COPY_MC on
+s390. Therefore we do not expect to see VM_FAULT_HWPOISON in
+do_exception().
+
+However, since commit af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more
+general"), it is possible to see VM_FAULT_HWPOISON in combination with
+PTE_MARKER_POISONED, even on architectures that do not support HWPOISON
+otherwise. In this case, we will end up on the BUG() in do_exception().
+
+Fix this by treating VM_FAULT_HWPOISON the same as VM_FAULT_SIGBUS, similar
+to x86 when MEMORY_FAILURE is not configured. Also print unexpected fault
+flags, for easier debugging.
+
+Note that VM_FAULT_HWPOISON_LARGE is not expected, because s390 cannot
+support swap entries on other levels than PTE level.
+
+Cc: stable@vger.kernel.org # 6.6+
+Fixes: af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more general")
+Reported-by: Yunseong Kim <yskelg@gmail.com>
+Tested-by: Yunseong Kim <yskelg@gmail.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Message-ID: <20240715180416.3632453-1-gerald.schaefer@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+
+diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+index 6b19a33c49c2..8e149ef5e89b 100644
+--- a/arch/s390/mm/fault.c
++++ b/arch/s390/mm/fault.c
+@@ -433,12 +433,13 @@ static void do_exception(struct pt_regs *regs, int access)
+ 			handle_fault_error_nolock(regs, 0);
+ 		else
+ 			do_sigsegv(regs, SEGV_MAPERR);
+-	} else if (fault & VM_FAULT_SIGBUS) {
++	} else if (fault & (VM_FAULT_SIGBUS | VM_FAULT_HWPOISON)) {
+ 		if (!user_mode(regs))
+ 			handle_fault_error_nolock(regs, 0);
+ 		else
+ 			do_sigbus(regs);
+ 	} else {
++		pr_emerg("Unexpected fault flags: %08x\n", fault);
+ 		BUG();
+ 	}
+ }
 
 
