@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2AA93C528
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CDC393C4D8
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55D241F2526E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8E702822B5
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7959E13C816;
-	Thu, 25 Jul 2024 14:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C1419D066;
+	Thu, 25 Jul 2024 14:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ytkv8qv0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXpj9hyS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382BFF519;
-	Thu, 25 Jul 2024 14:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA202199E9F;
+	Thu, 25 Jul 2024 14:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918876; cv=none; b=Out7xXwG7RAyORYNOshhc0mnqH/emz+gpQdRY/pMwpRh52JusrDSWo7/sVAW0yZGzZ5pq+GD87nJ1FAKEvKYBWxOE9CJKmFU+haoEbyDyUdJr8pfHFF+O/7sR6m0pUel3VNIumJdks0ngrMiRW3VfFj0xIJyeE30B4o6R12g3ss=
+	t=1721918658; cv=none; b=R/nOEHdyv/rrKclCFt8BPrwgEYS35wzn6hAW3cpK9encK9kyJ0ldTA8Ul+P5fOiyFiJy4yqUhn/eUzzrJJgvsm/cc6MuEv7oZN8Ivuk4IRbQsQM95R2GEbSiI3TJda8FSBeQOKpUd4L0WqDXSyYpWHNuvfR00a/DJSOSVasCvkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918876; c=relaxed/simple;
-	bh=2cDdGB8bwx555mFFPogBu8RvHpv+6eZivKIblJSYkMU=;
+	s=arc-20240116; t=1721918658; c=relaxed/simple;
+	bh=woxgRUw1bBPya8jc/DEfpXZ2zYf7KUfhRmt1WPFiC1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaCsu/oJaF/O3JVw35Ibs1x6GI80RvwMa7KnZhJVLgXvUCghpwYpViNJxVVN9yBPJnyVq1GboR6lCUCpvLSeyHsQOLmecOZguBRkrgXoQphUWcqmOUbkMLB+fuF6zMOhbxvtY++jyw4UDSDuY1L79du5w8vct9K0cON9wYBueN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ytkv8qv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BFBC116B1;
-	Thu, 25 Jul 2024 14:47:55 +0000 (UTC)
+	 MIME-Version; b=GdSFnzqLoxSkC4fNW2AiG26UFavsoe6EFZXnmzv6+XzMYj2I3zvxN8BYkOKMXE2nMNP/MhaL/H+Drf9wRjePvcoyCwyQhsQ589/n+6kOB4XaslAY8xEN8FStEEpknT7Qm97TgBney258D/guYQivJSY2LWwYporE+Y4Dd206hRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXpj9hyS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943DAC116B1;
+	Thu, 25 Jul 2024 14:44:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918876;
-	bh=2cDdGB8bwx555mFFPogBu8RvHpv+6eZivKIblJSYkMU=;
+	s=korg; t=1721918657;
+	bh=woxgRUw1bBPya8jc/DEfpXZ2zYf7KUfhRmt1WPFiC1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ytkv8qv0izINRXQ0Uzim9TYqSC8axiPbL276ey1L5XI36+HBVpllL4LMd7Gv6MuV8
-	 RS1zfkonWOW8Et9sWEU5HWATGFY70ceZJGEBpl/U0ceJa21Hxu15mUtOP9nqZag6PW
-	 A56QjqqMFEicTUFHFJHTIxEjUg9zCItgqbJOET18=
+	b=wXpj9hySz3SK52O5ofZTSHfuUWJjHWrcaDK7HnXJCb4MrSK3fI2nyI9PdPeKClL5r
+	 KVIjJFvSDbyn3C1QT2mhlpxEOPrjo4Ys7sxpjuh49DPgekAO4u4Q4VHTn43bDIubkE
+	 CDVv73+BHSevLKUwGrXihWTq/Frl6y9qoMKLQDg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <yuntao.wang@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 16/59] fs/file: fix the check in find_next_fd()
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.4 43/43] filelock: Fix fcntl/close race recovery compat path
 Date: Thu, 25 Jul 2024 16:37:06 +0200
-Message-ID: <20240725142733.879506227@linuxfoundation.org>
+Message-ID: <20240725142732.097230811@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit ed8c7fbdfe117abbef81f65428ba263118ef298a ]
+commit f8138f2ad2f745b9a1c696a05b749eabe44337ea upstream.
 
-The maximum possible return value of find_next_zero_bit(fdt->full_fds_bits,
-maxbit, bitbit) is maxbit. This return value, multiplied by BITS_PER_LONG,
-gives the value of bitbit, which can never be greater than maxfd, it can
-only be equal to maxfd at most, so the following check 'if (bitbit > maxfd)'
-will never be true.
+When I wrote commit 3cad1bc01041 ("filelock: Remove locks reliably when
+fcntl/close race is detected"), I missed that there are two copies of the
+code I was patching: The normal version, and the version for 64-bit offsets
+on 32-bit kernels.
+Thanks to Greg KH for stumbling over this while doing the stable
+backport...
 
-Moreover, when bitbit equals maxfd, it indicates that there are no unused
-fds, and the function can directly return.
+Apply exactly the same fix to the compat path for 32-bit kernels.
 
-Fix this check.
-
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://lore.kernel.org/r/20240529160656.209352-1-yuntao.wang@linux.dev
-Reviewed-by: Jan Kara <jack@suse.cz>
+Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
+Cc: stable@kernel.org
+Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20240723-fs-lock-recover-compatfix-v1-1-148096719529@google.com
 Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/file.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/locks.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/fs/file.c b/fs/file.c
-index fdb84a64724b7..913f7d897d2fc 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -494,12 +494,12 @@ struct files_struct init_files = {
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2656,8 +2656,9 @@ int fcntl_setlk64(unsigned int fd, struc
+ 	error = do_lock_file_wait(filp, cmd, file_lock);
  
- static unsigned int find_next_fd(struct fdtable *fdt, unsigned int start)
- {
--	unsigned int maxfd = fdt->max_fds;
-+	unsigned int maxfd = fdt->max_fds; /* always multiple of BITS_PER_LONG */
- 	unsigned int maxbit = maxfd / BITS_PER_LONG;
- 	unsigned int bitbit = start / BITS_PER_LONG;
- 
- 	bitbit = find_next_zero_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
--	if (bitbit > maxfd)
-+	if (bitbit >= maxfd)
- 		return maxfd;
- 	if (bitbit > start)
- 		start = bitbit;
--- 
-2.43.0
-
+ 	/*
+-	 * Attempt to detect a close/fcntl race and recover by releasing the
+-	 * lock that was just acquired. There is no need to do that when we're
++	 * Detect close/fcntl races and recover by zapping all POSIX locks
++	 * associated with this file and our files_struct, just like on
++	 * filp_flush(). There is no need to do that when we're
+ 	 * unlocking though, or for OFD locks.
+ 	 */
+ 	if (!error && file_lock->fl_type != F_UNLCK &&
+@@ -2671,9 +2672,7 @@ int fcntl_setlk64(unsigned int fd, struc
+ 		f = fcheck(fd);
+ 		spin_unlock(&current->files->file_lock);
+ 		if (f != filp) {
+-			file_lock->fl_type = F_UNLCK;
+-			error = do_lock_file_wait(filp, cmd, file_lock);
+-			WARN_ON_ONCE(error);
++			locks_remove_posix(filp, &current->files);
+ 			error = -EBADF;
+ 		}
+ 	}
 
 
 
