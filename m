@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-61612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD5293C52B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F11B93C4D0
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74B47B26A70
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD791B24297
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B9F8468;
-	Thu, 25 Jul 2024 14:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D6819B5AA;
+	Thu, 25 Jul 2024 14:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmeYUon2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRUsJ88M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333ED1E895;
-	Thu, 25 Jul 2024 14:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043F013DDB8;
+	Thu, 25 Jul 2024 14:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918873; cv=none; b=Sf+23ZC/DnzbUWEdq+MOdSZ6cxIQMmE3dhr15zThPHEsMYc2XkXEqakRZZ48NcgmXr3nf1LdG2cT0mFy4wYcxSOgpGpykY4geRJ0MlLKJMKyGJ0EEF4qm408KrfqcN8op2ScdYqRQ7TABmYsD+ricdU5HuPOwv3dGcCR25Swzjw=
+	t=1721918631; cv=none; b=SrZCGJ3bSDhMU/sGqpHzqJtBl85PypMpxOGz+lyxF2hfeYLRtwRBBvvfMkwtrOLBfo7XTiumdZ0ew1TZePzTz5OGSVB+JY+u5ZYU/DhfAgibNBiJKISsbhAeQezZvX9Q/zBwwQ9kB902lcJf1KYx7V0GsTf9+Zae+YDAz0xfqOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918873; c=relaxed/simple;
-	bh=R3yS3XPWcLrVCJ1xbEOgzR+8sA7K28OWapjCJaQu35A=;
+	s=arc-20240116; t=1721918631; c=relaxed/simple;
+	bh=Y21+UGsgNlb3qbtk+dRx7049Vkf6M7/vrvy9hstq55w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8+K8urjdkeXtglSn6tm8SnG7k6FvUdrpGnbyLZ/wu5SBx7hlaYdELf3515/KWzBRHGlKsf6MOZ3j/ikArxyjj3nQpRMpqcwakvbEAoe9QRnG7d762ohj/GR248mhQj1vlvMYKFX2GDne9yP+hr7VyND2AeYfXcKl1JiYo3QTcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmeYUon2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73963C116B1;
-	Thu, 25 Jul 2024 14:47:52 +0000 (UTC)
+	 MIME-Version; b=sOhaUpE5cKwu2P7iGbYyUWkDNLFauJj/uiCcDfhJCAiZCn+oItXF2Lbz/ciedDM8NsDjoAO5SoPkrZD3a+EEz86fyCNhVw2emzGJ38bwH9vja84WRlZOLU134qnO7D0FwiHqta+D3UWcE5OfBte4rxN/iGm/r24Nrbmh7QsTCjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRUsJ88M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7777AC116B1;
+	Thu, 25 Jul 2024 14:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918872;
-	bh=R3yS3XPWcLrVCJ1xbEOgzR+8sA7K28OWapjCJaQu35A=;
+	s=korg; t=1721918630;
+	bh=Y21+UGsgNlb3qbtk+dRx7049Vkf6M7/vrvy9hstq55w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OmeYUon2ShDCdJ5IqM7rRd5BNmQClmBq9Do2zF0W51QbFZFyj1/4HNRrS70YiQmt/
-	 c7aQcm5qgyOTAga0DdilhvjBSYaFpHR7vKoqCNr3PDA8sPSdeRujHb3fNlfepWAdC9
-	 GPsPn6okzx11M/U00tKVoccVsZzX9Kiu3cp3BNiA=
+	b=pRUsJ88MJrrkNKeZjU5XpVnvp+ulsUZl2jogJgsx4qydOrbGoG6m5le6ZhWWdgAuA
+	 vAACGxe5Ba+OuuS9x6KiqhCyxjEkMFwSsNUXh8bVXP2z7eigTrf1csKTwSl397Gvno
+	 hoC619o+Fk/vxv2ICi39laswM+6FroK2S/LtYFiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 15/59] kconfig: remove wrong expr_trans_bool()
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 42/43] ALSA: hda/realtek: Enable headset mic on Positivo SU C1400
 Date: Thu, 25 Jul 2024 16:37:05 +0200
-Message-ID: <20240725142733.842259291@linuxfoundation.org>
+Message-ID: <20240725142732.059661696@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,163 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
+commit 8fc1e8b230771442133d5cf5fa4313277aa2bb8b upstream.
 
-expr_trans_bool() performs an incorrect transformation.
+Positivo SU C1400 is equipped with ALC256, and it needs
+ALC269_FIXUP_ASPIRE_HEADSET_MIC quirk to make its headset mic work.
 
-[Test Code]
-
-    config MODULES
-            def_bool y
-            modules
-
-    config A
-            def_bool y
-            select C if B != n
-
-    config B
-            def_tristate m
-
-    config C
-            tristate
-
-[Result]
-
-    CONFIG_MODULES=y
-    CONFIG_A=y
-    CONFIG_B=m
-    CONFIG_C=m
-
-This output is incorrect because CONFIG_C=y is expected.
-
-Documentation/kbuild/kconfig-language.rst clearly explains the function
-of the '!=' operator:
-
-    If the values of both symbols are equal, it returns 'n',
-    otherwise 'y'.
-
-Therefore, the statement:
-
-    select C if B != n
-
-should be equivalent to:
-
-    select C if y
-
-Or, more simply:
-
-    select C
-
-Hence, the symbol C should be selected by the value of A, which is 'y'.
-
-However, expr_trans_bool() wrongly transforms it to:
-
-    select C if B
-
-Therefore, the symbol C is selected by (A && B), which is 'm'.
-
-The comment block of expr_trans_bool() correctly explains its intention:
-
-  * bool FOO!=n => FOO
-    ^^^^
-
-If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
-
-However, the actual code performs this transformation when FOO is
-tristate:
-
-    if (e->left.sym->type == S_TRISTATE) {
-                             ^^^^^^^^^^
-
-While it can be fixed to S_BOOLEAN, there is no point in doing so
-because expr_tranform() already transforms FOO!=n to FOO when FOO is
-bool. (see the "case E_UNEQUAL" part)
-
-expr_trans_bool() is wrong and unnecessary.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240712180642.22564-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/expr.c | 29 -----------------------------
- scripts/kconfig/expr.h |  1 -
- scripts/kconfig/menu.c |  2 --
- 3 files changed, 32 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
-index 81ebf8108ca74..81dfdf4470f75 100644
---- a/scripts/kconfig/expr.c
-+++ b/scripts/kconfig/expr.c
-@@ -396,35 +396,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
- 	return e;
- }
- 
--/*
-- * bool FOO!=n => FOO
-- */
--struct expr *expr_trans_bool(struct expr *e)
--{
--	if (!e)
--		return NULL;
--	switch (e->type) {
--	case E_AND:
--	case E_OR:
--	case E_NOT:
--		e->left.expr = expr_trans_bool(e->left.expr);
--		e->right.expr = expr_trans_bool(e->right.expr);
--		break;
--	case E_UNEQUAL:
--		// FOO!=n -> FOO
--		if (e->left.sym->type == S_TRISTATE) {
--			if (e->right.sym == &symbol_no) {
--				e->type = E_SYMBOL;
--				e->right.sym = NULL;
--			}
--		}
--		break;
--	default:
--		;
--	}
--	return e;
--}
--
- /*
-  * e1 || e2 -> ?
-  */
-diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
-index 5c3443692f346..385a47daa3643 100644
---- a/scripts/kconfig/expr.h
-+++ b/scripts/kconfig/expr.h
-@@ -302,7 +302,6 @@ void expr_free(struct expr *e);
- void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
- int expr_eq(struct expr *e1, struct expr *e2);
- tristate expr_calc_value(struct expr *e);
--struct expr *expr_trans_bool(struct expr *e);
- struct expr *expr_eliminate_dups(struct expr *e);
- struct expr *expr_transform(struct expr *e);
- int expr_contains_symbol(struct expr *dep, struct symbol *sym);
-diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
-index a5fbd6ccc006e..e5ad6313cfa1d 100644
---- a/scripts/kconfig/menu.c
-+++ b/scripts/kconfig/menu.c
-@@ -401,8 +401,6 @@ void menu_finalize(struct menu *parent)
- 				dep = expr_transform(dep);
- 				dep = expr_alloc_and(expr_copy(basedep), dep);
- 				dep = expr_eliminate_dups(dep);
--				if (menu->sym && menu->sym->type != S_TRISTATE)
--					dep = expr_trans_bool(dep);
- 				prop->visible.expr = dep;
- 
- 				/*
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -8335,6 +8335,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
+ 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
+ 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
++	SND_PCI_QUIRK(0x10ec, 0x119e, "Positivo SU C1400", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
 
 
 
