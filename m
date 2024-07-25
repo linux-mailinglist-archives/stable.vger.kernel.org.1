@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3369F93C4D4
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DC593C485
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1AA7281A6A
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A5C21C21BE0
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9D513DDB8;
-	Thu, 25 Jul 2024 14:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F6819DF62;
+	Thu, 25 Jul 2024 14:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5QaQ2aq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bg6fUArV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2724619A29C;
-	Thu, 25 Jul 2024 14:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E850519D07A;
+	Thu, 25 Jul 2024 14:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918644; cv=none; b=tCi1TakZ6xQ7K6IBQomYduWqImZOpJ4NZBaRBcqKdUD4At3NDLqrq0a+7q0OFbv6YPtR8MfvALt6VMnFoxFOvOETze//gFdc856TX93oohrrYhcxLzI/ffKAhN3qFRY/qv+1UtqaoMhsiyoAZXe64yb7tvBuHVRZx07BgJio+Q8=
+	t=1721918429; cv=none; b=ndwJC5FhvYIVgOcLoRbl/WcxMXh50AJ93YggNcirDlo5elhBR1DjGpF+sVOC6Co620a+/ehYJfjZtxaPfltwJvTjtUsRmaaJq0nKk2qvvE3IdQDM807r6JGVn6X5iDm+tCQfMgR9N7WLtJPCSkjSjqqqRg0uZGxX+Q2PJdV6fPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918644; c=relaxed/simple;
-	bh=h10HA9JyKN7oa7riOA6oCD7euPYX+Ju8z84nT9wZP6I=;
+	s=arc-20240116; t=1721918429; c=relaxed/simple;
+	bh=UmKHu6/VZt+A6YuAe1BjQgmx4LNZQZCEjc5uBi6pH+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J8vv8kZVRO24zl28/Ooq2tfpVeAIALxyBv8/aLFZtTqK8Ku7DrpPslGbUKY9/sOuvl3f33c3TpzbT0eLHQgTdRAQZBrgq19vJ2H2l5/GrctTUBkJidU+7fuzM5W+5SvRVeiooo1+roT7br5ezKX/b2mAjMlSynD2GTD1eEFf+TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5QaQ2aq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D85C116B1;
-	Thu, 25 Jul 2024 14:44:03 +0000 (UTC)
+	 MIME-Version; b=DY1wr4I+Pu84cV6aXX5n3QGH8j0NwIXeZYbBJLdnfluTiYHXQHl9j0O0WAQc6ye0jDMthNF7KyNC5H9DvDnKd+5ZCyqAtpWxvUlbUl7FpPSu0HI9O677nwNrxofjmjAV+pGN0ssXzp7vShgTu0Mmn++NZiJxnhAOLkkB3BeUMvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bg6fUArV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AC7C116B1;
+	Thu, 25 Jul 2024 14:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918644;
-	bh=h10HA9JyKN7oa7riOA6oCD7euPYX+Ju8z84nT9wZP6I=;
+	s=korg; t=1721918428;
+	bh=UmKHu6/VZt+A6YuAe1BjQgmx4LNZQZCEjc5uBi6pH+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5QaQ2aqUpuj6lFugYCEPFKsrwGp3wJAn3BYiFlXh9Bpukd2vJV+gqhBg6fXVYgDP
-	 imJmnQ4nw4H/AgHiu87DH3zFHP1qWZwJF/cpza6kHsxfEWzWZ6dQE83TdQnCCCecTq
-	 TTZDunCaqH2Dmv+6Q+HaeNHB2fSqJlXcAukEQuuQ=
+	b=Bg6fUArVPL7D0gxIC8U1N4Vf8QhTNh7Emo4I2IX1qafEw5s040unX80oc4SVa2MBI
+	 OBNpXXhedoW4ZZ082oM2Nh6MousvuMItpv7CR9EUkqFJFIWYm6V6R4cxSbuAvKlTT6
+	 BOks729mfvqKlV69jRCwjw1+3KMK0UjBuyhRa0XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 16/43] ALSA: hda/realtek: Add more codec ID to no shutup pins list
-Date: Thu, 25 Jul 2024 16:36:39 +0200
-Message-ID: <20240725142731.087580026@linuxfoundation.org>
+Subject: [PATCH 4.19 17/33] gpio: pca953x: fix pca953x_irq_bus_sync_unlock race
+Date: Thu, 25 Jul 2024 16:36:40 +0200
+Message-ID: <20240725142729.169703470@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Ian Ray <ian.ray@gehealthcare.com>
 
-[ Upstream commit 70794b9563fe011988bcf6a081af9777e63e8d37 ]
+[ Upstream commit bfc6444b57dc7186b6acc964705d7516cbaf3904 ]
 
-If it enter to runtime D3 state, it didn't shutup Headset MIC pin.
+Ensure that `i2c_lock' is held when setting interrupt latch and mask in
+pca953x_irq_bus_sync_unlock() in order to avoid races.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/r/8d86f61e7d6f4a03b311e4eb4e5caaef@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The other (non-probe) call site pca953x_gpio_set_multiple() ensures the
+lock is held before calling pca953x_write_regs().
+
+The problem occurred when a request raced against irq_bus_sync_unlock()
+approximately once per thousand reboots on an i.MX8MP based system.
+
+ * Normal case
+
+   0-0022: write register AI|3a {03,02,00,00,01} Input latch P0
+   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
+   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
+   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
+
+ * Race case
+
+   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
+   0-0022: write register AI|08 {03,02,00,00,01} *** Wrong register ***
+   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
+   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
+
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://lore.kernel.org/r/20240620042915.2173-1-ian.ray@gehealthcare.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpio/gpio-pca953x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 8a411a6fe0b7c..ff3a90e2e35cc 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -520,10 +520,14 @@ static void alc_shutup_pins(struct hda_codec *codec)
- 	switch (codec->core.vendor_id) {
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 	case 0x10ec0283:
-+	case 0x10ec0285:
- 	case 0x10ec0286:
-+	case 0x10ec0287:
- 	case 0x10ec0288:
-+	case 0x10ec0295:
- 	case 0x10ec0298:
- 		alc_headset_mic_no_shutup(codec);
- 		break;
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index dc4088a47ab2d..5dcc31e5fb3eb 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -489,6 +489,8 @@ static void pca953x_irq_bus_sync_unlock(struct irq_data *d)
+ 	u8 invert_irq_mask[MAX_BANK];
+ 
+ 	if (chip->driver_data & PCA_PCAL) {
++		guard(mutex)(&chip->i2c_lock);
++
+ 		/* Enable latch on interrupt-enabled inputs */
+ 		pca953x_write_regs(chip, PCAL953X_IN_LATCH, chip->irq_mask);
+ 
 -- 
 2.43.0
 
