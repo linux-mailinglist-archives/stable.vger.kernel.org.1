@@ -1,130 +1,174 @@
-Return-Path: <stable+bounces-61348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF86893BC0B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 07:31:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C58F093BC2E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 07:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D6041F241D3
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 05:31:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80B06283D9B
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 05:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396D51C6A3;
-	Thu, 25 Jul 2024 05:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28021CD2D;
+	Thu, 25 Jul 2024 05:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="DeKZoMQf"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YKLyxNlI"
 X-Original-To: stable@vger.kernel.org
-Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2A223D0
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 05:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9771BC43;
+	Thu, 25 Jul 2024 05:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721885482; cv=none; b=kgk0Zq1XPcjBFaR49uCUv2bJLgnb2JY2ozELc9gR6x6de3uNQGc0PS+nPhPrCqBwu3MysWRlGFDwVvIjnj5Kof8SP2dBS+/fPpNdRIqOD8b9OqqrbnlAMy5gb5ZaNS9fj6lF+y3chVhtY1SjWxVw+O3J9auWStW6ARke6AYAxDY=
+	t=1721886626; cv=none; b=oJEWO7J3B/6mfI1LKG3nFNaBq7wSCa49L5hF+9dAPJTUBXztXMg9Pv7IKca1O9+tuMgkQhumCkn9N6XG0TGWlVE3zQIpjjR0E9ymo9Ed5veM6RcWRO5en61GfCjR7hvxjzDIV57yE/b5kLId6l5bL9QDCpKLr3L42OYXIH4ROsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721885482; c=relaxed/simple;
-	bh=uZXbG36Q2EF7GySwh4nfozTd1dHlUpbJih4rSUWGGBM=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=sIgydGdxp2oiYwacC82UHmaTd4xKOMiYO1Z1jWOCgYgxCsPpBCFVT0ADwGEVGWQr2ruHyN+ubkDhQcX/GkF2znFAJd/ZLbZojkwqMBgEAckAuEZkol+tCamUUrEReg0zIjmhilS6btxqEfEavTUB5S8g2JjgTTMdRBI7mhSRlgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=DeKZoMQf; arc=none smtp.client-ip=35.89.44.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-	by cmsmtp with ESMTPS
-	id Wln8smIouvH7lWr4LsOwdg; Thu, 25 Jul 2024 05:31:13 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id Wr4KsfrKWks1PWr4LsurRB; Thu, 25 Jul 2024 05:31:13 +0000
-X-Authority-Analysis: v=2.4 cv=Ud+aS7SN c=1 sm=1 tr=0 ts=66a1e321
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=4kmOji7k6h8A:10 a=VwQbUJbxAAAA:8 a=CTd7gvyGw4ZjSuE7xIAA:9
- a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=NmLFwogGxk8T+/BTvVYv38MvO9AQWSFau4dqyGLbskk=; b=DeKZoMQffW9xoglVHlYzZ4n0l4
-	XMHH1T4NQT8GAUNxDNNQjn95njCbfAWVBq3C1YcKJr0dzuEoa02oewtO59Qa1kdX0nip5oKpezpRD
-	h48pa1XrTMu0UIyPuTnjKcxax+59XizxURlKLDlSqiO+KsocaBYwelg6AF6Tmwbib3W+ths1ibWeX
-	D+CCq5ZVo6YOT1FujbVRSgoeJGx/6DxtzOJVRomOWKtlnlLtPDQh9P/xNouw7E1iodnWI0hs1mZh3
-	6hp5lteYyGG9KPyKg1Um5nawGlmfV6mhU1mlluH3RCUBZvz3FC1vGmV/z9Hopje+u0LtEZtSDd7C2
-	kUniy5CA==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:59076 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1sWr4G-0031Cc-1l;
-	Wed, 24 Jul 2024 23:31:08 -0600
-Subject: Re: [PATCH 6.1 000/105] 6.1.101-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240723180402.490567226@linuxfoundation.org>
-In-Reply-To: <20240723180402.490567226@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <304aa6ca-71c6-4f72-26b7-72fcea3c6e3e@w6rz.net>
-Date: Wed, 24 Jul 2024 22:31:01 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1721886626; c=relaxed/simple;
+	bh=GenA40uiHEfDASyykxQOv84tC5ZU492Fawl2U80k6Zg=;
+	h=Date:To:From:Subject:Message-Id; b=XWgnUbJjJytGSOPEK4AKkv+7GVZLW+nNG1VHebTYh3Yt7T14h2gTxQ0AsyY53fwevUz+dw64cj3OEdDHHj1NSLUseePn6YjFJVhhjpAJ/khavYX0eMsXkLbHo9gYbHyJ4SjKuInBP8oQ7lnv8rH+U4aSaxmHMFX/KeON0M6HLWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YKLyxNlI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1759C116B1;
+	Thu, 25 Jul 2024 05:50:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1721886625;
+	bh=GenA40uiHEfDASyykxQOv84tC5ZU492Fawl2U80k6Zg=;
+	h=Date:To:From:Subject:From;
+	b=YKLyxNlI6Dx6R3wdCK6tPG4CkKFrQngphGKKJ+z5YMuRsOK9ubqd6z21ub3Cw8vuH
+	 4qvcSOW40aWoseDH+pY5vurduE6gG8xYIPJ0aS6q3IXwLFFqWz2KbrzXftyqGpvObK
+	 6aI9DXZODO3jxMqIc9GV/6l6LalWlcfkPwulbTrU=
+Date: Wed, 24 Jul 2024 22:50:25 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240725055025.C1759C116B1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1sWr4G-0031Cc-1l
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:59076
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 40
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfMDvpaNog0ikKO+FWgESX8cLpiWE7yw4mbrf9kuEuUqng/KgtsJl0DgN7rfUeUDZEhur/Khb8kM5vTXUTQ3EgGy/xCXWhbWYwvMgKpY7juFVp4/8iDUr
- 6y6YgKF5KOZ4L/mXHoMEGrdQ5lHX0Jvb+WVgJFgq5syczxL2xCv0W8Jh0tzNQRNE3ZMPAlUPEXjKlQ==
 
-On 7/23/24 11:22 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.101 release.
-> There are 105 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 25 Jul 2024 18:03:27 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.101-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+The patch titled
+     Subject: nilfs2: handle inconsistent state in nilfs_btnode_create_block()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block.patch
 
-Tested-by: Ron Economos <re@w6rz@net>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: nilfs2: handle inconsistent state in nilfs_btnode_create_block()
+Date: Thu, 25 Jul 2024 14:20:07 +0900
+
+Syzbot reported that a buffer state inconsistency was detected in
+nilfs_btnode_create_block(), triggering a kernel bug.
+
+It is not appropriate to treat this inconsistency as a bug; it can occur
+if the argument block address (the buffer index of the newly created
+block) is a virtual block number and has been reallocated due to
+corruption of the bitmap used to manage its allocation state.
+
+So, modify nilfs_btnode_create_block() and its callers to treat it as a
+possible filesystem error, rather than triggering a kernel bug.
+
+Link: https://lkml.kernel.org/r/20240725052007.4562-1-konishi.ryusuke@gmail.com
+Fixes: a60be987d45d ("nilfs2: B-tree node cache")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=89cc4f2324ed37988b60
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/nilfs2/btnode.c |   25 ++++++++++++++++++++-----
+ fs/nilfs2/btree.c  |    4 ++--
+ 2 files changed, 22 insertions(+), 7 deletions(-)
+
+--- a/fs/nilfs2/btnode.c~nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block
++++ a/fs/nilfs2/btnode.c
+@@ -51,12 +51,21 @@ nilfs_btnode_create_block(struct address
+ 
+ 	bh = nilfs_grab_buffer(inode, btnc, blocknr, BIT(BH_NILFS_Node));
+ 	if (unlikely(!bh))
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	if (unlikely(buffer_mapped(bh) || buffer_uptodate(bh) ||
+ 		     buffer_dirty(bh))) {
+-		brelse(bh);
+-		BUG();
++		/*
++		 * The block buffer at the specified new address was already
++		 * in use.  This can happen if it is a virtual block number
++		 * and has been reallocated due to corruption of the bitmap
++		 * used to manage its allocation state (if not, the buffer
++		 * clearing of an abandoned b-tree node is missing somewhere).
++		 */
++		nilfs_error(inode->i_sb,
++			    "state inconsistency probably due to duplicate use of b-tree node block address %llu (ino=%lu)",
++			    (unsigned long long)blocknr, inode->i_ino);
++		goto failed;
+ 	}
+ 	memset(bh->b_data, 0, i_blocksize(inode));
+ 	bh->b_bdev = inode->i_sb->s_bdev;
+@@ -67,6 +76,12 @@ nilfs_btnode_create_block(struct address
+ 	folio_unlock(bh->b_folio);
+ 	folio_put(bh->b_folio);
+ 	return bh;
++
++failed:
++	folio_unlock(bh->b_folio);
++	folio_put(bh->b_folio);
++	brelse(bh);
++	return ERR_PTR(-EIO);
+ }
+ 
+ int nilfs_btnode_submit_block(struct address_space *btnc, __u64 blocknr,
+@@ -217,8 +232,8 @@ retry:
+ 	}
+ 
+ 	nbh = nilfs_btnode_create_block(btnc, newkey);
+-	if (!nbh)
+-		return -ENOMEM;
++	if (IS_ERR(nbh))
++		return PTR_ERR(nbh);
+ 
+ 	BUG_ON(nbh == obh);
+ 	ctxt->newbh = nbh;
+--- a/fs/nilfs2/btree.c~nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block
++++ a/fs/nilfs2/btree.c
+@@ -63,8 +63,8 @@ static int nilfs_btree_get_new_block(con
+ 	struct buffer_head *bh;
+ 
+ 	bh = nilfs_btnode_create_block(btnc, ptr);
+-	if (!bh)
+-		return -ENOMEM;
++	if (IS_ERR(bh))
++		return PTR_ERR(bh);
+ 
+ 	set_buffer_nilfs_volatile(bh);
+ 	*bhp = bh;
+_
+
+Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+
+nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block.patch
 
 
