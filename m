@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7B993C4CE
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9430C93C527
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78709B242CC
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12334B26B07
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AE019D066;
-	Thu, 25 Jul 2024 14:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84B519D091;
+	Thu, 25 Jul 2024 14:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxIv1OQ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUINW9VP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9748C13DDB8;
-	Thu, 25 Jul 2024 14:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A330F19A29C;
+	Thu, 25 Jul 2024 14:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918621; cv=none; b=ut2OAOFgV0TZbwzpmZOVOdSPkSrRv93txHKfmnKeQ1Nk42PA7iOocjRUAZH7Bux4yLHpvuFqax5KviTQ6GV9FB6CX7N4VNi3AxbvoaW4OTpF+vVCwTBuuX21xX9Kw25oRY6GREcO91mwhXfN4/vZZgXm8lnScupAOzgwcBlbvzU=
+	t=1721918863; cv=none; b=m/C4TOgMDrMSQQUtsQodlkke/q4U3ENNypgYb1g1KW8AbS9EZBalZ2SKcyaV0hF2gjWJwC1WcbVtlABf7FeMc574C9LhPNmcNA302izKVwImfXWf5q91A7JfzR7XgWU7nB/mHR5jE0z+qZDN7SLlTTkVz2sYVb8LfZ1tWpKHxHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918621; c=relaxed/simple;
-	bh=P74xEOlVtQ1zie27+VX4rKUi+YWwcnuQtup6iWYFabQ=;
+	s=arc-20240116; t=1721918863; c=relaxed/simple;
+	bh=bwxqBYfPAfL1ST7N59QgIRByCvn8h+RStkc+FtxCxpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NoUkaNVuaYKn/yw5eLaUx7UP8S6XhcxKEAjbO3KihYCdzzN1/rfVBvWvumRHXHA9iiEXVmdJ7IrEAcJde+QMvfnGhK4tBkmyRKfjqeULS8Q2azOAmz1eHHWbIQosZAHMFP3QggmICIqvecbCSrCKc97wDM2zW9JA7yfCxVaOCEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxIv1OQ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB572C116B1;
-	Thu, 25 Jul 2024 14:43:40 +0000 (UTC)
+	 MIME-Version; b=iHKAXOMK3lJaVlDznR6YrbBpY/cdBTIwtmEyl4gIEsGltT4x9eJDXMZ7xNx13aymg86ZyQp8wbfmWCJa9DImxHwaSPvb9NeoKpMENxpiS8hG+N4FN4RpyWMvM5g82u3RjvgjDy42DebMJTjmnk28bW7J+kosyaC1+pnu+OMEI0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUINW9VP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EF5C116B1;
+	Thu, 25 Jul 2024 14:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918621;
-	bh=P74xEOlVtQ1zie27+VX4rKUi+YWwcnuQtup6iWYFabQ=;
+	s=korg; t=1721918863;
+	bh=bwxqBYfPAfL1ST7N59QgIRByCvn8h+RStkc+FtxCxpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KxIv1OQ7mU7tfnhP3Wmu43wJHDD9RyA6+V97kV4xmYIJ6tq++JVsMVop5PNC0giq0
-	 zuwOchGKvQdNxDpjkbMAFMVm7tUPbEIa8V5Y5irV9hgCJKvYWhVGDRtSrgP4Rn7qlK
-	 C8zEXcyQO+J68scnTH8crgJUvqbZdoluiZ5Votkg=
+	b=SUINW9VPo0pY8kwuJ3Wo1vRW2q9Jj1aQu7ymwp4Zu9GNSYl4J3Ilwg9h9NY+KnLaa
+	 cQGuy46i4XkrI692EJdi/a9TDu8eTtrRUlrGTekteMkAEznPwDLimvAF/mcpRM4XEc
+	 75jYEM5c1tG5naVmdFzwkGrVJL3Q6RDsme9PoUXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Paasch <cpaasch@apple.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Kuratov <kniv@yandex-team.ru>
-Subject: [PATCH 5.4 39/43] net: relax socket state check at accept time.
+	Wei Li <liwei391@huawei.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 12/59] arm64: armv8_deprecated: Fix warning in isndep cpuhp starting process
 Date: Thu, 25 Jul 2024 16:37:02 +0200
-Message-ID: <20240725142731.947948045@linuxfoundation.org>
+Message-ID: <20240725142733.731217445@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Wei Li <liwei391@huawei.com>
 
-commit 26afda78cda3da974fd4c287962c169e9462c495 upstream.
+[ Upstream commit 14951beaec93696b092a906baa0f29322cf34004 ]
 
-Christoph reported the following splat:
+The function run_all_insn_set_hw_mode() is registered as startup callback
+of 'CPUHP_AP_ARM64_ISNDEP_STARTING', it invokes set_hw_mode() methods of
+all emulated instructions.
 
-WARNING: CPU: 1 PID: 772 at net/ipv4/af_inet.c:761 __inet_accept+0x1f4/0x4a0
-Modules linked in:
-CPU: 1 PID: 772 Comm: syz-executor510 Not tainted 6.9.0-rc7-g7da7119fe22b #56
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-RIP: 0010:__inet_accept+0x1f4/0x4a0 net/ipv4/af_inet.c:759
-Code: 04 38 84 c0 0f 85 87 00 00 00 41 c7 04 24 03 00 00 00 48 83 c4 10 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc e8 ec b7 da fd <0f> 0b e9 7f fe ff ff e8 e0 b7 da fd 0f 0b e9 fe fe ff ff 89 d9 80
-RSP: 0018:ffffc90000c2fc58 EFLAGS: 00010293
-RAX: ffffffff836bdd14 RBX: 0000000000000000 RCX: ffff888104668000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: dffffc0000000000 R08: ffffffff836bdb89 R09: fffff52000185f64
-R10: dffffc0000000000 R11: fffff52000185f64 R12: dffffc0000000000
-R13: 1ffff92000185f98 R14: ffff88810754d880 R15: ffff8881007b7800
-FS:  000000001c772880(0000) GS:ffff88811b280000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fb9fcf2e178 CR3: 00000001045d2002 CR4: 0000000000770ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- inet_accept+0x138/0x1d0 net/ipv4/af_inet.c:786
- do_accept+0x435/0x620 net/socket.c:1929
- __sys_accept4_file net/socket.c:1969 [inline]
- __sys_accept4+0x9b/0x110 net/socket.c:1999
- __do_sys_accept net/socket.c:2016 [inline]
- __se_sys_accept net/socket.c:2013 [inline]
- __x64_sys_accept+0x7d/0x90 net/socket.c:2013
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x58/0x100 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x4315f9
-Code: fd ff 48 81 c4 80 00 00 00 e9 f1 fe ff ff 0f 1f 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 ab b4 fd ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffdb26d9c78 EFLAGS: 00000246 ORIG_RAX: 000000000000002b
-RAX: ffffffffffffffda RBX: 0000000000400300 RCX: 00000000004315f9
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000004
-RBP: 00000000006e1018 R08: 0000000000400300 R09: 0000000000400300
-R10: 0000000000400300 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000040cdf0 R14: 000000000040ce80 R15: 0000000000000055
- </TASK>
+As the STARTING callbacks are not expected to fail, if one of the
+set_hw_mode() fails, e.g. due to el0 mixed-endian is not supported for
+'setend', it will report a warning:
 
-The reproducer invokes shutdown() before entering the listener status.
-After commit 94062790aedb ("tcp: defer shutdown(SEND_SHUTDOWN) for
-TCP_SYN_RECV sockets"), the above causes the child to reach the accept
-syscall in FIN_WAIT1 status.
+```
+CPU[2] cannot support the emulation of setend
+CPU 2 UP state arm64/isndep:starting (136) failed (-22)
+CPU2: Booted secondary processor 0x0000000002 [0x414fd0c1]
+```
 
-Eric noted we can relax the existing assertion in __inet_accept()
+To fix it, add a check for INSN_UNAVAILABLE status and skip the process.
 
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/490
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Fixes: 94062790aedb ("tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/23ab880a44d8cfd967e84de8b93dbf48848e3d8c.1716299669.git.pabeni@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wei Li <liwei391@huawei.com>
+Tested-by: Huisong Li <lihuisong@huawei.com>
+Link: https://lore.kernel.org/r/20240423093501.3460764-1-liwei391@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/af_inet.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/armv8_deprecated.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -749,7 +749,9 @@ int inet_accept(struct socket *sock, str
- 	sock_rps_record_flow(sk2);
- 	WARN_ON(!((1 << sk2->sk_state) &
- 		  (TCPF_ESTABLISHED | TCPF_SYN_RECV |
--		  TCPF_CLOSE_WAIT | TCPF_CLOSE)));
-+		   TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 |
-+		   TCPF_CLOSING | TCPF_CLOSE_WAIT |
-+		   TCPF_CLOSE)));
- 
- 	sock_graft(sk2, newsock);
- 
+diff --git a/arch/arm64/kernel/armv8_deprecated.c b/arch/arm64/kernel/armv8_deprecated.c
+index f0ba854f0045e..34370be75acd5 100644
+--- a/arch/arm64/kernel/armv8_deprecated.c
++++ b/arch/arm64/kernel/armv8_deprecated.c
+@@ -471,6 +471,9 @@ static int run_all_insn_set_hw_mode(unsigned int cpu)
+ 	for (i = 0; i < ARRAY_SIZE(insn_emulations); i++) {
+ 		struct insn_emulation *insn = insn_emulations[i];
+ 		bool enable = READ_ONCE(insn->current_mode) == INSN_HW;
++		if (insn->status == INSN_UNAVAILABLE)
++			continue;
++
+ 		if (insn->set_hw_mode && insn->set_hw_mode(enable)) {
+ 			pr_warn("CPU[%u] cannot support the emulation of %s",
+ 				cpu, insn->name);
+-- 
+2.43.0
+
 
 
 
