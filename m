@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C2F93C478
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 749A993C4B8
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10968B2492A
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6FE21C21D6E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F8E19D090;
-	Thu, 25 Jul 2024 14:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CC919D07F;
+	Thu, 25 Jul 2024 14:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0D7YHYNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfHOtrS4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8774919D066;
-	Thu, 25 Jul 2024 14:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355D719B5BE;
+	Thu, 25 Jul 2024 14:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918396; cv=none; b=TPO4eabPycmlUVe4ibtSsnpDfDtWEB8gohiurb8eNUt4hW+OLbL9jmz96bfEQqotJvSQx+wGXX7UpE2WKLmUUcWaLf+k2C9yxtnIqqWhUD33fHPU+xRqAN7jBx+6y9PQtV/Pj7tThnGvV1Fo1YfbneWk/rS1DIdM1yDEMam4yLA=
+	t=1721918559; cv=none; b=kWtHI3KE4ivfTNNath0USP8QrTRl75q8o+KXl7EmzwOmXTpwZ93mHwUx0IxzANfwiLVeAbDKePke/NqIVe2mtDUE31/uLJrt7fDQ902NgoCuvWIg23sj6FvfQxe66OHdYxWoQmWGmmU0tw8+ZnznrkUyl9dFPR3KhjaRnmP90PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918396; c=relaxed/simple;
-	bh=UqVVNUYcZ2jtTayGoarvFFhz1NJfPC8rtmJGKAYzXBI=;
+	s=arc-20240116; t=1721918559; c=relaxed/simple;
+	bh=Qiev8cGpMCudh6YAJBuz/LESEzMKk8ordXeTzNixkb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJ+7xxYYmDMqrwWHE5KYpXS0fUkOUJobiU4sstMA4afMF8wi/8gS+d3lXEvPMdLMHJALZbR98fFgboFqQA8ST02bvh2vedHFBwico1DU/hWafNkAXUmqoEPChAml4n6rErAozIMFGVi371S7zXAE1yjyt63ixTPmU8eEHqCuRSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0D7YHYNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F366CC116B1;
-	Thu, 25 Jul 2024 14:39:55 +0000 (UTC)
+	 MIME-Version; b=cLROqjyFS+JyOlmSOAS/cIn0J4zPYfj6QFgyB0f/RWVCJkDgwAL1roU2lGsvhJOJxZ/NnkwEQyAd0qUNdOE/PMzS5qKKLB4Mhy2p6nyFoI9E8MsD8wDyG5LeEBQ/Kxzwou7EQItb2cv+KZQX2xaGGCqGy6wJIgTx2AKpO2sWv8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfHOtrS4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A269C116B1;
+	Thu, 25 Jul 2024 14:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918396;
-	bh=UqVVNUYcZ2jtTayGoarvFFhz1NJfPC8rtmJGKAYzXBI=;
+	s=korg; t=1721918558;
+	bh=Qiev8cGpMCudh6YAJBuz/LESEzMKk8ordXeTzNixkb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0D7YHYNVyR6iM+oRuIYpHmJUwcmzma6b6U1MG9kNWWfqD2zIJaZhJB70AA1eyZS5D
-	 3Fc/R8fPV1WDzw3kLVdVQ47pWA6PxqohXY/PPIh492tMuhjLX0Xd6kQNzB+MLAPyZ/
-	 +so24eF6B+P5uPmrcZp1b2xAHb4ua+ldQeRHv+xA=
+	b=CfHOtrS4p2bmILjYyysszLYoaWbKa+Dqlr1tjyl3lpJL54xDpdxlNeqkvikjjNEp8
+	 gTBTWr+GLhjVImbkoGHoBEfw8ZfXDyAd5MzLLTaaAG3+bOAi55QMvGkbblaMCR8N9C
+	 EE6vzi+zot42VUVWYvHR1DBd5Ye48xpLGwMDH3aA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.10 29/29] filelock: Fix fcntl/close race recovery compat path
+	Chen Ni <nichen@iscas.ac.cn>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 22/43] can: kvaser_usb: fix return value for hif_usb_send_regout
 Date: Thu, 25 Jul 2024 16:36:45 +0200
-Message-ID: <20240725142732.910355481@linuxfoundation.org>
+Message-ID: <20240725142731.312469599@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-References: <20240725142731.814288796@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit f8138f2ad2f745b9a1c696a05b749eabe44337ea upstream.
+[ Upstream commit 0d34d8163fd87978a6abd792e2d8ad849f4c3d57 ]
 
-When I wrote commit 3cad1bc01041 ("filelock: Remove locks reliably when
-fcntl/close race is detected"), I missed that there are two copies of the
-code I was patching: The normal version, and the version for 64-bit offsets
-on 32-bit kernels.
-Thanks to Greg KH for stumbling over this while doing the stable
-backport...
+As the potential failure of usb_submit_urb(), it should be better to
+return the err variable to catch the error.
 
-Apply exactly the same fix to the compat path for 32-bit kernels.
-
-Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
-Cc: stable@kernel.org
-Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240723-fs-lock-recover-compatfix-v1-1-148096719529@google.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://lore.kernel.org/all/20240521041020.1519416-1-nichen@iscas.ac.cn
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/locks.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2570,8 +2570,9 @@ int fcntl_setlk64(unsigned int fd, struc
- 	error = do_lock_file_wait(filp, cmd, file_lock);
- 
- 	/*
--	 * Attempt to detect a close/fcntl race and recover by releasing the
--	 * lock that was just acquired. There is no need to do that when we're
-+	 * Detect close/fcntl races and recover by zapping all POSIX locks
-+	 * associated with this file and our files_struct, just like on
-+	 * filp_flush(). There is no need to do that when we're
- 	 * unlocking though, or for OFD locks.
- 	 */
- 	if (!error && file_lock->c.flc_type != F_UNLCK &&
-@@ -2586,9 +2587,7 @@ int fcntl_setlk64(unsigned int fd, struc
- 		f = files_lookup_fd_locked(files, fd);
- 		spin_unlock(&files->file_lock);
- 		if (f != filp) {
--			file_lock->c.flc_type = F_UNLCK;
--			error = do_lock_file_wait(filp, cmd, file_lock);
--			WARN_ON_ONCE(error);
-+			locks_remove_posix(filp, files);
- 			error = -EBADF;
- 		}
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+index 411b3adb1d9ea..a96b223984070 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -266,7 +266,7 @@ int kvaser_usb_send_cmd_async(struct kvaser_usb_net_priv *priv, void *cmd,
  	}
+ 	usb_free_urb(urb);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ int kvaser_usb_can_rx_over_error(struct net_device *netdev)
+-- 
+2.43.0
+
 
 
 
