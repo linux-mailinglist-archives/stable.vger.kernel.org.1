@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-61557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4604C93C4E8
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BB293C596
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F26BA284D64
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2EF3B27479
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBD619AA5F;
-	Thu, 25 Jul 2024 14:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1419419CD0C;
+	Thu, 25 Jul 2024 14:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtEaU74G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPyx1Y9m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D22213DDB8;
-	Thu, 25 Jul 2024 14:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C757713C816;
+	Thu, 25 Jul 2024 14:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918699; cv=none; b=kyISU0BftxY9wWINkrLV69nO3apXPavCDtArlF9EpjqWLpmsgNfnFxgM/+Y/5eoi44hTH9nWhJ39ACKZZq+fdk6NK9gPEkLF7oQJ5w4fnRqM4cfKZnRaR46l6b+d1GYh4jChoRzSB1fOGBbpYlWwsN3uN64O+GQllIvWj91FUhI=
+	t=1721919186; cv=none; b=kxJBioH5psnV6/yCPlAmjwHAl50arjnDCg66oLbZgV5b2FRFoMEcQ3KODf6kANWlwDD2uCBI//104bdw7g+BLa8JT6RIIGaz52zUL1LqvNTmpGwPCFrJ/r7ieizfQ7zHlJyERGrxBMnc+SaI2gMbve+cceifvsxwrav+LJcaNuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918699; c=relaxed/simple;
-	bh=kWPxw1BG01MP3mBm+gtGc+hnX/P6pntzLbsiPFTnn/k=;
+	s=arc-20240116; t=1721919186; c=relaxed/simple;
+	bh=d3iorMjsL1ey/wH0PXFcPZBPz9tK8Z0kYuvtuabGYeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fD8I0NHhiKqTQOD1It7vyW/st33yFc7NPNfHKkLYznZokvQsONdk7DYIP+Lzds54X2zzzm03jBaeT/LS7fm9qmuCNiyFU4AelmcBpDEzuBtBOkNYa8fjgHSmSVsARbczYk2PSiSOrcfViO0U5OsYliFSR4uZjPwIbFUF9jvSI40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtEaU74G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E35C116B1;
-	Thu, 25 Jul 2024 14:44:58 +0000 (UTC)
+	 MIME-Version; b=X1eA3gzOE6picVtgEoVXqXUo6QQdeXHglnZ/dCI9thfMU0OWiD5qBVf7cZttjWOSoEer5lxOSq8b5ek5rk8uXTHKUMcF4fdRFj+zt+CN8Dnte4f7ovJHo3Nlk3YFDHuiufd0D97QuSeAkz8Lne6VZWBshpsnlC/SI0troHtdFWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPyx1Y9m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A06C116B1;
+	Thu, 25 Jul 2024 14:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918699;
-	bh=kWPxw1BG01MP3mBm+gtGc+hnX/P6pntzLbsiPFTnn/k=;
+	s=korg; t=1721919186;
+	bh=d3iorMjsL1ey/wH0PXFcPZBPz9tK8Z0kYuvtuabGYeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XtEaU74Gt7ziwnCjnkfjNcoJPPTlFLN0ZYHswHAk1ylf5UUnzhOnjuZoPv5auqnbO
-	 I6nXSnfKBooDrHnDo9n0LcBAVB3IRb5kEHc2sTPurMqofZqTqI/E12Q80/2dc6yF4p
-	 qmB4i4UmOk6iwcL86GV83vAm7gAUZGUGvmRcdRak=
+	b=QPyx1Y9mfQm1PS/ALUrrr3K9avpVHkH5+kRlgXlrlJt19YRt1kJ20Heswfpl1e+ix
+	 5Ydwak+RqaugJaacoPLlHBUqbrJeQZCpm0fSHoVgStakbVlCXNLai2kpwERgz6ANac
+	 XoXxzVM3SDChb3TVGLXf4s6Lf2AMqf277YN+EHpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>,
-	syzbot+c56033c8c15c08286062@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 13/13] btrfs: do not BUG_ON on failure to get dir index for new snapshot
-Date: Thu, 25 Jul 2024 16:37:22 +0200
-Message-ID: <20240725142728.540571187@linuxfoundation.org>
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 50/87] ALSA: dmaengine_pcm: terminate dmaengine before synchronize
+Date: Thu, 25 Jul 2024 16:37:23 +0200
+Message-ID: <20240725142740.321157027@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.029052310@linuxfoundation.org>
-References: <20240725142728.029052310@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-commit df9f278239046719c91aeb59ec0afb1a99ee8b2b upstream.
+[ Upstream commit 6a7db25aad8ce6512b366d2ce1d0e60bac00a09d ]
 
-During the transaction commit path, at create_pending_snapshot(), there
-is no need to BUG_ON() in case we fail to get a dir index for the snapshot
-in the parent directory. This should fail very rarely because the parent
-inode should be loaded in memory already, with the respective delayed
-inode created and the parent inode's index_cnt field already initialized.
+When dmaengine supports pause function, in suspend state,
+dmaengine_pause() is called instead of dmaengine_terminate_async(),
 
-However if it fails, it may be -ENOMEM like the comment at
-create_pending_snapshot() says or any error returned by
-btrfs_search_slot() through btrfs_set_inode_index_count(), which can be
-pretty much anything such as -EIO or -EUCLEAN for example. So the comment
-is not correct when it says it can only be -ENOMEM.
+In end of playback stream, the runtime->state will go to
+SNDRV_PCM_STATE_DRAINING, if system suspend & resume happen
+at this time, application will not resume playback stream, the
+stream will be closed directly, the dmaengine_terminate_async()
+will not be called before the dmaengine_synchronize(), which
+violates the call sequence for dmaengine_synchronize().
 
-However doing a BUG_ON() here is overkill, since we can instead abort
-the transaction and return the error. Note that any error returned by
-create_pending_snapshot() will eventually result in a transaction
-abort at cleanup_transaction(), called from btrfs_commit_transaction(),
-but we can explicitly abort the transaction at this point instead so that
-we get a stack trace to tell us that the call to btrfs_set_inode_index()
-failed.
+This behavior also happens for capture streams, but there is no
+SNDRV_PCM_STATE_DRAINING state for capture. So use
+dmaengine_tx_status() to check the DMA status if the status is
+DMA_PAUSED, then call dmaengine_terminate_async() to terminate
+dmaengine before dmaengine_synchronize().
 
-So just abort the transaction and return in case btrfs_set_inode_index()
-returned an error at create_pending_snapshot().
-
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
-Reported-by: syzbot+c56033c8c15c08286062@syzkaller.appspotmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/1718851218-27803-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/core/pcm_dmaengine.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1701,7 +1701,10 @@ static noinline int create_pending_snaps
- 	 * insert the directory item
- 	 */
- 	ret = btrfs_set_inode_index(BTRFS_I(parent_inode), &index);
--	BUG_ON(ret); /* -ENOMEM */
-+	if (ret) {
-+		btrfs_abort_transaction(trans, ret);
-+		goto fail;
-+	}
+diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
+index 3e479dca122a0..9f953ff8b0645 100644
+--- a/sound/core/pcm_dmaengine.c
++++ b/sound/core/pcm_dmaengine.c
+@@ -361,6 +361,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_sync_stop);
+ int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
++
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status == DMA_PAUSED)
++		dmaengine_terminate_async(prtd->dma_chan);
  
- 	/* check if there is a file/dir which has the same name. */
- 	dir_item = btrfs_lookup_dir_item(NULL, parent_root, path,
+ 	dmaengine_synchronize(prtd->dma_chan);
+ 	kfree(prtd);
+@@ -379,6 +385,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_close);
+ int snd_dmaengine_pcm_close_release_chan(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
++
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status == DMA_PAUSED)
++		dmaengine_terminate_async(prtd->dma_chan);
+ 
+ 	dmaengine_synchronize(prtd->dma_chan);
+ 	dma_release_channel(prtd->dma_chan);
+-- 
+2.43.0
+
 
 
 
