@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-61638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A2293C544
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:49:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1E893C4E9
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 594551C2185D
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:49:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7604C1F21522
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB5E1E895;
-	Thu, 25 Jul 2024 14:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEEB19CD0C;
+	Thu, 25 Jul 2024 14:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XxzFLIMP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZigqKDV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9B98468;
-	Thu, 25 Jul 2024 14:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8823E19D081;
+	Thu, 25 Jul 2024 14:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918958; cv=none; b=maSS856o3RDAa6Ab+JC8z3Pkf0Gr/b6T8SRJsYlAwIbJiBHLBs0p92poewn/3JZ8RRJMPO7IlMh2t7hAtEpOLbiWpT2DIE/G6MFlJDZHtSxniF1rqyY42N8fTxxEKLw1F6QD2R2gZgup1TguOBLos7PmTuwMdGXA43n7LHgBvaI=
+	t=1721918702; cv=none; b=kyt8rAWk9YKC6kQRmPGtuJnqV/w793uHpeL9TK0AIdNPOLFubPiL9bKwPSPGUqD8qlLNOEVPeX/6/eLOlSUuviYEs+qlBM+57zEYDnlh/zG8QQhz18RhH76OPyvJjRm8Lp58ZNEJCVhqOKy8rZKvnIp/hH89DQCzzBYVVrPxHDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918958; c=relaxed/simple;
-	bh=CcC7FdBhpdWZDGcV5XW/byaD1kq6o685APtb+sTtiiM=;
+	s=arc-20240116; t=1721918702; c=relaxed/simple;
+	bh=KS4g2uXAkgNUuzmxyayYQOeXt2zR2RMS2QZpZbANOAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cagIWnpC9aw3twtxaxDAZqFVpgPrGyW+bEwKsBPO5hpvkG3rJSqcSj+EyNltL3Jpxs09Krk8icoQeB4MPi8XVgBMtz/3Vj7hS9OrfDQrfk5RLZ2gFGI1fzvE4mFd4av7UIdIxbj0AwQMlNtJHEf4csfDf+2ELBhXwHe0t4CkCKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XxzFLIMP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1EE8C116B1;
-	Thu, 25 Jul 2024 14:49:17 +0000 (UTC)
+	 MIME-Version; b=ARhLm7as/nzjmq5Vgf+OK9fAErxwF7UVul/0BSm0fgP0h/P5TA8ZybEl4/XgzVusyTOxsPXzl+8iMBn7hBpUzLv7SQvMMRLPYV8Mja3OAyK2FCfdUHgawI+ndidglcaSrObXUS6VAAMBEN4psgT3VhfwF7VvaH8URXNbYrlEJaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZigqKDV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2EDC116B1;
+	Thu, 25 Jul 2024 14:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918958;
-	bh=CcC7FdBhpdWZDGcV5XW/byaD1kq6o685APtb+sTtiiM=;
+	s=korg; t=1721918702;
+	bh=KS4g2uXAkgNUuzmxyayYQOeXt2zR2RMS2QZpZbANOAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XxzFLIMPy+rPDLWRWDfX0gYVFlNgPKCKsZbTF4Mvs9edBbf2VvgtpbySXdGaE2MiH
-	 Vd0catArjBBPxuRiCCm2jzRgckyxL+REeR+7R62Vp/5NeWJf9uCpD1BGL7r/LaVBLP
-	 EGZfnInDwiD950jY9dUrkEkRxXcPTNkC8DcFeUCQ=
+	b=ZigqKDV2PQGlZJO4zC8YpzOlvAVUJUPbXjoGJbPJyGJN8Ee6FyTI4KiiTygGnt+I1
+	 l/w95gAQOJgA+oIP8BSDlSDlFL4LqSD3WhlUavOSRWzAIAMQGStfDfqxrppzpkg0oH
+	 pSJHxEgYxFhWgTlJ6i1Ax+ZMu0a87TM3U1796VCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 23/59] Input: i8042 - add Ayaneo Kun to i8042 quirk table
+	lei lu <llfamsec@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>
+Subject: [PATCH 6.1 04/13] jfs: dont walk off the end of ealist
 Date: Thu, 25 Jul 2024 16:37:13 +0200
-Message-ID: <20240725142734.136701696@linuxfoundation.org>
+Message-ID: <20240725142728.200427513@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142728.029052310@linuxfoundation.org>
+References: <20240725142728.029052310@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+From: lei lu <llfamsec@gmail.com>
 
-[ Upstream commit 955af6355ddfe35140f9706a635838212a32513b ]
+commit d0fa70aca54c8643248e89061da23752506ec0d4 upstream.
 
-See the added comment for details. Also fix a typo in the
-quirk's define.
+Add a check before visiting the members of ea to
+make sure each ea stays within the ealist.
 
-Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
-Link: https://lore.kernel.org/r/20240531190100.3874731-1-tjakobi@math.uni-bielefeld.de
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: lei lu <llfamsec@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ fs/jfs/xattr.c |   23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
-index 6804970d8f51a..91edfb88a218e 100644
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -75,7 +75,7 @@ static inline void i8042_write_command(int val)
- #define SERIO_QUIRK_PROBE_DEFER		BIT(5)
- #define SERIO_QUIRK_RESET_ALWAYS	BIT(6)
- #define SERIO_QUIRK_RESET_NEVER		BIT(7)
--#define SERIO_QUIRK_DIECT		BIT(8)
-+#define SERIO_QUIRK_DIRECT		BIT(8)
- #define SERIO_QUIRK_DUMBKBD		BIT(9)
- #define SERIO_QUIRK_NOLOOP		BIT(10)
- #define SERIO_QUIRK_NOTIMEOUT		BIT(11)
-@@ -1235,6 +1235,20 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	{
-+		/*
-+		 * The Ayaneo Kun is a handheld device where some the buttons
-+		 * are handled by an AT keyboard. The keyboard is usually
-+		 * detected as raw, but sometimes, usually after a cold boot,
-+		 * it is detected as translated. Make sure that the keyboard
-+		 * is always in raw mode.
-+		 */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
-+			DMI_MATCH(DMI_BOARD_NAME, "KUN"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_DIRECT)
-+	},
- 	{ }
- };
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -797,7 +797,7 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 		       size_t buf_size)
+ {
+ 	struct jfs_ea_list *ealist;
+-	struct jfs_ea *ea;
++	struct jfs_ea *ea, *ealist_end;
+ 	struct ea_buffer ea_buf;
+ 	int xattr_size;
+ 	ssize_t size;
+@@ -817,9 +817,16 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 		goto not_found;
  
-@@ -1553,7 +1567,7 @@ static void __init i8042_check_quirks(void)
- 		if (quirks & SERIO_QUIRK_RESET_NEVER)
- 			i8042_reset = I8042_RESET_NEVER;
+ 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
++	ealist_end = END_EALIST(ealist);
+ 
+ 	/* Find the named attribute */
+-	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea))
++	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
++		if (unlikely(ea + 1 > ealist_end) ||
++		    unlikely(NEXT_EA(ea) > ealist_end)) {
++			size = -EUCLEAN;
++			goto release;
++		}
++
+ 		if ((namelen == ea->namelen) &&
+ 		    memcmp(name, ea->name, namelen) == 0) {
+ 			/* Found it */
+@@ -834,6 +841,7 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 			memcpy(data, value, size);
+ 			goto release;
+ 		}
++	}
+       not_found:
+ 	size = -ENODATA;
+       release:
+@@ -861,7 +869,7 @@ ssize_t jfs_listxattr(struct dentry * de
+ 	ssize_t size = 0;
+ 	int xattr_size;
+ 	struct jfs_ea_list *ealist;
+-	struct jfs_ea *ea;
++	struct jfs_ea *ea, *ealist_end;
+ 	struct ea_buffer ea_buf;
+ 
+ 	down_read(&JFS_IP(inode)->xattr_sem);
+@@ -876,9 +884,16 @@ ssize_t jfs_listxattr(struct dentry * de
+ 		goto release;
+ 
+ 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
++	ealist_end = END_EALIST(ealist);
+ 
+ 	/* compute required size of list */
+-	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea)) {
++	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
++		if (unlikely(ea + 1 > ealist_end) ||
++		    unlikely(NEXT_EA(ea) > ealist_end)) {
++			size = -EUCLEAN;
++			goto release;
++		}
++
+ 		if (can_list(ea))
+ 			size += name_size(ea) + 1;
  	}
--	if (quirks & SERIO_QUIRK_DIECT)
-+	if (quirks & SERIO_QUIRK_DIRECT)
- 		i8042_direct = true;
- 	if (quirks & SERIO_QUIRK_DUMBKBD)
- 		i8042_dumbkbd = true;
--- 
-2.43.0
-
 
 
 
