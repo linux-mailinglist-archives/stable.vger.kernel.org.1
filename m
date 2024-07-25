@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4868C93C518
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8579A93C59E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D64E8B266BF
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:47:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6D3D1C21E6F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DE419CD05;
-	Thu, 25 Jul 2024 14:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2770F19CCF7;
+	Thu, 25 Jul 2024 14:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYYkKB43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ve0lSXLp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AF413DDB8;
-	Thu, 25 Jul 2024 14:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2C8FC19;
+	Thu, 25 Jul 2024 14:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918824; cv=none; b=aFE//d1BZn1gq+Y7Zp194DaRE3KvzFIgGqrYML6JHFvH1x45IqwlmPt3RiyUcBMiBEX82n/ah+bNCYUlKrKpggLRVl25f0MrNoinOLvP+KGJRtTsGioKoyeFicpMm2zu10elRnBuC7u/Y6kbw7A4IiMgc7s/HpzsbZr6fGuAQO4=
+	t=1721919213; cv=none; b=q4Muk26qtGaakbOCUtgaqDxKMYYoA2KkXKY2edCwRY2IxeanYKAUhcoYBlgcHhHTrTrbdhxUjTw7cTQUReaDXqJQ515TL902q5ovM9pHed/wET6AF451JJ6Hja6tIstpsBk/286T/Mk1FtGwFjX22lDmkxvCMAxfBtgF2TSJrb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918824; c=relaxed/simple;
-	bh=8TjwsOmGMogMh/9JtBx2QeKSZRanlMIT/GAwY0RZ04U=;
+	s=arc-20240116; t=1721919213; c=relaxed/simple;
+	bh=inc/BX7GZubiMIdpLK10iuF4w5SZNXknVtAOPL0lBjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYBrrLLa0eKlrHO/Q1r5e3ZxycKxE4vQPyRcyHNoo5nbfmacjp0ngSiogGaP16PK6AI7iXXYe9ySkM+9djo3m9bT+zhg4aSjuZ2CP7tIEClM2rLBu6amWe8RAHyei/Gz9pubxEqXzRlTxtyK9kgYaaHvr9U/OUNu91u5CwVdFJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYYkKB43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF684C116B1;
-	Thu, 25 Jul 2024 14:47:03 +0000 (UTC)
+	 MIME-Version; b=kbPsumZLUpag1OCn4ZmHw6fLoHhwgqmmekIJPWnZtI0lCzv6TXIoGIB3F2a85VjAZ0/s4DMV/vlfDX5k9v/NwHgxjUieqrzGpPD1UgHUOL4QT8jfLkJ/B5u3KqK7GJMzCaLg7szICQXQ5+OI9Vp4yq5YS8Q8liOXH6Y9hd3Vs1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ve0lSXLp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577A4C116B1;
+	Thu, 25 Jul 2024 14:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918824;
-	bh=8TjwsOmGMogMh/9JtBx2QeKSZRanlMIT/GAwY0RZ04U=;
+	s=korg; t=1721919213;
+	bh=inc/BX7GZubiMIdpLK10iuF4w5SZNXknVtAOPL0lBjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYYkKB43g94w8dgh53w7p5mT5EVSW9yoJiBUkY1fpK8IZ8e5YB4ssFVQWxl3WPoZm
-	 bMwcDEQmqAU6bIXQo1N8uDqViDxYRhLPtLkzHTArJvVAXhn5UvE73JdI00iThFTsT2
-	 ybqQ1Rw4A+ShvmB6pBvY0jJCOY/uVAck2boRAbpg=
+	b=ve0lSXLpnOeDm8c96HAXSG1XklrNdW8AYB3MNAmZa6xi8ivkE0w3fi/NEaxzTXh4I
+	 MUdwLYWOv3soLx59FsFj7QHaQm3yZsekyFmPg8Y1pXBX+qa2qgHN9vtihz3uYKFqj8
+	 su9//TvpCi+d4gJ4aPoEOpjBEd1gJ9oaybxOwAmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.9 21/29] arm64: dts: qcom: msm8998: Disable SS instance in Parkmode for USB
+	Jan Kara <jack@suse.cz>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 58/87] fs: better handle deep ancestor chains in is_subdir()
 Date: Thu, 25 Jul 2024 16:37:31 +0200
-Message-ID: <20240725142732.475146018@linuxfoundation.org>
+Message-ID: <20240725142740.618047978@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
-References: <20240725142731.678993846@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 0046325ae52079b46da13a7f84dd7b2a6f7c38f8 upstream.
+[ Upstream commit 391b59b045004d5b985d033263ccba3e941a7740 ]
 
-For Gen-1 targets like MSM8998, it is seen that stressing out the
-controller in host mode results in HC died error:
+Jan reported that 'cd ..' may take a long time in deep directory
+hierarchies under a bind-mount. If concurrent renames happen it is
+possible to livelock in is_subdir() because it will keep retrying.
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
+Change is_subdir() from simply retrying over and over to retry once and
+then acquire the rename lock to handle deep ancestor chains better. The
+list of alternatives to this approach were less then pleasant. Change
+the scope of rcu lock to cover the whole walk while at it.
 
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for MSM8998 to mitigate this issue.
+A big thanks to Jan and Linus. Both Jan and Linus had proposed
+effectively the same thing just that one version ended up being slightly
+more elegant.
 
-Cc: stable@vger.kernel.org
-Fixes: 026dad8f5873 ("arm64: dts: qcom: msm8998: Add USB-related nodes")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-4-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ fs/dcache.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -2154,6 +2154,7 @@
- 				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&qusb2phy>, <&usb3phy>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 				snps,has-lpm-erratum;
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 9a29cfdaa5416..43d75e7ee4785 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -3127,28 +3127,25 @@ EXPORT_SYMBOL(d_splice_alias);
+   
+ bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
+ {
+-	bool result;
++	bool subdir;
+ 	unsigned seq;
+ 
+ 	if (new_dentry == old_dentry)
+ 		return true;
+ 
+-	do {
+-		/* for restarting inner loop in case of seq retry */
+-		seq = read_seqbegin(&rename_lock);
+-		/*
+-		 * Need rcu_readlock to protect against the d_parent trashing
+-		 * due to d_move
+-		 */
+-		rcu_read_lock();
+-		if (d_ancestor(old_dentry, new_dentry))
+-			result = true;
+-		else
+-			result = false;
+-		rcu_read_unlock();
+-	} while (read_seqretry(&rename_lock, seq));
+-
+-	return result;
++	/* Access d_parent under rcu as d_move() may change it. */
++	rcu_read_lock();
++	seq = read_seqbegin(&rename_lock);
++	subdir = d_ancestor(old_dentry, new_dentry);
++	 /* Try lockless once... */
++	if (read_seqretry(&rename_lock, seq)) {
++		/* ...else acquire lock for progress even on deep chains. */
++		read_seqlock_excl(&rename_lock);
++		subdir = d_ancestor(old_dentry, new_dentry);
++		read_sequnlock_excl(&rename_lock);
++	}
++	rcu_read_unlock();
++	return subdir;
+ }
+ EXPORT_SYMBOL(is_subdir);
+ 
+-- 
+2.43.0
+
 
 
 
