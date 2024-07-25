@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C07893C49D
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DF693C571
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E0CE1C21D30
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31089B245EA
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC66719D080;
-	Thu, 25 Jul 2024 14:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A659419B5B5;
+	Thu, 25 Jul 2024 14:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDMJhCOO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k58eg/rl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8959519D066;
-	Thu, 25 Jul 2024 14:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8894315F;
+	Thu, 25 Jul 2024 14:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918476; cv=none; b=PwnFNssn+IGhTa4Lz8/OqP5s7Ta1lllmXbySVKpdxJS5RVWBJ/TOuwbt8MGUT6NSurAm3DTciB7Nvg9M/Vu4xT0WORS+BmHt8b3kkcJWCXaHCBm0TWGeFjCKqAS98HqSsrVA/0fiLTora7lgJeBD/Krjw6s94z/JR/S6eCAaZ/c=
+	t=1721919090; cv=none; b=ZMu1QW8SJdAn/RWvIBQPRsu4S1n8+uG0WGMfOJAe3U5IDlmiFZWFBzDA8p/jHvIncEdiyBmMnaf4QojTPc1ZB/MWcLC5bWo72pXp18bjgwf01MpSvFRaadI20QxjAr10SIkfr7fvpxvE5Rs274kBXYkjoBmp8WbTZp9wZOIggu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918476; c=relaxed/simple;
-	bh=wnUyVKHmzf0dB3ILZy1ciP0qN6IDzexLCYMDEMwFo+M=;
+	s=arc-20240116; t=1721919090; c=relaxed/simple;
+	bh=uVmCNtXPwlEJB+KTQhtfVoYUugsSByFjIZw19Dzb2F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zf+IXN1paznAW7eK/oxJ3H8qK9hdmBWNU3PQ6HeyKKnVyGTImk+g6M14t8MqUXxbGg8MEa/To6WzRZjPHGUqtX3YCzS4rh+3m1Os/2Q0oKcvyzlh54LyGwsJUdsoHAhPv/BjnpNFRtNfickIqSPQeKvnSbG5KHCTM2AV7x3kZAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDMJhCOO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D626FC32782;
-	Thu, 25 Jul 2024 14:41:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YvQSBH+lhtf9m471/8tBxp+7IlgdJdrm0vz/RlHWzoYlN+NeHMqBg+dLGhPtiOSdJ16b6EajBUMitc5wLh1rD1n/ptUlSlm2PJSHwg6oWK8BxTS/hzhdKcyYQKD8llMpQb2rVnFep5lQE//1pOs7de5XfG98RqjO+k5dPFt0mQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k58eg/rl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7F1C116B1;
+	Thu, 25 Jul 2024 14:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918476;
-	bh=wnUyVKHmzf0dB3ILZy1ciP0qN6IDzexLCYMDEMwFo+M=;
+	s=korg; t=1721919090;
+	bh=uVmCNtXPwlEJB+KTQhtfVoYUugsSByFjIZw19Dzb2F8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KDMJhCOOISWKOlbAE3yyfU5VeUGsIuJLOR3XedY9W2eCOtZSUincK1H1DgGsYVl+W
-	 iHGSiiMyXAIN9YgqK/zQNvQ5kxtns8KH5sb8szNUNDb5iYkceL9UM0ayP6c4ufM2Cf
-	 BoU8kSE7r1TtVnIvP1oq/Za8uKzIq83T38yhXbkE=
+	b=k58eg/rl1tk3Mh8NKAFXY+AsrTsBzZ+GfTIDpWR/C9x6TCUolfk8vi7RXa0MDoMg5
+	 DQfUfihpQ+Z3+kceQDCz0GJxTdnDKpfHjXbndhlCr4bhqfEYp5CJpoqSqPFCoRq0W6
+	 QhuXAAvdDxaQQQfjTjlA616aq/B3kKHXmru6Kp74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Paasch <cpaasch@apple.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Kuratov <kniv@yandex-team.ru>
-Subject: [PATCH 4.19 30/33] net: relax socket state check at accept time.
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 20/87] selftests/openat2: Fix build warnings on ppc64
 Date: Thu, 25 Jul 2024 16:36:53 +0200
-Message-ID: <20240725142729.647183391@linuxfoundation.org>
+Message-ID: <20240725142739.195476642@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 26afda78cda3da974fd4c287962c169e9462c495 upstream.
+[ Upstream commit 84b6df4c49a1cc2854a16937acd5fd3e6315d083 ]
 
-Christoph reported the following splat:
+Fix warnings like:
 
-WARNING: CPU: 1 PID: 772 at net/ipv4/af_inet.c:761 __inet_accept+0x1f4/0x4a0
-Modules linked in:
-CPU: 1 PID: 772 Comm: syz-executor510 Not tainted 6.9.0-rc7-g7da7119fe22b #56
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-RIP: 0010:__inet_accept+0x1f4/0x4a0 net/ipv4/af_inet.c:759
-Code: 04 38 84 c0 0f 85 87 00 00 00 41 c7 04 24 03 00 00 00 48 83 c4 10 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc e8 ec b7 da fd <0f> 0b e9 7f fe ff ff e8 e0 b7 da fd 0f 0b e9 fe fe ff ff 89 d9 80
-RSP: 0018:ffffc90000c2fc58 EFLAGS: 00010293
-RAX: ffffffff836bdd14 RBX: 0000000000000000 RCX: ffff888104668000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: dffffc0000000000 R08: ffffffff836bdb89 R09: fffff52000185f64
-R10: dffffc0000000000 R11: fffff52000185f64 R12: dffffc0000000000
-R13: 1ffff92000185f98 R14: ffff88810754d880 R15: ffff8881007b7800
-FS:  000000001c772880(0000) GS:ffff88811b280000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fb9fcf2e178 CR3: 00000001045d2002 CR4: 0000000000770ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- inet_accept+0x138/0x1d0 net/ipv4/af_inet.c:786
- do_accept+0x435/0x620 net/socket.c:1929
- __sys_accept4_file net/socket.c:1969 [inline]
- __sys_accept4+0x9b/0x110 net/socket.c:1999
- __do_sys_accept net/socket.c:2016 [inline]
- __se_sys_accept net/socket.c:2013 [inline]
- __x64_sys_accept+0x7d/0x90 net/socket.c:2013
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x58/0x100 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x4315f9
-Code: fd ff 48 81 c4 80 00 00 00 e9 f1 fe ff ff 0f 1f 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 ab b4 fd ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffdb26d9c78 EFLAGS: 00000246 ORIG_RAX: 000000000000002b
-RAX: ffffffffffffffda RBX: 0000000000400300 RCX: 00000000004315f9
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000004
-RBP: 00000000006e1018 R08: 0000000000400300 R09: 0000000000400300
-R10: 0000000000400300 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000040cdf0 R14: 000000000040ce80 R15: 0000000000000055
- </TASK>
+  openat2_test.c: In function ‘test_openat2_flags’:
+  openat2_test.c:303:73: warning: format ‘%llX’ expects argument of type
+  ‘long long unsigned int’, but argument 5 has type ‘__u64’ {aka ‘long
+  unsigned int’} [-Wformat=]
 
-The reproducer invokes shutdown() before entering the listener status.
-After commit 94062790aedb ("tcp: defer shutdown(SEND_SHUTDOWN) for
-TCP_SYN_RECV sockets"), the above causes the child to reach the accept
-syscall in FIN_WAIT1 status.
+By switching to unsigned long long for u64 for ppc64 builds.
 
-Eric noted we can relax the existing assertion in __inet_accept()
-
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/490
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Fixes: 94062790aedb ("tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/23ab880a44d8cfd967e84de8b93dbf48848e3d8c.1716299669.git.pabeni@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/af_inet.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/openat2/openat2_test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -749,7 +749,9 @@ int inet_accept(struct socket *sock, str
- 	sock_rps_record_flow(sk2);
- 	WARN_ON(!((1 << sk2->sk_state) &
- 		  (TCPF_ESTABLISHED | TCPF_SYN_RECV |
--		  TCPF_CLOSE_WAIT | TCPF_CLOSE)));
-+		   TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 |
-+		   TCPF_CLOSING | TCPF_CLOSE_WAIT |
-+		   TCPF_CLOSE)));
+diff --git a/tools/testing/selftests/openat2/openat2_test.c b/tools/testing/selftests/openat2/openat2_test.c
+index 7fb902099de45..f9d2b0ec77564 100644
+--- a/tools/testing/selftests/openat2/openat2_test.c
++++ b/tools/testing/selftests/openat2/openat2_test.c
+@@ -5,6 +5,7 @@
+  */
  
- 	sock_graft(sk2, newsock);
- 
+ #define _GNU_SOURCE
++#define __SANE_USERSPACE_TYPES__ // Use ll64
+ #include <fcntl.h>
+ #include <sched.h>
+ #include <sys/stat.h>
+-- 
+2.43.0
+
 
 
 
