@@ -1,131 +1,169 @@
-Return-Path: <stable+bounces-61384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FF393C21E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:32:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C57E93C220
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 456FE1C20B12
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 12:32:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB77EB22DF6
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 12:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8A81741F8;
-	Thu, 25 Jul 2024 12:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C41225A8;
+	Thu, 25 Jul 2024 12:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueufmoHM"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="c61gFEse";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EnDTF5/y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout6-smtp.messagingengine.com (fout6-smtp.messagingengine.com [103.168.172.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4973919938A
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:31:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5D522309
+	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721910712; cv=none; b=MgxkvdcC131fWWaBVaKqSy6NnGO8uLC3v4M1yx0M6a2M+7X3tf3fFJNnD96n5KwZRgPewpylMMj3WVMpE61FyZ3O88DKm+6n1h1/Ow0WopKX+KQ7HjlScHIcZS28wrbkn7WJhgwd/epY7FSDnsk+QCyJHvySYxtWliZXkzafRJs=
+	t=1721910756; cv=none; b=mKVaDrOBCYnKzKU51buc9jc7XuQ9ZiPa/WSsy8/z7Y5s8lCwUnB6Ij0VxzILFM84x7WTXk4wddJ899itT+se6ntlCUzVHVVB2InZp4heuWykPBY+2LHXTf/bIj6484w0XUNm5evyM0d709K6l3RchSK0fPFu+TfcZqLd6eoZoN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721910712; c=relaxed/simple;
-	bh=q8dQ7ETyqBFWaSOlKdzpCjVoSgWBT+FwznsIPfvFIZw=;
+	s=arc-20240116; t=1721910756; c=relaxed/simple;
+	bh=iVjwiTGWSbAPFWHvyGOwIVJDxssCDWbpNhvDA+S7C2g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PXhX6M9PENs2MUe/xIIAtg1dg2W39l8uej6OW+L/w9qJiZpoDTccYpj8GUKtm5i9Ri2n0MenOssaQLoUdmcbu3UPSHwLU016zgbvTmebM7sMouBHJdMMFxZq+Ug1+oDNccHCI+bCKt1doQkvv59RtAfzI1ffsgJCxIX9tBCN4oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueufmoHM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03E0C116B1;
-	Thu, 25 Jul 2024 12:31:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721910712;
-	bh=q8dQ7ETyqBFWaSOlKdzpCjVoSgWBT+FwznsIPfvFIZw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ueufmoHMwqyi5NazNpOnEL9M/rOxvp2l8K6SH7yqqGY+8//wDGsJOLFPYfSAznY2A
-	 SwvEllFO6I1ZaMsZIxVDgaQk/16eD3xcc/8XLK42U1TebU0EniPBuHeUvaDerVpT35
-	 MU/LmkpV/G20qqq7oKiHo5uAqSPL5Pk/qFo6WgwQ=
-Date: Thu, 25 Jul 2024 14:31:48 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: stable@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Christoph Paasch <cpaasch@apple.com>,
-	Eric Dumazet <edumazet@google.com>, lvc-project@linuxtesting.org
-Subject: Re: [PATCH v2 4.19 5.4 5.10 5.15] net: relax socket state check at
- accept time.
-Message-ID: <2024072534-tarantula-excusably-fc15@gregkh>
-References: <20240725093603.2812851-1-kniv@yandex-team.ru>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DgN8yYipnL/TlB61b5Hup3mGH/n0U9n0xl+pweAfPdHU/gwJOEm3jMIgGuQrp7mkLBH6IALGdOcAmnZmMVh57GqXQeqWJZBbqCemT7ahP5BFg+GyCw8a7OYlHrGKm46QJx6/OUektDj/hj54D2hcPB8PkmUVplDuRAprgLoH8bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=c61gFEse; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EnDTF5/y; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 513C113802FF;
+	Thu, 25 Jul 2024 08:32:29 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Thu, 25 Jul 2024 08:32:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1721910749;
+	 x=1721997149; bh=CRDgB4Ui9tFlWvibCNae+TBH12c1svg/LRxrQQiSeGk=; b=
+	c61gFEse+mV/1xOGwJVZegFhp0GRsBzCRusNHtDIhUw0AqgKCOfhovfRNyTh2EQM
+	WBYnpUU7DPmuU0thaDk0uAbdGEHfHJ+g3pq9EQwQy/8AUKxvt5UCHcnblGJ35H37
+	8uFUfeWv5pFnpHGrtdATxk8d46UUVEZDiab8vgKzzh8YViBbUhJp/Dj3SJ+ijzIu
+	gCdvdMWT0kSFFEtaNTmziR2rKw3B+rumQ7LdOKLQ+Sc9nw5DpTthU5Ayq99hQM3Y
+	XcI8PQ7MVSh5c9U4kAkd5H9AxPZ/WubGIquEZhxjhE3EsYahYXShr49Qa0lFC6wa
+	9qhZZ09xBDdR3A0Fh9i5MA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1721910749; x=
+	1721997149; bh=CRDgB4Ui9tFlWvibCNae+TBH12c1svg/LRxrQQiSeGk=; b=E
+	nDTF5/yCbk6/TSk7FW+dahxPhTk7vwE4IZl2LH70snxz1SIJ/9mef25hv/ItI5oU
+	1ullBW6GBHqwx3wNhAx5PtyK+bPll4Jf6uSxqxSYz0nf9Y7kOe2cW33WTW9Kba0J
+	IwBlqkAJ1evSfLIEJZbEeuc/gEIFYK2xYBqivkr4wNcznjIaC4ovUcJvBO4c89x2
+	erfosTIAbDK8qiWVKQAXBvkvmhUhbSVoAC+64RZmncAQDXXd1GJ+Quq3lYJmIPcV
+	FWVjSstF+Mf5gC6PqK6XdRW98RK+PEyk1SQfBb7dB3OmEeWfqTXd8JPFrj9rG8Yg
+	9Z3yDXngWB8ayaBa5rXCw==
+X-ME-Sender: <xms:3UWiZknOjhMa0dXoC65FIIW9f637R5b2M0rMZxu1rJBzpc-twN3-uw>
+    <xme:3UWiZj2HZWIPzY41j3BdUjjh89eipCXvUV6BBZ0ANiWOtRhHNde5JeaPFxgd72GJS
+    XayJhyKXrs5QA>
+X-ME-Received: <xmr:3UWiZiq7V6agct-Fkjw0nkqSl95NGxB2LOtVvoTbkd-zT8UkySa4ZUu2ijEg2D6ba7BGQUrKn5m95dssI3ziE21KSKEO_PsnOyt6LQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrieefgdehfecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepleehhe
+    duudeugeegjefgheeuudffheevueekgfekueefledtjeetieeutdekkeelnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhmpdhnsggprhgtphhtthhopedt
+X-ME-Proxy: <xmx:3UWiZgnZHeER7qMJ3nbGK_ERsDxxbCNtzTbEJx9pfo7j_0jAyhAFCA>
+    <xmx:3UWiZi1DQ8mKFSaPcSIn8xkIobIu6Yk83LRxf9MPcntMtbIgEQSJYw>
+    <xmx:3UWiZnukYJQhH-QZEiCaYl_73xwkcjdjp3u7k6IsluK4BXu4YG6HyA>
+    <xmx:3UWiZuUb7r5vZG_ZL7dYrNCJsXeSR_H9oq8_vjBQfppRnCdNJLcrJg>
+    <xmx:3UWiZoPfHIEkIhUfNrsHQmgDu5l1wQkTQmzJAdSo2asvoR2yDUm_JgyD>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 25 Jul 2024 08:32:28 -0400 (EDT)
+Date: Thu, 25 Jul 2024 14:32:26 +0200
+From: Greg KH <greg@kroah.com>
+To: Sergio =?iso-8859-1?Q?Gonz=E1lez?= Collado <sergio.collado@gmail.com>
+Cc: stable@vger.kernel.org, linux-kernel-mentees@lists.linuxfoundation.org,
+	Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+	syzbot+d0ab8746c920a592aeab@syzkaller.appspotmail.com
+Subject: Re: [PATCH 6.1.y] f2fs: avoid dead loop in f2fs_issue_checkpoint()
+Message-ID: <2024072519-among-surrogate-8c18@gregkh>
+References: <20240725111933.77493-1-sergio.collado@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240725093603.2812851-1-kniv@yandex-team.ru>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240725111933.77493-1-sergio.collado@gmail.com>
 
-On Thu, Jul 25, 2024 at 12:36:03PM +0300, Nikolay Kuratov wrote:
-> [ Upstream commit 26afda78cda3da974fd4c287962c169e9462c495 ]
+On Thu, Jul 25, 2024 at 01:19:33PM +0200, Sergio González Collado wrote:
+> From: Chao Yu <chao@kernel.org>
 > 
-> Christoph reported the following splat:
+> [ Upstream commit 5079e1c0c879311668b77075de3e701869804adf ]
 > 
-> WARNING: CPU: 1 PID: 772 at net/ipv4/af_inet.c:761 __inet_accept+0x1f4/0x4a0
-> Modules linked in:
-> CPU: 1 PID: 772 Comm: syz-executor510 Not tainted 6.9.0-rc7-g7da7119fe22b #56
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-> RIP: 0010:__inet_accept+0x1f4/0x4a0 net/ipv4/af_inet.c:759
-> Code: 04 38 84 c0 0f 85 87 00 00 00 41 c7 04 24 03 00 00 00 48 83 c4 10 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc e8 ec b7 da fd <0f> 0b e9 7f fe ff ff e8 e0 b7 da fd 0f 0b e9 fe fe ff ff 89 d9 80
-> RSP: 0018:ffffc90000c2fc58 EFLAGS: 00010293
-> RAX: ffffffff836bdd14 RBX: 0000000000000000 RCX: ffff888104668000
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-> RBP: dffffc0000000000 R08: ffffffff836bdb89 R09: fffff52000185f64
-> R10: dffffc0000000000 R11: fffff52000185f64 R12: dffffc0000000000
-> R13: 1ffff92000185f98 R14: ffff88810754d880 R15: ffff8881007b7800
-> FS:  000000001c772880(0000) GS:ffff88811b280000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007fb9fcf2e178 CR3: 00000001045d2002 CR4: 0000000000770ef0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> PKRU: 55555554
-> Call Trace:
->  <TASK>
->  inet_accept+0x138/0x1d0 net/ipv4/af_inet.c:786
->  do_accept+0x435/0x620 net/socket.c:1929
->  __sys_accept4_file net/socket.c:1969 [inline]
->  __sys_accept4+0x9b/0x110 net/socket.c:1999
->  __do_sys_accept net/socket.c:2016 [inline]
->  __se_sys_accept net/socket.c:2013 [inline]
->  __x64_sys_accept+0x7d/0x90 net/socket.c:2013
->  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->  do_syscall_64+0x58/0x100 arch/x86/entry/common.c:83
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> RIP: 0033:0x4315f9
-> Code: fd ff 48 81 c4 80 00 00 00 e9 f1 fe ff ff 0f 1f 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 ab b4 fd ff c3 66 2e 0f 1f 84 00 00 00 00
-> RSP: 002b:00007ffdb26d9c78 EFLAGS: 00000246 ORIG_RAX: 000000000000002b
-> RAX: ffffffffffffffda RBX: 0000000000400300 RCX: 00000000004315f9
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000004
-> RBP: 00000000006e1018 R08: 0000000000400300 R09: 0000000000400300
-> R10: 0000000000400300 R11: 0000000000000246 R12: 0000000000000000
-> R13: 000000000040cdf0 R14: 000000000040ce80 R15: 0000000000000055
->  </TASK>
+> generic/082 reports a bug as below:
 > 
-> The reproducer invokes shutdown() before entering the listener status.
-> After commit 94062790aedb ("tcp: defer shutdown(SEND_SHUTDOWN) for
-> TCP_SYN_RECV sockets"), the above causes the child to reach the accept
-> syscall in FIN_WAIT1 status.
+> __schedule+0x332/0xf60
+> schedule+0x6f/0xf0
+> schedule_timeout+0x23b/0x2a0
+> wait_for_completion+0x8f/0x140
+> f2fs_issue_checkpoint+0xfe/0x1b0
+> f2fs_sync_fs+0x9d/0xb0
+> sync_filesystem+0x87/0xb0
+> dquot_load_quota_sb+0x41b/0x460
+> dquot_load_quota_inode+0xa5/0x130
+> dquot_quota_on+0x4b/0x60
+> f2fs_quota_on+0xe3/0x1b0
+> do_quotactl+0x483/0x700
+> __x64_sys_quotactl+0x15c/0x310
+> do_syscall_64+0x3f/0x90
+> entry_SYSCALL_64_after_hwframe+0x72/0xdc
 > 
-> Eric noted we can relax the existing assertion in __inet_accept()
+> The root casue is race case as below:
 > 
-> Reported-by: Christoph Paasch <cpaasch@apple.com>
-> Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/490
-> Suggested-by: Eric Dumazet <edumazet@google.com>
-> Fixes: 94062790aedb ("tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets")
-> Link: https://lore.kernel.org/r/23ab880a44d8cfd967e84de8b93dbf48848e3d8c.1716299669.git.pabeni@redhat.com
-> Link: https://lore.kernel.org/linux-cve-announce/2024062136-CVE-2024-36484-375b@gregkh
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+> Thread A			Kworker			IRQ
+> - write()
+> : write data to quota.user file
+> 
+> 				- writepages
+> 				 - f2fs_submit_page_write
+> 				  - __is_cp_guaranteed return false
+> 				  - inc_page_count(F2FS_WB_DATA)
+> 				 - submit_bio
+> - quotactl(Q_QUOTAON)
+>  - f2fs_quota_on
+>   - dquot_quota_on
+>    - dquot_load_quota_inode
+>     - vfs_setup_quota_inode
+>     : inode->i_flags |= S_NOQUOTA
+> 							- f2fs_write_end_io
+> 							 - __is_cp_guaranteed return true
+> 							 - dec_page_count(F2FS_WB_CP_DATA)
+>     - dquot_load_quota_sb
+>      - f2fs_sync_fs
+>       - f2fs_issue_checkpoint
+>        - do_checkpoint
+>         - f2fs_wait_on_all_pages(F2FS_WB_CP_DATA)
+>         : loop due to F2FS_WB_CP_DATA count is negative
+> 
+> Calling filemap_fdatawrite() and filemap_fdatawait() to keep all data
+> clean before quota file setup.
+> 
+> Signed-off-by: Chao Yu <chao@kernel.org>
+> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+> (cherry picked from commit 5079e1c0c879311668b77075de3e701869804adf)
+> Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
+> Reported-by: syzbot+d0ab8746c920a592aeab@syzkaller.appspotmail.com
 > ---
-> Changes in v2:
-> - restore Signed-off-by tag with original author Paolo Abeni <pabeni@redhat.com>
+>  fs/f2fs/super.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
 
-You still lost the original authorship of the commit :(
-
-I fixed it up by hand...
+Now queued up, thanks.
 
 greg k-h
 
