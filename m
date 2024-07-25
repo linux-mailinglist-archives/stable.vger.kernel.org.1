@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-61656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34E393C558
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5EE93C50F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E57441C21DEC
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E91A7281C01
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BF419A29C;
-	Thu, 25 Jul 2024 14:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A293619AD9B;
+	Thu, 25 Jul 2024 14:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skOPjR+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuleoLCr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31CD8468;
-	Thu, 25 Jul 2024 14:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613E01E895;
+	Thu, 25 Jul 2024 14:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919020; cv=none; b=iRiwCcVy8BpPkmvQ5Z6H9VkNCf2I3Of5Rcq0PNZvRUKzzUy+JBNEav4ZgGqZ6JyVShAZ0unGHTOWMyeyTpIWQ1dYxxP59/CKJLC/xjcKNat5nMrhVHbPQRrwsgCDEFF7hAifP66zYVpkD/G6YeHVUVsnBXRu6hKhfgE4xMqjkWs=
+	t=1721918806; cv=none; b=m+hW0wAiZgpW2ittIolZVpCyDDdI4u0rExrDf9E19+F89zvp19Y7ajTMmXpJSIq8I+GCnT4K1uCfGYwJ/EubKc9AwczGjPPRNkN5nu6czTdpGc11CwZNWoIvz2Fbf6LlD2fQ6xiRc7V4g1AQEysKb4dnXhBfAzIq7Ewcp8qTJ+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919020; c=relaxed/simple;
-	bh=WQEcn3j51i4fqavPf0S3N2tHt1zYzezeK8L6+YcPcs0=;
+	s=arc-20240116; t=1721918806; c=relaxed/simple;
+	bh=xWU+M2r6K6HzKM04Ng4IkC4z77CNdGppVTR52khoPjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJvo+vepdEI/iTVv+8MVo6Ny9RB+7MdOCzww3uYUEYWqHXY/ZKOPYI5fNFiWhrUPIVoiPKk3T4qJQFnIpFTTIngHcCaKO1i6k4bLFsKSod8Zhz6fj7wVOywnUxfs1/xjFhRkrxOMq0n626FM7NOOtM815KTVi6ngo8t3aYA5Fv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skOPjR+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B02C116B1;
-	Thu, 25 Jul 2024 14:50:19 +0000 (UTC)
+	 MIME-Version; b=gcH5mY21WaSLu79Fy6CL4R1DZRpCCpNML/46ET61a2LGZlg9BDp20mjih40n5vqzU1hdMLtDFgnkPIyjRcVJHtLyn4xPDwQVIm5a/m2w0Mw80+WFBDKOg52djvlvEt3+wYu9oUxSjKJN5EC8C/NfLZW6rnPB+MlWMBABFEOve6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuleoLCr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF799C116B1;
+	Thu, 25 Jul 2024 14:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919019;
-	bh=WQEcn3j51i4fqavPf0S3N2tHt1zYzezeK8L6+YcPcs0=;
+	s=korg; t=1721918806;
+	bh=xWU+M2r6K6HzKM04Ng4IkC4z77CNdGppVTR52khoPjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skOPjR+2QvIdJgVor9P+fR0muhO/zh1HuvPf0GDBtynavaimJDgAwBo3THBq571gb
-	 JWwZKsHrHc6+3np2EEv16KrBHTfVjOqds6o4kEDJFaNDwDrCxNEOoeA3fPGuC0WZkI
-	 hJUsh72SLmu5/wzyRs3qPnvxVAl+bFJnvnwDa16g=
+	b=HuleoLCrvn3I2ntDVcWkAgvXOQ41yt1lcXsYiKzol0jBitoN44N5wO3aONssT8U6o
+	 Yw9x4/eSN+xMwwau7wxkdUMIo8CSSEkeYehWtNhyh/VYcfqwNSG24KQd9BysxrI+jX
+	 D4TnBIKuJ/3dJ8Ah0NihJXvUxH9hm242qxZ8GZtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Primoz Fiser <primoz.fiser@norik.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 27/59] ASoC: ti: omap-hdmi: Fix too long driver name
+	stable <stable@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.9 07/29] usb: gadget: midi2: Fix incorrect default MIDI2 protocol setup
 Date: Thu, 25 Jul 2024 16:37:17 +0200
-Message-ID: <20240725142734.286749148@linuxfoundation.org>
+Message-ID: <20240725142731.956752733@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
+References: <20240725142731.678993846@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Primoz Fiser <primoz.fiser@norik.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 524d3f126362b6033e92cbe107ae2158d7fbff94 ]
+commit 3eb27d3e32c78badbc4db6ae76614b5961e32291 upstream.
 
-Set driver name to "HDMI". This simplifies the code and gets rid of
-the following error messages:
+The MIDI2 gadget driver handled the default MIDI protocol version
+incorrectly due to the confusion of the protocol version passed via
+configfs (either 1 or 2) and UMP protocol bits (0x100 / 0x200).
+As a consequence, the default protocol always resulted in MIDI1.
 
-  ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
+This patch addresses the misunderstanding of the protocol handling.
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20240610125847.773394-1-primoz.fiser@norik.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 29ee7a4dddd5 ("usb: gadget: midi2: Add configfs support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240708095719.25627-1-tiwai@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/ti/omap-hdmi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/usb/gadget/function/f_midi2.c |   19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index 3328c02f93c74..1dfe439d13417 100644
---- a/sound/soc/ti/omap-hdmi.c
-+++ b/sound/soc/ti/omap-hdmi.c
-@@ -353,11 +353,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
- 	if (!card)
- 		return -ENOMEM;
+--- a/drivers/usb/gadget/function/f_midi2.c
++++ b/drivers/usb/gadget/function/f_midi2.c
+@@ -150,6 +150,9 @@ struct f_midi2 {
  
--	card->name = devm_kasprintf(dev, GFP_KERNEL,
--				    "HDMI %s", dev_name(ad->dssdev));
--	if (!card->name)
--		return -ENOMEM;
--
-+	card->name = "HDMI";
- 	card->owner = THIS_MODULE;
- 	card->dai_link =
- 		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
--- 
-2.43.0
-
+ #define func_to_midi2(f)	container_of(f, struct f_midi2, func)
+ 
++/* convert from MIDI protocol number (1 or 2) to SNDRV_UMP_EP_INFO_PROTO_* */
++#define to_ump_protocol(v)	(((v) & 3) << 8)
++
+ /* get EP name string */
+ static const char *ump_ep_name(const struct f_midi2_ep *ep)
+ {
+@@ -564,8 +567,7 @@ static void reply_ump_stream_ep_config(s
+ 		.status = UMP_STREAM_MSG_STATUS_STREAM_CFG,
+ 	};
+ 
+-	if ((ep->info.protocol & SNDRV_UMP_EP_INFO_PROTO_MIDI_MASK) ==
+-	    SNDRV_UMP_EP_INFO_PROTO_MIDI2)
++	if (ep->info.protocol == 2)
+ 		rep.protocol = UMP_STREAM_MSG_EP_INFO_CAP_MIDI2 >> 8;
+ 	else
+ 		rep.protocol = UMP_STREAM_MSG_EP_INFO_CAP_MIDI1 >> 8;
+@@ -627,13 +629,13 @@ static void process_ump_stream_msg(struc
+ 		return;
+ 	case UMP_STREAM_MSG_STATUS_STREAM_CFG_REQUEST:
+ 		if (*data & UMP_STREAM_MSG_EP_INFO_CAP_MIDI2) {
+-			ep->info.protocol = SNDRV_UMP_EP_INFO_PROTO_MIDI2;
++			ep->info.protocol = 2;
+ 			DBG(midi2, "Switching Protocol to MIDI2\n");
+ 		} else {
+-			ep->info.protocol = SNDRV_UMP_EP_INFO_PROTO_MIDI1;
++			ep->info.protocol = 1;
+ 			DBG(midi2, "Switching Protocol to MIDI1\n");
+ 		}
+-		snd_ump_switch_protocol(ep->ump, ep->info.protocol);
++		snd_ump_switch_protocol(ep->ump, to_ump_protocol(ep->info.protocol));
+ 		reply_ump_stream_ep_config(ep);
+ 		return;
+ 	case UMP_STREAM_MSG_STATUS_FB_DISCOVERY:
+@@ -1065,7 +1067,8 @@ static void f_midi2_midi1_ep_out_complet
+ 		group = midi2->out_cable_mapping[cable].group;
+ 		bytes = midi1_packet_bytes[*buf & 0x0f];
+ 		for (c = 0; c < bytes; c++) {
+-			snd_ump_convert_to_ump(cvt, group, ep->info.protocol,
++			snd_ump_convert_to_ump(cvt, group,
++					       to_ump_protocol(ep->info.protocol),
+ 					       buf[c + 1]);
+ 			if (cvt->ump_bytes) {
+ 				snd_ump_receive(ep->ump, cvt->ump,
+@@ -1375,7 +1378,7 @@ static void assign_block_descriptors(str
+ 			desc->nNumGroupTrm = b->num_groups;
+ 			desc->iBlockItem = ep->blks[blk].string_id;
+ 
+-			if (ep->info.protocol & SNDRV_UMP_EP_INFO_PROTO_MIDI2)
++			if (ep->info.protocol == 2)
+ 				desc->bMIDIProtocol = USB_MS_MIDI_PROTO_2_0;
+ 			else
+ 				desc->bMIDIProtocol = USB_MS_MIDI_PROTO_1_0_128;
+@@ -1552,7 +1555,7 @@ static int f_midi2_create_card(struct f_
+ 		if (midi2->info.static_block)
+ 			ump->info.flags |= SNDRV_UMP_EP_INFO_STATIC_BLOCKS;
+ 		ump->info.protocol_caps = (ep->info.protocol_caps & 3) << 8;
+-		ump->info.protocol = (ep->info.protocol & 3) << 8;
++		ump->info.protocol = to_ump_protocol(ep->info.protocol);
+ 		ump->info.version = 0x0101;
+ 		ump->info.family_id = ep->info.family;
+ 		ump->info.model_id = ep->info.model;
 
 
 
