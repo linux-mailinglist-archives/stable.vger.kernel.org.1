@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BFDF93C536
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F182493C4C9
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D2021C21E0B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E80BB240C7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD4B13C816;
-	Thu, 25 Jul 2024 14:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00EA19CD17;
+	Thu, 25 Jul 2024 14:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IR3rJ4bS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3XQ66zy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576F1F519;
-	Thu, 25 Jul 2024 14:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989C219AA5F;
+	Thu, 25 Jul 2024 14:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918915; cv=none; b=ZsW8fOHxIyCuCCJa005EIDHs6yfk4+FCjIZff39Dz3KGfUkSK20ZI2LppVaEXDuCSfO8ZOer1I2WWLRMo2pmiu3YE6r7oYd15404r3Dsl9/3Q57BBt9gCkK3XRB/uBoQ/sY0AWY0czFbq+VRM2xdQugcUaBTQyQaTUWNxUYjCWg=
+	t=1721918608; cv=none; b=j4+d51RcDE0bypPnbtFXezVbQc7qB2TqJUmv5Jkry4clCl0Y6fjP3jIelwiMqxmcc0lkQbvFmHot4y0Csf13SXjS90JXC0q366vsJI5ec2GU/rqG9JjaDjhDjgD9YQPEnPleKOi4Ah/FazljvU9gh7XHtl9Ve1CJRlB33QTeL24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918915; c=relaxed/simple;
-	bh=36t1/LG9X0DD5CHX19c/IEXSkbdZK+JCJgYY8WghYHQ=;
+	s=arc-20240116; t=1721918608; c=relaxed/simple;
+	bh=uLs88oG3mamLsZPjTTP+hmBbWIOPyhW/KqEJ0qP2bag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1o7KEtb1rdn3xAfJBWBtnzb9K3OeO9AZgNILdKoAlcYRFPBAR27sjojsyMIBqViNTuCuINCBZzpbtsRGM6aW9Y5l3D5J9DmgUKsOfhGkpirJWRgy2Y3bFg1f9LCg1DQ+RKIoz0WR0pvk/E+bfAfAWW2P0kIk6+R9dvwJQt5cHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IR3rJ4bS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02ADC116B1;
-	Thu, 25 Jul 2024 14:48:34 +0000 (UTC)
+	 MIME-Version; b=Nu6Q4kgy/Y1VyhzyLtLI4u0O9dwtbzlG/QY2jpUt9xSXaV2dXx2PY3kkpSWxQE5IdO5hpgi9jW3VtkOP1Ugv55hZJGC+o9Ty12gUGhvZ3MMMVu+Q5Z2s9zFHn+Uv5PnBR9C1uzMC/om7T9VSP2xpnmxM8jdswioLAZ2or6ukQVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3XQ66zy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7F6C116B1;
+	Thu, 25 Jul 2024 14:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918915;
-	bh=36t1/LG9X0DD5CHX19c/IEXSkbdZK+JCJgYY8WghYHQ=;
+	s=korg; t=1721918608;
+	bh=uLs88oG3mamLsZPjTTP+hmBbWIOPyhW/KqEJ0qP2bag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IR3rJ4bSxaZhbbp6MRExJWUZIAUiGASKGpHNhoMhXM4CjnhebXhvZIaJkZ65vfQFk
-	 qsrDMbbFd0bkoUXY16FTsK1ayOccdHAZZXu5CtW8HGiKi+x5PazKiZ7e61bcm+S87Z
-	 qHs+B+/qy19sN6LhRHvRdjYOMFZ3vzpGdW5JAZb0=
+	b=b3XQ66zyPVqoBt0thTP/BJNSMPdgRCYJl4N8oW+6UZDmt3iNxVHtqzRH3/bI/toZt
+	 5lY1Ddb4jXoogVj9o/ROibHFWxHe6GHeLixrVLKZJk1B3rvR2mo7XB1mWBBMhv6gQM
+	 f0rVMwwwtTplk0ghEZGInMbLv0Mls0O5odMGUJwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 09/59] Input: silead - Always support 10 fingers
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	John Stultz <jstultz@google.com>
+Subject: [PATCH 5.4 36/43] ARM: 9324/1: fix get_user() broken with veneer
 Date: Thu, 25 Jul 2024 16:36:59 +0200
-Message-ID: <20240725142733.618855998@linuxfoundation.org>
+Message-ID: <20240725142731.836261154@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 38a38f5a36da9820680d413972cb733349400532 ]
+commit 24d3ba0a7b44c1617c27f5045eecc4f34752ab03 upstream.
 
-When support for Silead touchscreens was orginal added some touchscreens
-with older firmware versions only supported 5 fingers and this was made
-the default requiring the setting of a "silead,max-fingers=10" uint32
-device-property for all touchscreen models which do support 10 fingers.
+The 32-bit ARM kernel stops working if the kernel grows to the point
+where veneers for __get_user_* are created.
 
-There are very few models with the old 5 finger fw, so in practice the
-setting of the "silead,max-fingers=10" is boilerplate which needs to
-be copy and pasted to every touchscreen config.
+AAPCS32 [1] states, "Register r12 (IP) may be used by a linker as a
+scratch register between a routine and any subroutine it calls. It
+can also be used within a routine to hold intermediate values between
+subroutine calls."
 
-Reporting that 10 fingers are supported on devices which only support
-5 fingers doesn't cause any problems for userspace in practice, since
-at max 4 finger gestures are supported anyways. Drop the max_fingers
-configuration and simply always assume 10 fingers.
+However, bl instructions buried within the inline asm are unpredictable
+for compilers; hence, "ip" must be added to the clobber list.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/20240525193854.39130-2-hdegoede@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This becomes critical when veneers for __get_user_* are created because
+veneers use the ip register since commit 02e541db0540 ("ARM: 8323/1:
+force linker to use PIC veneers").
+
+[1]: https://github.com/ARM-software/abi-aa/blob/2023Q1/aapcs32/aapcs32.rst
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: John Stultz <jstultz@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/silead.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ arch/arm/include/asm/uaccess.h |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/input/touchscreen/silead.c b/drivers/input/touchscreen/silead.c
-index e8b6c3137420b..901e28bc01645 100644
---- a/drivers/input/touchscreen/silead.c
-+++ b/drivers/input/touchscreen/silead.c
-@@ -70,7 +70,6 @@ struct silead_ts_data {
- 	struct regulator_bulk_data regulators[2];
- 	char fw_name[64];
- 	struct touchscreen_properties prop;
--	u32 max_fingers;
- 	u32 chip_id;
- 	struct input_mt_pos pos[SILEAD_MAX_FINGERS];
- 	int slots[SILEAD_MAX_FINGERS];
-@@ -98,7 +97,7 @@ static int silead_ts_request_input_dev(struct silead_ts_data *data)
- 	input_set_abs_params(data->input, ABS_MT_POSITION_Y, 0, 4095, 0, 0);
- 	touchscreen_parse_properties(data->input, true, &data->prop);
+--- a/arch/arm/include/asm/uaccess.h
++++ b/arch/arm/include/asm/uaccess.h
+@@ -143,16 +143,6 @@ extern int __get_user_64t_1(void *);
+ extern int __get_user_64t_2(void *);
+ extern int __get_user_64t_4(void *);
  
--	input_mt_init_slots(data->input, data->max_fingers,
-+	input_mt_init_slots(data->input, SILEAD_MAX_FINGERS,
- 			    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED |
- 			    INPUT_MT_TRACK);
- 
-@@ -145,10 +144,10 @@ static void silead_ts_read_data(struct i2c_client *client)
- 		return;
- 	}
- 
--	if (buf[0] > data->max_fingers) {
-+	if (buf[0] > SILEAD_MAX_FINGERS) {
- 		dev_warn(dev, "More touches reported then supported %d > %d\n",
--			 buf[0], data->max_fingers);
--		buf[0] = data->max_fingers;
-+			 buf[0], SILEAD_MAX_FINGERS);
-+		buf[0] = SILEAD_MAX_FINGERS;
- 	}
- 
- 	touch_nr = 0;
-@@ -200,7 +199,6 @@ static void silead_ts_read_data(struct i2c_client *client)
- 
- static int silead_ts_init(struct i2c_client *client)
- {
--	struct silead_ts_data *data = i2c_get_clientdata(client);
- 	int error;
- 
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_RESET,
-@@ -210,7 +208,7 @@ static int silead_ts_init(struct i2c_client *client)
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
- 
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_TOUCH_NR,
--					data->max_fingers);
-+					  SILEAD_MAX_FINGERS);
- 	if (error)
- 		goto i2c_write_err;
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
-@@ -437,13 +435,6 @@ static void silead_ts_read_props(struct i2c_client *client)
- 	const char *str;
- 	int error;
- 
--	error = device_property_read_u32(dev, "silead,max-fingers",
--					 &data->max_fingers);
--	if (error) {
--		dev_dbg(dev, "Max fingers read error %d\n", error);
--		data->max_fingers = 5; /* Most devices handle up-to 5 fingers */
--	}
+-#define __GUP_CLOBBER_1	"lr", "cc"
+-#ifdef CONFIG_CPU_USE_DOMAINS
+-#define __GUP_CLOBBER_2	"ip", "lr", "cc"
+-#else
+-#define __GUP_CLOBBER_2 "lr", "cc"
+-#endif
+-#define __GUP_CLOBBER_4	"lr", "cc"
+-#define __GUP_CLOBBER_32t_8 "lr", "cc"
+-#define __GUP_CLOBBER_8	"lr", "cc"
 -
- 	error = device_property_read_string(dev, "firmware-name", &str);
- 	if (!error)
- 		snprintf(data->fw_name, sizeof(data->fw_name),
--- 
-2.43.0
-
+ #define __get_user_x(__r2, __p, __e, __l, __s)				\
+ 	   __asm__ __volatile__ (					\
+ 		__asmeq("%0", "r0") __asmeq("%1", "r2")			\
+@@ -160,7 +150,7 @@ extern int __get_user_64t_4(void *);
+ 		"bl	__get_user_" #__s				\
+ 		: "=&r" (__e), "=r" (__r2)				\
+ 		: "0" (__p), "r" (__l)					\
+-		: __GUP_CLOBBER_##__s)
++		: "ip", "lr", "cc")
+ 
+ /* narrowing a double-word get into a single 32bit word register: */
+ #ifdef __ARMEB__
+@@ -182,7 +172,7 @@ extern int __get_user_64t_4(void *);
+ 		"bl	__get_user_64t_" #__s				\
+ 		: "=&r" (__e), "=r" (__r2)				\
+ 		: "0" (__p), "r" (__l)					\
+-		: __GUP_CLOBBER_##__s)
++		: "ip", "lr", "cc")
+ #else
+ #define __get_user_x_64t __get_user_x
+ #endif
 
 
 
