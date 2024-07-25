@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B91E293C45A
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8107693C47F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72BA7284376
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D4DA2856AF
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAD019D066;
-	Thu, 25 Jul 2024 14:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF1D19D884;
+	Thu, 25 Jul 2024 14:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jysiWNLY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyO5jJe0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E349219AA56;
-	Thu, 25 Jul 2024 14:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288DA19B5BE;
+	Thu, 25 Jul 2024 14:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918336; cv=none; b=iffutRnFcLE8ummk4PdIHaSbC2daIA5WsA04gRVKqw3U5yz3QP1vTUiVx2KoyrIEPRop39mFTs8SaWQAUzcETh3GAUipGN2KUyOgfhRy3q50GmfhdR8DAUg3S0jsHc65Szvm3GoqHS73QU73Y3z04Fq45WySLgbnVoG+zmoWMKc=
+	t=1721918416; cv=none; b=YTbU8ge0tzeXhytvgLswQmVpAoTwS6A241C1AgO8+SNczXohADc13zZwK8YPzXmvTqWPmlX9XjV8BEy0kIcfiXg9+Ygg7c7cEabemAUht/0XCIVa0YowO6q322XFDfdqmhNlJYaqHn2BuQMOxI9Z0WQ+Upxabiyq+AxLr17Mw/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918336; c=relaxed/simple;
-	bh=hsCVmtcVPa4xnsBNG4dXIm4SMihmkzU2Py+PSHawRVA=;
+	s=arc-20240116; t=1721918416; c=relaxed/simple;
+	bh=TawK+cl/P3o17roWmffj/iNXZY5cTDG+id9vAn6+zi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTzE8uIZ6xOpVDsKA8bBG1XAlHB8WUrzMpyVTbqIZTiO2I02LE2i7B2ACdv7YyToGBVProkQC9NRK2HJwzreqmf9l3YTb+Vrx3aoSR7lX/fy1aMFZUt8pXkVvld+hcDde4UYs0zARQqDpEUemkHKcPv1a4RDR6lfpFwsnUYlhNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jysiWNLY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B25BC116B1;
-	Thu, 25 Jul 2024 14:38:55 +0000 (UTC)
+	 MIME-Version; b=VejKsk7QVzBQwRhLSYDB7ot5F7AONQPrMXfqzR+/LNOtDgIvZvKLxW62+7jjFAsIK80DSgi/iH/ByGfynyE7JMqi07czZ8PmcbAvQGO7hZ34OEAr7HpS2BGPUcTbArGA+GRvAbkcNGvxCW3uDEX2nWugDHyb17tojKMLTlYmNyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyO5jJe0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F1FC116B1;
+	Thu, 25 Jul 2024 14:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918335;
-	bh=hsCVmtcVPa4xnsBNG4dXIm4SMihmkzU2Py+PSHawRVA=;
+	s=korg; t=1721918415;
+	bh=TawK+cl/P3o17roWmffj/iNXZY5cTDG+id9vAn6+zi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jysiWNLYWb71spLQu4Ow7tZgZtFwL5h4vw97C9cMD15naJxVjCitkZanN6s0o0DhK
-	 PIXo4X7nDC4TVDhkvsJMBvFl2oMZOf3aKaAEAO7GqjK/mueMzj+h8ZjoFbO6PIKCWX
-	 EDdMqgQyRIg2AY4ponqXvv7GCiQcQs3vmzkg2ENs=
+	b=cyO5jJe04OFszyoE/yvOSm8NUKIohqySow928P0XTGH4FePtX4Dl8QTSu4JCnljZX
+	 bbf7QLzNK6EkCsQViCreP3pGVOEbPeIOEqWc0cLchQdh3qqrQ9U2Yll81URuXNOTJw
+	 zzvjjmdJpYvQqrIkrkIm5ID8xulwDgTN4VzHAnak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 19/29] arm64: dts: qcom: msm8996: Disable SS instance in Parkmode for USB
-Date: Thu, 25 Jul 2024 16:36:35 +0200
-Message-ID: <20240725142732.540487176@linuxfoundation.org>
+	syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 13/33] wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
+Date: Thu, 25 Jul 2024 16:36:36 +0200
+Message-ID: <20240725142729.022210563@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-References: <20240725142731.814288796@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 44ea1ae3cf95db97e10d6ce17527948121f1dd4b upstream.
+[ Upstream commit 6ef09cdc5ba0f93826c09d810c141a8d103a80fc ]
 
-For Gen-1 targets like MSM8996, it is seen that stressing out the
-controller in host mode results in HC died error:
+In 'cfg80211_wext_siwscan()', add extra check whether number of
+channels passed via 'ioctl(sock, SIOCSIWSCAN, ...)' doesn't exceed
+IW_MAX_FREQUENCIES and reject invalid request with -EINVAL otherwise.
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
-
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for MSM8996 to mitigate this issue.
-
-Cc: stable@vger.kernel.org
-Fixes: 1e39255ed29d ("arm64: dts: msm8996: Add device node for qcom,dwc3")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-8-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=253cd2d2491df77c93ac
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240531032010.451295-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/scan.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -3091,6 +3091,7 @@
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
- 				snps,is-utmi-l1-suspend;
-+				snps,parkmode-disable-ss-quirk;
- 				tx-fifo-resize;
- 			};
- 		};
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index dacb9ceee3efd..0dc27703443c8 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1405,10 +1405,14 @@ int cfg80211_wext_siwscan(struct net_device *dev,
+ 	wiphy = &rdev->wiphy;
+ 
+ 	/* Determine number of channels, needed to allocate creq */
+-	if (wreq && wreq->num_channels)
++	if (wreq && wreq->num_channels) {
++		/* Passed from userspace so should be checked */
++		if (unlikely(wreq->num_channels > IW_MAX_FREQUENCIES))
++			return -EINVAL;
+ 		n_channels = wreq->num_channels;
+-	else
++	} else {
+ 		n_channels = ieee80211_get_num_supported_channels(wiphy);
++	}
+ 
+ 	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
+ 		       n_channels * sizeof(void *),
+-- 
+2.43.0
+
 
 
 
