@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-61751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEDB93C5C7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:55:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CB693C555
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93F041F2116E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:55:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8627E1C21EE8
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FCB19D069;
-	Thu, 25 Jul 2024 14:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AFAFC19;
+	Thu, 25 Jul 2024 14:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0r6wAwlh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXfTydcf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52EB1DFF7;
-	Thu, 25 Jul 2024 14:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0071319B589;
+	Thu, 25 Jul 2024 14:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919323; cv=none; b=lVEorA1OxA68XwFKlXSUtDBxjBstlwXWRB6sjxfRPwKyc+3giYcLXZYnFNmVGUVRNnZfbbDCkQj/6k6H+hv573/kgX1IatiP4oUVuGBzcDGy1zOKx44KbgiVi1KuMmfjdEuSn4MHrfJ2w81YqoQMUTeSBSkJmqUCKUGc923h0YA=
+	t=1721919010; cv=none; b=lqxJ0/c+UdAPjpvKjcVz6VzKl+mIxuZy6WGHcxJxQDoyGJheFi7WzcqsokSlnyDJ6MAWkaQTZDwp23Wr+u9m58IGdLWOm2DBMo6MOwql6QI0p3FRD6teiQv5uyxD2MfAR0JFtFwFMP48nvxjLtp+uw0RhpudaE94X6p15SbbkjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919323; c=relaxed/simple;
-	bh=cWH2yR97IGQaQmklwSmftqP/bgDqNnU2PS2rh/umo2Y=;
+	s=arc-20240116; t=1721919010; c=relaxed/simple;
+	bh=2qGV7fYIGaeTgAKgjR79aXQNc8tQFFx9e1BaSn59lxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nYN4etRq8Ob/k+OGkukc43+N+BAJQdm089UVygSGxPGN8T6XDNNiWvFv80Gxg8n6g2eTNZyZyGbjcv2FoWpmKhovoGsz2Xe4TX1lhqY6KFarFfeHEH7JwDjBqeGT5XQFF0A3kFhEA7RuY0A4/n/gpafCG/bJlOxUmFaRAo3AJhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0r6wAwlh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB04C116B1;
-	Thu, 25 Jul 2024 14:55:22 +0000 (UTC)
+	 MIME-Version; b=mxs1bwkLIEqnqzp5aYjJ4U4xz+7DtKdeapfi5WHd0npuPA2Pd2vV3h1J/cxJzwV4w7xs42Ha+dHu7YUW/VTZTqgsFPY6ETUH04IpoPFThONqt0w4LEZ5+qILM/QFweOa1g126r0cX7HAfYODNqcjdILgdCjesJHDXIr4YA/JfnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXfTydcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2FDC116B1;
+	Thu, 25 Jul 2024 14:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919323;
-	bh=cWH2yR97IGQaQmklwSmftqP/bgDqNnU2PS2rh/umo2Y=;
+	s=korg; t=1721919009;
+	bh=2qGV7fYIGaeTgAKgjR79aXQNc8tQFFx9e1BaSn59lxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0r6wAwlhhi8hFEqN+l/pIbDSpp04QSgoIM+RlvemhCyIgkBZTR4uhwHpXX9Ry0ZIz
-	 N0ah1C9dbZmN4BzdWBg3dqZ8JEzvy5kF0VvB0mB5Sv6J40i/3FO9IMKo0HfJfnCRXA
-	 86HLWKXf6z6WlxvJIhm+r64r4jQb8oq/IeorvJUI=
+	b=QXfTydcfyOaKLA3qrn3v/oegbKITJKwCFuQ/HOrZ4/pgHsrRj783eEY484GHYpyeP
+	 mNEhYORP7iY3fwTAr6NIBqEX9hAVwpQgL0Ou60pcH10mBdntKEe74qHN5BycuHERz/
+	 ocw7M8i18/7Zsmo1019/77RgAyOG7I+NWQ12L1S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	SeongJae Park <sj@kernel.org>
-Subject: [PATCH 5.15 70/87] minmax: relax check to allow comparison between unsigned arguments and signed constants
-Date: Thu, 25 Jul 2024 16:37:43 +0200
-Message-ID: <20240725142741.075359047@linuxfoundation.org>
+	lei lu <llfamsec@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>
+Subject: [PATCH 5.10 54/59] jfs: dont walk off the end of ealist
+Date: Thu, 25 Jul 2024 16:37:44 +0200
+Message-ID: <20240725142735.297197426@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,79 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: lei lu <llfamsec@gmail.com>
 
-commit 867046cc7027703f60a46339ffde91a1970f2901 upstream.
+commit d0fa70aca54c8643248e89061da23752506ec0d4 upstream.
 
-Allow (for example) min(unsigned_var, 20).
+Add a check before visiting the members of ea to
+make sure each ea stays within the ealist.
 
-The opposite min(signed_var, 20u) is still errored.
-
-Since a comparison between signed and unsigned never makes the unsigned
-value negative it is only necessary to adjust the __types_ok() test.
-
-Link: https://lkml.kernel.org/r/633b64e2f39e46bb8234809c5595b8c7@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 867046cc7027703f60a46339ffde91a1970f2901)
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: lei lu <llfamsec@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |   24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ fs/jfs/xattr.c |   23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -9,13 +9,18 @@
- /*
-  * min()/max()/clamp() macros must accomplish three things:
-  *
-- * - avoid multiple evaluations of the arguments (so side-effects like
-+ * - Avoid multiple evaluations of the arguments (so side-effects like
-  *   "x++" happen only once) when non-constant.
-- * - perform signed v unsigned type-checking (to generate compile
-- *   errors instead of nasty runtime surprises).
-- * - retain result as a constant expressions when called with only
-+ * - Retain result as a constant expressions when called with only
-  *   constant expressions (to avoid tripping VLA warnings in stack
-  *   allocation usage).
-+ * - Perform signed v unsigned type-checking (to generate compile
-+ *   errors instead of nasty runtime surprises).
-+ * - Unsigned char/short are always promoted to signed int and can be
-+ *   compared against signed or unsigned arguments.
-+ * - Unsigned arguments can be compared against non-negative signed constants.
-+ * - Comparison of a signed argument against an unsigned constant fails
-+ *   even if the constant is below __INT_MAX__ and could be cast to int.
-  */
- #define __typecheck(x, y) \
- 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
-@@ -25,9 +30,14 @@
- 	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
- 		is_signed_type(typeof(x)), 0)
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -797,7 +797,7 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 		       size_t buf_size)
+ {
+ 	struct jfs_ea_list *ealist;
+-	struct jfs_ea *ea;
++	struct jfs_ea *ea, *ealist_end;
+ 	struct ea_buffer ea_buf;
+ 	int xattr_size;
+ 	ssize_t size;
+@@ -817,9 +817,16 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 		goto not_found;
  
--#define __types_ok(x, y) 			\
--	(__is_signed(x) == __is_signed(y) ||	\
--		__is_signed((x) + 0) == __is_signed((y) + 0))
-+/* True for a non-negative signed int constant */
-+#define __is_noneg_int(x)	\
-+	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
+ 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
++	ealist_end = END_EALIST(ealist);
+ 
+ 	/* Find the named attribute */
+-	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea))
++	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
++		if (unlikely(ea + 1 > ealist_end) ||
++		    unlikely(NEXT_EA(ea) > ealist_end)) {
++			size = -EUCLEAN;
++			goto release;
++		}
 +
-+#define __types_ok(x, y) 					\
-+	(__is_signed(x) == __is_signed(y) ||			\
-+		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
-+		__is_noneg_int(x) || __is_noneg_int(y))
+ 		if ((namelen == ea->namelen) &&
+ 		    memcmp(name, ea->name, namelen) == 0) {
+ 			/* Found it */
+@@ -834,6 +841,7 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 			memcpy(data, value, size);
+ 			goto release;
+ 		}
++	}
+       not_found:
+ 	size = -ENODATA;
+       release:
+@@ -861,7 +869,7 @@ ssize_t jfs_listxattr(struct dentry * de
+ 	ssize_t size = 0;
+ 	int xattr_size;
+ 	struct jfs_ea_list *ealist;
+-	struct jfs_ea *ea;
++	struct jfs_ea *ea, *ealist_end;
+ 	struct ea_buffer ea_buf;
  
- #define __cmp_op_min <
- #define __cmp_op_max >
+ 	down_read(&JFS_IP(inode)->xattr_sem);
+@@ -876,9 +884,16 @@ ssize_t jfs_listxattr(struct dentry * de
+ 		goto release;
+ 
+ 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
++	ealist_end = END_EALIST(ealist);
+ 
+ 	/* compute required size of list */
+-	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea)) {
++	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
++		if (unlikely(ea + 1 > ealist_end) ||
++		    unlikely(NEXT_EA(ea) > ealist_end)) {
++			size = -EUCLEAN;
++			goto release;
++		}
++
+ 		if (can_list(ea))
+ 			size += name_size(ea) + 1;
+ 	}
 
 
 
