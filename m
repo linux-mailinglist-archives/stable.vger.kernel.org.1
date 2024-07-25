@@ -1,156 +1,113 @@
-Return-Path: <stable+bounces-61786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA2993C872
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 20:40:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C89D93C88B
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 21:00:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9864A1F21ABC
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 18:40:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CEF31F2284D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 19:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07841770E2;
-	Thu, 25 Jul 2024 18:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E694D8A3;
+	Thu, 25 Jul 2024 19:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N5Uyqllc"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="1488DJbz"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F08C76036
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 18:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC86228DD0
+	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 19:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721932814; cv=none; b=b9keFrjRhuI6rNfE5lZICHiWcWDvvM0V+J90V9NMvRW1ATCUy25XhZQX4cLvrwHQsKhuBU6AYPXRUvpzXK9J3y99M9uSz1+T3j8XsS1d+fZRH/vFBxW/lzYfkpd02JTbdMTrRVln9B56jhgQvTFN52kO34lB9S0vtW0SoKvYIys=
+	t=1721934017; cv=none; b=YEaSMWi7NfjdzbUBF08iNpcb2qBroDUM6lyMwjs/4ig5JGehdkb4ElCrcj05+E0gAbw9z/x/KOHmPxr0ht+3O0/GVylXaTL0zZNcs0Akj3Hbbvhb/0oFul/Hlnsg+qcq9pq5mhssgSfpdbo4KpnChzDQ6SWFNw9zPM0KNF6PUPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721932814; c=relaxed/simple;
-	bh=Pzr0Lnb/iiSYZSUYC2A4aMRyI4aM5W7rhKE1A2lGBzI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDGHb9S7EkZ8xIiianQYZJGJ0roN1gmgHMDmHZrcxLSvLibyrNeOQTvSxV96Wpm+FyqBBjUdR1daa4PgYZY/HT6xrxFngEkn2j3w9Q4OLH4B0r41VXGEVsGBepW0udgy2xDRGda04cIhVEGAR03/RitMZpnqTKsnyJVq8Zr6qNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N5Uyqllc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721932812;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=825KmH6PFbzryItWTiXJBmfjya/+p9AIE9EWqywGW+c=;
-	b=N5UyqllcEKBKb51EAUWoZnN3KR7C6qdVcz6JvKj5W9QfZflONX1yvDDvVopnrtlA8tlS8D
-	spmX2bcxbIy0ws79L7MtDwMsRJcFBLYameW8pMRKXGTe1PbmUDJl1tveF0vNsTFGeb1CkW
-	s7L/C5ua+XOTnExHAhGeMBY6jC8Uj58=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-457-s1hCBgoxNB6O3FQHM27urw-1; Thu,
- 25 Jul 2024 14:40:08 -0400
-X-MC-Unique: s1hCBgoxNB6O3FQHM27urw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CB20F1955D4B;
-	Thu, 25 Jul 2024 18:40:06 +0000 (UTC)
-Received: from t14s.fritz.box (unknown [10.39.192.30])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BE23F1955D42;
-	Thu, 25 Jul 2024 18:40:03 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Peter Xu <peterx@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v1 2/2] mm/hugetlb: fix hugetlb vs. core-mm PT locking
-Date: Thu, 25 Jul 2024 20:39:55 +0200
-Message-ID: <20240725183955.2268884-3-david@redhat.com>
-In-Reply-To: <20240725183955.2268884-1-david@redhat.com>
-References: <20240725183955.2268884-1-david@redhat.com>
+	s=arc-20240116; t=1721934017; c=relaxed/simple;
+	bh=1SXRSsqZz92FEOTrBrR6i2ym9WcdF3m0UDq9oqJ8/V0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WUVmxqJcp8w5TW47gI7oSI1SCGXQZ+LyOvbuZXD7u9uiWyfbCFebWXDWYHYqP57W+49zSlIRgs47W1z8fO+PXaW0R2JoHfFxaEMmLQ49R4+V2s30Xi/NNb4VVKoR/fmeEgVtC7eNBP57GJathzjEHysqpvS1CCdW0x7nD79wSAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=1488DJbz; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5a156556fb4so1716391a12.3
+        for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:00:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1721934014; x=1722538814; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1SXRSsqZz92FEOTrBrR6i2ym9WcdF3m0UDq9oqJ8/V0=;
+        b=1488DJbztqYCHXzB7B5mGAk/fo6Ugg5q6sb+n9cCS3SRS1qhZuEDxglsrVxZWUEGG3
+         SPI9+gfxBm008vrHfocqcVP3YhDj/W+zgeGnvM51C9qXoor7ZVJBPpBaNEXmdjCVft7N
+         DoMPSGBP/J+1uwnZrr0Aib0aZaj26+CaDmOXp6FxQNyN++qh5c9HXmtNzNs1qI3IJuNY
+         TaF/L7J4Tpn5OIokWvNOhi8Hubs47aa6/uRtBJgKx1kagvQqrcTcA+Q0b8SJJILQP714
+         YPGJI5Y+EeGj9XLNKa34xsqVx2S89fPlwZFTXTeKnY9o1qaouLucFKlQupLDee42HrP2
+         uIfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721934014; x=1722538814;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1SXRSsqZz92FEOTrBrR6i2ym9WcdF3m0UDq9oqJ8/V0=;
+        b=auPvCApOQcmlpJkZT7TAut8wCDvK86SJGfNmog/pMUH3aT0s9BCSkwQwPSAnn7AT+B
+         U4Ng+uvIJUCcA7asx1hbEakTg8ByYYAEIdK5MikyF6cK0f+VbL8UOaNXJ+8c93c0k2Nw
+         eoYMeQx8liCfEp+qHdiOaCr+xJYNdbJ5O4xoKmU0hL4XtSFKZCFQT7pvt3fXe/Yid7Nv
+         Yv4+YkSoudoSeCkBMqD6BNTGYYveK/T7jC1u7hu4a60KLnCri+XGXoIR7qwxorySyXih
+         bn+4CqBk0sBWj/3UJMRo5uzNPyejP77gpKJ0B4c232wiKu7Rbvb9QaGWKhO050YXuRvq
+         ygfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUIH1nF+YlqzmS0SbroAW17qgVVZF4E/T8rgN0o14vT8keIkhzibH5Muc/tteCJP7BK4iJtxN13ltCU//VJg3YLFIuh5XGJ
+X-Gm-Message-State: AOJu0Yw6MX9S4+RgSDhYRItgJ4NOsvG7Tb3bTco6e3YhXDVTZmXQGmpn
+	E4XXStEr6/vzHOBgzctvgCp6NEKBFYQThLepxpFN04qlud8sa6XbZw8DirtiL/wxCJo0XxOA7Z0
+	BdNL+9pYTQySULJwvw+TOMMNAmgjZc9dIdwGy7w==
+X-Google-Smtp-Source: AGHT+IFHUqdSVej/FJ48bmkUm2ijOZ5NIMkgNmJ5x7nyiK8ULyjrs0OUa2kOhzuQ5Wr4IrghMERmj1LuPI17mje/MmQ=
+X-Received: by 2002:a17:907:6d0b:b0:a7a:b9dd:7766 with SMTP id
+ a640c23a62f3a-a7acb4f9362mr226470666b.31.1721934014047; Thu, 25 Jul 2024
+ 12:00:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+References: <20240724183605.4038597-1-jesse@rivosinc.com> <20240724183605.4038597-4-jesse@rivosinc.com>
+In-Reply-To: <20240724183605.4038597-4-jesse@rivosinc.com>
+From: Evan Green <evan@rivosinc.com>
+Date: Thu, 25 Jul 2024 11:59:37 -0700
+Message-ID: <CALs-Hsv9KTz8crZ3BROuug-xzA-d6yG8wQR-Ny+5qmazhFHWBA@mail.gmail.com>
+Subject: Re: [PATCH v6 3/8] RISC-V: Check scalar unaligned access on all CPUs
+To: Jesse Taube <jesse@rivosinc.com>
+Cc: linux-riscv@lists.infradead.org, Jonathan Corbet <corbet@lwn.net>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Charlie Jenkins <charlie@rivosinc.com>, 
+	Xiao Wang <xiao.w.wang@intel.com>, Andy Chiu <andy.chiu@sifive.com>, 
+	Eric Biggers <ebiggers@google.com>, Greentime Hu <greentime.hu@sifive.com>, 
+	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Costa Shulyupin <costa.shul@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+	Anup Patel <apatel@ventanamicro.com>, Zong Li <zong.li@sifive.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Ben Dooks <ben.dooks@codethink.co.uk>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+	Erick Archer <erick.archer@gmx.com>, Joel Granados <j.granados@samsung.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-We recently made GUP's common page table walking code to also walk
-hugetlb VMAs without most hugetlb special-casing, preparing for the
-future of having less hugetlb-specific page table walking code in the
-codebase. Turns out that we missed one page table locking detail: page
-table locking for hugetlb folios that are not mapped using a single
-PMD/PUD.
+On Wed, Jul 24, 2024 at 11:36=E2=80=AFAM Jesse Taube <jesse@rivosinc.com> w=
+rote:
+>
+> Originally, the check_unaligned_access_emulated_all_cpus function
+> only checked the boot hart. This fixes the function to check all
+> harts.
+>
+> Fixes: 71c54b3d169d ("riscv: report misaligned accesses emulation to hwpr=
+obe")
+> Signed-off-by: Jesse Taube <jesse@rivosinc.com>
+> Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
 
-Assume we have hugetlb folio that spans multiple PTEs (e.g., 64 KiB
-hugetlb folios on arm64 with 4 KiB base page size). GUP, as it walks the
-page tables, will perform a pte_offset_map_lock() to grab the PTE table
-lock.
-
-However, hugetlb that concurrently modifies these page tables would
-actually grab the mm->page_table_lock: with USE_SPLIT_PTE_PTLOCKS, the
-locks would differ. Something similar can happen right now with hugetlb
-folios that span multiple PMDs when USE_SPLIT_PMD_PTLOCKS.
-
-Let's make huge_pte_lockptr() effectively uses the same PT locks as any
-core-mm page table walker would.
-
-There is one ugly case: powerpc 8xx, whereby we have an 8 MiB hugetlb
-folio being mapped using two PTE page tables. While hugetlb wants to take
-the PMD table lock, core-mm would grab the PTE table lock of one of both
-PTE page tables. In such corner cases, we have to make sure that both
-locks match, which is (fortunately!) currently guaranteed for 8xx as it
-does not support SMP.
-
-Fixes: 9cb28da54643 ("mm/gup: handle hugetlb in the generic follow_page_mask code")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- include/linux/hugetlb.h | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index c9bf68c239a01..da800e56fe590 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -944,10 +944,29 @@ static inline bool htlb_allow_alloc_fallback(int reason)
- static inline spinlock_t *huge_pte_lockptr(struct hstate *h,
- 					   struct mm_struct *mm, pte_t *pte)
- {
--	if (huge_page_size(h) == PMD_SIZE)
-+	VM_WARN_ON(huge_page_size(h) == PAGE_SIZE);
-+	VM_WARN_ON(huge_page_size(h) >= P4D_SIZE);
-+
-+	/*
-+	 * hugetlb must use the exact same PT locks as core-mm page table
-+	 * walkers would. When modifying a PTE table, hugetlb must take the
-+	 * PTE PT lock, when modifying a PMD table, hugetlb must take the PMD
-+	 * PT lock etc.
-+	 *
-+	 * The expectation is that any hugetlb folio smaller than a PMD is
-+	 * always mapped into a single PTE table and that any hugetlb folio
-+	 * smaller than a PUD (but at least as big as a PMD) is always mapped
-+	 * into a single PMD table.
-+	 *
-+	 * If that does not hold for an architecture, then that architecture
-+	 * must disable split PT locks such that all *_lockptr() functions
-+	 * will give us the same result: the per-MM PT lock.
-+	 */
-+	if (huge_page_size(h) < PMD_SIZE)
-+		return pte_lockptr(mm, pte);
-+	else if (huge_page_size(h) < PUD_SIZE)
- 		return pmd_lockptr(mm, (pmd_t *) pte);
--	VM_BUG_ON(huge_page_size(h) == PAGE_SIZE);
--	return &mm->page_table_lock;
-+	return pud_lockptr(mm, (pud_t *) pte);
- }
- 
- #ifndef hugepages_supported
--- 
-2.45.2
-
+Reviewed-by: Evan Green <evan@rivosinc.com>
 
