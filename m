@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-61466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B78793C477
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96B093C582
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56544284C25
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B235B25010
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CDA19D09A;
-	Thu, 25 Jul 2024 14:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088BA19CD0C;
+	Thu, 25 Jul 2024 14:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/Z1hRST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAmECmMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB2619D066;
-	Thu, 25 Jul 2024 14:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FC413C816;
+	Thu, 25 Jul 2024 14:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918400; cv=none; b=NNjw/LcYbvslYBZ/fI0Xd+30tkNF99WPIbHtv9lp8bw3tblAbZVkZxmIS2ZqCIX0EU7plRClhsyNtrY/PDcvkwF305urRR9Q9xIcidyFZaFffE396EzEKmKSf1nukymOvRhJsHBpaFPBIFKvNwa9O14f/zOlF6alKi8OB4jMVEI=
+	t=1721919131; cv=none; b=CV0FJ0bAlbXe6vSINNxH1XEXXrB7UzmTZvCaGhbL2DrgUD43fxZAOgSbDLPXUzekuJutrQPptPgdAVOGV8vXkv+s2DDAHYkdD1UbZ6G0+wB1uNJ+QsXImk6XMpiabz4iXF+LrsVtzSZd9sx7n9p6jbG5zx9SarLc0rczZzlvW48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918400; c=relaxed/simple;
-	bh=wAczj7jTmgbbnE8RR3FRujysTRl8hp3fRHGjMMMqf68=;
+	s=arc-20240116; t=1721919131; c=relaxed/simple;
+	bh=rGEUHh3IpwjFAIQZD3oemwVY0c4I5N59K0e48UTBgPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ke/hJBvD0giwF1aIFnSWGIg6vjZD15Pf7YKSh58v+Zhlgtm2iGeIb1/po8btJP7V2/2as7HX3NIG5kt6ZJKiLFGB4/4RQXQyx1nvtTccVFMd7Y0sEZn1rBceLI6MItY+IiRlv3D7OOQ6FRG3jnD0nBjVwaSRHVvuEQVno0n0Jro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/Z1hRST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545A6C116B1;
-	Thu, 25 Jul 2024 14:39:59 +0000 (UTC)
+	 MIME-Version; b=o1nXWVnPn9BuARrfAF8ItHBQvk7bMNzSZ6WzzT2ZEy4lWqZRMGg0Iz0k+83iV8ytmfmhamc0IHbTLqZL1TFAAcduqUviCXi56qcw3VW/fxPIdMS+/3E9nXfSKb8hmkTgw6vDfSaHbFkd+uhMG1qLw4dbVUFXKqkJlL1mFIij0V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAmECmMu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C18BC116B1;
+	Thu, 25 Jul 2024 14:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918399;
-	bh=wAczj7jTmgbbnE8RR3FRujysTRl8hp3fRHGjMMMqf68=;
+	s=korg; t=1721919131;
+	bh=rGEUHh3IpwjFAIQZD3oemwVY0c4I5N59K0e48UTBgPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G/Z1hRSTnqXrMInBAxV1WimmTZq0tyF+xNkWlPkNl8WO4s+76O1jK0P7VrRojwWg0
-	 9LXKYc1mh4fF3dm1WmEpKOIldoZlEG/oAfV91CqN3opnvNU/aIVdEA1GiVQCYdJdZ2
-	 UV2Ci8YfJSxQiTdQL3ZSKTP568b2WgrnHnKrV1AE=
+	b=VAmECmMuQtaYGnPJUGuQGmdHLrzPOxCkPqsd85LusNwehYgaQVgZLS5qEmVDmlI4J
+	 TXkVPbVaGtXNTJhPH35TOZezm6Jkcmje9AZSItukapnF6Tuxu4rnCYpEd5T3+2t+Fq
+	 kwoEp2GJOYFTSpElxCeO3pu0J6aeOlaoPT2h/fes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 24/29] arm64: dts: qcom: ipq8074: Disable SS instance in Parkmode for USB
+	Hannes Reinecke <hare@suse.de>,
+	Martin Wilck <martin.wilck@suse.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rajashekhar M A <rajs@netapp.com>
+Subject: [PATCH 5.15 07/87] scsi: core: alua: I/O errors for ALUA state transitions
 Date: Thu, 25 Jul 2024 16:36:40 +0200
-Message-ID: <20240725142732.724919193@linuxfoundation.org>
+Message-ID: <20240725142738.705670316@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-References: <20240725142731.814288796@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +67,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Martin Wilck <martin.wilck@suse.com>
 
-commit dc6ba95c6c4400a84cca5b419b34ae852a08cfb5 upstream.
+[ Upstream commit 10157b1fc1a762293381e9145041253420dfc6ad ]
 
-For Gen-1 targets like IPQ8074, it is seen that stressing out the
-controller in host mode results in HC died error:
+When a host is configured with a few LUNs and I/O is running, injecting FC
+faults repeatedly leads to path recovery problems.  The LUNs have 4 paths
+each and 3 of them come back active after say an FC fault which makes 2 of
+the paths go down, instead of all 4. This happens after several iterations
+of continuous FC faults.
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
+Reason here is that we're returning an I/O error whenever we're
+encountering sense code 06/04/0a (LOGICAL UNIT NOT ACCESSIBLE, ASYMMETRIC
+ACCESS STATE TRANSITION) instead of retrying.
 
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for IPQ8074 to mitigate this issue.
+[mwilck: The original patch was developed by Rajashekhar M A and Hannes
+Reinecke. I moved the code to alua_check_sense() as suggested by Mike
+Christie [1]. Evan Milne had raised the question whether pg->state should
+be set to transitioning in the UA case [2]. I believe that doing this is
+correct. SCSI_ACCESS_STATE_TRANSITIONING by itself doesn't cause I/O
+errors. Our handler schedules an RTPG, which will only result in an I/O
+error condition if the transitioning timeout expires.]
 
-Cc: stable@vger.kernel.org
-Fixes: 5e09bc51d07b ("arm64: dts: ipq8074: enable USB support")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-3-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://lore.kernel.org/all/0bc96e82-fdda-4187-148d-5b34f81d4942@oracle.com/
+[2] https://lore.kernel.org/all/CAGtn9r=kicnTDE2o7Gt5Y=yoidHYD7tG8XdMHEBJTBraVEoOCw@mail.gmail.com/
+
+Co-developed-by: Rajashekhar M A <rajs@netapp.com>
+Co-developed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Martin Wilck <martin.wilck@suse.com>
+Link: https://lore.kernel.org/r/20240514140344.19538-1-mwilck@suse.com
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq8074.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/device_handler/scsi_dh_alua.c | 31 +++++++++++++++-------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-@@ -666,6 +666,7 @@
- 				interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>;
- 				phys = <&qusb_phy_0>, <&ssphy_0>;
- 				phy-names = "usb2-phy", "usb3-phy";
-+				snps,parkmode-disable-ss-quirk;
- 				snps,is-utmi-l1-suspend;
- 				snps,hird-threshold = /bits/ 8 <0x0>;
- 				snps,dis_u2_susphy_quirk;
-@@ -715,6 +716,7 @@
- 				interrupts = <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>;
- 				phys = <&qusb_phy_1>, <&ssphy_1>;
- 				phy-names = "usb2-phy", "usb3-phy";
-+				snps,parkmode-disable-ss-quirk;
- 				snps,is-utmi-l1-suspend;
- 				snps,hird-threshold = /bits/ 8 <0x0>;
- 				snps,dis_u2_susphy_quirk;
+diff --git a/drivers/scsi/device_handler/scsi_dh_alua.c b/drivers/scsi/device_handler/scsi_dh_alua.c
+index a9c4a5e2ccb90..60792f257c235 100644
+--- a/drivers/scsi/device_handler/scsi_dh_alua.c
++++ b/drivers/scsi/device_handler/scsi_dh_alua.c
+@@ -406,28 +406,40 @@ static char print_alua_state(unsigned char state)
+ 	}
+ }
+ 
+-static enum scsi_disposition alua_check_sense(struct scsi_device *sdev,
+-					      struct scsi_sense_hdr *sense_hdr)
++static void alua_handle_state_transition(struct scsi_device *sdev)
+ {
+ 	struct alua_dh_data *h = sdev->handler_data;
+ 	struct alua_port_group *pg;
+ 
++	rcu_read_lock();
++	pg = rcu_dereference(h->pg);
++	if (pg)
++		pg->state = SCSI_ACCESS_STATE_TRANSITIONING;
++	rcu_read_unlock();
++	alua_check(sdev, false);
++}
++
++static enum scsi_disposition alua_check_sense(struct scsi_device *sdev,
++					      struct scsi_sense_hdr *sense_hdr)
++{
+ 	switch (sense_hdr->sense_key) {
+ 	case NOT_READY:
+ 		if (sense_hdr->asc == 0x04 && sense_hdr->ascq == 0x0a) {
+ 			/*
+ 			 * LUN Not Accessible - ALUA state transition
+ 			 */
+-			rcu_read_lock();
+-			pg = rcu_dereference(h->pg);
+-			if (pg)
+-				pg->state = SCSI_ACCESS_STATE_TRANSITIONING;
+-			rcu_read_unlock();
+-			alua_check(sdev, false);
++			alua_handle_state_transition(sdev);
+ 			return NEEDS_RETRY;
+ 		}
+ 		break;
+ 	case UNIT_ATTENTION:
++		if (sense_hdr->asc == 0x04 && sense_hdr->ascq == 0x0a) {
++			/*
++			 * LUN Not Accessible - ALUA state transition
++			 */
++			alua_handle_state_transition(sdev);
++			return NEEDS_RETRY;
++		}
+ 		if (sense_hdr->asc == 0x29 && sense_hdr->ascq == 0x00) {
+ 			/*
+ 			 * Power On, Reset, or Bus Device Reset.
+@@ -494,7 +506,8 @@ static int alua_tur(struct scsi_device *sdev)
+ 
+ 	retval = scsi_test_unit_ready(sdev, ALUA_FAILOVER_TIMEOUT * HZ,
+ 				      ALUA_FAILOVER_RETRIES, &sense_hdr);
+-	if (sense_hdr.sense_key == NOT_READY &&
++	if ((sense_hdr.sense_key == NOT_READY ||
++	     sense_hdr.sense_key == UNIT_ATTENTION) &&
+ 	    sense_hdr.asc == 0x04 && sense_hdr.ascq == 0x0a)
+ 		return SCSI_DH_RETRY;
+ 	else if (retval)
+-- 
+2.43.0
+
 
 
 
