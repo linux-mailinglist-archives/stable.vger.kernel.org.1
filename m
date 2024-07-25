@@ -1,111 +1,132 @@
-Return-Path: <stable+bounces-61798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B8493CACE
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 00:22:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C8593CB29
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 01:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 841301C21F0F
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 22:22:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C4F31F21A96
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 23:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778341428E4;
-	Thu, 25 Jul 2024 22:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610CE146A87;
+	Thu, 25 Jul 2024 23:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H3uJtd5x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GTydJ4xB"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A109B17E9
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 22:21:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F1FDF6C;
+	Thu, 25 Jul 2024 23:19:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721946120; cv=none; b=Pvfz+lb84wiF5wKGNQqTj74fMkIQTakXJzywWvVu1q//hrvwNxUZ7Dq2H+w6Rk5jV5lj8KZBiOYCrp5U3ZGN/HnJLP7NAhebWgK9O9Fwmuy7PsApZbl82BoMr1GNqjNGI/RlfqikCMf3I5+3IRDxqStRoPtwqb3wEAyln1YHDiU=
+	t=1721949599; cv=none; b=QziAfcBim1pbOjcZzJmnqsrbNyd/BfxvU9tVkE1zr4O485V2NHdVzhJzHUkU0npUXLyldL0dcXyX6W1UdBAVc413LbNVK5NvLxGiyp4upKhIZj5SJCE+pkPpDgSs3ZmDe0wxBTkEY9OQnP3UZNG8/BQeYKiorIJAzj1NDYia2Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721946120; c=relaxed/simple;
-	bh=e3QtoGAhKBBmMhj47JDionvHjW/apkWJ7Za+hWvi5KI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ROKPwpU0Nc9FqGlK8GpEpWKJK9Ni4Yi16s+F5jFjtJ7LbcPY9+M3KyxhU3kBU1NX6+IGMG9bCn6mLf5sAB6IR/rSuwRV9e4pPq8GVl4ZkBwtgTm3iPKWxmWrkMcyUHl3Egjt4SJTEyRiJFS6qJBYEFwItSYhaNuT8J1F0uBg9Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H3uJtd5x; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721946117;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c/KmYr3jbfKPlvOHElaBkUrO4ia1UgbTouR26iyDyNM=;
-	b=H3uJtd5xw/SvSf40wQdsRztGu16REUxpH+b8WoKBZQ51dg/Ym7/eOYx/oHDG3FqWB50mrk
-	n1+Rkz/QChkeIXhRbQsO/UJHhdvoxRxQYJF9PPoN/IvkqaKQPa0UURGvRo8vAuD2l8vaDM
-	z0saDYsH6uXCEE5qJcMKDJ6ORc3lCuc=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-P3pCV0svOsG5IpdnZicJhg-1; Thu, 25 Jul 2024 18:21:56 -0400
-X-MC-Unique: P3pCV0svOsG5IpdnZicJhg-1
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6b993657236so680496d6.0
-        for <stable@vger.kernel.org>; Thu, 25 Jul 2024 15:21:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721946115; x=1722550915;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c/KmYr3jbfKPlvOHElaBkUrO4ia1UgbTouR26iyDyNM=;
-        b=Y0TW4cwxl14VxuLgL+h0kMlh/jGEhHKCggvFJGFe59Ux7s6T/YFzF4oLQ/5U70/37C
-         o/BM55NYRaVwHGPmahmQ/mk74vwRSd7IgFQDNxxuAZVvOoVEWT4+szw0OVg+Ei4irMYm
-         aYY4GFluJb+XqU0Lv9ptx7vtuEObA8cQyx1P4UicO9Xtr2B4gPs4TilTI9IMRlxYtYh+
-         jBYweV1vzboomZ997Oc1o2knLeK8ZtJOrrTSR+MewbdN/140+Z+cuqG/BqOdkCeUO8v5
-         rhuMicql8is4Er627oA2HSx2Wk9a61vlxNyDS4oZRd/JghfSKxlYF5hFyjYrVAdYmed+
-         Z83g==
-X-Forwarded-Encrypted: i=1; AJvYcCWZQwCPikT2YwIPTK/2Hbax7RQYjKX1ga49pf0VjS3Xwgl/JuMsz4rPf6JN203SIJ1v2jzbwNBzfzi+TI97rYa3aHWZTMKd
-X-Gm-Message-State: AOJu0Yz65wd3zAQ1oDYgUEemT/wsCdu7IZsJ8awfU8XncNFyDc57Cpdm
-	2V59+bjS/riiNsh7OuCRX1IY5t7QCtX68RAZqqB5DIcLM6Qt7RHOuFQx6oiSwg32MDerdRNin9L
-	5X4oeVwcY2BYiDyP1HrNyPYqEeY1kbpwphe7XYl4NxKDV89aohSMduQ==
-X-Received: by 2002:a05:6214:cc6:b0:6b7:a4dc:e24a with SMTP id 6a1803df08f44-6bb4088c657mr43849276d6.54.1721946115681;
-        Thu, 25 Jul 2024 15:21:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF07I6M5sZysuSbSiY1fNxwueDCqDxgZ2yyxKjAhplt3Bd7CWYx3uTZ4M/qfs37U5MR3g6jXg==
-X-Received: by 2002:a05:6214:cc6:b0:6b7:a4dc:e24a with SMTP id 6a1803df08f44-6bb4088c657mr43849116d6.54.1721946115407;
-        Thu, 25 Jul 2024 15:21:55 -0700 (PDT)
-Received: from x1gen2nano ([2600:1700:1ff0:d0e0::d])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb3f925dc1sm10943676d6.65.2024.07.25.15.21.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jul 2024 15:21:55 -0700 (PDT)
-Date: Thu, 25 Jul 2024 17:21:52 -0500
-From: Andrew Halaney <ahalaney@redhat.com>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com, 
-	robh@kernel.org, vigneshr@ti.com, kishon@kernel.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
-	srk@ti.com
-Subject: Re: [PATCH] PCI: j721e: Set .map_irq and .swizzle_irq to NULL
-Message-ID: <vj6vtjphpmqv6hcblaalr2m4bwjujjwvom6ca4bjdzcmgazyaa@436unrb2lav7>
-References: <20240724065048.285838-1-s-vadapalli@ti.com>
+	s=arc-20240116; t=1721949599; c=relaxed/simple;
+	bh=fFLl0hAitZmOOqVCrDvGkWFfVVQEqRB91EVNTgaCn3E=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=uVI1S8SKyEqxxbJeji6a39hHkl9eONkN+4BgYbhCzpjkicEm1E5pYl7cs8PthItSlvsdTxvnIvrH2lf2kfHL+sg65SoLHRH1H3OyR6J+pdZNeUHIYEbZXYGUs9I23TiMumrwPLnfL09UV3+Hd9pW1Hx4QLbQgvOtlJ7AAIExkI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GTydJ4xB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32520C116B1;
+	Thu, 25 Jul 2024 23:19:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721949598;
+	bh=fFLl0hAitZmOOqVCrDvGkWFfVVQEqRB91EVNTgaCn3E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GTydJ4xBjXI+kYdNiqhkc/G2zVT6SVXK+sLxGyuWPBZqarEIgJyl7572gYwrg6fCE
+	 yInLltTwCx8BwidF6E56os7Xw8TaUCuTTY8l/arXKbVlwN4t8hFsWdUuajD2uvbNd5
+	 hJMBafDlH3MjQMe9q/QhPn9mAmVuvLtxJYVpZS3HOwUpQm9Ti4raFv2xoQd0fWpfM2
+	 a/ecAYnkWHKOqw+19zOrGBrixCFD6ezu4dqjfrLA7B8v95hMFBEodeUItfB+uAY3Mr
+	 I6dDy48TiyStPU7mxIOAbjt0qs1JdRuhtWCpBjaopFVEgsg/5KDW99eu9wx3HRiqj2
+	 xtGPfeSBH8s+A==
+From: SeongJae Park <sj@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org,
+	damon@lists.linux.dev
+Subject: Re: [PATCH 5.15 00/87] 5.15.164-rc1 review
+Date: Thu, 25 Jul 2024 16:19:54 -0700
+Message-Id: <20240725231954.28903-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240724065048.285838-1-s-vadapalli@ti.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 24, 2024 at 12:20:48PM GMT, Siddharth Vadapalli wrote:
-> Since the configuration of Legacy Interrupts (INTx) is not supported, set
-> the .map_irq and .swizzle_irq callbacks to NULL. This fixes the error:
->   of_irq_parse_pci: failed with rc=-22
-> due to the absence of Legacy Interrupts in the device-tree.
+Hello,
+
+On Thu, 25 Jul 2024 16:36:33 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+
+> This is the start of the stable review cycle for the 5.15.164 release.
+> There are 87 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
-> Reported-by: Andrew Halaney <ahalaney@redhat.com>
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+> Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.164-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 
-Tested-by: Andrew Halaney <ahalaney@redhat.com>
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
 
-Thanks for the quick work and follow through on the patch, I appreciate
-it! I would not have come to this solution myself, I was definitely off
-in the weeds when debugging :P
+Tested-by: SeongJae Park <sj@kernel.org>
 
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] 1d0703aa8114 ("Linux 5.15.164-rc1")
+
+Thanks,
+SJ
+
+[...]
+
+---
+
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh
+ok 12 selftests: damon-tests: build_m68k.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
 
