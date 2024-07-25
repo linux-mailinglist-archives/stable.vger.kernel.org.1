@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8107693C47F
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 734A193C4D1
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D4DA2856AF
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F32C1F228A4
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF1D19D884;
-	Thu, 25 Jul 2024 14:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B713219D067;
+	Thu, 25 Jul 2024 14:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyO5jJe0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqDmTNCL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288DA19B5BE;
-	Thu, 25 Jul 2024 14:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F4519A29C;
+	Thu, 25 Jul 2024 14:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918416; cv=none; b=YTbU8ge0tzeXhytvgLswQmVpAoTwS6A241C1AgO8+SNczXohADc13zZwK8YPzXmvTqWPmlX9XjV8BEy0kIcfiXg9+Ygg7c7cEabemAUht/0XCIVa0YowO6q322XFDfdqmhNlJYaqHn2BuQMOxI9Z0WQ+Upxabiyq+AxLr17Mw/Q=
+	t=1721918634; cv=none; b=FGddEDPkjB04fkHKoKwlgDIFH7XZuXtQpKxdE+8MeBV70nyND8AcYfx1LRccHcC/K8FPZtLTd6D061FCdpz0FTY44NdAp14BO7ZmFhQeTtQA87M2LsXvfR9hAduWw0VMc68jerKFru+AIprFCAOVuJ91Q16UGNeYrkhRuxWbE/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918416; c=relaxed/simple;
-	bh=TawK+cl/P3o17roWmffj/iNXZY5cTDG+id9vAn6+zi8=;
+	s=arc-20240116; t=1721918634; c=relaxed/simple;
+	bh=WjvFOJAXtSnG7iBN3cjyR8sufReDkGkV/Q5vwmYAl7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VejKsk7QVzBQwRhLSYDB7ot5F7AONQPrMXfqzR+/LNOtDgIvZvKLxW62+7jjFAsIK80DSgi/iH/ByGfynyE7JMqi07czZ8PmcbAvQGO7hZ34OEAr7HpS2BGPUcTbArGA+GRvAbkcNGvxCW3uDEX2nWugDHyb17tojKMLTlYmNyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyO5jJe0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F1FC116B1;
-	Thu, 25 Jul 2024 14:40:15 +0000 (UTC)
+	 MIME-Version; b=PGSHjJPNHG8qeDoGFWjJss/po57vHiKq1DDqJ5B4CGsFzpRZHw0geS1CzQUE53+XsJmaV7ZkexKgWDEs5wTCqPy+3r7Da1ip+yoMvBL1um9GT3HteovIIKr7mPts6E/79q88YpFlqEHfHYUFrrXyo+tVWLj97Dqr2dTzN+wyeOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqDmTNCL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B888CC116B1;
+	Thu, 25 Jul 2024 14:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918415;
-	bh=TawK+cl/P3o17roWmffj/iNXZY5cTDG+id9vAn6+zi8=;
+	s=korg; t=1721918634;
+	bh=WjvFOJAXtSnG7iBN3cjyR8sufReDkGkV/Q5vwmYAl7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cyO5jJe04OFszyoE/yvOSm8NUKIohqySow928P0XTGH4FePtX4Dl8QTSu4JCnljZX
-	 bbf7QLzNK6EkCsQViCreP3pGVOEbPeIOEqWc0cLchQdh3qqrQ9U2Yll81URuXNOTJw
-	 zzvjjmdJpYvQqrIkrkIm5ID8xulwDgTN4VzHAnak=
+	b=eqDmTNCLogMm5GafUt+X0ay8fKGOxDlfjowBiV4T5FTMijtsOvDhVhkeKn5gqoE79
+	 4OvWafq9ib7JBJd05U6z4PScUeNGF3ZWe/6Vnuzc/JcEwHU+HUQFCS0eB+5uP6Mw6h
+	 wdC8ojrC5c0rkW+aRScyABN9H9kToVJUCifJAdcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 13/33] wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
+Subject: [PATCH 5.4 13/43] mei: demote client disconnect warning on suspend to debug
 Date: Thu, 25 Jul 2024 16:36:36 +0200
-Message-ID: <20240725142729.022210563@linuxfoundation.org>
+Message-ID: <20240725142730.974970740@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 6ef09cdc5ba0f93826c09d810c141a8d103a80fc ]
+[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
 
-In 'cfg80211_wext_siwscan()', add extra check whether number of
-channels passed via 'ioctl(sock, SIOCSIWSCAN, ...)' doesn't exceed
-IW_MAX_FREQUENCIES and reject invalid request with -EINVAL otherwise.
+Change level for the "not connected" client message in the write
+callback from error to debug.
 
-Reported-by: syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=253cd2d2491df77c93ac
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://msgid.link/20240531032010.451295-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The MEI driver currently disconnects all clients upon system suspend.
+This behavior is by design and user-space applications with
+open connections before the suspend are expected to handle errors upon
+resume, by reopening their handles, reconnecting,
+and retrying their operations.
+
+However, the current driver implementation logs an error message every
+time a write operation is attempted on a disconnected client.
+Since this is a normal and expected flow after system resume
+logging this as an error can be misleading.
+
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/misc/mei/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index dacb9ceee3efd..0dc27703443c8 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1405,10 +1405,14 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 	wiphy = &rdev->wiphy;
+diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
+index 7310b476323c2..5cd29deb79858 100644
+--- a/drivers/misc/mei/main.c
++++ b/drivers/misc/mei/main.c
+@@ -268,7 +268,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
+ 	}
  
- 	/* Determine number of channels, needed to allocate creq */
--	if (wreq && wreq->num_channels)
-+	if (wreq && wreq->num_channels) {
-+		/* Passed from userspace so should be checked */
-+		if (unlikely(wreq->num_channels > IW_MAX_FREQUENCIES))
-+			return -EINVAL;
- 		n_channels = wreq->num_channels;
--	else
-+	} else {
- 		n_channels = ieee80211_get_num_supported_channels(wiphy);
-+	}
- 
- 	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
- 		       n_channels * sizeof(void *),
+ 	if (!mei_cl_is_connected(cl)) {
+-		cl_err(dev, cl, "is not connected");
++		cl_dbg(dev, cl, "is not connected");
+ 		rets = -ENODEV;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
