@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED89293C4AF
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6ADD93C4A3
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6C2A284ED8
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D07A1F21A3E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6AE19D085;
-	Thu, 25 Jul 2024 14:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78C219D088;
+	Thu, 25 Jul 2024 14:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjax3vUJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lwfn3VMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8865119AA5F;
-	Thu, 25 Jul 2024 14:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8552B19D066;
+	Thu, 25 Jul 2024 14:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918533; cv=none; b=WlaSPAHxqixC2lia6s7hjJZOp8eZuZN9de6HbBHq7PRT4x+vfOpng/7Zkmo0w/qbtuhUfrBIoUbZD8i6g4YP990/N+WiFb4EJDYv9h1EDbB4KlyMkPAIKwtUfakGPq6Q7V3ubsiON2wBK/gCa/YEqWjsjjJyW78BUNmWZ7QWXBI=
+	t=1721918492; cv=none; b=NiD4uKrw/spVcNncp3bu0yxxIe/2/kiM6KZLgYPbqwbTRYQW5MriRqSSUNgFd7E+2xtkJ5wMjxxmhgw93ZUnTU3IPQY71Of+NOGrBVPAIo1XSgYc0EIrjhL1V4oOud9s8UOQcmum6m3sQCThsVQnYII74B5eEjSkqRmIdV9Nr7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918533; c=relaxed/simple;
-	bh=cix4vbYlz7pDLsyIJwwG8FL2qRNeT9Gr4jRdOBeCoro=;
+	s=arc-20240116; t=1721918492; c=relaxed/simple;
+	bh=LruM59odGJs77w1KLMmvZk8iOoVzSfB1kRsk4VNhWVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVb1RpQJyF5OvqsE77D5H7Ydy4VI6FaCo24iCeq5NVa6oMQixU8shzQBi7zuJkHNbOZMIqriGM1iYl0WmrB7jmYbeLVEfp9aZUSRgdE54/1URHuIzDUf22BEJCkMxygB3WT1Ug+iPgda45KjpQF2PML96DJRZ9KGNbwxPrTIXHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjax3vUJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6ECC116B1;
-	Thu, 25 Jul 2024 14:42:12 +0000 (UTC)
+	 MIME-Version; b=kPE8g4+8QUR5n42WdNlqQZIi+164s7ToLdAvApQlA43k3UxYjt2lXG4wMCHvMceazArWHI5CEaxJaqaAhCKfVEzgNEG6/0EwFqmgpb8twPA/ahiYtmDAfsV0dXpSdX9JlslmpXVJYXdofZbgGdwGlQnGVVFZ4Ag3Y9D+MWA2iiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lwfn3VMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0921AC116B1;
+	Thu, 25 Jul 2024 14:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918533;
-	bh=cix4vbYlz7pDLsyIJwwG8FL2qRNeT9Gr4jRdOBeCoro=;
+	s=korg; t=1721918492;
+	bh=LruM59odGJs77w1KLMmvZk8iOoVzSfB1kRsk4VNhWVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hjax3vUJXkpYI2q4E9mN9zszfSHYx6ALVw09B6O8cWhBcOiqJWdir3BZucsCuR17r
-	 9E4QVh6wGtr4qzGrCtUcJ1rctjPb3WGDxB8/Z7NFTzIvcOeoPuPhPTxzLszqN1OL5m
-	 s+JXpYcf9eRiI29WbvSQQiMLRp3CQ9MibsWeywcY=
+	b=Lwfn3VMA202OfDrS/dQlH9Wwf2xNg+LtsSs0zi1Y/laVX8zAtZ2XdtLTqkxGjT1eZ
+	 ze3/eX/Wo/WTODBE7dHKRAJA5OokoO0ClzeireXhBuqkifLrdmWRZ0dZfqmqav7IgB
+	 N6UzLZBDylW0AofX22qV4P7fhsnIy+wUtaDDBax8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Escande <nico.escande@gmail.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 06/43] wifi: mac80211: mesh: init nonpeer_pm to active by default in mesh sdata
+Subject: [PATCH 4.19 06/33] wifi: mac80211: fix UBSAN noise in ieee80211_prep_hw_scan()
 Date: Thu, 25 Jul 2024 16:36:29 +0200
-Message-ID: <20240725142730.716286950@linuxfoundation.org>
+Message-ID: <20240725142728.759434286@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 6f6291f09a322c1c1578badac8072d049363f4e6 ]
+[ Upstream commit 92ecbb3ac6f3fe8ae9edf3226c76aa17b6800699 ]
 
-With a ath9k device I can see that:
-	iw phy phy0 interface add mesh0 type mp
-	ip link set mesh0 up
-	iw dev mesh0 scan
+When testing the previous patch with CONFIG_UBSAN_BOUNDS, I've
+noticed the following:
 
-Will start a scan with the Power Management bit set in the Frame Control Field.
-This is because we set this bit depending on the nonpeer_pm variable of the mesh
-iface sdata and when there are no active links on the interface it remains to
-NL80211_MESH_POWER_UNKNOWN.
+UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:372:4
+index 0 is out of range for type 'struct ieee80211_channel *[]'
+CPU: 0 PID: 1435 Comm: wpa_supplicant Not tainted 6.9.0+ #1
+Hardware name: LENOVO 20UN005QRT/20UN005QRT <...BIOS details...>
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x2d/0x90
+ __ubsan_handle_out_of_bounds+0xe7/0x140
+ ? timerqueue_add+0x98/0xb0
+ ieee80211_prep_hw_scan+0x2db/0x480 [mac80211]
+ ? __kmalloc+0xe1/0x470
+ __ieee80211_start_scan+0x541/0x760 [mac80211]
+ rdev_scan+0x1f/0xe0 [cfg80211]
+ nl80211_trigger_scan+0x9b6/0xae0 [cfg80211]
+ ...<the rest is not too useful...>
 
-As soon as links starts to be established, it wil switch to
-NL80211_MESH_POWER_ACTIVE as it is the value set by befault on the per sta
-nonpeer_pm field.
-As we want no power save by default, (as expressed with the per sta ini values),
-lets init it to the expected default value of NL80211_MESH_POWER_ACTIVE.
+Since '__ieee80211_start_scan()' leaves 'hw_scan_req->req.n_channels'
+uninitialized, actual boundaries of 'hw_scan_req->req.channels' can't
+be checked in 'ieee80211_prep_hw_scan()'. Although an initialization
+of 'hw_scan_req->req.n_channels' introduces some confusion around
+allocated vs. used VLA members, this shouldn't be a problem since
+everything is correctly adjusted soon in 'ieee80211_prep_hw_scan()'.
 
-Also please note that we cannot change the default value from userspace prior to
-establishing a link as using NL80211_CMD_SET_MESH_CONFIG will not work before
-NL80211_CMD_JOIN_MESH has been issued. So too late for our initial scan.
+Cleanup 'kmalloc()' math in '__ieee80211_start_scan()' by using the
+convenient 'struct_size()' as well.
 
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Link: https://msgid.link/20240527141759.299411-1-nico.escande@gmail.com
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240517153332.18271-2-dmantipov@yandex.ru
+[improve (imho) indentation a bit]
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/scan.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 36978a0e50001..c2d1addaa7ccc 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1525,6 +1525,7 @@ void ieee80211_mesh_init_sdata(struct ieee80211_sub_if_data *sdata)
- 	ifmsh->last_preq = jiffies;
- 	ifmsh->next_perr = jiffies;
- 	ifmsh->csa_role = IEEE80211_MESH_CSA_ROLE_NONE;
-+	ifmsh->nonpeer_pm = NL80211_MESH_POWER_ACTIVE;
- 	/* Allocate all mesh structures when creating the first mesh interface. */
- 	if (!mesh_allocated)
- 		ieee80211s_init();
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index e3d8be4feea50..76fb858dc890d 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -652,15 +652,21 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
+ 			local->hw_scan_ies_bufsize *= n_bands;
+ 		}
+ 
+-		local->hw_scan_req = kmalloc(
+-				sizeof(*local->hw_scan_req) +
+-				req->n_channels * sizeof(req->channels[0]) +
+-				local->hw_scan_ies_bufsize, GFP_KERNEL);
++		local->hw_scan_req = kmalloc(struct_size(local->hw_scan_req,
++							 req.channels,
++							 req->n_channels) +
++					     local->hw_scan_ies_bufsize,
++					     GFP_KERNEL);
+ 		if (!local->hw_scan_req)
+ 			return -ENOMEM;
+ 
+ 		local->hw_scan_req->req.ssids = req->ssids;
+ 		local->hw_scan_req->req.n_ssids = req->n_ssids;
++		/* None of the channels are actually set
++		 * up but let UBSAN know the boundaries.
++		 */
++		local->hw_scan_req->req.n_channels = req->n_channels;
++
+ 		ies = (u8 *)local->hw_scan_req +
+ 			sizeof(*local->hw_scan_req) +
+ 			req->n_channels * sizeof(req->channels[0]);
 -- 
 2.43.0
 
