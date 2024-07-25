@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-61487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2012E93C49B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CADF693C56E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F66AB24E37
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80DDA1F25CA6
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564E519D090;
-	Thu, 25 Jul 2024 14:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182981993A3;
+	Thu, 25 Jul 2024 14:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvws5Mn0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kR6donLG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1331319D06D;
-	Thu, 25 Jul 2024 14:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FACF519;
+	Thu, 25 Jul 2024 14:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918467; cv=none; b=T7gdGBQE3C5nknHD40c/jTPUJ326MIhWgvu9+zEs/cjNcXh7chZD3aM6mRMydsStOPiPCft5OprPvaaNdQUXI+PynoNk/mE3jkEYQiXpYeKnwI0waHOc7YIftzsfk37rliee8gqbJ2nWTf7bMM7uMGtcBajCVH8UUh1cfexehjM=
+	t=1721919080; cv=none; b=fN6+u6TJ35D3xBzm77E0NEL+5OT015ssn/DecOLAM1QxuusUnoOVQrcj3a3OmmcSZKeFLmXKgfxwPMhEU8GmrV+6whXQmj1nk/kRX2abQiu+Z/ZO0K+/WtFtpR2sJmilUwT0Fa2GGZCZ1SKP6POdLllleDD5kgAIYA5JjZ8ZPh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918467; c=relaxed/simple;
-	bh=eWW3Qq77Xz1JDT5u+4QLE18B/Z/+J/rGCcshiQTPOHU=;
+	s=arc-20240116; t=1721919080; c=relaxed/simple;
+	bh=Wj5IIBi5jn26YcB2C1eKtdLEf9YZOFjJUGNU2C5Y2y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pUvLvm2OmMCyynlk0GFPQVWuOg0p5d0RfJAsQYEDcg3hl8d+DTt2+jUBdQMmzaQj4xU6Kn6Cp6yIEbabIDQnmyfeQK/JPUfp9V1Gxp5/SQfIu3AZ8IBMBP9Fn26Lf6KvuC3eGkGsVfC9GCPMLVSj+ZOBWfyyW8vPRx/5ZpTokbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvws5Mn0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDA2C116B1;
-	Thu, 25 Jul 2024 14:41:06 +0000 (UTC)
+	 MIME-Version; b=F+Nut0rDWUI15oucrQN0EmRu+hmzj2GRcDCkCxwERpaP2AKsVy+IoZogmwD3CwTIYZynKMH5mhf7ZDzEplg+59qyqK+XgQeo0rdyuGdHMgYzyc1GpuSyNLxdQu90aiQgJ3ZD65mhGeIFJasQOvQIiq8j0k24YcexqRqmpF8/KNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kR6donLG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAB5C116B1;
+	Thu, 25 Jul 2024 14:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918467;
-	bh=eWW3Qq77Xz1JDT5u+4QLE18B/Z/+J/rGCcshiQTPOHU=;
+	s=korg; t=1721919080;
+	bh=Wj5IIBi5jn26YcB2C1eKtdLEf9YZOFjJUGNU2C5Y2y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jvws5Mn0p7VacfVtb9JVCb0SeDedlBrRcvviKXt86DrTdgxjsJFaIex4J3E0KWOhq
-	 0yewxG+YX8gwCtwHmTlbBYEzEr2nreg6/3h7r6uXQWlRXmHywHfm6iEiURUTN0MEZW
-	 piATlO8MvMHPST+noLCP6XMWgoKPFaFP3iQUdJ/c=
+	b=kR6donLGnY1nzJ2F5FxVZyTUyljc0883/NhDRAeNXrfJ1qaM88LrIxbzsn0DNqApu
+	 akAsVdhJPTAqqFV8zF08wbPLLtbGFS2UosMrkHqmXOsDnhzncIiPh7BElJAtzh2867
+	 i2srg3z+2QBx7m/lkl9olIjz6BcctqVnGLo/+kVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	John Stultz <jstultz@google.com>
-Subject: [PATCH 4.19 28/33] ARM: 9324/1: fix get_user() broken with veneer
+	Ayala Beker <ayala.beker@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 18/87] wifi: iwlwifi: mvm: properly set 6 GHz channel direct probe option
 Date: Thu, 25 Jul 2024 16:36:51 +0200
-Message-ID: <20240725142729.571727472@linuxfoundation.org>
+Message-ID: <20240725142739.121071297@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Ayala Beker <ayala.beker@intel.com>
 
-commit 24d3ba0a7b44c1617c27f5045eecc4f34752ab03 upstream.
+[ Upstream commit 989830d1cf16bd149bf0690d889a9caef95fb5b1 ]
 
-The 32-bit ARM kernel stops working if the kernel grows to the point
-where veneers for __get_user_* are created.
+Ensure that the 6 GHz channel is configured with a valid direct BSSID,
+avoiding any invalid or multicast BSSID addresses.
 
-AAPCS32 [1] states, "Register r12 (IP) may be used by a linker as a
-scratch register between a routine and any subroutine it calls. It
-can also be used within a routine to hold intermediate values between
-subroutine calls."
-
-However, bl instructions buried within the inline asm are unpredictable
-for compilers; hence, "ip" must be added to the clobber list.
-
-This becomes critical when veneers for __get_user_* are created because
-veneers use the ip register since commit 02e541db0540 ("ARM: 8323/1:
-force linker to use PIC veneers").
-
-[1]: https://github.com/ARM-software/abi-aa/blob/2023Q1/aapcs32/aapcs32.rst
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Cc: John Stultz <jstultz@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ayala Beker <ayala.beker@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.91a631a0fe60.I2ea2616af9b8a2eaf959b156c69cf65a2f1204d4@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/uaccess.h |   14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/arm/include/asm/uaccess.h
-+++ b/arch/arm/include/asm/uaccess.h
-@@ -145,16 +145,6 @@ extern int __get_user_64t_1(void *);
- extern int __get_user_64t_2(void *);
- extern int __get_user_64t_4(void *);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 0605363b62720..8179a7395bcaf 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -1721,7 +1721,10 @@ iwl_mvm_umac_scan_fill_6g_chan_list(struct iwl_mvm *mvm,
+ 				break;
+ 		}
  
--#define __GUP_CLOBBER_1	"lr", "cc"
--#ifdef CONFIG_CPU_USE_DOMAINS
--#define __GUP_CLOBBER_2	"ip", "lr", "cc"
--#else
--#define __GUP_CLOBBER_2 "lr", "cc"
--#endif
--#define __GUP_CLOBBER_4	"lr", "cc"
--#define __GUP_CLOBBER_32t_8 "lr", "cc"
--#define __GUP_CLOBBER_8	"lr", "cc"
--
- #define __get_user_x(__r2, __p, __e, __l, __s)				\
- 	   __asm__ __volatile__ (					\
- 		__asmeq("%0", "r0") __asmeq("%1", "r2")			\
-@@ -162,7 +152,7 @@ extern int __get_user_64t_4(void *);
- 		"bl	__get_user_" #__s				\
- 		: "=&r" (__e), "=r" (__r2)				\
- 		: "0" (__p), "r" (__l)					\
--		: __GUP_CLOBBER_##__s)
-+		: "ip", "lr", "cc")
- 
- /* narrowing a double-word get into a single 32bit word register: */
- #ifdef __ARMEB__
-@@ -184,7 +174,7 @@ extern int __get_user_64t_4(void *);
- 		"bl	__get_user_64t_" #__s				\
- 		: "=&r" (__e), "=r" (__r2)				\
- 		: "0" (__p), "r" (__l)					\
--		: __GUP_CLOBBER_##__s)
-+		: "ip", "lr", "cc")
- #else
- #define __get_user_x_64t __get_user_x
- #endif
+-		if (k == idex_b && idex_b < SCAN_BSSID_MAX_SIZE) {
++		if (k == idex_b && idex_b < SCAN_BSSID_MAX_SIZE &&
++		    !WARN_ONCE(!is_valid_ether_addr(scan_6ghz_params[j].bssid),
++			       "scan: invalid BSSID at index %u, index_b=%u\n",
++			       j, idex_b)) {
+ 			memcpy(&pp->bssid_array[idex_b++],
+ 			       scan_6ghz_params[j].bssid, ETH_ALEN);
+ 		}
+-- 
+2.43.0
+
 
 
 
