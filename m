@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-61591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5EE93C50F
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E627E93C559
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E91A7281C01
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:46:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2400D1C21E41
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A293619AD9B;
-	Thu, 25 Jul 2024 14:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DAF13C816;
+	Thu, 25 Jul 2024 14:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuleoLCr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVid4rJ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613E01E895;
-	Thu, 25 Jul 2024 14:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4461DF519;
+	Thu, 25 Jul 2024 14:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918806; cv=none; b=m+hW0wAiZgpW2ittIolZVpCyDDdI4u0rExrDf9E19+F89zvp19Y7ajTMmXpJSIq8I+GCnT4K1uCfGYwJ/EubKc9AwczGjPPRNkN5nu6czTdpGc11CwZNWoIvz2Fbf6LlD2fQ6xiRc7V4g1AQEysKb4dnXhBfAzIq7Ewcp8qTJ+8=
+	t=1721919023; cv=none; b=sTh8YSbXqGo1bcx3mGjqleL4IRStUDxxS7yjPCKg0Hvw2Pq8HvouLxxCaK0IVp4/58k/3evjWc++xv1K7aGJ7TpO8xXkhPQ1NpaIg7JhgaeruOXeMeeUZvvYL4lcaGMzRxLdlSAhXJF9td1dMVV8081XRFhvvi0YRPGzCS0mK+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918806; c=relaxed/simple;
-	bh=xWU+M2r6K6HzKM04Ng4IkC4z77CNdGppVTR52khoPjw=;
+	s=arc-20240116; t=1721919023; c=relaxed/simple;
+	bh=j8/DCpBowdzcb9SMRKze/NCe98LdUNmd3pKBirqBDSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcH5mY21WaSLu79Fy6CL4R1DZRpCCpNML/46ET61a2LGZlg9BDp20mjih40n5vqzU1hdMLtDFgnkPIyjRcVJHtLyn4xPDwQVIm5a/m2w0Mw80+WFBDKOg52djvlvEt3+wYu9oUxSjKJN5EC8C/NfLZW6rnPB+MlWMBABFEOve6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuleoLCr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF799C116B1;
-	Thu, 25 Jul 2024 14:46:45 +0000 (UTC)
+	 MIME-Version; b=cmYYxz31L8XLb6+9XpfqPDwaZk1sRSh9zWC9nhbg12ICSeP3AxxWstjHQCuq6IKJWOs1qUy95efDgKdG4KNp9J2mucGngyLX4AXaCP5TZv5gBI9kq5J2pJ0haDXXBkLP1rgs8LnP5HH/dGqYjWTIZkyxhw4KryWLBX9KP8rxolU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVid4rJ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C21C116B1;
+	Thu, 25 Jul 2024 14:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918806;
-	bh=xWU+M2r6K6HzKM04Ng4IkC4z77CNdGppVTR52khoPjw=;
+	s=korg; t=1721919023;
+	bh=j8/DCpBowdzcb9SMRKze/NCe98LdUNmd3pKBirqBDSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HuleoLCrvn3I2ntDVcWkAgvXOQ41yt1lcXsYiKzol0jBitoN44N5wO3aONssT8U6o
-	 Yw9x4/eSN+xMwwau7wxkdUMIo8CSSEkeYehWtNhyh/VYcfqwNSG24KQd9BysxrI+jX
-	 D4TnBIKuJ/3dJ8Ah0NihJXvUxH9hm242qxZ8GZtE=
+	b=WVid4rJ7kRnOlgiE6ECFCRNhZzJvpSiJc7774eB+j4J78WNeDIqvuL805x7+wOULI
+	 WVfz6ZPUwj9ukiResSgO+aeVQCkmST2fO46lj6fTlv1JOQJ/VAeEnwOXEwR7r86R5b
+	 HwQxeAHlxyAhgCYk+3BQgpII8cVyrlsvcYSNMUB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.9 07/29] usb: gadget: midi2: Fix incorrect default MIDI2 protocol setup
-Date: Thu, 25 Jul 2024 16:37:17 +0200
-Message-ID: <20240725142731.956752733@linuxfoundation.org>
+	Chen Ni <nichen@iscas.ac.cn>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 28/59] can: kvaser_usb: fix return value for hif_usb_send_regout
+Date: Thu, 25 Jul 2024 16:37:18 +0200
+Message-ID: <20240725142734.325117348@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
-References: <20240725142731.678993846@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit 3eb27d3e32c78badbc4db6ae76614b5961e32291 upstream.
+[ Upstream commit 0d34d8163fd87978a6abd792e2d8ad849f4c3d57 ]
 
-The MIDI2 gadget driver handled the default MIDI protocol version
-incorrectly due to the confusion of the protocol version passed via
-configfs (either 1 or 2) and UMP protocol bits (0x100 / 0x200).
-As a consequence, the default protocol always resulted in MIDI1.
+As the potential failure of usb_submit_urb(), it should be better to
+return the err variable to catch the error.
 
-This patch addresses the misunderstanding of the protocol handling.
-
-Fixes: 29ee7a4dddd5 ("usb: gadget: midi2: Add configfs support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20240708095719.25627-1-tiwai@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://lore.kernel.org/all/20240521041020.1519416-1-nichen@iscas.ac.cn
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_midi2.c |   19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_midi2.c
-+++ b/drivers/usb/gadget/function/f_midi2.c
-@@ -150,6 +150,9 @@ struct f_midi2 {
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+index 411b3adb1d9ea..a96b223984070 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -266,7 +266,7 @@ int kvaser_usb_send_cmd_async(struct kvaser_usb_net_priv *priv, void *cmd,
+ 	}
+ 	usb_free_urb(urb);
  
- #define func_to_midi2(f)	container_of(f, struct f_midi2, func)
+-	return 0;
++	return err;
+ }
  
-+/* convert from MIDI protocol number (1 or 2) to SNDRV_UMP_EP_INFO_PROTO_* */
-+#define to_ump_protocol(v)	(((v) & 3) << 8)
-+
- /* get EP name string */
- static const char *ump_ep_name(const struct f_midi2_ep *ep)
- {
-@@ -564,8 +567,7 @@ static void reply_ump_stream_ep_config(s
- 		.status = UMP_STREAM_MSG_STATUS_STREAM_CFG,
- 	};
- 
--	if ((ep->info.protocol & SNDRV_UMP_EP_INFO_PROTO_MIDI_MASK) ==
--	    SNDRV_UMP_EP_INFO_PROTO_MIDI2)
-+	if (ep->info.protocol == 2)
- 		rep.protocol = UMP_STREAM_MSG_EP_INFO_CAP_MIDI2 >> 8;
- 	else
- 		rep.protocol = UMP_STREAM_MSG_EP_INFO_CAP_MIDI1 >> 8;
-@@ -627,13 +629,13 @@ static void process_ump_stream_msg(struc
- 		return;
- 	case UMP_STREAM_MSG_STATUS_STREAM_CFG_REQUEST:
- 		if (*data & UMP_STREAM_MSG_EP_INFO_CAP_MIDI2) {
--			ep->info.protocol = SNDRV_UMP_EP_INFO_PROTO_MIDI2;
-+			ep->info.protocol = 2;
- 			DBG(midi2, "Switching Protocol to MIDI2\n");
- 		} else {
--			ep->info.protocol = SNDRV_UMP_EP_INFO_PROTO_MIDI1;
-+			ep->info.protocol = 1;
- 			DBG(midi2, "Switching Protocol to MIDI1\n");
- 		}
--		snd_ump_switch_protocol(ep->ump, ep->info.protocol);
-+		snd_ump_switch_protocol(ep->ump, to_ump_protocol(ep->info.protocol));
- 		reply_ump_stream_ep_config(ep);
- 		return;
- 	case UMP_STREAM_MSG_STATUS_FB_DISCOVERY:
-@@ -1065,7 +1067,8 @@ static void f_midi2_midi1_ep_out_complet
- 		group = midi2->out_cable_mapping[cable].group;
- 		bytes = midi1_packet_bytes[*buf & 0x0f];
- 		for (c = 0; c < bytes; c++) {
--			snd_ump_convert_to_ump(cvt, group, ep->info.protocol,
-+			snd_ump_convert_to_ump(cvt, group,
-+					       to_ump_protocol(ep->info.protocol),
- 					       buf[c + 1]);
- 			if (cvt->ump_bytes) {
- 				snd_ump_receive(ep->ump, cvt->ump,
-@@ -1375,7 +1378,7 @@ static void assign_block_descriptors(str
- 			desc->nNumGroupTrm = b->num_groups;
- 			desc->iBlockItem = ep->blks[blk].string_id;
- 
--			if (ep->info.protocol & SNDRV_UMP_EP_INFO_PROTO_MIDI2)
-+			if (ep->info.protocol == 2)
- 				desc->bMIDIProtocol = USB_MS_MIDI_PROTO_2_0;
- 			else
- 				desc->bMIDIProtocol = USB_MS_MIDI_PROTO_1_0_128;
-@@ -1552,7 +1555,7 @@ static int f_midi2_create_card(struct f_
- 		if (midi2->info.static_block)
- 			ump->info.flags |= SNDRV_UMP_EP_INFO_STATIC_BLOCKS;
- 		ump->info.protocol_caps = (ep->info.protocol_caps & 3) << 8;
--		ump->info.protocol = (ep->info.protocol & 3) << 8;
-+		ump->info.protocol = to_ump_protocol(ep->info.protocol);
- 		ump->info.version = 0x0101;
- 		ump->info.family_id = ep->info.family;
- 		ump->info.model_id = ep->info.model;
+ int kvaser_usb_can_rx_over_error(struct net_device *netdev)
+-- 
+2.43.0
+
 
 
 
