@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AB293C459
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:38:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5049993C47D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A853D1C20A6C
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0652A1F228AB
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3750E19B3E2;
-	Thu, 25 Jul 2024 14:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03AEE19D09B;
+	Thu, 25 Jul 2024 14:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhP4FVOU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUT2uX31"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F8D19A29C;
-	Thu, 25 Jul 2024 14:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BE219D086;
+	Thu, 25 Jul 2024 14:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918333; cv=none; b=ji139W76mK2ChBu0TeHQudQp/dKLAhdmE3wAGcfRzlg8rhve/I1MYGI7dSi6SoMISzny6SW/r/gWIBG+M0KKDvBmM5v4L6vmcLJEV9QDynFi26B3dgx42jHJA1OoSoDMOYCsImDK7KjFvbn8x9BeWlGUdVqyp2se1XCJavVgQck=
+	t=1721918409; cv=none; b=Rh9NQjvd0RoetRZ8ev2THKEhNASBNxbphvE95ugsy5EWerBHhBsk7PTK91ooD1NesOG00TA0d+z7alUa051SaW3Bwhl950UaymQN5Zl/+VUf2qmZls6fFFmWJ8TzgM2XGT7Y5YRRxus9m0Q4QzQ3xXbmui6+Plw4gpntwCaPf7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918333; c=relaxed/simple;
-	bh=ZkYomi9prToHUItq08EV0Xq1UZUD8WFshmhPbN8PUNU=;
+	s=arc-20240116; t=1721918409; c=relaxed/simple;
+	bh=HHiUoIi+lm0J6UI6pVAuxLAaV/lRPoStukUg4DnK2nA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ju1IWDnFG4noK4lx/giFvnvhVdmE9okMOYVcelZ74cl4qv0ovZAc4bwIyS4TMmkIEb+xtzQtOaHlHdQBpHqCPx25uihaeIMKmtAk1IieAPILchVpopnQVZ5kpAo1jH6GDOBvClwj/ywUKgQN9va2+7EizcyzndNL9UEi+nS1yKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhP4FVOU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A10C116B1;
-	Thu, 25 Jul 2024 14:38:51 +0000 (UTC)
+	 MIME-Version; b=g2qHsug86d3HEgMRfAH/jGv4A1Py5XiHTk961KmHNbsRCSL+UeMp6p232ANvhExYQMsiT5n9HSpaQTB16PMzzHZ/YL8syhrNmZqrW0XnpU7Skr5nFbuXWKE3nSZNPjujuzAeczLICGeOuIZrPbqSxAtU4fixqn5rnj7g1SrpLW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUT2uX31; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06CDC116B1;
+	Thu, 25 Jul 2024 14:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918332;
-	bh=ZkYomi9prToHUItq08EV0Xq1UZUD8WFshmhPbN8PUNU=;
+	s=korg; t=1721918409;
+	bh=HHiUoIi+lm0J6UI6pVAuxLAaV/lRPoStukUg4DnK2nA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IhP4FVOUZRxTTVuplpGDynABvrNyTdPMk0d2MXmvZ+wUjsPVqqeIWos4yHelIBgTa
-	 F/OjElZgYfaCXKffhJrzd28T/iKg+v66IPdybXYAK3mG25jd8fVvrVk4Fgp/GfzUZh
-	 iF2kQmrXkQxB3BSM3vz2erJWMyTnc6gP99ZXwVb0=
+	b=oUT2uX319RpS4BhcvWHF/JGwUqh9HKEL0wauIBczvU2iMB5wq1ptLe9VTz7kd9QaY
+	 mRPhc9qIAMehSrXdiH5l3qCsbIv8Se+fjJ6sLiz9Z1PVfMUGCBuxryWV2zVYW34IJL
+	 KC6lWLJ7VjMizA7jSQxPTHC3Sf8E0eWAfQpzbv2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 18/29] arm64: dts: qcom: x1e80100-crd: Fix USB PHYs regulators
+	Yuntao Wang <yuntao.wang@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 11/33] fs/file: fix the check in find_next_fd()
 Date: Thu, 25 Jul 2024 16:36:34 +0200
-Message-ID: <20240725142732.502258126@linuxfoundation.org>
+Message-ID: <20240725142728.949161620@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-References: <20240725142731.814288796@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Yuntao Wang <yuntao.wang@linux.dev>
 
-commit ae5cee8e7349d7e5deff4cf90a08cbd738287155 upstream.
+[ Upstream commit ed8c7fbdfe117abbef81f65428ba263118ef298a ]
 
-The 1.2v HS PHY shared regulator is actually LDO2 from PM8550ve id J.
-Also add the missing supplies to QMP PHYs.
+The maximum possible return value of find_next_zero_bit(fdt->full_fds_bits,
+maxbit, bitbit) is maxbit. This return value, multiplied by BITS_PER_LONG,
+gives the value of bitbit, which can never be greater than maxfd, it can
+only be equal to maxfd at most, so the following check 'if (bitbit > maxfd)'
+will never be true.
 
-Fixes: d7e03cce0400 ("arm64: dts: qcom: x1e80100-crd: Enable more support")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: stable@vger.kernel.org      # 6.9
-Link: https://lore.kernel.org/r/20240530-x1e80100-dts-fix-usb-phy-supplies-v1-1-6eb72a546227@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Moreover, when bitbit equals maxfd, it indicates that there are no unused
+fds, and the function can directly return.
+
+Fix this check.
+
+Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
+Link: https://lore.kernel.org/r/20240529160656.209352-1-yuntao.wang@linux.dev
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-crd.dts |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ fs/file.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-@@ -841,7 +841,7 @@
+diff --git a/fs/file.c b/fs/file.c
+index 928ba7b8df1e9..f5ba0e6f1a4c6 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -462,12 +462,12 @@ struct files_struct init_files = {
  
- &usb_1_ss0_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
+ static unsigned int find_next_fd(struct fdtable *fdt, unsigned int start)
+ {
+-	unsigned int maxfd = fdt->max_fds;
++	unsigned int maxfd = fdt->max_fds; /* always multiple of BITS_PER_LONG */
+ 	unsigned int maxbit = maxfd / BITS_PER_LONG;
+ 	unsigned int bitbit = start / BITS_PER_LONG;
  
- 	phys = <&smb2360_0_eusb2_repeater>;
- 
-@@ -849,6 +849,9 @@
- };
- 
- &usb_1_ss0_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l1j_0p8>;
-+
- 	status = "okay";
- };
- 
-@@ -863,7 +866,7 @@
- 
- &usb_1_ss1_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_1_eusb2_repeater>;
- 
-@@ -871,6 +874,9 @@
- };
- 
- &usb_1_ss1_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l2d_0p9>;
-+
- 	status = "okay";
- };
- 
-@@ -885,7 +891,7 @@
- 
- &usb_1_ss2_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_2_eusb2_repeater>;
- 
-@@ -893,6 +899,9 @@
- };
- 
- &usb_1_ss2_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l2d_0p9>;
-+
- 	status = "okay";
- };
- 
+ 	bitbit = find_next_zero_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
+-	if (bitbit > maxfd)
++	if (bitbit >= maxfd)
+ 		return maxfd;
+ 	if (bitbit > start)
+ 		start = bitbit;
+-- 
+2.43.0
+
 
 
 
