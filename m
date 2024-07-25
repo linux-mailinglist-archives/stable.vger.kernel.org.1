@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554C593C48A
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C2F93C478
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00DED1F219A7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10968B2492A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9569619D084;
-	Thu, 25 Jul 2024 14:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F8E19D090;
+	Thu, 25 Jul 2024 14:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVVHYdYz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0D7YHYNV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D1019A29C;
-	Thu, 25 Jul 2024 14:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8774919D066;
+	Thu, 25 Jul 2024 14:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918445; cv=none; b=pnT30Slp4VsX+y+CzYpSW3Ta77nTN5ExNnyr5itO0jZcckFNItWzMxI2T12+h2vf42v5mO5AhqLJpZYziJyOKJ8Kxu0K/6e/K7c5AIc0ccp2lPzd13QmE1L05WyD3qlsnBtPKC9k6Ih5BBxu73aZz3TVOtxWnvoU0whgc8oQg6U=
+	t=1721918396; cv=none; b=TPO4eabPycmlUVe4ibtSsnpDfDtWEB8gohiurb8eNUt4hW+OLbL9jmz96bfEQqotJvSQx+wGXX7UpE2WKLmUUcWaLf+k2C9yxtnIqqWhUD33fHPU+xRqAN7jBx+6y9PQtV/Pj7tThnGvV1Fo1YfbneWk/rS1DIdM1yDEMam4yLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918445; c=relaxed/simple;
-	bh=ueuv5fCSIT6F09ofOwlxSZ0Y16U2VBd8Cpcjke/XqYE=;
+	s=arc-20240116; t=1721918396; c=relaxed/simple;
+	bh=UqVVNUYcZ2jtTayGoarvFFhz1NJfPC8rtmJGKAYzXBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCxdeTS9PMSIo5DxSaMWtChcskNPkbIeU41fxLPNFYB77+wFGn4o146xHPEGVZM/DuB/CL9EquQgRKeqY8oom3Yf65noEK04J35b6hryasPWY275h9bcAQ+7d1B8n4NMkdLzyedM2ZYdYxFIGMl8tINUbt2Dmv6h2YqlvI0m540=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVVHYdYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED88C116B1;
-	Thu, 25 Jul 2024 14:40:44 +0000 (UTC)
+	 MIME-Version; b=dJ+7xxYYmDMqrwWHE5KYpXS0fUkOUJobiU4sstMA4afMF8wi/8gS+d3lXEvPMdLMHJALZbR98fFgboFqQA8ST02bvh2vedHFBwico1DU/hWafNkAXUmqoEPChAml4n6rErAozIMFGVi371S7zXAE1yjyt63ixTPmU8eEHqCuRSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0D7YHYNV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F366CC116B1;
+	Thu, 25 Jul 2024 14:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918444;
-	bh=ueuv5fCSIT6F09ofOwlxSZ0Y16U2VBd8Cpcjke/XqYE=;
+	s=korg; t=1721918396;
+	bh=UqVVNUYcZ2jtTayGoarvFFhz1NJfPC8rtmJGKAYzXBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVVHYdYz81mXyFmwUGBRuYuBWM2yICXbXuSGe/F0tfTPjftuYgWENZxmyrBanUisj
-	 kSekRtt0DhC/j7Ckt9cy6zWwBJamCh+II3W1HNAWz0xOFf+qNKjZYM2U6V5UKgmoJw
-	 8CQRJqPzeHbvtP4QWvTsg81WogooZxV/16GsUI1g=
+	b=0D7YHYNVyR6iM+oRuIYpHmJUwcmzma6b6U1MG9kNWWfqD2zIJaZhJB70AA1eyZS5D
+	 3Fc/R8fPV1WDzw3kLVdVQ47pWA6PxqohXY/PPIh492tMuhjLX0Xd6kQNzB+MLAPyZ/
+	 +so24eF6B+P5uPmrcZp1b2xAHb4ua+ldQeRHv+xA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunshui Jiang <jiangyunshui@kylinos.cn>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 21/33] net: mac802154: Fix racy device stats updates by DEV_STATS_INC() and DEV_STATS_ADD()
-Date: Thu, 25 Jul 2024 16:36:44 +0200
-Message-ID: <20240725142729.316208523@linuxfoundation.org>
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.10 29/29] filelock: Fix fcntl/close race recovery compat path
+Date: Thu, 25 Jul 2024 16:36:45 +0200
+Message-ID: <20240725142732.910355481@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunshui Jiang <jiangyunshui@kylinos.cn>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit b8ec0dc3845f6c9089573cb5c2c4b05f7fc10728 ]
+commit f8138f2ad2f745b9a1c696a05b749eabe44337ea upstream.
 
-mac802154 devices update their dev->stats fields locklessly. Therefore
-these counters should be updated atomically. Adopt SMP safe DEV_STATS_INC()
-and DEV_STATS_ADD() to achieve this.
+When I wrote commit 3cad1bc01041 ("filelock: Remove locks reliably when
+fcntl/close race is detected"), I missed that there are two copies of the
+code I was patching: The normal version, and the version for 64-bit offsets
+on 32-bit kernels.
+Thanks to Greg KH for stumbling over this while doing the stable
+backport...
 
-Signed-off-by: Yunshui Jiang <jiangyunshui@kylinos.cn>
-Message-ID: <20240531080739.2608969-1-jiangyunshui@kylinos.cn>
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Apply exactly the same fix to the compat path for 32-bit kernels.
+
+Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
+Cc: stable@kernel.org
+Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20240723-fs-lock-recover-compatfix-v1-1-148096719529@google.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac802154/tx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/locks.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
-index 2f873a0dc5836..0f192174a5693 100644
---- a/net/mac802154/tx.c
-+++ b/net/mac802154/tx.c
-@@ -42,8 +42,8 @@ void ieee802154_xmit_worker(struct work_struct *work)
- 	if (res)
- 		goto err_tx;
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2570,8 +2570,9 @@ int fcntl_setlk64(unsigned int fd, struc
+ 	error = do_lock_file_wait(filp, cmd, file_lock);
  
--	dev->stats.tx_packets++;
--	dev->stats.tx_bytes += skb->len;
-+	DEV_STATS_INC(dev, tx_packets);
-+	DEV_STATS_ADD(dev, tx_bytes, skb->len);
- 
- 	ieee802154_xmit_complete(&local->hw, skb, false);
- 
-@@ -94,8 +94,8 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
- 			goto err_tx;
+ 	/*
+-	 * Attempt to detect a close/fcntl race and recover by releasing the
+-	 * lock that was just acquired. There is no need to do that when we're
++	 * Detect close/fcntl races and recover by zapping all POSIX locks
++	 * associated with this file and our files_struct, just like on
++	 * filp_flush(). There is no need to do that when we're
+ 	 * unlocking though, or for OFD locks.
+ 	 */
+ 	if (!error && file_lock->c.flc_type != F_UNLCK &&
+@@ -2586,9 +2587,7 @@ int fcntl_setlk64(unsigned int fd, struc
+ 		f = files_lookup_fd_locked(files, fd);
+ 		spin_unlock(&files->file_lock);
+ 		if (f != filp) {
+-			file_lock->c.flc_type = F_UNLCK;
+-			error = do_lock_file_wait(filp, cmd, file_lock);
+-			WARN_ON_ONCE(error);
++			locks_remove_posix(filp, files);
+ 			error = -EBADF;
  		}
- 
--		dev->stats.tx_packets++;
--		dev->stats.tx_bytes += len;
-+		DEV_STATS_INC(dev, tx_packets);
-+		DEV_STATS_ADD(dev, tx_bytes, len);
- 	} else {
- 		local->tx_skb = skb;
- 		queue_work(local->workqueue, &local->tx_work);
--- 
-2.43.0
-
+ 	}
 
 
 
