@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4010593C5B5
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E5A93C562
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 726D81C21DE5
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82BE11C21F2D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9556319D88C;
-	Thu, 25 Jul 2024 14:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3BB19D069;
+	Thu, 25 Jul 2024 14:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSqY5zOU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeWE9kxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AF019D88A;
-	Thu, 25 Jul 2024 14:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACEC1993A3;
+	Thu, 25 Jul 2024 14:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919270; cv=none; b=lBQzvXBn+a8yNsIj/Gz+nkYoz+Z4/SeMxLTM1oyqQ/tB9Zj8IBJUI6Pjfbnqyj3lM74zmvzhlOBmNAazN4CSrhNiojYMD6fbas2vd/TgE3AJLci0s/PSfwndPAkk9P1SkGt7JUqyflLXnQ/5CvhBtc/oZJaBnugd2gRQO9BQCf4=
+	t=1721919045; cv=none; b=ssyoKDX0fKC5I+gPveANFbayTI5GXAJLfj8Ek5QAWIw9yiIb8vyPV/t27d1nFvx06WQZu4nuAq96CanV37bwFGSuxwekOdFYmcENSC9+oKoce4met/YpGMKHdfHRIHCCIGTZCioAoGtiK1jITQKEQTzZd8k9KjvoWKYPgP3jmKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919270; c=relaxed/simple;
-	bh=ncLp7LoiqHfZxeSppL545j58aCJCUJO8sMbypT1BwEU=;
+	s=arc-20240116; t=1721919045; c=relaxed/simple;
+	bh=LphKFI+DW+SKYI9/wAECUm25m6yr2UNr7t6YOzTvank=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ioZxZKX99MM/Pzo63FUjLPuNoyNfo/TK1PZmb/DIHNnOJsIv6fFZ8K+qqgttfpK9pnvDB+S7/2LxiF5Fu0yQx9IvckRcvGLmxi9W9J/hCrNYeITp54eY+k2wSWC570q60r30iJjTZjNlQX0x6U5wKEX8ZvVPjGwN/bABmCpHyBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSqY5zOU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEB1C116B1;
-	Thu, 25 Jul 2024 14:54:29 +0000 (UTC)
+	 MIME-Version; b=nf3CA4GgD/SADNDdwZJeYJ3DLiuCoZRLpSFevC19zCqyQyJ7gN0O0CpsJJmrRw3TI/K+jaALCgbqgJTMJ4BanmFvB6rHQs8DbZfTkLgHNJu1kuN3fhcBRrTKb4+FcOVNgWQHOC4SegxToujtn56RyveTSU96QXpoU6f4PlLIaqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeWE9kxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66C0C116B1;
+	Thu, 25 Jul 2024 14:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919269;
-	bh=ncLp7LoiqHfZxeSppL545j58aCJCUJO8sMbypT1BwEU=;
+	s=korg; t=1721919045;
+	bh=LphKFI+DW+SKYI9/wAECUm25m6yr2UNr7t6YOzTvank=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PSqY5zOUCxxLYnrI0LOyk8Pllo1AoL82kT2KYSUycC7SscA0pAEVRPP+IXszOlXTg
-	 aln+2QpvghVZtPpoQMWdAeJFO7MQ1e5i8yPWHLys0vNg9ZzrOG+RtRtM7oYmzmUSNF
-	 J+OFIFounDkds5vWHf591U+/OuiWCEE6p34RCGwE=
+	b=XeWE9kxo49ts9f4ToKOYGaUesXN6jVypfBOD6TM3ZR6x0WYZIruMa83fd54RzXjCi
+	 Qs0Yayr2SfMMexoK6F6Abx25c3jlLFg9v2h09x2Un2p2tL896p5zThYloBqNh7VQ/L
+	 RSeDPQQ04bNc4q322h3N4Y+2efQiUnFZTOul9qj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Gabriel Krisman Bertazi <krisman@collabora.com>,
-	Jan Kara <jack@suse.cz>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 76/87] docs: Fix formatting of literal sections in fanotify docs
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 59/59] filelock: Fix fcntl/close race recovery compat path
 Date: Thu, 25 Jul 2024 16:37:49 +0200
-Message-ID: <20240725142741.305737757@linuxfoundation.org>
+Message-ID: <20240725142735.482264617@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@collabora.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 9abeae5d4458326e16df7ea237104b58c27dfd77 ]
+commit f8138f2ad2f745b9a1c696a05b749eabe44337ea upstream.
 
-Stephen Rothwell reported the following warning was introduced by commit
-c0baf9ac0b05 ("docs: Document the FAN_FS_ERROR event").
+When I wrote commit 3cad1bc01041 ("filelock: Remove locks reliably when
+fcntl/close race is detected"), I missed that there are two copies of the
+code I was patching: The normal version, and the version for 64-bit offsets
+on 32-bit kernels.
+Thanks to Greg KH for stumbling over this while doing the stable
+backport...
 
-Documentation/admin-guide/filesystem-monitoring.rst:60: WARNING:
- Definition list ends without a blank line; unexpected unindent.
+Apply exactly the same fix to the compat path for 32-bit kernels.
 
-Link: https://lore.kernel.org/r/87y26camhe.fsf@collabora.com
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
+Cc: stable@kernel.org
+Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20240723-fs-lock-recover-compatfix-v1-1-148096719529@google.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/filesystem-monitoring.rst |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ fs/locks.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/Documentation/admin-guide/filesystem-monitoring.rst
-+++ b/Documentation/admin-guide/filesystem-monitoring.rst
-@@ -35,9 +35,11 @@ notifications is Ext4.
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2719,8 +2719,9 @@ int fcntl_setlk64(unsigned int fd, struc
+ 	error = do_lock_file_wait(filp, cmd, file_lock);
  
- A FAN_FS_ERROR Notification has the following format::
- 
--  [ Notification Metadata (Mandatory) ]
--  [ Generic Error Record  (Mandatory) ]
--  [ FID record            (Mandatory) ]
-+  ::
-+
-+     [ Notification Metadata (Mandatory) ]
-+     [ Generic Error Record  (Mandatory) ]
-+     [ FID record            (Mandatory) ]
- 
- The order of records is not guaranteed, and new records might be added
- in the future.  Therefore, applications must not rely on the order and
-@@ -53,11 +55,13 @@ providing any additional details about t
- identified by ``struct fanotify_event_info_header.info_type`` being set
- to FAN_EVENT_INFO_TYPE_ERROR.
- 
--  struct fanotify_event_info_error {
--	struct fanotify_event_info_header hdr;
--	__s32 error;
--	__u32 error_count;
--  };
-+  ::
-+
-+     struct fanotify_event_info_error {
-+          struct fanotify_event_info_header hdr;
-+         __s32 error;
-+         __u32 error_count;
-+     };
- 
- The `error` field identifies the type of error using errno values.
- `error_count` tracks the number of errors that occurred and were
+ 	/*
+-	 * Attempt to detect a close/fcntl race and recover by releasing the
+-	 * lock that was just acquired. There is no need to do that when we're
++	 * Detect close/fcntl races and recover by zapping all POSIX locks
++	 * associated with this file and our files_struct, just like on
++	 * filp_flush(). There is no need to do that when we're
+ 	 * unlocking though, or for OFD locks.
+ 	 */
+ 	if (!error && file_lock->fl_type != F_UNLCK &&
+@@ -2735,9 +2736,7 @@ int fcntl_setlk64(unsigned int fd, struc
+ 		f = files_lookup_fd_locked(files, fd);
+ 		spin_unlock(&files->file_lock);
+ 		if (f != filp) {
+-			file_lock->fl_type = F_UNLCK;
+-			error = do_lock_file_wait(filp, cmd, file_lock);
+-			WARN_ON_ONCE(error);
++			locks_remove_posix(filp, files);
+ 			error = -EBADF;
+ 		}
+ 	}
 
 
 
