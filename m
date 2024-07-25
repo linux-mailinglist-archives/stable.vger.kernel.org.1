@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D11093C517
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B7893C54E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:49:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A6D9B267D9
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:47:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E8A4280FA9
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC51919B589;
-	Thu, 25 Jul 2024 14:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2EB1E89C;
+	Thu, 25 Jul 2024 14:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5gGirJO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6QMGE5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891D213DDB8;
-	Thu, 25 Jul 2024 14:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE60F519;
+	Thu, 25 Jul 2024 14:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918821; cv=none; b=M8N9Zs8zBZdwf7hjtRyTdh4qSCvfm09HbmusAbuHL85IcACXw/fsQ5j2GcIFclucOcoT1tViW+57OKQhXGHk593KGJbibqZBykV5mnmZFObQxLbwz2XSvCCgNA7WGmRnxpgvYDz7NdRRarWhLowxPx9He4Fpjnnpa0y2M5KYQPI=
+	t=1721918988; cv=none; b=UyD1EFszOW+vlwkzO/ADi61aY5T+DuP8CFJjsDdc8yrPFRVO8zmqc1uVUkSbo3t+O4Qir93m/r4xV5WZJj5Oif7CHbhYOT8nHPNbW0qhzDt8NNAMOiSeg80avL6oZOlthmYxyTaoPXANW2VuUZm8Q1xLaYRz8KYUHydm/kvIccM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918821; c=relaxed/simple;
-	bh=t/mtTuvQQzbREULbQigUkr2jsQdMIGowAMuO5TCazpo=;
+	s=arc-20240116; t=1721918988; c=relaxed/simple;
+	bh=gc8tjztTI9bNOwX5lOLYyf59f6MoF68QngOLaU1ADxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aoBxYtQd6bIuDz6amDvDqy7bl3sczhaXNJBDKNqhzzILA9sA1yhrPGgs8+XR4Tv1mpyUsXsFNkmk4st34HgJW0lBnDiwb4rrUiAEJwTk6ZIlmlfIXfma4UeFXOd41MzJ4i7GQMXqIQupvG+44tGADOyQ48QeX5GCL5DMhE5rPLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5gGirJO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1DADC116B1;
-	Thu, 25 Jul 2024 14:47:00 +0000 (UTC)
+	 MIME-Version; b=cSyzMAdUHodMyxfOFABpRBNLpVN6I4bFehPzEUMfD0VGFD+IQ7AhzLAQkqBgAMZjdpFng5fTCsVb83AQMZVXp7q0J+qCicGTkW8SdLnaSr5mJBtMmjmXqf1VA0vcrmXDPFUY6jNz+vPljtvHuQl1sLM+HqowMfhSqRX1+adc7l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6QMGE5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4206CC116B1;
+	Thu, 25 Jul 2024 14:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918821;
-	bh=t/mtTuvQQzbREULbQigUkr2jsQdMIGowAMuO5TCazpo=;
+	s=korg; t=1721918988;
+	bh=gc8tjztTI9bNOwX5lOLYyf59f6MoF68QngOLaU1ADxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5gGirJOo3tudQKLdgYNySBhJ8cW9SW2HmFi4Jmk+XKeK2zyNjfM858PTPnDUH7rQ
-	 LiFSajVxQ7QLz6Ab0h0U3183VRA9xA3szVp/0oKPaYDTwxT9BrGpRdf0llooRRBweu
-	 +eWKM2BOS0Z34Tzp7WZBaRB7ir15YRhgPVCWOL/I=
+	b=b6QMGE5yeQp8ywynfJkTxlLqCHo5W52cfrunAlbGsO/zauUiGxoh88zWuJVJyL2AQ
+	 7Li1rvdTByKVtUh1imVHbcfytZgx1MKYNiW8upcPh80n6aDfGfjNQAfJdQ2DgUv5Tc
+	 VB6mwYIYCY6d62yePW6TReCFAeEFkUMCcM1bqveQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.9 29/29] filelock: Fix fcntl/close race recovery compat path
+	Gabriel Krisman Bertazi <krisman@collabora.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Ajay Kaher <ajay.kaher@broadcom.com>
+Subject: [PATCH 5.10 49/59] ext4: fix error code saved on super block during file system abort
 Date: Thu, 25 Jul 2024 16:37:39 +0200
-Message-ID: <20240725142732.765951056@linuxfoundation.org>
+Message-ID: <20240725142735.111052711@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
-References: <20240725142731.678993846@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Gabriel Krisman Bertazi <krisman@collabora.com>
 
-commit f8138f2ad2f745b9a1c696a05b749eabe44337ea upstream.
+commit 124e7c61deb27d758df5ec0521c36cf08d417f7a upstream.
 
-When I wrote commit 3cad1bc01041 ("filelock: Remove locks reliably when
-fcntl/close race is detected"), I missed that there are two copies of the
-code I was patching: The normal version, and the version for 64-bit offsets
-on 32-bit kernels.
-Thanks to Greg KH for stumbling over this while doing the stable
-backport...
+ext4_abort will eventually call ext4_errno_to_code, which translates the
+errno to an EXT4_ERR specific error.  This means that ext4_abort expects
+an errno.  By using EXT4_ERR_ here, it gets misinterpreted (as an errno),
+and ends up saving EXT4_ERR_EBUSY on the superblock during an abort,
+which makes no sense.
 
-Apply exactly the same fix to the compat path for 32-bit kernels.
+ESHUTDOWN will get properly translated to EXT4_ERR_SHUTDOWN, so use that
+instead.
 
-Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
-Cc: stable@kernel.org
-Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240723-fs-lock-recover-compatfix-v1-1-148096719529@google.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
+Link: https://lore.kernel.org/r/20211026173302.84000-1-krisman@collabora.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/locks.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/ext4/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2570,8 +2570,9 @@ int fcntl_setlk64(unsigned int fd, struc
- 	error = do_lock_file_wait(filp, cmd, file_lock);
- 
- 	/*
--	 * Attempt to detect a close/fcntl race and recover by releasing the
--	 * lock that was just acquired. There is no need to do that when we're
-+	 * Detect close/fcntl races and recover by zapping all POSIX locks
-+	 * associated with this file and our files_struct, just like on
-+	 * filp_flush(). There is no need to do that when we're
- 	 * unlocking though, or for OFD locks.
- 	 */
- 	if (!error && file_lock->c.flc_type != F_UNLCK &&
-@@ -2586,9 +2587,7 @@ int fcntl_setlk64(unsigned int fd, struc
- 		f = files_lookup_fd_locked(files, fd);
- 		spin_unlock(&files->file_lock);
- 		if (f != filp) {
--			file_lock->c.flc_type = F_UNLCK;
--			error = do_lock_file_wait(filp, cmd, file_lock);
--			WARN_ON_ONCE(error);
-+			locks_remove_posix(filp, files);
- 			error = -EBADF;
- 		}
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5887,7 +5887,7 @@ static int ext4_remount(struct super_blo
  	}
+ 
+ 	if (ext4_test_mount_flag(sb, EXT4_MF_FS_ABORTED))
+-		ext4_abort(sb, EXT4_ERR_ESHUTDOWN, "Abort forced by user");
++		ext4_abort(sb, ESHUTDOWN, "Abort forced by user");
+ 
+ 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
+ 		(test_opt(sb, POSIX_ACL) ? SB_POSIXACL : 0);
 
 
 
