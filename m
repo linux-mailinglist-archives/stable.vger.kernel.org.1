@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-61684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4574393C579
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:52:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4CB893C523
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4B181F25D56
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:52:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 657982822B5
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D661C19B5B5;
-	Thu, 25 Jul 2024 14:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5CF19D080;
+	Thu, 25 Jul 2024 14:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DsVZwSXS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m50YkunW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931B28468;
-	Thu, 25 Jul 2024 14:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889BD19CD0C;
+	Thu, 25 Jul 2024 14:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919109; cv=none; b=INZLwxsB/DWahde1GwJybuvA3ykQBVD6C6M2XGaFQsAwVwegV7+xNUjSnG1NPErcSyNVgzgLIfSwo8OnJ+OCN4eCuiXwFNaQ23lNVEvlSulbJqVPDu/Yw/yN63KiS4VJCtw+5887YROJu1I2+I5WwYhoi+L8hwRygetsSvwc6lc=
+	t=1721918856; cv=none; b=YvxLZ7KcFtqT/LjFanZ0+xRzThWcynZA/5g7WQ5UfnEWhUPk2tN4ns1N3AMCNBb0tqp1myZP21vRtnXhdGoe3cToki3jREv6TcJlbw0rL20WGPIBE10GgTrLU5RU43F2a5QRzMW75GkpXundARU2D89WFLSvcixeQAmfWPrf4+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919109; c=relaxed/simple;
-	bh=a0ZJYzaKjLc/i/mdPBlodsHf/oJWnjR4dyUK1e/rHxA=;
+	s=arc-20240116; t=1721918856; c=relaxed/simple;
+	bh=NxztyRd22IJWvN0bW0Wc6eNysrcHcALKiomjDjspCvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUaylfjmxRO/ZEhSmGQpXYGdcVnUGfTRUB0NSSm859AguImsvtn/Rk6Bm+rnml1cAqTufBR/5+vC/20ajLU1tiCNYzG8lOPqxq//FKOtYwXJbqdDQOXwhDd/SHBQFoGAZu9EB2Z/XFBJc8esLBCxKIBzyY+2M/n8/BT7pcydbf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DsVZwSXS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133AFC116B1;
-	Thu, 25 Jul 2024 14:51:48 +0000 (UTC)
+	 MIME-Version; b=fKM3s+dzgmA609oTzupcQVVS29Ur/V3yWHuq0yAajbZmwLqfvT2UTT/DiG+tctqsfagGJ1icq3UV+Gq9ESVkpBU4EMKZJh5iKjFzTlmpu9eVTxEQBwyam22bKcKz/0fidZEd9l9eJrPPuUXXKVb7nXzOBIAxnnNMkgZaol1KWbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m50YkunW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E8BC4AF10;
+	Thu, 25 Jul 2024 14:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919109;
-	bh=a0ZJYzaKjLc/i/mdPBlodsHf/oJWnjR4dyUK1e/rHxA=;
+	s=korg; t=1721918856;
+	bh=NxztyRd22IJWvN0bW0Wc6eNysrcHcALKiomjDjspCvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DsVZwSXSbjFcJw7mOajMp4kMrHEacViHLlUcLc0q+pwAkZbuip9XnZzxVUEiVIqf8
-	 KBb5KXoZbVE6gt2QDY7PUz6yvoETxpQT4rQTYzGw0IRUBgM5V4wACnXN0b1QYHYOY9
-	 DyHQU5pwQUYk/herdLdj33h+RjpXWePtJsa0vgLc=
+	b=m50YkunWXUzbs3cL2NX8kMUoHGOFDHtwqXEuhS7YYAxSVgZxMemfQ2HMFJFp2hr+b
+	 S9C0fdYqlHRhfMDmsgmHk0gHXul5Yf1xE6BYoWNcu5qetpZDF4Q+S2obALP1QW27Mk
+	 krbMxZcHzGmbqH/JGuyowfvUjDxTRJvspALOejPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Alexander Aring <aahringo@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 26/87] kconfig: gconf: give a proper initial state to the Save button
-Date: Thu, 25 Jul 2024 16:36:59 +0200
-Message-ID: <20240725142739.423074698@linuxfoundation.org>
+Subject: [PATCH 5.10 10/59] net: ipv6: rpl_iptunnel: block BH in rpl_output() and rpl_input()
+Date: Thu, 25 Jul 2024 16:37:00 +0200
+Message-ID: <20240725142733.655770507@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 46edf4372e336ef3a61c3126e49518099d2e2e6d ]
+[ Upstream commit db0090c6eb12c31246438b7fe2a8f1b833e7a653 ]
 
-Currently, the initial state of the "Save" button is always active.
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-If none of the CONFIG options are changed while loading the .config
-file, the "Save" button should be greyed out.
+Disabling preemption in rpl_output() is not good enough,
+because rpl_output() is called from process context,
+lwtunnel_output() only uses rcu_read_lock().
 
-This can be fixed by calling conf_read() after widget initialization.
+We might be interrupted by a softirq, re-enter rpl_output()
+and corrupt dst_cache data structures.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fix the race by using local_bh_disable() instead of
+preempt_disable().
+
+Apply a similar change in rpl_input().
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Alexander Aring <aahringo@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/gconf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/rpl_iptunnel.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index 17adabfd6e6bf..5d1404178e482 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -1481,7 +1481,6 @@ int main(int ac, char *av[])
+diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+index 5fdf3ebb953fb..2ba605db69769 100644
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -217,9 +217,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	if (unlikely(err))
+ 		goto drop;
  
- 	conf_parse(name);
- 	fixup_rootmenu(&rootmenu);
--	conf_read(NULL);
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+-	preempt_enable();
++	local_bh_enable();
  
- 	/* Load the interface and connect signals */
- 	init_main_window(glade_file);
-@@ -1489,6 +1488,8 @@ int main(int ac, char *av[])
- 	init_left_tree();
- 	init_right_tree();
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+@@ -239,9 +239,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
  
-+	conf_read(NULL);
-+
- 	switch (view_mode) {
- 	case SINGLE_VIEW:
- 		display_tree_part();
+-		preempt_disable();
++		local_bh_disable();
+ 		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
+-		preempt_enable();
++		local_bh_enable();
+ 	}
+ 
+ 	skb_dst_drop(skb);
+@@ -273,9 +273,8 @@ static int rpl_input(struct sk_buff *skb)
+ 		return err;
+ 	}
+ 
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+-	preempt_enable();
+ 
+ 	skb_dst_drop(skb);
+ 
+@@ -283,14 +282,13 @@ static int rpl_input(struct sk_buff *skb)
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+ 		if (!dst->error) {
+-			preempt_disable();
+ 			dst_cache_set_ip6(&rlwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
+-			preempt_enable();
+ 		}
+ 	} else {
+ 		skb_dst_set(skb, dst);
+ 	}
++	local_bh_enable();
+ 
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
 -- 
 2.43.0
 
