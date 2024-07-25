@@ -1,118 +1,251 @@
-Return-Path: <stable+bounces-61791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD06F93C94A
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 22:04:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D3693C9C3
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 22:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 641CF1F21CD9
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 20:04:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3873DB21686
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 20:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DD47347B;
-	Thu, 25 Jul 2024 20:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F3D13C661;
+	Thu, 25 Jul 2024 20:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="RK3tr9QL"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vcoHypMe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2EF5381E;
-	Thu, 25 Jul 2024 20:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A87813AD18;
+	Thu, 25 Jul 2024 20:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721937888; cv=none; b=nXLTam3Bl/tN96l9H3O4PC+y+0irXY7GuYQfLLjdYmtgiE7Mqbn+nGy4MhfBmeFzye7bE0eQUL7agRnFqMkq8meLFX6p+l+gGYWegdoHinP2Z6qUjTuHZLSD9/oPmPszaZuWFHmHCH+FY5hNE31FyAIPpWY0gHx69Smmm331WE0=
+	t=1721940100; cv=none; b=N8b97WVulNjuNwjLlXyBwQUBGqy2mThPt6TwymKYo1PPZq1sKfdJ+T0emfncfyErhzHw+ERtF0STC7knIVgcM49btY2XgBrUr9ZWpD+9Hexp2PSukQDBTYwiChGNqUhyowHJWPSn4ureCZZCliZfewNU76mzzESSivP570ZOLAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721937888; c=relaxed/simple;
-	bh=0zB5it7uK49pQC3YTBqbw/wBLjvQ626Ng1xUR2KMEEA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Stsx4nraceqWMN7een23LxOz1swbuUdoREQGccUEjYQXYElKdDypfRitLEPI0AFSNhvybQWqyfr/o8FpGCSt3vrWp5wJiewQbGXzvcYwopzHrqW9kqtTkZCYMM9wWVCiDjfaZqqvs5bRDSNxFH2beSdX4wb4qpJ93lfPST2UwjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=RK3tr9QL; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5a10bb7b237so1908881a12.0;
-        Thu, 25 Jul 2024 13:04:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1721937885; x=1722542685; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BJIispQ3EhnPiKSUP/X4tjbEqf9+Q8SqMXAI+5oyRU4=;
-        b=RK3tr9QLoY0zOxbRVBfbk0oKIrpCTJKqCJBqZXUW322hDzRd1XNHkzQGmJLtjRmNKB
-         nkJVnENgEUBGrq956P2WRWjW/IBqi5Moew0jgwkM14I+J6clJkeNWDBlKts/Sy7OSKWD
-         Ui74GmN81RwLo7i53fh+NabZmqB2XbBkBy/vDfH4XgGlcnoH15PridAhyrPzLpo97s5N
-         TXZy1XlqUacxzAp+LI6nXB2GcyGKThR3tuW2/gWtAhbHrx2pYiFKtbrs2Ohm1kF6neIh
-         Xo5XGcmJ+Zt/114km4D9smLTUHkCI3RUNydjkO3go7/SkgIq8o74tuEQVTujd7a+e1Fg
-         JEkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721937885; x=1722542685;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BJIispQ3EhnPiKSUP/X4tjbEqf9+Q8SqMXAI+5oyRU4=;
-        b=cOCprceNlKsnCYFNFb9a007l0REsWp5HisKP3D0GnV2SRNPf1PqMYQrGr1N9BVjFda
-         g44fIBfAsAOP6nZclui8kisijDW7TqhE5DzlQ2O59UQONVz+GstJaNM/l3tJ0wRI25NQ
-         /YQrqfeiQC2gi/Wlg955FyVtXUqufkk48thL7I05oOxPtHZTQI9cES44uWXbKFYsQeCC
-         UPvQSNNl1XcmpctJQRgZImqLfa4b1YT/UMAQKpBF+6IqQEQ5MCACjM/WGh6z5OIo3LOM
-         IOUs7IJpi53igpU4VJxMd5gvLWFEHV34/LHUALxI8ettER+2I2pBKo800GwyXo0j8dlh
-         FG1g==
-X-Forwarded-Encrypted: i=1; AJvYcCUFjse6CErP0OPt03JhBpJbfAFwKr6MBGJYvc5zOYcmL+P8VaOdr+o3v6pXveg2Gd9DZDloyFGd977schxDP6Mjka4B8EP/FMbQcAA28hZwlhRPGBZzrikdrmlPGf/7fM8tWb62
-X-Gm-Message-State: AOJu0Yxsbxqq8fpXZLxhzHzh8EiaHNk4GIDp+pkGODnkSKBkqgxPdYKt
-	b424pS/+9oL92/Q3tDTEvBieWR74gX1D4go/GZsE/ifBoleFUII=
-X-Google-Smtp-Source: AGHT+IHv+JcRw52C81YjbNlPDk230BPZ6wrLJ+DFbuw6XvAOhzZdLdGqm8xx+I9UbYb+HxaG+LizZw==
-X-Received: by 2002:a17:907:7296:b0:a7a:952b:95ae with SMTP id a640c23a62f3a-a7ac5075296mr326877666b.47.1721937884882;
-        Thu, 25 Jul 2024 13:04:44 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ac836.dip0.t-ipconnect.de. [91.42.200.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acab50cbfsm103131366b.47.2024.07.25.13.04.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jul 2024 13:04:44 -0700 (PDT)
-Message-ID: <af0ac6f4-8c6d-4a02-b771-d47347a15a1d@googlemail.com>
-Date: Thu, 25 Jul 2024 22:04:43 +0200
+	s=arc-20240116; t=1721940100; c=relaxed/simple;
+	bh=o1/hhDP+qkQgHteMC2U5IfLcaQOtEYal/PXFvOVqZtI=;
+	h=Date:To:From:Subject:Message-Id; b=Bx21y+NUop7YtMGp+1yIT62hDOZrNm6ZF43QxV9yoVDgq1A6Np06WuHS0301GYcRAHjrlwW8PL6eQKqv3xqxQzaHYhhllahQf5oAqooRfTXnA+exqCNF+cjuHUzw2V2bgPvceA3R5B46reSTG7uxTtM4AAqtWeq1JoGSUGn80lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vcoHypMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3840C32786;
+	Thu, 25 Jul 2024 20:41:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1721940099;
+	bh=o1/hhDP+qkQgHteMC2U5IfLcaQOtEYal/PXFvOVqZtI=;
+	h=Date:To:From:Subject:From;
+	b=vcoHypMeiDDt5x4XFMzQ/OU0nT98dsVr+Xt8XIAKClfS/vkC40bC5KrqOFeVO37hn
+	 UxTyvhPuoHV9WyPNGwzCiMqDxdH5zbdF+x414iMngxfmJrrcnwzclPZOrR/UWSXrGR
+	 EXxzcfU/A9kSgW3tZMOoHTcHYjmE4y0x8T1L6GZI=
+Date: Thu, 25 Jul 2024 13:41:39 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterx@redhat.com,osalvador@suse.de,muchun.song@linux.dev,david@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-let-pte_lockptr-consume-a-pte_t-pointer.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240725204139.D3840C32786@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 00/16] 6.6.43-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240725142728.905379352@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20240725142728.905379352@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-Am 25.07.2024 um 16:37 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.43 release.
-> There are 16 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
-
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
 
-Beste Grüße,
-Peter Schneider
+The patch titled
+     Subject: mm: let pte_lockptr() consume a pte_t pointer
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-let-pte_lockptr-consume-a-pte_t-pointer.patch
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-let-pte_lockptr-consume-a-pte_t-pointer.patch
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: David Hildenbrand <david@redhat.com>
+Subject: mm: let pte_lockptr() consume a pte_t pointer
+Date: Thu, 25 Jul 2024 20:39:54 +0200
+
+Patch series "mm/hugetlb: fix hugetlb vs. core-mm PT locking".
+
+Working on another generic page table walker that tries to avoid
+special-casing hugetlb, I found a page table locking issue with hugetlb
+folios that are not mapped using a single PMD/PUD.
+
+For some hugetlb folio sizes, GUP will take different page table locks
+when walking the page tables than hugetlb when modifying the page tables.
+
+I did not actually try reproducing an issue, but looking at
+follow_pmd_mask() where we might be rereading a PMD value multiple times
+it's rather clear that concurrent modifications are rather unpleasant.
+
+In follow_page_pte() we might be better in that regard -- ptep_get() does
+a READ_ONCE() -- but who knows what else could happen concurrently in some
+weird corner cases (e.g., hugetlb folio getting unmapped and freed).
+
+
+This patch (of 2):
+
+pte_lockptr() is the only *_lockptr() function that doesn't consume what
+would be expected: it consumes a pmd_t pointer instead of a pte_t pointer.
+
+Let's change that.  The two callers in pgtable-generic.c are easily
+adjusted.  Adjust khugepaged.c:retract_page_tables() to simply do a
+pte_offset_map_nolock() to obtain the lock, even though we won't actually
+be traversing the page table.
+
+This makes the code more similar to the other variants and avoids other
+hacks to make the new pte_lockptr() version happy.  pte_lockptr() users
+reside now only in pgtable-generic.c.
+
+Maybe, using pte_offset_map_nolock() is the right thing to do because the
+PTE table could have been removed in the meantime?  At least it sounds
+more future proof if we ever have other means of page table reclaim.
+
+It's not quite clear if holding the PTE table lock is really required:
+what if someone else obtains the lock just after we unlock it?  But we'll
+leave that as is for now, maybe there are good reasons.
+
+This is a preparation for adapting hugetlb page table locking logic to
+take the same locks as core-mm page table walkers would.
+
+Link: https://lkml.kernel.org/r/20240725183955.2268884-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20240725183955.2268884-2-david@redhat.com
+Fixes: 9cb28da54643 ("mm/gup: handle hugetlb in the generic follow_page_mask code")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/mm.h   |    7 ++++---
+ mm/khugepaged.c      |   21 +++++++++++++++------
+ mm/pgtable-generic.c |    4 ++--
+ 3 files changed, 21 insertions(+), 11 deletions(-)
+
+--- a/include/linux/mm.h~mm-let-pte_lockptr-consume-a-pte_t-pointer
++++ a/include/linux/mm.h
+@@ -2915,9 +2915,10 @@ static inline spinlock_t *ptlock_ptr(str
+ }
+ #endif /* ALLOC_SPLIT_PTLOCKS */
+ 
+-static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pmd_t *pmd)
++static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pte_t *pte)
+ {
+-	return ptlock_ptr(page_ptdesc(pmd_page(*pmd)));
++	/* PTE page tables don't currently exceed a single page. */
++	return ptlock_ptr(virt_to_ptdesc(pte));
+ }
+ 
+ static inline bool ptlock_init(struct ptdesc *ptdesc)
+@@ -2940,7 +2941,7 @@ static inline bool ptlock_init(struct pt
+ /*
+  * We use mm->page_table_lock to guard all pagetable pages of the mm.
+  */
+-static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pmd_t *pmd)
++static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pte_t *pte)
+ {
+ 	return &mm->page_table_lock;
+ }
+--- a/mm/khugepaged.c~mm-let-pte_lockptr-consume-a-pte_t-pointer
++++ a/mm/khugepaged.c
+@@ -1697,12 +1697,13 @@ static void retract_page_tables(struct a
+ 	i_mmap_lock_read(mapping);
+ 	vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff, pgoff) {
+ 		struct mmu_notifier_range range;
++		bool retracted = false;
+ 		struct mm_struct *mm;
+ 		unsigned long addr;
+ 		pmd_t *pmd, pgt_pmd;
+ 		spinlock_t *pml;
+ 		spinlock_t *ptl;
+-		bool skipped_uffd = false;
++		pte_t *pte;
+ 
+ 		/*
+ 		 * Check vma->anon_vma to exclude MAP_PRIVATE mappings that
+@@ -1739,9 +1740,17 @@ static void retract_page_tables(struct a
+ 		mmu_notifier_invalidate_range_start(&range);
+ 
+ 		pml = pmd_lock(mm, pmd);
+-		ptl = pte_lockptr(mm, pmd);
++
++		/*
++		 * No need to check the PTE table content, but we'll grab the
++		 * PTE table lock while we zap it.
++		 */
++		pte = pte_offset_map_nolock(mm, pmd, addr, &ptl);
++		if (!pte)
++			goto unlock_pmd;
+ 		if (ptl != pml)
+ 			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
++		pte_unmap(pte);
+ 
+ 		/*
+ 		 * Huge page lock is still held, so normally the page table
+@@ -1752,20 +1761,20 @@ static void retract_page_tables(struct a
+ 		 * repeating the anon_vma check protects from one category,
+ 		 * and repeating the userfaultfd_wp() check from another.
+ 		 */
+-		if (unlikely(vma->anon_vma || userfaultfd_wp(vma))) {
+-			skipped_uffd = true;
+-		} else {
++		if (likely(!vma->anon_vma && !userfaultfd_wp(vma))) {
+ 			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
+ 			pmdp_get_lockless_sync();
++			retracted = true;
+ 		}
+ 
+ 		if (ptl != pml)
+ 			spin_unlock(ptl);
++unlock_pmd:
+ 		spin_unlock(pml);
+ 
+ 		mmu_notifier_invalidate_range_end(&range);
+ 
+-		if (!skipped_uffd) {
++		if (retracted) {
+ 			mm_dec_nr_ptes(mm);
+ 			page_table_check_pte_clear_range(mm, addr, pgt_pmd);
+ 			pte_free_defer(mm, pmd_pgtable(pgt_pmd));
+--- a/mm/pgtable-generic.c~mm-let-pte_lockptr-consume-a-pte_t-pointer
++++ a/mm/pgtable-generic.c
+@@ -313,7 +313,7 @@ pte_t *pte_offset_map_nolock(struct mm_s
+ 
+ 	pte = __pte_offset_map(pmd, addr, &pmdval);
+ 	if (likely(pte))
+-		*ptlp = pte_lockptr(mm, &pmdval);
++		*ptlp = pte_lockptr(mm, pte);
+ 	return pte;
+ }
+ 
+@@ -371,7 +371,7 @@ again:
+ 	pte = __pte_offset_map(pmd, addr, &pmdval);
+ 	if (unlikely(!pte))
+ 		return pte;
+-	ptl = pte_lockptr(mm, &pmdval);
++	ptl = pte_lockptr(mm, pte);
+ 	spin_lock(ptl);
+ 	if (likely(pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
+ 		*ptlp = ptl;
+_
+
+Patches currently in -mm which might be from david@redhat.com are
+
+mm-let-pte_lockptr-consume-a-pte_t-pointer.patch
+mm-hugetlb-fix-hugetlb-vs-core-mm-pt-locking.patch
+
 
