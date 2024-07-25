@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 749A993C4B8
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBCB93C48B
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6FE21C21D6E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 273AA284042
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CC919D07F;
-	Thu, 25 Jul 2024 14:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F62119D095;
+	Thu, 25 Jul 2024 14:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfHOtrS4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hb+IxU5n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355D719B5BE;
-	Thu, 25 Jul 2024 14:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF2F19D088;
+	Thu, 25 Jul 2024 14:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918559; cv=none; b=kWtHI3KE4ivfTNNath0USP8QrTRl75q8o+KXl7EmzwOmXTpwZ93mHwUx0IxzANfwiLVeAbDKePke/NqIVe2mtDUE31/uLJrt7fDQ902NgoCuvWIg23sj6FvfQxe66OHdYxWoQmWGmmU0tw8+ZnznrkUyl9dFPR3KhjaRnmP90PE=
+	t=1721918448; cv=none; b=hNfnUwrsnfbT+UCuSy5Sx+RYl/0z/4bZ45A1Qbt2WQKulGPcVJbF3rKQOyrZdlXRfd2KEBqIu3tCJA2QWmHX0IIOZGwfqYRH800GlQPlmcDN2GM685zUfIJUjqQco4PHMTB3NO+HrPD9G6Th4MeTxcNKqGKq48Lha9lhyXRhdLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918559; c=relaxed/simple;
-	bh=Qiev8cGpMCudh6YAJBuz/LESEzMKk8ordXeTzNixkb4=;
+	s=arc-20240116; t=1721918448; c=relaxed/simple;
+	bh=v6Oto3nn11K/iHXG92PzBJM3L0addZNfysxQrybb8qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLROqjyFS+JyOlmSOAS/cIn0J4zPYfj6QFgyB0f/RWVCJkDgwAL1roU2lGsvhJOJxZ/NnkwEQyAd0qUNdOE/PMzS5qKKLB4Mhy2p6nyFoI9E8MsD8wDyG5LeEBQ/Kxzwou7EQItb2cv+KZQX2xaGGCqGy6wJIgTx2AKpO2sWv8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfHOtrS4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A269C116B1;
-	Thu, 25 Jul 2024 14:42:38 +0000 (UTC)
+	 MIME-Version; b=b/PZyLi7rWuhZZAMWVPmwNbx26IVEFpys/Cis64KM4ZwO9nOXHkBLsZ6ScBI78Cu25RW4gIEtZQ+TN7F+DqRea7hh9UDEjXFxdobb7UDJnI0+3k8CTaliyLF+Bf9hZpgy43jYskQTQXeIn7BI0P2xyfdSpyI6Ep+m/Y7g8YpN8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hb+IxU5n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C9CC116B1;
+	Thu, 25 Jul 2024 14:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918558;
-	bh=Qiev8cGpMCudh6YAJBuz/LESEzMKk8ordXeTzNixkb4=;
+	s=korg; t=1721918448;
+	bh=v6Oto3nn11K/iHXG92PzBJM3L0addZNfysxQrybb8qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfHOtrS4p2bmILjYyysszLYoaWbKa+Dqlr1tjyl3lpJL54xDpdxlNeqkvikjjNEp8
-	 gTBTWr+GLhjVImbkoGHoBEfw8ZfXDyAd5MzLLTaaAG3+bOAi55QMvGkbblaMCR8N9C
-	 EE6vzi+zot42VUVWYvHR1DBd5Ye48xpLGwMDH3aA=
+	b=Hb+IxU5ntLGFok3w2qMjUZYqJxigvWR/Y8cAq20j8h2uu+WpGtvMFH2f8DAT4q+CD
+	 XFTGpsfbNTQ5aSHa4k9V61Kp/PwwrCtH6kNSYg2j7DP6H7OJzyLHZ3NaptqWyiAO1N
+	 LYTibCMTDyRR8AbB1PzPHfZwpEAlhWld1HCqnGIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 22/43] can: kvaser_usb: fix return value for hif_usb_send_regout
+Subject: [PATCH 4.19 22/33] Bluetooth: hci_core: cancel all works upon hci_unregister_dev()
 Date: Thu, 25 Jul 2024 16:36:45 +0200
-Message-ID: <20240725142731.312469599@linuxfoundation.org>
+Message-ID: <20240725142729.353753188@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 0d34d8163fd87978a6abd792e2d8ad849f4c3d57 ]
+[ Upstream commit 0d151a103775dd9645c78c97f77d6e2a5298d913 ]
 
-As the potential failure of usb_submit_urb(), it should be better to
-return the err variable to catch the error.
+syzbot is reporting that calling hci_release_dev() from hci_error_reset()
+due to hci_dev_put() from hci_error_reset() can cause deadlock at
+destroy_workqueue(), for hci_error_reset() is called from
+hdev->req_workqueue which destroy_workqueue() needs to flush.
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://lore.kernel.org/all/20240521041020.1519416-1-nichen@iscas.ac.cn
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+We need to make sure that hdev->{rx_work,cmd_work,tx_work} which are
+queued into hdev->workqueue and hdev->{power_on,error_reset} which are
+queued into hdev->req_workqueue are no longer running by the moment
+
+       destroy_workqueue(hdev->workqueue);
+       destroy_workqueue(hdev->req_workqueue);
+
+are called from hci_release_dev().
+
+Call cancel_work_sync() on these work items from hci_unregister_dev()
+as soon as hdev->list is removed from hci_dev_list.
+
+Reported-by: syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=da0a9c9721e36db712e8
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index 411b3adb1d9ea..a96b223984070 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -266,7 +266,7 @@ int kvaser_usb_send_cmd_async(struct kvaser_usb_net_priv *priv, void *cmd,
- 	}
- 	usb_free_urb(urb);
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 47f1eec0eb35f..504f6aa4e95db 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -3288,7 +3288,11 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	list_del(&hdev->list);
+ 	write_unlock(&hci_dev_list_lock);
  
--	return 0;
-+	return err;
- }
++	cancel_work_sync(&hdev->rx_work);
++	cancel_work_sync(&hdev->cmd_work);
++	cancel_work_sync(&hdev->tx_work);
+ 	cancel_work_sync(&hdev->power_on);
++	cancel_work_sync(&hdev->error_reset);
  
- int kvaser_usb_can_rx_over_error(struct net_device *netdev)
+ 	hci_dev_do_close(hdev);
+ 
 -- 
 2.43.0
 
