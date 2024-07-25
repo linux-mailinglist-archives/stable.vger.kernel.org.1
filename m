@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-61683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9E093C578
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA58493C4C8
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD91A1C20A64
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42112B25445
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A912419D886;
-	Thu, 25 Jul 2024 14:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700F019D06A;
+	Thu, 25 Jul 2024 14:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFphKaJU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7jO75mC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CC18468;
-	Thu, 25 Jul 2024 14:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACBB199E9F;
+	Thu, 25 Jul 2024 14:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919106; cv=none; b=LWs3DhdF4YKI7NlDuIGBeNL43tdxDwjmvltjSdyQ0M8SAmEom342zP64R+EB98RgnrwB73u+CGN0SXDOB3FVuRKAKgqwwxMG1GmHdM4d01s4mtd+s3Ac+6WMbgCfBM0Kn33XL7ggv+85/G1TtOLNRqdw+WMwB0XsKqq+ZG6nRKE=
+	t=1721918605; cv=none; b=jRl+8tQtrJH/bccsg2tgjhqcAFAgmWd/yRR9jQ7ZUftqLnQE1YCpfAUCEgGoDx7UjKm5OuS0p6M0S2UWERcFIyeJay8slixSJYoKqkzFjRfntb43sbdGisp3zSUewtidU+wN6wxvEe15gFCkRDL35UpB18kDpn89gwfQUrZLPwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919106; c=relaxed/simple;
-	bh=rD4pWXgfuxLMfT7epwJqOoLrBTokt9YN7D2qG8Yj4Fg=;
+	s=arc-20240116; t=1721918605; c=relaxed/simple;
+	bh=mbiboMtB9NIx43FEmSvWwcbAMLuWHlh75Zb5Z0WI7PQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzXJiDwJofn/zcOgfQ50wktAs4+rmtzTYUTDsxToixHhcMvVbYITI/3by4trdRXzg3O/eAfTJaFniuiV9cskri9vSwdfP7HwEgTESRo7AfPNgS7U7m0WZ7T2ihNKkKJa+HUJ8Ga8gjWP+stRPXco3o1/QoFon0JTSZ9AbEFM1a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFphKaJU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9ABC4AF0B;
-	Thu, 25 Jul 2024 14:51:45 +0000 (UTC)
+	 MIME-Version; b=ioDN5a3dzuecL+hVoa4Q79iRlxrO0nwwqLHAp3ke7q2E0G6HKRfQhPm25DRk3ieh2pjmaj29J67ZekXtIcfp4VO+Kcb1oo+/oUto+zhVBj+qiwv4tpj/Hse17TPQWyIhKMYaStnY2V2V0vYW/PGpxQeBAwdWwUQLAZa5QMuGdlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7jO75mC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D41C116B1;
+	Thu, 25 Jul 2024 14:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919106;
-	bh=rD4pWXgfuxLMfT7epwJqOoLrBTokt9YN7D2qG8Yj4Fg=;
+	s=korg; t=1721918605;
+	bh=mbiboMtB9NIx43FEmSvWwcbAMLuWHlh75Zb5Z0WI7PQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uFphKaJUssWITWgllHaW/6pmhgvxGLqj7GF13Wj5YMVtIyQgDWedyuJgIgkSE1LKe
-	 XpzhwCVoTrDZdoOi4c6tTeFi/hyCHde0jVowh+HRfJznbxfpnlBTsQRPBp9jjNBV+M
-	 S+ZjzVg4UomT75/P1ODEjLa+/Lh5+wrZ0YDvMHEg=
+	b=J7jO75mC0o51CUVcf1CLE151BDgR+onhaDrH9gAxzL4jPjvQRJuxcJOvIRt8fenbO
+	 D4mpQPPt37UxH/pNIKEVyuHzIvN62Bxm060nQ9YRmVA4KyNP1os90wohrmB6HBO/qT
+	 NsVn1ppZhb/sNEPLkGW0NA0iUjmC6NI9WD8Yplos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 25/87] null_blk: fix validation of block size
+	Edward Adam Davis <eadavis@qq.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com,
+	syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 35/43] hfsplus: fix uninit-value in copy_name
 Date: Thu, 25 Jul 2024 16:36:58 +0200
-Message-ID: <20240725142739.384146972@linuxfoundation.org>
+Message-ID: <20240725142731.798727948@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit c462ecd659b5fce731f1d592285832fd6ad54053 ]
+[ Upstream commit 0570730c16307a72f8241df12363f76600baf57d ]
 
-Block size should be between 512 and PAGE_SIZE and be a power of 2. The current
-check does not validate this, so update the check.
+[syzbot reported]
+BUG: KMSAN: uninit-value in sized_strscpy+0xc4/0x160
+ sized_strscpy+0xc4/0x160
+ copy_name+0x2af/0x320 fs/hfsplus/xattr.c:411
+ hfsplus_listxattr+0x11e9/0x1a50 fs/hfsplus/xattr.c:750
+ vfs_listxattr fs/xattr.c:493 [inline]
+ listxattr+0x1f3/0x6b0 fs/xattr.c:840
+ path_listxattr fs/xattr.c:864 [inline]
+ __do_sys_listxattr fs/xattr.c:876 [inline]
+ __se_sys_listxattr fs/xattr.c:873 [inline]
+ __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
+ x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Without this patch, null_blk would Oops due to a null pointer deref when
-loaded with bs=1536 [1].
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:3877 [inline]
+ slab_alloc_node mm/slub.c:3918 [inline]
+ kmalloc_trace+0x57b/0xbe0 mm/slub.c:4065
+ kmalloc include/linux/slab.h:628 [inline]
+ hfsplus_listxattr+0x4cc/0x1a50 fs/hfsplus/xattr.c:699
+ vfs_listxattr fs/xattr.c:493 [inline]
+ listxattr+0x1f3/0x6b0 fs/xattr.c:840
+ path_listxattr fs/xattr.c:864 [inline]
+ __do_sys_listxattr fs/xattr.c:876 [inline]
+ __se_sys_listxattr fs/xattr.c:873 [inline]
+ __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
+ x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[Fix]
+When allocating memory to strbuf, initialize memory to 0.
 
-Link: https://lore.kernel.org/all/87wmn8mocd.fsf@metaspace.dk/
-
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240603192645.977968-1-nmi@metaspace.dk
-[axboe: remove unnecessary braces and != 0 check]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-and-tested-by: syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://lore.kernel.org/r/tencent_8BBB6433BC9E1C1B7B4BDF1BF52574BA8808@qq.com
+Reported-and-tested-by: syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/hfsplus/xattr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index ec78d9ad3e9bc..23c4a7b3d4e53 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -1749,8 +1749,8 @@ static int null_validate_conf(struct nullb_device *dev)
- 		return -EINVAL;
+diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
+index bb0b27d88e502..d91f76ef18d9b 100644
+--- a/fs/hfsplus/xattr.c
++++ b/fs/hfsplus/xattr.c
+@@ -700,7 +700,7 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
+ 		return err;
  	}
  
--	dev->blocksize = round_down(dev->blocksize, 512);
--	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
-+	if (blk_validate_block_size(dev->blocksize))
-+		return -EINVAL;
- 
- 	if (dev->queue_mode == NULL_Q_MQ && dev->use_per_node_hctx) {
- 		if (dev->submit_queues != nr_online_nodes)
+-	strbuf = kmalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
++	strbuf = kzalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
+ 			XATTR_MAC_OSX_PREFIX_LEN + 1, GFP_KERNEL);
+ 	if (!strbuf) {
+ 		res = -ENOMEM;
 -- 
 2.43.0
 
