@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-61675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CADF693C56E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B728B93C522
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80DDA1F25CA6
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7140F28251F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182981993A3;
-	Thu, 25 Jul 2024 14:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DE319D8AF;
+	Thu, 25 Jul 2024 14:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kR6donLG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMzleGpL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FACF519;
-	Thu, 25 Jul 2024 14:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A02D19AD91;
+	Thu, 25 Jul 2024 14:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919080; cv=none; b=fN6+u6TJ35D3xBzm77E0NEL+5OT015ssn/DecOLAM1QxuusUnoOVQrcj3a3OmmcSZKeFLmXKgfxwPMhEU8GmrV+6whXQmj1nk/kRX2abQiu+Z/ZO0K+/WtFtpR2sJmilUwT0Fa2GGZCZ1SKP6POdLllleDD5kgAIYA5JjZ8ZPh8=
+	t=1721918853; cv=none; b=peMm7Z7osUpEAtI6ucHp9pG2nZnO7GgsRKqxw73Ytt1jwOAcE9NSPtVbesZxMTAbevqa21xnYrzIHzjH6i4ohjjYJsPwfz/Jwy81JTBfAESt65JgipERdtNeTII7QDFzQBNrFk3CiFNXxDUh5MEAc176L6IwKRm3T6o5LHCA8rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919080; c=relaxed/simple;
-	bh=Wj5IIBi5jn26YcB2C1eKtdLEf9YZOFjJUGNU2C5Y2y8=;
+	s=arc-20240116; t=1721918853; c=relaxed/simple;
+	bh=Wocgy+wmWTiHlBeJpHTojMstwwAKhHzNd/OZm2NoyB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+Nut0rDWUI15oucrQN0EmRu+hmzj2GRcDCkCxwERpaP2AKsVy+IoZogmwD3CwTIYZynKMH5mhf7ZDzEplg+59qyqK+XgQeo0rdyuGdHMgYzyc1GpuSyNLxdQu90aiQgJ3ZD65mhGeIFJasQOvQIiq8j0k24YcexqRqmpF8/KNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kR6donLG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAB5C116B1;
-	Thu, 25 Jul 2024 14:51:20 +0000 (UTC)
+	 MIME-Version; b=bbv3pmBSKEMbpx7QMnXB5ScjTi8wZHhhSbEO/eGAPn9KphUoRyWuq63+tBK4fWyWq7Lzttmli+hH8dbY8g9BvGX2yI3/tJ3guq+goHUMUtV6yc59U5HdiZrA4ZqwNQjoeumOj4nm1ZC6ZvPSwOE0EMKGlNQcK7qnBfO83vL4u68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMzleGpL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EB2C32782;
+	Thu, 25 Jul 2024 14:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919080;
-	bh=Wj5IIBi5jn26YcB2C1eKtdLEf9YZOFjJUGNU2C5Y2y8=;
+	s=korg; t=1721918853;
+	bh=Wocgy+wmWTiHlBeJpHTojMstwwAKhHzNd/OZm2NoyB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kR6donLGnY1nzJ2F5FxVZyTUyljc0883/NhDRAeNXrfJ1qaM88LrIxbzsn0DNqApu
-	 akAsVdhJPTAqqFV8zF08wbPLLtbGFS2UosMrkHqmXOsDnhzncIiPh7BElJAtzh2867
-	 i2srg3z+2QBx7m/lkl9olIjz6BcctqVnGLo/+kVM=
+	b=oMzleGpLnFFBKRptpWfpPzWvjPYYAxE8bpb/rt9Wch18nDx45J1Nks6dMDLylCZ/b
+	 WmG0p+/n+Eq+iJZf5Ahz2G9Ptx8iW30glS6OrdrpkmMnvHgNg4qma+yhc6Ur7wZFAu
+	 oZTXlZ7Kk/s90MqiWK3e372RTuSXykjIMcSYkfTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ayala Beker <ayala.beker@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/87] wifi: iwlwifi: mvm: properly set 6 GHz channel direct probe option
+	linux-hardening@vger.kernel.org,
+	Kees Cook <keescook@chromium.org>,
+	Thomas Meyer <thomas@m3y3r.de>
+Subject: [PATCH 5.10 01/59] gcc-plugins: Rename last_stmt() for GCC 14+
 Date: Thu, 25 Jul 2024 16:36:51 +0200
-Message-ID: <20240725142739.121071297@linuxfoundation.org>
+Message-ID: <20240725142733.320110727@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ayala Beker <ayala.beker@intel.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 989830d1cf16bd149bf0690d889a9caef95fb5b1 ]
+commit 2e3f65ccfe6b0778b261ad69c9603ae85f210334 upstream.
 
-Ensure that the 6 GHz channel is configured with a valid direct BSSID,
-avoiding any invalid or multicast BSSID addresses.
+In GCC 14, last_stmt() was renamed to last_nondebug_stmt(). Add a helper
+macro to handle the renaming.
 
-Signed-off-by: Ayala Beker <ayala.beker@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.91a631a0fe60.I2ea2616af9b8a2eaf959b156c69cf65a2f1204d4@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Cc: Thomas Meyer <thomas@m3y3r.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ scripts/gcc-plugins/gcc-common.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 0605363b62720..8179a7395bcaf 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1721,7 +1721,10 @@ iwl_mvm_umac_scan_fill_6g_chan_list(struct iwl_mvm *mvm,
- 				break;
- 		}
+--- a/scripts/gcc-plugins/gcc-common.h
++++ b/scripts/gcc-plugins/gcc-common.h
+@@ -980,4 +980,8 @@ static inline void debug_gimple_stmt(con
+ #define SET_DECL_MODE(decl, mode)	DECL_MODE(decl) = (mode)
+ #endif
  
--		if (k == idex_b && idex_b < SCAN_BSSID_MAX_SIZE) {
-+		if (k == idex_b && idex_b < SCAN_BSSID_MAX_SIZE &&
-+		    !WARN_ONCE(!is_valid_ether_addr(scan_6ghz_params[j].bssid),
-+			       "scan: invalid BSSID at index %u, index_b=%u\n",
-+			       j, idex_b)) {
- 			memcpy(&pp->bssid_array[idex_b++],
- 			       scan_6ghz_params[j].bssid, ETH_ALEN);
- 		}
--- 
-2.43.0
-
++#if BUILDING_GCC_VERSION >= 14000
++#define last_stmt(x)			last_nondebug_stmt(x)
++#endif
++
+ #endif
 
 
 
