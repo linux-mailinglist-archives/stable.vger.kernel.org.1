@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAA593C52A
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0632F93C5A7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77AB3282D6D
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78E78B24A39
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E9719B589;
-	Thu, 25 Jul 2024 14:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F4719D074;
+	Thu, 25 Jul 2024 14:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocuA/1mm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zc7kX9lg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1253A1E895;
-	Thu, 25 Jul 2024 14:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FF819CD0C;
+	Thu, 25 Jul 2024 14:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918880; cv=none; b=kjJYLRTFHKlpvJUA6a7AdqffbZh41XnSEoJWIGTFfkEx4FqA61YwcW4s/2H/921O2niW1RDT5L+tnqTZNwIx81QRRl1rlBOLuw1Q86Hdv519a+U5DbvnuQ6dUIodimqn74SvPVVEhzRen7bNVEm+5aBPKYYIbIAN4aJ/wObcUVk=
+	t=1721919236; cv=none; b=HsqAe+K4QAUP9dSNQsSskarMzPr03k1ehDt3i/WuYMo6wdKTZMk/9XhM8+ans12oMsxfTPNkpi3yqSoQ/iNgtFPwCKQaf8VBLMsIuLnt07NN+eLJKFd7QY5204gS/h46uffq1+l21FL7basBtsn/JC5KGCowUuDccqdSjrLmVLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918880; c=relaxed/simple;
-	bh=Gapd9Qt0rUOeNlGdv4lheTZOZvhakcASdA9lfj+e0Jk=;
+	s=arc-20240116; t=1721919236; c=relaxed/simple;
+	bh=DKpJsBUZeAmEzJrdHXofOhktP7jygO1zy4sxu0RMhZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ow0PWrnBEU6QvSrQbQJNsTH3HDFoUDfdUI8trGRmnPOnAsCvk+Vn/3XwNQvS5Jl9tMjTL2Qlt/iyF9iGhHvPcbFvZraGQj+AJAK4oOQO1EcykGgQ8l54oHGqdvpzeSoR8aFdrzbpKL24wTW7sFPs/qXtdfjpd9XR+g2lHHCHLMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocuA/1mm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3951EC116B1;
-	Thu, 25 Jul 2024 14:47:58 +0000 (UTC)
+	 MIME-Version; b=FSXG76CF+iM0jCrMnFy67X1mltWt1XIW6+gDeuAQuyN4JDA4W/a89siV/53MGZwlNdmJ0YA6BQKWEegKgBc0IF1B1LjFBW+U4z4w9XGu+xDbf61f8N9dvekZlVtNTD8y4bTdmg+eNLDjC8jcZpilP3ikg0uYNoXaNyWpMdVVcIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zc7kX9lg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F7EC32782;
+	Thu, 25 Jul 2024 14:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918879;
-	bh=Gapd9Qt0rUOeNlGdv4lheTZOZvhakcASdA9lfj+e0Jk=;
+	s=korg; t=1721919236;
+	bh=DKpJsBUZeAmEzJrdHXofOhktP7jygO1zy4sxu0RMhZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ocuA/1mm36DtUfLGcHra94U+iPlSgPdzbySTfUQrT4pKyDidmfpIVhsErHcEZF0oh
-	 VPVhfI6tf5TUKSOqhPclTPwvK41sTE3G5Hw5yxxTiqlxYB/1yOTnsqB9UYYZYNHQTg
-	 iDGO8m0kSTYtPXfPvY64AsgBgz7O5+E8KZBZywR4=
+	b=zc7kX9lgxdqP1irkKNoVhtEh8SQ799BKTq5gXZqSRenOv3Zf3nt0DE970kPXohjE/
+	 ABV+UWNESM3ZV5uI7iDvO1gDFBr7YALvT4tf0l0f857hhiEzOS+aB4YXOclQ5Xr4rR
+	 luiaeRPC9b8jVrwfTlCdWcsh3XoxbVfrmqc0GrwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 17/59] mei: demote client disconnect warning on suspend to debug
+Subject: [PATCH 5.15 34/87] ALSA: hda/realtek: Add more codec ID to no shutup pins list
 Date: Thu, 25 Jul 2024 16:37:07 +0200
-Message-ID: <20240725142733.915332783@linuxfoundation.org>
+Message-ID: <20240725142739.721931287@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
+[ Upstream commit 70794b9563fe011988bcf6a081af9777e63e8d37 ]
 
-Change level for the "not connected" client message in the write
-callback from error to debug.
+If it enter to runtime D3 state, it didn't shutup Headset MIC pin.
 
-The MEI driver currently disconnects all clients upon system suspend.
-This behavior is by design and user-space applications with
-open connections before the suspend are expected to handle errors upon
-resume, by reopening their handles, reconnecting,
-and retrying their operations.
-
-However, the current driver implementation logs an error message every
-time a write operation is attempted on a disconnected client.
-Since this is a normal and expected flow after system resume
-logging this as an error can be misleading.
-
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/r/8d86f61e7d6f4a03b311e4eb4e5caaef@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
-index 9f6682033ed7e..d8311d41f0a7b 100644
---- a/drivers/misc/mei/main.c
-+++ b/drivers/misc/mei/main.c
-@@ -329,7 +329,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
- 	}
- 
- 	if (!mei_cl_is_connected(cl)) {
--		cl_err(dev, cl, "is not connected");
-+		cl_dbg(dev, cl, "is not connected");
- 		rets = -ENODEV;
- 		goto out;
- 	}
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 6e3772f2d6bcd..aeecc208e7fa0 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -577,10 +577,14 @@ static void alc_shutup_pins(struct hda_codec *codec)
+ 	switch (codec->core.vendor_id) {
+ 	case 0x10ec0236:
+ 	case 0x10ec0256:
++	case 0x10ec0257:
+ 	case 0x19e58326:
+ 	case 0x10ec0283:
++	case 0x10ec0285:
+ 	case 0x10ec0286:
++	case 0x10ec0287:
+ 	case 0x10ec0288:
++	case 0x10ec0295:
+ 	case 0x10ec0298:
+ 		alc_headset_mic_no_shutup(codec);
+ 		break;
 -- 
 2.43.0
 
