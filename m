@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-61733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C96893C5B6
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1349A93C564
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 285C7B24BFD
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70176B2180C
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4EB19D886;
-	Thu, 25 Jul 2024 14:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4B0F519;
+	Thu, 25 Jul 2024 14:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKWNzZE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caNLGf9A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C305019D091;
-	Thu, 25 Jul 2024 14:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B31FFC18;
+	Thu, 25 Jul 2024 14:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919266; cv=none; b=LkU7y1tf9xDf2gdPyUilN1l6qFfnspjVOz6t8jeDoxRPBdxd602osKVYGgdivc53CPJpeX+oRnsJVDgjml7oN0HGjhkq217gf+d8xFf1XMPrZwodCf4QwAl4o7NcKMiIjtE8FYe3alCgRys1czf7ll9mKanCzeRIn0k1OVi6GqI=
+	t=1721919042; cv=none; b=gROhTFXOdwIcpcjbVg/0aEDESdiXiQwWoIAtUWG3rPVbjPNDngIR5BDNt8d+P980q4Or/ZfZKG/yanbpZRgAPZ9reIIkDKb4Illg3gXZnqKrOXsylPNXvqKj2b9hp4f5EwSnYfKf9EyF1WfZwwUatf+5dnJbCc5pM3035ZtQMtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919266; c=relaxed/simple;
-	bh=d13Fayu+YC/5MkZQsDl05Nl6PonPaj2q/BGUgA4YHrU=;
+	s=arc-20240116; t=1721919042; c=relaxed/simple;
+	bh=70ZZjRJA5tLmjc0enfO8tESAVi+WBx6t388KCK0vcoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urWUHiMlW24DWx9YhFY243mr/GU7rIaiWEiz8b18xtI0s+FFkacTNvc5o+iPzRelr70RyP+Vm+G+2eLcxbAlDlKBjZZD5y5pG0MTrperYWqP4HxdTZn0HOMuswmMdW0eKTKOoA1SPLQ6V2HBlnBKaHs0Eht0s/kXCPF0WNFbdRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKWNzZE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D42C116B1;
-	Thu, 25 Jul 2024 14:54:26 +0000 (UTC)
+	 MIME-Version; b=gO6QzsoOSSBn2S9h75hGtTbNV832JbmkHwqCy2a+m+ittDJ0avt+ACwVXV9ZQZNsaVif7nikYFBvpL14ntj9raTLSa0kKmYnZgSqpTUjN5PSMXHk9DVr0IbKOyKpLKx4nv92QmyBnxrayg3e9G+/uoF1TXrxdgn4FKlHlCo/vIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caNLGf9A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F56C116B1;
+	Thu, 25 Jul 2024 14:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919266;
-	bh=d13Fayu+YC/5MkZQsDl05Nl6PonPaj2q/BGUgA4YHrU=;
+	s=korg; t=1721919042;
+	bh=70ZZjRJA5tLmjc0enfO8tESAVi+WBx6t388KCK0vcoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKWNzZE6BS3mO5gMm7YR0OXO9nZ3mYwTfr3I7YEuaLw+ofiyP+Kzt2j9S4jJrv8M1
-	 eVHBWr3Dl0Zs05udU111KV8hnV39+5cJLoLcVxMUmhOBVET5wUPv4m94psUyPNnN7L
-	 VGUFX1jHhtfF70WVOrZJ7ZPmFH2x6L+IkuekmibQ=
+	b=caNLGf9AGiVdSS/kjIocQvqoTxwIPmWPrNW1Q/V/NQNbeASa7D/rG1hFCgECsOl8a
+	 vvZq6ftLDDARobjOsdbhcMO8GLUvrBVvfET3VoAi2ejL0sTFoXUkSgYShueUwXdNiU
+	 6LbTzNUPEhr6tXdP5cTeuGQN66mm2GTyVjSXT0Fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Gabriel Krisman Bertazi <krisman@collabora.com>,
-	Jan Kara <jack@suse.cz>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 75/87] samples: Make fs-monitor depend on libc and headers
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 58/59] ALSA: pcm_dmaengine: Dont synchronize DMA channel when DMA is paused
 Date: Thu, 25 Jul 2024 16:37:48 +0200
-Message-ID: <20240725142741.267332048@linuxfoundation.org>
+Message-ID: <20240725142735.445997715@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@collabora.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 8fc70b3a142f97f7859bf052151df896933d2586 ]
+commit 88e98af9f4b5b0d60c1fe7f7f2701b5467691e75 upstream.
 
-Prevent build errors when headers or libc are not available, such as on
-kernel build bots, like the below:
+When suspended, the DMA channel may enter PAUSE state if dmaengine_pause()
+is supported by DMA.
+At this state, dmaengine_synchronize() should not be called, otherwise
+the DMA channel can't be resumed successfully.
 
-samples/fanotify/fs-monitor.c:7:10: fatal error: errno.h: No such file
-or directory
-  7 | #include <errno.h>
-    |          ^~~~~~~~~
-
-Link: https://lore.kernel.org/r/87fsslasgz.fsf@collabora.com
-Suggested-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: e8343410ddf0 ("ALSA: dmaengine: Synchronize dma channel after drop()")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/1721198693-27636-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/pcm_dmaengine.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/samples/Kconfig
-+++ b/samples/Kconfig
-@@ -122,7 +122,7 @@ config SAMPLE_CONNECTOR
+--- a/sound/core/pcm_dmaengine.c
++++ b/sound/core/pcm_dmaengine.c
+@@ -345,8 +345,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_open
+ int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
  
- config SAMPLE_FANOTIFY_ERROR
- 	bool "Build fanotify error monitoring sample"
--	depends on FANOTIFY
-+	depends on FANOTIFY && CC_CAN_LINK && HEADERS_INSTALL
- 	help
- 	  When enabled, this builds an example code that uses the
- 	  FAN_FS_ERROR fanotify mechanism to monitor filesystem
+-	dmaengine_synchronize(prtd->dma_chan);
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status != DMA_PAUSED)
++		dmaengine_synchronize(prtd->dma_chan);
+ 
+ 	return 0;
+ }
 
 
 
