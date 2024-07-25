@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-61511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C25B93C4B5
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B55A393C46C
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B17CD284B3E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E44C51C21BED
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB9919D06D;
-	Thu, 25 Jul 2024 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B144A19D07F;
+	Thu, 25 Jul 2024 14:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABIVfNEm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qUB8pluf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFCA19D067;
-	Thu, 25 Jul 2024 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDA519D06D;
+	Thu, 25 Jul 2024 14:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918549; cv=none; b=hGYbwNvHma//vS8LqTNdFhVIt1R59a2Tu5vbkMt1sPCSDGxbw3TWDUksLX0FNMglJe2rD/mAysEaeeKp+7MNREKrCxndZ6t8ZtV6zZzxYf22xif+EoG9cPBVvupRMPDJkP33ZWkaGrXT4abB/YfkZfXPLur1TY5THKXOSaleYOM=
+	t=1721918386; cv=none; b=EqbgyhVKy1EPsdXjYiPpGxx+I4He2vfN7n5KLGf+zWwt58w7tSMesGWzi0PppSXVsyRiEbxlyo7VW9Ng3peIBmpB/xjn9gp1mTmguqhpYhrE8WBwUhUFT45H6naChveepxAKD1FDvUq8ZPEfOvfPsRHAL3PqWT/AbGmHyFDtSyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918549; c=relaxed/simple;
-	bh=yKeUMlEBqaKDUb/iLIDpFv0nVN8x+1hxSfoqFRCxi28=;
+	s=arc-20240116; t=1721918386; c=relaxed/simple;
+	bh=MEA4/yeKHW+6wmwKisn51uofiORZGpN5e66y0I0O4Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nujHxLa2OpUQsjAmwvCzqxwTclCm8YD6JxnOCBLw3f/HZZWNFDJcQ2LhsLZq60E9a30b3D1K8VpY8c9p+gEqh8hE3DEd/T4sBafqP9zzinLyvZh/n/x2OjLWGhgXhh7iq+qGasdSGtPy4T6i662U8UenbNUbEo1WqxJGUIWf9i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABIVfNEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B1BC116B1;
-	Thu, 25 Jul 2024 14:42:28 +0000 (UTC)
+	 MIME-Version; b=eMwvGKWc0Sdb1rWfMV58eu7E1qWEh5TIaUhiDneROCTzDQzjqgex+XOSQKBraXrp/tsePNDP/4iNzQemnLxR+kCzmswZe+U/sw3GQImhZ04fk15ewOXzFc6fOdaP+BsLyQFLzZDJVpCMcfD2WZ7dDq6dbkhkec/UYJtlsvQUV9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qUB8pluf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04E9C4AF07;
+	Thu, 25 Jul 2024 14:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918549;
-	bh=yKeUMlEBqaKDUb/iLIDpFv0nVN8x+1hxSfoqFRCxi28=;
+	s=korg; t=1721918386;
+	bh=MEA4/yeKHW+6wmwKisn51uofiORZGpN5e66y0I0O4Yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ABIVfNEmyr6lNwsffAYG83ax7mYQZJHki7nY118eJKoIypNUd5/Gp9jjDoR9jzkoe
-	 jNnRh41i8E8PFCc09ZnlGXnF+0/qAvL9Dv0Fco4pwiRJ8O0lWkvgPMuWABg97xWCPW
-	 lt4YlPxCVcKhYEqjNrGjuyWBRGZE62hqji6wqebY=
+	b=qUB8pluf7l+KZIzs4dAj1s1mqsDjbsM0zk5KXSc7wjyCMH/w5l/zeBVk2cTzz5//R
+	 GXycSX/uhmcnMJWTXCakhgY+2igvKvBSCayL5RREi5wjeKNtCkoiOOHJlaXsD9hgqi
+	 FUF4S87SzLIUmFy6M5gMwCYH4Hhm0wi+HjMmmXnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas GENTY <tomlohave@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 19/43] bytcr_rt5640 : inverse jack detect for Archos 101 cesium
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 26/29] arm64: dts: qcom: sm6115: Disable SS instance in Parkmode for USB
 Date: Thu, 25 Jul 2024 16:36:42 +0200
-Message-ID: <20240725142731.199676055@linuxfoundation.org>
+Message-ID: <20240725142732.798921569@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas GENTY <tomlohave@gmail.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit e3209a1827646daaab744aa6a5767b1f57fb5385 ]
+commit 074992a1163295d717faa21d1818c4c19ef6e676 upstream.
 
-When headphones are plugged in, they appear absent; when they are removed,
-they appear present.
-Add a specific entry in bytcr_rt5640 for this device
+For Gen-1 targets like SM6115, it is seen that stressing out the
+controller in host mode results in HC died error:
 
-Signed-off-by: Thomas GENTY <tomlohave@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240608170251.99936-1-tomlohave@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
+
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instance in park mode for SM6115 to mitigate this issue.
+
+Cc: stable@vger.kernel.org
+Fixes: 97e563bf5ba1 ("arm64: dts: qcom: sm6115: Add basic soc dtsi")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240704152848.3380602-6-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm64/boot/dts/qcom/sm6115.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index c740dec00f83b..057ecfe2c8b5c 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -465,6 +465,17 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF1 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ARCHOS 101 CESIUM"),
-+		},
-+		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
-+					BYT_RT5640_JD_NOT_INV |
-+					BYT_RT5640_DIFF_MIC |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
+@@ -1656,6 +1656,7 @@
+ 				snps,has-lpm-erratum;
+ 				snps,hird-threshold = /bits/ 8 <0x10>;
+ 				snps,usb3_lpm_capable;
++				snps,parkmode-disable-ss-quirk;
+ 
+ 				usb-role-switch;
+ 
 
 
 
