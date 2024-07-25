@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD62293C58B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:52:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A2293C544
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F387B27331
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:52:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 594551C2185D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA84519B5B5;
-	Thu, 25 Jul 2024 14:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB5E1E895;
+	Thu, 25 Jul 2024 14:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2FNeblr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XxzFLIMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678B68468;
-	Thu, 25 Jul 2024 14:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9B98468;
+	Thu, 25 Jul 2024 14:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919152; cv=none; b=TdhZPQOCl52gObmjlMZ3NDG8nS+zenJebWuKjDaZiB3StkqJnaLPhQzSBdU4cUhQG2rh4cPicFuiDfYGXhHfNkfXxvJkayrIWdDGjcgjW9FkkK3w2KSbl+hux7ipJCEOq4+uqFJjbhd9IwvBrze40qwf2Y7BaUwdoAUan7+AFsU=
+	t=1721918958; cv=none; b=maSS856o3RDAa6Ab+JC8z3Pkf0Gr/b6T8SRJsYlAwIbJiBHLBs0p92poewn/3JZ8RRJMPO7IlMh2t7hAtEpOLbiWpT2DIE/G6MFlJDZHtSxniF1rqyY42N8fTxxEKLw1F6QD2R2gZgup1TguOBLos7PmTuwMdGXA43n7LHgBvaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919152; c=relaxed/simple;
-	bh=qrxRkjXrm4ZMv2HOk6diC7cqWjOVP+uGTLZtfMsepkw=;
+	s=arc-20240116; t=1721918958; c=relaxed/simple;
+	bh=CcC7FdBhpdWZDGcV5XW/byaD1kq6o685APtb+sTtiiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYRuHnGxBpgBtovefpbc+qRgCpeq4d/DkmPSdBlXmgEWNg5Lo2IRCfg6H86RzV3KpLilH0fQhNiZiHmt2+QD1mn0cOXxInJDamwLj+zU3MEVp7ROA1uWc81krE4obNOaEHV+jKgNlIk4Te1QKncL/fL3upOXGfyCwCn3Bl63D2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2FNeblr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DE9C116B1;
-	Thu, 25 Jul 2024 14:52:30 +0000 (UTC)
+	 MIME-Version; b=cagIWnpC9aw3twtxaxDAZqFVpgPrGyW+bEwKsBPO5hpvkG3rJSqcSj+EyNltL3Jpxs09Krk8icoQeB4MPi8XVgBMtz/3Vj7hS9OrfDQrfk5RLZ2gFGI1fzvE4mFd4av7UIdIxbj0AwQMlNtJHEf4csfDf+2ELBhXwHe0t4CkCKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XxzFLIMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1EE8C116B1;
+	Thu, 25 Jul 2024 14:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919150;
-	bh=qrxRkjXrm4ZMv2HOk6diC7cqWjOVP+uGTLZtfMsepkw=;
+	s=korg; t=1721918958;
+	bh=CcC7FdBhpdWZDGcV5XW/byaD1kq6o685APtb+sTtiiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z2FNeblrFFxI96Jek7z4/3DD0b78+JD97RA3+hTzRBonNOSgJ0sZSQrbrZfsRfRJ0
-	 zYXA1Am780734xuNjpYY5cTOo5+cdzd5g5e3baToztrnONw9bUMMx4+ycdLXpzEO/w
-	 CDDeNP6D2Qu4Akk8aN3thpl3EGK2gTOg5y861riw=
+	b=XxzFLIMPy+rPDLWRWDfX0gYVFlNgPKCKsZbTF4Mvs9edBbf2VvgtpbySXdGaE2MiH
+	 Vd0catArjBBPxuRiCCm2jzRgckyxL+REeR+7R62Vp/5NeWJf9uCpD1BGL7r/LaVBLP
+	 EGZfnInDwiD950jY9dUrkEkRxXcPTNkC8DcFeUCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Jai Luthra <j-luthra@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 40/87] ASoC: ti: davinci-mcasp: Set min period size using FIFO config
+Subject: [PATCH 5.10 23/59] Input: i8042 - add Ayaneo Kun to i8042 quirk table
 Date: Thu, 25 Jul 2024 16:37:13 +0200
-Message-ID: <20240725142739.946433953@linuxfoundation.org>
+Message-ID: <20240725142734.136701696@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jai Luthra <j-luthra@ti.com>
+From: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
 
-[ Upstream commit c5dcf8ab10606e76c1d8a0ec77f27d84a392e874 ]
+[ Upstream commit 955af6355ddfe35140f9706a635838212a32513b ]
 
-The minimum period size was enforced to 64 as older devices integrating
-McASP with EDMA used an internal FIFO of 64 samples.
+See the added comment for details. Also fix a typo in the
+quirk's define.
 
-With UDMA based platforms this internal McASP FIFO is optional, as the
-DMA engine internally does some buffering which is already accounted for
-when registering the platform. So we should read the actual FIFO
-configuration (txnumevt/rxnumevt) instead of hardcoding frames.min to
-64.
-
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240611-asoc_next-v3-2-fcfd84b12164@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Link: https://lore.kernel.org/r/20240531190100.3874731-1-tjakobi@math.uni-bielefeld.de
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/davinci-mcasp.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-index 5b82329f44401..dbd30604816e5 100644
---- a/sound/soc/ti/davinci-mcasp.c
-+++ b/sound/soc/ti/davinci-mcasp.c
-@@ -1472,10 +1472,11 @@ static int davinci_mcasp_hw_rule_min_periodsize(
- {
- 	struct snd_interval *period_size = hw_param_interval(params,
- 						SNDRV_PCM_HW_PARAM_PERIOD_SIZE);
-+	u8 numevt = *((u8 *)rule->private);
- 	struct snd_interval frames;
+diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
+index 6804970d8f51a..91edfb88a218e 100644
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -75,7 +75,7 @@ static inline void i8042_write_command(int val)
+ #define SERIO_QUIRK_PROBE_DEFER		BIT(5)
+ #define SERIO_QUIRK_RESET_ALWAYS	BIT(6)
+ #define SERIO_QUIRK_RESET_NEVER		BIT(7)
+-#define SERIO_QUIRK_DIECT		BIT(8)
++#define SERIO_QUIRK_DIRECT		BIT(8)
+ #define SERIO_QUIRK_DUMBKBD		BIT(9)
+ #define SERIO_QUIRK_NOLOOP		BIT(10)
+ #define SERIO_QUIRK_NOTIMEOUT		BIT(11)
+@@ -1235,6 +1235,20 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	{
++		/*
++		 * The Ayaneo Kun is a handheld device where some the buttons
++		 * are handled by an AT keyboard. The keyboard is usually
++		 * detected as raw, but sometimes, usually after a cold boot,
++		 * it is detected as translated. Make sure that the keyboard
++		 * is always in raw mode.
++		 */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
++			DMI_MATCH(DMI_BOARD_NAME, "KUN"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_DIRECT)
++	},
+ 	{ }
+ };
  
- 	snd_interval_any(&frames);
--	frames.min = 64;
-+	frames.min = numevt;
- 	frames.integer = 1;
- 
- 	return snd_interval_refine(period_size, &frames);
-@@ -1490,6 +1491,7 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
- 	u32 max_channels = 0;
- 	int i, dir, ret;
- 	int tdm_slots = mcasp->tdm_slots;
-+	u8 *numevt;
- 
- 	/* Do not allow more then one stream per direction */
- 	if (mcasp->substreams[substream->stream])
-@@ -1589,9 +1591,12 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
- 			return ret;
+@@ -1553,7 +1567,7 @@ static void __init i8042_check_quirks(void)
+ 		if (quirks & SERIO_QUIRK_RESET_NEVER)
+ 			i8042_reset = I8042_RESET_NEVER;
  	}
- 
-+	numevt = (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) ?
-+			 &mcasp->txnumevt :
-+			 &mcasp->rxnumevt;
- 	snd_pcm_hw_rule_add(substream->runtime, 0,
- 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE,
--			    davinci_mcasp_hw_rule_min_periodsize, NULL,
-+			    davinci_mcasp_hw_rule_min_periodsize, numevt,
- 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE, -1);
- 
- 	return 0;
+-	if (quirks & SERIO_QUIRK_DIECT)
++	if (quirks & SERIO_QUIRK_DIRECT)
+ 		i8042_direct = true;
+ 	if (quirks & SERIO_QUIRK_DUMBKBD)
+ 		i8042_dumbkbd = true;
 -- 
 2.43.0
 
