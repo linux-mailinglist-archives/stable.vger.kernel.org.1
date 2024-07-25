@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7192B93C4F1
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4184693C53F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2C7AB25D0C
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D077C1F256A0
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B5727473;
-	Thu, 25 Jul 2024 14:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCBC19A29C;
+	Thu, 25 Jul 2024 14:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6sdh6ad"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcNZ6qS+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6392EFC19;
-	Thu, 25 Jul 2024 14:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B5A1E895;
+	Thu, 25 Jul 2024 14:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918718; cv=none; b=uZjv4Jc03J50YXejq26PKtlTKrNMnxV0SkD86tWQ2qerfhk24oNF2catQaaUVocB5rdPq77hSMTm1VGjINqy2xtFlefnUz+995vxKeTMrQZMskiQH+kvIB+fTD1bQdaEWAQR76+ph5xXLJaC9Xbb1pu/oOMpGXee6VtkD51V1f4=
+	t=1721918942; cv=none; b=Put5xeWhXK7fgHXYfLr26iL4hTMFEBE5vt+rkM51Wgb/0i+XT9MhbYOumXvgXZ24+hkU0s2ZpxA6S+bFSMy0WheIj+mybBe7Vk3ENNzVPYgvHQ3FCMVZc7xfXDR7StVAJwNLiCZNsvqR9xPjn44Be7TGvF2H/6PAiRZiCio8tQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918718; c=relaxed/simple;
-	bh=CC5lsAJvfDDu+FdQ3YKxaH5bUtx+0f/T4qpaDbOIvmo=;
+	s=arc-20240116; t=1721918942; c=relaxed/simple;
+	bh=sIHkftenhD3ydHk9iIDUARkVQvv7WTNWBw+sJOQuptw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POBdz8ZUtU2YsMgg//XZGGxxud7wnFEB5UaYazHCYk0McN3oTWDQ52UVki02tYNGYtmKWYxmFbZbqmNxyfyV+532y+1SWL/tFIkGSaASYonhCqB+4ktvF07AhGxduTyWm1EFgiPWvRjXr3TrOC3DBjL4QjJ5QH4Qam4jSTQaNPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6sdh6ad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A1BC116B1;
-	Thu, 25 Jul 2024 14:45:17 +0000 (UTC)
+	 MIME-Version; b=VBAj/ZF0SszAE30S7+lU8XJwzJflPG7CPn1LvjxQdj5oU+foxVBoo1baIyhSSs2N+dYUisZTdo4V8OIC2sz+fgIhsXWjWaQDhCZ5+3zB+96UoPM1NnZyTF1AFj9yOY22qNrFri2FPTNUqRX6IDTB8H+l6C/fibO81KAaSz3UakA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcNZ6qS+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928D6C116B1;
+	Thu, 25 Jul 2024 14:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918718;
-	bh=CC5lsAJvfDDu+FdQ3YKxaH5bUtx+0f/T4qpaDbOIvmo=;
+	s=korg; t=1721918942;
+	bh=sIHkftenhD3ydHk9iIDUARkVQvv7WTNWBw+sJOQuptw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6sdh6adD8+g2K9Rx/q+S9h5wNIv/ASW2SQ9mgn/6qOOgBQGI3W18v6Ec6hkg9Fm8
-	 diD0aC4c1JqX1wjYyLfiG5vBXfcGU/qMO8zsstjF4WZfo3DEk/9A/22r4m/lErncGo
-	 hDofdmc2LOgEEze/ZWq3UbN1UqwRPgKCL/kuJIrs=
+	b=hcNZ6qS+DbMcUzPe9dw1PPnfLdOyAdwOHam1+eN7jx8vwX4Dal7btq/Bo4VxQZj2C
+	 19ZU6yQU+DI1562aT7EV5TsVYg82APkwpbK6zAQ/wLqAuc3UdYDBqHeLZ3CHapjI/0
+	 voVZwUzl3GMh2fDpWzZsSwx4QgN/5uGn9ZBc1FSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 13/16] arm64: dts: qcom: sdm630: Disable SS instance in Parkmode for USB
+	Ganesh Goudar <ganeshgr@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 36/59] powerpc/eeh: avoid possible crash when edev->pdev changes
 Date: Thu, 25 Jul 2024 16:37:26 +0200
-Message-ID: <20240725142729.402215798@linuxfoundation.org>
+Message-ID: <20240725142734.627947914@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.905379352@linuxfoundation.org>
-References: <20240725142728.905379352@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
 
-commit fad58a41b84667cb6c9232371fc3af77d4443889 upstream.
+[ Upstream commit a1216e62d039bf63a539bbe718536ec789a853dd ]
 
-For Gen-1 targets like SDM630, it is seen that stressing out the
-controller in host mode results in HC died error:
+If a PCI device is removed during eeh_pe_report_edev(), edev->pdev
+will change and can cause a crash, hold the PCI rescan/remove lock
+while taking a copy of edev->pdev->bus.
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
-
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for SDM630 to mitigate this issue.
-
-Cc: stable@vger.kernel.org
-Fixes: c65a4ed2ea8b ("arm64: dts: qcom: sdm630: Add USB configuration")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-5-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240617140240.580453-1-ganeshgr@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm630.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kernel/eeh_pe.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -1258,6 +1258,7 @@
- 				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
+diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
+index 845e024321d47..a856d9ba42d20 100644
+--- a/arch/powerpc/kernel/eeh_pe.c
++++ b/arch/powerpc/kernel/eeh_pe.c
+@@ -849,6 +849,7 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
+ {
+ 	struct eeh_dev *edev;
+ 	struct pci_dev *pdev;
++	struct pci_bus *bus = NULL;
  
- 				/*
- 				 * SDM630 technically supports USB3 but I
+ 	if (pe->type & EEH_PE_PHB)
+ 		return pe->phb->bus;
+@@ -859,9 +860,11 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
+ 
+ 	/* Retrieve the parent PCI bus of first (top) PCI device */
+ 	edev = list_first_entry_or_null(&pe->edevs, struct eeh_dev, entry);
++	pci_lock_rescan_remove();
+ 	pdev = eeh_dev_to_pci_dev(edev);
+ 	if (pdev)
+-		return pdev->bus;
++		bus = pdev->bus;
++	pci_unlock_rescan_remove();
+ 
+-	return NULL;
++	return bus;
+ }
+-- 
+2.43.0
+
 
 
 
