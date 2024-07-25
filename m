@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-61588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF58393C50B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:46:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE1393C4EA
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D3391C21DD3
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:46:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 928421C21D76
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58BD27473;
-	Thu, 25 Jul 2024 14:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0073219D096;
+	Thu, 25 Jul 2024 14:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwkDlbx+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tctBVXca"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932841E89C;
-	Thu, 25 Jul 2024 14:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3ED819D086;
+	Thu, 25 Jul 2024 14:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918797; cv=none; b=pYZYeF72bCwjLRpQJhQ93fjhdbL3v5OUeauHebvzQmKyuU1wYlN4JluJBFEhi2qh0HBFE59nwfssw7smPElfNRvclkBCYu8aCceri7vkH1eUUSZ172lzWpmpKkZ9RNMpkU4C9/xM+w6yR4Skx0Bgla+3rX5gb0jUfvJrndDD9Po=
+	t=1721918705; cv=none; b=YD23NemB/Cv/hHYbBKdM+7Lac8M+HKLf6ckfXWbcQBmhUNEBsyo4ScROxFBfhn1EJBf8NTCunmWyBxOrPlL25Nmt0ydMYskPXXN+EiKym9gYnJg2rWDLomoU7ZY0mNYGqiRNDHOs4LnsJiHK0YIRNCG+QdazGvoi1ci0u6DgBZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918797; c=relaxed/simple;
-	bh=oRiar7uXRQ3kS4a5+jjuqhiLXKqoVg31AVVdkrl5F0M=;
+	s=arc-20240116; t=1721918705; c=relaxed/simple;
+	bh=+iQcVOclMuqN7DoLmRQSR5oNtuf/z4HqdE/WtDv8DIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BEd0w9oBasFdmgB5dSfDp4yV6IYjU6QEKihD3aGLrhywLHGv9Z62bmHtcGzTwgG2pYtHVJRIblgDjf6+8878gd3WtCXcA41MBQNl61cEOnjxmu6XZGtkePL8VjBlKeqUiVzqmMxm7dvphsRFXJ0dusLPZmdqZXS0KQ6CMDx4ie4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwkDlbx+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B69C116B1;
-	Thu, 25 Jul 2024 14:46:36 +0000 (UTC)
+	 MIME-Version; b=ZifLdG2iDH7obK62xGUVridctsngJYXudVrlHtlir2/4kSrJ/gKoJ6bu6RET4Vti2Pre/SmbLcBky9txp6gBdqD4OU9fhxG+IlK7laQga6+ztfvi9OFGFDeZeM6IoGEdqY50ODXZQslrm3x4c/Whkg1BdGqzSAwNJbtdwI3SCio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tctBVXca; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FF1C116B1;
+	Thu, 25 Jul 2024 14:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918797;
-	bh=oRiar7uXRQ3kS4a5+jjuqhiLXKqoVg31AVVdkrl5F0M=;
+	s=korg; t=1721918705;
+	bh=+iQcVOclMuqN7DoLmRQSR5oNtuf/z4HqdE/WtDv8DIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EwkDlbx+VqS7WgTZkDN5WW2BsSdyqZxgvDXguqJGQOJBHEX0rz0oI3+A+q5UZQUKk
-	 Q1/D9QISIr1U+aGkv1hFauklN5H1KvNMEOLie+3sVCG38EzfwlY4+NYzuleqDInzWP
-	 xQobjHcRkhVZ3+f12qpP/DMBOOPi74JSHfbt6pIc=
+	b=tctBVXcaT2SAlx0F22pmHxN+CTm6Bo5+kpqbnf2mUKzNTeRAkHHRYS6ySn9ai6Ufy
+	 b8UUn8OWFoK7TCcjo0KZnEXmhX/C4HDCFEyO8dNLz7i769r7gtB90CFybWmDXNMo7s
+	 jl6o/idIeHc6YPlBkBc9DoYJ0FvbCMkm+pNtr/vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei lu <llfamsec@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 6.9 04/29] jfs: dont walk off the end of ealist
+	Bob Zhou <bob.zhou@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 6.6 01/16] drm/amdgpu: Fix signedness bug in sdma_v4_0_process_trap_irq()
 Date: Thu, 25 Jul 2024 16:37:14 +0200
-Message-ID: <20240725142731.848085993@linuxfoundation.org>
+Message-ID: <20240725142728.962595279@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
-References: <20240725142731.678993846@linuxfoundation.org>
+In-Reply-To: <20240725142728.905379352@linuxfoundation.org>
+References: <20240725142728.905379352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: lei lu <llfamsec@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit d0fa70aca54c8643248e89061da23752506ec0d4 upstream.
+commit 6769a23697f17f9bf9365ca8ed62fe37e361a05a upstream.
 
-Add a check before visiting the members of ea to
-make sure each ea stays within the ealist.
+The "instance" variable needs to be signed for the error handling to work.
 
-Signed-off-by: lei lu <llfamsec@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: 8b2faf1a4f3b ("drm/amdgpu: add error handle to avoid out-of-bounds")
+Reviewed-by: Bob Zhou <bob.zhou@amd.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Siddh Raman Pant <siddh.raman.pant@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/xattr.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -797,7 +797,7 @@ ssize_t __jfs_getxattr(struct inode *ino
- 		       size_t buf_size)
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+@@ -2027,7 +2027,7 @@ static int sdma_v4_0_process_trap_irq(st
+ 				      struct amdgpu_irq_src *source,
+ 				      struct amdgpu_iv_entry *entry)
  {
- 	struct jfs_ea_list *ealist;
--	struct jfs_ea *ea;
-+	struct jfs_ea *ea, *ealist_end;
- 	struct ea_buffer ea_buf;
- 	int xattr_size;
- 	ssize_t size;
-@@ -817,9 +817,16 @@ ssize_t __jfs_getxattr(struct inode *ino
- 		goto not_found;
+-	uint32_t instance;
++	int instance;
  
- 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
-+	ealist_end = END_EALIST(ealist);
- 
- 	/* Find the named attribute */
--	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea))
-+	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
-+		if (unlikely(ea + 1 > ealist_end) ||
-+		    unlikely(NEXT_EA(ea) > ealist_end)) {
-+			size = -EUCLEAN;
-+			goto release;
-+		}
-+
- 		if ((namelen == ea->namelen) &&
- 		    memcmp(name, ea->name, namelen) == 0) {
- 			/* Found it */
-@@ -834,6 +841,7 @@ ssize_t __jfs_getxattr(struct inode *ino
- 			memcpy(data, value, size);
- 			goto release;
- 		}
-+	}
-       not_found:
- 	size = -ENODATA;
-       release:
-@@ -861,7 +869,7 @@ ssize_t jfs_listxattr(struct dentry * de
- 	ssize_t size = 0;
- 	int xattr_size;
- 	struct jfs_ea_list *ealist;
--	struct jfs_ea *ea;
-+	struct jfs_ea *ea, *ealist_end;
- 	struct ea_buffer ea_buf;
- 
- 	down_read(&JFS_IP(inode)->xattr_sem);
-@@ -876,9 +884,16 @@ ssize_t jfs_listxattr(struct dentry * de
- 		goto release;
- 
- 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
-+	ealist_end = END_EALIST(ealist);
- 
- 	/* compute required size of list */
--	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea)) {
-+	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
-+		if (unlikely(ea + 1 > ealist_end) ||
-+		    unlikely(NEXT_EA(ea) > ealist_end)) {
-+			size = -EUCLEAN;
-+			goto release;
-+		}
-+
- 		if (can_list(ea))
- 			size += name_size(ea) + 1;
- 	}
+ 	DRM_DEBUG("IH: SDMA trap\n");
+ 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
 
 
 
