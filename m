@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-61418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7F693C277
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F1A493C275
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45311B20C14
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45F3C283768
 	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 12:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8F219AD49;
-	Thu, 25 Jul 2024 12:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CE819AD41;
+	Thu, 25 Jul 2024 12:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8kIjsRY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ux4h8yXA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DEC19AD47
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3231A19AD40
+	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721911878; cv=none; b=REeA2gRWJ5LHEOGE2+8iTbUI+lCRev3LMvw7y+Wf9/Nl1IjP6i+D1fs49z2RQVCNEHwfThGl3w45rRCn1UG78SnNOir2w+ufppJbPhJNsULYZkCVt5t1x71QkdYTN3xgMX2gw+Ux4uqP26ynm3GGouVmhHrEgmI5YG62SkU04pw=
+	t=1721911881; cv=none; b=c1ez19bs8If50kpsuINZh8mLUxz9MUaPgrXeij0iFtp3r5w2tH9y/ppFULTqu4iNiSuTU7OrKvwcjyrfCwn0NDAfTZ1WD1vKZkNRt0rp7N82+Oj9e1EVZ9w3jS62LsCsjfJp/oSKo8KXWFbhd6wegseiMPEyxKza/w96HaQKeuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721911878; c=relaxed/simple;
-	bh=bHfoXTtKgsTlUwRWVOfxEZJTJWcotNfhgUlK6h/Ckuk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pMQ+QlO+CAvFwBN4SPmWlrGX3U/q4+eG8SZidLf81H94eMSek0c2sZzStRW/h2937B30dw9gICJm8fiPLYBqL/0yrYJ2b8SWQMb9+iUO25W3l3Rqp/VgWC3swEKzE3+ZeNhhQcrJ0nDaTUiRqIxwIiN6lxQliR/QR4O9k+ycF5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8kIjsRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F7AC116B1;
-	Thu, 25 Jul 2024 12:51:16 +0000 (UTC)
+	s=arc-20240116; t=1721911881; c=relaxed/simple;
+	bh=O0HLjmOwan/yTVQSwLC8wNahoGCZe0W6eBjd19EW/xY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OEc00OA36VHs1CV9O3hdxLJ3bGWCZE9mpvDxJFAKX8+gH8eaRYYV8eKD5P7X4SF4ZG6Za1WjDpIe1AxfLqGwvObHfXOVQhjFtnRY57XJBvHkKRDs+OthUrbTxenQUCIArOyPom8uU0BZD8GvTXJ90yGT1itHUN8Ri7HiprzY+zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ux4h8yXA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BDAC116B1;
+	Thu, 25 Jul 2024 12:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721911877;
-	bh=bHfoXTtKgsTlUwRWVOfxEZJTJWcotNfhgUlK6h/Ckuk=;
+	s=korg; t=1721911880;
+	bh=O0HLjmOwan/yTVQSwLC8wNahoGCZe0W6eBjd19EW/xY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=q8kIjsRYRUPBXX9gqxgiRfZ9vmLx9FEHTyF7cHw/SRkzEF/ukEG0yMXMzXd9EvdN+
-	 x+coD0q6lpAPcNUmliL2xU7oQzv+HJpGC4sG6upce0I5aquzCftANbAIwQffQnec6i
-	 io5ewQw1mFdWXkI8NdLgp2efnwIVWgPOcWRuGT6M=
-Subject: FAILED: patch "[PATCH] arm64: dts: qcom: ipq8074: Disable SS instance in Parkmode" failed to apply to 5.15-stable tree
+	b=ux4h8yXAiocFQfM6iGtOKsSnGhskvA81jh+soC5YM+L+u3tXxeCFNc/g2f2F0qjkB
+	 5dFBvsUU3daJYWlKO1ml7wB0+hCIPtX6VBU2NmOTxSSgAEZJlucdmrdZOuT0mMh+td
+	 hpG3gkwxM6e1b/Y5Tjokaare6U6O7ORBEpmHF+pk=
+Subject: FAILED: patch "[PATCH] arm64: dts: qcom: ipq8074: Disable SS instance in Parkmode" failed to apply to 5.10-stable tree
 To: quic_kriskura@quicinc.com,andersson@kernel.org,konrad.dybcio@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 25 Jul 2024 14:50:52 +0200
-Message-ID: <2024072552-twisty-harvest-26cd@gregkh>
+Date: Thu, 25 Jul 2024 14:50:53 +0200
+Message-ID: <2024072552-victory-unpaid-afda@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x dc6ba95c6c4400a84cca5b419b34ae852a08cfb5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072552-twisty-harvest-26cd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072552-victory-unpaid-afda@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 dc6ba95c6c44 ("arm64: dts: qcom: ipq8074: Disable SS instance in Parkmode for USB")
+d412786ab86b ("arm64: dts: qcom: ipq8074: remove USB tx-fifo-resize property")
 
 thanks,
 
