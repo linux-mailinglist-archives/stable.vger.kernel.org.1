@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F04F93C503
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:46:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FBE93C4F8
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28403B26266
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:46:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DCBE1F232AA
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB8619D090;
-	Thu, 25 Jul 2024 14:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101101E89C;
+	Thu, 25 Jul 2024 14:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4F0qcYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9z+4taE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2F819AD91;
-	Thu, 25 Jul 2024 14:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7368468;
+	Thu, 25 Jul 2024 14:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918772; cv=none; b=p2ON8HuNHYrDFMYgp+jUnn3+FWWUuhk20y6v4dU4sLxvS8ZsF+aR6JjtrkSobDXEjYXl6O660zNXbRezSjErF+LBIxlfe2vs+IPYUDvs6hpx5JIgmjWuV18M8DND9Wdrk7zKwuNsW90llbY5Hr2vq+WO2T7UDPXC/fOMiqtESLg=
+	t=1721918747; cv=none; b=ltQ8qRUk6uWFzalWQURx63CZrhKbFgFV5cUeGqZDiPgkUsQKvCLSfenw1YO91Qvvc7+mHl2PpAdlGhF9L5SbGVQ99o3Uu0KVQARMNd0FzRN1kXsnsm7Rnfo0FNYK21euMzMUnGmNm8N26G5HLEkwE2OY9BXHSPq1bwMD/jgI5hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918772; c=relaxed/simple;
-	bh=qJ7R8VIRdHO5714UUOc6bv5ywZbZoqAIhDbv+IplXpc=;
+	s=arc-20240116; t=1721918747; c=relaxed/simple;
+	bh=lnguMXchgzAt07WoGtEhMN0vhfHIK3jWwkl0wvinrWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZrWOzDwNXIpcpK/z9tbjzL1r+Jcu1DMQxsL2JDV0tEcU/w3s98awvPIfM2KpGsBfpw0At0LXW4P6JJp2fWcTENe9wDakFznlCXsnXy8sSUYOBwyT/SMVFVz1dyLNwSuR2yitJquSMJi10LxQ50jUWsw0fQ7o+LKOPXPn9XDamg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4F0qcYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782F5C116B1;
-	Thu, 25 Jul 2024 14:46:11 +0000 (UTC)
+	 MIME-Version; b=fxYwP7YB8wp+3N0k5JLmW6n1wfNeuFPtlPBN8+XofnadVB3vChO1PttQ+pwdKUaeTUfjQcHJE9EwJrQuj/uEJ26M9egBckfVMJCYVExfh2KteoPeyOEK89bxoRCvcjJUWdICN2K+IQnSxTkbiRmrI+P+ECs/IZMiOTSkb5MD5VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9z+4taE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F94C116B1;
+	Thu, 25 Jul 2024 14:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918771;
-	bh=qJ7R8VIRdHO5714UUOc6bv5ywZbZoqAIhDbv+IplXpc=;
+	s=korg; t=1721918747;
+	bh=lnguMXchgzAt07WoGtEhMN0vhfHIK3jWwkl0wvinrWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4F0qcYk6+qvZkXD128wj52OFEEkF30j/dqPXH0jQXupAWDcnlEZoNSiwCMDpy7Qr
-	 RUMW1foSvUrOF6F1LmqOBBLZt8wTQ3DoP1V0dpfIiy39iZ+N0dWt6FlPQNCXgCnCIP
-	 mBTPo6DWKbQRGvIAGZHXwwlln1jtSk7vX6fq9SQs=
+	b=S9z+4taEAd9nPRueiaTk46NcSRpa16PpRJDM6XVWm99dJils+eWQW4z9WU1BzPrJX
+	 hdzISyhSh2QcDjcKtxE4smgQJdxv0OLv95JAeMcayqxx1GzU+3Fz/cYS0MxwsnrhHn
+	 7IaeQBXFVGySnPcTj73uWa5AjwVgdw1Xec6pFnUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.9 13/29] arm64: dts: qcom: x1e80100-qcp: Fix USB PHYs regulators
+Subject: [PATCH 6.6 10/16] arm64: dts: qcom: msm8996: Disable SS instance in Parkmode for USB
 Date: Thu, 25 Jul 2024 16:37:23 +0200
-Message-ID: <20240725142732.175402973@linuxfoundation.org>
+Message-ID: <20240725142729.292177176@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
-References: <20240725142731.678993846@linuxfoundation.org>
+In-Reply-To: <20240725142728.905379352@linuxfoundation.org>
+References: <20240725142728.905379352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-commit 20676f7819d7364b7e8bd437b212106faa893b49 upstream.
+commit 44ea1ae3cf95db97e10d6ce17527948121f1dd4b upstream.
 
-The 1.2v HS PHY shared regulator is actually LDO2 from PM8550ve id J.
-Also add the missing supplies to QMP PHYs.
+For Gen-1 targets like MSM8996, it is seen that stressing out the
+controller in host mode results in HC died error:
 
-Fixes: f9a9c11471da ("arm64: dts: qcom: x1e80100-qcp: Enable more support")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: stable@vger.kernel.org      # 6.9
-Link: https://lore.kernel.org/r/20240530-x1e80100-dts-fix-usb-phy-supplies-v1-2-6eb72a546227@linaro.org
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
+
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instance in park mode for MSM8996 to mitigate this issue.
+
+Cc: stable@vger.kernel.org
+Fixes: 1e39255ed29d ("arm64: dts: msm8996: Add device node for qcom,dwc3")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240704152848.3380602-8-quic_kriskura@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-qcp.dts |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-@@ -520,12 +520,15 @@
- 
- &usb_1_ss0_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	status = "okay";
- };
- 
- &usb_1_ss0_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l1j_0p8>;
-+
- 	status = "okay";
- };
- 
-@@ -540,12 +543,15 @@
- 
- &usb_1_ss1_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	status = "okay";
- };
- 
- &usb_1_ss1_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l2d_0p9>;
-+
- 	status = "okay";
- };
- 
-@@ -560,12 +566,15 @@
- 
- &usb_1_ss2_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	status = "okay";
- };
- 
- &usb_1_ss2_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l2d_0p9>;
-+
- 	status = "okay";
- };
- 
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -3082,6 +3082,7 @@
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
+ 				snps,is-utmi-l1-suspend;
++				snps,parkmode-disable-ss-quirk;
+ 				tx-fifo-resize;
+ 			};
+ 		};
 
 
 
