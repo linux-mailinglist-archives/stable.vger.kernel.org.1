@@ -1,227 +1,271 @@
-Return-Path: <stable+bounces-61380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D2393C100
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 13:40:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C3593C109
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 13:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 462A3B215A9
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 11:40:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA9D9B21AF5
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 11:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A9219922A;
-	Thu, 25 Jul 2024 11:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D0C199393;
+	Thu, 25 Jul 2024 11:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="iwmmXcM0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OEhC+VbS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0C616D4C3;
-	Thu, 25 Jul 2024 11:40:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6888819925A
+	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 11:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721907609; cv=none; b=azvbPSaLeItVAxK8Z2rthoieTi7qWeye+3gM3CaokAlQxp+pvYm73YXp3Zc73fzvFHtesT2+bBLw6qkZReCqW7u0uQqXAsT/axUrKOrKZA5gLrwge7w53bT2ALK2tMxB80qJBauflHEDno5LlK5QRc/9l1eoCJBZw4/9vwpAo3Y=
+	t=1721907752; cv=none; b=XyPo5iWOYWg6nbh23tV3dLY+a5KmYz1U63gNBJteJ59S82AsSoi1A0tAbAv7b92jwk0kx2fVK2+lTiO0NVzdE/IX+u2afn1t2WrWMNhBclSdPAnyJ/o/B9gyDf0Bru9qN089/8lgoZE5S3Dl9gAo5FcGukXvSs5DVxTd+I2B0QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721907609; c=relaxed/simple;
-	bh=fjIl38MPpR6EspID/CmBJyuL9XdT99m/wKla7QeZ1TA=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=XrQ484KPoeH61e9l5yXOFmmHMtXMBI+vflIP2Zge3zJa4rFwDClIGQLwAM9/bZZFj2ps0hB5uvSX2NZ/J76cpno9wl/BcpBQCT2F3F0FetQY7quvnawhAr2SvxOLP3hiC/Jvi40NVWADEGOT2HGhjPAUI4OTPNFhVPnoJ0ATOHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=iwmmXcM0; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1721907752; c=relaxed/simple;
+	bh=y8Tzkjt3WEFzvpKh9C7Qb8XLQEz4aUjZ0wIgoulmCOU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bpd4EPFSaYsOY5Cfk7WabDKdhDSZtDXiC6rqklk2wh6ONoC99SF4C697u8C6BoL9SUvK5YgRFBIhZoXqvOQSvRw1k6/wBt4pGtEFu9ZVJ+r61g88MIHDC47AwzMzE1mN34zzV69VCM09EUxjGfoVguKIz0R88jv6OKNdekCpoeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OEhC+VbS; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721907749;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n5omChVN0d3O1VEI9wuk2MqAV/WoccHrIriVgLmhRRE=;
+	b=OEhC+VbSpkxZ577ZRLwtKs7i/2qXHDT5AJCT7PQZzS/zRA1UhClH+VCxc93ZeNu9ZcDTVV
+	fDryunI1bR2uZu+9y8QRKJ5pTAqTnoYiJc+pho9PhwxPoI4FAWmBPNkOfk5crqybN2/vv/
+	IgucBqXYx5KIgUZpcjQpwbTLcQN9m6A=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-612-oQ576cPmOgW30bLs2DQMTg-1; Thu, 25 Jul 2024 07:42:28 -0400
+X-MC-Unique: oQ576cPmOgW30bLs2DQMTg-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a7ab4817f34so37681466b.2
+        for <stable@vger.kernel.org>; Thu, 25 Jul 2024 04:42:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721907747; x=1722512547;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n5omChVN0d3O1VEI9wuk2MqAV/WoccHrIriVgLmhRRE=;
+        b=nzcT2mrzIKuywMPdnWPHGpMTc1ijitEnOGRjbcbQprcMZa2xqKX7mFI9uOqllCL6jC
+         Ek48YMRm2ii8Oj5BwxVwjhymusFXWvhXrrzzBbgiZ2jc5I64+aVtnSsI3mdcB3bPCO7p
+         URyBPJTCQ0IXG0K2upE+StrKfvN1jFBQHTWObp8K/8pmxx+QUrna9oGdk9c6Y8KTpUNE
+         FvEPNBKGy7ht1bOSCVAItvnW8EogjCjgi9dp32SEhupL9vWylL2QsK5vdEhkhq3llHsK
+         YDdxwKIhvxvB6p12PB2FdoshWc7K5s11xrwmeLqCRsDQGxWUvvzPPuGxyPySDlM7lTo7
+         f1kA==
+X-Forwarded-Encrypted: i=1; AJvYcCU/sa9qcRnhMsBE90pncIFvleCUb55QOc3Y+yCIEP7LKAiTyoRoFO4p8bTohcT8Nc4IIWRxnTRjMcFA0PXJtdbuCFyXpSoG
+X-Gm-Message-State: AOJu0YyxZ/T6h5v7PCtzSAK4djWLZefp8PkWcbyeimy/o6gKCH9iOpI/
+	3Cz475zcFkzbx9E3jd9a92ZQHelHV8gFfaKMlmWvgwqqhfA4U8Rpf/Xn1A956kJ0Ac35uf+WGOV
+	zXHuVFG0A+sgne3ilPigql1/3flJyLS00k1J47rupOAvlkF87kryvnJNk8dGXG+dasSJDJAuHw2
+	ViBeMbXZH4X4V/cx+QJa9f4y4VNn5e
+X-Received: by 2002:a17:906:3919:b0:a72:633d:5fd6 with SMTP id a640c23a62f3a-a7ac51c32e7mr125613066b.32.1721907746848;
+        Thu, 25 Jul 2024 04:42:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEmadhxxx575qyx8hqVbxwuDtzxrO4Wi+b1xdVgOFO4thCx7wcJ83rXORBI0bEPquJCJWR0cI3H8T0sD2M942g=
+X-Received: by 2002:a17:906:3919:b0:a72:633d:5fd6 with SMTP id
+ a640c23a62f3a-a7ac51c32e7mr125611566b.32.1721907746257; Thu, 25 Jul 2024
+ 04:42:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1721907605;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MKkwczeb2Wdcu0GU+l0zWcYRLI5FKPw8pU+pCi+Cqrw=;
-	b=iwmmXcM0LsY1zREoBfPNApQ6r4uYOh8RWwwp90sHG0VZkq9+xeiaXJfGXQ+ENYaMGp6vsR
-	p2KUrRoH2liOnZqFwuG7Ou8l9h1CPkZMXmny1KxOYMk0JsrWVVr7E5+UtpdTXDmZ5FdZsP
-	hXoK96OBoYMPC3/aP2oN9SiItXtoHsfM9Ona3Cqk6jfsjS3cfCzbYWQFqDvPu9/uwAaWiv
-	T5bd4Et8osUejwVE1pjv1phmp15g6RbQoXrlkJRuobaErv+lY1lf2TDQMDKJA/WzLuehCc
-	PY5qN/2U1IBCvC3GjzhE5KD1NecT4eiSyIVFeb2mzOwd53cfg3yym2+9gJMebA==
-Date: Thu, 25 Jul 2024 13:40:04 +0200
-From: Dragan Simic <dsimic@manjaro.org>
-To: Steven Price <steven.price@arm.com>
-Cc: dri-devel@lists.freedesktop.org, boris.brezillon@collabora.com,
- robh@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
- linux-kernel@vger.kernel.org, Diederik de Haas <didi.debian@cknow.org>,
- Furkan Kardame <f.kardame@manjaro.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/panfrost: Mark simple_ondemand governor as softdep
-In-Reply-To: <ae62139f-3655-44d0-aeb7-15c6b67eb97c@arm.com>
-References: <4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org>
- <f672e7460c92bc9e0c195804f7e99d0b@manjaro.org>
- <e42a55ba-cbb5-47a4-bec6-9c3067040970@arm.com>
- <192dbcd968dfebf825a3a759701bf381@manjaro.org>
- <d20667e76aa56fb69c91ef327d467d4a@manjaro.org>
- <ae62139f-3655-44d0-aeb7-15c6b67eb97c@arm.com>
-Message-ID: <c2b1016fb633f89cfeb96da2b761e494@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+References: <20240716120724.134512-1-xiubli@redhat.com>
+In-Reply-To: <20240716120724.134512-1-xiubli@redhat.com>
+From: Venky Shankar <vshankar@redhat.com>
+Date: Thu, 25 Jul 2024 17:11:49 +0530
+Message-ID: <CACPzV1=3m3zKcBuUKTYD6JfkSvo9dTuPU_8shrNBOEdBeSZDuA@mail.gmail.com>
+Subject: Re: [PATCH v3] ceph: force sending a cap update msg back to MDS for
+ revoke op
+To: xiubli@redhat.com
+Cc: ceph-devel@vger.kernel.org, idryomov@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Steven,
+On Tue, Jul 16, 2024 at 5:37=E2=80=AFPM <xiubli@redhat.com> wrote:
+>
+> From: Xiubo Li <xiubli@redhat.com>
+>
+> If a client sends out a cap update dropping caps with the prior 'seq'
+> just before an incoming cap revoke request, then the client may drop
+> the revoke because it believes it's already released the requested
+> capabilities.
+>
+> This causes the MDS to wait indefinitely for the client to respond
+> to the revoke. It's therefore always a good idea to ack the cap
+> revoke request with the bumped up 'seq'.
+>
+> Currently if the cap->issued equals to the newcaps the check_caps()
+> will do nothing, we should force flush the caps.
+>
+> Cc: stable@vger.kernel.org
+> Link: https://tracker.ceph.com/issues/61782
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> ---
+>
+> V3:
+> - Move the force check earlier
+>
+> V2:
+> - Improved the patch to force send the cap update only when no caps
+> being used.
+>
+>
+>  fs/ceph/caps.c  | 35 ++++++++++++++++++++++++-----------
+>  fs/ceph/super.h |  7 ++++---
+>  2 files changed, 28 insertions(+), 14 deletions(-)
+>
+> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+> index 24c31f795938..672c6611d749 100644
+> --- a/fs/ceph/caps.c
+> +++ b/fs/ceph/caps.c
+> @@ -2024,6 +2024,8 @@ bool __ceph_should_report_size(struct ceph_inode_in=
+fo *ci)
+>   *  CHECK_CAPS_AUTHONLY - we should only check the auth cap
+>   *  CHECK_CAPS_FLUSH - we should flush any dirty caps immediately, witho=
+ut
+>   *    further delay.
+> + *  CHECK_CAPS_FLUSH_FORCE - we should flush any caps immediately, witho=
+ut
+> + *    further delay.
+>   */
+>  void ceph_check_caps(struct ceph_inode_info *ci, int flags)
+>  {
+> @@ -2105,7 +2107,7 @@ void ceph_check_caps(struct ceph_inode_info *ci, in=
+t flags)
+>         }
+>
+>         doutc(cl, "%p %llx.%llx file_want %s used %s dirty %s "
+> -             "flushing %s issued %s revoking %s retain %s %s%s%s\n",
+> +             "flushing %s issued %s revoking %s retain %s %s%s%s%s\n",
+>              inode, ceph_vinop(inode), ceph_cap_string(file_wanted),
+>              ceph_cap_string(used), ceph_cap_string(ci->i_dirty_caps),
+>              ceph_cap_string(ci->i_flushing_caps),
+> @@ -2113,7 +2115,8 @@ void ceph_check_caps(struct ceph_inode_info *ci, in=
+t flags)
+>              ceph_cap_string(retain),
+>              (flags & CHECK_CAPS_AUTHONLY) ? " AUTHONLY" : "",
+>              (flags & CHECK_CAPS_FLUSH) ? " FLUSH" : "",
+> -            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "");
+> +            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "",
+> +            (flags & CHECK_CAPS_FLUSH_FORCE) ? " FLUSH_FORCE" : "");
+>
+>         /*
+>          * If we no longer need to hold onto old our caps, and we may
+> @@ -2188,6 +2191,11 @@ void ceph_check_caps(struct ceph_inode_info *ci, i=
+nt flags)
+>                                 queue_writeback =3D true;
+>                 }
+>
+> +               if (flags & CHECK_CAPS_FLUSH_FORCE) {
+> +                       doutc(cl, "force to flush caps\n");
+> +                       goto ack;
+> +               }
+> +
+>                 if (cap =3D=3D ci->i_auth_cap &&
+>                     (cap->issued & CEPH_CAP_FILE_WR)) {
+>                         /* request larger max_size from MDS? */
+> @@ -3518,6 +3526,8 @@ static void handle_cap_grant(struct inode *inode,
+>         bool queue_invalidate =3D false;
+>         bool deleted_inode =3D false;
+>         bool fill_inline =3D false;
+> +       bool revoke_wait =3D false;
+> +       int flags =3D 0;
+>
+>         /*
+>          * If there is at least one crypto block then we'll trust
+> @@ -3713,16 +3723,18 @@ static void handle_cap_grant(struct inode *inode,
+>                       ceph_cap_string(cap->issued), ceph_cap_string(newca=
+ps),
+>                       ceph_cap_string(revoking));
+>                 if (S_ISREG(inode->i_mode) &&
+> -                   (revoking & used & CEPH_CAP_FILE_BUFFER))
+> +                   (revoking & used & CEPH_CAP_FILE_BUFFER)) {
+>                         writeback =3D true;  /* initiate writeback; will =
+delay ack */
+> -               else if (queue_invalidate &&
+> +                       revoke_wait =3D true;
+> +               } else if (queue_invalidate &&
+>                          revoking =3D=3D CEPH_CAP_FILE_CACHE &&
+> -                        (newcaps & CEPH_CAP_FILE_LAZYIO) =3D=3D 0)
+> -                       ; /* do nothing yet, invalidation will be queued =
+*/
+> -               else if (cap =3D=3D ci->i_auth_cap)
+> +                        (newcaps & CEPH_CAP_FILE_LAZYIO) =3D=3D 0) {
+> +                       revoke_wait =3D true; /* do nothing yet, invalida=
+tion will be queued */
+> +               } else if (cap =3D=3D ci->i_auth_cap) {
+>                         check_caps =3D 1; /* check auth cap only */
+> -               else
+> +               } else {
+>                         check_caps =3D 2; /* check all caps */
+> +               }
+>                 /* If there is new caps, try to wake up the waiters */
+>                 if (~cap->issued & newcaps)
+>                         wake =3D true;
+> @@ -3749,8 +3761,9 @@ static void handle_cap_grant(struct inode *inode,
+>         BUG_ON(cap->issued & ~cap->implemented);
+>
+>         /* don't let check_caps skip sending a response to MDS for revoke=
+ msgs */
+> -       if (le32_to_cpu(grant->op) =3D=3D CEPH_CAP_OP_REVOKE) {
+> +       if (!revoke_wait && le32_to_cpu(grant->op) =3D=3D CEPH_CAP_OP_REV=
+OKE) {
+>                 cap->mds_wanted =3D 0;
+> +               flags |=3D CHECK_CAPS_FLUSH_FORCE;
+>                 if (cap =3D=3D ci->i_auth_cap)
+>                         check_caps =3D 1; /* check auth cap only */
+>                 else
+> @@ -3806,9 +3819,9 @@ static void handle_cap_grant(struct inode *inode,
+>
+>         mutex_unlock(&session->s_mutex);
+>         if (check_caps =3D=3D 1)
+> -               ceph_check_caps(ci, CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOIN=
+VAL);
+> +               ceph_check_caps(ci, flags | CHECK_CAPS_AUTHONLY | CHECK_C=
+APS_NOINVAL);
+>         else if (check_caps =3D=3D 2)
+> -               ceph_check_caps(ci, CHECK_CAPS_NOINVAL);
+> +               ceph_check_caps(ci, flags | CHECK_CAPS_NOINVAL);
+>  }
+>
+>  /*
+> diff --git a/fs/ceph/super.h b/fs/ceph/super.h
+> index b0b368ed3018..831e8ec4d5da 100644
+> --- a/fs/ceph/super.h
+> +++ b/fs/ceph/super.h
+> @@ -200,9 +200,10 @@ struct ceph_cap {
+>         struct list_head caps_item;
+>  };
+>
+> -#define CHECK_CAPS_AUTHONLY   1  /* only check auth cap */
+> -#define CHECK_CAPS_FLUSH      2  /* flush any dirty caps */
+> -#define CHECK_CAPS_NOINVAL    4  /* don't invalidate pagecache */
+> +#define CHECK_CAPS_AUTHONLY     1  /* only check auth cap */
+> +#define CHECK_CAPS_FLUSH        2  /* flush any dirty caps */
+> +#define CHECK_CAPS_NOINVAL      4  /* don't invalidate pagecache */
+> +#define CHECK_CAPS_FLUSH_FORCE  8  /* force flush any caps */
+>
+>  struct ceph_cap_flush {
+>         u64 tid;
+> --
+> 2.45.1
+>
 
-On 2024-07-25 11:20, Steven Price wrote:
-> On 25/07/2024 09:24, Dragan Simic wrote:
->> Hello Steven and Boris,
-> 
-> <snip>
-> 
->> Another option has become available for expressing additional module
->> dependencies, weakdeps. [1][2]  Long story short, weakdeps are similar
->> to softdeps, in the sense of telling the initial ramdisk utilities to
->> include additional kernel modules, but weakdeps result in no module
->> loading being performed by userspace.
->> 
->> Maybe "weak" isn't the best possible word choice (arguably, "soft" 
->> also
->> wasn't the best word choice), but weakdeps should be a better choice 
->> for
->> use with Panfrost and governor_simpleondemand, because weakdeps 
->> provide
->> the required information to the utilities used to generate initial
->> ramdisks,
->> while the actual module loading is left to the kernel.
->> 
->> The recent addition of weakdeps renders the previously mentioned 
->> harddeps
->> obsolete, because weakdeps actually do what we need.  Obviously, 
->> "weak"
->> doesn't go along very well with the actual nature of the dependency 
->> between
->> Panfrost and governor_simpleondemand, but it's pretty much just the
->> somewhat
->> unfortunate word choice.
->> 
->> The support for weakdeps has been already added to the kmod [3][4] and
->> Dracut [5] userspace utilities.  I'll hopefully add support for 
->> weakdeps
->> to mkinitcpio [6] rather soon.
-> 
-> That sounds much closer to the dependency we want to advertise for
-> Panfrost so that's great.
-> 
->> Maybe we could actually add MODULE_HARDDEP() as some kind of syntactic
->> sugar, which would currently be an alias for MODULE_WEAKDEP(), so the
->> actual hard module dependencies could be expressed properly, and 
->> possibly
->> handled differently in the future, with no need to go back and track 
->> all
->> such instances of hard module dependencies.
-> 
-> Please do! While "weak" dependencies tell the initramfs tools what to
-> put in, it would be good to be able to actually express that this 
-> module
-> actually requires the governor.
+v3 pathset looks good.
 
-Great, I'm glad that you agree.  Here's the MODULE_HARDDEP() patch on
-the linux-modules mailing list, and we'll see will it be accepted:
+Reviewed-by: Venky Shankar <vshankar@redhat.com>
+Tested-by: Venky Shankar <vshankar@redhat.com>
 
-https://lore.kernel.org/linux-modules/04e0676b0e77c5eb69df6972f41d77cdf061265a.1721906745.git.dsimic@manjaro.org/T/#u
+--=20
+Cheers,
+Venky
 
-> I can see the potential utility in
-> initramfs tools wanting to put a module in without "weak" dependencies
-> if initramfs size was limited[1] and "limited support" was appropriate,
-> and that's not what Panfrost gives. So having a way of fixing this in
-> the future without churn in driver would be good.
-
-Sure, that's a good example, but unfortunately, omitting weakdep modules
-that way from the initial ramdisk, and keeping only the harddep modules,
-wouldn't be that simple. :(  In fact, it's unknown which one(s) of the
-weakdep modules is/are actually needed on some platform or device, so
-pruning the weakdep modules would require some additional information,
-to end up with a fully functional device after booting it up.
-
-Of course, the distinction between the harddeps and the weakdeps opens
-up a path towards using such additional "pruning information" in a safe
-and robust way, by ensuring that the absolutely required harddep modules
-aren't pruned away.
-
-This is just another example of how "weak" was a somewhat
-unfortunate word choice, but we've got to live with it. :)
-
->> With all this in mind, here's what I'm going to do:
->> 
->> 1) Submit a patch that adds MODULE_HARDDEP() as syntactic sugar
->> 2) Implement support for weakdeps in Arch Linux's mkinitcpio [6]
->> 3) Depending on what kind of feedback the MODULE_HARDDEP() patch 
->> receives,
->>    I'll submit follow-up patches for Lima and Panfrost, which will 
->> swap
->>    uses of MODULE_SOFTDEP() with MODULE_HARDDEP() or MODULE_WEAKDEP()
-> 
-> It sounds good from my perspective. It will be interesting to see what
-> feedback comes from people more familiar with initramfs tools.
-
-Great, thanks once again!
-
-> [1] Although from my understanding it's firmware which is the real 
-> cause
-> of bloat in initramfs size. I guess I need to start paying attention to
-> this for panthor which adds GPU firmware - although currently tiny in
-> comparison to others.
-
-We might have a solution for the initramfs bloat induced by the firmware
-blobs, which I'm going to fight for, one way or another. :)  Though, 
-only
-time will tell will the related patches be accepted. [7]
-
-[7] 
-https://lore.kernel.org/linux-rockchip/9b7a9e9b88ad8c7489ee1b4c70b8751eeb5cf6f9.1720049413.git.dsimic@manjaro.org/T/#u
-
->> Looking forward to your thoughts.
->> 
->> [1] 
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/linux/module.h?id=61842868de13aa7fd7391c626e889f4d6f1450bf
->> [2] 
->> https://lore.kernel.org/linux-kernel/20240724102349.430078-1-jtornosm@redhat.com/T/#u
->> [3] 
->> https://github.com/kmod-project/kmod/commit/05828b4a6e9327a63ef94df544a042b5e9ce4fe7
->> [4] 
->> https://github.com/kmod-project/kmod/commit/d06712b51404061eef92cb275b8303814fca86ec
->> [5] 
->> https://github.com/dracut-ng/dracut-ng/commit/8517a6be5e20f4a6d87e55fce35ee3e29e2a1150
->> [6] https://gitlab.archlinux.org/archlinux/mkinitcpio/mkinitcpio
->> 
->>>>> If a filesystem driver can rely on the (ab)use of softdeps, which
->>>>> may be
->>>>> fragile or seen as a bit wrong, I think we can follow the same
->>>>> approach,
->>>>> at least until a better solution is available.
->>>>> 
->>>>> [6]
->>>>> https://cgit.freedesktop.org/drm/drm-misc/commit/?id=0c94f58cef319ad054fd909b3bf4b7d09c03e11c
->>>>> [7]
->>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5178578bcd4
->>>>> [8]
->>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/super.c#n2593
->>>>> 
->>>>>> ---
->>>>>>  drivers/gpu/drm/panfrost/panfrost_drv.c | 1 +
->>>>>>  1 file changed, 1 insertion(+)
->>>>>> 
->>>>>> diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>>>> b/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>>>> index ef9f6c0716d5..149737d7a07e 100644
->>>>>> --- a/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>>>> +++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>>>> @@ -828,3 +828,4 @@ module_platform_driver(panfrost_driver);
->>>>>>  MODULE_AUTHOR("Panfrost Project Developers");
->>>>>>  MODULE_DESCRIPTION("Panfrost DRM Driver");
->>>>>>  MODULE_LICENSE("GPL v2");
->>>>>> +MODULE_SOFTDEP("pre: governor_simpleondemand");
 
