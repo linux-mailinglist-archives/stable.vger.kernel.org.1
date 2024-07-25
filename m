@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-61730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3317593C5B2
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0BD793C51E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD2111F21535
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D276F1C21E0B
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E941C19D090;
-	Thu, 25 Jul 2024 14:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EC619D09B;
+	Thu, 25 Jul 2024 14:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1ZwWQBu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aful0qhD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A72FC19;
-	Thu, 25 Jul 2024 14:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21A98468;
+	Thu, 25 Jul 2024 14:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919257; cv=none; b=HTGSE2oHkwRyk8BoEnG9jG5chX6q8lA09ibt9wRKwsJC4uxt+cioLoaJXO9tR/LnQ5lgpiTo3u+C+Lh5eqweLdS1tFomuMZ1CreUNk0HMAPedG+Up4RGqFPzTcGHFBn8u8ulgCt7bzaa5idlbAFnAYQBbGvvAlkZPEfdiKp+tJw=
+	t=1721918843; cv=none; b=p55WsEYDGBeR4gsaBTCiFrkeRXmrmGVRlBvgr3kA/MlkwdcQFxIxOeQa8ETpHRe4lrFqkbNc0ZzsAaJZq855PSG/eqCswT7VZ4+OZYJLmcuei0QqI7hmkt3YLtJeGzxHpfgMdWWJJrZkEF6p8z0QAXVPRZXVqJiX66zAc5TgFEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919257; c=relaxed/simple;
-	bh=ojPpIkA3bsTx+JF72oESatB8moZrKblfbJBIfDWwm6g=;
+	s=arc-20240116; t=1721918843; c=relaxed/simple;
+	bh=sIMADyemBlnrLsYXh3hEtggYEk7Qa7mRVhcdVjHOyoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uR9NFKMFjb/GGFFrTM/lWq81FwwmOir4kOEVJ+jNEt0iiKqOfu718ED3CBAONbDXbJ3ZHjxBEEJLVtxY136KmH57Q3O1PSO8kE6AMdr0uww9ngA9xlyUdm+VLsrcWZDEFq4AmMk5ROanFOF73yMjgSgYyB/qFGwIK6wMsDxNaEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1ZwWQBu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF90FC116B1;
-	Thu, 25 Jul 2024 14:54:16 +0000 (UTC)
+	 MIME-Version; b=XqgKSfciK/RM9ZAWiOlVeqR7kcKm401HTfZOlHcjPi1UD0QXmCNEJ9B7AQJnE2aX2m5njh7tUxtrtKl6VgDkFkWts2UxTXCWdKQsfftXnjuOdd2Yr6I6s23iUT+hDQP9fYn4mPMrIe31LIqp+AQ6JRnHUpYZBAAp6yej7xG7ntc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aful0qhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27DF4C116B1;
+	Thu, 25 Jul 2024 14:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919257;
-	bh=ojPpIkA3bsTx+JF72oESatB8moZrKblfbJBIfDWwm6g=;
+	s=korg; t=1721918843;
+	bh=sIMADyemBlnrLsYXh3hEtggYEk7Qa7mRVhcdVjHOyoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1ZwWQBuyf9qn3RDN+coJFLjyOQtdOdRvBgy/UPR0hj50R4jA0NF5r0GojBOHqJha
-	 mxbTthLxfTVhSlrBbxtBNT4vD5cltUF+YvcMh7xhKVp+sgSepG5xlleS2Ci9mITCwd
-	 CfvPARk2zfqKIfqUNYwC1xpMHxNPqkm2oZiPDf0Y=
+	b=Aful0qhDc1JUqUN+MCHx5iZ2QTP75b7gz/m4Otvd+2s/avMuRTNtjRwv7Fc8HqyFL
+	 WKvCaN5bBWdAV41mDT6QYKtKfHZ80N8PLY3qg3kH6CtMO2pP46M7MKEHoUKIH1Vk2i
+	 LDNbBAEKL39AVbWMhHL0PW3kJ7/DQBmMyj+MHQJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Kees Cook <keescook@chromium.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	SeongJae Park <sj@kernel.org>
-Subject: [PATCH 5.15 64/87] tracing: Define the is_signed_type() macro once
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.9 27/29] ALSA: pcm_dmaengine: Dont synchronize DMA channel when DMA is paused
 Date: Thu, 25 Jul 2024 16:37:37 +0200
-Message-ID: <20240725142740.846142912@linuxfoundation.org>
+Message-ID: <20240725142732.693297972@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
+References: <20240725142731.678993846@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-commit a49a64b5bf195381c09202c524f0f84b5f3e816f upstream.
+commit 88e98af9f4b5b0d60c1fe7f7f2701b5467691e75 upstream.
 
-There are two definitions of the is_signed_type() macro: one in
-<linux/overflow.h> and a second definition in <linux/trace_events.h>.
+When suspended, the DMA channel may enter PAUSE state if dmaengine_pause()
+is supported by DMA.
+At this state, dmaengine_synchronize() should not be called, otherwise
+the DMA channel can't be resumed successfully.
 
-As suggested by Linus, move the definition of the is_signed_type() macro
-into the <linux/compiler.h> header file.  Change the definition of the
-is_signed_type() macro to make sure that it does not trigger any sparse
-warnings with future versions of sparse for bitwise types.
-
-Link: https://lore.kernel.org/all/CAHk-=whjH6p+qzwUdx5SOVVHjS3WvzJQr6mDUwhEyTf6pJWzaQ@mail.gmail.com/
-Link: https://lore.kernel.org/all/CAHk-=wjQGnVfb4jehFR0XyZikdQvCZouE96xR_nnf5kqaM5qqQ@mail.gmail.com/
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Acked-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-(cherry picked from commit a49a64b5bf195381c09202c524f0f84b5f3e816f)
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Fixes: e8343410ddf0 ("ALSA: dmaengine: Synchronize dma channel after drop()")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/1721198693-27636-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/compiler.h     |    6 ++++++
- include/linux/overflow.h     |    1 -
- include/linux/trace_events.h |    2 --
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ sound/core/pcm_dmaengine.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -247,6 +247,12 @@ static inline void *offset_to_ptr(const
- #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+--- a/sound/core/pcm_dmaengine.c
++++ b/sound/core/pcm_dmaengine.c
+@@ -352,8 +352,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_open
+ int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
  
- /*
-+ * Whether 'type' is a signed type or an unsigned type. Supports scalar types,
-+ * bool and also pointer types.
-+ */
-+#define is_signed_type(type) (((type)(-1)) < (__force type)1)
-+
-+/*
-  * This is needed in functions which generate the stack canary, see
-  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
-  */
---- a/include/linux/overflow.h
-+++ b/include/linux/overflow.h
-@@ -29,7 +29,6 @@
-  * https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html -
-  * credit to Christian Biere.
-  */
--#define is_signed_type(type)       (((type)(-1)) < (type)1)
- #define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
- #define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
- #define type_min(T) ((T)((T)-type_max(T)-(T)1))
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -801,8 +801,6 @@ extern int trace_add_event_call(struct t
- extern int trace_remove_event_call(struct trace_event_call *call);
- extern int trace_event_get_offsets(struct trace_event_call *call);
+-	dmaengine_synchronize(prtd->dma_chan);
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status != DMA_PAUSED)
++		dmaengine_synchronize(prtd->dma_chan);
  
--#define is_signed_type(type)	(((type)(-1)) < (type)1)
--
- int ftrace_set_clr_event(struct trace_array *tr, char *buf, int set);
- int trace_set_clr_event(const char *system, const char *event, int set);
- int trace_array_set_clr_event(struct trace_array *tr, const char *system,
+ 	return 0;
+ }
 
 
 
