@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-61658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CB293C55A
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 532B193C590
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:52:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F5F9B21620
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E51A8B273C6
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B932013A409;
-	Thu, 25 Jul 2024 14:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E3119D069;
+	Thu, 25 Jul 2024 14:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFM5feee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8pyd6bW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758A0FC19;
-	Thu, 25 Jul 2024 14:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6682913C816;
+	Thu, 25 Jul 2024 14:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919026; cv=none; b=So22oYXXjWYrHZfNb/e2e5Kysy27oEzdtqXJCAu1/8Sd8sxHWOV/z/1zLYAu/PLfeIsWqjZkw663/ZaoUeP3svia3JiXRji49VBVfZt7LG+82mhlRC+xpBs6RufYN74TkKPtD5ABWM8vafvo3CYl48gwYDnwNHL0J6oUpKBeLd8=
+	t=1721919170; cv=none; b=SYyxD3svITx8Qq+t94DMnnfbXhXeunRoQND2vx5cvLUtfMEU5Fg029ueUzqS6w03wMPXCZK9OiI27Wrs3v3uFQnqsOSXolPg0G2jSk3LPPowvFUyO4+6QZwMqDU7SOnSatGaqOfFm4HROctpdB0GO8Rv+LseSY59Y1po0CXwWEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919026; c=relaxed/simple;
-	bh=eIGrVGYKA4gweZFa/qIS3Fae85l5lfYjdcmmOq2RTiU=;
+	s=arc-20240116; t=1721919170; c=relaxed/simple;
+	bh=4vhxNZ0K/+5frh+ZM8UwTo6YxpCQBvc9voKtlrT5pnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQ1TQ5TDKFlSuKPOXTQSKfHamQqVXinTiJgGP+U3cBZhpjDOOacFNrYYyrb0N16/8h+j2p6Dy/rYOqdb0INqjSreYtYmUCbsvlvMMUbGBRG30O1AOZU0vHaICe0AHliT0gYGhd0UCXxGvEM9fv2QyARNd9xKFn1vpgCO2ya1kds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFM5feee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB206C116B1;
-	Thu, 25 Jul 2024 14:50:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EUhRwr8vZnvZG8EV0PSoyBMPZry4Z5O0bLlSzplxIrltY/8rwKGl2tasy6/qYhZS/JrZcSmC2SCDHTg1dR9vDYlGlEx/EdTO/zI7glLxxnh6ZeHG4SYE+397jaiW9KfWdeO+267tzIMoBZgYRkYahuz0dj+mceIljuK9VqEwmgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8pyd6bW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1EB1C32782;
+	Thu, 25 Jul 2024 14:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919026;
-	bh=eIGrVGYKA4gweZFa/qIS3Fae85l5lfYjdcmmOq2RTiU=;
+	s=korg; t=1721919170;
+	bh=4vhxNZ0K/+5frh+ZM8UwTo6YxpCQBvc9voKtlrT5pnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nFM5feeeMe5b2XD4B1BB7I+8DycCjKxnRDyQ/YLOPnKqqtbHC1X55wPH/0TKLqqqD
-	 6RCKS7eU81W1xNmKtQmGPcrlHkB+JS/mc3qnmGUB0rI2pXLZG1r4S3ZEbXnSO8dY3W
-	 MmJUlHsmGk+RWoCZouSnmdCBiLtFFWruTHAVdSiA=
+	b=c8pyd6bWnDV2ZSBDKqnUzY5OGPyPqCX3vULcJjh+UDkqP7yn4u8+u7cGJheQDHQfN
+	 O0AibWvzmw9POZ2Ymi39gjnE9/1M70oY/kEbCVMBjsv2hkfUAtLA4Px/rrlWFJGAUc
+	 nrffo16u+QvrupUcNe3bMyY6/TP+0+kIiQy0NMKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Agathe Boutmy <agathe@boutmy.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 29/59] s390/sclp: Fix sclp_init() cleanup on failure
+Subject: [PATCH 5.15 46/87] platform/x86: lg-laptop: Change ACPI device id
 Date: Thu, 25 Jul 2024 16:37:19 +0200
-Message-ID: <20240725142734.361493340@linuxfoundation.org>
+Message-ID: <20240725142740.169745154@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 6434b33faaa063df500af355ee6c3942e0f8d982 ]
+[ Upstream commit 58a54f27a0dac81f7fd3514be01012635219a53c ]
 
-If sclp_init() fails it only partially cleans up: if there are multiple
-failing calls to sclp_init() sclp_state_change_event will be added several
-times to sclp_reg_list, which results in the following warning:
+The LGEX0815 ACPI device id is used for handling hotkey events, but
+this functionality is already handled by the wireless-hotkey driver.
 
-------------[ cut here ]------------
-list_add double add: new=000003ffe1598c10, prev=000003ffe1598bf0, next=000003ffe1598c10.
-WARNING: CPU: 0 PID: 1 at lib/list_debug.c:35 __list_add_valid_or_report+0xde/0xf8
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.10.0-rc3
-Krnl PSW : 0404c00180000000 000003ffe0d6076a (__list_add_valid_or_report+0xe2/0xf8)
-           R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-...
-Call Trace:
- [<000003ffe0d6076a>] __list_add_valid_or_report+0xe2/0xf8
-([<000003ffe0d60766>] __list_add_valid_or_report+0xde/0xf8)
- [<000003ffe0a8d37e>] sclp_init+0x40e/0x450
- [<000003ffe00009f2>] do_one_initcall+0x42/0x1e0
- [<000003ffe15b77a6>] do_initcalls+0x126/0x150
- [<000003ffe15b7a0a>] kernel_init_freeable+0x1ba/0x1f8
- [<000003ffe0d6650e>] kernel_init+0x2e/0x180
- [<000003ffe000301c>] __ret_from_fork+0x3c/0x60
- [<000003ffe0d759ca>] ret_from_fork+0xa/0x30
+The LGEX0820 ACPI device id however is used to manage various
+platform features using the WMAB/WMBB ACPI methods. Use this ACPI
+device id to avoid blocking the wireless-hotkey driver from probing.
 
-Fix this by removing sclp_state_change_event from sclp_reg_list when
-sclp_init() fails.
-
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Tested-by: Agathe Boutmy <agathe@boutmy.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606233540.9774-4-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/lg-laptop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
-index d2ab3f07c008c..8296e6bc229ee 100644
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -1208,6 +1208,7 @@ sclp_init(void)
- fail_unregister_reboot_notifier:
- 	unregister_reboot_notifier(&sclp_reboot_notifier);
- fail_init_state_uninitialized:
-+	list_del(&sclp_state_change_event.list);
- 	sclp_init_state = sclp_init_state_uninitialized;
- 	free_page((unsigned long) sclp_read_sccb);
- 	free_page((unsigned long) sclp_init_sccb);
+diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
+index 96960f96f775c..807bd4283b979 100644
+--- a/drivers/platform/x86/lg-laptop.c
++++ b/drivers/platform/x86/lg-laptop.c
+@@ -718,7 +718,7 @@ static int acpi_remove(struct acpi_device *device)
+ }
+ 
+ static const struct acpi_device_id device_ids[] = {
+-	{"LGEX0815", 0},
++	{"LGEX0820", 0},
+ 	{"", 0}
+ };
+ MODULE_DEVICE_TABLE(acpi, device_ids);
 -- 
 2.43.0
 
