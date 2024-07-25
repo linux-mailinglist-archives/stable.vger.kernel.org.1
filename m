@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04BE793C5A4
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:53:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAA593C52A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 355C71C21EDA
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77AB3282D6D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C57319AD9B;
-	Thu, 25 Jul 2024 14:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E9719B589;
+	Thu, 25 Jul 2024 14:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9b278VP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocuA/1mm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DF2FC19;
-	Thu, 25 Jul 2024 14:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1253A1E895;
+	Thu, 25 Jul 2024 14:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919233; cv=none; b=b9Wu6f5+gxO3Px7C99xmc4KigCTwqH/X567gDOMMbaZs4sxVVx6H+g71YUdVq1Gt9Rb+ZzW/bOcoQ7Tp8UXMktttfIUA/vjeqBcxn+XT11Uf7H8LWTxH288HUW85RM90LxSasXoLYK7sfpFHgvFUpx+d86qKVW6Ovj9OT6grgfA=
+	t=1721918880; cv=none; b=kjJYLRTFHKlpvJUA6a7AdqffbZh41XnSEoJWIGTFfkEx4FqA61YwcW4s/2H/921O2niW1RDT5L+tnqTZNwIx81QRRl1rlBOLuw1Q86Hdv519a+U5DbvnuQ6dUIodimqn74SvPVVEhzRen7bNVEm+5aBPKYYIbIAN4aJ/wObcUVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919233; c=relaxed/simple;
-	bh=RMo/uWZz0TO4dr1igDrXYcp+V06JvPxdXTlXW1f5VGE=;
+	s=arc-20240116; t=1721918880; c=relaxed/simple;
+	bh=Gapd9Qt0rUOeNlGdv4lheTZOZvhakcASdA9lfj+e0Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WP1pOq8E8iTz5DB1TkU1mrvu8zPSe6ZXHGk91RjM+G/zuSxFWOvdGbd0iXM9oaG9kHjVvhmm8Lk7Rh54ZeBxPcFgV1kTGLDKAJeT9APTp7e1sS90oO5lrBbodHirSOvLrAX+7WvQBa4ar7BdHATSpJAaKLNEiiD9LnsP2tqiQ7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9b278VP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8CFCC116B1;
-	Thu, 25 Jul 2024 14:53:52 +0000 (UTC)
+	 MIME-Version; b=Ow0PWrnBEU6QvSrQbQJNsTH3HDFoUDfdUI8trGRmnPOnAsCvk+Vn/3XwNQvS5Jl9tMjTL2Qlt/iyF9iGhHvPcbFvZraGQj+AJAK4oOQO1EcykGgQ8l54oHGqdvpzeSoR8aFdrzbpKL24wTW7sFPs/qXtdfjpd9XR+g2lHHCHLMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocuA/1mm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3951EC116B1;
+	Thu, 25 Jul 2024 14:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919233;
-	bh=RMo/uWZz0TO4dr1igDrXYcp+V06JvPxdXTlXW1f5VGE=;
+	s=korg; t=1721918879;
+	bh=Gapd9Qt0rUOeNlGdv4lheTZOZvhakcASdA9lfj+e0Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J9b278VPWinbb8oQ1kODJwqLspC9iBnA1Zia4sk0i0M4KObCbSqX4j8lB1YcaachM
-	 W6TfPyzIexqy/faiVRJjhRtX6CgzTl/7Mok82FXg3tvWiUeX/P/rO9k11oE1eQxfSY
-	 BFVluT4Nfe9ae8TepHtRxZBUXJ5fc9NisQtFyIRI=
+	b=ocuA/1mm36DtUfLGcHra94U+iPlSgPdzbySTfUQrT4pKyDidmfpIVhsErHcEZF0oh
+	 VPVhfI6tf5TUKSOqhPclTPwvK41sTE3G5Hw5yxxTiqlxYB/1yOTnsqB9UYYZYNHQTg
+	 iDGO8m0kSTYtPXfPvY64AsgBgz7O5+E8KZBZywR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 33/87] drm/vmwgfx: Fix missing HYPERVISOR_GUEST dependency
-Date: Thu, 25 Jul 2024 16:37:06 +0200
-Message-ID: <20240725142739.684918070@linuxfoundation.org>
+Subject: [PATCH 5.10 17/59] mei: demote client disconnect warning on suspend to debug
+Date: Thu, 25 Jul 2024 16:37:07 +0200
+Message-ID: <20240725142733.915332783@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Makhalov <alexey.makhalov@broadcom.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 8c4d6945fe5bd04ff847c3c788abd34ca354ecee ]
+[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
 
-VMWARE_HYPERCALL alternative will not work as intended without VMware guest code
-initialization.
+Change level for the "not connected" client message in the write
+callback from error to debug.
 
-  [ bp: note that this doesn't reproduce with newer gccs so it must be
-    something gcc-9-specific. ]
+The MEI driver currently disconnects all clients upon system suspend.
+This behavior is by design and user-space applications with
+open connections before the suspend are expected to handle errors upon
+resume, by reopening their handles, reconnecting,
+and retrying their operations.
 
-Closes: https://lore.kernel.org/oe-kbuild-all/202406152104.FxakP1MB-lkp@intel.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240616012511.198243-1-alexey.makhalov@broadcom.com
+However, the current driver implementation logs an error message every
+time a write operation is attempted on a disconnected client.
+Since this is a normal and expected flow after system resume
+logging this as an error can be misleading.
+
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/Kconfig | 2 +-
+ drivers/misc/mei/main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/Kconfig b/drivers/gpu/drm/vmwgfx/Kconfig
-index c9ce47c448e03..5b9a9fba85421 100644
---- a/drivers/gpu/drm/vmwgfx/Kconfig
-+++ b/drivers/gpu/drm/vmwgfx/Kconfig
-@@ -2,7 +2,7 @@
- config DRM_VMWGFX
- 	tristate "DRM driver for VMware Virtual GPU"
- 	depends on DRM && PCI && MMU
--	depends on X86 || ARM64
-+	depends on (X86 && HYPERVISOR_GUEST) || ARM64
- 	select DRM_TTM
- 	select MAPPING_DIRTY_HELPERS
- 	# Only needed for the transitional use of drm_crtc_init - can be removed
+diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
+index 9f6682033ed7e..d8311d41f0a7b 100644
+--- a/drivers/misc/mei/main.c
++++ b/drivers/misc/mei/main.c
+@@ -329,7 +329,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
+ 	}
+ 
+ 	if (!mei_cl_is_connected(cl)) {
+-		cl_err(dev, cl, "is not connected");
++		cl_dbg(dev, cl, "is not connected");
+ 		rets = -ENODEV;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
