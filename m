@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AADC793C458
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:38:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A162D93C47C
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD1401C2145F
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D29661C21D38
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D352519CD17;
-	Thu, 25 Jul 2024 14:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9C519D088;
+	Thu, 25 Jul 2024 14:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdeZ5Be4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjPdnNtf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9224D19A29C;
-	Thu, 25 Jul 2024 14:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6829519D086;
+	Thu, 25 Jul 2024 14:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918329; cv=none; b=D3qdmQjQNk5iGmK+n/W1puUML4sYta3Czy2mGvO7SpmC+l3bCdPHmzGNgQXBQHDKyxWp6FZ5nM+QtAESeb9PH3UKIdbTWAf7BeTmuRjGEj2lnkRD2BsUA4QJDiSedvLT1qNMSpC+1ENLx7zohBtCu/aM2gJ7UHkaaxKwQFEolgM=
+	t=1721918406; cv=none; b=E+MaPFiYPCcGvu+wxO81scPcODKrZzCB3kjU9jpqERhn4Uoz2q1aSRczbqg4hJw26ZqJNLpRV0/n0mxiUtK4vjPqiGAYxiJXi/jHo7w/r4jl8dhvyyjV5qkbjxAFIZjKZJjC02YYECMVa+HQOOwfi761957UXCYyldj/bDezhSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918329; c=relaxed/simple;
-	bh=uioX+3JVJBQGG45Q6yXDF4ydlbWyehuXOlI5MLvgMO8=;
+	s=arc-20240116; t=1721918406; c=relaxed/simple;
+	bh=JZzuceccPAKi7i7zjb9Qi2ngoBZt+ag/GATkL7So9MA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dfi/4Ws0yaKxaP5U1H/ZqQf5j3SbaLUZWWTY4HfDEq3x1lOxAXmskPkXNoC3I60+qIdiEPw/HW66nQq+dssOEpBHN6JD5vTU6Q19FmWCCoWX7qGYTefrCayrFf04gbPd/pCsqNSPvPAh5rXxK0ZpPxdinhiXn93/g7wfpGodwTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdeZ5Be4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197E5C116B1;
-	Thu, 25 Jul 2024 14:38:48 +0000 (UTC)
+	 MIME-Version; b=iFZ2Lzszkh+iUZOxcBPLvtiHJ31DtSRvS+XgIgZoei7BO1szgUIlJQLNfRqPhTP9B88HejGkVOdr5cDFBizZxSQGgqBw62Qs7CnwEfN1ypkYhNp7bCGxmrAp09Qucro0FtcdGFMA+YPdwgKyUSa+0CXbdQhTX9S3AG3V4Rrdjsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjPdnNtf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D04E2C116B1;
+	Thu, 25 Jul 2024 14:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918329;
-	bh=uioX+3JVJBQGG45Q6yXDF4ydlbWyehuXOlI5MLvgMO8=;
+	s=korg; t=1721918406;
+	bh=JZzuceccPAKi7i7zjb9Qi2ngoBZt+ag/GATkL7So9MA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tdeZ5Be4GbkEq5S25h/tCHWYRg96qTdm6BuGhoyBoC5VYIKVxJFTjOSGaDY0kvqgK
-	 Ig48YfYYL/Dx6k+CYCRQCs6sPWKWzYwdz86ZYew26faqcYWrmfDX4n4+K9dzVOXmEf
-	 T4akaXjrCW0QnTTmu+c5I5N3LkpaNekjl0Wfoywo=
+	b=rjPdnNtfPhTJTijcYaAXfNWktyyFa+C7Rxli7z0a3kdBXxzR3JfpNAZzB1T4iR8ca
+	 aEu8pvc2l5Pi+qFfFRZl7fKrrdvtBvN9ioi7/BaupK82hJgc88WxFfyOBxszklB1v1
+	 Lw+3Qk0UBShsO89dvbGGau9mHp0UtM+p4k9HX+S4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 17/29] arm64: dts: qcom: x1e80100-qcp: Fix the PHY regulator for PCIe 6a
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 10/33] kconfig: remove wrong expr_trans_bool()
 Date: Thu, 25 Jul 2024 16:36:33 +0200
-Message-ID: <20240725142732.463820675@linuxfoundation.org>
+Message-ID: <20240725142728.911910274@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-References: <20240725142731.814288796@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 87042003f6ea7d075784db98da6903738a38f3cf upstream.
+[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
 
-The actual PHY regulator is L1d instead of L3j, so fix it accordingly.
+expr_trans_bool() performs an incorrect transformation.
 
-Fixes: f9a9c11471da ("arm64: dts: qcom: x1e80100-qcp: Enable more support")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: stable@vger.kernel.org      # 6.9
-Link: https://lore.kernel.org/r/20240530-x1e80100-dts-pcie6a-v1-2-ee17a9939ba5@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Test Code]
+
+    config MODULES
+            def_bool y
+            modules
+
+    config A
+            def_bool y
+            select C if B != n
+
+    config B
+            def_tristate m
+
+    config C
+            tristate
+
+[Result]
+
+    CONFIG_MODULES=y
+    CONFIG_A=y
+    CONFIG_B=m
+    CONFIG_C=m
+
+This output is incorrect because CONFIG_C=y is expected.
+
+Documentation/kbuild/kconfig-language.rst clearly explains the function
+of the '!=' operator:
+
+    If the values of both symbols are equal, it returns 'n',
+    otherwise 'y'.
+
+Therefore, the statement:
+
+    select C if B != n
+
+should be equivalent to:
+
+    select C if y
+
+Or, more simply:
+
+    select C
+
+Hence, the symbol C should be selected by the value of A, which is 'y'.
+
+However, expr_trans_bool() wrongly transforms it to:
+
+    select C if B
+
+Therefore, the symbol C is selected by (A && B), which is 'm'.
+
+The comment block of expr_trans_bool() correctly explains its intention:
+
+  * bool FOO!=n => FOO
+    ^^^^
+
+If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
+
+However, the actual code performs this transformation when FOO is
+tristate:
+
+    if (e->left.sym->type == S_TRISTATE) {
+                             ^^^^^^^^^^
+
+While it can be fixed to S_BOOLEAN, there is no point in doing so
+because expr_tranform() already transforms FOO!=n to FOO when FOO is
+bool. (see the "case E_UNEQUAL" part)
+
+expr_trans_bool() is wrong and unnecessary.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-qcp.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/kconfig/expr.c | 29 -----------------------------
+ scripts/kconfig/expr.h |  1 -
+ scripts/kconfig/menu.c |  2 --
+ 3 files changed, 32 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-@@ -470,7 +470,7 @@
- };
+diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
+index 7e38070ee523b..1c69de8cacf6d 100644
+--- a/scripts/kconfig/expr.c
++++ b/scripts/kconfig/expr.c
+@@ -395,35 +395,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
+ 	return e;
+ }
  
- &pcie6a_phy {
--	vdda-phy-supply = <&vreg_l3j_0p8>;
-+	vdda-phy-supply = <&vreg_l1d_0p8>;
- 	vdda-pll-supply = <&vreg_l2j_1p2>;
+-/*
+- * bool FOO!=n => FOO
+- */
+-struct expr *expr_trans_bool(struct expr *e)
+-{
+-	if (!e)
+-		return NULL;
+-	switch (e->type) {
+-	case E_AND:
+-	case E_OR:
+-	case E_NOT:
+-		e->left.expr = expr_trans_bool(e->left.expr);
+-		e->right.expr = expr_trans_bool(e->right.expr);
+-		break;
+-	case E_UNEQUAL:
+-		// FOO!=n -> FOO
+-		if (e->left.sym->type == S_TRISTATE) {
+-			if (e->right.sym == &symbol_no) {
+-				e->type = E_SYMBOL;
+-				e->right.sym = NULL;
+-			}
+-		}
+-		break;
+-	default:
+-		;
+-	}
+-	return e;
+-}
+-
+ /*
+  * e1 || e2 -> ?
+  */
+diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
+index 43a87f8ea738c..968219750244a 100644
+--- a/scripts/kconfig/expr.h
++++ b/scripts/kconfig/expr.h
+@@ -302,7 +302,6 @@ struct expr *expr_copy(const struct expr *org);
+ void expr_free(struct expr *e);
+ void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
+ tristate expr_calc_value(struct expr *e);
+-struct expr *expr_trans_bool(struct expr *e);
+ struct expr *expr_eliminate_dups(struct expr *e);
+ struct expr *expr_transform(struct expr *e);
+ int expr_contains_symbol(struct expr *dep, struct symbol *sym);
+diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
+index 4cf15d449c05d..4d48ff3083bd8 100644
+--- a/scripts/kconfig/menu.c
++++ b/scripts/kconfig/menu.c
+@@ -390,8 +390,6 @@ void menu_finalize(struct menu *parent)
+ 				dep = expr_transform(dep);
+ 				dep = expr_alloc_and(expr_copy(basedep), dep);
+ 				dep = expr_eliminate_dups(dep);
+-				if (menu->sym && menu->sym->type != S_TRISTATE)
+-					dep = expr_trans_bool(dep);
+ 				prop->visible.expr = dep;
  
- 	status = "okay";
+ 				/*
+-- 
+2.43.0
+
 
 
 
