@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-61664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E5A93C562
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C3993C5B7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82BE11C21F2D
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A1A228185A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3BB19D069;
-	Thu, 25 Jul 2024 14:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA7019D88F;
+	Thu, 25 Jul 2024 14:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeWE9kxo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVrVykZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACEC1993A3;
-	Thu, 25 Jul 2024 14:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895D319D88A;
+	Thu, 25 Jul 2024 14:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919045; cv=none; b=ssyoKDX0fKC5I+gPveANFbayTI5GXAJLfj8Ek5QAWIw9yiIb8vyPV/t27d1nFvx06WQZu4nuAq96CanV37bwFGSuxwekOdFYmcENSC9+oKoce4met/YpGMKHdfHRIHCCIGTZCioAoGtiK1jITQKEQTzZd8k9KjvoWKYPgP3jmKI=
+	t=1721919273; cv=none; b=lcCx6TIY7KLfPsNczSCPfy5ZD73+TLs2J96kX7IRJBDRjfj0K+tn4Q61zRaR1Nm2LJT8O4j/rovgQfSZoTioa9h70lVC8OV+7IeAzN4eYSfYpl/BdgTTnTP9JQ/dBTHqseMcR1qqb5CjqQNY91k8Elw1LCtMjyMLjSUFk0cBPyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919045; c=relaxed/simple;
-	bh=LphKFI+DW+SKYI9/wAECUm25m6yr2UNr7t6YOzTvank=;
+	s=arc-20240116; t=1721919273; c=relaxed/simple;
+	bh=PsRRiYbeSmm2DqW92L/rq3OxLrG3TMaFI+v/Sztag1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nf3CA4GgD/SADNDdwZJeYJ3DLiuCoZRLpSFevC19zCqyQyJ7gN0O0CpsJJmrRw3TI/K+jaALCgbqgJTMJ4BanmFvB6rHQs8DbZfTkLgHNJu1kuN3fhcBRrTKb4+FcOVNgWQHOC4SegxToujtn56RyveTSU96QXpoU6f4PlLIaqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeWE9kxo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66C0C116B1;
-	Thu, 25 Jul 2024 14:50:44 +0000 (UTC)
+	 MIME-Version; b=QPHM3a1IhJNfbPIO9c3nm0UZvgXOUbFlnku3WjXdaHv5GEfSHFsQd0hwHL+/uR/GcM013D4Wvdvo0jYFItwqj4slavJ8ZkjU5MBpaQuGBINQMQLM281VGKuPbd6Ja6TkZ3r938neZdZg6sLs0GOmkZO+0qgTSxlwgA6zuTiggno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVrVykZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8748DC116B1;
+	Thu, 25 Jul 2024 14:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919045;
-	bh=LphKFI+DW+SKYI9/wAECUm25m6yr2UNr7t6YOzTvank=;
+	s=korg; t=1721919273;
+	bh=PsRRiYbeSmm2DqW92L/rq3OxLrG3TMaFI+v/Sztag1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XeWE9kxo49ts9f4ToKOYGaUesXN6jVypfBOD6TM3ZR6x0WYZIruMa83fd54RzXjCi
-	 Qs0Yayr2SfMMexoK6F6Abx25c3jlLFg9v2h09x2Un2p2tL896p5zThYloBqNh7VQ/L
-	 RSeDPQQ04bNc4q322h3N4Y+2efQiUnFZTOul9qj4=
+	b=aVrVykZr90nMVF3aBGDmUJl4qaBJ0Ty3gGxSjVQtrEln1tQO1uH8Vqk+vnlxfDsqE
+	 +p+nfF2yeT6WmgMI0QXX+Y3xIfHTIoamxd0/nHi1X65QD15V7PYxufXJyQ/L5ZYwFf
+	 dXjygI1y/OacXjRTm6JcZ6QtFIIEz0h0TSrESizQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 59/59] filelock: Fix fcntl/close race recovery compat path
-Date: Thu, 25 Jul 2024 16:37:49 +0200
-Message-ID: <20240725142735.482264617@linuxfoundation.org>
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 77/87] Add gitignore file for samples/fanotify/ subdirectory
+Date: Thu, 25 Jul 2024 16:37:50 +0200
+Message-ID: <20240725142741.343975788@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit f8138f2ad2f745b9a1c696a05b749eabe44337ea upstream.
+[ Upstream commit c107fb9b4f8338375b3e865c3d2c1d98ccb3a95a ]
 
-When I wrote commit 3cad1bc01041 ("filelock: Remove locks reliably when
-fcntl/close race is detected"), I missed that there are two copies of the
-code I was patching: The normal version, and the version for 64-bit offsets
-on 32-bit kernels.
-Thanks to Greg KH for stumbling over this while doing the stable
-backport...
+Commit 5451093081db ("samples: Add fs error monitoring example") added a
+new sample program, but didn't teach git to ignore the new generated
+files, causing unnecessary noise from 'git status' after a full build.
 
-Apply exactly the same fix to the compat path for 32-bit kernels.
+Add the 'fs-monitor' sample executable to the .gitignore for this
+subdirectory to silence it all again.
 
-Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
-Cc: stable@kernel.org
-Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240723-fs-lock-recover-compatfix-v1-1-148096719529@google.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/locks.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ samples/fanotify/.gitignore |    1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 samples/fanotify/.gitignore
 
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2719,8 +2719,9 @@ int fcntl_setlk64(unsigned int fd, struc
- 	error = do_lock_file_wait(filp, cmd, file_lock);
- 
- 	/*
--	 * Attempt to detect a close/fcntl race and recover by releasing the
--	 * lock that was just acquired. There is no need to do that when we're
-+	 * Detect close/fcntl races and recover by zapping all POSIX locks
-+	 * associated with this file and our files_struct, just like on
-+	 * filp_flush(). There is no need to do that when we're
- 	 * unlocking though, or for OFD locks.
- 	 */
- 	if (!error && file_lock->fl_type != F_UNLCK &&
-@@ -2735,9 +2736,7 @@ int fcntl_setlk64(unsigned int fd, struc
- 		f = files_lookup_fd_locked(files, fd);
- 		spin_unlock(&files->file_lock);
- 		if (f != filp) {
--			file_lock->fl_type = F_UNLCK;
--			error = do_lock_file_wait(filp, cmd, file_lock);
--			WARN_ON_ONCE(error);
-+			locks_remove_posix(filp, files);
- 			error = -EBADF;
- 		}
- 	}
+--- /dev/null
++++ b/samples/fanotify/.gitignore
+@@ -0,0 +1 @@
++fs-monitor
 
 
 
