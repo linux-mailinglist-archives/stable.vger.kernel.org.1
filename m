@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DC593C485
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9F693C4D5
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A5C21C21BE0
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49ABD2815B7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F6819DF62;
-	Thu, 25 Jul 2024 14:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F179C19D066;
+	Thu, 25 Jul 2024 14:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bg6fUArV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vc7kIzVU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E850519D07A;
-	Thu, 25 Jul 2024 14:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBFB199E9F;
+	Thu, 25 Jul 2024 14:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918429; cv=none; b=ndwJC5FhvYIVgOcLoRbl/WcxMXh50AJ93YggNcirDlo5elhBR1DjGpF+sVOC6Co620a+/ehYJfjZtxaPfltwJvTjtUsRmaaJq0nKk2qvvE3IdQDM807r6JGVn6X5iDm+tCQfMgR9N7WLtJPCSkjSjqqqRg0uZGxX+Q2PJdV6fPk=
+	t=1721918647; cv=none; b=lcZfLb3aBjwGNCQlRZJYEnnqupq249eWva7RFOCiu4IaIcmItOqYmg9qdvBrTNQDUvoGRQMLTSYP3w1GS8PWLJdnXPm4tupf49oX0sF8Yux2IVuk1wg/I4VDvYyucOMRjZwzIo6DNmVjF25NVuxiahBM4YmX1tHU835JwwWugko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918429; c=relaxed/simple;
-	bh=UmKHu6/VZt+A6YuAe1BjQgmx4LNZQZCEjc5uBi6pH+s=;
+	s=arc-20240116; t=1721918647; c=relaxed/simple;
+	bh=OwMny5WJMRCQsVIhx/wPY8sI4WtIBUs1zM8ZjI88s3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DY1wr4I+Pu84cV6aXX5n3QGH8j0NwIXeZYbBJLdnfluTiYHXQHl9j0O0WAQc6ye0jDMthNF7KyNC5H9DvDnKd+5ZCyqAtpWxvUlbUl7FpPSu0HI9O677nwNrxofjmjAV+pGN0ssXzp7vShgTu0Mmn++NZiJxnhAOLkkB3BeUMvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bg6fUArV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AC7C116B1;
-	Thu, 25 Jul 2024 14:40:28 +0000 (UTC)
+	 MIME-Version; b=QiygTIw40Mrnv5z6TjLlsrAq3wN7+ULYjmFpeM0pbk1XhtiORcqxQHOv6M+Imkn3xfcRhQn9CY+8hhMJxdTG6zYTWgyDHSFA3SDaJca0X4L0YQszpSNiHGD/t39VNiN3XWgFnea9QNDYODWMlIOBlzTRAmxCwe71TxN76taogNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vc7kIzVU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D209DC116B1;
+	Thu, 25 Jul 2024 14:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918428;
-	bh=UmKHu6/VZt+A6YuAe1BjQgmx4LNZQZCEjc5uBi6pH+s=;
+	s=korg; t=1721918647;
+	bh=OwMny5WJMRCQsVIhx/wPY8sI4WtIBUs1zM8ZjI88s3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bg6fUArVPL7D0gxIC8U1N4Vf8QhTNh7Emo4I2IX1qafEw5s040unX80oc4SVa2MBI
-	 OBNpXXhedoW4ZZ082oM2Nh6MousvuMItpv7CR9EUkqFJFIWYm6V6R4cxSbuAvKlTT6
-	 BOks729mfvqKlV69jRCwjw1+3KMK0UjBuyhRa0XI=
+	b=vc7kIzVUv4nfEx9ElvhiC0E6+gRHBPShU7yXe01LXtZPW8Q+82+3/GLRnBRYCLbBO
+	 tQtuKHu/BDIXo3Rwc/DL/uyYpr7/hYlj+RRmZ8qQIJkLr0HedN/mafYnaMvnqaI4+7
+	 LRXaYUjxaAb5XJFyo/luXcKFdfeYuW8JcLOEjE6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 17/33] gpio: pca953x: fix pca953x_irq_bus_sync_unlock race
+Subject: [PATCH 5.4 17/43] mips: fix compat_sys_lseek syscall
 Date: Thu, 25 Jul 2024 16:36:40 +0200
-Message-ID: <20240725142729.169703470@linuxfoundation.org>
+Message-ID: <20240725142731.124981402@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit bfc6444b57dc7186b6acc964705d7516cbaf3904 ]
+[ Upstream commit 0d5679a0aae2d8cda72169452c32e5cb88a7ab33 ]
 
-Ensure that `i2c_lock' is held when setting interrupt latch and mask in
-pca953x_irq_bus_sync_unlock() in order to avoid races.
+This is almost compatible, but passing a negative offset should result
+in a EINVAL error, but on mips o32 compat mode would seek to a large
+32-bit byte offset.
 
-The other (non-probe) call site pca953x_gpio_set_multiple() ensures the
-lock is held before calling pca953x_write_regs().
+Use compat_sys_lseek() to correctly sign-extend the argument.
 
-The problem occurred when a request raced against irq_bus_sync_unlock()
-approximately once per thousand reboots on an i.MX8MP based system.
-
- * Normal case
-
-   0-0022: write register AI|3a {03,02,00,00,01} Input latch P0
-   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
-   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
-   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
-
- * Race case
-
-   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
-   0-0022: write register AI|08 {03,02,00,00,01} *** Wrong register ***
-   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
-   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
-
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://lore.kernel.org/r/20240620042915.2173-1-ian.ray@gehealthcare.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-pca953x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/kernel/syscalls/syscall_o32.tbl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index dc4088a47ab2d..5dcc31e5fb3eb 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -489,6 +489,8 @@ static void pca953x_irq_bus_sync_unlock(struct irq_data *d)
- 	u8 invert_irq_mask[MAX_BANK];
- 
- 	if (chip->driver_data & PCA_PCAL) {
-+		guard(mutex)(&chip->i2c_lock);
-+
- 		/* Enable latch on interrupt-enabled inputs */
- 		pca953x_write_regs(chip, PCAL953X_IN_LATCH, chip->irq_mask);
- 
+diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
+index 353539ea4140a..5f2c2636e7a4f 100644
+--- a/arch/mips/kernel/syscalls/syscall_o32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+@@ -27,7 +27,7 @@
+ 17	o32	break				sys_ni_syscall
+ # 18 was sys_stat
+ 18	o32	unused18			sys_ni_syscall
+-19	o32	lseek				sys_lseek
++19	o32	lseek				sys_lseek			compat_sys_lseek
+ 20	o32	getpid				sys_getpid
+ 21	o32	mount				sys_mount			compat_sys_mount
+ 22	o32	umount				sys_oldumount
 -- 
 2.43.0
 
