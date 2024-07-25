@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-61458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F57593C468
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:39:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC1893C4AB
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19E38B245B3
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:39:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CE7E1C21BF6
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2426A19D06A;
-	Thu, 25 Jul 2024 14:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44BAE19D080;
+	Thu, 25 Jul 2024 14:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FYW3mw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSqtwki4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46AF19A29C;
-	Thu, 25 Jul 2024 14:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032A019B5BE;
+	Thu, 25 Jul 2024 14:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918372; cv=none; b=eqM+OBXMFxlidCwlVj4SEfktp6C0VNcKkgvTkE0VmRLCxZCvd9OpeLQFg7MnHc7NWurwq7KAtiUkAt5SzURQEKK79FEXQWjJP2XZpv+HqsKw9dkplJzljZWw8QuuHTKgcg0JL5p2Sa+Og5I4kOUUaquDUPYwfxS19ibfkx6oaPA=
+	t=1721918521; cv=none; b=o0grE84RyVIOZH2eEdtpKZf1QidaOidHiCPfRHcj9M2B0bKyfkb8XQ+NtkZ85VTIIPoNSDBkmOnEFNXH8kHyqRV+G3MAcH3VvW7yPNXMOYHGiD0KfVZ888cpsi0nz7x0QN/R/uueyLq6fyhKRsz71PN1Cny3tbwKcQVs6Rv/UvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918372; c=relaxed/simple;
-	bh=2U5Rlz3rS7iPbNqm2sbJH59myweHmNSv3UvVmavbAAE=;
+	s=arc-20240116; t=1721918521; c=relaxed/simple;
+	bh=Rqf+OZLhFZtt0gdi3z8zasFui1OVL4/qExudBsZdddo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6ufC8vjp7uVoZifK/9B2ZKMODTao/nFBNSgtnDpkyxWbbaLHe0xiH9QXF/1FAN7lFH9EdZE4McVzO3RL1IdWFuo4G0GbDVh8Wm3Fyy3P0K2blPVhvCzCyw1D5KECVaTRkwcFWZvmxqjxISC2O85ApI0RoYciRrvQK5HMnjlJt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FYW3mw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9FDC116B1;
-	Thu, 25 Jul 2024 14:39:32 +0000 (UTC)
+	 MIME-Version; b=CMIot3GBRiCqmcziTGu6ZqTm1SC2qWXIXzacoOi8J4v0/WNomneoXp4/1MJhhCaPamWKOOxxGpUX81J19OySEw5COB8jZYqJ5hhKJTDe8acXgVEkXJYrIjq8OE3Z+/li6r0NiJcXWdZVkDTOS9Efc5bhygle2WPWEPktR6U8WWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSqtwki4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658AAC116B1;
+	Thu, 25 Jul 2024 14:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918372;
-	bh=2U5Rlz3rS7iPbNqm2sbJH59myweHmNSv3UvVmavbAAE=;
+	s=korg; t=1721918520;
+	bh=Rqf+OZLhFZtt0gdi3z8zasFui1OVL4/qExudBsZdddo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0FYW3mw1TCA2KBKoDIgFeQiz0TW10xWd9eVxSVxnR7phcMe5ZnV3jn1HelwgUP6z8
-	 q0cQrCwH14b2BuF0GEB8BLog4J9VNJd8Ua3ZqAtji9QwT2BtsFht75SxVPdk65mASo
-	 MZzY2eT/RbDbkcer0Y9fmtptkNucQdv3qQXY1TzY=
+	b=iSqtwki4TcN+/z4kTOESC38rvvvMETkIvziewGVJX0IdKMAs7HJ7mk7CiVKdMaA3Y
+	 30VhBE4VijNEjNW+8ZUTOjkljhzYZ04mM9d/1bT33c3bJwiPju6istjY21hPZRQXms
+	 ddsz599a5ucgDOnH/LrkskZWD1IME4mfgBrnZwvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 08/29] ALSA: hda/tas2781: Add new quirk for Lenovo Hera2 Laptop
-Date: Thu, 25 Jul 2024 16:36:24 +0200
-Message-ID: <20240725142732.131045499@linuxfoundation.org>
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.4 02/43] filelock: Remove locks reliably when fcntl/close race is detected
+Date: Thu, 25 Jul 2024 16:36:25 +0200
+Message-ID: <20240725142730.565093055@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-References: <20240725142731.814288796@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Jann Horn <jannh@google.com>
 
-commit 1e5597e5ff18d452cf9afa847e904f301d1ac690 upstream.
+commit 3cad1bc010416c6dd780643476bc59ed742436b9 upstream.
 
-Add new vendor_id and subsystem_id in quirk for Lenovo Hera2 Laptop.
+When fcntl_setlk() races with close(), it removes the created lock with
+do_lock_file_wait().
+However, LSMs can allow the first do_lock_file_wait() that created the lock
+while denying the second do_lock_file_wait() that tries to remove the lock.
+In theory (but AFAIK not in practice), posix_lock_file() could also fail to
+remove a lock due to GFP_KERNEL allocation failure (when splitting a range
+in the middle).
 
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240717115305.723-1-shenghao-ding@ti.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+After the bug has been triggered, use-after-free reads will occur in
+lock_get_status() when userspace reads /proc/locks. This can likely be used
+to read arbitrary kernel memory, but can't corrupt kernel memory.
+This only affects systems with SELinux / Smack / AppArmor / BPF-LSM in
+enforcing mode and only works from some security contexts.
+
+Fix it by calling locks_remove_posix() instead, which is designed to
+reliably get rid of POSIX locks associated with the given file and
+files_struct and is also used by filp_flush().
+
+Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
+Cc: stable@kernel.org
+Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20240702-fs-lock-recover-2-v1-1-edd456f63789@google.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[stable fixup: ->c.flc_type was ->fl_type in older kernels]
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/locks.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10539,6 +10539,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x231a, "Thinkpad Z16 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
- 	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
- 	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
-+	SND_PCI_QUIRK(0x17aa, 0x2326, "Hera2", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x30bb, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
- 	SND_PCI_QUIRK(0x17aa, 0x30e2, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
- 	SND_PCI_QUIRK(0x17aa, 0x310c, "ThinkCentre Station", ALC294_FIXUP_LENOVO_MIC_LOCATION),
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2526,8 +2526,9 @@ int fcntl_setlk(unsigned int fd, struct
+ 	error = do_lock_file_wait(filp, cmd, file_lock);
+ 
+ 	/*
+-	 * Attempt to detect a close/fcntl race and recover by releasing the
+-	 * lock that was just acquired. There is no need to do that when we're
++	 * Detect close/fcntl races and recover by zapping all POSIX locks
++	 * associated with this file and our files_struct, just like on
++	 * filp_flush(). There is no need to do that when we're
+ 	 * unlocking though, or for OFD locks.
+ 	 */
+ 	if (!error && file_lock->fl_type != F_UNLCK &&
+@@ -2541,9 +2542,7 @@ int fcntl_setlk(unsigned int fd, struct
+ 		f = fcheck(fd);
+ 		spin_unlock(&current->files->file_lock);
+ 		if (f != filp) {
+-			file_lock->fl_type = F_UNLCK;
+-			error = do_lock_file_wait(filp, cmd, file_lock);
+-			WARN_ON_ONCE(error);
++			locks_remove_posix(filp, &current->files);
+ 			error = -EBADF;
+ 		}
+ 	}
 
 
 
