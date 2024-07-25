@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F87B93C489
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0C893C4B6
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF0C31F21FBB
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 114971F225F4
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8154719D8B1;
-	Thu, 25 Jul 2024 14:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1934199E9F;
+	Thu, 25 Jul 2024 14:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrIZJPYd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buVrRST/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCD519D06D;
-	Thu, 25 Jul 2024 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEC719AA5F;
+	Thu, 25 Jul 2024 14:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918442; cv=none; b=ba7dkGgEiJoMpmpF/DVLH/KRV6xeJwfyIMfAeE0RPhEQ1h4otvMW6NlSqiWTrNMPj6XvSN/GVElXUiA7FLCioYLqacPUInRUYyntWqsNoI9YnXfooo40q68dHrg0gEQ1zCW31pdQOsFUTCXaNlEcXq66kw4k7hKNjP/dt47w5sY=
+	t=1721918552; cv=none; b=Mfc6Hap+w0yrgrdsAbykNKOztGlktiknN2nlxBpFvXbhjYomJ1vNBjrrKXtc5zJhsdr4aaW0D51nRQHxw/AA4QbjTxUIzJfvDW6spr8RPnaIZpMcQZCxKGkqAA9avqH96MESAMJWsheS5R86moeiK/lER4IpcGd2xFEiE9WWCpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918442; c=relaxed/simple;
-	bh=iSvAk3Yhuwx6r9d/HcPu6XkRFAR92jG6qDwgjhXaa6Q=;
+	s=arc-20240116; t=1721918552; c=relaxed/simple;
+	bh=zmH+rBhcr/MPpuIUuZY0GGjGSYyq+ilB+/s7qkF3b1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RqfvAXhXCBZBnvoxH0zQ26ervnUUDs9Xf3CHatxoxc9xq7igX526KFnW7Pm3mMAsgzAWyZeA5t7Jkb57bwq8VGcI16NRF4Ibu9Ifwoz5uEUoQhgvwWjDOuTBlNZXUUv1nTsCWgjQl7AM6B1oTZ8CbgEc3W4tVNgpTRoaseAtYjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrIZJPYd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE42C116B1;
-	Thu, 25 Jul 2024 14:40:41 +0000 (UTC)
+	 MIME-Version; b=lhU2/OCqYFjBqlLTgOiz63a8N+xKxWXoW4iXh3ETEV54o8o29nz1T/cBQ4UEMHFgw0mmzdoQOPtWwBGBDU6vyhIjUFdBtKqjYaBawnyWUb6igq6OTIDJDJq+oWEgyrNskpda3sH6zGUQyopMOWYKEbR3+EChPFKwH+oPWIgR38U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buVrRST/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9382C116B1;
+	Thu, 25 Jul 2024 14:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918441;
-	bh=iSvAk3Yhuwx6r9d/HcPu6XkRFAR92jG6qDwgjhXaa6Q=;
+	s=korg; t=1721918552;
+	bh=zmH+rBhcr/MPpuIUuZY0GGjGSYyq+ilB+/s7qkF3b1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qrIZJPYdi5r55Jc7U4cFJUW/C2RpIZ80nu+wY1MtF9HHJFvEBEWham+5YTfEpe8MY
-	 ZDq5dVRVFGaIM3uOUgyccXRyhHKPb0MlzCrROlgmNixxCnVKIKK2c8b2dGSvlNBhvr
-	 OqGymhixmj94xB+hgFyYpx0W3tgXBHhBzgOe79eY=
+	b=buVrRST/5lKzH4wzSMnzeqmnHqASUoaVVhiJu7m9vBZYKPXuv4gb5YoRD7Hkvg1Z2
+	 /7JpmPdI0JXgAj6UB530exhFrmYtwAySoNW9BHU4IR2gHgFG2GmfTthb3tJ5Na76UY
+	 zSH9u997NabzsfGxRQzOmlyrM0FnDolSO4d1qOLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Jai Luthra <j-luthra@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 20/33] net: usb: qmi_wwan: add Telit FN912 compositions
+Subject: [PATCH 5.4 20/43] ASoC: ti: davinci-mcasp: Set min period size using FIFO config
 Date: Thu, 25 Jul 2024 16:36:43 +0200
-Message-ID: <20240725142729.279756961@linuxfoundation.org>
+Message-ID: <20240725142731.236962122@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Jai Luthra <j-luthra@ti.com>
 
-[ Upstream commit 77453e2b015b5ced5b3f45364dd5a72dfc3bdecb ]
+[ Upstream commit c5dcf8ab10606e76c1d8a0ec77f27d84a392e874 ]
 
-Add the following Telit FN912 compositions:
+The minimum period size was enforced to 64 as older devices integrating
+McASP with EDMA used an internal FIFO of 64 samples.
 
-0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3000 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+With UDMA based platforms this internal McASP FIFO is optional, as the
+DMA engine internally does some buffering which is already accounted for
+when registering the platform. So we should read the actual FIFO
+configuration (txnumevt/rxnumevt) instead of hardcoding frames.min to
+64.
 
-0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3001 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Link: https://patch.msgid.link/20240625102236.69539-1-dnlplm@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Link: https://lore.kernel.org/r/20240611-asoc_next-v3-2-fcfd84b12164@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/ti/davinci-mcasp.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 3e59b63b838f6..3c65549a8688a 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1337,6 +1337,8 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1260, 2)},	/* Telit LE910Cx */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1261, 2)},	/* Telit LE910Cx */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1900, 1)},	/* Telit LN940 series */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3000, 0)},	/* Telit FN912 series */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3001, 0)},	/* Telit FN912 series */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9801, 3)},	/* Telewell TW-3G HSPA+ */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9803, 4)},	/* Telewell TW-3G HSPA+ */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9b01, 3)},	/* XS Stick W100-2 from 4G Systems */
+diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+index dc40b5c5d501e..b7a0806772027 100644
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -1422,10 +1422,11 @@ static int davinci_mcasp_hw_rule_min_periodsize(
+ {
+ 	struct snd_interval *period_size = hw_param_interval(params,
+ 						SNDRV_PCM_HW_PARAM_PERIOD_SIZE);
++	u8 numevt = *((u8 *)rule->private);
+ 	struct snd_interval frames;
+ 
+ 	snd_interval_any(&frames);
+-	frames.min = 64;
++	frames.min = numevt;
+ 	frames.integer = 1;
+ 
+ 	return snd_interval_refine(period_size, &frames);
+@@ -1440,6 +1441,7 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
+ 	u32 max_channels = 0;
+ 	int i, dir, ret;
+ 	int tdm_slots = mcasp->tdm_slots;
++	u8 *numevt;
+ 
+ 	/* Do not allow more then one stream per direction */
+ 	if (mcasp->substreams[substream->stream])
+@@ -1539,9 +1541,12 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
+ 			return ret;
+ 	}
+ 
++	numevt = (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) ?
++			 &mcasp->txnumevt :
++			 &mcasp->rxnumevt;
+ 	snd_pcm_hw_rule_add(substream->runtime, 0,
+ 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE,
+-			    davinci_mcasp_hw_rule_min_periodsize, NULL,
++			    davinci_mcasp_hw_rule_min_periodsize, numevt,
+ 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE, -1);
+ 
+ 	return 0;
 -- 
 2.43.0
 
