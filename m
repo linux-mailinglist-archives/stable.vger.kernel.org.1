@@ -1,148 +1,150 @@
-Return-Path: <stable+bounces-61756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8567593C61C
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 17:02:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9006E93C624
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 17:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F97A284919
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 15:02:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 393831F22087
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 15:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2ABD19CD18;
-	Thu, 25 Jul 2024 15:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E1F19D087;
+	Thu, 25 Jul 2024 15:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S9t2BiyF"
+	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="DHgZMX5A";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lstSyifR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh3-smtp.messagingengine.com (fhigh3-smtp.messagingengine.com [103.168.172.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160C619D066;
-	Thu, 25 Jul 2024 15:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6764C7482;
+	Thu, 25 Jul 2024 15:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919740; cv=none; b=Kk8u7SVD8ooLPg8TPmrsMQYAANRYYIcxZydUutV2dI+STBGqPrlW0TYDFnFKSWyz0O+SJiG9IDLFYgtaLv7I0Gs9q+p0aLI/RYWi+LNgjfqrpD9MvZHa5WHD6haT/oSsfqppNLlG3JiXauZz5h+TVQcjAyy0TenDL0gx//NWJg8=
+	t=1721919974; cv=none; b=NL/c3vDu+EIQmAwJmZzclODVY/VaJ/10z7UzX6pAGzv/SwyuaIUhzSjLLW+3OLtA4AzT9tgt0qHOZFav/FOU5Pz7GjwSUkm8pICWGovRhRBe+5TVwdMShfsgVn9kpyM533I2TuQChcxiDpAdGzmeGxCJEJaX1CocyOpWiaxh1pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919740; c=relaxed/simple;
-	bh=Gt7tT4IS1ETjy/tUYBrc2CiRyA2ObR6lUoBhHn98yiA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A2TOcrV/EnqeJxU/h/Hnrjm+ab3+05Nzp1Msw79/R+pRqq+Ccl0Kw/v/BihHTu/sitHKNyLyrKNwJ2jboQl7xprzaNr9Xpg3qAZpYXlwCz00LUcYeOzAYXWxQgICP0ddM6jnSxUDL75Mb65q83vDnGYZ11WnKTVX4u6NWJoyE64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S9t2BiyF; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2cb4b7fef4aso768883a91.0;
-        Thu, 25 Jul 2024 08:02:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721919738; x=1722524538; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QoJFajSTaKRkyu/ZodTh2Ah4x6T0R9kHlD7qvYnI/nA=;
-        b=S9t2BiyFoF+4x74KWvO3xSGvxGieIex8jxcM3t/oeOoGE6Aon26ciOeMo1TTY7HTcj
-         MduYPLFKXNIvzHmEwae15uT6sQIwEBVmvjseZN0zD/9Oo9MjsVHz6djlFk1CiPlqifAc
-         zvK0pPArQLMKqv3MpxIU5qSCurnFQEV2NCMQown39tUqMymyt1ouPhpU3U/Y/ngox0hd
-         9Zg/mcxrpTT7setRMJlIvHzkqwYSZxaZH4JbZZfuWkyJeehVdARBu/H1JG8yLaDSbTZ1
-         vnA9twX7r2kHRd9MOvO8Lp99BH1LBRs+t9vuNex0V20b3h7NT7bFVvGHw0ACfdCcc+GH
-         2TnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721919738; x=1722524538;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QoJFajSTaKRkyu/ZodTh2Ah4x6T0R9kHlD7qvYnI/nA=;
-        b=aaA9YS2GUztdZSuGVtsOh4n+d6OxMvl+vqz9aKp0Z2nWqs7JN/KfpyFyMoRaSMgDb9
-         K0u6RFOkvCueRGq57p38iMiuBTLEXWnw2K1keQUNkGU1UPqdNnq3SxiEMBcN57dkceqs
-         w1iERbZiVcHOHgpLh1xab3fXHBhW5cvjE5gh0wcOZvMmiBc9OCAFDk6oJvZ1wCIKRtpY
-         lJJ5fG12lOn4oHpp9qYfilxpoN73NOOfpc5Uz3mxB7juF05zzdCcxofMN4JmhiB9Xy2T
-         pqJqJROHa9iFQSj8lI7IF+tysTHEJH02QOID2hFAYIf37fk32QC3ttKPRahc9hQqoo5A
-         FX5w==
-X-Forwarded-Encrypted: i=1; AJvYcCXFfGWF2Wyf7MsK12iJJqw54qenJEApM76sF7z3hHn6Z+B5zw1sg95EOi7H1WqMhkLoz4tYjK3hU/p1vtcGZp5fwXRNVh/Pi/V+ZA==
-X-Gm-Message-State: AOJu0YzD/teuHyyMPr/40uGd0A/AhlX7gdOv/33foJYcFikw2BSrDFQ9
-	vPlv9djOo5JFgxhLdD9j2B6aoJJZxj5qcSfajhuZFFqF4QsjYXsx79fikA==
-X-Google-Smtp-Source: AGHT+IGZGLrpBp65z/osGfTeccjvs2IJt9WMWAD8p4OsAYCJQWqiqH5PFAxAOvhrHhAsh6vo9n5w7Q==
-X-Received: by 2002:a17:90a:ee4b:b0:2c8:1f30:4e04 with SMTP id 98e67ed59e1d1-2cf2ec05516mr2484907a91.36.1721919738250;
-        Thu, 25 Jul 2024 08:02:18 -0700 (PDT)
-Received: from [192.168.50.95] ([118.32.98.101])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cdb73afe30sm3688841a91.13.2024.07.25.08.02.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jul 2024 08:02:16 -0700 (PDT)
-Message-ID: <83f4efd8-8bab-4113-a845-dbb462201069@gmail.com>
-Date: Fri, 26 Jul 2024 00:02:12 +0900
+	s=arc-20240116; t=1721919974; c=relaxed/simple;
+	bh=klhcupiSnzZjEwy2ORCn/f5y48gvFionPVTR6qinpKE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UVMrs+jVxu2r/OyHTRJFkN075CIAY7JPr28TeusWIRKlvfkZnTk0Tvy0PUBAHB3XgyXLATW7rnUio8tX69QVqZrHtY/gMpSbbG5cL4TvNtKkcx+CkS2bxd47f/b3NO2L6yLyPVk0sS1VW2T4NxwEWpytmHn3wBGsEO2N0kXxWoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; spf=pass smtp.mailfrom=sakamocchi.jp; dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b=DHgZMX5A; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lstSyifR; arc=none smtp.client-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 15B741140153;
+	Thu, 25 Jul 2024 11:06:10 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Thu, 25 Jul 2024 11:06:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1721919970; x=
+	1722006370; bh=t+z2WwcSe7QLeZynJcabPdsfa6tgNxxAeuqOFR0xAaE=; b=D
+	HgZMX5A0fPflfC4LuugsYNlkK3KHsQPEkRmCVS+M9N2EGXOP1Z5X0Ezx9qwJ0H3r
+	wgWxJ6xS2AXBdQemZ3hoQVajDgWrwwvCKziohNuEpY044hornDSrPHJ5qVpaOacH
+	BMXMlljJDuOKTY3PDoazXqmS6p/TukGGfD3rt+l5Pt19MLJ+BmW2WVMfIGoxcF8z
+	Owan2t/I3IMbrR4639nmfHemDX4nOTLvOP/p44rS4DGFQ+1dPKRgWr/YT2eIJxyu
+	AaigTMFp4hQNKXkgUfbtVNMmfWfbFAsy/n2MAXN19gIG6zqENQepB/myoGZ8s0hc
+	n3n3rqSIgYc50fkdPvaEw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1721919970; x=1722006370; bh=t+z2WwcSe7QLeZynJcabPdsfa6tg
+	NxxAeuqOFR0xAaE=; b=lstSyifRFbckCbX40djberdQyV+adJn3okg68JuzBoLw
+	5aQULdMB9cVN/EpJks1lDOg56R7IzCZNoMfidpRQ49KLJDH4VoPIISAfbwK6vFnd
+	ErNf7Fyi6KYKqhBI192tNX9QTc/ay99Kk594f/aErUCBrBsXWR+t1sR2A3G9fyaK
+	6SQk1WcA/r2jpORFKQn8vdJ3zwiLczMUnFO1kddGmYl5VNsBGvoshhCxHIWIuodp
+	e39Mn5Fvu5PASB/IFhqk/0W2BwO7HwTbmCOteQEJQNuFTqOaCI4WMXo3qjqXU45x
+	G0mKEtG3vWawOJ/T2aF9PbT6I6vgM4bd29BF3skx5g==
+X-ME-Sender: <xms:4WmiZsYNX-txLxLJG22wbcRa2EHygxsei5IoBEcTUrtcoGFEdLG2iA>
+    <xme:4WmiZnbdVkxsrJrYyeLTX6XBoBSbl-6hCBBqaMWGdqwESbjccvDpoXckT91woyF_9
+    fLI0nAAzW3EWFIZxJ8>
+X-ME-Received: <xmr:4WmiZm-nHADuGLwNvWDA_0JdYecwjW45rw0I3VLuoimoanzfulEXmtpxzAbeF1OHtIymrkMaxOFZ6k6pqQAIlzA07XIcwXj8M9Gy>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrieefgdekgecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefvrghkrghs
+    hhhiucfurghkrghmohhtohcuoehoqdhtrghkrghshhhisehsrghkrghmohgttghhihdrjh
+    hpqeenucggtffrrghtthgvrhhnpedtheehieffjeffffekteehhfejgeduuedvhfevgeff
+    teejfeevuefgueefuedvudenucffohhmrghinhephhgvrgguvghrpghlvghnghhthhdrih
+    htnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepohdq
+    thgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjphdpnhgspghrtghpthhtoheptd
+X-ME-Proxy: <xmx:4WmiZmpw2KugmtnQlBhmmFjTmgiKXKbUBgMhbl9Bd3OOpO5PA4gROw>
+    <xmx:4WmiZnrdImoZiEWjd5BTraJ-3KIad0vwJrPNOW4wcQNyTkrFiBsVTw>
+    <xmx:4WmiZkSFMv1WeFQWv_1WCfwaqO_eD71A1fiwluPRHjhST0YAMQRHfw>
+    <xmx:4WmiZnpni3dR2vaq4k4_vj8wWs8oOkqUWjswbbgNLLl8VzCzIKG6Qw>
+    <xmx:4mmiZq1_8h-qFL9Tq2y-fusb2CNBzMVDLNO1WwIcuT0dRkrmaumnwfNr>
+Feedback-ID: ie8e14432:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 25 Jul 2024 11:06:06 -0400 (EDT)
+Date: Fri, 26 Jul 2024 00:06:03 +0900
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc: Takashi Iwai <tiwai@suse.de>, "edmund.raile" <edmund.raile@proton.me>,
+	alsa-devel@alsa-project.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev, gustavoars@kernel.org,
+	clemens@ladisch.de, linux-sound@vger.kernel.org
+Subject: Re: [REGRESSION] ALSA: firewire-lib: heavy digital distortion with
+ Fireface 800
+Message-ID: <20240725150603.GA109922@workstation.local>
+Mail-Followup-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	"edmund.raile" <edmund.raile@proton.me>,
+	alsa-devel@alsa-project.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev, gustavoars@kernel.org,
+	clemens@ladisch.de, linux-sound@vger.kernel.org
+References: <rrufondjeynlkx2lniot26ablsltnynfaq2gnqvbiso7ds32il@qk4r6xps7jh2>
+ <87r0bhipr7.wl-tiwai@suse.de>
+ <906edca8-a357-4fc2-913d-be447a86963c@embeddedor.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH] s390/mm: Fix VM_FAULT_HWPOISON handling in do_fault_error()
-To: gregkh@linuxfoundation.org, gerald.schaefer@linux.ibm.com,
- agordeev@linux.ibm.com, gor@linux.ibm.com
-Cc: stable@vger.kernel.org, linux-s390@vger.kernel.org
-References: <2024072535-synergy-struggle-8ecc@gregkh>
-Content-Language: en-US
-From: Yunseong Kim <yskelg@gmail.com>
-In-Reply-To: <2024072535-synergy-struggle-8ecc@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <906edca8-a357-4fc2-913d-be447a86963c@embeddedor.com>
 
-This patch backporting to v6.6.43+ cherry picked from
-commit df39038cd895 ("s390/mm: Fix VM_FAULT_HWPOISON handling in do_exception()")
+On Thu, Jul 25, 2024 at 08:08:14AM -0600, Gustavo A. R. Silva wrote:
+> Hi!
+> 
+> On 25/07/24 07:07, Takashi Iwai wrote:
+> > On Thu, 25 Jul 2024 00:24:29 +0200,
+> > edmund.raile wrote:
+> > > 
+> > > Bisection revealed that the bitcrushing distortion with RME FireFace 800
+> > > was caused by 1d717123bb1a7555
+> > > ("ALSA: firewire-lib: Avoid -Wflex-array-member-not-at-end warning").
+> > > 
+> > > Reverting this commit yields restoration of clear audio output.
+> > > I will send in a patch reverting this commit for now, soonTM.
+> > > 
+> > > #regzbot introduced: 1d717123bb1a7555
+> > 
+> > While it's OK to have a quick revert, it'd be worth to investigate
+> > further what broke there; the change is rather trivial, so it might be
+> > something in the macro expansion or a use of flex array stuff.
+> > 
+> 
+> I wonder is there is any log that I can take a look at. That'd be really
+> helpful.
 
-There is no support for HWPOISON, MEMORY_FAILURE, or ARCH_HAS_COPY_MC on
-s390. Therefore we do not expect to see VM_FAULT_HWPOISON in
-do_fault_error().
+The original designated initializer fills all of fields with 0.
 
-However, since commit af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more
-general"), it is possible to see VM_FAULT_HWPOISON in combination with
-PTE_MARKER_POISONED, even on architectures that do not support HWPOISON
-otherwise. In this case, we will end up on the BUG() in do_fault_error().
+The new designated initializer assigns CIP_HEADER_QUADLETS (=2) to
+struct fw_iso_packet.header_length. It is wrong value in the case of
+CIP_NO_HEADER. Additionally it is wrong value in another case since the
+value of the field should be byte unit.
 
-Fix this by treating VM_FAULT_HWPOISON the same as VM_FAULT_SIGBUS, similar
-to x86 when MEMORY_FAILURE is not configured. Also print unexpected fault
-flags, for easier debugging.
+I'll post a patch soon.
 
-Note that VM_FAULT_HWPOISON_LARGE is not expected, because s390 cannot
-support swap entries on other levels than PTE level.
 
-Cc: stable@vger.kernel.org # 6.6+
-Fixes: af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more general")
-Reported-by: Yunseong Kim <yskelg@gmail.com>
-Tested-by: Yunseong Kim <yskelg@gmail.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Message-ID: <20240715180416.3632453-1-gerald.schaefer@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Yunseong Kim <yskelg@gmail.com>
----
- arch/s390/mm/fault.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Regards
 
-diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-index b678295931c3..1a231181a413 100644
---- a/arch/s390/mm/fault.c
-+++ b/arch/s390/mm/fault.c
-@@ -331,14 +331,16 @@ static noinline void do_fault_error(struct pt_regs *regs, vm_fault_t fault)
- 				do_no_context(regs, fault);
- 			else
- 				do_sigsegv(regs, SEGV_MAPERR);
--		} else if (fault & VM_FAULT_SIGBUS) {
-+		} else if (fault & (VM_FAULT_SIGBUS | VM_FAULT_HWPOISON)) {
- 			/* Kernel mode? Handle exceptions or die */
- 			if (!user_mode(regs))
- 				do_no_context(regs, fault);
- 			else
- 				do_sigbus(regs);
--		} else
-+		} else {
-+			pr_emerg("Unexpected fault flags: %08x\n", fault);
- 			BUG();
-+		}
- 		break;
- 	}
- }
--- 
-2.45.2
-
+Takashi Sakamoto
 
