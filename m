@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464F193C594
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:53:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F64293C4F7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0696B281BCF
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90DB41C2084B
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC61A19CCF7;
-	Thu, 25 Jul 2024 14:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CB227473;
+	Thu, 25 Jul 2024 14:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyGT5qQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBx7VzGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE9613C816;
-	Thu, 25 Jul 2024 14:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B488BFC18;
+	Thu, 25 Jul 2024 14:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919183; cv=none; b=jBsBE+2508a3XFI+QZ3dT0u7yWnwSeB9iSaKQv4MaibT4XrXE57j1jAu+DYMoTNtYgNg7xYULRyyS0HK3P8FEr++QnW/bxvTrTuCOahlDbarARpG5nbEocLrVdyDhvPiOb/xLbsyeadgO0gmhryaS9ox/z4EeORvC85EU0q0sOI=
+	t=1721918743; cv=none; b=Ot0ITUxvsBEHWD7jIfig0ztGmD8n0z0mRIQLvPxrYwH8QH0I7/TO+GkOr7z5p8X0hN8nRvck/xWr566N5B7jpxGiyKm9Jz9M8GLtsDyxkhbfPFVGvcdynup906PdfKYDnuMaMuPOvQgSnOmAqpmcoktc/CkV0f1dQPrtFhuFgEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919183; c=relaxed/simple;
-	bh=yRuGTfBhPrGR2FyzomJQzE4er2iXZWb6rR+5A89w3+Q=;
+	s=arc-20240116; t=1721918743; c=relaxed/simple;
+	bh=AzNzEtJRaa9eoMifnNo9Ak9mmm0EVKFkQhg3bfWGdEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tVfQsIjyNWlfHQTceCylZEN3QFDmafHtUFBVpfTK4dc8WtwCBmr7KoS6tp5p/gTGdgFaerX1j+BEYLI+x5aLJiEjF7HNv9kbZt28XxUk9H4mATVDPd/Bj52hafZhtH4B2wjiT2paYrlMfvHRVrlK9rLP7bdipn0/2ujvnwoJDVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RyGT5qQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D663EC116B1;
-	Thu, 25 Jul 2024 14:53:02 +0000 (UTC)
+	 MIME-Version; b=Y2r3U1sK/T4mPYUeaevVxLCNv2rdaVE9qeIz89IqFZsekV0v4rmBM/EalQ7TzP+o3b9YTK7aa/LSz57kj9DvtkXV2F3Mxd6JHB+OaXTBjIPQf25CxQx6W8niMocv1sLwcAYnP79HqO7JNjDlZIPSyK27ludK0M0JU3HX7gcXwQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBx7VzGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237F6C32782;
+	Thu, 25 Jul 2024 14:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919183;
-	bh=yRuGTfBhPrGR2FyzomJQzE4er2iXZWb6rR+5A89w3+Q=;
+	s=korg; t=1721918743;
+	bh=AzNzEtJRaa9eoMifnNo9Ak9mmm0EVKFkQhg3bfWGdEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RyGT5qQvQw3n1dK5aIpiuKsGCrS76Ez3J4P94kiSG8s/wXk3dM4Nx4RWvH84Zk3PY
-	 1XG2SUWyA5vxeiveSso3wISHz6QWu8I0xrzELGv3m83c+qiwK+UNW15ma/LKXljZKu
-	 8dPOvAHTXyXhBfZxMGeVwV0SjflaZOHU6BgsQSh0=
+	b=UBx7VzGsK7qoh1+QoYYvyZWKpNT4PuCNGDnaxDwVvOEC93Asi6cpkbSjgMK74Twnm
+	 jhvjVfZiEmhAj/LjjUiXWODt9i9sXTahbQE7Uz6JnY0aCSTBkslgU3r3HEZILQb++j
+	 PrEa8JNlH5rp7Yr/x827XOVo05UPBQZEk1dUAC7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aivaz Latypov <reichaivaz@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 49/87] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15-gw0xxx
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 09/16] arm64: dts: qcom: qrb4210-rb2: switch I2C2 to i2c-gpio
 Date: Thu, 25 Jul 2024 16:37:22 +0200
-Message-ID: <20240725142740.283640392@linuxfoundation.org>
+Message-ID: <20240725142729.255319868@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142728.905379352@linuxfoundation.org>
+References: <20240725142728.905379352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aivaz Latypov <reichaivaz@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 1d091a98c399c17d0571fa1d91a7123a698446e4 ]
+commit f77e7bd40c3c2d79685e9cc80de874b69a976f55 upstream.
 
-This HP Laptop uses ALC236 codec with COEF 0x07 controlling
-the mute LED. Enable existing quirk for this device.
+On the Qualcomm RB2 platform the I2C bus connected to the LT9611UXC
+bridge under some circumstances can go into a state when all transfers
+timeout. This causes both issues with fetching of EDID and with
+updating of the bridge's firmware. While we are debugging the issue,
+switch corresponding I2C bus to use i2c-gpio driver. While using
+i2c-gpio no communication issues are observed.
 
-Signed-off-by: Aivaz Latypov <reichaivaz@gmail.com>
-Link: https://patch.msgid.link/20240625081217.1049-1-reichaivaz@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch is asusmed to be a temporary fix, so it is implemented in a
+non-intrusive manner to simply reverting it later.
+
+Fixes: f7b01e07e89c ("arm64: dts: qcom: qrb4210-rb2: Enable display out")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Link: https://lore.kernel.org/r/20240605-rb12-i2c2g-pio-v2-2-946f5d6b6948@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/qrb4210-rb2.dts |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index aeecc208e7fa0..afc9f1cd9647c 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9161,6 +9161,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87e7, "HP ProBook 450 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87f1, "HP ProBook 630 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
++++ b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
+@@ -57,6 +57,17 @@
+ 		};
+ 	};
+ 
++	i2c2_gpio: i2c {
++		compatible = "i2c-gpio";
++
++		sda-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
++		scl-gpios = <&tlmm 7 GPIO_ACTIVE_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		status = "disabled";
++	};
++
+ 	leds {
+ 		compatible = "gpio-leds";
+ 
+@@ -187,7 +198,7 @@
+ 	};
+ };
+ 
+-&i2c2 {
++&i2c2_gpio {
+ 	clock-frequency = <400000>;
+ 	status = "okay";
+ 
 
 
 
