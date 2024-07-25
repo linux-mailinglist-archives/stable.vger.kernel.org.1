@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA28893C5AF
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66E693C4DB
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18D841C21EFB
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7206428245D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB5119D069;
-	Thu, 25 Jul 2024 14:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237FB19D087;
+	Thu, 25 Jul 2024 14:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXz3J65B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krVa2jul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E030E1DFF7;
-	Thu, 25 Jul 2024 14:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D681A19AA5F;
+	Thu, 25 Jul 2024 14:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919247; cv=none; b=MTQtYKGV6LQqjIR8O6UAQR9O6K+Bjgzf7QXrZUZUkrEUnois3UnWmW5HpGoAKX1dJ+CWZtnjCfSEfliF4CgAzk4IJFBdX3ApHR7ylKyS4tXnXo6tKQDbUbcxoqWlXTbHxUTh9O25bx96S4m3F57A6lqqYsiMv/XnZAgJcOsNnZk=
+	t=1721918660; cv=none; b=nDQagG+azOiU3+d6FrRBUkbRraPuYH2LyYDP1xgNX280CVabHSWRp1027F2anL+iO5eulc/sV86hT2DjN2Z9JxLf/sy70YW7y6HcRaWbcMTibPSmO/KhBLkf0Uc/hD9nIvfsxWqHE4kTP08fwn4G+3pxT9wzWJEDwYJEFWdxq+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919247; c=relaxed/simple;
-	bh=avZCrDm35zfY6HNhqCuArGYMRHsSe8GzN+1L/6dQZ4U=;
+	s=arc-20240116; t=1721918660; c=relaxed/simple;
+	bh=bfnSJhCtwOVyJG+jgpRU6YDG+NZCuFIuSND9LN6pws8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VW63bemKLq9Ju6pDjphFi8tSTa/5jaUWhW30O5TXijPtEXxXaDQ+D6+NA+Djj/DvYECd4QroZhW4xox/xMCRDJzsMHr9DwsCbed3VmZuGJUZjscJ7L8fwlnHWMe4xCBkG4Lgg1OsECzUK0siUvX2YR1rzoAifq98fyXi5tWuhIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXz3J65B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E896C116B1;
-	Thu, 25 Jul 2024 14:54:06 +0000 (UTC)
+	 MIME-Version; b=j83gZCiKb/QAZycq6jqCyvJajO4FAHDwBi3B1GPrRLtkWJHE36t9aB3cQ/m++gr3FhzJHGp8ZIkOrGofjBfvHrYClFPucqLjSCpO7BknuQ18bB+W5BIGNntMoBGVhSHlWq4QOeJUx1fqpVLkX+/sPc9q1wDAL5KSwAL9ZJBTQxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krVa2jul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53794C4AF0C;
+	Thu, 25 Jul 2024 14:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919246;
-	bh=avZCrDm35zfY6HNhqCuArGYMRHsSe8GzN+1L/6dQZ4U=;
+	s=korg; t=1721918660;
+	bh=bfnSJhCtwOVyJG+jgpRU6YDG+NZCuFIuSND9LN6pws8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXz3J65BDPl2KitbQ1Ed7X829mY8cO9xtG8El9JpS4E23BLb0HAgNzaRB2BrVN2B3
-	 xTTWiJl5SOawHo1hpNK4fBORkYnynhYAvzF7GCgNzfUZ+YKPD19umzsgumM/G0Udr0
-	 XmspyrrxVgTrjo8KXWFHqRVY5SUfxHjVjDfbL6wA=
+	b=krVa2julr5Gm9+oFiJUJo3s/ovvZiS4MijL+2uf0TVgsgF6bPJ6oTfHyeQRycJ5Ge
+	 1NyRsgTvVML4CyJvxCwxQk9vo4RM+C++9LmO/cV7DxTewhu7voF/CoQCpPMAGkjsz7
+	 uXZZdoPnpEcOMnjsrajgujwXVGijOWM9cEV/Rmwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 37/87] Input: i8042 - add Ayaneo Kun to i8042 quirk table
+	Bob Zhou <bob.zhou@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 6.1 01/13] drm/amdgpu: Fix signedness bug in sdma_v4_0_process_trap_irq()
 Date: Thu, 25 Jul 2024 16:37:10 +0200
-Message-ID: <20240725142739.834140795@linuxfoundation.org>
+Message-ID: <20240725142728.087209261@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142728.029052310@linuxfoundation.org>
+References: <20240725142728.029052310@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 955af6355ddfe35140f9706a635838212a32513b ]
+commit 6769a23697f17f9bf9365ca8ed62fe37e361a05a upstream.
 
-See the added comment for details. Also fix a typo in the
-quirk's define.
+The "instance" variable needs to be signed for the error handling to work.
 
-Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
-Link: https://lore.kernel.org/r/20240531190100.3874731-1-tjakobi@math.uni-bielefeld.de
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8b2faf1a4f3b ("drm/amdgpu: add error handle to avoid out-of-bounds")
+Reviewed-by: Bob Zhou <bob.zhou@amd.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
-index d4792950bcffd..49d87f56cb909 100644
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -75,7 +75,7 @@ static inline void i8042_write_command(int val)
- #define SERIO_QUIRK_PROBE_DEFER		BIT(5)
- #define SERIO_QUIRK_RESET_ALWAYS	BIT(6)
- #define SERIO_QUIRK_RESET_NEVER		BIT(7)
--#define SERIO_QUIRK_DIECT		BIT(8)
-+#define SERIO_QUIRK_DIRECT		BIT(8)
- #define SERIO_QUIRK_DUMBKBD		BIT(9)
- #define SERIO_QUIRK_NOLOOP		BIT(10)
- #define SERIO_QUIRK_NOTIMEOUT		BIT(11)
-@@ -1295,6 +1295,20 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	{
-+		/*
-+		 * The Ayaneo Kun is a handheld device where some the buttons
-+		 * are handled by an AT keyboard. The keyboard is usually
-+		 * detected as raw, but sometimes, usually after a cold boot,
-+		 * it is detected as translated. Make sure that the keyboard
-+		 * is always in raw mode.
-+		 */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
-+			DMI_MATCH(DMI_BOARD_NAME, "KUN"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_DIRECT)
-+	},
- 	{ }
- };
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+@@ -2045,7 +2045,7 @@ static int sdma_v4_0_process_trap_irq(st
+ 				      struct amdgpu_irq_src *source,
+ 				      struct amdgpu_iv_entry *entry)
+ {
+-	uint32_t instance;
++	int instance;
  
-@@ -1613,7 +1627,7 @@ static void __init i8042_check_quirks(void)
- 		if (quirks & SERIO_QUIRK_RESET_NEVER)
- 			i8042_reset = I8042_RESET_NEVER;
- 	}
--	if (quirks & SERIO_QUIRK_DIECT)
-+	if (quirks & SERIO_QUIRK_DIRECT)
- 		i8042_direct = true;
- 	if (quirks & SERIO_QUIRK_DUMBKBD)
- 		i8042_dumbkbd = true;
--- 
-2.43.0
-
+ 	DRM_DEBUG("IH: SDMA trap\n");
+ 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
 
 
 
