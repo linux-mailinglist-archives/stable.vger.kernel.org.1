@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F64293C4F7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39A0893C501
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:46:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90DB41C2084B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E992B282E77
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CB227473;
-	Thu, 25 Jul 2024 14:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B89F19D09A;
+	Thu, 25 Jul 2024 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBx7VzGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjefPzWf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B488BFC18;
-	Thu, 25 Jul 2024 14:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2271E89C;
+	Thu, 25 Jul 2024 14:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918743; cv=none; b=Ot0ITUxvsBEHWD7jIfig0ztGmD8n0z0mRIQLvPxrYwH8QH0I7/TO+GkOr7z5p8X0hN8nRvck/xWr566N5B7jpxGiyKm9Jz9M8GLtsDyxkhbfPFVGvcdynup906PdfKYDnuMaMuPOvQgSnOmAqpmcoktc/CkV0f1dQPrtFhuFgEM=
+	t=1721918769; cv=none; b=TuNZf/hfEXfVGwK5qR8URDqJ1HmvyqitwFHaNlYKvNsRHBr3VmsV3+Xx0S7WjOI2kKs0CG/Zo3qwzcPG0s0FjhB9nyFCqI1DAZ72emwx3Fc/c+oVVf7PFhY7AbPzaPctb5IL0q30hwJZGxUDAEB/Trq9JB8ki1/Tw0YoFBOlaFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918743; c=relaxed/simple;
-	bh=AzNzEtJRaa9eoMifnNo9Ak9mmm0EVKFkQhg3bfWGdEc=;
+	s=arc-20240116; t=1721918769; c=relaxed/simple;
+	bh=wzn1VIgZzOxtms4unLqkM82PC9qWgfdmU8IoDQu7cMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2r3U1sK/T4mPYUeaevVxLCNv2rdaVE9qeIz89IqFZsekV0v4rmBM/EalQ7TzP+o3b9YTK7aa/LSz57kj9DvtkXV2F3Mxd6JHB+OaXTBjIPQf25CxQx6W8niMocv1sLwcAYnP79HqO7JNjDlZIPSyK27ludK0M0JU3HX7gcXwQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBx7VzGs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237F6C32782;
-	Thu, 25 Jul 2024 14:45:42 +0000 (UTC)
+	 MIME-Version; b=qOw//JIIJFdEC6QiiTQqVIVeBfclSbmpW3IvL58jjTtdO8vnUYf9HYKRoAQtVb1qKOjDjCNK9ZwY2a62Jq5PKC259Hgs5ZHv24Pgs8xMMCtSt4ThwY3zEmUXzBwKUhsrpDXF0oMOJZ3plGTvcb96xbAsdl27Htod97uDSxf0r5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjefPzWf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69479C116B1;
+	Thu, 25 Jul 2024 14:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918743;
-	bh=AzNzEtJRaa9eoMifnNo9Ak9mmm0EVKFkQhg3bfWGdEc=;
+	s=korg; t=1721918768;
+	bh=wzn1VIgZzOxtms4unLqkM82PC9qWgfdmU8IoDQu7cMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBx7VzGsK7qoh1+QoYYvyZWKpNT4PuCNGDnaxDwVvOEC93Asi6cpkbSjgMK74Twnm
-	 jhvjVfZiEmhAj/LjjUiXWODt9i9sXTahbQE7Uz6JnY0aCSTBkslgU3r3HEZILQb++j
-	 PrEa8JNlH5rp7Yr/x827XOVo05UPBQZEk1dUAC7I=
+	b=jjefPzWfa5kYZGBradolachlA/aSj0NTjRySex9RKYSroMBxJ8Wy4Qx4I3Njz6zv/
+	 a1bZ+C1oz/45Nde3iH2x6cGOaHGfO4vwXzmGMFWztCKllh4CdPslhbZpRsr2uQitf4
+	 4VQPs2CqAykncl+KnKmceQo8F3LjLqh2UsrihgeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
+	Doug Anderson <dianders@google.com>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 09/16] arm64: dts: qcom: qrb4210-rb2: switch I2C2 to i2c-gpio
+Subject: [PATCH 6.9 12/29] arm64: dts: qcom: sc7280: Disable SuperSpeed instances in park mode
 Date: Thu, 25 Jul 2024 16:37:22 +0200
-Message-ID: <20240725142729.255319868@linuxfoundation.org>
+Message-ID: <20240725142732.138967001@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.905379352@linuxfoundation.org>
-References: <20240725142728.905379352@linuxfoundation.org>
+In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
+References: <20240725142731.678993846@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-commit f77e7bd40c3c2d79685e9cc80de874b69a976f55 upstream.
+commit 3d930f1750ce30a6c36dbc71f8ff7e20322b94d7 upstream.
 
-On the Qualcomm RB2 platform the I2C bus connected to the LT9611UXC
-bridge under some circumstances can go into a state when all transfers
-timeout. This causes both issues with fetching of EDID and with
-updating of the bridge's firmware. While we are debugging the issue,
-switch corresponding I2C bus to use i2c-gpio driver. While using
-i2c-gpio no communication issues are observed.
+On SC7280, in host mode, it is observed that stressing out controller
+results in HC died error:
 
-This patch is asusmed to be a temporary fix, so it is implemented in a
-non-intrusive manner to simply reverting it later.
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
 
-Fixes: f7b01e07e89c ("arm64: dts: qcom: qrb4210-rb2: Enable display out")
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instances in park mode for SC7280 to mitigate this issue.
+
+Reported-by: Doug Anderson <dianders@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-Link: https://lore.kernel.org/r/20240605-rb12-i2c2g-pio-v2-2-946f5d6b6948@linaro.org
+Fixes: bb9efa59c665 ("arm64: dts: qcom: sc7280: Add USB related nodes")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240604060659.1449278-3-quic_kriskura@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/qrb4210-rb2.dts |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-@@ -57,6 +57,17 @@
- 		};
- 	};
- 
-+	i2c2_gpio: i2c {
-+		compatible = "i2c-gpio";
-+
-+		sda-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
-+		scl-gpios = <&tlmm 7 GPIO_ACTIVE_HIGH>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		status = "disabled";
-+	};
-+
- 	leds {
- 		compatible = "gpio-leds";
- 
-@@ -187,7 +198,7 @@
- 	};
- };
- 
--&i2c2 {
-+&i2c2_gpio {
- 	clock-frequency = <400000>;
- 	status = "okay";
- 
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -4131,6 +4131,7 @@
+ 				iommus = <&apps_smmu 0xe0 0x0>;
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
++				snps,parkmode-disable-ss-quirk;
+ 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 				maximum-speed = "super-speed";
 
 
 
