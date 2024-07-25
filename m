@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-61593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D651E93C511
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CB293C55A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90E4A282525
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:47:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F5F9B21620
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD8119D082;
-	Thu, 25 Jul 2024 14:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B932013A409;
+	Thu, 25 Jul 2024 14:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mC2gVI3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFM5feee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB9C198A2C;
-	Thu, 25 Jul 2024 14:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758A0FC19;
+	Thu, 25 Jul 2024 14:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918812; cv=none; b=dbdbUW/S/t2mEBTrFKVAOG6+TY0FxYag+w8aWXX2t6NZeeuglnRbPPpab77YGW3LJeiHXYTLjmIYffNJfSAdB9Rqb2fxVQS+IIPgyJ7hiSJUEFVZL4D4zoc7nG188Ncu632OxPrEYf4xMO6fgUNncoNkb7QZm4nwVFmqXuvarn0=
+	t=1721919026; cv=none; b=So22oYXXjWYrHZfNb/e2e5Kysy27oEzdtqXJCAu1/8Sd8sxHWOV/z/1zLYAu/PLfeIsWqjZkw663/ZaoUeP3svia3JiXRji49VBVfZt7LG+82mhlRC+xpBs6RufYN74TkKPtD5ABWM8vafvo3CYl48gwYDnwNHL0J6oUpKBeLd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918812; c=relaxed/simple;
-	bh=2wo4BfBGTlOIm1Re7AOlCCizGiEfFLpsX6B7aQ7M41w=;
+	s=arc-20240116; t=1721919026; c=relaxed/simple;
+	bh=eIGrVGYKA4gweZFa/qIS3Fae85l5lfYjdcmmOq2RTiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PX1FAEWtnIHv5ZqaSuzEiPXfusr95DP0fcfyfRwpK4vNU++RuRRdhmS/EZHUNglykGLoAYq0l9tSetZlcqX5MQQw+P3+75GdFsVf6PoUFX25hAqeTdVGrKdGvANOs9hq5ITMhFLL0lh4puZEzBpJSyKOsv8VBiys/YW+TG+UvoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mC2gVI3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E34C32782;
-	Thu, 25 Jul 2024 14:46:51 +0000 (UTC)
+	 MIME-Version; b=TQ1TQ5TDKFlSuKPOXTQSKfHamQqVXinTiJgGP+U3cBZhpjDOOacFNrYYyrb0N16/8h+j2p6Dy/rYOqdb0INqjSreYtYmUCbsvlvMMUbGBRG30O1AOZU0vHaICe0AHliT0gYGhd0UCXxGvEM9fv2QyARNd9xKFn1vpgCO2ya1kds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFM5feee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB206C116B1;
+	Thu, 25 Jul 2024 14:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918812;
-	bh=2wo4BfBGTlOIm1Re7AOlCCizGiEfFLpsX6B7aQ7M41w=;
+	s=korg; t=1721919026;
+	bh=eIGrVGYKA4gweZFa/qIS3Fae85l5lfYjdcmmOq2RTiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mC2gVI3Bo6gl2gvM37COliMJK3ApTTGt8ghsqni3WepogkofQaaZOQoqL0tw2vjCS
-	 iUiF0+G4IDFMJTQToP21gUb+56PSEa4hMWJsymVXdErvlqi/5PiRD2s7YYcVCXnsHx
-	 jV7jZ/IXUoEukvZxLTRKgml/g0IIYDyNJ8vRmVEs=
+	b=nFM5feeeMe5b2XD4B1BB7I+8DycCjKxnRDyQ/YLOPnKqqtbHC1X55wPH/0TKLqqqD
+	 6RCKS7eU81W1xNmKtQmGPcrlHkB+JS/mc3qnmGUB0rI2pXLZG1r4S3ZEbXnSO8dY3W
+	 MmJUlHsmGk+RWoCZouSnmdCBiLtFFWruTHAVdSiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.9 09/29] ALSA: hda/realtek: Enable headset mic on Positivo SU C1400
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 29/59] s390/sclp: Fix sclp_init() cleanup on failure
 Date: Thu, 25 Jul 2024 16:37:19 +0200
-Message-ID: <20240725142732.029894875@linuxfoundation.org>
+Message-ID: <20240725142734.361493340@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
-References: <20240725142731.678993846@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 8fc1e8b230771442133d5cf5fa4313277aa2bb8b upstream.
+[ Upstream commit 6434b33faaa063df500af355ee6c3942e0f8d982 ]
 
-Positivo SU C1400 is equipped with ALC256, and it needs
-ALC269_FIXUP_ASPIRE_HEADSET_MIC quirk to make its headset mic work.
+If sclp_init() fails it only partially cleans up: if there are multiple
+failing calls to sclp_init() sclp_state_change_event will be added several
+times to sclp_reg_list, which results in the following warning:
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240712180642.22564-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+------------[ cut here ]------------
+list_add double add: new=000003ffe1598c10, prev=000003ffe1598bf0, next=000003ffe1598c10.
+WARNING: CPU: 0 PID: 1 at lib/list_debug.c:35 __list_add_valid_or_report+0xde/0xf8
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.10.0-rc3
+Krnl PSW : 0404c00180000000 000003ffe0d6076a (__list_add_valid_or_report+0xe2/0xf8)
+           R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+...
+Call Trace:
+ [<000003ffe0d6076a>] __list_add_valid_or_report+0xe2/0xf8
+([<000003ffe0d60766>] __list_add_valid_or_report+0xde/0xf8)
+ [<000003ffe0a8d37e>] sclp_init+0x40e/0x450
+ [<000003ffe00009f2>] do_one_initcall+0x42/0x1e0
+ [<000003ffe15b77a6>] do_initcalls+0x126/0x150
+ [<000003ffe15b7a0a>] kernel_init_freeable+0x1ba/0x1f8
+ [<000003ffe0d6650e>] kernel_init+0x2e/0x180
+ [<000003ffe000301c>] __ret_from_fork+0x3c/0x60
+ [<000003ffe0d759ca>] ret_from_fork+0xa/0x30
+
+Fix this by removing sclp_state_change_event from sclp_reg_list when
+sclp_init() fails.
+
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
+ drivers/s390/char/sclp.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10333,6 +10333,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
- 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
- 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x10ec, 0x119e, "Positivo SU C1400", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
+index d2ab3f07c008c..8296e6bc229ee 100644
+--- a/drivers/s390/char/sclp.c
++++ b/drivers/s390/char/sclp.c
+@@ -1208,6 +1208,7 @@ sclp_init(void)
+ fail_unregister_reboot_notifier:
+ 	unregister_reboot_notifier(&sclp_reboot_notifier);
+ fail_init_state_uninitialized:
++	list_del(&sclp_state_change_event.list);
+ 	sclp_init_state = sclp_init_state_uninitialized;
+ 	free_page((unsigned long) sclp_read_sccb);
+ 	free_page((unsigned long) sclp_init_sccb);
+-- 
+2.43.0
+
 
 
 
