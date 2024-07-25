@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E627E93C559
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5589D93C4E4
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2400D1C21E41
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77D8B1C20EEF
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DAF13C816;
-	Thu, 25 Jul 2024 14:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C89E19D083;
+	Thu, 25 Jul 2024 14:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVid4rJ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYvmRDq9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4461DF519;
-	Thu, 25 Jul 2024 14:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB7319B5AA;
+	Thu, 25 Jul 2024 14:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919023; cv=none; b=sTh8YSbXqGo1bcx3mGjqleL4IRStUDxxS7yjPCKg0Hvw2Pq8HvouLxxCaK0IVp4/58k/3evjWc++xv1K7aGJ7TpO8xXkhPQ1NpaIg7JhgaeruOXeMeeUZvvYL4lcaGMzRxLdlSAhXJF9td1dMVV8081XRFhvvi0YRPGzCS0mK+Q=
+	t=1721918686; cv=none; b=Cuy9EkGuNei6GCfoSthRsCsdL04ihTUehk+hyjAXDQ74a20EYdBUd2l1qi3SK4l4vBQPrimV2TDphnmRpaqh+1iMAXakcCWfTystRBksGO/MLisL7yghhOMSjUkspcQHHKYR9xr1sIp+K3BXFlEoHF2YzGv6rEAeSYLlYImrDrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919023; c=relaxed/simple;
-	bh=j8/DCpBowdzcb9SMRKze/NCe98LdUNmd3pKBirqBDSQ=;
+	s=arc-20240116; t=1721918686; c=relaxed/simple;
+	bh=xFBXnuRL0cRkumiQQ5IutBzXld4/ZphVEE1kyUwn9xE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmYYxz31L8XLb6+9XpfqPDwaZk1sRSh9zWC9nhbg12ICSeP3AxxWstjHQCuq6IKJWOs1qUy95efDgKdG4KNp9J2mucGngyLX4AXaCP5TZv5gBI9kq5J2pJ0haDXXBkLP1rgs8LnP5HH/dGqYjWTIZkyxhw4KryWLBX9KP8rxolU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVid4rJ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C21C116B1;
-	Thu, 25 Jul 2024 14:50:22 +0000 (UTC)
+	 MIME-Version; b=HDY2YF3f62BbmCKAeaiq0wvBqMiHX/I4NyFayheDSprOp4zaKIiG5ARdAJtvvLdr1s8bXjDQj6WHDMXx/RM9LKLQdPJdMeSJhLkNVoRJspSnj28m1KNjeDPgwv1acL6JfpkwG1rTvHCNUb0dgxkPdTfR3Y6tKiqR+L0D8jhlkFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYvmRDq9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40664C116B1;
+	Thu, 25 Jul 2024 14:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919023;
-	bh=j8/DCpBowdzcb9SMRKze/NCe98LdUNmd3pKBirqBDSQ=;
+	s=korg; t=1721918686;
+	bh=xFBXnuRL0cRkumiQQ5IutBzXld4/ZphVEE1kyUwn9xE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVid4rJ7kRnOlgiE6ECFCRNhZzJvpSiJc7774eB+j4J78WNeDIqvuL805x7+wOULI
-	 WVfz6ZPUwj9ukiResSgO+aeVQCkmST2fO46lj6fTlv1JOQJ/VAeEnwOXEwR7r86R5b
-	 HwQxeAHlxyAhgCYk+3BQgpII8cVyrlsvcYSNMUB0=
+	b=TYvmRDq9Bqma2vInBgQgEURnMEaZh0iYgBqg0YgAYmUPQ+R+o4zlOsumdkm3TGq2j
+	 ajCRMHtibAIyv3WyaZCsUTL9w5O4RagRWgROLb58jzC/9KVoyZwYQ9MDKnPkPgB1wR
+	 e8vKDvogFYsWTcu5fDgGS8coN/x/Umy7dcL/BQfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 28/59] can: kvaser_usb: fix return value for hif_usb_send_regout
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 09/13] arm64: dts: qcom: ipq6018: Disable SS instance in Parkmode for USB
 Date: Thu, 25 Jul 2024 16:37:18 +0200
-Message-ID: <20240725142734.325117348@linuxfoundation.org>
+Message-ID: <20240725142728.391246071@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142728.029052310@linuxfoundation.org>
+References: <20240725142728.029052310@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit 0d34d8163fd87978a6abd792e2d8ad849f4c3d57 ]
+commit 4ae4837871ee8c8b055cf8131f65d31ee4208fa0 upstream.
 
-As the potential failure of usb_submit_urb(), it should be better to
-return the err variable to catch the error.
+For Gen-1 targets like IPQ6018, it is seen that stressing out the
+controller in host mode results in HC died error:
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://lore.kernel.org/all/20240521041020.1519416-1-nichen@iscas.ac.cn
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
+
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instance in park mode for IPQ6018 to mitigate this issue.
+
+Cc: stable@vger.kernel.org
+Fixes: 20bb9e3dd2e4 ("arm64: dts: qcom: ipq6018: add usb3 DT description")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240704152848.3380602-2-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index 411b3adb1d9ea..a96b223984070 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -266,7 +266,7 @@ int kvaser_usb_send_cmd_async(struct kvaser_usb_net_priv *priv, void *cmd,
- 	}
- 	usb_free_urb(urb);
- 
--	return 0;
-+	return err;
- }
- 
- int kvaser_usb_can_rx_over_error(struct net_device *netdev)
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -760,6 +760,7 @@
+ 				clocks = <&xo>;
+ 				clock-names = "ref";
+ 				tx-fifo-resize;
++				snps,parkmode-disable-ss-quirk;
+ 				snps,is-utmi-l1-suspend;
+ 				snps,hird-threshold = /bits/ 8 <0x0>;
+ 				snps,dis_u2_susphy_quirk;
 
 
 
