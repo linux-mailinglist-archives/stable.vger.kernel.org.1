@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F3A93C4CB
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F268293C524
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D92951F224F1
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CA9F1F24E3F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4464119D06A;
-	Thu, 25 Jul 2024 14:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFF519D08A;
+	Thu, 25 Jul 2024 14:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="an2FqXZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqaYEZbW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC2B13DDB8;
-	Thu, 25 Jul 2024 14:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4819C13DDB8;
+	Thu, 25 Jul 2024 14:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918615; cv=none; b=fzvtu5iIKPJdWLb+qNKOQKg7lby+LQ2hXY01SgWiYwdXZNAjI/lzXhEYodcgKVNX7KiWKHReJzbKwuFhSjJVfpxgWp9jesmGXYXiiY1BXA4mN+KPqDUeBsQejXPGQ5laMVpbf3SyPegT7X/ometwQbGGlo+EBIQkd11wcrejD+Y=
+	t=1721918860; cv=none; b=eBsOKR0KThTC73RmklWq+Ey5NT8G8jSZuduo+d5odDD4aXIZParhJCxGvu7oRN8XOoivIuoXPbxQXmDbSAH4j4ndfoo/swMAqOOlAl9cDOwVIBTBShpknfRr7XDb1AKZYip873/lHfrDQzsNsj7HERXKk7EBvu25eJXNUH+Myk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918615; c=relaxed/simple;
-	bh=m1bXEMbd3iQtQy6kqlpez5HrmJ4xYIrB34VNIay+NuE=;
+	s=arc-20240116; t=1721918860; c=relaxed/simple;
+	bh=Ho/zgEPuH3uXV2jBbA5G5UEKEbKkdamDp5WGDNkxlGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ot+ldY+KAmMoAaPyFFhHqAazEO4f0tIG9xhNRViCsvToXa5l6/inRiRVqenizVOrgQkS96037fRQMarPi3HbFlzW2rty0VubL+EaZwbRnxjZ/LyLRK1I4x8E1oP2bT/mOQIVquiO1TSB2RQ4aFsRnEEYJwaD0OXyYoAY4XyL2Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=an2FqXZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C40BC116B1;
-	Thu, 25 Jul 2024 14:43:33 +0000 (UTC)
+	 MIME-Version; b=JLv59E5j6IxBkcVRTp8IGxis0M/t79FDBDWSK8yF0ruO/0y3Y5AzcNo6d6f1lqusUd80/mAAfPCM0+AzgecFnGdGPlK9dI1XJGO/ALaFB7O/OczSHofdlOPIUsIQECcN6eEbgXyeP2lpP8GcpEXG7E5ZO5t9nJokN/+r5CbTZHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqaYEZbW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57FBBC116B1;
+	Thu, 25 Jul 2024 14:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918614;
-	bh=m1bXEMbd3iQtQy6kqlpez5HrmJ4xYIrB34VNIay+NuE=;
+	s=korg; t=1721918859;
+	bh=Ho/zgEPuH3uXV2jBbA5G5UEKEbKkdamDp5WGDNkxlGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=an2FqXZy5IW5yrxubcXa7jYJxszi/c9wIlkuBY6hFf9FLIIp4P9/4O8zbFPKUmKps
-	 R18THxltJEFrx2ccfhwxHtLFEMDNfm2+Wwq2JgVrEUYnbObbWK6Vu2f7AhuMIx3ji7
-	 y/nknESOFPMYSNBYigIm+DP02DzXKY8mMuzFPEsY=
+	b=DqaYEZbW3tThskjJFiouUdNWIDwnK3S4jJ59/WKAN71rwC0V6Y5GRl9kv5/TW/TRj
+	 wHTFA1DKGD7j+sjLSNyGxOJPgwAxXx3aDk6/lwy9WDWzJRZ6drZIxGdrxROxyulmfP
+	 6HRyAX/EYkz4ucjgpNjfMJQDB8Tlu9NXrtXA3x/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Zhou <bob.zhou@amd.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Subject: [PATCH 5.4 38/43] drm/amdgpu: Fix signedness bug in sdma_v4_0_process_trap_irq()
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 11/59] ila: block BH in ila_output()
 Date: Thu, 25 Jul 2024 16:37:01 +0200
-Message-ID: <20240725142731.911172186@linuxfoundation.org>
+Message-ID: <20240725142733.693855719@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 6769a23697f17f9bf9365ca8ed62fe37e361a05a upstream.
+[ Upstream commit cf28ff8e4c02e1ffa850755288ac954b6ff0db8c ]
 
-The "instance" variable needs to be signed for the error handling to work.
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-Fixes: 8b2faf1a4f3b ("drm/amdgpu: add error handle to avoid out-of-bounds")
-Reviewed-by: Bob Zhou <bob.zhou@amd.com>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ila_output() is called from lwtunnel_output()
+possibly from process context, and under rcu_read_lock().
+
+We might be interrupted by a softirq, re-enter ila_output()
+and corrupt dst_cache data structures.
+
+Fix the race by using local_bh_disable().
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/ila/ila_lwt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -2003,7 +2003,7 @@ static int sdma_v4_0_process_trap_irq(st
- 				      struct amdgpu_irq_src *source,
- 				      struct amdgpu_iv_entry *entry)
- {
--	uint32_t instance;
-+	int instance;
+diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
+index 8c1ce78956bae..9d37f7164e732 100644
+--- a/net/ipv6/ila/ila_lwt.c
++++ b/net/ipv6/ila/ila_lwt.c
+@@ -58,7 +58,9 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		return orig_dst->lwtstate->orig_output(net, sk, skb);
+ 	}
  
- 	DRM_DEBUG("IH: SDMA trap\n");
- 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
++	local_bh_disable();
+ 	dst = dst_cache_get(&ilwt->dst_cache);
++	local_bh_enable();
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *ip6h = ipv6_hdr(skb);
+ 		struct flowi6 fl6;
+@@ -86,8 +88,11 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
+ 
+-		if (ilwt->connected)
++		if (ilwt->connected) {
++			local_bh_disable();
+ 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
++			local_bh_enable();
++		}
+ 	}
+ 
+ 	skb_dst_set(skb, dst);
+-- 
+2.43.0
+
 
 
 
