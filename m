@@ -1,184 +1,150 @@
-Return-Path: <stable+bounces-61378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 778D393C0A3
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 13:21:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C0693C0C2
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 13:26:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27A091F2208A
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 11:21:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3607A28111A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 11:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC31198E81;
-	Thu, 25 Jul 2024 11:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E67199243;
+	Thu, 25 Jul 2024 11:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMV52EGV"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HJSumhwg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1134F176224
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 11:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4141991CF
+	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 11:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721906457; cv=none; b=NY10l47jel4o8ZgOY+F5dgwVd7LUr++hAHxzdNJzz5OICVOsWRG43SKg8Bhz8/SvphAg601fdTBfCYKyhGefMaI62lUkbrPPVxmZYWUqC3gLX8iSjUO+knO5UoG1I7YT9/9zYsK+C0iQkSQGPIuQnBgVL5Sd4CUxyJxCsPXO2cg=
+	t=1721906724; cv=none; b=oazZdy3CoZOQFYj5roi5sZxOPJxAXPBb4SZXeg3tIba//b7L+0Ug3QmaFbjLg8fOuwPCCoGVTPpu/3GCaBXvza5ObaDiuO8VvHtwljPDghBzOdH3M5iPQxZqb/QKQ4Ov5f0CYzE3yOI3casmZP7VoX8oelvijx+7YgOaXCtOt0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721906457; c=relaxed/simple;
-	bh=4pLSKsSIlFe0Boofv8OmOs+lznm8wsBMDVlE8ew8Ag0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=f2o/XVlATu7iBG+3YuCdXyZBHN9Kk7CvUWFqH/IShVYuE5FTuYGLvPOwTAYsd2UfphNhec9JWqn3DY6zWl1uy42tf/9Gn55izEfRbBVhQHg9Z4/tSXooHdxfzrdoG+FeEKg/FHDnUyS5TAhpkvD/3EPLFtLNcUw+J66aalCC9HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMV52EGV; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-369f68f63b1so461482f8f.2
-        for <stable@vger.kernel.org>; Thu, 25 Jul 2024 04:20:55 -0700 (PDT)
+	s=arc-20240116; t=1721906724; c=relaxed/simple;
+	bh=JsK7yJjBr07hesTWuuOd0Olz1bm2HQodZpRdnFA5cgc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kv9NExnWg7ZIsEll4VqA5wXRj2SWhm8W/Pxf/4nH3pQcwXz4lLjefhuY0/a8oYeGOln6cmeSpuDpOPJ/pc9PDVthnjaFEiRmXKGjPhwd04SjANaEmM30vcOWSlmtaqzTJ5uY9kHmezbT82EN9Dp8JNmMAYlyXMvYXy/NKSR4pTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HJSumhwg; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3db13410adfso336148b6e.2
+        for <stable@vger.kernel.org>; Thu, 25 Jul 2024 04:25:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721906454; x=1722511254; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5co6LslmYIo4HQfh6P0CfIggT1PGKK0tJqwvRnY71Ik=;
-        b=GMV52EGVmrbbzcxSekqI8t1cYHTUmBgrC2JJpMuvtNjL6iUFlUwDFPs22cepPPBlVZ
-         IOsfC5EQh9nqjv8Z+iPHCzsVHQd7lGRqvCaMDQN4v7NPt6juov2csAXSAqG7WqgNZAsB
-         Kpp0C3mrECQf2uShadoykLlht1LARalzRZht/QUf/0sCMSBoYHyJQUTvG2x3rcu1w+Nk
-         sx7O8Nj3NyVGMRIC+DQi3VrorUi0aEdfgn2IHoYkoNcr585wLdlVajPEZjkl3xLXg1aC
-         cTR3pJaY9iJhgom60YEPsvzM7rNYHE1kt3uHKiwGBnoyzv6Q9mnEhaDIV3q41KOQ1mJA
-         OLmA==
+        d=linaro.org; s=google; t=1721906722; x=1722511522; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pB5alhK3P/rWHh7+6LRvYSZnbMJZGnDqL1m2WfhmM9Q=;
+        b=HJSumhwgmCZaXodmOfg9ocbC3JhI/zX3ZkZKQpY8n7OmYpBJQaCFWdKtCbqGheR0lj
+         wk9rAZTfmsWYHGAB2HSKqndQpPWohjTi4ATfVsBpp4nxGYYGSG8TiH414rB5URn744rt
+         jchQGsCf3hNbbqxUhEJmNCaRbsbICuv1smWBhpVyQlhlmcjfmW5UF8Xmzzu7MLLb9oKR
+         e9RFiSPPil4Y38xgvFxYs05KHV7UoPQUkkd+zQiOaNt8lkGOjSwPOU7xnwJvjItrFhRp
+         1j3dyzCoaKZFahyeSVpjcy3LGgcwI08hIBxIesIVAYETq7zEjEqkpNf9R6LG/mLzFAFH
+         Dp+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721906454; x=1722511254;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5co6LslmYIo4HQfh6P0CfIggT1PGKK0tJqwvRnY71Ik=;
-        b=j6RkqHSn1x33pXezS+afjD9tqAhOovmg00/oPRYFnNgIq1EZ7iWjvrubxZPFb5Sfxp
-         hE+MjJapTOKuZr3uzG0vg1UXFxDj6CmKfFRZaHVBPqNyzrzTg/0YtaVX6eZR9PcrUl4E
-         lg7FB7oqPbxoQbo2m4HIyTfwHmmOJHiKfete1acB+tZx48JR2XjeJpe1WXW3kUBixtJ/
-         gYKcCO7fxrJOU5V14PrYI+zG/h0jv7DMW1Squmqhk3LtLw8W+IXV4ofIEVe1d0eZdYOs
-         KPro11yXQmEkHGxeF02pnL4rckUXNFdtilQKGvCJZSH1lb6IF6kIkaP/AGksuQTGttBs
-         +ELw==
-X-Gm-Message-State: AOJu0Yz/sneXs5ZmeiIp3Hi1m44CedmaczcBRIyniYTmOXoWke/R3lms
-	SiPad6r1KuBbBiUaxslNl+rYKyaDXgtCcIfQggDlJJclQEqmmVCU5X6eYZ6H
-X-Google-Smtp-Source: AGHT+IGcxg8RUbMwA0gj9w3ZyO5OTBoq5GmbMpklGggcrtVih0Fx9xSEVTyhCo9zI35eIFDwd5yQqw==
-X-Received: by 2002:a5d:63c1:0:b0:368:77f9:fb34 with SMTP id ffacd0b85a97d-36b363894d7mr1220005f8f.15.1721906453714;
-        Thu, 25 Jul 2024 04:20:53 -0700 (PDT)
-Received: from laptop.home (83.50.134.37.dynamic.jazztel.es. [37.134.50.83])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36b367fcb78sm1824738f8f.53.2024.07.25.04.20.53
+        d=1e100.net; s=20230601; t=1721906722; x=1722511522;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pB5alhK3P/rWHh7+6LRvYSZnbMJZGnDqL1m2WfhmM9Q=;
+        b=iqcKK2HdbFVZYPOe8KrSNNO2hI+T03XXcjdrRS9CW1GEQ6FdJMbABe9CJjCgRBjZzx
+         qaMfwMPk1cqJvT0VtkvHSRRtAHfE1k35gTq0uBR9eQAiR+C7JEW4M+P9lx5VV3q5z8m0
+         wlNmutQsnfdnszsgXb5iO1bUqTvPfQoZseOKVvkE9u9o/ays9iMc2ebZ6ZaTWUKNCz+m
+         FcL9Fdlc5RVZisYoUfWxxBuIZwGm7+NVk0K6GcZ0dUeipKmTUujkSgaBSpME3OCGuTFY
+         AsNkkW0KWEc6nS6izuImC8iabapTANtcqfelYq/8OEWy48tW0mpp7I26xyFB3N4463OJ
+         0SdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVCaBceQjGQcdacaniETFwsPJQl2OT7BZKaRQrHKLxzUdJ+c2itpN2xEoBKYe1aaISOYFXQv1nfFYTDFvwkzJ8I2MgCm4C7
+X-Gm-Message-State: AOJu0YzG1bQiJJPizg3coJKOFZbCKu3GspZHJdoYd+G2eMj7qAoahm/T
+	Wp1ByfzwMEDfqLHAG+4OO6ORG9REUJLGmjctWsC59rzEwqhQlqD+bFuBDw1q25s=
+X-Google-Smtp-Source: AGHT+IGB/C7i53ZMxQDVG7er3qrj96VmG0v9dXH1VLSTmcs7GQ7h6A9jCwiBR5/hKLh7wLBNc8M2NA==
+X-Received: by 2002:a05:6870:b020:b0:229:f022:ef83 with SMTP id 586e51a60fabf-266ede9b2f8mr1951899fac.43.1721906722263;
+        Thu, 25 Jul 2024 04:25:22 -0700 (PDT)
+Received: from localhost ([122.172.84.129])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead8af074sm937252b3a.218.2024.07.25.04.25.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jul 2024 04:20:53 -0700 (PDT)
-From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-To: stable@vger.kernel.org
-Cc: linux-kernel-mentees@lists.linuxfoundation.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>,
-	syzbot+d0ab8746c920a592aeab@syzkaller.appspotmail.com
-Subject: [PATCH 6.1.y] f2fs: avoid dead loop in f2fs_issue_checkpoint()
-Date: Thu, 25 Jul 2024 13:19:33 +0200
-Message-Id: <20240725111933.77493-1-sergio.collado@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        Thu, 25 Jul 2024 04:25:21 -0700 (PDT)
+Date: Thu, 25 Jul 2024 16:55:19 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>, Nikunj Kela <nkela@quicinc.com>,
+	Prasad Sodagudi <psodagud@quicinc.com>, linux-pm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] OPP: Fix support for required OPPs for multiple PM
+ domains
+Message-ID: <20240725112519.d6ec7obtclsf3ace@vireshk-i7>
+References: <CAPDyKFoA9O5a6xZ+948QOzYqsRjk_0jJaSxeYRwx=76YsLHzXQ@mail.gmail.com>
+ <20240711031356.rl2j6fqxrykmqfoy@vireshk-i7>
+ <CAPDyKFocjOt+JyzcAqOfCnmTxBMZmPjMerSh6RZ-hSMajRhzEA@mail.gmail.com>
+ <CAPDyKFoWgX=r1QtrcpEF-Y4BkiOtVnz4jaztL9zggo-=uiKsUg@mail.gmail.com>
+ <20240711131637.opzrayksfadimgq4@vireshk-i7>
+ <CAPDyKFqczrJzHApBOYRSg=MXzzd1_nSgQQ3QwKYLWzgZ+XY32A@mail.gmail.com>
+ <20240718030556.dmgzs24d2bk3hmpb@vireshk-i7>
+ <CAPDyKFqCqDqSz2AGrNvkoWzn8-oYnS2fT1dyiMC8ZP1yqYvLKg@mail.gmail.com>
+ <20240725060211.e5pnfk46c6lxedpg@vireshk-i7>
+ <CAPDyKFpSmZgxtmCtiTrFOwgj7ZpNpkDMhxsK0KnuGsWi1a9U5g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFpSmZgxtmCtiTrFOwgj7ZpNpkDMhxsK0KnuGsWi1a9U5g@mail.gmail.com>
 
-From: Chao Yu <chao@kernel.org>
+On 25-07-24, 11:21, Ulf Hansson wrote:
+> Right.
+> 
+> The main issue in regards to the above, is that we may end up trying
+> to vote for different devices, which votes correspond to the same
+> OPP/OPP-table. The one that comes first will request the OPP, the
+> other ones will be ignored as the OPP core thinks there is no reason
+> to already set the current OPP.
 
-[ Upstream commit 5079e1c0c879311668b77075de3e701869804adf ]
+Right, but that won't happen with the diff I shared earlier where we set
+"forced" to true. Isn't it ?
 
-generic/082 reports a bug as below:
+> > I think that design is rather correct, just like other frameworks. Just that we
+> > need to do only set-level for genpds and nothing else. That will have exactly
+> > the same behavior that you want.
+> 
+> I don't quite understand what you are proposing. Do you want to add a
+> separate path for opp-levels?
 
-__schedule+0x332/0xf60
-schedule+0x6f/0xf0
-schedule_timeout+0x23b/0x2a0
-wait_for_completion+0x8f/0x140
-f2fs_issue_checkpoint+0xfe/0x1b0
-f2fs_sync_fs+0x9d/0xb0
-sync_filesystem+0x87/0xb0
-dquot_load_quota_sb+0x41b/0x460
-dquot_load_quota_inode+0xa5/0x130
-dquot_quota_on+0x4b/0x60
-f2fs_quota_on+0xe3/0x1b0
-do_quotactl+0x483/0x700
-__x64_sys_quotactl+0x15c/0x310
-do_syscall_64+0x3f/0x90
-entry_SYSCALL_64_after_hwframe+0x72/0xdc
+Not separate paths, but ignore clk/regulator changes if the table belongs to a
+genpd.
 
-The root casue is race case as below:
+> The problem with that would be that platforms (Tegra at least) are
+> already using a combination of opp-level and clocks.
 
-Thread A			Kworker			IRQ
-- write()
-: write data to quota.user file
+If they are using both for a genpd's OPP table (and changes are made for both
+opp-level and clock by the OPP core), then it should already be wrong, isn't it?
+Two simultaneous calls to dev_pm_opp_set_opp() would set the level correctly (as
+aggregation happens in the genpd core), but clock setting would always reflect
+the second caller. This should be fixed too, isn't it ?
 
-				- writepages
-				 - f2fs_submit_page_write
-				  - __is_cp_guaranteed return false
-				  - inc_page_count(F2FS_WB_DATA)
-				 - submit_bio
-- quotactl(Q_QUOTAON)
- - f2fs_quota_on
-  - dquot_quota_on
-   - dquot_load_quota_inode
-    - vfs_setup_quota_inode
-    : inode->i_flags |= S_NOQUOTA
-							- f2fs_write_end_io
-							 - __is_cp_guaranteed return true
-							 - dec_page_count(F2FS_WB_CP_DATA)
-    - dquot_load_quota_sb
-     - f2fs_sync_fs
-      - f2fs_issue_checkpoint
-       - do_checkpoint
-        - f2fs_wait_on_all_pages(F2FS_WB_CP_DATA)
-        : loop due to F2FS_WB_CP_DATA count is negative
+> To be able to call dev_pm_opp_set_opp() on the required-dev (which
+> would be the real device in this case), we need to add it to genpd's
+> OPP table by calling _add_opp_dev() on it. See _opp_attach_genpd().
+> 
+> The problem with this, is that the real device already has its own OPP
+> table (with the required-OPPs pointing to genpd's OPP table), which
+> means that we would end up adding the device to two different OPP
+> tables.
 
-Calling filemap_fdatawrite() and filemap_fdatawait() to keep all data
-clean before quota file setup.
+I was terrified for a minute after reading this and the current code, as I also
+thought there is an issue there. But I was confident that we used to take care
+of this case separately earlier. A short dive into git logs got me to this:
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-(cherry picked from commit 5079e1c0c879311668b77075de3e701869804adf)
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
-Reported-by: syzbot+d0ab8746c920a592aeab@syzkaller.appspotmail.com
----
- fs/f2fs/super.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+commit 6d366d0e5446 ("OPP: Use _set_opp_level() for single genpd case")
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 6bd8c231069a..2d586a6bfe5f 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2824,15 +2824,26 @@ static int f2fs_quota_on(struct super_block *sb, int type, int format_id,
- 		return -EBUSY;
- 	}
- 
-+	if (path->dentry->d_sb != sb)
-+		return -EXDEV;
-+
- 	err = f2fs_quota_sync(sb, type);
- 	if (err)
- 		return err;
- 
--	err = dquot_quota_on(sb, type, format_id, path);
-+	inode = d_inode(path->dentry);
-+
-+	err = filemap_fdatawrite(inode->i_mapping);
- 	if (err)
- 		return err;
- 
--	inode = d_inode(path->dentry);
-+	err = filemap_fdatawait(inode->i_mapping);
-+	if (err)
-+		return err;
-+
-+	err = dquot_quota_on(sb, type, format_id, path);
-+	if (err)
-+		return err;
- 
- 	inode_lock(inode);
- 	F2FS_I(inode)->i_flags |= F2FS_NOATIME_FL | F2FS_IMMUTABLE_FL;
+This should be working just fine I guess.
+
 -- 
-2.39.2
-
+viresh
 
