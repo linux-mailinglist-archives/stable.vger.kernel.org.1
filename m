@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-61525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C5593C4C5
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2927393C4A0
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EF49283D94
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D44EA1F21B21
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F1619D06D;
-	Thu, 25 Jul 2024 14:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E896A19D081;
+	Thu, 25 Jul 2024 14:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Np7dBXd6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlDJmqJN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529B0199E9F;
-	Thu, 25 Jul 2024 14:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F4A19D066;
+	Thu, 25 Jul 2024 14:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918595; cv=none; b=PBqQ7uAx9DXx6YB1/v/JUj5uXWnSPIRI532BmujK9tyPHdeurMKFrZq8oIee2ropj/rBbmtSt9ZxOFikNzW+f9brjeJE9L6hTILiiDDpEGYrvVMnfvOp5JXR2nXEp+/HmMMfzP3tv+OAOqgz7baK5dBczcxXzovd2nRefsHHTQI=
+	t=1721918482; cv=none; b=BGUGCSNJm9I+6R6hn42OdgqqYoSdpILGS15PUV+LC8wImR+57Yaul+7sOylJ+PlNf2sOnvpbLtRvGjYBV/eug6zSRwGHlmNsazRxxntfE0wnSyfjP+SMVJ0Wd27XYreb9+Q1bCqWszr3p5WmLwViioPWRsE+fd87F/nEta7IOZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918595; c=relaxed/simple;
-	bh=Gth+mzlgr3bAYrKlYnKx6PhuvPzCkAQDotdRSY/NoBY=;
+	s=arc-20240116; t=1721918482; c=relaxed/simple;
+	bh=9Ghd4oHg/lTCJxAL3jQ4KIPwWU2s2UA5NuH3Rh5ZEG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUCKkarAp48qS5uA1xWfEBBiMgt+5KLXwvzNxAkh+f1nft+EAriewOC+XIDceAm8KeiYbAGHmXhp49eLZB35QfCSnuZt2wwnVF9lgSyPYfTrW2ZMPrs3Vun2bUiskOZvzFfXc2G/P/pUduYPEV+su8ELmHIpe5zE/MDPPFg60Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Np7dBXd6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E87C116B1;
-	Thu, 25 Jul 2024 14:43:14 +0000 (UTC)
+	 MIME-Version; b=PcHU96A/kch/upV0lJ+RTqqmsxGDTf7G+TObz9yuDrEqxae0rr2h8UEH73K7Lk3NPPYd9fzZI7qSiKPEq7BL6P8RuUFHOLxohwxzY6XJqnkksT4UPliRmj6xF8L+39E/uYUbRePnMpKQEHZm1EKgcoGIYq6I0nFnsdgeS2FPMz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlDJmqJN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27119C116B1;
+	Thu, 25 Jul 2024 14:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918595;
-	bh=Gth+mzlgr3bAYrKlYnKx6PhuvPzCkAQDotdRSY/NoBY=;
+	s=korg; t=1721918482;
+	bh=9Ghd4oHg/lTCJxAL3jQ4KIPwWU2s2UA5NuH3Rh5ZEG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Np7dBXd6SFeAayW3BAS7MDKq8/g0dZsUTNohDp0BJyios6Hdoz4Jhb8iuEV2rN+Vd
-	 sQGTg47wThOLUtIjRvkY4q71FharZd2dMSePYCWUfpvXEACfQChvAQWTv5FM8giqvU
-	 gboiGKwNffFAqqerFoRlSw8ngSxpTMjQEfegKqfs=
+	b=wlDJmqJN6/ui1ywqAVT3Y8QwljY01jixF/PgJ2JT8dVoPhCzp4oM0Yu5HpgNTBVoz
+	 L8UhT98Ko4dk1pbIYW63gExEjs0ltelZcn2fvzqFoA1ZTuRfX4hsojijAsGV1cHUPY
+	 CM6Jx/kNT0z62quZMHO/SSyCjtKqWyD64/8dETgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 32/43] fs: better handle deep ancestor chains in is_subdir()
+	lei lu <llfamsec@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>
+Subject: [PATCH 4.19 32/33] jfs: dont walk off the end of ealist
 Date: Thu, 25 Jul 2024 16:36:55 +0200
-Message-ID: <20240725142731.684955510@linuxfoundation.org>
+Message-ID: <20240725142729.721362407@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: lei lu <llfamsec@gmail.com>
 
-[ Upstream commit 391b59b045004d5b985d033263ccba3e941a7740 ]
+commit d0fa70aca54c8643248e89061da23752506ec0d4 upstream.
 
-Jan reported that 'cd ..' may take a long time in deep directory
-hierarchies under a bind-mount. If concurrent renames happen it is
-possible to livelock in is_subdir() because it will keep retrying.
+Add a check before visiting the members of ea to
+make sure each ea stays within the ealist.
 
-Change is_subdir() from simply retrying over and over to retry once and
-then acquire the rename lock to handle deep ancestor chains better. The
-list of alternatives to this approach were less then pleasant. Change
-the scope of rcu lock to cover the whole walk while at it.
-
-A big thanks to Jan and Linus. Both Jan and Linus had proposed
-effectively the same thing just that one version ended up being slightly
-more elegant.
-
-Reported-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: lei lu <llfamsec@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dcache.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+ fs/jfs/xattr.c |   23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index c58b5e5cb045d..78081bdc49311 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -3073,28 +3073,25 @@ EXPORT_SYMBOL(d_splice_alias);
-   
- bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -810,7 +810,7 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 		       size_t buf_size)
  {
--	bool result;
-+	bool subdir;
- 	unsigned seq;
+ 	struct jfs_ea_list *ealist;
+-	struct jfs_ea *ea;
++	struct jfs_ea *ea, *ealist_end;
+ 	struct ea_buffer ea_buf;
+ 	int xattr_size;
+ 	ssize_t size;
+@@ -830,9 +830,16 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 		goto not_found;
  
- 	if (new_dentry == old_dentry)
- 		return true;
+ 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
++	ealist_end = END_EALIST(ealist);
  
--	do {
--		/* for restarting inner loop in case of seq retry */
--		seq = read_seqbegin(&rename_lock);
--		/*
--		 * Need rcu_readlock to protect against the d_parent trashing
--		 * due to d_move
--		 */
--		rcu_read_lock();
--		if (d_ancestor(old_dentry, new_dentry))
--			result = true;
--		else
--			result = false;
--		rcu_read_unlock();
--	} while (read_seqretry(&rename_lock, seq));
--
--	return result;
-+	/* Access d_parent under rcu as d_move() may change it. */
-+	rcu_read_lock();
-+	seq = read_seqbegin(&rename_lock);
-+	subdir = d_ancestor(old_dentry, new_dentry);
-+	 /* Try lockless once... */
-+	if (read_seqretry(&rename_lock, seq)) {
-+		/* ...else acquire lock for progress even on deep chains. */
-+		read_seqlock_excl(&rename_lock);
-+		subdir = d_ancestor(old_dentry, new_dentry);
-+		read_sequnlock_excl(&rename_lock);
+ 	/* Find the named attribute */
+-	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea))
++	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
++		if (unlikely(ea + 1 > ealist_end) ||
++		    unlikely(NEXT_EA(ea) > ealist_end)) {
++			size = -EUCLEAN;
++			goto release;
++		}
++
+ 		if ((namelen == ea->namelen) &&
+ 		    memcmp(name, ea->name, namelen) == 0) {
+ 			/* Found it */
+@@ -847,6 +854,7 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 			memcpy(data, value, size);
+ 			goto release;
+ 		}
 +	}
-+	rcu_read_unlock();
-+	return subdir;
- }
- EXPORT_SYMBOL(is_subdir);
+       not_found:
+ 	size = -ENODATA;
+       release:
+@@ -874,7 +882,7 @@ ssize_t jfs_listxattr(struct dentry * de
+ 	ssize_t size = 0;
+ 	int xattr_size;
+ 	struct jfs_ea_list *ealist;
+-	struct jfs_ea *ea;
++	struct jfs_ea *ea, *ealist_end;
+ 	struct ea_buffer ea_buf;
  
--- 
-2.43.0
-
+ 	down_read(&JFS_IP(inode)->xattr_sem);
+@@ -889,9 +897,16 @@ ssize_t jfs_listxattr(struct dentry * de
+ 		goto release;
+ 
+ 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
++	ealist_end = END_EALIST(ealist);
+ 
+ 	/* compute required size of list */
+-	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea)) {
++	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
++		if (unlikely(ea + 1 > ealist_end) ||
++		    unlikely(NEXT_EA(ea) > ealist_end)) {
++			size = -EUCLEAN;
++			goto release;
++		}
++
+ 		if (can_list(ea))
+ 			size += name_size(ea) + 1;
+ 	}
 
 
 
