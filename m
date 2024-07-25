@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-61601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C456D93C51C
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B0193C5A3
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AC861F24B22
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:47:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 064691C21EF6
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DE313A409;
-	Thu, 25 Jul 2024 14:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602BC19AD9B;
+	Thu, 25 Jul 2024 14:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TE+7/VZ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXInGf8A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F371E895;
-	Thu, 25 Jul 2024 14:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD8D1990DD;
+	Thu, 25 Jul 2024 14:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918837; cv=none; b=MHbZaxvnstwSzNZPT1d2o2cVmT3qDrz0HcvwBhm0Hf9AKaee39TAukb9iXnCnf14d+G7oXm88RmEqQfxw3pq9YVAh0CS2uHb86JMFcNvFOVLvK1pjrOj7KT5viJrx4zE2IDEm2PG9mHRp7lzdpnwOPlCMmrlJrv2P56I9l7rSNc=
+	t=1721919230; cv=none; b=NVXi9GfqvICMNZ22+Yvqi9kmBI1I9RNrIt87dJ6ILQepsFAfM3cRb1Bo9mSZmzSak/dGuCj7+RUAa2POl4v0/m+T8Aziw2aCKExyxv9Z7xLZYh/mi+ETUcPRdlioaJvyW7RuwAQVYvTBbUBTqhBG572rihFrzNfDus/xWjKZmWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918837; c=relaxed/simple;
-	bh=rkeqzXT3tAj5qqlZfh/ZxyoTvinpnIPgbUK3oU9+r04=;
+	s=arc-20240116; t=1721919230; c=relaxed/simple;
+	bh=UHnYBQE9y8jE1X9cAg6cQbvsDOeFx+bZitpE0Lq9DxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOKkstrVaWiR7OWKqq2q6lcj1N2++OCZw57T0a4ZyElOfaPaTaBgyW8P8aS62KIj+4p8QPUAbWcuiBjNmT/s0l3MDWhTtnp1Hmhgn+4avIV1xA7aB8iahtbDeJvvalG0JqAs010ExZh2PDe+QwKL2Fq8bDbLfj7/fzwPfe1RoDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TE+7/VZ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B44C116B1;
-	Thu, 25 Jul 2024 14:47:16 +0000 (UTC)
+	 MIME-Version; b=okP8rlsalEzQm7AjafRfV+FGsr3sRlnfbBMc7ao7dYK0BmhaptaYKkROlIM7eVXSYqyT0nUMX0vET8G8wDu2CDBGgdQSTFbqok/GMnPOZ9zV3/Qc8e6Gh1aywlzFtH3+vCaFjbrM2cOY4gRudaZdWZoqI3aFreZAoK9EjJYPcXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXInGf8A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E2FC116B1;
+	Thu, 25 Jul 2024 14:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918837;
-	bh=rkeqzXT3tAj5qqlZfh/ZxyoTvinpnIPgbUK3oU9+r04=;
+	s=korg; t=1721919230;
+	bh=UHnYBQE9y8jE1X9cAg6cQbvsDOeFx+bZitpE0Lq9DxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TE+7/VZ0DC304BhHImytVrAoGaVV0+ys3AuUBB6yNraiTLtr8nmtMjnp0sQ8hSnAB
-	 w0p2DML5zJA3czFKuSrPVdvI5JmlRGdizeJlVOtsKkQaWDFYF+5wWjRnyPTGFYXlU9
-	 XeDfyYgTEhYSDNvNdw4StMW955uL9zSEtCLIBw4s=
+	b=FXInGf8AC4pDMxnpcPVFpctrnRWN1YmoBGnU/+XYQ6dA71ne557RjLfW/dTHaqpnF
+	 ozXXcS2aCUuK4Xr/JY7OOqMQoutFyHGGbJ+/yMxadGsD7XDrP+9qmQ2XJuZBuf3Tke
+	 3Mrnts1wEQIU1HPkKjE2WA+8NecsoNQLbCJGvGo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.9 25/29] arm64: dts: qcom: sdm845: Disable SS instance in Parkmode for USB
+	Edward Adam Davis <eadavis@qq.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com,
+	syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 62/87] hfsplus: fix uninit-value in copy_name
 Date: Thu, 25 Jul 2024 16:37:35 +0200
-Message-ID: <20240725142732.620474578@linuxfoundation.org>
+Message-ID: <20240725142740.770881863@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
-References: <20240725142731.678993846@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit cf4d6d54eadb60d2ee4d31c9d92299f5e8dcb55c upstream.
+[ Upstream commit 0570730c16307a72f8241df12363f76600baf57d ]
 
-For Gen-1 targets like SDM845, it is seen that stressing out the
-controller in host mode results in HC died error:
+[syzbot reported]
+BUG: KMSAN: uninit-value in sized_strscpy+0xc4/0x160
+ sized_strscpy+0xc4/0x160
+ copy_name+0x2af/0x320 fs/hfsplus/xattr.c:411
+ hfsplus_listxattr+0x11e9/0x1a50 fs/hfsplus/xattr.c:750
+ vfs_listxattr fs/xattr.c:493 [inline]
+ listxattr+0x1f3/0x6b0 fs/xattr.c:840
+ path_listxattr fs/xattr.c:864 [inline]
+ __do_sys_listxattr fs/xattr.c:876 [inline]
+ __se_sys_listxattr fs/xattr.c:873 [inline]
+ __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
+ x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:3877 [inline]
+ slab_alloc_node mm/slub.c:3918 [inline]
+ kmalloc_trace+0x57b/0xbe0 mm/slub.c:4065
+ kmalloc include/linux/slab.h:628 [inline]
+ hfsplus_listxattr+0x4cc/0x1a50 fs/hfsplus/xattr.c:699
+ vfs_listxattr fs/xattr.c:493 [inline]
+ listxattr+0x1f3/0x6b0 fs/xattr.c:840
+ path_listxattr fs/xattr.c:864 [inline]
+ __do_sys_listxattr fs/xattr.c:876 [inline]
+ __se_sys_listxattr fs/xattr.c:873 [inline]
+ __x64_sys_listxattr+0x16b/0x2f0 fs/xattr.c:873
+ x64_sys_call+0x2ba0/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:195
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[Fix]
+When allocating memory to strbuf, initialize memory to 0.
 
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for SDM845 to mitigate this issue.
-
-Cc: stable@vger.kernel.org
-Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-9-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+efde959319469ff8d4d7@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://lore.kernel.org/r/tencent_8BBB6433BC9E1C1B7B4BDF1BF52574BA8808@qq.com
+Reported-and-tested-by: syzbot+01ade747b16e9c8030e0@syzkaller.appspotmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/hfsplus/xattr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4086,6 +4086,7 @@
- 				iommus = <&apps_smmu 0x740 0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 			};
-@@ -4141,6 +4142,7 @@
- 				iommus = <&apps_smmu 0x760 0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_2_hsphy>, <&usb_2_qmpphy>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 			};
+diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
+index e2855ceefd394..71fb2f8e91170 100644
+--- a/fs/hfsplus/xattr.c
++++ b/fs/hfsplus/xattr.c
+@@ -699,7 +699,7 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
+ 		return err;
+ 	}
+ 
+-	strbuf = kmalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
++	strbuf = kzalloc(NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN +
+ 			XATTR_MAC_OSX_PREFIX_LEN + 1, GFP_KERNEL);
+ 	if (!strbuf) {
+ 		res = -ENOMEM;
+-- 
+2.43.0
+
 
 
 
