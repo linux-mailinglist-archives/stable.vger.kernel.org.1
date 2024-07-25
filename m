@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-61592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58E793C512
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09AE393C4E6
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41BA0B20CD7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:47:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C50FB259AC
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA6619A29C;
-	Thu, 25 Jul 2024 14:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FB319D06A;
+	Thu, 25 Jul 2024 14:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmyODhuU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0suIfmW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7556EFC18;
-	Thu, 25 Jul 2024 14:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B805C19CD11;
+	Thu, 25 Jul 2024 14:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918809; cv=none; b=q9Gd/IuAgwnz/Qhfq7bep3/s09lQ1hNZWsTc07Y+Nmgne+bOblaAyQuoqEmRP0U1v0vW0LVAKaVD7MAZ9W9uT27ynAWdhvh0lUPcTXyMcj2PalVf6XXj1Qy4oOpgpzlpRXNByx+X0GUr4rRvx54JsldUGO741Klh2hhbI14adA4=
+	t=1721918689; cv=none; b=fC61Gi0zj+cQrOji/17/pcbQgB5QuN59JAkuZnZ8iCDqwYUFnWXHB8G0az8m0YsOKD/tU2STacqNyIMypqXIecuHBQy1DgicpnrlvOf8oZB3iow9JtTcxR/Gfx7VmmWxL1weYuHQqnfrAouSuQDJVh5hMC3M73upvrVL1fJLnyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918809; c=relaxed/simple;
-	bh=jEXQWsAZ/LyOMBd+z8/trwGYzOaClt7bw1zO4KP/Szw=;
+	s=arc-20240116; t=1721918689; c=relaxed/simple;
+	bh=rkBBpqgBSeL6LdxcEsdcDHobzWCwWydvxz0KUGUzR9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQGBNSuC+ga0KGqXuVshQTv7ZA/rvlwlYJ9eAtS8rVJIX/6mCm/xMFYeJZnGA7hPksAWw4LG1Vm4wk6v029hlY0FeOkDiNuGqIFTWPxnh6ijsDRqB99hgjdqwV+VRpSnKLY9M3SLJJh7gsTKLb7ysl1K1Tu0NBy/8PQ/LNXKj3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmyODhuU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13E4C116B1;
-	Thu, 25 Jul 2024 14:46:48 +0000 (UTC)
+	 MIME-Version; b=DrRzesl88RW6ZvYd5dlnBPtiyI++jpFCXkRG7mIsJOVhqld5hkSS2Xe249YkHP8C/OCLNN8pg58YkxrEgkR4ToTaq5+Mp8iqfocF66fkYHXHW9XFLGnHRd8scfQeotxSSv2uO2g9uKWqMZE3GW50VD1SMYC66SwhG6ZrEeP9JWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0suIfmW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1FDC116B1;
+	Thu, 25 Jul 2024 14:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918809;
-	bh=jEXQWsAZ/LyOMBd+z8/trwGYzOaClt7bw1zO4KP/Szw=;
+	s=korg; t=1721918689;
+	bh=rkBBpqgBSeL6LdxcEsdcDHobzWCwWydvxz0KUGUzR9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmyODhuUylnvkrDY/xPF9UlL3bDbBafcysU7Bf+57pZoal+zki1y2KVwKjstmORsr
-	 2jkGMPkyYM/etJLJE6TNntNni8OKcyO8qyc3NfnorMwmOLCJWmcRp4SOSdEst95rtB
-	 mF7dXqjNvFHQrRiZa67Y7mIVPSXSIIOxX64UhvNk=
+	b=T0suIfmWuzjATQwHbMRIVthuR8pygwugm2YB6vqk2L58lfTrTMvlCG6T/qZ02j04x
+	 kXDBtqjF69aYfK7vAV17kix3rJVXAEo91CNJqrMErd8BPM/Hv902uYqaf8Jj7rjoVa
+	 Iw69tUnSrAaxNZkJf4yYGWIW+q5Riye4TiFgGcWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.9 08/29] ALSA: hda/tas2781: Add new quirk for Lenovo Hera2 Laptop
-Date: Thu, 25 Jul 2024 16:37:18 +0200
-Message-ID: <20240725142731.993139234@linuxfoundation.org>
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 10/13] arm64: dts: qcom: sdm630: Disable SS instance in Parkmode for USB
+Date: Thu, 25 Jul 2024 16:37:19 +0200
+Message-ID: <20240725142728.428517867@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
-References: <20240725142731.678993846@linuxfoundation.org>
+In-Reply-To: <20240725142728.029052310@linuxfoundation.org>
+References: <20240725142728.029052310@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-commit 1e5597e5ff18d452cf9afa847e904f301d1ac690 upstream.
+commit fad58a41b84667cb6c9232371fc3af77d4443889 upstream.
 
-Add new vendor_id and subsystem_id in quirk for Lenovo Hera2 Laptop.
+For Gen-1 targets like SDM630, it is seen that stressing out the
+controller in host mode results in HC died error:
 
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240717115305.723-1-shenghao-ding@ti.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
+
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instance in park mode for SDM630 to mitigate this issue.
+
+Cc: stable@vger.kernel.org
+Fixes: c65a4ed2ea8b ("arm64: dts: qcom: sdm630: Add USB configuration")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240704152848.3380602-5-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
+ arch/arm64/boot/dts/qcom/sdm630.dtsi |    1 +
  1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10488,6 +10488,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x231a, "Thinkpad Z16 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
- 	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
- 	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
-+	SND_PCI_QUIRK(0x17aa, 0x2326, "Hera2", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x30bb, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
- 	SND_PCI_QUIRK(0x17aa, 0x30e2, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
- 	SND_PCI_QUIRK(0x17aa, 0x310c, "ThinkCentre Station", ALC294_FIXUP_LENOVO_MIC_LOCATION),
+--- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
+@@ -1243,6 +1243,7 @@
+ 				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
++				snps,parkmode-disable-ss-quirk;
+ 
+ 				/*
+ 				 * SDM630 technically supports USB3 but I
 
 
 
