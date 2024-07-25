@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-61478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0907E93C488
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2556693C469
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:39:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8AB71F21A42
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF0B61F2094E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4847419D081;
-	Thu, 25 Jul 2024 14:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4237719D066;
+	Thu, 25 Jul 2024 14:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPkKi5HB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dD4NsatV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0728F19AA5F;
-	Thu, 25 Jul 2024 14:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2593199E9F;
+	Thu, 25 Jul 2024 14:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918439; cv=none; b=LVQPmD6aq3qb5xEW04pskMtU8+ZsSb+Dive9NLOMUIuSdQRQxI0qhlu1B2Hv4Y3P1o+nG78FjC4eZX4zoUJ9Zn9cJNeYa+HYcB6AdXigfNN1Eo7qzgf6msS/4/SARb5+uGLoIHCcfrFtVC1GLq6bu5/dlQLjsglAuT3Aw+mNMM0=
+	t=1721918377; cv=none; b=PVSqgtdpeve7cZ3GZ4mBBaKjCNUjXSeTQOx06FzIW5Lj64VEpiOO1T4poZg6rMikokTys4u5AEnhSHjbGkOBDJvmeOYo30+h1x7H9GivaZ5fchl0yfy16iwTmeH7KfkFNa33vu0m1b/CkrYQ9v5deqUQaXcmIfrkh0rqwHJmjLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918439; c=relaxed/simple;
-	bh=EBPnpkgm3VxHGYQ0Q2FhgKaHypFKjygLWUKrEeVBlf0=;
+	s=arc-20240116; t=1721918377; c=relaxed/simple;
+	bh=T+/JarZQUqrcrIhU1f/R/ACzMUzk6PXiUQcyQENP4+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Na/feuPv5+cPlabc0f16mEOoXKz/Ux0Voz03noR56T5+EEXWLXBGSmcKJHYjXw4GF/ycfOrCpjyTm0hIVjlxPL61FRggZEKWMDU/3iA4WBh66dhiGih6HGl/hsj4+OZ0sNRbs3XlAQ2WVZpic8v2O5Mwi0Ny1+LM9w/5zQT7NPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPkKi5HB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A863C116B1;
-	Thu, 25 Jul 2024 14:40:38 +0000 (UTC)
+	 MIME-Version; b=mlAR3RuGGucBPdhHYKcqsoqxYwfJXcm0kr4/ecdg4lu0ZeOJ4qY+ciSsvusBNJIr/CXWuMBpS9/f+zvbShfORavfn4pRkCbEggILmTbtM629lR1TegCCY09IdS2QqyGDmDZH1RLQWqLfnkH1aItPTz6QoZommalLF3EqyAHsTEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dD4NsatV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03828C116B1;
+	Thu, 25 Jul 2024 14:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918438;
-	bh=EBPnpkgm3VxHGYQ0Q2FhgKaHypFKjygLWUKrEeVBlf0=;
+	s=korg; t=1721918376;
+	bh=T+/JarZQUqrcrIhU1f/R/ACzMUzk6PXiUQcyQENP4+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IPkKi5HBJGSIUF6LykiS73rzbSA+vzw+kZd3wCFfm12owwwK3ArqVtXgGo+kGPYwF
-	 7XlP9xsKkgVXqLT3oQCZWhIl+K9T9fjktziAG1O83uCvg2GtqwQP6zfPVUObIw8GRK
-	 V+xsJESEzrMEs+luybmhm+3VcFGIAh7hGB/RznNQ=
+	b=dD4NsatVTD0xhyV/R5wf1P5n8KrJTynZac58uYNpe8epbtvO6SzBOOvWLcAUhJ/Kq
+	 wF5qI9fkoY7EN5fYzjH2iIfMOOjOwrxkKUCRGJOhq9HEM/2ekLwE1Ffv0WVKo70Oki
+	 3Un4So4EVZwVb5+eFhXYgxcGDFt0oDdsWHZdS9zU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 02/33] scsi: qedf: Set qed_slowpath_params to zero before use
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 09/29] ALSA: hda/realtek: Enable headset mic on Positivo SU C1400
 Date: Thu, 25 Jul 2024 16:36:25 +0200
-Message-ID: <20240725142728.607944263@linuxfoundation.org>
+Message-ID: <20240725142732.167377561@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit 6c3bb589debd763dc4b94803ddf3c13b4fcca776 ]
+commit 8fc1e8b230771442133d5cf5fa4313277aa2bb8b upstream.
 
-Zero qed_slowpath_params before use.
+Positivo SU C1400 is equipped with ALC256, and it needs
+ALC269_FIXUP_ASPIRE_HEADSET_MIC quirk to make its headset mic work.
 
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240515091101.18754-4-skashyap@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240712180642.22564-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qedf/qedf_main.c | 1 +
+ sound/pci/hda/patch_realtek.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index 01e27285b26ba..33fb0e1926831 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -3101,6 +3101,7 @@ static int __qedf_probe(struct pci_dev *pdev, int mode)
- 	}
- 
- 	/* Start the Slowpath-process */
-+	memset(&slowpath_params, 0, sizeof(struct qed_slowpath_params));
- 	slowpath_params.int_mode = QED_INT_MODE_MSIX;
- 	slowpath_params.drv_major = QEDF_DRIVER_MAJOR_VER;
- 	slowpath_params.drv_minor = QEDF_DRIVER_MINOR_VER;
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10384,6 +10384,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
+ 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
+ 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
++	SND_PCI_QUIRK(0x10ec, 0x119e, "Positivo SU C1400", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
 
 
 
