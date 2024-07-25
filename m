@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-61492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2927393C4A0
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FBA93C4C6
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D44EA1F21B21
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5B7B1F210A1
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E896A19D081;
-	Thu, 25 Jul 2024 14:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE3019D07F;
+	Thu, 25 Jul 2024 14:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlDJmqJN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0JpPlAJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F4A19D066;
-	Thu, 25 Jul 2024 14:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADF219AA5F;
+	Thu, 25 Jul 2024 14:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918482; cv=none; b=BGUGCSNJm9I+6R6hn42OdgqqYoSdpILGS15PUV+LC8wImR+57Yaul+7sOylJ+PlNf2sOnvpbLtRvGjYBV/eug6zSRwGHlmNsazRxxntfE0wnSyfjP+SMVJ0Wd27XYreb9+Q1bCqWszr3p5WmLwViioPWRsE+fd87F/nEta7IOZs=
+	t=1721918598; cv=none; b=KNuKo+BdxdLMeaqVGC/jggVoiMmQyCQGJxVFfvJDyOti+z+1NsNW7AyDTqKnkqHesF4PkmGtY15H61fJIFOYN2/Xz9XZ1SjR4sMWQl7kHf4ERZJlyFM8Tcr4y7nVhDyrzJixXizrNuCwyzFqa/FAKwkzPcxga8o/XAHtAH4YGEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918482; c=relaxed/simple;
-	bh=9Ghd4oHg/lTCJxAL3jQ4KIPwWU2s2UA5NuH3Rh5ZEG4=;
+	s=arc-20240116; t=1721918598; c=relaxed/simple;
+	bh=DxNdMtmC+DEYMwE4PaVKXp80kvgPssaM7sEmZW3FlJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PcHU96A/kch/upV0lJ+RTqqmsxGDTf7G+TObz9yuDrEqxae0rr2h8UEH73K7Lk3NPPYd9fzZI7qSiKPEq7BL6P8RuUFHOLxohwxzY6XJqnkksT4UPliRmj6xF8L+39E/uYUbRePnMpKQEHZm1EKgcoGIYq6I0nFnsdgeS2FPMz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlDJmqJN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27119C116B1;
-	Thu, 25 Jul 2024 14:41:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LMBpIh5scErGe1ZXOycAVwvu4ZZGzaScD8r1pbduB/I9DzK6uxbO30UmaLRPj5W8QF/NCju9tOrZVlejul755/U5dhUTWfdQTOxM2/+mbM8AkH9pDXFB9QDSj4Uh/pUovby4lmLvsocyOuyw+8UAp5jX4iTdutypvHgGvVEfagc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0JpPlAJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00831C116B1;
+	Thu, 25 Jul 2024 14:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918482;
-	bh=9Ghd4oHg/lTCJxAL3jQ4KIPwWU2s2UA5NuH3Rh5ZEG4=;
+	s=korg; t=1721918598;
+	bh=DxNdMtmC+DEYMwE4PaVKXp80kvgPssaM7sEmZW3FlJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wlDJmqJN6/ui1ywqAVT3Y8QwljY01jixF/PgJ2JT8dVoPhCzp4oM0Yu5HpgNTBVoz
-	 L8UhT98Ko4dk1pbIYW63gExEjs0ltelZcn2fvzqFoA1ZTuRfX4hsojijAsGV1cHUPY
-	 CM6Jx/kNT0z62quZMHO/SSyCjtKqWyD64/8dETgo=
+	b=K0JpPlAJ5zOS+sNvx7f5A0UEi1uWivVEXQwqAE7LbmzX0NzhU2ZFjf+7OLtK2F4Gg
+	 4nihmbLvY5fTwWud/jlYdpdSdJZvL4xEt20qvCHUCptqRZA2zKVG44CAkIXZ3MCFnO
+	 +YSC/HaPudO3rIH9HTk6KSCmztsjxAm6pwETlbJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei lu <llfamsec@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 4.19 32/33] jfs: dont walk off the end of ealist
-Date: Thu, 25 Jul 2024 16:36:55 +0200
-Message-ID: <20240725142729.721362407@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 33/43] spi: imx: Dont expect DMA for i.MX{25,35,50,51,53} cspi devices
+Date: Thu, 25 Jul 2024 16:36:56 +0200
+Message-ID: <20240725142731.722223097@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,90 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: lei lu <llfamsec@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit d0fa70aca54c8643248e89061da23752506ec0d4 upstream.
+[ Upstream commit ce1dac560a74220f2e53845ec0723b562288aed4 ]
 
-Add a check before visiting the members of ea to
-make sure each ea stays within the ealist.
+While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
+claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
+device trees don't add DMA channels. The Reference manuals of i.MX31 and
+i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
+check the others.)
 
-Signed-off-by: lei lu <llfamsec@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
+DMA channel requests") this results in an error message
+
+	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
+
+during boot. However that isn't fatal and the driver gets loaded just
+fine, just without using DMA.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://patch.msgid.link/20240508095610.2146640-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/xattr.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -810,7 +810,7 @@ ssize_t __jfs_getxattr(struct inode *ino
- 		       size_t buf_size)
- {
- 	struct jfs_ea_list *ealist;
--	struct jfs_ea *ea;
-+	struct jfs_ea *ea, *ealist_end;
- 	struct ea_buffer ea_buf;
- 	int xattr_size;
- 	ssize_t size;
-@@ -830,9 +830,16 @@ ssize_t __jfs_getxattr(struct inode *ino
- 		goto not_found;
- 
- 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
-+	ealist_end = END_EALIST(ealist);
- 
- 	/* Find the named attribute */
--	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea))
-+	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
-+		if (unlikely(ea + 1 > ealist_end) ||
-+		    unlikely(NEXT_EA(ea) > ealist_end)) {
-+			size = -EUCLEAN;
-+			goto release;
-+		}
-+
- 		if ((namelen == ea->namelen) &&
- 		    memcmp(name, ea->name, namelen) == 0) {
- 			/* Found it */
-@@ -847,6 +854,7 @@ ssize_t __jfs_getxattr(struct inode *ino
- 			memcpy(data, value, size);
- 			goto release;
- 		}
-+	}
-       not_found:
- 	size = -ENODATA;
-       release:
-@@ -874,7 +882,7 @@ ssize_t jfs_listxattr(struct dentry * de
- 	ssize_t size = 0;
- 	int xattr_size;
- 	struct jfs_ea_list *ealist;
--	struct jfs_ea *ea;
-+	struct jfs_ea *ea, *ealist_end;
- 	struct ea_buffer ea_buf;
- 
- 	down_read(&JFS_IP(inode)->xattr_sem);
-@@ -889,9 +897,16 @@ ssize_t jfs_listxattr(struct dentry * de
- 		goto release;
- 
- 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
-+	ealist_end = END_EALIST(ealist);
- 
- 	/* compute required size of list */
--	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea)) {
-+	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
-+		if (unlikely(ea + 1 > ealist_end) ||
-+		    unlikely(NEXT_EA(ea) > ealist_end)) {
-+			size = -EUCLEAN;
-+			goto release;
-+		}
-+
- 		if (can_list(ea))
- 			size += name_size(ea) + 1;
- 	}
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 67f31183c1180..8c9bafee58f9f 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -993,7 +993,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
+ 	.rx_available = mx31_rx_available,
+ 	.reset = mx31_reset,
+ 	.fifo_size = 8,
+-	.has_dmamode = true,
++	.has_dmamode = false,
+ 	.dynamic_burst = false,
+ 	.has_slavemode = false,
+ 	.devtype = IMX35_CSPI,
+-- 
+2.43.0
+
 
 
 
