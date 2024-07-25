@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CEFD93C4D7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DA0793C457
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9E79B25382
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8F11284147
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A6C19CD11;
-	Thu, 25 Jul 2024 14:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE4319B5BE;
+	Thu, 25 Jul 2024 14:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y55rJbxn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iee3oue9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1905A13DDB8;
-	Thu, 25 Jul 2024 14:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC9B19A29C;
+	Thu, 25 Jul 2024 14:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918654; cv=none; b=Yvo/1us4ys4UgXjZTq9yzYTSDHyudUNrPJvVT/aU1M1OhMlErk34JYeoxfcbTr3hvXg1RaLWL7FOIbB3PZbLcH3wqGZLHe/NBAYiVGWte9yPz7ofEgUxTf8D1BsIBN3kOML1NA2tvVgPUJw2lz+JYlJ+1pc23tokd1gBqtXSpEs=
+	t=1721918326; cv=none; b=OoA5SRDLfnvmp50tlKabdFdqLmg/NNwd6jpt6l+Wrru+h9KH4aE8wHUW3D4lZBL2BCZVx1B3gn838q9xRXzvsX7VeGVtJ72JBT/DpVHvQwJ21W5QeVc/gjckcoDWJZK/9SuV2kIwFEKZBZ3NNX9Lk+6SVAoZix38wTvo9lV0deA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918654; c=relaxed/simple;
-	bh=3ZvkwQ3nI8gv1bq8ZSneRDjWb8gT+JDP7fR9KGvLUuE=;
+	s=arc-20240116; t=1721918326; c=relaxed/simple;
+	bh=J1GJWfE2i2KJGpyHwwDnrd9ImpqQGJWLSpPkvO+zSLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oqt/bABIeRE9vdVQmy8SgMAZgfDIkTcIN6y41ty5MavBTvIswOhiGTBWarfYJWli0msEnpDMLS069uJezqbyWEJkccFwtbJm7wr/E+fqcJc/WAK54lCXmM4P3etefzF4Kk4XfAM4qLp1l300VgcJ8FbAI1byEbewIaye3UYzE4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y55rJbxn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DA3C116B1;
-	Thu, 25 Jul 2024 14:44:13 +0000 (UTC)
+	 MIME-Version; b=oBBxlURszbEfJSSzS70QvizqzCczRdkEX/HTzeqBTcfUmZ1FSNlNZq6EbjIcHHFmT4MzQA72pBJszMNE1Gd6A61X7qTvNhotVF2TisponpPkaxV+H+x9HUTZE9Oc6db7ZS1lgIn3Fgf9BZW+NXPFBFmK5z4YNL7IoOJDP7DNb54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iee3oue9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0052C116B1;
+	Thu, 25 Jul 2024 14:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918654;
-	bh=3ZvkwQ3nI8gv1bq8ZSneRDjWb8gT+JDP7fR9KGvLUuE=;
+	s=korg; t=1721918326;
+	bh=J1GJWfE2i2KJGpyHwwDnrd9ImpqQGJWLSpPkvO+zSLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y55rJbxnGID5D2XxETUF2hD2+d8gBH/CnKoT2tJYJJq4nz8uJOGHhwKZn/9eKuXIZ
-	 UWMJo0ZduJGMCKVSc6Wu398SQvjyKYjsQ7fdfgWYdySeyN48CpEWEzGWqYg5Gwtn9j
-	 xZOAImquef8K5wwtNWGbYniigRjMBQXEaThZY+Ns=
+	b=iee3oue9xPWbDhP1LJ8jiV8TwMJh9l6CNZcbzz8Axo/DNhBFPNGY2XV57thQ50z4h
+	 KhgjfUwp7rjesPV9wWcLUduTx3o4JkJKNw7ZbFJOIEF31GjB5+81OxRIk4m3C2HZFp
+	 A1oI+BTiF0qQQcy0T/EuM0cbD5/06z5N9NImcuSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 09/43] ila: block BH in ila_output()
+	Abel Vesa <abel.vesa@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 16/29] arm64: dts: qcom: x1e80100-crd: Fix the PHY regulator for PCIe 6a
 Date: Thu, 25 Jul 2024 16:36:32 +0200
-Message-ID: <20240725142730.827049266@linuxfoundation.org>
+Message-ID: <20240725142732.425665394@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit cf28ff8e4c02e1ffa850755288ac954b6ff0db8c ]
+commit cf7d2157aa87dca6f078a2d4867fd0a9dbc357aa upstream.
 
-As explained in commit 1378817486d6 ("tipc: block BH
-before using dst_cache"), net/core/dst_cache.c
-helpers need to be called with BH disabled.
+The actual PHY regulator is L1d instead of L3j, so fix it accordingly.
 
-ila_output() is called from lwtunnel_output()
-possibly from process context, and under rcu_read_lock().
-
-We might be interrupted by a softirq, re-enter ila_output()
-and corrupt dst_cache data structures.
-
-Fix the race by using local_bh_disable().
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240531132636.2637995-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d7e03cce0400 ("arm64: dts: qcom: x1e80100-crd: Enable more support")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: stable@vger.kernel.org      # 6.9
+Link: https://lore.kernel.org/r/20240530-x1e80100-dts-pcie6a-v1-1-ee17a9939ba5@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ila/ila_lwt.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/x1e80100-crd.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index 422dcc691f71c..6a6a30e82810d 100644
---- a/net/ipv6/ila/ila_lwt.c
-+++ b/net/ipv6/ila/ila_lwt.c
-@@ -58,7 +58,9 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		return orig_dst->lwtstate->orig_output(net, sk, skb);
- 	}
+--- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
+@@ -659,7 +659,7 @@
+ };
  
-+	local_bh_disable();
- 	dst = dst_cache_get(&ilwt->dst_cache);
-+	local_bh_enable();
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *ip6h = ipv6_hdr(skb);
- 		struct flowi6 fl6;
-@@ -86,8 +88,11 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
+ &pcie6a_phy {
+-	vdda-phy-supply = <&vreg_l3j_0p8>;
++	vdda-phy-supply = <&vreg_l1d_0p8>;
+ 	vdda-pll-supply = <&vreg_l2j_1p2>;
  
--		if (ilwt->connected)
-+		if (ilwt->connected) {
-+			local_bh_disable();
- 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
-+			local_bh_enable();
-+		}
- 	}
- 
- 	skb_dst_set(skb, dst);
--- 
-2.43.0
-
+ 	status = "okay";
 
 
 
