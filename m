@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CDC393C4D8
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04BE793C5A4
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:53:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8E702822B5
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 355C71C21EDA
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C1419D066;
-	Thu, 25 Jul 2024 14:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C57319AD9B;
+	Thu, 25 Jul 2024 14:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXpj9hyS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9b278VP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA202199E9F;
-	Thu, 25 Jul 2024 14:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DF2FC19;
+	Thu, 25 Jul 2024 14:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918658; cv=none; b=R/nOEHdyv/rrKclCFt8BPrwgEYS35wzn6hAW3cpK9encK9kyJ0ldTA8Ul+P5fOiyFiJy4yqUhn/eUzzrJJgvsm/cc6MuEv7oZN8Ivuk4IRbQsQM95R2GEbSiI3TJda8FSBeQOKpUd4L0WqDXSyYpWHNuvfR00a/DJSOSVasCvkY=
+	t=1721919233; cv=none; b=b9Wu6f5+gxO3Px7C99xmc4KigCTwqH/X567gDOMMbaZs4sxVVx6H+g71YUdVq1Gt9Rb+ZzW/bOcoQ7Tp8UXMktttfIUA/vjeqBcxn+XT11Uf7H8LWTxH288HUW85RM90LxSasXoLYK7sfpFHgvFUpx+d86qKVW6Ovj9OT6grgfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918658; c=relaxed/simple;
-	bh=woxgRUw1bBPya8jc/DEfpXZ2zYf7KUfhRmt1WPFiC1g=;
+	s=arc-20240116; t=1721919233; c=relaxed/simple;
+	bh=RMo/uWZz0TO4dr1igDrXYcp+V06JvPxdXTlXW1f5VGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GdSFnzqLoxSkC4fNW2AiG26UFavsoe6EFZXnmzv6+XzMYj2I3zvxN8BYkOKMXE2nMNP/MhaL/H+Drf9wRjePvcoyCwyQhsQ589/n+6kOB4XaslAY8xEN8FStEEpknT7Qm97TgBney258D/guYQivJSY2LWwYporE+Y4Dd206hRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXpj9hyS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943DAC116B1;
-	Thu, 25 Jul 2024 14:44:16 +0000 (UTC)
+	 MIME-Version; b=WP1pOq8E8iTz5DB1TkU1mrvu8zPSe6ZXHGk91RjM+G/zuSxFWOvdGbd0iXM9oaG9kHjVvhmm8Lk7Rh54ZeBxPcFgV1kTGLDKAJeT9APTp7e1sS90oO5lrBbodHirSOvLrAX+7WvQBa4ar7BdHATSpJAaKLNEiiD9LnsP2tqiQ7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9b278VP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8CFCC116B1;
+	Thu, 25 Jul 2024 14:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918657;
-	bh=woxgRUw1bBPya8jc/DEfpXZ2zYf7KUfhRmt1WPFiC1g=;
+	s=korg; t=1721919233;
+	bh=RMo/uWZz0TO4dr1igDrXYcp+V06JvPxdXTlXW1f5VGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXpj9hySz3SK52O5ofZTSHfuUWJjHWrcaDK7HnXJCb4MrSK3fI2nyI9PdPeKClL5r
-	 KVIjJFvSDbyn3C1QT2mhlpxEOPrjo4Ys7sxpjuh49DPgekAO4u4Q4VHTn43bDIubkE
-	 CDVv73+BHSevLKUwGrXihWTq/Frl6y9qoMKLQDg8=
+	b=J9b278VPWinbb8oQ1kODJwqLspC9iBnA1Zia4sk0i0M4KObCbSqX4j8lB1YcaachM
+	 W6TfPyzIexqy/faiVRJjhRtX6CgzTl/7Mok82FXg3tvWiUeX/P/rO9k11oE1eQxfSY
+	 BFVluT4Nfe9ae8TepHtRxZBUXJ5fc9NisQtFyIRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.4 43/43] filelock: Fix fcntl/close race recovery compat path
+	kernel test robot <lkp@intel.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 33/87] drm/vmwgfx: Fix missing HYPERVISOR_GUEST dependency
 Date: Thu, 25 Jul 2024 16:37:06 +0200
-Message-ID: <20240725142732.097230811@linuxfoundation.org>
+Message-ID: <20240725142739.684918070@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Alexey Makhalov <alexey.makhalov@broadcom.com>
 
-commit f8138f2ad2f745b9a1c696a05b749eabe44337ea upstream.
+[ Upstream commit 8c4d6945fe5bd04ff847c3c788abd34ca354ecee ]
 
-When I wrote commit 3cad1bc01041 ("filelock: Remove locks reliably when
-fcntl/close race is detected"), I missed that there are two copies of the
-code I was patching: The normal version, and the version for 64-bit offsets
-on 32-bit kernels.
-Thanks to Greg KH for stumbling over this while doing the stable
-backport...
+VMWARE_HYPERCALL alternative will not work as intended without VMware guest code
+initialization.
 
-Apply exactly the same fix to the compat path for 32-bit kernels.
+  [ bp: note that this doesn't reproduce with newer gccs so it must be
+    something gcc-9-specific. ]
 
-Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
-Cc: stable@kernel.org
-Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240723-fs-lock-recover-compatfix-v1-1-148096719529@google.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://lore.kernel.org/oe-kbuild-all/202406152104.FxakP1MB-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240616012511.198243-1-alexey.makhalov@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/locks.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/vmwgfx/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2656,8 +2656,9 @@ int fcntl_setlk64(unsigned int fd, struc
- 	error = do_lock_file_wait(filp, cmd, file_lock);
- 
- 	/*
--	 * Attempt to detect a close/fcntl race and recover by releasing the
--	 * lock that was just acquired. There is no need to do that when we're
-+	 * Detect close/fcntl races and recover by zapping all POSIX locks
-+	 * associated with this file and our files_struct, just like on
-+	 * filp_flush(). There is no need to do that when we're
- 	 * unlocking though, or for OFD locks.
- 	 */
- 	if (!error && file_lock->fl_type != F_UNLCK &&
-@@ -2671,9 +2672,7 @@ int fcntl_setlk64(unsigned int fd, struc
- 		f = fcheck(fd);
- 		spin_unlock(&current->files->file_lock);
- 		if (f != filp) {
--			file_lock->fl_type = F_UNLCK;
--			error = do_lock_file_wait(filp, cmd, file_lock);
--			WARN_ON_ONCE(error);
-+			locks_remove_posix(filp, &current->files);
- 			error = -EBADF;
- 		}
- 	}
+diff --git a/drivers/gpu/drm/vmwgfx/Kconfig b/drivers/gpu/drm/vmwgfx/Kconfig
+index c9ce47c448e03..5b9a9fba85421 100644
+--- a/drivers/gpu/drm/vmwgfx/Kconfig
++++ b/drivers/gpu/drm/vmwgfx/Kconfig
+@@ -2,7 +2,7 @@
+ config DRM_VMWGFX
+ 	tristate "DRM driver for VMware Virtual GPU"
+ 	depends on DRM && PCI && MMU
+-	depends on X86 || ARM64
++	depends on (X86 && HYPERVISOR_GUEST) || ARM64
+ 	select DRM_TTM
+ 	select MAPPING_DIRTY_HELPERS
+ 	# Only needed for the transitional use of drm_crtc_init - can be removed
+-- 
+2.43.0
+
 
 
 
