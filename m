@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-61611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4C293C529
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5DC93C4CF
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48AF4B26B49
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D50E2858A8
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D04E19D090;
-	Thu, 25 Jul 2024 14:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193EB19D066;
+	Thu, 25 Jul 2024 14:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONbjNJ/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cViJHOFc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1A1FC18;
-	Thu, 25 Jul 2024 14:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC68C13DDB8;
+	Thu, 25 Jul 2024 14:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918870; cv=none; b=MePKncp5rkcOwghmJuTabmsmUojAu3xzmkH6utvneAEQ1Kp7ILy4Z0LQvwnqLC8I4D9uDJo0nN364n/DeW7VHpeZbI3CHNqrurT2X2uG74hzyzMG2PRudlWF1cenj3//gBcuI36uOdXn2Fgnpo4kjp28fRg4iYgSnzjlMLdveQ0=
+	t=1721918627; cv=none; b=MPa61CfdqoihDj+OBOI+zaAc5XTE7fJNI69N9rEWEffhuxTMJqut8Cxi2bcxyUQT9GRtoSiqXsFiiPFo2w0QKJnOk1h0E4SaZjOd2twYgd01XL9xqLTF8+cXQTqamSH6v/jLsts+fYokvdkGR81g+flrvRY7PzmQyumHLPnRJVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918870; c=relaxed/simple;
-	bh=zDpu5z9TjqFZIJfFEy2o32jonIQVeWkZ+UZxmFA6SYY=;
+	s=arc-20240116; t=1721918627; c=relaxed/simple;
+	bh=tisQIEsNX6VJt+NioDcdKj91xng5Ol1IHQnQgDyr9zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgJtPErpWEM0k7hd3lnram8jBdxpsG+tmvsRCGQacyKxmqidY95fmGjP+y/J4pVbsgNlJv0f9gtrko5LOjv2NYx3JkFjcXBMEjUHkDIslqICIFSYF/nS0t85yGfPhjdcdzsqfP8Z/EMvpj3P1GmTC0RQkM0r/gcQG20kvRvLje0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONbjNJ/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FD0C116B1;
-	Thu, 25 Jul 2024 14:47:49 +0000 (UTC)
+	 MIME-Version; b=g9UEpAkuZjQaOgC0MgHigIWzgDcR45Qk9BpVLwW2F/3rZGuR2htL4wq9kPErbJJ/fOmL4nAdTstQJxrtSqpbCZOZ7MYdqwcxD9Y8Hx7cNsg6BtjwnmRxbA1d+7d9iW2cZXlNTg9bMu+7OkpKNCXiPXab7O9XRbkcejsZuE5Fphs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cViJHOFc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B81C32782;
+	Thu, 25 Jul 2024 14:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918869;
-	bh=zDpu5z9TjqFZIJfFEy2o32jonIQVeWkZ+UZxmFA6SYY=;
+	s=korg; t=1721918627;
+	bh=tisQIEsNX6VJt+NioDcdKj91xng5Ol1IHQnQgDyr9zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ONbjNJ/UIKBafX+NT+vxzyFtahrJQNTvbsvkpUUyHdrQeZ1sKqemZTzKyKDW3sG6y
-	 R0unbSYJH1YYASpd7m2l1phmMAPtXc1tTmwOh3WuM2k7Z8CyDvhYkRznYuBD0LMfH6
-	 2lz0kKzfww7X9QuaqkcE5a8Ei9Ytifp/vTgszVbo=
+	b=cViJHOFcIyaFIXrm+AB8laL0SDwZDAIw+sYVUrpGhwsh/fePXszm6X9BZmn6hjxzC
+	 nPOZUs6WDTx4KKS/psiO8F4J5r8WaBnPpV4d/Y2C3iQUSzz5Uw/Zh0jIewE8y0M7a3
+	 H+5GFxEQgEnrL+q33O31yW2+SLwi+PT6fzH3g3+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 14/59] kconfig: gconf: give a proper initial state to the Save button
+	lei lu <llfamsec@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>
+Subject: [PATCH 5.4 41/43] jfs: dont walk off the end of ealist
 Date: Thu, 25 Jul 2024 16:37:04 +0200
-Message-ID: <20240725142733.805505170@linuxfoundation.org>
+Message-ID: <20240725142732.022014891@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: lei lu <llfamsec@gmail.com>
 
-[ Upstream commit 46edf4372e336ef3a61c3126e49518099d2e2e6d ]
+commit d0fa70aca54c8643248e89061da23752506ec0d4 upstream.
 
-Currently, the initial state of the "Save" button is always active.
+Add a check before visiting the members of ea to
+make sure each ea stays within the ealist.
 
-If none of the CONFIG options are changed while loading the .config
-file, the "Save" button should be greyed out.
-
-This can be fixed by calling conf_read() after widget initialization.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: lei lu <llfamsec@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/gconf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/jfs/xattr.c |   23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index 5527482c30779..4097999127315 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -1484,7 +1484,6 @@ int main(int ac, char *av[])
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -797,7 +797,7 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 		       size_t buf_size)
+ {
+ 	struct jfs_ea_list *ealist;
+-	struct jfs_ea *ea;
++	struct jfs_ea *ea, *ealist_end;
+ 	struct ea_buffer ea_buf;
+ 	int xattr_size;
+ 	ssize_t size;
+@@ -817,9 +817,16 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 		goto not_found;
  
- 	conf_parse(name);
- 	fixup_rootmenu(&rootmenu);
--	conf_read(NULL);
+ 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
++	ealist_end = END_EALIST(ealist);
  
- 	/* Load the interface and connect signals */
- 	init_main_window(glade_file);
-@@ -1492,6 +1491,8 @@ int main(int ac, char *av[])
- 	init_left_tree();
- 	init_right_tree();
- 
-+	conf_read(NULL);
+ 	/* Find the named attribute */
+-	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea))
++	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
++		if (unlikely(ea + 1 > ealist_end) ||
++		    unlikely(NEXT_EA(ea) > ealist_end)) {
++			size = -EUCLEAN;
++			goto release;
++		}
 +
- 	switch (view_mode) {
- 	case SINGLE_VIEW:
- 		display_tree_part();
--- 
-2.43.0
-
+ 		if ((namelen == ea->namelen) &&
+ 		    memcmp(name, ea->name, namelen) == 0) {
+ 			/* Found it */
+@@ -834,6 +841,7 @@ ssize_t __jfs_getxattr(struct inode *ino
+ 			memcpy(data, value, size);
+ 			goto release;
+ 		}
++	}
+       not_found:
+ 	size = -ENODATA;
+       release:
+@@ -861,7 +869,7 @@ ssize_t jfs_listxattr(struct dentry * de
+ 	ssize_t size = 0;
+ 	int xattr_size;
+ 	struct jfs_ea_list *ealist;
+-	struct jfs_ea *ea;
++	struct jfs_ea *ea, *ealist_end;
+ 	struct ea_buffer ea_buf;
+ 
+ 	down_read(&JFS_IP(inode)->xattr_sem);
+@@ -876,9 +884,16 @@ ssize_t jfs_listxattr(struct dentry * de
+ 		goto release;
+ 
+ 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
++	ealist_end = END_EALIST(ealist);
+ 
+ 	/* compute required size of list */
+-	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea)) {
++	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
++		if (unlikely(ea + 1 > ealist_end) ||
++		    unlikely(NEXT_EA(ea) > ealist_end)) {
++			size = -EUCLEAN;
++			goto release;
++		}
++
+ 		if (can_list(ea))
+ 			size += name_size(ea) + 1;
+ 	}
 
 
 
