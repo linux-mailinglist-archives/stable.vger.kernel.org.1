@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9828093C4A2
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B9793C452
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23147B20F82
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38F071F21F41
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFED19D083;
-	Thu, 25 Jul 2024 14:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEBB19B5BE;
+	Thu, 25 Jul 2024 14:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sa02KSKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORqFFrsr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACD719D066;
-	Thu, 25 Jul 2024 14:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C0B199E9F;
+	Thu, 25 Jul 2024 14:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918486; cv=none; b=nfmkBqFsSTp82YPxWBKZyHP9NyWmUUFoaehzcqjfbT6hepNcQpX4JUQjI4rRS5T7lufZ8X948mA/VGZQzqRWP/XGjMIGYv7umbVZc8nSRZ1XJIg7fsPrn649sR8UTrmq/HZ1j08aG/Wa7me6qOuR2hz0em9D25oM1OG45czALpo=
+	t=1721918310; cv=none; b=U1dPI+Ka0EYA/7oXo9WhD483ysdvyK3u8VmeiPoy2NNZISxukSTn+YSa2UsC9n781mf5xrZDZW2sroW5q/Dsh7+XA2h5B9u4oRsrvn2KzptH85l8WnN/YLDtqzYlCk6qfMZn3TlKunS1bo74LYO6plaXQiIqmlSr4nFNKpFNayU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918486; c=relaxed/simple;
-	bh=4IXjiRLO8OV4qS+L+ZZOF4LXXAdzY1MLAz5WvZtSKeo=;
+	s=arc-20240116; t=1721918310; c=relaxed/simple;
+	bh=xJW5wBuARIUbL7VPo85rmRPDs8X/aCmnc3Se3KxncoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xa0qedPzom9HsfTQtnkIXOR8sFFg1l86CLPZEnzmUaVmr2hfouLvFXbEDuuii7LG88BjermpIiTEnTWnrgiGIcvIQBzycbZtMPsyypqgdKaIOt4u24aBwVpIKllavAD3vxjbK3jNNjuEIGOIlXWqTBcp1VNgjA1SCsL9GeboPgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sa02KSKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5474C116B1;
-	Thu, 25 Jul 2024 14:41:25 +0000 (UTC)
+	 MIME-Version; b=W72hNLGc2hYuHuqZynhR/0XxM3s5DHL7ok0tPf0Cs1wediLxI2x/B2u2uCv0JuKjy77F5AwNVnxhL8552TRnSyIB7Wle1NqE2d0fLxtDwu8vMY1iBe83710dwPoSWGicU1XMQ7KlttQnBUi0+rnlWB5bleUupdrHrSdOQ+MLTQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORqFFrsr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3929C116B1;
+	Thu, 25 Jul 2024 14:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918486;
-	bh=4IXjiRLO8OV4qS+L+ZZOF4LXXAdzY1MLAz5WvZtSKeo=;
+	s=korg; t=1721918310;
+	bh=xJW5wBuARIUbL7VPo85rmRPDs8X/aCmnc3Se3KxncoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sa02KSKQL75a+Y8yi8FmypSJKD01cMpkLcexOIiIsMIiCx9TfwZira1KcCt4kmFtz
-	 S2wyg4Srs8RRYb+NoXKtdTXy+ogbCIW8/7XP0mwWyZ4LqUmyhzPKPbvV3qzMQ8qASm
-	 fwreZjqr2BVLS4YpvX9YszIx0RsFrgqfgEvZR6hE=
+	b=ORqFFrsr+T5L3gODD0W2bzGQ3BsQrgCxlDIMogNqxkVt3ycb487VZqaPG4ZRsJviQ
+	 nOfUoXQe/Kmy80m9/jwLANRrdoe/H6fKNAwdJI3AJbj2LSY68PlbgNV0ahO/TsxzKu
+	 WDQYoIB3rvpnuwlfGAZxCLQSO+QRvMbYnSkXjwrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 04/33] ACPI: EC: Avoid returning AE_OK on errors in address space handler
+	Doug Anderson <dianders@google.com>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 11/29] arm64: dts: qcom: sc7180: Disable SuperSpeed instances in park mode
 Date: Thu, 25 Jul 2024 16:36:27 +0200
-Message-ID: <20240725142728.683946468@linuxfoundation.org>
+Message-ID: <20240725142732.241532757@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
+commit 5b8baed4b88132c12010ce6ca1b56f00d122e376 upstream.
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
-returned by acpi_ec_space_handler().
+On SC7180, in host mode, it is observed that stressing out controller
+results in HC died error:
 
-Fix this by only returning AE_OK on success, and return AE_ERROR
-otherwise.
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instances in park mode for SC7180 to mitigate this issue.
+
+Reported-by: Doug Anderson <dianders@google.com>
+Cc: stable@vger.kernel.org
+Fixes: 0b766e7fe5a2 ("arm64: dts: qcom: sc7180: Add USB related nodes")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240604060659.1449278-2-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/ec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 78f8b8b5a8099..7db62dec2ee53 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1348,8 +1348,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
- }
- 
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -3067,6 +3067,7 @@
+ 				iommus = <&apps_smmu 0x540 0>;
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
++				snps,parkmode-disable-ss-quirk;
+ 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 				maximum-speed = "super-speed";
 
 
 
