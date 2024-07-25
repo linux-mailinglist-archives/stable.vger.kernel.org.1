@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-61686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490E893C57C
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:52:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA8D93C5B1
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A6991C21E87
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:52:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFE571C21DD7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2231419D091;
-	Thu, 25 Jul 2024 14:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2658919D080;
+	Thu, 25 Jul 2024 14:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJnXJgzh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyDLhHX8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D380C13DDB8;
-	Thu, 25 Jul 2024 14:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E4EFC19;
+	Thu, 25 Jul 2024 14:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919115; cv=none; b=p/k8EGmShRGCh0Lln2Gn5YjjKERKEeE/S9X/HU6+uhs02FY1lUxDCn8Mm7GuKOe05wAWMOkZdsAlA/rmMV/s/Unix2HNQccWro50pSVptXQBkED2BZrhJMDYP4iwU2WpNIlX2iDTVHKZfn8KP+Iy3ffmDt2v+QLl3Qd8QxRkIHI=
+	t=1721919253; cv=none; b=nFJ0r4o00C4K6RBEzgpTbhIInRvCyBbgwqKQ/UfbpVxs5YjNn4a3Kg3ee5ebxAIRKcICZKyqr/klIQqI1km2POjx1Td1r7A12P2TkQdqRacLYphkR2Z8XUZZmBGYf5BwyUAslO4CJFrYD224fhT7V6cXzxaQ5qut/z+GZkEQ0MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919115; c=relaxed/simple;
-	bh=rA1cYnL9FUKSHJR9d93QXW8mvmDnP8gZauR0xNlbdIE=;
+	s=arc-20240116; t=1721919253; c=relaxed/simple;
+	bh=fkEppUBRuvjphEhkGAZ+S+uRRyuA3sZ9UfIUDN0KARY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECSGD1+D1QCz/Lm8r9uuyg88AI29uuFXnFLGKXThTHxgK7SFjjnWnhbP21vusIpqZmYvQZyV4Yo8wb8QOnvCEon8AvJXLErCNVSFIcRGW1eLfIIbx35bB76YfS4fEeFTX2Ju5cTMo/a4mM8MWmK+JM9IB4AY6cMboLfHqfQ55P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJnXJgzh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56614C116B1;
-	Thu, 25 Jul 2024 14:51:55 +0000 (UTC)
+	 MIME-Version; b=dRDcxzfoOh7yS/f81EKqGlxmJsMQQH+kVQuXgW0fYATlHshKnRfdJxexaGRiVstWRY5fFjCLQCjwjKYWjf9iLin7CVeJw1m0lG7oORhxn6uOX+KhOmriPDSwioy8ojt4Hqx66vKDExWt94B277QIvCVC3CoFxwQDPq5zQNHIusQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyDLhHX8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 498A4C116B1;
+	Thu, 25 Jul 2024 14:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919115;
-	bh=rA1cYnL9FUKSHJR9d93QXW8mvmDnP8gZauR0xNlbdIE=;
+	s=korg; t=1721919253;
+	bh=fkEppUBRuvjphEhkGAZ+S+uRRyuA3sZ9UfIUDN0KARY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJnXJgzhsMyw9L6c34dJFR79qujgqqNs0oOza90aVS8L73rWgwICtYJqC8qS+bJFH
-	 l6r4c93Pbfh2E4t0QvvyYE8TwpeuLDEcSL86wVFhXHkAaDt0e8m3/Q+oT5N8erMf1o
-	 ObNtWxj6kXNpGfVGNVpuHdfNOTOhCst4bS/+tiGo=
+	b=QyDLhHX8qnxm4vF6t+QwnuIBXKTPbszcFS1JOkXu3QD5BQPKL+9iiBwe+0L8HvMtJ
+	 r/PprF3s7BOm6xJ+UBxmkfyG0AyCdq0IXjBOWOws8XyFJbPUfbc6veyqTzhBdoFLUp
+	 6QDydnYdktEa6myLr7owVjtRFr0ZiYDjLX54uej8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <yuntao.wang@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 28/87] fs/file: fix the check in find_next_fd()
-Date: Thu, 25 Jul 2024 16:37:01 +0200
-Message-ID: <20240725142739.498300448@linuxfoundation.org>
+Subject: [PATCH 5.15 29/87] mei: demote client disconnect warning on suspend to debug
+Date: Thu, 25 Jul 2024 16:37:02 +0200
+Message-ID: <20240725142739.534985037@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
 References: <20240725142738.422724252@linuxfoundation.org>
@@ -67,49 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit ed8c7fbdfe117abbef81f65428ba263118ef298a ]
+[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
 
-The maximum possible return value of find_next_zero_bit(fdt->full_fds_bits,
-maxbit, bitbit) is maxbit. This return value, multiplied by BITS_PER_LONG,
-gives the value of bitbit, which can never be greater than maxfd, it can
-only be equal to maxfd at most, so the following check 'if (bitbit > maxfd)'
-will never be true.
+Change level for the "not connected" client message in the write
+callback from error to debug.
 
-Moreover, when bitbit equals maxfd, it indicates that there are no unused
-fds, and the function can directly return.
+The MEI driver currently disconnects all clients upon system suspend.
+This behavior is by design and user-space applications with
+open connections before the suspend are expected to handle errors upon
+resume, by reopening their handles, reconnecting,
+and retrying their operations.
 
-Fix this check.
+However, the current driver implementation logs an error message every
+time a write operation is attempted on a disconnected client.
+Since this is a normal and expected flow after system resume
+logging this as an error can be misleading.
 
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://lore.kernel.org/r/20240529160656.209352-1-yuntao.wang@linux.dev
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/mei/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/file.c b/fs/file.c
-index 69a51d37b66d9..b46a4a725a0ef 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -481,12 +481,12 @@ struct files_struct init_files = {
+diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
+index 786f7c8f7f619..71f15fba21ad6 100644
+--- a/drivers/misc/mei/main.c
++++ b/drivers/misc/mei/main.c
+@@ -327,7 +327,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
+ 	}
  
- static unsigned int find_next_fd(struct fdtable *fdt, unsigned int start)
- {
--	unsigned int maxfd = fdt->max_fds;
-+	unsigned int maxfd = fdt->max_fds; /* always multiple of BITS_PER_LONG */
- 	unsigned int maxbit = maxfd / BITS_PER_LONG;
- 	unsigned int bitbit = start / BITS_PER_LONG;
- 
- 	bitbit = find_next_zero_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
--	if (bitbit > maxfd)
-+	if (bitbit >= maxfd)
- 		return maxfd;
- 	if (bitbit > start)
- 		start = bitbit;
+ 	if (!mei_cl_is_connected(cl)) {
+-		cl_err(dev, cl, "is not connected");
++		cl_dbg(dev, cl, "is not connected");
+ 		rets = -ENODEV;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
