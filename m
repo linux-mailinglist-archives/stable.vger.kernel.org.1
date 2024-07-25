@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-61556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F58E93C4E7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7741D93C592
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C70DA1F2126E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33CC7281A97
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EED19D087;
-	Thu, 25 Jul 2024 14:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1309319AD9B;
+	Thu, 25 Jul 2024 14:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVP/FJwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1+C+wA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5668319CD11;
-	Thu, 25 Jul 2024 14:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A948468;
+	Thu, 25 Jul 2024 14:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918696; cv=none; b=Zc0f2TZQyyI6JJSvGmbwKfC82CwOhcaJkgsPzDBCVOgeU8iGG8DnbsH9XYZcHjqE0w+iyMoqsTUAYHQgiCZtECfZcAvWUxmhHAUNY/LqnEm+AaXKnT8GY2RxVKle1fYFf4WOaetN7HZ3nwqIFNGcgZYriwEQzHmymamGIcMbg50=
+	t=1721919176; cv=none; b=NL4K0w5PbwoQAz1LyONGN29J7UhC4k6QtmN114PzgQHo/6ik8EQF5d3UpQjmAur+0VYi+CmiJWwZ4uoehmP0IUg+hyF2WzG+/EyF0+8JIJybdcGG9IWY4U/OUSDB58tHAJCJMZ1olwGjuw1O408yGLjyq2rgroRUWHr95jFbfn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918696; c=relaxed/simple;
-	bh=8I0vLTJt/pFL/mIM9E0OafyeNUbK2EOG5k2vnU0Uwjg=;
+	s=arc-20240116; t=1721919176; c=relaxed/simple;
+	bh=Ht+o9l3sqtfa7FZF4mVIROlSS6ZsKpl97mWZ7YoE/Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tyMIIJFkXNEZkK63PeN+TMaZD9Bg7nrBaTX5G/UbeYoBrZFfI0W1w9r4SuSqtrYjM3UrxMzP1GgYLWT5pEzrAfw2Q61GYbK+fEp5oXhmRb1kC9k3pgvMkZWpE+iZhQVXXZA0/4GpQaQXhpUQkdcVxVkVAxbXWT06+MiPhi1pQto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVP/FJwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A07C116B1;
-	Thu, 25 Jul 2024 14:44:55 +0000 (UTC)
+	 MIME-Version; b=sOcX03hjgYfLusdaEwbGV6LEVGyXHrEwzB4rVFst4tyw2g1lrHP4Cws+zl95V7/ksyrnIj4tvunwuDWs82sUc2DThtA0J6C+Kw2MuVudRwqf5E2JWF7L2n9JkJ7lj8VlSyYoNZ+Ivk/r1F4GciLFx+0ab7lR43uqajiZSShh/n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1+C+wA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4969FC4AF0B;
+	Thu, 25 Jul 2024 14:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918696;
-	bh=8I0vLTJt/pFL/mIM9E0OafyeNUbK2EOG5k2vnU0Uwjg=;
+	s=korg; t=1721919176;
+	bh=Ht+o9l3sqtfa7FZF4mVIROlSS6ZsKpl97mWZ7YoE/Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bVP/FJwuycIKR/0vla+DlWdmREtZaD88pnXHUO/6ZsuC8z5QSB9YestNZLypFuagi
-	 8585C+WiZVfDPObFb9mRbdiLtEap0mZlWFNxF3KI27t3cUo5YAiLc627cHg5eOh+6L
-	 Lxq8HuRws1Bp9oUnb7BsOTUO41nCCtOE+jsScTRI=
+	b=k1+C+wA+VC4AmbFJK+U9KfwAZpeqcY7jJb/EMkeBGzV7We8cxLR0JanANhdY1wvuE
+	 WvTX6QFvm5twTwEleI+0N4r5dIkI+S+FrX73qADLsAo7/od+Hp4p50NwyjYRM1ciri
+	 0E9VGXKW6s+bjV6h1rfmCYqdiYt8QOCAzVP/Z0+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 12/13] filelock: Fix fcntl/close race recovery compat path
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 48/87] btrfs: qgroup: fix quota root leak after quota disable failure
 Date: Thu, 25 Jul 2024 16:37:21 +0200
-Message-ID: <20240725142728.503993036@linuxfoundation.org>
+Message-ID: <20240725142740.245329612@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.029052310@linuxfoundation.org>
-References: <20240725142728.029052310@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit f8138f2ad2f745b9a1c696a05b749eabe44337ea upstream.
+[ Upstream commit a7e4c6a3031c74078dba7fa36239d0f4fe476c53 ]
 
-When I wrote commit 3cad1bc01041 ("filelock: Remove locks reliably when
-fcntl/close race is detected"), I missed that there are two copies of the
-code I was patching: The normal version, and the version for 64-bit offsets
-on 32-bit kernels.
-Thanks to Greg KH for stumbling over this while doing the stable
-backport...
+If during the quota disable we fail when cleaning the quota tree or when
+deleting the root from the root tree, we jump to the 'out' label without
+ever dropping the reference on the quota root, resulting in a leak of the
+root since fs_info->quota_root is no longer pointing to the root (we have
+set it to NULL just before those steps).
 
-Apply exactly the same fix to the compat path for 32-bit kernels.
+Fix this by always doing a btrfs_put_root() call under the 'out' label.
+This is a problem that exists since qgroups were first added in 2012 by
+commit bed92eae26cc ("Btrfs: qgroup implementation and prototypes"), but
+back then we missed a kfree on the quota root and free_extent_buffer()
+calls on its root and commit root nodes, since back then roots were not
+yet reference counted.
 
-Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
-Cc: stable@kernel.org
-Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240723-fs-lock-recover-compatfix-v1-1-148096719529@google.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/locks.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/btrfs/qgroup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2516,8 +2516,9 @@ int fcntl_setlk64(unsigned int fd, struc
- 	error = do_lock_file_wait(filp, cmd, file_lock);
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index c50cabf69415f..1f5ab51e18dc4 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1196,7 +1196,7 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info)
  
- 	/*
--	 * Attempt to detect a close/fcntl race and recover by releasing the
--	 * lock that was just acquired. There is no need to do that when we're
-+	 * Detect close/fcntl races and recover by zapping all POSIX locks
-+	 * associated with this file and our files_struct, just like on
-+	 * filp_flush(). There is no need to do that when we're
- 	 * unlocking though, or for OFD locks.
- 	 */
- 	if (!error && file_lock->fl_type != F_UNLCK &&
-@@ -2532,9 +2533,7 @@ int fcntl_setlk64(unsigned int fd, struc
- 		f = files_lookup_fd_locked(files, fd);
- 		spin_unlock(&files->file_lock);
- 		if (f != filp) {
--			file_lock->fl_type = F_UNLCK;
--			error = do_lock_file_wait(filp, cmd, file_lock);
--			WARN_ON_ONCE(error);
-+			locks_remove_posix(filp, files);
- 			error = -EBADF;
- 		}
- 	}
+ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ {
+-	struct btrfs_root *quota_root;
++	struct btrfs_root *quota_root = NULL;
+ 	struct btrfs_trans_handle *trans = NULL;
+ 	int ret = 0;
+ 
+@@ -1290,9 +1290,9 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 	btrfs_free_tree_block(trans, btrfs_root_id(quota_root),
+ 			      quota_root->node, 0, 1);
+ 
+-	btrfs_put_root(quota_root);
+ 
+ out:
++	btrfs_put_root(quota_root);
+ 	mutex_unlock(&fs_info->qgroup_ioctl_lock);
+ 	if (ret && trans)
+ 		btrfs_end_transaction(trans);
+-- 
+2.43.0
+
 
 
 
