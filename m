@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1703B93C4B9
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D6493C492
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2E24285519
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9F33B22A1C
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7408319D088;
-	Thu, 25 Jul 2024 14:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87AD319AA5F;
+	Thu, 25 Jul 2024 14:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqTzJEKF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcX72Mjn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3193519D087;
-	Thu, 25 Jul 2024 14:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6B919D8AA;
+	Thu, 25 Jul 2024 14:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918565; cv=none; b=FPAYf64WeVtbESKc6nA0gLfxuaA/d9zZUfgQ+dyRheZk2UH8tX73ltQB3iwsOTigDo5f79iqLQtZCB7rd8UEarZSQZmzBGOb7AGbHq8hTyf6w7QxsrmGEs9JfRk/Sc0teryIy5f4Ib170v5WFRx09ycODwIFbIF6SwoSUnX3QJc=
+	t=1721918454; cv=none; b=m1yZRQ2TdOKvrVK0Fx1lBLniYjgVD+xS4di0ExH5CflolFVUjJHvCXYwwfpWRdFBaxGMqnHYqUM/W251qAFdDfwZxpR5cB25/MWVlWrk2+uiiNdLGWK472+A7SSC0HzTIIIPNx90V8ji1sp8n70prU2Js8wU7GPU8KLaxF4hpo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918565; c=relaxed/simple;
-	bh=wiunuq2QJsTw+3dLc8edu+QiiHN/vHBQ35v7gbilus8=;
+	s=arc-20240116; t=1721918454; c=relaxed/simple;
+	bh=aIlY7GAaxP6GGUi33A5disRajKI2U7PZLXBIGYv0bv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOt3aBg7ThYVjkGTvdOBh/k1lN9KIyUMINtC2OaBP6R/FZMIhLJX9tDA7MkV32veFfPhkNXVsvVVFB75yBy5ORuiS/e5ZhLI3fYydzJ+5EGPj9OdGVBRAGEqRPpHHb6u6SJssXGqCPKN6u4K4eG7AZWmpvMw7sNsmar0N3b4Grg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqTzJEKF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD095C116B1;
-	Thu, 25 Jul 2024 14:42:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QA/Y9EcqfVOGtBlgf8iHcgn293cQt9WMhFBhU3OQIqx9B5+82Gl/+sUBpa5bLQT6XVl+jgTigBz5CK9xA2KS6aXmCGgfssEVeWPCESNaQL/j1ly7dNLncBmgL2dp+dRndm1KH0XuciaYkEwPC5vC7f86DwSq9jFpNvHfhHtnwV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcX72Mjn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E02C116B1;
+	Thu, 25 Jul 2024 14:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918565;
-	bh=wiunuq2QJsTw+3dLc8edu+QiiHN/vHBQ35v7gbilus8=;
+	s=korg; t=1721918454;
+	bh=aIlY7GAaxP6GGUi33A5disRajKI2U7PZLXBIGYv0bv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RqTzJEKFNSUq775pjGJZGZj3Ard30A6Vfbf4dG3Crns8gyJM7NGsawlfHAS2bb3Xs
-	 9JFF+OZqgXkLiY8M5S8TDvQi11G61DbOcxS4wIXOJGFQQ2qSIOjjThIdIPCWYO/Ydc
-	 Cgn5kpDizXpyMS2i+EO0bKKFdFKfnNEa9ogX/f3U=
+	b=dcX72MjnvHmNeRtFzeLmAG5URoXoJ9s/7mETT9mt/TxKysUboCSEmc1+Efkz5Ypcm
+	 BZF2kUDQ1IVrRC//Nw3BjqgvMxD9Iu2wjx7yPZMQXeUwjyQe0lpKr8zR/IRdCbfF9w
+	 dRpd6xrc5cuKEa1xW+AEr/oKDCG6r/NiwhCHzsfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 24/43] s390/sclp: Fix sclp_init() cleanup on failure
+Subject: [PATCH 4.19 24/33] spi: imx: Dont expect DMA for i.MX{25,35,50,51,53} cspi devices
 Date: Thu, 25 Jul 2024 16:36:47 +0200
-Message-ID: <20240725142731.386684514@linuxfoundation.org>
+Message-ID: <20240725142729.426060424@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 6434b33faaa063df500af355ee6c3942e0f8d982 ]
+[ Upstream commit ce1dac560a74220f2e53845ec0723b562288aed4 ]
 
-If sclp_init() fails it only partially cleans up: if there are multiple
-failing calls to sclp_init() sclp_state_change_event will be added several
-times to sclp_reg_list, which results in the following warning:
+While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
+claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
+device trees don't add DMA channels. The Reference manuals of i.MX31 and
+i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
+check the others.)
 
-------------[ cut here ]------------
-list_add double add: new=000003ffe1598c10, prev=000003ffe1598bf0, next=000003ffe1598c10.
-WARNING: CPU: 0 PID: 1 at lib/list_debug.c:35 __list_add_valid_or_report+0xde/0xf8
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.10.0-rc3
-Krnl PSW : 0404c00180000000 000003ffe0d6076a (__list_add_valid_or_report+0xe2/0xf8)
-           R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-...
-Call Trace:
- [<000003ffe0d6076a>] __list_add_valid_or_report+0xe2/0xf8
-([<000003ffe0d60766>] __list_add_valid_or_report+0xde/0xf8)
- [<000003ffe0a8d37e>] sclp_init+0x40e/0x450
- [<000003ffe00009f2>] do_one_initcall+0x42/0x1e0
- [<000003ffe15b77a6>] do_initcalls+0x126/0x150
- [<000003ffe15b7a0a>] kernel_init_freeable+0x1ba/0x1f8
- [<000003ffe0d6650e>] kernel_init+0x2e/0x180
- [<000003ffe000301c>] __ret_from_fork+0x3c/0x60
- [<000003ffe0d759ca>] ret_from_fork+0xa/0x30
+Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
+DMA channel requests") this results in an error message
 
-Fix this by removing sclp_state_change_event from sclp_reg_list when
-sclp_init() fails.
+	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
 
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+during boot. However that isn't fatal and the driver gets loaded just
+fine, just without using DMA.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://patch.msgid.link/20240508095610.2146640-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
-index d2ab3f07c008c..8296e6bc229ee 100644
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -1208,6 +1208,7 @@ sclp_init(void)
- fail_unregister_reboot_notifier:
- 	unregister_reboot_notifier(&sclp_reboot_notifier);
- fail_init_state_uninitialized:
-+	list_del(&sclp_state_change_event.list);
- 	sclp_init_state = sclp_init_state_uninitialized;
- 	free_page((unsigned long) sclp_read_sccb);
- 	free_page((unsigned long) sclp_init_sccb);
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 0078cb365d8c2..adcd519c70b19 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -968,7 +968,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
+ 	.rx_available = mx31_rx_available,
+ 	.reset = mx31_reset,
+ 	.fifo_size = 8,
+-	.has_dmamode = true,
++	.has_dmamode = false,
+ 	.dynamic_burst = false,
+ 	.has_slavemode = false,
+ 	.devtype = IMX35_CSPI,
 -- 
 2.43.0
 
