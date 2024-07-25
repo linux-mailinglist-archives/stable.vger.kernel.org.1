@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B1E493C53D
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:49:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD6393C504
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24E4F1F256E8
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:49:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72F571F23E6A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DB419B586;
-	Thu, 25 Jul 2024 14:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558BA19D074;
+	Thu, 25 Jul 2024 14:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wt5YmRwg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQLssnPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D9027473;
-	Thu, 25 Jul 2024 14:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100B11E895;
+	Thu, 25 Jul 2024 14:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918935; cv=none; b=ATMK0Lgi6kUj8+ebO4uPmef6vWuwZxfwOihdflYDk/8ufIUBHywufxi6RrxSDsgFyD2rkHzEtUGNxLH+za9X7sqK+qNcUmHBnz9UupXLVJiRYrS2OzPAXhxdct5VnaAr/OSIkKp3tnLziEzvTnAfC5nqXQehFKL0DoRkFIqRd04=
+	t=1721918775; cv=none; b=hiEroFgPPUSp/vhCOc8e9N0uOwjphhSBmw++nJ6wXFfG1FIKsheQImOasIxPC6MHHqHehqjYQrGhmnl/mNKoVJnbievS7CRRD0FrKEN4k2I8/PD4j3uPLUKfSxoZivgsKu8kubv1xAdvW/z8SSBKsqGNo6kcQE3ZRKJ3+plD1XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918935; c=relaxed/simple;
-	bh=eR/HgKutPIGdRwtRPxK9t4VXr8j53kGSinUWb4vHFz0=;
+	s=arc-20240116; t=1721918775; c=relaxed/simple;
+	bh=kUaWLHmBT8tXsnm56g4qv7vcHyzJZieR7hmWJlIV7mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V3ZEpHDGLgh2R8nGFxsXZ+9Ul9Lg7JUqnU3PfXefIo98TUJ4UNkXcf+hJoX6SMbGVacW6bgrmxqU4SGN+qf7HuewYh15XDm6UC9QXl9vFwUlqNdBQDDtaEnfTV+evVDB+G3omV8iJQGmg6TTLGsqb+HoODA4AGeg6dco6a5EsQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wt5YmRwg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B0EC116B1;
-	Thu, 25 Jul 2024 14:48:55 +0000 (UTC)
+	 MIME-Version; b=iRRx5SWTqGF+6DxMi5ObObpeDuyk12byC6uEVaT2XP36zu1M7fEOdb8s8C0QY0ITKBjH4LLIUVlyxp8kGhss08JrFOoBl7FI91xp6dhnLHl9jj8igdYHtPTrlQJTZ6Y3DrxSSo2q2Uyp8un90NsU35dB/LfeJWrLDnCK/YG9H/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQLssnPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEDDC4AF07;
+	Thu, 25 Jul 2024 14:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918935;
-	bh=eR/HgKutPIGdRwtRPxK9t4VXr8j53kGSinUWb4vHFz0=;
+	s=korg; t=1721918774;
+	bh=kUaWLHmBT8tXsnm56g4qv7vcHyzJZieR7hmWJlIV7mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wt5YmRwgjJF6xYTnduiW+q8WtwIQDmTIMdjNZkuNRJTYkEgYLsqFvqBrI9LKEWZxb
-	 uEOA5FMaKKrdoJaCrKY9m1pwJDephDrRdiItTOOVgHOyA4pyYLkHnisqhm/zZdLPtV
-	 iLLs6CNDuk3oybHI5kYv2xLCfPxH2NlhK+HTKSAk=
+	b=nQLssnPNqC3bLMAbzQtwxabA7XY2vbf3WWtKxYUGr9N216xM3xkjAuv9zleSEd+md
+	 0DxjZFBP8pipLf5QRfROm0pbpnpucYyIsBlEm1rdbqEyoTEF7n1UO3458STKfYgDR9
+	 FGP5Yq6s3YOT5olGVDFBLJmgTFv3AQ/7Xc0rcoAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunshui Jiang <jiangyunshui@kylinos.cn>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 34/59] net: mac802154: Fix racy device stats updates by DEV_STATS_INC() and DEV_STATS_ADD()
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.9 14/29] arm64: dts: qcom: qrb2210-rb1: switch I2C2 to i2c-gpio
 Date: Thu, 25 Jul 2024 16:37:24 +0200
-Message-ID: <20240725142734.554136887@linuxfoundation.org>
+Message-ID: <20240725142732.213512444@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
+References: <20240725142731.678993846@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunshui Jiang <jiangyunshui@kylinos.cn>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b8ec0dc3845f6c9089573cb5c2c4b05f7fc10728 ]
+commit b7b545ccc08873e107aa24c461b1fdb123dd3761 upstream.
 
-mac802154 devices update their dev->stats fields locklessly. Therefore
-these counters should be updated atomically. Adopt SMP safe DEV_STATS_INC()
-and DEV_STATS_ADD() to achieve this.
+On the Qualcomm RB1 platform the I2C bus connected to the LT9611UXC
+bridge under some circumstances can go into a state when all transfers
+timeout. This causes both issues with fetching of EDID and with
+updating of the bridge's firmware. While we are debugging the issue,
+switch corresponding I2C bus to use i2c-gpio driver. While using
+i2c-gpio no communication issues are observed.
 
-Signed-off-by: Yunshui Jiang <jiangyunshui@kylinos.cn>
-Message-ID: <20240531080739.2608969-1-jiangyunshui@kylinos.cn>
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch is asusmed to be a temporary fix, so it is implemented in a
+non-intrusive manner to simply reverting it later.
+
+Fixes: 616eda24edd4 ("arm64: dts: qcom: qrb2210-rb1: Set up HDMI")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Link: https://lore.kernel.org/r/20240605-rb12-i2c2g-pio-v2-1-946f5d6b6948@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac802154/tx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/qrb2210-rb1.dts | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
-index c829e4a753256..7cea95d0b78f9 100644
---- a/net/mac802154/tx.c
-+++ b/net/mac802154/tx.c
-@@ -34,8 +34,8 @@ void ieee802154_xmit_worker(struct work_struct *work)
- 	if (res)
- 		goto err_tx;
+diff --git a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+index bb5191422660..8c27d52139a1 100644
+--- a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
++++ b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+@@ -59,6 +59,17 @@ hdmi_con: endpoint {
+ 		};
+ 	};
  
--	dev->stats.tx_packets++;
--	dev->stats.tx_bytes += skb->len;
-+	DEV_STATS_INC(dev, tx_packets);
-+	DEV_STATS_ADD(dev, tx_bytes, skb->len);
++	i2c2_gpio: i2c {
++		compatible = "i2c-gpio";
++
++		sda-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
++		scl-gpios = <&tlmm 7 GPIO_ACTIVE_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		status = "disabled";
++	};
++
+ 	leds {
+ 		compatible = "gpio-leds";
  
- 	ieee802154_xmit_complete(&local->hw, skb, false);
+@@ -199,7 +210,7 @@ &gpi_dma0 {
+ 	status = "okay";
+ };
  
-@@ -86,8 +86,8 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
- 			goto err_tx;
- 		}
+-&i2c2 {
++&i2c2_gpio {
+ 	clock-frequency = <400000>;
+ 	status = "okay";
  
--		dev->stats.tx_packets++;
--		dev->stats.tx_bytes += len;
-+		DEV_STATS_INC(dev, tx_packets);
-+		DEV_STATS_ADD(dev, tx_bytes, len);
- 	} else {
- 		local->tx_skb = skb;
- 		queue_work(local->workqueue, &local->tx_work);
 -- 
-2.43.0
+2.45.2
 
 
 
