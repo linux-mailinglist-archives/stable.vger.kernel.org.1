@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-61695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4247093C587
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:52:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 669AF93C526
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73B991C21DDC
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:52:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CA6D1F2527B
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEE419D886;
-	Thu, 25 Jul 2024 14:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB21199EA5;
+	Thu, 25 Jul 2024 14:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oU84Us4X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7aD3NWz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F6019D09A;
-	Thu, 25 Jul 2024 14:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA751E89C;
+	Thu, 25 Jul 2024 14:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919144; cv=none; b=Wru+VGrFzgB9eZQGt5er4rMr11k6ei+kV5Gu8a3BvO/kUrZCxjp95fqoj3roZIYbLXo4xzGmRkBsK0otU5o9VO4kdzVoKpaY0QTAYunvYVUwkwR/8dXmo0xddCDHQNz4vFIiRoaCK2bS4ih6OLw72awjKZ9P4XSQHG+eF6C4blc=
+	t=1721918866; cv=none; b=Io4us4vkHY26Z3nSDvsxDtlh5BLF2MggbtBCV6HwJ98ZzFnE0+Yie0hm9za7kh3KBaM+XgCY3F8Y74lbRR6irhPq2lAvXoeUjBchV5EkIIYSc429GhycZY5P5LpKsPde1ZDoR8UrWwo+ai868raNsjIbccw0tm/MribLQjohawU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919144; c=relaxed/simple;
-	bh=EuQZc7g/kOYxbgp1CEUwuFKGqIXj5DUXmDSS1AalG9w=;
+	s=arc-20240116; t=1721918866; c=relaxed/simple;
+	bh=TMY1QeAuJW32Mlt15jDfhvTO7/n5DtFsYdyBY17074c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COh7HoFrFIZrn4jhejOWWTKUnbHWzdPTO68/eodt7E0mL4WVM/DhcXAQ2uGIBftoqkH5w4m6FQfahCNPumX6AN0IctvEeCvpY3lyICRAlJG7dUjaX97LelXjcTztPGoo2l4Xu24bepkaGZnyvSiNX9KEgckvBIy0MbI9D6FGQvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oU84Us4X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0701DC116B1;
-	Thu, 25 Jul 2024 14:52:23 +0000 (UTC)
+	 MIME-Version; b=of7AXI5U9gbUzWAjtAwuSuyBaASoFWK3V4aNS59/2bl2CUJZKt7S6K6VvGxrdJ6lXIYFf3i/MwCYDs48vZWa446aIpO+0qAeQw00t5OV90gsJI70624PdZxY2tZP0ShBw0EY0xqj0Yf6n0vn82zccueG/7SsfNYZ/81sJnKF1eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7aD3NWz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA398C116B1;
+	Thu, 25 Jul 2024 14:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919144;
-	bh=EuQZc7g/kOYxbgp1CEUwuFKGqIXj5DUXmDSS1AalG9w=;
+	s=korg; t=1721918866;
+	bh=TMY1QeAuJW32Mlt15jDfhvTO7/n5DtFsYdyBY17074c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oU84Us4X59+u/KtZZjk81gL21YNDKz7thb0GPM1LSPB3UCTKfC+YAucK7m40XQV1C
-	 9eg089tKsF+Vmpa+EbkCjnmVX9gVnGbBf/YlH3shyEyCsRl+ArzDUyBLJDBlWMwfID
-	 dzwZoxBcMNK5KDitmXexMSUmcfkmTxajOBoDyM8U=
+	b=Y7aD3NWzdLz1G5Mz7tkeTWPe7scXKaJDBAwL4X3CcBiC3Ng6rVNGjC1CvFUzwlz4q
+	 UXEYeM8j0jjzZwi54n7/okZJcekuRzIbETUV/lbjPwptHDbh3u+IcXwC9vkXyD8rOr
+	 LzD5hMIt3JQJIzRS6LbxccUTi9aqfuC8LOsWCX+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunguang Xu <chunguang.xu@shopee.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 30/87] nvme: avoid double free special payload
+Subject: [PATCH 5.10 13/59] null_blk: fix validation of block size
 Date: Thu, 25 Jul 2024 16:37:03 +0200
-Message-ID: <20240725142739.571759418@linuxfoundation.org>
+Message-ID: <20240725142733.767770757@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunguang Xu <chunguang.xu@shopee.com>
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-[ Upstream commit e5d574ab37f5f2e7937405613d9b1a724811e5ad ]
+[ Upstream commit c462ecd659b5fce731f1d592285832fd6ad54053 ]
 
-If a discard request needs to be retried, and that retry may fail before
-a new special payload is added, a double free will result. Clear the
-RQF_SPECIAL_LOAD when the request is cleaned.
+Block size should be between 512 and PAGE_SIZE and be a power of 2. The current
+check does not validate this, so update the check.
 
-Signed-off-by: Chunguang Xu <chunguang.xu@shopee.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Without this patch, null_blk would Oops due to a null pointer deref when
+loaded with bs=1536 [1].
+
+Link: https://lore.kernel.org/all/87wmn8mocd.fsf@metaspace.dk/
+
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240603192645.977968-1-nmi@metaspace.dk
+[axboe: remove unnecessary braces and != 0 check]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/block/null_blk/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 960a31e3307a2..93a19588ae92a 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -981,6 +981,7 @@ void nvme_cleanup_cmd(struct request *req)
- 			clear_bit_unlock(0, &ctrl->discard_page_busy);
- 		else
- 			kfree(bvec_virt(&req->special_vec));
-+		req->rq_flags &= ~RQF_SPECIAL_PAYLOAD;
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 862a9420df526..8e24fb93324cb 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -1743,8 +1743,8 @@ static int null_validate_conf(struct nullb_device *dev)
+ 		return -EINVAL;
  	}
- }
- EXPORT_SYMBOL_GPL(nvme_cleanup_cmd);
+ 
+-	dev->blocksize = round_down(dev->blocksize, 512);
+-	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
++	if (blk_validate_block_size(dev->blocksize))
++		return -EINVAL;
+ 
+ 	if (dev->queue_mode == NULL_Q_MQ && dev->use_per_node_hctx) {
+ 		if (dev->submit_queues != nr_online_nodes)
 -- 
 2.43.0
 
