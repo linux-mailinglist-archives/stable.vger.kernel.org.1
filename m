@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D2C93C4B2
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54ED593C455
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EBC3B25008
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 856581C218E4
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F383019D089;
-	Thu, 25 Jul 2024 14:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7626019D066;
+	Thu, 25 Jul 2024 14:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQCGQKTR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eg206CQE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31BD199E9F;
-	Thu, 25 Jul 2024 14:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2322A199E9F;
+	Thu, 25 Jul 2024 14:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918539; cv=none; b=ORTjq3PEP6DPObk92yIJI5yRhZ1kg7/xoRwHr54rmNzhUZaQLF4BCYWcaIf80XnQoyRVsmwZ2Ye6GGIUe6Suc3zQRK1PaEsf97o/ci08KbMG6JRkRpeSupoUEMVWZOnOyE5X7R/IaCSap9hKBJcBpN3Vxgw3lPplZR6gpFpZaoA=
+	t=1721918323; cv=none; b=R0qGzFTjPHYQWOW+R/e0XOg4SmjXxtfNKhgh0BTBzq2bnJwMGrzxfPGMfcrYpeCdg6QXThS6/VMX9JH2cl4s0epcGF/WV2vu+/Z2hcpRAJfhxMzVP40ElNXr8FIwgUxywWrmCtqqeikGQiiqt7Awd4HIztEbWn8nNygsiox64Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918539; c=relaxed/simple;
-	bh=6hKUm/45m+I1/lB3c0+YNth86MlUfBdQ4ruIOygwXfU=;
+	s=arc-20240116; t=1721918323; c=relaxed/simple;
+	bh=TAYXGKwFmTwNusY8nlNrErbVZ6SlFZtoU5E8YdN/eoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ax6w+xBP4gq6jvgzmnSZGMm6DpQK77VvA5CwzYQ5VXR70PIS1UEOAmk864RP24aTu7/NTsMhVASqOd2q2zsnJWXGGtk8R9+isE20XdsKLZoDmR/eOo/55tO0W4Fqgiv0jO46k78zxIOvuxBR8kQco3wueDTphQk4tBtYN6owgBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQCGQKTR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3837FC116B1;
-	Thu, 25 Jul 2024 14:42:19 +0000 (UTC)
+	 MIME-Version; b=NrKifCYUuNk+Q9fWhTSRsyaO27JMayXRCaWJO2HrJE8iKFy34tiFroJDmkdMLvmJiR34wfmV8OEcREYTfy88gtYPRjn0HoFmSbjUdV8JZ55Nu12j+Po/ny4ZHoGQ2WgIaeyzmyORXcxCBzGJruB7QiUdy2KeUFPg9kzIxOwC9Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eg206CQE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D206C116B1;
+	Thu, 25 Jul 2024 14:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918539;
-	bh=6hKUm/45m+I1/lB3c0+YNth86MlUfBdQ4ruIOygwXfU=;
+	s=korg; t=1721918323;
+	bh=TAYXGKwFmTwNusY8nlNrErbVZ6SlFZtoU5E8YdN/eoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQCGQKTRRU0uSNimV5C7Pl8We9aAebVNzwwytpiY5/x7BTC5Es8+R+snrMhOVnOLq
-	 RKrV/3H2k77eI+oOsdbWs3JORk2E3CoQxZiFWyhUrHNA7tPKwiYc+Cxxj+DkBhU/3V
-	 aLtAd1EdewrRwkzGHx7uWoEGbDoopnJ7l4lF1sI8=
+	b=Eg206CQEvGajagG+iYkOI1jbZiPg2+1N5WDCyD581vl9fBHAyXpdTreSOI1qWOirP
+	 J5YtAHK6vsoGTRPmQnVdLCivVftYyZ4/3qqUw6pdCSdn+7l5dvdLo3QutOzlroKPos
+	 M3QwOW0iMGm+o4W36n58WD4qIKxxxEVUs3ywbUxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 08/43] Input: silead - Always support 10 fingers
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 15/29] arm64: dts: qcom: qrb4210-rb2: switch I2C2 to i2c-gpio
 Date: Thu, 25 Jul 2024 16:36:31 +0200
-Message-ID: <20240725142730.789346612@linuxfoundation.org>
+Message-ID: <20240725142732.389560730@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 38a38f5a36da9820680d413972cb733349400532 ]
+commit f77e7bd40c3c2d79685e9cc80de874b69a976f55 upstream.
 
-When support for Silead touchscreens was orginal added some touchscreens
-with older firmware versions only supported 5 fingers and this was made
-the default requiring the setting of a "silead,max-fingers=10" uint32
-device-property for all touchscreen models which do support 10 fingers.
+On the Qualcomm RB2 platform the I2C bus connected to the LT9611UXC
+bridge under some circumstances can go into a state when all transfers
+timeout. This causes both issues with fetching of EDID and with
+updating of the bridge's firmware. While we are debugging the issue,
+switch corresponding I2C bus to use i2c-gpio driver. While using
+i2c-gpio no communication issues are observed.
 
-There are very few models with the old 5 finger fw, so in practice the
-setting of the "silead,max-fingers=10" is boilerplate which needs to
-be copy and pasted to every touchscreen config.
+This patch is asusmed to be a temporary fix, so it is implemented in a
+non-intrusive manner to simply reverting it later.
 
-Reporting that 10 fingers are supported on devices which only support
-5 fingers doesn't cause any problems for userspace in practice, since
-at max 4 finger gestures are supported anyways. Drop the max_fingers
-configuration and simply always assume 10 fingers.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/20240525193854.39130-2-hdegoede@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f7b01e07e89c ("arm64: dts: qcom: qrb4210-rb2: Enable display out")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Link: https://lore.kernel.org/r/20240605-rb12-i2c2g-pio-v2-2-946f5d6b6948@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/silead.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ arch/arm64/boot/dts/qcom/qrb4210-rb2.dts |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/touchscreen/silead.c b/drivers/input/touchscreen/silead.c
-index c8776146f1d1b..467feacdbd7a2 100644
---- a/drivers/input/touchscreen/silead.c
-+++ b/drivers/input/touchscreen/silead.c
-@@ -70,7 +70,6 @@ struct silead_ts_data {
- 	struct regulator_bulk_data regulators[2];
- 	char fw_name[64];
- 	struct touchscreen_properties prop;
--	u32 max_fingers;
- 	u32 chip_id;
- 	struct input_mt_pos pos[SILEAD_MAX_FINGERS];
- 	int slots[SILEAD_MAX_FINGERS];
-@@ -98,7 +97,7 @@ static int silead_ts_request_input_dev(struct silead_ts_data *data)
- 	input_set_abs_params(data->input, ABS_MT_POSITION_Y, 0, 4095, 0, 0);
- 	touchscreen_parse_properties(data->input, true, &data->prop);
+--- a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
++++ b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
+@@ -60,6 +60,17 @@
+ 		};
+ 	};
  
--	input_mt_init_slots(data->input, data->max_fingers,
-+	input_mt_init_slots(data->input, SILEAD_MAX_FINGERS,
- 			    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED |
- 			    INPUT_MT_TRACK);
++	i2c2_gpio: i2c {
++		compatible = "i2c-gpio";
++
++		sda-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
++		scl-gpios = <&tlmm 7 GPIO_ACTIVE_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		status = "disabled";
++	};
++
+ 	leds {
+ 		compatible = "gpio-leds";
  
-@@ -145,10 +144,10 @@ static void silead_ts_read_data(struct i2c_client *client)
- 		return;
- 	}
+@@ -190,7 +201,7 @@
+ 	};
+ };
  
--	if (buf[0] > data->max_fingers) {
-+	if (buf[0] > SILEAD_MAX_FINGERS) {
- 		dev_warn(dev, "More touches reported then supported %d > %d\n",
--			 buf[0], data->max_fingers);
--		buf[0] = data->max_fingers;
-+			 buf[0], SILEAD_MAX_FINGERS);
-+		buf[0] = SILEAD_MAX_FINGERS;
- 	}
+-&i2c2 {
++&i2c2_gpio {
+ 	clock-frequency = <400000>;
+ 	status = "okay";
  
- 	touch_nr = 0;
-@@ -200,7 +199,6 @@ static void silead_ts_read_data(struct i2c_client *client)
- 
- static int silead_ts_init(struct i2c_client *client)
- {
--	struct silead_ts_data *data = i2c_get_clientdata(client);
- 	int error;
- 
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_RESET,
-@@ -210,7 +208,7 @@ static int silead_ts_init(struct i2c_client *client)
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
- 
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_TOUCH_NR,
--					data->max_fingers);
-+					  SILEAD_MAX_FINGERS);
- 	if (error)
- 		goto i2c_write_err;
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
-@@ -437,13 +435,6 @@ static void silead_ts_read_props(struct i2c_client *client)
- 	const char *str;
- 	int error;
- 
--	error = device_property_read_u32(dev, "silead,max-fingers",
--					 &data->max_fingers);
--	if (error) {
--		dev_dbg(dev, "Max fingers read error %d\n", error);
--		data->max_fingers = 5; /* Most devices handle up-to 5 fingers */
--	}
--
- 	error = device_property_read_string(dev, "firmware-name", &str);
- 	if (!error)
- 		snprintf(data->fw_name, sizeof(data->fw_name),
--- 
-2.43.0
-
 
 
 
