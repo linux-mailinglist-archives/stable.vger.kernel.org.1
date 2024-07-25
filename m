@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A5093C4A9
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D2693C533
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D6EBB24ECC
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A31FC1C21E18
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02F519D8A0;
-	Thu, 25 Jul 2024 14:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0164013A409;
+	Thu, 25 Jul 2024 14:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHxFKzGg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7bLlNU1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E94619D89C;
-	Thu, 25 Jul 2024 14:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C0AFC19;
+	Thu, 25 Jul 2024 14:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918514; cv=none; b=lXiAwBjCwYWuQX/qFuhrQZy1tLntgw9M9QRmbxi8NA4Bb03C+OD150tgrrKuxa//BA2pMccMmGAQ5UdV+Yl0FdBEttLZyL4k+PWm8SdBO966AK+O3v96CPp/UUprtqFHHDW6UZfvsDcgpzqi2LwUvaS5RIYQ+aKeRsBZUR1RnCE=
+	t=1721918905; cv=none; b=MeaXGGEh1yQxYNRrW3c3umNayoCFonyR4AiVF+JStWAYPWqSrP3cOaPSQhL0XlxSVrLQJ1pjIAK2AnXW7/qMvQuTU3MB9iP/BT/Iq54EEm01SzMqwwzH5BR/MO6C9b7e5Dy+cci3cHePj4wP7ouGk3JQ4UZ9z6RYR7eqevevrgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918514; c=relaxed/simple;
-	bh=J0/dNcvsU9UHX8tfoFHNKTipjg+JHlIG7R3/cg4UJ9E=;
+	s=arc-20240116; t=1721918905; c=relaxed/simple;
+	bh=9ocjONUo9r6P4NnCYLcO028zjHvOJ4g7pjsdb23FeLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxTc+wHGgG2LypNg0j7gQWJWIXv83fQTwBiYAMUHImcVQCUm87lqfefTRh4zqGunPdhk1Q46oLHu/ITnxf24inabIDP6wKf+Xq1jYA57GdFo4oiV+/dHqCvhsH8hKthu8L7Ktbg9F57aTYT+btdUVRNuKbHzef+8E1+0zF1K2AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHxFKzGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27E8C32782;
-	Thu, 25 Jul 2024 14:41:53 +0000 (UTC)
+	 MIME-Version; b=kKkKjZjr4Yp4aS8q4nC5Pnj9oximcVSI66jA0ZBOnsHpj6Xw4/Z5siCNZHRCoP36HwgpYWDOX7fKWOOTqZIWwEfdtZtJgPJNOO8Yh9kuQhPKXqrbjK5RuAj9j4ZKMYF4eLinuhP3bRGsoE1NRn9Os0sW7Q5zA7LalvqYKUrGoDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7bLlNU1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38426C116B1;
+	Thu, 25 Jul 2024 14:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918514;
-	bh=J0/dNcvsU9UHX8tfoFHNKTipjg+JHlIG7R3/cg4UJ9E=;
+	s=korg; t=1721918905;
+	bh=9ocjONUo9r6P4NnCYLcO028zjHvOJ4g7pjsdb23FeLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHxFKzGgX4fAprcqKwdV9VQ5pEj4sNygSlO3qAg+1SkEHh9nXN9hbQa8flih9/wVX
-	 oulgCTltS5x9XqZNZBBUJ7QDxZm81y7/dTXIHLXllcbH1oM6/PF+AAxyooo6DBX96m
-	 nTESE+vvVZlTllrqNfPrm0f81HWjP/MsnsaEE1iA=
+	b=L7bLlNU1PNNQe5uonkjwrnDJscKKV9ejxTRyxdxDfgPuZTW9QvDT0TODF29NqOkMw
+	 yQNr+HaL+6j+jBYpMRsehb1+DSx4vzEiDc989CQaptzK0dqESKsbWISY0+NA1Oup8Y
+	 +SGnbxosikXwAvSPdqvTtCp3VaXJg6lrWHjdRO+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 4.19 33/33] filelock: Fix fcntl/close race recovery compat path
+	Nicolas Escande <nico.escande@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 06/59] wifi: mac80211: mesh: init nonpeer_pm to active by default in mesh sdata
 Date: Thu, 25 Jul 2024 16:36:56 +0200
-Message-ID: <20240725142729.759663258@linuxfoundation.org>
+Message-ID: <20240725142733.505392197@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-commit f8138f2ad2f745b9a1c696a05b749eabe44337ea upstream.
+[ Upstream commit 6f6291f09a322c1c1578badac8072d049363f4e6 ]
 
-When I wrote commit 3cad1bc01041 ("filelock: Remove locks reliably when
-fcntl/close race is detected"), I missed that there are two copies of the
-code I was patching: The normal version, and the version for 64-bit offsets
-on 32-bit kernels.
-Thanks to Greg KH for stumbling over this while doing the stable
-backport...
+With a ath9k device I can see that:
+	iw phy phy0 interface add mesh0 type mp
+	ip link set mesh0 up
+	iw dev mesh0 scan
 
-Apply exactly the same fix to the compat path for 32-bit kernels.
+Will start a scan with the Power Management bit set in the Frame Control Field.
+This is because we set this bit depending on the nonpeer_pm variable of the mesh
+iface sdata and when there are no active links on the interface it remains to
+NL80211_MESH_POWER_UNKNOWN.
 
-Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
-Cc: stable@kernel.org
-Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240723-fs-lock-recover-compatfix-v1-1-148096719529@google.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As soon as links starts to be established, it wil switch to
+NL80211_MESH_POWER_ACTIVE as it is the value set by befault on the per sta
+nonpeer_pm field.
+As we want no power save by default, (as expressed with the per sta ini values),
+lets init it to the expected default value of NL80211_MESH_POWER_ACTIVE.
+
+Also please note that we cannot change the default value from userspace prior to
+establishing a link as using NL80211_CMD_SET_MESH_CONFIG will not work before
+NL80211_CMD_JOIN_MESH has been issued. So too late for our initial scan.
+
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Link: https://msgid.link/20240527141759.299411-1-nico.escande@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/locks.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/mac80211/mesh.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2427,8 +2427,9 @@ int fcntl_setlk64(unsigned int fd, struc
- 	error = do_lock_file_wait(filp, cmd, file_lock);
- 
- 	/*
--	 * Attempt to detect a close/fcntl race and recover by releasing the
--	 * lock that was just acquired. There is no need to do that when we're
-+	 * Detect close/fcntl races and recover by zapping all POSIX locks
-+	 * associated with this file and our files_struct, just like on
-+	 * filp_flush(). There is no need to do that when we're
- 	 * unlocking though, or for OFD locks.
- 	 */
- 	if (!error && file_lock->fl_type != F_UNLCK &&
-@@ -2442,9 +2443,7 @@ int fcntl_setlk64(unsigned int fd, struc
- 		f = fcheck(fd);
- 		spin_unlock(&current->files->file_lock);
- 		if (f != filp) {
--			file_lock->fl_type = F_UNLCK;
--			error = do_lock_file_wait(filp, cmd, file_lock);
--			WARN_ON_ONCE(error);
-+			locks_remove_posix(filp, &current->files);
- 			error = -EBADF;
- 		}
- 	}
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index ce5825d6f1d1c..d3a9ce1f8e53f 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -1584,6 +1584,7 @@ void ieee80211_mesh_init_sdata(struct ieee80211_sub_if_data *sdata)
+ 	ifmsh->last_preq = jiffies;
+ 	ifmsh->next_perr = jiffies;
+ 	ifmsh->csa_role = IEEE80211_MESH_CSA_ROLE_NONE;
++	ifmsh->nonpeer_pm = NL80211_MESH_POWER_ACTIVE;
+ 	/* Allocate all mesh structures when creating the first mesh interface. */
+ 	if (!mesh_allocated)
+ 		ieee80211s_init();
+-- 
+2.43.0
+
 
 
 
