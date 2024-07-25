@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CBCB93C48B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A61A93C568
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 273AA284042
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97101F25CC3
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F62119D095;
-	Thu, 25 Jul 2024 14:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8490719B5B5;
+	Thu, 25 Jul 2024 14:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hb+IxU5n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOWtA9/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF2F19D088;
-	Thu, 25 Jul 2024 14:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423158468;
+	Thu, 25 Jul 2024 14:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918448; cv=none; b=hNfnUwrsnfbT+UCuSy5Sx+RYl/0z/4bZ45A1Qbt2WQKulGPcVJbF3rKQOyrZdlXRfd2KEBqIu3tCJA2QWmHX0IIOZGwfqYRH800GlQPlmcDN2GM685zUfIJUjqQco4PHMTB3NO+HrPD9G6Th4MeTxcNKqGKq48Lha9lhyXRhdLs=
+	t=1721919062; cv=none; b=i8wIRwEQKVZ48FRUeVDa980u0+pVNMvaBDLf6P40Jc7dqdS67BKk5c6jQobD3bHC05Q6kgsjAF8u+dDcYPM6cJm9gqHyqPBT4n+byvyb4nUqs+NQnIGzRZQd0okoJpVlan5kszzOwflKv2VYiwVUEAOWdeOGBacwFppnQEEbyXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918448; c=relaxed/simple;
-	bh=v6Oto3nn11K/iHXG92PzBJM3L0addZNfysxQrybb8qs=;
+	s=arc-20240116; t=1721919062; c=relaxed/simple;
+	bh=/XF4w9e47b52DGFVOXW/mhpCrfnSiedyEoaiHTFMMTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/PZyLi7rWuhZZAMWVPmwNbx26IVEFpys/Cis64KM4ZwO9nOXHkBLsZ6ScBI78Cu25RW4gIEtZQ+TN7F+DqRea7hh9UDEjXFxdobb7UDJnI0+3k8CTaliyLF+Bf9hZpgy43jYskQTQXeIn7BI0P2xyfdSpyI6Ep+m/Y7g8YpN8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hb+IxU5n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C9CC116B1;
-	Thu, 25 Jul 2024 14:40:47 +0000 (UTC)
+	 MIME-Version; b=fnOOLb3b1e7e/wnTvBSTXRSHFqv0PHbsUO/A07Kt0IH9wYKHxXGBGHQUIcQp3LU7c7DZDLFKC3r9FdcrJXo9H586ZqTNB6DASz2mS8G0JgyGLMUkSoyXq7LtCmST4RYj+WsUmgbqLpR2liAu+skD9/OxzH899wfCKr1nnhvtDKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOWtA9/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7337C116B1;
+	Thu, 25 Jul 2024 14:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918448;
-	bh=v6Oto3nn11K/iHXG92PzBJM3L0addZNfysxQrybb8qs=;
+	s=korg; t=1721919061;
+	bh=/XF4w9e47b52DGFVOXW/mhpCrfnSiedyEoaiHTFMMTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hb+IxU5ntLGFok3w2qMjUZYqJxigvWR/Y8cAq20j8h2uu+WpGtvMFH2f8DAT4q+CD
-	 XFTGpsfbNTQ5aSHa4k9V61Kp/PwwrCtH6kNSYg2j7DP6H7OJzyLHZ3NaptqWyiAO1N
-	 LYTibCMTDyRR8AbB1PzPHfZwpEAlhWld1HCqnGIw=
+	b=VOWtA9/IQYMC61uzhUU4PCslCHJEcJXPT5RZz8HU7OGLdT0SEdp2tEhi2+ZMVP5u0
+	 cwUrcC185k+IWGeX0lAxNg/l3JNctpQwzUtS27CSO1ER9xi0lww1rvW86Nub5I7tt0
+	 fGZ54zOMAaqmmmiJBOrdzuZm39PzS8Zwi0rA3Q1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 22/33] Bluetooth: hci_core: cancel all works upon hci_unregister_dev()
+Subject: [PATCH 5.15 12/87] ACPI: EC: Avoid returning AE_OK on errors in address space handler
 Date: Thu, 25 Jul 2024 16:36:45 +0200
-Message-ID: <20240725142729.353753188@linuxfoundation.org>
+Message-ID: <20240725142738.895114762@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 0d151a103775dd9645c78c97f77d6e2a5298d913 ]
+[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
 
-syzbot is reporting that calling hci_release_dev() from hci_error_reset()
-due to hci_dev_put() from hci_error_reset() can cause deadlock at
-destroy_workqueue(), for hci_error_reset() is called from
-hdev->req_workqueue which destroy_workqueue() needs to flush.
+If an error code other than EINVAL, ENODEV or ETIME is returned
+by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
+returned by acpi_ec_space_handler().
 
-We need to make sure that hdev->{rx_work,cmd_work,tx_work} which are
-queued into hdev->workqueue and hdev->{power_on,error_reset} which are
-queued into hdev->req_workqueue are no longer running by the moment
+Fix this by only returning AE_OK on success, and return AE_ERROR
+otherwise.
 
-       destroy_workqueue(hdev->workqueue);
-       destroy_workqueue(hdev->req_workqueue);
-
-are called from hci_release_dev().
-
-Call cancel_work_sync() on these work items from hci_unregister_dev()
-as soon as hdev->list is removed from hci_dev_list.
-
-Reported-by: syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=da0a9c9721e36db712e8
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/ec.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 47f1eec0eb35f..504f6aa4e95db 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -3288,7 +3288,11 @@ void hci_unregister_dev(struct hci_dev *hdev)
- 	list_del(&hdev->list);
- 	write_unlock(&hci_dev_list_lock);
- 
-+	cancel_work_sync(&hdev->rx_work);
-+	cancel_work_sync(&hdev->cmd_work);
-+	cancel_work_sync(&hdev->tx_work);
- 	cancel_work_sync(&hdev->power_on);
-+	cancel_work_sync(&hdev->error_reset);
- 
- 	hci_dev_do_close(hdev);
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 1896ec78e88c7..59e617ab12a51 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1321,8 +1321,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 		return AE_NOT_FOUND;
+ 	case -ETIME:
+ 		return AE_TIME;
+-	default:
++	case 0:
+ 		return AE_OK;
++	default:
++		return AE_ERROR;
+ 	}
+ }
  
 -- 
 2.43.0
