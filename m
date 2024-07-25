@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-61716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8579A93C59E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6165E93C545
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:49:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6D3D1C21E6F
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84EA61C21E61
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2770F19CCF7;
-	Thu, 25 Jul 2024 14:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64AB13A409;
+	Thu, 25 Jul 2024 14:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ve0lSXLp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pr3L2Og6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2C8FC19;
-	Thu, 25 Jul 2024 14:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BAFFC19;
+	Thu, 25 Jul 2024 14:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919213; cv=none; b=q4Muk26qtGaakbOCUtgaqDxKMYYoA2KkXKY2edCwRY2IxeanYKAUhcoYBlgcHhHTrTrbdhxUjTw7cTQUReaDXqJQ515TL902q5ovM9pHed/wET6AF451JJ6Hja6tIstpsBk/286T/Mk1FtGwFjX22lDmkxvCMAxfBtgF2TSJrb0=
+	t=1721918962; cv=none; b=XSvSKNg/ACKBKhK70jTkODhlgES9Aru2y5ggFf0WXd7J37kJGqCrp4K8ySvjuxPi923DHNhl/Ag85gh2TmkdW4seXlF+cBQnX5hvL3qTrcE3mIa+/SRsSF6ZBmba9Vj/UQPkl8usyxWrvfaPU+I6lj7O07/kw2E+4LERT2GeODc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919213; c=relaxed/simple;
-	bh=inc/BX7GZubiMIdpLK10iuF4w5SZNXknVtAOPL0lBjg=;
+	s=arc-20240116; t=1721918962; c=relaxed/simple;
+	bh=kdPF5v9eXcP9g92ryEYpL443XEOhZi6zQujhCUrMw3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbPsumZLUpag1OCn4ZmHw6fLoHhwgqmmekIJPWnZtI0lCzv6TXIoGIB3F2a85VjAZ0/s4DMV/vlfDX5k9v/NwHgxjUieqrzGpPD1UgHUOL4QT8jfLkJ/B5u3KqK7GJMzCaLg7szICQXQ5+OI9Vp4yq5YS8Q8liOXH6Y9hd3Vs1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ve0lSXLp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577A4C116B1;
-	Thu, 25 Jul 2024 14:53:33 +0000 (UTC)
+	 MIME-Version; b=FtiNyLfP6ubK9qnR1Y92P+boiHtFnBZZvC6imkxSSEZ0yKarRg4U+V5F3mRSQuEBCtYA/D91xmXBadj+MzAmlsLNp8NAMw47Lv0QrEoWeC6saFgrf7X+r4ms8NNXl387NukLPkLJhqLybjbfsMQa8kVFuYMrW1rJsfdaGL9hTVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pr3L2Og6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D5AC4AF0E;
+	Thu, 25 Jul 2024 14:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919213;
-	bh=inc/BX7GZubiMIdpLK10iuF4w5SZNXknVtAOPL0lBjg=;
+	s=korg; t=1721918962;
+	bh=kdPF5v9eXcP9g92ryEYpL443XEOhZi6zQujhCUrMw3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ve0lSXLpnOeDm8c96HAXSG1XklrNdW8AYB3MNAmZa6xi8ivkE0w3fi/NEaxzTXh4I
-	 MUdwLYWOv3soLx59FsFj7QHaQm3yZsekyFmPg8Y1pXBX+qa2qgHN9vtihz3uYKFqj8
-	 su9//TvpCi+d4gJ4aPoEOpjBEd1gJ9oaybxOwAmI=
+	b=pr3L2Og6LqfAhFUVhiy/TyekaoLUDt1ZW36Al1VslONcfCmZ04FPT5WmTa2esnh4S
+	 V/UhU+Ly2VvYWj4e09oSSRy9Xh8CfkfP7cXMLKliB5p4hL+6tW9aZPK8Z5m2Nfzax8
+	 7wjTjl/5FrXx/VMWN+Al8TfnKnYipwA3DSYcKBkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Edward Liaw <edliaw@google.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 58/87] fs: better handle deep ancestor chains in is_subdir()
+Subject: [PATCH 5.10 41/59] selftests/vDSO: fix clang build errors and warnings
 Date: Thu, 25 Jul 2024 16:37:31 +0200
-Message-ID: <20240725142740.618047978@linuxfoundation.org>
+Message-ID: <20240725142734.816251876@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +65,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 391b59b045004d5b985d033263ccba3e941a7740 ]
+[ Upstream commit 73810cd45b99c6c418e1c6a487b52c1e74edb20d ]
 
-Jan reported that 'cd ..' may take a long time in deep directory
-hierarchies under a bind-mount. If concurrent renames happen it is
-possible to livelock in is_subdir() because it will keep retrying.
+When building with clang, via:
 
-Change is_subdir() from simply retrying over and over to retry once and
-then acquire the rename lock to handle deep ancestor chains better. The
-list of alternatives to this approach were less then pleasant. Change
-the scope of rcu lock to cover the whole walk while at it.
+    make LLVM=1 -C tools/testing/selftests
 
-A big thanks to Jan and Linus. Both Jan and Linus had proposed
-effectively the same thing just that one version ended up being slightly
-more elegant.
+...there are several warnings, and an error. This fixes all of those and
+allows these tests to run and pass.
 
-Reported-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+1. Fix linker error (undefined reference to memcpy) by providing a local
+   version of memcpy.
+
+2. clang complains about using this form:
+
+    if (g = h & 0xf0000000)
+
+...so factor out the assignment into a separate step.
+
+3. The code is passing a signed const char* to elf_hash(), which expects
+   a const unsigned char *. There are several callers, so fix this at
+   the source by allowing the function to accept a signed argument, and
+   then converting to unsigned operations, once inside the function.
+
+4. clang doesn't have __attribute__((externally_visible)) and generates
+   a warning to that effect. Fortunately, gcc 12 and gcc 13 do not seem
+   to require that attribute in order to build, run and pass tests here,
+   so remove it.
+
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dcache.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+ tools/testing/selftests/vDSO/parse_vdso.c      | 16 +++++++++++-----
+ .../selftests/vDSO/vdso_standalone_test_x86.c  | 18 ++++++++++++++++--
+ 2 files changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index 9a29cfdaa5416..43d75e7ee4785 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -3127,28 +3127,25 @@ EXPORT_SYMBOL(d_splice_alias);
-   
- bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index 413f75620a35b..4ae417372e9eb 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -55,14 +55,20 @@ static struct vdso_info
+ 	ELF(Verdef) *verdef;
+ } vdso_info;
+ 
+-/* Straight from the ELF specification. */
+-static unsigned long elf_hash(const unsigned char *name)
++/*
++ * Straight from the ELF specification...and then tweaked slightly, in order to
++ * avoid a few clang warnings.
++ */
++static unsigned long elf_hash(const char *name)
  {
--	bool result;
-+	bool subdir;
- 	unsigned seq;
+ 	unsigned long h = 0, g;
+-	while (*name)
++	const unsigned char *uch_name = (const unsigned char *)name;
++
++	while (*uch_name)
+ 	{
+-		h = (h << 4) + *name++;
+-		if (g = h & 0xf0000000)
++		h = (h << 4) + *uch_name++;
++		g = h & 0xf0000000;
++		if (g)
+ 			h ^= g >> 24;
+ 		h &= ~g;
+ 	}
+diff --git a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
+index 8a44ff973ee17..27f6fdf119691 100644
+--- a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
++++ b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
+@@ -18,7 +18,7 @@
  
- 	if (new_dentry == old_dentry)
- 		return true;
+ #include "parse_vdso.h"
  
--	do {
--		/* for restarting inner loop in case of seq retry */
--		seq = read_seqbegin(&rename_lock);
--		/*
--		 * Need rcu_readlock to protect against the d_parent trashing
--		 * due to d_move
--		 */
--		rcu_read_lock();
--		if (d_ancestor(old_dentry, new_dentry))
--			result = true;
--		else
--			result = false;
--		rcu_read_unlock();
--	} while (read_seqretry(&rename_lock, seq));
--
--	return result;
-+	/* Access d_parent under rcu as d_move() may change it. */
-+	rcu_read_lock();
-+	seq = read_seqbegin(&rename_lock);
-+	subdir = d_ancestor(old_dentry, new_dentry);
-+	 /* Try lockless once... */
-+	if (read_seqretry(&rename_lock, seq)) {
-+		/* ...else acquire lock for progress even on deep chains. */
-+		read_seqlock_excl(&rename_lock);
-+		subdir = d_ancestor(old_dentry, new_dentry);
-+		read_sequnlock_excl(&rename_lock);
-+	}
-+	rcu_read_unlock();
-+	return subdir;
+-/* We need a libc functions... */
++/* We need some libc functions... */
+ int strcmp(const char *a, const char *b)
+ {
+ 	/* This implementation is buggy: it never returns -1. */
+@@ -34,6 +34,20 @@ int strcmp(const char *a, const char *b)
+ 	return 0;
  }
- EXPORT_SYMBOL(is_subdir);
  
++/*
++ * The clang build needs this, although gcc does not.
++ * Stolen from lib/string.c.
++ */
++void *memcpy(void *dest, const void *src, size_t count)
++{
++	char *tmp = dest;
++	const char *s = src;
++
++	while (count--)
++		*tmp++ = *s++;
++	return dest;
++}
++
+ /* ...and two syscalls.  This is x86-specific. */
+ static inline long x86_syscall3(long nr, long a0, long a1, long a2)
+ {
+@@ -70,7 +84,7 @@ void to_base10(char *lastdig, time_t n)
+ 	}
+ }
+ 
+-__attribute__((externally_visible)) void c_main(void **stack)
++void c_main(void **stack)
+ {
+ 	/* Parse the stack */
+ 	long argc = (long)*stack;
 -- 
 2.43.0
 
