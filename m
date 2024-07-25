@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-61437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AD193C451
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:38:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C99393C45B
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDE00B2183B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED72428432A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19E219D07F;
-	Thu, 25 Jul 2024 14:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C06119B5BE;
+	Thu, 25 Jul 2024 14:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQbG1Hcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCqAdkdS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F9519A29C;
-	Thu, 25 Jul 2024 14:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3857519A29C;
+	Thu, 25 Jul 2024 14:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918304; cv=none; b=S6eKzZr2k5wnU6AhjukDyjmuOIpniY4Cbm1dBFpb2hcl2zRok7Je7P7Yb+iOv+fFgiLEnoPK9Xq1LypEh5mp+k2rV8y35ts+OgH1YmZGsxMfoqxQVEcf7/kLG3nW5Dop+c6GIkOF+4z14LGT1NYxaqp2qqvQ6jRWEkaBB/bcwKU=
+	t=1721918339; cv=none; b=edODhC68LC2RFQW9/pE76PUX29ZyYefqLK6Zp6ZoUXd1FA+lHVlq7H/G0qkGcHYvHYKk++ZdKsAtadA00l30ReRo5rJVpFtF5Kxop8QC33lMOQwzn9Bl7BSHbOp5fngJdQ1NVWUgvegb11TR/zvWSrZmQuvQEaJxFfY3/9uPJJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918304; c=relaxed/simple;
-	bh=Yv1Tfp7MXPkUw+uwkCOsovb+cETVRXYcXCfUxnhp77w=;
+	s=arc-20240116; t=1721918339; c=relaxed/simple;
+	bh=/F178W1nI/O83DORbG59fQ95fqtRKsMle9yHkYSxZ/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kO8/Is3mmwkKZ9N4YSNCElEEYUjVNlJwdo/+KRTCYwl1SQ3f0ArNr1WpuGhQ1/L4K/XV61yiiDGxGU2cyhsHeGPD13BVT1HIoCH6ll/uq3TAFVDf1upMPpgDd526oSCMyIoRhNcpYsNjufcjp1haVWqpyY+eZ5CoXpY0xlzC68s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQbG1Hcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3612C116B1;
-	Thu, 25 Jul 2024 14:38:23 +0000 (UTC)
+	 MIME-Version; b=H+XnxvV+FbeHaDyj5Rz2GSeJT/qqk6kUtV02n/JUWoW1F8H+yjmZdQ/8+8U+HderSABh//HeEN4/bd8HlT5731022z+H3O0gD+6E2RfSKqQIt9zn/8HKi3mksK2pGGEEl7HHmcRGBTPMT83JoRTvwAPTKxboEL21+M861JQ91rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCqAdkdS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849B0C116B1;
+	Thu, 25 Jul 2024 14:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918304;
-	bh=Yv1Tfp7MXPkUw+uwkCOsovb+cETVRXYcXCfUxnhp77w=;
+	s=korg; t=1721918339;
+	bh=/F178W1nI/O83DORbG59fQ95fqtRKsMle9yHkYSxZ/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQbG1Hcf7cpH7p3K5JaUNtVPnwdOI6ocYP94bNdZFSqg85W2SUEqwFMEzoCGaGxu9
-	 7OVAPLAVtKA1JiIjec4ISFj8PROGj/B3HXLv+fPFtO5ub5pFsso7zh8+nGsxXT/dz8
-	 QBvFNGSkuKriMw2tnI5cVGNuQn2ep82hBb/AB+50=
+	b=UCqAdkdShxq0bA7lIvusDpjM1utrMWgM28RIq17sX8teI/2kTrgsr7K9TXR0Z9qq0
+	 +UZqTQn5cMeAS7IkjQjFbj9Dky+U/YgrnCve9tCM3kwQ9S+5qfqdc7RO1kU7XMvKiE
+	 qTsWu/+rDRWm1lH1Eyo/8Lxe8L+PTXySQ4jtq22o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Zhou <bob.zhou@amd.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Subject: [PATCH 6.10 01/29] drm/amdgpu: Fix signedness bug in sdma_v4_0_process_trap_irq()
-Date: Thu, 25 Jul 2024 16:36:17 +0200
-Message-ID: <20240725142731.873778629@linuxfoundation.org>
+	Yunseong Kim <yskelg@gmail.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.10 02/29] s390/mm: Fix VM_FAULT_HWPOISON handling in do_exception()
+Date: Thu, 25 Jul 2024 16:36:18 +0200
+Message-ID: <20240725142731.910029742@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
 References: <20240725142731.814288796@linuxfoundation.org>
@@ -67,33 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
 
-commit 6769a23697f17f9bf9365ca8ed62fe37e361a05a upstream.
+commit df39038cd89525d465c2c8827eb64116873f141a upstream.
 
-The "instance" variable needs to be signed for the error handling to work.
+There is no support for HWPOISON, MEMORY_FAILURE, or ARCH_HAS_COPY_MC on
+s390. Therefore we do not expect to see VM_FAULT_HWPOISON in
+do_exception().
 
-Fixes: 8b2faf1a4f3b ("drm/amdgpu: add error handle to avoid out-of-bounds")
-Reviewed-by: Bob Zhou <bob.zhou@amd.com>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+However, since commit af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more
+general"), it is possible to see VM_FAULT_HWPOISON in combination with
+PTE_MARKER_POISONED, even on architectures that do not support HWPOISON
+otherwise. In this case, we will end up on the BUG() in do_exception().
+
+Fix this by treating VM_FAULT_HWPOISON the same as VM_FAULT_SIGBUS, similar
+to x86 when MEMORY_FAILURE is not configured. Also print unexpected fault
+flags, for easier debugging.
+
+Note that VM_FAULT_HWPOISON_LARGE is not expected, because s390 cannot
+support swap entries on other levels than PTE level.
+
+Cc: stable@vger.kernel.org # 6.6+
+Fixes: af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more general")
+Reported-by: Yunseong Kim <yskelg@gmail.com>
+Tested-by: Yunseong Kim <yskelg@gmail.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Message-ID: <20240715180416.3632453-1-gerald.schaefer@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/mm/fault.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -2017,7 +2017,7 @@ static int sdma_v4_0_process_trap_irq(st
- 				      struct amdgpu_irq_src *source,
- 				      struct amdgpu_iv_entry *entry)
- {
--	uint32_t instance;
-+	int instance;
- 
- 	DRM_DEBUG("IH: SDMA trap\n");
- 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
+--- a/arch/s390/mm/fault.c
++++ b/arch/s390/mm/fault.c
+@@ -433,12 +433,13 @@ error:
+ 			handle_fault_error_nolock(regs, 0);
+ 		else
+ 			do_sigsegv(regs, SEGV_MAPERR);
+-	} else if (fault & VM_FAULT_SIGBUS) {
++	} else if (fault & (VM_FAULT_SIGBUS | VM_FAULT_HWPOISON)) {
+ 		if (!user_mode(regs))
+ 			handle_fault_error_nolock(regs, 0);
+ 		else
+ 			do_sigbus(regs);
+ 	} else {
++		pr_emerg("Unexpected fault flags: %08x\n", fault);
+ 		BUG();
+ 	}
+ }
 
 
 
