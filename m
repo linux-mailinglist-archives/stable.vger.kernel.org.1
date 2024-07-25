@@ -1,160 +1,162 @@
-Return-Path: <stable+bounces-61783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEC2293C7D2
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 19:52:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3FD93C827
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 20:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D4D71F21E1B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 17:52:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B74151F2190E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 18:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1AE19D06C;
-	Thu, 25 Jul 2024 17:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fYk3E86h";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="E2ODFwuU";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fYk3E86h";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="E2ODFwuU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73E219DF72;
+	Thu, 25 Jul 2024 18:10:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1A126286
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 17:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F3C339A0;
+	Thu, 25 Jul 2024 18:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721929922; cv=none; b=EpBMYL1YzYf6lqWDo9OBIIInDSSvjMDDqp6nKyqfu0iECkhb/gNLAm4pvOvs0c01tQbGWZKMdfYzYuSU9WaLzquUKQ3SCWmXdkK5tm/+vzDCGvS/9KzUBtRisBwI4OgS+ZjI5NSOkx+JGqHzYb4yzC5lwfzRwjdrHjxATyXbv2s=
+	t=1721931007; cv=none; b=SJSICll4BDphhUpilL6LTsMfryFRe4tO0q1wtI98rIIgSoGSjT2n+TaV9GVmOpcQoZm3Fwr8BeWL2k0KhvkQfkS/n/VQzxjHpzb26pq1SxXB3Y/9dDbNIT0+9cMciPWydvqKPfBtgxORtfQJ7SbiTiefhQtJD1FfRgi8QCVbWec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721929922; c=relaxed/simple;
-	bh=12WVg3nkNN5dJr4yt7agDrOqYpMz/tzTOI0MbISKRRM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tQhbrllQVyYihWN/DErKT495OB84eXClUEHYugBTOBUYjflZd9E7pjbCvPA6xwIGc09GUFLfl06Cv3+M3WhALdSZZnSPj6uGTIl+NckHqglMV9Ac1ghAS6nghzRIYM+13+X2P5R3SDJ2JtmZ3OQw5WyB/p3TKF3H+7IqKd9sUx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fYk3E86h; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=E2ODFwuU; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fYk3E86h; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=E2ODFwuU; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0C82A1F824;
-	Thu, 25 Jul 2024 17:51:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1721929918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u3FSe0mL3X9v9JJ+iNhnA+pFWgWbWdYPW2n58aGjUHk=;
-	b=fYk3E86hc89SC/JtwvkEYQ45KcwCNQWA8pRWx8OvP0jXlGtpYe+Kxn9X3G6QOQ7RpYznnh
-	FHNzn+ER85z0vFaBn991H9pdKicw1/KmpHv2v506p+Umve05GomvqtM9E0J9Mo0OpBAwUt
-	+2jCBhkBrqckubx4CXbNd45GkOuul4E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1721929918;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u3FSe0mL3X9v9JJ+iNhnA+pFWgWbWdYPW2n58aGjUHk=;
-	b=E2ODFwuUqydO3MXkVfkS4fi22KqiS3couW5kBxjk3rm8bJB+1JzhYexQd+YlRdiGIz1NLg
-	hhBGx7ECxR1o8lAw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1721929918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u3FSe0mL3X9v9JJ+iNhnA+pFWgWbWdYPW2n58aGjUHk=;
-	b=fYk3E86hc89SC/JtwvkEYQ45KcwCNQWA8pRWx8OvP0jXlGtpYe+Kxn9X3G6QOQ7RpYznnh
-	FHNzn+ER85z0vFaBn991H9pdKicw1/KmpHv2v506p+Umve05GomvqtM9E0J9Mo0OpBAwUt
-	+2jCBhkBrqckubx4CXbNd45GkOuul4E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1721929918;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u3FSe0mL3X9v9JJ+iNhnA+pFWgWbWdYPW2n58aGjUHk=;
-	b=E2ODFwuUqydO3MXkVfkS4fi22KqiS3couW5kBxjk3rm8bJB+1JzhYexQd+YlRdiGIz1NLg
-	hhBGx7ECxR1o8lAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D50621368A;
-	Thu, 25 Jul 2024 17:51:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id niJ/Mr2Qomb5UwAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Thu, 25 Jul 2024 17:51:57 +0000
-Date: Thu, 25 Jul 2024 19:52:32 +0200
-Message-ID: <8734nxickf.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Cc: "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	stable@vger.kernel.org,
-	Edmund Raile <edmund.raile@proton.me>
-Subject: Re: [PATCH] ALSA: firewire-lib: fix wrong value as length of header for CIP_NO_HEADER case
-In-Reply-To: <20240725162537.GB109922@workstation.local>
-References: <20240725155640.128442-1-o-takashi@sakamocchi.jp>
-	<94600ca4-47ce-4993-b6ce-dabb93ef01dc@embeddedor.com>
-	<877cd9ih8l.wl-tiwai@suse.de>
-	<9d039b39-06c1-4328-bd5b-8b2c757ee438@embeddedor.com>
-	<20240725162537.GB109922@workstation.local>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1721931007; c=relaxed/simple;
+	bh=3d1lkerYjEzQAmgzNkELGoKubu7y/tjQ0HLQAN0wUas=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EyFX9cFRqj8jr5PXHHXB2Clrp1lFD7D2wIEes8D1Q1yDvCPyVTBce4sjxx6mUkvLdrCM1z3C5N/uUeii0yo2dzUEV5ZMjNB7JfAcjwv9oyJvT415ZKBDkAVhfHllTmyqLN7iV6bmFjGJbGiYO7Wt7ofbrT3cuvzXnMlq2s4TKZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
+Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
+ (195.54.195.169) with Microsoft SMTP Server (TLS) id 14.3.498.0; Thu, 25 Jul
+ 2024 21:09:54 +0300
+Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Thu, 25 Jul
+ 2024 21:09:54 +0300
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+To: Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, Xinhui Pan
+	<Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>, Daniel Vetter
+	<daniel@ffwll.ch>
+CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Jerome Glisse
+	<jglisse@redhat.com>, Dave Airlie <airlied@redhat.com>,
+	<amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] drm/radeon/evergreen_cs: fix int overflow errors in cs track offsets
+Date: Thu, 25 Jul 2024 11:09:50 -0700
+Message-ID: <20240725180950.15820-1-n.zhandarovich@fintech.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-3.10 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -3.10
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
+ (10.0.10.18)
 
-On Thu, 25 Jul 2024 18:25:37 +0200,
-Takashi Sakamoto wrote:
-> 
-> Hi,
-> 
-> On Thu, Jul 25, 2024 at 10:16:36AM -0600, Gustavo A. R. Silva wrote:
-> > Yes, but why have two separate patches when the root cause can be addressed by
-> > a single one, which will prevent other potential issues from occurring?
-> > 
-> > The main issue in this case is the __counted_by() annotation. The DEFINE_FLEX()
-> > bug was a consequence.
-> 
-> Just now I sent a patch to revert the issued commit[1].
-> 
-> I guess that we need the association between the two fixes. For example,
-> we can append more 'Fixes' tag to the patch in sound subsystem into the
-> patch in firewire subsystem (or vice versa).
+Several cs track offsets (such as 'track->db_s_read_offset')
+either are initialized with or plainly take big enough values that,
+once shifted 8 bits left, may be hit with integer overflow if the
+resulting values end up going over u32 limit.
 
-OK, then I drop your patch for the sound stuff, and you can take it
-through firewire tree.
+Some debug prints take this into account (see according dev_warn() in
+evergreen_cs_track_validate_stencil()), even if the actual
+calculated value assigned to local 'offset' variable is missing
+similar proper expansion.
 
-Feel free to take my ack:
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Mitigate the problem by casting the type of right operands to the
+wider type of corresponding left ones in all such cases.
 
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-thanks,
+Fixes: 285484e2d55e ("drm/radeon: add support for evergreen/ni tiling informations v11")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+---
+P.S. While I am not certain that track->cb_color_bo_offset[id]
+actually ends up taking values high enough to cause an overflow,
+nonetheless I thought it prudent to cast it to ulong as well.
 
-Takashi
+ drivers/gpu/drm/radeon/evergreen_cs.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/gpu/drm/radeon/evergreen_cs.c b/drivers/gpu/drm/radeon/evergreen_cs.c
+index 1fe6e0d883c7..d734d221e2da 100644
+--- a/drivers/gpu/drm/radeon/evergreen_cs.c
++++ b/drivers/gpu/drm/radeon/evergreen_cs.c
+@@ -433,7 +433,7 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 		return r;
+ 	}
+ 
+-	offset = track->cb_color_bo_offset[id] << 8;
++	offset = (unsigned long)track->cb_color_bo_offset[id] << 8;
+ 	if (offset & (surf.base_align - 1)) {
+ 		dev_warn(p->dev, "%s:%d cb[%d] bo base %ld not aligned with %ld\n",
+ 			 __func__, __LINE__, id, offset, surf.base_align);
+@@ -455,7 +455,7 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 				min = surf.nby - 8;
+ 			}
+ 			bsize = radeon_bo_size(track->cb_color_bo[id]);
+-			tmp = track->cb_color_bo_offset[id] << 8;
++			tmp = (unsigned long)track->cb_color_bo_offset[id] << 8;
+ 			for (nby = surf.nby; nby > min; nby--) {
+ 				size = nby * surf.nbx * surf.bpe * surf.nsamples;
+ 				if ((tmp + size * mslice) <= bsize) {
+@@ -476,10 +476,10 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 			}
+ 		}
+ 		dev_warn(p->dev, "%s:%d cb[%d] bo too small (layer size %d, "
+-			 "offset %d, max layer %d, bo size %ld, slice %d)\n",
++			 "offset %ld, max layer %d, bo size %ld, slice %d)\n",
+ 			 __func__, __LINE__, id, surf.layer_size,
+-			track->cb_color_bo_offset[id] << 8, mslice,
+-			radeon_bo_size(track->cb_color_bo[id]), slice);
++			(unsigned long)track->cb_color_bo_offset[id] << 8,
++			mslice,	radeon_bo_size(track->cb_color_bo[id]), slice);
+ 		dev_warn(p->dev, "%s:%d problematic surf: (%d %d) (%d %d %d %d %d %d %d)\n",
+ 			 __func__, __LINE__, surf.nbx, surf.nby,
+ 			surf.mode, surf.bpe, surf.nsamples,
+@@ -608,7 +608,7 @@ static int evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
+ 		return r;
+ 	}
+ 
+-	offset = track->db_s_read_offset << 8;
++	offset = (unsigned long)track->db_s_read_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+ 		dev_warn(p->dev, "%s:%d stencil read bo base %ld not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
+@@ -627,7 +627,7 @@ static int evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
+ 		return -EINVAL;
+ 	}
+ 
+-	offset = track->db_s_write_offset << 8;
++	offset = (unsigned long)track->db_s_write_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+ 		dev_warn(p->dev, "%s:%d stencil write bo base %ld not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
+@@ -706,7 +706,7 @@ static int evergreen_cs_track_validate_depth(struct radeon_cs_parser *p)
+ 		return r;
+ 	}
+ 
+-	offset = track->db_z_read_offset << 8;
++	offset = (unsigned long)track->db_z_read_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+ 		dev_warn(p->dev, "%s:%d stencil read bo base %ld not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
+@@ -722,7 +722,7 @@ static int evergreen_cs_track_validate_depth(struct radeon_cs_parser *p)
+ 		return -EINVAL;
+ 	}
+ 
+-	offset = track->db_z_write_offset << 8;
++	offset = (unsigned long)track->db_z_write_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+ 		dev_warn(p->dev, "%s:%d stencil write bo base %ld not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
 
