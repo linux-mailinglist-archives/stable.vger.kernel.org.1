@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A9393C565
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E88E93C47E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E2832814D7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 189F01F2252E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5751619D07A;
-	Thu, 25 Jul 2024 14:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E445019D096;
+	Thu, 25 Jul 2024 14:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cr4wcyur"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvX/SdK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126CEFC19;
-	Thu, 25 Jul 2024 14:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A214819B5BE;
+	Thu, 25 Jul 2024 14:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919052; cv=none; b=ta6wReuootI3YMxgTbl1qNTqLhFbrKpbT9szWQ4LfSh/aQD+GWTkQZqLOwiL3TizSi5AD92y4hyKykRX3Tu7WEcrUx6SoJXc1NCurE7ZIzeOwqENBUCSRkeE4gIGJfmZ8OJtFI/suID5INnc3xa0xmT7SSztEsgfhqCMOMc2B2A=
+	t=1721918412; cv=none; b=Je4EfL0kka1J3xxN4YxX/ZNA0u3IN2IGobCpy/XZy/+E7M5u9lNWQ+vf+gsOpVTOAbC4X6/wUqSKlPzVhhxamxigU71/lK6iPtZAb7Dnw9EksPt7bx2ErFcGKD/w2NWPZvLG28qu8n/yRJnpYvueHd5NgGc7Y0IJwkCs37DyMek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919052; c=relaxed/simple;
-	bh=EuySZPdNE+eRw/Az/90Z2+SSoyyBVSJTC0gDHTz74t8=;
+	s=arc-20240116; t=1721918412; c=relaxed/simple;
+	bh=ibOWO7LX2eDChBhHmKPh1wkla7GA1fpfLKrVi0AGwJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uS74078awL6cSMwuAv6I6gkcKyhvCnnhM1sCcChbb/Bs2gKUqRPwm5YWuOmtH0ni6IAvppVQtY6CVZzbffY6rAIiL6lcdbsiMAq1glaNszIvoozsfZORQvgnrIF43L0gT4TDi+TYyYHBOXZG3vy8bDyLG2o4gVXynhESeThTpIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cr4wcyur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70234C116B1;
-	Thu, 25 Jul 2024 14:50:51 +0000 (UTC)
+	 MIME-Version; b=B4ecJ7wQ+0DXCFUNxt369R3wZTcb0JnBtdw/de8yhuq+5Nw3wFKIcE/Udu1Ea0Irv0UqIPnxspxID0RFYvO+ZATA6BZRRyVRKXfwwwqKmEgPqxX4Pt1aNZossU0gQdcMB+ofXI2TjVq4kDOfpl5duw7ctN9DXRYK3NMY7bvdYiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvX/SdK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D433C116B1;
+	Thu, 25 Jul 2024 14:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919051;
-	bh=EuySZPdNE+eRw/Az/90Z2+SSoyyBVSJTC0gDHTz74t8=;
+	s=korg; t=1721918412;
+	bh=ibOWO7LX2eDChBhHmKPh1wkla7GA1fpfLKrVi0AGwJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cr4wcyurt6A/7e7jWdCXKnlFr+5KZez2cexQAmEIbE8sEXtfv4roZwEyNLMZMB01f
-	 mS7Jn4EifkRvyAtxkzErMNvSUxA6i3VeE96x6UkFnmYeMyUkzFcITakKbyvKMK73R2
-	 6W0unV+BaJCzLvBc8Dmh6s3Aq5aFGvtCjkcHYWw4=
+	b=wvX/SdK2SrBlWTawuvR0cWS2ycz53IuwMtCKyZO2DqsRbl5kHbP+USQz/v58P7DfW
+	 7hH3pWBOY0jjbS1dd8WS91wbrl/Al1c/YH4/xezBwNikB1n9PuQ+YoQ7NLki5lcsvx
+	 XQq8S75PxoFN4+5oQ58AkFKZbWs3b3iEnfLWWnZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-hardening@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>,
-	Thomas Meyer <thomas@m3y3r.de>
-Subject: [PATCH 5.15 01/87] gcc-plugins: Rename last_stmt() for GCC 14+
-Date: Thu, 25 Jul 2024 16:36:34 +0200
-Message-ID: <20240725142738.480817874@linuxfoundation.org>
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 12/33] mei: demote client disconnect warning on suspend to debug
+Date: Thu, 25 Jul 2024 16:36:35 +0200
+Message-ID: <20240725142728.985428273@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit 2e3f65ccfe6b0778b261ad69c9603ae85f210334 upstream.
+[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
 
-In GCC 14, last_stmt() was renamed to last_nondebug_stmt(). Add a helper
-macro to handle the renaming.
+Change level for the "not connected" client message in the write
+callback from error to debug.
 
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Cc: Thomas Meyer <thomas@m3y3r.de>
+The MEI driver currently disconnects all clients upon system suspend.
+This behavior is by design and user-space applications with
+open connections before the suspend are expected to handle errors upon
+resume, by reopening their handles, reconnecting,
+and retrying their operations.
+
+However, the current driver implementation logs an error message every
+time a write operation is attempted on a disconnected client.
+Since this is a normal and expected flow after system resume
+logging this as an error can be misleading.
+
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gcc-plugins/gcc-common.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/misc/mei/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/scripts/gcc-plugins/gcc-common.h
-+++ b/scripts/gcc-plugins/gcc-common.h
-@@ -570,4 +570,8 @@ static inline void debug_gimple_stmt(con
- #define SET_DECL_MODE(decl, mode)	DECL_MODE(decl) = (mode)
- #endif
+diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
+index 87281b3695e60..e87c2b13c381e 100644
+--- a/drivers/misc/mei/main.c
++++ b/drivers/misc/mei/main.c
+@@ -271,7 +271,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
+ 	}
  
-+#if BUILDING_GCC_VERSION >= 14000
-+#define last_stmt(x)			last_nondebug_stmt(x)
-+#endif
-+
- #endif
+ 	if (!mei_cl_is_connected(cl)) {
+-		cl_err(dev, cl, "is not connected");
++		cl_dbg(dev, cl, "is not connected");
+ 		rets = -ENODEV;
+ 		goto out;
+ 	}
+-- 
+2.43.0
+
 
 
 
