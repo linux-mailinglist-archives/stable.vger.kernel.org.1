@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E685393C500
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:46:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D34993C53B
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60696B260BD
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:46:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E12DF1F256A1
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F7419B5B5;
-	Thu, 25 Jul 2024 14:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F96FC19;
+	Thu, 25 Jul 2024 14:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9ifWfNe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSYbYJgi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68C21E895;
-	Thu, 25 Jul 2024 14:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EF9F519;
+	Thu, 25 Jul 2024 14:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918765; cv=none; b=AdHcK7xMTk4MY80YFLRuq0JJGeYKr5Rpg4M03HHcpIfXJfmoAlF8xm7igg3v8d/WXj8trTRqDLea24KNAORrd/lXwRJ76RAOuF/LDKI6kr0AiYsSED106wQOPdtQSK6vzakTIi9YLBKPOG8PjEyuSbohKpi92c2PCJoUmNl5Wxs=
+	t=1721918928; cv=none; b=ZVlJ9zLjwv6lU+gFmcA9RvUMuDUx6kj/w+1ulBELY9wtIbqdzsDSUle8lADG/6uE3tYBtjmTExDk9HQ3PA9N7d9M/FrYDI+cnlM4jkg5QxWgy0mLpe/UaQHZDrb38/wIXJSwfhi/Yzlw/yXdRrGZMOzM3nqPgbul2bd0h2f5D5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918765; c=relaxed/simple;
-	bh=6KJq4BFsK/vwchqCAdeqi+M98eXGG1bdAUhOwudwkqw=;
+	s=arc-20240116; t=1721918928; c=relaxed/simple;
+	bh=V4/DDMkyMYa121aqZj+lylYlLBpzqYtHI4lPWK5MnsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tdQ+bbfYV8jjbvA+hhJ5xtDmWTCob7HNdUF7yLeYLVglV8zU7UnZ+K6+0lQO8j+mmLUc38jAaXx/yLoyGhCGIAgQ44MSVFhJYeHKjETRazv79vwTPPofbmLslbbWjbpCWi9nSRRKJPeGiSOCNmeUNy57hIHJN0brGPXP0G2S9B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9ifWfNe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF18C116B1;
-	Thu, 25 Jul 2024 14:46:05 +0000 (UTC)
+	 MIME-Version; b=sBUfBwOVcbP54CHJ92ylhcxYbVVbuvOBb7rbHlq9D49gp6bqAhEQaApmLvxCrGiEj92gtW81/npxbcV0g7/VJswx+60JqmgcSlTHgnSHXBeghUowCx857YHCFOvZxKl3MgrPRBkO1L5dHh8Zoip7lEbuvr00ZBGEMZYd2uWHgqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSYbYJgi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B0AFC116B1;
+	Thu, 25 Jul 2024 14:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918765;
-	bh=6KJq4BFsK/vwchqCAdeqi+M98eXGG1bdAUhOwudwkqw=;
+	s=korg; t=1721918928;
+	bh=V4/DDMkyMYa121aqZj+lylYlLBpzqYtHI4lPWK5MnsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9ifWfNeF+WJUC9L4U7sfHLzj9S0wiitb0r0pTMtSe8VrTyv+dSsJBDuVz9NvDFp7
-	 u8nePbZKIX6d0p1lx4CQwqm6rVRvO8U8SEnJXZt0sTbbvAbIa+LBOQb8Yjpk4N7fsb
-	 t3XjJbXcl0vdHlRnsbSHZ4tEM0pOvdnZan0HtCRE=
+	b=PSYbYJgiYF+FdXAg2wglHrkjsI59uVS2tJW7WWqwuEcLwduB1Ccexsri0v9cwDizI
+	 LQRzCtRHb1wiTl5QRV1YdILWZaYxFBKqlTr5rv0fWrF02T86dk6K+3Y9/GsKit76+i
+	 uNVrneRDHQo7XWCNmOnRLN/RGEX03FE1teo6rpvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Anderson <dianders@google.com>,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.9 11/29] arm64: dts: qcom: sc7180: Disable SuperSpeed instances in park mode
-Date: Thu, 25 Jul 2024 16:37:21 +0200
-Message-ID: <20240725142732.102803278@linuxfoundation.org>
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 32/59] ALSA: dmaengine_pcm: terminate dmaengine before synchronize
+Date: Thu, 25 Jul 2024 16:37:22 +0200
+Message-ID: <20240725142734.479262495@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
-References: <20240725142731.678993846@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-commit 5b8baed4b88132c12010ce6ca1b56f00d122e376 upstream.
+[ Upstream commit 6a7db25aad8ce6512b366d2ce1d0e60bac00a09d ]
 
-On SC7180, in host mode, it is observed that stressing out controller
-results in HC died error:
+When dmaengine supports pause function, in suspend state,
+dmaengine_pause() is called instead of dmaengine_terminate_async(),
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
+In end of playback stream, the runtime->state will go to
+SNDRV_PCM_STATE_DRAINING, if system suspend & resume happen
+at this time, application will not resume playback stream, the
+stream will be closed directly, the dmaengine_terminate_async()
+will not be called before the dmaengine_synchronize(), which
+violates the call sequence for dmaengine_synchronize().
 
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instances in park mode for SC7180 to mitigate this issue.
+This behavior also happens for capture streams, but there is no
+SNDRV_PCM_STATE_DRAINING state for capture. So use
+dmaengine_tx_status() to check the DMA status if the status is
+DMA_PAUSED, then call dmaengine_terminate_async() to terminate
+dmaengine before dmaengine_synchronize().
 
-Reported-by: Doug Anderson <dianders@google.com>
-Cc: stable@vger.kernel.org
-Fixes: 0b766e7fe5a2 ("arm64: dts: qcom: sc7180: Add USB related nodes")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240604060659.1449278-2-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/1718851218-27803-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ sound/core/pcm_dmaengine.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -3063,6 +3063,7 @@
- 				iommus = <&apps_smmu 0x540 0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 				maximum-speed = "super-speed";
+diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
+index db22294452560..a7e2e6955e51c 100644
+--- a/sound/core/pcm_dmaengine.c
++++ b/sound/core/pcm_dmaengine.c
+@@ -359,6 +359,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_sync_stop);
+ int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
++
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status == DMA_PAUSED)
++		dmaengine_terminate_async(prtd->dma_chan);
+ 
+ 	dmaengine_synchronize(prtd->dma_chan);
+ 	kfree(prtd);
+@@ -377,6 +383,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_close);
+ int snd_dmaengine_pcm_close_release_chan(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
++
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status == DMA_PAUSED)
++		dmaengine_terminate_async(prtd->dma_chan);
+ 
+ 	dmaengine_synchronize(prtd->dma_chan);
+ 	dma_release_channel(prtd->dma_chan);
+-- 
+2.43.0
+
 
 
 
