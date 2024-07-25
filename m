@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-61408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C190F93C265
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE3993C266
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D67D283945
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 12:50:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58EAC1F21F46
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 12:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623B319AD4A;
-	Thu, 25 Jul 2024 12:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB36D19AA6A;
+	Thu, 25 Jul 2024 12:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBfkuFJo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ee5VWX2w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244CB19AD42
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC5419AA4F
+	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721911845; cv=none; b=g4uk5g0lync+qdhznVPgccqJNnGw4HEyTznIYNPY53xWyYdzYumYtjEX5PWc2CnlW62yhcXZfqZ2kpzcsz9QBadboXtEphUBceSAcHs5jtBu9ZWABtTZA80YOxIX0X6/BhPR4prUQBjFUcXmgjiy9ZG8bk6MB4IxJI33acAAJCw=
+	t=1721911848; cv=none; b=QLMDdhBK+JC3gQyOaZVpJx+YUJVrQGbXfcPXwdlGqvTodd8Vr8383DOWYRTwriVEXkDf0AfABIetdC5qquUdFnwiPpbDXZ0cw0PlRDrKdEyVDBVAJcduQouonCbxXgTxqx4FNbP0Rx+joeaWTqC35oc2qPXokrIOMFRG5q6zFmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721911845; c=relaxed/simple;
-	bh=niAGQjMGariKsZSER07K/YTDmBgo0KQjQl/nIRl7w5A=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tNQaSfhuntoA15vZ1vX6fRdavoBdBwoSR+NrBQtOCMzPIPjAMYVkUnkg5ViCrqIIMWik0JgdAjbHyaZso927ssdrzd6qhvoEy6x66cb84WKepzMXdo0BuHG7Hcw2BoMmSa0C73YxEwSjeDhFopf7pVQQIWDyIT5viP0jERzhRVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBfkuFJo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99663C116B1;
-	Thu, 25 Jul 2024 12:50:44 +0000 (UTC)
+	s=arc-20240116; t=1721911848; c=relaxed/simple;
+	bh=ZMkWRC3AQV51SzTnzapW2wPFgM3aH40YeFviKXrvEaQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pRfBnRFpr8YPtLx8r2IPdD9RXJKTq2rZ5DYM6O42fNRsjAIF4CLtIg1rScdVO32NrNmGtsdP6KCpOigCFqiGImYuTxuHXvHtLOUJEtKr8TsOZzqoPJU41iNlCAAOz87YQazPfI80UmKUrJ+ZaeSO0pHZPlgX9KzcnJ3RrxrENn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ee5VWX2w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5DAC32782;
+	Thu, 25 Jul 2024 12:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721911845;
-	bh=niAGQjMGariKsZSER07K/YTDmBgo0KQjQl/nIRl7w5A=;
+	s=korg; t=1721911848;
+	bh=ZMkWRC3AQV51SzTnzapW2wPFgM3aH40YeFviKXrvEaQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xBfkuFJo5bII7dbXe3APkn6bj7b9wdNMEaev+coL9cXXCjsV29ytnK/9FGHCTpN6e
-	 wZfGvWymK9PVVPw2ZWDR1qu973E73gtJPBSO0b45lwiL0lT5SajJ+mtjilktAf9Edb
-	 m3BcBI4QtBevn1GsfyRZEupGlRwO7AwIvRfMRm24=
-Subject: FAILED: patch "[PATCH] arm64: dts: qcom: msm8996: Disable SS instance in Parkmode" failed to apply to 5.4-stable tree
+	b=ee5VWX2wdyz6Gp5sWFTTaCrh8jrBMFwrO/rrLXAhyyEKhmnFQxDUYw+a+oaqCY1gw
+	 Zc90k382lQuQQYt2JiciflPOsiHLep80sX+InsKzFaBhXpB5jf/a5F6HUm5eGR4YBi
+	 2x6p2UECfwPx9eu2W2E303IziAHOwCvL7ANnDl1Q=
+Subject: FAILED: patch "[PATCH] arm64: dts: qcom: msm8996: Disable SS instance in Parkmode" failed to apply to 4.19-stable tree
 To: quic_kriskura@quicinc.com,andersson@kernel.org,konrad.dybcio@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 25 Jul 2024 14:49:33 +0200
-Message-ID: <2024072533-splurge-kung-54fa@gregkh>
+Date: Thu, 25 Jul 2024 14:49:34 +0200
+Message-ID: <2024072534-unguarded-atonable-f64d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 44ea1ae3cf95db97e10d6ce17527948121f1dd4b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072533-splurge-kung-54fa@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072534-unguarded-atonable-f64d@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,6 +77,18 @@ d0af0537e28f ("arm64: dts: qcom: msm8996: Add missing DWC3 quirks")
 75b77d6492eb ("arm64: dts: qcom: msm8996: Use node references in db820c")
 f978d45b4aab ("arm64: dts: qcom: db820c: Move non-soc entries out of /soc")
 d026c96b25b7 ("arm64: dts: qcom: msm8996: Disable USB2 PHY suspend by core")
+4e300e439af3 ("arm64: dts: qcom: msm8996: Add Venus video codec DT node")
+d98de8efa19f ("arm64: dts: qcom: msm8996: Add Coresight support")
+887e54218183 ("arm64: dts: qcom: msm8996: Rename smmu nodes")
+72825e7f4a63 ("arm64: dts: qcom: msm8996: Enable SMMUs")
+64a68a736068 ("arm64: dts: qcom: msm8996: Correct apr-domain property")
+693e824452e5 ("arm64: dts: qcom: msm8996: Stop using legacy clock names")
+3a2b37b09f74 ("arm64: dts: msm8996: Add UFS PHY reset controller")
+f3eb39a55a1f ("arm64: dts: db820c: Add sound card support")
+1ad69b695582 ("arm64: dts: apq8096-db820c: Add HDMI display support")
+69cc3114ab0f ("arm64: dts: Add Adreno GPU definitions")
+3a4547c1fc2f ("arm64: qcom: msm8996.dtsi: Add Display nodes")
+953f65737006 ("arm64: dts: msm8996: Add display smmu node")
 
 thanks,
 
