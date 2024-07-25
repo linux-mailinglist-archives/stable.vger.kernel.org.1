@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-61336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9257793BAC7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 04:30:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB3093BAE6
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 04:41:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56EF2282933
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 02:30:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 897D2283D1C
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 02:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB8011725;
-	Thu, 25 Jul 2024 02:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E5510A03;
+	Thu, 25 Jul 2024 02:41:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0DD63D0;
-	Thu, 25 Jul 2024 02:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C3B101F2;
+	Thu, 25 Jul 2024 02:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721874609; cv=none; b=APGfn1LouXWiFepe0RpBoRJQr3SvDCJnprCbppHsMgvKLDJk11ESlROXR8cbBBRVPNttOZJEWcD75asnDIpukDKhHWLBFg5lels+7Gb/AiCew1qdWWTwql/x/H8hjL6B/roNigp59o0xVQquyCVRF7jwnY1RxZ5rslm1j1qkSc8=
+	t=1721875278; cv=none; b=lzU/apXcdXXa3FMv/85xhpgYLN2ffE36MvOQMfHtaNpD1MjNZjYck7ZUBZvX4KrWX3Q1wEJpABCGZNWSRhU/dEY/QTeTbZQSW2YataX8MzP1Np/WIIQpAc3717j6ZHcjT7IrdUKXMnHlZ3IrDZ2XDo/Hgrpb0ZUO+vr3uc0Ji+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721874609; c=relaxed/simple;
-	bh=UflBeGAI8Ewd2P0gL0BG4VcOuURnvNeNQ1BGv2VbtmI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NxX2wm9ar8h1OGXVtr3pwU+oCcJT5jvTEN7giyTwYsViiJTBaZ2zYgzTsrB+VDvysCd0EMj0jMdmzuj/FltNmilphrv4wAjEcZJh5d9jUP8D816U8EsLp8tReGfb3KGDK0YGhYNDtWezL26TU2EJrX0NUHl6HGv+JluOSWRPhvo=
+	s=arc-20240116; t=1721875278; c=relaxed/simple;
+	bh=tR5qH+CDKQnhLl3ghv2WT12nhh4dsdsYHHcR3zXyqh8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=I5UYzmjt7eZdtHkqSIc3+iVvK56ugbcAi/If52bpARxdkLuQVK5+5/s4rDdVtnrXaVqlfOeZpEF97HlI7FcWGUQoey6UJonyJAkCNs/JdjJxc3w81cXPikcRoURPNOrEA1u0AadcFVGF43uzoFBfwqAlK+87HUff2zDbPIGbQcw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowACnEUGXuKFm2O7cAA--.57002S2;
-	Thu, 25 Jul 2024 10:29:50 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowADHrjk2u6FmaVvdAA--.20694S2;
+	Thu, 25 Jul 2024 10:41:00 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	make24@iscas.ac.cn,
-	liujunliang_ljl@163.com,
-	syoshida@redhat.com,
-	andrew@lunn.ch,
-	horms@kernel.org
-Cc: linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
+To: kristo@kernel.org,
+	bp@alien8.de,
+	tony.luck@intel.com,
+	james.morse@arm.com,
+	mchehab@kernel.org,
+	rric@kernel.org,
+	avadnaik@amd.com
+Cc: linux-edac@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH net v4] net: usb: sr9700: fix uninitialized variable use in sr_mdio_read
-Date: Thu, 25 Jul 2024 10:29:42 +0800
-Message-Id: <20240725022942.1720199-1-make24@iscas.ac.cn>
+Subject: [PATCH v3] EDAC/ti: Fix possible null pointer dereference in _emif_get_id()
+Date: Thu, 25 Jul 2024 10:40:52 +0800
+Message-Id: <20240725024052.1722866-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -56,81 +54,67 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACnEUGXuKFm2O7cAA--.57002S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CF15XFyrCr4kuryfCF1kAFb_yoW8AF1fpr
-	47Ga90yrWUJ347Z3ykXw1vg3WFkw4kKay3W348Gw1fZ395Arn5C34FgFyYgw1UGrW5Aa12
-	qF4qvFWxua10vaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBa14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:zQCowADHrjk2u6FmaVvdAA--.20694S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrZr1DZrWDtrWDAFW5Zw13Jwb_yoW8JrW8pw
+	47WFW5AryUtry29r4vv34kZFy5C3WkJayDK340k39Y9w15XF97Jry09ry7tFyYyrW8Gay3
+	Xw4rtFs8XFWUJFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBS14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
-	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
-	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
-	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20x
-	vY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I
-	3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIx
-	AIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAI
-	cVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2js
-	IEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUQvtAUUUUU=
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxV
+	WxJr0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
+	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r
+	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAq
+	YI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82
+	IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC2
+	0s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMI
+	IF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF
+	0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87
+	Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUF0eHDUUUU
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-It could lead to error happen because the variable res is not updated if
-the call to sr_share_read_word returns an error. In this particular case
-error code was returned and res stayed uninitialized. Same issue also
-applies to sr_read_reg.
-
-This can be avoided by checking the return value of sr_share_read_word
-and sr_read_reg, and propagating the error if the read operation failed.
+In _emif_get_id(), of_get_address() may return NULL which is later
+dereferenced. Fix this bug by adding NULL check.
 
 Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
+Fixes: 86a18ee21e5e ("EDAC, ti: Add support for TI keystone and DRA7xx EDAC")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
-Changes in v4:
-- added a check for sr_read_reg() as suggestions.
 Changes in v3:
-- added Cc stable line as suggestions.
+- added the patch operations omitted in PATCH v2 RESEND compared to PATCH 
+v2. Sorry for my oversight.
 Changes in v2:
-- modified the subject as suggestions.
+- added Cc stable line.
 ---
- drivers/net/usb/sr9700.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/edac/ti_edac.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
-index 0a662e42ed96..cb7d2f798fb4 100644
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -179,6 +179,7 @@ static int sr_mdio_read(struct net_device *netdev, int phy_id, int loc)
- 	struct usbnet *dev = netdev_priv(netdev);
- 	__le16 res;
- 	int rc = 0;
-+	int err;
+diff --git a/drivers/edac/ti_edac.c b/drivers/edac/ti_edac.c
+index 29723c9592f7..6f3da8d99eab 100644
+--- a/drivers/edac/ti_edac.c
++++ b/drivers/edac/ti_edac.c
+@@ -207,6 +207,9 @@ static int _emif_get_id(struct device_node *node)
+ 	int my_id = 0;
  
- 	if (phy_id) {
- 		netdev_dbg(netdev, "Only internal phy supported\n");
-@@ -189,11 +190,17 @@ static int sr_mdio_read(struct net_device *netdev, int phy_id, int loc)
- 	if (loc == MII_BMSR) {
- 		u8 value;
+ 	addrp = of_get_address(node, 0, NULL, NULL);
++	if (!addrp)
++		return -EINVAL;
++
+ 	my_addr = (u32)of_translate_address(node, addrp);
  
--		sr_read_reg(dev, SR_NSR, &value);
-+		err = sr_read_reg(dev, SR_NSR, &value);
-+		if (err < 0)
-+			return err;
+ 	for_each_matching_node(np, ti_edac_of_match) {
+@@ -214,6 +217,9 @@ static int _emif_get_id(struct device_node *node)
+ 			continue;
+ 
+ 		addrp = of_get_address(np, 0, NULL, NULL);
++		if (!addrp)
++			return -EINVAL;
 +
- 		if (value & NSR_LINKST)
- 			rc = 1;
- 	}
--	sr_share_read_word(dev, 1, loc, &res);
-+	err = sr_share_read_word(dev, 1, loc, &res);
-+	if (err < 0)
-+		return err;
-+
- 	if (rc == 1)
- 		res = le16_to_cpu(res) | BMSR_LSTATUS;
- 	else
+ 		addr = (u32)of_translate_address(np, addrp);
+ 
+ 		edac_printk(KERN_INFO, EDAC_MOD_NAME,
 -- 
 2.25.1
 
