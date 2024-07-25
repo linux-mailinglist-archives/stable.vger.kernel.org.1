@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-61623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B183293C534
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A301A93C535
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2A141C21E1A
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13293B26C90
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6A913C816;
-	Thu, 25 Jul 2024 14:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7222D8468;
+	Thu, 25 Jul 2024 14:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdCw6FCD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knAolHKp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10E5F519;
-	Thu, 25 Jul 2024 14:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C619FC19;
+	Thu, 25 Jul 2024 14:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918909; cv=none; b=nCeHe5OohY3tbaVI/kSqI4vcc8ZRTCzYfCumnRiNnwVENYOctbW5PYsh8A9x8IZnTrHNzFjl2+EuN/A0lsq2jiXNmI8Apj0tTUA+TZ6uSSpmAPEV19gzQtvjr/RFv2rhd3zLDBZRL5OqgBak7pe37yJgfgKHFGp9UPU/q4/Z21U=
+	t=1721918912; cv=none; b=i3IbXawNJpO+sCF/lGi34Wnxp1dbQFWtXil5tqu12J7cmvj9hmqMo6GJDQq7lBGbXRxv0ekIXKpV8Y63JBnZwD9e1YY+tq+XdlSU1aIViqaRke2HiRHBdHAbG51Q39bjrbRQyviBIU+bC17mXvj9gAyMcMsYazwhkmmAH0nV7zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918909; c=relaxed/simple;
-	bh=HUyBsVxjYSZurz0MsEXkmH3i++wvvfkZUw5XnsElTd8=;
+	s=arc-20240116; t=1721918912; c=relaxed/simple;
+	bh=G5yGq0y8UKf7bMigFZoW+NeIn2FVHkPIch+hgMSbYd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1y4mTw80h/FyiSE9lYvw66A/mxtoBBdj7g5oGowVK8USruIC359L8pp3NL4hpCSDVhGQzJsDbHTSonta/rHbkyYRxc7Ui2AKnWDW/5FLSCdXxVesqLuqmHmE8+WUNZkWhRBIvaEpuPOUfgo7vO/fH4KTDkzRxDyALn6SRis9KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdCw6FCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74254C116B1;
-	Thu, 25 Jul 2024 14:48:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kJU6ZLyD3dTWnPncf2a209kBvZoRXOLw5CqsEuDA+9YqkXHtIrvDdxBgSZABqjfmS58uuRcCyUaxzMZ1MJnWQwr7e/fFlOJejhFGSLaTqyl6NE2dGh2UVi9m42aTRnGE5lbkyUq5Xc0wyD5B7ADlzIUsnEvZra5o2eL2vJvC/BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knAolHKp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5DCC116B1;
+	Thu, 25 Jul 2024 14:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918908;
-	bh=HUyBsVxjYSZurz0MsEXkmH3i++wvvfkZUw5XnsElTd8=;
+	s=korg; t=1721918912;
+	bh=G5yGq0y8UKf7bMigFZoW+NeIn2FVHkPIch+hgMSbYd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kdCw6FCDeCyzOr1dWMSihBCtkEc/Fu2FBjEiURPgKCuuF8mXjo374bmzdpC8SPzol
-	 vM7gtzmRzyZujlVzt/McL2L2s06z/TsIOWF4pOjvVjDCwlIAVzofXXCGep1/zA7vsE
-	 ZZg+lPqOPEAZ39rZmnVWmCzYjSU5SNqdLN8655l8=
+	b=knAolHKpQamCVnQze3ZjTY3/TA4XDTRySBTzeuiSJwezOSLI1J7puqZpIOZoCJh+1
+	 CYmya/1+QvUZsU+VJnlVtvi2hNemEYIcHMy79wC8t5Y/fMKR4nbuTYjVjhUUVkNmhf
+	 GaogXSuXkIuOQo3tKf3VTLr+puCH1TZKH4on1vGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 07/59] wifi: mac80211: fix UBSAN noise in ieee80211_prep_hw_scan()
-Date: Thu, 25 Jul 2024 16:36:57 +0200
-Message-ID: <20240725142733.542199787@linuxfoundation.org>
+Subject: [PATCH 5.10 08/59] selftests/openat2: Fix build warnings on ppc64
+Date: Thu, 25 Jul 2024 16:36:58 +0200
+Message-ID: <20240725142733.579431284@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
 References: <20240725142733.262322603@linuxfoundation.org>
@@ -60,84 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 92ecbb3ac6f3fe8ae9edf3226c76aa17b6800699 ]
+[ Upstream commit 84b6df4c49a1cc2854a16937acd5fd3e6315d083 ]
 
-When testing the previous patch with CONFIG_UBSAN_BOUNDS, I've
-noticed the following:
+Fix warnings like:
 
-UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:372:4
-index 0 is out of range for type 'struct ieee80211_channel *[]'
-CPU: 0 PID: 1435 Comm: wpa_supplicant Not tainted 6.9.0+ #1
-Hardware name: LENOVO 20UN005QRT/20UN005QRT <...BIOS details...>
-Call Trace:
- <TASK>
- dump_stack_lvl+0x2d/0x90
- __ubsan_handle_out_of_bounds+0xe7/0x140
- ? timerqueue_add+0x98/0xb0
- ieee80211_prep_hw_scan+0x2db/0x480 [mac80211]
- ? __kmalloc+0xe1/0x470
- __ieee80211_start_scan+0x541/0x760 [mac80211]
- rdev_scan+0x1f/0xe0 [cfg80211]
- nl80211_trigger_scan+0x9b6/0xae0 [cfg80211]
- ...<the rest is not too useful...>
+  openat2_test.c: In function ‘test_openat2_flags’:
+  openat2_test.c:303:73: warning: format ‘%llX’ expects argument of type
+  ‘long long unsigned int’, but argument 5 has type ‘__u64’ {aka ‘long
+  unsigned int’} [-Wformat=]
 
-Since '__ieee80211_start_scan()' leaves 'hw_scan_req->req.n_channels'
-uninitialized, actual boundaries of 'hw_scan_req->req.channels' can't
-be checked in 'ieee80211_prep_hw_scan()'. Although an initialization
-of 'hw_scan_req->req.n_channels' introduces some confusion around
-allocated vs. used VLA members, this shouldn't be a problem since
-everything is correctly adjusted soon in 'ieee80211_prep_hw_scan()'.
+By switching to unsigned long long for u64 for ppc64 builds.
 
-Cleanup 'kmalloc()' math in '__ieee80211_start_scan()' by using the
-convenient 'struct_size()' as well.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://msgid.link/20240517153332.18271-2-dmantipov@yandex.ru
-[improve (imho) indentation a bit]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/scan.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ tools/testing/selftests/openat2/openat2_test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index b241ff8c015a9..be5d02c129e92 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -727,15 +727,21 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
- 			local->hw_scan_ies_bufsize *= n_bands;
- 		}
+diff --git a/tools/testing/selftests/openat2/openat2_test.c b/tools/testing/selftests/openat2/openat2_test.c
+index 453152b58e7f0..1045df1a98c07 100644
+--- a/tools/testing/selftests/openat2/openat2_test.c
++++ b/tools/testing/selftests/openat2/openat2_test.c
+@@ -5,6 +5,7 @@
+  */
  
--		local->hw_scan_req = kmalloc(
--				sizeof(*local->hw_scan_req) +
--				req->n_channels * sizeof(req->channels[0]) +
--				local->hw_scan_ies_bufsize, GFP_KERNEL);
-+		local->hw_scan_req = kmalloc(struct_size(local->hw_scan_req,
-+							 req.channels,
-+							 req->n_channels) +
-+					     local->hw_scan_ies_bufsize,
-+					     GFP_KERNEL);
- 		if (!local->hw_scan_req)
- 			return -ENOMEM;
- 
- 		local->hw_scan_req->req.ssids = req->ssids;
- 		local->hw_scan_req->req.n_ssids = req->n_ssids;
-+		/* None of the channels are actually set
-+		 * up but let UBSAN know the boundaries.
-+		 */
-+		local->hw_scan_req->req.n_channels = req->n_channels;
-+
- 		ies = (u8 *)local->hw_scan_req +
- 			sizeof(*local->hw_scan_req) +
- 			req->n_channels * sizeof(req->channels[0]);
+ #define _GNU_SOURCE
++#define __SANE_USERSPACE_TYPES__ // Use ll64
+ #include <fcntl.h>
+ #include <sched.h>
+ #include <sys/stat.h>
 -- 
 2.43.0
 
