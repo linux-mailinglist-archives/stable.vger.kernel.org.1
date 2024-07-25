@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9F693C4D5
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B78793C477
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49ABD2815B7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56544284C25
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F179C19D066;
-	Thu, 25 Jul 2024 14:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CDA19D09A;
+	Thu, 25 Jul 2024 14:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vc7kIzVU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/Z1hRST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBFB199E9F;
-	Thu, 25 Jul 2024 14:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB2619D066;
+	Thu, 25 Jul 2024 14:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918647; cv=none; b=lcZfLb3aBjwGNCQlRZJYEnnqupq249eWva7RFOCiu4IaIcmItOqYmg9qdvBrTNQDUvoGRQMLTSYP3w1GS8PWLJdnXPm4tupf49oX0sF8Yux2IVuk1wg/I4VDvYyucOMRjZwzIo6DNmVjF25NVuxiahBM4YmX1tHU835JwwWugko=
+	t=1721918400; cv=none; b=NNjw/LcYbvslYBZ/fI0Xd+30tkNF99WPIbHtv9lp8bw3tblAbZVkZxmIS2ZqCIX0EU7plRClhsyNtrY/PDcvkwF305urRR9Q9xIcidyFZaFffE396EzEKmKSf1nukymOvRhJsHBpaFPBIFKvNwa9O14f/zOlF6alKi8OB4jMVEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918647; c=relaxed/simple;
-	bh=OwMny5WJMRCQsVIhx/wPY8sI4WtIBUs1zM8ZjI88s3c=;
+	s=arc-20240116; t=1721918400; c=relaxed/simple;
+	bh=wAczj7jTmgbbnE8RR3FRujysTRl8hp3fRHGjMMMqf68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QiygTIw40Mrnv5z6TjLlsrAq3wN7+ULYjmFpeM0pbk1XhtiORcqxQHOv6M+Imkn3xfcRhQn9CY+8hhMJxdTG6zYTWgyDHSFA3SDaJca0X4L0YQszpSNiHGD/t39VNiN3XWgFnea9QNDYODWMlIOBlzTRAmxCwe71TxN76taogNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vc7kIzVU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D209DC116B1;
-	Thu, 25 Jul 2024 14:44:06 +0000 (UTC)
+	 MIME-Version; b=ke/hJBvD0giwF1aIFnSWGIg6vjZD15Pf7YKSh58v+Zhlgtm2iGeIb1/po8btJP7V2/2as7HX3NIG5kt6ZJKiLFGB4/4RQXQyx1nvtTccVFMd7Y0sEZn1rBceLI6MItY+IiRlv3D7OOQ6FRG3jnD0nBjVwaSRHVvuEQVno0n0Jro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/Z1hRST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545A6C116B1;
+	Thu, 25 Jul 2024 14:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918647;
-	bh=OwMny5WJMRCQsVIhx/wPY8sI4WtIBUs1zM8ZjI88s3c=;
+	s=korg; t=1721918399;
+	bh=wAczj7jTmgbbnE8RR3FRujysTRl8hp3fRHGjMMMqf68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vc7kIzVUv4nfEx9ElvhiC0E6+gRHBPShU7yXe01LXtZPW8Q+82+3/GLRnBRYCLbBO
-	 tQtuKHu/BDIXo3Rwc/DL/uyYpr7/hYlj+RRmZ8qQIJkLr0HedN/mafYnaMvnqaI4+7
-	 LRXaYUjxaAb5XJFyo/luXcKFdfeYuW8JcLOEjE6A=
+	b=G/Z1hRSTnqXrMInBAxV1WimmTZq0tyF+xNkWlPkNl8WO4s+76O1jK0P7VrRojwWg0
+	 9LXKYc1mh4fF3dm1WmEpKOIldoZlEG/oAfV91CqN3opnvNU/aIVdEA1GiVQCYdJdZ2
+	 UV2Ci8YfJSxQiTdQL3ZSKTP568b2WgrnHnKrV1AE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 17/43] mips: fix compat_sys_lseek syscall
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 24/29] arm64: dts: qcom: ipq8074: Disable SS instance in Parkmode for USB
 Date: Thu, 25 Jul 2024 16:36:40 +0200
-Message-ID: <20240725142731.124981402@linuxfoundation.org>
+Message-ID: <20240725142732.724919193@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit 0d5679a0aae2d8cda72169452c32e5cb88a7ab33 ]
+commit dc6ba95c6c4400a84cca5b419b34ae852a08cfb5 upstream.
 
-This is almost compatible, but passing a negative offset should result
-in a EINVAL error, but on mips o32 compat mode would seek to a large
-32-bit byte offset.
+For Gen-1 targets like IPQ8074, it is seen that stressing out the
+controller in host mode results in HC died error:
 
-Use compat_sys_lseek() to correctly sign-extend the argument.
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instance in park mode for IPQ8074 to mitigate this issue.
+
+Cc: stable@vger.kernel.org
+Fixes: 5e09bc51d07b ("arm64: dts: ipq8074: enable USB support")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240704152848.3380602-3-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/syscalls/syscall_o32.tbl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/ipq8074.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
-index 353539ea4140a..5f2c2636e7a4f 100644
---- a/arch/mips/kernel/syscalls/syscall_o32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
-@@ -27,7 +27,7 @@
- 17	o32	break				sys_ni_syscall
- # 18 was sys_stat
- 18	o32	unused18			sys_ni_syscall
--19	o32	lseek				sys_lseek
-+19	o32	lseek				sys_lseek			compat_sys_lseek
- 20	o32	getpid				sys_getpid
- 21	o32	mount				sys_mount			compat_sys_mount
- 22	o32	umount				sys_oldumount
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
+@@ -666,6 +666,7 @@
+ 				interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>;
+ 				phys = <&qusb_phy_0>, <&ssphy_0>;
+ 				phy-names = "usb2-phy", "usb3-phy";
++				snps,parkmode-disable-ss-quirk;
+ 				snps,is-utmi-l1-suspend;
+ 				snps,hird-threshold = /bits/ 8 <0x0>;
+ 				snps,dis_u2_susphy_quirk;
+@@ -715,6 +716,7 @@
+ 				interrupts = <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>;
+ 				phys = <&qusb_phy_1>, <&ssphy_1>;
+ 				phy-names = "usb2-phy", "usb3-phy";
++				snps,parkmode-disable-ss-quirk;
+ 				snps,is-utmi-l1-suspend;
+ 				snps,hird-threshold = /bits/ 8 <0x0>;
+ 				snps,dis_u2_susphy_quirk;
 
 
 
