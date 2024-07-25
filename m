@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-61670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744B793C569
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA9193C4BB
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E4351F25D38
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEE32B252B1
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2BC1993A3;
-	Thu, 25 Jul 2024 14:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3349419B5BE;
+	Thu, 25 Jul 2024 14:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKi3ePoo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrK5/T4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A711F519;
-	Thu, 25 Jul 2024 14:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CF519A29C;
+	Thu, 25 Jul 2024 14:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919065; cv=none; b=HOIgXpmSMtF39os71WEKxfVHssCh3ARg6qm1+6i3L1pfVoj7USGI3QdBYkhI3AEQTnn7HzSDQWXdnCXNKUJqgda/FAMFsDtZ3LH1iynUo7s6BfRTyJa/ZkKskEPOicKOA13InGpwWNJGX8/jTVSOkHjpxkuumuKxhAPh7hGs7HU=
+	t=1721918562; cv=none; b=gtq/KB6RtnvzUYYMR63ZQ8WARC5qAws1K3JuooYbW55xR9ngk/gekEKiq9/E/aF74O0uj0a+VYSgmrUwDdC23wYqSuLCS2kiIHeKUJFSZguMMarKySWVFlhACIiS7Fu5OR2yEPTReidmtUIx4cIl0H8594Ag1qjwjSvz91i60Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919065; c=relaxed/simple;
-	bh=c65RCx26USeRhnvL0I8tG7pfL9IJNzkhOGt2a2CP+p8=;
+	s=arc-20240116; t=1721918562; c=relaxed/simple;
+	bh=lmg3xzFI82KttQK9Ffh3dvH2RfjfVPkYJ5cSrCXt1S8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3BoChKoatWq2Tt5UVxqAtoIcTNpwDGzgq896HmjMKotJTDkaRvVy82EDg9Hs0xG6S33HKTW7JurrSdLFMgyeDXkRULOarqTfz3mTeCsv9u0Ebifg0c+YZ0CcEO8XdzToLzk6EFBy6WsUDv0bQjd4QgCumnU314BI6+ll/jxIAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKi3ePoo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EE5C116B1;
-	Thu, 25 Jul 2024 14:51:04 +0000 (UTC)
+	 MIME-Version; b=LL/w8fpMDtlVlFhVBzb/DKy5ctwRwgR2xp4JjZqCRI4e9dgmH4lDvYVW8rku6XNzWjudF1hZjRnbZXIwAgZtdpaw3lirZ7PyTqL5I8sfyucW8t9q10OIuBMSYr0ednw6rIvdKhEVlxxMBf5DPGc9tYyim17wlH/9G+ioDC4myTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrK5/T4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B875C116B1;
+	Thu, 25 Jul 2024 14:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919065;
-	bh=c65RCx26USeRhnvL0I8tG7pfL9IJNzkhOGt2a2CP+p8=;
+	s=korg; t=1721918561;
+	bh=lmg3xzFI82KttQK9Ffh3dvH2RfjfVPkYJ5cSrCXt1S8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKi3ePooIyqYYfamrU8CYcjANIAKS2yP5+xSecpWyqaES8zvyKookCTKKTNOOjAbG
-	 1GfstZGoFnd60px0SJpYvS8lv3NQHXRwE/iuZWOxpXybNaJJfzl2SI4P7PlzAou53N
-	 +khhx8RGXWlsJmlwh8PthIX39647X00lj0X8qids=
+	b=KrK5/T4+QiMSgTAosK2K7OBq4bvL4qhIzK55nfsnLKGByzYjblfrSKH5UcrtjurdX
+	 r05YgFeNQ/XrfEONFtDYxoxv3wj0q5RZwJVXDuSpjZQ5MSmu6oGIcI1ZF5avaDDiOG
+	 buDljsqeDm88sOscXHnvWDbndUaGpYFA/4L8a7/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ananth Narayan <Ananth.Narayan@amd.com>,
-	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 13/87] tools/power/cpupower: Fix Pstate frequency reporting on AMD Family 1Ah CPUs
+Subject: [PATCH 5.4 23/43] gpio: pca953x: fix pca953x_irq_bus_sync_unlock race
 Date: Thu, 25 Jul 2024 16:36:46 +0200
-Message-ID: <20240725142738.932860365@linuxfoundation.org>
+Message-ID: <20240725142731.349817406@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+From: Ian Ray <ian.ray@gehealthcare.com>
 
-[ Upstream commit 43cad521c6d228ea0c51e248f8e5b3a6295a2849 ]
+[ Upstream commit bfc6444b57dc7186b6acc964705d7516cbaf3904 ]
 
-Update cpupower's P-State frequency calculation and reporting with AMD
-Family 1Ah+ processors, when using the acpi-cpufreq driver. This is due
-to a change in the PStateDef MSR layout in AMD Family 1Ah+.
+Ensure that `i2c_lock' is held when setting interrupt latch and mask in
+pca953x_irq_bus_sync_unlock() in order to avoid races.
 
-Tested on 4th and 5th Gen AMD EPYC system
+The other (non-probe) call site pca953x_gpio_set_multiple() ensures the
+lock is held before calling pca953x_write_regs().
 
-Signed-off-by: Ananth Narayan <Ananth.Narayan@amd.com>
-Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+The problem occurred when a request raced against irq_bus_sync_unlock()
+approximately once per thousand reboots on an i.MX8MP based system.
+
+ * Normal case
+
+   0-0022: write register AI|3a {03,02,00,00,01} Input latch P0
+   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
+   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
+   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
+
+ * Race case
+
+   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
+   0-0022: write register AI|08 {03,02,00,00,01} *** Wrong register ***
+   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
+   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
+
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://lore.kernel.org/r/20240620042915.2173-1-ian.ray@gehealthcare.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/utils/helpers/amd.c | 26 +++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/gpio/gpio-pca953x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/power/cpupower/utils/helpers/amd.c b/tools/power/cpupower/utils/helpers/amd.c
-index 97f2c857048e1..e0a7a9b1f6d69 100644
---- a/tools/power/cpupower/utils/helpers/amd.c
-+++ b/tools/power/cpupower/utils/helpers/amd.c
-@@ -38,6 +38,16 @@ union core_pstate {
- 		unsigned res1:31;
- 		unsigned en:1;
- 	} pstatedef;
-+	/* since fam 1Ah: */
-+	struct {
-+		unsigned fid:12;
-+		unsigned res1:2;
-+		unsigned vid:8;
-+		unsigned iddval:8;
-+		unsigned idddiv:2;
-+		unsigned res2:31;
-+		unsigned en:1;
-+	} pstatedef2;
- 	unsigned long long val;
- };
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index c81d73d5e0159..d4c81373929af 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -696,6 +696,8 @@ static void pca953x_irq_bus_sync_unlock(struct irq_data *d)
+ 	pca953x_read_regs(chip, chip->regs->direction, reg_direction);
  
-@@ -45,6 +55,10 @@ static int get_did(union core_pstate pstate)
- {
- 	int t;
- 
-+	/* Fam 1Ah onward do not use did */
-+	if (cpupower_cpu_info.family >= 0x1A)
-+		return 0;
+ 	if (chip->driver_data & PCA_PCAL) {
++		guard(mutex)(&chip->i2c_lock);
 +
- 	if (cpupower_cpu_info.caps & CPUPOWER_CAP_AMD_PSTATEDEF)
- 		t = pstate.pstatedef.did;
- 	else if (cpupower_cpu_info.family == 0x12)
-@@ -58,12 +72,18 @@ static int get_did(union core_pstate pstate)
- static int get_cof(union core_pstate pstate)
- {
- 	int t;
--	int fid, did, cof;
-+	int fid, did, cof = 0;
+ 		/* Enable latch on interrupt-enabled inputs */
+ 		pca953x_write_regs(chip, PCAL953X_IN_LATCH, chip->irq_mask);
  
- 	did = get_did(pstate);
- 	if (cpupower_cpu_info.caps & CPUPOWER_CAP_AMD_PSTATEDEF) {
--		fid = pstate.pstatedef.fid;
--		cof = 200 * fid / did;
-+		if (cpupower_cpu_info.family >= 0x1A) {
-+			fid = pstate.pstatedef2.fid;
-+			if (fid > 0x0f)
-+				cof = (fid * 5);
-+		} else {
-+			fid = pstate.pstatedef.fid;
-+			cof = 200 * fid / did;
-+		}
- 	} else {
- 		t = 0x10;
- 		fid = pstate.pstate.fid;
 -- 
 2.43.0
 
