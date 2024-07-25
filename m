@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EBF93C570
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B91E293C45A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:38:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFF6A1F25CA6
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72BA7284376
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFCD1993A3;
-	Thu, 25 Jul 2024 14:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAD019D066;
+	Thu, 25 Jul 2024 14:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJKlRJRe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jysiWNLY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D387F519;
-	Thu, 25 Jul 2024 14:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E349219AA56;
+	Thu, 25 Jul 2024 14:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919087; cv=none; b=ZFMu3wttgackqlC7dtV6n6pzUHbLAH3Zezxo2K5zmlwlg2Pd5bTBmoX/ruK36F4KY/QSSFTmFK0Ijqg5xx++GV4jaBadmx8y3FC25fgnkQ3uE9140bdSUaYk0K6w/Y7zs/rBpTmZlQY6Gmi1QMTrlXu3P7pVe7ZE30U1PWIa1bY=
+	t=1721918336; cv=none; b=iffutRnFcLE8ummk4PdIHaSbC2daIA5WsA04gRVKqw3U5yz3QP1vTUiVx2KoyrIEPRop39mFTs8SaWQAUzcETh3GAUipGN2KUyOgfhRy3q50GmfhdR8DAUg3S0jsHc65Szvm3GoqHS73QU73Y3z04Fq45WySLgbnVoG+zmoWMKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919087; c=relaxed/simple;
-	bh=1ijugZKA43F+J+WpSoPj4PfwRaJ2y++3iDg7kMZNKds=;
+	s=arc-20240116; t=1721918336; c=relaxed/simple;
+	bh=hsCVmtcVPa4xnsBNG4dXIm4SMihmkzU2Py+PSHawRVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QTLz4fyQDTQkxj5NG/ILEPMk43YzheFZ1+VaoG0v48aXekXEzx8wxzzvs4+9Qvtcap1nvylhIeUt7kxq17yUhpgFJl6/UxsLe0I0HfhgpWOBxYTGwoqJCBCnMcHaJ69iXmGSKsy1jvaf5ibVXj29/O40hEJa9VvqOOgLWNhJTAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJKlRJRe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9937C116B1;
-	Thu, 25 Jul 2024 14:51:26 +0000 (UTC)
+	 MIME-Version; b=hTzE8uIZ6xOpVDsKA8bBG1XAlHB8WUrzMpyVTbqIZTiO2I02LE2i7B2ACdv7YyToGBVProkQC9NRK2HJwzreqmf9l3YTb+Vrx3aoSR7lX/fy1aMFZUt8pXkVvld+hcDde4UYs0zARQqDpEUemkHKcPv1a4RDR6lfpFwsnUYlhNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jysiWNLY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B25BC116B1;
+	Thu, 25 Jul 2024 14:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919087;
-	bh=1ijugZKA43F+J+WpSoPj4PfwRaJ2y++3iDg7kMZNKds=;
+	s=korg; t=1721918335;
+	bh=hsCVmtcVPa4xnsBNG4dXIm4SMihmkzU2Py+PSHawRVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJKlRJRe3ytsmu1dnWZbhP3qq1gZpmbuQop/3/m6TpBdBEedYpDAKLDs6fN86f9Hr
-	 Ft7kfAyyQIwOH2VGFesqb50ZB3h8O/PqEtI6RQl0gE/1EQ9pawut3WH1kj7BZOvWn8
-	 rCdF40d3n+l/ZzbhfcAVX3ggwJG3QLLVOm4BQpn4=
+	b=jysiWNLYWb71spLQu4Ow7tZgZtFwL5h4vw97C9cMD15naJxVjCitkZanN6s0o0DhK
+	 PIXo4X7nDC4TVDhkvsJMBvFl2oMZOf3aKaAEAO7GqjK/mueMzj+h8ZjoFbO6PIKCWX
+	 EDdMqgQyRIg2AY4ponqXvv7GCiQcQs3vmzkg2ENs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 02/87] filelock: Remove locks reliably when fcntl/close race is detected
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 19/29] arm64: dts: qcom: msm8996: Disable SS instance in Parkmode for USB
 Date: Thu, 25 Jul 2024 16:36:35 +0200
-Message-ID: <20240725142738.518931545@linuxfoundation.org>
+Message-ID: <20240725142732.540487176@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-commit 3cad1bc010416c6dd780643476bc59ed742436b9 upstream.
+commit 44ea1ae3cf95db97e10d6ce17527948121f1dd4b upstream.
 
-When fcntl_setlk() races with close(), it removes the created lock with
-do_lock_file_wait().
-However, LSMs can allow the first do_lock_file_wait() that created the lock
-while denying the second do_lock_file_wait() that tries to remove the lock.
-In theory (but AFAIK not in practice), posix_lock_file() could also fail to
-remove a lock due to GFP_KERNEL allocation failure (when splitting a range
-in the middle).
+For Gen-1 targets like MSM8996, it is seen that stressing out the
+controller in host mode results in HC died error:
 
-After the bug has been triggered, use-after-free reads will occur in
-lock_get_status() when userspace reads /proc/locks. This can likely be used
-to read arbitrary kernel memory, but can't corrupt kernel memory.
-This only affects systems with SELinux / Smack / AppArmor / BPF-LSM in
-enforcing mode and only works from some security contexts.
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
 
-Fix it by calling locks_remove_posix() instead, which is designed to
-reliably get rid of POSIX locks associated with the given file and
-files_struct and is also used by filp_flush().
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instance in park mode for MSM8996 to mitigate this issue.
 
-Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
-Cc: stable@kernel.org
-Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240702-fs-lock-recover-2-v1-1-edd456f63789@google.com
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[stable fixup: ->c.flc_type was ->fl_type in older kernels]
-Signed-off-by: Jann Horn <jannh@google.com>
+Cc: stable@vger.kernel.org
+Fixes: 1e39255ed29d ("arm64: dts: msm8996: Add device node for qcom,dwc3")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240704152848.3380602-8-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/locks.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2483,8 +2483,9 @@ int fcntl_setlk(unsigned int fd, struct
- 	error = do_lock_file_wait(filp, cmd, file_lock);
- 
- 	/*
--	 * Attempt to detect a close/fcntl race and recover by releasing the
--	 * lock that was just acquired. There is no need to do that when we're
-+	 * Detect close/fcntl races and recover by zapping all POSIX locks
-+	 * associated with this file and our files_struct, just like on
-+	 * filp_flush(). There is no need to do that when we're
- 	 * unlocking though, or for OFD locks.
- 	 */
- 	if (!error && file_lock->fl_type != F_UNLCK &&
-@@ -2499,9 +2500,7 @@ int fcntl_setlk(unsigned int fd, struct
- 		f = files_lookup_fd_locked(files, fd);
- 		spin_unlock(&files->file_lock);
- 		if (f != filp) {
--			file_lock->fl_type = F_UNLCK;
--			error = do_lock_file_wait(filp, cmd, file_lock);
--			WARN_ON_ONCE(error);
-+			locks_remove_posix(filp, files);
- 			error = -EBADF;
- 		}
- 	}
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -3091,6 +3091,7 @@
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
+ 				snps,is-utmi-l1-suspend;
++				snps,parkmode-disable-ss-quirk;
+ 				tx-fifo-resize;
+ 			};
+ 		};
 
 
 
