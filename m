@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB7F93C480
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3EAF93C460
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:39:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADFE11C21178
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6673C2846A9
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E73E19D887;
-	Thu, 25 Jul 2024 14:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EB219D083;
+	Thu, 25 Jul 2024 14:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/f0kfD7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRdUV+sf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B24519B5BE;
-	Thu, 25 Jul 2024 14:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003EE19D074;
+	Thu, 25 Jul 2024 14:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918419; cv=none; b=hP9NQMUYYUDwUE2UFFDXOxbXAhoBhj4L86lMLa5Lofk9FWDyxaeU2sfTwWHMeZ6ecL7+pnKCMhfRWTk15Ir+bbnvczVudv0R3/ls1xGnUd0S2Ax1MVWQ58Zf0AC3LTh5Ei2qHC8YSf1+bOuyN/+tQP1L4uskBDJEs312CwPCU7s=
+	t=1721918349; cv=none; b=NERlCdFxJtLrI88k+gUp5q4RhBW+mHV37tHmyExZHJA3OVZsEMFiHXGo9+FnN/2YvkbA+ekoK2w1I5J4VMJXlgRK9dpy7P5tH6LOEkdFi8M+WOwYlVBP3+LQCd6xMA/77Rs/RasYFipf5WeK8uFqANIf3/1NOeLEG48FvwXQuE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918419; c=relaxed/simple;
-	bh=Uznm5XQ7pDkI+EqaTVim7jGzpUFCultt7m4JMcbyouk=;
+	s=arc-20240116; t=1721918349; c=relaxed/simple;
+	bh=WqBhsSJ6/TUzuSFEQYVtMziW2Mrr3H3Pjki7uhIn53k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u2hX4clpCfEvJGEpLzTC5ZvUyEQaoYdlYyUptwXGMGF1LkEULfpTQoJJvowqORpU+3Rml3nDr4RD+/4nMR1MBPOfUMq7S9npAnci9tvLFSv3vLa+3amHt0eSc+1ndeEY1uG03bfKHMWjxnTQhCo3Gmbak2R2D2YpLI+9567WhJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/f0kfD7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDA5C116B1;
-	Thu, 25 Jul 2024 14:40:18 +0000 (UTC)
+	 MIME-Version; b=MGac1Hh5QRqmu89EtF13ZpDISDsSaCECkZ5yNVzswjAYcDZmju/4ROhsF7OZrhIpviF7i6cLqSTTyj9KyStw4HWv3vRXdHk7Bh2+oerhW4OWtjm5e72SqdTn5nfU99s6l7EFoDxuhK6NEsPodXpSop54Rec/KDFKAMSc1z362K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRdUV+sf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2BCC116B1;
+	Thu, 25 Jul 2024 14:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918419;
-	bh=Uznm5XQ7pDkI+EqaTVim7jGzpUFCultt7m4JMcbyouk=;
+	s=korg; t=1721918348;
+	bh=WqBhsSJ6/TUzuSFEQYVtMziW2Mrr3H3Pjki7uhIn53k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/f0kfD7TJBSF/3oH9RgHbTYXCMP/5Bw00LlOOmM7ir2D9g+pq1AgH2yHedlGKONR
-	 /zkQsQuAajwlMxXPQwQnr3iHmH5zH80lpf9oqLiFDHS1Y3XNvUkWJrt04o4TjEjbGz
-	 n2P3id3Bcbb7tbV77jQMDemVvL3cwblKfcezj944=
+	b=vRdUV+sf1P53cmAYvUfU14TnZv8UX5juI01Q5CtqNkIKUMFnLVW080WXVfJ77vQXp
+	 HhXT+V/cLwokF8zMiQbPXxPPaq6Dx00v5w2H3sPh99VCHmTeqC0HsAIO52CSpdxaPH
+	 u8k0cTSu08M0qr3vGjraQHQaVfMrxvxZ4F2BDU9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Denose <jdenose@google.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 14/33] Input: elantech - fix touchpad state on resume for Lenovo N24
-Date: Thu, 25 Jul 2024 16:36:37 +0200
-Message-ID: <20240725142729.058584185@linuxfoundation.org>
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 22/29] arm64: dts: qcom: ipq6018: Disable SS instance in Parkmode for USB
+Date: Thu, 25 Jul 2024 16:36:38 +0200
+Message-ID: <20240725142732.651958450@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Denose <jdenose@google.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit a69ce592cbe0417664bc5a075205aa75c2ec1273 ]
+commit 4ae4837871ee8c8b055cf8131f65d31ee4208fa0 upstream.
 
-The Lenovo N24 on resume becomes stuck in a state where it
-sends incorrect packets, causing elantech_packet_check_v4 to fail.
-The only way for the device to resume sending the correct packets is for
-it to be disabled and then re-enabled.
+For Gen-1 targets like IPQ6018, it is seen that stressing out the
+controller in host mode results in HC died error:
 
-This change adds a dmi check to trigger this behavior on resume.
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
 
-Signed-off-by: Jonathan Denose <jdenose@google.com>
-Link: https://lore.kernel.org/r/20240503155020.v2.1.Ifa0e25ebf968d8f307f58d678036944141ab17e6@changeid
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instance in park mode for IPQ6018 to mitigate this issue.
+
+Cc: stable@vger.kernel.org
+Fixes: 20bb9e3dd2e4 ("arm64: dts: qcom: ipq6018: add usb3 DT description")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240704152848.3380602-2-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/elantech.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/input/mouse/elantech.c b/drivers/input/mouse/elantech.c
-index 6759cab82a723..6f747c59cd652 100644
---- a/drivers/input/mouse/elantech.c
-+++ b/drivers/input/mouse/elantech.c
-@@ -1527,16 +1527,47 @@ static void elantech_disconnect(struct psmouse *psmouse)
- 	psmouse->private = NULL;
- }
- 
-+/*
-+ * Some hw_version 4 models fail to properly activate absolute mode on
-+ * resume without going through disable/enable cycle.
-+ */
-+static const struct dmi_system_id elantech_needs_reenable[] = {
-+#if defined(CONFIG_DMI) && defined(CONFIG_X86)
-+	{
-+		/* Lenovo N24 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "81AF"),
-+		},
-+	},
-+#endif
-+	{ }
-+};
-+
- /*
-  * Put the touchpad back into absolute mode when reconnecting
-  */
- static int elantech_reconnect(struct psmouse *psmouse)
- {
-+	int err;
-+
- 	psmouse_reset(psmouse);
- 
- 	if (elantech_detect(psmouse, 0))
- 		return -1;
- 
-+	if (dmi_check_system(elantech_needs_reenable)) {
-+		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_DISABLE);
-+		if (err)
-+			psmouse_warn(psmouse, "failed to deactivate mouse on %s: %d\n",
-+				     psmouse->ps2dev.serio->phys, err);
-+
-+		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_ENABLE);
-+		if (err)
-+			psmouse_warn(psmouse, "failed to reactivate mouse on %s: %d\n",
-+				     psmouse->ps2dev.serio->phys, err);
-+	}
-+
- 	if (elantech_set_absolute_mode(psmouse)) {
- 		psmouse_err(psmouse,
- 			    "failed to put touchpad back into absolute mode.\n");
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -685,6 +685,7 @@
+ 				clocks = <&xo>;
+ 				clock-names = "ref";
+ 				tx-fifo-resize;
++				snps,parkmode-disable-ss-quirk;
+ 				snps,is-utmi-l1-suspend;
+ 				snps,hird-threshold = /bits/ 8 <0x0>;
+ 				snps,dis_u2_susphy_quirk;
 
 
 
