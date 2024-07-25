@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-61482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C73C893C48C
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 744B793C569
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72A921F223E5
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E4351F25D38
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2A919D088;
-	Thu, 25 Jul 2024 14:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2BC1993A3;
+	Thu, 25 Jul 2024 14:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vu4C++HZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKi3ePoo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3F719B5BE;
-	Thu, 25 Jul 2024 14:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A711F519;
+	Thu, 25 Jul 2024 14:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918451; cv=none; b=UXFwwQTPN/RvEZZCPlFpXjz2YlEUAAgNgBP/ulhOsKKM1CfRJw4Pisc6bq/nQ2aEt8QDqrvKA5EQJ1WONq6+5LGDMs354u6W/O8O1VTL/R9UwgubE0ICR0eVug+sn/eo9bSTD+UQh/tYA5LzsA64WhcCwa7W58TrA6O+2amBChY=
+	t=1721919065; cv=none; b=HOIgXpmSMtF39os71WEKxfVHssCh3ARg6qm1+6i3L1pfVoj7USGI3QdBYkhI3AEQTnn7HzSDQWXdnCXNKUJqgda/FAMFsDtZ3LH1iynUo7s6BfRTyJa/ZkKskEPOicKOA13InGpwWNJGX8/jTVSOkHjpxkuumuKxhAPh7hGs7HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918451; c=relaxed/simple;
-	bh=OjCDkc1jzmGEAM9go17T82EYP6ET3zt3iwA1z3iGplw=;
+	s=arc-20240116; t=1721919065; c=relaxed/simple;
+	bh=c65RCx26USeRhnvL0I8tG7pfL9IJNzkhOGt2a2CP+p8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llwZCJe59m4ZL1jWfM+7kUtapjRLU5xA0/vfGnTPX41ifN4Y+d/pyLrd+TC5PqsPMHYyJof+zj8KIX7LoGmPNh5j+XcSjzIfx4GbisJc70LXCNwYuwxWBjxFrdbjJ0EUZQ9BpyEkwp3nmYcNvXUVkI4OPEOjsWa3RRLg9to04kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vu4C++HZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71CDC116B1;
-	Thu, 25 Jul 2024 14:40:50 +0000 (UTC)
+	 MIME-Version; b=u3BoChKoatWq2Tt5UVxqAtoIcTNpwDGzgq896HmjMKotJTDkaRvVy82EDg9Hs0xG6S33HKTW7JurrSdLFMgyeDXkRULOarqTfz3mTeCsv9u0Ebifg0c+YZ0CcEO8XdzToLzk6EFBy6WsUDv0bQjd4QgCumnU314BI6+ll/jxIAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKi3ePoo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EE5C116B1;
+	Thu, 25 Jul 2024 14:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918451;
-	bh=OjCDkc1jzmGEAM9go17T82EYP6ET3zt3iwA1z3iGplw=;
+	s=korg; t=1721919065;
+	bh=c65RCx26USeRhnvL0I8tG7pfL9IJNzkhOGt2a2CP+p8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vu4C++HZusKN2xZ0AhO9mWceN2E4hG3QnAnJn8SCmkTXdpkm1ZVg//3/xc5O/iYm4
-	 3Dy4P8d3bAlzm2zT73tUFduLHi9JM+s1exWgjY/TQpCW1x3tBGlif+sGJ1HhIsxnCt
-	 sAx8v6+oNYX1438GaEtdN0zDvB9Hm4N0G4SH4Wik=
+	b=KKi3ePooIyqYYfamrU8CYcjANIAKS2yP5+xSecpWyqaES8zvyKookCTKKTNOOjAbG
+	 1GfstZGoFnd60px0SJpYvS8lv3NQHXRwE/iuZWOxpXybNaJJfzl2SI4P7PlzAou53N
+	 +khhx8RGXWlsJmlwh8PthIX39647X00lj0X8qids=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Ananth Narayan <Ananth.Narayan@amd.com>,
+	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 23/33] fs: better handle deep ancestor chains in is_subdir()
+Subject: [PATCH 5.15 13/87] tools/power/cpupower: Fix Pstate frequency reporting on AMD Family 1Ah CPUs
 Date: Thu, 25 Jul 2024 16:36:46 +0200
-Message-ID: <20240725142729.390475028@linuxfoundation.org>
+Message-ID: <20240725142738.932860365@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
 
-[ Upstream commit 391b59b045004d5b985d033263ccba3e941a7740 ]
+[ Upstream commit 43cad521c6d228ea0c51e248f8e5b3a6295a2849 ]
 
-Jan reported that 'cd ..' may take a long time in deep directory
-hierarchies under a bind-mount. If concurrent renames happen it is
-possible to livelock in is_subdir() because it will keep retrying.
+Update cpupower's P-State frequency calculation and reporting with AMD
+Family 1Ah+ processors, when using the acpi-cpufreq driver. This is due
+to a change in the PStateDef MSR layout in AMD Family 1Ah+.
 
-Change is_subdir() from simply retrying over and over to retry once and
-then acquire the rename lock to handle deep ancestor chains better. The
-list of alternatives to this approach were less then pleasant. Change
-the scope of rcu lock to cover the whole walk while at it.
+Tested on 4th and 5th Gen AMD EPYC system
 
-A big thanks to Jan and Linus. Both Jan and Linus had proposed
-effectively the same thing just that one version ended up being slightly
-more elegant.
-
-Reported-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Ananth Narayan <Ananth.Narayan@amd.com>
+Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dcache.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+ tools/power/cpupower/utils/helpers/amd.c | 26 +++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index 4d96eb591f5d9..93671238abce1 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -3003,28 +3003,25 @@ EXPORT_SYMBOL(d_splice_alias);
-   
- bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
+diff --git a/tools/power/cpupower/utils/helpers/amd.c b/tools/power/cpupower/utils/helpers/amd.c
+index 97f2c857048e1..e0a7a9b1f6d69 100644
+--- a/tools/power/cpupower/utils/helpers/amd.c
++++ b/tools/power/cpupower/utils/helpers/amd.c
+@@ -38,6 +38,16 @@ union core_pstate {
+ 		unsigned res1:31;
+ 		unsigned en:1;
+ 	} pstatedef;
++	/* since fam 1Ah: */
++	struct {
++		unsigned fid:12;
++		unsigned res1:2;
++		unsigned vid:8;
++		unsigned iddval:8;
++		unsigned idddiv:2;
++		unsigned res2:31;
++		unsigned en:1;
++	} pstatedef2;
+ 	unsigned long long val;
+ };
+ 
+@@ -45,6 +55,10 @@ static int get_did(union core_pstate pstate)
  {
--	bool result;
-+	bool subdir;
- 	unsigned seq;
+ 	int t;
  
- 	if (new_dentry == old_dentry)
- 		return true;
++	/* Fam 1Ah onward do not use did */
++	if (cpupower_cpu_info.family >= 0x1A)
++		return 0;
++
+ 	if (cpupower_cpu_info.caps & CPUPOWER_CAP_AMD_PSTATEDEF)
+ 		t = pstate.pstatedef.did;
+ 	else if (cpupower_cpu_info.family == 0x12)
+@@ -58,12 +72,18 @@ static int get_did(union core_pstate pstate)
+ static int get_cof(union core_pstate pstate)
+ {
+ 	int t;
+-	int fid, did, cof;
++	int fid, did, cof = 0;
  
--	do {
--		/* for restarting inner loop in case of seq retry */
--		seq = read_seqbegin(&rename_lock);
--		/*
--		 * Need rcu_readlock to protect against the d_parent trashing
--		 * due to d_move
--		 */
--		rcu_read_lock();
--		if (d_ancestor(old_dentry, new_dentry))
--			result = true;
--		else
--			result = false;
--		rcu_read_unlock();
--	} while (read_seqretry(&rename_lock, seq));
--
--	return result;
-+	/* Access d_parent under rcu as d_move() may change it. */
-+	rcu_read_lock();
-+	seq = read_seqbegin(&rename_lock);
-+	subdir = d_ancestor(old_dentry, new_dentry);
-+	 /* Try lockless once... */
-+	if (read_seqretry(&rename_lock, seq)) {
-+		/* ...else acquire lock for progress even on deep chains. */
-+		read_seqlock_excl(&rename_lock);
-+		subdir = d_ancestor(old_dentry, new_dentry);
-+		read_sequnlock_excl(&rename_lock);
-+	}
-+	rcu_read_unlock();
-+	return subdir;
- }
- EXPORT_SYMBOL(is_subdir);
- 
+ 	did = get_did(pstate);
+ 	if (cpupower_cpu_info.caps & CPUPOWER_CAP_AMD_PSTATEDEF) {
+-		fid = pstate.pstatedef.fid;
+-		cof = 200 * fid / did;
++		if (cpupower_cpu_info.family >= 0x1A) {
++			fid = pstate.pstatedef2.fid;
++			if (fid > 0x0f)
++				cof = (fid * 5);
++		} else {
++			fid = pstate.pstatedef.fid;
++			cof = 200 * fid / did;
++		}
+ 	} else {
+ 		t = 0x10;
+ 		fid = pstate.pstate.fid;
 -- 
 2.43.0
 
