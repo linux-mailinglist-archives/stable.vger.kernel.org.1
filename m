@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669AF93C526
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6363393C593
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CA6D1F2527B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7800B272A5
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB21199EA5;
-	Thu, 25 Jul 2024 14:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5344519CD0C;
+	Thu, 25 Jul 2024 14:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7aD3NWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5U4jH1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA751E89C;
-	Thu, 25 Jul 2024 14:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118E6FC19;
+	Thu, 25 Jul 2024 14:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918866; cv=none; b=Io4us4vkHY26Z3nSDvsxDtlh5BLF2MggbtBCV6HwJ98ZzFnE0+Yie0hm9za7kh3KBaM+XgCY3F8Y74lbRR6irhPq2lAvXoeUjBchV5EkIIYSc429GhycZY5P5LpKsPde1ZDoR8UrWwo+ai868raNsjIbccw0tm/MribLQjohawU=
+	t=1721919180; cv=none; b=EXqzLmXmlcUJqlsURQ0Lu0d68cM1NyIMxPaDDDtrPErji3XzKtP+rdRAq1DKG8lTi8155DA5qFg7PcnsvUHrI294S16sQ5ohXe0xZcqPDXC/f5sntyJvcoocgNARHkKoWRJ0SW0RkyAXu3WWJ3uYUNEZPY7C+1OM0Pf3SekMzI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918866; c=relaxed/simple;
-	bh=TMY1QeAuJW32Mlt15jDfhvTO7/n5DtFsYdyBY17074c=;
+	s=arc-20240116; t=1721919180; c=relaxed/simple;
+	bh=9U0L8jfJAmHW15uMlqodw+vqAdB8v+DFmv/VgJu+sNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=of7AXI5U9gbUzWAjtAwuSuyBaASoFWK3V4aNS59/2bl2CUJZKt7S6K6VvGxrdJ6lXIYFf3i/MwCYDs48vZWa446aIpO+0qAeQw00t5OV90gsJI70624PdZxY2tZP0ShBw0EY0xqj0Yf6n0vn82zccueG/7SsfNYZ/81sJnKF1eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7aD3NWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA398C116B1;
-	Thu, 25 Jul 2024 14:47:45 +0000 (UTC)
+	 MIME-Version; b=rpqJQSSmRMWtBwgC5rvvd/tI1gmJpiLVnsfDk/+jzhDhhDbi/lshf+LyDZWl+V8o/ucHwhRhXFLUlY6gyRI7CFVDXJR2lI4/TrC6TTLdMz2lvPmIdLOWn5YgxfMyhD5yun0C3etJBwlyHeGGlmmDdlxGUfFPM22VaYAU3yRApnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5U4jH1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB41C116B1;
+	Thu, 25 Jul 2024 14:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918866;
-	bh=TMY1QeAuJW32Mlt15jDfhvTO7/n5DtFsYdyBY17074c=;
+	s=korg; t=1721919179;
+	bh=9U0L8jfJAmHW15uMlqodw+vqAdB8v+DFmv/VgJu+sNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7aD3NWzdLz1G5Mz7tkeTWPe7scXKaJDBAwL4X3CcBiC3Ng6rVNGjC1CvFUzwlz4q
-	 UXEYeM8j0jjzZwi54n7/okZJcekuRzIbETUV/lbjPwptHDbh3u+IcXwC9vkXyD8rOr
-	 LzD5hMIt3JQJIzRS6LbxccUTi9aqfuC8LOsWCX+Y=
+	b=e5U4jH1Psl5evJNRkRr1CEkyPga0v2kDegQxhlTdVxpWeD9jfajaFKgGK6WaT2kNo
+	 Si8BJ3r9IYWyEv2wpYZlSLExIOnAH/q1OuuG/5avnQigSMs0ynatqbe1N/t8KP/CRp
+	 M94L4BIlaelKD50UcE9HLZS76YHVRaKzPAsTiDhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 13/59] null_blk: fix validation of block size
-Date: Thu, 25 Jul 2024 16:37:03 +0200
-Message-ID: <20240725142733.767770757@linuxfoundation.org>
+Subject: [PATCH 5.15 31/87] wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
+Date: Thu, 25 Jul 2024 16:37:04 +0200
+Message-ID: <20240725142739.610213487@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit c462ecd659b5fce731f1d592285832fd6ad54053 ]
+[ Upstream commit 6ef09cdc5ba0f93826c09d810c141a8d103a80fc ]
 
-Block size should be between 512 and PAGE_SIZE and be a power of 2. The current
-check does not validate this, so update the check.
+In 'cfg80211_wext_siwscan()', add extra check whether number of
+channels passed via 'ioctl(sock, SIOCSIWSCAN, ...)' doesn't exceed
+IW_MAX_FREQUENCIES and reject invalid request with -EINVAL otherwise.
 
-Without this patch, null_blk would Oops due to a null pointer deref when
-loaded with bs=1536 [1].
-
-Link: https://lore.kernel.org/all/87wmn8mocd.fsf@metaspace.dk/
-
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240603192645.977968-1-nmi@metaspace.dk
-[axboe: remove unnecessary braces and != 0 check]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=253cd2d2491df77c93ac
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240531032010.451295-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/scan.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 862a9420df526..8e24fb93324cb 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -1743,8 +1743,8 @@ static int null_validate_conf(struct nullb_device *dev)
- 		return -EINVAL;
- 	}
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 2898df10a72ae..a444eb84d621e 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -2782,10 +2782,14 @@ int cfg80211_wext_siwscan(struct net_device *dev,
+ 	wiphy = &rdev->wiphy;
  
--	dev->blocksize = round_down(dev->blocksize, 512);
--	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
-+	if (blk_validate_block_size(dev->blocksize))
-+		return -EINVAL;
+ 	/* Determine number of channels, needed to allocate creq */
+-	if (wreq && wreq->num_channels)
++	if (wreq && wreq->num_channels) {
++		/* Passed from userspace so should be checked */
++		if (unlikely(wreq->num_channels > IW_MAX_FREQUENCIES))
++			return -EINVAL;
+ 		n_channels = wreq->num_channels;
+-	else
++	} else {
+ 		n_channels = ieee80211_get_num_supported_channels(wiphy);
++	}
  
- 	if (dev->queue_mode == NULL_Q_MQ && dev->use_per_node_hctx) {
- 		if (dev->submit_queues != nr_online_nodes)
+ 	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
+ 		       n_channels * sizeof(void *),
 -- 
 2.43.0
 
