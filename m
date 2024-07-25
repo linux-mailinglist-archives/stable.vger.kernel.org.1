@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E0993C509
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:46:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F78C93C539
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93F0E1C203AC
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:46:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31A42B26E46
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319FF13DDB8;
-	Thu, 25 Jul 2024 14:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C17419D881;
+	Thu, 25 Jul 2024 14:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pk/HjXt9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ve4KvpmB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CA18468;
-	Thu, 25 Jul 2024 14:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1E719D096;
+	Thu, 25 Jul 2024 14:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918791; cv=none; b=LxGGD3YZtzYtGWruANKyzv1iQNm1rFg7DH4W2sqsQA1lc/olKQU3r1z+AvrbM8/qYwU26mzRGUfpTcDuTPSNt547IIUYAM0Bw2FhiNTrwuayeZ1jqz7M4I6aKtG5Qx0StOq9ItBx76aai5d6kZuvi/5tJSwhlleDkxV2vJOOKQY=
+	t=1721918922; cv=none; b=jU9uxSbMmmtUTA1wDI4WMmLaiSIYHMQmGxGBzUAtM3QdJ6oFGggj+Uwz9Qzt2zKLpeLicpyr5k+YG/zHzVI7bMkPlNtfuft5qgkaY4aZUravvruFkzxpVK3u7j5Gi0st9/ACPIdeGMc7vhZqIEmBmV62sVUcfOw2RgeWP15OzEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918791; c=relaxed/simple;
-	bh=CQTQhZPfbdNMZmFi3hS2SbZbun8U02axy2YPyHOOnLU=;
+	s=arc-20240116; t=1721918922; c=relaxed/simple;
+	bh=F6xC11Aj18V7L1SN0cK5aqhRD8Guwx2p8noFU8CNU3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDuYRpAcWAiYBalmJyDdamAkRQ9Z07YfsYZB7DMx4BplOm8twSj4yY7oTIC6/LzeeMTin+eImhFzgjhZnSgqjUPE3bkV1h/vOjm+7Z580Xjr58pMLxaKSnkbEtjfzKgNEYW7eN65CrWMT+Prp7UrSoxXACsqE8EdXskBR4Y/eVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pk/HjXt9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC58C116B1;
-	Thu, 25 Jul 2024 14:46:30 +0000 (UTC)
+	 MIME-Version; b=mDLES7RJ13bWY+PEHJ/AIu2agVR9eZUsz5/N/5TRzGKOLqH6dxFI6Ff5kwXoK13YPu0q6HJe/wZ7sHB6iwbDoXxhM1W9uSQ9I5/uAW5uw91NRps2B4/OfXy5+V4OzEgBXVg+4EJuGe0SJp/T0e65U/bdXiSBH0cdPEDAbC8FWZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ve4KvpmB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CBAC32782;
+	Thu, 25 Jul 2024 14:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918790;
-	bh=CQTQhZPfbdNMZmFi3hS2SbZbun8U02axy2YPyHOOnLU=;
+	s=korg; t=1721918922;
+	bh=F6xC11Aj18V7L1SN0cK5aqhRD8Guwx2p8noFU8CNU3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pk/HjXt9BM6n4Ywm82IHpvjp1iw63LUvUB+5AKFo+7pos+m1OmP78x/ytSqe8DgGr
-	 CdxTRZTPVsWqw3WtS13uZvnFznD0s3fTlnvu8UgGF4sKC7KSVD499i/P6dkyywHGvt
-	 WYjxrrRJl95fZb94jsh+eHKo7WeJq70siNc+Jwy0=
+	b=Ve4KvpmBx+qUnytFSC1/SJRPhYEFVxxJSfWRnewA6TFWwB7bUYkf5mEqbV+ZKBgDy
+	 7FDacPM/mreONTkW2vZRS0vFmJXhfXUZeY+g9PvJcgW2jTfXoG0/XfPb8dxlZVyMZC
+	 69F65zivVIcZeQTPO9jLiTNXJDTIOgIgeHUT2PXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunseong Kim <yskelg@gmail.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.9 02/29] s390/mm: Fix VM_FAULT_HWPOISON handling in do_exception()
+	Jonathan Denose <jdenose@google.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 22/59] Input: elantech - fix touchpad state on resume for Lenovo N24
 Date: Thu, 25 Jul 2024 16:37:12 +0200
-Message-ID: <20240725142731.773049432@linuxfoundation.org>
+Message-ID: <20240725142734.099859817@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
-References: <20240725142731.678993846@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+From: Jonathan Denose <jdenose@google.com>
 
-commit df39038cd89525d465c2c8827eb64116873f141a upstream.
+[ Upstream commit a69ce592cbe0417664bc5a075205aa75c2ec1273 ]
 
-There is no support for HWPOISON, MEMORY_FAILURE, or ARCH_HAS_COPY_MC on
-s390. Therefore we do not expect to see VM_FAULT_HWPOISON in
-do_exception().
+The Lenovo N24 on resume becomes stuck in a state where it
+sends incorrect packets, causing elantech_packet_check_v4 to fail.
+The only way for the device to resume sending the correct packets is for
+it to be disabled and then re-enabled.
 
-However, since commit af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more
-general"), it is possible to see VM_FAULT_HWPOISON in combination with
-PTE_MARKER_POISONED, even on architectures that do not support HWPOISON
-otherwise. In this case, we will end up on the BUG() in do_exception().
+This change adds a dmi check to trigger this behavior on resume.
 
-Fix this by treating VM_FAULT_HWPOISON the same as VM_FAULT_SIGBUS, similar
-to x86 when MEMORY_FAILURE is not configured. Also print unexpected fault
-flags, for easier debugging.
-
-Note that VM_FAULT_HWPOISON_LARGE is not expected, because s390 cannot
-support swap entries on other levels than PTE level.
-
-Cc: stable@vger.kernel.org # 6.6+
-Fixes: af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more general")
-Reported-by: Yunseong Kim <yskelg@gmail.com>
-Tested-by: Yunseong Kim <yskelg@gmail.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Message-ID: <20240715180416.3632453-1-gerald.schaefer@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jonathan Denose <jdenose@google.com>
+Link: https://lore.kernel.org/r/20240503155020.v2.1.Ifa0e25ebf968d8f307f58d678036944141ab17e6@changeid
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/fault.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/mouse/elantech.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
---- a/arch/s390/mm/fault.c
-+++ b/arch/s390/mm/fault.c
-@@ -432,12 +432,13 @@ error:
- 			handle_fault_error_nolock(regs, 0);
- 		else
- 			do_sigsegv(regs, SEGV_MAPERR);
--	} else if (fault & VM_FAULT_SIGBUS) {
-+	} else if (fault & (VM_FAULT_SIGBUS | VM_FAULT_HWPOISON)) {
- 		if (!user_mode(regs))
- 			handle_fault_error_nolock(regs, 0);
- 		else
- 			do_sigbus(regs);
- 	} else {
-+		pr_emerg("Unexpected fault flags: %08x\n", fault);
- 		BUG();
- 	}
+diff --git a/drivers/input/mouse/elantech.c b/drivers/input/mouse/elantech.c
+index 400281feb4e8d..8246662fa60b7 100644
+--- a/drivers/input/mouse/elantech.c
++++ b/drivers/input/mouse/elantech.c
+@@ -1476,16 +1476,47 @@ static void elantech_disconnect(struct psmouse *psmouse)
+ 	psmouse->private = NULL;
  }
+ 
++/*
++ * Some hw_version 4 models fail to properly activate absolute mode on
++ * resume without going through disable/enable cycle.
++ */
++static const struct dmi_system_id elantech_needs_reenable[] = {
++#if defined(CONFIG_DMI) && defined(CONFIG_X86)
++	{
++		/* Lenovo N24 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "81AF"),
++		},
++	},
++#endif
++	{ }
++};
++
+ /*
+  * Put the touchpad back into absolute mode when reconnecting
+  */
+ static int elantech_reconnect(struct psmouse *psmouse)
+ {
++	int err;
++
+ 	psmouse_reset(psmouse);
+ 
+ 	if (elantech_detect(psmouse, 0))
+ 		return -1;
+ 
++	if (dmi_check_system(elantech_needs_reenable)) {
++		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_DISABLE);
++		if (err)
++			psmouse_warn(psmouse, "failed to deactivate mouse on %s: %d\n",
++				     psmouse->ps2dev.serio->phys, err);
++
++		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_ENABLE);
++		if (err)
++			psmouse_warn(psmouse, "failed to reactivate mouse on %s: %d\n",
++				     psmouse->ps2dev.serio->phys, err);
++	}
++
+ 	if (elantech_set_absolute_mode(psmouse)) {
+ 		psmouse_err(psmouse,
+ 			    "failed to put touchpad back into absolute mode.\n");
+-- 
+2.43.0
+
 
 
 
