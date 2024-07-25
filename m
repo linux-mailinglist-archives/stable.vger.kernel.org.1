@@ -1,174 +1,175 @@
-Return-Path: <stable+bounces-61349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C58F093BC2E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 07:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0434B93BC39
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 07:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80B06283D9B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 05:50:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF2FD2855F1
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 05:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28021CD2D;
-	Thu, 25 Jul 2024 05:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114E213DDBD;
+	Thu, 25 Jul 2024 05:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YKLyxNlI"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="uDUDqTEF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9771BC43;
-	Thu, 25 Jul 2024 05:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B798C13D8B3;
+	Thu, 25 Jul 2024 05:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721886626; cv=none; b=oJEWO7J3B/6mfI1LKG3nFNaBq7wSCa49L5hF+9dAPJTUBXztXMg9Pv7IKca1O9+tuMgkQhumCkn9N6XG0TGWlVE3zQIpjjR0E9ymo9Ed5veM6RcWRO5en61GfCjR7hvxjzDIV57yE/b5kLId6l5bL9QDCpKLr3L42OYXIH4ROsA=
+	t=1721886846; cv=none; b=S4T9tcjzkWxy73z/i/771g59l/6fgXl4y8DfVVHEqp1gqn2idV8W6XyHR1/vzKGam50s9gdnQL9r2BaJHOeuKZS18zjrVRFo5FEym1bP8czzHat+w5NFmPepznicNGcz1oN0ikfkAOr4nq0T3CZAigQXTbIdtVsACrjzieqQApI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721886626; c=relaxed/simple;
-	bh=GenA40uiHEfDASyykxQOv84tC5ZU492Fawl2U80k6Zg=;
-	h=Date:To:From:Subject:Message-Id; b=XWgnUbJjJytGSOPEK4AKkv+7GVZLW+nNG1VHebTYh3Yt7T14h2gTxQ0AsyY53fwevUz+dw64cj3OEdDHHj1NSLUseePn6YjFJVhhjpAJ/khavYX0eMsXkLbHo9gYbHyJ4SjKuInBP8oQ7lnv8rH+U4aSaxmHMFX/KeON0M6HLWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YKLyxNlI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1759C116B1;
-	Thu, 25 Jul 2024 05:50:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1721886625;
-	bh=GenA40uiHEfDASyykxQOv84tC5ZU492Fawl2U80k6Zg=;
-	h=Date:To:From:Subject:From;
-	b=YKLyxNlI6Dx6R3wdCK6tPG4CkKFrQngphGKKJ+z5YMuRsOK9ubqd6z21ub3Cw8vuH
-	 4qvcSOW40aWoseDH+pY5vurduE6gG8xYIPJ0aS6q3IXwLFFqWz2KbrzXftyqGpvObK
-	 6aI9DXZODO3jxMqIc9GV/6l6LalWlcfkPwulbTrU=
-Date: Wed, 24 Jul 2024 22:50:25 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240725055025.C1759C116B1@smtp.kernel.org>
+	s=arc-20240116; t=1721886846; c=relaxed/simple;
+	bh=iAhpckX3WLrcRDqsdq49YABDpgjH8cOYW51iK4Yi9U8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ClZPmCRcAAvzOj6zPiWjiwNkHAXyad7OYP2g1fMsv1AlUNPFe+qm0UFtEzv6WPqpZdPnG7ygkFfp4fx451EI1wRxZkOdLSQX94Y/ft9dfj6hN5PPt58c43uZKivzEjZGF54ipi0gLIiNUW3T4cNPc3f7BKPvLhnUX0Ry1iErEs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=uDUDqTEF; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 46P5rjpS103866;
+	Thu, 25 Jul 2024 00:53:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1721886825;
+	bh=mXvRUEWdVcaZN+h7WS/2ZfLarQXHOiOFcVf6Y4xsMmk=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=uDUDqTEFebvRL+mGuS7XzdeAdDfZjK7FyzbbotNDJOjJSFJ/9UHI/GUUQFG3wEEzE
+	 oRf2Nk/luJL73FkeBw1SKjiI7CwR4B07idkRCJHhz8alcQo5eSI6pF1QlTRlurO4K0
+	 DQXFiuVx1MXjC4EZENZl+d70b4ym52gTNTHEzIhk=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 46P5rjaO044137
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 25 Jul 2024 00:53:45 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 25
+ Jul 2024 00:53:45 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 25 Jul 2024 00:53:45 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 46P5rihr080277;
+	Thu, 25 Jul 2024 00:53:44 -0500
+Date: Thu, 25 Jul 2024 11:23:43 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <bhelgaas@google.com>,
+        <lpieralisi@kernel.org>, <kw@linux.com>, <robh@kernel.org>,
+        <vigneshr@ti.com>, <kishon@kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <stable@vger.kernel.org>, <ahalaney@redhat.com>, <srk@ti.com>
+Subject: Re: [PATCH] PCI: j721e: Set .map_irq and .swizzle_irq to NULL
+Message-ID: <be3e3c5f-0d48-41b0-87f4-2210f13b9460@ti.com>
+References: <20240724065048.285838-1-s-vadapalli@ti.com>
+ <20240724162304.GA802428@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240724162304.GA802428@bhelgaas>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
+On Wed, Jul 24, 2024 at 11:23:04AM -0500, Bjorn Helgaas wrote:
+> Subject should say something about why this change is needed, not just
+> translate the C code to English.
 
-The patch titled
-     Subject: nilfs2: handle inconsistent state in nilfs_btnode_create_block()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block.patch
+My intent was to summarize the change to make it easy for anyone to find
+out what's being done. The commit message below explains in detail as to
+why they are set to NULL. As an alternative, I could change the $subject
+to:
+PCI: j721e: Disable INTx mapping and swizzling
+where the "Disable" is equivalent to NULL. Kindly let me know if this is
+acceptable or needs to be improved further.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block.patch
+> 
+> On Wed, Jul 24, 2024 at 12:20:48PM +0530, Siddharth Vadapalli wrote:
+> > Since the configuration of Legacy Interrupts (INTx) is not supported, set
+> 
+> I assume you mean J721E doesn't support INTx?
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Yes, the driver support doesn't exist and the device-tree also doesn't
+have the required nodes. Kishon had posted a series to enable it for
+J721E, J7200 and AM64 on the 4th of August 2021:
+https://lore.kernel.org/r/20210804132912.30685-1-kishon@ti.com/
+and based on the discussion on the series, an Errata was discovered for
+J721E:
+https://www.ti.com/lit/er/sprz455d/sprz455d.pdf
+i2094: PCIe: End of Interrupt (EOI) Not Enabled for PCIe Legacy Interrupts
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Thus, there is no support for Legacy Interrupts (INTx) in the pci-j721e.c
+driver and as a consequence, no device-tree nodes either.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+> 
+> > the .map_irq and .swizzle_irq callbacks to NULL. This fixes the error:
+> >   of_irq_parse_pci: failed with rc=-22
+> 
+> I guess this happens because devm_of_pci_bridge_init() initializes
+> .map_irq and .swizzle_irq unconditionally?
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Yes. The PCIe Controller on J721E and other SoCs is the Cadence PCIe
+Controller. In the commit which added driver support for the Cadence
+PCIe Controller's Host functionality:
+https://github.com/torvalds/linux/commit/1b79c5284439
+'map_irq' and 'swizzle_irq' were set to the same functions:
+'of_irq_parse_and_map_pci()' and 'pci_common_swizzle()'
+respectively. Commit:
+https://github.com/torvalds/linux/commit/b64aa11eb2dd
+extracted out the shared defaults from multiple Host Controller drivers
+and moved them into the common 'devm_of_pci_bridge_init()' function.
 
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: handle inconsistent state in nilfs_btnode_create_block()
-Date: Thu, 25 Jul 2024 14:20:07 +0900
+While 'map_irq' and 'swizzle_irq' are unconditionally set to the
+defaults in 'devm_of_pci_bridge_init()', those Host Controller driver
+which haven't been using the shared defaults do have the choice of
+overriding them in the driver (which is already being done).
 
-Syzbot reported that a buffer state inconsistency was detected in
-nilfs_btnode_create_block(), triggering a kernel bug.
+Similarly, for pci-j721e.c, since the shared defaults inherited from the
+Cadence PCIe Controller are not applicable (due to the Errata), the
+pci-j721e.c driver should override them to NULL as done in this patch.
 
-It is not appropriate to treat this inconsistency as a bug; it can occur
-if the argument block address (the buffer index of the newly created
-block) is a virtual block number and has been reallocated due to
-corruption of the bitmap used to manage its allocation state.
+> 
+> I'm not sure the default assumption should be that a host bridge
+> supports INTx.
+> 
+> Maybe .map_irq and .swizzle_irq should only be set when we discover
+> some information about INTx routing, e.g., an ACPI _PRT or the
+> corresponding DT properties.
 
-So, modify nilfs_btnode_create_block() and its callers to treat it as a
-possible filesystem error, rather than triggering a kernel bug.
+I believe that the defaults were set since most of the Host drivers were
+using them in their respective drivers as indicated in the commit:
+https://github.com/torvalds/linux/commit/b64aa11eb2dd
 
-Link: https://lkml.kernel.org/r/20240725052007.4562-1-konishi.ryusuke@gmail.com
-Fixes: a60be987d45d ("nilfs2: B-tree node cache")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=89cc4f2324ed37988b60
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+[...]
 
- fs/nilfs2/btnode.c |   25 ++++++++++++++++++++-----
- fs/nilfs2/btree.c  |    4 ++--
- 2 files changed, 22 insertions(+), 7 deletions(-)
+> > 
+> >  drivers/pci/controller/cadence/pci-j721e.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> > 
+> > diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> > index 85718246016b..5372218849a8 100644
+> > --- a/drivers/pci/controller/cadence/pci-j721e.c
+> > +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> > @@ -417,6 +417,10 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+> >  		if (!bridge)
+> >  			return -ENOMEM;
+> >  
+> > +		/* Legacy interrupts are not supported */
+> 
+> Say "INTx" explicitly here instead of assuming "legacy" == "INTx".
 
---- a/fs/nilfs2/btnode.c~nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block
-+++ a/fs/nilfs2/btnode.c
-@@ -51,12 +51,21 @@ nilfs_btnode_create_block(struct address
- 
- 	bh = nilfs_grab_buffer(inode, btnc, blocknr, BIT(BH_NILFS_Node));
- 	if (unlikely(!bh))
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	if (unlikely(buffer_mapped(bh) || buffer_uptodate(bh) ||
- 		     buffer_dirty(bh))) {
--		brelse(bh);
--		BUG();
-+		/*
-+		 * The block buffer at the specified new address was already
-+		 * in use.  This can happen if it is a virtual block number
-+		 * and has been reallocated due to corruption of the bitmap
-+		 * used to manage its allocation state (if not, the buffer
-+		 * clearing of an abandoned b-tree node is missing somewhere).
-+		 */
-+		nilfs_error(inode->i_sb,
-+			    "state inconsistency probably due to duplicate use of b-tree node block address %llu (ino=%lu)",
-+			    (unsigned long long)blocknr, inode->i_ino);
-+		goto failed;
- 	}
- 	memset(bh->b_data, 0, i_blocksize(inode));
- 	bh->b_bdev = inode->i_sb->s_bdev;
-@@ -67,6 +76,12 @@ nilfs_btnode_create_block(struct address
- 	folio_unlock(bh->b_folio);
- 	folio_put(bh->b_folio);
- 	return bh;
-+
-+failed:
-+	folio_unlock(bh->b_folio);
-+	folio_put(bh->b_folio);
-+	brelse(bh);
-+	return ERR_PTR(-EIO);
- }
- 
- int nilfs_btnode_submit_block(struct address_space *btnc, __u64 blocknr,
-@@ -217,8 +232,8 @@ retry:
- 	}
- 
- 	nbh = nilfs_btnode_create_block(btnc, newkey);
--	if (!nbh)
--		return -ENOMEM;
-+	if (IS_ERR(nbh))
-+		return PTR_ERR(nbh);
- 
- 	BUG_ON(nbh == obh);
- 	ctxt->newbh = nbh;
---- a/fs/nilfs2/btree.c~nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block
-+++ a/fs/nilfs2/btree.c
-@@ -63,8 +63,8 @@ static int nilfs_btree_get_new_block(con
- 	struct buffer_head *bh;
- 
- 	bh = nilfs_btnode_create_block(btnc, ptr);
--	if (!bh)
--		return -ENOMEM;
-+	if (IS_ERR(bh))
-+		return PTR_ERR(bh);
- 
- 	set_buffer_nilfs_volatile(bh);
- 	*bhp = bh;
-_
+Sure. I will update it in the v2 patch.
 
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+Thank you for reviewing this patch and sharing your feedback.
 
-nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block.patch
-
+Regards,
+Siddharth.
 
