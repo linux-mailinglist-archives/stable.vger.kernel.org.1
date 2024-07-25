@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA8D93C5B1
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7B993C4CE
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFE571C21DD7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78709B242CC
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2658919D080;
-	Thu, 25 Jul 2024 14:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AE019D066;
+	Thu, 25 Jul 2024 14:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyDLhHX8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxIv1OQ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E4EFC19;
-	Thu, 25 Jul 2024 14:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9748C13DDB8;
+	Thu, 25 Jul 2024 14:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919253; cv=none; b=nFJ0r4o00C4K6RBEzgpTbhIInRvCyBbgwqKQ/UfbpVxs5YjNn4a3Kg3ee5ebxAIRKcICZKyqr/klIQqI1km2POjx1Td1r7A12P2TkQdqRacLYphkR2Z8XUZZmBGYf5BwyUAslO4CJFrYD224fhT7V6cXzxaQ5qut/z+GZkEQ0MQ=
+	t=1721918621; cv=none; b=ut2OAOFgV0TZbwzpmZOVOdSPkSrRv93txHKfmnKeQ1Nk42PA7iOocjRUAZH7Bux4yLHpvuFqax5KviTQ6GV9FB6CX7N4VNi3AxbvoaW4OTpF+vVCwTBuuX21xX9Kw25oRY6GREcO91mwhXfN4/vZZgXm8lnScupAOzgwcBlbvzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919253; c=relaxed/simple;
-	bh=fkEppUBRuvjphEhkGAZ+S+uRRyuA3sZ9UfIUDN0KARY=;
+	s=arc-20240116; t=1721918621; c=relaxed/simple;
+	bh=P74xEOlVtQ1zie27+VX4rKUi+YWwcnuQtup6iWYFabQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dRDcxzfoOh7yS/f81EKqGlxmJsMQQH+kVQuXgW0fYATlHshKnRfdJxexaGRiVstWRY5fFjCLQCjwjKYWjf9iLin7CVeJw1m0lG7oORhxn6uOX+KhOmriPDSwioy8ojt4Hqx66vKDExWt94B277QIvCVC3CoFxwQDPq5zQNHIusQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyDLhHX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 498A4C116B1;
-	Thu, 25 Jul 2024 14:54:13 +0000 (UTC)
+	 MIME-Version; b=NoUkaNVuaYKn/yw5eLaUx7UP8S6XhcxKEAjbO3KihYCdzzN1/rfVBvWvumRHXHA9iiEXVmdJ7IrEAcJde+QMvfnGhK4tBkmyRKfjqeULS8Q2azOAmz1eHHWbIQosZAHMFP3QggmICIqvecbCSrCKc97wDM2zW9JA7yfCxVaOCEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxIv1OQ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB572C116B1;
+	Thu, 25 Jul 2024 14:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919253;
-	bh=fkEppUBRuvjphEhkGAZ+S+uRRyuA3sZ9UfIUDN0KARY=;
+	s=korg; t=1721918621;
+	bh=P74xEOlVtQ1zie27+VX4rKUi+YWwcnuQtup6iWYFabQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QyDLhHX8qnxm4vF6t+QwnuIBXKTPbszcFS1JOkXu3QD5BQPKL+9iiBwe+0L8HvMtJ
-	 r/PprF3s7BOm6xJ+UBxmkfyG0AyCdq0IXjBOWOws8XyFJbPUfbc6veyqTzhBdoFLUp
-	 6QDydnYdktEa6myLr7owVjtRFr0ZiYDjLX54uej8=
+	b=KxIv1OQ7mU7tfnhP3Wmu43wJHDD9RyA6+V97kV4xmYIJ6tq++JVsMVop5PNC0giq0
+	 zuwOchGKvQdNxDpjkbMAFMVm7tUPbEIa8V5Y5irV9hgCJKvYWhVGDRtSrgP4Rn7qlK
+	 C8zEXcyQO+J68scnTH8crgJUvqbZdoluiZ5Votkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 29/87] mei: demote client disconnect warning on suspend to debug
+	Christoph Paasch <cpaasch@apple.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 5.4 39/43] net: relax socket state check at accept time.
 Date: Thu, 25 Jul 2024 16:37:02 +0200
-Message-ID: <20240725142739.534985037@linuxfoundation.org>
+Message-ID: <20240725142731.947948045@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
+commit 26afda78cda3da974fd4c287962c169e9462c495 upstream.
 
-Change level for the "not connected" client message in the write
-callback from error to debug.
+Christoph reported the following splat:
 
-The MEI driver currently disconnects all clients upon system suspend.
-This behavior is by design and user-space applications with
-open connections before the suspend are expected to handle errors upon
-resume, by reopening their handles, reconnecting,
-and retrying their operations.
+WARNING: CPU: 1 PID: 772 at net/ipv4/af_inet.c:761 __inet_accept+0x1f4/0x4a0
+Modules linked in:
+CPU: 1 PID: 772 Comm: syz-executor510 Not tainted 6.9.0-rc7-g7da7119fe22b #56
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
+RIP: 0010:__inet_accept+0x1f4/0x4a0 net/ipv4/af_inet.c:759
+Code: 04 38 84 c0 0f 85 87 00 00 00 41 c7 04 24 03 00 00 00 48 83 c4 10 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc e8 ec b7 da fd <0f> 0b e9 7f fe ff ff e8 e0 b7 da fd 0f 0b e9 fe fe ff ff 89 d9 80
+RSP: 0018:ffffc90000c2fc58 EFLAGS: 00010293
+RAX: ffffffff836bdd14 RBX: 0000000000000000 RCX: ffff888104668000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: dffffc0000000000 R08: ffffffff836bdb89 R09: fffff52000185f64
+R10: dffffc0000000000 R11: fffff52000185f64 R12: dffffc0000000000
+R13: 1ffff92000185f98 R14: ffff88810754d880 R15: ffff8881007b7800
+FS:  000000001c772880(0000) GS:ffff88811b280000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fb9fcf2e178 CR3: 00000001045d2002 CR4: 0000000000770ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ inet_accept+0x138/0x1d0 net/ipv4/af_inet.c:786
+ do_accept+0x435/0x620 net/socket.c:1929
+ __sys_accept4_file net/socket.c:1969 [inline]
+ __sys_accept4+0x9b/0x110 net/socket.c:1999
+ __do_sys_accept net/socket.c:2016 [inline]
+ __se_sys_accept net/socket.c:2013 [inline]
+ __x64_sys_accept+0x7d/0x90 net/socket.c:2013
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x58/0x100 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x4315f9
+Code: fd ff 48 81 c4 80 00 00 00 e9 f1 fe ff ff 0f 1f 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 ab b4 fd ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007ffdb26d9c78 EFLAGS: 00000246 ORIG_RAX: 000000000000002b
+RAX: ffffffffffffffda RBX: 0000000000400300 RCX: 00000000004315f9
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000004
+RBP: 00000000006e1018 R08: 0000000000400300 R09: 0000000000400300
+R10: 0000000000400300 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000040cdf0 R14: 000000000040ce80 R15: 0000000000000055
+ </TASK>
 
-However, the current driver implementation logs an error message every
-time a write operation is attempted on a disconnected client.
-Since this is a normal and expected flow after system resume
-logging this as an error can be misleading.
+The reproducer invokes shutdown() before entering the listener status.
+After commit 94062790aedb ("tcp: defer shutdown(SEND_SHUTDOWN) for
+TCP_SYN_RECV sockets"), the above causes the child to reach the accept
+syscall in FIN_WAIT1 status.
 
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
+Eric noted we can relax the existing assertion in __inet_accept()
+
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/490
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Fixes: 94062790aedb ("tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/23ab880a44d8cfd967e84de8b93dbf48848e3d8c.1716299669.git.pabeni@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/af_inet.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
-index 786f7c8f7f619..71f15fba21ad6 100644
---- a/drivers/misc/mei/main.c
-+++ b/drivers/misc/mei/main.c
-@@ -327,7 +327,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
- 	}
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -749,7 +749,9 @@ int inet_accept(struct socket *sock, str
+ 	sock_rps_record_flow(sk2);
+ 	WARN_ON(!((1 << sk2->sk_state) &
+ 		  (TCPF_ESTABLISHED | TCPF_SYN_RECV |
+-		  TCPF_CLOSE_WAIT | TCPF_CLOSE)));
++		   TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 |
++		   TCPF_CLOSING | TCPF_CLOSE_WAIT |
++		   TCPF_CLOSE)));
  
- 	if (!mei_cl_is_connected(cl)) {
--		cl_err(dev, cl, "is not connected");
-+		cl_dbg(dev, cl, "is not connected");
- 		rets = -ENODEV;
- 		goto out;
- 	}
--- 
-2.43.0
-
+ 	sock_graft(sk2, newsock);
+ 
 
 
 
