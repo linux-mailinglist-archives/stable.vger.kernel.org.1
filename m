@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-61444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA0793C457
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:38:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C1493C4A6
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8F11284147
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31F9E1F225B2
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE4319B5BE;
-	Thu, 25 Jul 2024 14:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D6619D08E;
+	Thu, 25 Jul 2024 14:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iee3oue9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moVKY3wS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC9B19A29C;
-	Thu, 25 Jul 2024 14:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1913219A29C;
+	Thu, 25 Jul 2024 14:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918326; cv=none; b=OoA5SRDLfnvmp50tlKabdFdqLmg/NNwd6jpt6l+Wrru+h9KH4aE8wHUW3D4lZBL2BCZVx1B3gn838q9xRXzvsX7VeGVtJ72JBT/DpVHvQwJ21W5QeVc/gjckcoDWJZK/9SuV2kIwFEKZBZ3NNX9Lk+6SVAoZix38wTvo9lV0deA=
+	t=1721918508; cv=none; b=ZOBTklo9bNlsARhBypkL7bf5ywKSMTNti+IMi5E09n52SgwhxU7uOSE7xP/8fP94O83SIIgyfLk9VjHv3yGMpyeMBMcsJOwUhFULxLpp0s5t1LMD0dH3EQx0RM4MPc2yKtPPIrrzIZtX6JTHjKrzXvxZhSVhnSG00CIendLkN4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918326; c=relaxed/simple;
-	bh=J1GJWfE2i2KJGpyHwwDnrd9ImpqQGJWLSpPkvO+zSLU=;
+	s=arc-20240116; t=1721918508; c=relaxed/simple;
+	bh=dzVBhccvp0hU0+Ir7A9lbv+vH5/lOzD+6wiLDbQnmDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBBxlURszbEfJSSzS70QvizqzCczRdkEX/HTzeqBTcfUmZ1FSNlNZq6EbjIcHHFmT4MzQA72pBJszMNE1Gd6A61X7qTvNhotVF2TisponpPkaxV+H+x9HUTZE9Oc6db7ZS1lgIn3Fgf9BZW+NXPFBFmK5z4YNL7IoOJDP7DNb54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iee3oue9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0052C116B1;
-	Thu, 25 Jul 2024 14:38:45 +0000 (UTC)
+	 MIME-Version; b=GtaCd0hDUqaD+DyWZLTUXT1G48rT+kdDm0t3h8e/sCR8isa+mRE1ocOw8D/sFPVUKVpN9CoUVCxFGzbF2uIFD9RDxOxwVQz5w2recPTQhObbGEAoYmVu4xmV44PxoDZIpBBxQggi4ArXYatnASxwu0nQKQDmVp7N4ux1Gc0Jd28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moVKY3wS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3BCC116B1;
+	Thu, 25 Jul 2024 14:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918326;
-	bh=J1GJWfE2i2KJGpyHwwDnrd9ImpqQGJWLSpPkvO+zSLU=;
+	s=korg; t=1721918507;
+	bh=dzVBhccvp0hU0+Ir7A9lbv+vH5/lOzD+6wiLDbQnmDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iee3oue9xPWbDhP1LJ8jiV8TwMJh9l6CNZcbzz8Axo/DNhBFPNGY2XV57thQ50z4h
-	 KhgjfUwp7rjesPV9wWcLUduTx3o4JkJKNw7ZbFJOIEF31GjB5+81OxRIk4m3C2HZFp
-	 A1oI+BTiF0qQQcy0T/EuM0cbD5/06z5N9NImcuSI=
+	b=moVKY3wSTVvexUDOupdj3Ic58xjzLBnY6GR1aBVJJD52T7jo8LuJT40oKgJOsHJP5
+	 dXYZ35VRIK8otn+KRrPmPx234QWUNRsOlQ727nsMkW2jXqtJ0Eu10zFfaIv2eI1whu
+	 lbL0a420hB8mkirG/rovoIgbdQ9V6z5IdLT5nQY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 16/29] arm64: dts: qcom: x1e80100-crd: Fix the PHY regulator for PCIe 6a
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 09/33] kconfig: gconf: give a proper initial state to the Save button
 Date: Thu, 25 Jul 2024 16:36:32 +0200
-Message-ID: <20240725142732.425665394@linuxfoundation.org>
+Message-ID: <20240725142728.873711772@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-References: <20240725142731.814288796@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit cf7d2157aa87dca6f078a2d4867fd0a9dbc357aa upstream.
+[ Upstream commit 46edf4372e336ef3a61c3126e49518099d2e2e6d ]
 
-The actual PHY regulator is L1d instead of L3j, so fix it accordingly.
+Currently, the initial state of the "Save" button is always active.
 
-Fixes: d7e03cce0400 ("arm64: dts: qcom: x1e80100-crd: Enable more support")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: stable@vger.kernel.org      # 6.9
-Link: https://lore.kernel.org/r/20240530-x1e80100-dts-pcie6a-v1-1-ee17a9939ba5@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If none of the CONFIG options are changed while loading the .config
+file, the "Save" button should be greyed out.
+
+This can be fixed by calling conf_read() after widget initialization.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-crd.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/kconfig/gconf.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-@@ -659,7 +659,7 @@
- };
+diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
+index 36f578415c4a6..5e0ea015394e9 100644
+--- a/scripts/kconfig/gconf.c
++++ b/scripts/kconfig/gconf.c
+@@ -1485,7 +1485,6 @@ int main(int ac, char *av[])
  
- &pcie6a_phy {
--	vdda-phy-supply = <&vreg_l3j_0p8>;
-+	vdda-phy-supply = <&vreg_l1d_0p8>;
- 	vdda-pll-supply = <&vreg_l2j_1p2>;
+ 	conf_parse(name);
+ 	fixup_rootmenu(&rootmenu);
+-	conf_read(NULL);
  
- 	status = "okay";
+ 	/* Load the interface and connect signals */
+ 	init_main_window(glade_file);
+@@ -1493,6 +1492,8 @@ int main(int ac, char *av[])
+ 	init_left_tree();
+ 	init_right_tree();
+ 
++	conf_read(NULL);
++
+ 	switch (view_mode) {
+ 	case SINGLE_VIEW:
+ 		display_tree_part();
+-- 
+2.43.0
+
 
 
 
