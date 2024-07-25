@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-61679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313DA93C572
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E891C93C49F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0268281027
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CA211F21B48
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC2F1993A3;
-	Thu, 25 Jul 2024 14:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1580E19D068;
+	Thu, 25 Jul 2024 14:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhoP4kXn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHtfcioO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49498F519;
-	Thu, 25 Jul 2024 14:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73C719A29C;
+	Thu, 25 Jul 2024 14:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919094; cv=none; b=qdEhm9bdP9dhLk4l+nE0hahGT4zSBZS+dBFM/NLu8F83FlsmwH063z8Cb6XFI9CLoi4TGrA4gd677tJpdbQOca6syfsFeJ163zGkbQv+9QMRjMQvkxfNL21EESD7yG4BsDbPoWtOByUdQ0XAAnr9M4f3f3hPHMrqyPwClRHs1rA=
+	t=1721918479; cv=none; b=ZiCM8ibOZ2+LDR+n+2gTv90/JBDsBXIjgAkQwaaEjGDCeh5VgVxMyfB6Rj68UqY3rbeHF8SXen5iYA4LiBnL35M/US36nkwZyinhH3qGpeuGiUNkj+c5OUc/D+whjT3MHwJesHq94H/V8MuU6Yxuwe0l9vozqVKOYPZEIgRg9mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919094; c=relaxed/simple;
-	bh=zWcdv/4cLj1+19Y3nN9OvL6L2CFPtGdURS9VMll70yw=;
+	s=arc-20240116; t=1721918479; c=relaxed/simple;
+	bh=kKIvqr9pxTGs6zmPJJt+5S29leuEi0acGJ1DUUgqly0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JpP0U97uQw1+nZMT1PyIsTnvKElQEAJAMqYrrIK174NjT6wFT4+dYpZty3ib4E5DIBjaGe6VObYAZaLHq7cRLjRsGaKEwgy75/j8u3iHsSKWpA3GSEU0RLa36J7lIB6t7+026J6ol8zvxztFg5VerlXj0Se+RSdZ2MCi2AADd28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhoP4kXn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E237DC116B1;
-	Thu, 25 Jul 2024 14:51:32 +0000 (UTC)
+	 MIME-Version; b=DGrE+dsHYdty+2vO8Zb4HZBPFbjHuq6K+ncQlMcs+VqnZs0TBdk1BfPywI8HRpT1PYipljW7ZljoGvvRz4pRY0mkinXz+pA2oZt+7j8c09C6JZZrZHNfgGo3JCWBQY6yIivd1OpDcr7Om2drfnAm0ZUS171G5RaVeKvzhSl8QSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHtfcioO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF67C116B1;
+	Thu, 25 Jul 2024 14:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919093;
-	bh=zWcdv/4cLj1+19Y3nN9OvL6L2CFPtGdURS9VMll70yw=;
+	s=korg; t=1721918479;
+	bh=kKIvqr9pxTGs6zmPJJt+5S29leuEi0acGJ1DUUgqly0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhoP4kXn4jLuteMsCsZczp7fQflhuGi8MhyhihME0K9rda150/6RHotTFnunqXHFR
-	 +5HyYr5HAda43vrrF0A07LK+kWabnyFpZpKK/Wd/CFphdC8SrXyYa/TO6TkuKEL560
-	 Nj+nikBkLQAZA/i5s4BKxXxwaR4+gHCW0EBS8qK4=
+	b=YHtfcioOnp57hC09NEFxmhYKptXqYDQui3VbsG6aZFUuqEg6XuK0mJ2gvyKy3V7Wd
+	 ArDMt7Ledbgxyhsvz/GP+pPJk18o+7aXDunieWhZZoKJkDbjkXhCS97vfWytMYXnGb
+	 17mmiY54ezAwLJn4gTS18IvC1OvrIM5GDzhkHFY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 21/87] Input: silead - Always support 10 fingers
+	lei lu <llfamsec@gmail.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 31/33] ocfs2: add bounds checking to ocfs2_check_dir_entry()
 Date: Thu, 25 Jul 2024 16:36:54 +0200
-Message-ID: <20240725142739.232944927@linuxfoundation.org>
+Message-ID: <20240725142729.683806352@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +69,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: lei lu <llfamsec@gmail.com>
 
-[ Upstream commit 38a38f5a36da9820680d413972cb733349400532 ]
+commit 255547c6bb8940a97eea94ef9d464ea5967763fb upstream.
 
-When support for Silead touchscreens was orginal added some touchscreens
-with older firmware versions only supported 5 fingers and this was made
-the default requiring the setting of a "silead,max-fingers=10" uint32
-device-property for all touchscreen models which do support 10 fingers.
+This adds sanity checks for ocfs2_dir_entry to make sure all members of
+ocfs2_dir_entry don't stray beyond valid memory region.
 
-There are very few models with the old 5 finger fw, so in practice the
-setting of the "silead,max-fingers=10" is boilerplate which needs to
-be copy and pasted to every touchscreen config.
-
-Reporting that 10 fingers are supported on devices which only support
-5 fingers doesn't cause any problems for userspace in practice, since
-at max 4 finger gestures are supported anyways. Drop the max_fingers
-configuration and simply always assume 10 fingers.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/20240525193854.39130-2-hdegoede@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240626104433.163270-1-llfamsec@gmail.com
+Signed-off-by: lei lu <llfamsec@gmail.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/silead.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ fs/ocfs2/dir.c |   46 +++++++++++++++++++++++++++++-----------------
+ 1 file changed, 29 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/input/touchscreen/silead.c b/drivers/input/touchscreen/silead.c
-index 1ee760bac0cfa..3be59b7239a68 100644
---- a/drivers/input/touchscreen/silead.c
-+++ b/drivers/input/touchscreen/silead.c
-@@ -70,7 +70,6 @@ struct silead_ts_data {
- 	struct regulator_bulk_data regulators[2];
- 	char fw_name[64];
- 	struct touchscreen_properties prop;
--	u32 max_fingers;
- 	u32 chip_id;
- 	struct input_mt_pos pos[SILEAD_MAX_FINGERS];
- 	int slots[SILEAD_MAX_FINGERS];
-@@ -98,7 +97,7 @@ static int silead_ts_request_input_dev(struct silead_ts_data *data)
- 	input_set_abs_params(data->input, ABS_MT_POSITION_Y, 0, 4095, 0, 0);
- 	touchscreen_parse_properties(data->input, true, &data->prop);
- 
--	input_mt_init_slots(data->input, data->max_fingers,
-+	input_mt_init_slots(data->input, SILEAD_MAX_FINGERS,
- 			    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED |
- 			    INPUT_MT_TRACK);
- 
-@@ -145,10 +144,10 @@ static void silead_ts_read_data(struct i2c_client *client)
- 		return;
- 	}
- 
--	if (buf[0] > data->max_fingers) {
-+	if (buf[0] > SILEAD_MAX_FINGERS) {
- 		dev_warn(dev, "More touches reported then supported %d > %d\n",
--			 buf[0], data->max_fingers);
--		buf[0] = data->max_fingers;
-+			 buf[0], SILEAD_MAX_FINGERS);
-+		buf[0] = SILEAD_MAX_FINGERS;
- 	}
- 
- 	touch_nr = 0;
-@@ -200,7 +199,6 @@ static void silead_ts_read_data(struct i2c_client *client)
- 
- static int silead_ts_init(struct i2c_client *client)
+--- a/fs/ocfs2/dir.c
++++ b/fs/ocfs2/dir.c
+@@ -314,13 +314,16 @@ out:
+  * bh passed here can be an inode block or a dir data block, depending
+  * on the inode inline data flag.
+  */
+-static int ocfs2_check_dir_entry(struct inode * dir,
+-				 struct ocfs2_dir_entry * de,
+-				 struct buffer_head * bh,
++static int ocfs2_check_dir_entry(struct inode *dir,
++				 struct ocfs2_dir_entry *de,
++				 struct buffer_head *bh,
++				 char *buf,
++				 unsigned int size,
+ 				 unsigned long offset)
  {
--	struct silead_ts_data *data = i2c_get_clientdata(client);
- 	int error;
+ 	const char *error_msg = NULL;
+ 	const int rlen = le16_to_cpu(de->rec_len);
++	const unsigned long next_offset = ((char *) de - buf) + rlen;
  
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_RESET,
-@@ -210,7 +208,7 @@ static int silead_ts_init(struct i2c_client *client)
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
+ 	if (unlikely(rlen < OCFS2_DIR_REC_LEN(1)))
+ 		error_msg = "rec_len is smaller than minimal";
+@@ -328,9 +331,11 @@ static int ocfs2_check_dir_entry(struct
+ 		error_msg = "rec_len % 4 != 0";
+ 	else if (unlikely(rlen < OCFS2_DIR_REC_LEN(de->name_len)))
+ 		error_msg = "rec_len is too small for name_len";
+-	else if (unlikely(
+-		 ((char *) de - bh->b_data) + rlen > dir->i_sb->s_blocksize))
+-		error_msg = "directory entry across blocks";
++	else if (unlikely(next_offset > size))
++		error_msg = "directory entry overrun";
++	else if (unlikely(next_offset > size - OCFS2_DIR_REC_LEN(1)) &&
++		 next_offset != size)
++		error_msg = "directory entry too close to end";
  
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_TOUCH_NR,
--					data->max_fingers);
-+					  SILEAD_MAX_FINGERS);
- 	if (error)
- 		goto i2c_write_err;
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
-@@ -437,13 +435,6 @@ static void silead_ts_read_props(struct i2c_client *client)
- 	const char *str;
- 	int error;
+ 	if (unlikely(error_msg != NULL))
+ 		mlog(ML_ERROR, "bad entry in directory #%llu: %s - "
+@@ -372,16 +377,17 @@ static inline int ocfs2_search_dirblock(
+ 	de_buf = first_de;
+ 	dlimit = de_buf + bytes;
  
--	error = device_property_read_u32(dev, "silead,max-fingers",
--					 &data->max_fingers);
--	if (error) {
--		dev_dbg(dev, "Max fingers read error %d\n", error);
--		data->max_fingers = 5; /* Most devices handle up-to 5 fingers */
--	}
--
- 	error = device_property_read_string(dev, "firmware-name", &str);
- 	if (!error)
- 		snprintf(data->fw_name, sizeof(data->fw_name),
--- 
-2.43.0
-
+-	while (de_buf < dlimit) {
++	while (de_buf < dlimit - OCFS2_DIR_MEMBER_LEN) {
+ 		/* this code is executed quadratically often */
+ 		/* do minimal checking `by hand' */
+ 
+ 		de = (struct ocfs2_dir_entry *) de_buf;
+ 
+-		if (de_buf + namelen <= dlimit &&
++		if (de->name + namelen <= dlimit &&
+ 		    ocfs2_match(namelen, name, de)) {
+ 			/* found a match - just to be sure, do a full check */
+-			if (!ocfs2_check_dir_entry(dir, de, bh, offset)) {
++			if (!ocfs2_check_dir_entry(dir, de, bh, first_de,
++						   bytes, offset)) {
+ 				ret = -1;
+ 				goto bail;
+ 			}
+@@ -1158,7 +1164,7 @@ static int __ocfs2_delete_entry(handle_t
+ 	pde = NULL;
+ 	de = (struct ocfs2_dir_entry *) first_de;
+ 	while (i < bytes) {
+-		if (!ocfs2_check_dir_entry(dir, de, bh, i)) {
++		if (!ocfs2_check_dir_entry(dir, de, bh, first_de, bytes, i)) {
+ 			status = -EIO;
+ 			mlog_errno(status);
+ 			goto bail;
+@@ -1658,7 +1664,8 @@ int __ocfs2_add_entry(handle_t *handle,
+ 		/* These checks should've already been passed by the
+ 		 * prepare function, but I guess we can leave them
+ 		 * here anyway. */
+-		if (!ocfs2_check_dir_entry(dir, de, insert_bh, offset)) {
++		if (!ocfs2_check_dir_entry(dir, de, insert_bh, data_start,
++					   size, offset)) {
+ 			retval = -ENOENT;
+ 			goto bail;
+ 		}
+@@ -1796,7 +1803,8 @@ static int ocfs2_dir_foreach_blk_id(stru
+ 		}
+ 
+ 		de = (struct ocfs2_dir_entry *) (data->id_data + ctx->pos);
+-		if (!ocfs2_check_dir_entry(inode, de, di_bh, ctx->pos)) {
++		if (!ocfs2_check_dir_entry(inode, de, di_bh, (char *)data->id_data,
++					   i_size_read(inode), ctx->pos)) {
+ 			/* On error, skip the f_pos to the end. */
+ 			ctx->pos = i_size_read(inode);
+ 			break;
+@@ -1893,7 +1901,8 @@ static int ocfs2_dir_foreach_blk_el(stru
+ 		while (ctx->pos < i_size_read(inode)
+ 		       && offset < sb->s_blocksize) {
+ 			de = (struct ocfs2_dir_entry *) (bh->b_data + offset);
+-			if (!ocfs2_check_dir_entry(inode, de, bh, offset)) {
++			if (!ocfs2_check_dir_entry(inode, de, bh, bh->b_data,
++						   sb->s_blocksize, offset)) {
+ 				/* On error, skip the f_pos to the
+ 				   next block. */
+ 				ctx->pos = (ctx->pos | (sb->s_blocksize - 1)) + 1;
+@@ -3369,7 +3378,7 @@ static int ocfs2_find_dir_space_id(struc
+ 	struct super_block *sb = dir->i_sb;
+ 	struct ocfs2_dinode *di = (struct ocfs2_dinode *)di_bh->b_data;
+ 	struct ocfs2_dir_entry *de, *last_de = NULL;
+-	char *de_buf, *limit;
++	char *first_de, *de_buf, *limit;
+ 	unsigned long offset = 0;
+ 	unsigned int rec_len, new_rec_len, free_space = dir->i_sb->s_blocksize;
+ 
+@@ -3382,14 +3391,16 @@ static int ocfs2_find_dir_space_id(struc
+ 	else
+ 		free_space = dir->i_sb->s_blocksize - i_size_read(dir);
+ 
+-	de_buf = di->id2.i_data.id_data;
++	first_de = di->id2.i_data.id_data;
++	de_buf = first_de;
+ 	limit = de_buf + i_size_read(dir);
+ 	rec_len = OCFS2_DIR_REC_LEN(namelen);
+ 
+ 	while (de_buf < limit) {
+ 		de = (struct ocfs2_dir_entry *)de_buf;
+ 
+-		if (!ocfs2_check_dir_entry(dir, de, di_bh, offset)) {
++		if (!ocfs2_check_dir_entry(dir, de, di_bh, first_de,
++					   i_size_read(dir), offset)) {
+ 			ret = -ENOENT;
+ 			goto out;
+ 		}
+@@ -3471,7 +3482,8 @@ static int ocfs2_find_dir_space_el(struc
+ 			/* move to next block */
+ 			de = (struct ocfs2_dir_entry *) bh->b_data;
+ 		}
+-		if (!ocfs2_check_dir_entry(dir, de, bh, offset)) {
++		if (!ocfs2_check_dir_entry(dir, de, bh, bh->b_data, blocksize,
++					   offset)) {
+ 			status = -ENOENT;
+ 			goto bail;
+ 		}
 
 
 
