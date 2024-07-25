@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E1C93C52D
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1B493C5AE
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9554282D6E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBADA1C21F1B
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0E627473;
-	Thu, 25 Jul 2024 14:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFF419DF40;
+	Thu, 25 Jul 2024 14:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCq1Eiow"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KELEiBzz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1C11E895;
-	Thu, 25 Jul 2024 14:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11DD13C816;
+	Thu, 25 Jul 2024 14:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918886; cv=none; b=heJC4ZUCei+uEP/F0zwZt4/BNZbNo0WZs8L9uBiuG9q3joe76KCvTfOH12iKYkF3OeuR5mJ7TcLF+paaW8ICF1HJHsMn9LKeSHqarfHbBjwQbNNevDlyy7cL3WKb/8SBOAb4LfdjYT32IroQ78eTl0UjKMqdqSDtgd+AnRcGTno=
+	t=1721919243; cv=none; b=KqN2VcFiVCZrrVGH1rC0xUE+4ifJOoRJEoibWskz4oIKt4WpvOCAWm2ae6Do2L7mkqGFjQkfpBhESPJ8WJ5FZTMvKukvqClEnuVWo5A33MjTptuq6glbEZ0na/ml7I/lc/LtbYZ7xefMWN8zvG/FZaA3vZe9rMsIe/URAWkX0ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918886; c=relaxed/simple;
-	bh=e0kijenlXyR2PoG2QRJaThN9nQxbVMoAKrkl4akH7Mk=;
+	s=arc-20240116; t=1721919243; c=relaxed/simple;
+	bh=BXpxJviUXyVHnwH2k9sS4gs21yxWWw7Cuqh+MM3GHPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jaXt+WM2NsTkjmVRVjiC2Xqesfgg+vzkxr+iBgb+pjuzXvzDagCqFS+QieMzdRK7/jxdQuWKhyMseXV6NAuXwO6t6hff5HKv32QEuhH2iFzA++nSfgwyxMJ9kHBQGOLmePwY+zrmK1hsHl+t5Fkcy8XSygwCLyjHESa0bRp83bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCq1Eiow; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0631C116B1;
-	Thu, 25 Jul 2024 14:48:05 +0000 (UTC)
+	 MIME-Version; b=QiX99DTL876z97OzZ6E4s1Z83SVCcZPAxKVsy3EY/foFn20uVXU7y+suqB5rtp2/Vh5HrbfTEtz9cDUFiQMemjC8xi/VFn1lwk9V1T/G2iWZ1Eu1hqqmqJGDGdR4kJH9x+1+fTUoTumQplcx83SbqETI059bRbIazNKyXZzWipo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KELEiBzz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B26C32782;
+	Thu, 25 Jul 2024 14:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918886;
-	bh=e0kijenlXyR2PoG2QRJaThN9nQxbVMoAKrkl4akH7Mk=;
+	s=korg; t=1721919243;
+	bh=BXpxJviUXyVHnwH2k9sS4gs21yxWWw7Cuqh+MM3GHPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCq1EiowJAX/hsI62jLIQFTtueSsExrIDNK6ditX2KYYjeBF0k0TuyHc78y5ZD5kD
-	 D44P2t7pWBbB4XQlRHOK2YsElpXo6kpNLyGxRjyyiSbo8NP/SyXQV255cHI5itfmW/
-	 fwjI4Ymln+ZzzkgkR5o7Bxj5jgLp8K0fYI3sWL+E=
+	b=KELEiBzzznFlnNOd4C70vrys0d1FdR8uipIK+u3ltaDoWlmP0ed9Rys2bVzDYPqsw
+	 +ytIdQBERKSg0qEdJM7VPKyQw3KhNFS/FDqJTWCFxbz2BWLRqzbTgm1SeIoH2WeyZg
+	 0zhJ7htb7qvmZrNP/quNK3uQPCIYfBA/+OC2bFjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Jonathan Denose <jdenose@google.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 19/59] KVM: PPC: Book3S HV: Prevent UAF in kvm_spapr_tce_attach_iommu_group()
+Subject: [PATCH 5.15 36/87] Input: elantech - fix touchpad state on resume for Lenovo N24
 Date: Thu, 25 Jul 2024 16:37:09 +0200
-Message-ID: <20240725142733.988967432@linuxfoundation.org>
+Message-ID: <20240725142739.796165373@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,149 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Jonathan Denose <jdenose@google.com>
 
-[ Upstream commit a986fa57fd81a1430e00b3c6cf8a325d6f894a63 ]
+[ Upstream commit a69ce592cbe0417664bc5a075205aa75c2ec1273 ]
 
-Al reported a possible use-after-free (UAF) in kvm_spapr_tce_attach_iommu_group().
+The Lenovo N24 on resume becomes stuck in a state where it
+sends incorrect packets, causing elantech_packet_check_v4 to fail.
+The only way for the device to resume sending the correct packets is for
+it to be disabled and then re-enabled.
 
-It looks up `stt` from tablefd, but then continues to use it after doing
-fdput() on the returned fd. After the fdput() the tablefd is free to be
-closed by another thread. The close calls kvm_spapr_tce_release() and
-then release_spapr_tce_table() (via call_rcu()) which frees `stt`.
+This change adds a dmi check to trigger this behavior on resume.
 
-Although there are calls to rcu_read_lock() in
-kvm_spapr_tce_attach_iommu_group() they are not sufficient to prevent
-the UAF, because `stt` is used outside the locked regions.
-
-With an artifcial delay after the fdput() and a userspace program which
-triggers the race, KASAN detects the UAF:
-
-  BUG: KASAN: slab-use-after-free in kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
-  Read of size 4 at addr c000200027552c30 by task kvm-vfio/2505
-  CPU: 54 PID: 2505 Comm: kvm-vfio Not tainted 6.10.0-rc3-next-20240612-dirty #1
-  Hardware name: 8335-GTH POWER9 0x4e1202 opal:skiboot-v6.5.3-35-g1851b2a06 PowerNV
-  Call Trace:
-    dump_stack_lvl+0xb4/0x108 (unreliable)
-    print_report+0x2b4/0x6ec
-    kasan_report+0x118/0x2b0
-    __asan_load4+0xb8/0xd0
-    kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
-    kvm_vfio_set_attr+0x524/0xac0 [kvm]
-    kvm_device_ioctl+0x144/0x240 [kvm]
-    sys_ioctl+0x62c/0x1810
-    system_call_exception+0x190/0x440
-    system_call_vectored_common+0x15c/0x2ec
-  ...
-  Freed by task 0:
-   ...
-   kfree+0xec/0x3e0
-   release_spapr_tce_table+0xd4/0x11c [kvm]
-   rcu_core+0x568/0x16a0
-   handle_softirqs+0x23c/0x920
-   do_softirq_own_stack+0x6c/0x90
-   do_softirq_own_stack+0x58/0x90
-   __irq_exit_rcu+0x218/0x2d0
-   irq_exit+0x30/0x80
-   arch_local_irq_restore+0x128/0x230
-   arch_local_irq_enable+0x1c/0x30
-   cpuidle_enter_state+0x134/0x5cc
-   cpuidle_enter+0x6c/0xb0
-   call_cpuidle+0x7c/0x100
-   do_idle+0x394/0x410
-   cpu_startup_entry+0x60/0x70
-   start_secondary+0x3fc/0x410
-   start_secondary_prolog+0x10/0x14
-
-Fix it by delaying the fdput() until `stt` is no longer in use, which
-is effectively the entire function. To keep the patch minimal add a call
-to fdput() at each of the existing return paths. Future work can convert
-the function to goto or __cleanup style cleanup.
-
-With the fix in place the test case no longer triggers the UAF.
-
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Closes: https://lore.kernel.org/all/20240610024437.GA1464458@ZenIV/
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240614122910.3499489-1-mpe@ellerman.id.au
+Signed-off-by: Jonathan Denose <jdenose@google.com>
+Link: https://lore.kernel.org/r/20240503155020.v2.1.Ifa0e25ebf968d8f307f58d678036944141ab17e6@changeid
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_64_vio.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/input/mouse/elantech.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-index c640053ab03f2..2686ba59873dd 100644
---- a/arch/powerpc/kvm/book3s_64_vio.c
-+++ b/arch/powerpc/kvm/book3s_64_vio.c
-@@ -117,14 +117,16 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 	}
- 	rcu_read_unlock();
- 
--	fdput(f);
--
--	if (!found)
-+	if (!found) {
-+		fdput(f);
- 		return -EINVAL;
-+	}
- 
- 	table_group = iommu_group_get_iommudata(grp);
--	if (WARN_ON(!table_group))
-+	if (WARN_ON(!table_group)) {
-+		fdput(f);
- 		return -EFAULT;
-+	}
- 
- 	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
- 		struct iommu_table *tbltmp = table_group->tables[i];
-@@ -145,8 +147,10 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 			break;
- 		}
- 	}
--	if (!tbl)
-+	if (!tbl) {
-+		fdput(f);
- 		return -EINVAL;
-+	}
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(stit, &stt->iommu_tables, next) {
-@@ -157,6 +161,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 			/* stit is being destroyed */
- 			iommu_tce_table_put(tbl);
- 			rcu_read_unlock();
-+			fdput(f);
- 			return -ENOTTY;
- 		}
- 		/*
-@@ -164,6 +169,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 		 * its KVM reference counter and can return.
- 		 */
- 		rcu_read_unlock();
-+		fdput(f);
- 		return 0;
- 	}
- 	rcu_read_unlock();
-@@ -171,6 +177,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 	stit = kzalloc(sizeof(*stit), GFP_KERNEL);
- 	if (!stit) {
- 		iommu_tce_table_put(tbl);
-+		fdput(f);
- 		return -ENOMEM;
- 	}
- 
-@@ -179,6 +186,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 
- 	list_add_rcu(&stit->next, &stt->iommu_tables);
- 
-+	fdput(f);
- 	return 0;
+diff --git a/drivers/input/mouse/elantech.c b/drivers/input/mouse/elantech.c
+index 4e38229404b4b..b4723ea395eb9 100644
+--- a/drivers/input/mouse/elantech.c
++++ b/drivers/input/mouse/elantech.c
+@@ -1476,16 +1476,47 @@ static void elantech_disconnect(struct psmouse *psmouse)
+ 	psmouse->private = NULL;
  }
  
++/*
++ * Some hw_version 4 models fail to properly activate absolute mode on
++ * resume without going through disable/enable cycle.
++ */
++static const struct dmi_system_id elantech_needs_reenable[] = {
++#if defined(CONFIG_DMI) && defined(CONFIG_X86)
++	{
++		/* Lenovo N24 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "81AF"),
++		},
++	},
++#endif
++	{ }
++};
++
+ /*
+  * Put the touchpad back into absolute mode when reconnecting
+  */
+ static int elantech_reconnect(struct psmouse *psmouse)
+ {
++	int err;
++
+ 	psmouse_reset(psmouse);
+ 
+ 	if (elantech_detect(psmouse, 0))
+ 		return -1;
+ 
++	if (dmi_check_system(elantech_needs_reenable)) {
++		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_DISABLE);
++		if (err)
++			psmouse_warn(psmouse, "failed to deactivate mouse on %s: %d\n",
++				     psmouse->ps2dev.serio->phys, err);
++
++		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_ENABLE);
++		if (err)
++			psmouse_warn(psmouse, "failed to reactivate mouse on %s: %d\n",
++				     psmouse->ps2dev.serio->phys, err);
++	}
++
+ 	if (elantech_set_absolute_mode(psmouse)) {
+ 		psmouse_err(psmouse,
+ 			    "failed to put touchpad back into absolute mode.\n");
 -- 
 2.43.0
 
