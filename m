@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-61335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018D093BA84
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 04:09:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9257793BAC7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 04:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 337651C2200E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 02:09:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56EF2282933
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 02:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5F76AB9;
-	Thu, 25 Jul 2024 02:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB8011725;
+	Thu, 25 Jul 2024 02:30:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B083E11725;
-	Thu, 25 Jul 2024 02:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0DD63D0;
+	Thu, 25 Jul 2024 02:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721873349; cv=none; b=EfvW5DR+wX2s9cmUJjmgQL694rLgqY1VpW8tynmmZ/9sZ5CGZ815MR2JU8qEGjmTxwkNFKLKB/vheWBQ4/ddoYg59OTFvHeU/4X1FOE9vUTc/phLDbjHuTtMcC7VVmie1+EAaqTN9CRETsHrH0lNAlYEqDKOo51NtO5N35NoMgM=
+	t=1721874609; cv=none; b=APGfn1LouXWiFepe0RpBoRJQr3SvDCJnprCbppHsMgvKLDJk11ESlROXR8cbBBRVPNttOZJEWcD75asnDIpukDKhHWLBFg5lels+7Gb/AiCew1qdWWTwql/x/H8hjL6B/roNigp59o0xVQquyCVRF7jwnY1RxZ5rslm1j1qkSc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721873349; c=relaxed/simple;
-	bh=+kNvqMnTo91nb7DgrwbHiZHaESPi+L4LHpTotwAZIIE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lF13xCCIODVKxeUkxZP0zzVzK4kURLCLKtfdv1jNQnTQkiGl5H7402OouOUi18AMwDJ+lb79suXQNdh0VavNo/n311l8qOUD4Bn8GDV3NV+JNGw69UmYjs0vzqgnzjt5+6SPNNtRRVCEQBqGhjhIax0Zy6bfbn+dRVCgq0cDce4=
+	s=arc-20240116; t=1721874609; c=relaxed/simple;
+	bh=UflBeGAI8Ewd2P0gL0BG4VcOuURnvNeNQ1BGv2VbtmI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NxX2wm9ar8h1OGXVtr3pwU+oCcJT5jvTEN7giyTwYsViiJTBaZ2zYgzTsrB+VDvysCd0EMj0jMdmzuj/FltNmilphrv4wAjEcZJh5d9jUP8D816U8EsLp8tReGfb3KGDK0YGhYNDtWezL26TU2EJrX0NUHl6HGv+JluOSWRPhvo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowAD33zqrs6Fm8yfcAA--.20476S2;
-	Thu, 25 Jul 2024 10:08:50 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowACnEUGXuKFm2O7cAA--.57002S2;
+	Thu, 25 Jul 2024 10:29:50 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	noralf@tronnes.org,
-	sam@ravnborg.org
-Cc: dri-devel@lists.freedesktop.org,
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	make24@iscas.ac.cn,
+	liujunliang_ljl@163.com,
+	syoshida@redhat.com,
+	andrew@lunn.ch,
+	horms@kernel.org
+Cc: linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v4] drm/client: fix null pointer dereference in drm_client_modeset_probe
-Date: Thu, 25 Jul 2024 10:08:42 +0800
-Message-Id: <20240725020842.1715719-1-make24@iscas.ac.cn>
+Subject: [PATCH net v4] net: usb: sr9700: fix uninitialized variable use in sr_mdio_read
+Date: Thu, 25 Jul 2024 10:29:42 +0800
+Message-Id: <20240725022942.1720199-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -54,62 +56,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAD33zqrs6Fm8yfcAA--.20476S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw45GFyrWF48ZF4rArW5Wrg_yoW8GFWUpr
-	43Gr90yFWjvF9rCFs2va97uF17A3W3Jr48GF17Aanxu3Z0qr1jyryYvFy5WFy7Gry3JF15
-	tFnayFW2qF18AaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBS14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:zQCowACnEUGXuKFm2O7cAA--.57002S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CF15XFyrCr4kuryfCF1kAFb_yoW8AF1fpr
+	47Ga90yrWUJ347Z3ykXw1vg3WFkw4kKay3W348Gw1fZ395Arn5C34FgFyYgw1UGrW5Aa12
+	qF4qvFWxua10vaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBa14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	4UJVWxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
-	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r
-	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAq
-	YI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82
-	IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC2
-	0s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMI
-	IF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF
-	0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87
-	Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20x
+	vY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I
+	3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIx
+	AIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAI
+	cVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2js
+	IEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUQvtAUUUUU=
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-In drm_client_modeset_probe(), the return value of drm_mode_duplicate() is
-assigned to modeset->mode, which will lead to a possible NULL pointer
-dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
+It could lead to error happen because the variable res is not updated if
+the call to sr_share_read_word returns an error. In this particular case
+error code was returned and res stayed uninitialized. Same issue also
+applies to sr_read_reg.
+
+This can be avoided by checking the return value of sr_share_read_word
+and sr_read_reg, and propagating the error if the read operation failed.
+
+Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: cf13909aee05 ("drm/fb-helper: Move out modeset config code")
+Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
 Changes in v4:
-- modified patch, set ret and break to handle error rightly.
+- added a check for sr_read_reg() as suggestions.
 Changes in v3:
-- modified patch as suggestions, returned error directly when failing to 
-get modeset->mode.
+- added Cc stable line as suggestions.
 Changes in v2:
-- added the recipient's email address, due to the prolonged absence of a 
-response from the recipients.
-- added Cc stable.
+- modified the subject as suggestions.
 ---
- drivers/gpu/drm/drm_client_modeset.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/usb/sr9700.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
-index 31af5cf37a09..cee5eafbfb81 100644
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -880,6 +880,11 @@ int drm_client_modeset_probe(struct drm_client_dev *client, unsigned int width,
+diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
+index 0a662e42ed96..cb7d2f798fb4 100644
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -179,6 +179,7 @@ static int sr_mdio_read(struct net_device *netdev, int phy_id, int loc)
+ 	struct usbnet *dev = netdev_priv(netdev);
+ 	__le16 res;
+ 	int rc = 0;
++	int err;
  
- 			kfree(modeset->mode);
- 			modeset->mode = drm_mode_duplicate(dev, mode);
-+			if (!modeset->mode) {
-+				ret = -ENOMEM;
-+				break;
-+			}
+ 	if (phy_id) {
+ 		netdev_dbg(netdev, "Only internal phy supported\n");
+@@ -189,11 +190,17 @@ static int sr_mdio_read(struct net_device *netdev, int phy_id, int loc)
+ 	if (loc == MII_BMSR) {
+ 		u8 value;
+ 
+-		sr_read_reg(dev, SR_NSR, &value);
++		err = sr_read_reg(dev, SR_NSR, &value);
++		if (err < 0)
++			return err;
 +
- 			drm_connector_get(connector);
- 			modeset->connectors[modeset->num_connectors++] = connector;
- 			modeset->x = offset->x;
+ 		if (value & NSR_LINKST)
+ 			rc = 1;
+ 	}
+-	sr_share_read_word(dev, 1, loc, &res);
++	err = sr_share_read_word(dev, 1, loc, &res);
++	if (err < 0)
++		return err;
++
+ 	if (rc == 1)
+ 		res = le16_to_cpu(res) | BMSR_LSTATUS;
+ 	else
 -- 
 2.25.1
 
