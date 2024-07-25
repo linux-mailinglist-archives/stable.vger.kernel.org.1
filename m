@@ -1,173 +1,183 @@
-Return-Path: <stable+bounces-61373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE09193BEEC
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 11:20:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E43393BEF9
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 11:22:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C357B22BCA
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 09:20:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 625C41C2149F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 09:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1256316EC02;
-	Thu, 25 Jul 2024 09:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344291974F4;
+	Thu, 25 Jul 2024 09:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fiwxPXij"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DF081E;
-	Thu, 25 Jul 2024 09:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3FF13A884
+	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 09:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721899228; cv=none; b=IBnDhmfN4U9ZFhqEBO+I2wFafTOs8zQJa8ltyQ1Kpe0YGPTmI4hnGijtiTt2NU2/HX16ldgZoBaQ1SHum7+/U3qG/EJYhTtRpyfYSB0OYNE8BKPyRNzCPfaL+sfFYstDTYKL9Q9jGLCVxo4VLHzaGAOYzmygq0O8u3TjetBLirQ=
+	t=1721899348; cv=none; b=RcpLpz08wk/wetPaZKKXpsS2THR4iURKbqKjTCOTFMfQ2WhcP4CXxgD/KBHNJE59cw8qwgRNOUbTIAXT3rySb3RuQfN38DvXE9H1TAlKQz5rpVTs22/pe+03Bl9LGCf5HM134sGSnRHJ5oPU4KuvxYVVwiY4ChsmYGmQTAe/6ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721899228; c=relaxed/simple;
-	bh=U8jCPxWrWUyEz1ZrGA/2DamhTswK41MbXPUdq6Zy5qc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WeOK0zB2LgZ/GG+VHN8X1iEX23lAWVVFCpbJdtTQ3edm7SB+WS7omeT4lHsFuB1UvkOsFXzUnU7dU9oucpKxStiZoi+S7LtxNKDuj9yJEDtoq4H+0A9zT48kNANW7z5S5m62IvGV6e+Ua8JP00u3oQ7sX2aNgXXmDKyyGVy3W74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DBEF81007;
-	Thu, 25 Jul 2024 02:20:51 -0700 (PDT)
-Received: from [10.1.29.30] (e122027.cambridge.arm.com [10.1.29.30])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 00ED93F5A1;
-	Thu, 25 Jul 2024 02:20:23 -0700 (PDT)
-Message-ID: <ae62139f-3655-44d0-aeb7-15c6b67eb97c@arm.com>
-Date: Thu, 25 Jul 2024 10:20:22 +0100
+	s=arc-20240116; t=1721899348; c=relaxed/simple;
+	bh=bLdP/yluvMBuIJt5YOH7LjpEzuVagCOShgdj7rj20iM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ePQa8MTfAloYgqHPhWmmiLT4MYFekE9CD8Yjc+4HcCJVg8/gnR2rgrZlNEJC6YN9wDKwhJgNp9RSgUz7UfbrSE0UBz8F4hltYwqx+Y2pC+T3XDDJcdyYu6VZXOszryX4pNQJ6ICTrm5NKBEc846nbR4GyAfAad61IberLiv3TSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fiwxPXij; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e05f25fb96eso619351276.1
+        for <stable@vger.kernel.org>; Thu, 25 Jul 2024 02:22:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721899345; x=1722504145; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bLdP/yluvMBuIJt5YOH7LjpEzuVagCOShgdj7rj20iM=;
+        b=fiwxPXijBCu7+N8DoCx2O94TElHx8cHfp4nWrtKajcuoxmzPN+AiKgoRA6jhzu4Dpt
+         I6iak6KREbCsIUW8+DUNCkhN1i+pVECnrttjkE53J6/dqI7OlR1SpIMehHQGBaGyV2zN
+         HbYz8TeOWnaFUNc/XimaUNNbPS+3gVfKkp9x4PwkHHwHedH/yPXGN3E2oVgp/PrbBUYD
+         97qNNzFMP+GindQeEqJmk94tFit0d7/zk4UvMQP7br8DxIGdoby8CNMfIWYukbvlDT+W
+         qSJfkBPe+Un0EMc6rqDkwNBxRIztcZMnCFB0s7gp/AoxTmsGdazuy+FLN+HSq2cPHI9c
+         mojg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721899345; x=1722504145;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bLdP/yluvMBuIJt5YOH7LjpEzuVagCOShgdj7rj20iM=;
+        b=jPXGt7i7bm1K52PD6cHLi09zWeNEbTpntus3G9Z+s48oViv1BF8jl+aZe1md1tlkDY
+         dVGGBqZfq7fhlUuhkYEXyK8lwjLKichwWLiSgMbYgWpgHqHZiFhnjgVoYkBu8e+fNHYD
+         sbbDCiy9BwOrVYMX/3amqaDo3HO9JbG0abS2BYLOpUIOX3PUgK2smzkiOMR6qJ+kzDO2
+         dDqwtBj1UhuNfHbRbYl2KFozvDGgW2Ss0vZ2oQabBcJXA/epEgyzWwHt3KeLh0icCbHv
+         otyxq3liHEOayiM3Y8riPF42WyKQamMgaIBjnIONxu5SG+3Ppg3ZdVOSzKBqVMhAKyMf
+         wMpw==
+X-Forwarded-Encrypted: i=1; AJvYcCVDAW+k0/MBpS6XCACw9kpvL3y4RYUlpyAmxyfOTtxc9Ux5XjnzTGpzK1f38isjF42p3hYxLr4Xv+3FO905y1MgTyJVa9Fc
+X-Gm-Message-State: AOJu0YxldL4lnzBA9WVHNhhCuAOC/evPx4XCO/V1qEjSX/fYQPkT96Cd
+	pewlAoxDBMrxFHn500ZemsZ3O+hfE5SYrrFZRATx1lrjNlguYR1bQzAK4WgPZ2vtyz/mbsyAc0S
+	8R21ekmcrygZnsFHcEnNjsA2kDJE450Rp4yhWLA==
+X-Google-Smtp-Source: AGHT+IHv32q/Dww8pcfbsHuuIT4hJr8/2ZHQ97ux3ZX4BwITDamJ4v4NkMFXVPjNU54b72O6TOTXdehGNiVfv1jQFf8=
+X-Received: by 2002:a05:6902:70d:b0:e02:b51f:830f with SMTP id
+ 3f1490d57ef6-e0b2cd8ec12mr1229263276.41.1721899345252; Thu, 25 Jul 2024
+ 02:22:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/panfrost: Mark simple_ondemand governor as softdep
-To: Dragan Simic <dsimic@manjaro.org>
-Cc: dri-devel@lists.freedesktop.org, boris.brezillon@collabora.com,
- robh@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
- linux-kernel@vger.kernel.org, Diederik de Haas <didi.debian@cknow.org>,
- Furkan Kardame <f.kardame@manjaro.org>, stable@vger.kernel.org
-References: <4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org>
- <f672e7460c92bc9e0c195804f7e99d0b@manjaro.org>
- <e42a55ba-cbb5-47a4-bec6-9c3067040970@arm.com>
- <192dbcd968dfebf825a3a759701bf381@manjaro.org>
- <d20667e76aa56fb69c91ef327d467d4a@manjaro.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <d20667e76aa56fb69c91ef327d467d4a@manjaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240701114748.hodf6pngk7opx373@vireshk-i7> <20240702051526.hyqhvmxnywofsjp2@vireshk-i7>
+ <CAPDyKFoA9O5a6xZ+948QOzYqsRjk_0jJaSxeYRwx=76YsLHzXQ@mail.gmail.com>
+ <20240711031356.rl2j6fqxrykmqfoy@vireshk-i7> <CAPDyKFocjOt+JyzcAqOfCnmTxBMZmPjMerSh6RZ-hSMajRhzEA@mail.gmail.com>
+ <CAPDyKFoWgX=r1QtrcpEF-Y4BkiOtVnz4jaztL9zggo-=uiKsUg@mail.gmail.com>
+ <20240711131637.opzrayksfadimgq4@vireshk-i7> <CAPDyKFqczrJzHApBOYRSg=MXzzd1_nSgQQ3QwKYLWzgZ+XY32A@mail.gmail.com>
+ <20240718030556.dmgzs24d2bk3hmpb@vireshk-i7> <CAPDyKFqCqDqSz2AGrNvkoWzn8-oYnS2fT1dyiMC8ZP1yqYvLKg@mail.gmail.com>
+ <20240725060211.e5pnfk46c6lxedpg@vireshk-i7>
+In-Reply-To: <20240725060211.e5pnfk46c6lxedpg@vireshk-i7>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 25 Jul 2024 11:21:48 +0200
+Message-ID: <CAPDyKFpSmZgxtmCtiTrFOwgj7ZpNpkDMhxsK0KnuGsWi1a9U5g@mail.gmail.com>
+Subject: Re: [PATCH] OPP: Fix support for required OPPs for multiple PM domains
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Nikunj Kela <nkela@quicinc.com>, Prasad Sodagudi <psodagud@quicinc.com>, linux-pm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Dragan,
+On Thu, 25 Jul 2024 at 08:02, Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>
+> On 18-07-24, 12:38, Ulf Hansson wrote:
+> > I understand your point, but we don't need to call
+> > dev_pm_opp_set_opp() from _set_required_opps() to accomplish this.
+>
+> I _strongly_ feel that the OPP core should be doing what other frameworks, like
+> clk, regulator, genpd, are doing in this case. Call recursively.
+>
+> > In fact, I have realized that calling dev_pm_opp_set_opp() from there
+> > doesn't work the way we expected.
+> >
+> > More precisely, at each recursive call to dev_pm_opp_set_opp() we are
+> > changing the OPP for a genpd's OPP table for a device that has been
+> > attached to it. The problem with this, is that we may have several
+> > devices being attached to the same genpd, thus sharing the same
+> > OPP-table that is being used for their required OPPs. So, we may have
+> > several active requests for different OPPs for a genpd's OPP table
+> > simultaneously. It seems wrong from the OPP library point of view. To
+> > me, it's would be better to leave any kind of aggregation to be
+> > managed by genpd itself.
+>
+> Right. I see this problem too and that's why I said earlier that OPP core was
+> designed for a different use case and genpd doesn't fit perfectly. Though I
+> don't see how several calls the dev_pm_opp_set_opp() simultaneously is a
+> problem. This can happen without recursive calling too, where simultaneous calls
+> for genpds occur.
 
-On 25/07/2024 09:24, Dragan Simic wrote:
-> Hello Steven and Boris,
+Right.
 
-<snip>
+The main issue in regards to the above, is that we may end up trying
+to vote for different devices, which votes correspond to the same
+OPP/OPP-table. The one that comes first will request the OPP, the
+other ones will be ignored as the OPP core thinks there is no reason
+to already set the current OPP.
 
-> Another option has become available for expressing additional module
-> dependencies, weakdeps. [1][2]  Long story short, weakdeps are similar
-> to softdeps, in the sense of telling the initial ramdisk utilities to
-> include additional kernel modules, but weakdeps result in no module
-> loading being performed by userspace.
-> 
-> Maybe "weak" isn't the best possible word choice (arguably, "soft" also
-> wasn't the best word choice), but weakdeps should be a better choice for
-> use with Panfrost and governor_simpleondemand, because weakdeps provide
-> the required information to the utilities used to generate initial
-> ramdisks,
-> while the actual module loading is left to the kernel.
-> 
-> The recent addition of weakdeps renders the previously mentioned harddeps
-> obsolete, because weakdeps actually do what we need.  Obviously, "weak"
-> doesn't go along very well with the actual nature of the dependency between
-> Panfrost and governor_simpleondemand, but it's pretty much just the
-> somewhat
-> unfortunate word choice.
-> 
-> The support for weakdeps has been already added to the kmod [3][4] and
-> Dracut [5] userspace utilities.  I'll hopefully add support for weakdeps
-> to mkinitcpio [6] rather soon.
+>
+> I think the main problem here, on how genpd doesn't fit with OPP core, is that
+> the OPP core is trying to do some sort of aggregation generally at its level,
+> like avoiding a change of OPP if the OPP is same. I think the right way to fix
+> this is by not doing any aggregation at OPP core level and genpd handle it all.
+> Which you are also aligned with I guess. This would also mean that OPP core
+> shouldn't try configuring, clk, regulator, bandwidth, etc for a genpd. The Genpd
+> core should handle that, else we may end up incorrectly configuring things.
+>
+> I guess this is what you were trying to say as well, when you were trying to
+> replace the recursive call with set-level only.
 
-That sounds much closer to the dependency we want to advertise for
-Panfrost so that's great.
+Right, I think we are in agreement. Aggregation of the
+*performance-state* (opp-level) needs to be managed by genpd, solely.
 
-> Maybe we could actually add MODULE_HARDDEP() as some kind of syntactic
-> sugar, which would currently be an alias for MODULE_WEAKDEP(), so the
-> actual hard module dependencies could be expressed properly, and possibly
-> handled differently in the future, with no need to go back and track all
-> such instances of hard module dependencies.
+>
+> I think, we don't need that change but rather avoid all these extra settings
+> from dev_pm_opp_set_opp() itself.
+>
+> Also consider that genpd configuration doesn't only happen with recursive call,
+> but can happen with a call to dev_pm_opp_set_opp() directly too for the genpd.
 
-Please do! While "weak" dependencies tell the initramfs tools what to
-put in, it would be good to be able to actually express that this module
-actually requires the governor. I can see the potential utility in
-initramfs tools wanting to put a module in without "weak" dependencies
-if initramfs size was limited[1] and "limited support" was appropriate,
-and that's not what Panfrost gives. So having a way of fixing this in
-the future without churn in driver would be good.
+Right.
 
-> With all this in mind, here's what I'm going to do:
-> 
-> 1) Submit a patch that adds MODULE_HARDDEP() as syntactic sugar
-> 2) Implement support for weakdeps in Arch Linux's mkinitcpio [6]
-> 3) Depending on what kind of feedback the MODULE_HARDDEP() patch receives,
->    I'll submit follow-up patches for Lima and Panfrost, which will swap
->    uses of MODULE_SOFTDEP() with MODULE_HARDDEP() or MODULE_WEAKDEP()
+>
+> > The API as such isn't the problem, but rather that we are recursivly
+> > calling dev_pm_opp_set_opp() for the required-devs.
+>
+> I think that design is rather correct, just like other frameworks. Just that we
+> need to do only set-level for genpds and nothing else. That will have exactly
+> the same behavior that you want.
 
-It sounds good from my perspective. It will be interesting to see what
-feedback comes from people more familiar with initramfs tools.
+I don't quite understand what you are proposing. Do you want to add a
+separate path for opp-levels?
 
-Thanks,
+The problem with that would be that platforms (Tegra at least) are
+already using a combination of opp-level and clocks.
 
-Steve
+>
+> > In the single PM domain case, this would simply not work, as there is
+> > not a separate virtual device we can assign to the required-dev to.
+>
+> We can assign the real device in that case, why is that a problem ?
 
-[1] Although from my understanding it's firmware which is the real cause
-of bloat in initramfs size. I guess I need to start paying attention to
-this for panthor which adds GPU firmware - although currently tiny in
-comparison to others.
+To be able to call dev_pm_opp_set_opp() on the required-dev (which
+would be the real device in this case), we need to add it to genpd's
+OPP table by calling _add_opp_dev() on it. See _opp_attach_genpd().
 
-> Looking forward to your thoughts.
-> 
-> [1]
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/linux/module.h?id=61842868de13aa7fd7391c626e889f4d6f1450bf
-> [2]
-> https://lore.kernel.org/linux-kernel/20240724102349.430078-1-jtornosm@redhat.com/T/#u
-> [3]
-> https://github.com/kmod-project/kmod/commit/05828b4a6e9327a63ef94df544a042b5e9ce4fe7
-> [4]
-> https://github.com/kmod-project/kmod/commit/d06712b51404061eef92cb275b8303814fca86ec
-> [5]
-> https://github.com/dracut-ng/dracut-ng/commit/8517a6be5e20f4a6d87e55fce35ee3e29e2a1150
-> [6] https://gitlab.archlinux.org/archlinux/mkinitcpio/mkinitcpio
-> 
->>>> If a filesystem driver can rely on the (ab)use of softdeps, which
->>>> may be
->>>> fragile or seen as a bit wrong, I think we can follow the same
->>>> approach,
->>>> at least until a better solution is available.
->>>>
->>>> [6]
->>>> https://cgit.freedesktop.org/drm/drm-misc/commit/?id=0c94f58cef319ad054fd909b3bf4b7d09c03e11c
->>>> [7]
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5178578bcd4
->>>> [8]
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/super.c#n2593
->>>>
->>>>> ---
->>>>>  drivers/gpu/drm/panfrost/panfrost_drv.c | 1 +
->>>>>  1 file changed, 1 insertion(+)
->>>>>
->>>>> diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>>> b/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>>> index ef9f6c0716d5..149737d7a07e 100644
->>>>> --- a/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>>> +++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
->>>>> @@ -828,3 +828,4 @@ module_platform_driver(panfrost_driver);
->>>>>  MODULE_AUTHOR("Panfrost Project Developers");
->>>>>  MODULE_DESCRIPTION("Panfrost DRM Driver");
->>>>>  MODULE_LICENSE("GPL v2");
->>>>> +MODULE_SOFTDEP("pre: governor_simpleondemand");
+The problem with this, is that the real device already has its own OPP
+table (with the required-OPPs pointing to genpd's OPP table), which
+means that we would end up adding the device to two different OPP
+tables.
 
+Kind regards
+Uffe
 
