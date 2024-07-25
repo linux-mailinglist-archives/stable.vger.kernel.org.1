@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F8593C4BC
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC0993C56D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54FB61C20C2F
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 736C51F25CC3
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E7819D081;
-	Thu, 25 Jul 2024 14:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05AFD19AD93;
+	Thu, 25 Jul 2024 14:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gro9Yc2u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eg5/PGMx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D1C19D06A;
-	Thu, 25 Jul 2024 14:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75048468;
+	Thu, 25 Jul 2024 14:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918572; cv=none; b=j3SKFstN9XTcsv0Bt+OhE7RgovH8DNKlpMHA2Bt2H72hZY8Ak67rGhsvJUferpl/s1thWwJJ0p+QvnsczvSQCkztSIIyzxR+TMe+i36QQFrS/y3EsV+qVfLi89Z0qAGWvkuwGRVAWrQb3uyAAiTLMBE5m+KDAhz1i66G6muzteE=
+	t=1721919077; cv=none; b=fXb30K/1CVxZui8eOcflARCV4nZb7xqQi6JwkECkuDegnVd7Ike/UF81c10dW3ILNGpMdrMqCiSKNmhH2fK81KNB+7dZO71HKCTgbfh5GyBJntlE4yrmDCLubXXRZPPANyTYoe8tafVhXaV8lq9UabCDTn1DWvOYzfJU1glP16A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918572; c=relaxed/simple;
-	bh=lzvBI48LlXvylKfUOLek5hU9kjfQU+UXrIDXji6S+Ls=;
+	s=arc-20240116; t=1721919077; c=relaxed/simple;
+	bh=+FC4f0yKXIB/qNpT3bslgvGDZeHURjfF5wcUBNCcaSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WMm1BELB+dtISJe/lje8OuARPhrCV2EACFgiRvdU+YssP24UBW6o7pR4U0sF6lkTAz07s+TimXf6dIInjTJ4357Y3Fv1o4FnzVDVTYQcRHyFeGrVGuRrtPJZpznSN+Cnu6Buqzm0+daDHQcPsjqIumbCYiLqfmSnsss7EwK34lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gro9Yc2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A404C116B1;
-	Thu, 25 Jul 2024 14:42:50 +0000 (UTC)
+	 MIME-Version; b=osOEWG0QXuWlIhoH8z4hdJjoI60Q2q1iDI78v5KWGH/gwMM8HrrpjOW7JNO5c8oDRx2ShdYz9g+O6cUiBWnbNfA6gett9yNO3kLobjPAeTCTC40w+OsvKEqCOmZenqR6AK2skvdD7vf6GsTFY0kIzmUnZE0l3RoK1GmRa83GRBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eg5/PGMx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B1DC116B1;
+	Thu, 25 Jul 2024 14:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918571;
-	bh=lzvBI48LlXvylKfUOLek5hU9kjfQU+UXrIDXji6S+Ls=;
+	s=korg; t=1721919077;
+	bh=+FC4f0yKXIB/qNpT3bslgvGDZeHURjfF5wcUBNCcaSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gro9Yc2ujIo5qvHrpqN9eTxT12ia1q7VVF19d1YmBlq0N9sz7R/Tl4p9+PbcwGAxP
-	 Xp91pZdCd7lZvBaJrfFQ9/b69+pbKrV4KteMnJ6i39VLArJvN6S6xLq1ETND9cNWoK
-	 C0E+ww5KX9fezN/LcM5jXpcCd3mSl25wXL8jojr8=
+	b=Eg5/PGMxFvxwszPnq4I+QDi/6gg3PusrvdBsziV99KVtH7cMsFfwo5m5WQapgnlel
+	 LkGmx8gpiFbXXeVD4ixzQTFy2Fa3n6CAD3s+6EdhWgPzS6fflYV6MmX6cIPefMyXIr
+	 FIA2s00BpqDAs0cmWF8A97FIGdtXSVbnyjrmJxj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 26/43] net: usb: qmi_wwan: add Telit FN912 compositions
-Date: Thu, 25 Jul 2024 16:36:49 +0200
-Message-ID: <20240725142731.460222984@linuxfoundation.org>
+Subject: [PATCH 5.15 17/87] wifi: iwlwifi: mvm: Handle BIGTK cipher in kek_kck cmd
+Date: Thu, 25 Jul 2024 16:36:50 +0200
+Message-ID: <20240725142739.083798381@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 
-[ Upstream commit 77453e2b015b5ced5b3f45364dd5a72dfc3bdecb ]
+[ Upstream commit 08b16d1b5997dc378533318e2a9cd73c7a898284 ]
 
-Add the following Telit FN912 compositions:
+The BIGTK cipher field was added to the kek_kck_material_cmd
+but wasn't assigned. Fix that by differentiating between the
+IGTK/BIGTK keys and assign the ciphers fields accordingly.
 
-0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3000 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3001 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Link: https://patch.msgid.link/20240625102236.69539-1-dnlplm@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.7fd0b22b7267.Ie9b581652b74bd7806980364d59e1b2e78e682c0@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 7cad9850e6f15..17aa52ed892b5 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1334,6 +1334,8 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1260, 2)},	/* Telit LE910Cx */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1261, 2)},	/* Telit LE910Cx */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1900, 1)},	/* Telit LN940 series */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3000, 0)},	/* Telit FN912 series */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3001, 0)},	/* Telit FN912 series */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9801, 3)},	/* Telewell TW-3G HSPA+ */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9803, 4)},	/* Telewell TW-3G HSPA+ */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9b01, 3)},	/* XS Stick W100-2 from 4G Systems */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index f9b004d139501..24c1666b2c88a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -595,16 +595,25 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
+ 					 void *_data)
+ {
+ 	struct wowlan_key_gtk_type_iter *data = _data;
++	__le32 *cipher = NULL;
++
++	if (key->keyidx == 4 || key->keyidx == 5)
++		cipher = &data->kek_kck_cmd->igtk_cipher;
++	if (key->keyidx == 6 || key->keyidx == 7)
++		cipher = &data->kek_kck_cmd->bigtk_cipher;
+ 
+ 	switch (key->cipher) {
+ 	default:
+ 		return;
+ 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
+ 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
+-		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
++		if (cipher)
++			*cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
+ 		return;
+ 	case WLAN_CIPHER_SUITE_AES_CMAC:
+-		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_CCM);
++	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
++		if (cipher)
++			*cipher = cpu_to_le32(STA_KEY_FLG_CCM);
+ 		return;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 		if (!sta)
 -- 
 2.43.0
 
