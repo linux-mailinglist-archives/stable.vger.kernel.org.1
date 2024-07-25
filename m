@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-61497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447E693C4A4
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CEFD93C4D7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E285E1F21C54
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9E79B25382
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1244119D096;
-	Thu, 25 Jul 2024 14:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A6C19CD11;
+	Thu, 25 Jul 2024 14:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9+zBL5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y55rJbxn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C163119D066;
-	Thu, 25 Jul 2024 14:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1905A13DDB8;
+	Thu, 25 Jul 2024 14:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918504; cv=none; b=LeuqlBoTcVzHYv37RSYoW6p9wSYufSHR6KMNTC59fSjHbp3yc+Kpm9vxTsCWYV/+iSvo31bVG7V84gPX+3V00zCc1BF5OPO4xpqHcbC+uvOBUMVb+NC50zB2fEB07QRfmTvymln6CeOqoTTNRGySZdXOlW2VPwineGzFHzhYxoA=
+	t=1721918654; cv=none; b=Yvo/1us4ys4UgXjZTq9yzYTSDHyudUNrPJvVT/aU1M1OhMlErk34JYeoxfcbTr3hvXg1RaLWL7FOIbB3PZbLcH3wqGZLHe/NBAYiVGWte9yPz7ofEgUxTf8D1BsIBN3kOML1NA2tvVgPUJw2lz+JYlJ+1pc23tokd1gBqtXSpEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918504; c=relaxed/simple;
-	bh=T1z4vm5oxhs8BwmgrfPR15IaEJsSvEbGwYSCko/zaio=;
+	s=arc-20240116; t=1721918654; c=relaxed/simple;
+	bh=3ZvkwQ3nI8gv1bq8ZSneRDjWb8gT+JDP7fR9KGvLUuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJVPr4kjyko0rtDg/wqVacP39jxFrMkTGQganROGK2ar92ftxyu7569mwxhfB52XDRrQus9hKPTbGXxwr+YfpUOlbxuYwjlZWNI7Re3KfPKJKnvUEaosMOah4rEA78AUWqL1LOV0Z2xUJME8us50RzenAF7FprCwnohFTH3EOIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9+zBL5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38350C116B1;
-	Thu, 25 Jul 2024 14:41:44 +0000 (UTC)
+	 MIME-Version; b=oqt/bABIeRE9vdVQmy8SgMAZgfDIkTcIN6y41ty5MavBTvIswOhiGTBWarfYJWli0msEnpDMLS069uJezqbyWEJkccFwtbJm7wr/E+fqcJc/WAK54lCXmM4P3etefzF4Kk4XfAM4qLp1l300VgcJ8FbAI1byEbewIaye3UYzE4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y55rJbxn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DA3C116B1;
+	Thu, 25 Jul 2024 14:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918504;
-	bh=T1z4vm5oxhs8BwmgrfPR15IaEJsSvEbGwYSCko/zaio=;
+	s=korg; t=1721918654;
+	bh=3ZvkwQ3nI8gv1bq8ZSneRDjWb8gT+JDP7fR9KGvLUuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a9+zBL5AtHguGSBXvrNoUW/jRvNe+6z5r/rvxQgCotCmxCuQWtB9wHtB2sXzqYahD
-	 HJJhqUIn4GBvzPoRlWplP/gRvdo3S1Vx77M58IdxgovvuRPBZXwmMgNy+4f2v66OKP
-	 0v0LS+oZS6E2C9m21hPnLYbZeKAPXioR5Su4ygkI=
+	b=Y55rJbxnGID5D2XxETUF2hD2+d8gBH/CnKoT2tJYJJq4nz8uJOGHhwKZn/9eKuXIZ
+	 UWMJo0ZduJGMCKVSc6Wu398SQvjyKYjsQ7fdfgWYdySeyN48CpEWEzGWqYg5Gwtn9j
+	 xZOAImquef8K5wwtNWGbYniigRjMBQXEaThZY+Ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 08/33] ila: block BH in ila_output()
-Date: Thu, 25 Jul 2024 16:36:31 +0200
-Message-ID: <20240725142728.835743130@linuxfoundation.org>
+Subject: [PATCH 5.4 09/43] ila: block BH in ila_output()
+Date: Thu, 25 Jul 2024 16:36:32 +0200
+Message-ID: <20240725142730.827049266@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -93,7 +93,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index 3d56a2fb6f86f..c7630776bd8e8 100644
+index 422dcc691f71c..6a6a30e82810d 100644
 --- a/net/ipv6/ila/ila_lwt.c
 +++ b/net/ipv6/ila/ila_lwt.c
 @@ -58,7 +58,9 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
