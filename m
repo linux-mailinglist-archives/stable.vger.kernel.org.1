@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0050393C541
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:49:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D5B93C508
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:46:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DB19B26F42
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:49:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D7452811CB
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFD0198A2C;
-	Thu, 25 Jul 2024 14:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019D119D080;
+	Thu, 25 Jul 2024 14:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPXzCONu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5omDbzu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DABFC19;
-	Thu, 25 Jul 2024 14:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CE0F519;
+	Thu, 25 Jul 2024 14:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918948; cv=none; b=ZU68K3l+vuxBzvprrZH3x2jhZttnGSp2CcitddH1GyUKyXQ2whJilWn2LXo8i5DwxlIjdOGCfeDxR6Pe5kh+0qSoq9C1tOHSVQbPJgZanxnQA5dx1kDSfxnUGBxhPSMIWaun45KZ3Ywqt6A0uwIyehB1lGRNEuXbQ4aZqjS3k98=
+	t=1721918787; cv=none; b=ce9PBch2etykUnmbVdZ58AOstnFkhzEnspD0JqnRzD0n2Ul90TWzmAyX4RaJuOT8Mbpy/6KXW1AhkMUtdC1o1mbuCG1bxA8+ZbzEbKKc4p9txrLLrli0C/fDqF0Kkw11X7B4sp6jMres7Yr20vKDeH/+Qd4doozhXD/RchZlcfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918948; c=relaxed/simple;
-	bh=9dYGtlSuBgmuyWCTlu020P9nN7ED8oVFTkLMPypANfA=;
+	s=arc-20240116; t=1721918787; c=relaxed/simple;
+	bh=BLlxdd9+AUhmvO6pinhnzJRGrIe6EBW7NxLPdANK8TI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVsYAlnOjz9+L83MSxmiXIQHuXuvasBPVrYRW+cmCMhppRmbodHBrSDerFxX6JC+pS4qM3A3G5ntp/rq6oR0SgQBYL2JS8Bkk0ioINryfX5CAj51Ad/F6HNIKEI2ojG+P5BMKbWRe8oplcrtrKLnV3LFcv50FM6E21r3F9iU7wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPXzCONu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F607C116B1;
-	Thu, 25 Jul 2024 14:49:08 +0000 (UTC)
+	 MIME-Version; b=IHAyr7yKypnYEWJwv1uJ4d7JQQposz/8h2WRy45/ICF41jdWyQSqhDAYrTkbUNQ0YKwk0QISDx/RBa4lMGRuMJOyzv1QawFkYs20lZQZgyU0AIOqh4i6h3X908G9r/iJTeuD3LRkNL+IydGumg6Yc1GpbzWDoXyjRu0TZABSDyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5omDbzu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D269C116B1;
+	Thu, 25 Jul 2024 14:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918948;
-	bh=9dYGtlSuBgmuyWCTlu020P9nN7ED8oVFTkLMPypANfA=;
+	s=korg; t=1721918787;
+	bh=BLlxdd9+AUhmvO6pinhnzJRGrIe6EBW7NxLPdANK8TI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sPXzCONulbPiSvlm7TB+BLkgNnPLtXDmgU6ShvV3neDyzCF2cyQPyUj53qgwbe6PI
-	 M5TG3Qw1SPDg+ax5vmw9cwMeQxxXNg2yYA6WjkiBLDwldt8fPd2sNLqScrrnOjHHsj
-	 2AH5B3vpCLuYwwR+7aFWdcwkelKD32vh25F43rtU=
+	b=s5omDbzu0qeQZAbozRXWIP/FG9M5gGfFRIB3W4OcKf8DAais59mpq8GH5LV5NQw2k
+	 OuQ1fZkEmvLqEm5NnHFCCxono6hGGkz1iW3yvehM1mtKJbo4UrEG7J/ijRMjABJPz2
+	 ZFJiFFQDtdGEa2nQR3+5q5wEuUPayj93K/RE53H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 38/59] Bluetooth: hci_core: cancel all works upon hci_unregister_dev()
+	Abel Vesa <abel.vesa@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.9 18/29] arm64: dts: qcom: x1e80100-crd: Fix USB PHYs regulators
 Date: Thu, 25 Jul 2024 16:37:28 +0200
-Message-ID: <20240725142734.700605239@linuxfoundation.org>
+Message-ID: <20240725142732.364238662@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
+References: <20240725142731.678993846@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 0d151a103775dd9645c78c97f77d6e2a5298d913 ]
+commit ae5cee8e7349d7e5deff4cf90a08cbd738287155 upstream.
 
-syzbot is reporting that calling hci_release_dev() from hci_error_reset()
-due to hci_dev_put() from hci_error_reset() can cause deadlock at
-destroy_workqueue(), for hci_error_reset() is called from
-hdev->req_workqueue which destroy_workqueue() needs to flush.
+The 1.2v HS PHY shared regulator is actually LDO2 from PM8550ve id J.
+Also add the missing supplies to QMP PHYs.
 
-We need to make sure that hdev->{rx_work,cmd_work,tx_work} which are
-queued into hdev->workqueue and hdev->{power_on,error_reset} which are
-queued into hdev->req_workqueue are no longer running by the moment
-
-       destroy_workqueue(hdev->workqueue);
-       destroy_workqueue(hdev->req_workqueue);
-
-are called from hci_release_dev().
-
-Call cancel_work_sync() on these work items from hci_unregister_dev()
-as soon as hdev->list is removed from hci_dev_list.
-
-Reported-by: syzbot <syzbot+da0a9c9721e36db712e8@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=da0a9c9721e36db712e8
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d7e03cce0400 ("arm64: dts: qcom: x1e80100-crd: Enable more support")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: stable@vger.kernel.org      # 6.9
+Link: https://lore.kernel.org/r/20240530-x1e80100-dts-fix-usb-phy-supplies-v1-1-6eb72a546227@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/qcom/x1e80100-crd.dts |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index b9cf5bc9364c1..c8c1cd55c0eb0 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -3839,7 +3839,11 @@ void hci_unregister_dev(struct hci_dev *hdev)
- 	list_del(&hdev->list);
- 	write_unlock(&hci_dev_list_lock);
+--- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
+@@ -824,12 +824,15 @@
  
-+	cancel_work_sync(&hdev->rx_work);
-+	cancel_work_sync(&hdev->cmd_work);
-+	cancel_work_sync(&hdev->tx_work);
- 	cancel_work_sync(&hdev->power_on);
-+	cancel_work_sync(&hdev->error_reset);
+ &usb_1_ss0_hsphy {
+ 	vdd-supply = <&vreg_l2e_0p8>;
+-	vdda12-supply = <&vreg_l3e_1p2>;
++	vdda12-supply = <&vreg_l2j_1p2>;
  
- 	if (!test_bit(HCI_QUIRK_NO_SUSPEND_NOTIFIER, &hdev->quirks)) {
- 		hci_suspend_clear_tasks(hdev);
--- 
-2.43.0
-
+ 	status = "okay";
+ };
+ 
+ &usb_1_ss0_qmpphy {
++	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-pll-supply = <&vreg_l1j_0p8>;
++
+ 	status = "okay";
+ };
+ 
+@@ -844,12 +847,15 @@
+ 
+ &usb_1_ss1_hsphy {
+ 	vdd-supply = <&vreg_l2e_0p8>;
+-	vdda12-supply = <&vreg_l3e_1p2>;
++	vdda12-supply = <&vreg_l2j_1p2>;
+ 
+ 	status = "okay";
+ };
+ 
+ &usb_1_ss1_qmpphy {
++	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-pll-supply = <&vreg_l2d_0p9>;
++
+ 	status = "okay";
+ };
+ 
+@@ -864,12 +870,15 @@
+ 
+ &usb_1_ss2_hsphy {
+ 	vdd-supply = <&vreg_l2e_0p8>;
+-	vdda12-supply = <&vreg_l3e_1p2>;
++	vdda12-supply = <&vreg_l2j_1p2>;
+ 
+ 	status = "okay";
+ };
+ 
+ &usb_1_ss2_qmpphy {
++	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-pll-supply = <&vreg_l2d_0p9>;
++
+ 	status = "okay";
+ };
+ 
 
 
 
