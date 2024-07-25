@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-61410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE26C93C267
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64B693C26A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98DFC2839E7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 12:51:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E83FF1C21380
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 12:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF3319AA69;
-	Thu, 25 Jul 2024 12:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A2719AD46;
+	Thu, 25 Jul 2024 12:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNDJSshu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbSfECq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900AD19AA4F
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FF819AA7C
+	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721911851; cv=none; b=iP6Fg2BxmqI37aCT+eh+KsuTLgQZ0tDCwF11Ll8IE07frKCxvaK0GTEEKBd95pL/BXLPyG7b+lSkATI47MdWRwD6fEnSBVPvTDWLqfAQbWPlwkMzVxI9G9uC28/mnT2jgbPyIMJBhttFWEOzwy49fiqy5yE//XsqSMaFSgylIO8=
+	t=1721911854; cv=none; b=ZJSKwvk1Am8u6GCpnvRTHUFzURWCCjte7Y2p2g5cBgTjo4Sp9XAZPOJ+WrtrBRVRp4zG8g5XyHD2Q98W6LsDn0lsQp8pYDd42Ri6o/asiW7ZOtlSvzsYZ0K/qn8+2f0mB7epEInxXbKtusc+adPqsBnaRGe0uHsZrf7DxWeqYHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721911851; c=relaxed/simple;
-	bh=e+nV/dbFAJRu6tZeVz7JHiNNHO87p5RisvDt1/eUkUQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CuLWCYLdVOx8oZRpok+V1f+jrvUZz/zBAVJtQshz4i1LZbWrr6XUi4yiUAHXikULTYhAHThLvQYeUE8xVDQ3XvFgN8FEXQGPwG8YScNCHqasY2arMiUUsYpxJuFuN2Hg3F9HSDx2HhtaBq3qeh1mprAsfscohT/RzEjm6xkDSrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNDJSshu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13999C32782;
-	Thu, 25 Jul 2024 12:50:50 +0000 (UTC)
+	s=arc-20240116; t=1721911854; c=relaxed/simple;
+	bh=UfC7A1qnNpMpIeluyj1d6MDisiVHFZAAtdyaPlfsVSI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GddakM1VBwmrLpnEZuG59QiSHWJNM0mcBG8W0Vqf5lqW6yMFuWMIZAMudfHEjos3gbPiVzPu3pG0nPqKd10537ZRW/j9AwkVpju8JEPP+n0iIE7X2xq/tYQni0KGmZSDUwFRVEdb/11J7DUQTr8qepNaNQ2E3jITzh/Ypz8QpXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbSfECq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC92C4AF0B;
+	Thu, 25 Jul 2024 12:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721911851;
-	bh=e+nV/dbFAJRu6tZeVz7JHiNNHO87p5RisvDt1/eUkUQ=;
+	s=korg; t=1721911854;
+	bh=UfC7A1qnNpMpIeluyj1d6MDisiVHFZAAtdyaPlfsVSI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LNDJSshuE5EFrUofSAnJXhyBL8w1R7ICsFFq3d0aRaK7h1dvNLkwEFDKLLymOTomD
-	 rlAQGqZ/64/s14A6r79hkC4MNdRXaX82lemga3hYsBUMzH/9nPznmONDFktBT2KjWT
-	 X3JWyRUvN1OkY//a75Tb4NyBW209FZbp/c6TE9L8=
-Subject: FAILED: patch "[PATCH] arm64: dts: qcom: sm6350: Disable SS instance in Parkmode for" failed to apply to 6.1-stable tree
+	b=wbSfECq+O/gYfkgtFvgCpf62V2M0AQprTBtNhlqJaXjJqF07H2/G3Pc3UGTOMsn/6
+	 OXgDy1fmFXKgocmNzLA/sFIOdX60PtL1rlUUAZRbwYPK6XZ1PlYKT+gLhvNLQwggkP
+	 OZUSmn/S7DhgJQpFEeG7S0KXnMpa6tXPMmVAScf8=
+Subject: FAILED: patch "[PATCH] arm64: dts: qcom: msm8998: Disable SS instance in Parkmode" failed to apply to 6.6-stable tree
 To: quic_kriskura@quicinc.com,andersson@kernel.org,konrad.dybcio@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 25 Jul 2024 14:49:52 +0200
-Message-ID: <2024072552-smock-demeanor-6259@gregkh>
+Date: Thu, 25 Jul 2024 14:50:08 +0200
+Message-ID: <2024072508-equipment-maturely-32e1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,26 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x c5d57eb7d06df16c07037cea5dacfd74d49d1833
+git cherry-pick -x 0046325ae52079b46da13a7f84dd7b2a6f7c38f8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072552-smock-demeanor-6259@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072508-equipment-maturely-32e1@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-c5d57eb7d06d ("arm64: dts: qcom: sm6350: Disable SS instance in Parkmode for USB")
-5ed2b6388b31 ("arm64: dts: qcom: sm6350: Use specific qmpphy compatible")
-347b9491c595 ("arm64: dts: qcom: sm6350: fix USB-DP PHY registers")
-95fade4016cb ("arm64: dts: qcom: sm6350: drop bogus DP PHY clock")
+0046325ae520 ("arm64: dts: qcom: msm8998: Disable SS instance in Parkmode for USB")
+b7efebfeb2e8 ("arm64: dts: qcom: msm8998: switch USB QMP PHY to new style of bindings")
 
 thanks,
 
@@ -80,13 +78,13 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c5d57eb7d06df16c07037cea5dacfd74d49d1833 Mon Sep 17 00:00:00 2001
+From 0046325ae52079b46da13a7f84dd7b2a6f7c38f8 Mon Sep 17 00:00:00 2001
 From: Krishna Kurapati <quic_kriskura@quicinc.com>
-Date: Thu, 4 Jul 2024 20:58:46 +0530
-Subject: [PATCH] arm64: dts: qcom: sm6350: Disable SS instance in Parkmode for
- USB
+Date: Thu, 4 Jul 2024 20:58:43 +0530
+Subject: [PATCH] arm64: dts: qcom: msm8998: Disable SS instance in Parkmode
+ for USB
 
-For Gen-1 targets like SM6350, it is seen that stressing out the
+For Gen-1 targets like MSM8998, it is seen that stressing out the
 controller in host mode results in HC died error:
 
  xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
@@ -94,26 +92,26 @@ controller in host mode results in HC died error:
  xhci-hcd.12.auto: HC died; cleaning up
 
 And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for SM6350 to mitigate this issue.
+SuperSpeed instance in park mode for MSM8998 to mitigate this issue.
 
 Cc: stable@vger.kernel.org
-Fixes: 23737b9557fe ("arm64: dts: qcom: sm6350: Add USB1 nodes")
+Fixes: 026dad8f5873 ("arm64: dts: qcom: msm8998: Add USB-related nodes")
 Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-7-quic_kriskura@quicinc.com
+Link: https://lore.kernel.org/r/20240704152848.3380602-4-quic_kriskura@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-index 46e122c4421c..84009b74aee7 100644
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -1921,6 +1921,7 @@ usb_1_dwc3: usb@a600000 {
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index 99f811a57ac5..7f44807b1b97 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -2144,6 +2144,7 @@ usb3_dwc3: usb@a800000 {
+ 				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
+ 				snps,dis_u2_susphy_quirk;
  				snps,dis_enblslpm_quirk;
- 				snps,has-lpm-erratum;
- 				snps,hird-threshold = /bits/ 8 <0x10>;
 +				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
+ 				phys = <&qusb2phy>, <&usb3phy>;
  				phy-names = "usb2-phy", "usb3-phy";
- 				usb-role-switch;
+ 				snps,has-lpm-erratum;
 
 
