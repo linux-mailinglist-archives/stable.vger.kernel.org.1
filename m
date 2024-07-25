@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734A193C4D1
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6533793C45C
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F32C1F228A4
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 264402843E4
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B713219D067;
-	Thu, 25 Jul 2024 14:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DA119CD0F;
+	Thu, 25 Jul 2024 14:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqDmTNCL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9PoGpjR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F4519A29C;
-	Thu, 25 Jul 2024 14:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F5819A29C;
+	Thu, 25 Jul 2024 14:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918634; cv=none; b=FGddEDPkjB04fkHKoKwlgDIFH7XZuXtQpKxdE+8MeBV70nyND8AcYfx1LRccHcC/K8FPZtLTd6D061FCdpz0FTY44NdAp14BO7ZmFhQeTtQA87M2LsXvfR9hAduWw0VMc68jerKFru+AIprFCAOVuJ91Q16UGNeYrkhRuxWbE/c=
+	t=1721918342; cv=none; b=D5p7JI+J3/LvEIyQBo3JFB/ud3uiPWPSeEzjed4Nfhwasf8jhl9dYkBKWxDdDfRTs8WmFbFdRJwR8sbT0fJcLSV//V+D48lzo7Bj1fLyxZIMUGM5pqhmEjKJzlf8kiTlyZr7Jg5+QSDvIT+BIVuhrXMfuCYVmywq1EA+EKAu4ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918634; c=relaxed/simple;
-	bh=WjvFOJAXtSnG7iBN3cjyR8sufReDkGkV/Q5vwmYAl7Q=;
+	s=arc-20240116; t=1721918342; c=relaxed/simple;
+	bh=DMWS5UvFnNSy/DT8cne3FS3pjpuU77l/RWF93g+hmtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGSHjJPNHG8qeDoGFWjJss/po57vHiKq1DDqJ5B4CGsFzpRZHw0geS1CzQUE53+XsJmaV7ZkexKgWDEs5wTCqPy+3r7Da1ip+yoMvBL1um9GT3HteovIIKr7mPts6E/79q88YpFlqEHfHYUFrrXyo+tVWLj97Dqr2dTzN+wyeOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqDmTNCL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B888CC116B1;
-	Thu, 25 Jul 2024 14:43:53 +0000 (UTC)
+	 MIME-Version; b=CneQOeOhOPDkpI6lar8so2PvwJo0KllOM+2BhsUCzYjfi1JUQb07JhfVhs40nOkpHGlgGIGog6ngVDBY54mToHS2fIMqkLu2xkFy/eiMew11+g/lXDUtaVotfoBN5esku56w+9v0Gvk7CdZz8bje6xqqRjh8SsccuPOntYr+Cwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9PoGpjR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02401C116B1;
+	Thu, 25 Jul 2024 14:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918634;
-	bh=WjvFOJAXtSnG7iBN3cjyR8sufReDkGkV/Q5vwmYAl7Q=;
+	s=korg; t=1721918342;
+	bh=DMWS5UvFnNSy/DT8cne3FS3pjpuU77l/RWF93g+hmtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqDmTNCLogMm5GafUt+X0ay8fKGOxDlfjowBiV4T5FTMijtsOvDhVhkeKn5gqoE79
-	 4OvWafq9ib7JBJd05U6z4PScUeNGF3ZWe/6Vnuzc/JcEwHU+HUQFCS0eB+5uP6Mw6h
-	 wdC8ojrC5c0rkW+aRScyABN9H9kToVJUCifJAdcc=
+	b=G9PoGpjRrBCEuknrw/2uRw8CDLI8LmPEqjKIUOLgXGMmzEXlYaDheE66GjEIilFlA
+	 ISK100y4wa3UdBwJGXbui6i8Bd9mxa4Qs3oC+0AOMhYJy3M+gx1GpA0xc5kh5ED/UN
+	 iZkWRDlZmQLLPdn0cLnKyYxYAOnsX67fFmQDJH/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 13/43] mei: demote client disconnect warning on suspend to debug
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 20/29] arm64: dts: qcom: sm6350: Disable SS instance in Parkmode for USB
 Date: Thu, 25 Jul 2024 16:36:36 +0200
-Message-ID: <20240725142730.974970740@linuxfoundation.org>
+Message-ID: <20240725142732.578540739@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
+commit c5d57eb7d06df16c07037cea5dacfd74d49d1833 upstream.
 
-Change level for the "not connected" client message in the write
-callback from error to debug.
+For Gen-1 targets like SM6350, it is seen that stressing out the
+controller in host mode results in HC died error:
 
-The MEI driver currently disconnects all clients upon system suspend.
-This behavior is by design and user-space applications with
-open connections before the suspend are expected to handle errors upon
-resume, by reopening their handles, reconnecting,
-and retrying their operations.
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
 
-However, the current driver implementation logs an error message every
-time a write operation is attempted on a disconnected client.
-Since this is a normal and expected flow after system resume
-logging this as an error can be misleading.
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instance in park mode for SM6350 to mitigate this issue.
 
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
+Cc: stable@vger.kernel.org
+Fixes: 23737b9557fe ("arm64: dts: qcom: sm6350: Add USB1 nodes")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240704152848.3380602-7-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
-index 7310b476323c2..5cd29deb79858 100644
---- a/drivers/misc/mei/main.c
-+++ b/drivers/misc/mei/main.c
-@@ -268,7 +268,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
- 	}
- 
- 	if (!mei_cl_is_connected(cl)) {
--		cl_err(dev, cl, "is not connected");
-+		cl_dbg(dev, cl, "is not connected");
- 		rets = -ENODEV;
- 		goto out;
- 	}
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -1890,6 +1890,7 @@
+ 				snps,dis_enblslpm_quirk;
+ 				snps,has-lpm-erratum;
+ 				snps,hird-threshold = /bits/ 8 <0x10>;
++				snps,parkmode-disable-ss-quirk;
+ 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 			};
 
 
 
