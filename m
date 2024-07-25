@@ -1,104 +1,147 @@
-Return-Path: <stable+bounces-61777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D61693C771
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 18:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1701493C77A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 18:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAD4CB212A2
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80334B21E0F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B6719D088;
-	Thu, 25 Jul 2024 16:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFE219D89E;
+	Thu, 25 Jul 2024 16:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="ICID+PBq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="M6Dz+PSd"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3599018786F;
-	Thu, 25 Jul 2024 16:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BB119D088
+	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 16:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721926478; cv=none; b=fNjcHjIpACxJh8/oZ4ffutQrXky+2xzthnb5vYs37O+pA2rwkKoxeHZj/xbXF+m+15ADY0BvHJwmprBMB1ie2bFQDlUSuDOhjQ+ZWQKcC/i3qQZhXVVgBZaqST/lae9MTkE8TUISzozVMDWA8Rxx9Be/BFWcl8AHRkNen8QYSws=
+	t=1721926711; cv=none; b=UbHSUoIbNRNj8+DSxq+XWTXxzgdgEjPELizoukcPh8LsayC//J4hndUweFzbueWR2a071p/iEDGLwqvxr3ATZWyGd6tbShbEijFGcrNB+fcp8vpsP732yjTsqrbhovpC8ybf3pOmxRkqnt29jtBODwjCFIlVSvNzqjXqT5Z8VTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721926478; c=relaxed/simple;
-	bh=syONP8VjVdqL2xWWMPlf7RznwF4rCyxx+6JdVj5duMw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uEZWHVMeFNAxlAlhF/UG7sEIFj3MJpcbTQ6X20s98Ipb9xhO6ONt1gfoZc2lj4bkLSyi7+glBA8QMwOw0GNH4XZUWwf+P9k6ZY0kcWxreuZhm23jT8dbRjeJiABsGze85/qpmVr2Suhy4yrV0G17OIXmjaa/Ko2p5TuJtJuIm5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=ICID+PBq; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1721926464;
-	bh=syONP8VjVdqL2xWWMPlf7RznwF4rCyxx+6JdVj5duMw=;
-	h=From:Date:Subject:To:Cc:From;
-	b=ICID+PBqOoNxfgEe43uhkJTTtzc9gjA5qc6trmobw1xGl9U0UBsM2Uyn2xL5V+v/j
-	 EN6Z6wrlZ/Mi2mC3hKEFnaM10Jm7JcVOeWiNoEz4c8FTuZuu+cWa1xOIPeo6MC5rSo
-	 79uUIp+KU3qcoMYRS0x20Wf2ytV3OTfntdTHFiuU=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Thu, 25 Jul 2024 18:54:18 +0200
-Subject: [PATCH] tools/nolibc: include arch.h from string.h
+	s=arc-20240116; t=1721926711; c=relaxed/simple;
+	bh=Eh+GYj41EH2bfKgWDm+bmK5udsi7e7BfjyJqmvPoP/0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X0X6eiPK+4WFOd7BIwUj5M+mB8pKecuQyIv9nsGsB8sbxscwfPlm/iwZdrL07BOCvvbsMUmW56+yuVh6MJPQj3Els3qUUrP+C7aqlQnEhJVE7sWCi3W+8paE+2GGxU/qNLfLOCl89z4S/FBq8L9Rgy0COGcIpGDkgXpFQX1jtZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=M6Dz+PSd; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-4f51c218396so363754e0c.3
+        for <stable@vger.kernel.org>; Thu, 25 Jul 2024 09:58:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721926708; x=1722531508; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=VDQ6s6CMG7gHp/w9EVEaonlcBFFTlypRMzTuMlEuBvY=;
+        b=M6Dz+PSdFi0lgHU+SO1xPYPAvd8AskY6vJaB2sfZA2BZujiFnVezu8ikflyQREp7GO
+         TppVhX2GhqxkgYUsi9ID7/B0dlYNvguMhInTg1QOdlx+F03gCCN/BxoZJeE48G7i+1mb
+         iy3hbw0HvkT74PbOwmYcDhNOLDff/dwQwN6q9ElNUAy5PnR8ztA51eFqHtVkQIcX3fBN
+         ME+zaQdU8YEvkP0oFr0eboF2xh/3kmv2hS8HXzF9a8CSmmSJhTW1KZYAZPVi7hInTVe4
+         VI6ybHZlkH8c1aQuqHdwzIH3HH6qaHgdPU1IBCriUptXoonW/LOghbxoXRZcXtd489SY
+         /hWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721926708; x=1722531508;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VDQ6s6CMG7gHp/w9EVEaonlcBFFTlypRMzTuMlEuBvY=;
+        b=ANF4FiF3vVfzdw4TRTfaHDZ5/Cq/nyRGna21dozANkXTQ2Htrj1hziYKfb1oCUDSsB
+         tTNP0ybVTov0uW/1o6hh/GEOpDNKZFL2E6fXDB7hUWezXROFYUU1PUrQ+dAFHb6BbwWK
+         x8T1pb4j7m0GcBWR86F8cQMeX9Hq91bbVL4aVSyva0sIo+dy/nHR5KSUWc4CWF1ShIOx
+         MjfVGK/qAfb//lBBICNyB3qfT/wvnnvSuZ668z530NoJqUn9kwNFZQfMKAD2n1cSAwUp
+         iK8FF4J/TWzeSyKeRdVEse0YUANKAjICVIzHYeuGRE9kXh5Add0uuqNPgZXXbTbq0SoY
+         g1fQ==
+X-Gm-Message-State: AOJu0YxHrU8gv7TC3+xepK9Mv0cjhPo9WiwJ+MG8KHO8uMZXKYPKy0OQ
+	oDewbwmhEAf3NDAWhdogiMjZaIS61Eaon+uykgACK3D1vo6U2fmOkLA55UrlzDvbi8jCM9ctTfJ
+	bEuM+zPUVOnX36v3xoIerlm8uvr/8nGGxRTgzzA==
+X-Google-Smtp-Source: AGHT+IEqzIGu6UGuRS/hG4Muuvv+ROC3+TMPz4G/q7GbQ1qVMcFVJrUiW/7L+Riug4rto673vTz15kixh9I30mEwN70=
+X-Received: by 2002:a05:6122:d8b:b0:4f5:27ac:ce6e with SMTP id
+ 71dfb90a1353d-4f6ca2f4282mr2619326e0c.7.1721926708409; Thu, 25 Jul 2024
+ 09:58:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240725-arch-has-func-v1-1-5521ed354acd@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIADmDomYC/x3MQQqAIBBA0avErBswy8KuEi1sGnM2FkoRRHdPW
- r7F/w9kTsIZxuqBxJdk2WNBU1dAwcWNUdZi0Ep3atAGXaKAwWX0ZyQ0dunJamLbGijNkdjL/f+
- m+X0/rCp+sl8AAAA=
-To: Willy Tarreau <w@1wt.eu>, Ammar Faizi <ammarfaizi2@gnuweeb.org>, 
- Alviro Iskandar Setiawan <alviro.iskandar@gnuweeb.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1721926463; l=1160;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=syONP8VjVdqL2xWWMPlf7RznwF4rCyxx+6JdVj5duMw=;
- b=90tcfI/zcxy8Qi19+jtfQ5KHMrUKeQjZYJDHa1Q7Wil+sdrYhhgLITVc+i+BygeNjWO040rv0
- yyjKnJpgyI9DOU3V0HFc2i2/Q/9i074fYpER7UfZXXsa64X2NrdoXdy
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 25 Jul 2024 22:28:16 +0530
+Message-ID: <CA+G9fYsVD0Yn2WPqu3a_CYtDZ=XR4WctQLOyTdn=EoS-idDHGg@mail.gmail.com>
+Subject: Re: [PATCH 5.4 00/43] 5.4.281-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
+	Ian Ray <ian.ray@gehealthcare.com>, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-string.h tests for the macros NOLIBC_ARCH_HAS_$FUNC to use the
-architecture-optimized function variants.
-However if string.h is included before arch.h header than that check
-does not work, leading to duplicate function definitions.
+On Thu, 25 Jul 2024 at 20:12, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.4.281 release.
+> There are 43 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.281-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Fixes: 553845eebd60 ("tools/nolibc: x86-64: Use `rep movsb` for `memcpy()` and `memmove()`")
-Fixes: 12108aa8c1a1 ("tools/nolibc: x86-64: Use `rep stosb` for `memset()`")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
-If nobody complains I'll apply this after v6.11-rc1 is released.
----
- tools/include/nolibc/string.h | 1 +
- 1 file changed, 1 insertion(+)
+The following build errors noticed while building arm and arm64 configs with
+toolchains gcc-12 and clang-18 on stable-rc linux-5.4.y
 
-diff --git a/tools/include/nolibc/string.h b/tools/include/nolibc/string.h
-index f9ab28421e6d..9ec9c24f38c0 100644
---- a/tools/include/nolibc/string.h
-+++ b/tools/include/nolibc/string.h
-@@ -7,6 +7,7 @@
- #ifndef _NOLIBC_STRING_H
- #define _NOLIBC_STRING_H
- 
-+#include "arch.h"
- #include "std.h"
- 
- static void *malloc(size_t len);
+First seen on today builds 25-July-2024.
 
----
-base-commit: 6ca8f2e20bd1ced8a7cd12b3ae4b1ceca85cfc2b
-change-id: 20240725-arch-has-func-59b6c92ce935
+  GOOD: 4fb5a81f1046 ("Linux 5.4.280-rc2")
+  BAD:  13f3efb40ee1 ("Linux 5.4.281-rc1")
 
-Best regards,
--- 
-Thomas Weißschuh <linux@weissschuh.net>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+Build errors:
+-------
+drivers/gpio/gpio-pca953x.c: In function 'pca953x_irq_bus_sync_unlock':
+drivers/gpio/gpio-pca953x.c:699:17: error: implicit declaration of
+function 'guard' [-Werror=implicit-function-declaration]
+  699 |                 guard(mutex)(&chip->i2c_lock);
+      |                 ^~~~~
+drivers/gpio/gpio-pca953x.c:699:23: error: 'mutex' undeclared (first
+use in this function)
+  699 |                 guard(mutex)(&chip->i2c_lock);
+      |                       ^~~~~
+
+metadata:
+------
+  config: https://storage.tuxsuite.com/public/linaro/lkft/builds/2jkAGMFVlBW89jcWOIsv80LLLSa/config
+  download_url:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2jkAGMFVlBW89jcWOIsv80LLLSa/
+  git_describe: v5.4.280-44-g13f3efb40ee1
+  git_repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+  git_sha: 13f3efb40ee1218ae1933c1a9f876c2a86c48664
+  git_short_log: 13f3efb40ee1 ("Linux 5.4.281-rc1")
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
