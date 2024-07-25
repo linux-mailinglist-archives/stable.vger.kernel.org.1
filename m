@@ -1,145 +1,165 @@
-Return-Path: <stable+bounces-61726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A1B493C5AE
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A3693C4DE
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBADA1C21F1B
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3A98284608
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFF419DF40;
-	Thu, 25 Jul 2024 14:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34D019AA5F;
+	Thu, 25 Jul 2024 14:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KELEiBzz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+uFvZsZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11DD13C816;
-	Thu, 25 Jul 2024 14:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFA819D066;
+	Thu, 25 Jul 2024 14:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919243; cv=none; b=KqN2VcFiVCZrrVGH1rC0xUE+4ifJOoRJEoibWskz4oIKt4WpvOCAWm2ae6Do2L7mkqGFjQkfpBhESPJ8WJ5FZTMvKukvqClEnuVWo5A33MjTptuq6glbEZ0na/ml7I/lc/LtbYZ7xefMWN8zvG/FZaA3vZe9rMsIe/URAWkX0ow=
+	t=1721918670; cv=none; b=ornfZXXEJaJZaHBn7NZe5+dW9V/dyO1aomqGrXwAvGiwktkAkQgvqudExsm1Br0Kk8jdCniveuPD6Z6+oPDV7mGGOD2MFLd+icOpiudm2FBZxAbrKJBkkfkhg6KGWGpr4h8FA1mMrBafuwhzfYRwsCEvwImcDcjZLVoZuN+Nm6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919243; c=relaxed/simple;
-	bh=BXpxJviUXyVHnwH2k9sS4gs21yxWWw7Cuqh+MM3GHPc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QiX99DTL876z97OzZ6E4s1Z83SVCcZPAxKVsy3EY/foFn20uVXU7y+suqB5rtp2/Vh5HrbfTEtz9cDUFiQMemjC8xi/VFn1lwk9V1T/G2iWZ1Eu1hqqmqJGDGdR4kJH9x+1+fTUoTumQplcx83SbqETI059bRbIazNKyXZzWipo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KELEiBzz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B26C32782;
-	Thu, 25 Jul 2024 14:54:03 +0000 (UTC)
+	s=arc-20240116; t=1721918670; c=relaxed/simple;
+	bh=pjN/m4ScIOKWRLZR1SP7MoVIpqpQ4u+iEJXDzQUotho=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J2xknN9xAM+QU/crYLN6tousXSOHFuu8H5iKZm4T7o9ZS3DEaezLHHfsvxEkDpXTQEKMp8azmvDo8boR9MaZS4YXv2u3HqWEf+HqtfKzovxRTzcZZNq/hiFRyRfNfXynRlXm2g+q3+pS77vrQIJ0XwSsXJyEs2KCQlySuHDOZ1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+uFvZsZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93C0C116B1;
+	Thu, 25 Jul 2024 14:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919243;
-	bh=BXpxJviUXyVHnwH2k9sS4gs21yxWWw7Cuqh+MM3GHPc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KELEiBzzznFlnNOd4C70vrys0d1FdR8uipIK+u3ltaDoWlmP0ed9Rys2bVzDYPqsw
-	 +ytIdQBERKSg0qEdJM7VPKyQw3KhNFS/FDqJTWCFxbz2BWLRqzbTgm1SeIoH2WeyZg
-	 0zhJ7htb7qvmZrNP/quNK3uQPCIYfBA/+OC2bFjo=
+	s=korg; t=1721918670;
+	bh=pjN/m4ScIOKWRLZR1SP7MoVIpqpQ4u+iEJXDzQUotho=;
+	h=From:To:Cc:Subject:Date:From;
+	b=t+uFvZsZpKELrJC0kUKOvNbSjsgMJQ8yqkUZ/Y6QC6MH9aRteZhqsG2Zj1yE+LSgM
+	 bsl0S82B/MJ1LxR2CWfG4jDys5whxBxLJG3IrdwklA+4zO5ZUJ28i2BVwcLE/rdJ5G
+	 HEo6LVqpulxIaWKBk9QrHHJgB95utI5fQCSVpjhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Denose <jdenose@google.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 36/87] Input: elantech - fix touchpad state on resume for Lenovo N24
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 6.1 00/13] 6.1.102-rc1 review
 Date: Thu, 25 Jul 2024 16:37:09 +0200
-Message-ID: <20240725142739.796165373@linuxfoundation.org>
+Message-ID: <20240725142728.029052310@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.102-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.1.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.1.102-rc1
+X-KernelTest-Deadline: 2024-07-27T14:27+00:00
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.1.102 release.
+There are 13 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
+Anything received after that time might be too late.
 
-From: Jonathan Denose <jdenose@google.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.102-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+and the diffstat can be found below.
 
-[ Upstream commit a69ce592cbe0417664bc5a075205aa75c2ec1273 ]
+thanks,
 
-The Lenovo N24 on resume becomes stuck in a state where it
-sends incorrect packets, causing elantech_packet_check_v4 to fail.
-The only way for the device to resume sending the correct packets is for
-it to be disabled and then re-enabled.
+greg k-h
 
-This change adds a dmi check to trigger this behavior on resume.
+-------------
+Pseudo-Shortlog of commits:
 
-Signed-off-by: Jonathan Denose <jdenose@google.com>
-Link: https://lore.kernel.org/r/20240503155020.v2.1.Ifa0e25ebf968d8f307f58d678036944141ab17e6@changeid
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/input/mouse/elantech.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.1.102-rc1
 
-diff --git a/drivers/input/mouse/elantech.c b/drivers/input/mouse/elantech.c
-index 4e38229404b4b..b4723ea395eb9 100644
---- a/drivers/input/mouse/elantech.c
-+++ b/drivers/input/mouse/elantech.c
-@@ -1476,16 +1476,47 @@ static void elantech_disconnect(struct psmouse *psmouse)
- 	psmouse->private = NULL;
- }
- 
-+/*
-+ * Some hw_version 4 models fail to properly activate absolute mode on
-+ * resume without going through disable/enable cycle.
-+ */
-+static const struct dmi_system_id elantech_needs_reenable[] = {
-+#if defined(CONFIG_DMI) && defined(CONFIG_X86)
-+	{
-+		/* Lenovo N24 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "81AF"),
-+		},
-+	},
-+#endif
-+	{ }
-+};
-+
- /*
-  * Put the touchpad back into absolute mode when reconnecting
-  */
- static int elantech_reconnect(struct psmouse *psmouse)
- {
-+	int err;
-+
- 	psmouse_reset(psmouse);
- 
- 	if (elantech_detect(psmouse, 0))
- 		return -1;
- 
-+	if (dmi_check_system(elantech_needs_reenable)) {
-+		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_DISABLE);
-+		if (err)
-+			psmouse_warn(psmouse, "failed to deactivate mouse on %s: %d\n",
-+				     psmouse->ps2dev.serio->phys, err);
-+
-+		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_ENABLE);
-+		if (err)
-+			psmouse_warn(psmouse, "failed to reactivate mouse on %s: %d\n",
-+				     psmouse->ps2dev.serio->phys, err);
-+	}
-+
- 	if (elantech_set_absolute_mode(psmouse)) {
- 		psmouse_err(psmouse,
- 			    "failed to put touchpad back into absolute mode.\n");
--- 
-2.43.0
+Filipe Manana <fdmanana@suse.com>
+    btrfs: do not BUG_ON on failure to get dir index for new snapshot
 
+Jann Horn <jannh@google.com>
+    filelock: Fix fcntl/close race recovery compat path
+
+Shengjiu Wang <shengjiu.wang@nxp.com>
+    ALSA: pcm_dmaengine: Don't synchronize DMA channel when DMA is paused
+
+Krishna Kurapati <quic_kriskura@quicinc.com>
+    arm64: dts: qcom: sdm630: Disable SS instance in Parkmode for USB
+
+Krishna Kurapati <quic_kriskura@quicinc.com>
+    arm64: dts: qcom: ipq6018: Disable SS instance in Parkmode for USB
+
+Krishna Kurapati <quic_kriskura@quicinc.com>
+    arm64: dts: qcom: msm8996: Disable SS instance in Parkmode for USB
+
+Seunghun Han <kkamagui@gmail.com>
+    ALSA: hda/realtek: Fix the speaker output on Samsung Galaxy Book Pro 360
+
+Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+    ALSA: hda/realtek: Enable headset mic on Positivo SU C1400
+
+lei lu <llfamsec@gmail.com>
+    fs/ntfs3: Validate ff offset
+
+lei lu <llfamsec@gmail.com>
+    jfs: don't walk off the end of ealist
+
+lei lu <llfamsec@gmail.com>
+    ocfs2: add bounds checking to ocfs2_check_dir_entry()
+
+Chao Yu <chao@kernel.org>
+    f2fs: avoid dead loop in f2fs_issue_checkpoint()
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    drm/amdgpu: Fix signedness bug in sdma_v4_0_process_trap_irq()
+
+
+-------------
+
+Diffstat:
+
+ Makefile                               |  4 +--
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi  |  1 +
+ arch/arm64/boot/dts/qcom/msm8996.dtsi  |  1 +
+ arch/arm64/boot/dts/qcom/sdm630.dtsi   |  1 +
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |  2 +-
+ fs/btrfs/transaction.c                 |  5 +++-
+ fs/f2fs/super.c                        | 15 +++++++++--
+ fs/jfs/xattr.c                         | 23 ++++++++++++++---
+ fs/locks.c                             |  9 +++----
+ fs/ntfs3/fslog.c                       |  6 ++++-
+ fs/ocfs2/dir.c                         | 46 +++++++++++++++++++++-------------
+ sound/core/pcm_dmaengine.c             |  6 ++++-
+ sound/pci/hda/patch_realtek.c          |  2 ++
+ 13 files changed, 87 insertions(+), 34 deletions(-)
 
 
 
