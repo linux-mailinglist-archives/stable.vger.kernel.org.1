@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397AC93C576
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B183293C534
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AA1F1C21EC2
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2A141C21E1A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A25019D08A;
-	Thu, 25 Jul 2024 14:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6A913C816;
+	Thu, 25 Jul 2024 14:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsJ0+tGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdCw6FCD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FA619D074;
-	Thu, 25 Jul 2024 14:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10E5F519;
+	Thu, 25 Jul 2024 14:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919103; cv=none; b=jHkgptbgt/xhMjAiguTStlZho92ALMGOpsFYcFHGdtJ1sHh0OM91TtU3ygW/WCMteVEusTktTWSjMsEtEHegNuH7rCXQvpNItnqbjvg+9S1BM2u/9JDBSF/qp2J2knWhFBBh7W4uSNSTwwz4fxcIJTITEV40u6GYyF856wVnefw=
+	t=1721918909; cv=none; b=nCeHe5OohY3tbaVI/kSqI4vcc8ZRTCzYfCumnRiNnwVENYOctbW5PYsh8A9x8IZnTrHNzFjl2+EuN/A0lsq2jiXNmI8Apj0tTUA+TZ6uSSpmAPEV19gzQtvjr/RFv2rhd3zLDBZRL5OqgBak7pe37yJgfgKHFGp9UPU/q4/Z21U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919103; c=relaxed/simple;
-	bh=2F95Z+6lxs9jiIUKF3BCKTzxZPVzsbJzfWeSDp4bGfg=;
+	s=arc-20240116; t=1721918909; c=relaxed/simple;
+	bh=HUyBsVxjYSZurz0MsEXkmH3i++wvvfkZUw5XnsElTd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DEdyk2NcTLdkH5T2SACQpKsGJxFfzX5JMtTMCUu4AIjR5stEvD4hYQqxsFhF18goxs58cYJU265J29614AbynTh6PiuuwhiV58WC73oF6ak2+G3eBIFp8xOl5j3s8Ulecy66AUeTFydTShjIKwLuKsave30iV83YTls0+8CTH1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsJ0+tGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D5EC32782;
-	Thu, 25 Jul 2024 14:51:42 +0000 (UTC)
+	 MIME-Version; b=I1y4mTw80h/FyiSE9lYvw66A/mxtoBBdj7g5oGowVK8USruIC359L8pp3NL4hpCSDVhGQzJsDbHTSonta/rHbkyYRxc7Ui2AKnWDW/5FLSCdXxVesqLuqmHmE8+WUNZkWhRBIvaEpuPOUfgo7vO/fH4KTDkzRxDyALn6SRis9KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdCw6FCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74254C116B1;
+	Thu, 25 Jul 2024 14:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919103;
-	bh=2F95Z+6lxs9jiIUKF3BCKTzxZPVzsbJzfWeSDp4bGfg=;
+	s=korg; t=1721918908;
+	bh=HUyBsVxjYSZurz0MsEXkmH3i++wvvfkZUw5XnsElTd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KsJ0+tGdMD0IEQgKZwo3KP9EHnmuuQyYoicPkgBn0+rLxg05y2KHSF3HaUrT5AnrD
-	 TPwYArAwbbzijEQZvtj0OEs+oU9W2CGPDu6w9IhBcqwuOABxo9KHviC6lsLM34SHzN
-	 lL/Vdgt90NqP1qrRgao/78IJ75SKoCiKr9SAHurg=
+	b=kdCw6FCDeCyzOr1dWMSihBCtkEc/Fu2FBjEiURPgKCuuF8mXjo374bmzdpC8SPzol
+	 vM7gtzmRzyZujlVzt/McL2L2s06z/TsIOWF4pOjvVjDCwlIAVzofXXCGep1/zA7vsE
+	 ZZg+lPqOPEAZ39rZmnVWmCzYjSU5SNqdLN8655l8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Li <liwei391@huawei.com>,
-	Huisong Li <lihuisong@huawei.com>,
-	Will Deacon <will@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 24/87] arm64: armv8_deprecated: Fix warning in isndep cpuhp starting process
+Subject: [PATCH 5.10 07/59] wifi: mac80211: fix UBSAN noise in ieee80211_prep_hw_scan()
 Date: Thu, 25 Jul 2024 16:36:57 +0200
-Message-ID: <20240725142739.346725276@linuxfoundation.org>
+Message-ID: <20240725142733.542199787@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Li <liwei391@huawei.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 14951beaec93696b092a906baa0f29322cf34004 ]
+[ Upstream commit 92ecbb3ac6f3fe8ae9edf3226c76aa17b6800699 ]
 
-The function run_all_insn_set_hw_mode() is registered as startup callback
-of 'CPUHP_AP_ARM64_ISNDEP_STARTING', it invokes set_hw_mode() methods of
-all emulated instructions.
+When testing the previous patch with CONFIG_UBSAN_BOUNDS, I've
+noticed the following:
 
-As the STARTING callbacks are not expected to fail, if one of the
-set_hw_mode() fails, e.g. due to el0 mixed-endian is not supported for
-'setend', it will report a warning:
+UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:372:4
+index 0 is out of range for type 'struct ieee80211_channel *[]'
+CPU: 0 PID: 1435 Comm: wpa_supplicant Not tainted 6.9.0+ #1
+Hardware name: LENOVO 20UN005QRT/20UN005QRT <...BIOS details...>
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x2d/0x90
+ __ubsan_handle_out_of_bounds+0xe7/0x140
+ ? timerqueue_add+0x98/0xb0
+ ieee80211_prep_hw_scan+0x2db/0x480 [mac80211]
+ ? __kmalloc+0xe1/0x470
+ __ieee80211_start_scan+0x541/0x760 [mac80211]
+ rdev_scan+0x1f/0xe0 [cfg80211]
+ nl80211_trigger_scan+0x9b6/0xae0 [cfg80211]
+ ...<the rest is not too useful...>
 
-```
-CPU[2] cannot support the emulation of setend
-CPU 2 UP state arm64/isndep:starting (136) failed (-22)
-CPU2: Booted secondary processor 0x0000000002 [0x414fd0c1]
-```
+Since '__ieee80211_start_scan()' leaves 'hw_scan_req->req.n_channels'
+uninitialized, actual boundaries of 'hw_scan_req->req.channels' can't
+be checked in 'ieee80211_prep_hw_scan()'. Although an initialization
+of 'hw_scan_req->req.n_channels' introduces some confusion around
+allocated vs. used VLA members, this shouldn't be a problem since
+everything is correctly adjusted soon in 'ieee80211_prep_hw_scan()'.
 
-To fix it, add a check for INSN_UNAVAILABLE status and skip the process.
+Cleanup 'kmalloc()' math in '__ieee80211_start_scan()' by using the
+convenient 'struct_size()' as well.
 
-Signed-off-by: Wei Li <liwei391@huawei.com>
-Tested-by: Huisong Li <lihuisong@huawei.com>
-Link: https://lore.kernel.org/r/20240423093501.3460764-1-liwei391@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240517153332.18271-2-dmantipov@yandex.ru
+[improve (imho) indentation a bit]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/armv8_deprecated.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/scan.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/kernel/armv8_deprecated.c b/arch/arm64/kernel/armv8_deprecated.c
-index 91eabe56093d6..91c29979aea79 100644
---- a/arch/arm64/kernel/armv8_deprecated.c
-+++ b/arch/arm64/kernel/armv8_deprecated.c
-@@ -471,6 +471,9 @@ static int run_all_insn_set_hw_mode(unsigned int cpu)
- 	for (i = 0; i < ARRAY_SIZE(insn_emulations); i++) {
- 		struct insn_emulation *insn = insn_emulations[i];
- 		bool enable = READ_ONCE(insn->current_mode) == INSN_HW;
-+		if (insn->status == INSN_UNAVAILABLE)
-+			continue;
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index b241ff8c015a9..be5d02c129e92 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -727,15 +727,21 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
+ 			local->hw_scan_ies_bufsize *= n_bands;
+ 		}
+ 
+-		local->hw_scan_req = kmalloc(
+-				sizeof(*local->hw_scan_req) +
+-				req->n_channels * sizeof(req->channels[0]) +
+-				local->hw_scan_ies_bufsize, GFP_KERNEL);
++		local->hw_scan_req = kmalloc(struct_size(local->hw_scan_req,
++							 req.channels,
++							 req->n_channels) +
++					     local->hw_scan_ies_bufsize,
++					     GFP_KERNEL);
+ 		if (!local->hw_scan_req)
+ 			return -ENOMEM;
+ 
+ 		local->hw_scan_req->req.ssids = req->ssids;
+ 		local->hw_scan_req->req.n_ssids = req->n_ssids;
++		/* None of the channels are actually set
++		 * up but let UBSAN know the boundaries.
++		 */
++		local->hw_scan_req->req.n_channels = req->n_channels;
 +
- 		if (insn->set_hw_mode && insn->set_hw_mode(enable)) {
- 			pr_warn("CPU[%u] cannot support the emulation of %s",
- 				cpu, insn->name);
+ 		ies = (u8 *)local->hw_scan_req +
+ 			sizeof(*local->hw_scan_req) +
+ 			req->n_channels * sizeof(req->channels[0]);
 -- 
 2.43.0
 
