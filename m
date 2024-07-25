@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-61748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C772193C5C4
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:55:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3055A93C552
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50975B239E9
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:55:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E60452810C3
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB3819D070;
-	Thu, 25 Jul 2024 14:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663BE27473;
+	Thu, 25 Jul 2024 14:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTQ5ffeC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3QO2MB9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497F113C816;
-	Thu, 25 Jul 2024 14:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241F8FC19;
+	Thu, 25 Jul 2024 14:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919314; cv=none; b=JT/FXAad1p/ln+5+gzBNDhtWXdnQKbLB5eSDsNNP4UcN7LWnYoH1AMlvC5Wl6KgL8HqXSHWujQrNYiBVvGBpMwXbzQtxHgL/Q/DNZfR9sWKJTenF+A2kLxEuhoiKCZkAAOCcaiIcjHwS1QMzlgGNitjh2fy95F9QHFF3BrJDm4A=
+	t=1721919000; cv=none; b=LB/IP2Bdb57fcOPfIgRdq9Ye856xBkMXKrQaL60J6UvnPGvtLh1E9VH0pMGlt+7TT8j/I20zMHVMLQ5ww/tmTHI6oNgT0V8ec8E9ntw2Y6igxAK/mlkwI3w1Wsh7P/+jRq8g1V15Bj2YEOUd3NQIGvrKaxZC0MlpBep/UjcW5WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919314; c=relaxed/simple;
-	bh=G6nmWHDB3/hi2c2fku5ZHyyqVACAoiZvw9NCoxA+dJ0=;
+	s=arc-20240116; t=1721919000; c=relaxed/simple;
+	bh=qTJikoGy3Hf8OKZMcc13FnbQNP+HZ1i5gVTQL3J1y20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQYa94aMZg4SidhpbO2pTJDarGCsdtII6r7QaiaRMKUsT/q2kKQKiA5C0wYIgK9C66BBD1OcgZofEBmraVFHAgs/mUP9C3fc+bPGnxinA4fXoSrmxdHjKQCMfXssIfdcactBYwHJzIF5MLzFaI65eoCB/1gojea+uFgWhPXFfA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTQ5ffeC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC580C116B1;
-	Thu, 25 Jul 2024 14:55:13 +0000 (UTC)
+	 MIME-Version; b=h94t4NArJzZW0g78SxLLz/CWRoyxCcfKJOUofJ6o8XHKf6GiI/mnu6m0pXajtSvsvRuFcMRcJgk0xMhvSVmiD9XqurweQnovErdU7MYKNGvsOgAofo5JFtNuFLVXi1+H6VYot6wW24oCRDbnITnjyUa99DmIW3QlFQXuB8OYvLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3QO2MB9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEE2C116B1;
+	Thu, 25 Jul 2024 14:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919314;
-	bh=G6nmWHDB3/hi2c2fku5ZHyyqVACAoiZvw9NCoxA+dJ0=;
+	s=korg; t=1721919000;
+	bh=qTJikoGy3Hf8OKZMcc13FnbQNP+HZ1i5gVTQL3J1y20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTQ5ffeC3D59vaxY7eACpk/lq04TcEfpqxuPwtIWlCG1Eqv/VxJ1OEXm63AiFtgzC
-	 DvNbqYbKFMHkcN9GVFBI5U1Yv5JqkYE/x1g/31KPa0UHWz92sptvgZidJlqNSVJ7dH
-	 j0Y2d4wQUNn56/bCxGBIf0FRiSFmsSmg+L+u2WNA=
+	b=E3QO2MB9Q5KDGAKiObl6V3BSx+mVnyrK+fXTg7REx/jkf9FCI1M8kNvKbVYG2rzWl
+	 ZeCu5t2tfdienLd5DUFCsY8Wnx1yN85oyDXVeKMB2dtYdR/UpfEA8INexHV4lVci3b
+	 hma9/yAjYLtxkhtU96kYlJ3ZiwSnub4QTl7x8H+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	SeongJae Park <sj@kernel.org>
-Subject: [PATCH 5.15 67/87] minmax: fix header inclusions
-Date: Thu, 25 Jul 2024 16:37:40 +0200
-Message-ID: <20240725142740.960306698@linuxfoundation.org>
+	Bob Zhou <bob.zhou@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 5.10 51/59] drm/amdgpu: Fix signedness bug in sdma_v4_0_process_trap_irq()
+Date: Thu, 25 Jul 2024 16:37:41 +0200
+Message-ID: <20240725142735.184338562@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit f6e9d38f8eb00ac8b52e6d15f6aa9bcecacb081b upstream.
+commit 6769a23697f17f9bf9365ca8ed62fe37e361a05a upstream.
 
-BUILD_BUG_ON*() macros are defined in build_bug.h.  Include it.  Replace
-compiler_types.h by compiler.h, which provides the former, to have a
-definition of the __UNIQUE_ID().
+The "instance" variable needs to be signed for the error handling to work.
 
-Link: https://lkml.kernel.org/r/20230912092355.79280-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit f6e9d38f8eb00ac8b52e6d15f6aa9bcecacb081b)
-Signed-off-by: SeongJae Park <sj@kernel.org>
-[Fix a conflict due to absence of compiler_types.h include]
+Fixes: 8b2faf1a4f3b ("drm/amdgpu: add error handle to avoid out-of-bounds")
+Reviewed-by: Bob Zhou <bob.zhou@amd.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Siddh Raman Pant <siddh.raman.pant@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -2,6 +2,8 @@
- #ifndef _LINUX_MINMAX_H
- #define _LINUX_MINMAX_H
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+@@ -2069,7 +2069,7 @@ static int sdma_v4_0_process_trap_irq(st
+ 				      struct amdgpu_irq_src *source,
+ 				      struct amdgpu_iv_entry *entry)
+ {
+-	uint32_t instance;
++	int instance;
  
-+#include <linux/build_bug.h>
-+#include <linux/compiler.h>
- #include <linux/const.h>
- 
- /*
+ 	DRM_DEBUG("IH: SDMA trap\n");
+ 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
 
 
 
