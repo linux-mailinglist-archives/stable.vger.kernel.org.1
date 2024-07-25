@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A301A93C535
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9E093C578
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13293B26C90
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD91A1C20A64
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7222D8468;
-	Thu, 25 Jul 2024 14:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A912419D886;
+	Thu, 25 Jul 2024 14:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knAolHKp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFphKaJU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C619FC19;
-	Thu, 25 Jul 2024 14:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CC18468;
+	Thu, 25 Jul 2024 14:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918912; cv=none; b=i3IbXawNJpO+sCF/lGi34Wnxp1dbQFWtXil5tqu12J7cmvj9hmqMo6GJDQq7lBGbXRxv0ekIXKpV8Y63JBnZwD9e1YY+tq+XdlSU1aIViqaRke2HiRHBdHAbG51Q39bjrbRQyviBIU+bC17mXvj9gAyMcMsYazwhkmmAH0nV7zE=
+	t=1721919106; cv=none; b=LWs3DhdF4YKI7NlDuIGBeNL43tdxDwjmvltjSdyQ0M8SAmEom342zP64R+EB98RgnrwB73u+CGN0SXDOB3FVuRKAKgqwwxMG1GmHdM4d01s4mtd+s3Ac+6WMbgCfBM0Kn33XL7ggv+85/G1TtOLNRqdw+WMwB0XsKqq+ZG6nRKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918912; c=relaxed/simple;
-	bh=G5yGq0y8UKf7bMigFZoW+NeIn2FVHkPIch+hgMSbYd0=;
+	s=arc-20240116; t=1721919106; c=relaxed/simple;
+	bh=rD4pWXgfuxLMfT7epwJqOoLrBTokt9YN7D2qG8Yj4Fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kJU6ZLyD3dTWnPncf2a209kBvZoRXOLw5CqsEuDA+9YqkXHtIrvDdxBgSZABqjfmS58uuRcCyUaxzMZ1MJnWQwr7e/fFlOJejhFGSLaTqyl6NE2dGh2UVi9m42aTRnGE5lbkyUq5Xc0wyD5B7ADlzIUsnEvZra5o2eL2vJvC/BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knAolHKp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5DCC116B1;
-	Thu, 25 Jul 2024 14:48:31 +0000 (UTC)
+	 MIME-Version; b=bzXJiDwJofn/zcOgfQ50wktAs4+rmtzTYUTDsxToixHhcMvVbYITI/3by4trdRXzg3O/eAfTJaFniuiV9cskri9vSwdfP7HwEgTESRo7AfPNgS7U7m0WZ7T2ihNKkKJa+HUJ8Ga8gjWP+stRPXco3o1/QoFon0JTSZ9AbEFM1a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFphKaJU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9ABC4AF0B;
+	Thu, 25 Jul 2024 14:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918912;
-	bh=G5yGq0y8UKf7bMigFZoW+NeIn2FVHkPIch+hgMSbYd0=;
+	s=korg; t=1721919106;
+	bh=rD4pWXgfuxLMfT7epwJqOoLrBTokt9YN7D2qG8Yj4Fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knAolHKpQamCVnQze3ZjTY3/TA4XDTRySBTzeuiSJwezOSLI1J7puqZpIOZoCJh+1
-	 CYmya/1+QvUZsU+VJnlVtvi2hNemEYIcHMy79wC8t5Y/fMKR4nbuTYjVjhUUVkNmhf
-	 GaogXSuXkIuOQo3tKf3VTLr+puCH1TZKH4on1vGs=
+	b=uFphKaJUssWITWgllHaW/6pmhgvxGLqj7GF13Wj5YMVtIyQgDWedyuJgIgkSE1LKe
+	 XpzhwCVoTrDZdoOi4c6tTeFi/hyCHde0jVowh+HRfJznbxfpnlBTsQRPBp9jjNBV+M
+	 S+ZjzVg4UomT75/P1ODEjLa+/Lh5+wrZ0YDvMHEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 08/59] selftests/openat2: Fix build warnings on ppc64
+Subject: [PATCH 5.15 25/87] null_blk: fix validation of block size
 Date: Thu, 25 Jul 2024 16:36:58 +0200
-Message-ID: <20240725142733.579431284@linuxfoundation.org>
+Message-ID: <20240725142739.384146972@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-[ Upstream commit 84b6df4c49a1cc2854a16937acd5fd3e6315d083 ]
+[ Upstream commit c462ecd659b5fce731f1d592285832fd6ad54053 ]
 
-Fix warnings like:
+Block size should be between 512 and PAGE_SIZE and be a power of 2. The current
+check does not validate this, so update the check.
 
-  openat2_test.c: In function ‘test_openat2_flags’:
-  openat2_test.c:303:73: warning: format ‘%llX’ expects argument of type
-  ‘long long unsigned int’, but argument 5 has type ‘__u64’ {aka ‘long
-  unsigned int’} [-Wformat=]
+Without this patch, null_blk would Oops due to a null pointer deref when
+loaded with bs=1536 [1].
 
-By switching to unsigned long long for u64 for ppc64 builds.
+Link: https://lore.kernel.org/all/87wmn8mocd.fsf@metaspace.dk/
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240603192645.977968-1-nmi@metaspace.dk
+[axboe: remove unnecessary braces and != 0 check]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/openat2/openat2_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/block/null_blk/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/openat2/openat2_test.c b/tools/testing/selftests/openat2/openat2_test.c
-index 453152b58e7f0..1045df1a98c07 100644
---- a/tools/testing/selftests/openat2/openat2_test.c
-+++ b/tools/testing/selftests/openat2/openat2_test.c
-@@ -5,6 +5,7 @@
-  */
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index ec78d9ad3e9bc..23c4a7b3d4e53 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -1749,8 +1749,8 @@ static int null_validate_conf(struct nullb_device *dev)
+ 		return -EINVAL;
+ 	}
  
- #define _GNU_SOURCE
-+#define __SANE_USERSPACE_TYPES__ // Use ll64
- #include <fcntl.h>
- #include <sched.h>
- #include <sys/stat.h>
+-	dev->blocksize = round_down(dev->blocksize, 512);
+-	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
++	if (blk_validate_block_size(dev->blocksize))
++		return -EINVAL;
+ 
+ 	if (dev->queue_mode == NULL_Q_MQ && dev->use_per_node_hctx) {
+ 		if (dev->submit_queues != nr_online_nodes)
 -- 
 2.43.0
 
