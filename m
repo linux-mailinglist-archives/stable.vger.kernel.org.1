@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-61419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1A493C275
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CF093C276
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45F3C283768
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 12:51:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9CA41C21778
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 12:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CE819AD41;
-	Thu, 25 Jul 2024 12:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D93C19AD59;
+	Thu, 25 Jul 2024 12:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ux4h8yXA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtCMZGYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3231A19AD40
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0F719AD55
+	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 12:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721911881; cv=none; b=c1ez19bs8If50kpsuINZh8mLUxz9MUaPgrXeij0iFtp3r5w2tH9y/ppFULTqu4iNiSuTU7OrKvwcjyrfCwn0NDAfTZ1WD1vKZkNRt0rp7N82+Oj9e1EVZ9w3jS62LsCsjfJp/oSKo8KXWFbhd6wegseiMPEyxKza/w96HaQKeuo=
+	t=1721911883; cv=none; b=Fh6rk/Gc1iLB2KV96L2SVlID+zpKlPNOloOyb7Sv0uQyWc5GEba9VngCWmRot1kVwcTfHo5qbZc99iySJ3ra081xNfUpi2jU90Dr5sARGaWL4Csmf7cu2ZInyqrAlXAVBxKLxj0Wvj9LY+IQa7MtZ6iiW5E3vPrpOqXFwcj5MCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721911881; c=relaxed/simple;
-	bh=O0HLjmOwan/yTVQSwLC8wNahoGCZe0W6eBjd19EW/xY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OEc00OA36VHs1CV9O3hdxLJ3bGWCZE9mpvDxJFAKX8+gH8eaRYYV8eKD5P7X4SF4ZG6Za1WjDpIe1AxfLqGwvObHfXOVQhjFtnRY57XJBvHkKRDs+OthUrbTxenQUCIArOyPom8uU0BZD8GvTXJ90yGT1itHUN8Ri7HiprzY+zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ux4h8yXA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BDAC116B1;
-	Thu, 25 Jul 2024 12:51:20 +0000 (UTC)
+	s=arc-20240116; t=1721911883; c=relaxed/simple;
+	bh=J/3OEuUgovcBm/72Fq5v/LfWA2PeN1QX21a1dMy6R1Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MUrwgXaQeM+XaRVfVWt09RWpa0GbMvsVRcwuGO502q0fG82AnGxag+e+hjoqj3QTAy1DEZ+yITXHfzBXkrCnCcrVkIvzvQ5VDn1nA4+5ghWZ+brJZf0x4J+2tSrtcEZG3yVo3x3aDnSIw/1LIyxvruJakZC+jIUNQ4y5dFeqE5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtCMZGYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550D1C116B1;
+	Thu, 25 Jul 2024 12:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721911880;
-	bh=O0HLjmOwan/yTVQSwLC8wNahoGCZe0W6eBjd19EW/xY=;
+	s=korg; t=1721911883;
+	bh=J/3OEuUgovcBm/72Fq5v/LfWA2PeN1QX21a1dMy6R1Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ux4h8yXAiocFQfM6iGtOKsSnGhskvA81jh+soC5YM+L+u3tXxeCFNc/g2f2F0qjkB
-	 5dFBvsUU3daJYWlKO1ml7wB0+hCIPtX6VBU2NmOTxSSgAEZJlucdmrdZOuT0mMh+td
-	 hpG3gkwxM6e1b/Y5Tjokaare6U6O7ORBEpmHF+pk=
-Subject: FAILED: patch "[PATCH] arm64: dts: qcom: ipq8074: Disable SS instance in Parkmode" failed to apply to 5.10-stable tree
+	b=dtCMZGYkTzrx3UxCJHZERJa+0MRGBwpfFXbWJV00eWPlfVhW2ZmMiJoNNx/6HJP/t
+	 En+MXMj8Ptoo5/SHyWXtqdPEsnUqQFAvdkBOy+k7nPgyLBmtX5JFvwq7+i5pIiZGkc
+	 7KeB+t8VaeZVnCWVr+S6B2eQeatk+JZGiKLVNmd0=
+Subject: FAILED: patch "[PATCH] arm64: dts: qcom: sdm845: Disable SS instance in Parkmode for" failed to apply to 6.6-stable tree
 To: quic_kriskura@quicinc.com,andersson@kernel.org,konrad.dybcio@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 25 Jul 2024 14:50:53 +0200
-Message-ID: <2024072552-victory-unpaid-afda@gregkh>
+Date: Thu, 25 Jul 2024 14:51:09 +0200
+Message-ID: <2024072509-chive-tabby-a6f1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x dc6ba95c6c4400a84cca5b419b34ae852a08cfb5
+git cherry-pick -x cf4d6d54eadb60d2ee4d31c9d92299f5e8dcb55c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072552-victory-unpaid-afda@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072509-chive-tabby-a6f1@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-dc6ba95c6c44 ("arm64: dts: qcom: ipq8074: Disable SS instance in Parkmode for USB")
-d412786ab86b ("arm64: dts: qcom: ipq8074: remove USB tx-fifo-resize property")
+cf4d6d54eadb ("arm64: dts: qcom: sdm845: Disable SS instance in Parkmode for USB")
+ca5ca568d738 ("arm64: dts: qcom: sdm845: switch USB QMP PHY to new style of bindings")
+a9ecdec45a3a ("arm64: dts: qcom: sdm845: switch USB+DP QMP PHY to new style of bindings")
 
 thanks,
 
@@ -78,13 +79,13 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From dc6ba95c6c4400a84cca5b419b34ae852a08cfb5 Mon Sep 17 00:00:00 2001
+From cf4d6d54eadb60d2ee4d31c9d92299f5e8dcb55c Mon Sep 17 00:00:00 2001
 From: Krishna Kurapati <quic_kriskura@quicinc.com>
-Date: Thu, 4 Jul 2024 20:58:42 +0530
-Subject: [PATCH] arm64: dts: qcom: ipq8074: Disable SS instance in Parkmode
- for USB
+Date: Thu, 4 Jul 2024 20:58:48 +0530
+Subject: [PATCH] arm64: dts: qcom: sdm845: Disable SS instance in Parkmode for
+ USB
 
-For Gen-1 targets like IPQ8074, it is seen that stressing out the
+For Gen-1 targets like SDM845, it is seen that stressing out the
 controller in host mode results in HC died error:
 
  xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
@@ -92,34 +93,34 @@ controller in host mode results in HC died error:
  xhci-hcd.12.auto: HC died; cleaning up
 
 And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for IPQ8074 to mitigate this issue.
+SuperSpeed instance in park mode for SDM845 to mitigate this issue.
 
 Cc: stable@vger.kernel.org
-Fixes: 5e09bc51d07b ("arm64: dts: ipq8074: enable USB support")
+Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
 Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-3-quic_kriskura@quicinc.com
+Link: https://lore.kernel.org/r/20240704152848.3380602-9-quic_kriskura@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq8074.dtsi b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-index 92682d3c9478..284a4553070f 100644
---- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-@@ -666,6 +666,7 @@ dwc_0: usb@8a00000 {
- 				interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>;
- 				phys = <&qusb_phy_0>, <&ssphy_0>;
- 				phy-names = "usb2-phy", "usb3-phy";
-+				snps,parkmode-disable-ss-quirk;
- 				snps,is-utmi-l1-suspend;
- 				snps,hird-threshold = /bits/ 8 <0x0>;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 23b101bb3842..54077549b9da 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4138,6 +4138,7 @@ usb_1_dwc3: usb@a600000 {
+ 				iommus = <&apps_smmu 0x740 0>;
  				snps,dis_u2_susphy_quirk;
-@@ -715,6 +716,7 @@ dwc_1: usb@8c00000 {
- 				interrupts = <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>;
- 				phys = <&qusb_phy_1>, <&ssphy_1>;
- 				phy-names = "usb2-phy", "usb3-phy";
+ 				snps,dis_enblslpm_quirk;
 +				snps,parkmode-disable-ss-quirk;
- 				snps,is-utmi-l1-suspend;
- 				snps,hird-threshold = /bits/ 8 <0x0>;
+ 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 
+@@ -4213,6 +4214,7 @@ usb_2_dwc3: usb@a800000 {
+ 				iommus = <&apps_smmu 0x760 0>;
  				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
++				snps,parkmode-disable-ss-quirk;
+ 				phys = <&usb_2_hsphy>, <&usb_2_qmpphy>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 			};
 
 
