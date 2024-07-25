@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0328D93C5A8
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DB9A93C52C
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2FA91F227EE
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:54:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABC2D1F2522D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB2F19CD0C;
-	Thu, 25 Jul 2024 14:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC07C19AD91;
+	Thu, 25 Jul 2024 14:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nc2c/ZWs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ft5o+yEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D96B19AD93;
-	Thu, 25 Jul 2024 14:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790221E895;
+	Thu, 25 Jul 2024 14:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919240; cv=none; b=ZVNZpCIhbYuZ60m6PVhd5OoKkFGYxJLxiV6aY4Ai6Y598xo8dCGXsgYUSQ7Ab4ytDRTT4SFV6MAbMJKRMBpKOFgHqWiTikfA3/leQMi+NpXY4ze3pUq1fKi/58BYVtJmhELoxrFgRlAov8YTIuD0vXYOxJO/Z1IzABVHvXHxbMQ=
+	t=1721918883; cv=none; b=dfs4cKF+hYjcqfCv1cUuVUPU19Eis6AWEFjTR2qpjHbMzOy3xG92DOJFFsw2nDRV1jiNKP+1XAuXzgUPiuXGJ6K9vmjxdlB5LkEaZkddywJM5K9rWNQEoFVDunIdhKC9GZOWcGDZNjgWCgHu/XTVNWT0SHtBEVn4k/3H8cwVOO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919240; c=relaxed/simple;
-	bh=s2PR9rvFiggAXH6L1bQRwlo7+E7mCtqSgc2rJGlIBeQ=;
+	s=arc-20240116; t=1721918883; c=relaxed/simple;
+	bh=N8o6B+n0icmMuQdhX3GdBhNy/+haXmedepCAg5DR3XM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ctpgUZ4vwHSu/35tYKzPHTPcBeeNlB3Mo31hufBTKTsQDAytgCQBkjC7pSoIZ5ZoCo2RdzwQ0dYs6PqSccIpVYMxCqpKO1kZApq5508d0UY6RthPQhLMMw3c20GAbM1OIV0zvaOgp/jMjshhVQXWIuqwm9Q4ZecqBDEueQd1UU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nc2c/ZWs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA15C116B1;
-	Thu, 25 Jul 2024 14:53:59 +0000 (UTC)
+	 MIME-Version; b=F9SwNva1fnavxR+w3XtubD5OBwU+lmQLzVVdeCXvTgET8olSJ9cHIvolc/Nz458iFtM4ZPjrd41d4Ew3s9vKZqna3GV+mMS3Ec1WHCAXPsNQzM/bMJBD1+uKobtjwtOoIlxlbud0tzUIZv8WojtV8Kyser8eO8rcGcwgjKz2Opk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ft5o+yEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BA3C116B1;
+	Thu, 25 Jul 2024 14:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919240;
-	bh=s2PR9rvFiggAXH6L1bQRwlo7+E7mCtqSgc2rJGlIBeQ=;
+	s=korg; t=1721918883;
+	bh=N8o6B+n0icmMuQdhX3GdBhNy/+haXmedepCAg5DR3XM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nc2c/ZWsbsD8YwRO80IV4Vbi2mmrTn1tN1XjX0ZO3Qjan1LTM9Cb1YrduRADfWHTX
-	 JJISwPS4OBTVVEyX0vORUuMpIObhi+3Af1zlc6EI9FV4Giyhp/QtTZx9NVdgejKVfe
-	 763Y+ToH+wFlYcKi3R/IhZ0LH1aYykMBofgYBWyo=
+	b=Ft5o+yEaPgba46YCR38U5C0SQ4+zpDWitzHZ3kQLvxPet1FqBgypA5YONP9kKf389
+	 NexaxygaOOn6lSwgB3hhZjx6ww0/m3Se1uTrQyNSNZEftJgMZ6D8GSVMaIUtEZiFKD
+	 dbuMi61XL8pM+9InyCxGSlQInOYfrcN27QW/KrqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/87] mips: fix compat_sys_lseek syscall
+Subject: [PATCH 5.10 18/59] wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
 Date: Thu, 25 Jul 2024 16:37:08 +0200
-Message-ID: <20240725142739.758737187@linuxfoundation.org>
+Message-ID: <20240725142733.952032153@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 0d5679a0aae2d8cda72169452c32e5cb88a7ab33 ]
+[ Upstream commit 6ef09cdc5ba0f93826c09d810c141a8d103a80fc ]
 
-This is almost compatible, but passing a negative offset should result
-in a EINVAL error, but on mips o32 compat mode would seek to a large
-32-bit byte offset.
+In 'cfg80211_wext_siwscan()', add extra check whether number of
+channels passed via 'ioctl(sock, SIOCSIWSCAN, ...)' doesn't exceed
+IW_MAX_FREQUENCIES and reject invalid request with -EINVAL otherwise.
 
-Use compat_sys_lseek() to correctly sign-extend the argument.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Reported-by: syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=253cd2d2491df77c93ac
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240531032010.451295-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/syscalls/syscall_o32.tbl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/scan.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
-index ec1119760cd3c..cd107ca10e69a 100644
---- a/arch/mips/kernel/syscalls/syscall_o32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
-@@ -27,7 +27,7 @@
- 17	o32	break				sys_ni_syscall
- # 18 was sys_stat
- 18	o32	unused18			sys_ni_syscall
--19	o32	lseek				sys_lseek
-+19	o32	lseek				sys_lseek			compat_sys_lseek
- 20	o32	getpid				sys_getpid
- 21	o32	mount				sys_mount
- 22	o32	umount				sys_oldumount
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index a6c289a61d30c..76a27b6d45d28 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -2772,10 +2772,14 @@ int cfg80211_wext_siwscan(struct net_device *dev,
+ 	wiphy = &rdev->wiphy;
+ 
+ 	/* Determine number of channels, needed to allocate creq */
+-	if (wreq && wreq->num_channels)
++	if (wreq && wreq->num_channels) {
++		/* Passed from userspace so should be checked */
++		if (unlikely(wreq->num_channels > IW_MAX_FREQUENCIES))
++			return -EINVAL;
+ 		n_channels = wreq->num_channels;
+-	else
++	} else {
+ 		n_channels = ieee80211_get_num_supported_channels(wiphy);
++	}
+ 
+ 	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
+ 		       n_channels * sizeof(void *),
 -- 
 2.43.0
 
