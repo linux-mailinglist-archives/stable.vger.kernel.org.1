@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-61693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A441293C584
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:52:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C25B93C4B5
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EDA31F25CD7
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:52:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B17CD284B3E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75411990DD;
-	Thu, 25 Jul 2024 14:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB9919D06D;
+	Thu, 25 Jul 2024 14:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iblhHypv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABIVfNEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664AB8468;
-	Thu, 25 Jul 2024 14:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFCA19D067;
+	Thu, 25 Jul 2024 14:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919138; cv=none; b=FEUZRMfXPibAeHlRhyL/FLSbzFbTkZAGa28GLisPyuCt7MPJEM7f1DhX7EIkcIlOhFpSFTeRQjlQfP3EDSjZy7/8S7hM67TsdmINp88A3DezkvkQ4aTOXDZHyooG98bl8b/RWfwSKMAO2kr848NsgaQEgpxJKiCF9b+gE4zB0ok=
+	t=1721918549; cv=none; b=hGYbwNvHma//vS8LqTNdFhVIt1R59a2Tu5vbkMt1sPCSDGxbw3TWDUksLX0FNMglJe2rD/mAysEaeeKp+7MNREKrCxndZ6t8ZtV6zZzxYf22xif+EoG9cPBVvupRMPDJkP33ZWkaGrXT4abB/YfkZfXPLur1TY5THKXOSaleYOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919138; c=relaxed/simple;
-	bh=05OORzWJDGeIuiCEJDfcoDK8wdtqzLi2QpcJF/ZQcpg=;
+	s=arc-20240116; t=1721918549; c=relaxed/simple;
+	bh=yKeUMlEBqaKDUb/iLIDpFv0nVN8x+1hxSfoqFRCxi28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWWXhR096lADYZLVe2Syb40qKrSsDAU7AMMvnevCogb9VtjiN5rBPWTYfXRExL9hb3c6s4/IXaUhMIaXKEimxXa3BQ6gR9Or+LJcbUOBOoUoeeA1oE7XFJuFwLqobPrMnDKJy4QUoOMaZcyZk5I8BoutiT6+yDLRRBFpBzPFMPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iblhHypv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08C2C116B1;
-	Thu, 25 Jul 2024 14:52:17 +0000 (UTC)
+	 MIME-Version; b=nujHxLa2OpUQsjAmwvCzqxwTclCm8YD6JxnOCBLw3f/HZZWNFDJcQ2LhsLZq60E9a30b3D1K8VpY8c9p+gEqh8hE3DEd/T4sBafqP9zzinLyvZh/n/x2OjLWGhgXhh7iq+qGasdSGtPy4T6i662U8UenbNUbEo1WqxJGUIWf9i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABIVfNEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B1BC116B1;
+	Thu, 25 Jul 2024 14:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919138;
-	bh=05OORzWJDGeIuiCEJDfcoDK8wdtqzLi2QpcJF/ZQcpg=;
+	s=korg; t=1721918549;
+	bh=yKeUMlEBqaKDUb/iLIDpFv0nVN8x+1hxSfoqFRCxi28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iblhHypvdFXlILVWSO1PtM1zYg9dfwkot/K80D2Klnj9qR3aqvV+BLLLYwloi4wUa
-	 jItynw4MKmiGUv0dWSd3BrQEVfvvRVdEfK2BNY/uZVGN+vRMjgT+RpyOecsFH96dvA
-	 94WdxsbDr2g6qif5QTTEenZnUDU2RTTTUX6eIZLg=
+	b=ABIVfNEmyr6lNwsffAYG83ax7mYQZJHki7nY118eJKoIypNUd5/Gp9jjDoR9jzkoe
+	 jNnRh41i8E8PFCc09ZnlGXnF+0/qAvL9Dv0Fco4pwiRJ8O0lWkvgPMuWABg97xWCPW
+	 lt4YlPxCVcKhYEqjNrGjuyWBRGZE62hqji6wqebY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Thomas GENTY <tomlohave@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/87] scsi: qedf: Wait for stag work during unload
+Subject: [PATCH 5.4 19/43] bytcr_rt5640 : inverse jack detect for Archos 101 cesium
 Date: Thu, 25 Jul 2024 16:36:42 +0200
-Message-ID: <20240725142738.779910122@linuxfoundation.org>
+Message-ID: <20240725142731.199676055@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Thomas GENTY <tomlohave@gmail.com>
 
-[ Upstream commit 78e88472b60936025b83eba57cffa59d3501dc07 ]
+[ Upstream commit e3209a1827646daaab744aa6a5767b1f57fb5385 ]
 
-If stag work is already scheduled and unload is called, it can lead to
-issues as unload cleans up the work element. Wait for stag work to get
-completed before cleanup during unload.
+When headphones are plugged in, they appear absent; when they are removed,
+they appear present.
+Add a specific entry in bytcr_rt5640 for this device
 
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240515091101.18754-3-skashyap@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Thomas GENTY <tomlohave@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240608170251.99936-1-tomlohave@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf.h      |  1 +
- drivers/scsi/qedf/qedf_main.c | 30 +++++++++++++++++++++++++++---
- 2 files changed, 28 insertions(+), 3 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/scsi/qedf/qedf.h b/drivers/scsi/qedf/qedf.h
-index ba94413fe2ead..1d457831f153c 100644
---- a/drivers/scsi/qedf/qedf.h
-+++ b/drivers/scsi/qedf/qedf.h
-@@ -354,6 +354,7 @@ struct qedf_ctx {
- #define QEDF_IN_RECOVERY		5
- #define QEDF_DBG_STOP_IO		6
- #define QEDF_PROBING			8
-+#define QEDF_STAG_IN_PROGRESS		9
- 	unsigned long flags; /* Miscellaneous state flags */
- 	int fipvlan_retries;
- 	u8 num_queues;
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index ab43e15fa8f36..1900acfee88ed 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -318,11 +318,18 @@ static struct fc_seq *qedf_elsct_send(struct fc_lport *lport, u32 did,
- 	 */
- 	if (resp == fc_lport_flogi_resp) {
- 		qedf->flogi_cnt++;
-+		qedf->flogi_pending++;
-+
-+		if (test_bit(QEDF_UNLOADING, &qedf->flags)) {
-+			QEDF_ERR(&qedf->dbg_ctx, "Driver unloading\n");
-+			qedf->flogi_pending = 0;
-+		}
-+
- 		if (qedf->flogi_pending >= QEDF_FLOGI_RETRY_CNT) {
- 			schedule_delayed_work(&qedf->stag_work, 2);
- 			return NULL;
- 		}
--		qedf->flogi_pending++;
-+
- 		return fc_elsct_send(lport, did, fp, op, qedf_flogi_resp,
- 		    arg, timeout);
- 	}
-@@ -911,13 +918,14 @@ void qedf_ctx_soft_reset(struct fc_lport *lport)
- 	struct qedf_ctx *qedf;
- 	struct qed_link_output if_link;
- 
-+	qedf = lport_priv(lport);
-+
- 	if (lport->vport) {
-+		clear_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
- 		printk_ratelimited("Cannot issue host reset on NPIV port.\n");
- 		return;
- 	}
- 
--	qedf = lport_priv(lport);
--
- 	qedf->flogi_pending = 0;
- 	/* For host reset, essentially do a soft link up/down */
- 	atomic_set(&qedf->link_state, QEDF_LINK_DOWN);
-@@ -937,6 +945,7 @@ void qedf_ctx_soft_reset(struct fc_lport *lport)
- 	if (!if_link.link_up) {
- 		QEDF_INFO(&qedf->dbg_ctx, QEDF_LOG_DISC,
- 			  "Physical link is not up.\n");
-+		clear_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
- 		return;
- 	}
- 	/* Flush and wait to make sure link down is processed */
-@@ -949,6 +958,7 @@ void qedf_ctx_soft_reset(struct fc_lport *lport)
- 		  "Queue link up work.\n");
- 	queue_delayed_work(qedf->link_update_wq, &qedf->link_update,
- 	    0);
-+	clear_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
- }
- 
- /* Reset the host by gracefully logging out and then logging back in */
-@@ -3725,6 +3735,7 @@ static void __qedf_remove(struct pci_dev *pdev, int mode)
- {
- 	struct qedf_ctx *qedf;
- 	int rc;
-+	int cnt = 0;
- 
- 	if (!pdev) {
- 		QEDF_ERR(NULL, "pdev is NULL.\n");
-@@ -3742,6 +3753,17 @@ static void __qedf_remove(struct pci_dev *pdev, int mode)
- 		return;
- 	}
- 
-+stag_in_prog:
-+	if (test_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags)) {
-+		QEDF_ERR(&qedf->dbg_ctx, "Stag in progress, cnt=%d.\n", cnt);
-+		cnt++;
-+
-+		if (cnt < 5) {
-+			msleep(500);
-+			goto stag_in_prog;
-+		}
-+	}
-+
- 	if (mode != QEDF_MODE_RECOVERY)
- 		set_bit(QEDF_UNLOADING, &qedf->flags);
- 
-@@ -4017,6 +4039,8 @@ void qedf_stag_change_work(struct work_struct *work)
- 		return;
- 	}
- 
-+	set_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
-+
- 	printk_ratelimited("[%s]:[%s:%d]:%d: Performing software context reset.",
- 			dev_name(&qedf->pdev->dev), __func__, __LINE__,
- 			qedf->dbg_ctx.host_no);
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index c740dec00f83b..057ecfe2c8b5c 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -465,6 +465,17 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF1 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ARCHOS 101 CESIUM"),
++		},
++		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_JD_NOT_INV |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
 -- 
 2.43.0
 
