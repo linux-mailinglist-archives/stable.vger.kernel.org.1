@@ -1,145 +1,193 @@
-Return-Path: <stable+bounces-61430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A8C93C31D
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 15:36:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9023793C346
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 15:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4D591C2114E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 13:36:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BCA8283984
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 13:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A3A198E78;
-	Thu, 25 Jul 2024 13:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F21C19B5A9;
+	Thu, 25 Jul 2024 13:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IuQpvPYg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d0Zz+UjS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08A4C8DF
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 13:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FD31DA4D;
+	Thu, 25 Jul 2024 13:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721914606; cv=none; b=DQu1ogkecgqcTZ5cTSdZ4j046LwL/88WDOeaXVC7AzayQq+/sIRoHlsyf1VAPxEpYJxACRjSzQLfhpe+ykYZO6N4QPbU2Fn84PZmWUApABN7OwZwSpjoIp9nc3SHEFA7X35WRbCXOvqak7Rwxwb/C3lq31Gjwnwsf56oQKsdF6E=
+	t=1721915287; cv=none; b=lDGvjbjuxQeVgdkwRo9M5yHieLipsCBmK5Lm6vA2nc/X8ACkjPGNChA8rh454RSTB7keDUAt0scYmjxa29myqBUe3Bz0cNb7LXzCOVwe8bRnTx88A5Egi/kg1eb1kVrVgO6Ian0exFacmw6X323ygQUkq588naOicowW7uquBGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721914606; c=relaxed/simple;
-	bh=J5MGTw4Lo37SVAoabN3Fr/KKgg2UEJjeG2UpeGbbvz8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Meh3kWMP4UTRpLlbY61CE2ZaBVosTQksU/P36WE89weSgFPfGstNyzQ5oMg115K3OJ6lDr/xhOu9OHUhNrsjMS1VDJLTzNFWHyglFKJoi6GbOTUw7NC9Y4KFORthKmxGrkM9SoP4C7Q64WPUd5WSzAwmb2FlK2cjR0bJBAZ0eKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IuQpvPYg; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1721915287; c=relaxed/simple;
+	bh=7Sv6OCEzzkgx+3bkiIC0oHCZE/eFdrysxGn/aVTxDgc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YIF8qn2AV/9LfWvy7gG4+HMCWPeVDFqLSuxh5rlfmS/M6Hb0GX0fd1lqnIpGKUa3tDFG5rHe6SRByMefIo+I+CLpiro6QaRxt2fkH1gcBOkpoZp32O8Vo5T7Cso1c5ahz+OBq1uFm6MPncGomThya9vXjxQTjhzex+71nll/ng0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d0Zz+UjS; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4266fd395eeso6846515e9.3
-        for <stable@vger.kernel.org>; Thu, 25 Jul 2024 06:36:44 -0700 (PDT)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1fd69e44596so7270445ad.1;
+        Thu, 25 Jul 2024 06:48:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721914603; x=1722519403; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1721915285; x=1722520085; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ci5WccFjX7Id9FxFRfbLX6JJ9WpQtxw7zRs+FLTrQyo=;
-        b=IuQpvPYgBQmrHWB9zG8AM1rk8nVBgnBKa33bvchdW9lI97GmIQUrlTaQX52Wpaz1RY
-         NCsag939p5ang6BA+DCMHv2FSrQS0mkbQC7w6wfCP+Ay197E9qKPIwh9RmWHCIaaqaF4
-         6/vFwVMIoQgMv1PQvvyduT7IwRO3sdAEs+bNl2c6aJ9S1nhW3zSoq+2ZrPNYA8oiaWUq
-         ychdE9eGshj/CxwCBLsMBfYg6vBBA9K/Ef5cJvxQ+n23uaD6L1ptYsqxZwvZYiDRtrS2
-         YVym94yISxGk/NmC3C1a4YGUBJsRWxvbPeH2Oj7tLwYzMNBXQmqetJJnabrCZ2GRBOtO
-         cieg==
+        bh=D36avothTiN26DEXRrwl8vL9+l9JWVjxZcAnqb0lUtE=;
+        b=d0Zz+UjSHKvdNFSolbR0RMPaFv1t683Fh9sq/H7h+nf15RcgB3LDaS8MkT3Kn43ZOR
+         nRmfjXrQvyfcbRNo3ajZ1p8aHyToj4tbV4uNNgE1Vq0jl4A57zVDFVSivMe0/Td6co9A
+         5fbCjjmc//RUJxBOdy/NQOz9AQjilx8rLN6SYTy8pgmJqGZ5B1pIB5WbVQBBvtBVWZZ9
+         ofUTmmeJVhpPFJgergA1GOx0uafBJmEYk/AB6wkKaMI7vlSraDPA5/aEDaVoWcw3y0Oa
+         cSz82lkccOHBc1Q7Q5yCUMYoZL5tFnOhp3avZqU5d2SExxWQm9UludKTU9nupSW245Lo
+         qeiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721914603; x=1722519403;
+        d=1e100.net; s=20230601; t=1721915285; x=1722520085;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ci5WccFjX7Id9FxFRfbLX6JJ9WpQtxw7zRs+FLTrQyo=;
-        b=B+zMaWCG1CW6zm5mIKIYxqAjzscLC93KdT8M6VqMLHUYjDBAiFL0tVxdHsRQTTqE5O
-         i/0/hgNNzX6VcBZTz5Qvxvyk75Ve7t7qlcQ607g5sqeTi26A/J/3CrL1RtzXQufsM8da
-         ILa2YMevN/UVTQIG2690QbzzKFJVOwTQ4gRjYz+QEkA0BmuS3QYM/vtpDeasSiKV/F+P
-         4RinZCDXYlWSwQF8e4YtqoCQmqwWlSWf9UyVwMdpXdYTrl5/OhMAWzqz30+j2eSR2ERd
-         GHdzBGzEr9RX9ueQ1tp5Dqczwzblzp/LLMV5khTXQOefk915alfAnR3GADpHYgAkTtyd
-         Bgtw==
-X-Gm-Message-State: AOJu0YyVOzLV0XJj2g7F59f5jJ4ruxbQNxR26/7jIajycsTjn9mnQqxi
-	9oQPboc6FFlSZ/6deYfdkuvxDFnkZIjNdG0Ya+9CWZz3RuZ63M6BXW6laAxS
-X-Google-Smtp-Source: AGHT+IEf069GnhZM17p/H3KJ8SZnEu8EBtK9yPg40M3mQXRhH0/CJRsEcTugpE8Hlx+7BnCCCjxjGw==
-X-Received: by 2002:a05:600c:4ca1:b0:426:5dc8:6a6a with SMTP id 5b1f17b1804b1-42806bae7admr15268185e9.21.1721914602560;
-        Thu, 25 Jul 2024 06:36:42 -0700 (PDT)
-Received: from laptop.home (83.50.134.37.dynamic.jazztel.es. [37.134.50.83])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-428057b740bsm36977455e9.46.2024.07.25.06.36.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jul 2024 06:36:42 -0700 (PDT)
-From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-To: stable@vger.kernel.org
-Cc: linux-kernel-mentees@lists.linuxfoundation.org,
-	Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>,
-	syzbot+c56033c8c15c08286062@syzkaller.appspotmail.com
-Subject: [PATCH 6.1.y] btrfs: do not BUG_ON on failure to get dir index for new snapshot
-Date: Thu, 25 Jul 2024 15:35:59 +0200
-Message-Id: <20240725133559.151607-1-sergio.collado@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        bh=D36avothTiN26DEXRrwl8vL9+l9JWVjxZcAnqb0lUtE=;
+        b=R2lYqtFTO26VG5tcW5Ly12ep08bcW5jfYM8t37+kLSEa3a2V3UbvN7D1lM5zsVwd74
+         PGcFugpgpRHTcFKTWIqcVEDd34xi8dZLcWa8FMZwyMlCds5hrCWg1ZxtD5kOJak1Jz0g
+         ecU2op2wzdrey8PNwkx9ANXPO4MENKBVLokm1AvMY240pqdZfAXYJR1YdiPjgxd4Kn8z
+         Xu13rrZGnBePZMoTgWeR5oKo1LT7GWpfvefFSAR7qywqc1kInu/7kZ1p00LYPNC3Qcmk
+         ygD9KDoACkOPq1ONY2oQZO1XjPM5n1fgMqbnPF0E5p5xtS/teVU8h2wfeQd4jT1Jd+3j
+         SHXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVT8S11Rh1/RKdlUfG1VKHCuH+4BZakdFa+m7KpmemoMJLYwDIKe/6gSYc8LStjkn6tRl5xExlC3pyNhQEjoe7NI0RClhidJliwRAsHiZCN2wBhi54tKmDE240b1F6oSnWKY0Fo+sjrQPbFOKHbGwVwNadQh5CVxKQEor3R
+X-Gm-Message-State: AOJu0Yzduaw/ANgJTxC1TxCo3kcTspToAXcjq/ylcgvOGE66X/2KFmkC
+	oUCrRsIVRxkc/g9dZibi7MNQq5gA1HQVR1std3zHzkMjsBg2z18Y
+X-Google-Smtp-Source: AGHT+IHrGj4i8av4Df9LjTSzxkl4RLlmaLnBdbHXQEJCzMcaacwmT4UIE6ho2KCbU2sqs1FU8CfR0Q==
+X-Received: by 2002:a17:902:dacc:b0:1f9:b19c:2e3b with SMTP id d9443c01a7336-1fdd6d9ca95mr91682575ad.15.1721915284726;
+        Thu, 25 Jul 2024 06:48:04 -0700 (PDT)
+Received: from localhost.localdomain ([118.32.98.101])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7ca8fd5sm14309735ad.64.2024.07.25.06.48.01
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 25 Jul 2024 06:48:04 -0700 (PDT)
+From: Yunseong Kim <yskelg@gmail.com>
+To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH v2] Bluetooth: hci_core: fix suspicious RCU usage in hci_conn_drop()
+Date: Thu, 25 Jul 2024 22:47:42 +0900
+Message-ID: <20240725134741.27281-2-yskelg@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+Protection from the queuing operation is achieved with an RCU read lock
+to avoid calling 'queue_delayed_work()' after 'cancel_delayed_work()',
+but this does not apply to 'hci_conn_drop()'.
 
-[ Upstream commit df9f278239046719c91aeb59ec0afb1a99ee8b2b ]
+commit deee93d13d38 ("Bluetooth: use hdev->workqueue when queuing
+ hdev->{cmd,ncmd}_timer works")
 
-During the transaction commit path, at create_pending_snapshot(), there
-is no need to BUG_ON() in case we fail to get a dir index for the snapshot
-in the parent directory. This should fail very rarely because the parent
-inode should be loaded in memory already, with the respective delayed
-inode created and the parent inode's index_cnt field already initialized.
+The situation described raises concerns about suspicious RCU usage in a
+corrupted context.
 
-However if it fails, it may be -ENOMEM like the comment at
-create_pending_snapshot() says or any error returned by
-btrfs_search_slot() through btrfs_set_inode_index_count(), which can be
-pretty much anything such as -EIO or -EUCLEAN for example. So the comment
-is not correct when it says it can only be -ENOMEM.
+CPU 1                   CPU 2
+ hci_dev_do_reset()
+  synchronize_rcu()      hci_conn_drop()
+  drain_workqueue()       <-- no RCU read protection during queuing. -->
+                           queue_delayed_work()
 
-However doing a BUG_ON() here is overkill, since we can instead abort
-the transaction and return the error. Note that any error returned by
-create_pending_snapshot() will eventually result in a transaction
-abort at cleanup_transaction(), called from btrfs_commit_transaction(),
-but we can explicitly abort the transaction at this point instead so that
-we get a stack trace to tell us that the call to btrfs_set_inode_index()
-failed.
+It displays a warning message like the following
 
-So just abort the transaction and return in case btrfs_set_inode_index()
-returned an error at create_pending_snapshot().
+Bluetooth: hci0: unexpected cc 0x0c38 length: 249 > 2
+=============================
+WARNING: suspicious RCU usage
+6.10.0-rc6-01340-gf14c0bb78769 #5 Not tainted
+-----------------------------
+net/mac80211/util.c:4000 RCU-list traversed in non-reader section!!
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-(cherry picked from commit df9f278239046719c91aeb59ec0afb1a99ee8b2b)
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
-Reported-by: syzbot+c56033c8c15c08286062@syzkaller.appspotmail.com
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+2 locks held by syz-executor/798:
+ #0: ffff800089a3de50 (rtnl_mutex){+.+.}-{4:4},
+    at: rtnl_lock+0x28/0x40 net/core/rtnetlink.c:79
+
+stack backtrace:
+CPU: 0 PID: 798 Comm: syz-executor Not tainted
+  6.10.0-rc6-01340-gf14c0bb78769 #5
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ dump_backtrace.part.0+0x1b8/0x1d0 arch/arm64/kernel/stacktrace.c:317
+ dump_backtrace arch/arm64/kernel/stacktrace.c:323 [inline]
+ show_stack+0x34/0x50 arch/arm64/kernel/stacktrace.c:324
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xf0/0x170 lib/dump_stack.c:114
+ dump_stack+0x20/0x30 lib/dump_stack.c:123
+ lockdep_rcu_suspicious+0x204/0x2f8 kernel/locking/lockdep.c:6712
+ ieee80211_check_combinations+0x71c/0x828 [mac80211]
+ ieee80211_check_concurrent_iface+0x494/0x700 [mac80211]
+ ieee80211_open+0x140/0x238 [mac80211]
+ __dev_open+0x270/0x498 net/core/dev.c:1474
+ __dev_change_flags+0x47c/0x610 net/core/dev.c:8837
+ dev_change_flags+0x98/0x170 net/core/dev.c:8909
+ devinet_ioctl+0xdf0/0x18d0 net/ipv4/devinet.c:1177
+ inet_ioctl+0x34c/0x388 net/ipv4/af_inet.c:1003
+ sock_do_ioctl+0xe4/0x240 net/socket.c:1222
+ sock_ioctl+0x4cc/0x740 net/socket.c:1341
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl fs/ioctl.c:893 [inline]
+ __arm64_sys_ioctl+0x184/0x218 fs/ioctl.c:893
+ __invoke_syscall arch/arm64/kernel/syscall.c:34 [inline]
+ invoke_syscall+0x90/0x2e8 arch/arm64/kernel/syscall.c:48
+ el0_svc_common.constprop.0+0x200/0x2a8 arch/arm64/kernel/syscall.c:131
+ el0_svc+0x48/0xc0 arch/arm64/kernel/entry-common.c:712
+ el0t_64_sync_handler+0x120/0x130 arch/arm64/kernel/entry-common.c:730
+ el0t_64_sync+0x190/0x198 arch/arm64/kernel/entry.S:598
+
+This patch attempts to fix that issue with the same convention.
+
+Cc: stable@vger.kernel.org # v6.1+
+Fixes: deee93d13d38 ("Bluetooth: use hdev->workqueue when queuing hdev->{cmd,ncmd}_timer works")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Tested-by: Yunseong Kim <yskelg@gmail.com>
+Signed-off-by: Yunseong Kim <yskelg@gmail.com>
 ---
- fs/btrfs/transaction.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/net/bluetooth/hci_core.h | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index a7853a3a5719..604241e6e2c1 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1701,7 +1701,10 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
- 	 * insert the directory item
- 	 */
- 	ret = btrfs_set_inode_index(BTRFS_I(parent_inode), &index);
--	BUG_ON(ret); /* -ENOMEM */
-+	if (ret) {
-+		btrfs_abort_transaction(trans, ret);
-+		goto fail;
-+	}
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 31020891fc68..111509dc1a23 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1572,8 +1572,13 @@ static inline void hci_conn_drop(struct hci_conn *conn)
+ 		}
  
- 	/* check if there is a file/dir which has the same name. */
- 	dir_item = btrfs_lookup_dir_item(NULL, parent_root, path,
+ 		cancel_delayed_work(&conn->disc_work);
+-		queue_delayed_work(conn->hdev->workqueue,
+-				   &conn->disc_work, timeo);
++
++		rcu_read_lock();
++		if (!hci_dev_test_flag(conn->hdev, HCI_CMD_DRAIN_WORKQUEUE)) {
++			queue_delayed_work(conn->hdev->workqueue,
++							   &conn->disc_work, timeo);
++		}
++		rcu_read_unlock();
+ 	}
+ }
+ 
 -- 
-2.39.2
+2.45.2
 
 
