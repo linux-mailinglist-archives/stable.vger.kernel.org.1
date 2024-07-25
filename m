@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D6493C492
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DDB93C56A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9F33B22A1C
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AD031C2188B
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87AD319AA5F;
-	Thu, 25 Jul 2024 14:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAA31993A3;
+	Thu, 25 Jul 2024 14:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcX72Mjn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwxOZ7Lw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6B919D8AA;
-	Thu, 25 Jul 2024 14:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC0B8468;
+	Thu, 25 Jul 2024 14:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918454; cv=none; b=m1yZRQ2TdOKvrVK0Fx1lBLniYjgVD+xS4di0ExH5CflolFVUjJHvCXYwwfpWRdFBaxGMqnHYqUM/W251qAFdDfwZxpR5cB25/MWVlWrk2+uiiNdLGWK472+A7SSC0HzTIIIPNx90V8ji1sp8n70prU2Js8wU7GPU8KLaxF4hpo0=
+	t=1721919068; cv=none; b=Q2YJHxzQ/Vj2eKfsP4nTvhX7haVU2NK/xNtDt44aVbzBBl5zC4MqPgiDKsx+ea46SIiaO/HohiSAPI8NWHUqh5bYwiHf07RhDiPuZ23uQHROWkA6BjbsB4Pt+IfYE0Hcjk3yKipabGvcJfxWYf9K6xafp//L/CELx4S53wLXJL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918454; c=relaxed/simple;
-	bh=aIlY7GAaxP6GGUi33A5disRajKI2U7PZLXBIGYv0bv4=;
+	s=arc-20240116; t=1721919068; c=relaxed/simple;
+	bh=nVwvOn+V0ruiIg/dmq9CGOZpVxGMfot9N/+NFTIorJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QA/Y9EcqfVOGtBlgf8iHcgn293cQt9WMhFBhU3OQIqx9B5+82Gl/+sUBpa5bLQT6XVl+jgTigBz5CK9xA2KS6aXmCGgfssEVeWPCESNaQL/j1ly7dNLncBmgL2dp+dRndm1KH0XuciaYkEwPC5vC7f86DwSq9jFpNvHfhHtnwV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcX72Mjn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E02C116B1;
-	Thu, 25 Jul 2024 14:40:53 +0000 (UTC)
+	 MIME-Version; b=gxhR+UOGGM2lGdnFwbvUqEAUSBI79HLG8F9r3RpgK2Kx8iyeCbbh2W/vcP8Z+ZMITmAKaaMQQsjjE2y+dpUBGCRIJSxF1r/ZgsFGVjCt5o52NIHU4TVS/KvOypwk8012DPFoWFdOeU6YpyZ7Wl6xU3M+KkmF0BMY9rahZNFX5+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwxOZ7Lw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D65C116B1;
+	Thu, 25 Jul 2024 14:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918454;
-	bh=aIlY7GAaxP6GGUi33A5disRajKI2U7PZLXBIGYv0bv4=;
+	s=korg; t=1721919068;
+	bh=nVwvOn+V0ruiIg/dmq9CGOZpVxGMfot9N/+NFTIorJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dcX72MjnvHmNeRtFzeLmAG5URoXoJ9s/7mETT9mt/TxKysUboCSEmc1+Efkz5Ypcm
-	 BZF2kUDQ1IVrRC//Nw3BjqgvMxD9Iu2wjx7yPZMQXeUwjyQe0lpKr8zR/IRdCbfF9w
-	 dRpd6xrc5cuKEa1xW+AEr/oKDCG6r/NiwhCHzsfQ=
+	b=kwxOZ7LwrMSoKgpdjqEu+AhmSZ1NKdHtyNK7SWy34urNWcyJV2JPCkyhs7d3fse+3
+	 e2P5cLAuudCihejtZblRw2ikTeOc4DcX5v+WKTQsgDDXuePVabv7yZl1pHhcjBNcFq
+	 gQ0FdqUKKKPLQrzjWjLPxjm6Jtatl69uYp6vyK7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 24/33] spi: imx: Dont expect DMA for i.MX{25,35,50,51,53} cspi devices
+Subject: [PATCH 5.15 14/87] wifi: mac80211: mesh: init nonpeer_pm to active by default in mesh sdata
 Date: Thu, 25 Jul 2024 16:36:47 +0200
-Message-ID: <20240725142729.426060424@linuxfoundation.org>
+Message-ID: <20240725142738.969769475@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit ce1dac560a74220f2e53845ec0723b562288aed4 ]
+[ Upstream commit 6f6291f09a322c1c1578badac8072d049363f4e6 ]
 
-While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
-claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
-device trees don't add DMA channels. The Reference manuals of i.MX31 and
-i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
-check the others.)
+With a ath9k device I can see that:
+	iw phy phy0 interface add mesh0 type mp
+	ip link set mesh0 up
+	iw dev mesh0 scan
 
-Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
-DMA channel requests") this results in an error message
+Will start a scan with the Power Management bit set in the Frame Control Field.
+This is because we set this bit depending on the nonpeer_pm variable of the mesh
+iface sdata and when there are no active links on the interface it remains to
+NL80211_MESH_POWER_UNKNOWN.
 
-	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
+As soon as links starts to be established, it wil switch to
+NL80211_MESH_POWER_ACTIVE as it is the value set by befault on the per sta
+nonpeer_pm field.
+As we want no power save by default, (as expressed with the per sta ini values),
+lets init it to the expected default value of NL80211_MESH_POWER_ACTIVE.
 
-during boot. However that isn't fatal and the driver gets loaded just
-fine, just without using DMA.
+Also please note that we cannot change the default value from userspace prior to
+establishing a link as using NL80211_CMD_SET_MESH_CONFIG will not work before
+NL80211_CMD_JOIN_MESH has been issued. So too late for our initial scan.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://patch.msgid.link/20240508095610.2146640-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Link: https://msgid.link/20240527141759.299411-1-nico.escande@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/mesh.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 0078cb365d8c2..adcd519c70b19 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -968,7 +968,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
- 	.rx_available = mx31_rx_available,
- 	.reset = mx31_reset,
- 	.fifo_size = 8,
--	.has_dmamode = true,
-+	.has_dmamode = false,
- 	.dynamic_burst = false,
- 	.has_slavemode = false,
- 	.devtype = IMX35_CSPI,
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index 6847fdf934392..6202157f467b1 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -1628,6 +1628,7 @@ void ieee80211_mesh_init_sdata(struct ieee80211_sub_if_data *sdata)
+ 	ifmsh->last_preq = jiffies;
+ 	ifmsh->next_perr = jiffies;
+ 	ifmsh->csa_role = IEEE80211_MESH_CSA_ROLE_NONE;
++	ifmsh->nonpeer_pm = NL80211_MESH_POWER_ACTIVE;
+ 	/* Allocate all mesh structures when creating the first mesh interface. */
+ 	if (!mesh_allocated)
+ 		ieee80211s_init();
 -- 
 2.43.0
 
