@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-61637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0498393C543
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:49:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADD093C516
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35E7D1C21EB6
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:49:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26592849FF
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6767413C816;
-	Thu, 25 Jul 2024 14:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137E819D8B8;
+	Thu, 25 Jul 2024 14:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4wWvOS6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONdYOAHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23344FC19;
-	Thu, 25 Jul 2024 14:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C265919D8AE;
+	Thu, 25 Jul 2024 14:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918955; cv=none; b=pN0uTelanuWajKf+Hf9syBmB8gHvjphIUcJY1JOFUMMi7qwYS6RLROo9catVCq+T+lnGyf1QuSugHrNih7idi8rTC6C0qTJTXte3mDg+qOKMukSUTfoLl+pdEtqCe64c0F3gfFj+8eHdkvYX4+rOUjFJ66Nxv3FTioS5jLRTtUU=
+	t=1721918818; cv=none; b=pL1t6uUP0pn6moh1flOZHctXEHUDCQry0G5yuY8c5CZrMjahMB0Dm2FBdsG+DNlTWssOL/MXPLGQTri21iirUWZd4uV/O2M9ZJLu7AbLQZIIWRBZ6ClK/nyOm4Rwb/usHDMKVfukd1Cg6CfYUHoug+Ilovo6qDiUFEuYKK220AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918955; c=relaxed/simple;
-	bh=z56eoMfQxmMfPXHOv013zor4B4YqjIej8S0ov3qL3AI=;
+	s=arc-20240116; t=1721918818; c=relaxed/simple;
+	bh=MVI5+D1U77I5nOO3J3CwNC3FVZNfxRh9UmXVuTZN/Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ml8NuFjrkWfv4qnYnHszpfSbGOHd20rEDYgrD+sCl/u3h54uHjh5I8pAUXDF8nJkh++paVnT1kwPOSmRRtP1yPxaqfovM0y1CmO+uY5MdTj7eh1r/Cy9ptCjXDdhbQyLclZaxkd/HXgUSV0fO9n77jNz2SdVTw/uztKSkB6V3WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4wWvOS6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4072C116B1;
-	Thu, 25 Jul 2024 14:49:14 +0000 (UTC)
+	 MIME-Version; b=P5tXenp9xQnif0eaVi1H+ujuQb1WIgfsj3ZhWRTr0bxZiJShSuJtwyYh5xhrs0EblKgeBjxmqKwHpDCI0BVDEJSrEBsfG/xIAwm8RRNvPig6DrKwWWgCZRl91kTVq3C+k/DqGQPgkaeTp+GuR3Mpob0H6tQ+mEHO2voWULlgHgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONdYOAHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D44C4AF07;
+	Thu, 25 Jul 2024 14:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918955;
-	bh=z56eoMfQxmMfPXHOv013zor4B4YqjIej8S0ov3qL3AI=;
+	s=korg; t=1721918818;
+	bh=MVI5+D1U77I5nOO3J3CwNC3FVZNfxRh9UmXVuTZN/Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4wWvOS6DFVgELWOhjRlc5UEEHcmPR2P55/L+NvR57GOdNyL4lU+alid1tggqOY9h
-	 quolJQKNI+KK4BOdpsr/Y118F81NWDSLdBR/LCEPjUiXNQKhUoy5whZG/xHrr2kCir
-	 ALI4GZCsMirymZJwbe+sTGX8ND0dg1FzIH+O6Qho=
+	b=ONdYOAHWbAVwiQTCoBieSLTrUwWPZAq5wfpQqaBHA1Qcn1Q4i607fLAVkWzyLUI6s
+	 YgvPMnqc5expE6IHtHOzm/ro/Td/gMGVZN0ualJny0V/7V/yQVffNLr+qOO289C6HP
+	 PIDVx/kSNCF2jMavelaXMSoj/XCcgB44WiwNmAlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 40/59] spi: imx: Dont expect DMA for i.MX{25,35,50,51,53} cspi devices
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.9 20/29] arm64: dts: qcom: sm6350: Disable SS instance in Parkmode for USB
 Date: Thu, 25 Jul 2024 16:37:30 +0200
-Message-ID: <20240725142734.778928029@linuxfoundation.org>
+Message-ID: <20240725142732.438300228@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
+References: <20240725142731.678993846@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit ce1dac560a74220f2e53845ec0723b562288aed4 ]
+commit c5d57eb7d06df16c07037cea5dacfd74d49d1833 upstream.
 
-While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
-claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
-device trees don't add DMA channels. The Reference manuals of i.MX31 and
-i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
-check the others.)
+For Gen-1 targets like SM6350, it is seen that stressing out the
+controller in host mode results in HC died error:
 
-Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
-DMA channel requests") this results in an error message
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
 
-	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instance in park mode for SM6350 to mitigate this issue.
 
-during boot. However that isn't fatal and the driver gets loaded just
-fine, just without using DMA.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://patch.msgid.link/20240508095610.2146640-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 23737b9557fe ("arm64: dts: qcom: sm6350: Add USB1 nodes")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240704152848.3380602-7-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 21297cc62571a..8566da12d15e3 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1001,7 +1001,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
- 	.rx_available = mx31_rx_available,
- 	.reset = mx31_reset,
- 	.fifo_size = 8,
--	.has_dmamode = true,
-+	.has_dmamode = false,
- 	.dynamic_burst = false,
- 	.has_slavemode = false,
- 	.devtype = IMX35_CSPI,
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -1859,6 +1859,7 @@
+ 				snps,dis_enblslpm_quirk;
+ 				snps,has-lpm-erratum;
+ 				snps,hird-threshold = /bits/ 8 <0x10>;
++				snps,parkmode-disable-ss-quirk;
+ 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 			};
 
 
 
