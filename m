@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-61569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9960593C4F5
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B262493C4E5
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 516F01F230FB
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC6021C21DA1
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66241E89C;
-	Thu, 25 Jul 2024 14:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CFCB19D088;
+	Thu, 25 Jul 2024 14:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYnGuz/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMvyAtlj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DCD8468;
-	Thu, 25 Jul 2024 14:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295BF19CD11;
+	Thu, 25 Jul 2024 14:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918737; cv=none; b=uSLT9/zJDLGZgchCHNIw36Or2ZPuTES67RnEbmVbZIerjHBjpggAZ/DRvOJIj4t5UMnJMpsceRkGf9J4TZeu8IaPm1T6OpB0NuJSpXEc8OGSVgM8MnUSth4shM7om/sPRjyHKsL2cnWH0RVzensL/KYrtCYcnAjEw0h/Uk2iLy0=
+	t=1721918693; cv=none; b=pXZZm583GNw1mdKc+YACJ1VqMgxWbSF5LWk4upKl30Z96PcrmPPMFKeWoSXyV2Matp/VsUEMajhbffa73KGH4HAOE66UB6a1lsBxYTQSpqC70OxaHoFZyLHMOBNv8GU7+5DBgFFkOXDOG0moBQwvGiRyYDqGL80Kbb9cPDcE2Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918737; c=relaxed/simple;
-	bh=BEHUY73uWsmhVoyM1BNKX3U7jGmTq1SiT+kdviPa660=;
+	s=arc-20240116; t=1721918693; c=relaxed/simple;
+	bh=OKxne6J4qoskQLiLC1uYZMftrOn6Qy1b0T1Cc8RRzRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNBLbXsK6W1v9N3nQ/o5OWPTyHPOyw5dMq4h6muBDvT3k7gutvZUyl0Vgt6Vn9tnfBW386ZthYOP+dH2P0qEDcrrM4N92T+QNQJ3Pw7e6x0kGx2RH9p3qFOwHEsywNFS//L8tTHO+1w0ThzIdbGIONzH/gNahKtWqmTYyilm4/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYnGuz/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A7DC116B1;
-	Thu, 25 Jul 2024 14:45:36 +0000 (UTC)
+	 MIME-Version; b=MAXhQ5LsLTbkgQ/lgNlV/bjAVHjqWaZ3gAEh5VHDsVmb5Syq4GDs/DUiaEBQAteS2dOtyk4OzkaJhRlPW25KraJjj1n12vY4BSUo1rLEr0FVqXP6wLOFgOvvtehK+JCOVolbRdmQYOWdgsJLuqyvnMuYrkjxWGxcYQmRPlnn7gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMvyAtlj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762AFC116B1;
+	Thu, 25 Jul 2024 14:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918737;
-	bh=BEHUY73uWsmhVoyM1BNKX3U7jGmTq1SiT+kdviPa660=;
+	s=korg; t=1721918692;
+	bh=OKxne6J4qoskQLiLC1uYZMftrOn6Qy1b0T1Cc8RRzRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pYnGuz/wDTmwnY46qMlf6GxIvN1e+8Xdk5TvMmAal2PH0H0+iI6a31M/RpDN/zCtB
-	 FIJ0pVEY/vaCmTE61+bYF7dvol7eGFZ0KmsZBGoJhRAiu+riS2pW/MjGaSKNLYvCKn
-	 5t8iK729r0YL0og+iK6dgOSriD+dMHdq1AVUDPmM=
+	b=jMvyAtljnpjgOD2WcBDlkgNY8ylz4kScNEtmRulwnGswIFsJRq7ek5xPEVSrr9FvW
+	 qQbyd2M7+GTmnVs+IZbbKyaZITtolQ3v5lUv0hVEaOGzjtxuSSvrbvYl7ql6CPAwma
+	 ikK4jIrhZVWnN3WKEmd07e4DAtgpOgPCvQEeKz/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 07/16] ALSA: hda/realtek: Enable headset mic on Positivo SU C1400
+Subject: [PATCH 6.1 11/13] ALSA: pcm_dmaengine: Dont synchronize DMA channel when DMA is paused
 Date: Thu, 25 Jul 2024 16:37:20 +0200
-Message-ID: <20240725142729.180627665@linuxfoundation.org>
+Message-ID: <20240725142728.466385861@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.905379352@linuxfoundation.org>
-References: <20240725142728.905379352@linuxfoundation.org>
+In-Reply-To: <20240725142728.029052310@linuxfoundation.org>
+References: <20240725142728.029052310@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-commit 8fc1e8b230771442133d5cf5fa4313277aa2bb8b upstream.
+commit 88e98af9f4b5b0d60c1fe7f7f2701b5467691e75 upstream.
 
-Positivo SU C1400 is equipped with ALC256, and it needs
-ALC269_FIXUP_ASPIRE_HEADSET_MIC quirk to make its headset mic work.
+When suspended, the DMA channel may enter PAUSE state if dmaengine_pause()
+is supported by DMA.
+At this state, dmaengine_synchronize() should not be called, otherwise
+the DMA channel can't be resumed successfully.
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Fixes: e8343410ddf0 ("ALSA: dmaengine: Synchronize dma channel after drop()")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240712180642.22564-1-edson.drosdeck@gmail.com
+Link: https://patch.msgid.link/1721198693-27636-1-git-send-email-shengjiu.wang@nxp.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/core/pcm_dmaengine.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10092,6 +10092,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
- 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
- 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x10ec, 0x119e, "Positivo SU C1400", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+--- a/sound/core/pcm_dmaengine.c
++++ b/sound/core/pcm_dmaengine.c
+@@ -352,8 +352,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_open
+ int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
+ 
+-	dmaengine_synchronize(prtd->dma_chan);
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status != DMA_PAUSED)
++		dmaengine_synchronize(prtd->dma_chan);
+ 
+ 	return 0;
+ }
 
 
 
