@@ -1,149 +1,173 @@
-Return-Path: <stable+bounces-61372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CF693BED6
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 11:15:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE09193BEEC
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 11:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7AAB1F21821
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 09:15:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C357B22BCA
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 09:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEEFB13A414;
-	Thu, 25 Jul 2024 09:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="X3tflaXn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1256316EC02;
+	Thu, 25 Jul 2024 09:20:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB26613AA46
-	for <stable@vger.kernel.org>; Thu, 25 Jul 2024 09:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DF081E;
+	Thu, 25 Jul 2024 09:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721898938; cv=none; b=OXWjuUoxgc7Q94EdVeKz4FB7I4ps4zPKXE2PlnqE66XKBlnvXiu+jKy6Jz8cRaEEgWQkAImwrL5V54KzHbdDSHK/gAiXo20eZKE5+uinRJaXb9zGMrDi582N2tB/JyYfAtLfrowT3nxXkXxgNozneBlZdj02n/wT9tPXyct2B84=
+	t=1721899228; cv=none; b=IBnDhmfN4U9ZFhqEBO+I2wFafTOs8zQJa8ltyQ1Kpe0YGPTmI4hnGijtiTt2NU2/HX16ldgZoBaQ1SHum7+/U3qG/EJYhTtRpyfYSB0OYNE8BKPyRNzCPfaL+sfFYstDTYKL9Q9jGLCVxo4VLHzaGAOYzmygq0O8u3TjetBLirQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721898938; c=relaxed/simple;
-	bh=wJdGkOSrDUI9Stb8W8GNNg19+R0mWHXTlEvz2vVpXzk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tpvaWJdUY8OrW+EnDHmIPGhMwOGdgPE+EXw3fAK52ETXTDoYeiT74+NOdSHuKyBrc9rYr00RdM3kEWJ6dMhSx0OnnWtb/Lm4svyockKVeMy4S7UCMKG6OQqpOKo1zeJiWvWExepugICPr8RFnoRP3zQ4hXNBsqHVrHamJNyIggA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=X3tflaXn; arc=none smtp.client-ip=178.154.239.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:25c3:0:640:236:0])
-	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 51EB560DBB;
-	Thu, 25 Jul 2024 12:15:29 +0300 (MSK)
-Received: from kniv-nix.yandex-team.ru (unknown [2a02:6b8:b081:b67f::1:2f])
-	by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id JFM7IR0Pj8c0-tJuvobK6;
-	Thu, 25 Jul 2024 12:15:28 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1721898928;
-	bh=7Wkq9dhdjsSMsLbquL+0IloEWZ0vGb45na4TNKlZ9Ws=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=X3tflaXnC14wLNrU1CaPkj/Y7vtY5qHmhOYFWjYLOe2FcFngA0IQb4O2OlVzBQYVN
-	 G6nUyDPgFYzs3/wMm2Cte+RO5xJVOoS+CRWZaHmEuZXqJZ8K4jBv4jxXMw4Ac8oPVL
-	 /W0PaETmIc9bygX0vIhXN55OiRy0A8VnxMplawv4=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Nikolay Kuratov <kniv@yandex-team.ru>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Christoph Paasch <cpaasch@apple.com>,
-	Eric Dumazet <edumazet@google.com>,
-	lvc-project@linuxtesting.org,
-	Nikolay Kuratov <kniv@yandex-team.ru>
-Subject: [PATCH 4.19 5.4 5.10 5.15] net: relax socket state check at accept time.
-Date: Thu, 25 Jul 2024 12:15:02 +0300
-Message-Id: <20240725091502.2808792-1-kniv@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1721899228; c=relaxed/simple;
+	bh=U8jCPxWrWUyEz1ZrGA/2DamhTswK41MbXPUdq6Zy5qc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WeOK0zB2LgZ/GG+VHN8X1iEX23lAWVVFCpbJdtTQ3edm7SB+WS7omeT4lHsFuB1UvkOsFXzUnU7dU9oucpKxStiZoi+S7LtxNKDuj9yJEDtoq4H+0A9zT48kNANW7z5S5m62IvGV6e+Ua8JP00u3oQ7sX2aNgXXmDKyyGVy3W74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DBEF81007;
+	Thu, 25 Jul 2024 02:20:51 -0700 (PDT)
+Received: from [10.1.29.30] (e122027.cambridge.arm.com [10.1.29.30])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 00ED93F5A1;
+	Thu, 25 Jul 2024 02:20:23 -0700 (PDT)
+Message-ID: <ae62139f-3655-44d0-aeb7-15c6b67eb97c@arm.com>
+Date: Thu, 25 Jul 2024 10:20:22 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/panfrost: Mark simple_ondemand governor as softdep
+To: Dragan Simic <dsimic@manjaro.org>
+Cc: dri-devel@lists.freedesktop.org, boris.brezillon@collabora.com,
+ robh@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
+ linux-kernel@vger.kernel.org, Diederik de Haas <didi.debian@cknow.org>,
+ Furkan Kardame <f.kardame@manjaro.org>, stable@vger.kernel.org
+References: <4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org>
+ <f672e7460c92bc9e0c195804f7e99d0b@manjaro.org>
+ <e42a55ba-cbb5-47a4-bec6-9c3067040970@arm.com>
+ <192dbcd968dfebf825a3a759701bf381@manjaro.org>
+ <d20667e76aa56fb69c91ef327d467d4a@manjaro.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <d20667e76aa56fb69c91ef327d467d4a@manjaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit 26afda78cda3da974fd4c287962c169e9462c495 ]
+Hi Dragan,
 
-Christoph reported the following splat:
+On 25/07/2024 09:24, Dragan Simic wrote:
+> Hello Steven and Boris,
 
-WARNING: CPU: 1 PID: 772 at net/ipv4/af_inet.c:761 __inet_accept+0x1f4/0x4a0
-Modules linked in:
-CPU: 1 PID: 772 Comm: syz-executor510 Not tainted 6.9.0-rc7-g7da7119fe22b #56
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-RIP: 0010:__inet_accept+0x1f4/0x4a0 net/ipv4/af_inet.c:759
-Code: 04 38 84 c0 0f 85 87 00 00 00 41 c7 04 24 03 00 00 00 48 83 c4 10 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc e8 ec b7 da fd <0f> 0b e9 7f fe ff ff e8 e0 b7 da fd 0f 0b e9 fe fe ff ff 89 d9 80
-RSP: 0018:ffffc90000c2fc58 EFLAGS: 00010293
-RAX: ffffffff836bdd14 RBX: 0000000000000000 RCX: ffff888104668000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: dffffc0000000000 R08: ffffffff836bdb89 R09: fffff52000185f64
-R10: dffffc0000000000 R11: fffff52000185f64 R12: dffffc0000000000
-R13: 1ffff92000185f98 R14: ffff88810754d880 R15: ffff8881007b7800
-FS:  000000001c772880(0000) GS:ffff88811b280000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fb9fcf2e178 CR3: 00000001045d2002 CR4: 0000000000770ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- inet_accept+0x138/0x1d0 net/ipv4/af_inet.c:786
- do_accept+0x435/0x620 net/socket.c:1929
- __sys_accept4_file net/socket.c:1969 [inline]
- __sys_accept4+0x9b/0x110 net/socket.c:1999
- __do_sys_accept net/socket.c:2016 [inline]
- __se_sys_accept net/socket.c:2013 [inline]
- __x64_sys_accept+0x7d/0x90 net/socket.c:2013
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x58/0x100 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x4315f9
-Code: fd ff 48 81 c4 80 00 00 00 e9 f1 fe ff ff 0f 1f 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 ab b4 fd ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffdb26d9c78 EFLAGS: 00000246 ORIG_RAX: 000000000000002b
-RAX: ffffffffffffffda RBX: 0000000000400300 RCX: 00000000004315f9
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000004
-RBP: 00000000006e1018 R08: 0000000000400300 R09: 0000000000400300
-R10: 0000000000400300 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000040cdf0 R14: 000000000040ce80 R15: 0000000000000055
- </TASK>
+<snip>
 
-The reproducer invokes shutdown() before entering the listener status.
-After commit 94062790aedb ("tcp: defer shutdown(SEND_SHUTDOWN) for
-TCP_SYN_RECV sockets"), the above causes the child to reach the accept
-syscall in FIN_WAIT1 status.
+> Another option has become available for expressing additional module
+> dependencies, weakdeps. [1][2]  Long story short, weakdeps are similar
+> to softdeps, in the sense of telling the initial ramdisk utilities to
+> include additional kernel modules, but weakdeps result in no module
+> loading being performed by userspace.
+> 
+> Maybe "weak" isn't the best possible word choice (arguably, "soft" also
+> wasn't the best word choice), but weakdeps should be a better choice for
+> use with Panfrost and governor_simpleondemand, because weakdeps provide
+> the required information to the utilities used to generate initial
+> ramdisks,
+> while the actual module loading is left to the kernel.
+> 
+> The recent addition of weakdeps renders the previously mentioned harddeps
+> obsolete, because weakdeps actually do what we need.  Obviously, "weak"
+> doesn't go along very well with the actual nature of the dependency between
+> Panfrost and governor_simpleondemand, but it's pretty much just the
+> somewhat
+> unfortunate word choice.
+> 
+> The support for weakdeps has been already added to the kmod [3][4] and
+> Dracut [5] userspace utilities.  I'll hopefully add support for weakdeps
+> to mkinitcpio [6] rather soon.
 
-Eric noted we can relax the existing assertion in __inet_accept()
+That sounds much closer to the dependency we want to advertise for
+Panfrost so that's great.
 
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/490
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Fixes: 94062790aedb ("tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets")
-Link: https://lore.kernel.org/r/23ab880a44d8cfd967e84de8b93dbf48848e3d8c.1716299669.git.pabeni@redhat.com
-Link: https://lore.kernel.org/linux-cve-announce/2024062136-CVE-2024-36484-375b@gregkh
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
----
- net/ipv4/af_inet.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> Maybe we could actually add MODULE_HARDDEP() as some kind of syntactic
+> sugar, which would currently be an alias for MODULE_WEAKDEP(), so the
+> actual hard module dependencies could be expressed properly, and possibly
+> handled differently in the future, with no need to go back and track all
+> such instances of hard module dependencies.
 
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 475a19db3713..ce42626663de 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -758,7 +758,9 @@ int inet_accept(struct socket *sock, struct socket *newsock, int flags,
- 	sock_rps_record_flow(sk2);
- 	WARN_ON(!((1 << sk2->sk_state) &
- 		  (TCPF_ESTABLISHED | TCPF_SYN_RECV |
--		  TCPF_CLOSE_WAIT | TCPF_CLOSE)));
-+		   TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 |
-+		   TCPF_CLOSING | TCPF_CLOSE_WAIT |
-+		   TCPF_CLOSE)));
- 
- 	sock_graft(sk2, newsock);
- 
--- 
-2.34.1
+Please do! While "weak" dependencies tell the initramfs tools what to
+put in, it would be good to be able to actually express that this module
+actually requires the governor. I can see the potential utility in
+initramfs tools wanting to put a module in without "weak" dependencies
+if initramfs size was limited[1] and "limited support" was appropriate,
+and that's not what Panfrost gives. So having a way of fixing this in
+the future without churn in driver would be good.
+
+> With all this in mind, here's what I'm going to do:
+> 
+> 1) Submit a patch that adds MODULE_HARDDEP() as syntactic sugar
+> 2) Implement support for weakdeps in Arch Linux's mkinitcpio [6]
+> 3) Depending on what kind of feedback the MODULE_HARDDEP() patch receives,
+>    I'll submit follow-up patches for Lima and Panfrost, which will swap
+>    uses of MODULE_SOFTDEP() with MODULE_HARDDEP() or MODULE_WEAKDEP()
+
+It sounds good from my perspective. It will be interesting to see what
+feedback comes from people more familiar with initramfs tools.
+
+Thanks,
+
+Steve
+
+[1] Although from my understanding it's firmware which is the real cause
+of bloat in initramfs size. I guess I need to start paying attention to
+this for panthor which adds GPU firmware - although currently tiny in
+comparison to others.
+
+> Looking forward to your thoughts.
+> 
+> [1]
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/linux/module.h?id=61842868de13aa7fd7391c626e889f4d6f1450bf
+> [2]
+> https://lore.kernel.org/linux-kernel/20240724102349.430078-1-jtornosm@redhat.com/T/#u
+> [3]
+> https://github.com/kmod-project/kmod/commit/05828b4a6e9327a63ef94df544a042b5e9ce4fe7
+> [4]
+> https://github.com/kmod-project/kmod/commit/d06712b51404061eef92cb275b8303814fca86ec
+> [5]
+> https://github.com/dracut-ng/dracut-ng/commit/8517a6be5e20f4a6d87e55fce35ee3e29e2a1150
+> [6] https://gitlab.archlinux.org/archlinux/mkinitcpio/mkinitcpio
+> 
+>>>> If a filesystem driver can rely on the (ab)use of softdeps, which
+>>>> may be
+>>>> fragile or seen as a bit wrong, I think we can follow the same
+>>>> approach,
+>>>> at least until a better solution is available.
+>>>>
+>>>> [6]
+>>>> https://cgit.freedesktop.org/drm/drm-misc/commit/?id=0c94f58cef319ad054fd909b3bf4b7d09c03e11c
+>>>> [7]
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5178578bcd4
+>>>> [8]
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/super.c#n2593
+>>>>
+>>>>> ---
+>>>>>  drivers/gpu/drm/panfrost/panfrost_drv.c | 1 +
+>>>>>  1 file changed, 1 insertion(+)
+>>>>>
+>>>>> diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c
+>>>>> b/drivers/gpu/drm/panfrost/panfrost_drv.c
+>>>>> index ef9f6c0716d5..149737d7a07e 100644
+>>>>> --- a/drivers/gpu/drm/panfrost/panfrost_drv.c
+>>>>> +++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
+>>>>> @@ -828,3 +828,4 @@ module_platform_driver(panfrost_driver);
+>>>>>  MODULE_AUTHOR("Panfrost Project Developers");
+>>>>>  MODULE_DESCRIPTION("Panfrost DRM Driver");
+>>>>>  MODULE_LICENSE("GPL v2");
+>>>>> +MODULE_SOFTDEP("pre: governor_simpleondemand");
 
 
