@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-61553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5589D93C4E4
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:44:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE32893C4F3
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77D8B1C20EEF
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:44:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 838791F2302B
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C89E19D083;
-	Thu, 25 Jul 2024 14:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AC427473;
+	Thu, 25 Jul 2024 14:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYvmRDq9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhI0xrAk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB7319B5AA;
-	Thu, 25 Jul 2024 14:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D83FC19;
+	Thu, 25 Jul 2024 14:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918686; cv=none; b=Cuy9EkGuNei6GCfoSthRsCsdL04ihTUehk+hyjAXDQ74a20EYdBUd2l1qi3SK4l4vBQPrimV2TDphnmRpaqh+1iMAXakcCWfTystRBksGO/MLisL7yghhOMSjUkspcQHHKYR9xr1sIp+K3BXFlEoHF2YzGv6rEAeSYLlYImrDrM=
+	t=1721918730; cv=none; b=bSCSf7t81i97W3oOgEk34d0shY6x/S9d8kN7erzVAlVAYMsSpN4Iqq94bWGUqzI4mzqWGZtH4hIz4/5TLc/bZdvItZmRT+aePqH4jBY+RXb8SAG9DZtxSLNAVNS10iF7nw8dHAncSd/eT++XD3YdDzPN+lvP7PFU9V7EOi1/KpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918686; c=relaxed/simple;
-	bh=xFBXnuRL0cRkumiQQ5IutBzXld4/ZphVEE1kyUwn9xE=;
+	s=arc-20240116; t=1721918730; c=relaxed/simple;
+	bh=ioXSTDgWr1ArSZsU3AC9NXC3oiNDjJ7RpBd1a4FnFrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HDY2YF3f62BbmCKAeaiq0wvBqMiHX/I4NyFayheDSprOp4zaKIiG5ARdAJtvvLdr1s8bXjDQj6WHDMXx/RM9LKLQdPJdMeSJhLkNVoRJspSnj28m1KNjeDPgwv1acL6JfpkwG1rTvHCNUb0dgxkPdTfR3Y6tKiqR+L0D8jhlkFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYvmRDq9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40664C116B1;
-	Thu, 25 Jul 2024 14:44:46 +0000 (UTC)
+	 MIME-Version; b=tFMnHRwJpdAAdottJXsops+lMHpxemG6H8Ct8u6IC/oBnRQU1wfcFS8rhIsvY2Fmo1w8rgqk2MkkJ/ttGqTO9+W2gjBEUgwmuoQ0xs2D4KFqmbMXKAH5I2J5SqTGFI7fln6sP8xkl/KzrLlZZIDydx+8enCbxm1O807XsKszpXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhI0xrAk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370F3C116B1;
+	Thu, 25 Jul 2024 14:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918686;
-	bh=xFBXnuRL0cRkumiQQ5IutBzXld4/ZphVEE1kyUwn9xE=;
+	s=korg; t=1721918730;
+	bh=ioXSTDgWr1ArSZsU3AC9NXC3oiNDjJ7RpBd1a4FnFrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TYvmRDq9Bqma2vInBgQgEURnMEaZh0iYgBqg0YgAYmUPQ+R+o4zlOsumdkm3TGq2j
-	 ajCRMHtibAIyv3WyaZCsUTL9w5O4RagRWgROLb58jzC/9KVoyZwYQ9MDKnPkPgB1wR
-	 e8vKDvogFYsWTcu5fDgGS8coN/x/Umy7dcL/BQfA=
+	b=jhI0xrAk6L/ikLnQ4op34zv7CyqvrSg14od747DPejDzJMVTGszwCNP+/ouheNGkm
+	 UrCRfY/S4Jqh6dGr2TJuKYcKapghF+fULPj8PtMVtQpaQP3DSSDLeQISDtc6QHZKs8
+	 euy2ZJ5UU+0PtQbRyBLkzXXV2m7MW57dFNXCUgAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 09/13] arm64: dts: qcom: ipq6018: Disable SS instance in Parkmode for USB
+	lei lu <llfamsec@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 6.6 05/16] fs/ntfs3: Validate ff offset
 Date: Thu, 25 Jul 2024 16:37:18 +0200
-Message-ID: <20240725142728.391246071@linuxfoundation.org>
+Message-ID: <20240725142729.108065579@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.029052310@linuxfoundation.org>
-References: <20240725142728.029052310@linuxfoundation.org>
+In-Reply-To: <20240725142728.905379352@linuxfoundation.org>
+References: <20240725142728.905379352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: lei lu <llfamsec@gmail.com>
 
-commit 4ae4837871ee8c8b055cf8131f65d31ee4208fa0 upstream.
+commit 50c47879650b4c97836a0086632b3a2e300b0f06 upstream.
 
-For Gen-1 targets like IPQ6018, it is seen that stressing out the
-controller in host mode results in HC died error:
+This adds sanity checks for ff offset. There is a check
+on rt->first_free at first, but walking through by ff
+without any check. If the second ff is a large offset.
+We may encounter an out-of-bound read.
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
-
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for IPQ6018 to mitigate this issue.
-
-Cc: stable@vger.kernel.org
-Fixes: 20bb9e3dd2e4 ("arm64: dts: qcom: ipq6018: add usb3 DT description")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-2-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: lei lu <llfamsec@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/ipq6018.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ntfs3/fslog.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-@@ -760,6 +760,7 @@
- 				clocks = <&xo>;
- 				clock-names = "ref";
- 				tx-fifo-resize;
-+				snps,parkmode-disable-ss-quirk;
- 				snps,is-utmi-l1-suspend;
- 				snps,hird-threshold = /bits/ 8 <0x0>;
- 				snps,dis_u2_susphy_quirk;
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -724,7 +724,8 @@ static bool check_rstbl(const struct RES
+ 
+ 	if (!rsize || rsize > bytes ||
+ 	    rsize + sizeof(struct RESTART_TABLE) > bytes || bytes < ts ||
+-	    le16_to_cpu(rt->total) > ne || ff > ts || lf > ts ||
++	    le16_to_cpu(rt->total) > ne ||
++			ff > ts - sizeof(__le32) || lf > ts - sizeof(__le32) ||
+ 	    (ff && ff < sizeof(struct RESTART_TABLE)) ||
+ 	    (lf && lf < sizeof(struct RESTART_TABLE))) {
+ 		return false;
+@@ -754,6 +755,9 @@ static bool check_rstbl(const struct RES
+ 			return false;
+ 
+ 		off = le32_to_cpu(*(__le32 *)Add2Ptr(rt, off));
++
++		if (off > ts - sizeof(__le32))
++			return false;
+ 	}
+ 
+ 	return true;
 
 
 
