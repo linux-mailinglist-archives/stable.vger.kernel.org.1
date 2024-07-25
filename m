@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54ED593C455
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:38:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 447E693C4A4
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 856581C218E4
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:38:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E285E1F21C54
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7626019D066;
-	Thu, 25 Jul 2024 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1244119D096;
+	Thu, 25 Jul 2024 14:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eg206CQE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9+zBL5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2322A199E9F;
-	Thu, 25 Jul 2024 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C163119D066;
+	Thu, 25 Jul 2024 14:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918323; cv=none; b=R0qGzFTjPHYQWOW+R/e0XOg4SmjXxtfNKhgh0BTBzq2bnJwMGrzxfPGMfcrYpeCdg6QXThS6/VMX9JH2cl4s0epcGF/WV2vu+/Z2hcpRAJfhxMzVP40ElNXr8FIwgUxywWrmCtqqeikGQiiqt7Awd4HIztEbWn8nNygsiox64Tg=
+	t=1721918504; cv=none; b=LeuqlBoTcVzHYv37RSYoW6p9wSYufSHR6KMNTC59fSjHbp3yc+Kpm9vxTsCWYV/+iSvo31bVG7V84gPX+3V00zCc1BF5OPO4xpqHcbC+uvOBUMVb+NC50zB2fEB07QRfmTvymln6CeOqoTTNRGySZdXOlW2VPwineGzFHzhYxoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918323; c=relaxed/simple;
-	bh=TAYXGKwFmTwNusY8nlNrErbVZ6SlFZtoU5E8YdN/eoQ=;
+	s=arc-20240116; t=1721918504; c=relaxed/simple;
+	bh=T1z4vm5oxhs8BwmgrfPR15IaEJsSvEbGwYSCko/zaio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NrKifCYUuNk+Q9fWhTSRsyaO27JMayXRCaWJO2HrJE8iKFy34tiFroJDmkdMLvmJiR34wfmV8OEcREYTfy88gtYPRjn0HoFmSbjUdV8JZ55Nu12j+Po/ny4ZHoGQ2WgIaeyzmyORXcxCBzGJruB7QiUdy2KeUFPg9kzIxOwC9Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eg206CQE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D206C116B1;
-	Thu, 25 Jul 2024 14:38:42 +0000 (UTC)
+	 MIME-Version; b=pJVPr4kjyko0rtDg/wqVacP39jxFrMkTGQganROGK2ar92ftxyu7569mwxhfB52XDRrQus9hKPTbGXxwr+YfpUOlbxuYwjlZWNI7Re3KfPKJKnvUEaosMOah4rEA78AUWqL1LOV0Z2xUJME8us50RzenAF7FprCwnohFTH3EOIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9+zBL5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38350C116B1;
+	Thu, 25 Jul 2024 14:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918323;
-	bh=TAYXGKwFmTwNusY8nlNrErbVZ6SlFZtoU5E8YdN/eoQ=;
+	s=korg; t=1721918504;
+	bh=T1z4vm5oxhs8BwmgrfPR15IaEJsSvEbGwYSCko/zaio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eg206CQEvGajagG+iYkOI1jbZiPg2+1N5WDCyD581vl9fBHAyXpdTreSOI1qWOirP
-	 J5YtAHK6vsoGTRPmQnVdLCivVftYyZ4/3qqUw6pdCSdn+7l5dvdLo3QutOzlroKPos
-	 M3QwOW0iMGm+o4W36n58WD4qIKxxxEVUs3ywbUxg=
+	b=a9+zBL5AtHguGSBXvrNoUW/jRvNe+6z5r/rvxQgCotCmxCuQWtB9wHtB2sXzqYahD
+	 HJJhqUIn4GBvzPoRlWplP/gRvdo3S1Vx77M58IdxgovvuRPBZXwmMgNy+4f2v66OKP
+	 0v0LS+oZS6E2C9m21hPnLYbZeKAPXioR5Su4ygkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 15/29] arm64: dts: qcom: qrb4210-rb2: switch I2C2 to i2c-gpio
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 08/33] ila: block BH in ila_output()
 Date: Thu, 25 Jul 2024 16:36:31 +0200
-Message-ID: <20240725142732.389560730@linuxfoundation.org>
+Message-ID: <20240725142728.835743130@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-References: <20240725142731.814288796@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit f77e7bd40c3c2d79685e9cc80de874b69a976f55 upstream.
+[ Upstream commit cf28ff8e4c02e1ffa850755288ac954b6ff0db8c ]
 
-On the Qualcomm RB2 platform the I2C bus connected to the LT9611UXC
-bridge under some circumstances can go into a state when all transfers
-timeout. This causes both issues with fetching of EDID and with
-updating of the bridge's firmware. While we are debugging the issue,
-switch corresponding I2C bus to use i2c-gpio driver. While using
-i2c-gpio no communication issues are observed.
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-This patch is asusmed to be a temporary fix, so it is implemented in a
-non-intrusive manner to simply reverting it later.
+ila_output() is called from lwtunnel_output()
+possibly from process context, and under rcu_read_lock().
 
-Fixes: f7b01e07e89c ("arm64: dts: qcom: qrb4210-rb2: Enable display out")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-Link: https://lore.kernel.org/r/20240605-rb12-i2c2g-pio-v2-2-946f5d6b6948@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We might be interrupted by a softirq, re-enter ila_output()
+and corrupt dst_cache data structures.
+
+Fix the race by using local_bh_disable().
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qrb4210-rb2.dts |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ net/ipv6/ila/ila_lwt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-@@ -60,6 +60,17 @@
- 		};
- 	};
+diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
+index 3d56a2fb6f86f..c7630776bd8e8 100644
+--- a/net/ipv6/ila/ila_lwt.c
++++ b/net/ipv6/ila/ila_lwt.c
+@@ -58,7 +58,9 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		return orig_dst->lwtstate->orig_output(net, sk, skb);
+ 	}
  
-+	i2c2_gpio: i2c {
-+		compatible = "i2c-gpio";
-+
-+		sda-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
-+		scl-gpios = <&tlmm 7 GPIO_ACTIVE_HIGH>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		status = "disabled";
-+	};
-+
- 	leds {
- 		compatible = "gpio-leds";
++	local_bh_disable();
+ 	dst = dst_cache_get(&ilwt->dst_cache);
++	local_bh_enable();
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *ip6h = ipv6_hdr(skb);
+ 		struct flowi6 fl6;
+@@ -86,8 +88,11 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
  
-@@ -190,7 +201,7 @@
- 	};
- };
+-		if (ilwt->connected)
++		if (ilwt->connected) {
++			local_bh_disable();
+ 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
++			local_bh_enable();
++		}
+ 	}
  
--&i2c2 {
-+&i2c2_gpio {
- 	clock-frequency = <400000>;
- 	status = "okay";
- 
+ 	skb_dst_set(skb, dst);
+-- 
+2.43.0
+
 
 
 
