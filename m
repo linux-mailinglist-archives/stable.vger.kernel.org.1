@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-61509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5341793C4B1
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 706DD93C4A7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3D141F22737
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E87621F2250D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FAC019D095;
-	Thu, 25 Jul 2024 14:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C8919D884;
+	Thu, 25 Jul 2024 14:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlhqa4/S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVmjmj1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF598199E9F;
-	Thu, 25 Jul 2024 14:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2FC19D074;
+	Thu, 25 Jul 2024 14:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918543; cv=none; b=kqfVVErdzqJgXn6ux4KMOOpNy5Ycld1SGOJUGhvyty4El4t9j8nqixC8/ezIGYMYSggnC77/XaS2O8AslA3VZ3cJrYOsvKH5pqnprV357ws4OmoWYl465ClOjAh+V1QxpjsyeuIF1PWqQMBMYYSdpFCzevc18CO1HW6nRLYh+v4=
+	t=1721918511; cv=none; b=WKBM0Z8NCKdYVdnUjqAvOfk5PzuJ5MTJLULiyAepCBZEx/s+WSvIbA6pHhgz/eqFPTfnuTQhARF+3nHaS+Hj8BieMNIcklKQPxrK+Ke/p9EaseSsbRANcEu7gEe2f0UfGLgqSF3D2odyZp+EV7DN+CqGj2oiTPd53Xm3YdQMnaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918543; c=relaxed/simple;
-	bh=O8WB1vn2EVJKP57WNmbzACqlZXczu9A+w9U7IQfYg8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K+5lzgV+LCJ1vey65mwKdLzHlOXMG32H+eD6xNnMZ/BoZna2visMg1WcWm6jZD3jQ3hAjo4ZlBZPs0MTjB9R3hyrvs3TsxQ2iGaIzFlZCyfRXw9l7DaFzTrVHeH+fo8RhCB61LJAVyny9DLRFrY7Rp4QwUZjbHU2xe/nlh6ExKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlhqa4/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FB6C116B1;
-	Thu, 25 Jul 2024 14:42:22 +0000 (UTC)
+	s=arc-20240116; t=1721918511; c=relaxed/simple;
+	bh=PDBbUin/14b6/69p0pC8d8ass0y7UoXiTELSVkW600s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rna1/2epzw4njGOttsvn20Y4jVKx37m0mVW0WBkUZqF8QITB/Y3zQ6O96C32UOd4On2x2O7fCLUNGx8ReBDIacJILQGuVKwu6LaVd1jM4n6DcxFWcC4fscpUYYYxRc6opLnCNj0ZiIb6wSWz+ZP93T8dg25fdurFArhgsUC5x0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVmjmj1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70092C116B1;
+	Thu, 25 Jul 2024 14:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918542;
-	bh=O8WB1vn2EVJKP57WNmbzACqlZXczu9A+w9U7IQfYg8c=;
+	s=korg; t=1721918511;
+	bh=PDBbUin/14b6/69p0pC8d8ass0y7UoXiTELSVkW600s=;
 	h=From:To:Cc:Subject:Date:From;
-	b=jlhqa4/SGpdiJUs6dhhpkfV2sP71upXaHdUK5FlbocMq3xa5wernI+DdDRUFf424O
-	 Pp6xNxwXvIWh5B73I+lAFhKRQwrfj+1O3Nz6nNuexB1iaIP2rZpqpXuFFfZskF6aub
-	 c5EwRqQrYdzumQ0vCZxsBjz5sFMLXRH07RgwYDlA=
+	b=xVmjmj1ncCQt83wC2aWuCGOOGHgl+uVEv33Etn1+0nblClqK4lWLomqHPH6GfMP7T
+	 OQR3snhYj/yoL6xhmzfL+NSABn/kDRql/3vof5OyiFY8oOfdpuaS3+kApejiNyVptw
+	 Gle/09Sr8a+JdyDZ8FuPDjaGgYbJTvKr8++YYoT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -57,9 +57,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	conor@kernel.org,
 	allen.lkml@gmail.com,
 	broonie@kernel.org
-Subject: [PATCH 5.4 00/43] 5.4.281-rc1 review
+Subject: [PATCH 4.19 00/33] 4.19.319-rc1 review
 Date: Thu, 25 Jul 2024 16:36:23 +0200
-Message-ID: <20240725142730.471190017@linuxfoundation.org>
+Message-ID: <20240725142728.511303502@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,17 +70,17 @@ MIME-Version: 1.0
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.281-rc1.gz
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.319-rc1.gz
 X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.4.y
+X-KernelTest-Branch: linux-4.19.y
 X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.4.281-rc1
+X-KernelTest-Version: 4.19.319-rc1
 X-KernelTest-Deadline: 2024-07-27T14:27+00:00
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 5.4.281 release.
-There are 43 patches in this series, all will be posted as a response
+This is the start of the stable review cycle for the 4.19.319 release.
+There are 33 patches in this series, all will be posted as a response
 to this one.  If anyone has any issues with these being applied, please
 let me know.
 
@@ -88,9 +88,9 @@ Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
 Anything received after that time might be too late.
 
 The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.281-rc1.gz
+	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.319-rc1.gz
 or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
 and the diffstat can be found below.
 
 thanks,
@@ -101,13 +101,10 @@ greg k-h
 Pseudo-Shortlog of commits:
 
 Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 5.4.281-rc1
+    Linux 4.19.319-rc1
 
 Jann Horn <jannh@google.com>
     filelock: Fix fcntl/close race recovery compat path
-
-Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-    ALSA: hda/realtek: Enable headset mic on Positivo SU C1400
 
 lei lu <llfamsec@gmail.com>
     jfs: don't walk off the end of ealist
@@ -118,14 +115,14 @@ lei lu <llfamsec@gmail.com>
 Paolo Abeni <pabeni@redhat.com>
     net: relax socket state check at accept time.
 
-Dan Carpenter <dan.carpenter@linaro.org>
-    drm/amdgpu: Fix signedness bug in sdma_v4_0_process_trap_irq()
-
 Kuan-Wei Chiu <visitorckw@gmail.com>
     ACPI: processor_idle: Fix invalid comparison with insertion sort for latency
 
 Masahiro Yamada <masahiroy@kernel.org>
     ARM: 9324/1: fix get_user() broken with veneer
+
+Jann Horn <jannh@google.com>
+    filelock: Remove locks reliably when fcntl/close race is detected
 
 Edward Adam Davis <eadavis@qq.com>
     hfsplus: fix uninit-value in copy_name
@@ -141,15 +138,6 @@ Christian Brauner <brauner@kernel.org>
 
 Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
     Bluetooth: hci_core: cancel all works upon hci_unregister_dev()
-
-Xingui Yang <yangxingui@huawei.com>
-    scsi: libsas: Fix exp-attached device scan after probe failure scanned in again after probe failed
-
-Ganesh Goudar <ganeshgr@linux.ibm.com>
-    powerpc/eeh: avoid possible crash when edev->pdev changes
-
-Anjali K <anjalik@linux.ibm.com>
-    powerpc/pseries: Whitelist dtl slub object for copying to userspace
 
 Yunshui Jiang <jiangyunshui@kylinos.cn>
     net: mac802154: Fix racy device stats updates by DEV_STATS_INC() and DEV_STATS_ADD()
@@ -169,26 +157,11 @@ Ian Ray <ian.ray@gehealthcare.com>
 Chen Ni <nichen@iscas.ac.cn>
     can: kvaser_usb: fix return value for hif_usb_send_regout
 
-Primoz Fiser <primoz.fiser@norik.com>
-    ASoC: ti: omap-hdmi: Fix too long driver name
-
-Jai Luthra <j-luthra@ti.com>
-    ASoC: ti: davinci-mcasp: Set min period size using FIFO config
-
 Thomas GENTY <tomlohave@gmail.com>
     bytcr_rt5640 : inverse jack detect for Archos 101 cesium
 
 Jonathan Denose <jdenose@google.com>
     Input: elantech - fix touchpad state on resume for Lenovo N24
-
-Arnd Bergmann <arnd@arndb.de>
-    mips: fix compat_sys_lseek syscall
-
-Kailang Yang <kailang@realtek.com>
-    ALSA: hda/realtek: Add more codec ID to no shutup pins list
-
-Michael Ellerman <mpe@ellerman.id.au>
-    KVM: PPC: Book3S HV: Prevent UAF in kvm_spapr_tce_attach_iommu_group()
 
 Dmitry Antipov <dmantipov@yandex.ru>
     wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
@@ -226,9 +199,6 @@ Armin Wolf <W_Armin@gmx.de>
 Saurav Kashyap <skashyap@marvell.com>
     scsi: qedf: Set qed_slowpath_params to zero before use
 
-Jann Horn <jannh@google.com>
-    filelock: Remove locks reliably when fcntl/close race is detected
-
 Kees Cook <keescook@chromium.org>
     gcc-plugins: Rename last_stmt() for GCC 14+
 
@@ -239,21 +209,15 @@ Diffstat:
 
  Makefile                                           |  4 +-
  arch/arm/include/asm/uaccess.h                     | 14 +------
- arch/mips/kernel/syscalls/syscall_o32.tbl          |  2 +-
- arch/powerpc/kernel/eeh_pe.c                       |  7 +++-
- arch/powerpc/kvm/book3s_64_vio.c                   | 18 ++++++---
- arch/powerpc/platforms/pseries/setup.c             |  4 +-
  drivers/acpi/ec.c                                  |  9 ++++-
  drivers/acpi/processor_idle.c                      | 40 ++++++++-----------
  drivers/gpio/gpio-pca953x.c                        |  2 +
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c             |  2 +-
  drivers/input/mouse/elantech.c                     | 31 +++++++++++++++
  drivers/input/touchscreen/silead.c                 | 19 +++------
  drivers/misc/mei/main.c                            |  2 +-
  drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c   |  2 +-
  drivers/net/usb/qmi_wwan.c                         |  2 +
  drivers/s390/char/sclp.c                           |  1 +
- drivers/scsi/libsas/sas_internal.h                 | 14 +++++++
  drivers/scsi/qedf/qedf_main.c                      |  1 +
  drivers/spi/spi-imx.c                              |  2 +-
  fs/dcache.c                                        | 31 +++++++--------
@@ -275,13 +239,10 @@ Diffstat:
  scripts/kconfig/gconf.c                            |  3 +-
  scripts/kconfig/menu.c                             |  2 -
  sound/core/pcm_dmaengine.c                         | 12 ++++++
- sound/pci/hda/patch_realtek.c                      |  5 +++
  sound/soc/intel/boards/bytcr_rt5640.c              | 11 ++++++
- sound/soc/ti/davinci-mcasp.c                       |  9 ++++-
- sound/soc/ti/omap-hdmi.c                           |  6 +--
  tools/testing/selftests/vDSO/parse_vdso.c          | 16 +++++---
  .../selftests/vDSO/vdso_standalone_test_x86.c      | 18 ++++++++-
- 44 files changed, 284 insertions(+), 178 deletions(-)
+ 35 files changed, 235 insertions(+), 160 deletions(-)
 
 
 
