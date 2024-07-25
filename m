@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-61678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DF693C571
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A91D93C530
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31089B245EA
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C63C1C21E93
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A659419B5B5;
-	Thu, 25 Jul 2024 14:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708621E89C;
+	Thu, 25 Jul 2024 14:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k58eg/rl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHUV+PAr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8894315F;
-	Thu, 25 Jul 2024 14:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3016C8468;
+	Thu, 25 Jul 2024 14:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919090; cv=none; b=ZMu1QW8SJdAn/RWvIBQPRsu4S1n8+uG0WGMfOJAe3U5IDlmiFZWFBzDA8p/jHvIncEdiyBmMnaf4QojTPc1ZB/MWcLC5bWo72pXp18bjgwf01MpSvFRaadI20QxjAr10SIkfr7fvpxvE5Rs274kBXYkjoBmp8WbTZp9wZOIggu8=
+	t=1721918896; cv=none; b=rHdW7XsoZcBarh7xqELbKv8GZt6AC7wZqh5Be7hFYzPfeI4ELfzY4eJi2uxhxE+nFFAzhbhIuWM7HqK/p9Ss79teXDaAroyrOlLfyju2qwjbjrQq59VVyvI/tWgOaCukvTodabwzi0kbrfy/I9fTIQS+nrGgEHTsKirMC4DucR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919090; c=relaxed/simple;
-	bh=uVmCNtXPwlEJB+KTQhtfVoYUugsSByFjIZw19Dzb2F8=;
+	s=arc-20240116; t=1721918896; c=relaxed/simple;
+	bh=tXts4WTbpc8Hye/I5uTKdgfCacb/W+415fSqSLZx2aA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YvQSBH+lhtf9m471/8tBxp+7IlgdJdrm0vz/RlHWzoYlN+NeHMqBg+dLGhPtiOSdJ16b6EajBUMitc5wLh1rD1n/ptUlSlm2PJSHwg6oWK8BxTS/hzhdKcyYQKD8llMpQb2rVnFep5lQE//1pOs7de5XfG98RqjO+k5dPFt0mQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k58eg/rl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7F1C116B1;
-	Thu, 25 Jul 2024 14:51:29 +0000 (UTC)
+	 MIME-Version; b=VUE4sxypLuP2w2gAWsv25zWBjZINsfS5o95Rli9aUwmcSB0JSjnuwO1NX7WBC2OwpraaqNjRAg45a8E98I8BKaOvB0m9DYpP1QpOeRxYT93MKpp6bBXegClaZcRZcq8+uKzcm05oGRcH5Pi5xoKXxQLDP+pwA841YJkI9BgIFG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHUV+PAr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9571DC116B1;
+	Thu, 25 Jul 2024 14:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919090;
-	bh=uVmCNtXPwlEJB+KTQhtfVoYUugsSByFjIZw19Dzb2F8=;
+	s=korg; t=1721918896;
+	bh=tXts4WTbpc8Hye/I5uTKdgfCacb/W+415fSqSLZx2aA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k58eg/rl1tk3Mh8NKAFXY+AsrTsBzZ+GfTIDpWR/C9x6TCUolfk8vi7RXa0MDoMg5
-	 DQfUfihpQ+Z3+kceQDCz0GJxTdnDKpfHjXbndhlCr4bhqfEYp5CJpoqSqPFCoRq0W6
-	 QhuXAAvdDxaQQQfjTjlA616aq/B3kKHXmru6Kp74=
+	b=VHUV+PArtXvOwexFMcOs3+dLuDl3LdohIfGr6O6gl156QLcRaIZDUKPfmzIcTquPW
+	 uxsPjvfGgAjEtj5FWxwLfroR2OirGddT30c6oCqjBnh4wks5/9MCls0Xr+eXydwuaK
+	 +XOdW5zmG5jXc5k6jbtLHFJOnp6Vl8329+i0IZNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 20/87] selftests/openat2: Fix build warnings on ppc64
+Subject: [PATCH 5.10 03/59] scsi: qedf: Set qed_slowpath_params to zero before use
 Date: Thu, 25 Jul 2024 16:36:53 +0200
-Message-ID: <20240725142739.195476642@linuxfoundation.org>
+Message-ID: <20240725142733.393417308@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+References: <20240725142733.262322603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-[ Upstream commit 84b6df4c49a1cc2854a16937acd5fd3e6315d083 ]
+[ Upstream commit 6c3bb589debd763dc4b94803ddf3c13b4fcca776 ]
 
-Fix warnings like:
+Zero qed_slowpath_params before use.
 
-  openat2_test.c: In function ‘test_openat2_flags’:
-  openat2_test.c:303:73: warning: format ‘%llX’ expects argument of type
-  ‘long long unsigned int’, but argument 5 has type ‘__u64’ {aka ‘long
-  unsigned int’} [-Wformat=]
-
-By switching to unsigned long long for u64 for ppc64 builds.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240515091101.18754-4-skashyap@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/openat2/openat2_test.c | 1 +
+ drivers/scsi/qedf/qedf_main.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/openat2/openat2_test.c b/tools/testing/selftests/openat2/openat2_test.c
-index 7fb902099de45..f9d2b0ec77564 100644
---- a/tools/testing/selftests/openat2/openat2_test.c
-+++ b/tools/testing/selftests/openat2/openat2_test.c
-@@ -5,6 +5,7 @@
-  */
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index 6923862be3fbc..2536da96130ea 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -3453,6 +3453,7 @@ static int __qedf_probe(struct pci_dev *pdev, int mode)
+ 	}
  
- #define _GNU_SOURCE
-+#define __SANE_USERSPACE_TYPES__ // Use ll64
- #include <fcntl.h>
- #include <sched.h>
- #include <sys/stat.h>
+ 	/* Start the Slowpath-process */
++	memset(&slowpath_params, 0, sizeof(struct qed_slowpath_params));
+ 	slowpath_params.int_mode = QED_INT_MODE_MSIX;
+ 	slowpath_params.drv_major = QEDF_DRIVER_MAJOR_VER;
+ 	slowpath_params.drv_minor = QEDF_DRIVER_MINOR_VER;
 -- 
 2.43.0
 
