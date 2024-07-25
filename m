@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6533793C45C
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:39:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6DEB93C57D
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 264402843E4
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:39:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93444282986
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DA119CD0F;
-	Thu, 25 Jul 2024 14:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4906819AD93;
+	Thu, 25 Jul 2024 14:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9PoGpjR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rondybkz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F5819A29C;
-	Thu, 25 Jul 2024 14:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07294F519;
+	Thu, 25 Jul 2024 14:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918342; cv=none; b=D5p7JI+J3/LvEIyQBo3JFB/ud3uiPWPSeEzjed4Nfhwasf8jhl9dYkBKWxDdDfRTs8WmFbFdRJwR8sbT0fJcLSV//V+D48lzo7Bj1fLyxZIMUGM5pqhmEjKJzlf8kiTlyZr7Jg5+QSDvIT+BIVuhrXMfuCYVmywq1EA+EKAu4ME=
+	t=1721919119; cv=none; b=WNGQE1nAq7MHJkbTCBxxQq9Y6CP4m/xm7SYB24O/V4lBAptbptEynmiOWxIXTQiggolwsp9ixVeqZjQ2YmgVkhxftrGhFAr1vRlsOwGeIQXxkbozivqa6/brdYq9aMU4UpiIjHC/j/glvzL9pYnE/WPalHJgltU8sPZx7QYQX3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918342; c=relaxed/simple;
-	bh=DMWS5UvFnNSy/DT8cne3FS3pjpuU77l/RWF93g+hmtQ=;
+	s=arc-20240116; t=1721919119; c=relaxed/simple;
+	bh=2WaCDGe+hKRJuviBPSza/eZja65aAcN4vJ19XYYtrqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CneQOeOhOPDkpI6lar8so2PvwJo0KllOM+2BhsUCzYjfi1JUQb07JhfVhs40nOkpHGlgGIGog6ngVDBY54mToHS2fIMqkLu2xkFy/eiMew11+g/lXDUtaVotfoBN5esku56w+9v0Gvk7CdZz8bje6xqqRjh8SsccuPOntYr+Cwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9PoGpjR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02401C116B1;
-	Thu, 25 Jul 2024 14:39:01 +0000 (UTC)
+	 MIME-Version; b=DEyYdsk0Xwc3p7dDM3i//zggfxdmDAj+pr7RNsW3oTNGGzMSMrLsyRlBMRBtrATyKta2SK17EYMEXJPzN4UGeR0Y1ibTJN2FbNVZZw5QK6QVLg7NF9Hdk+KME4XkeZ8ZuADPAFNtxwG+8/VvmZ/z9A60n/GBbX+Qw7KPjQTfVOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rondybkz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C87C116B1;
+	Thu, 25 Jul 2024 14:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918342;
-	bh=DMWS5UvFnNSy/DT8cne3FS3pjpuU77l/RWF93g+hmtQ=;
+	s=korg; t=1721919118;
+	bh=2WaCDGe+hKRJuviBPSza/eZja65aAcN4vJ19XYYtrqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G9PoGpjRrBCEuknrw/2uRw8CDLI8LmPEqjKIUOLgXGMmzEXlYaDheE66GjEIilFlA
-	 ISK100y4wa3UdBwJGXbui6i8Bd9mxa4Qs3oC+0AOMhYJy3M+gx1GpA0xc5kh5ED/UN
-	 iZkWRDlZmQLLPdn0cLnKyYxYAOnsX67fFmQDJH/E=
+	b=rondybkzsybEgAHnZr+DttN1ffDH0qqsTn0zTHsoHBujKYqo8W6RigO/6WcmzieXP
+	 9wPXYnGtaHOzEvi1B4vX/+/baph4SilCZGPI8nQMKtUw+Y2rAC5VwBMvl5UxbASvmg
+	 gD0u6FF3BjWuCFr3nJ6rdy0OmhB7yVzhCsoCQS6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 20/29] arm64: dts: qcom: sm6350: Disable SS instance in Parkmode for USB
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	John Stultz <jstultz@google.com>
+Subject: [PATCH 5.15 03/87] ARM: 9324/1: fix get_user() broken with veneer
 Date: Thu, 25 Jul 2024 16:36:36 +0200
-Message-ID: <20240725142732.578540739@linuxfoundation.org>
+Message-ID: <20240725142738.556287262@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-References: <20240725142731.814288796@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit c5d57eb7d06df16c07037cea5dacfd74d49d1833 upstream.
+commit 24d3ba0a7b44c1617c27f5045eecc4f34752ab03 upstream.
 
-For Gen-1 targets like SM6350, it is seen that stressing out the
-controller in host mode results in HC died error:
+The 32-bit ARM kernel stops working if the kernel grows to the point
+where veneers for __get_user_* are created.
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
+AAPCS32 [1] states, "Register r12 (IP) may be used by a linker as a
+scratch register between a routine and any subroutine it calls. It
+can also be used within a routine to hold intermediate values between
+subroutine calls."
 
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for SM6350 to mitigate this issue.
+However, bl instructions buried within the inline asm are unpredictable
+for compilers; hence, "ip" must be added to the clobber list.
 
-Cc: stable@vger.kernel.org
-Fixes: 23737b9557fe ("arm64: dts: qcom: sm6350: Add USB1 nodes")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-7-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This becomes critical when veneers for __get_user_* are created because
+veneers use the ip register since commit 02e541db0540 ("ARM: 8323/1:
+force linker to use PIC veneers").
+
+[1]: https://github.com/ARM-software/abi-aa/blob/2023Q1/aapcs32/aapcs32.rst
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: John Stultz <jstultz@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm6350.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/include/asm/uaccess.h |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -1890,6 +1890,7 @@
- 				snps,dis_enblslpm_quirk;
- 				snps,has-lpm-erratum;
- 				snps,hird-threshold = /bits/ 8 <0x10>;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 			};
+--- a/arch/arm/include/asm/uaccess.h
++++ b/arch/arm/include/asm/uaccess.h
+@@ -124,16 +124,6 @@ extern int __get_user_64t_1(void *);
+ extern int __get_user_64t_2(void *);
+ extern int __get_user_64t_4(void *);
+ 
+-#define __GUP_CLOBBER_1	"lr", "cc"
+-#ifdef CONFIG_CPU_USE_DOMAINS
+-#define __GUP_CLOBBER_2	"ip", "lr", "cc"
+-#else
+-#define __GUP_CLOBBER_2 "lr", "cc"
+-#endif
+-#define __GUP_CLOBBER_4	"lr", "cc"
+-#define __GUP_CLOBBER_32t_8 "lr", "cc"
+-#define __GUP_CLOBBER_8	"lr", "cc"
+-
+ #define __get_user_x(__r2, __p, __e, __l, __s)				\
+ 	   __asm__ __volatile__ (					\
+ 		__asmeq("%0", "r0") __asmeq("%1", "r2")			\
+@@ -141,7 +131,7 @@ extern int __get_user_64t_4(void *);
+ 		"bl	__get_user_" #__s				\
+ 		: "=&r" (__e), "=r" (__r2)				\
+ 		: "0" (__p), "r" (__l)					\
+-		: __GUP_CLOBBER_##__s)
++		: "ip", "lr", "cc")
+ 
+ /* narrowing a double-word get into a single 32bit word register: */
+ #ifdef __ARMEB__
+@@ -163,7 +153,7 @@ extern int __get_user_64t_4(void *);
+ 		"bl	__get_user_64t_" #__s				\
+ 		: "=&r" (__e), "=r" (__r2)				\
+ 		: "0" (__p), "r" (__l)					\
+-		: __GUP_CLOBBER_##__s)
++		: "ip", "lr", "cc")
+ #else
+ #define __get_user_x_64t __get_user_x
+ #endif
 
 
 
