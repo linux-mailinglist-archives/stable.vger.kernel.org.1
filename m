@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-61469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5049993C47D
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A9393C565
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0652A1F228AB
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E2832814D7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03AEE19D09B;
-	Thu, 25 Jul 2024 14:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5751619D07A;
+	Thu, 25 Jul 2024 14:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUT2uX31"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cr4wcyur"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BE219D086;
-	Thu, 25 Jul 2024 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126CEFC19;
+	Thu, 25 Jul 2024 14:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918409; cv=none; b=Rh9NQjvd0RoetRZ8ev2THKEhNASBNxbphvE95ugsy5EWerBHhBsk7PTK91ooD1NesOG00TA0d+z7alUa051SaW3Bwhl950UaymQN5Zl/+VUf2qmZls6fFFmWJ8TzgM2XGT7Y5YRRxus9m0Q4QzQ3xXbmui6+Plw4gpntwCaPf7I=
+	t=1721919052; cv=none; b=ta6wReuootI3YMxgTbl1qNTqLhFbrKpbT9szWQ4LfSh/aQD+GWTkQZqLOwiL3TizSi5AD92y4hyKykRX3Tu7WEcrUx6SoJXc1NCurE7ZIzeOwqENBUCSRkeE4gIGJfmZ8OJtFI/suID5INnc3xa0xmT7SSztEsgfhqCMOMc2B2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918409; c=relaxed/simple;
-	bh=HHiUoIi+lm0J6UI6pVAuxLAaV/lRPoStukUg4DnK2nA=;
+	s=arc-20240116; t=1721919052; c=relaxed/simple;
+	bh=EuySZPdNE+eRw/Az/90Z2+SSoyyBVSJTC0gDHTz74t8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2qHsug86d3HEgMRfAH/jGv4A1Py5XiHTk961KmHNbsRCSL+UeMp6p232ANvhExYQMsiT5n9HSpaQTB16PMzzHZ/YL8syhrNmZqrW0XnpU7Skr5nFbuXWKE3nSZNPjujuzAeczLICGeOuIZrPbqSxAtU4fixqn5rnj7g1SrpLW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUT2uX31; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06CDC116B1;
-	Thu, 25 Jul 2024 14:40:08 +0000 (UTC)
+	 MIME-Version; b=uS74078awL6cSMwuAv6I6gkcKyhvCnnhM1sCcChbb/Bs2gKUqRPwm5YWuOmtH0ni6IAvppVQtY6CVZzbffY6rAIiL6lcdbsiMAq1glaNszIvoozsfZORQvgnrIF43L0gT4TDi+TYyYHBOXZG3vy8bDyLG2o4gVXynhESeThTpIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cr4wcyur; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70234C116B1;
+	Thu, 25 Jul 2024 14:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918409;
-	bh=HHiUoIi+lm0J6UI6pVAuxLAaV/lRPoStukUg4DnK2nA=;
+	s=korg; t=1721919051;
+	bh=EuySZPdNE+eRw/Az/90Z2+SSoyyBVSJTC0gDHTz74t8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUT2uX319RpS4BhcvWHF/JGwUqh9HKEL0wauIBczvU2iMB5wq1ptLe9VTz7kd9QaY
-	 mRPhc9qIAMehSrXdiH5l3qCsbIv8Se+fjJ6sLiz9Z1PVfMUGCBuxryWV2zVYW34IJL
-	 KC6lWLJ7VjMizA7jSQxPTHC3Sf8E0eWAfQpzbv2Q=
+	b=Cr4wcyurt6A/7e7jWdCXKnlFr+5KZez2cexQAmEIbE8sEXtfv4roZwEyNLMZMB01f
+	 mS7Jn4EifkRvyAtxkzErMNvSUxA6i3VeE96x6UkFnmYeMyUkzFcITakKbyvKMK73R2
+	 6W0unV+BaJCzLvBc8Dmh6s3Aq5aFGvtCjkcHYWw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <yuntao.wang@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 11/33] fs/file: fix the check in find_next_fd()
+	linux-hardening@vger.kernel.org,
+	Kees Cook <keescook@chromium.org>,
+	Thomas Meyer <thomas@m3y3r.de>
+Subject: [PATCH 5.15 01/87] gcc-plugins: Rename last_stmt() for GCC 14+
 Date: Thu, 25 Jul 2024 16:36:34 +0200
-Message-ID: <20240725142728.949161620@linuxfoundation.org>
+Message-ID: <20240725142738.480817874@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
-References: <20240725142728.511303502@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit ed8c7fbdfe117abbef81f65428ba263118ef298a ]
+commit 2e3f65ccfe6b0778b261ad69c9603ae85f210334 upstream.
 
-The maximum possible return value of find_next_zero_bit(fdt->full_fds_bits,
-maxbit, bitbit) is maxbit. This return value, multiplied by BITS_PER_LONG,
-gives the value of bitbit, which can never be greater than maxfd, it can
-only be equal to maxfd at most, so the following check 'if (bitbit > maxfd)'
-will never be true.
+In GCC 14, last_stmt() was renamed to last_nondebug_stmt(). Add a helper
+macro to handle the renaming.
 
-Moreover, when bitbit equals maxfd, it indicates that there are no unused
-fds, and the function can directly return.
-
-Fix this check.
-
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://lore.kernel.org/r/20240529160656.209352-1-yuntao.wang@linux.dev
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Cc: Thomas Meyer <thomas@m3y3r.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/file.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/gcc-plugins/gcc-common.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/file.c b/fs/file.c
-index 928ba7b8df1e9..f5ba0e6f1a4c6 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -462,12 +462,12 @@ struct files_struct init_files = {
+--- a/scripts/gcc-plugins/gcc-common.h
++++ b/scripts/gcc-plugins/gcc-common.h
+@@ -570,4 +570,8 @@ static inline void debug_gimple_stmt(con
+ #define SET_DECL_MODE(decl, mode)	DECL_MODE(decl) = (mode)
+ #endif
  
- static unsigned int find_next_fd(struct fdtable *fdt, unsigned int start)
- {
--	unsigned int maxfd = fdt->max_fds;
-+	unsigned int maxfd = fdt->max_fds; /* always multiple of BITS_PER_LONG */
- 	unsigned int maxbit = maxfd / BITS_PER_LONG;
- 	unsigned int bitbit = start / BITS_PER_LONG;
- 
- 	bitbit = find_next_zero_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
--	if (bitbit > maxfd)
-+	if (bitbit >= maxfd)
- 		return maxfd;
- 	if (bitbit > start)
- 		start = bitbit;
--- 
-2.43.0
-
++#if BUILDING_GCC_VERSION >= 14000
++#define last_stmt(x)			last_nondebug_stmt(x)
++#endif
++
+ #endif
 
 
 
