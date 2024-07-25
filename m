@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-61512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0C893C4B6
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F2093C46F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 114971F225F4
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47870B24663
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1934199E9F;
-	Thu, 25 Jul 2024 14:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1541119D06A;
+	Thu, 25 Jul 2024 14:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buVrRST/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAey/UxE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEC719AA5F;
-	Thu, 25 Jul 2024 14:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84C619A29C;
+	Thu, 25 Jul 2024 14:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918552; cv=none; b=Mfc6Hap+w0yrgrdsAbykNKOztGlktiknN2nlxBpFvXbhjYomJ1vNBjrrKXtc5zJhsdr4aaW0D51nRQHxw/AA4QbjTxUIzJfvDW6spr8RPnaIZpMcQZCxKGkqAA9avqH96MESAMJWsheS5R86moeiK/lER4IpcGd2xFEiE9WWCpE=
+	t=1721918389; cv=none; b=GDRFP/yFsxXLVibpBGt/+EJEzgiTf7gpNCjyH62ue+OuqiYcGdWHVAbvhV7ipoTdg+kQ+W9WpLD0Nzlgbt9tBOTboxUvePWAvXsUbroVqta34yu0I7DPr+Yx2MxOLJu5U8YVTum+oui1+TsEcndRj2h/uQi0LBVv4Od8jk9+pGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918552; c=relaxed/simple;
-	bh=zmH+rBhcr/MPpuIUuZY0GGjGSYyq+ilB+/s7qkF3b1Y=;
+	s=arc-20240116; t=1721918389; c=relaxed/simple;
+	bh=QsG3dx0mBl8GtHmVd18FQH4nn5+oU887JRhCdFH/TPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lhU2/OCqYFjBqlLTgOiz63a8N+xKxWXoW4iXh3ETEV54o8o29nz1T/cBQ4UEMHFgw0mmzdoQOPtWwBGBDU6vyhIjUFdBtKqjYaBawnyWUb6igq6OTIDJDJq+oWEgyrNskpda3sH6zGUQyopMOWYKEbR3+EChPFKwH+oPWIgR38U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buVrRST/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9382C116B1;
-	Thu, 25 Jul 2024 14:42:31 +0000 (UTC)
+	 MIME-Version; b=HQw+kLC0tJczUR2OVkWd9Ozt6psVdQ3hf4cm3lHPeCZIPvNPzpUx+1aTizUw/hbrwU6xE2If64zyHxyOXyjUR6FiMQ6EpkpX/6xbPoRB9zMqThwkrRW3AXHCFc9MHZZRkjEOKaOXhEi+HEO+rzZFP5utLRU+GzxA9nUNaVyIJgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAey/UxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 357D1C32782;
+	Thu, 25 Jul 2024 14:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918552;
-	bh=zmH+rBhcr/MPpuIUuZY0GGjGSYyq+ilB+/s7qkF3b1Y=;
+	s=korg; t=1721918389;
+	bh=QsG3dx0mBl8GtHmVd18FQH4nn5+oU887JRhCdFH/TPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=buVrRST/5lKzH4wzSMnzeqmnHqASUoaVVhiJu7m9vBZYKPXuv4gb5YoRD7Hkvg1Z2
-	 /7JpmPdI0JXgAj6UB530exhFrmYtwAySoNW9BHU4IR2gHgFG2GmfTthb3tJ5Na76UY
-	 zSH9u997NabzsfGxRQzOmlyrM0FnDolSO4d1qOLQ=
+	b=UAey/UxEKDsSMk2S9W1BirqXZDR1PfKVZD761npLRvDzf98yerUQdLwGlUl/92e1d
+	 OnQ/b3sCnckRsrWFCHwIFGjPEEa1FX2QLcbNFa8zBQ4EcfXMt5g+MuqRXpwVmD/Wv0
+	 +f6yc+ku0rBes20HOJX2cbwstAOq2C8cUBUk93G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Jai Luthra <j-luthra@ti.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 20/43] ASoC: ti: davinci-mcasp: Set min period size using FIFO config
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 27/29] ALSA: pcm_dmaengine: Dont synchronize DMA channel when DMA is paused
 Date: Thu, 25 Jul 2024 16:36:43 +0200
-Message-ID: <20240725142731.236962122@linuxfoundation.org>
+Message-ID: <20240725142732.835497220@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jai Luthra <j-luthra@ti.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit c5dcf8ab10606e76c1d8a0ec77f27d84a392e874 ]
+commit 88e98af9f4b5b0d60c1fe7f7f2701b5467691e75 upstream.
 
-The minimum period size was enforced to 64 as older devices integrating
-McASP with EDMA used an internal FIFO of 64 samples.
+When suspended, the DMA channel may enter PAUSE state if dmaengine_pause()
+is supported by DMA.
+At this state, dmaengine_synchronize() should not be called, otherwise
+the DMA channel can't be resumed successfully.
 
-With UDMA based platforms this internal McASP FIFO is optional, as the
-DMA engine internally does some buffering which is already accounted for
-when registering the platform. So we should read the actual FIFO
-configuration (txnumevt/rxnumevt) instead of hardcoding frames.min to
-64.
-
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240611-asoc_next-v3-2-fcfd84b12164@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e8343410ddf0 ("ALSA: dmaengine: Synchronize dma channel after drop()")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/1721198693-27636-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/ti/davinci-mcasp.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ sound/core/pcm_dmaengine.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-index dc40b5c5d501e..b7a0806772027 100644
---- a/sound/soc/ti/davinci-mcasp.c
-+++ b/sound/soc/ti/davinci-mcasp.c
-@@ -1422,10 +1422,11 @@ static int davinci_mcasp_hw_rule_min_periodsize(
+--- a/sound/core/pcm_dmaengine.c
++++ b/sound/core/pcm_dmaengine.c
+@@ -352,8 +352,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_open
+ int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream)
  {
- 	struct snd_interval *period_size = hw_param_interval(params,
- 						SNDRV_PCM_HW_PARAM_PERIOD_SIZE);
-+	u8 numevt = *((u8 *)rule->private);
- 	struct snd_interval frames;
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
  
- 	snd_interval_any(&frames);
--	frames.min = 64;
-+	frames.min = numevt;
- 	frames.integer = 1;
- 
- 	return snd_interval_refine(period_size, &frames);
-@@ -1440,6 +1441,7 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
- 	u32 max_channels = 0;
- 	int i, dir, ret;
- 	int tdm_slots = mcasp->tdm_slots;
-+	u8 *numevt;
- 
- 	/* Do not allow more then one stream per direction */
- 	if (mcasp->substreams[substream->stream])
-@@ -1539,9 +1541,12 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
- 			return ret;
- 	}
- 
-+	numevt = (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) ?
-+			 &mcasp->txnumevt :
-+			 &mcasp->rxnumevt;
- 	snd_pcm_hw_rule_add(substream->runtime, 0,
- 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE,
--			    davinci_mcasp_hw_rule_min_periodsize, NULL,
-+			    davinci_mcasp_hw_rule_min_periodsize, numevt,
- 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE, -1);
+-	dmaengine_synchronize(prtd->dma_chan);
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status != DMA_PAUSED)
++		dmaengine_synchronize(prtd->dma_chan);
  
  	return 0;
--- 
-2.43.0
-
+ }
 
 
 
