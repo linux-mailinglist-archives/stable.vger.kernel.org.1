@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-61536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F11B93C4D0
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8835893C59F
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:53:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD791B24297
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B3B41F21A2E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D6819B5AA;
-	Thu, 25 Jul 2024 14:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6111F19D074;
+	Thu, 25 Jul 2024 14:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRUsJ88M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsC5UEHx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043F013DDB8;
-	Thu, 25 Jul 2024 14:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED0D19AD9B;
+	Thu, 25 Jul 2024 14:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918631; cv=none; b=SrZCGJ3bSDhMU/sGqpHzqJtBl85PypMpxOGz+lyxF2hfeYLRtwRBBvvfMkwtrOLBfo7XTiumdZ0ew1TZePzTz5OGSVB+JY+u5ZYU/DhfAgibNBiJKISsbhAeQezZvX9Q/zBwwQ9kB902lcJf1KYx7V0GsTf9+Zae+YDAz0xfqOU=
+	t=1721919217; cv=none; b=s6WHNGxLoaMM+7Ayu1ZqBfTZ67JdSKzkQX91WwkxIOdhADKEU4NmD+X7OcsXcttqmHDjnhydg56t/x3h6T4+I2gBiUe211OYlgDLyXdbmEje083KEsQshkVzUH9O8XIM3/1UT/QREpBUBG3TGvyOCd2SwelDhNVOhlg5OnYsU8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918631; c=relaxed/simple;
-	bh=Y21+UGsgNlb3qbtk+dRx7049Vkf6M7/vrvy9hstq55w=;
+	s=arc-20240116; t=1721919217; c=relaxed/simple;
+	bh=PK3mKWcYPrSBOm8FQChjX1atoJu0BIrfgXAg0eeyGdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sOhaUpE5cKwu2P7iGbYyUWkDNLFauJj/uiCcDfhJCAiZCn+oItXF2Lbz/ciedDM8NsDjoAO5SoPkrZD3a+EEz86fyCNhVw2emzGJ38bwH9vja84WRlZOLU134qnO7D0FwiHqta+D3UWcE5OfBte4rxN/iGm/r24Nrbmh7QsTCjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRUsJ88M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7777AC116B1;
-	Thu, 25 Jul 2024 14:43:50 +0000 (UTC)
+	 MIME-Version; b=uHfFyK9Rz8ilvrqLlisky9ECeD04FRAf1bBkLuU2sfkdyLwAzzwTmMM7ovOuyIUpWvxu7O58uceuVQCNR3oBTH5m5zPfGmcULZsEIAReAAS2X5kkPdaZYKXrTee4GQJ3CGmJ6wk606J52UltM7nbwWBf3vtCmF9h5MpfkUWKN/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsC5UEHx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBA9C116B1;
+	Thu, 25 Jul 2024 14:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918630;
-	bh=Y21+UGsgNlb3qbtk+dRx7049Vkf6M7/vrvy9hstq55w=;
+	s=korg; t=1721919217;
+	bh=PK3mKWcYPrSBOm8FQChjX1atoJu0BIrfgXAg0eeyGdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRUsJ88MJrrkNKeZjU5XpVnvp+ulsUZl2jogJgsx4qydOrbGoG6m5le6ZhWWdgAuA
-	 vAACGxe5Ba+OuuS9x6KiqhCyxjEkMFwSsNUXh8bVXP2z7eigTrf1csKTwSl397Gvno
-	 hoC619o+Fk/vxv2ICi39laswM+6FroK2S/LtYFiA=
+	b=SsC5UEHxgKE+YhVVuA+ayxaugt/gCYfeZaMtSVDPFi5y1aJvsDvO+MEDhR+M3D7YT
+	 1M3ORZPr5F+HmGY37NxzuOlRGFSXZ3xZXxPsulPVFGdA3Z+RkCcuCWCq01CdVVTw49
+	 1jrE7R/ukOVQ47dCLgzODJ6aYchMfp7WzKjoE4a8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 42/43] ALSA: hda/realtek: Enable headset mic on Positivo SU C1400
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 32/87] KVM: PPC: Book3S HV: Prevent UAF in kvm_spapr_tce_attach_iommu_group()
 Date: Thu, 25 Jul 2024 16:37:05 +0200
-Message-ID: <20240725142732.059661696@linuxfoundation.org>
+Message-ID: <20240725142739.647474064@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 8fc1e8b230771442133d5cf5fa4313277aa2bb8b upstream.
+[ Upstream commit a986fa57fd81a1430e00b3c6cf8a325d6f894a63 ]
 
-Positivo SU C1400 is equipped with ALC256, and it needs
-ALC269_FIXUP_ASPIRE_HEADSET_MIC quirk to make its headset mic work.
+Al reported a possible use-after-free (UAF) in kvm_spapr_tce_attach_iommu_group().
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240712180642.22564-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It looks up `stt` from tablefd, but then continues to use it after doing
+fdput() on the returned fd. After the fdput() the tablefd is free to be
+closed by another thread. The close calls kvm_spapr_tce_release() and
+then release_spapr_tce_table() (via call_rcu()) which frees `stt`.
+
+Although there are calls to rcu_read_lock() in
+kvm_spapr_tce_attach_iommu_group() they are not sufficient to prevent
+the UAF, because `stt` is used outside the locked regions.
+
+With an artifcial delay after the fdput() and a userspace program which
+triggers the race, KASAN detects the UAF:
+
+  BUG: KASAN: slab-use-after-free in kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
+  Read of size 4 at addr c000200027552c30 by task kvm-vfio/2505
+  CPU: 54 PID: 2505 Comm: kvm-vfio Not tainted 6.10.0-rc3-next-20240612-dirty #1
+  Hardware name: 8335-GTH POWER9 0x4e1202 opal:skiboot-v6.5.3-35-g1851b2a06 PowerNV
+  Call Trace:
+    dump_stack_lvl+0xb4/0x108 (unreliable)
+    print_report+0x2b4/0x6ec
+    kasan_report+0x118/0x2b0
+    __asan_load4+0xb8/0xd0
+    kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
+    kvm_vfio_set_attr+0x524/0xac0 [kvm]
+    kvm_device_ioctl+0x144/0x240 [kvm]
+    sys_ioctl+0x62c/0x1810
+    system_call_exception+0x190/0x440
+    system_call_vectored_common+0x15c/0x2ec
+  ...
+  Freed by task 0:
+   ...
+   kfree+0xec/0x3e0
+   release_spapr_tce_table+0xd4/0x11c [kvm]
+   rcu_core+0x568/0x16a0
+   handle_softirqs+0x23c/0x920
+   do_softirq_own_stack+0x6c/0x90
+   do_softirq_own_stack+0x58/0x90
+   __irq_exit_rcu+0x218/0x2d0
+   irq_exit+0x30/0x80
+   arch_local_irq_restore+0x128/0x230
+   arch_local_irq_enable+0x1c/0x30
+   cpuidle_enter_state+0x134/0x5cc
+   cpuidle_enter+0x6c/0xb0
+   call_cpuidle+0x7c/0x100
+   do_idle+0x394/0x410
+   cpu_startup_entry+0x60/0x70
+   start_secondary+0x3fc/0x410
+   start_secondary_prolog+0x10/0x14
+
+Fix it by delaying the fdput() until `stt` is no longer in use, which
+is effectively the entire function. To keep the patch minimal add a call
+to fdput() at each of the existing return paths. Future work can convert
+the function to goto or __cleanup style cleanup.
+
+With the fix in place the test case no longer triggers the UAF.
+
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Closes: https://lore.kernel.org/all/20240610024437.GA1464458@ZenIV/
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240614122910.3499489-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kvm/book3s_64_vio.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -8335,6 +8335,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
- 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
- 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x10ec, 0x119e, "Positivo SU C1400", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
+index 3cb2e05a7ee83..a8e5eefee794f 100644
+--- a/arch/powerpc/kvm/book3s_64_vio.c
++++ b/arch/powerpc/kvm/book3s_64_vio.c
+@@ -117,14 +117,16 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 	}
+ 	rcu_read_unlock();
+ 
+-	fdput(f);
+-
+-	if (!found)
++	if (!found) {
++		fdput(f);
+ 		return -EINVAL;
++	}
+ 
+ 	table_group = iommu_group_get_iommudata(grp);
+-	if (WARN_ON(!table_group))
++	if (WARN_ON(!table_group)) {
++		fdput(f);
+ 		return -EFAULT;
++	}
+ 
+ 	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
+ 		struct iommu_table *tbltmp = table_group->tables[i];
+@@ -145,8 +147,10 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 			break;
+ 		}
+ 	}
+-	if (!tbl)
++	if (!tbl) {
++		fdput(f);
+ 		return -EINVAL;
++	}
+ 
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(stit, &stt->iommu_tables, next) {
+@@ -157,6 +161,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 			/* stit is being destroyed */
+ 			iommu_tce_table_put(tbl);
+ 			rcu_read_unlock();
++			fdput(f);
+ 			return -ENOTTY;
+ 		}
+ 		/*
+@@ -164,6 +169,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 		 * its KVM reference counter and can return.
+ 		 */
+ 		rcu_read_unlock();
++		fdput(f);
+ 		return 0;
+ 	}
+ 	rcu_read_unlock();
+@@ -171,6 +177,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 	stit = kzalloc(sizeof(*stit), GFP_KERNEL);
+ 	if (!stit) {
+ 		iommu_tce_table_put(tbl);
++		fdput(f);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -179,6 +186,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 
+ 	list_add_rcu(&stit->next, &stt->iommu_tables);
+ 
++	fdput(f);
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
