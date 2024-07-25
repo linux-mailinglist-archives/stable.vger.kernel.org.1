@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A61A93C568
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C73C893C48C
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97101F25CC3
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72A921F223E5
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8490719B5B5;
-	Thu, 25 Jul 2024 14:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2A919D088;
+	Thu, 25 Jul 2024 14:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOWtA9/I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vu4C++HZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423158468;
-	Thu, 25 Jul 2024 14:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3F719B5BE;
+	Thu, 25 Jul 2024 14:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721919062; cv=none; b=i8wIRwEQKVZ48FRUeVDa980u0+pVNMvaBDLf6P40Jc7dqdS67BKk5c6jQobD3bHC05Q6kgsjAF8u+dDcYPM6cJm9gqHyqPBT4n+byvyb4nUqs+NQnIGzRZQd0okoJpVlan5kszzOwflKv2VYiwVUEAOWdeOGBacwFppnQEEbyXc=
+	t=1721918451; cv=none; b=UXFwwQTPN/RvEZZCPlFpXjz2YlEUAAgNgBP/ulhOsKKM1CfRJw4Pisc6bq/nQ2aEt8QDqrvKA5EQJ1WONq6+5LGDMs354u6W/O8O1VTL/R9UwgubE0ICR0eVug+sn/eo9bSTD+UQh/tYA5LzsA64WhcCwa7W58TrA6O+2amBChY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721919062; c=relaxed/simple;
-	bh=/XF4w9e47b52DGFVOXW/mhpCrfnSiedyEoaiHTFMMTk=;
+	s=arc-20240116; t=1721918451; c=relaxed/simple;
+	bh=OjCDkc1jzmGEAM9go17T82EYP6ET3zt3iwA1z3iGplw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnOOLb3b1e7e/wnTvBSTXRSHFqv0PHbsUO/A07Kt0IH9wYKHxXGBGHQUIcQp3LU7c7DZDLFKC3r9FdcrJXo9H586ZqTNB6DASz2mS8G0JgyGLMUkSoyXq7LtCmST4RYj+WsUmgbqLpR2liAu+skD9/OxzH899wfCKr1nnhvtDKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOWtA9/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7337C116B1;
-	Thu, 25 Jul 2024 14:51:00 +0000 (UTC)
+	 MIME-Version; b=llwZCJe59m4ZL1jWfM+7kUtapjRLU5xA0/vfGnTPX41ifN4Y+d/pyLrd+TC5PqsPMHYyJof+zj8KIX7LoGmPNh5j+XcSjzIfx4GbisJc70LXCNwYuwxWBjxFrdbjJ0EUZQ9BpyEkwp3nmYcNvXUVkI4OPEOjsWa3RRLg9to04kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vu4C++HZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71CDC116B1;
+	Thu, 25 Jul 2024 14:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721919061;
-	bh=/XF4w9e47b52DGFVOXW/mhpCrfnSiedyEoaiHTFMMTk=;
+	s=korg; t=1721918451;
+	bh=OjCDkc1jzmGEAM9go17T82EYP6ET3zt3iwA1z3iGplw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOWtA9/IQYMC61uzhUU4PCslCHJEcJXPT5RZz8HU7OGLdT0SEdp2tEhi2+ZMVP5u0
-	 cwUrcC185k+IWGeX0lAxNg/l3JNctpQwzUtS27CSO1ER9xi0lww1rvW86Nub5I7tt0
-	 fGZ54zOMAaqmmmiJBOrdzuZm39PzS8Zwi0rA3Q1A=
+	b=Vu4C++HZusKN2xZ0AhO9mWceN2E4hG3QnAnJn8SCmkTXdpkm1ZVg//3/xc5O/iYm4
+	 3Dy4P8d3bAlzm2zT73tUFduLHi9JM+s1exWgjY/TQpCW1x3tBGlif+sGJ1HhIsxnCt
+	 sAx8v6+oNYX1438GaEtdN0zDvB9Hm4N0G4SH4Wik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jan Kara <jack@suse.cz>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 12/87] ACPI: EC: Avoid returning AE_OK on errors in address space handler
-Date: Thu, 25 Jul 2024 16:36:45 +0200
-Message-ID: <20240725142738.895114762@linuxfoundation.org>
+Subject: [PATCH 4.19 23/33] fs: better handle deep ancestor chains in is_subdir()
+Date: Thu, 25 Jul 2024 16:36:46 +0200
+Message-ID: <20240725142729.390475028@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
-References: <20240725142738.422724252@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
+[ Upstream commit 391b59b045004d5b985d033263ccba3e941a7740 ]
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
-returned by acpi_ec_space_handler().
+Jan reported that 'cd ..' may take a long time in deep directory
+hierarchies under a bind-mount. If concurrent renames happen it is
+possible to livelock in is_subdir() because it will keep retrying.
 
-Fix this by only returning AE_OK on success, and return AE_ERROR
-otherwise.
+Change is_subdir() from simply retrying over and over to retry once and
+then acquire the rename lock to handle deep ancestor chains better. The
+list of alternatives to this approach were less then pleasant. Change
+the scope of rcu lock to cover the whole walk while at it.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+A big thanks to Jan and Linus. Both Jan and Linus had proposed
+effectively the same thing just that one version ended up being slightly
+more elegant.
+
+Reported-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/dcache.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 1896ec78e88c7..59e617ab12a51 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1321,8 +1321,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 4d96eb591f5d9..93671238abce1 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -3003,28 +3003,25 @@ EXPORT_SYMBOL(d_splice_alias);
+   
+ bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
+ {
+-	bool result;
++	bool subdir;
+ 	unsigned seq;
+ 
+ 	if (new_dentry == old_dentry)
+ 		return true;
+ 
+-	do {
+-		/* for restarting inner loop in case of seq retry */
+-		seq = read_seqbegin(&rename_lock);
+-		/*
+-		 * Need rcu_readlock to protect against the d_parent trashing
+-		 * due to d_move
+-		 */
+-		rcu_read_lock();
+-		if (d_ancestor(old_dentry, new_dentry))
+-			result = true;
+-		else
+-			result = false;
+-		rcu_read_unlock();
+-	} while (read_seqretry(&rename_lock, seq));
+-
+-	return result;
++	/* Access d_parent under rcu as d_move() may change it. */
++	rcu_read_lock();
++	seq = read_seqbegin(&rename_lock);
++	subdir = d_ancestor(old_dentry, new_dentry);
++	 /* Try lockless once... */
++	if (read_seqretry(&rename_lock, seq)) {
++		/* ...else acquire lock for progress even on deep chains. */
++		read_seqlock_excl(&rename_lock);
++		subdir = d_ancestor(old_dentry, new_dentry);
++		read_sequnlock_excl(&rename_lock);
++	}
++	rcu_read_unlock();
++	return subdir;
  }
+ EXPORT_SYMBOL(is_subdir);
  
 -- 
 2.43.0
