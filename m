@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-61464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F17C93C474
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:40:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB4593C4B7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A6F8284BBF
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:40:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 383C21F219A7
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7545E19D895;
-	Thu, 25 Jul 2024 14:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3615719D082;
+	Thu, 25 Jul 2024 14:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0R6L797"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDU3pQSj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6AE19D894;
-	Thu, 25 Jul 2024 14:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E930319A29C;
+	Thu, 25 Jul 2024 14:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918393; cv=none; b=E/UI5VXBq2kIFiuOzLNNwPi6jNQlucr+2fBP6AydrZ5XjLG24mPdgGQp0Hr8jakfydgBwWLLXiuZpJIrDW9qgtUjGHMpK5+7BrAXYe60MUaWdiCgRBa2x7+lBepi4akEC2sCz/C/HaIBJzoY3PRHX3OVawmT0pHokFmtFf3F+KE=
+	t=1721918556; cv=none; b=rO1styzqH9JPnB3uQHrubZNPMJOPYEwjwWN+wBA0o3vza2NGCXYkXYiHqYmr4kLeAJ6owjfSniI+t96b9K9yKqU1dAmBe92+CG7wsSSIPj6GvZgF6Lz2RnYNjWp8RqyTwScAn3y8h7PjGlJbkkTDZLNtajPkWPLv0mJXx9Js4mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918393; c=relaxed/simple;
-	bh=3R23GLmo5/Haigox82N2tyMOqfitAECHGGe3caSiK2U=;
+	s=arc-20240116; t=1721918556; c=relaxed/simple;
+	bh=V6adh8Lb0ZiL17NBgPzCflwBHKoe8+WQyM/xTsandtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NfyHdMCmE0dtyqT+s+oDyiBEk4W4DC6NemyN+TYiTUZ8HURa27hBZWXsr2d/xaJo2By+uVJ7PYFU1AW0ki+JHhZGW46PFHYcxUREmFCzRdj3DF0ergzgNicsKJRxCEsxGQtJdAKWTksfKpJ1V1kci58PYd8MP/sThOTgj6oOeAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0R6L797; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8DDC4AF10;
-	Thu, 25 Jul 2024 14:39:52 +0000 (UTC)
+	 MIME-Version; b=TYpaKICaGEVynfa9Gpx0fy94KhorTL6Jr83xZtPCH3aoJEOUR822OmBC05SSCI5PFLhr+KykmmzM7n4fLLfLX7jDukKB6YvZtZ/qoPeLoIgH5jjrIRg4w1U9RnmYG72jQeqcnbWKlk1l9w7uy1AANieA+vaBuna9Na+89vr6Nqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDU3pQSj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3A5C116B1;
+	Thu, 25 Jul 2024 14:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918393;
-	bh=3R23GLmo5/Haigox82N2tyMOqfitAECHGGe3caSiK2U=;
+	s=korg; t=1721918555;
+	bh=V6adh8Lb0ZiL17NBgPzCflwBHKoe8+WQyM/xTsandtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N0R6L797aLmpveJssERMGrWu9rSC6Vb8RaQqljKmBQTZI0kTuKeeHYKLrUgE5eP8g
-	 /FnD//+8DGGqnegY7xWHJUeoLVfAXJivK3Z6RAmj3vVmIzgo0zjJ5+jr+OHxEG+eIi
-	 g3VwYPHSxB2USCT3Vkjp7bYTdKIW2g8geu8nm2Sk=
+	b=pDU3pQSjtL7No2BGV//Hkpqa9/ace0lnZ6MEw1x6XBr0x/Ia9NNC8VGpkQEBa9sn3
+	 pNbfLP41UTGXM0uvfOf1tY0+TYGJfNoMv7GwpQwIdUry9G+F/LbKlEegW2Uiht3u+L
+	 Inx9dpoPB6yZqcT3X7axlnzVi1zAT44fifFnaEF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 28/29] ALSA: seq: ump: Skip useless ports for static blocks
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 21/43] ASoC: ti: omap-hdmi: Fix too long driver name
 Date: Thu, 25 Jul 2024 16:36:44 +0200
-Message-ID: <20240725142732.873167295@linuxfoundation.org>
+Message-ID: <20240725142731.274426857@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-References: <20240725142731.814288796@linuxfoundation.org>
+In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
+References: <20240725142730.471190017@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,94 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Primoz Fiser <primoz.fiser@norik.com>
 
-commit 3bfd7c0ba184de99e9f5083b29e5308f30767265 upstream.
+[ Upstream commit 524d3f126362b6033e92cbe107ae2158d7fbff94 ]
 
-When the UMP Endpoint is configured with static blocks, the block
-configuration will never change, hence the unused ports will be
-unchanged as well.  Creating sequencer ports for those unused ports
-is simply useless, and it might be rather confusing for users.
-The idea behind the inactive ports was for allowing connections
-from/to ports that can become usable later, but this will never
-happen for inactive groups in static blocks.
+Set driver name to "HDMI". This simplifies the code and gets rid of
+the following error messages:
 
-Let's change the sequencer UMP binding to skip those unused ports when
-the UMP EP is with static blocks.
+  ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
 
-Fixes: 81fd444aa371 ("ALSA: seq: Bind UMP device")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240717083322.25892-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20240610125847.773394-1-primoz.fiser@norik.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_ump_client.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ sound/soc/ti/omap-hdmi.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/sound/core/seq/seq_ump_client.c
-+++ b/sound/core/seq/seq_ump_client.c
-@@ -28,6 +28,7 @@ struct seq_ump_group {
- 	int group;			/* group index (0-based) */
- 	unsigned int dir_bits;		/* directions */
- 	bool active;			/* activeness */
-+	bool valid;			/* valid group (referred by blocks) */
- 	char name[64];			/* seq port name */
- };
- 
-@@ -210,6 +211,13 @@ static void fill_port_info(struct snd_se
- 		sprintf(port->name, "Group %d", group->group + 1);
- }
- 
-+/* skip non-existing group for static blocks */
-+static bool skip_group(struct seq_ump_client *client, struct seq_ump_group *group)
-+{
-+	return !group->valid &&
-+		(client->ump->info.flags & SNDRV_UMP_EP_INFO_STATIC_BLOCKS);
-+}
-+
- /* create a new sequencer port per UMP group */
- static int seq_ump_group_init(struct seq_ump_client *client, int group_index)
- {
-@@ -217,6 +225,9 @@ static int seq_ump_group_init(struct seq
- 	struct snd_seq_port_info *port __free(kfree) = NULL;
- 	struct snd_seq_port_callback pcallbacks;
- 
-+	if (skip_group(client, group))
-+		return 0;
-+
- 	port = kzalloc(sizeof(*port), GFP_KERNEL);
- 	if (!port)
+diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
+index def2a0ce88863..e4f661c5349ef 100644
+--- a/sound/soc/ti/omap-hdmi.c
++++ b/sound/soc/ti/omap-hdmi.c
+@@ -353,11 +353,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
+ 	if (!card)
  		return -ENOMEM;
-@@ -250,6 +261,9 @@ static void update_port_infos(struct seq
- 		return;
  
- 	for (i = 0; i < SNDRV_UMP_MAX_GROUPS; i++) {
-+		if (skip_group(client, &client->groups[i]))
-+			continue;
-+
- 		old->addr.client = client->seq_client;
- 		old->addr.port = i;
- 		err = snd_seq_kernel_client_ctl(client->seq_client,
-@@ -284,6 +298,7 @@ static void update_group_attrs(struct se
- 		group->dir_bits = 0;
- 		group->active = 0;
- 		group->group = i;
-+		group->valid = false;
- 	}
- 
- 	list_for_each_entry(fb, &client->ump->block_list, list) {
-@@ -291,6 +306,7 @@ static void update_group_attrs(struct se
- 			break;
- 		group = &client->groups[fb->info.first_group];
- 		for (i = 0; i < fb->info.num_groups; i++, group++) {
-+			group->valid = true;
- 			if (fb->info.active)
- 				group->active = 1;
- 			switch (fb->info.direction) {
+-	card->name = devm_kasprintf(dev, GFP_KERNEL,
+-				    "HDMI %s", dev_name(ad->dssdev));
+-	if (!card->name)
+-		return -ENOMEM;
+-
++	card->name = "HDMI";
+ 	card->owner = THIS_MODULE;
+ 	card->dai_link =
+ 		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
+-- 
+2.43.0
+
 
 
 
