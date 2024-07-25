@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-61517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB0493C4BA
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:42:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9C393C496
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD885285575
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:42:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3489D281F1A
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BFD13DDB8;
-	Thu, 25 Jul 2024 14:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B3919DF66;
+	Thu, 25 Jul 2024 14:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tf4qYGpt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QlHGy907"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5247E19AA5F;
-	Thu, 25 Jul 2024 14:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6535D19DF45;
+	Thu, 25 Jul 2024 14:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918568; cv=none; b=G9eW5IUHP8of2uI62nKfwz5WmHDHvsQHGH97wOMcuXzz7GNLwwcIPdmVbx7rL/+J4+MEaej5Q4tZcdpzWjYhxC+Tzw3TYjvNj2hWCjpjHunDWOOEXwA4RhwAoEsarqwLmKWnH/U0luEYy7Is4qYsLRTMuFrbqWm96bJGnJWqTeY=
+	t=1721918457; cv=none; b=SNYuDKZwo4nB0LZpnHaKYWq/AyfozNVtw4PeRBbZTSwM+MjDysHm+TrIT+mlpvJZnu3SwuUAEvfburEYURzPrSJgVasdAm6pg13cJLMWek6ftmPZpFOsKmIyHTlwFYoLIfp0H2sStXo8xkiyAdgnM14l4IEHlPcnqGth6lDZdfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918568; c=relaxed/simple;
-	bh=MYYPFTKVNPOXoDYiow/biUyHTpUOL/Seg8cPWtW4OqA=;
+	s=arc-20240116; t=1721918457; c=relaxed/simple;
+	bh=aJa0EZnkO4nJzUrLyW863nU8dJp3PgUcB87ddoUg+20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3y4J5ltLjwT1TCHrNdADSitSrZkAtKgyBD/JKzxCIlHLoneEcIQnt8v6Ym8gxtUAjuHiYqveqB3lwyD1Dm5BBUPle5tSBiIgNbGO2F6ZlydBdTMfHkNEK4at+N2mcP+Hwrd8YQbdmheEd0DX/bQglPhjcZrhxcu94ea2OWO4Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tf4qYGpt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC32C116B1;
-	Thu, 25 Jul 2024 14:42:47 +0000 (UTC)
+	 MIME-Version; b=Xbfdk3i4AxXb9nWU2CtTGkY+LFH0p8FOka1vHGDqwuPXmofi/6hSifWSPdmIHK9fEeXrGrf6vUFSSa2kpCztyuAsajki+Y5WyDdBNZnA6hh2h9wYDON9lGVBNYPSm+SbDWGWtOXMnkeJJpTNVAMVa/b4aSeOQfETpJJsIitLlFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QlHGy907; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8D8C116B1;
+	Thu, 25 Jul 2024 14:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918568;
-	bh=MYYPFTKVNPOXoDYiow/biUyHTpUOL/Seg8cPWtW4OqA=;
+	s=korg; t=1721918457;
+	bh=aJa0EZnkO4nJzUrLyW863nU8dJp3PgUcB87ddoUg+20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tf4qYGpt5xrz3SZSj44KxH4zpCr2p0Vp0c42dIN7phvIr6WiqwCpqjhcBrwltQD6w
-	 j5Qac2DNx4MW6LLMlAHizAXkOqmw49mpA8x1hilxkQsJfISQtf0HVXUw/e6RF8ZBwy
-	 FlpNa8WJDQEDBoM7dwDt2mSI0CL3jJ+UWKQOiZ6Q=
+	b=QlHGy907fD3FOhxhg6FzUurCOVx1xtzZwnHKiBjNGG4TM4vVHCo11YGin+fW5GVtY
+	 PVSTbNYxMbIbBvnmlgVyfi+toAj9FujkqAAVNGgiDBA+nQg+KFYPMqZfEB0L9YUxEw
+	 sJTacHzGz7RxbKCbzBnxvRSiXwdv/44pXLZLVhD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Carlos Llamas <cmllamas@google.com>,
+	Edward Liaw <edliaw@google.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 25/43] ALSA: dmaengine_pcm: terminate dmaengine before synchronize
+Subject: [PATCH 4.19 25/33] selftests/vDSO: fix clang build errors and warnings
 Date: Thu, 25 Jul 2024 16:36:48 +0200
-Message-ID: <20240725142731.423457545@linuxfoundation.org>
+Message-ID: <20240725142729.462163519@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142728.511303502@linuxfoundation.org>
+References: <20240725142728.511303502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +65,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 6a7db25aad8ce6512b366d2ce1d0e60bac00a09d ]
+[ Upstream commit 73810cd45b99c6c418e1c6a487b52c1e74edb20d ]
 
-When dmaengine supports pause function, in suspend state,
-dmaengine_pause() is called instead of dmaengine_terminate_async(),
+When building with clang, via:
 
-In end of playback stream, the runtime->state will go to
-SNDRV_PCM_STATE_DRAINING, if system suspend & resume happen
-at this time, application will not resume playback stream, the
-stream will be closed directly, the dmaengine_terminate_async()
-will not be called before the dmaengine_synchronize(), which
-violates the call sequence for dmaengine_synchronize().
+    make LLVM=1 -C tools/testing/selftests
 
-This behavior also happens for capture streams, but there is no
-SNDRV_PCM_STATE_DRAINING state for capture. So use
-dmaengine_tx_status() to check the DMA status if the status is
-DMA_PAUSED, then call dmaengine_terminate_async() to terminate
-dmaengine before dmaengine_synchronize().
+...there are several warnings, and an error. This fixes all of those and
+allows these tests to run and pass.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/1718851218-27803-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+1. Fix linker error (undefined reference to memcpy) by providing a local
+   version of memcpy.
+
+2. clang complains about using this form:
+
+    if (g = h & 0xf0000000)
+
+...so factor out the assignment into a separate step.
+
+3. The code is passing a signed const char* to elf_hash(), which expects
+   a const unsigned char *. There are several callers, so fix this at
+   the source by allowing the function to accept a signed argument, and
+   then converting to unsigned operations, once inside the function.
+
+4. clang doesn't have __attribute__((externally_visible)) and generates
+   a warning to that effect. Fortunately, gcc 12 and gcc 13 do not seem
+   to require that attribute in order to build, run and pass tests here,
+   so remove it.
+
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_dmaengine.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/testing/selftests/vDSO/parse_vdso.c      | 16 +++++++++++-----
+ .../selftests/vDSO/vdso_standalone_test_x86.c  | 18 ++++++++++++++++--
+ 2 files changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
-index 5d9a24ca6f3ec..6c0d0a43baa11 100644
---- a/sound/core/pcm_dmaengine.c
-+++ b/sound/core/pcm_dmaengine.c
-@@ -345,6 +345,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_open_request_chan);
- int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream)
- {
- 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
-+	struct dma_tx_state state;
-+	enum dma_status status;
-+
-+	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
-+	if (status == DMA_PAUSED)
-+		dmaengine_terminate_async(prtd->dma_chan);
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index 1dbb4b87268fa..9ef3ad3789c17 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -77,14 +77,20 @@ static struct vdso_info
+ 	ELF(Verdef) *verdef;
+ } vdso_info;
  
- 	dmaengine_synchronize(prtd->dma_chan);
- 	kfree(prtd);
-@@ -362,6 +368,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_close);
- int snd_dmaengine_pcm_close_release_chan(struct snd_pcm_substream *substream)
+-/* Straight from the ELF specification. */
+-static unsigned long elf_hash(const unsigned char *name)
++/*
++ * Straight from the ELF specification...and then tweaked slightly, in order to
++ * avoid a few clang warnings.
++ */
++static unsigned long elf_hash(const char *name)
  {
- 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
-+	struct dma_tx_state state;
-+	enum dma_status status;
+ 	unsigned long h = 0, g;
+-	while (*name)
++	const unsigned char *uch_name = (const unsigned char *)name;
 +
-+	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
-+	if (status == DMA_PAUSED)
-+		dmaengine_terminate_async(prtd->dma_chan);
++	while (*uch_name)
+ 	{
+-		h = (h << 4) + *name++;
+-		if (g = h & 0xf0000000)
++		h = (h << 4) + *uch_name++;
++		g = h & 0xf0000000;
++		if (g)
+ 			h ^= g >> 24;
+ 		h &= ~g;
+ 	}
+diff --git a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
+index 93b0ebf8cc38d..805e8c1892764 100644
+--- a/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
++++ b/tools/testing/selftests/vDSO/vdso_standalone_test_x86.c
+@@ -20,7 +20,7 @@ extern void *vdso_sym(const char *version, const char *name);
+ extern void vdso_init_from_sysinfo_ehdr(uintptr_t base);
+ extern void vdso_init_from_auxv(void *auxv);
  
- 	dmaengine_synchronize(prtd->dma_chan);
- 	dma_release_channel(prtd->dma_chan);
+-/* We need a libc functions... */
++/* We need some libc functions... */
+ int strcmp(const char *a, const char *b)
+ {
+ 	/* This implementation is buggy: it never returns -1. */
+@@ -36,6 +36,20 @@ int strcmp(const char *a, const char *b)
+ 	return 0;
+ }
+ 
++/*
++ * The clang build needs this, although gcc does not.
++ * Stolen from lib/string.c.
++ */
++void *memcpy(void *dest, const void *src, size_t count)
++{
++	char *tmp = dest;
++	const char *s = src;
++
++	while (count--)
++		*tmp++ = *s++;
++	return dest;
++}
++
+ /* ...and two syscalls.  This is x86-specific. */
+ static inline long x86_syscall3(long nr, long a0, long a1, long a2)
+ {
+@@ -72,7 +86,7 @@ void to_base10(char *lastdig, time_t n)
+ 	}
+ }
+ 
+-__attribute__((externally_visible)) void c_main(void **stack)
++void c_main(void **stack)
+ {
+ 	/* Parse the stack */
+ 	long argc = (long)*stack;
 -- 
 2.43.0
 
