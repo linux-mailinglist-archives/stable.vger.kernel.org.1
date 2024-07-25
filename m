@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-61526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37FBA93C4C6
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:43:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB1D93C574
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5B7B1F210A1
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:43:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 075A61C2142E
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE3019D07F;
-	Thu, 25 Jul 2024 14:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF6E13DDB8;
+	Thu, 25 Jul 2024 14:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0JpPlAJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/QMhzi0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADF219AA5F;
-	Thu, 25 Jul 2024 14:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA8BF519;
+	Thu, 25 Jul 2024 14:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918598; cv=none; b=KNuKo+BdxdLMeaqVGC/jggVoiMmQyCQGJxVFfvJDyOti+z+1NsNW7AyDTqKnkqHesF4PkmGtY15H61fJIFOYN2/Xz9XZ1SjR4sMWQl7kHf4ERZJlyFM8Tcr4y7nVhDyrzJixXizrNuCwyzFqa/FAKwkzPcxga8o/XAHtAH4YGEg=
+	t=1721919100; cv=none; b=apcTg8IPRZyq5jZvUBW5uAH7HXWflKGkhPql40CafPYcmRyzfO7tDWCJ1pZtH62DNe6NRlpb1K5lKmhcaq7NL5fo8vwqTZlvb88Jn3e7s2ytw3KI2IrJTrheIH4BV/qNbqJKxhjJ8nIrjRftrlXJXbXpHfYxnW495e5aRTj7hK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918598; c=relaxed/simple;
-	bh=DxNdMtmC+DEYMwE4PaVKXp80kvgPssaM7sEmZW3FlJQ=;
+	s=arc-20240116; t=1721919100; c=relaxed/simple;
+	bh=Fpxz+hr+mBEF+Fz0LTkFQBn+Z5xAtUBXSe6hrKrSKuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LMBpIh5scErGe1ZXOycAVwvu4ZZGzaScD8r1pbduB/I9DzK6uxbO30UmaLRPj5W8QF/NCju9tOrZVlejul755/U5dhUTWfdQTOxM2/+mbM8AkH9pDXFB9QDSj4Uh/pUovby4lmLvsocyOuyw+8UAp5jX4iTdutypvHgGvVEfagc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0JpPlAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00831C116B1;
-	Thu, 25 Jul 2024 14:43:17 +0000 (UTC)
+	 MIME-Version; b=X5I7MwVjDDQcopHQ7KKBlqhehDUnjDISXllf3CLFtmkvuwJHGIWB8MmAV+S3s0+9HCRJxpnIWSkhCTErbEHXk5tvuqFtWXMMiwMtMkueQO7TpiP4EtKsy1WREi2p+JHSaWRzFQF+nXRDReGCwkFhVS2M+yj8Y1/lGVqGlngT64o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/QMhzi0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4306C116B1;
+	Thu, 25 Jul 2024 14:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918598;
-	bh=DxNdMtmC+DEYMwE4PaVKXp80kvgPssaM7sEmZW3FlJQ=;
+	s=korg; t=1721919100;
+	bh=Fpxz+hr+mBEF+Fz0LTkFQBn+Z5xAtUBXSe6hrKrSKuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0JpPlAJ5zOS+sNvx7f5A0UEi1uWivVEXQwqAE7LbmzX0NzhU2ZFjf+7OLtK2F4Gg
-	 4nihmbLvY5fTwWud/jlYdpdSdJZvL4xEt20qvCHUCptqRZA2zKVG44CAkIXZ3MCFnO
-	 +YSC/HaPudO3rIH9HTk6KSCmztsjxAm6pwETlbJU=
+	b=X/QMhzi0fOEh9xA7o6RMYnDKyveldL4XKdQ+mNU+iXjSOyEE6iwDRPphUJqqvHWko
+	 +McmDmiTYAHDAK4KQwmz0HA5RLdwe/X72cfwUnouJSL4PSYqfD3tUP2duMzhpGYWdT
+	 0Qiu+C+Q26ppfxyHH7iB0DHkRQbLlHy1uy9amjks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 33/43] spi: imx: Dont expect DMA for i.MX{25,35,50,51,53} cspi devices
+Subject: [PATCH 5.15 23/87] ila: block BH in ila_output()
 Date: Thu, 25 Jul 2024 16:36:56 +0200
-Message-ID: <20240725142731.722223097@linuxfoundation.org>
+Message-ID: <20240725142739.308335365@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142730.471190017@linuxfoundation.org>
-References: <20240725142730.471190017@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ce1dac560a74220f2e53845ec0723b562288aed4 ]
+[ Upstream commit cf28ff8e4c02e1ffa850755288ac954b6ff0db8c ]
 
-While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
-claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
-device trees don't add DMA channels. The Reference manuals of i.MX31 and
-i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
-check the others.)
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
-DMA channel requests") this results in an error message
+ila_output() is called from lwtunnel_output()
+possibly from process context, and under rcu_read_lock().
 
-	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
+We might be interrupted by a softirq, re-enter ila_output()
+and corrupt dst_cache data structures.
 
-during boot. However that isn't fatal and the driver gets loaded just
-fine, just without using DMA.
+Fix the race by using local_bh_disable().
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://patch.msgid.link/20240508095610.2146640-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/ila/ila_lwt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 67f31183c1180..8c9bafee58f9f 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -993,7 +993,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
- 	.rx_available = mx31_rx_available,
- 	.reset = mx31_reset,
- 	.fifo_size = 8,
--	.has_dmamode = true,
-+	.has_dmamode = false,
- 	.dynamic_burst = false,
- 	.has_slavemode = false,
- 	.devtype = IMX35_CSPI,
+diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
+index 8c1ce78956bae..9d37f7164e732 100644
+--- a/net/ipv6/ila/ila_lwt.c
++++ b/net/ipv6/ila/ila_lwt.c
+@@ -58,7 +58,9 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		return orig_dst->lwtstate->orig_output(net, sk, skb);
+ 	}
+ 
++	local_bh_disable();
+ 	dst = dst_cache_get(&ilwt->dst_cache);
++	local_bh_enable();
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *ip6h = ipv6_hdr(skb);
+ 		struct flowi6 fl6;
+@@ -86,8 +88,11 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
+ 
+-		if (ilwt->connected)
++		if (ilwt->connected) {
++			local_bh_disable();
+ 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
++			local_bh_enable();
++		}
+ 	}
+ 
+ 	skb_dst_set(skb, dst);
 -- 
 2.43.0
 
