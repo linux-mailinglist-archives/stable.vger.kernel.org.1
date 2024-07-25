@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-61632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE7E93C53E
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:49:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C5193C599
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 16:53:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D7FC1F256F0
-	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:49:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD59FB24916
+	for <lists+stable@lfdr.de>; Thu, 25 Jul 2024 14:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A820A27473;
-	Thu, 25 Jul 2024 14:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DEA19CCF7;
+	Thu, 25 Jul 2024 14:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7FkOqLn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYb1kAev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C3AF519;
-	Thu, 25 Jul 2024 14:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F62FC19;
+	Thu, 25 Jul 2024 14:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918939; cv=none; b=ZfoAFpY/zeGjlJ5QcXeOip9HL221OTHnrYr+f4RJzMEPYoZ3cpMckYyq9QXP5/54sqaWeAeegYS1IxMOgYOWv32f0yA/dpNm+YlZcllrBMNwZu5Tha8HwEQq3VPuDfNNFEhRN3CU4GcOEIRz9e4TobkjfqNNUmMzOnyxdur0BdM=
+	t=1721919197; cv=none; b=W7YPRL1pTzfICnNh+0LaICe3w+grgxEH/iSGuP8nFOrH/+O3SkvxJxJcGU4i0sfmN2Q02QlreyShD/8v5oLTQfBXFUdr/17T/HwV+lYpmsA0G3yplaJSISF/ICXK409wrl+jMPDhq2PYCMO8G0C0w1NAi6NFLMBzZU8tPIgXm2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918939; c=relaxed/simple;
-	bh=SaTTyA1jQuW1SNntK6T0+xpyYgaefbtlHSfDGzudQ7I=;
+	s=arc-20240116; t=1721919197; c=relaxed/simple;
+	bh=d9p9z7CVsSAR5KiAdavVQEHLPlQqdf2S2gQAk2ipowk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DecHd+vlHxZctnIsFUFZO2l9le7TRrOQ9HTBEjtHzEn3kaZD3aR6l6KjvVYfoWER113z4nRxh5NA/bAX2+oZ/MsPVJgxWC29zAOcVir1AeuUiaHJPK2IMfIrerPxcbwkuXyd251FFOkWqVMG/ptwNzHHjkHYqhJWgKtMuyrdB6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7FkOqLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF01C116B1;
-	Thu, 25 Jul 2024 14:48:58 +0000 (UTC)
+	 MIME-Version; b=pFGxnDhS/gOPEOynsRMq0UuhMtI53L2CXiKh67kA9xtoCE9so5zNQ35u4nKed8bT7OjNV6AtNqlbL+R84EWL7MjdrihMZosdDzM6lwRtjIi8qyy2q3rDpmwoiEGmiwubmkjhVZj/kG/KlnphePXS2OnJMw+Hwjxe7+V4s1PEgm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYb1kAev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A4CC116B1;
+	Thu, 25 Jul 2024 14:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721918939;
-	bh=SaTTyA1jQuW1SNntK6T0+xpyYgaefbtlHSfDGzudQ7I=;
+	s=korg; t=1721919196;
+	bh=d9p9z7CVsSAR5KiAdavVQEHLPlQqdf2S2gQAk2ipowk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7FkOqLnTswQ/BkjVBezncndqkpMZJ3KP93TlrjYjHkMh1oMWGDw7ezOQAEoNBUFe
-	 4JLZVhgR+Fc1xdz5BPERv0vL1LbyE62nrUcZ/TfdbKn5b3783l4T23Gu0OWIEDWWq0
-	 3yZ3RzlahlAshkKHluCslZGU22/nYBHs6JaSkQzA=
+	b=lYb1kAevyJhOPIJNDLsj8xeZUpO7I7rDQRIpcXUw5rr0yvecuBDpsG18nP23YxKK2
+	 fXwdyeMDtAOQzyvimsg+sYxQ845ju846nvaMwYGxoHYWg5/wns5e+Nro3R6A5rSmgX
+	 rGtLewNJGqzuXwBr6l+ftsUyMvtYeEPXz/7CLiwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Srikar Dronamraju <srikar@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 35/59] powerpc/pseries: Whitelist dtl slub object for copying to userspace
-Date: Thu, 25 Jul 2024 16:37:25 +0200
-Message-ID: <20240725142734.591357943@linuxfoundation.org>
+Subject: [PATCH 5.15 53/87] powerpc/pseries: Whitelist dtl slub object for copying to userspace
+Date: Thu, 25 Jul 2024 16:37:26 +0200
+Message-ID: <20240725142740.433996221@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
-References: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142738.422724252@linuxfoundation.org>
+References: <20240725142738.422724252@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -123,10 +123,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 822be2680b792..8e4a2e8aee114 100644
+index d25053755c8b8..309a72518ecc3 100644
 --- a/arch/powerpc/platforms/pseries/setup.c
 +++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -312,8 +312,8 @@ static int alloc_dispatch_log_kmem_cache(void)
+@@ -314,8 +314,8 @@ static int alloc_dispatch_log_kmem_cache(void)
  {
  	void (*ctor)(void *) = get_dtl_cache_ctor();
  
