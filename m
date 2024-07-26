@@ -1,260 +1,237 @@
-Return-Path: <stable+bounces-61808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9912893CC88
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 03:41:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FE793CCC1
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 04:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC0AC1C20FB7
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 01:41:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D146D282E6D
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 02:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007C6BA4B;
-	Fri, 26 Jul 2024 01:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BC81A716;
+	Fri, 26 Jul 2024 02:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aK2blC56"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SeSaDTBg"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59B64C99
-	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 01:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6791B947;
+	Fri, 26 Jul 2024 02:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721958109; cv=none; b=bM+WtYM5iCp27Y0HnyLlPOjFdzikIgKLOYVr3+DCocPG6S9itoAw0HZwcIMNPbKi077bTiauoUcn+kyTtfIZ/jj54i38NmcUvr71IBBP5c0LHXDi3xtRDjnlAkfqQqr0n3nHV5taEDLjXzSMN1Be0LQ/xThgtNPerAwR+79QNYg=
+	t=1721961246; cv=none; b=Yr1/RxCZaRObiIY3n8YwRMkLvI/eZpVDv5OgLGJJjRosEu7XsonGKKq9Cppd6J2WNYTHVUuzHaZrtdehwuc+JnXS4zYJDGOpmg1grpM0x72xWsXjs4PFoDhLWnZpXyiEjyUgmLXcsqwwLSyhsJ8kUCWZ6sj+pAtTUnr5ibDX4sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721958109; c=relaxed/simple;
-	bh=o3HnjrWlITcEfZpqbTHl4tyfWAfMWz6+riSbKTagLco=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WopCBRymiUj3YWHkibMhCKJjkzCYEVxCRtvjDrkcRdgtx+bDvY0dbytLOigiEMY/Wd67WWBnf4TOEqduhROeTIbBpQgI2f6Hb7F4r/oJ1V7MyoTSBHwxH1TY4yNS6UYrpCAKs3AMH7O3eNT1u3sHEAOptAvLPWX9AxV2DfGtdHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aK2blC56; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721958105;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eaOMRhY/gRejCiB3H5KoMMK1aCX64UdyNisj6DkIbYc=;
-	b=aK2blC56IjVGSofLuZStUMBja/4+jxn/tZsnPMbdIrtUv2fbgkImGrWwWJuNy7eZu2y6Ay
-	1hc1HM4homSLXxjC0KsBa2JR0rFUJEs+7DEo4aEQacehRL/47nMVGW/f9I+oNiCCkKwRCf
-	jl9xMpvR8MTmpkelgFxIu5U5VY/deSM=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-533-LyVjleDWPwqBHM1Rfo7Lfg-1; Thu, 25 Jul 2024 21:41:44 -0400
-X-MC-Unique: LyVjleDWPwqBHM1Rfo7Lfg-1
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-1fc53227f21so2021665ad.2
-        for <stable@vger.kernel.org>; Thu, 25 Jul 2024 18:41:43 -0700 (PDT)
+	s=arc-20240116; t=1721961246; c=relaxed/simple;
+	bh=fGO7zgAjSKLGmo/Nb/TQ4yUxCHvoxiuh+5KbAxDkpUY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qCA7EQDn7HxmuLFda7D7K0b+30CylQ8ViBCpUfMekWy7eYNbjJ1BnTbVGB6ugCEfKXwdnqo23GPJmWnzgGDHW0uwnU1g2u6TyCHbfrGsisQM6Gpmo8pDBhy/YKxH9FcGf2/cNLYYJQTlM5i1d+hI9yyH3F03lWFToHFckGlPbRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SeSaDTBg; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-44fdde0c8dcso1105591cf.0;
+        Thu, 25 Jul 2024 19:34:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721961244; x=1722566044; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=B1DrkWVH1N3/4i4ZMI9uWQ4G3glJcw7jxGQQ1U+yfBg=;
+        b=SeSaDTBg7YpW4KrFtRa9+H6DtwZ07V2OViTOZL0r91fcYGZYO61auSAThiVMlDJTdS
+         Yss3Nyr6IJD9jy0X+FwQ7gn/t4gD+fEc+QOkuQMT6F48Gm/BRVCI7ZQlVClmdYqgr7QU
+         KwRH+5Q838c3vSPqy35H+7JT+mkHTm9A6bL3RhpfkY+Z+YuV3/ZkMck0tw/JjU5CUXFk
+         4rDarMFube7Nek67+XXZsv8JFAc0D+VHA/mTpXUDVI/rvMt5UdWJ+eEXTz+ym9yBhaHW
+         knON7gC+g9Qld+nd/wVpOMX5n0Wjsk5dGkoUXJIKF9h26lZsJ0+RGeo5L7hIEFgZp/A3
+         d/kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721958103; x=1722562903;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eaOMRhY/gRejCiB3H5KoMMK1aCX64UdyNisj6DkIbYc=;
-        b=g9I3NtwXadZduKgFcq1xpFM8Rb1U6qTaoTX21Ay2foJIMdqxgj+tk0sKrMTLysrrbj
-         rKOq5WxJEb+iOy8oUJmIobDrJSjHf3Gid+VoXC5MghY6vRbVksBPgyQyr7F10fPzS/I+
-         KtvmnfaHyWNsHylwrKGCmRPTqqqqCtrwGO9zBCaEjrhjcopkD6Ri1v0Wltvi5bcudGmY
-         fyYHeHSKvo1oQitPZttji8sWk3oqlFrIa9ag7SrwBrYVjli6XR07L4VnMuElkgrSzQr6
-         TtsPx9dZu/wvWIUlm8B7tbVQ2K0cGV1H0JjY3gtv/a6+jBcS/J7K2/FG30A3/EwwOH2e
-         +s5g==
-X-Forwarded-Encrypted: i=1; AJvYcCXL8eRpFR6ojDdrzIEaRX8dh8H4G2X/d7iEAXinvuNy8xTLLJvWQLAln6mvppfG3B2E816WGDqIMbr+5n+UNf6cYLKmFalz
-X-Gm-Message-State: AOJu0Yz0NOaOVPWIf73TQ4pzcgE4Am541KG40joX6T6nI8wyDVXZ+3b6
-	D2J9INOY2uA8a/KUC/wvP5bq6R0mNWSPlqPW5u9yZ6GP8mjMATv4/tF2vVUMM5Oe005l0wepgvu
-	Cdogp9MyK/Q93v8UNU3cSPx5rL1P7QJ1X0bHnrw4qHxsiyafETl1xXJLKPiTtnxbB
-X-Received: by 2002:a17:903:32ce:b0:1fc:71fb:10d6 with SMTP id d9443c01a7336-1fed352fd44mr52630265ad.6.1721958102840;
-        Thu, 25 Jul 2024 18:41:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHVwes48W5IHUAfJqPQlO+VKA3ekAdkvW4TtjeJ+ONnDUCYG2nahUGE/QByRqvVcriyAyh9LQ==
-X-Received: by 2002:a17:903:32ce:b0:1fc:71fb:10d6 with SMTP id d9443c01a7336-1fed352fd44mr52630075ad.6.1721958102367;
-        Thu, 25 Jul 2024 18:41:42 -0700 (PDT)
-Received: from [10.72.116.41] ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7cf1db4sm20741095ad.87.2024.07.25.18.41.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jul 2024 18:41:42 -0700 (PDT)
-Message-ID: <c69c688b-98ba-4c45-a45a-eefdf1fa467e@redhat.com>
-Date: Fri, 26 Jul 2024 09:41:36 +0800
+        d=1e100.net; s=20230601; t=1721961244; x=1722566044;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B1DrkWVH1N3/4i4ZMI9uWQ4G3glJcw7jxGQQ1U+yfBg=;
+        b=drI18XgYnHbOiV8UeeCO9mCBzaPvQwbDgvQIEnsJrYA7Sx1SUngxb7s++OI7WIVTeW
+         hQrU7QdnFS0ikeITijSKzQos+tVX+Q7B605uuUY9qSK2VFB4C8mWiGeTJncEM6GXJ0T3
+         5mEbFI0/JrlF8uXvxYqSKOJBa5KlCvV65OdVB/tErLtfXvlMU8i+7DhizUgZTRVkjniN
+         tzAgSBMvGdWW+l0z5Mu0RzbaOioySQrHSPq7kHhhTGJAcH4Z65nUYuDB5JmzRaypuFI0
+         STa3ndFlmHb8k5+J9c47QP6VoZRccqeZ6+tyF9q1xmEaQATWsjlEJg636vFXXvJS3y5k
+         75gQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJcQwaET5i7o5bmhQKlFVeO5NDBQVlIRaOLFZsLHvPlaFlJn2SbEIt44zoI6GJkbRY/S5frWEOdx0mimj80632S8crLx0L
+X-Gm-Message-State: AOJu0Yybl++cLWHManAxbL+en5J7rFi+qdLZGWMfulRou2SRp+POpkro
+	UNoAJAHFYq1d7fwM1XiX0mUKt7Byq0XZH5DhkS4VHdgs2STGttjrgngT6w==
+X-Google-Smtp-Source: AGHT+IGJi0rlpnoJDnkh4TLgoJ0OhF3ZU6Eqq5O6eZw/kgN+3qP6bMAfcdpvbsLZXT3bI68so+xGaA==
+X-Received: by 2002:a05:622a:448:b0:447:df17:5116 with SMTP id d75a77b69052e-44fe32a19f4mr47893061cf.7.1721961243818;
+        Thu, 25 Jul 2024 19:34:03 -0700 (PDT)
+Received: from willemb.c.googlers.com.com (73.84.86.34.bc.googleusercontent.com. [34.86.84.73])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44fe81463easm10677521cf.26.2024.07.25.19.34.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jul 2024 19:34:03 -0700 (PDT)
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	mst@redhat.com,
+	jasowang@redhat.com,
+	arefev@swemel.ru,
+	alexander.duyck@gmail.com,
+	Willem de Bruijn <willemb@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: drop bad gso csum_start and offset in virtio_net_hdr
+Date: Thu, 25 Jul 2024 22:32:49 -0400
+Message-ID: <20240726023359.879166-1-willemdebruijn.kernel@gmail.com>
+X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] ceph: force sending a cap update msg back to MDS for
- revoke op
-To: Venky Shankar <vshankar@redhat.com>
-Cc: ceph-devel@vger.kernel.org, idryomov@gmail.com, stable@vger.kernel.org
-References: <20240716120724.134512-1-xiubli@redhat.com>
- <CACPzV1=3m3zKcBuUKTYD6JfkSvo9dTuPU_8shrNBOEdBeSZDuA@mail.gmail.com>
-Content-Language: en-US
-From: Xiubo Li <xiubli@redhat.com>
-In-Reply-To: <CACPzV1=3m3zKcBuUKTYD6JfkSvo9dTuPU_8shrNBOEdBeSZDuA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+From: Willem de Bruijn <willemb@google.com>
 
-On 7/25/24 19:41, Venky Shankar wrote:
-> On Tue, Jul 16, 2024 at 5:37 PM <xiubli@redhat.com> wrote:
->> From: Xiubo Li <xiubli@redhat.com>
->>
->> If a client sends out a cap update dropping caps with the prior 'seq'
->> just before an incoming cap revoke request, then the client may drop
->> the revoke because it believes it's already released the requested
->> capabilities.
->>
->> This causes the MDS to wait indefinitely for the client to respond
->> to the revoke. It's therefore always a good idea to ack the cap
->> revoke request with the bumped up 'seq'.
->>
->> Currently if the cap->issued equals to the newcaps the check_caps()
->> will do nothing, we should force flush the caps.
->>
->> Cc: stable@vger.kernel.org
->> Link: https://tracker.ceph.com/issues/61782
->> Signed-off-by: Xiubo Li <xiubli@redhat.com>
->> ---
->>
->> V3:
->> - Move the force check earlier
->>
->> V2:
->> - Improved the patch to force send the cap update only when no caps
->> being used.
->>
->>
->>   fs/ceph/caps.c  | 35 ++++++++++++++++++++++++-----------
->>   fs/ceph/super.h |  7 ++++---
->>   2 files changed, 28 insertions(+), 14 deletions(-)
->>
->> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
->> index 24c31f795938..672c6611d749 100644
->> --- a/fs/ceph/caps.c
->> +++ b/fs/ceph/caps.c
->> @@ -2024,6 +2024,8 @@ bool __ceph_should_report_size(struct ceph_inode_info *ci)
->>    *  CHECK_CAPS_AUTHONLY - we should only check the auth cap
->>    *  CHECK_CAPS_FLUSH - we should flush any dirty caps immediately, without
->>    *    further delay.
->> + *  CHECK_CAPS_FLUSH_FORCE - we should flush any caps immediately, without
->> + *    further delay.
->>    */
->>   void ceph_check_caps(struct ceph_inode_info *ci, int flags)
->>   {
->> @@ -2105,7 +2107,7 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
->>          }
->>
->>          doutc(cl, "%p %llx.%llx file_want %s used %s dirty %s "
->> -             "flushing %s issued %s revoking %s retain %s %s%s%s\n",
->> +             "flushing %s issued %s revoking %s retain %s %s%s%s%s\n",
->>               inode, ceph_vinop(inode), ceph_cap_string(file_wanted),
->>               ceph_cap_string(used), ceph_cap_string(ci->i_dirty_caps),
->>               ceph_cap_string(ci->i_flushing_caps),
->> @@ -2113,7 +2115,8 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
->>               ceph_cap_string(retain),
->>               (flags & CHECK_CAPS_AUTHONLY) ? " AUTHONLY" : "",
->>               (flags & CHECK_CAPS_FLUSH) ? " FLUSH" : "",
->> -            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "");
->> +            (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "",
->> +            (flags & CHECK_CAPS_FLUSH_FORCE) ? " FLUSH_FORCE" : "");
->>
->>          /*
->>           * If we no longer need to hold onto old our caps, and we may
->> @@ -2188,6 +2191,11 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
->>                                  queue_writeback = true;
->>                  }
->>
->> +               if (flags & CHECK_CAPS_FLUSH_FORCE) {
->> +                       doutc(cl, "force to flush caps\n");
->> +                       goto ack;
->> +               }
->> +
->>                  if (cap == ci->i_auth_cap &&
->>                      (cap->issued & CEPH_CAP_FILE_WR)) {
->>                          /* request larger max_size from MDS? */
->> @@ -3518,6 +3526,8 @@ static void handle_cap_grant(struct inode *inode,
->>          bool queue_invalidate = false;
->>          bool deleted_inode = false;
->>          bool fill_inline = false;
->> +       bool revoke_wait = false;
->> +       int flags = 0;
->>
->>          /*
->>           * If there is at least one crypto block then we'll trust
->> @@ -3713,16 +3723,18 @@ static void handle_cap_grant(struct inode *inode,
->>                        ceph_cap_string(cap->issued), ceph_cap_string(newcaps),
->>                        ceph_cap_string(revoking));
->>                  if (S_ISREG(inode->i_mode) &&
->> -                   (revoking & used & CEPH_CAP_FILE_BUFFER))
->> +                   (revoking & used & CEPH_CAP_FILE_BUFFER)) {
->>                          writeback = true;  /* initiate writeback; will delay ack */
->> -               else if (queue_invalidate &&
->> +                       revoke_wait = true;
->> +               } else if (queue_invalidate &&
->>                           revoking == CEPH_CAP_FILE_CACHE &&
->> -                        (newcaps & CEPH_CAP_FILE_LAZYIO) == 0)
->> -                       ; /* do nothing yet, invalidation will be queued */
->> -               else if (cap == ci->i_auth_cap)
->> +                        (newcaps & CEPH_CAP_FILE_LAZYIO) == 0) {
->> +                       revoke_wait = true; /* do nothing yet, invalidation will be queued */
->> +               } else if (cap == ci->i_auth_cap) {
->>                          check_caps = 1; /* check auth cap only */
->> -               else
->> +               } else {
->>                          check_caps = 2; /* check all caps */
->> +               }
->>                  /* If there is new caps, try to wake up the waiters */
->>                  if (~cap->issued & newcaps)
->>                          wake = true;
->> @@ -3749,8 +3761,9 @@ static void handle_cap_grant(struct inode *inode,
->>          BUG_ON(cap->issued & ~cap->implemented);
->>
->>          /* don't let check_caps skip sending a response to MDS for revoke msgs */
->> -       if (le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
->> +       if (!revoke_wait && le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
->>                  cap->mds_wanted = 0;
->> +               flags |= CHECK_CAPS_FLUSH_FORCE;
->>                  if (cap == ci->i_auth_cap)
->>                          check_caps = 1; /* check auth cap only */
->>                  else
->> @@ -3806,9 +3819,9 @@ static void handle_cap_grant(struct inode *inode,
->>
->>          mutex_unlock(&session->s_mutex);
->>          if (check_caps == 1)
->> -               ceph_check_caps(ci, CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOINVAL);
->> +               ceph_check_caps(ci, flags | CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOINVAL);
->>          else if (check_caps == 2)
->> -               ceph_check_caps(ci, CHECK_CAPS_NOINVAL);
->> +               ceph_check_caps(ci, flags | CHECK_CAPS_NOINVAL);
->>   }
->>
->>   /*
->> diff --git a/fs/ceph/super.h b/fs/ceph/super.h
->> index b0b368ed3018..831e8ec4d5da 100644
->> --- a/fs/ceph/super.h
->> +++ b/fs/ceph/super.h
->> @@ -200,9 +200,10 @@ struct ceph_cap {
->>          struct list_head caps_item;
->>   };
->>
->> -#define CHECK_CAPS_AUTHONLY   1  /* only check auth cap */
->> -#define CHECK_CAPS_FLUSH      2  /* flush any dirty caps */
->> -#define CHECK_CAPS_NOINVAL    4  /* don't invalidate pagecache */
->> +#define CHECK_CAPS_AUTHONLY     1  /* only check auth cap */
->> +#define CHECK_CAPS_FLUSH        2  /* flush any dirty caps */
->> +#define CHECK_CAPS_NOINVAL      4  /* don't invalidate pagecache */
->> +#define CHECK_CAPS_FLUSH_FORCE  8  /* force flush any caps */
->>
->>   struct ceph_cap_flush {
->>          u64 tid;
->> --
->> 2.45.1
->>
-> v3 pathset looks good.
->
-> Reviewed-by: Venky Shankar <vshankar@redhat.com>
-> Tested-by: Venky Shankar <vshankar@redhat.com>
-Thanks Venky.
->
+Tighten csum_start and csum_offset checks in virtio_net_hdr_to_skb
+for GSO packets.
+
+The function already checks that a checksum requested with
+VIRTIO_NET_HDR_F_NEEDS_CSUM is in skb linear. But for GSO packets
+this might not hold for segs after segmentation.
+
+Syzkaller demonstrated to reach this warning in skb_checksum_help
+
+	offset = skb_checksum_start_offset(skb);
+	ret = -EINVAL;
+	if (WARN_ON_ONCE(offset >= skb_headlen(skb)))
+
+By injecting a TSO packet:
+
+WARNING: CPU: 1 PID: 3539 at net/core/dev.c:3284 skb_checksum_help+0x3d0/0x5b0
+ ip_do_fragment+0x209/0x1b20 net/ipv4/ip_output.c:774
+ ip_finish_output_gso net/ipv4/ip_output.c:279 [inline]
+ __ip_finish_output+0x2bd/0x4b0 net/ipv4/ip_output.c:301
+ iptunnel_xmit+0x50c/0x930 net/ipv4/ip_tunnel_core.c:82
+ ip_tunnel_xmit+0x2296/0x2c70 net/ipv4/ip_tunnel.c:813
+ __gre_xmit net/ipv4/ip_gre.c:469 [inline]
+ ipgre_xmit+0x759/0xa60 net/ipv4/ip_gre.c:661
+ __netdev_start_xmit include/linux/netdevice.h:4850 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4864 [inline]
+ xmit_one net/core/dev.c:3595 [inline]
+ dev_hard_start_xmit+0x261/0x8c0 net/core/dev.c:3611
+ __dev_queue_xmit+0x1b97/0x3c90 net/core/dev.c:4261
+ packet_snd net/packet/af_packet.c:3073 [inline]
+
+The geometry of the bad input packet at tcp_gso_segment:
+
+[   52.003050][ T8403] skb len=12202 headroom=244 headlen=12093 tailroom=0
+[   52.003050][ T8403] mac=(168,24) mac_len=24 net=(192,52) trans=244
+[   52.003050][ T8403] shinfo(txflags=0 nr_frags=1 gso(size=1552 type=3 segs=0))
+[   52.003050][ T8403] csum(0x60000c7 start=199 offset=1536
+ip_summed=3 complete_sw=0 valid=0 level=0)
+
+Migitage with stricter input validation.
+
+csum_offset: for GSO packets, deduce the correct value from gso_type.
+This is already done for USO. Extend it to TSO. Let UFO be:
+udp[46]_ufo_fragment ignores these fields and always computes the
+checksum in software.
+
+csum_start: finding the real offset requires parsing to the transport
+header. Do not add a parser, use existing segmentation parsing. Thanks
+to SKB_GSO_DODGY, that also catches bad packets that are hw offloaded.
+Again test both TSO and USO. Do not test UFO for the above reason, and
+do not test UDP tunnel offload.
+
+GSO packet are almost always CHECKSUM_PARTIAL. USO packets may be
+CHECKSUM_NONE since commit 10154dbded6d6 ("udp: Allow GSO transmit
+from devices with no checksum offload"), but then still these fields
+are initialized correctly in udp4_hwcsum/udp6_hwcsum_outgoing. So no
+need to test for ip_summed == CHECKSUM_PARTIAL first.
+
+This revises an existing fix mentioned in the Fixes tag, which broke
+small packets with GSO offload, as detected by kselftests.
+
+Link: https://syzkaller.appspot.com/bug?extid=e1db31216c789f552871
+Link: https://lore.kernel.org/netdev/20240723223109.2196886-1-kuba@kernel.org
+Fixes: e269d79c7d35 ("net: missing check virtio")
+Cc: stable@vger.kernel.org
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+---
+ include/linux/virtio_net.h | 16 +++++-----------
+ net/ipv4/tcp_offload.c     |  3 +++
+ net/ipv4/udp_offload.c     |  3 +++
+ 3 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index d1d7825318c32..6c395a2600e8d 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -56,7 +56,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 	unsigned int thlen = 0;
+ 	unsigned int p_off = 0;
+ 	unsigned int ip_proto;
+-	u64 ret, remainder, gso_size;
+ 
+ 	if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
+ 		switch (hdr->gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
+@@ -99,16 +98,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
+ 		u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
+ 
+-		if (hdr->gso_size) {
+-			gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
+-			ret = div64_u64_rem(skb->len, gso_size, &remainder);
+-			if (!(ret && (hdr->gso_size > needed) &&
+-						((remainder > needed) || (remainder == 0)))) {
+-				return -EINVAL;
+-			}
+-			skb_shinfo(skb)->tx_flags |= SKBFL_SHARED_FRAG;
+-		}
+-
+ 		if (!pskb_may_pull(skb, needed))
+ 			return -EINVAL;
+ 
+@@ -182,6 +171,11 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 			if (gso_type != SKB_GSO_UDP_L4)
+ 				return -EINVAL;
+ 			break;
++		case SKB_GSO_TCPV4:
++		case SKB_GSO_TCPV6:
++			if (skb->csum_offset != offsetof(struct tcphdr, check))
++				return -EINVAL;
++			break;
+ 		}
+ 
+ 		/* Kernel has a special handling for GSO_BY_FRAGS. */
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 4b791e74529e1..9e49ffcc77071 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -140,6 +140,9 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	if (thlen < sizeof(*th))
+ 		goto out;
+ 
++	if (unlikely(skb->csum_start != skb->transport_header))
++		goto out;
++
+ 	if (!pskb_may_pull(skb, thlen))
+ 		goto out;
+ 
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index aa2e0a28ca613..f521152c40871 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -278,6 +278,9 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 	if (gso_skb->len <= sizeof(*uh) + mss)
+ 		return ERR_PTR(-EINVAL);
+ 
++	if (unlikely(gso_skb->csum_start != gso_skb->transport_header))
++		return ERR_PTR(-EINVAL);
++
+ 	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
+ 		/* Packet is from an untrusted source, reset gso_segs. */
+ 		skb_shinfo(gso_skb)->gso_segs = DIV_ROUND_UP(gso_skb->len - sizeof(*uh),
+-- 
+2.46.0.rc1.232.g9752f9e123-goog
 
 
