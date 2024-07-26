@@ -1,132 +1,81 @@
-Return-Path: <stable+bounces-61935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F3793DA28
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 23:28:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E900D93DAB9
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 00:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67B4E1F2481C
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 21:28:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3C82283D66
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 22:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C1E149C41;
-	Fri, 26 Jul 2024 21:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="NS/ixlHx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9041314F9EE;
+	Fri, 26 Jul 2024 22:39:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A281748A;
-	Fri, 26 Jul 2024 21:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5004C15099D;
+	Fri, 26 Jul 2024 22:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722029285; cv=none; b=BTuRYOqs+2fDu8tD2w9M3CpzfsJSgzf4VwM9NCA4SsG0acgEL4uADdb9hMfVsgERy+C0Q7teKFXnvfNNM/+2bDGKOOaU0OuEdfvlnX0hOUSBVGis4n3HSjItfM0mJXer5L1EGc+36Gjp3WG5SoE0Uc6H0KlXjR9C6Qjwq8IItYA=
+	t=1722033557; cv=none; b=MYJPcbva8iM+UiVJ8Qwn9JFeRV5S6YdPNVHgHjLJIdY/QZLTK3YekBePgfsFM+8zs8i55NobwhTLkbBWHwwUHClBZ22wjfv9MQX/Ht8XiUUzbj1iFip+bc3JNgx8eNZrWXBQVzevL9jiW2VXO8WaA3EPt1ZhE21xNzOgmfH91UM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722029285; c=relaxed/simple;
-	bh=OrrdlTnH3WEKPN3TEJlkVeUCJlHW+7VcMK+CyiOaVko=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S/D1WeeA0ECVNuMxgTOuichHP/pTXf0nZjQDjvwi3z8NvUNf61UBirNOw2uEEAqnDN8h/zanqAvsrcnnAP86wpfkmWQp6twly/y9M1eHCtIInqrnZHcjdng8O3SiFASUOQjztuykdpM9+z7Mj0cpEhkZxYtqYmrpNEVmCRG1bEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=NS/ixlHx; arc=none smtp.client-ip=217.72.192.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1722029243; x=1722634043; i=christian@heusel.eu;
-	bh=7cb9FKqiTnmAm4LGtD713mXbbQFUzBHgztfenIYWcFs=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=NS/ixlHxQgNlPBNJpdaCictNQj535JyqyZxV6PfqKrH1mfRDCFYuSKZM2yVgNKS9
-	 D28ag89tIeUkviAkdavPscpp5EFzG4n+wMQTP9WhSGihfhgN+AXqD4NCyEVKBTBoY
-	 9U3Gu86GOaxkRwdtqD2v4MFai0syNRcCAwfWQiaVFj3BVugdgP4IaxChfGVnGpNo6
-	 ua3p/vQRh5yIU7D83EwUdwMJT4yArzmAmD/7Z7ewWP/igTJlLwAcc44MEkA1CNyBf
-	 iL9ztpc9t5YxbQGSRG7ZvoiWCMr1FjPFn0FCbJBinCbcBhpuZL6gISboYsVwTbMgE
-	 9PhxBRBm8pjrlkfXJg==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([141.70.80.5]) by mrelayeu.kundenserver.de (mreue106
- [212.227.15.183]) with ESMTPSA (Nemesis) id 1M4rHF-1sXBM41NuZ-0030Ij; Fri, 26
- Jul 2024 23:27:23 +0200
-Date: Fri, 26 Jul 2024 23:27:21 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.10 00/29] 6.10.2-rc1 review
-Message-ID: <ff7f0e41-537c-4e06-8fba-5a027067a6a8@heusel.eu>
-References: <20240725142731.814288796@linuxfoundation.org>
+	s=arc-20240116; t=1722033557; c=relaxed/simple;
+	bh=Bu5UslRBZq44O0sqBkTIKfN+TgpcyydLs8owUsPUz8w=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=M466wzzR+rlZh/3fyC+S1Q3r5y9AbOBEW/QzeLu4pUzOfJtmmwD4dSrKIRb4HQRZ2VcbfqYsNZZ6go0LCjNcVeZEKW6iK0VSWTNn8EmtpybDI3NAISuEYOczkN/B3mGdV38MLq1bUNOnVn2n2Mz44gch1h6nIzSdQfS4QxEAkzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7141C32782;
+	Fri, 26 Jul 2024 22:39:16 +0000 (UTC)
+Received: by mercury (Postfix, from userid 1000)
+	id 6CB721060980; Sat, 27 Jul 2024 00:39:14 +0200 (CEST)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Sebastian Reichel <sre@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>, 
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-arm-msm@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20240715-topic-sm8x50-upstream-fix-battmgr-temp-tz-warn-v1-1-16e842ccead7@linaro.org>
+References: <20240715-topic-sm8x50-upstream-fix-battmgr-temp-tz-warn-v1-1-16e842ccead7@linaro.org>
+Subject: Re: [PATCH] power: supply: qcom_battmgr: return EAGAIN when
+ firmware service is not up
+Message-Id: <172203355443.246603.13662219731890792931.b4-ty@collabora.com>
+Date: Sat, 27 Jul 2024 00:39:14 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="d6guo2gbfiwflmbb"
-Content-Disposition: inline
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-X-Provags-ID: V03:K1:u+DcOdoBn801YoG1swHt3jWoqlewT2v3Rp51C4Gn3TFSbo7y8YA
- RiwlhTjFS/NgIvioR0ijVxc8aF647WDV0i97P0d1lCOlw0BRJ+YlHJQfegMYc1xLQrCUI4i
- QWV0V2RSZBd5rp6r1aJgg1CHGYieQIuKOmFH2fixtbhqLjij8GP1tGNC101k0Ut+fcjq1CG
- +TK0XBf/4red6q1zQtmWQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:2qsYY1e11Dc=;fgYB+yoosq6hmmwAi9PXEZDvWfL
- UK6BgD8Fo6iA6T8sEt42ltv26qu0aKZs2s6qJ/r71xl7MxyY3WWHnU4oAfs8el0p/fhic4eTm
- K6/vEwPcUzP18oydD+a/Y5SSV2AQBsAoAX6DLiwQcfBn+UbgiZi+PLATo2ZwVfGqVdtMiR/R6
- 5Q3sSBtzjGwT91DaHQOa4N0TWvuSi2iabgTDP9EIfKMnUUZNArkXtUSjFW8qplIgkuRJlHHAi
- VZ0GdlfPzpvVz1kKO2FSeKE7onhar3B4ygMFSqZOPg2oGlAFPWqDUbxYcd4qRL2IDhb9lH6T2
- zomfxSTXGo7yQUdF3xS49BkrlXi/B5T+NL/NiY1Dv9agbtnohOcXDLUjIYyGo+CIDdm5qD2bz
- hcn0YdF6kzlr3EX7DG/TJzZ2J3eodztXGJqQOgOrlFw9sbw6+z8XuLi0FJTxvP1gM/j36XNtd
- FXiryxz4BceyF8TtFmTNG4oTFPFVSxzNUwO9kXRxLY9K5e85YhthH54N7hDJgWcIm3hnXEo7L
- 8FjAco4hCbAbMPilgnggn3t22QbSRxK58O8elOyJkTAd73Lu2uwyHdV8wHPrKUI0mlo8ZsXm4
- mpPdKndz8MwnJWKKEqs153BmT/wAMwLsGZuMImY7Jw8rHud/ou8kPCwgX89IgIVOCLhRZVD2J
- 6mzSvTpNroFFLknzQzi4sojeX0u82D6Kvzk9k7/i3Anvq6vZGpavWwdIN5qniOulTOmbPm9dX
- glBnZgMzIUkjbtCgrKgwpLO/0cgU8Nfqw==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
 
---d6guo2gbfiwflmbb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, 15 Jul 2024 14:57:06 +0200, Neil Armstrong wrote:
+> The driver returns -ENODEV when the firmware battmrg service hasn't
+> started yet, while per-se -ENODEV is fine, we usually use -EAGAIN to
+> tell the user to retry again later. And the power supply core uses
+> -EGAIN when the device isn't initialized, let's use the same return.
+> 
+> This notably causes an infinite spam of:
+> thermal thermal_zoneXX: failed to read out thermal zone (-19)
+> because the thermal core doesn't understand -ENODEV, but only
+> considers -EAGAIN as a non-fatal error.
+> 
+> [...]
 
-On 24/07/25 04:36PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.10.2 release.
-> There are 29 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-> Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
-> Anything received after that time might be too late.
->=20
+Applied, thanks!
 
-Tested-by: Christian Heusel <christian@heusel.eu>
+[1/1] power: supply: qcom_battmgr: return EAGAIN when firmware service is not up
+      commit: bf9d5cb588755ee41ac12a8976dccf44ae18281b
 
-Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU
+Best regards,
+-- 
+Sebastian Reichel <sebastian.reichel@collabora.com>
 
---d6guo2gbfiwflmbb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmakFLgACgkQwEfU8yi1
-JYVL4Q//c3u7IM+ekLkSdT+bjoqcNA4/nqR390psXhySqWaO2Qmyebwqf2QuO8UN
-DE2qEVWHmQIBpgUM7lQah8lr41nfioMdMC1J3M9mILRahkVmvvY3URqamGEgvNmy
-SqKeErbxZ8b5HaohINtfaipCEWkHOyamFF2wITbRzRKqpfTIrwnBBedCtiTmsYZN
-R/NhNVY4Qy4L9Ith2AMjGTEPTfNqExnwzlAHDXHtGwitkFOFqtJRPAakOCRwJY6e
-l8kotjvpMRdTj6KouV3MyI/au5srpw6Dp4jbxOdDpkqyuvQXJZsSBzVShJwIWEQn
-PBcMeazXeVaGNK+CankKTLUfLr53AoqfeHobn30q4woP+sh9i/RLR0NUkKOsm+gk
-C64XTJqq+15Pp6kLW3h9yIxe1Yd6HQdTb8azOar/HDbfpM2JM61R15DZSOtbgQVv
-YKOzei1uvuN0bgI/uPvbm/yIhmueIRmCvpd614mPngiRhy72AF9KPpf38t/upRfm
-vv/AzxGVdei4ovd3UtH7q7ZtVN6TVmGnFHIoxwB9JdTAT/w/OUjpOHoJq/J2BdSS
-JdcF3RNCV6YjwTQC6RHzGQCXyR9N3MVduDcCNyPJozOUE0SCL/U1wwmc2dhzqmqr
-+FHkfgEX72OG5s7o9R4YZfXFX7hXbzLzi+GkXcWTeGtYjZQfySQ=
-=7Q49
------END PGP SIGNATURE-----
-
---d6guo2gbfiwflmbb--
 
