@@ -1,224 +1,131 @@
-Return-Path: <stable+bounces-61847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6EF93CFEF
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 10:55:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACECE93D001
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 11:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A7E51F250EF
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 08:55:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68C85284AC3
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 09:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E25B36D;
-	Fri, 26 Jul 2024 08:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E870C176FA2;
+	Fri, 26 Jul 2024 08:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHRWyuJd"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="DGKXPuWl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AFE13D255;
-	Fri, 26 Jul 2024 08:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08BA628
+	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 08:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721984108; cv=none; b=Cno5l+0ZtXno/uCTggQWWpOAlA0zL/HjT6CZo6cn0AwVhPwPAz3VmoFGEZ6wlKS1+Dpjgdzu4h+dCY+9+5NBvtI0w5ad7iY4c+rmjYQMPazVqxjmyQHYQXJCMKUBxAy2T8RKVZpoc2RSr4j90LRSf1zWF+jnH1pjTf37mETT4Bo=
+	t=1721984395; cv=none; b=I04WN/ulkbXbzbZPqktMgjnIRa5/LnRrl21yEMCCqS+e4ZnuDoGSwldVoG/vsmJNUqjI1SFfAtpCgxpTRMAo7RZSxx7gplzu4sx326Vd/hfrc6AoJIKoPSMQin1Rr8AoiQglxkYoqKHfIG6xLWMzV/D4H5bAAdKfFGJmcATlRBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721984108; c=relaxed/simple;
-	bh=he8U9UZkpAtKkVBLgORPLmjh+O4ksWKp5HJkZbNarpA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jLzWCoPv0v5RkylhIYAs9LOht0AGZoX1Rt0nBff/tf4zfES800PiezRY8DPBxPm4UFfeKSGaC7v7tSnhz7EkQLl0OKZCcCHi3oyYATSwt9a4Zwc/EMzFHOyyKEgyq6efffQmZ9Bs50QfGjfwDtpmHJIzOnLB5nBt8XO7/XRk+U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHRWyuJd; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5af6a1afa7bso253185a12.1;
-        Fri, 26 Jul 2024 01:55:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721984105; x=1722588905; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=STqdda2SEZjOE7whuhp/QZewj60K8H9Mte6gIw2bzZk=;
-        b=nHRWyuJdilrkq8823QUw6DjfMClQVL4EI1iJw71Ij69h2Q2dEu4Ui0Lixk2zXZtPj2
-         Db4tPCBiGrb3+rmonavD9OUnNRYLq8k5v0nXtA0iiTzyACaOtbEMKEKvgWd+ItvQG+n3
-         Wy9wwYx0eQLZoV4tnvW+ohf6CmK8t8ASCyBRypIpQ5XCLvrx1XBdYQMbPKaRFQlzoFAD
-         KOsCKY61TJfw4JlP6r+fThikXnXnPgW0thjgMz8w5TRyXXN7ToxvHOGDogoUNMFys7Wu
-         4hX8BwInCMNflKq8IcyjG+907fMxaP6aRinlqkkPbUKssn8/93AvA3jXub9jHS7Zjjml
-         s4gQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721984105; x=1722588905;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=STqdda2SEZjOE7whuhp/QZewj60K8H9Mte6gIw2bzZk=;
-        b=TPKCiURFvQ18O59vU8B/XYOaAQHUcBcmBN4mIkwnqD8QzGfO/uyu5DaDn+kcBgtdwq
-         yb+M6A8dBte3LLiocupuCAZ/trFuoQqjrHsv5tuONffbq+e4bDRB04oYvlva4dANKFhu
-         IrXqOeNDPUGcCYDgCSEwKe8er464aq+D3Ck8uZ1QSPdz4qo8DdPVLHsL6LU14+5ekxRs
-         aVuM3ZHtscV5tVsCEP+dDZ1WdD/xYpyjcrDhvaqAeSBwCFC6wADtyzPoo1xBlFpQ9YaR
-         3CCcvxY0/qWgNhq0gtP4Aoh558r/82bpXTrzkOUgzoi+FZrZmNzpA3Hdii7l1av7yQGS
-         EL0w==
-X-Forwarded-Encrypted: i=1; AJvYcCXPnF+5MTxyC5ZLXAES6vXhiz9M8W10xlwrVR2GWZTpgnrds3Y08Ao3YLEa3KuGllXvEm1LRKMhEweFTp1YWM37E2FWSyB0MSb5QnQE1jrUWskXuso+XSaMZQFi6l+IRu7ABz3d
-X-Gm-Message-State: AOJu0YwWY2V7vNXHA75cXup7Qs7wyT80144dzjFpaTThYwSbWKx4WuYT
-	WS+aph+y1RRqhBQX8DSZ16n3K/beRccn4J8WXpcs5SqKNOXs9emIHEE0veKq7I0btdCRv9S55li
-	VrpJKYUttNSR8E3z4SfHDBSJ1f6Y=
-X-Google-Smtp-Source: AGHT+IEuCu0LH7RWYE4C2+y6Xq5Gd2lTUbSPZXSufj4wZklvkT/2hJWwi5rBWclTtW6+ZEIpzQUnvUyY0BRiDSmspAE=
-X-Received: by 2002:a50:8d5a:0:b0:5a1:7362:91d9 with SMTP id
- 4fb4d7f45d1cf-5ac629fb8d8mr3328924a12.22.1721984104539; Fri, 26 Jul 2024
- 01:55:04 -0700 (PDT)
+	s=arc-20240116; t=1721984395; c=relaxed/simple;
+	bh=OvDZzrWii8BqOJzep1QZbE/B7yd0X88IeZ+QKHYPDwU=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=O2XtxetgUpTfiFyWpvBn+M64EEbzILM4KjFtv3AmElWE3txn/b+vZqGWzKHjfdmvO1NJRvLDFgXMZJ1eAB9z33st1RKL4m3+BDxl/hErtqWrzln6bfS9otlHxLIcJYyvTqDNfSQ4E62QGneF2UoMyQL3hfbQWDfpnPyoe+s4VhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=DGKXPuWl; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6009a.ext.cloudfilter.net ([10.0.30.184])
+	by cmsmtp with ESMTPS
+	id XEvrs09AHg2lzXGnisYAsw; Fri, 26 Jul 2024 08:59:46 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id XGnhsmV2VoaMiXGnisuO7j; Fri, 26 Jul 2024 08:59:46 +0000
+X-Authority-Analysis: v=2.4 cv=deKG32Xe c=1 sm=1 tr=0 ts=66a36582
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=4kmOji7k6h8A:10 a=VwQbUJbxAAAA:8 a=HaFmDPmJAAAA:8
+ a=hP_FQLMrEgTDVdh0MfgA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=58LeIBzsaBlakXQzzdgAQcWkxAPcI5DfFUItk0TWIg4=; b=DGKXPuWl38/tHKN8N7ZPbmyTwB
+	W0LeOiTkCbST5CqAX8feMrR0NdrF4D1Fx0O5/qndv9brIDOVoRT2c4OLjxv/Ky/s+TQ7myXL66ScZ
+	JlC0v6O/ELxsK2rRArB64ul6J6jXUChyki869oF9Cve1ThNpgr2bLQFGhqHddZYIPkQiQt0S1jHtB
+	AVbclb8SX4NuvLeIvU9KdCB79v+HOh7c3jJrDRJLTMzhK1a3nrsNJgC7iGMtO7jXck8DdRoRVSAsM
+	WcCfl1XE1woRI9lEzjZJysfrFbG8VB0FIi56A2ZjKi/fVcN98tqT78b0XzRK6mYtmgRQyZIZNE8LI
+	x2XdK4EQ==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:59276 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sXGnd-004FL1-0Y;
+	Fri, 26 Jul 2024 02:59:41 -0600
+Subject: Re: [PATCH 6.6 00/16] 6.6.43-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240725142728.905379352@linuxfoundation.org>
+In-Reply-To: <20240725142728.905379352@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <76c0854b-5b0e-cd93-994b-081ccc4bdfe5@w6rz.net>
+Date: Fri, 26 Jul 2024 01:59:35 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <fdaf2e41bb6a0c5118ff9cc21f4f62583208d885.1718655070.git.dsimic@manjaro.org>
- <CAKGbVbs8VmCXVOHbhkCYEHNJiKWwy10p0SV9J09h2h7xjs7hUg@mail.gmail.com>
- <CAKGbVbsM4rCprWdp+aGXE-pvCkb6N7weUyG2z4nXqFpv+y=LrA@mail.gmail.com>
- <20240618-great-hissing-skink-b7950e@houat> <4813a6885648e5368028cd822e8b2381@manjaro.org>
- <457ae7654dba38fcd8b50e38a1275461@manjaro.org> <2c072cc4bc800a0c52518fa2476ef9dd@manjaro.org>
- <CAKGbVbsGm7emEPzGuf0Xn5k22Pbjfg9J9ykJHtvDF3SacfDg6A@mail.gmail.com>
- <74c69c3bb4498099a195ec890e1a7896@manjaro.org> <4498852466ec9b49cc5288c5f091b3ae@manjaro.org>
- <CAKGbVbucXy+5Sn9U55DY69Lw9bQ+emmN1G4L8DQcUC1wdFSP_Q@mail.gmail.com> <7d1c35d6829f00fa62ea39b6fee656be@manjaro.org>
-In-Reply-To: <7d1c35d6829f00fa62ea39b6fee656be@manjaro.org>
-From: Qiang Yu <yuq825@gmail.com>
-Date: Fri, 26 Jul 2024 16:54:52 +0800
-Message-ID: <CAKGbVbukwz5naLwe7oW+UU8Ghtz6PmTjZ8k0PNZr2+h1Y20Qzw@mail.gmail.com>
-Subject: Re: [PATCH] drm/lima: Mark simple_ondemand governor as softdep
-To: Dragan Simic <dsimic@manjaro.org>
-Cc: Maxime Ripard <mripard@kernel.org>, dri-devel@lists.freedesktop.org, 
-	lima@lists.freedesktop.org, maarten.lankhorst@linux.intel.com, 
-	tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, 
-	linux-kernel@vger.kernel.org, Philip Muller <philm@manjaro.org>, 
-	Oliver Smith <ollieparanoid@postmarketos.org>, Daniel Smith <danct12@disroot.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1sXGnd-004FL1-0Y
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:59276
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 40
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfCA8lEvc+o70UAvpf+nMaVrRKba88C5AIem7AMu1qddHsYKD7zyA28yoiNX6ASSZhW9PDKA0gwITrtzRZoQltC2YoqJTgDVlZ4oI8YcOY/BFGqYq/JBn
+ DLZnb06LV31z2ZR31FefuVg2JHOGVxtI64LYcEyRiNZmUZVa68SrOTSJm6yAeWhu3AgcX8mxhqTCNA==
 
-On Fri, Jul 26, 2024 at 4:03=E2=80=AFPM Dragan Simic <dsimic@manjaro.org> w=
-rote:
+On 7/25/24 7:37 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.43 release.
+> There are 16 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Hello Qiang Yu,
+> Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
+> Anything received after that time might be too late.
 >
-> On 2024-07-26 08:07, Qiang Yu wrote:
-> > Yeah, I agree weakdep is a better choice here. It solves the confusion
-> > of softdep which the depend module is optional.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.43-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
 >
-> Thanks, I'm glad that you agree.
+> thanks,
 >
-> > But I prefer using weakdep directly instead of creating an aliasing of
-> > it which has no actual difference.
->
-> Just checking, did you have a chance to read what I wrote in my earlier
-> response on the linux-modules mailing list, [7] which includes a rather
-> elaborate explanation of the intent behind MODULE_HARDDEP being
-> currently
-> just a proposed alias for MODULE_WEAKDEP?  It also describes why using
-> this alias might save use some time and effort in the future.
->
-> [7]
-> https://lore.kernel.org/linux-modules/0720a516416a92a8f683053d37ee9481@ma=
-njaro.org/
->
-Yeah, I've seen that mail. But I haven't seen clearly how weakdep will chan=
-ge
-in the future which could break our usage here. As an interface exposed to =
-other
-users, I expect it should be stable.
+> greg k-h
 
-> > On Thu, Jul 25, 2024 at 4:21=E2=80=AFPM Dragan Simic <dsimic@manjaro.or=
-g>
-> > wrote:
-> >>
-> >> Hello Qiang,
-> >>
-> >> On 2024-06-26 08:49, Dragan Simic wrote:
-> >> > On 2024-06-26 03:11, Qiang Yu wrote:
-> >> >> On Wed, Jun 26, 2024 at 2:15=E2=80=AFAM Dragan Simic <dsimic@manjar=
-o.org>
-> >> >> wrote:
-> >> >>> Just checking, any further thoughts about this patch?
-> >> >>>
-> >> >> I'm OK with this as a temp workaround because it's simple and do no
-> >> >> harm
-> >> >> even it's not perfect. If no other better suggestion for short term=
-,
-> >> >> I'll submit
-> >> >> this at weekend.
-> >> >
-> >> > Thanks.  Just as you described it, it's far from perfect, but it's
-> >> > still
-> >> > fine until there's a better solution, such as harddeps.  I'll contin=
-ue
-> >> > my
-> >> > research about the possibility for adding harddeps, which would
-> >> > hopefully
-> >> > replace quite a few instances of the softdep (ab)use.
-> >>
-> >> Another option has become available for expressing additional module
-> >> dependencies, weakdeps. [1][2]  Long story short, weakdeps are similar
-> >> to softdeps, in the sense of telling the initial ramdisk utilities to
-> >> include additional kernel modules, but weakdeps result in no module
-> >> loading being performed by userspace.
-> >>
-> >> Maybe "weak" isn't the best possible word choice (arguably, "soft"
-> >> also
-> >> wasn't the best word choice), but weakdeps should be a better choice
-> >> for
-> >> use with Lima and governor_simpleondemand, because weakdeps provide
-> >> the
-> >> required information to the utilities used to generate initial
-> >> ramdisk,
-> >> while the actual module loading is left to the kernel.
-> >>
-> >> The recent addition of weakdeps renders the previously mentioned
-> >> harddeps
-> >> obsolete, because weakdeps actually do what we need.  Obviously,
-> >> "weak"
-> >> doesn't go along very well with the actual nature of the dependency
-> >> between
-> >> Lima and governor_simpleondemand, but it's pretty much just the
-> >> somewhat
-> >> unfortunate word choice.
-> >>
-> >> The support for weakdeps has been already added to the kmod [3][4] and
-> >> Dracut [5] userspace utilities.  I'll hopefully add support for
-> >> weakdeps
-> >> to mkinitcpio [6] rather soon.
-> >>
-> >> Maybe we could actually add MODULE_HARDDEP() as some kind of syntactic
-> >> sugar, which would currently be an alias for MODULE_WEAKDEP(), so the
-> >> actual hard module dependencies could be expressed properly, and
-> >> possibly
-> >> handled differently in the future, with no need to go back and track
-> >> all
-> >> such instances of hard module dependencies.
-> >>
-> >> With all this in mind, here's what I'm going to do:
-> >>
-> >> 1) Submit a patch that adds MODULE_HARDDEP() as syntactic sugar
-> >> 2) Implement support for weakdeps in Arch Linux's mkinitcpio [6]
-> >> 3) Depending on what kind of feedback the MODULE_HARDDEP() patch
-> >> receives,
-> >>     I'll submit follow-up patches for Lima and Panfrost, which will
-> >> swap
-> >>     uses of MODULE_SOFTDEP() with MODULE_HARDDEP() or MODULE_WEAKDEP()
-> >>
-> >> Looking forward to your thoughts.
-> >>
-> >> [1]
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/com=
-mit/include/linux/module.h?id=3D61842868de13aa7fd7391c626e889f4d6f1450bf
-> >> [2]
-> >> https://lore.kernel.org/linux-kernel/20240724102349.430078-1-jtornosm@=
-redhat.com/T/#u
-> >> [3]
-> >> https://github.com/kmod-project/kmod/commit/05828b4a6e9327a63ef94df544=
-a042b5e9ce4fe7
-> >> [4]
-> >> https://github.com/kmod-project/kmod/commit/d06712b51404061eef92cb275b=
-8303814fca86ec
-> >> [5]
-> >> https://github.com/dracut-ng/dracut-ng/commit/8517a6be5e20f4a6d87e55fc=
-e35ee3e29e2a1150
-> >> [6] https://gitlab.archlinux.org/archlinux/mkinitcpio/mkinitcpio
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+
+Tested-by: Ron Economos <re@w6rz.net>
+
 
