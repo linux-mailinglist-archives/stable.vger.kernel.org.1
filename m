@@ -1,134 +1,120 @@
-Return-Path: <stable+bounces-61924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB15793D8EB
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 21:17:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC9D93D983
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 22:02:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F17F1F21C88
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 19:17:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0B081C21EFF
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 20:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228A04779D;
-	Fri, 26 Jul 2024 19:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8C24EB2B;
+	Fri, 26 Jul 2024 20:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="40whssOM";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N2URE3Hg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GwSe4L8r"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7AA24205;
-	Fri, 26 Jul 2024 19:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED79D383BF;
+	Fri, 26 Jul 2024 20:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722021434; cv=none; b=mXAQpAl04rUF3tyZ4QHe9qFDBdLKja+d0TRnpRlNZnpoxUiAnwmsZqyC0XdND5BuKSoOxML30Y0VV+4rk9PX5h9Qj5dZhOUGySL+xzq5SToeHVAt2VreSyRWwAreUIkh+i8kX3YbKpadhmie2CYjnPxAJOk6WdOP4bxLDiloqGE=
+	t=1722024167; cv=none; b=inq/hvBUI0WiJ+vjEb86udy/iYWLF63rW6lv7ztWITlPNn40iXVBGcd6hIa+JV4KiqJsB/PjGJRBxgGfMlwtOjh/adkkvaPVhuZg3Ze8izMp+sWpVfi9e4nHlV0LkCjK73v7Dhiswff3Kily12O6t9oiLEieN5TE4uw1fFPlOII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722021434; c=relaxed/simple;
-	bh=OE8MEKsVTtFrnP50pHVinj/nPKl7CKeQdrUpdUGPmMQ=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=SP8ZihuSaQ7R1orueZyyvyG5IohkpRLRdphXWEu0rmjAW4ofbMK5ib9xTj5EmAeot4TFAH7Ka7qlxLtRJTW0C16BKk+9zXsgmBJ31leFxLOy5CXuUSlImjni/DB7AMcohuZ7YsQUKZhsHUjyxqySpDKkZZ672u2DFWcT6ic2e9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=40whssOM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N2URE3Hg; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 26 Jul 2024 19:17:10 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722021431;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lhrAtTTu8DHRd5jfPalDcxDj16nhVoMkPMFW+VWrNTc=;
-	b=40whssOMY39Ia+uldZhW+5FRgvIg6hwTCsh8hUt8UurWVOAmqRrQcGnXBtFoBcH7266DsD
-	W6CFhv+UrXHXuKUB6KCCkgV8945KKT6ZxIXuimi3OeUbxuN20Naq4x+X7MHqDaNBwE5/jD
-	AYB+NYNtKj+3gDsj07BhJXLRrie4VQmxN8xpJblw805LaNz0TluO0mYI3TzmQUXM3frYVr
-	kaJr0b6BqJKOVm71+oTeV/Io5jVkfFRc3RWcr3t4eP5ffOdzPJ4AVMO7vMxRBLi3BVwHjV
-	ns8NwxnPbfdA5NQffz5BTLaaQH/MlHq74PylQqxJH267znlPCJydhlwLx2VkLg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722021431;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lhrAtTTu8DHRd5jfPalDcxDj16nhVoMkPMFW+VWrNTc=;
-	b=N2URE3HgObZGW/BjIHSHPbBDl1/diTG+ZMcvlf1yrLdCfI/cXCgwf3tSo/basWgLiAY99q
-	FX5zO2L5y3ve1uCQ==
-From: "tip-bot2 for Huacai Chen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/loongarch-cpu: Fix return value of
- lpic_gsi_to_irq()
-Cc: Miao Wang <shankerwangmiao@gmail.com>,
- Huacai Chen <chenhuacai@loongson.cn>, Thomas Gleixner <tglx@linutronix.de>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,  <stable@vger.kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240723064508.35560-1-chenhuacai@loongson.cn>
-References: <20240723064508.35560-1-chenhuacai@loongson.cn>
+	s=arc-20240116; t=1722024167; c=relaxed/simple;
+	bh=GFsF+jKskuhgGnBjr3n4TRAHhLbxgaBJyMzCDsYbsn8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bIynP6bkO8irCw0fYF7bYwpyoEUUZJDmCUnuYLFWglXrQgPFO9iFVy8NbOrL83BdcIWSuPzVGextXlhkzHcXxVFHLtR4LF2m0vN2ubmQm3syV0zPjeTHTblviIe3fJVKdBHnmTqfvM3sA/JcDc4OdVrW61+FYJEOYYfpri8mzJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GwSe4L8r; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6b79fc76d03so5968966d6.1;
+        Fri, 26 Jul 2024 13:02:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722024165; x=1722628965; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nJxI3RUALg6qvPeKhK5g5YhXu5vNqGOcbCAXjfUdd6M=;
+        b=GwSe4L8rVXH0t51SQtGgecGOktchOgmjsR/Sb2B6lR1dMH6FVxPk/UeMtXIHAsKLnH
+         oVNJ/uGi0sxrMaTUKKvHjpI2zitYBSiRx9PWzxPsJYplhhvlcjZQEBPZtSAHZstfGSc8
+         y1N0oX80COw3xGguWtjISGIkLiEcWy0DPo5Z3Tdbzw9fUjR5yln9umPHDHlU8TSoA+Ng
+         b2FGVFoY+tnYGcifCM5KSfm6sAlsdhQG3ZGCfCIl5WF2M2wxemt3LavfknS0jlWXyA4q
+         TY74mGng8MVBr99TGDLm+y0d2T3jHJJi7C1gUqWidA+c9ViJR8PAYBhZ6ZnC5GQj4+ic
+         nzOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722024165; x=1722628965;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nJxI3RUALg6qvPeKhK5g5YhXu5vNqGOcbCAXjfUdd6M=;
+        b=cD8VpRrXQkyq8lJ0Y2196WFkfahLkY2og/3F39hDtKLVkeAin+0VSyLuBRhK2Y3yjX
+         cRDYgKd/6f9cXrWQB7nV9CXcSN1/GcJjIHVoN7lCLQKgF83afpbYUTWrS+IW8ilnObJs
+         Yycb1/PupC3wg9cHA5pIKjN6UlgM4QMPPcEj+aKDLLzkt3HQBAg7IPRP8+frBBuGxI3o
+         M24zYM4GMXv9h5/G0mlh8oBGYBpIccLVkNBAMwMZAo6NBdQCszOhN4CmPsZiAz/3Wp7K
+         0vTog4sX1sM8en4rOJabXpC682IjS3sISiXqzEfsOoTFj8lFBSxNTtTOL91pPmlU09me
+         W2YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX/89Ud8YwZi544eyJbofpnqtZOf6oWLfPTwc6vuFQn92M7QUGPGhPcTAJUCghju4wIzWXsGg/OaxQNtDkmqtVYsbfGvsQB614gRW8+U7RSKSP/jA9ndavm0Xw0lYEzCcW759Kv
+X-Gm-Message-State: AOJu0YzQHG6jVzp0xo5lQyiUym89GeBrIKLpq/+sfNnbE7LNDrRsWz8u
+	6pPCgS21wt/NOdzr47bE8wU4JLC/pIwRXfyYX4VmGU3xpFTWcRO/
+X-Google-Smtp-Source: AGHT+IHB6Z+lbg7XWIRMElM0+HtT1YAvNgKpK/ewPBfnsocH6+ThAkHe4XJsJe9r0X4FQZXNDw/HEw==
+X-Received: by 2002:a05:6214:2a47:b0:6b7:b2eb:ae82 with SMTP id 6a1803df08f44-6bb55a44de6mr9274016d6.29.1722024164770;
+        Fri, 26 Jul 2024 13:02:44 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id 6a1803df08f44-6bb3fa94e63sm19727426d6.76.2024.07.26.13.02.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jul 2024 13:02:43 -0700 (PDT)
+Message-ID: <d873b5f1-4208-4e9f-9846-965ba27073e2@gmail.com>
+Date: Fri, 26 Jul 2024 13:02:38 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172202143044.2215.9209897857096931802.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.9 00/29] 6.9.12-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240725142731.678993846@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240725142731.678993846@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/urgent branch of tip:
+On 7/25/24 07:37, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.9.12 release.
+> There are 29 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.12-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Commit-ID:     81a91abab1307d7725fa4620952c0767beae7753
-Gitweb:        https://git.kernel.org/tip/81a91abab1307d7725fa4620952c0767beae7753
-Author:        Huacai Chen <chenhuacai@loongson.cn>
-AuthorDate:    Tue, 23 Jul 2024 14:45:08 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 26 Jul 2024 21:08:42 +02:00
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-irqchip/loongarch-cpu: Fix return value of lpic_gsi_to_irq()
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-lpic_gsi_to_irq() should return a valid Linux interrupt number if
-acpi_register_gsi() succeeds, and return 0 otherwise. But lpic_gsi_to_irq()
-converts a negative return value of acpi_register_gsi() to a positive value
-silently.
-
-Convert the return value explicitly.
-
-Fixes: e8bba72b396c ("irqchip / ACPI: Introduce ACPI_IRQ_MODEL_LPIC for LoongArch")
-Reported-by: Miao Wang <shankerwangmiao@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240723064508.35560-1-chenhuacai@loongson.cn
----
- drivers/irqchip/irq-loongarch-cpu.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/irqchip/irq-loongarch-cpu.c b/drivers/irqchip/irq-loongarch-cpu.c
-index 9d8f2c4..b35903a 100644
---- a/drivers/irqchip/irq-loongarch-cpu.c
-+++ b/drivers/irqchip/irq-loongarch-cpu.c
-@@ -18,11 +18,13 @@ struct fwnode_handle *cpuintc_handle;
- 
- static u32 lpic_gsi_to_irq(u32 gsi)
- {
-+	int irq = 0;
-+
- 	/* Only pch irqdomain transferring is required for LoongArch. */
- 	if (gsi >= GSI_MIN_PCH_IRQ && gsi <= GSI_MAX_PCH_IRQ)
--		return acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_HIGH);
-+		irq = acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_HIGH);
- 
--	return 0;
-+	return (irq > 0) ? irq : 0;
- }
- 
- static struct fwnode_handle *lpic_get_gsi_domain_id(u32 gsi)
 
