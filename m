@@ -1,141 +1,145 @@
-Return-Path: <stable+bounces-61862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE6593D112
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 12:24:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B26293D140
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 12:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 563F02820BA
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 10:24:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 281181F21E94
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 10:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF31C178395;
-	Fri, 26 Jul 2024 10:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9691C178CDF;
+	Fri, 26 Jul 2024 10:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="q3YK29yE"
+	dkim=pass (1024-bit key) header.d=volny.cz header.i=@volny.cz header.b="PRPPvzTI"
 X-Original-To: stable@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from gmmr-3.centrum.cz (gmmr-3.centrum.cz [46.255.225.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA322B9C4;
-	Fri, 26 Jul 2024 10:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3477813A240
+	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 10:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.225.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721989483; cv=none; b=kLzmZYVG1mWzQmcLiWOGFH94LlTVDnJs2Q1WAkOVqG0SRNERQab2QV0qks07m6vsSLa10IgWb6RaqOlnlHfnxUyU4DA+anJ1zi/DTytryTiH6IUXW5B7sh0NhDTlmik9Wptrdnt3IcQlBhrQ3+CSbiIzCApIES1oLnmVpx6tZMs=
+	t=1721990311; cv=none; b=jlyQLAv7DWJddufAgMCWi9Svimnw2y0cJYBdQb7XMczQIdYWI+PGycaiSkQRM+Wrq+9KcjwVtZWFHfnkmrWQqM+CtK0ttw5dhY1EzmF1p2txvNfJd995pfcrqh4dOdNGXvlv0XdLuwA5zcBH0I/EXdgK2McZoOm6cfwjvGL2fTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721989483; c=relaxed/simple;
-	bh=pLmo7U3YsnJjVV9h5qw1epXAntcjLIGWaCLimBAJyFI=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eGdcwpefz9J7EruYzN3Lc++5qx2PA/bvSVEaGFxNpjrK7kIr2nVG/ZOY2xy5Wu14FLM9bI3mqMWr0crsCv0prKFGlafOUHVwiTw05wDFJIh9HPxZdJagxy/7ESC37sxFVueeIgIHkfoO9oFzhOATvLiQ/UARzY8ydwCpID3k9kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=q3YK29yE; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 46QAOIPB015133;
-	Fri, 26 Jul 2024 05:24:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1721989458;
-	bh=wwNAQqMZTOfeHyckA0S42XeXv2UW3eBc8gvudOtAbiM=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=q3YK29yEzypwF7a1nBjNzhCIb1/4JRqaQKejP7CXp0v6CNaZYMPnlDqiPSuYzBb+l
-	 bd4xOAMi36h1ZQgDpGkeDNKvlqP27g2/wBVgObRVbFaJKW6J666f0txpMlJVptzlro
-	 Gvw93jZfcogys5Blgskabiwa2497+VO14nMznleM=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 46QAOI5g086465
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 26 Jul 2024 05:24:18 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 26
- Jul 2024 05:24:18 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 26 Jul 2024 05:24:18 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 46QAOHZ5110895;
-	Fri, 26 Jul 2024 05:24:18 -0500
-Date: Fri, 26 Jul 2024 15:54:17 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <bhelgaas@google.com>,
-        <lpieralisi@kernel.org>, <kw@linux.com>, <robh@kernel.org>,
-        <vigneshr@ti.com>, <kishon@kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <stable@vger.kernel.org>, <ahalaney@redhat.com>, <srk@ti.com>
-Subject: Re: [PATCH] PCI: j721e: Set .map_irq and .swizzle_irq to NULL
-Message-ID: <4cb79826-5945-40d5-b52c-22959a5df41a@ti.com>
-References: <20240724065048.285838-1-s-vadapalli@ti.com>
- <20240724161916.GG3349@thinkpad>
- <69f8c45c-29b4-4090-8034-8c5a19efa4f8@ti.com>
- <20240725074708.GB2770@thinkpad>
- <5f7328f8-eabc-4a8c-87a3-b27e2f6c0c1f@ti.com>
+	s=arc-20240116; t=1721990311; c=relaxed/simple;
+	bh=GXTxWdLNKxmrL63ov/Lg+qbfgFHpMG+OrSTgSuk1t18=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=sxzrpXGEyEVwfi5/bCCMVyxf5l5rFW0r0JsSJIoUS07nqjPywdjS3t7jNbf7SrJ7bXLKnn+OVcSvRd17HkRsvy5zxjY2P8zw/bsz8CCcmv0JyLXuWx6KoGWLgYvGKRDKDrJzjf4pPM4UEJvQYd9PE3wuWTqNSA7fy+A2/9G8SLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=volny.cz; spf=pass smtp.mailfrom=volny.cz; dkim=pass (1024-bit key) header.d=volny.cz header.i=@volny.cz header.b=PRPPvzTI; arc=none smtp.client-ip=46.255.225.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=volny.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=volny.cz
+Received: from gmmr-3.centrum.cz (localhost [127.0.0.1])
+	by gmmr-3.centrum.cz (Postfix) with ESMTP id EAEB4200A0C8
+	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 12:36:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=volny.cz; s=mail;
+	t=1721990192; bh=FDVD6Aq/Y3zdjFYN0JIMrnQ78BRMQbuEndYlpaj2pPU=;
+	h=Date:To:Cc:From:Subject:From;
+	b=PRPPvzTIPOZPiYiqLzJgWAmhVQmTuHOAn0h7VMBXbK5dCt53ld6inMbWpT/McLcsC
+	 Dev/YglC6MpdmFHA9CIHJPMRuQhwdj5RXpe67UjKmVa31FR9Y7XGepMkgzaMQsfb8T
+	 rwigo/97ykBF1mVViuMvmvYD49YWPmgOhP4whypg=
+Received: from antispam34.centrum.cz (antispam34.cent [10.30.208.34])
+	by gmmr-3.centrum.cz (Postfix) with ESMTP id E9F1D2009A30
+	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 12:36:32 +0200 (CEST)
+X-CSE-ConnectionGUID: 6Gpmm/7MRrC9PTLyQDqR/Q==
+X-CSE-MsgGUID: j5Nwsh2JTpOsdZTc1npiGw==
+X-ThreatScanner-Verdict: Negative
+X-IPAS-Result: =?us-ascii?q?A2HuBABRe6Nm/03h/y5agQkJhQaGOpFthD6NbIUfiAs+D?=
+ =?us-ascii?q?wEBAQEBAQEBAUQJBAEBAwSEOUaJPSc4EwECBAEBAQEDAgMBAQEBAQEBAQEFA?=
+ =?us-ascii?q?QEGAQEBAQEBBgYBAoEdhS9GDYJgGIESgSYBAQEBAQEBAQEBAQEBAQEBAQEXA?=
+ =?us-ascii?q?g2BJxVBKA0CJgJzAQGCfAGCZBStF4EyGgJlhHvZFzWBUAaBGi6EcAGDTAGIJ?=
+ =?us-ascii?q?IItAoECgQlEgTwLiEaDDoJpBIgZihEWgh4IFoEYiCgkAoE0jBqBEQMJBgICA?=
+ =?us-ascii?q?g8XFgYDWSEBEgFVExcLCQIFEIlggy8pgW+EG4FJAYNkgWsMBF2BXxCFQheCH?=
+ =?us-ascii?q?4E+gV+DQUuFaUwgHRMtAgELbT01CQsbBj2iJQGDBYFtLxAUPHUaIzGkQYxVl?=
+ =?us-ascii?q?QwHA2KDM4RNh0eVKgYPBC+DchONAIZLFgOSVZhtjXqdFYFrDQeEKFEZkirMS?=
+ =?us-ascii?q?4ExAgcLAQEDCYkigUoBAQ?=
+IronPort-PHdr: A9a23:LoOgmBUjFbJHywrxuC7itGFKHUfV8KxMUjF92vMcY1JmTK2v8tzYM
+ VDF4r011RmVBt2dta8P0bqe8/i5HzBasNDZ6DFKWacPfiFGoP1epxYnDs+BBB+zB9/RRAt+M
+ eJ8EXRIxDWFC3VTA9v0fFbIo3e/vnY4ExT7MhdpdKyuQtaBx8u42Pqv9JLNfg5GmCSyYa9oL
+ BWxsA7dqtQajZFtJ6s/1hfFuHpFduRZyW92Jl+YghLw6tut8JJ5/ClcpfYs+9RcXanmeqgzU
+ KBVAikhP20p68LnsgXOQxGS7XUGSGUWlRRIAwnB7B7kW5r6rzX3uOlg1iSEJMP6Vb86Vyyt4
+ KtyVhLmhzoJOyY2/2/LhMNwirlboA+6qBxk34HUeoCVO+Fgca7bYNgXWHBOXsdVVyxGH4O8c
+ 44CBPcPMOpEs4XwoUYFoB2jDgeuGezv0CdFiHz406I13esvDx/L0gw9Ed0Sv3rZt8n1OaUIX
+ Oyp0KXE0zfOYvVL0jn98ojIdRUhrOmCUbJ1cMre1UkvGBnBjlmKqYzlJSma2fgNs2ic8epvS
+ /6ghnU5qwF2pjivwMcthpPViYMUxFzP6CJ0wIM0JdKkSE50e9qkHIFQtyGALYR5XsMiQ2Z2u
+ Ckk1rILooC7fC8OyJQhxx/TceCIcomR7x/lSe2eLit2imh/d7Kjmxa971KgyuvkW8e60FtHs
+ iVLn9fPu34C2BHf9MeKRud/80qixDqCyQDd5+5LL006iafWNoAtzLEsm5cTsUnNETP7lFnog
+ aGWaEkp/PWj5ergYrXjvJCcNol0hxnlMqQygMOwHec4Mg8QX2eF4+S82rnj/Ur3QblQkvI2l
+ azZvZbHLsoYvq60GwBY34c55xqhDzqr0M4UkWcZIF9FYh6KjYrkN0nMLf37F/uznlShnTVxy
+ /zbMLDsAI/BImXdnLrnYL1z8VRTyBApwtBa/59UD7YBL+/tVULpr9zYCwM5MxSzw+b6FNVxz
+ oMeVnyLAq+eKK7SvlqI6vs0I+mJeI8VoCvxJ+Q/6/Hyk3A5n0MdfbO03ZsScny3AvVnL12YY
+ XrqnNgBDX8HswU/QeDwllGPUT5ea2ysU64i5jw3EoCrAIXbSoComrOB3SO7HpNMZmBBD1CBC
+ XLod4SYVPcMci2SJtVtkjweVbe7V4Ah1RautBHkxLV7NefU5CoYtZbl1Nl1/eHciRAz+SRuD
+ 8uBy2GNU310nmQQSj8swq9/rlZ9xUmY0ahjgvxYEtpT5+hSXwc+NJ7c1PB6C8voVgLFf9eJT
+ kumQ9q8DT4sUN0x3ccCY1xhFNW6khDDwy2qDqcOl7yXHpM76abc0GbqKsZjxHbJyrMhg0MlQ
+ sRRL22mgLBw9wzJC47OiUWZmL6mdaIH0yHV7meM0XKOvF1EUA53SajJQ2gTaVbVrdT440PPV
+ 6egB7spPQVf1cCPNq1EZsX0glVDXvjjIsjRbnqplWmpHRiGyauAbJHye2UTxCjTEFEKnRgc8
+ 3qeLgg+HimhrHreDDNwEVLvZFvh//Fnpn2jQUFnhz2NOlZ93rCx9zYLivGGDfAexLQJvGEms
+ TonMky62oecDtuLpwNlOqVGaNg950lK3krHsAh7L9qrPeoq0lsfeAR+uwXuzRx8CoJenMMCs
+ nQuyhs0IrDOgwAJTC+RwZ2lYu6fEWL15h36M8br
+IronPort-Data: A9a23:CtxKbqs89rBIJ4YylV4HK33/cufnVDJfMUV32f8akzHdYApBsoF/q
+ tZmKWHVaPyJM2D1L94jbIiz8xkO6sPXmtU1TwFl/CBjRS0SgMeUXt7xwmUcns+xwm8vaGo9s
+ q3yv/GZdJhcokf0/0rrb/646yEhiMlkf5KkYMbcICd9WAR4fykojBNnioYRj5Vh6TSDK1rlV
+ eja/YuHaTdJ5xYuajhIs/3Z9ks21BjPkGpwUmIWNK0jUGD2yCF94KI3fcmZM3b+S49IKe+2L
+ 86r5K255G7Q4yA2AdqjlLvhGmVSKlIFFVXmZtJ+AsBOszAazsAA+v9T2Mk0NS+7vw60c+VZk
+ 72hg7TrEFt0Yfec8Agqe0Iw/ylWZcWq8VJcSJS1mZT7I0buKxMAzxjyZa2f0EJxFutfWAlzG
+ fIkxD8lMD+bgufxn5eBUMI9vvgHPfDHJblYgyQ1pd3ZJa5OrZHrTKCP/tpExG5owMtDG+rEe
+ s9fYigHgBboP0MJYApKTshkwaH32RETcBUBwL6Rja826GjayEpxyrHmMN3Ld9eiW8JRmFfer
+ XCuE2HRXk9La43CmWTtHnSEhLLpgjj7AqAuDJqj+sxWiwSV3m08F0hDPbe8ibzj4qKkYPpFJ
+ kMO9zE1rK8072SvT8LhRFu8oXiZrlgQVsQ4O/Ym4QuJx4LK7AuDQGsJVDhMbJohrsBeeNAx/
+ gPX2Ym0WHo16uDTFi31GqqokA5e8BM9dQcqDRLohyNfizU/iOnfVi7yc+s=
+IronPort-HdrOrdr: A9a23:PnOXeamJ/1SyZdGSHHkmsIHPs9HpDfI73DAbv31ZSRFFG/FwWf
+ rPoB1p73HJYVEqKRUdcLG7Scy9qBznmKKdjbNhXotKPzOLhILLFutfBOLZqlWKJ8SUzJ8+6U
+ 4PSclD4ZHLYmRHsQ==
+X-Talos-CUID: =?us-ascii?q?9a23=3A7J/eU2tdtBbzolEep6jhWmaG6It7XWXYyTCPBnW?=
+ =?us-ascii?q?iIjdRdJmEcHOJwuRdxp8=3D?=
+X-Talos-MUID: =?us-ascii?q?9a23=3Ag0rE2w7xe4ucfRVm8w9qxqjdxoxqvoKxE0BXs6k?=
+ =?us-ascii?q?enNKIBxB7YjGFjRuoF9o=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.09,238,1716242400"; 
+   d="scan'208";a="46979586"
+Received: from unknown (HELO gm-smtp10.centrum.cz) ([46.255.225.77])
+  by antispam34.centrum.cz with ESMTP; 26 Jul 2024 12:36:32 +0200
+Received: from [192.168.1.100] (unknown [78.157.137.12])
+	by gm-smtp10.centrum.cz (Postfix) with ESMTPA id 9DDC3B8A43;
+	Fri, 26 Jul 2024 12:36:32 +0200 (CEST)
+Message-ID: <3855f3cf-9c63-4498-853a-d3a0a2f47e7f@volny.cz>
+Date: Fri, 26 Jul 2024 12:36:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <5f7328f8-eabc-4a8c-87a3-b27e2f6c0c1f@ti.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US, cs-CZ
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev
+From: "michal.hrachovec@volny.cz" <michal.hrachovec@volny.cz>
+Subject: mmap 0-th page
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 25, 2024 at 02:01:48PM +0530, Siddharth Vadapalli wrote:
-> On Thu, Jul 25, 2024 at 01:17:08PM +0530, Manivannan Sadhasivam wrote:
-> > On Thu, Jul 25, 2024 at 10:50:13AM +0530, Siddharth Vadapalli wrote:
-> > > On Wed, Jul 24, 2024 at 09:49:16PM +0530, Manivannan Sadhasivam wrote:
-> > > > On Wed, Jul 24, 2024 at 12:20:48PM +0530, Siddharth Vadapalli wrote:
-> > > > > Since the configuration of Legacy Interrupts (INTx) is not supported, set
-> > > > > the .map_irq and .swizzle_irq callbacks to NULL. This fixes the error:
-> > > > >   of_irq_parse_pci: failed with rc=-22
-> > > > > due to the absence of Legacy Interrupts in the device-tree.
-> > > > > 
-> > > > 
-> > > > Do you really need to set 'swizzle_irq' to NULL? pci_assign_irq() will bail out
-> > > > if 'map_irq' is set to NULL.
-> > > 
-> > > While 'swizzle_irq' won't be invoked if 'map_irq' is NULL, having a
-> > > non-NULL 'swizzle_irq' (pci_common_swizzle in this case) with a NULL
-> > > 'map_irq' seems inconsistent to me though the code-path may never invoke
-> > > it. Wouldn't a non-NULL 'swizzle_irq' imply that Legacy Interrupts are
-> > > supported, while a NULL 'map_irq' indicates that they aren't? Since they
-> > > are always described in pairs, whether it is in the initial commit that
-> > > added support for the Cadence PCIe Host controller (used by pci-j721e.c):
-> > > https://github.com/torvalds/linux/commit/1b79c5284439
-> > > OR the commit which moved the shared 'map_irq' and 'swizzle_irq' defaults
-> > > from all the host drivers into the common 'devm_of_pci_bridge_init()'
-> > > function:
-> > > https://github.com/torvalds/linux/commit/b64aa11eb2dd
-> > > I have set both of them to NULL for the sake of consistency.
-> > > 
-> > 
-> > Since both callbacks are populated in the pci/of driver, this consistency won't
-> > be visible in the controller drivers. From the functionality pov, setting both
-> > callbacks to NULL is *not* required to disable INTx, right?
-> 
-> Yes, setting 'swizzle_irq' to NULL isn't required. The execution sequence
-> with 'swizzle_irq' set to 'pci_common_swizzle()' is as follows:
-> 
-> pci_assign_irq()
->   if (pin) {
->     if (hbrg->swizzle_irq)
->       slot = (*(hbrg->swizzle_irq))(dev, &pin);
->         pci_common_swizzle()
-> 	  while (!pci_is_root_bus(dev->bus)) <= NOT entered
-> 	..continue execution similar to 'swizzle_irq' being NULL.
-> 
-> Having 'swizzle_irq' set to 'pci_common_swizzle()' will only result
-> in a no-op which could have been avoided by setting it to NULL. So there
-> is no difference w.r.t. functionality.
+Good afternoon,
 
-Mani,
+I am trying to allocate the 0-th page with mmap function in my code.
+I am always getting this error with this error-code: mmap error ffffffff
+Then I was searching the internet for this topic and I have found the 
+same topic at stackoverflow web pages.
 
-I prefer setting 'swizzle_irq' to NULL as well unless you have an objection
-to it. Kindly let me know. I plan to post the v2 for this patch addressing
-Bjorn's feedback and collecting Andrew's "Tested-by" tag as well.
+Here I am sending the link:
+https://stackoverflow.com/questions/63790813/allocating-address-zero-on-linux-with-mmap-fails
 
-Regards,
-Siddharth.
+I was setting value of |/proc/sys/vm/mmap_min_add to zero and using the 
+root privileges along the link.
+And I am having the same problem still.
+
+Can you help, please.
+
+Thank you for the reply.
+
+Michal Hrachovec
+
+|
 
