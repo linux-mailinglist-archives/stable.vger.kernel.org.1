@@ -1,158 +1,132 @@
-Return-Path: <stable+bounces-61934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2587693D9E6
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 22:38:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F3793DA28
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 23:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE8821F22CEC
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 20:38:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67B4E1F2481C
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 21:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8170414A089;
-	Fri, 26 Jul 2024 20:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C1E149C41;
+	Fri, 26 Jul 2024 21:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pv/PxPVT"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="NS/ixlHx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E10FC1F;
-	Fri, 26 Jul 2024 20:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A281748A;
+	Fri, 26 Jul 2024 21:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722026299; cv=none; b=NFvKWLPwFJXKKdSONmXhQFxmXpTHdRBviQpgvm6FzEbVSFN5egGLiUFpa09o0pgGrrSlDGGbBWwjI5MSm3a1VNqV7vro3dnbkkziFoIagQIvD8lQJgtL22bK6EjGRM7raNJO1Tz+H9DUHT8z9DUr8s/OdBtlqsx0843nNEZWkoo=
+	t=1722029285; cv=none; b=BTuRYOqs+2fDu8tD2w9M3CpzfsJSgzf4VwM9NCA4SsG0acgEL4uADdb9hMfVsgERy+C0Q7teKFXnvfNNM/+2bDGKOOaU0OuEdfvlnX0hOUSBVGis4n3HSjItfM0mJXer5L1EGc+36Gjp3WG5SoE0Uc6H0KlXjR9C6Qjwq8IItYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722026299; c=relaxed/simple;
-	bh=erFWMLNHrLCAagBPeoRBSyKy6YQNhkKu95aTVyyJ7ns=;
-	h=Date:To:From:Subject:Message-Id; b=pGOEtZyt/fH6FB6F6NT7Ws89b3a5C+XsObKBCgvUjpPleHD194N1GehZVcTVRBmFPzH5jI/SWjtRjQD/X2lCrInBDcFk4Fa91IEfkOv85EUi7HvM3uPNAWx+/Ulz8WFyvZV05M3wv4oYX668oYexxQbuJfNzqdp0VYk447K0cnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pv/PxPVT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085ADC32782;
-	Fri, 26 Jul 2024 20:38:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1722026299;
-	bh=erFWMLNHrLCAagBPeoRBSyKy6YQNhkKu95aTVyyJ7ns=;
-	h=Date:To:From:Subject:From;
-	b=pv/PxPVT7nl0otM6DCkI93AglbvCNruo49lcRmHOC6SR2rlNbm4ZHvUXcPvy+MB31
-	 0fW1ffiK2Ft4/Jb3HkkWVw9zQeY6m+FU4QH1HCFx7owaU6OTh6mXKSNRNfweurdIYN
-	 j3YR04pMcGCFemzT1RZRdOVC1Iu3YdMzo4IDKetk=
-Date: Fri, 26 Jul 2024 13:38:18 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block.patch removed from -mm tree
-Message-Id: <20240726203819.085ADC32782@smtp.kernel.org>
+	s=arc-20240116; t=1722029285; c=relaxed/simple;
+	bh=OrrdlTnH3WEKPN3TEJlkVeUCJlHW+7VcMK+CyiOaVko=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S/D1WeeA0ECVNuMxgTOuichHP/pTXf0nZjQDjvwi3z8NvUNf61UBirNOw2uEEAqnDN8h/zanqAvsrcnnAP86wpfkmWQp6twly/y9M1eHCtIInqrnZHcjdng8O3SiFASUOQjztuykdpM9+z7Mj0cpEhkZxYtqYmrpNEVmCRG1bEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=NS/ixlHx; arc=none smtp.client-ip=217.72.192.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1722029243; x=1722634043; i=christian@heusel.eu;
+	bh=7cb9FKqiTnmAm4LGtD713mXbbQFUzBHgztfenIYWcFs=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=NS/ixlHxQgNlPBNJpdaCictNQj535JyqyZxV6PfqKrH1mfRDCFYuSKZM2yVgNKS9
+	 D28ag89tIeUkviAkdavPscpp5EFzG4n+wMQTP9WhSGihfhgN+AXqD4NCyEVKBTBoY
+	 9U3Gu86GOaxkRwdtqD2v4MFai0syNRcCAwfWQiaVFj3BVugdgP4IaxChfGVnGpNo6
+	 ua3p/vQRh5yIU7D83EwUdwMJT4yArzmAmD/7Z7ewWP/igTJlLwAcc44MEkA1CNyBf
+	 iL9ztpc9t5YxbQGSRG7ZvoiWCMr1FjPFn0FCbJBinCbcBhpuZL6gISboYsVwTbMgE
+	 9PhxBRBm8pjrlkfXJg==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([141.70.80.5]) by mrelayeu.kundenserver.de (mreue106
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1M4rHF-1sXBM41NuZ-0030Ij; Fri, 26
+ Jul 2024 23:27:23 +0200
+Date: Fri, 26 Jul 2024 23:27:21 +0200
+From: Christian Heusel <christian@heusel.eu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.10 00/29] 6.10.2-rc1 review
+Message-ID: <ff7f0e41-537c-4e06-8fba-5a027067a6a8@heusel.eu>
+References: <20240725142731.814288796@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="d6guo2gbfiwflmbb"
+Content-Disposition: inline
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+X-Provags-ID: V03:K1:u+DcOdoBn801YoG1swHt3jWoqlewT2v3Rp51C4Gn3TFSbo7y8YA
+ RiwlhTjFS/NgIvioR0ijVxc8aF647WDV0i97P0d1lCOlw0BRJ+YlHJQfegMYc1xLQrCUI4i
+ QWV0V2RSZBd5rp6r1aJgg1CHGYieQIuKOmFH2fixtbhqLjij8GP1tGNC101k0Ut+fcjq1CG
+ +TK0XBf/4red6q1zQtmWQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:2qsYY1e11Dc=;fgYB+yoosq6hmmwAi9PXEZDvWfL
+ UK6BgD8Fo6iA6T8sEt42ltv26qu0aKZs2s6qJ/r71xl7MxyY3WWHnU4oAfs8el0p/fhic4eTm
+ K6/vEwPcUzP18oydD+a/Y5SSV2AQBsAoAX6DLiwQcfBn+UbgiZi+PLATo2ZwVfGqVdtMiR/R6
+ 5Q3sSBtzjGwT91DaHQOa4N0TWvuSi2iabgTDP9EIfKMnUUZNArkXtUSjFW8qplIgkuRJlHHAi
+ VZ0GdlfPzpvVz1kKO2FSeKE7onhar3B4ygMFSqZOPg2oGlAFPWqDUbxYcd4qRL2IDhb9lH6T2
+ zomfxSTXGo7yQUdF3xS49BkrlXi/B5T+NL/NiY1Dv9agbtnohOcXDLUjIYyGo+CIDdm5qD2bz
+ hcn0YdF6kzlr3EX7DG/TJzZ2J3eodztXGJqQOgOrlFw9sbw6+z8XuLi0FJTxvP1gM/j36XNtd
+ FXiryxz4BceyF8TtFmTNG4oTFPFVSxzNUwO9kXRxLY9K5e85YhthH54N7hDJgWcIm3hnXEo7L
+ 8FjAco4hCbAbMPilgnggn3t22QbSRxK58O8elOyJkTAd73Lu2uwyHdV8wHPrKUI0mlo8ZsXm4
+ mpPdKndz8MwnJWKKEqs153BmT/wAMwLsGZuMImY7Jw8rHud/ou8kPCwgX89IgIVOCLhRZVD2J
+ 6mzSvTpNroFFLknzQzi4sojeX0u82D6Kvzk9k7/i3Anvq6vZGpavWwdIN5qniOulTOmbPm9dX
+ glBnZgMzIUkjbtCgrKgwpLO/0cgU8Nfqw==
 
 
-The quilt patch titled
-     Subject: nilfs2: handle inconsistent state in nilfs_btnode_create_block()
-has been removed from the -mm tree.  Its filename was
-     nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block.patch
+--d6guo2gbfiwflmbb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+On 24/07/25 04:36PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.2 release.
+> There are 29 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
+> Anything received after that time might be too late.
+>=20
 
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: handle inconsistent state in nilfs_btnode_create_block()
-Date: Thu, 25 Jul 2024 14:20:07 +0900
+Tested-by: Christian Heusel <christian@heusel.eu>
 
-Syzbot reported that a buffer state inconsistency was detected in
-nilfs_btnode_create_block(), triggering a kernel bug.
+Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU
 
-It is not appropriate to treat this inconsistency as a bug; it can occur
-if the argument block address (the buffer index of the newly created
-block) is a virtual block number and has been reallocated due to
-corruption of the bitmap used to manage its allocation state.
+--d6guo2gbfiwflmbb
+Content-Type: application/pgp-signature; name="signature.asc"
 
-So, modify nilfs_btnode_create_block() and its callers to treat it as a
-possible filesystem error, rather than triggering a kernel bug.
+-----BEGIN PGP SIGNATURE-----
 
-Link: https://lkml.kernel.org/r/20240725052007.4562-1-konishi.ryusuke@gmail.com
-Fixes: a60be987d45d ("nilfs2: B-tree node cache")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=89cc4f2324ed37988b60
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmakFLgACgkQwEfU8yi1
+JYVL4Q//c3u7IM+ekLkSdT+bjoqcNA4/nqR390psXhySqWaO2Qmyebwqf2QuO8UN
+DE2qEVWHmQIBpgUM7lQah8lr41nfioMdMC1J3M9mILRahkVmvvY3URqamGEgvNmy
+SqKeErbxZ8b5HaohINtfaipCEWkHOyamFF2wITbRzRKqpfTIrwnBBedCtiTmsYZN
+R/NhNVY4Qy4L9Ith2AMjGTEPTfNqExnwzlAHDXHtGwitkFOFqtJRPAakOCRwJY6e
+l8kotjvpMRdTj6KouV3MyI/au5srpw6Dp4jbxOdDpkqyuvQXJZsSBzVShJwIWEQn
+PBcMeazXeVaGNK+CankKTLUfLr53AoqfeHobn30q4woP+sh9i/RLR0NUkKOsm+gk
+C64XTJqq+15Pp6kLW3h9yIxe1Yd6HQdTb8azOar/HDbfpM2JM61R15DZSOtbgQVv
+YKOzei1uvuN0bgI/uPvbm/yIhmueIRmCvpd614mPngiRhy72AF9KPpf38t/upRfm
+vv/AzxGVdei4ovd3UtH7q7ZtVN6TVmGnFHIoxwB9JdTAT/w/OUjpOHoJq/J2BdSS
+JdcF3RNCV6YjwTQC6RHzGQCXyR9N3MVduDcCNyPJozOUE0SCL/U1wwmc2dhzqmqr
++FHkfgEX72OG5s7o9R4YZfXFX7hXbzLzi+GkXcWTeGtYjZQfySQ=
+=7Q49
+-----END PGP SIGNATURE-----
 
- fs/nilfs2/btnode.c |   25 ++++++++++++++++++++-----
- fs/nilfs2/btree.c  |    4 ++--
- 2 files changed, 22 insertions(+), 7 deletions(-)
-
---- a/fs/nilfs2/btnode.c~nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block
-+++ a/fs/nilfs2/btnode.c
-@@ -51,12 +51,21 @@ nilfs_btnode_create_block(struct address
- 
- 	bh = nilfs_grab_buffer(inode, btnc, blocknr, BIT(BH_NILFS_Node));
- 	if (unlikely(!bh))
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	if (unlikely(buffer_mapped(bh) || buffer_uptodate(bh) ||
- 		     buffer_dirty(bh))) {
--		brelse(bh);
--		BUG();
-+		/*
-+		 * The block buffer at the specified new address was already
-+		 * in use.  This can happen if it is a virtual block number
-+		 * and has been reallocated due to corruption of the bitmap
-+		 * used to manage its allocation state (if not, the buffer
-+		 * clearing of an abandoned b-tree node is missing somewhere).
-+		 */
-+		nilfs_error(inode->i_sb,
-+			    "state inconsistency probably due to duplicate use of b-tree node block address %llu (ino=%lu)",
-+			    (unsigned long long)blocknr, inode->i_ino);
-+		goto failed;
- 	}
- 	memset(bh->b_data, 0, i_blocksize(inode));
- 	bh->b_bdev = inode->i_sb->s_bdev;
-@@ -67,6 +76,12 @@ nilfs_btnode_create_block(struct address
- 	folio_unlock(bh->b_folio);
- 	folio_put(bh->b_folio);
- 	return bh;
-+
-+failed:
-+	folio_unlock(bh->b_folio);
-+	folio_put(bh->b_folio);
-+	brelse(bh);
-+	return ERR_PTR(-EIO);
- }
- 
- int nilfs_btnode_submit_block(struct address_space *btnc, __u64 blocknr,
-@@ -217,8 +232,8 @@ retry:
- 	}
- 
- 	nbh = nilfs_btnode_create_block(btnc, newkey);
--	if (!nbh)
--		return -ENOMEM;
-+	if (IS_ERR(nbh))
-+		return PTR_ERR(nbh);
- 
- 	BUG_ON(nbh == obh);
- 	ctxt->newbh = nbh;
---- a/fs/nilfs2/btree.c~nilfs2-handle-inconsistent-state-in-nilfs_btnode_create_block
-+++ a/fs/nilfs2/btree.c
-@@ -63,8 +63,8 @@ static int nilfs_btree_get_new_block(con
- 	struct buffer_head *bh;
- 
- 	bh = nilfs_btnode_create_block(btnc, ptr);
--	if (!bh)
--		return -ENOMEM;
-+	if (IS_ERR(bh))
-+		return PTR_ERR(bh);
- 
- 	set_buffer_nilfs_volatile(bh);
- 	*bhp = bh;
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-
+--d6guo2gbfiwflmbb--
 
