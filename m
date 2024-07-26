@@ -1,137 +1,116 @@
-Return-Path: <stable+bounces-61823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E5293CE31
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 08:33:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CC593CE61
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 09:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0704F1C213EC
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 06:33:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67C41F21EAE
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 07:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140B27E767;
-	Fri, 26 Jul 2024 06:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2A31741E8;
+	Fri, 26 Jul 2024 07:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyr4r7RQ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TMGeYcqR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2210364DC;
-	Fri, 26 Jul 2024 06:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E162A1C0
+	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 07:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721975583; cv=none; b=Oh/5XF4KoizdYDgYQ6EvLF31lNLF/b4yli8xBt9trzQUtNErouDoNfx0ppET4qnZ43/l6N2/dP6gt06ej9cNmzO+bQYbaY5UI/cz6xJM0C4DTJ4vPV4h2wDo+dW+OMpuPvIMJtHllPYwcUk3SL5cOOIUIgpe1XEr9qbw9Ca3PUg=
+	t=1721977248; cv=none; b=QOBDqG/3lgAO+iu7Q1qlMmIqxC6LJG8tbQVPLITZy6vx1gDx4MOSLgIfsyS7YmYBTXIEN9zGwenHw9QH4ix8blsHeOnCx8+y1etST+jxBS29Yzt9o7qTUPurEZwnGXJzUaWp3NpHkxPHLRgKBgzbwiMG6MjAH0DVsWbKj1Hh5bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721975583; c=relaxed/simple;
-	bh=LhmpSFRImNhxYoL4ax/b0424qCJAA3V6P/KQf12ysbo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bU7XBAeiTmEPKwunIPqczltxG8vHwBqU+p67PMIRITmNkciD1oxWb1L8oG2o76B0/qx3CBVQFOAz9B4hBwFRRk3/nQVM9PPrM5VOP2ZSKubjbvanJuIn0QEDZ+fT2hqASN+PXJNEgoeSmkJoilLWME5P8hObyHMg/+zhEXpzQaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyr4r7RQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AA7C32782;
-	Fri, 26 Jul 2024 06:33:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721975583;
-	bh=LhmpSFRImNhxYoL4ax/b0424qCJAA3V6P/KQf12ysbo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fyr4r7RQ75gZItslnwo2VMuQpShKw5/zjjrYPOsU2tI+J+5tQYPaSm1pHS1Sp5ZEe
-	 ZjsPiDlLZauPHW6ws5Muqwey2pIwtU0f7hvxVqYZvL2SWMuPKufITFentHFD2r4Pxl
-	 CWWHbN3BVDNjPTm8WXrk13HyreBnwTNfhG+bMR0Q=
-Date: Fri, 26 Jul 2024 08:33:00 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: [PATCH 5.15 00/87] 5.15.164-rc1 review
-Message-ID: <2024072645-delighted-barbecue-154f@gregkh>
-References: <20240725142738.422724252@linuxfoundation.org>
- <CA+G9fYvCyg1hXaci_j-RB4YgATb458ZqRjJSye4qub9zYrmL_A@mail.gmail.com>
+	s=arc-20240116; t=1721977248; c=relaxed/simple;
+	bh=cXuBQx8G6HRYGa0zLfyDdgR2a85QCTfKAqQ15Xuh0GU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t5XLQ/klBhOYz9lbJdtjBwm7AAkGhHNklJw/2xNh0DY83hcFT03ecn+bqAHM6UZqQazzhgsGJ/M3z7vM/cdlbKlSGx8l2eRe0RMsx3AAQtrfBdG1HgQvGoYspWCpMxhG/tWf9ovLKr06sL/IdmSE37y4D2r/DBKyJmZFqhXX8gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TMGeYcqR; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5a1b073d7cdso10969a12.0
+        for <stable@vger.kernel.org>; Fri, 26 Jul 2024 00:00:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721977245; x=1722582045; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y53RKvzqwB6Dazh5v3d7KIAfo6n5xzd1ZjyTale8iyE=;
+        b=TMGeYcqRdXm4l60kUGYknKAvHdGAEVRv5NQN65i4FG/TCHJ3TXJZep6siLFU/chlxF
+         PzAEVEAImwK1JpCsIO4CF9m0rrYu8Mdk6UsNAWBvioAi5XcaZAdFZRVTNM2iuDjhDMZn
+         q+W4iS4AEF98LLa5cE6mlVA0I5oLnb58E4o2eUNCYDHx+PkqinShyUtC68SiHF8ORErM
+         qBC67XgX3LBiLJqLvk6E8F9KEk1Mg/DnzXezgRD+lk2HaUPVDRo+K/W8/HAvgeq+HgAa
+         Qh0/dX/Z0bbzLu06GvBLms6sFqIjBdpLDUBXteERU0yEromWgIZczbcNX/jpuVj2H5ZK
+         U4JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721977245; x=1722582045;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y53RKvzqwB6Dazh5v3d7KIAfo6n5xzd1ZjyTale8iyE=;
+        b=CGgyj4Cu2DuIqdx/+fzCc68AVBqZ7dGUuQAA2jiLEsin+OsFd7rm8F2KF7iRo0S9bq
+         tK3tSt8Oftbvs7dgCpluyMjZBaJiu5MOcrEJpfdE5QyqtRd5wM0A7HKzYDnvKaDrSCaZ
+         ys58U0Duhx1mOB1V5YmmOXkHaSB13qiWVU+T1NqM5Vx0z062XXVmBhN7IiU3QpBenBnH
+         MitZ3rWdxPWxP74yjh24A0PXpd1iDyMiCP7Ob02UEogB8HhhecBOG74ZabFcPthA651v
+         tbDocir1wGXFqlZBIpW7Zni6cuMsFv5keIw9/3/EgXxO2HQeNa0PgdcCX0uQpxt26/pS
+         8Bgg==
+X-Forwarded-Encrypted: i=1; AJvYcCXXoLdNAjkGWb9yA3D58KzS2Hgli2FvJyidH3Cvdd9z9Dptx/2QIGkpvpBiwZCda4oEFAPPVhzXJ4u8bjDz4arF/KXIFFM8
+X-Gm-Message-State: AOJu0Yz5GGiuztIxfYTXGV/wG5CLnbLw1i5VAkwcyZqEbdy2dSCJR5PP
+	R80ZPYSX6BagPutSD4W8YsVaW6yFhys0zFlsfBwXF5QrTIIUN6ZTcY73GzP/MtWht72vjEm987s
+	GP4EK8a128wZ45Zryoze44azk/F2vj+DMHsAZ
+X-Google-Smtp-Source: AGHT+IFR4x8V4lq/D59qYaxfXZmUN89/wq11yTIMlDMOCvYHoW19s4vACmySyegOBrCOQvySYTHsqn+gvzSYKwXSm90=
+X-Received: by 2002:a05:6402:35c3:b0:5a0:d4ce:59a6 with SMTP id
+ 4fb4d7f45d1cf-5aed72f8708mr118245a12.2.1721977244667; Fri, 26 Jul 2024
+ 00:00:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYvCyg1hXaci_j-RB4YgATb458ZqRjJSye4qub9zYrmL_A@mail.gmail.com>
+References: <20240726023359.879166-1-willemdebruijn.kernel@gmail.com>
+In-Reply-To: <20240726023359.879166-1-willemdebruijn.kernel@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 26 Jul 2024 09:00:30 +0200
+Message-ID: <CANn89i+gMUzYfX2UTzCZx_S=96UHEf9_KzkG-cCq9aQkUiX3Bg@mail.gmail.com>
+Subject: Re: [PATCH net] net: drop bad gso csum_start and offset in virtio_net_hdr
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, mst@redhat.com, jasowang@redhat.com, arefev@swemel.ru, 
+	alexander.duyck@gmail.com, Willem de Bruijn <willemb@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 25, 2024 at 10:18:49PM +0530, Naresh Kamboju wrote:
-> On Thu, 25 Jul 2024 at 20:22, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 5.15.164 release.
-> > There are 87 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.164-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> The following build errors noticed while building arm configs with toolchains
-> gcc-12 and clang-18 on stable-rc linux-5.15.y
-> 
-> First seen on today builds 25-July-2024.
-> 
->   GOOD: b84034c8f228 ("Linux 5.15.163-rc2")
->   BAD:  1d0703aa8114 ("Linux 5.15.164-rc1")
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> Build log:
-> -------
-> from drivers/net/wireless/ralink/rt2x00/rt2800lib.c:25:
-> drivers/net/wireless/ralink/rt2x00/rt2800lib.c: In function
-> 'rt2800_txpower_to_dev':
-> include/linux/build_bug.h:78:41: error: static assertion failed:
-> "clamp() low limit (char)(-7) greater than high limit (char)(15)"
->    78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
->       |                                         ^~~~~~~~~~~~~~
-> include/linux/build_bug.h:77:34: note: in expansion of macro '__static_assert'
->    77 | #define static_assert(expr, ...) __static_assert(expr,
-> ##__VA_ARGS__, #expr)
->       |                                  ^~~~~~~~~~~~~~~
-> include/linux/minmax.h:66:17: note: in expansion of macro 'static_assert'
->    66 |
-> static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)),
->  \
->       |                 ^~~~~~~~~~~~~
-> include/linux/minmax.h:76:17: note: in expansion of macro '__clamp_once'
->    76 |                 __clamp_once(val, lo, hi, __UNIQUE_ID(__val),
->          \
->       |                 ^~~~~~~~~~~~
-> include/linux/minmax.h:180:36: note: in expansion of macro '__careful_clamp'
->   180 | #define clamp_t(type, val, lo, hi)
-> __careful_clamp((type)(val), (type)(lo), (type)(hi))
->       |                                    ^~~~~~~~~~~~~~~
-> drivers/net/wireless/ralink/rt2x00/rt2800lib.c:3993:24: note: in
-> expansion of macro 'clamp_t'
->  3993 |                 return clamp_t(char, txpower, MIN_A_TXPOWER,
-> MAX_A_TXPOWER);
->       |                        ^~~~~~~
-> 
+On Fri, Jul 26, 2024 at 4:34=E2=80=AFAM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> From: Willem de Bruijn <willemb@google.com>
 
-Thanks, I've added a commit that should resolve this now.  I'll push out
-a -rc2 in a bit.
+...
 
-greg k-h
+>                 /* Kernel has a special handling for GSO_BY_FRAGS. */
+> diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+> index 4b791e74529e1..9e49ffcc77071 100644
+> --- a/net/ipv4/tcp_offload.c
+> +++ b/net/ipv4/tcp_offload.c
+> @@ -140,6 +140,9 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+>         if (thlen < sizeof(*th))
+>                 goto out;
+>
+> +       if (unlikely(skb->csum_start !=3D skb->transport_header))
+> +               goto out;
+> +
+
+Using skb_transport_header() will make sure DEBUG_NET_WARN_ON_ONCE()
+will fire for debug kernels,
+with no additional costs for non debug kernels (compiler will generate
+not use skb->head at all)
+
+if (unlikely(skb->csum_start !=3D skb_transport_header(skb) - skb->head))
+                  goto out;
+
+(This will match the corresponding initialization in __tcp_v4_send_check())
 
