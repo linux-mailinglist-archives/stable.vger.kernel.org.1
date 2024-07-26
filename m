@@ -1,131 +1,105 @@
-Return-Path: <stable+bounces-61853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3789193D075
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 11:36:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC03293D07A
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 11:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3172B20F58
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 09:36:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDFBF1C218F4
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 09:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB058178360;
-	Fri, 26 Jul 2024 09:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B0B176AAF;
+	Fri, 26 Jul 2024 09:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="ohJriQwv"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="P6qesZcF"
 X-Original-To: stable@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58001741DA
-	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 09:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7C31A286;
+	Fri, 26 Jul 2024 09:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721986559; cv=none; b=klueG/atRlnPVgQ3FegvUxifazs9TDF/LM30nn1rfA8L+R//mgLAkgUsKwjOKTbTpcsRX4vUbbletRelUvvJ1g0ajtOfkJnsOQit+XGJ9min1P3Ej+vYiQSyjkntJxMDSZgq7dbTtYWAtEaAvKXwSLfFmiH+uJRaokaqm2Yi5Uo=
+	t=1721986739; cv=none; b=S9RogqHSrPwmaGPWgFhkTrtJ2N5J6OeMhAji0E7G9K3AjToQto91Uz1hGg64eZJ/H2YnHV8eV39k/i0Z+EZj9+Qbl0PxwGd0nJkWbfrlysS5ijZaITcRwsocmP/t1zWS80DV4hKYkvLVwqxDYYcipLuUMrZll/JMyX7VP0BADyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721986559; c=relaxed/simple;
-	bh=d17qNW9Cmc3z0FcmOgveSQqUgbjM0ztt3lwp/ovST/0=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=jR29b/IOm1cWRYI0UrYwLBu3HR4OFcF+CcWZiFUbU031etf/cBvgzAABXR3ZaFN62nlxv8kzfN+V+uCGN0M95uTSjAkBN15irdoBQK/gZjhi/MGPT90A3l9/L8Zz+j2jxKcwOoqX8J/WzV8Wmm3RPlkvcTDy/bqs7lqqaEUgz7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=ohJriQwv; arc=none smtp.client-ip=44.202.169.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
-	by cmsmtp with ESMTPS
-	id X4dAsaPf7iA19XHMisIVav; Fri, 26 Jul 2024 09:35:56 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id XHMhsvLn6XCIHXHMisJZ9E; Fri, 26 Jul 2024 09:35:56 +0000
-X-Authority-Analysis: v=2.4 cv=dKWgmvZb c=1 sm=1 tr=0 ts=66a36dfc
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=4kmOji7k6h8A:10 a=VwQbUJbxAAAA:8 a=HaFmDPmJAAAA:8
- a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
- a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Ptl5cmTnn6koUKZXVZBKDW80S3sMtIdccC55tkeSdBw=; b=ohJriQwvdtZ160OnRv2Muf0O/w
-	Nvre7/RkyKsBYIBenIlD4zU0CDKmHe7xzohFUHTIWJyFUJQqC58gn0E/jS3RMTagPCBIa0d7+V1oU
-	JTaKVJVGAXIJPDdO49opxLnvkuyjyTBylTzIxmVovvWKuybt6Ztx4sAeumzh2E/xv5hZGV2P+L7Uz
-	k+mHRNO7YIWFf8kfI1Ao2nNBDMefi1xmvGR/vhLMgc2rLNHfePBM5gwJNatQkXux0bjX1cWTEel8K
-	er9VI8W7304qV/24Nh8cx8YWiL+tl+tYMJcTDYHrfOwvCUDfST6RuKM5gikrE3S+EJgCjLu9ejy7N
-	s9aF8nwQ==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:59298 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1sXHMd-0003yQ-14;
-	Fri, 26 Jul 2024 03:35:51 -0600
-Subject: Re: [PATCH 5.15 00/90] 5.15.164-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240726070557.506802053@linuxfoundation.org>
-In-Reply-To: <20240726070557.506802053@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <4e18540d-b1bf-7c72-04ad-ac08263b37c8@w6rz.net>
-Date: Fri, 26 Jul 2024 02:35:45 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1721986739; c=relaxed/simple;
+	bh=lQe+wBRcsk0ZyYkVQL0n/nKRWVZoQpNAw1NCjhW4FYQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gjV3biisJWpppG1et0If2aGRaBn9YVQLL5sSPOSBDM7TQJ0dVsWjnNIff9C3jp/zq+ZMcCqD1c1T2rVdbXQED30p2UwR7utsR47NN5A91MtLDD73Q4G/9aQ33cABNArqM76WPG081zLkBVGs1k/C60g9zicMDSkaryHQPsqrXmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=P6qesZcF; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1721986728; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=t048/vV/d5nEHrbgDDl8oC6lorOHiJTnPFFh8ETL5eA=;
+	b=P6qesZcFjUicdwIut4W9Wciz6NvtOuthCdAXpvPlTTOHMnMOTBJhD6ZpVkhtMFlVhXHOZzCQmujO7p+jdaNhXLzVYycNhjPvHLZNr5vjHJUa+UqD9VNLHWzS6jZ//3y1JRCMq+i5bKsHqGmOwbDA/SaIRejsk1DkOfjdy0BX2wE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033068173054;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0WBLNct._1721986727;
+Received: from 30.97.56.64(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WBLNct._1721986727)
+          by smtp.aliyun-inc.com;
+          Fri, 26 Jul 2024 17:38:47 +0800
+Message-ID: <4439d559-5acf-4688-a1ad-7626bf027027@linux.alibaba.com>
+Date: Fri, 26 Jul 2024 17:38:47 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] mm/hugetlb: fix hugetlb vs. core-mm PT locking
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Peter Xu <peterx@redhat.com>,
+ Oscar Salvador <osalvador@suse.de>, stable@vger.kernel.org
+References: <20240725183955.2268884-1-david@redhat.com>
+ <20240725183955.2268884-3-david@redhat.com>
+ <0067dfe6-b9a6-4e98-9eef-7219299bfe58@linux.alibaba.com>
+ <c16a731f-1029-4ede-bbea-af2218c566d1@redhat.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <c16a731f-1029-4ede-bbea-af2218c566d1@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1sXHMd-0003yQ-14
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:59298
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 21
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfPoh4BJIe1m2eJC9FZJoCKrrieQ86UZ9Ooo0p/FxOsO9KHJ6i/oiG3ftC7lAQ/cgIrPql14l2ZHS1iBw4PRzS2Y1RVqQj6QwVuerLM7DYNyzrsFwpQpe
- w8Dbm6W8xMFNqdsyh2iIZ2/Jjpr2zh76WET5ZzyaUdwWBN+I9dYaelTHdXA3qHJfJAoDv+FDzvA1Ng==
 
-On 7/26/24 12:12 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.164 release.
-> There are 90 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 28 Jul 2024 07:05:35 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.164-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Tested-by: Ron Economos <re@w6rz.net>
+On 2024/7/26 16:04, David Hildenbrand wrote:
+> On 26.07.24 04:33, Baolin Wang wrote:
+>>
+>>
+>> On 2024/7/26 02:39, David Hildenbrand wrote:
+>>> We recently made GUP's common page table walking code to also walk
+>>> hugetlb VMAs without most hugetlb special-casing, preparing for the
+>>> future of having less hugetlb-specific page table walking code in the
+>>> codebase. Turns out that we missed one page table locking detail: page
+>>> table locking for hugetlb folios that are not mapped using a single
+>>> PMD/PUD.
+>>>
+>>> Assume we have hugetlb folio that spans multiple PTEs (e.g., 64 KiB
+>>> hugetlb folios on arm64 with 4 KiB base page size). GUP, as it walks the
+>>> page tables, will perform a pte_offset_map_lock() to grab the PTE table
+>>> lock.
+>>>
+>>> However, hugetlb that concurrently modifies these page tables would
+>>> actually grab the mm->page_table_lock: with USE_SPLIT_PTE_PTLOCKS, the
+>>> locks would differ. Something similar can happen right now with hugetlb
+>>> folios that span multiple PMDs when USE_SPLIT_PMD_PTLOCKS.
+>>>
+>>> Let's make huge_pte_lockptr() effectively uses the same PT locks as any
+>>> core-mm page table walker would.
+>>
+>> Thanks for raising the issue again. I remember fixing this issue 2 years
+>> ago in commit fac35ba763ed ("mm/hugetlb: fix races when looking up a
+>> CONT-PTE/PMD size hugetlb page"), but it seems to be broken again.
+>>
+> 
+> Ah, right! We fixed it by rerouting to hugetlb code that we then removed :D
+> 
+> Did we have a reproducer back then that would make my live easier?
 
+I don't have any reproducers right now. I remember I added some ugly 
+hack code (adding delay() etc.) in kernel to analyze this issue, and not 
+easy to reproduce. :(
 
