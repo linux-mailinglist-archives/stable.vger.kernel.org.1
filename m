@@ -1,252 +1,131 @@
-Return-Path: <stable+bounces-61843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B395993CF9B
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 10:26:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E3493CFCE
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 10:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09908B20F21
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 08:26:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F40C81C209F2
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 08:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176BB176FA1;
-	Fri, 26 Jul 2024 08:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D655674D;
+	Fri, 26 Jul 2024 08:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aPxNnRVL"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="U6tYk5gm"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F9E176AB6;
-	Fri, 26 Jul 2024 08:26:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8751236D
+	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 08:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721982365; cv=none; b=rnkyaVAe3K8R6cWR/YbZ1aOqUBmuLn9MHEXvkDNdb0DDtmOL9Z9ejJzAfuhQLLoidtoR07RHKz17h1gx9UcQPwujA6KlFO337ABPY4YDYELkRwI4YLq2axOh2i4X8pe4+2VuX9iY0iVjctM9MGBqW8aXx5SfZFwph1ovUArRPUs=
+	t=1721983623; cv=none; b=XRPm8Nqb7t0w2SSc54NO8gmP2HXbflJpfjarJ2sdMPRA3Wf2yGjsZw60LL9cu07xLOD/bcm0hSOu/oY9Iu846UR2P0G/KJgUZ5bS2Jd5bS841RoyHyTu0HOkL+E6dVaLmJU4ZdrmAI/iUU7j9/KxUREtngknof+8fWLLsPIVlcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721982365; c=relaxed/simple;
-	bh=dzHtMzHbaJ2yE5UIrMONtQRc75u7v0DvZWr8hP/nT0E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PtY8Obo3O1jEnAVwa1fMApu22znGlGxlgf77v4V6U3vFAEH06hpjnlzQBdQCmqP9pBov0QpFaHhbyCvKE9+qoh5nMGeTkVgvnTGeLNb88g+6JriLtlSMIu1piPRONT9PVd7kmU5+GlJrsRBFrj/bbP9b7B4csqNV5mrOCp5H5yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aPxNnRVL; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721982363; x=1753518363;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=dzHtMzHbaJ2yE5UIrMONtQRc75u7v0DvZWr8hP/nT0E=;
-  b=aPxNnRVLt9IxWlwV6Nsi4R/LQiMjHXzTsPW86TKAf65YmvaVJdBQRCHq
-   +rGv224vaC1NBmQBQrNvzs0WOdH3/WoGQAGp/WT13lKvQ7RIQISMUA5cV
-   /rM1gIfm+cphCmRcA+YITExTGjpMX6QH8u2Gbri59gaGiOEiABn5kDo4J
-   BJJaDFJavrKYpvJJk+Ojk+LfJ7Y3MSva2Uex19oh+CyGIC+4bavi1/1hv
-   wlPUf6XIyrCdt5hUY1IxDHLykBUDbvrVEVBo84YfqBQH07kstJY9AoZ9u
-   hvmPn4yb61zkLTheUhngToWui36Q5SCn6cYx4bDlbyFjCqI/FZIAAhjrI
-   Q==;
-X-CSE-ConnectionGUID: VwzH0dUMT6q8xK2cKkBvdg==
-X-CSE-MsgGUID: ItqpO9hLRB2fKLofaBtC/g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="19892090"
-X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; 
-   d="scan'208";a="19892090"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2024 01:26:00 -0700
-X-CSE-ConnectionGUID: khyK4IXFRY6UMJBtoOLvfw==
-X-CSE-MsgGUID: lvwBMgd3Tnq2BcaUZpQp0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; 
-   d="scan'208";a="53214226"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.66])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2024 01:25:56 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, Ville =?utf-8?B?U3lyasOkbMOk?=
- <ville.syrjala@linux.intel.com>, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915: Fix possible int overflow in
- skl_ddi_calculate_wrpll()
-In-Reply-To: <e6c131df-64b6-4856-8778-0fa7e8c7c876@fintech.ru>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20240724184911.12250-1-n.zhandarovich@fintech.ru>
- <87sevxzy0i.fsf@intel.com>
- <e6c131df-64b6-4856-8778-0fa7e8c7c876@fintech.ru>
-Date: Fri, 26 Jul 2024 11:25:52 +0300
-Message-ID: <87ed7gzhin.fsf@intel.com>
+	s=arc-20240116; t=1721983623; c=relaxed/simple;
+	bh=GlY9aa4gGoE2V43heZAzTH9QWMGYp1pFjNavKmIa+Hs=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=XXKPB55czdlH58ckQdeGqDLFBDfPtFrhvNCtONqk4qmw70YAzA31jqiZo9op1YdPbpHdWmVEgNeNqm/NAPKTzRI/cqsTYntVOALtaJCRlw3scFybMDxtRUuktmXGnuikSMXujsfh+IzcEzBVyqmfNR4fOFrPIZ8uUEjHRqrz8ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=U6tYk5gm; arc=none smtp.client-ip=35.89.44.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
+	by cmsmtp with ESMTPS
+	id X8qGsxHSVjnP5XGbGslD9P; Fri, 26 Jul 2024 08:46:54 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id XGbFss2TKX56wXGbGsDMA0; Fri, 26 Jul 2024 08:46:54 +0000
+X-Authority-Analysis: v=2.4 cv=MY6nuI/f c=1 sm=1 tr=0 ts=66a3627e
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=4kmOji7k6h8A:10 a=VwQbUJbxAAAA:8 a=HaFmDPmJAAAA:8
+ a=hP_FQLMrEgTDVdh0MfgA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=72Vjo2GWED/GA+jMRh77g4QFy8aP+xnolgShSF6hHUQ=; b=U6tYk5gmg6UUdT8vlDr9ybKoT+
+	D17cCMG2dqfZtOeyOXYqM20ypJTLx9Kota4tRoGfPWdQERWIWJkw3P0eg3bLtfMi7jQvCl8Azb3gC
+	8CLfCzdRfofHvqmj3rRZuH94Ia86eOP0gFvS/u7vJLyZpbPFoiGXZHXKgMVW7cEk3MRZLGqeZr2Ce
+	FQ9JCnTxiGXRXS2/i7J87EdlXi5BgurhKcFoo5DdFi+7MvW8CoPrGYaSFbSjCBs5sUxE05Z0B8HHj
+	4Z+1hhkAcksV7GHEqE0wR6IUX1fJQAd9DPIesylXoAY/QaMCNqGZhK62VASJEX4HbBhCyBTeerlht
+	07eNhKSw==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:59252 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sXGbA-004ASz-2l;
+	Fri, 26 Jul 2024 02:46:48 -0600
+Subject: Re: [PATCH 6.10 00/29] 6.10.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240725142731.814288796@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <16ed41f6-b6e1-0c1c-ed97-755530caafaa@w6rz.net>
+Date: Fri, 26 Jul 2024 01:46:42 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1sXGbA-004ASz-2l
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:59252
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfGrC5OftwjD6Oj+YhgWhmjEkkZKgzS3DBe6IxvRhNvL3UZLCtkADbuv75B0sAJSZXSvkDiHh/O6E3RfmQGTBybMSSt3sU/+5HK6TUeKcxmwlQuFXkVnf
+ uUYaRZxZdeVl2gGuJtebMkydfePASip1kWRwI9EZWqv3ds9he+ZZckXHegZlhH1x6PibDDJbOQSBXg==
 
-On Thu, 25 Jul 2024, Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
-> Hi,
+On 7/25/24 7:36 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.2 release.
+> There are 29 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> On 7/25/24 01:17, Jani Nikula wrote:
->> On Wed, 24 Jul 2024, Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
->>> On the off chance that clock value ends up being too high (by means
->>> of skl_ddi_calculate_wrpll() having benn called with big enough
->>> value of crtc_state->port_clock * 1000), one possible consequence
->>> may be that the result will not be able to fit into signed int.
->>>
->>> Fix this, albeit unlikely, issue by first casting one of the operands
->>> to u32, then to u64, and thus avoid causing an integer overflow.
->> 
->> Okay, thanks for the patch, but please let's not do this.
->> 
->> Currently the highest possible port clock is 2000000 kHz, and 1000 times
->> that fits into 31 bits. When we need to support higher clocks, we'll
->> need to handle this. But not like this.
->> 
->> That (u64)(u32) is just too unintuitive, and assumes the caller has
->> already passed in something that has overflown. People are just going to
->> pause there, and wonder what's going on.
->> 
->> If we want to appease the static analyzer, I think a better approach
->> would be to change the parameter to u64 clock_hz, and have the caller
->> do:
->> 
->> 	ret = skl_ddi_calculate_wrpll((u64)crtc_state->port_clock * 1000,
->> 				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
->> 
->> BR,
->> Jani.
->> 
+> Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
+> Anything received after that time might be too late.
 >
-> First, I agree that using (u64)(u32) is confusing and not intuitive,
-> even if there are some similar examples in kernel code.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.2-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
 >
-> The reason why I thought I had to opt for it though is the following: I
-> was worried that if the int value of 'clock' in
-> skl_ddi_calculate_wrpll() is big enough (specifically, high bit is 1),
-> then after casting it to long or u64 in this case, the resulting value
-> of wider type will have all its ~32 upper bits also set to 1, per rules
-> of Integer Promotion. Changing the type from signed to unsigned, then to
-> bigger unsigned seems to mitigate *this* particular issue and I can't
-> come up with a more elegant solution at the moment. Correct me if I'm
-> wrong somewhere.
+> thanks,
 >
-> Also, while port clock may be able to fit its value timed 1000 into 31
-> bits, multiplying it by 5 to get AFE Clock value, as far as I can see,
-> *will* lead to overflow, as 2,000,000,000 * 5 won't fit into 32 bits.
->
-> To sum it up, with current max possible port clock values an integer
-> overflow can occur and changing 'clock' parameter from int to u64 may
-> lead to a different issue. If my understanding about integer promotion
-> is flawed, I'll gladly send v2 patch with your solution.
+> greg k-h
 
-This is what I'm suggesting. Cast the clock (which is in kHz) to u64
-before multiplication, and avoid overflows.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Option 1, preferred:
+Tested-by: Ron Economos <re@w6rz.net>
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-index 90998b037349..292d163036b1 100644
---- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-+++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-@@ -1658,7 +1658,7 @@ static void skl_wrpll_params_populate(struct skl_wrpll_params *params,
- }
- 
- static int
--skl_ddi_calculate_wrpll(int clock /* in Hz */,
-+skl_ddi_calculate_wrpll(int clock,
- 			int ref_clock,
- 			struct skl_wrpll_params *wrpll_params)
- {
-@@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in Hz */,
- 	};
- 	unsigned int dco, d, i;
- 	unsigned int p0, p1, p2;
--	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
-+	u64 afe_clock = (u64)clock * 1000 * 5; /* AFE Clock is 5x Pixel clock, in Hz */
- 
- 	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
- 		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
-@@ -1808,7 +1808,7 @@ static int skl_ddi_hdmi_pll_dividers(struct intel_crtc_state *crtc_state)
- 	struct skl_wrpll_params wrpll_params = {};
- 	int ret;
- 
--	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock * 1000,
-+	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock,
- 				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
- 	if (ret)
- 		return ret;
-
-Option 2, this is what I suggested earlier:
-
-diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-index 90998b037349..a48a45f30f17 100644
---- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-+++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-@@ -1658,7 +1658,7 @@ static void skl_wrpll_params_populate(struct skl_wrpll_params *params,
- }
- 
- static int
--skl_ddi_calculate_wrpll(int clock /* in Hz */,
-+skl_ddi_calculate_wrpll(u64 clock_hz,
- 			int ref_clock,
- 			struct skl_wrpll_params *wrpll_params)
- {
-@@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in Hz */,
- 	};
- 	unsigned int dco, d, i;
- 	unsigned int p0, p1, p2;
--	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
-+	u64 afe_clock = clock_hz * 5; /* AFE Clock is 5x Pixel clock */
- 
- 	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
- 		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
-@@ -1808,7 +1808,7 @@ static int skl_ddi_hdmi_pll_dividers(struct intel_crtc_state *crtc_state)
- 	struct skl_wrpll_params wrpll_params = {};
- 	int ret;
- 
--	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock * 1000,
-+	ret = skl_ddi_calculate_wrpll((u64)crtc_state->port_clock * 1000,
- 				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
- 	if (ret)
- 		return ret;
-
-
->
-> Regards,
-> Nikita
->> 
->>>
->>> Found by Linux Verification Center (linuxtesting.org) with static
->>> analysis tool SVACE.
->>>
->>> Fixes: fe70b262e781 ("drm/i915: Move a bunch of stuff into rodata from the stack")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
->>> ---
->>> Fixes: tag is not entirely correct, as I can't properly identify the
->>> origin with all the code movement. I opted out for using the most
->>> recent topical commit instead.
->>>
->>>  drivers/gpu/drm/i915/display/intel_dpll_mgr.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
->>> index 90998b037349..46d4dac6c491 100644
->>> --- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
->>> +++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
->>> @@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in Hz */,
->>>  	};
->>>  	unsigned int dco, d, i;
->>>  	unsigned int p0, p1, p2;
->>> -	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
->>> +	u64 afe_clock = (u64)(u32)clock * 5; /* AFE Clock is 5x Pixel clock */
->>>  
->>>  	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
->>>  		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
->> 
-
--- 
-Jani Nikula, Intel
 
