@@ -1,176 +1,105 @@
-Return-Path: <stable+bounces-61872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83AE93D297
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 13:56:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 246F593D2C9
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 14:07:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DE5C282465
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 11:56:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD1F51F21323
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 12:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420F917A934;
-	Fri, 26 Jul 2024 11:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A0117B430;
+	Fri, 26 Jul 2024 12:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VVJkwlh0"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="HlXXtBas"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8475617A5A5
-	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 11:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D0017B41B;
+	Fri, 26 Jul 2024 12:07:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721994980; cv=none; b=OWpp07KhyrYSQyr6kzflY4mzK7Bog8wVKoet83BRmlcMX9fvWJsyN7hJG995zEymbM0p4W6sNE4/NfkzRLO9R/l+ORCuM/g5FsghI27Xu8PbfnLrbsSOMm2E/pcnWNPM15YPCWD4Cvbo6DyEuLzaIMmnGPjmrTc7Wzqvm1CiuAs=
+	t=1721995641; cv=none; b=OPrsYVAMidjv20KMggJ4wAaxYODOCXjvEUobSetZkBr+rns3X2/QMANf/xRR2P+P7PjbcW+dmOqrDskavNgLwXFj3L43QNOPYjjLzqzyPsQFsh15SwrZnivKHuMi7RLjxcP1ZSJGo4JG96NDRYLKlLqVJrfPDZNxxxD17CaAXD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721994980; c=relaxed/simple;
-	bh=U539Uq8Qs5gV5WNuvWf2uP4NoFxyJZ+3W+hmd5gZpKo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qZbLsnpOn6YJIwxt+9qm/JnnglxreTMk2mZloGtPL8GkXZThI6GUDEokbBp/jh+0klhwgqVxckybFiPNhPLTnvJdrIKgTuIAtCBNsMPjq7CgK6oEp9+4YhJ6aC/EF8VGFsLaoDep66IN9nFpBm00Wa5nTQSFhRpzRI+DXKyBT5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VVJkwlh0; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1fd69e44596so4190625ad.1
-        for <stable@vger.kernel.org>; Fri, 26 Jul 2024 04:56:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721994978; x=1722599778; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5y7YOEDfU4JS5fx5scmrf6hqB3/+VWCj5aY8K/rMjG8=;
-        b=VVJkwlh084nD+XdVnWTV2AvVpAxMPUr3jeo6roxIRLQLXOuCdDAMjaqAT2dtZO4vvZ
-         s1pco6Vf7rj9+R5UIe7Tx+3xt0dXG+vGmegieQTECnkrdyL+Q3xT9FQdTqo5lRe0j754
-         sUrfTxoAPEKoMw+q02EnIyVmjgALPqpurIZjaw57ozYtXmKV9D6M87WmsJLmx0GKwWun
-         bK4K/0z3gCotXSR91s9IrbO30Hg6fsQgfPYellozxXBP7mZWblDVevOsSdWFOKkdJvzJ
-         BecmTw/W4AcWQiT5Ce3WUFcjgWXIwcWAPb3SeoTcycuHuj3z4X2KS/nWrGut3WcUJi+u
-         XXXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721994978; x=1722599778;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5y7YOEDfU4JS5fx5scmrf6hqB3/+VWCj5aY8K/rMjG8=;
-        b=I/KEyNYnN8CJC5cRWH/t9dTLTWjpVK8vqgHNDHkHW/jEw1EZIF6/2ADqhdK8LMZtUl
-         UJx+Vsd+R83x6ukpSC00ZKdfpp3860XC5CuPKqvzo7uNBHD8aG3zPTY++asoMw9zc9pB
-         Ir2wHbPP7VP11gxjvGDjEj84Wsay4zdg/anWvXMy0/pVsg2uf3QeV/aowCMX42knHRXO
-         BjR0OKjLL8cEf3rv9evwcDP8dr/YjRFX5g2chJeNir5T86cJNLXVaH+APZwymAvrraEc
-         eA30dIu43KMfLWEtXkG+PqfFwv82WqrI67lxwaUuhItl5B5PUm2GO9mxj/x2F8xBPz5v
-         ccqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV8ynV0chkOU6TDd0/gjBInDrGghrqaiBV9LF0TjVSwczDM8NU3ibd7OleWTBDG8CVcgXK9lMOcU0M1ujmFUnXoYJTU0XdA
-X-Gm-Message-State: AOJu0Yzwydw5hgmTAl7uXOW4q97fgfjtwmNZYs7TsxZZxSA+hXVGRgr4
-	QeOuc0p0J6p718TkgY5r9DxEcIXw6oCqXuYUnIJ1tTAJBOmthtZnZ0bzTpveHe4ij9j5vNILPkE
-	=
-X-Google-Smtp-Source: AGHT+IEcrjndBXB2ZtsnkLons2ztafN8jRqGa2IoiheYYReC037fHhFd+JnG6qPN10f0KGDBK21ZYw==
-X-Received: by 2002:a17:902:e550:b0:1fc:5b81:729f with SMTP id d9443c01a7336-1fdd6e89195mr109783765ad.32.1721994977780;
-        Fri, 26 Jul 2024 04:56:17 -0700 (PDT)
-Received: from thinkpad ([2409:40f4:201d:928a:9e8:14a5:7572:42b6])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7fb67e4sm30343095ad.265.2024.07.26.04.56.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jul 2024 04:56:17 -0700 (PDT)
-Date: Fri, 26 Jul 2024 17:26:09 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com,
-	robh@kernel.org, vigneshr@ti.com, kishon@kernel.org,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
-	ahalaney@redhat.com, srk@ti.com
+	s=arc-20240116; t=1721995641; c=relaxed/simple;
+	bh=bMl77tOSd51zz1D3u2B0loJWkNusxsZyBhr+5DsdKYo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f53uEKoKutcnOsyQ3WqCmam9UGacrEfBi7thW/Eshm98h/489cCtMa1HnynOB5aZzLtau3GAr6sabZLyOl3zsEjeu54uuI+AlszOq69OZGcrdCSo/vur5J5BFDbOZ6x/kjSNGTQVGDKNdozRiRg9/EIHoxxz5kN0VBTOp9gCSGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=HlXXtBas; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 46QC6x8S023189;
+	Fri, 26 Jul 2024 07:06:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1721995619;
+	bh=vsqNMysQUHjEuHaKrRwfGzQ5izr5DrtDTkWgNjf9rQM=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=HlXXtBasnbagEpJyIlKNevd0sziAo+ztMtRUo+DcgwTljrPKiYldlv2SdyJiQxZ5C
+	 Go912/l8kT6Kowf19mxVnyWnBanPp7E09EFve3Y87aTVzTUwLMosrnsa1GupuvnNQH
+	 yyYbJayAnYzRPXGI/wqD+fU3aOHRN59AI3Rfqxkk=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 46QC6w6K041746
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 26 Jul 2024 07:06:58 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 26
+ Jul 2024 07:06:58 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 26 Jul 2024 07:06:58 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 46QC6vkp129002;
+	Fri, 26 Jul 2024 07:06:58 -0500
+Date: Fri, 26 Jul 2024 17:36:56 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <bhelgaas@google.com>,
+        <lpieralisi@kernel.org>, <kw@linux.com>, <robh@kernel.org>,
+        <vigneshr@ti.com>, <kishon@kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <stable@vger.kernel.org>, <ahalaney@redhat.com>, <srk@ti.com>
 Subject: Re: [PATCH] PCI: j721e: Set .map_irq and .swizzle_irq to NULL
-Message-ID: <20240726115609.GF2628@thinkpad>
+Message-ID: <465fbf0f-39b9-4ea6-be99-f726e275d099@ti.com>
 References: <20240724065048.285838-1-s-vadapalli@ti.com>
  <20240724161916.GG3349@thinkpad>
- <20240725042001.GC2317@thinkpad>
- <93e864fb-cf52-4cc0-84a0-d689dd829afb@ti.com>
+ <69f8c45c-29b4-4090-8034-8c5a19efa4f8@ti.com>
+ <20240725074708.GB2770@thinkpad>
+ <5f7328f8-eabc-4a8c-87a3-b27e2f6c0c1f@ti.com>
+ <4cb79826-5945-40d5-b52c-22959a5df41a@ti.com>
+ <20240726113008.GE2628@thinkpad>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <93e864fb-cf52-4cc0-84a0-d689dd829afb@ti.com>
+In-Reply-To: <20240726113008.GE2628@thinkpad>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On Thu, Jul 25, 2024 at 01:50:16PM +0530, Siddharth Vadapalli wrote:
-> On Thu, Jul 25, 2024 at 09:50:01AM +0530, Manivannan Sadhasivam wrote:
-> > On Wed, Jul 24, 2024 at 09:49:21PM +0530, Manivannan Sadhasivam wrote:
-> > > On Wed, Jul 24, 2024 at 12:20:48PM +0530, Siddharth Vadapalli wrote:
-> > > > Since the configuration of Legacy Interrupts (INTx) is not supported, set
-> > > > the .map_irq and .swizzle_irq callbacks to NULL. This fixes the error:
-> > > >   of_irq_parse_pci: failed with rc=-22
-> > > > due to the absence of Legacy Interrupts in the device-tree.
-> > > > 
-> > > 
-> > > Do you really need to set 'swizzle_irq' to NULL? pci_assign_irq() will bail out
-> > > if 'map_irq' is set to NULL.
-> > > 
+On Fri, Jul 26, 2024 at 05:00:08PM +0530, Manivannan Sadhasivam wrote:
+> On Fri, Jul 26, 2024 at 03:54:17PM +0530, Siddharth Vadapalli wrote:
+
+[...]
+
+> > Mani,
 > > 
-> > Hold on. The errono of of_irq_parse_pci() is not -ENOENT. So the INTx interrupts
-> > are described in DT? Then why are they not supported?
+> > I prefer setting 'swizzle_irq' to NULL as well unless you have an objection
+> > to it. Kindly let me know. I plan to post the v2 for this patch addressing
+> > Bjorn's feedback and collecting Andrew's "Tested-by" tag as well.
+> > 
 > 
-> No, the INTx interrupts are not described in the DT. It is the pcieport
-> driver that is attempting to setup INTx via "of_irq_parse_and_map_pci()"
-> which is the .map_irq callback. The sequence of execution leading to the
-> error is as follows:
-> 
-> pcie_port_probe_service()
->   pci_device_probe()
->     pci_assign_irq()
->       hbrg->map_irq
->         of_pciof_irq_parse_and_map_pci()
-> 	  of_irq_parse_pci()
-> 	    of_irq_parse_raw()
-> 	      rc = -EINVAL
-> 	      ...
-> 	      [DEBUG] OF: of_irq_parse_raw: ipar=/bus@100000/interrupt-controller@1800000, size=3
-> 	      if (out_irq->args_count != intsize)
-> 	        goto fail
-> 		  return rc
-> 
-> The call to of_irq_parse_raw() results in the Interrupt-Parent for the
-> PCIe node in the device-tree being found via of_irq_find_parent(). The
-> Interrupt-Parent for the PCIe node for MSI happens to be GIC_ITS:
-> msi-map = <0x0 &gic_its 0x0 0x10000>;
-> and the parent of GIC_ITS is:
-> gic500: interrupt-controller@1800000
-> which has the following:
-> #interrupt-cells = <3>;
-> 
-> The "size=3" portion of the DEBUG print above corresponds to the
-> #interrupt-cells property above. Now, "out_irq->args_count" is set to 1
-> as __assumed__ by of_irq_parse_pci() and mentioned as a comment in that
-> function:
-> 	/*
-> 	 * Ok, we don't, time to have fun. Let's start by building up an
-> 	 * interrupt spec.  we assume #interrupt-cells is 1, which is standard
-> 	 * for PCI. If you do different, then don't use that routine.
-> 	 */
-> 
-> In of_irq_parse_pci(), since the PCIe-Port driver doesn't have a
-> device-tree node, the following doesn't apply:
->   dn = pci_device_to_OF_node(pdev);
-> and we skip to the __assumption__ above and proceed as explained in the
-> execution sequence above.
-> 
-> If the device-tree nodes for the INTx interrupts were present, the
-> "ipar" sequence to find the interrupt parent would be skipped and we
-> wouldn't end up with the -22 (-EINVAL) error code.
-> 
-> I hope this clarifies the relation between the -22 error code and the
-> missing device-tree nodes for INTx.
-> 
+> Ok, fine with me.
 
-Thanks for explaining the logic. Still I think the logic is flawed. Because the
-parent (host bridge) doesn't have 'interrupt-map', which means INTx is not
-supported. But parsing one level up to the GIC node and not returning -ENOENT
-doesn't make sense to me.
+Thank you for the confirmation.
 
-Rob, what is your opinion on this behavior?
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Regards,
+Siddharth.
 
