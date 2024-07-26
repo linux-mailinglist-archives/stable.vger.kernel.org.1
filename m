@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-61932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5241693D9E4
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 22:38:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EFF793D9E5
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 22:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 084E81F246FC
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 20:38:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 910FCB231F4
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 20:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD66B149E0C;
-	Fri, 26 Jul 2024 20:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909B3149E1B;
+	Fri, 26 Jul 2024 20:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tKT0YnHG"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZapahxOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656FE148FFA;
-	Fri, 26 Jul 2024 20:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0C41494CD;
+	Fri, 26 Jul 2024 20:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722026294; cv=none; b=RceQramGcU8g8rPyVPBABK0Wqbt/XbvvCj/uTOv6tFqeLTNVEM9WXlTU64yvYi8RzYcN4bM8eCPMJDNc7U1kq/leGWXKUEur27Q+rzjC0BfyiI/oQIYj3TgpQ7woxdUPZ/Mn8DdhOLyLZlKHJh2/LSH6p1Cr9Kx8kKSREg2fnNY=
+	t=1722026297; cv=none; b=hGrRAzztW076izODkxgTFHZ9h1MhPcxCl0zgL+rcf9i5YMa9LC1RKSFa1Wglfqr5EH1U3+O8tURoDuj89mVHmJpS7hPRQJLrVCQOlxHhYfOpMUND33CBLTJ1Y2oN+xwyFd9QD/pSFI8CYbpaZdLu6tvbiIylWJXs0LGLX2E8xM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722026294; c=relaxed/simple;
-	bh=KiwtFBWWjk+HzvIyGnCKaWrhN0OvYvrf9WPRYSzYq0g=;
-	h=Date:To:From:Subject:Message-Id; b=h+lvnjjVXIhBTSXm1C15k35pGikEPUbDnakwDi13eEZQ+TZtcWrxOpf5CHkhss7ReBK22kdNVI5wmkuw0WUAhCUWnm/0hEfX1qLS9brAcR0XBAl/GC/efB/CYnVYJ99QoYeT+oSpGtoeb1e6W7RfYmPFNNAlUnPgXSpwGHrG6xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tKT0YnHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30751C32782;
-	Fri, 26 Jul 2024 20:38:14 +0000 (UTC)
+	s=arc-20240116; t=1722026297; c=relaxed/simple;
+	bh=bnlXMXLn7XPMRFAmuCRD1hYkCui1/Iq+C4A5mNFxAxo=;
+	h=Date:To:From:Subject:Message-Id; b=ZZFXfxyTpR0YjWsm9u9IfHC6z5bIv1Vtj/gKTlztiGhQMgZ2hgh4nErjRwOZZb7x1uKTrQeUZvpx6m+h2tqxhA06/FgZ843ouDFXw2I1dss1rTjVx1JxM5XPR7MpW+Jt3zg44q6FPWr9jmwxyY+ZY7o/vjzkbtnEYh/x4CpbSj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZapahxOi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AC9C32782;
+	Fri, 26 Jul 2024 20:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1722026294;
-	bh=KiwtFBWWjk+HzvIyGnCKaWrhN0OvYvrf9WPRYSzYq0g=;
+	s=korg; t=1722026296;
+	bh=bnlXMXLn7XPMRFAmuCRD1hYkCui1/Iq+C4A5mNFxAxo=;
 	h=Date:To:From:Subject:From;
-	b=tKT0YnHGTtMN9wsTXVrJhLxJ4Z3brlzG1JVA1AFb+MIuW0uTGlTFg36i4G4j1mOTT
-	 /0kUf0tIAbuMvhAoEWjFN4SrT4ijh3mDMVT8SmBeciQev0XaA9lO5JIXgMMcV8LP2+
-	 wBhazMEWcVTTfQZiIZ7L6KOoDc31OU7O+hu5r9A8=
-Date: Fri, 26 Jul 2024 13:38:13 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,souravpanda@google.com,pasha.tatashin@soleen.com,lkp@intel.com,kent.overstreet@linux.dev,keescook@chromium.org,hch@infradead.org,surenb@google.com,akpm@linux-foundation.org
+	b=ZapahxOirk+pM7ep3mL8nYLO6CQMLJaQ7JxOPz70Mgq+5t1vAhjAQH1a9CHJ507j0
+	 LqlWpJh33pgKWEgZv8gmFWxD9NX/J7jR5kKITDWZlelFIA5m8lPCNcICRR1/I9GxsT
+	 cN4dEl1e6eISvMlzmXIYZDM3soLGj9djGWH1Hrrw=
+Date: Fri, 26 Jul 2024 13:38:16 -0700
+To: mm-commits@vger.kernel.org,yaoxt.fnst@fujitsu.com,vbabka@suse.cz,stable@vger.kernel.org,david@redhat.com,lizhijian@fujitsu.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] alloc_tag-outline-and-export-free_reserved_page.patch removed from -mm tree
-Message-Id: <20240726203814.30751C32782@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist.patch removed from -mm tree
+Message-Id: <20240726203816.C2AC9C32782@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,98 +50,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: alloc_tag: outline and export free_reserved_page()
+     Subject: mm/page_alloc: fix pcp->count race between drain_pages_zone() vs __rmqueue_pcplist()
 has been removed from the -mm tree.  Its filename was
-     alloc_tag-outline-and-export-free_reserved_page.patch
+     mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: alloc_tag: outline and export free_reserved_page()
-Date: Wed, 17 Jul 2024 14:28:44 -0700
+From: Li Zhijian <lizhijian@fujitsu.com>
+Subject: mm/page_alloc: fix pcp->count race between drain_pages_zone() vs __rmqueue_pcplist()
+Date: Tue, 23 Jul 2024 14:44:28 +0800
 
-Outline and export free_reserved_page() because modules use it and it in
-turn uses page_ext_{get|put} which should not be exported.  The same
-result could be obtained by outlining {get|put}_page_tag_ref() but that
-would have higher performance impact as these functions are used in more
-performance critical paths.
+It's expected that no page should be left in pcp_list after calling
+zone_pcp_disable() in offline_pages().  Previously, it's observed that
+offline_pages() gets stuck [1] due to some pages remaining in pcp_list.
 
-Link: https://lkml.kernel.org/r/20240717212844.2749975-1-surenb@google.com
-Fixes: dcfe378c81f7 ("lib: introduce support for page allocation tagging")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202407080044.DWMC9N9I-lkp@intel.com/
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: <stable@vger.kernel.org>	[6.10]
+Cause:
+There is a race condition between drain_pages_zone() and __rmqueue_pcplist()
+involving the pcp->count variable. See below scenario:
+
+         CPU0                              CPU1
+    ----------------                    ---------------
+                                      spin_lock(&pcp->lock);
+                                      __rmqueue_pcplist() {
+zone_pcp_disable() {
+                                        /* list is empty */
+                                        if (list_empty(list)) {
+                                          /* add pages to pcp_list */
+                                          alloced = rmqueue_bulk()
+  mutex_lock(&pcp_batch_high_lock)
+  ...
+  __drain_all_pages() {
+    drain_pages_zone() {
+      /* read pcp->count, it's 0 here */
+      count = READ_ONCE(pcp->count)
+      /* 0 means nothing to drain */
+                                          /* update pcp->count */
+                                          pcp->count += alloced << order;
+      ...
+                                      ...
+                                      spin_unlock(&pcp->lock);
+
+In this case, after calling zone_pcp_disable() though, there are still some
+pages in pcp_list. And these pages in pcp_list are neither movable nor
+isolated, offline_pages() gets stuck as a result.
+
+Solution:
+Expand the scope of the pcp->lock to also protect pcp->count in
+drain_pages_zone(), to ensure no pages are left in the pcp list after
+zone_pcp_disable()
+
+[1] https://lore.kernel.org/linux-mm/6a07125f-e720-404c-b2f9-e55f3f166e85@fujitsu.com/
+
+Link: https://lkml.kernel.org/r/20240723064428.1179519-1-lizhijian@fujitsu.com
+Fixes: 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reported-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/mm.h |   16 +---------------
- mm/page_alloc.c    |   17 +++++++++++++++++
- 2 files changed, 18 insertions(+), 15 deletions(-)
+ mm/page_alloc.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
---- a/include/linux/mm.h~alloc_tag-outline-and-export-free_reserved_page
-+++ a/include/linux/mm.h
-@@ -3130,21 +3130,7 @@ extern void reserve_bootmem_region(phys_
- 				   phys_addr_t end, int nid);
- 
- /* Free the reserved page into the buddy system, so it gets managed. */
--static inline void free_reserved_page(struct page *page)
--{
--	if (mem_alloc_profiling_enabled()) {
--		union codetag_ref *ref = get_page_tag_ref(page);
--
--		if (ref) {
--			set_codetag_empty(ref);
--			put_page_tag_ref(ref);
--		}
--	}
--	ClearPageReserved(page);
--	init_page_count(page);
--	__free_page(page);
--	adjust_managed_page_count(page, 1);
--}
-+void free_reserved_page(struct page *page);
- #define free_highmem_page(page) free_reserved_page(page)
- 
- static inline void mark_page_reserved(struct page *page)
---- a/mm/page_alloc.c~alloc_tag-outline-and-export-free_reserved_page
+--- a/mm/page_alloc.c~mm-page_alloc-fix-pcp-count-race-between-drain_pages_zone-vs-__rmqueue_pcplist
 +++ a/mm/page_alloc.c
-@@ -5815,6 +5815,23 @@ unsigned long free_reserved_area(void *s
- 	return pages;
+@@ -2343,16 +2343,20 @@ void drain_zone_pages(struct zone *zone,
+ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
+ {
+ 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
+-	int count = READ_ONCE(pcp->count);
+-
+-	while (count) {
+-		int to_drain = min(count, pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
+-		count -= to_drain;
++	int count;
+ 
++	do {
+ 		spin_lock(&pcp->lock);
+-		free_pcppages_bulk(zone, to_drain, pcp, 0);
++		count = pcp->count;
++		if (count) {
++			int to_drain = min(count,
++				pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
++
++			free_pcppages_bulk(zone, to_drain, pcp, 0);
++			count -= to_drain;
++		}
+ 		spin_unlock(&pcp->lock);
+-	}
++	} while (count);
  }
  
-+void free_reserved_page(struct page *page)
-+{
-+	if (mem_alloc_profiling_enabled()) {
-+		union codetag_ref *ref = get_page_tag_ref(page);
-+
-+		if (ref) {
-+			set_codetag_empty(ref);
-+			put_page_tag_ref(ref);
-+		}
-+	}
-+	ClearPageReserved(page);
-+	init_page_count(page);
-+	__free_page(page);
-+	adjust_managed_page_count(page, 1);
-+}
-+EXPORT_SYMBOL(free_reserved_page);
-+
- static int page_alloc_cpu_dead(unsigned int cpu)
- {
- 	struct zone *zone;
+ /*
 _
 
-Patches currently in -mm which might be from surenb@google.com are
+Patches currently in -mm which might be from lizhijian@fujitsu.com are
 
 
 
