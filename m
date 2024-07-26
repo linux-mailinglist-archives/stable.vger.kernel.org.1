@@ -1,120 +1,124 @@
-Return-Path: <stable+bounces-61927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E210793D9D7
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 22:37:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 448EF93D9E0
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 22:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 981B51F2464B
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 20:37:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4F911F24691
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 20:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A837813B5A0;
-	Fri, 26 Jul 2024 20:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF44149C61;
+	Fri, 26 Jul 2024 20:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bG7OQNdK"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pLoNN0W9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200EA1428E5;
-	Fri, 26 Jul 2024 20:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41045149C40;
+	Fri, 26 Jul 2024 20:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722026250; cv=none; b=WQJhZviH5cti0593jXzl6/zJIvgePa67kx1f4HKUtSpa6YH5nDA0WA6wmfjMhUnYfyUhr1/YOHQEaTGRcjUf5eHcYn7VZMVt0HnSKi16iupWNO1ZqAW+We8vysOqtLvzejf+Dd8+OYaO+tZTFuQ7xV57cOqK9IWS3K9zBfi18h0=
+	t=1722026289; cv=none; b=ASyQ8fYJjG8h1biv1wfaCnlH2mWmHz5/J1XnANTfUkQXnTdfXEdcFiYEop9TQ4bwXlLaSLwKWdKtx94TTvhV5fVNgHwY/3QaIucQyzhM+9e1KSsFEZb40xfUwgGVfbtuvwsZKj9CuQTMVpXz7sjD+HzKwJ3TDZ5w3O5VwTY8m/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722026250; c=relaxed/simple;
-	bh=uWBUHLN++fFLVc8VGhHcKdEKbNwcnzqj1Ef+6lusonk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gOYQV2eOcPwYG3Zf9+9TJV6pCAerzOQtfDHCxN7as8zWLgfRu+aepvqc1FGgPHx/LCAKhl84JuDwGfzY4IC7mJcCbkMdtEcNWnhN6MDwQgBc/cWsuh+z8/mM+8PHF4tjILTeItDd+rbu0U8UwwyIrJZFwWL1bxK6YauLgF4Ya34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bG7OQNdK; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e0885b4f1d5so98466276.1;
-        Fri, 26 Jul 2024 13:37:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722026248; x=1722631048; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7kWEZ6NgVlVpoQaTTvdw2+TWHYVF29fS2zjyGtUPgyo=;
-        b=bG7OQNdKgmj/85amsoshdM1q+wCbrWQDgdF+2rpWdspScP5n0aI7sFVZU8+/QHZtbb
-         GcjS+ervJ1jDoO7evpwZvYbiCYc9D/UryfTdzZ42FZoMEDbwnK0Za96kP9HqClryGRV4
-         AgAFMmK6vdq717LhlITgorJjHCDV5EXzjzUqT/1rdAVbrq9z9vZ9EinsGUdWke04B9lW
-         gZ63WSoYb1oo7CzB9iaNe5VnAZGDT/C9uzYBchXe4X/G1kUrNXLe1sIo7HR0OwsgeFLL
-         PxdmSz8q3WBPndWjNCHNjnPpdZNPgzd37H+fw0yzKx0w+NBOB2DU7uMdrQcIasAUefPY
-         6Bbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722026248; x=1722631048;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7kWEZ6NgVlVpoQaTTvdw2+TWHYVF29fS2zjyGtUPgyo=;
-        b=B37ma9fniIV+vxM+fgxfuiGoEpxSccQXkCwhU3npYEwSn54kXBg25hJP7og22jio4V
-         7+eMNxhQdLHnsnuUnD+AGuKvMgDrMmz2+DElxzelwwAA1pU9Ue9nrOj1eIYXfTYQMN+m
-         U9zEYlsNXCT4AcXqBB6vVC20rX3XEhoo+3XPb8PUWGguPjFczqIS4YvZ1N1s7IyMk7uX
-         mOTNXMc0EcPuFro4OSsFhrMqzF8MpgDg8e3FLg79oO1XJOVYnI/CP4JDqlcCmcfsSNV/
-         o82B+gE6xfthaa5R3J4Jk/z4dr2f5RCjegTU+iFvB6Q7UfMoH6eo2XMGyeyOZvvjKV9k
-         onAg==
-X-Forwarded-Encrypted: i=1; AJvYcCXWp9zkz9QQFmEL8jkJ3NE9laLzz0cPHKBiL5WxE+RbrCAgPnVJHTwgRWffDPpGE803+kQ0n/B3+D2CfCH0uglrE2FeCmLV+fkFFciBMrkbLK8SUAT06nfJ+hKQgHUMo8wYpn/t
-X-Gm-Message-State: AOJu0YwMYmv73MUXMJkNolctY2ORa1lu6z1sZ78QprCkiV6xvQEiYr5J
-	srdgH7T8iis1565e/Sjz+qHHEinVQqoY+cU3XPwPuINmVc+Guuhe
-X-Google-Smtp-Source: AGHT+IFNhaodW351fInS0gTk9F/KiQFTbb1U/E7OYRCsIfxlD9sQtsc+29bcqRAo49m8kr1HhU3rbg==
-X-Received: by 2002:a05:6902:1029:b0:e08:7950:5d2c with SMTP id 3f1490d57ef6-e0b545e3cb5mr1178338276.49.1722026247972;
-        Fri, 26 Jul 2024 13:37:27 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id af79cd13be357-7a1d73b2036sm210087885a.38.2024.07.26.13.37.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Jul 2024 13:37:26 -0700 (PDT)
-Message-ID: <29df5bc5-6515-4fe2-a248-1f3d66a6581a@gmail.com>
-Date: Fri, 26 Jul 2024 13:37:20 -0700
+	s=arc-20240116; t=1722026289; c=relaxed/simple;
+	bh=7CkVEFKSO5Qeoq0TPhttOriIxrZN99AwN+jGkrctOzU=;
+	h=Date:To:From:Subject:Message-Id; b=Y0u1b7cEQtR64XJlRaDfA0XravBe40wLYqVSC+ppE38uwOVkxdpXkpTr8Q7lzYWS4VBkN3WNiwYTmu21SLjqUKk/xP11vITOiw1JdOV0irP950cXl4RnTGqFK5xBK4aHY/dhF3NXCciBtjwizZboZDGUBXc5FpRQ17oXXlUfMrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pLoNN0W9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0538C32782;
+	Fri, 26 Jul 2024 20:38:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1722026288;
+	bh=7CkVEFKSO5Qeoq0TPhttOriIxrZN99AwN+jGkrctOzU=;
+	h=Date:To:From:Subject:From;
+	b=pLoNN0W90qBESIFjdWlrL9knDr1wCVPhAsaQoUsRx2lUpa8VosZvtqsStP4T0zCaZ
+	 /0qgQqUTrLwlmHD0WIpZfkPmWp0tek1Ez3BFI5clP5hWBM0KWnJ8oO9zYaHFpghqko
+	 g4TQV4acwGSktayjZNuu6Q154HmCn9fkTKCbYhoY=
+Date: Fri, 26 Jul 2024 13:38:08 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,fengwei.yin@intel.com,apopple@nvidia.com,rtummala@nvidia.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-fix-old-young-bit-handling-in-the-faulting-path.patch removed from -mm tree
+Message-Id: <20240726203808.C0538C32782@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.10 00/29] 6.10.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240725142731.814288796@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 7/25/24 07:36, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.10.2 release.
-> There are 29 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+The quilt patch titled
+     Subject: mm: fix old/young bit handling in the faulting path
+has been removed from the -mm tree.  Its filename was
+     mm-fix-old-young-bit-handling-in-the-faulting-path.patch
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Ram Tummala <rtummala@nvidia.com>
+Subject: mm: fix old/young bit handling in the faulting path
+Date: Tue, 9 Jul 2024 18:45:39 -0700
+
+Commit 3bd786f76de2 ("mm: convert do_set_pte() to set_pte_range()")
+replaced do_set_pte() with set_pte_range() and that introduced a
+regression in the following faulting path of non-anonymous vmas which
+caused the PTE for the faulting address to be marked as old instead of
+young.
+
+handle_pte_fault()
+  do_pte_missing()
+    do_fault()
+      do_read_fault() || do_cow_fault() || do_shared_fault()
+        finish_fault()
+          set_pte_range()
+
+The polarity of prefault calculation is incorrect.  This leads to prefault
+being incorrectly set for the faulting address.  The following check will
+incorrectly mark the PTE old rather than young.  On some architectures
+this will cause a double fault to mark it young when the access is
+retried.
+
+    if (prefault && arch_wants_old_prefaulted_pte())
+        entry = pte_mkold(entry);
+
+On a subsequent fault on the same address, the faulting path will see a
+non NULL vmf->pte and instead of reaching the do_pte_missing() path, PTE
+will then be correctly marked young in handle_pte_fault() itself.
+
+Due to this bug, performance degradation in the fault handling path will
+be observed due to unnecessary double faulting.
+
+Link: https://lkml.kernel.org/r/20240710014539.746200-1-rtummala@nvidia.com
+Fixes: 3bd786f76de2 ("mm: convert do_set_pte() to set_pte_range()")
+Signed-off-by: Ram Tummala <rtummala@nvidia.com>
+Reviewed-by: Yin Fengwei <fengwei.yin@intel.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Yin Fengwei <fengwei.yin@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/memory.c~mm-fix-old-young-bit-handling-in-the-faulting-path
++++ a/mm/memory.c
+@@ -4780,7 +4780,7 @@ void set_pte_range(struct vm_fault *vmf,
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	bool write = vmf->flags & FAULT_FLAG_WRITE;
+-	bool prefault = in_range(vmf->address, addr, nr * PAGE_SIZE);
++	bool prefault = !in_range(vmf->address, addr, nr * PAGE_SIZE);
+ 	pte_t entry;
+ 
+ 	flush_icache_pages(vma, page, nr);
+_
+
+Patches currently in -mm which might be from rtummala@nvidia.com are
+
 
 
