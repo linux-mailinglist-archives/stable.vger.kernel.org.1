@@ -1,96 +1,118 @@
-Return-Path: <stable+bounces-61889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E8393D6C5
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 18:16:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 681B293D6E4
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 18:28:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D3D3285C1F
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 16:16:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B39E1F24769
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 16:28:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F2F3FBA5;
-	Fri, 26 Jul 2024 16:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB9317C7B1;
+	Fri, 26 Jul 2024 16:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E1HHs12N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXZ7rdFh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F4A23759;
-	Fri, 26 Jul 2024 16:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B269C17BB27
+	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 16:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722010573; cv=none; b=tNFgFUyvmkj/SNnEtAj7DKgRlCgdgAKSYDlqnfag3nm4C9pYYBxcKJ8Fwsn5kySeSWahGPYHneXxwBEcUbwIMrVwfTN7nEMw1FwaJFgvZJ+f3rtU0lkAAgYrVfnzufuX0t4+zFpBDKUchfh15dlN774g2lgJiNBZKuL42Ks2TOo=
+	t=1722011333; cv=none; b=Q9mHTW3koEQ95DFGhW4PoLE4lMNOn3+usKBl4sMEf3mdJcFdou11fmo/uDF/8j/NyW4G+eJdTrjOZMU292qUTmY8IOzjoXk53lLYvr6w0wrsrED//HNpA0JIbozfzuMWRBNoGBQdNsdWsSPO0ohJDlGYxYJeqomHA77yTYs8MHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722010573; c=relaxed/simple;
-	bh=mmDA6t4TSfv6XfSHaXGCVVdLxR4aF+if9zRvtYtDxRg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pbBAOk6COtP9K3WSDXBUjaPjhnljssxlT1PkUqmg4zlmSouDO1tBiAq2P0y5Prq4hp2kh8jDZ/zU69KPvvnux0govTqWyjiquzQ/f0sPx2Ok2VI0p/z2TyV8vvA3+Y41vDbO537KTPGt2oAPKTcpje26DKeBumYV62sTi5xJ6Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E1HHs12N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0E0C32782;
-	Fri, 26 Jul 2024 16:16:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722010573;
-	bh=mmDA6t4TSfv6XfSHaXGCVVdLxR4aF+if9zRvtYtDxRg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E1HHs12NDKpbhf4p86zXpkSAO/96o5WYqB5HlLNm0Zufa8wVTM5AI/u+WLGSw2BQD
-	 q0E7dcQrDpJzqN9vNkH2sheyuf24FsI+kzPgcHvUtVNHjNBgtuqMpTh0Ls2uEVUKav
-	 RsZCZzS6dvVfdPDaFnAQy4SJyIG2nqc0aYRCukS70R9GosAXANpQtHIlGvY1qOpYZB
-	 OAOuq9XUMyzCfseTYKcgBv6W7DMHJxjy+Lnh/imQrFJADpd7YJ0kTnc3Na/ixOocay
-	 /U+QGSo5KPmx8agXha/z2552m1D6PaYMkIgA+4OJNfC5sJ/hJf7FiwdZj5ElpycKzi
-	 HGxxlAiXcZeBQ==
-Date: Fri, 26 Jul 2024 17:16:08 +0100
-From: Simon Horman <horms@kernel.org>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	nex.sw.ncis.osdt.itp.upstreaming@intel.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michal Kubiak <michal.kubiak@intel.com>, stable@vger.kernel.org,
-	Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Subject: Re: [PATCH iwl-net 2/3] idpf: fix memleak in vport interrupt
- configuration
-Message-ID: <20240726161608.GP97837@kernel.org>
-References: <20240724134024.2182959-1-aleksander.lobakin@intel.com>
- <20240724134024.2182959-3-aleksander.lobakin@intel.com>
+	s=arc-20240116; t=1722011333; c=relaxed/simple;
+	bh=mquU6ywnjz4JDQ/DDkE2Uz2Wzsol6GCYyxCGq3HowUI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oaFYEifobR9pdX2bPBtlpgnBXlqpkhMMvYb1VnYxzzUTfUCn/JuKFaGLO9aermCXzS5gB0938qZHuiOoHUATmCZzcaGVWgUlyjOj829davBstJzNBsDenVAHRowYcH7UToyDLYb7nuHAk7dGB9WzSzbQunowIguW0+Snhxegt3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXZ7rdFh; arc=none smtp.client-ip=209.85.166.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-81d05359badso10411439f.3
+        for <stable@vger.kernel.org>; Fri, 26 Jul 2024 09:28:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1722011331; x=1722616131; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6LSLb+GcNXv5+p/rTuMG1Nke3iHiL3wBoVAeG+q1+uQ=;
+        b=CXZ7rdFh43IE0rWnIsXK4kJUHfz2DzXMDuh3YQ/2FWFiFknTrBRgs0IgHKjywsEANd
+         yU8rQ0tLMi0Y+1uuuAa+2/qLYH7N9KclJ9IKlfD7OYdW2JpYVrQC6zrDq73ZKLIXIuhU
+         Soo9EyrBZs31kqEv+jdK/1khlNRjcWeGc7FcM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722011331; x=1722616131;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6LSLb+GcNXv5+p/rTuMG1Nke3iHiL3wBoVAeG+q1+uQ=;
+        b=qrg0xxDikCdXXm6OnoAQLAq1SoL4DOcK0rABtuThbxH6ZBBC1yJwvO1cx4oeq1q59d
+         fnzDKMPogSFF9mSavK/fu/0Ra8iB+Dxh4YUNE7+wjJ1MLUEF6xhxIh89NwhYYtt2rMxf
+         CsomyTjWSmGozROY2Ypax/WP/lMipNyTSLFWavQvuAELMZEKETdqD8DnSpA1FgpEuChO
+         DtTS/xzmtfwpE5aK7bxSLkMM9M4OVjUlTWN75xExbPOxgNT9eO9HSjtP4gRKZJmOOJeP
+         JruDV/4twwouZlLATTfs+ZqWaFnFOQ4GEpWVjqFHigTRtax/zn3dHqQAortJEDfmZUWb
+         us4A==
+X-Forwarded-Encrypted: i=1; AJvYcCVNl8N353mxVlegFNX/JrSf/oQegiLf6ggcEFvtxAjBAlz67Db8P0YrmZwjB0OG9mSbADjW+uw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXuJRNcpUCioViUOVXFyUG7hqJ5c6hPX1yCYAYfzP78Almvioq
+	0RNAiGPYzWmtAEAdJQbV6kpVZ8QWi3/0GmCUolRwjJBy6Lci12SdVPsZs2EvwCQ=
+X-Google-Smtp-Source: AGHT+IG36a6KJseR67jskiTVIquUkz1PMahA2GURB1GVgedlRkR4qMbhMAV7SV+PVwv0fsN/5IOfpw==
+X-Received: by 2002:a05:6602:4f88:b0:81f:8295:fec5 with SMTP id ca18e2360f4ac-81f82a54258mr357558539f.1.1722011330710;
+        Fri, 26 Jul 2024 09:28:50 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4c29fa40509sm905994173.7.2024.07.26.09.28.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jul 2024 09:28:50 -0700 (PDT)
+Message-ID: <bc28c629-5710-4fd4-b477-1fb9eff21cef@linuxfoundation.org>
+Date: Fri, 26 Jul 2024 10:28:49 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240724134024.2182959-3-aleksander.lobakin@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.10 00/29] 6.10.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240725142731.814288796@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 24, 2024 at 03:40:23PM +0200, Alexander Lobakin wrote:
-> From: Michal Kubiak <michal.kubiak@intel.com>
+On 7/25/24 08:36, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.2 release.
+> There are 29 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> The initialization of vport interrupt consists of two functions:
->  1) idpf_vport_intr_init() where a generic configuration is done
->  2) idpf_vport_intr_req_irq() where the irq for each q_vector is
->    requested.
+> Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
+> Anything received after that time might be too late.
 > 
-> The first function used to create a base name for each interrupt using
-> "kasprintf()" call. Unfortunately, although that call allocated memory
-> for a text buffer, that memory was never released.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.2-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
 > 
-> Fix this by removing creating the interrupt base name in 1).
-> Instead, always create a full interrupt name in the function 2), because
-> there is no need to create a base name separately, considering that the
-> function 2) is never called out of idpf_vport_intr_init() context.
+> thanks,
 > 
-> Fixes: d4d558718266 ("idpf: initialize interrupts and enable vport")
-> Cc: stable@vger.kernel.org # 6.7
-> Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-> Reviewed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-> Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> greg k-h
+> 
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Compiled and booted on my test system. No dmesg regressions.
 
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+
+thanks,
+-- Shuah
 
