@@ -1,167 +1,117 @@
-Return-Path: <stable+bounces-61839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E7793CF64
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 10:15:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D19E93CF70
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 10:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E55522812FA
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 08:15:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E2EF1C21162
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 08:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D981862A;
-	Fri, 26 Jul 2024 08:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8FB176AB3;
+	Fri, 26 Jul 2024 08:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Yas2g6wg"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19EE6BFA5;
-	Fri, 26 Jul 2024 08:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D9717624F
+	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 08:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721981731; cv=none; b=n+/tWVhpdiem9nJDzOASaTKupFvCO3vZOe9Rpj7EEKV9lyDvRbdYZr3xoy3I0MI1By0Sm5BzZuAAgPD5KL8SvHKB6/s0f7n5/cbuli/yMjeRyc7KusFAuZQ21xqiaH69+Ch8oeJlWiBIBJSkZWA58QY6odwI9/hiVpV3rj7YMxE=
+	t=1721981935; cv=none; b=mlxnYLMoF9IRFFQERw1D0zI+4l317rSsxGfcSY2ZSOUlZUsrGP5qZDkfjGOoFCyFxTJxfdLZAbBQ0yoyETzVMDYAG73U+CP6froF8r/vmzeNhMPPm08jQkcZdmwBWUoFMoDmdHxUcFFsKzwFinepj/8X44B9yAg0iPOyZYvkMzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721981731; c=relaxed/simple;
-	bh=vpcvxNYgJelihQ1vsEnYcvgA9wSZcn2Etrgjh4jzpUg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VRuQQ9Z8DBM3wfteUBnnxaP585LoeWcoNERZB237FbCnaWdGRtT4I/P1mRI7jolE7wIBJ/EgJFebuBuyhxWDcEHced6p598n3A/MFvGvt87IVQStolq4tbkCx12GoNHSFfmCB0DpFRurnD0layPUX1mLrxdWR4lBTrFf25K2Csg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 2DE9D1C009A; Fri, 26 Jul 2024 10:15:28 +0200 (CEST)
-Date: Fri, 26 Jul 2024 10:15:27 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: [PATCH 5.15 00/87] 5.15.164-rc1 review
-Message-ID: <ZqNbHyu+9P8s4F30@duo.ucw.cz>
-References: <20240725142738.422724252@linuxfoundation.org>
- <CA+G9fYvCyg1hXaci_j-RB4YgATb458ZqRjJSye4qub9zYrmL_A@mail.gmail.com>
- <2024072645-delighted-barbecue-154f@gregkh>
+	s=arc-20240116; t=1721981935; c=relaxed/simple;
+	bh=gZawXqEBSOKq3l+x6lvnCzwSP/j4q0qgw21LwxEow6w=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=r8WiT027erRDmBs8vP96eED/JGnzYSur/jyqXRl8FoVAJwDWHig9cq2+NGOgkCq0jZsxvf8h3qoMa30tZq/p5EhWHy7YBOZZl2mxFdJ65fcFfwx1bllNQm22G2N0ev02OXuTMAS37nNKWvrJ4/I+YwjE3/vpsLJfj0LK51CHLV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Yas2g6wg; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1721981930;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gZawXqEBSOKq3l+x6lvnCzwSP/j4q0qgw21LwxEow6w=;
+	b=Yas2g6wg3Wuakf0TbRE0f6Ed8D4npM9i6I0tlobXpVQtXYaNXSUJVldh1h0kP0+xedybnU
+	c03DY50+fI7KoUYlpAcQDC47BZTNJLAkKPYWmXK5KpJp+OOPwy0zkK5a5gVyfv22C98Auy
+	e5sNYHvLqIpdWCEHCFZn1u/IllksfZI=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="rU9CAJE2jXtz4tGD"
-Content-Disposition: inline
-In-Reply-To: <2024072645-delighted-barbecue-154f@gregkh>
-
-
---rU9CAJE2jXtz4tGD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [PATCH v1 2/2] mm/hugetlb: fix hugetlb vs. core-mm PT locking
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20240725183955.2268884-3-david@redhat.com>
+Date: Fri, 26 Jul 2024 16:18:06 +0800
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Peter Xu <peterx@redhat.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <F678B4FD-A806-4BF9-8D8A-8679354A1068@linux.dev>
+References: <20240725183955.2268884-1-david@redhat.com>
+ <20240725183955.2268884-3-david@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Fri 2024-07-26 08:33:00, Greg Kroah-Hartman wrote:
-> On Thu, Jul 25, 2024 at 10:18:49PM +0530, Naresh Kamboju wrote:
-> > On Thu, 25 Jul 2024 at 20:22, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > This is the start of the stable review cycle for the 5.15.164 release.
-> > > There are 87 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, plea=
-se
-> > > let me know.
-> > >
-> > > Responses should be made by Sat, 27 Jul 2024 14:27:16 +0000.
-> > > Anything received after that time might be too late.
-> > >
-> > > The whole patch series can be found in one patch at:
-> > >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/pa=
-tch-5.15.164-rc1.gz
-> > > or in the git tree and branch at:
-> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git linux-5.15.y
-> > > and the diffstat can be found below.
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> >=20
-> > The following build errors noticed while building arm configs with tool=
-chains
-> > gcc-12 and clang-18 on stable-rc linux-5.15.y
-> >=20
-> > First seen on today builds 25-July-2024.
-> >=20
-> >   GOOD: b84034c8f228 ("Linux 5.15.163-rc2")
-> >   BAD:  1d0703aa8114 ("Linux 5.15.164-rc1")
-> >=20
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> >=20
-> > Build log:
-> > -------
-> > from drivers/net/wireless/ralink/rt2x00/rt2800lib.c:25:
-> > drivers/net/wireless/ralink/rt2x00/rt2800lib.c: In function
-> > 'rt2800_txpower_to_dev':
-> > include/linux/build_bug.h:78:41: error: static assertion failed:
-> > "clamp() low limit (char)(-7) greater than high limit (char)(15)"
-> >    78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, ms=
-g)
-> >       |                                         ^~~~~~~~~~~~~~
-> > include/linux/build_bug.h:77:34: note: in expansion of macro '__static_=
-assert'
-> >    77 | #define static_assert(expr, ...) __static_assert(expr,
-> > ##__VA_ARGS__, #expr)
-> >       |                                  ^~~~~~~~~~~~~~~
-> > include/linux/minmax.h:66:17: note: in expansion of macro 'static_asser=
-t'
-> >    66 |
-> > static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)),
-> >  \
-> >       |                 ^~~~~~~~~~~~~
-> > include/linux/minmax.h:76:17: note: in expansion of macro '__clamp_once'
-> >    76 |                 __clamp_once(val, lo, hi, __UNIQUE_ID(__val),
-> >          \
-> >       |                 ^~~~~~~~~~~~
-> > include/linux/minmax.h:180:36: note: in expansion of macro '__careful_c=
-lamp'
-> >   180 | #define clamp_t(type, val, lo, hi)
-> > __careful_clamp((type)(val), (type)(lo), (type)(hi))
-> >       |                                    ^~~~~~~~~~~~~~~
-> > drivers/net/wireless/ralink/rt2x00/rt2800lib.c:3993:24: note: in
-> > expansion of macro 'clamp_t'
-> >  3993 |                 return clamp_t(char, txpower, MIN_A_TXPOWER,
-> > MAX_A_TXPOWER);
-> >       |                        ^~~~~~~
-> >=20
+
+
+> On Jul 26, 2024, at 02:39, David Hildenbrand <david@redhat.com> wrote:
 >=20
-> Thanks, I've added a commit that should resolve this now.  I'll push out
-> a -rc2 in a bit.
+> We recently made GUP's common page table walking code to also walk
+> hugetlb VMAs without most hugetlb special-casing, preparing for the
+> future of having less hugetlb-specific page table walking code in the
+> codebase. Turns out that we missed one page table locking detail: page
+> table locking for hugetlb folios that are not mapped using a single
+> PMD/PUD.
+>=20
+> Assume we have hugetlb folio that spans multiple PTEs (e.g., 64 KiB
+> hugetlb folios on arm64 with 4 KiB base page size). GUP, as it walks =
+the
+> page tables, will perform a pte_offset_map_lock() to grab the PTE =
+table
+> lock.
+>=20
+> However, hugetlb that concurrently modifies these page tables would
+> actually grab the mm->page_table_lock: with USE_SPLIT_PTE_PTLOCKS, the
+> locks would differ. Something similar can happen right now with =
+hugetlb
+> folios that span multiple PMDs when USE_SPLIT_PMD_PTLOCKS.
+>=20
+> Let's make huge_pte_lockptr() effectively uses the same PT locks as =
+any
+> core-mm page table walker would.
+>=20
+> There is one ugly case: powerpc 8xx, whereby we have an 8 MiB hugetlb
+> folio being mapped using two PTE page tables. While hugetlb wants to =
+take
+> the PMD table lock, core-mm would grab the PTE table lock of one of =
+both
+> PTE page tables. In such corner cases, we have to make sure that both
+> locks match, which is (fortunately!) currently guaranteed for 8xx as =
+it
+> does not support SMP.
+>=20
+> Fixes: 9cb28da54643 ("mm/gup: handle hugetlb in the generic =
+follow_page_mask code")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-We see this one, too. -rc2's hit the test farm, we should have results
-in hour or so.
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
-BR,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Thanks.
 
---rU9CAJE2jXtz4tGD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZqNbHwAKCRAw5/Bqldv6
-8qHXAJ0ZLfUS/Dq1JynMWQsEAH6QLdr23gCgjsBMAkK5IWHz+mtMvV50SqDsVkA=
-=9VD/
------END PGP SIGNATURE-----
-
---rU9CAJE2jXtz4tGD--
 
