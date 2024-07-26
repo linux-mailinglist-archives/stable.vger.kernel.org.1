@@ -1,80 +1,54 @@
-Return-Path: <stable+bounces-61884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED8F93D55A
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 16:50:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF0893D55C
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 16:51:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 798FFB229F8
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 14:50:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8618BB20ED5
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 14:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA2D1CD16;
-	Fri, 26 Jul 2024 14:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A580182DF;
+	Fri, 26 Jul 2024 14:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M0pnta9l"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="C606xOJz"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7FC1CD0C
-	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 14:50:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01F712E78;
+	Fri, 26 Jul 2024 14:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722005428; cv=none; b=s6wvv82zKr1QUWUZiJNNXeQIy22s6sFzraPEpgD1+J0OamwkDY7G9DG5hvOpsud+7MHR5ltyrvdoj8eyRgicOVdcsGnRHLR4NjkPW72Sn4NYYQVJ5zZLYKsLFbNnsJGgsBtPQuV9T34xa/Re5wkaI7drAweYMmXShDgrRNQNDRY=
+	t=1722005510; cv=none; b=ECZm1uEle016IrGr60baowqFjZamiaIrUdHFNt6DMO+wC4APHiUFx8bt0AyTKArvqDvRUHd2Ql8Q74xNZxv8pQaHbtvMHDuOKWaqtJ/UA12oZ8XSsj0ppjmAYA8uq4oFQfw6b3v7XAaDmdVCI0HSWcIUVgOPdSTsNqDleO1Cg+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722005428; c=relaxed/simple;
-	bh=tLx/fMXOVGCyadE2i1prx1ayp8nFacEeeSEdUOK4kbo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jMSp6wKOrfpoyAa1cewEh+jGCTbvrh51LgOySNhh26ab0aAWnhslzBwixGNx0k2Hk9x4jT8U0gth9PqjbIbrxbHiNddqybGj7xtwvQspzm/xgdzyta5V+6rIPRYkKVXBW2L6Rt95tjsiRB8PKQxO5VycHGZi6cvxJe6sCD6zL0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M0pnta9l; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722005425;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jvwUGbn07tsXSoowZQu31RzeEXtVHtqeR0AF7mHMHh4=;
-	b=M0pnta9lTAozmUo5L2Pa/a7vYnJDhiK2dEx4fxRbO0mWNuN3bZzkYe+YkztNnB1A4/J96z
-	Qt4zyMDwUEnE9gjQp3Je9GkFnY3hLKG87nZ6akwYMOsrVkQ6746+1uUpG+y85l28yIKdhn
-	12YJ27zfBglGwAE13mS+0T7YY/SSIBE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-aNgdMLyUO0uECXvVzgygug-1; Fri, 26 Jul 2024 10:50:23 -0400
-X-MC-Unique: aNgdMLyUO0uECXvVzgygug-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-428087d1ddfso1207575e9.1
-        for <stable@vger.kernel.org>; Fri, 26 Jul 2024 07:50:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722005422; x=1722610222;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jvwUGbn07tsXSoowZQu31RzeEXtVHtqeR0AF7mHMHh4=;
-        b=q44YN5q3dVAOCeudAK2bltmc8V82hG0waHCVoQbelyoxGPVUBJjQar/1PA9XtD2KHy
-         4cQMj6IhA3pcWgjGoM54Xm6btV4eNl6kUq5GZIyaOlHA9lEtSAeohe43KYi7Eca4endC
-         InR68tXRX+iVwAHhPH5lgaLtTn/05PJ5mEWDUrAFygzIM+8734kZhZWKWI/xyUS7PZs7
-         SM2WsXmhzg/GsPokPwhMVzcqJunnGjey2ElnNRHYTfZXJTbJmKxOdTqz9EQLEyufq3hd
-         h9oEXcLw272e4n+pDXDfuzmG1rbdpmLmTZ0012+NADG1U0jUR7FTp5MONnkWV/WH5Cde
-         4sdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUBGdOEhP36D4d68NxiiY6Vx+Ifsh5vtHNmlDOp8eGl5iVYKj5oMuuDpbIolsxzO4rImwGlXV4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuO3mJlaZ1cAmqKS3+FQ7EtWw5ZtjTb9fiI0cMm20mVQuW9xws
-	WyuYLTwU/8xCdC7pcKcB4tuu1HeVQXg/lPdqUvcBV2MlSExV0wY9nCswKXvUetapju+543X6Kbp
-	HwnkcmfnhX6KL2nKWlvS+osc7wlvKIWoRB3p6XNVdKVTl/gZuxe8+YBD9PKA+3w==
-X-Received: by 2002:a05:600c:3b21:b0:424:ac9f:5c61 with SMTP id 5b1f17b1804b1-428057706aemr25378605e9.3.1722005422450;
-        Fri, 26 Jul 2024 07:50:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFi3Z9jbl+hMmUI7U3ZNPl1/Ndk9lNLNUNn8NAAYX7TfuFrgQKs3zUcmvvJUAtbTDzJ8aLL5Q==
-X-Received: by 2002:a05:600c:3b21:b0:424:ac9f:5c61 with SMTP id 5b1f17b1804b1-428057706aemr25378485e9.3.1722005421960;
-        Fri, 26 Jul 2024 07:50:21 -0700 (PDT)
-Received: from [192.168.1.24] ([145.224.103.221])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36b36863d87sm5314384f8f.110.2024.07.26.07.50.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Jul 2024 07:50:21 -0700 (PDT)
-Message-ID: <aad76753-d2b5-4905-b90b-e31483e5956b@redhat.com>
-Date: Fri, 26 Jul 2024 16:48:06 +0200
+	s=arc-20240116; t=1722005510; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=G5OkGO0dkwmbB+A5bEKbCOJJ8aQ5LfngrHPtAP1xgSfIOo4S6TrwIRaoeFW3R7ZM+x2bzzeJsJrVFX8gbBPGrivAIDp6vOTZ18YiH61ulkK2puuVMfcB5sdkF8gtvj1+QOkXQOdr3JannSmhMP/u0ngCInaYz+OgEl4FWntSdEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=C606xOJz; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1722005505; x=1722610305; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=C606xOJzVLP11P0n+XbWYPMUWXP6OMo6okB4kUgwfLliRiAZIDSX8Ky6a4Gr3JR7
+	 SOoQuRJG9xsj845w+PH3DU587Jv3VQBbI0D3TATb7tDFJmixiyXC8AzqiZ90TV3jy
+	 aAdAw8OGTdFd+ANZPI2BQhXyzlP0OYB2BNHeNkxElVB0JdmHWyLlUq2XTwja7Ka6p
+	 6e23m5daUPUk2y2YRsNLI4SeITofURnap1XsWicvOSqs9yZTOwMeoADb1SaaMHGGu
+	 4KMXApAzjHcQZsi+KhUn26vRvpVEDLzV0M6xtYHzpa/BPxjXDFsfVHY4JdvLpfmOA
+	 OvFtR79ewL/FknXdPQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.34.104]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M7sHo-1sbC3H0mgc-003eCg; Fri, 26
+ Jul 2024 16:51:45 +0200
+Message-ID: <fd3c47bf-b788-42b1-8c30-2b0b0a492ab3@gmx.de>
+Date: Fri, 26 Jul 2024 16:51:44 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,55 +56,37 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: drop bad gso csum_start and offset in
- virtio_net_hdr
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, mst@redhat.com, jasowang@redhat.com, arefev@swemel.ru,
- alexander.duyck@gmail.com, Willem de Bruijn <willemb@google.com>,
- stable@vger.kernel.org
-References: <20240726023359.879166-1-willemdebruijn.kernel@gmail.com>
- <bab2caf1-87a5-444d-8b5f-c6388facf65d@redhat.com>
- <CAF=yD-J57z=iUZChLJR4YXq-3X-qPc+N93jvpCy5HE89B7-Tdw@mail.gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CAF=yD-J57z=iUZChLJR4YXq-3X-qPc+N93jvpCy5HE89B7-Tdw@mail.gmail.com>
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.10 00/29] 6.10.2-rc1 review
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:7s01lIKdg5AGXhfyXxtDvqaiUhiGSOzcwo9ktYnVMWRpcyNkHws
+ mCnWlGmzT351fdXaLEKUkFXGXVnsN1UAA29Q3ZHVye1lpor+yl2FjSclS1QLG5nx6AtDvZ0
+ Va3PXUgPtKK2VPE8xOjGGnMPyq72Rhxidr5VrEnWF4e4YNxMZktH2o2ZC23AZHFAd6gzwgr
+ fG7WVTjyMwpnF/UqYlN+w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:BXOPtmf0NUg=;bEXnBdIbDSw1sY5kVA7QfaRcD0n
+ eDslmrzj7UAF+DRSMjRCTV2VBZ5xdKoWwJHsc7J3kOtCsoejxjiL2D1+r17BCnP+tCTop7G7t
+ 6N17h03UHdu2rsfauzQ7LO19f+brgdFlmDhO0PdHP2ZhxQDMZfmnLIJhglRfgwBTmlhtp5ukF
+ gkSGcUvnJqtnsQDytv0dIpCCu1vEYYWkHDuNN1ER3ZJpJn9eOf1lay4pBm/vQK/UAD37ddWE7
+ nZqu47TB2AjMovKzZ3+8b2jnTC7Ja3DQJ2aiCnoRsZKkOhcXJ5gC9so9PG/0yYNMKxrPbhcZK
+ V3uta8rbyB6hvOG2Je058vhZe1fCAWYYa5hNi3swo6m9xxxBJ3rexwU/0WproJOZ2/Pf9d5+o
+ VdEBUUwWcF0PBqq1mXJMlAsg3Jd8Qrccg8oiInrHzNSa8jl9tAT/dgohpyk5on5pBKeEO18g7
+ +r41/GFIE1NhQw9sZIZ0ragQGOwgUs40gcyQh1OnP1gzM4HescZXyeET+d5T0PyeUIL/Ml5js
+ AdRz9AlBsM0DcHW49YzHikJ7BE4RrravYDxl/1586uI2VCGS/8cUt1N215GJrisdPT5GCAK8G
+ z7KCW5rdGeZX6i+4rIiaK50sJH1/ZkXHITgTyikoQ2hgaQyAKzH3eB1fUZ7cr7402OpHRkwk2
+ 3VFoPy52V+OqnFBsqSmDyT8Ml3vLeg5v6FBPHwV4QMQz8jEsWxoZWOaIPdoVxa3dDweSRvkzc
+ T+8aly8fufU0zwzC0G+BWcRqAYZWQGtf4dP+CE+y1MJM2EDwRz5ZkR5P6elhDrAj8ozr6pMcn
+ COFdFz9fXkh/joASHXhm2fHA==
 
-On 7/26/24 15:52, Willem de Bruijn wrote:
-> On Fri, Jul 26, 2024 at 4:23 AM Paolo Abeni <pabeni@redhat.com> wrote:
->>
->> On 7/26/24 04:32, Willem de Bruijn wrot> @@ -182,6 +171,11 @@ static
->> inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
->>>                        if (gso_type != SKB_GSO_UDP_L4)
->>>                                return -EINVAL;
->>>                        break;
->>> +             case SKB_GSO_TCPV4:
->>> +             case SKB_GSO_TCPV6:
->>
->> I think we need to add here an additional check:
->>
->>                          if (!(hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM))
->>                                  return -EINVAL;
->>
-> 
-> Historically this interface has been able to request
-> VIRTIO_NET_HDR_GSO_* without VIRTIO_NET_HDR_F_NEEDS_CSUM.
+Hi Greg
 
-I see. I looked at the SKB_GSO_UDP_L4 case, but I did not dig into history.
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-> I would love to clamp down on this, as those packets are essentially
-> illegal. But we should probably leave that discussion for a separate
-> patch?
+Thanks
 
-Yep, I guess we have to keep the two discussion separate.
-
-As a consequence, I'm fine with the current checks (with Eric's 
-suggested changes).
-
-Thanks,
-
-Paolo
-
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
