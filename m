@@ -1,137 +1,252 @@
-Return-Path: <stable+bounces-61842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC6693CF96
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 10:23:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B395993CF9B
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 10:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA27C1F22538
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 08:23:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09908B20F21
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 08:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68020176ACF;
-	Fri, 26 Jul 2024 08:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176BB176FA1;
+	Fri, 26 Jul 2024 08:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iO4EBk4t"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aPxNnRVL"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748B7176246
-	for <stable@vger.kernel.org>; Fri, 26 Jul 2024 08:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F9E176AB6;
+	Fri, 26 Jul 2024 08:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721982230; cv=none; b=NYwTvZrnH/FxrmkmwnItIsw8r7f2aMGpXpYX6RPc1Qe1qogv8TRp9ksHvYvOu6KrEqJjNydQKc6mjE706gpKAi+nNgHzsEw1iTRStZMP5k/pS3WaDIfie77L1nwtJQFWyHs5a7iczc9bmDhQ/tPQ0gq1KSbD0PuCDc8pHAic+48=
+	t=1721982365; cv=none; b=rnkyaVAe3K8R6cWR/YbZ1aOqUBmuLn9MHEXvkDNdb0DDtmOL9Z9ejJzAfuhQLLoidtoR07RHKz17h1gx9UcQPwujA6KlFO337ABPY4YDYELkRwI4YLq2axOh2i4X8pe4+2VuX9iY0iVjctM9MGBqW8aXx5SfZFwph1ovUArRPUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721982230; c=relaxed/simple;
-	bh=V9W5+OcL4dtcPDuVIRDRDKUFfYi6CmrQZMZhvwyfyhI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mKvvOdM13X/bD70DBeF+b+tOP3TFqyrZebcPSpmwfDXztwSKm19NdPNtaiPPcYuHr/GvOOx80PGA0X05PKRh+scsutgdXyHqtaX/6gYe/3BtvBmmMnfNBP7vseZA83YyRLtmkV/Hhs8qn17FxcewBgUGebo8VIL4VSOYri+IT7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iO4EBk4t; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721982227;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IYuPDPFmQ3yjKfaNaXYatDsZSH0jFsHP0pvY2Laqfrg=;
-	b=iO4EBk4t7w++zZggIWYYbo5jTUx1dWEwHR/MT2kKsLqKgRVZF7LkPhDCwhoJUTdDh4R2DP
-	OFBy/P1zyZmhJZ5Qf2ndAWQZN3BXtpY/hj0qpiE8F1dYaFSf/tNaKrcQuvdPFoN0UIIPOD
-	UQrYQ9TFRL1Px28vR6lqHCyRjFs1OhI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-537-ZRrCF3BvP5KrzBTDjaSp2w-1; Fri, 26 Jul 2024 04:23:45 -0400
-X-MC-Unique: ZRrCF3BvP5KrzBTDjaSp2w-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-427feed9c71so3157355e9.0
-        for <stable@vger.kernel.org>; Fri, 26 Jul 2024 01:23:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721982224; x=1722587024;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IYuPDPFmQ3yjKfaNaXYatDsZSH0jFsHP0pvY2Laqfrg=;
-        b=ZZz23Li3G0fs1Aqi8XRJkH/hIuc42QJHWGC1FDHWrJaQ23AEosVwaIX3g44JQejhTz
-         53+9PGgyicy4VmCx7k0WklpyKyCq2nTS4kISV3jnnWft3MCsr+KKsILrDTUuFROw68eH
-         e3JJhmY/NTzj2zHIpRaIH09LnPWuza9Pe0XAG9z/XmukE5CQIafntwsB9IOj0pq1+0iU
-         jAemzsALZdyFQ3vTYVdbv6dWEsY6pN+YWYUqRYm36/JCAsZpV/aAJgl/qtH8i1dCyaCO
-         z6wDjtAc7/asK/e249UVrGrKjzjSRmx3XZZL7LrR6kcN5lWePUJdeNacbYb6YVnhM4B0
-         ZAAA==
-X-Forwarded-Encrypted: i=1; AJvYcCXway/5tGL6TdghRlUGntHkmZRRf/wWx8XjTrTc86+vZLkKy7XmrHSr30enf/L86KMLcxbjHWqL824AHc1Wgsu1t30v0xl6
-X-Gm-Message-State: AOJu0Yxa5mTZGu1aTn4I3I9kP5PMo9Aqk9Wo06deUe/yivVz+mPgYCHD
-	fyzH2pwFYjn5vMbQgkpN18phBFO/K0TIMnQfcX9C1tcpiqgX8n8m4bKlKKueZBd0RrGA2RDUBTJ
-	h2yhtmr9zy0DoM4/mX4+CuwZhGGazqWqadihbo/GZGnfcorbvSAcmeA==
-X-Received: by 2002:a05:600c:3c89:b0:426:6ea6:383d with SMTP id 5b1f17b1804b1-4280543f1c8mr20335375e9.2.1721982224362;
-        Fri, 26 Jul 2024 01:23:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHr0dd8is+ijDiLASGm8eqohX/NfIGiuAF0U/2jvpWsvaxTrL5TLr8c0hkyCSRSF+/LwfgsA==
-X-Received: by 2002:a05:600c:3c89:b0:426:6ea6:383d with SMTP id 5b1f17b1804b1-4280543f1c8mr20335205e9.2.1721982223806;
-        Fri, 26 Jul 2024 01:23:43 -0700 (PDT)
-Received: from ?IPV6:2a0d:3341:b099:1310:2725:cccc:c3fe:5a02? ([2a0d:3341:b099:1310:2725:cccc:c3fe:5a02])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4280573fec6sm65499645e9.18.2024.07.26.01.23.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Jul 2024 01:23:43 -0700 (PDT)
-Message-ID: <bab2caf1-87a5-444d-8b5f-c6388facf65d@redhat.com>
-Date: Fri, 26 Jul 2024 10:23:42 +0200
+	s=arc-20240116; t=1721982365; c=relaxed/simple;
+	bh=dzHtMzHbaJ2yE5UIrMONtQRc75u7v0DvZWr8hP/nT0E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=PtY8Obo3O1jEnAVwa1fMApu22znGlGxlgf77v4V6U3vFAEH06hpjnlzQBdQCmqP9pBov0QpFaHhbyCvKE9+qoh5nMGeTkVgvnTGeLNb88g+6JriLtlSMIu1piPRONT9PVd7kmU5+GlJrsRBFrj/bbP9b7B4csqNV5mrOCp5H5yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aPxNnRVL; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721982363; x=1753518363;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=dzHtMzHbaJ2yE5UIrMONtQRc75u7v0DvZWr8hP/nT0E=;
+  b=aPxNnRVLt9IxWlwV6Nsi4R/LQiMjHXzTsPW86TKAf65YmvaVJdBQRCHq
+   +rGv224vaC1NBmQBQrNvzs0WOdH3/WoGQAGp/WT13lKvQ7RIQISMUA5cV
+   /rM1gIfm+cphCmRcA+YITExTGjpMX6QH8u2Gbri59gaGiOEiABn5kDo4J
+   BJJaDFJavrKYpvJJk+Ojk+LfJ7Y3MSva2Uex19oh+CyGIC+4bavi1/1hv
+   wlPUf6XIyrCdt5hUY1IxDHLykBUDbvrVEVBo84YfqBQH07kstJY9AoZ9u
+   hvmPn4yb61zkLTheUhngToWui36Q5SCn6cYx4bDlbyFjCqI/FZIAAhjrI
+   Q==;
+X-CSE-ConnectionGUID: VwzH0dUMT6q8xK2cKkBvdg==
+X-CSE-MsgGUID: ItqpO9hLRB2fKLofaBtC/g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="19892090"
+X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; 
+   d="scan'208";a="19892090"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2024 01:26:00 -0700
+X-CSE-ConnectionGUID: khyK4IXFRY6UMJBtoOLvfw==
+X-CSE-MsgGUID: lvwBMgd3Tnq2BcaUZpQp0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; 
+   d="scan'208";a="53214226"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.66])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2024 01:25:56 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Ville =?utf-8?B?U3lyasOkbMOk?=
+ <ville.syrjala@linux.intel.com>, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915: Fix possible int overflow in
+ skl_ddi_calculate_wrpll()
+In-Reply-To: <e6c131df-64b6-4856-8778-0fa7e8c7c876@fintech.ru>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240724184911.12250-1-n.zhandarovich@fintech.ru>
+ <87sevxzy0i.fsf@intel.com>
+ <e6c131df-64b6-4856-8778-0fa7e8c7c876@fintech.ru>
+Date: Fri, 26 Jul 2024 11:25:52 +0300
+Message-ID: <87ed7gzhin.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: drop bad gso csum_start and offset in
- virtio_net_hdr
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
- mst@redhat.com, jasowang@redhat.com, arefev@swemel.ru,
- alexander.duyck@gmail.com, Willem de Bruijn <willemb@google.com>,
- stable@vger.kernel.org
-References: <20240726023359.879166-1-willemdebruijn.kernel@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20240726023359.879166-1-willemdebruijn.kernel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 7/26/24 04:32, Willem de Bruijn wrot> @@ -182,6 +171,11 @@ static 
-inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
->   			if (gso_type != SKB_GSO_UDP_L4)
->   				return -EINVAL;
->   			break;
-> +		case SKB_GSO_TCPV4:
-> +		case SKB_GSO_TCPV6:
+On Thu, 25 Jul 2024, Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
+> Hi,
+>
+> On 7/25/24 01:17, Jani Nikula wrote:
+>> On Wed, 24 Jul 2024, Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
+>>> On the off chance that clock value ends up being too high (by means
+>>> of skl_ddi_calculate_wrpll() having benn called with big enough
+>>> value of crtc_state->port_clock * 1000), one possible consequence
+>>> may be that the result will not be able to fit into signed int.
+>>>
+>>> Fix this, albeit unlikely, issue by first casting one of the operands
+>>> to u32, then to u64, and thus avoid causing an integer overflow.
+>> 
+>> Okay, thanks for the patch, but please let's not do this.
+>> 
+>> Currently the highest possible port clock is 2000000 kHz, and 1000 times
+>> that fits into 31 bits. When we need to support higher clocks, we'll
+>> need to handle this. But not like this.
+>> 
+>> That (u64)(u32) is just too unintuitive, and assumes the caller has
+>> already passed in something that has overflown. People are just going to
+>> pause there, and wonder what's going on.
+>> 
+>> If we want to appease the static analyzer, I think a better approach
+>> would be to change the parameter to u64 clock_hz, and have the caller
+>> do:
+>> 
+>> 	ret = skl_ddi_calculate_wrpll((u64)crtc_state->port_clock * 1000,
+>> 				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
+>> 
+>> BR,
+>> Jani.
+>> 
+>
+> First, I agree that using (u64)(u32) is confusing and not intuitive,
+> even if there are some similar examples in kernel code.
+>
+> The reason why I thought I had to opt for it though is the following: I
+> was worried that if the int value of 'clock' in
+> skl_ddi_calculate_wrpll() is big enough (specifically, high bit is 1),
+> then after casting it to long or u64 in this case, the resulting value
+> of wider type will have all its ~32 upper bits also set to 1, per rules
+> of Integer Promotion. Changing the type from signed to unsigned, then to
+> bigger unsigned seems to mitigate *this* particular issue and I can't
+> come up with a more elegant solution at the moment. Correct me if I'm
+> wrong somewhere.
+>
+> Also, while port clock may be able to fit its value timed 1000 into 31
+> bits, multiplying it by 5 to get AFE Clock value, as far as I can see,
+> *will* lead to overflow, as 2,000,000,000 * 5 won't fit into 32 bits.
+>
+> To sum it up, with current max possible port clock values an integer
+> overflow can occur and changing 'clock' parameter from int to u64 may
+> lead to a different issue. If my understanding about integer promotion
+> is flawed, I'll gladly send v2 patch with your solution.
 
-I think we need to add here an additional check:
+This is what I'm suggesting. Cast the clock (which is in kHz) to u64
+before multiplication, and avoid overflows.
 
-			if (!(hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM))
-				return -EINVAL;
+Option 1, preferred:
 
-> +			if (skb->csum_offset != offsetof(struct tcphdr, check))
-> +				return -EINVAL;
-> +			break;
->   		}
->   
->   		/* Kernel has a special handling for GSO_BY_FRAGS. */
-> diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-> index 4b791e74529e1..9e49ffcc77071 100644
-> --- a/net/ipv4/tcp_offload.c
-> +++ b/net/ipv4/tcp_offload.c
-> @@ -140,6 +140,9 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
->   	if (thlen < sizeof(*th))
->   		goto out;
->   
-> +	if (unlikely(skb->csum_start != skb->transport_header))
-> +		goto out;
+diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+index 90998b037349..292d163036b1 100644
+--- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
++++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+@@ -1658,7 +1658,7 @@ static void skl_wrpll_params_populate(struct skl_wrpll_params *params,
+ }
+ 
+ static int
+-skl_ddi_calculate_wrpll(int clock /* in Hz */,
++skl_ddi_calculate_wrpll(int clock,
+ 			int ref_clock,
+ 			struct skl_wrpll_params *wrpll_params)
+ {
+@@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in Hz */,
+ 	};
+ 	unsigned int dco, d, i;
+ 	unsigned int p0, p1, p2;
+-	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
++	u64 afe_clock = (u64)clock * 1000 * 5; /* AFE Clock is 5x Pixel clock, in Hz */
+ 
+ 	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
+ 		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
+@@ -1808,7 +1808,7 @@ static int skl_ddi_hdmi_pll_dividers(struct intel_crtc_state *crtc_state)
+ 	struct skl_wrpll_params wrpll_params = {};
+ 	int ret;
+ 
+-	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock * 1000,
++	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock,
+ 				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
+ 	if (ret)
+ 		return ret;
 
-Given that for packet injected from user-space, the transport offset is 
-set to csum_start by skb_partial_csum_set(), do we need the above check? 
-If so, why don't we need another similar one for csum_offset even here?
+Option 2, this is what I suggested earlier:
 
-Thanks,
+diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+index 90998b037349..a48a45f30f17 100644
+--- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
++++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+@@ -1658,7 +1658,7 @@ static void skl_wrpll_params_populate(struct skl_wrpll_params *params,
+ }
+ 
+ static int
+-skl_ddi_calculate_wrpll(int clock /* in Hz */,
++skl_ddi_calculate_wrpll(u64 clock_hz,
+ 			int ref_clock,
+ 			struct skl_wrpll_params *wrpll_params)
+ {
+@@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in Hz */,
+ 	};
+ 	unsigned int dco, d, i;
+ 	unsigned int p0, p1, p2;
+-	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
++	u64 afe_clock = clock_hz * 5; /* AFE Clock is 5x Pixel clock */
+ 
+ 	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
+ 		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
+@@ -1808,7 +1808,7 @@ static int skl_ddi_hdmi_pll_dividers(struct intel_crtc_state *crtc_state)
+ 	struct skl_wrpll_params wrpll_params = {};
+ 	int ret;
+ 
+-	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock * 1000,
++	ret = skl_ddi_calculate_wrpll((u64)crtc_state->port_clock * 1000,
+ 				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
+ 	if (ret)
+ 		return ret;
 
-Paolo
 
+>
+> Regards,
+> Nikita
+>> 
+>>>
+>>> Found by Linux Verification Center (linuxtesting.org) with static
+>>> analysis tool SVACE.
+>>>
+>>> Fixes: fe70b262e781 ("drm/i915: Move a bunch of stuff into rodata from the stack")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+>>> ---
+>>> Fixes: tag is not entirely correct, as I can't properly identify the
+>>> origin with all the code movement. I opted out for using the most
+>>> recent topical commit instead.
+>>>
+>>>  drivers/gpu/drm/i915/display/intel_dpll_mgr.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+>>> index 90998b037349..46d4dac6c491 100644
+>>> --- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+>>> +++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+>>> @@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in Hz */,
+>>>  	};
+>>>  	unsigned int dco, d, i;
+>>>  	unsigned int p0, p1, p2;
+>>> -	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
+>>> +	u64 afe_clock = (u64)(u32)clock * 5; /* AFE Clock is 5x Pixel clock */
+>>>  
+>>>  	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
+>>>  		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
+>> 
+
+-- 
+Jani Nikula, Intel
 
