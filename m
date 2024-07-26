@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-61867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F2293D260
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 13:35:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D5A93D26C
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 13:37:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D32C282371
-	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 11:35:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2366281C5C
+	for <lists+stable@lfdr.de>; Fri, 26 Jul 2024 11:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4098917A5AC;
-	Fri, 26 Jul 2024 11:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B3F17B430;
+	Fri, 26 Jul 2024 11:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gg6Z/0X8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="me/WaghA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA18B7F8;
-	Fri, 26 Jul 2024 11:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D977217A5AF;
+	Fri, 26 Jul 2024 11:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721993739; cv=none; b=DqQD+CuAJn+SY8Q/rWImYvqHe0YVQjDU3g/yKl2tfAMM7IUWrxHINEhvPtw7P7AKqZMena+CLpXnHMLwI61MRXL6r5t9yIrQgTA9xF81ut1IQPumN87DOE9NX7ZgLGmq2YH4EtWJwtpdwHY0O5tFT2q+/qZ/rcKWZB5vokdkVJU=
+	t=1721993807; cv=none; b=b780+INFctPScHOwA8U27UMIgwNB7O4yJjht+mUd2WJFVYfSszChX3L/DLw2nYLBb/0KK4SgMA5GE0ucbhDLoybjrPF06FprJ7GYFlZ5/tOfOxjKpzgJFWc2kQZIefOQ+JeRGeBSrksqgZTs8wOLiDveVtoCC+VhtWPLl1TkuLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721993739; c=relaxed/simple;
-	bh=LD7TLNNtkKxXJ3/zNuhaoPP6BcdevAO+oUiI7KQbCT8=;
+	s=arc-20240116; t=1721993807; c=relaxed/simple;
+	bh=FQT7ZDieWdwu7snT6cXtT/QU2JjKN0nQBOPD4g8XfeM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vE/nfPizXwcPMo0xeqNRSw4K2/N/NK20wLRqux0dHkILTwovx33pBUeEuch1HnZbxPOv5heEP1MgpKc0lfr6BgRx9wbxOAPH1JVLoX5fMejDOjbvsbnYBxcyTZAEDQ0o9GwS4w1OGSrTrLrIW90niJgb8GYA6C0B1tB644gBMcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gg6Z/0X8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2908C32782;
-	Fri, 26 Jul 2024 11:35:33 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=bfMo+orrZBI93TcvO7jy0axy61YBwVYJtPYIJuxDoFBselDxsKi4WzSYT1ipNTe2rIyLElcsWcCGn/X9qmCJI+XUwkeTlmZ35Ho38fH3Rt9l597yjYoM2V0Lm3bH3usJ1WFqLoQGlHlKXbNYSuTFVSwz1fNYKuSoEG91OeT4nYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=me/WaghA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39960C4AF0B;
+	Fri, 26 Jul 2024 11:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721993738;
-	bh=LD7TLNNtkKxXJ3/zNuhaoPP6BcdevAO+oUiI7KQbCT8=;
+	s=k20201202; t=1721993805;
+	bh=FQT7ZDieWdwu7snT6cXtT/QU2JjKN0nQBOPD4g8XfeM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Gg6Z/0X8RWUhY9ZNZWcD3pKnQDZ7h3u57s34tltr04mJZiKU6UuLQqGJ3moIUg9sa
-	 8sYfM9oSR+Fht176j0W1bQyfbWX8IBkp/SOppMGNfiT4jA8MbZ2YKihvQ2SYN76r78
-	 lFRTbmZDSp4LTFTC2mDpf8A1Y63swOeQTWcB9kBMR7Wl4XRLB160oJkcLGLtSsmGmY
-	 DBTpStJSKuU+wQ8n+jagrvnZaRMXGtux31pzgAgqAQNHLtfApmxkLurgtb42CMsjEe
-	 g5EGEKBu0l21Qy4mhfKhJcviQ01+O1ODYm0SkeYiyj1sZeoS9hZ80WLyG7FWfJ1+Bt
-	 noMtj70/0CYiA==
-Date: Fri, 26 Jul 2024 12:35:30 +0100
+	b=me/WaghAEMocbStc6QRXqc0bOccmTLVb76U8iVEVx18goeT9g1dxxB1yCxTXpRnxg
+	 xUBmc4p1LPBLAWRJ0XcAjWp8rQFcOviou/pyACr3E9GmtO18QrwjRAw+KDaDiLuBJO
+	 5HsuqVrPzqLkc9ZQ9JCCT7VUwAUs//6kqcpxj5in0TII9RS9Y220TZyihx3fjHOWJ0
+	 iRAG/3ipOKmNBVGqz+heJ8GL9lf9qMNNVnsCWBfVYE9SM+RyJrP7xdEPrsx3oce9UY
+	 6cPfZTkP/lgKkexYgaNbPfgQV5p0VQ0K+82+r0+ldAFMIZpMo7C3VJ4RC77teb9shF
+	 /5V6wjCySpInA==
+Date: Fri, 26 Jul 2024 12:36:39 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -51,9 +51,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 5.10 00/59] 5.10.223-rc1 review
-Message-ID: <1b75abb2-6ef7-4d58-8d47-e169dc2cf7ba@sirena.org.uk>
-References: <20240725142733.262322603@linuxfoundation.org>
+Subject: Re: [PATCH 6.1 00/13] 6.1.102-rc1 review
+Message-ID: <bec5a8bc-6d40-452b-b985-5184c8145651@sirena.org.uk>
+References: <20240725142728.029052310@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,38 +61,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="T44G+3X3pqKmie04"
+	protocol="application/pgp-signature"; boundary="DaC5PyC1/9nkiTKa"
 Content-Disposition: inline
-In-Reply-To: <20240725142733.262322603@linuxfoundation.org>
+In-Reply-To: <20240725142728.029052310@linuxfoundation.org>
 X-Cookie: It is your destiny.
 
 
---T44G+3X3pqKmie04
+--DaC5PyC1/9nkiTKa
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jul 25, 2024 at 04:36:50PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.223 release.
-> There are 59 patches in this series, all will be posted as a response
+On Thu, Jul 25, 2024 at 04:37:09PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.102 release.
+> There are 13 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 Tested-by: Mark Brown <broonie@kernel.org>
 
---T44G+3X3pqKmie04
+--DaC5PyC1/9nkiTKa
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmajigEACgkQJNaLcl1U
-h9Aqsgf+PpE3UYFYkYdkLzEyhr5OO0Xuw3tWjM5JZ1G/gZtuZMV5GT7+pdGOnTQd
-PsVH43ZLmIYgOId5hKKehxFkI3YRx/2vizxh9jkDlsEgHz/dub5FnBIM7BiYjf16
-KPSZHmv+qy5zYMRMQhXIfXHDM3RGFCgWRFmJYjPyG+P3Wq7/xq2sEnYjsmg93Hvj
-KDOppzHgsvhs0c9iv2Ro3PJXVurAxihynre/QMa+IN+/zp0m2V3/io/0o9oB5wR1
-RD9M3QXYdmq/8ba7B0wK1fEwwocXMo/vyNnRfvidym4eoaVtnnPN+/bwEEI4meS4
-4sMwoUA6JDkha6LdNX61DArP/ybasQ==
-=vMJH
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmajikYACgkQJNaLcl1U
+h9DueAf7BoUcPcyRDj+EngYY9NTpxf7Lml9BmLFUa1QZO1Mpr6Sx8/FrbFqs1sno
+YMFL3aft4oJ+XY5LRf5pUgfwa8KM0hKUH8d4b8+dVK9i6UnzB8dZivUHFEvCboeG
+QNYgrvVT1RDEOleDQ3iy4i3s/m5kPJYMiccj3l29v9rlD5C8zj+V40QUQlD0JJq4
+2oTVdiqIECbTZNgPUya7jvSyKyPvTUvBSd0/piB11pxLygZT0DJAwUrePws+WZrs
+HOPn0OTp8KM7snyudnKz6k9u8QuOCDWfZHE0vOte0DFBEUyZXB8VBzV/On81NYQ+
+Vf4kzKUyq+8NUPny/9QNgR7CbClghA==
+=oKKi
 -----END PGP SIGNATURE-----
 
---T44G+3X3pqKmie04--
+--DaC5PyC1/9nkiTKa--
 
