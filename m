@@ -1,74 +1,122 @@
-Return-Path: <stable+bounces-61942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5035593DD61
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 07:10:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C324093DDF0
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 11:04:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 065F61F23F0D
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 05:10:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F16E21C217BD
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 09:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FF5179A3;
-	Sat, 27 Jul 2024 05:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DC942AAD;
+	Sat, 27 Jul 2024 09:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ra5FhW/1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i/Sk8GaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2AA14290
-	for <stable@vger.kernel.org>; Sat, 27 Jul 2024 05:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D682E851;
+	Sat, 27 Jul 2024 09:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722057030; cv=none; b=dhRgAMkgRi9oj5yeaK6NgO1X+8EsFT2LITeXeQveIGNn9FtREVtuRgagMz/4kbr0JnqMyghVxSzckflZnNJ7FndcaeFA0Cee+nTHy6j7WiB+noKM70ndCnmpNBITmwaTN0C+EVbb8+5Lis6oPKMReCXCnrPnaxoeSmI1SP6Mrf8=
+	t=1722071070; cv=none; b=XrwsZg2l6yjY2GphT6EiJfedy6kc9imEzglnwBMql3CRS6rFcWlcJKbYkYeytLxbe6w96IrXdgzXRkfqp+0Ej3Sso0uzHRcEkiHmsI9SLS/n2vG5+rNSk4nt4oG+qC4aioIsYN8k58akY11j4Xc7MbNQirRWRxrGqKSuohdlSoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722057030; c=relaxed/simple;
-	bh=auo4fTunZsreZJwnd9jfvqLTZMnaLGCenpW62Cijhgo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CVYvvhW8847QeiGOFRV6M9LGoPDMs2z7Id8PhRm2lEyVERrD7tJkbUc83EZ8F1ItQJDawlp55CeL86kyMwbZtvFj6KYqxP6DF7kGwat1PAtU3rFCWTOjv4Qsuc+UuTvqzNnuqlDKkIHH7eT+NrBBGMMhJYN6opCyFtSTnkOZgc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ra5FhW/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EA2C32781;
-	Sat, 27 Jul 2024 05:10:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722057029;
-	bh=auo4fTunZsreZJwnd9jfvqLTZMnaLGCenpW62Cijhgo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ra5FhW/1uMPjBaO423dxKs2OMkmDxpQ8qqjQUrd+RLjzFTTl8FstRlIRK0j4NqaJM
-	 wRLSO/QKZU9UizjKubT7mk2UMdh2qFYsVv9zipf+5XORVO411C7Lh1aSTLFHX4V5bi
-	 Anf6bajVzbLtzcZTOFTepL4+K+B9tE05HnIQXhig=
-Date: Sat, 27 Jul 2024 07:10:26 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Tj <tj.iam.tj@proton.me>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH] arm64: v6.8: cmdline param >= 146 chars kills kernel
-Message-ID: <2024072722-borrowing-arbitrate-256f@gregkh>
-References: <JsQ4W_o2R1NfPFTCCJjjksPED-8TuWGr796GMNeUMAdCh-2NSB_16x6TXcEecXwIfgzVxHzeB_-PMQnvQuDo0gmYE_lye0rC5KkbkDgkUqM=@proton.me>
+	s=arc-20240116; t=1722071070; c=relaxed/simple;
+	bh=/WInVHz5/5nRA9OxCUOUNLKXu8jpoFq68RMMSbHKe5E=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=u5sBNPm2rIm3VsNpcPYGHS37WtoM4tcXTLUefusT7Q+ZIQ5cuzfB1LCN0olFR7EvkfjN/cY0KgY8O4Gro9wNc1HLV9FKDMPSUCC34ZQ64FDniL/uGaXYgYG3yNRLCZZ0s7rQwIi3WI885YBxPcDPkQxfjylTawE8WVEtUlA3eXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i/Sk8GaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9AFC32781;
+	Sat, 27 Jul 2024 09:04:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722071070;
+	bh=/WInVHz5/5nRA9OxCUOUNLKXu8jpoFq68RMMSbHKe5E=;
+	h=From:Subject:Date:To:Cc:From;
+	b=i/Sk8GaYSHLmG6xaru9tAb1cXQ0Yhp6rlJxa+yZlVjkDJRdcPJTxuueQf9jqpAS1+
+	 bQfYYt7dA7f05m1yY6PfKiY7z9EOk8cza8texrdD0RUvYxPD5iqAmsQp6TnUyyGW2C
+	 nsWnjFtJNsioJE08dODQATkLd/CmBCbzj6fvN1wpVeaTjt86t4bbybOQVar5KoCiMH
+	 19ekswhA7fkFeVYwwl5hKOgcndVX5BDCu3jX/otlBz76ggBqChP1ubNfNJHmd6kJaG
+	 V5CKVPnyK74KBOXc61yXVTpfSy6p6vJZOlLkdVHKm/xcTUpL0oYqvP8uYYBvVCchXr
+	 hMD0hmqCdL0FA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/5] mptcp: fix signal endpoint readd
+Date: Sat, 27 Jul 2024 11:03:58 +0200
+Message-Id: <20240727-upstream-net-20240726-mptcp-fix-signal-readd-v1-0-1e7d25a23362@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <JsQ4W_o2R1NfPFTCCJjjksPED-8TuWGr796GMNeUMAdCh-2NSB_16x6TXcEecXwIfgzVxHzeB_-PMQnvQuDo0gmYE_lye0rC5KkbkDgkUqM=@proton.me>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP63pGYC/z2NQQqDMBBFryKz7oBNpUKvUrpIJqMOaBoyUQTx7
+ h1cdPk+j/cPUC7CCq/mgMKbqHyTwf3WAE0+jYwSjcG1rmt798Q1ay3sF0xc8b8uuVLGQXZUGZO
+ f0ZQYcXhQ70KgQBzAkrmwOdfdGywAn/P8AZb+Ik2DAAAA
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
+ Liu Jing <liujing@cmss.chinamobile.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1574; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=/WInVHz5/5nRA9OxCUOUNLKXu8jpoFq68RMMSbHKe5E=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmpLgaBDm+3i6X4MsqXmUeEy7qTiBIm9QanpXIW
+ fP6uG6a68SJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZqS4GgAKCRD2t4JPQmmg
+ c9tkD/95oI0gsFL0AZCjhsBoaM4P0cWBz8nY8uTAVquxZyNe688ZZxp124XHZrFzRBhQzhDm6u0
+ ZR+zXx/gtbubfeDbmuSrYrLeD439KiZpfKsIwVq06u7ngI+UpfbgD5TN/zYCM3SiONV0Mnz8SSz
+ AaTl0qk87C4lCfpEU3OYOYYxonY82NrClJIG4GgW7Gegid4TfKUtxvk0inMMX3BcT23rdUFxGkX
+ hdM0jkq2g3R/4knwrK3+fIgFzAD5+3Bsy4NaZN4iwCIB8JOGOXcWbHXSKBDEck83U0DVJn5AE0m
+ GOMv+G/ozdBYpFdX9m546Yx/JMjdUTf92fsMwQx34SOwWlFCZZA9Kos1A5rt0sOV9Ny5m9Po9Ec
+ v5aUZIcrc4/BlWNjiRGNKIlO6atwNsgTPL/E9u8Dc0W0O9RoFm6kGV2nqqNUY/iO7rn5+Jesdxp
+ rGr/DG+LzwgoXEESD0JoqcoV3iRzkTKOA+W2AZ8d2fjC33SDZK1wGAcu2OiNPz/MKVUQRjDsdXg
+ DdXVTM4SBQPdK5VF1hw+NljhpgWweU/7l8lLVYqpJLQ6t0mWPkb/odiBhn1dn5OD2E1TOGdT/Sc
+ ldX8AbHZAOERl9V7vZs8EGq+GT7iDwmDL9Hn93oDJs9WOMEOsDlojaogwOVX4H0TBkbf2pV8GTs
+ +OYf6C1+hsfiOpA==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-On Fri, Jul 26, 2024 at 01:48:44PM +0000, Tj wrote:
-> This is v6.8 specific; v6.9 is reported as not affected (due to
-> extensive code refactoring).
+Issue #501 [1] showed that the Netlink PM currently doesn't correctly
+support removal and re-add of signal endpoints.
 
-The 6.8.y kernel tree is long end-of-life, there's nothing we can do
-about that one anymore, sorry.  Also, you really shouldn't be using that
-branch for anything at this point in time either.
+Patches 1 and 2 address the issue: the first one in the userspace path-
+manager, introduced in v5.19 ; and the second one in the in-kernel path-
+manager, introduced in v5.7.
 
-Always check the front page of kernel.org if you are wondering about the
-status of any stable tree.
+Patch 3 introduces a related selftest. There is no 'Fixes' tag, because
+it might be hard to backport it automatically, as missing helpers in
+Bash will not be caught when compiling the kernel or the selftests.
 
-thanks,
+The last two patches address two small issues in the MPTCP selftests,
+one introduced in v6.6., and the other one in v5.17.
 
-greg k-h
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/501 [1]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Liu Jing (1):
+      selftests: mptcp: always close input's FD if opened
+
+Paolo Abeni (4):
+      mptcp: fix user-space PM announced address accounting
+      mptcp: fix NL PM announced address accounting
+      selftests: mptcp: add explicit test case for remove/readd
+      selftests: mptcp: fix error path
+
+ net/mptcp/pm_netlink.c                            | 27 ++++++++++++++------
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |  8 +++---
+ tools/testing/selftests/net/mptcp/mptcp_join.sh   | 31 ++++++++++++++++++++++-
+ 3 files changed, 53 insertions(+), 13 deletions(-)
+---
+base-commit: 301927d2d2eb8e541357ba850bc7a1a74dbbd670
+change-id: 20240726-upstream-net-20240726-mptcp-fix-signal-readd-f3c72bbcbceb
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
