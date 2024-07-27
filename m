@@ -1,119 +1,148 @@
-Return-Path: <stable+bounces-61977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B8C93E038
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 18:52:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B961E93E092
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 20:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D35B1C20E35
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 16:52:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C340B214C1
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 18:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010441741D5;
-	Sat, 27 Jul 2024 16:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF11186E43;
+	Sat, 27 Jul 2024 18:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZQco6WfN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="in74GW17"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D381DA4C
-	for <stable@vger.kernel.org>; Sat, 27 Jul 2024 16:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C30288BD;
+	Sat, 27 Jul 2024 18:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722099151; cv=none; b=s9O/DSbsyMIk/JAkZmqnJ77f6zGSjxHDTnS6cDUPN6QnfjdHfpDgLc9Z+UCwu8ZRzzIievW66as05s7j9ycxv6f3TsuTKhzjtwv+Z/PXahZu7PQzciY6PRRJCEEmgF0mlVWthZjDCmTwbJfPKCc8MNJjGJbzsEzA+wTwpiS96iw=
+	t=1722105566; cv=none; b=pPuMcnOM7dn1t3084EIZYsUE5On3vB7x9TFo2HAOOFzt6RWEUjf4wnTRlBvGlk45MQqZYQRgSJaJ4MLlScXdae7AMsvYqROjYe9M9B+mZv/1SeqvelufLNnmWq4pwUYJRG0p000DP6h10Yr1IwE0wu3Br6fWi7boZQ4J7MdVO6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722099151; c=relaxed/simple;
-	bh=Kt3UTHXY6pUS1uNOKixy1D9DX1Rs2NDL7dotc9CQrko=;
-	h=Date:From:Subject:To:Cc:Message-Id:MIME-Version:Content-Type; b=i5LPeL2E9dEZfYq8uXhi7Bp0fKHlDoCxaukfkcTvc/9GvEghvCNhR3WxxOjzVBed8xRnFLzByZsZdVbrf6bdHjzP3tKqxeqNfDnwWRKRRHbMAm/GxAdz0MbuMy1w/VKnZAv53mZIGYJkZdPWmhqq7RR3XvE+9j3/ARquJjRa8Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZQco6WfN; arc=none smtp.client-ip=209.85.208.180
+	s=arc-20240116; t=1722105566; c=relaxed/simple;
+	bh=mqqTbeT3cQxsVumINcr8inDBGKCLmYlO+jG2QvMYj74=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H7sy07HB4NM/x9nQ7ZdbG5ICFG31BlLGzd22jlUaoFB/6f7g6Aj0SxpZ211LB/96nYc0e2I31Zos1bqCaWINpxJG84WB4iWHXK0mAEw8DBrQGcVKnXCuENyvl4oZ3pnbh9QtbLrEya08GDvaSvatRU7Mib/P+VU5o6PG0k6/moM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=in74GW17; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2eeb1ba0481so34160041fa.2
-        for <stable@vger.kernel.org>; Sat, 27 Jul 2024 09:52:29 -0700 (PDT)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1fd69e44596so11907685ad.1;
+        Sat, 27 Jul 2024 11:39:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722099148; x=1722703948; darn=vger.kernel.org;
-        h=mime-version:message-id:cc:to:subject:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=32TR7SGEwzQNHi8BSEjhZCZbMRgIoVZcq32HmZiwQ2g=;
-        b=ZQco6WfNYI1NT5C3iSrT+DZeykz5P9FwMxqyk9V/toN7MchnDb/xv6oJ4cZk5RpGIO
-         W8vMbnNXiMS9cxuzvyetnAsWFTK4mvkfxLsNPv3/OHVsusjM/Z07XXkSQtzSoKX33ysX
-         SIDaTkVLY51I180J39gk3b/LQunPY+Cvas/K8v5XdyBkEYY6I7VElswJHBLDsQ2LAHfp
-         i834nCKMNkTHrI69yHuRj7wJOQOmWx30LuFCGDlA5Qf458ltd7DBXrGbxxNdD4Y4n7wW
-         /sGriavu6OjJkvlTFBihm85eiqyAfWMSwGtLTTgKTD7xYb2ajdMnS+HbFgnWiRRih0SU
-         oLqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722099148; x=1722703948;
-        h=mime-version:message-id:cc:to:subject:from:date:x-gm-message-state
+        d=gmail.com; s=20230601; t=1722105563; x=1722710363; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=32TR7SGEwzQNHi8BSEjhZCZbMRgIoVZcq32HmZiwQ2g=;
-        b=jOn+cfZfDjmJVmfAhawz2vg/or9RS38lAvylJNAZVlVNK+DkGnY8dMyrq/rMnb7daL
-         hRKdnUOOH82Oy0nzX+K+oFGRSt08X1e5L9k+RDkvkjq7w1ydf/qyyjKcTvH1yDmv7A99
-         5uBrLzMeBSvmr/KqDMy0iMkQr3UbTrA1psUANo055UCAhCd1XzW2x6onwRjdbEm4InLa
-         CsWDcsA0A5R9phox8zscxkBHH9v3mnUYswiZ1tqUCV+ZaxfnBWkNYFtduz5dDgAAfezK
-         LhOBX59DZpH8lREVSYTVYdRlHlkUTguU5ZsBe9usb1zdCXK8JFeCqrCBWLShZJsma3pk
-         CO6Q==
-X-Gm-Message-State: AOJu0YxciCWTyE19LRjbh4YKoigj+x+ibUN7T7U35dKpvlEfgWEWHEKg
-	3O0UmNMYRsV+TUaXxBUhLl4GlduTQQ9yUEx/e+PseOJORysR4TXu1PAzxBlI
-X-Google-Smtp-Source: AGHT+IGuAop1O4/gAYTT5gL+X62ar7kjLB5+Ie9wR9wU6dXF9aYRZO7tFMq0G/kr9w7fDqsKQUzmGg==
-X-Received: by 2002:a05:6512:451:b0:52f:d128:bd13 with SMTP id 2adb3069b0e04-5309b2c39d0mr1685683e87.39.1722099147651;
-        Sat, 27 Jul 2024 09:52:27 -0700 (PDT)
-Received: from [192.168.1.69] ([93.170.44.26])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52fd5bc42ecsm808811e87.49.2024.07.27.09.52.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jul 2024 09:52:27 -0700 (PDT)
-Date: Sat, 27 Jul 2024 19:52:19 +0300
-From: serg.partizan@gmail.com
-Subject: [REGRESSION] Brightness at max level after waking up from sleep on
- AMD Laptop
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, mario.limonciello@amd.com,
-	hamza.mahfooz@amd.com, alexander.deucher@amd.com
-Message-Id: <77KAHS.13UUH2XVHQQF1@gmail.com>
-X-Mailer: geary/46.0
+        bh=Tb01SeeGpCzCq1LvvFZXXuhnamF3QgcshPskKwvVvF4=;
+        b=in74GW17K6oUtIdSAl87weIrbC8qEsPdm7QY8xi/ftacyT1yTYgpt8A5oZA14FbvS6
+         Uxsb/1cZTkZF/QJELQvinire/qgTfKX7sU8PHGO9+VZurLhFBsc8tN2ZfsJBelcZVfPe
+         IbAFgE6bg+3i4fsGdWtHFC/MaqCMxb65noUwsAZXp9YjoADjP25Q1nxOI1VOkiEnupWG
+         7qKGd5B110UWvF5/QOoL/RXgTtNcXUnXwsa2Zuj6xBQdP0JVzguUNYtn2vauvmpyRat9
+         RmsBxgMZ+je6qkDx9bZix0uMJn52TKpUZ50fLeiBus9Sp1T+Xi4IjgKVMaE36VB72BhV
+         fCQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722105563; x=1722710363;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tb01SeeGpCzCq1LvvFZXXuhnamF3QgcshPskKwvVvF4=;
+        b=P9jHodRQa4nqd3cOi40MSBs8HHNOTxGOw2mFRKg7+4/XPfRm/NSXsjKbHnCR9PnLy8
+         oaShIu/nK1TD4tlmWXmUhe2+QxpueaX5aq/S9ZgtF8GGnnAsQJCLSBWozLGYozGAH3Ee
+         CwlRy8iJj8sfqSEIgW9S+Z/9X8QR38BeqRDblA8kAcArZCOndnUkdFSBMGMmbGtYyD3J
+         LyQORsMDEdR2kSImBG2Hfmgx2AJwOuGOlTc1Xxnp9L+WVzGvrOfIP+diw0JJ0779pzNL
+         ijxjYKyfnjgYFczeir0JDMOTpDFE+WwttB+rcTAhPFbymPJ82lzoyn387Q7Xq5tL6kvX
+         N7vg==
+X-Forwarded-Encrypted: i=1; AJvYcCXyA1PCDGJviTjkUa3GxXD70LKYWfWLjRYfHFZMLmUD1H4eKYyG8CJWCtmzpWQsVTnp+tVRCXoe0z8rdNBNyuWXDuTsyLahwtA7BRfPr/AkG+rz/Fy+BFgA22JtIXPwIqC4WP6nxkB4HqMheUZrkx03pcnRM4qex+diBP7l
+X-Gm-Message-State: AOJu0YwXk5+AzyiIOj2BKTUpM40G/PjFc0ikinAjPIdxQCr6yziaynK8
+	mFjGUH+2cely0ZSxYzGZiziN5M3Y9SV7icixErVxDoAF0KuCrTZJ
+X-Google-Smtp-Source: AGHT+IEJ4IRHhYPrzjr/OjD23R9bp2YPKOjIQBf1Lw3E5OFbAgholhIYZ4qqgS0clYvxTh+5y6ZLkQ==
+X-Received: by 2002:a17:902:d48a:b0:1fd:65ad:d8a1 with SMTP id d9443c01a7336-1ff04b01785mr52332705ad.21.1722105563425;
+        Sat, 27 Jul 2024 11:39:23 -0700 (PDT)
+Received: from [192.168.50.95] ([118.32.98.101])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7c7fbe1sm53831005ad.45.2024.07.27.11.39.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 Jul 2024 11:39:22 -0700 (PDT)
+Message-ID: <b2232e8d-275b-4e98-84fe-bbb33e3c6b7e@gmail.com>
+Date: Sun, 28 Jul 2024 03:39:18 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] Bluetooth: hci_core: fix suspicious RCU usage in
+ hci_conn_drop()
+To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ Marcel Holtmann <marcel@holtmann.org>,
+ Johan Hedberg <johan.hedberg@gmail.com>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Yeoreum Yun <yeoreum.yun@arm.com>
+References: <20240725134741.27281-2-yskelg@gmail.com>
+ <9dc0399a-573a-40c1-b342-a81410864cd9@I-love.SAKURA.ne.jp>
+Content-Language: en-US
+From: Yunseong Kim <yskelg@gmail.com>
+In-Reply-To: <9dc0399a-573a-40c1-b342-a81410864cd9@I-love.SAKURA.ne.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
+Hi Tetsuo,
 
-After updating from 6.8.9 to 6.9.1 I noticed a bug on my HP Envy x360 
-with AMD Ryzen 5 4500U.
+> Excuse me, but I can't interpret why this patch solves the warning.
+> 
+> The warning says that list_for_each_entry_rcu() { } in
+> ieee80211_check_combinations() is called outside of rcu_read_lock() and
+> rcu_read_unlock() pair, doesn't it? How does that connected to
+> guarding hci_dev_test_flag() and queue_delayed_work() with rcu_read_lock()
+> and rcu_read_unlock() pair? Unless you guard list_for_each_entry_rcu() { }
+> in ieee80211_check_combinations() with rcu_read_lock() and rcu_read_unlock()
+> pair (or annotate that appropriate locks are already held), I can't expect
+> that the warning will be solved...
 
-#regzbot introduced: v6.8.9..v6.9.1
+Thank you for the code review.
 
-After waking up from sleep brightness is set to max level, ignoring 
-previous value.
+Sorry, I apologize for attaching the wrong kernel dump.
 
-With the help of Arch Linux team, we was able to track bad commit to 
-this: 
-https://gitlab.freedesktop.org/agd5f/linux/-/commit/63d0b87213a0ba241b3fcfba3fe7b0aed0cd1cc5
-
-I have tested this on latest mainline kernel:
-
-Results after waking up:
-
- > cat /sys/class/backlight/amdgpu_bl1/{brightness,actual_brightness}
-12
-252
-
-Then, on exact this commit (63d0b87213a0ba241b3fcfba3fe7b0aed0cd1cc5), 
-result is the same.
-
-Then, on commit just before this one (aeaf3e6cf842):
-
- > cat /sys/class/backlight/amdgpu_bl1/{brightness,actual_brightness}
-12
-12
-
-I hope I included all relevant information, more info can be found here:
-
-https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/52
+> Also, what guarantees that drain_workqueue() won't be disturbed by
+> queue_work(disc_work) which will be called after "timeo" delay, for you are
+> not explicitly cancelling scheduled "disc_work" (unlike "cmd_timer" work
+> and "ncmd_timer" work shown below) before calling drain_workqueue() ?
+> 
+> 	/* Cancel these to avoid queueing non-chained pending work */
+> 	hci_dev_set_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE);
+> 	/* Wait for
+> 	 *
+> 	 *    if (!hci_dev_test_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE))
+> 	 *        queue_delayed_work(&hdev->{cmd,ncmd}_timer)
+> 	 *
+> 	 * inside RCU section to see the flag or complete scheduling.
+> 	 */
+> 	synchronize_rcu();
+> 	/* Explicitly cancel works in case scheduled after setting the flag. */
+> 	cancel_delayed_work(&hdev->cmd_timer);
+> 	cancel_delayed_work(&hdev->ncmd_timer);
+> 
+> 	/* Avoid potential lockdep warnings from the *_flush() calls by
+> 	 * ensuring the workqueue is empty up front.
+> 	 */
+> 	drain_workqueue(hdev->workqueue);
 
 
+Please bear with me for a moment.
+
+I'll attach the correct kernel dump and resend the patch email.
+
+
+Warm regards,
+
+Yunseong Kim
 
