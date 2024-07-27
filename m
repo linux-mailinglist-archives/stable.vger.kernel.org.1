@@ -1,148 +1,136 @@
-Return-Path: <stable+bounces-61978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B961E93E092
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 20:39:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6922193E0FA
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 22:43:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C340B214C1
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 18:39:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CE341C20DFB
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 20:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF11186E43;
-	Sat, 27 Jul 2024 18:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0057839FD8;
+	Sat, 27 Jul 2024 20:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="in74GW17"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iCO/TTwr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C30288BD;
-	Sat, 27 Jul 2024 18:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5E92D05D;
+	Sat, 27 Jul 2024 20:43:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722105566; cv=none; b=pPuMcnOM7dn1t3084EIZYsUE5On3vB7x9TFo2HAOOFzt6RWEUjf4wnTRlBvGlk45MQqZYQRgSJaJ4MLlScXdae7AMsvYqROjYe9M9B+mZv/1SeqvelufLNnmWq4pwUYJRG0p000DP6h10Yr1IwE0wu3Br6fWi7boZQ4J7MdVO6U=
+	t=1722112995; cv=none; b=LP7Ukl/4Q9CuKNVCwmZLowd721sKNk+xnzD2UsDGYsIbrE6Bxb6/R68POl7B2SgvdmlteE3HiYJBcLcH9XwgI8T2tcnOLxBrevZvz8TskmK1H+slIz+dqVw/LQq+RcTDO/DKakfTjRk/z0Nr8V22Iwj/IcJxtxt6lxy06p9acV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722105566; c=relaxed/simple;
-	bh=mqqTbeT3cQxsVumINcr8inDBGKCLmYlO+jG2QvMYj74=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H7sy07HB4NM/x9nQ7ZdbG5ICFG31BlLGzd22jlUaoFB/6f7g6Aj0SxpZ211LB/96nYc0e2I31Zos1bqCaWINpxJG84WB4iWHXK0mAEw8DBrQGcVKnXCuENyvl4oZ3pnbh9QtbLrEya08GDvaSvatRU7Mib/P+VU5o6PG0k6/moM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=in74GW17; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1722112995; c=relaxed/simple;
+	bh=pCLrAC0c7kI1WPvw+F3AOPdqNfHw/TdcPzhDI1T0wGU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=abDA6NZgDlYS9MxRQsi+biQw/t9ygowrXGW0Nkm1RH674U7gxUjLN14OgbSk/aHCrv3nNj2eVRDIONqXSiTj+m7mFQGhuiBgNd+ENEyw5r/ayhebeMTcHEIMU9+PNac/L6klxIuY6n1lxjAphcZmhr4BwgRcMqg0tgfwSsrCxk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iCO/TTwr; arc=none smtp.client-ip=209.85.167.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1fd69e44596so11907685ad.1;
-        Sat, 27 Jul 2024 11:39:24 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52f042c15e3so2092489e87.0;
+        Sat, 27 Jul 2024 13:43:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722105563; x=1722710363; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Tb01SeeGpCzCq1LvvFZXXuhnamF3QgcshPskKwvVvF4=;
-        b=in74GW17K6oUtIdSAl87weIrbC8qEsPdm7QY8xi/ftacyT1yTYgpt8A5oZA14FbvS6
-         Uxsb/1cZTkZF/QJELQvinire/qgTfKX7sU8PHGO9+VZurLhFBsc8tN2ZfsJBelcZVfPe
-         IbAFgE6bg+3i4fsGdWtHFC/MaqCMxb65noUwsAZXp9YjoADjP25Q1nxOI1VOkiEnupWG
-         7qKGd5B110UWvF5/QOoL/RXgTtNcXUnXwsa2Zuj6xBQdP0JVzguUNYtn2vauvmpyRat9
-         RmsBxgMZ+je6qkDx9bZix0uMJn52TKpUZ50fLeiBus9Sp1T+Xi4IjgKVMaE36VB72BhV
-         fCQQ==
+        d=gmail.com; s=20230601; t=1722112992; x=1722717792; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bv4ok3GIewx2d9Yx1/BgjuhSzkHnMJiT1FqXF1qlCKw=;
+        b=iCO/TTwr4b00nlVrp/wYaJ2hQ1Y8KrnzJe0yZ7gwSMoufaDcpaE+13Mkbz3j4630sy
+         A/FNCmY883Fb+d1TMDE8he42/UffaFJuNiSRTwA3+4ZB88d2mIAOFX/rE2N6dA840jQA
+         xxMuYtO+tJI+xWZ9WuJ1naKZ4io9XOL14vFbjnYnXw3SxNWQV27HxnM4yOaAaHfYN2/Y
+         V2AE3cspGCCk3/avmLUZTQgJeeDv/+ya0HbdJO4vvmrALD4SBFk6UcBTUSC3O+EZAK4X
+         HV35x3nz462KB2hbg+3imLTMoJIz2jz9LRlKAKKQtjgGR8xRWSnUKhrU7IaCioBO1ADM
+         Fzqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722105563; x=1722710363;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tb01SeeGpCzCq1LvvFZXXuhnamF3QgcshPskKwvVvF4=;
-        b=P9jHodRQa4nqd3cOi40MSBs8HHNOTxGOw2mFRKg7+4/XPfRm/NSXsjKbHnCR9PnLy8
-         oaShIu/nK1TD4tlmWXmUhe2+QxpueaX5aq/S9ZgtF8GGnnAsQJCLSBWozLGYozGAH3Ee
-         CwlRy8iJj8sfqSEIgW9S+Z/9X8QR38BeqRDblA8kAcArZCOndnUkdFSBMGMmbGtYyD3J
-         LyQORsMDEdR2kSImBG2Hfmgx2AJwOuGOlTc1Xxnp9L+WVzGvrOfIP+diw0JJ0779pzNL
-         ijxjYKyfnjgYFczeir0JDMOTpDFE+WwttB+rcTAhPFbymPJ82lzoyn387Q7Xq5tL6kvX
-         N7vg==
-X-Forwarded-Encrypted: i=1; AJvYcCXyA1PCDGJviTjkUa3GxXD70LKYWfWLjRYfHFZMLmUD1H4eKYyG8CJWCtmzpWQsVTnp+tVRCXoe0z8rdNBNyuWXDuTsyLahwtA7BRfPr/AkG+rz/Fy+BFgA22JtIXPwIqC4WP6nxkB4HqMheUZrkx03pcnRM4qex+diBP7l
-X-Gm-Message-State: AOJu0YwXk5+AzyiIOj2BKTUpM40G/PjFc0ikinAjPIdxQCr6yziaynK8
-	mFjGUH+2cely0ZSxYzGZiziN5M3Y9SV7icixErVxDoAF0KuCrTZJ
-X-Google-Smtp-Source: AGHT+IEJ4IRHhYPrzjr/OjD23R9bp2YPKOjIQBf1Lw3E5OFbAgholhIYZ4qqgS0clYvxTh+5y6ZLkQ==
-X-Received: by 2002:a17:902:d48a:b0:1fd:65ad:d8a1 with SMTP id d9443c01a7336-1ff04b01785mr52332705ad.21.1722105563425;
-        Sat, 27 Jul 2024 11:39:23 -0700 (PDT)
-Received: from [192.168.50.95] ([118.32.98.101])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7c7fbe1sm53831005ad.45.2024.07.27.11.39.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 27 Jul 2024 11:39:22 -0700 (PDT)
-Message-ID: <b2232e8d-275b-4e98-84fe-bbb33e3c6b7e@gmail.com>
-Date: Sun, 28 Jul 2024 03:39:18 +0900
+        d=1e100.net; s=20230601; t=1722112992; x=1722717792;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bv4ok3GIewx2d9Yx1/BgjuhSzkHnMJiT1FqXF1qlCKw=;
+        b=bcig4AP1fnBiPi076T49wPJz38e3/fSgqt6Kc/Jok3QCekp5KKW4Q1hPBY7CS8k8C2
+         nG0rlcOaRp+ZpCNtBEzOyghg6z8yj4UiMRhG0AZcEZf8XjprX88gFqNiYE2wmHZPCFhA
+         9UiDrjODxSoGIzgVjYr/KxP6hycO6+Nn1her7bLI5N3sbhzFf+ZtKwZN2XXK7wWUvyqv
+         mDSK13EACpq1qT3rGtEeYZN8fgePyE63B/uEdFiESkCLg3l8umHELySPeEL5fU02XROG
+         N7otUwP8UEy8U9QubXlhqzrBmDLRVGMIKopFOzXgETS2mBpWPkomRnpto4PjiFWSXCtk
+         x8JQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV7md3Rz7qZi/ivYmRuhruJYG7W+LUKLJHpY7maX95/BO0nrr2u1xDh/6EkEb47Yxpx5oLaFY8iyJmO+13I41G4OhvI360JAy5n4GL+412QjFOk3CRs2NGjxryZCSLvmuccXdkHjT5kAUKBw+o1J2lWjDmBNvC6YIx5uSPrB21nGAQP
+X-Gm-Message-State: AOJu0YyoskNO2bfEdT3YLpzqqTSiNh3FYWSrsFqY7QxwCs02Bg5rU4vp
+	5nta3KDd2yfwT3WX76+6aysHe5MOolYH/CnDvlboAfC6fRKNZ3WMxhetL7g+WlNod9njxvEAqgS
+	0qJGzXdOMX2a34ZSFtX1LxQhlUA==
+X-Google-Smtp-Source: AGHT+IGP71xKWMKOJHw+6eAC+0bfS2GCggw5OubOUU2ooeGmpjLgTwO9dToD28ptkFTPF8afYXAbZ5d0nh1LLHWoUjg=
+X-Received: by 2002:a05:6512:3ca9:b0:52e:8161:4ce6 with SMTP id
+ 2adb3069b0e04-5309b718bebmr1011788e87.25.1722112991729; Sat, 27 Jul 2024
+ 13:43:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Bluetooth: hci_core: fix suspicious RCU usage in
- hci_conn_drop()
-To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- Yeoreum Yun <yeoreum.yun@arm.com>
-References: <20240725134741.27281-2-yskelg@gmail.com>
- <9dc0399a-573a-40c1-b342-a81410864cd9@I-love.SAKURA.ne.jp>
-Content-Language: en-US
-From: Yunseong Kim <yskelg@gmail.com>
-In-Reply-To: <9dc0399a-573a-40c1-b342-a81410864cd9@I-love.SAKURA.ne.jp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240726-fix-x86-stack-protector-tests-v1-1-a30fe80e8925@kernel.org>
+In-Reply-To: <20240726-fix-x86-stack-protector-tests-v1-1-a30fe80e8925@kernel.org>
+From: Brian Gerst <brgerst@gmail.com>
+Date: Sat, 27 Jul 2024 16:43:00 -0400
+Message-ID: <CAMzpN2hRVzWOF5YDvE8pPKfogdcuou8REsY+uXzkdORnFn=buQ@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: Fix '-S -c' in x86 stack protector scripts
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: masahiroy@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, nicolas@fjasle.eu, 
+	maskray@google.com, morbo@google.com, justinstitt@google.com, kees@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Tetsuo,
+On Fri, Jul 26, 2024 at 2:05=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
+>
+> After a recent change in clang to stop consuming all instances of '-S'
+> and '-c' [1], the stack protector scripts break due to the kernel's use
+> of -Werror=3Dunused-command-line-argument to catch cases where flags are
+> not being properly consumed by the compiler driver:
+>
+>   $ echo | clang -o - -x c - -S -c -Werror=3Dunused-command-line-argument
+>   clang: error: argument unused during compilation: '-c' [-Werror,-Wunuse=
+d-command-line-argument]
+>
+> This results in CONFIG_STACKPROTECTOR getting disabled because
+> CONFIG_CC_HAS_SANE_STACKPROTECTOR is no longer set.
+>
+> '-c' and '-S' both instruct the compiler to stop at different stages of
+> the pipeline ('-S' after compiling, '-c' after assembling), so having
+> them present together in the same command makes little sense. In this
+> case, the test wants to stop before assembling because it is looking at
+> the textual assembly output of the compiler for either '%fs' or '%gs',
+> so remove '-c' from the list of arguments to resolve the error.
+>
+> All versions of GCC continue to work after this change, along with
+> versions of clang that do or do not contain the change mentioned above.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 4f7fd4d7a791 ("[PATCH] Add the -fstack-protector option to the CFL=
+AGS")
+> Fixes: 60a5317ff0f4 ("x86: implement x86_32 stack protector")
+> Link: https://github.com/llvm/llvm-project/commit/6461e537815f7fa68cef068=
+42505353cf5600e9c [1]
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+> I think this could go via either -tip or Kbuild?
+>
+> Perhaps this is an issue in the clang commit mentioned in the message
+> above since it deviates from GCC (Fangrui is on CC here) but I think the
+> combination of these options is a little dubious to begin with, hence
+> this change.
 
-> Excuse me, but I can't interpret why this patch solves the warning.
-> 
-> The warning says that list_for_each_entry_rcu() { } in
-> ieee80211_check_combinations() is called outside of rcu_read_lock() and
-> rcu_read_unlock() pair, doesn't it? How does that connected to
-> guarding hci_dev_test_flag() and queue_delayed_work() with rcu_read_lock()
-> and rcu_read_unlock() pair? Unless you guard list_for_each_entry_rcu() { }
-> in ieee80211_check_combinations() with rcu_read_lock() and rcu_read_unlock()
-> pair (or annotate that appropriate locks are already held), I can't expect
-> that the warning will be solved...
+As part of my stack protector cleanup series, I found that these
+scripts can simply be removed.  I can repost those patches as a
+standalone cleanup.
 
-Thank you for the code review.
+https://lore.kernel.org/lkml/20240322165233.71698-1-brgerst@gmail.com/
 
-Sorry, I apologize for attaching the wrong kernel dump.
-
-> Also, what guarantees that drain_workqueue() won't be disturbed by
-> queue_work(disc_work) which will be called after "timeo" delay, for you are
-> not explicitly cancelling scheduled "disc_work" (unlike "cmd_timer" work
-> and "ncmd_timer" work shown below) before calling drain_workqueue() ?
-> 
-> 	/* Cancel these to avoid queueing non-chained pending work */
-> 	hci_dev_set_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE);
-> 	/* Wait for
-> 	 *
-> 	 *    if (!hci_dev_test_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE))
-> 	 *        queue_delayed_work(&hdev->{cmd,ncmd}_timer)
-> 	 *
-> 	 * inside RCU section to see the flag or complete scheduling.
-> 	 */
-> 	synchronize_rcu();
-> 	/* Explicitly cancel works in case scheduled after setting the flag. */
-> 	cancel_delayed_work(&hdev->cmd_timer);
-> 	cancel_delayed_work(&hdev->ncmd_timer);
-> 
-> 	/* Avoid potential lockdep warnings from the *_flush() calls by
-> 	 * ensuring the workqueue is empty up front.
-> 	 */
-> 	drain_workqueue(hdev->workqueue);
-
-
-Please bear with me for a moment.
-
-I'll attach the correct kernel dump and resend the patch email.
-
-
-Warm regards,
-
-Yunseong Kim
+Brian Gerst
 
