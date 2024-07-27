@@ -1,971 +1,159 @@
-Return-Path: <stable+bounces-61963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D04093DE52
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 11:44:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF33993DE84
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 12:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FBE21C21854
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 09:44:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DBD81F221EF
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 10:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F97055894;
-	Sat, 27 Jul 2024 09:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B9442045;
+	Sat, 27 Jul 2024 10:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jopIRZwh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ok4AWHb4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239066CDC8;
-	Sat, 27 Jul 2024 09:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AADB328B6;
+	Sat, 27 Jul 2024 10:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722073399; cv=none; b=nbpLhPh3Esvw2eUuHrqZhrYUVEND+4vkjUcQjo+8Fd4NQR5DEOgE5HL+w6hW6rCHuF6MQVce1Y1ahlc2iFVTWpvH+H2pPJLupB3PPqVDsSkAhk/8ntbkmo+igdr47xLBevwuOGS072qNaLwpu2j6LFbqoAzrqxITlijv2xmap5o=
+	t=1722074602; cv=none; b=tURSkxlw2xw1zwkrUApuXGdEjz2mUMxfnTrMbEuOYuKAnzIh9/C7J0RNihAvMDVY2UyYzuXqpDRz4IkrfNPhN7zt+sFkEVA7XTTttjVONCu0dtD5UuwZ76PoYIsaZEloROAsvqoDnGoLD9Ged89jv+AQW5YYHMyRQDvhVCqeTWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722073399; c=relaxed/simple;
-	bh=tnrPtZzPv34HoAsItb91DvI2T7OdQRZCt9Kp6Ehj/bQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JG5lOMEKoy4JNBr5+SjML7lz4gaxQFbG80bvrx7zq6YD+zsgVGXRWEDvdXirmWyzj1GSWJf9iNiF1ohKWcE+BL1YyUK+4DQJDFCGJ1TawcwhvuwXJWCzD/d4Dv6FxogqqPAz+PnaUHfmMBsbg6o1ojE3jeAFu3E3gxZddCVtpW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jopIRZwh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5779C32786;
-	Sat, 27 Jul 2024 09:43:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722073398;
-	bh=tnrPtZzPv34HoAsItb91DvI2T7OdQRZCt9Kp6Ehj/bQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jopIRZwhvWKFDetyVMGRnJ731eRgyeHCS9Qdmy+e0SerEX85LHaoUTCg+UDMi+e8B
-	 BysxSEbmBo7yrswNDVsOBZIe72v8MnzgWX5mpd79QFTzhnWj9QZWivftHte60hjHWd
-	 3HzsOZq4B3MGkMwLyqC09lUA579/ym3szEMzvNvc=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	torvalds@linux-foundation.org,
-	stable@vger.kernel.org
-Cc: lwn@lwn.net,
-	jslaby@suse.cz,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.10.2
-Date: Sat, 27 Jul 2024 11:42:58 +0200
-Message-ID: <2024072758-derived-deviant-9f90@gregkh>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024072758-untold-deflected-6abf@gregkh>
-References: <2024072758-untold-deflected-6abf@gregkh>
+	s=arc-20240116; t=1722074602; c=relaxed/simple;
+	bh=Z15GjYBZCh0HcGaZaCE/4VnIjxekyMTKY0iRxlGu1PA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MHVvu16xXim+eGK0vHZSxB7CKQybbCGq/QIBc2W9CQDnhgz4qa/R4L354gGj9KSLDzlu84pYGVjMmN0XIbjs3BzFMeLMVjli2mgEZAG29+JCxTL6UuPIQyfFacpPCczSgGhx+cCyWhZfKBHFbPvoxL1vK8N+CBAwu83ALqO84Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ok4AWHb4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77796C32781;
+	Sat, 27 Jul 2024 10:03:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722074602;
+	bh=Z15GjYBZCh0HcGaZaCE/4VnIjxekyMTKY0iRxlGu1PA=;
+	h=From:Subject:Date:To:Cc:From;
+	b=ok4AWHb4QaT3BZQStD15E36iUCU2UuDBcNPlFOIA/DhOH0azzybPlLfvzbSglEIbB
+	 69WRkdqlckQBFasTxvqUJa3OkbGDLyCAYzTqouNn5NH5Ln0x7uBVIMP4/Ypi3+91nx
+	 0VjFEPmwpT+iUvzd2Zyn6yueK+5ksV6vRv16s0UKhLycxD+W/gaXVfF2c92C82NslT
+	 Q26gG7Dl+Vl8uofcKh3jrDQAevL5hut2L1xglpuin3UPu6p3iYhRZrQ34FF4xAyYrW
+	 HeETB2+viF2VZZjKu4hPh/sPKNCN2gbDFEPeAA1Cl2DhidvXQr85y5p/0R3O/t2B8Q
+	 SmfpxvOlAjorw==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/7] mptcp: fix inconsistent backup usage
+Date: Sat, 27 Jul 2024 12:01:22 +0200
+Message-Id: <20240727-upstream-net-20240727-mptcp-backup-signal-v1-0-f50b31604cf1@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHLFpGYC/z2NQQrCQAxFr1KyNjDGSqtXERdxmtagHcNkKkLp3
+ R1cuHwf3n8ruGQVh3OzQpa3ur5Shf2ugXjnNAnqUBkoUBs66nAxL1l4xiQF/+tsJRreOD4WQ9c
+ p8RNPbU+H40g8hB7qn2UZ9fNrXaDacN22LxQ5gKyAAAAA
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Florian Westphal <fw@strlen.de>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ linux-trace-kernel@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3260; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=Z15GjYBZCh0HcGaZaCE/4VnIjxekyMTKY0iRxlGu1PA=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmpMXlT5eTB1icmHhpv0jNQaUD+kXrTj7d4lnyU
+ VRbbOKUdgaJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZqTF5QAKCRD2t4JPQmmg
+ c80rEAC4OrIKiaeZgNf9fW+ItbNT/z72+ZfFjWqCFiN4s0EIaTDtxXDJ1VSScHeg/YXeE9Cpqvi
+ FmK0vhIK/5pYs9W3EJTPSr+VBxvvm67VhgrnnUixnIvrXhpWr8rqZAi6dPuGGSQvUSlmwH/TEN2
+ gNFhOABr3/g6D9tzbKs5tn03v35sD0Fce6KjG9pnGQPc+hV+BBLbtHgEo/nKeXh3ZTJmFBAIWjm
+ ZFDvHFM9455J3gg5uYtL7O26WTZNOhtUplm+q4K/mPqurrVFRSGU7DHYEyy+KbJPW7QjckqG3eP
+ KEpqZGZqsPjIeBZZ/dH3pncnUHKSeX0fwkQAkKc+SxecsVxugNWr94s8Y98/cf4q9L8AW3H+iy8
+ 5YfTiveoY13H2k3ybT63Ah+7tYWaZm7oAYhcPwXFhHaeP3iGZg0WqGF1c7FDPXbJwAAtIcHTxCo
+ Bral6iKRxAAqxTM4S6iHDYhL43T0Wl88I4xOXNbJTLtELT4UoKCHUpLIuINJWbfaOMhjYOJ8jJo
+ ksWrPdeoTPVqRKMqWi8P8CJbOFuyNcuHpS4s4hUaiF0x728Eu9n9E0Zla0r4bVlrsOkRjyc/k4z
+ vuA26TKI89vF2Y45qInICfadQs9OK4w6p0sYzZirm6oCr9ejCezbmIUK+GaTZ/I7dB1UFuCJqNS
+ qGQnhhmzxn3VXuA==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-diff --git a/Makefile b/Makefile
-index 9ae12a6c0ece..07e1aec72c17 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 10
--SUBLEVEL = 1
-+SUBLEVEL = 2
- EXTRAVERSION =
- NAME = Baby Opossum Posse
- 
-diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-index 17ab6c475958..625abd976cac 100644
---- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-@@ -685,6 +685,7 @@ dwc_0: usb@8a00000 {
- 				clocks = <&xo>;
- 				clock-names = "ref";
- 				tx-fifo-resize;
-+				snps,parkmode-disable-ss-quirk;
- 				snps,is-utmi-l1-suspend;
- 				snps,hird-threshold = /bits/ 8 <0x0>;
- 				snps,dis_u2_susphy_quirk;
-diff --git a/arch/arm64/boot/dts/qcom/ipq8074.dtsi b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-index 5d42de829e75..ca75b7de7bf3 100644
---- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-@@ -666,6 +666,7 @@ dwc_0: usb@8a00000 {
- 				interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>;
- 				phys = <&qusb_phy_0>, <&ssphy_0>;
- 				phy-names = "usb2-phy", "usb3-phy";
-+				snps,parkmode-disable-ss-quirk;
- 				snps,is-utmi-l1-suspend;
- 				snps,hird-threshold = /bits/ 8 <0x0>;
- 				snps,dis_u2_susphy_quirk;
-@@ -715,6 +716,7 @@ dwc_1: usb@8c00000 {
- 				interrupts = <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>;
- 				phys = <&qusb_phy_1>, <&ssphy_1>;
- 				phy-names = "usb2-phy", "usb3-phy";
-+				snps,parkmode-disable-ss-quirk;
- 				snps,is-utmi-l1-suspend;
- 				snps,hird-threshold = /bits/ 8 <0x0>;
- 				snps,dis_u2_susphy_quirk;
-diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-index 8d2cb6f41095..6e7a4bb08b35 100644
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -3091,6 +3091,7 @@ usb3_dwc3: usb@6a00000 {
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
- 				snps,is-utmi-l1-suspend;
-+				snps,parkmode-disable-ss-quirk;
- 				tx-fifo-resize;
- 			};
- 		};
-diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index d795b2bbe133..2dbef4b526ab 100644
---- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -2164,6 +2164,7 @@ usb3_dwc3: usb@a800000 {
- 				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&qusb2phy>, <&usb3phy>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 				snps,has-lpm-erratum;
-diff --git a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
-index bb5191422660..8c27d52139a1 100644
---- a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
-@@ -59,6 +59,17 @@ hdmi_con: endpoint {
- 		};
- 	};
- 
-+	i2c2_gpio: i2c {
-+		compatible = "i2c-gpio";
-+
-+		sda-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
-+		scl-gpios = <&tlmm 7 GPIO_ACTIVE_HIGH>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		status = "disabled";
-+	};
-+
- 	leds {
- 		compatible = "gpio-leds";
- 
-@@ -199,7 +210,7 @@ &gpi_dma0 {
- 	status = "okay";
- };
- 
--&i2c2 {
-+&i2c2_gpio {
- 	clock-frequency = <400000>;
- 	status = "okay";
- 
-diff --git a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-index 2c39bb1b97db..cb8a62714a30 100644
---- a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-@@ -60,6 +60,17 @@ hdmi_con: endpoint {
- 		};
- 	};
- 
-+	i2c2_gpio: i2c {
-+		compatible = "i2c-gpio";
-+
-+		sda-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
-+		scl-gpios = <&tlmm 7 GPIO_ACTIVE_HIGH>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		status = "disabled";
-+	};
-+
- 	leds {
- 		compatible = "gpio-leds";
- 
-@@ -190,7 +201,7 @@ zap-shader {
- 	};
- };
- 
--&i2c2 {
-+&i2c2_gpio {
- 	clock-frequency = <400000>;
- 	status = "okay";
- 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-index 4774a859bd7e..e9deffe3aaf6 100644
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -3067,6 +3067,7 @@ usb_1_dwc3: usb@a600000 {
- 				iommus = <&apps_smmu 0x540 0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 				maximum-speed = "super-speed";
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index fc9ec367e3a5..2f7780f629ac 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -4150,6 +4150,7 @@ usb_1_dwc3: usb@a600000 {
- 				iommus = <&apps_smmu 0xe0 0x0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 				maximum-speed = "super-speed";
-diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index f5921b80ef94..5f6884b2367d 100644
---- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -1302,6 +1302,7 @@ usb3_dwc3: usb@a800000 {
- 				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 
- 				phys = <&qusb2phy0>, <&usb3_qmpphy>;
- 				phy-names = "usb2-phy", "usb3-phy";
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 10de2bd46ffc..d817a7751086 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4106,6 +4106,7 @@ usb_1_dwc3: usb@a600000 {
- 				iommus = <&apps_smmu 0x740 0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 			};
-@@ -4161,6 +4162,7 @@ usb_2_dwc3: usb@a800000 {
- 				iommus = <&apps_smmu 0x760 0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_2_hsphy>, <&usb_2_qmpphy>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 			};
-diff --git a/arch/arm64/boot/dts/qcom/sm6115.dtsi b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-index 9ed062150aaf..b4ce5a322107 100644
---- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-@@ -1656,6 +1656,7 @@ usb_dwc3: usb@4e00000 {
- 				snps,has-lpm-erratum;
- 				snps,hird-threshold = /bits/ 8 <0x10>;
- 				snps,usb3_lpm_capable;
-+				snps,parkmode-disable-ss-quirk;
- 
- 				usb-role-switch;
- 
-diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-index 84ff20a96c83..6c7eac0110ba 100644
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -1890,6 +1890,7 @@ usb_1_dwc3: usb@a600000 {
- 				snps,dis_enblslpm_quirk;
- 				snps,has-lpm-erratum;
- 				snps,hird-threshold = /bits/ 8 <0x10>;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 			};
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-index be6b1e7d07ce..7618ae1f8b1c 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-@@ -659,7 +659,7 @@ &pcie6a {
- };
- 
- &pcie6a_phy {
--	vdda-phy-supply = <&vreg_l3j_0p8>;
-+	vdda-phy-supply = <&vreg_l1d_0p8>;
- 	vdda-pll-supply = <&vreg_l2j_1p2>;
- 
- 	status = "okay";
-@@ -841,7 +841,7 @@ &uart21 {
- 
- &usb_1_ss0_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_0_eusb2_repeater>;
- 
-@@ -849,6 +849,9 @@ &usb_1_ss0_hsphy {
- };
- 
- &usb_1_ss0_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l1j_0p8>;
-+
- 	status = "okay";
- };
- 
-@@ -863,7 +866,7 @@ &usb_1_ss0_dwc3 {
- 
- &usb_1_ss1_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_1_eusb2_repeater>;
- 
-@@ -871,6 +874,9 @@ &usb_1_ss1_hsphy {
- };
- 
- &usb_1_ss1_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l2d_0p9>;
-+
- 	status = "okay";
- };
- 
-@@ -885,7 +891,7 @@ &usb_1_ss1_dwc3 {
- 
- &usb_1_ss2_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_2_eusb2_repeater>;
- 
-@@ -893,6 +899,9 @@ &usb_1_ss2_hsphy {
- };
- 
- &usb_1_ss2_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l2d_0p9>;
-+
- 	status = "okay";
- };
- 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-index 8f67c393b871..5567636c8b27 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-@@ -470,7 +470,7 @@ &pcie6a {
- };
- 
- &pcie6a_phy {
--	vdda-phy-supply = <&vreg_l3j_0p8>;
-+	vdda-phy-supply = <&vreg_l1d_0p8>;
- 	vdda-pll-supply = <&vreg_l2j_1p2>;
- 
- 	status = "okay";
-@@ -537,7 +537,7 @@ &uart21 {
- 
- &usb_1_ss0_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_0_eusb2_repeater>;
- 
-@@ -545,6 +545,9 @@ &usb_1_ss0_hsphy {
- };
- 
- &usb_1_ss0_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l1j_0p8>;
-+
- 	status = "okay";
- };
- 
-@@ -559,7 +562,7 @@ &usb_1_ss0_dwc3 {
- 
- &usb_1_ss1_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_1_eusb2_repeater>;
- 
-@@ -567,6 +570,9 @@ &usb_1_ss1_hsphy {
- };
- 
- &usb_1_ss1_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l2d_0p9>;
-+
- 	status = "okay";
- };
- 
-@@ -581,7 +587,7 @@ &usb_1_ss1_dwc3 {
- 
- &usb_1_ss2_hsphy {
- 	vdd-supply = <&vreg_l2e_0p8>;
--	vdda12-supply = <&vreg_l3e_1p2>;
-+	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_2_eusb2_repeater>;
- 
-@@ -589,6 +595,9 @@ &usb_1_ss2_hsphy {
- };
- 
- &usb_1_ss2_qmpphy {
-+	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-pll-supply = <&vreg_l2d_0p9>;
-+
- 	status = "okay";
- };
- 
-diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-index 65747f15dbec..c848966ed175 100644
---- a/arch/s390/mm/fault.c
-+++ b/arch/s390/mm/fault.c
-@@ -433,12 +433,13 @@ static void do_exception(struct pt_regs *regs, int access)
- 			handle_fault_error_nolock(regs, 0);
- 		else
- 			do_sigsegv(regs, SEGV_MAPERR);
--	} else if (fault & VM_FAULT_SIGBUS) {
-+	} else if (fault & (VM_FAULT_SIGBUS | VM_FAULT_HWPOISON)) {
- 		if (!user_mode(regs))
- 			handle_fault_error_nolock(regs, 0);
- 		else
- 			do_sigbus(regs);
- 	} else {
-+		pr_emerg("Unexpected fault flags: %08x\n", fault);
- 		BUG();
- 	}
- }
-diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-index 101038395c3b..772604feb6ac 100644
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -2017,7 +2017,7 @@ static int sdma_v4_0_process_trap_irq(struct amdgpu_device *adev,
- 				      struct amdgpu_irq_src *source,
- 				      struct amdgpu_iv_entry *entry)
- {
--	uint32_t instance;
-+	int instance;
- 
- 	DRM_DEBUG("IH: SDMA trap\n");
- 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index bfdd3875fe86..77574f7a3bd4 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -1177,6 +1177,11 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
- 	struct sk_buff *skb;
- 	int err, depth;
- 
-+	if (unlikely(xdp->data_end - xdp->data < ETH_HLEN)) {
-+		err = -EINVAL;
-+		goto err;
-+	}
-+
- 	if (q->flags & IFF_VNET_HDR)
- 		vnet_hdr_len = READ_ONCE(q->vnet_hdr_sz);
- 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 9254bca2813d..4a5107117b4a 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -2451,6 +2451,9 @@ static int tun_xdp_one(struct tun_struct *tun,
- 	bool skb_xdp = false;
- 	struct page *page;
- 
-+	if (unlikely(datasize < ETH_HLEN))
-+		return -EINVAL;
-+
- 	xdp_prog = rcu_dereference(tun->xdp_prog);
- 	if (xdp_prog) {
- 		if (gso->gso_type) {
-diff --git a/drivers/usb/gadget/function/f_midi2.c b/drivers/usb/gadget/function/f_midi2.c
-index ec8cd7c7bbfc..0e38bb145e8f 100644
---- a/drivers/usb/gadget/function/f_midi2.c
-+++ b/drivers/usb/gadget/function/f_midi2.c
-@@ -150,6 +150,9 @@ struct f_midi2 {
- 
- #define func_to_midi2(f)	container_of(f, struct f_midi2, func)
- 
-+/* convert from MIDI protocol number (1 or 2) to SNDRV_UMP_EP_INFO_PROTO_* */
-+#define to_ump_protocol(v)	(((v) & 3) << 8)
-+
- /* get EP name string */
- static const char *ump_ep_name(const struct f_midi2_ep *ep)
- {
-@@ -564,8 +567,7 @@ static void reply_ump_stream_ep_config(struct f_midi2_ep *ep)
- 		.status = UMP_STREAM_MSG_STATUS_STREAM_CFG,
- 	};
- 
--	if ((ep->info.protocol & SNDRV_UMP_EP_INFO_PROTO_MIDI_MASK) ==
--	    SNDRV_UMP_EP_INFO_PROTO_MIDI2)
-+	if (ep->info.protocol == 2)
- 		rep.protocol = UMP_STREAM_MSG_EP_INFO_CAP_MIDI2 >> 8;
- 	else
- 		rep.protocol = UMP_STREAM_MSG_EP_INFO_CAP_MIDI1 >> 8;
-@@ -627,13 +629,13 @@ static void process_ump_stream_msg(struct f_midi2_ep *ep, const u32 *data)
- 		return;
- 	case UMP_STREAM_MSG_STATUS_STREAM_CFG_REQUEST:
- 		if (*data & UMP_STREAM_MSG_EP_INFO_CAP_MIDI2) {
--			ep->info.protocol = SNDRV_UMP_EP_INFO_PROTO_MIDI2;
-+			ep->info.protocol = 2;
- 			DBG(midi2, "Switching Protocol to MIDI2\n");
- 		} else {
--			ep->info.protocol = SNDRV_UMP_EP_INFO_PROTO_MIDI1;
-+			ep->info.protocol = 1;
- 			DBG(midi2, "Switching Protocol to MIDI1\n");
- 		}
--		snd_ump_switch_protocol(ep->ump, ep->info.protocol);
-+		snd_ump_switch_protocol(ep->ump, to_ump_protocol(ep->info.protocol));
- 		reply_ump_stream_ep_config(ep);
- 		return;
- 	case UMP_STREAM_MSG_STATUS_FB_DISCOVERY:
-@@ -1065,7 +1067,8 @@ static void f_midi2_midi1_ep_out_complete(struct usb_ep *usb_ep,
- 		group = midi2->out_cable_mapping[cable].group;
- 		bytes = midi1_packet_bytes[*buf & 0x0f];
- 		for (c = 0; c < bytes; c++) {
--			snd_ump_convert_to_ump(cvt, group, ep->info.protocol,
-+			snd_ump_convert_to_ump(cvt, group,
-+					       to_ump_protocol(ep->info.protocol),
- 					       buf[c + 1]);
- 			if (cvt->ump_bytes) {
- 				snd_ump_receive(ep->ump, cvt->ump,
-@@ -1375,7 +1378,7 @@ static void assign_block_descriptors(struct f_midi2 *midi2,
- 			desc->nNumGroupTrm = b->num_groups;
- 			desc->iBlockItem = ep->blks[blk].string_id;
- 
--			if (ep->info.protocol & SNDRV_UMP_EP_INFO_PROTO_MIDI2)
-+			if (ep->info.protocol == 2)
- 				desc->bMIDIProtocol = USB_MS_MIDI_PROTO_2_0;
- 			else
- 				desc->bMIDIProtocol = USB_MS_MIDI_PROTO_1_0_128;
-@@ -1552,7 +1555,7 @@ static int f_midi2_create_card(struct f_midi2 *midi2)
- 		if (midi2->info.static_block)
- 			ump->info.flags |= SNDRV_UMP_EP_INFO_STATIC_BLOCKS;
- 		ump->info.protocol_caps = (ep->info.protocol_caps & 3) << 8;
--		ump->info.protocol = (ep->info.protocol & 3) << 8;
-+		ump->info.protocol = to_ump_protocol(ep->info.protocol);
- 		ump->info.version = 0x0101;
- 		ump->info.family_id = ep->info.family;
- 		ump->info.model_id = ep->info.model;
-diff --git a/fs/jfs/xattr.c b/fs/jfs/xattr.c
-index 9987055293b3..2999ed5d83f5 100644
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -797,7 +797,7 @@ ssize_t __jfs_getxattr(struct inode *inode, const char *name, void *data,
- 		       size_t buf_size)
- {
- 	struct jfs_ea_list *ealist;
--	struct jfs_ea *ea;
-+	struct jfs_ea *ea, *ealist_end;
- 	struct ea_buffer ea_buf;
- 	int xattr_size;
- 	ssize_t size;
-@@ -817,9 +817,16 @@ ssize_t __jfs_getxattr(struct inode *inode, const char *name, void *data,
- 		goto not_found;
- 
- 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
-+	ealist_end = END_EALIST(ealist);
- 
- 	/* Find the named attribute */
--	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea))
-+	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
-+		if (unlikely(ea + 1 > ealist_end) ||
-+		    unlikely(NEXT_EA(ea) > ealist_end)) {
-+			size = -EUCLEAN;
-+			goto release;
-+		}
-+
- 		if ((namelen == ea->namelen) &&
- 		    memcmp(name, ea->name, namelen) == 0) {
- 			/* Found it */
-@@ -834,6 +841,7 @@ ssize_t __jfs_getxattr(struct inode *inode, const char *name, void *data,
- 			memcpy(data, value, size);
- 			goto release;
- 		}
-+	}
-       not_found:
- 	size = -ENODATA;
-       release:
-@@ -861,7 +869,7 @@ ssize_t jfs_listxattr(struct dentry * dentry, char *data, size_t buf_size)
- 	ssize_t size = 0;
- 	int xattr_size;
- 	struct jfs_ea_list *ealist;
--	struct jfs_ea *ea;
-+	struct jfs_ea *ea, *ealist_end;
- 	struct ea_buffer ea_buf;
- 
- 	down_read(&JFS_IP(inode)->xattr_sem);
-@@ -876,9 +884,16 @@ ssize_t jfs_listxattr(struct dentry * dentry, char *data, size_t buf_size)
- 		goto release;
- 
- 	ealist = (struct jfs_ea_list *) ea_buf.xattr;
-+	ealist_end = END_EALIST(ealist);
- 
- 	/* compute required size of list */
--	for (ea = FIRST_EA(ealist); ea < END_EALIST(ealist); ea = NEXT_EA(ea)) {
-+	for (ea = FIRST_EA(ealist); ea < ealist_end; ea = NEXT_EA(ea)) {
-+		if (unlikely(ea + 1 > ealist_end) ||
-+		    unlikely(NEXT_EA(ea) > ealist_end)) {
-+			size = -EUCLEAN;
-+			goto release;
-+		}
-+
- 		if (can_list(ea))
- 			size += name_size(ea) + 1;
- 	}
-diff --git a/fs/locks.c b/fs/locks.c
-index bdd94c32256f..9afb16e0683f 100644
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2570,8 +2570,9 @@ int fcntl_setlk64(unsigned int fd, struct file *filp, unsigned int cmd,
- 	error = do_lock_file_wait(filp, cmd, file_lock);
- 
- 	/*
--	 * Attempt to detect a close/fcntl race and recover by releasing the
--	 * lock that was just acquired. There is no need to do that when we're
-+	 * Detect close/fcntl races and recover by zapping all POSIX locks
-+	 * associated with this file and our files_struct, just like on
-+	 * filp_flush(). There is no need to do that when we're
- 	 * unlocking though, or for OFD locks.
- 	 */
- 	if (!error && file_lock->c.flc_type != F_UNLCK &&
-@@ -2586,9 +2587,7 @@ int fcntl_setlk64(unsigned int fd, struct file *filp, unsigned int cmd,
- 		f = files_lookup_fd_locked(files, fd);
- 		spin_unlock(&files->file_lock);
- 		if (f != filp) {
--			file_lock->c.flc_type = F_UNLCK;
--			error = do_lock_file_wait(filp, cmd, file_lock);
--			WARN_ON_ONCE(error);
-+			locks_remove_posix(filp, files);
- 			error = -EBADF;
- 		}
- 	}
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index d7807d255dfe..40926bf392d2 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -724,7 +724,8 @@ static bool check_rstbl(const struct RESTART_TABLE *rt, size_t bytes)
- 
- 	if (!rsize || rsize > bytes ||
- 	    rsize + sizeof(struct RESTART_TABLE) > bytes || bytes < ts ||
--	    le16_to_cpu(rt->total) > ne || ff > ts || lf > ts ||
-+	    le16_to_cpu(rt->total) > ne ||
-+			ff > ts - sizeof(__le32) || lf > ts - sizeof(__le32) ||
- 	    (ff && ff < sizeof(struct RESTART_TABLE)) ||
- 	    (lf && lf < sizeof(struct RESTART_TABLE))) {
- 		return false;
-@@ -754,6 +755,9 @@ static bool check_rstbl(const struct RESTART_TABLE *rt, size_t bytes)
- 			return false;
- 
- 		off = le32_to_cpu(*(__le32 *)Add2Ptr(rt, off));
-+
-+		if (off > ts - sizeof(__le32))
-+			return false;
- 	}
- 
- 	return true;
-@@ -3722,6 +3726,8 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 
- 	u64 rec_lsn, checkpt_lsn = 0, rlsn = 0;
- 	struct ATTR_NAME_ENTRY *attr_names = NULL;
-+	u32 attr_names_bytes = 0;
-+	u32 oatbl_bytes = 0;
- 	struct RESTART_TABLE *dptbl = NULL;
- 	struct RESTART_TABLE *trtbl = NULL;
- 	const struct RESTART_TABLE *rt;
-@@ -3736,6 +3742,7 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	struct NTFS_RESTART *rst = NULL;
- 	struct lcb *lcb = NULL;
- 	struct OPEN_ATTR_ENRTY *oe;
-+	struct ATTR_NAME_ENTRY *ane;
- 	struct TRANSACTION_ENTRY *tr;
- 	struct DIR_PAGE_ENTRY *dp;
- 	u32 i, bytes_per_attr_entry;
-@@ -4314,17 +4321,40 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	lcb = NULL;
- 
- check_attribute_names2:
--	if (rst->attr_names_len && oatbl) {
--		struct ATTR_NAME_ENTRY *ane = attr_names;
--		while (ane->off) {
-+	if (attr_names && oatbl) {
-+		off = 0;
-+		for (;;) {
-+			/* Check we can use attribute name entry 'ane'. */
-+			static_assert(sizeof(*ane) == 4);
-+			if (off + sizeof(*ane) > attr_names_bytes) {
-+				/* just ignore the rest. */
-+				break;
-+			}
-+
-+			ane = Add2Ptr(attr_names, off);
-+			t16 = le16_to_cpu(ane->off);
-+			if (!t16) {
-+				/* this is the only valid exit. */
-+				break;
-+			}
-+
-+			/* Check we can use open attribute entry 'oe'. */
-+			if (t16 + sizeof(*oe) > oatbl_bytes) {
-+				/* just ignore the rest. */
-+				break;
-+			}
-+
- 			/* TODO: Clear table on exit! */
--			oe = Add2Ptr(oatbl, le16_to_cpu(ane->off));
-+			oe = Add2Ptr(oatbl, t16);
- 			t16 = le16_to_cpu(ane->name_bytes);
-+			off += t16 + sizeof(*ane);
-+			if (off > attr_names_bytes) {
-+				/* just ignore the rest. */
-+				break;
-+			}
- 			oe->name_len = t16 / sizeof(short);
- 			oe->ptr = ane->name;
- 			oe->is_attr_name = 2;
--			ane = Add2Ptr(ane,
--				      sizeof(struct ATTR_NAME_ENTRY) + t16);
- 		}
- 	}
- 
-diff --git a/fs/ocfs2/dir.c b/fs/ocfs2/dir.c
-index d620d4c53c6f..f0beb173dbba 100644
---- a/fs/ocfs2/dir.c
-+++ b/fs/ocfs2/dir.c
-@@ -294,13 +294,16 @@ static void ocfs2_dx_dir_name_hash(struct inode *dir, const char *name, int len,
-  * bh passed here can be an inode block or a dir data block, depending
-  * on the inode inline data flag.
-  */
--static int ocfs2_check_dir_entry(struct inode * dir,
--				 struct ocfs2_dir_entry * de,
--				 struct buffer_head * bh,
-+static int ocfs2_check_dir_entry(struct inode *dir,
-+				 struct ocfs2_dir_entry *de,
-+				 struct buffer_head *bh,
-+				 char *buf,
-+				 unsigned int size,
- 				 unsigned long offset)
- {
- 	const char *error_msg = NULL;
- 	const int rlen = le16_to_cpu(de->rec_len);
-+	const unsigned long next_offset = ((char *) de - buf) + rlen;
- 
- 	if (unlikely(rlen < OCFS2_DIR_REC_LEN(1)))
- 		error_msg = "rec_len is smaller than minimal";
-@@ -308,9 +311,11 @@ static int ocfs2_check_dir_entry(struct inode * dir,
- 		error_msg = "rec_len % 4 != 0";
- 	else if (unlikely(rlen < OCFS2_DIR_REC_LEN(de->name_len)))
- 		error_msg = "rec_len is too small for name_len";
--	else if (unlikely(
--		 ((char *) de - bh->b_data) + rlen > dir->i_sb->s_blocksize))
--		error_msg = "directory entry across blocks";
-+	else if (unlikely(next_offset > size))
-+		error_msg = "directory entry overrun";
-+	else if (unlikely(next_offset > size - OCFS2_DIR_REC_LEN(1)) &&
-+		 next_offset != size)
-+		error_msg = "directory entry too close to end";
- 
- 	if (unlikely(error_msg != NULL))
- 		mlog(ML_ERROR, "bad entry in directory #%llu: %s - "
-@@ -352,16 +357,17 @@ static inline int ocfs2_search_dirblock(struct buffer_head *bh,
- 	de_buf = first_de;
- 	dlimit = de_buf + bytes;
- 
--	while (de_buf < dlimit) {
-+	while (de_buf < dlimit - OCFS2_DIR_MEMBER_LEN) {
- 		/* this code is executed quadratically often */
- 		/* do minimal checking `by hand' */
- 
- 		de = (struct ocfs2_dir_entry *) de_buf;
- 
--		if (de_buf + namelen <= dlimit &&
-+		if (de->name + namelen <= dlimit &&
- 		    ocfs2_match(namelen, name, de)) {
- 			/* found a match - just to be sure, do a full check */
--			if (!ocfs2_check_dir_entry(dir, de, bh, offset)) {
-+			if (!ocfs2_check_dir_entry(dir, de, bh, first_de,
-+						   bytes, offset)) {
- 				ret = -1;
- 				goto bail;
- 			}
-@@ -1138,7 +1144,7 @@ static int __ocfs2_delete_entry(handle_t *handle, struct inode *dir,
- 	pde = NULL;
- 	de = (struct ocfs2_dir_entry *) first_de;
- 	while (i < bytes) {
--		if (!ocfs2_check_dir_entry(dir, de, bh, i)) {
-+		if (!ocfs2_check_dir_entry(dir, de, bh, first_de, bytes, i)) {
- 			status = -EIO;
- 			mlog_errno(status);
- 			goto bail;
-@@ -1635,7 +1641,8 @@ int __ocfs2_add_entry(handle_t *handle,
- 		/* These checks should've already been passed by the
- 		 * prepare function, but I guess we can leave them
- 		 * here anyway. */
--		if (!ocfs2_check_dir_entry(dir, de, insert_bh, offset)) {
-+		if (!ocfs2_check_dir_entry(dir, de, insert_bh, data_start,
-+					   size, offset)) {
- 			retval = -ENOENT;
- 			goto bail;
- 		}
-@@ -1774,7 +1781,8 @@ static int ocfs2_dir_foreach_blk_id(struct inode *inode,
- 		}
- 
- 		de = (struct ocfs2_dir_entry *) (data->id_data + ctx->pos);
--		if (!ocfs2_check_dir_entry(inode, de, di_bh, ctx->pos)) {
-+		if (!ocfs2_check_dir_entry(inode, de, di_bh, (char *)data->id_data,
-+					   i_size_read(inode), ctx->pos)) {
- 			/* On error, skip the f_pos to the end. */
- 			ctx->pos = i_size_read(inode);
- 			break;
-@@ -1867,7 +1875,8 @@ static int ocfs2_dir_foreach_blk_el(struct inode *inode,
- 		while (ctx->pos < i_size_read(inode)
- 		       && offset < sb->s_blocksize) {
- 			de = (struct ocfs2_dir_entry *) (bh->b_data + offset);
--			if (!ocfs2_check_dir_entry(inode, de, bh, offset)) {
-+			if (!ocfs2_check_dir_entry(inode, de, bh, bh->b_data,
-+						   sb->s_blocksize, offset)) {
- 				/* On error, skip the f_pos to the
- 				   next block. */
- 				ctx->pos = (ctx->pos | (sb->s_blocksize - 1)) + 1;
-@@ -3339,7 +3348,7 @@ static int ocfs2_find_dir_space_id(struct inode *dir, struct buffer_head *di_bh,
- 	struct super_block *sb = dir->i_sb;
- 	struct ocfs2_dinode *di = (struct ocfs2_dinode *)di_bh->b_data;
- 	struct ocfs2_dir_entry *de, *last_de = NULL;
--	char *de_buf, *limit;
-+	char *first_de, *de_buf, *limit;
- 	unsigned long offset = 0;
- 	unsigned int rec_len, new_rec_len, free_space;
- 
-@@ -3352,14 +3361,16 @@ static int ocfs2_find_dir_space_id(struct inode *dir, struct buffer_head *di_bh,
- 	else
- 		free_space = dir->i_sb->s_blocksize - i_size_read(dir);
- 
--	de_buf = di->id2.i_data.id_data;
-+	first_de = di->id2.i_data.id_data;
-+	de_buf = first_de;
- 	limit = de_buf + i_size_read(dir);
- 	rec_len = OCFS2_DIR_REC_LEN(namelen);
- 
- 	while (de_buf < limit) {
- 		de = (struct ocfs2_dir_entry *)de_buf;
- 
--		if (!ocfs2_check_dir_entry(dir, de, di_bh, offset)) {
-+		if (!ocfs2_check_dir_entry(dir, de, di_bh, first_de,
-+					   i_size_read(dir), offset)) {
- 			ret = -ENOENT;
- 			goto out;
- 		}
-@@ -3441,7 +3452,8 @@ static int ocfs2_find_dir_space_el(struct inode *dir, const char *name,
- 			/* move to next block */
- 			de = (struct ocfs2_dir_entry *) bh->b_data;
- 		}
--		if (!ocfs2_check_dir_entry(dir, de, bh, offset)) {
-+		if (!ocfs2_check_dir_entry(dir, de, bh, bh->b_data, blocksize,
-+					   offset)) {
- 			status = -ENOENT;
- 			goto bail;
- 		}
-diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
-index cc5db93b9132..4786b5a0b984 100644
---- a/sound/core/pcm_dmaengine.c
-+++ b/sound/core/pcm_dmaengine.c
-@@ -352,8 +352,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_open_request_chan);
- int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream)
- {
- 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
-+	struct dma_tx_state state;
-+	enum dma_status status;
- 
--	dmaengine_synchronize(prtd->dma_chan);
-+	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
-+	if (status != DMA_PAUSED)
-+		dmaengine_synchronize(prtd->dma_chan);
- 
- 	return 0;
- }
-diff --git a/sound/core/seq/seq_ump_client.c b/sound/core/seq/seq_ump_client.c
-index c627d72f7fe2..9cdfbeae3ed5 100644
---- a/sound/core/seq/seq_ump_client.c
-+++ b/sound/core/seq/seq_ump_client.c
-@@ -28,6 +28,7 @@ struct seq_ump_group {
- 	int group;			/* group index (0-based) */
- 	unsigned int dir_bits;		/* directions */
- 	bool active;			/* activeness */
-+	bool valid;			/* valid group (referred by blocks) */
- 	char name[64];			/* seq port name */
- };
- 
-@@ -210,6 +211,13 @@ static void fill_port_info(struct snd_seq_port_info *port,
- 		sprintf(port->name, "Group %d", group->group + 1);
- }
- 
-+/* skip non-existing group for static blocks */
-+static bool skip_group(struct seq_ump_client *client, struct seq_ump_group *group)
-+{
-+	return !group->valid &&
-+		(client->ump->info.flags & SNDRV_UMP_EP_INFO_STATIC_BLOCKS);
-+}
-+
- /* create a new sequencer port per UMP group */
- static int seq_ump_group_init(struct seq_ump_client *client, int group_index)
- {
-@@ -217,6 +225,9 @@ static int seq_ump_group_init(struct seq_ump_client *client, int group_index)
- 	struct snd_seq_port_info *port __free(kfree) = NULL;
- 	struct snd_seq_port_callback pcallbacks;
- 
-+	if (skip_group(client, group))
-+		return 0;
-+
- 	port = kzalloc(sizeof(*port), GFP_KERNEL);
- 	if (!port)
- 		return -ENOMEM;
-@@ -250,6 +261,9 @@ static void update_port_infos(struct seq_ump_client *client)
- 		return;
- 
- 	for (i = 0; i < SNDRV_UMP_MAX_GROUPS; i++) {
-+		if (skip_group(client, &client->groups[i]))
-+			continue;
-+
- 		old->addr.client = client->seq_client;
- 		old->addr.port = i;
- 		err = snd_seq_kernel_client_ctl(client->seq_client,
-@@ -284,6 +298,7 @@ static void update_group_attrs(struct seq_ump_client *client)
- 		group->dir_bits = 0;
- 		group->active = 0;
- 		group->group = i;
-+		group->valid = false;
- 	}
- 
- 	list_for_each_entry(fb, &client->ump->block_list, list) {
-@@ -291,6 +306,7 @@ static void update_group_attrs(struct seq_ump_client *client)
- 			break;
- 		group = &client->groups[fb->info.first_group];
- 		for (i = 0; i < fb->info.num_groups; i++, group++) {
-+			group->valid = true;
- 			if (fb->info.active)
- 				group->active = 1;
- 			switch (fb->info.direction) {
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 766f0b1d3e9d..6f4512b598ea 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10384,6 +10384,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
- 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
- 	SND_PCI_QUIRK(0x10ec, 0x118c, "Medion EE4254 MD62100", ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x10ec, 0x119e, "Positivo SU C1400", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x10ec, 0x11bc, "VAIO VJFE-IL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x10ec, 0x1230, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
-@@ -10398,6 +10399,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x144d, 0xc189, "Samsung Galaxy Flex Book (NT950QCG-X716)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc18a, "Samsung Galaxy Book Ion (NP930XCJ-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc1a3, "Samsung Galaxy Book Pro (NP935XDB-KC1SE)", ALC298_FIXUP_SAMSUNG_AMP),
-+	SND_PCI_QUIRK(0x144d, 0xc1a4, "Samsung Galaxy Book Pro 360 (NT935QBD)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc1a6, "Samsung Galaxy Book Pro 360 (NP930QBD)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc740, "Samsung Ativ book 8 (NP870Z5G)", ALC269_FIXUP_ATIV_BOOK_8),
- 	SND_PCI_QUIRK(0x144d, 0xc812, "Samsung Notebook Pen S (NT950SBE-X58)", ALC298_FIXUP_SAMSUNG_AMP),
-@@ -10539,6 +10541,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x231a, "Thinkpad Z16 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
- 	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
- 	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
-+	SND_PCI_QUIRK(0x17aa, 0x2326, "Hera2", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x30bb, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
- 	SND_PCI_QUIRK(0x17aa, 0x30e2, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
- 	SND_PCI_QUIRK(0x17aa, 0x310c, "ThinkCentre Station", ALC294_FIXUP_LENOVO_MIC_LOCATION),
+In all the MPTCP backup related tests, the backup flag was set on one
+side, and the expected behaviour is to have both sides respecting this
+decision. That's also the "natural" way, and what the users seem to
+expect.
+
+On the scheduler side, only the 'backup' field was checked, which is
+supposed to be set only if the other peer flagged a subflow as backup.
+But in various places, this flag was also set when the local host
+flagged the subflow as backup, certainly to have the expected behaviour
+mentioned above.
+
+Patch 1 modifies the packet scheduler to check if the backup flag has
+been set on both directions, not to change its behaviour after having
+applied the following patches. That's what the default packet scheduler
+should have done since the beginning in v5.7.
+
+Patch 2 fixes the backup flag being mirrored on the MPJ+SYN+ACK by
+accident since its introduction in v5.7. Instead, the received and sent
+backup flags are properly distinguished in requests.
+
+Patch 3 stops setting the received backup flag as well when sending an
+MP_PRIO, something that was done since the MP_PRIO support in v5.12.
+
+Patch 4 adds related and missing MIB counters to be able to easily check
+if MP_JOIN are sent with a backup flag. Certainly because these counters
+were not there, the behaviour that is fixed by patches here was not
+properly verified.
+
+Patch 5 validates the previous patch by extending the MPTCP Join
+selftest.
+
+Patch 6 fixes the backup support in signal endpoints: if a signal
+endpoint had the backup flag, it was not set in the MPJ+SYN+ACK as
+expected. It was only set for ongoing connections, but not future ones
+as expected, since the introduction of the backup flag in endpoints in
+v5.10.
+
+Patch 7 validates the previous patch by extending the MPTCP Join
+selftest as well.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Matthieu Baerts (NGI0) (7):
+      mptcp: sched: check both directions for backup
+      mptcp: distinguish rcv vs sent backup flag in requests
+      mptcp: pm: only set request_bkup flag when sending MP_PRIO
+      mptcp: mib: count MPJ with backup flag
+      selftests: mptcp: join: validate backup in MPJ
+      mptcp: pm: fix backup support in signal endpoints
+      selftests: mptcp: join: check backup support in signal endp
+
+ include/trace/events/mptcp.h                    |  2 +-
+ net/mptcp/mib.c                                 |  2 +
+ net/mptcp/mib.h                                 |  2 +
+ net/mptcp/options.c                             |  2 +-
+ net/mptcp/pm.c                                  | 12 +++++
+ net/mptcp/pm_netlink.c                          | 19 ++++++-
+ net/mptcp/pm_userspace.c                        | 18 +++++++
+ net/mptcp/protocol.c                            | 10 ++--
+ net/mptcp/protocol.h                            |  4 ++
+ net/mptcp/subflow.c                             | 10 ++++
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 72 ++++++++++++++++++++-----
+ 11 files changed, 132 insertions(+), 21 deletions(-)
+---
+base-commit: 301927d2d2eb8e541357ba850bc7a1a74dbbd670
+change-id: 20240727-upstream-net-20240727-mptcp-backup-signal-948235f2ad08
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
