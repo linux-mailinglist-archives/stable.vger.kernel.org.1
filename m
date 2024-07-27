@@ -1,90 +1,123 @@
-Return-Path: <stable+bounces-61974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6828793E012
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 18:08:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE60E93E022
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 18:28:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 160CA1F21C64
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 16:08:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 912542822D2
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 16:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3B91849C6;
-	Sat, 27 Jul 2024 16:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731F91862B8;
+	Sat, 27 Jul 2024 16:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b="ui54UfmR"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="JCxihUNI"
 X-Original-To: stable@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA6118413A
-	for <stable@vger.kernel.org>; Sat, 27 Jul 2024 16:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35431822F8;
+	Sat, 27 Jul 2024 16:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722096478; cv=none; b=t8ZH1CO6TPISycatXB0HRIb6dV98V/4iKKpqdpzKnUpuPgKkB4eiJOUWJ8A73PnXKbL5l3tPTDjXBaaHSdGUTGkA+t0mdJeUGYPhDmbv0cvsgd22assLXHtYBnNu9hU0TdP7OFhGKjLzv8egxO4zFGF6IRyjVPb8u/1cKGgmLHA=
+	t=1722097721; cv=none; b=J9bWI4qPeJE8NE0LTbD5gChxWnbyk+ezggtIoBAA49bwP9+JmQgItfrUTMHZQ5//ItCHpXMLiIHBw6EV7xnGpaujb/dlY3ioo+zEU2SVr6lzLFzbQ5TPweod9dtRKmymwEaExosnSwTjVt2WNmsj4VnMXqcJ708IQRfvBsHLw+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722096478; c=relaxed/simple;
-	bh=282oIA90G5O2Ude1KXvz8VqSWcqJ7AUYamQOvYzpDe4=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc; b=G5WVlNDE3bqMAGS0aI/Vy8aKhWSdwdLuIWPn8yNVt0UxmutATfKAGJjwcL7osdkGiN+IVC84EYHSQlQz7ZX725Wa4sePWirZk5MD5C/b1rPLg+6Iy3LOAqzIqba8+glgzDEsms20ulYGKtZTxVsvete3X/YqoU/oyL4QAQPtISg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev; spf=pass smtp.mailfrom=holm.dev; dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b=ui54UfmR; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holm.dev
+	s=arc-20240116; t=1722097721; c=relaxed/simple;
+	bh=3f0zTor1mnvMTzO0DsCTtilH+K/71txNhBOAejZBYvw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QuunOKqMT+XJ4okVS3yLMQPqW8183kSM4D8gsSamLEtwQSm978n5veSqRSj8GMPa5DUg12UoUPJZZnwh9JNjFk5g5gQrliANgBwMmGLMIdqeZbTk/5ayUY9g4H9emSyMR/5xiYos7lm8OaSNJD7m/kPZKO6YUh/G2sUT8D701I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=JCxihUNI; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=6woDU4xkf0yXoBT9uAn0Jihe89Zin8AHAJkgz1oPFS4=;
+	t=1722097718; x=1722529718; b=JCxihUNId6gqdqHylgpyn1eaWY4FHEAiGHcehJ3T48+i0wd
+	QOBQUTNEs9jHwTI56r5RlWp7e+P8yvx2HjN9rpIxODcfIiaUg0Q71KEW5KHFISSsNCLbS0cyiaquF
+	mADibR4jwNq6j7nf2Nc3MaG5evuHnBnT3Df4zV2W/f4LyrEnoAFexb/0RLPLtKfofxKZPWGduuCvQ
+	4ov0Tcs3NZ8B0f1DwKp57o/8NgipkKD24dJLORnZutATtNU0UNfLrEVmTCyFt7aMwWnTmjb7pBJ4b
+	VRkMM7CdhVoBNHG8RzHcXrkLGYyTFWWmbZHCTRnQIusIzYbUNU7zZlDQf14Cn6xQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sXkHV-00007W-6i; Sat, 27 Jul 2024 18:28:29 +0200
+Message-ID: <9ca719e4-2790-4804-b2cb-4812899adfe8@leemhuis.info>
+Date: Sat, 27 Jul 2024 18:28:28 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=holm.dev; s=key1;
-	t=1722096473;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=282oIA90G5O2Ude1KXvz8VqSWcqJ7AUYamQOvYzpDe4=;
-	b=ui54UfmR5vMXdJJ0iaanxYyL42sTrYC6XSVVHJ+BOHc4IoY6qDcPvdwWuyi8v3Cu4TECFT
-	zFiTN8w1SWXVDOG4mvK/AHkNxx6EPA8bbd6UERYfWBLCSg9QqHhfr+pm0nPYgNC2Rha7QN
-	tuoCMEjPDm9W89ntjkZm81JBbEHFy4FaSNmT6rKkInQEwb/0PpDdgY1RO6+2DbFVCba53H
-	Sen62vfu9+k6b1CsCh8STOTVkHkOAhBKJ8+XPS5sUdguqyYkY0pxEhppjw1mT/dPowy5ht
-	41bsTpufIfVH/++gJ1McfHuTuWLyAV8gPirJj23R0cdIQtR5PPxl53lOWq8toQ==
-Date: Sat, 27 Jul 2024 16:07:50 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: kevin@holm.dev
-Message-ID: <d74a7768e957e6ce88c27a5bece0c64dff132e24@holm.dev>
-TLS-Required: No
-Subject: [REGRESSION]  No image on 4k display port displays connected through
- usb-c dock in kernel 6.10
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] No image on 4k display port displays connected
+ through usb-c dock in kernel 6.10
+To: kevin@holm.dev, Alex Deucher <alexander.deucher@amd.com>,
+ Hersen Wu <hersenxs.wu@amd.com>, Wayne Lin <wayne.lin@amd.com>
+Cc: regressions@lists.linux.dev, stable@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>,
+ ML dri-devel <dri-devel@lists.freedesktop.org>,
+ "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>
+References: <d74a7768e957e6ce88c27a5bece0c64dff132e24@holm.dev>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Content-Language: en-US, de-DE
+In-Reply-To: <d74a7768e957e6ce88c27a5bece0c64dff132e24@holm.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1722097718;5d878406;
+X-HE-SMSGID: 1sXkHV-00007W-6i
 
-Connecting two 4k displays with display port through a lenovo usb-c dock =
-(type 40AS) to a Lenovo P14s Gen 2 (type 21A0) results in no image on the=
- connected displays.
+[adding a few people and lists to the recipients]
 
-The CPU in the Lenovo P14s is a 'AMD Ryzen 7 PRO 5850U with Radeon Graphi=
-cs' and it has no discrete GPU.
+Hi! Thx for your rpeort.
 
-I first noticed the issue with kernel version '6.10.0-arch1-2' provided b=
-y arch linux. With the previous kernel version '6.9.10.arch1-1' both conn=
-ected displays worked normally. I reported the issue in the arch forums a=
-t https://bbs.archlinux.org/viewtopic.php?id=3D297999 and was guided to d=
-o a bisection to find the commit that caused the problem. Through testing=
- I identified that the issue is not present in the latest kernel directly=
- compiled from the trovalds/linux git repository.
+On 27.07.24 18:07, kevin@holm.dev wrote:
+> Connecting two 4k displays with display port through a lenovo usb-c
+> dock (type 40AS) to a Lenovo P14s Gen 2 (type 21A0) results in no
+> image on the connected displays.
+> 
+> The CPU in the Lenovo P14s is a 'AMD Ryzen 7 PRO 5850U with Radeon
+> Graphics' and it has no discrete GPU.
+> 
+> I first noticed the issue with kernel version '6.10.0-arch1-2'
+> provided by arch linux. With the previous kernel version
+> '6.9.10.arch1-1' both connected displays worked normally. I reported
+> the issue in the arch forums at
+> https://bbs.archlinux.org/viewtopic.php?id=297999 and was guided to
+> do a bisection to find the commit that caused the problem. Through
+> testing I identified that the issue is not present in the latest
+> kernel directly compiled from the trovalds/linux git repository.
+> 
+> With git bisect I identified 4df96ba66760345471a85ef7bb29e1cd4e956057
 
-With git bisect I identified 4df96ba66760345471a85ef7bb29e1cd4e956057 as =
-the first bad commit and fa57924c76d995e87ca3533ec60d1d5e55769a27 as the =
-first commit that fixed the problem again.
+That's 4df96ba6676034 ("drm/amd/display: Add timing pixel encoding for
+mst mode validation") [v6.10-rc1] from Hersen Wu.
 
-The initial commit only still shows an image on one of the connected 4k s=
-creens. I have not investigated further to find out at what point both di=
-splays stopped showing an image.
+Did you try if reverting that commit is possible and might fix the problem?
 
-Best Regards,
-Kevin
+> as the first bad commit and fa57924c76d995e87ca3533ec60d1d5e55769a27
 
-#regzbot introduced: 4df96ba66760345471a85ef7bb29e1cd4e956057
+That's fa57924c76d995 ("drm/amd/display: Refactor function
+dm_dp_mst_is_port_support_mode()") [v6.10-post] from Wayne Lin.
+
+> as the first commit that fixed the problem again.
+
+Hmm, the latter commit does not have a fixes tag and might or might not
+be to invasive to backport to 6.10. Let's see what the AMD developers say.
+
+> The initial commit only still shows an image on one of the connected
+> 4k screens. I have not investigated further to find out at what point
+> both displays stopped showing an image.
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
