@@ -1,117 +1,151 @@
-Return-Path: <stable+bounces-61939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AD893DCCC
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 03:05:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A56393DCF2
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 03:35:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE975283F80
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 01:05:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E70A284F10
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 01:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E044F15C9;
-	Sat, 27 Jul 2024 01:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51FA15C3;
+	Sat, 27 Jul 2024 01:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="ShcPXY79"
+	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="SsTACFw1";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZJyTTvqp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh1-smtp.messagingengine.com (fhigh1-smtp.messagingengine.com [103.168.172.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B8EA21;
-	Sat, 27 Jul 2024 01:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13668186A;
+	Sat, 27 Jul 2024 01:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722042348; cv=none; b=JjPbrrsxKNxFN9rVlng4Xw2IH43OfQrbySntKjK4Mk6nDkIZRjTDG9G3AIOQBj/K/8eReoaTWzm87rjPq65PDtjncQ/lYapxqTEOKDygILPD/SsIYJxZbSBD0T3e8zODzulXd8k8sI2usuwcoZ1+MZwvN6SSRc9QHw/+h44oL8c=
+	t=1722044119; cv=none; b=hUhAH8x+zcYb0s/QV8iDDi/CvjZ82TZR+8eNixDBJyEMQs0tXsypuxdA2FwzL0Z5zDNB7VTODEBo0vvj1rc9h2AHmoFlFYrc95VkzPbH8Vy6NKrpoPA3AX8ToGE4xmufki63SGELvrYOD3Yms4hDESnA69LHf9slC3hbMFJcjoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722042348; c=relaxed/simple;
-	bh=eBM00HPHPHHPgnKiqzyJspcHdFqwmz4Hw91GAOe7BsM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K6YA3y3FuIO32kmYoNkN3ueyhwejPVf8MA6Jln7BYDGlhdeoU/1Hz7TBm+GCRQkbiw4B7ze1fFQJeCYb5TgDnUuxMoFhilK5ZAYJQ1lazbeZViJbH1rwo5QKDC7oRjjftuAKi89AWchpjH1h+tCY62nWM41EN8kvyG+NBSOaUhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=ShcPXY79; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2f035ae0fe0so19860111fa.3;
-        Fri, 26 Jul 2024 18:05:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1722042345; x=1722647145; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YCpYlMHHYU/MQ6aVrJgbcTOmXWPj7kp1NEbwn6nBdTQ=;
-        b=ShcPXY79dDRT+81ZSQpryuZvdbC1+eL15wq8cVYlc7aJhTwQKgq4yDLvbxhjWKUdve
-         Z3YzNxw5Ehjv4EXerLaIJ3iz87X2ZPrGVW4UE61n/z8Kj3uE43ixFCN8Xr1eOrTkJnsn
-         ehlXCFYegss9SdVpJa5jxHh2/ajmiWzDxi3Hm6vHgGCBzFt65Cs8+4S7UhWBTbuNobX5
-         cFevPEllLFGsv+sGsZncOEy8nFBW44IGPRiYlGL7Y0avzSLP/kDjc4L1kCM/6ZeskjO7
-         rLOeIXT329rtMNQGwrzHCIIZ0/AuNPGAlUpArQNp/O+ZxoRcx5EU8XHp/UNcXyYmp79n
-         euTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722042345; x=1722647145;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YCpYlMHHYU/MQ6aVrJgbcTOmXWPj7kp1NEbwn6nBdTQ=;
-        b=NVePkXhBfQt6qkAl5GsOneB05UQ48vvrZ+B+PpOG/CzkXr9ylrSopEfLZAWo+F08MD
-         fqLFG5IGf6zZcr6AeTRugUVHrAxPIfsLWjrq3sO0gv9R2DLfI5QT1ekpnUSwADyOVHcE
-         tuwcqst/ieyLRbQY37UK69GGw8hgxRXDdgTNfZwTaJTsfQJLpp+2mEXDfLy5U4CR6vv5
-         lLEYN0UimQ1l7147lnkXIHEDaQges0uJxKXSnGX6GJVk7mAmhgAvR7L95MAtBrTfiFD1
-         4iIjh2oVLnfr8XXX/QvnTryoKlzAfY5V2iLdS7sTi7WjV6Qqu8hQoUCneu3klmcQT54p
-         ZARA==
-X-Forwarded-Encrypted: i=1; AJvYcCVrN/4/aATAF8q4T6jgsa8ujkIX68F3kAek1mBgOSPU31eUwi+lUIMwSPGFPos1QwPUrlUZOnpuDTmy4+1GPJKbM8qInHUsmCfYzhaQymbBfNyIjiZQ6EZSFBeFbhmx9oqNvE+b
-X-Gm-Message-State: AOJu0YxqbxuIqBNOcCuKfjHPrqVD4aJnJiGIAjwo7I9ycFmiPWhh2j2p
-	qz+Y2eGWjvV1khtB88Qw/H5zZ071y4xTyvuqShLC3dWKveQq6kQ=
-X-Google-Smtp-Source: AGHT+IGtGvxhQRAK565ipUYI/VEWvAFVhGLiYkiIBm6tZ/FoMfehv5V035vAuked77InbdG60d2IfA==
-X-Received: by 2002:a05:651c:128d:b0:2ee:7a71:6e3b with SMTP id 38308e7fff4ca-2f12edd8349mr6462661fa.27.1722042344897;
-        Fri, 26 Jul 2024 18:05:44 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b41a8.dip0.t-ipconnect.de. [91.43.65.168])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ac63590cedsm2496802a12.29.2024.07.26.18.05.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Jul 2024 18:05:44 -0700 (PDT)
-Message-ID: <4fd87233-ad60-48bd-a6bc-fc14fc8a45f9@googlemail.com>
-Date: Sat, 27 Jul 2024 03:05:42 +0200
+	s=arc-20240116; t=1722044119; c=relaxed/simple;
+	bh=caKF6u6Pl+NoxLygxRMFyDqsz80P3X6Uwn53Yo++fvY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=R6l56E6d+kXOP0ZKRj91LXeT13KY4BL6rJlZjjCbFjQ5wVO3gMXy9MuVZGgJrmS8e7YMPC4flPJr/D23U4SO3oxe44k+Q0Y77gD1fMiYkdpJ8WaZdS2eSZs280F3LDKLv2BRJ7X3kJ3T5Dh6hNuXcnZG7gS+Ho4pe0bcgU8HuO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; spf=pass smtp.mailfrom=sakamocchi.jp; dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b=SsTACFw1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZJyTTvqp; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 0C323114016B;
+	Fri, 26 Jul 2024 21:35:16 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute7.internal (MEProxy); Fri, 26 Jul 2024 21:35:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm3; t=1722044116; x=1722130516; bh=oq
+	cjv4bT7MIFsiqTNHBGPXx0q9DQaCb9mZzOClyodqM=; b=SsTACFw1XDFV8DKgxq
+	jibFtpsUulIAceQTWNfRedAZVyEnVpaSJcdbyq+QuqLNaQ60FUXN8yVUGyK57Xoj
+	7uQ+m4B+PiHy99xx0meQsPK2sEaerIEsUHsljX2S+znAs5e4k/IyHx8nJzAZCKNQ
+	Yp3GCBMyWqUYb5UVi4b0VIMO9Y4ilUmkYTdZywsRQF4bNqxzsP5sfkbENeJiqdGw
+	uVEbLAJr2a9S4IeastKZHMSHR3ay78sET0mqG0rdswifwMfz9YF+F2phbUhhJyIC
+	IcPC4e1mNV8dI9O8gzspAXQndAoiXsUF9TQsbNZiDacBTsPLR/6Nc+2TKwEi3NJa
+	RgGg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:reply-to:subject:subject:to:to
+	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1722044116; x=1722130516; bh=oqcjv4bT7MIFsiqTNHBGPXx0q9DQ
+	aCb9mZzOClyodqM=; b=ZJyTTvqpmSLVUzHIJwcN7y3lzNXIuaf/K7VhJgwHpwF9
+	1JkDHKh4w0iqueN6J/PHBMQjGV8oSWMhZI7LfCVBg9ePnL6iPWKkG216qjPuKHAU
+	wdqMFpZtXz6H7kwXl807IYH5bAq8WDwF57kIHTaAaNpcMUZMPC8gxz3C6OeAu1TV
+	TeSRtYapEuwOvDqJX2ZZIDju0rSd+GLQzSaaX1mOqZdaPEMPD8ZTKJk1vQnwkPJi
+	feBF5RMl+Vsh4IvwSYz49mPRKdbTbPI4lCbmW9VuzHn/T1VHJDRQikYyLG9UhNCp
+	v3zY60YZfb5bA6VJabShUiSHH5sYKfn+YHTCMaSR2g==
+X-ME-Sender: <xms:006kZgN-ePo0PUaBqf93TQ47a_r6XKa7EFlVIn8OnsTpbgiK62O9HQ>
+    <xme:006kZm91PvNQdere4LRCCoSRrIQLuDrInOILfdEu0Co7PullGh7AfxEe6mBxUfm9w
+    Gtsqz4bZ7296l3a96s>
+X-ME-Received: <xmr:006kZnQSzirFzI7L9oIYmyz7S5aszGwD-VQWVGu00KIFyuEC1I0oEGrpfu0VSOYudG0f6nRmaV9p7tKewm_JtBOcpWYJA_0SmNQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrieeigdehtdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkgggtuggjsehttdertd
+    dttddvnecuhfhrohhmpefvrghkrghshhhiucfurghkrghmohhtohcuoehoqdhtrghkrghs
+    hhhisehsrghkrghmohgttghhihdrjhhpqeenucggtffrrghtthgvrhhnpeeuieffveeggf
+    efjeeufeetveejuddtkedtgedtjeekgedufffhhfegkeekteetgeenucffohhmrghinhep
+    khgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepohdqthgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjphdpnhgspghr
+    tghpthhtoheptd
+X-ME-Proxy: <xmx:006kZot_JT7q8sFbfXA-TdP7uk0btpMmCAPnzgpXfGlDxVfQA_ZmMA>
+    <xmx:006kZof09YCdbat1C9BFnhywU0YUPa7EdwrU-IEeAH9MHuK4T3mGDw>
+    <xmx:006kZs0DxeF-ujj4pLKvUxo67tJ1npqIGSmYecKcgSnokie7djo-sA>
+    <xmx:006kZs9d5ttjKyeBpsTSF8VNmRZVp7oeWqgz6_YkLdireMhxZBFt-A>
+    <xmx:1E6kZtHKzaRg3g8aVCulUTUK80VhUGXbMg3lP3mYbXEthMI8WcYZCfCG>
+Feedback-ID: ie8e14432:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 26 Jul 2024 21:35:13 -0400 (EDT)
+Date: Sat, 27 Jul 2024 10:35:10 +0900
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+To: tiwai@suse.de
+Cc: stable@vger.kernel.org, edmund.raile@proton.me,
+	linux-sound@vger.kernel.org, gustavo@embeddedor.com
+Subject: Re: [PATCH] ALSA: firewire-lib: fix wrong value as length of header
+ for CIP_NO_HEADER case
+Message-ID: <20240727013510.GA163039@workstation.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.10 00/29] 6.10.2-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240725142731.814288796@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20240725142731.814288796@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240725155640.128442-1-o-takashi@sakamocchi.jp>
 
-Am 25.07.2024 um 16:36 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.10.2 release.
-> There are 29 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 25/07/24 09:56, Takashi Sakamoto wrote:
+> In a commit 1d717123bb1a ("ALSA: firewire-lib: Avoid
+> -Wflex-array-member-not-at-end warning"), DEFINE_FLEX() macro was used to
+> handle variable length of array for header field in struct fw_iso_packet
+> structure. The usage of macro has a side effect that the designated
+> initializer assigns the count of array to the given field. Therefore
+> CIP_HEADER_QUADLETS (=2) is assigned to struct fw_iso_packet.header,
+> while the original designated initializer assigns zero to all fields.
+> 
+> With CIP_NO_HEADER flag, the change causes invalid length of header in
+> isochronous packet for 1394 OHCI IT context. This bug affects all of
+> devices supported by ALSA fireface driver; RME Fireface 400, 800, UCX, UFX,
+> and 802.
+> 
+> This commit fixes the bug by replacing it with the alternative version of
+> macro which corresponds no initializer.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 1d717123bb1a ("ALSA: firewire-lib: Avoid -Wflex-array-member-not-at-end warning")
+> Reported-by: Edmund Raile <edmund.raile@proton.me>
+> Closes: https://lore.kernel.org/r/rrufondjeynlkx2lniot26ablsltnynfaq2gnqvbiso7ds32il@qk4r6xps7jh2/
+> Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+> ---
+>   sound/firewire/amdtp-stream.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
+> index d35d0a420ee0..1a163bbcabd7 100644
+> --- a/sound/firewire/amdtp-stream.c
+> +++ b/sound/firewire/amdtp-stream.c
+> @@ -1180,8 +1180,7 @@ static void process_rx_packets(struct fw_iso_context *context, u32 tstamp, size_
+>   		(void)fw_card_read_cycle_time(fw_parent_device(s->unit)->card, &curr_cycle_time);
+>   	for (i = 0; i < packets; ++i) {
+> -		DEFINE_FLEX(struct fw_iso_packet, template, header,
+> -			    header_length, CIP_HEADER_QUADLETS);
+> +		DEFINE_RAW_FLEX(struct fw_iso_packet, template, header, CIP_HEADER_QUADLETS);
+>   		bool sched_irq = false;
+>   		build_it_pkt_header(s, desc->cycle, template, pkt_header_length,
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+Applied to for-linus branch in firewire subsystem tree[1], and would be
+sent to mainline today with another patch[2].
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Beste Grüße,
-Peter Schneider
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ieee1394/linux1394.git/log/?h=for-linus
+[2] https://lore.kernel.org/lkml/20240725161648.130404-1-o-takashi@sakamocchi.jp/
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+Regards
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Takashi Sakamoto
 
