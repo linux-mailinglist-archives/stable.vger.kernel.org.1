@@ -1,185 +1,158 @@
-Return-Path: <stable+bounces-61971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E822A93DEA0
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 12:05:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D83C93DF68
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 14:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 681A22839BE
-	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 10:05:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 133622821F8
+	for <lists+stable@lfdr.de>; Sat, 27 Jul 2024 12:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0634B80027;
-	Sat, 27 Jul 2024 10:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C220F7EEF5;
+	Sat, 27 Jul 2024 12:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdVqDUwj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dTDsDIRL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA44457CAC;
-	Sat, 27 Jul 2024 10:03:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0A351016;
+	Sat, 27 Jul 2024 12:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722074626; cv=none; b=OMdCmNvKgCOyMjeT2kTm0u3XjIMkHV65FAZvrnEedGslevaUVqT1LQFc/Co3RIjFyuL0SsNQvRA4N6+etcljiD+bQc8/DwCT3zi8cGGMW1duUFQ2zLPnJobtkpqJmzP7YkesO/xKmAvL7rD6LlNC136I7WM0MqAcWUOQuLuKwHo=
+	t=1722084659; cv=none; b=BS/A1n9Cnc+/4y67uwd0lN688/w7VFPUR3GHi3cdBFoZcTbSX6KaKApge1GNxMJsmBgNWh599L7Xle1rynOl/Om6/ONt0oeWDYYQImH4HBfZxjhGfskev2zPSQ19N7bFQaLQsW2DFOJV+V5bhiZT/rVqnV7fBCCkIRj3365eoi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722074626; c=relaxed/simple;
-	bh=B2vhK+0RBBQJO+CkqazxYwoIfSfpFJCq0O68Tg4d5m0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VQ4NtPFiAVCC/gutJPw8m83wvrmNH4d3R0erG1ZBWouVam2LSuMeS64PHwop1phbTT+QwnAjYQFXX06+u9gVN4M9M+bSGbgYajRDQHUY1jzTlWNookDNBY2doulHeSeuGuPbVSi5M0QCBIa3w0pWaNHW1Ex1Urrvv+mnn8FCrQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RdVqDUwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A790C4AF0E;
-	Sat, 27 Jul 2024 10:03:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722074626;
-	bh=B2vhK+0RBBQJO+CkqazxYwoIfSfpFJCq0O68Tg4d5m0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=RdVqDUwj4I/Mb/qdteXi0uD7bg/HXL9bqVg9UsM8vZZAey0WtwwBUc42TNwwV72KT
-	 s9l15zbeQ6hql64CLydekW5QHaHSlni6FuS3TLfsqsfdYMWzbhG71ZO9kHBWDnJox7
-	 pY2UIjsnju+ubfUg2MKuOuJpr0sAdIqjOrjHmFs+eIrJaRUy6YRjNwCrG+Y2xBeapS
-	 XpXSB+5VrPTuB0llYQZhydq4JxxtIm3Wr3qNq4L59FbVH9Y729C1Y4n+4If4dPMX4U
-	 PQ/LixXAGPXwNMwkrKbteis6a3ktSm/xuTTsHBQlvkAhBURmL5zFETcXaRB8aCDhTj
-	 4fQ4EqOFkvMKg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Sat, 27 Jul 2024 12:01:29 +0200
-Subject: [PATCH net 7/7] selftests: mptcp: join: check backup support in
- signal endp
+	s=arc-20240116; t=1722084659; c=relaxed/simple;
+	bh=daeORxYFFkHRNTRySRS69lWfO9yt2vMF0zZaT96ryvg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rs+ACVYE7gZyfAg/3Y4CXsmzsjhJT2sTUYFqwChQICLtrPJdqnr05cx+Yz5CC+zVnWTvWag9T0EYoJZnPRuG/l791oDCRfprT77QK53sWcTAm1w61wBOtvhxtJFGIKk73QyNfhERCco9m+M0hfPRgZvPilyJ4SQ6U1U93x5s04M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dTDsDIRL; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-368712acb8dso319037f8f.2;
+        Sat, 27 Jul 2024 05:50:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722084656; x=1722689456; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YrSePS2tjkAvXk+3ojAAHSx1Ti5vY7/fuIVJdHRQLH4=;
+        b=dTDsDIRLjN6CiliOuya2pzCI+RPvJEWang8A8XGlmXu9+e++x13EeIEsnOD8+2mRaV
+         4hcr1UXopzLYjePhOPy3C1no5J3c1KquZVuKJE2Uc+yJHcTpXXDZxrBXjh8ZqYRSgJsv
+         PbyW42c3MSrBb0DaerviUnj40Fw5qqhPO0Yi8CS679Is4RjpV+cDVA6oS8XPaXcFQvfE
+         gAj+3AAlNCh4DHeG5UBlNPtrsNko0PNuh0Cm0OwQ5cbBZj6nMpFqu1qr8nlJxtZa+E2m
+         8Td81E+VvGWqRwm+epZuWw7o/hdjEQNEOx8oI37uoctZZqZ5CEd/3dZjAt1puzu1pP+K
+         PXnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722084656; x=1722689456;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YrSePS2tjkAvXk+3ojAAHSx1Ti5vY7/fuIVJdHRQLH4=;
+        b=voxfbPxSVaWVFE4OpozxrxNz4pXMbmikBEVGEkzMSfUELqcjXm0i3MtOUE5d29r+L+
+         VgmJ87pKjbM4m1g6d527J+ZsxnzvheikYoJ4jlvTQsEwvk+boq459O1OeIdeXkdZNs9W
+         W2cxKdHcoLj4nWV7qyUIAY2WT3gGlHOpl+/Qvypai2ZW3BkENV1OTFM9XqA29CPuVnpZ
+         OyxOArDH7KMXDwVB39tbQQVSt/DFSu6hFnb5nnzN88ftyavtVCfD1FIpNCnwl0TA7JW/
+         itdqg8T7wCKdoZW3M7KraP7Pt1tfl/uuuwvSL2OR6knoPpbxAM/G1nkBxg2Bp15HqCHh
+         hkfA==
+X-Forwarded-Encrypted: i=1; AJvYcCUKhNQjp5VJ8j4x+9JbUuaU4MKBIdUGR7tm6/ocdVVRd9/RQI2ePNI3FM+jYWBHCVtIvIjzVw8Rd2Db4Cc7BdG2mkrPng7ekiQO/ilT0ADzTA0oUWoK0c2gwCfMzFdx
+X-Gm-Message-State: AOJu0Ywvtb4lOiz9VJdlCOTeO2+So5jRo75eyCzBfMEY4OYus2MRXQv/
+	F+PS9Wb1uwVz7aZjgpvbSaTj/3lfOBw9AmbvQxsCxGYfcl812V35
+X-Google-Smtp-Source: AGHT+IGTlhXQcIAISdmF0dJP5y3BG7A66wxgRwdaUabvKjbB5K/oAgVKfT650r3iMkZxiElhM1zXGQ==
+X-Received: by 2002:adf:e5cc:0:b0:366:eb45:6d55 with SMTP id ffacd0b85a97d-36b5d0afc01mr1749663f8f.49.1722084655778;
+        Sat, 27 Jul 2024 05:50:55 -0700 (PDT)
+Received: from sacco.station (net-2-44-141-41.cust.vodafonedsl.it. [2.44.141.41])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36b368638fbsm7489383f8f.103.2024.07.27.05.50.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Jul 2024 05:50:55 -0700 (PDT)
+From: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+To: johannes@sipsolutions.net,
+	sashal@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	javier.carrasco.cruz@gmail.com,
+	skhan@linuxfoundation.org,
+	stable@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com,
+	Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+Subject: [PATCH v5.15] wifi: mac80211: check basic rates validity
+Date: Sat, 27 Jul 2024 14:50:33 +0200
+Message-ID: <20240727125033.1774143-1-vincenzo.mezzela@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240727-upstream-net-20240727-mptcp-backup-signal-v1-7-f50b31604cf1@kernel.org>
-References: <20240727-upstream-net-20240727-mptcp-backup-signal-v1-0-f50b31604cf1@kernel.org>
-In-Reply-To: <20240727-upstream-net-20240727-mptcp-backup-signal-v1-0-f50b31604cf1@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Florian Westphal <fw@strlen.de>, 
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3761; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=B2vhK+0RBBQJO+CkqazxYwoIfSfpFJCq0O68Tg4d5m0=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmpMXm5+RoMvMHoX9uSbfCV0l6chDQbp4wHe0+n
- KM+1XYUaOyJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZqTF5gAKCRD2t4JPQmmg
- c5f3D/9jwEMQsW92OQ4X+b2puhWmRoxg2fhuoJIECewgRDDWjb/W0+wywo1SPlKREk9Qd5G8Jht
- XwFNuQ0bvICTFN5/mZ+3uk3B0fPAo8AK86T0A+cTQT8xshLhsWRZmjA9lJlGHqynXPRmS7NzwhL
- jF/htRv0O3TN8kKfNjqCK41JqYxrCPEtNoaiwJ4BQfHnVZKaVjR+aX7H1V8i9pkNpTA+VF/+3Bq
- 4lA3j+gC/8V4ftGkdVrd8vAgDU9L0GZSPeF88EbaURZMuHzPkjl5bP7wx0f6MzNAHkN4yrvxiLR
- y0BtlmavYPI15vFuuZFprhq9FrioSpg/rTqQ92/iNC4UmNQR6Y+6LA2qZ5IMZOUUQ3tCk17ilB7
- BuFamGHh0zIWiSjqO4fM1eVRITYtPPL8pkk+Yl5yl+DbE/gYgEnnDgY/dudbEYy8sbW+QtSqqzf
- XPR5QTSJ0wqUZb5SAnIZYlQl6zlMCBdZz6y82q8Cd/lNJvHvDigR3WM+uUT5y7a7AN6Yu3OetpI
- OZAbtA7263pb3EJss5ILLFPNuzG9O5e0QcnvAPEu8JCBpCbbF7zsS8MQ0SGEra7gwK1pFJ7l8AH
- s+TvNbSbFENuboBPanz30UaqEkNvKt8e9wELwbn+sA3Lc29ktMI8mEHO0A+JnhyfcXS3ysH1WEd
- pFLKIVnCc61O8Wg==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-Before the previous commit, 'signal' endpoints with the 'backup' flag
-were ignored when sending the MP_JOIN.
+From: Johannes Berg <johannes.berg@intel.com>
 
-The MPTCP Join selftest has then been modified to validate this case:
-the "single address, backup" test, is now validating the MP_JOIN with a
-backup flag as it is what we expect it to do with such name. The
-previous version has been kept, but renamed to "single address, switch
-to backup" to avoid confusions.
+commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
 
-The "single address with port, backup" test is also now validating the
-MPJ with a backup flag, which makes more sense than checking the switch
-to backup with an MP_PRIO.
+When userspace sets basic rates, it might send us some rates
+list that's empty or consists of invalid values only. We're
+currently ignoring invalid values and then may end up with a
+rates bitmap that's empty, which later results in a warning.
 
-The "mpc backup both sides" test is now validating that the backup flag
-is also set in MP_JOIN from and to the addresses used in the initial
-subflow, using the special ID 0.
+Reject the call if there were no valid rates.
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+[ Conflict resolution involved adjusting the patch to accommodate
+changes in the function signature of ieee80211_parse_bitrates,
+specifically the updated first parameter ]
 
-Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com
+Tested-by: syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=19013115c9786bfd0c4e
+Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 34 ++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 6 deletions(-)
+ net/mac80211/cfg.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 655715c8c6d9..9c7d0ab106d0 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2639,6 +2639,19 @@ backup_tests()
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f277ce839ddb..85abd3ff07b4 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2339,6 +2339,17 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+ 	if (!sband)
+ 		return -EINVAL;
  
- 	# single address, backup
- 	if reset "single address, backup" &&
-+	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+		pm_nl_set_limits $ns1 0 1
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
-+		pm_nl_set_limits $ns2 1 1
-+		sflags=nobackup speed=slow \
-+			run_tests $ns1 $ns2 10.0.1.1
-+		chk_join_nr 1 1 1
-+		chk_add_nr 1 1
-+		chk_prio_nr 1 0 0 1
-+	fi
++	if (params->basic_rates) {
++		if (!ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
++					      wiphy->bands[sband->band],
++					      params->basic_rates,
++					      params->basic_rates_len,
++					      &sdata->vif.bss_conf.basic_rates))
++			return -EINVAL;
++		changed |= BSS_CHANGED_BASIC_RATES;
++		ieee80211_check_rate_mask(sdata);
++	}
 +
-+	# single address, switch to backup
-+	if reset "single address, switch to backup" &&
- 	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 0 1
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-@@ -2654,13 +2667,13 @@ backup_tests()
- 	if reset "single address with port, backup" &&
- 	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 0 1
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal port 10100
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup port 10100
- 		pm_nl_set_limits $ns2 1 1
--		sflags=backup speed=slow \
-+		sflags=nobackup speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
--		chk_prio_nr 1 1 0 0
-+		chk_prio_nr 1 0 0 1
- 	fi
+ 	if (params->use_cts_prot >= 0) {
+ 		sdata->vif.bss_conf.use_cts_prot = params->use_cts_prot;
+ 		changed |= BSS_CHANGED_ERP_CTS_PROT;
+@@ -2362,16 +2373,6 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+ 		changed |= BSS_CHANGED_ERP_SLOT;
+ 	}
  
- 	if reset "mpc backup" &&
-@@ -2674,12 +2687,21 @@ backup_tests()
- 
- 	if reset "mpc backup both sides" &&
- 	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
--		pm_nl_add_endpoint $ns1 10.0.1.1 flags subflow,backup
-+		pm_nl_set_limits $ns1 0 2
-+		pm_nl_set_limits $ns2 1 2
-+		pm_nl_add_endpoint $ns1 10.0.1.1 flags signal,backup
- 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,backup
-+
-+		# 10.0.2.2 (non-backup) -> 10.0.1.1 (backup)
-+		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow
-+		# 10.0.1.2 (backup) -> 10.0.2.1 (non-backup)
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		ip -net "$ns2" route add 10.0.2.1 via 10.0.1.1 dev ns2eth1 # force this path
-+
- 		speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
--		chk_join_nr 0 0 0
--		chk_prio_nr 1 1 0 0
-+		chk_join_nr 2 2 2
-+		chk_prio_nr 1 1 1 1
- 	fi
- 
- 	if reset "mpc switch to backup" &&
-
+-	if (params->basic_rates) {
+-		ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
+-					 wiphy->bands[sband->band],
+-					 params->basic_rates,
+-					 params->basic_rates_len,
+-					 &sdata->vif.bss_conf.basic_rates);
+-		changed |= BSS_CHANGED_BASIC_RATES;
+-		ieee80211_check_rate_mask(sdata);
+-	}
+-
+ 	if (params->ap_isolate >= 0) {
+ 		if (params->ap_isolate)
+ 			sdata->flags |= IEEE80211_SDATA_DONT_BRIDGE_PACKETS;
 -- 
-2.45.2
+2.43.0
 
 
