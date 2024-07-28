@@ -1,68 +1,78 @@
-Return-Path: <stable+bounces-62202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EFD93E6E3
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:57:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A21193E6E5
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:57:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DA5FB217ED
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:57:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35C66280AA5
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751A684E0A;
-	Sun, 28 Jul 2024 15:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDED85947;
+	Sun, 28 Jul 2024 15:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cT0iIE9p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gj5sPPqZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299687174F;
-	Sun, 28 Jul 2024 15:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01B178C99;
+	Sun, 28 Jul 2024 15:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181707; cv=none; b=QK8Z3UPOQ2jG1qTz81aQELL98BV9dL6KQvz7JQkeyTOKRjzz7ttifrpYXeXKbIr6OMN9n8i2SR36a8alkcg8UNGRvfkPwVnLPfCMSBMQTpHZexXOVzt/O/iyvsw72x7eNGBtjFV9fgxtEcuFd/h/L23jx7NDjkdTzLuzqa+dN64=
+	t=1722181716; cv=none; b=XFo47iepfFI25WgJC2Xd9oN1vrp1GMeBsa5IGuFYnnKKEhsTGkdhOaDjdllXro/I7tnoP6jM+rdKgE9xzrsZ531udof/1JTRxsiL68U/5I3cMDodLGvPQ33z+HBhHFgKO8oqa+K7iMKgI3ab4WGpCRxwFj5txvwXwtlBQQ6FfGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181707; c=relaxed/simple;
-	bh=u4PxsXeP670KXL6vgt65RPxUUCTJcBGO6w+MmpNjnsA=;
+	s=arc-20240116; t=1722181716; c=relaxed/simple;
+	bh=y+NshhF582nLsDJJMjv/4/FHFhc0MHyEUN00dHHz1M4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMqecmmaX43Dy4HaEhoXKPWAczl1lFYSGtgXrOwCcOtXooMUSw4V4QbmE2wSSx5Eyoo4thFkspwZdAPVSHqVcM2zMy5NHChNC1uEzWYmnjEwsvcf2Q61+AuT0MZstPNDVYLAuxfCy2YglbQyhWUBGEWQ0eoO5kr75MI5/AdeAHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cT0iIE9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98867C116B1;
-	Sun, 28 Jul 2024 15:48:24 +0000 (UTC)
+	 MIME-Version; b=iUMVt9dtFj/GysvaLIQSytF5qc5wml/wPUtQsO7qe4WhI95p5BAZM2vMLTqxLpar1m0V35C8ZPnnw7oxCXjcCVkCuju4nDHRkkzKzjgxIC0dd+XW5+FFiDH2AdxDAeU+xEYZ+MidHHreTPwPrGeci4eVoDUdXCTyGOL4K9t62b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gj5sPPqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB30C32782;
+	Sun, 28 Jul 2024 15:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181706;
-	bh=u4PxsXeP670KXL6vgt65RPxUUCTJcBGO6w+MmpNjnsA=;
+	s=k20201202; t=1722181716;
+	bh=y+NshhF582nLsDJJMjv/4/FHFhc0MHyEUN00dHHz1M4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cT0iIE9pLgDvkhEsCIttI4j0CCUF46mCAWs+ZoASwZD4u3+cuUgKYGSeo2chMiQdF
-	 GnK9YtUkT/JqvZKIjp0X7IDlFoTybtu0FUOlfKnCMT5p/t6XiDghbGfYXht8UO5kIX
-	 n/ne+a3okSLqRJzjpFDCFp2BJdPhFumXBZom5C2EStbCNoxmHgIJa2/04Rbc2Rp1TE
-	 YMNJFjl/METR2nIv4sg13rr4ul+t/V3m1tajPH0VeVxMdR/65Hp/CRy9SGdmyiSsdJ
-	 vxet8zHsjcPtI5t5jxWQbXPpxwE0ZN0Sy/09LcCBHFmdeyfzOI7jh9j5NZHKfTy0ml
-	 VmT/mF57VrzpA==
+	b=Gj5sPPqZ6GqEQ7GJr5Dwua+cJgKyYQI4Xm+zzgvMnza/wHFsyl+nChDJ849iNP7XZ
+	 2j30GlwQIasm9j9JZsDvSh3C9H4KcH095mvWwwZGor2LwkmX2OtSIxOOuLgAL3rYFi
+	 NcnmcB6CBZtNU31xvufuZvOUY8TXY4VeItolmwMLnSfIWdGAdXuN7F03Tg/yYY77w+
+	 9NbtmDIyNtP1kCl87GLEAT8FVN+nj8fZdA1EpS2H62jaCzrAH9hrbY2gzyaC5AzWtP
+	 gPKTx7WnjIx92uSZKgcofXsCr5VK/ilEVGkR9dGsYoxprxkGWqDKqlDdkTfjNflJmn
+	 a2n2UewGOrKfQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ma Jun <Jun.Ma2@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
+Cc: Victor Skvortsov <victor.skvortsov@amd.com>,
+	Zhigang Luo <zhigang.luo@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	evan.quan@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
+	Hawking.Zhang@amd.com,
 	mario.limonciello@amd.com,
 	lijo.lazar@amd.com,
+	Jun.Ma2@amd.com,
+	candice.li@amd.com,
+	victorchengchi.lu@amd.com,
+	andrealmeid@igalia.com,
+	hamza.mahfooz@amd.com,
+	Jingwen.Chen2@amd.com,
+	Zhigang.Luo@amd.com,
+	surbhi.kakarya@amd.com,
 	sunran001@208suo.com,
-	ruanjinjie@huawei.com,
-	alexious@zju.edu.cn,
+	chongli2@amd.com,
+	danijel.slivka@amd.com,
+	bokun.zhang@amd.com,
+	YiPeng.Chai@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 04/17] drm/amdgpu/pm: Fix the null pointer dereference in apply_state_adjust_rules
-Date: Sun, 28 Jul 2024 11:47:14 -0400
-Message-ID: <20240728154805.2049226-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 05/17] drm/amdgpu: Add lock around VF RLCG interface
+Date: Sun, 28 Jul 2024 11:47:15 -0400
+Message-ID: <20240728154805.2049226-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728154805.2049226-1-sashal@kernel.org>
 References: <20240728154805.2049226-1-sashal@kernel.org>
@@ -77,102 +87,76 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Victor Skvortsov <victor.skvortsov@amd.com>
 
-[ Upstream commit d19fb10085a49b77578314f69fff21562f7cd054 ]
+[ Upstream commit e864180ee49b4d30e640fd1e1d852b86411420c9 ]
 
-Check the pointer value to fix potential null pointer
-dereference
+flush_gpu_tlb may be called from another thread while
+device_gpu_recover is running.
 
-Acked-by: Yang Wang<kevinyang.wang@amd.com>
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Both of these threads access registers through the VF
+RLCG interface during VF Full Access. Add a lock around this interface
+to prevent race conditions between these threads.
+
+Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
+Reviewed-by: Zhigang Luo <zhigang.luo@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c    |  7 +++++--
- .../gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c    | 14 ++++++++------
- .../gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c  |  7 +++++--
- 3 files changed, 18 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c   | 6 ++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h   | 2 ++
+ 3 files changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 9f2f3f6a79adb..750b7527bdf83 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -3327,8 +3327,7 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 			const struct pp_power_state *current_ps)
- {
- 	struct amdgpu_device *adev = hwmgr->adev;
--	struct smu7_power_state *smu7_ps =
--				cast_phw_smu7_power_state(&request_ps->hardware);
-+	struct smu7_power_state *smu7_ps;
- 	uint32_t sclk;
- 	uint32_t mclk;
- 	struct PP_Clocks minimum_clocks = {0};
-@@ -3345,6 +3344,10 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 	uint32_t latency;
- 	bool latency_allowed = false;
- 
-+	smu7_ps = cast_phw_smu7_power_state(&request_ps->hardware);
-+	if (!smu7_ps)
-+		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 157441dd07041..6d70b386c21ee 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3631,6 +3631,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	mutex_init(&adev->grbm_idx_mutex);
+ 	mutex_init(&adev->mn_lock);
+ 	mutex_init(&adev->virt.vf_errors.lock);
++	mutex_init(&adev->virt.rlcg_reg_lock);
+ 	hash_init(adev->mn_hash);
+ 	mutex_init(&adev->psp.mutex);
+ 	mutex_init(&adev->notifier_lock);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 81549f1edfe01..5ee9211c503c4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -956,6 +956,9 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
+ 	scratch_reg1 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg1;
+ 	scratch_reg2 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg2;
+ 	scratch_reg3 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg3;
 +
- 	data->battery_state = (PP_StateUILabel_Battery ==
- 			request_ps->classification.ui_label);
- 	data->mclk_ignore_signal = false;
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-index b015a601b385a..eb744401e0567 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-@@ -1065,16 +1065,18 @@ static int smu8_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 				struct pp_power_state  *prequest_ps,
- 			const struct pp_power_state *pcurrent_ps)
- {
--	struct smu8_power_state *smu8_ps =
--				cast_smu8_power_state(&prequest_ps->hardware);
--
--	const struct smu8_power_state *smu8_current_ps =
--				cast_const_smu8_power_state(&pcurrent_ps->hardware);
--
-+	struct smu8_power_state *smu8_ps;
-+	const struct smu8_power_state *smu8_current_ps;
- 	struct smu8_hwmgr *data = hwmgr->backend;
- 	struct PP_Clocks clocks = {0, 0, 0, 0};
- 	bool force_high;
- 
-+	smu8_ps = cast_smu8_power_state(&prequest_ps->hardware);
-+	smu8_current_ps = cast_const_smu8_power_state(&pcurrent_ps->hardware);
++	mutex_lock(&adev->virt.rlcg_reg_lock);
 +
-+	if (!smu8_ps || !smu8_current_ps)
-+		return -EINVAL;
+ 	if (reg_access_ctrl->spare_int)
+ 		spare_int = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->spare_int;
+ 
+@@ -1009,6 +1012,9 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
+ 	}
+ 
+ 	ret = readl(scratch_reg0);
 +
- 	smu8_ps->need_dfs_bypass = true;
- 
- 	data->battery_state = (PP_StateUILabel_Battery == prequest_ps->classification.ui_label);
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index d8cd23438b762..2628f12e0eedc 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -3263,8 +3263,7 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 			const struct pp_power_state *current_ps)
- {
- 	struct amdgpu_device *adev = hwmgr->adev;
--	struct vega10_power_state *vega10_ps =
--				cast_phw_vega10_power_state(&request_ps->hardware);
-+	struct vega10_power_state *vega10_ps;
- 	uint32_t sclk;
- 	uint32_t mclk;
- 	struct PP_Clocks minimum_clocks = {0};
-@@ -3282,6 +3281,10 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 	uint32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
- 	uint32_t latency;
- 
-+	vega10_ps = cast_phw_vega10_power_state(&request_ps->hardware);
-+	if (!vega10_ps)
-+		return -EINVAL;
++	mutex_unlock(&adev->virt.rlcg_reg_lock);
 +
- 	data->battery_state = (PP_StateUILabel_Battery ==
- 			request_ps->classification.ui_label);
+ 	return ret;
+ }
  
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+index 2b9d806e23afb..dc6aaa4d67be7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+@@ -260,6 +260,8 @@ struct amdgpu_virt {
+ 
+ 	/* the ucode id to signal the autoload */
+ 	uint32_t autoload_ucode_id;
++
++	struct mutex rlcg_reg_lock;
+ };
+ 
+ struct amdgpu_video_codec_info;
 -- 
 2.43.0
 
