@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-62221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 736F193E71C
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:03:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EF193E71F
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:03:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3241E2812FB
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:03:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46DC9B228AC
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFD715535D;
-	Sun, 28 Jul 2024 15:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C49B155A24;
+	Sun, 28 Jul 2024 15:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fy2EjsLz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i2y9h7qO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0682361FC4;
-	Sun, 28 Jul 2024 15:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C4B15572A;
+	Sun, 28 Jul 2024 15:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181792; cv=none; b=Ru+HH3Sw20JWVbUJClksEbfNqaMgC+V1gXjaQcagMgQiH2zI/1b4DeWGWnCGpH5fLbVoNDYiO4CtTj3d+/5I8fSWcFM6e1ODwJwGSsAZfIDJHoFan+/jftJVyAVc+CyzFUrlvP7rrKFBp2eQCrxRnLmmDbgIQiIohsMg4H10oHw=
+	t=1722181793; cv=none; b=haDho1wcOXbnLnLyQ0qtdJgahVDjLZ3EkSVJWZAO5gLXKfgSHrWILZjMwRWeyQBisFVU9lZgJSMzlwpD0v7WIC78copeOBbyzrOyn5hKYZ+sC2z0XB59HTpiSbAGBIyahHRomkm+uPlrT5qR2AbGthqN0ubGl72vjt/KMT8m7Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181792; c=relaxed/simple;
-	bh=WhoMDi3JLe+XeQRf6d1g4HSZ2Zj0m/r0petxVnL4flk=;
+	s=arc-20240116; t=1722181793; c=relaxed/simple;
+	bh=9EYuljhfcMjJD9/Krb8g2G2OQNsgjn5rET5cCzyvlBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJbxe/BysKkdb1YY6JR2zvtbdjlmw5WWNDdWqGz4a/6c7HuSIikxdd37rOdIBi4oW8rGCxfxQxos1W+/7O5Kwz1co4X5z5FFhwpeL9ZhEATSs57hQa7l2nbdCDgzLw8MHHrCMuY0nq+ovIEy/ODMSarUh3NeS+PApJwQVTxfDuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fy2EjsLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3DDC4AF0A;
-	Sun, 28 Jul 2024 15:49:50 +0000 (UTC)
+	 MIME-Version; b=hE5n6iaqcwqxuoH4c+AO/Grsfk9zngccPBIzG2RRoHEkkUIj/VtLuBOHF7QI1Jq0gzlxUVSF8h/mIvjtKMF5JlQTj2WEXk9oyfQEJkzHgVdkbJ0heKayeDkPAujLpJRBBcTM3uJohrNmKmJnTeBwzr2G5tpttF+nFBtbkOfDK3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i2y9h7qO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E328C4AF14;
+	Sun, 28 Jul 2024 15:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181791;
-	bh=WhoMDi3JLe+XeQRf6d1g4HSZ2Zj0m/r0petxVnL4flk=;
+	s=k20201202; t=1722181793;
+	bh=9EYuljhfcMjJD9/Krb8g2G2OQNsgjn5rET5cCzyvlBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fy2EjsLzEj2nvfxSmClKAL54IvqRYWRVI6MJLMjre6DyddHhaCddmTpstaVBjsJLV
-	 IQVhQHD0yHrs7D0BzlcNr/ueO1eNpQFyfvyL9lHz3vxUrUbCsiLAVSR9/qwJcHP9iO
-	 iMlqDHRRXfIS8yyBJtGFMpB9vYlItZSFCvtAvHlT9nbiIwVgkD35Y+makBJ8l5VLuN
-	 Qd56Gtn5kr3/jbDhoTD2RQLXj35tsp71zhf3zgGRKsCpVnYNS2nzc/bnUea2nd62is
-	 bxXXJyJaDR1Xqe2MsGTT22e+KAVmClv+SaLkR26fEK/hXNtFNGiRnlV0lW4Ew9rpYy
-	 Q1xImltOpXZeg==
+	b=i2y9h7qOkf1f7VnADqYG2WSjrDhDbGEqMJCDxcSwXX60w1fwcAmUKxEycQekDpk5e
+	 bv0XV+0unadIQNZPTIyQWTdprwirq9MZoGeFQo86BiwfISGD3jceUmrtZBrc0yCCx4
+	 wiAi3iuvowLpAaXiWeix1yiUftEFRUsFmQRtxbu2O0lmLPx+VxQIkGAl/fSWKCEPVv
+	 cXXi/Hx5BFi57mixw9O0pyFA3iBleysGq5MugTVQrOUZb3gzJKHjA5eXLRriaBZx4f
+	 QoOq7lJNL3uZkzYPjQiI4Mvt7SajWRLp/j/sRrLwpZhSv/AYgUGD82gLeDl/nrnaG8
+	 A0bX08+5XhGJg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michal Pecio <michal.pecio@gmail.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+Cc: Xiaxi Shen <shenxiaxi26@gmail.com>,
+	syzbot+eaba5abe296837a640c0@syzkaller.appspotmail.com,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 06/10] media: uvcvideo: Fix the bandwdith quirk on USB 3.x
-Date: Sun, 28 Jul 2024 11:49:04 -0400
-Message-ID: <20240728154927.2050160-6-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 07/10] ext4: fix uninitialized variable in ext4_inlinedir_to_tree
+Date: Sun, 28 Jul 2024 11:49:05 -0400
+Message-ID: <20240728154927.2050160-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728154927.2050160-1-sashal@kernel.org>
 References: <20240728154927.2050160-1-sashal@kernel.org>
@@ -67,50 +67,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.164
 Content-Transfer-Encoding: 8bit
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Xiaxi Shen <shenxiaxi26@gmail.com>
 
-[ Upstream commit 9e3d55fbd160b3ca376599a68b4cddfdc67d4153 ]
+[ Upstream commit 8dc9c3da79c84b13fdb135e2fb0a149a8175bffe ]
 
-The bandwidth fixup quirk doesn't know that SuperSpeed exists and has
-the same 8 service intervals per millisecond as High Speed, hence its
-calculations are wrong.
+Syzbot has found an uninit-value bug in ext4_inlinedir_to_tree
 
-Assume that all speeds from HS up use 8 intervals per millisecond.
+This error happens because ext4_inlinedir_to_tree does not
+handle the case when ext4fs_dirhash returns an error
 
-No further changes are needed, updated code has been confirmed to work
-with all speeds from FS to SS.
+This can be avoided by checking the return value of ext4fs_dirhash
+and propagating the error,
+similar to how it's done with ext4_htree_store_dirent
 
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240414190040.2255a0bc@foxbook
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
+Reported-and-tested-by: syzbot+eaba5abe296837a640c0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=eaba5abe296837a640c0
+Link: https://patch.msgid.link/20240501033017.220000-1-shenxiaxi26@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ext4/inline.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index dbba68701b4a1..30c8bcdda437f 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -210,13 +210,13 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
- 		/* Compute a bandwidth estimation by multiplying the frame
- 		 * size by the number of video frames per second, divide the
- 		 * result by the number of USB frames (or micro-frames for
--		 * high-speed devices) per second and add the UVC header size
--		 * (assumed to be 12 bytes long).
-+		 * high- and super-speed devices) per second and add the UVC
-+		 * header size (assumed to be 12 bytes long).
- 		 */
- 		bandwidth = frame->wWidth * frame->wHeight / 8 * format->bpp;
- 		bandwidth *= 10000000 / interval + 1;
- 		bandwidth /= 1000;
--		if (stream->dev->udev->speed == USB_SPEED_HIGH)
-+		if (stream->dev->udev->speed >= USB_SPEED_HIGH)
- 			bandwidth /= 8;
- 		bandwidth += 12;
- 
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index 6fe665de1b203..bc7f6417888dc 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -1446,7 +1446,11 @@ int ext4_inlinedir_to_tree(struct file *dir_file,
+ 			hinfo->hash = EXT4_DIRENT_HASH(de);
+ 			hinfo->minor_hash = EXT4_DIRENT_MINOR_HASH(de);
+ 		} else {
+-			ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
++			err = ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
++			if (err) {
++				ret = err;
++				goto out;
++			}
+ 		}
+ 		if ((hinfo->hash < start_hash) ||
+ 		    ((hinfo->hash == start_hash) &&
 -- 
 2.43.0
 
