@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-62183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310CB93E6B2
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:51:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E80DD93E6B4
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE1B41F23918
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:51:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 556A5B20CE0
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296A577111;
-	Sun, 28 Jul 2024 15:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9C478274;
+	Sun, 28 Jul 2024 15:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gEPQfzcr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qf6D0AAm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05EC7D071;
-	Sun, 28 Jul 2024 15:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592A577F13;
+	Sun, 28 Jul 2024 15:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181592; cv=none; b=qp2xtSrMOy2NGF/fyzDBhkCH7rpEwrd2FVbyBcjmqPEGv0K23DoSP4bairr7E26Eg5sIaCsOUkFOUlxlnVUkrtxxNv8fJ2bsr2npPC8vPFwavEEGdEfqG9EvJCuCxMp9PSCsIlf/lZHhEfBhuREcRbbhuao8Y59yU9pEEPrvvyY=
+	t=1722181600; cv=none; b=fEMQadgm7K6pL9Bm6vKpSE/zbXQ25y1Q9moQ62phqg4p+yMADJSh6xPA21lZAarT7EJb3WJQBe16PdAI+FBWyTOttA/PzGael9UzMyS0jmIYEsaj+Amgo6ix2vhXd/XvItofONdJzRbnzApPqYreR7+Y7f4ntEP2vWOYOBpQEnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181592; c=relaxed/simple;
-	bh=jEzhEmqGGLMTZyA3OJtr1xZIhHmbm5L8/sN4C75lmOE=;
+	s=arc-20240116; t=1722181600; c=relaxed/simple;
+	bh=iOxDyR+qbi9NJss30DyPUad7YAyifRHyRLUj1vXiJ3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ok4VYGOmZ6Z6HYjglVkQtVc+ZgeMMG3TbOl8HONm2IHcVyk46taYRTiFopyWShEhUMvgF+jvkYglVBe/V0Jm2syDZK3LBeru+wrDnmdVzdq674Fwdn7aBKixMe+ocZdQRDw59W7J97xlj2vFHxSLbQb3o0EPIaf0EY6vf4r2MRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gEPQfzcr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E0BC4AF0A;
-	Sun, 28 Jul 2024 15:46:28 +0000 (UTC)
+	 MIME-Version; b=b2yoeRVyx89yaxQXxkldcwiptYM/zIfSZML3VxSssIzlzXvVNNQ8bPJT9gywWYQMMda0A3gIAdlxE2q5BjNvrm6IDFTuZtmcE5/1K5LmqpNb9fu/bv2hQGqoPmmmbnnwCFJADLSLtZLySEtAuS9dKuZ84wQVAzQrL/gc9A+EclQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qf6D0AAm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E39C116B1;
+	Sun, 28 Jul 2024 15:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181591;
-	bh=jEzhEmqGGLMTZyA3OJtr1xZIhHmbm5L8/sN4C75lmOE=;
+	s=k20201202; t=1722181600;
+	bh=iOxDyR+qbi9NJss30DyPUad7YAyifRHyRLUj1vXiJ3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gEPQfzcrAnv4exIvNUvYvfNx9ao0atuEJnjWxPvD29MluIL/4NkTJr/j9/hKZuysq
-	 m9ElPJQuWuvXRxIlFXK+nGQed8myE0MXoAeJw1kVvuqjnbX0DKa4QiyDbvi3+fg2Yw
-	 MUE0tdYlUYuwlsHP20qzgr5DHlKALqwe51Siru4ERjXAX3Qoo3zWDtxIocU13E3QQp
-	 ez91DnvHxR7JByJQ6vPXeD7PVG1V8VcoOi4416B7t1PWUiiiLNrFkB+V1XnslWjPww
-	 1Y4Iw4yBzgg+VD4d+ws5fKM0liQT5P4FDhF2t4SzW7evj7yAPgNmbOQVsXCCUrVNNe
-	 FYoTZeckmikPA==
+	b=qf6D0AAm+dtd3Y0rw2jjH4kdCpoKfXWoKviVAG9tN/Lh0hU32hf5N+CyTLCh+tkU4
+	 PoIrcUFLX7opUanfi3s7GDdPpgoOVZK7B4NTX0h/KJJ+L8jkFjpsQbm9GuOJbHHMg7
+	 hxgIgoOIqa0P12Re93GwKfWgk0F7BeHKxkm4KRwNnQ0YDGiNvf6rNhgIudA1tcFtK1
+	 nC1ptB06hP2FrPYvy5VKxKi48EXCQCte0tWiyuCb2teBX9e9RI1f5Bx75RDNX25fHo
+	 z9+c6u7GTYstOMUCO1O9WVQSrqSJx8CpZrdaZKFS4C1yWLsL0wF+AUNpGImtEeSIWU
+	 VUX8kVxs2oqHg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Ma Jun <Jun.Ma2@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	evan.quan@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	Hawking.Zhang@amd.com,
-	tao.zhou1@amd.com,
-	kevinyang.wang@amd.com,
-	YiPeng.Chai@amd.com,
-	Stanley.Yang@amd.com,
-	candice.li@amd.com,
+	mario.limonciello@amd.com,
+	ruanjinjie@huawei.com,
+	alexious@zju.edu.cn,
+	sunran001@208suo.com,
+	lijo.lazar@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 05/20] drm/amdgpu: Fix the null pointer dereference to ras_manager
-Date: Sun, 28 Jul 2024 11:45:03 -0400
-Message-ID: <20240728154605.2048490-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 06/20] drm/amdgpu/pm: Fix the null pointer dereference in apply_state_adjust_rules
+Date: Sun, 28 Jul 2024 11:45:04 -0400
+Message-ID: <20240728154605.2048490-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728154605.2048490-1-sashal@kernel.org>
 References: <20240728154605.2048490-1-sashal@kernel.org>
@@ -79,39 +79,99 @@ Content-Transfer-Encoding: 8bit
 
 From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 4c11d30c95576937c6c35e6f29884761f2dddb43 ]
+[ Upstream commit d19fb10085a49b77578314f69fff21562f7cd054 ]
 
-Check ras_manager before using it
+Check the pointer value to fix potential null pointer
+dereference
 
+Acked-by: Yang Wang<kevinyang.wang@amd.com>
 Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c    |  7 +++++--
+ .../gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c    | 14 ++++++++------
+ .../gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c  |  7 +++++--
+ 3 files changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index 67b75ff0f7c37..7cba98f8bbdca 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -1780,12 +1780,15 @@ static void amdgpu_ras_interrupt_process_handler(struct work_struct *work)
- int amdgpu_ras_interrupt_dispatch(struct amdgpu_device *adev,
- 		struct ras_dispatch_if *info)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 15515025d995b..163864bd51c34 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -3314,8 +3314,7 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 			const struct pp_power_state *current_ps)
  {
--	struct ras_manager *obj = amdgpu_ras_find_obj(adev, &info->head);
--	struct ras_ih_data *data = &obj->ih_data;
-+	struct ras_manager *obj;
-+	struct ras_ih_data *data;
+ 	struct amdgpu_device *adev = hwmgr->adev;
+-	struct smu7_power_state *smu7_ps =
+-				cast_phw_smu7_power_state(&request_ps->hardware);
++	struct smu7_power_state *smu7_ps;
+ 	uint32_t sclk;
+ 	uint32_t mclk;
+ 	struct PP_Clocks minimum_clocks = {0};
+@@ -3332,6 +3331,10 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 	uint32_t latency;
+ 	bool latency_allowed = false;
  
-+	obj = amdgpu_ras_find_obj(adev, &info->head);
- 	if (!obj)
- 		return -EINVAL;
- 
-+	data = &obj->ih_data;
++	smu7_ps = cast_phw_smu7_power_state(&request_ps->hardware);
++	if (!smu7_ps)
++		return -EINVAL;
 +
- 	if (data->inuse == 0)
- 		return 0;
+ 	data->battery_state = (PP_StateUILabel_Battery ==
+ 			request_ps->classification.ui_label);
+ 	data->mclk_ignore_signal = false;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+index b015a601b385a..eb744401e0567 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+@@ -1065,16 +1065,18 @@ static int smu8_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 				struct pp_power_state  *prequest_ps,
+ 			const struct pp_power_state *pcurrent_ps)
+ {
+-	struct smu8_power_state *smu8_ps =
+-				cast_smu8_power_state(&prequest_ps->hardware);
+-
+-	const struct smu8_power_state *smu8_current_ps =
+-				cast_const_smu8_power_state(&pcurrent_ps->hardware);
+-
++	struct smu8_power_state *smu8_ps;
++	const struct smu8_power_state *smu8_current_ps;
+ 	struct smu8_hwmgr *data = hwmgr->backend;
+ 	struct PP_Clocks clocks = {0, 0, 0, 0};
+ 	bool force_high;
+ 
++	smu8_ps = cast_smu8_power_state(&prequest_ps->hardware);
++	smu8_current_ps = cast_const_smu8_power_state(&pcurrent_ps->hardware);
++
++	if (!smu8_ps || !smu8_current_ps)
++		return -EINVAL;
++
+ 	smu8_ps->need_dfs_bypass = true;
+ 
+ 	data->battery_state = (PP_StateUILabel_Battery == prequest_ps->classification.ui_label);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index 6d6bc6a380b36..49c984f14e6b1 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -3259,8 +3259,7 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 			const struct pp_power_state *current_ps)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+-	struct vega10_power_state *vega10_ps =
+-				cast_phw_vega10_power_state(&request_ps->hardware);
++	struct vega10_power_state *vega10_ps;
+ 	uint32_t sclk;
+ 	uint32_t mclk;
+ 	struct PP_Clocks minimum_clocks = {0};
+@@ -3278,6 +3277,10 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 	uint32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
+ 	uint32_t latency;
+ 
++	vega10_ps = cast_phw_vega10_power_state(&request_ps->hardware);
++	if (!vega10_ps)
++		return -EINVAL;
++
+ 	data->battery_state = (PP_StateUILabel_Battery ==
+ 			request_ps->classification.ui_label);
  
 -- 
 2.43.0
