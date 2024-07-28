@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-62274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E53C93E7E2
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:18:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA13293E7E6
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 806421C214CF
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:18:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C0511F2100E
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0B8146019;
-	Sun, 28 Jul 2024 16:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AFE145A03;
+	Sun, 28 Jul 2024 16:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pXTcptzs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PldaCcLz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CD5146000;
-	Sun, 28 Jul 2024 16:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A485814658C;
+	Sun, 28 Jul 2024 16:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722182851; cv=none; b=U6+7Tn8E87lwYWwPSAT1FBf8++Tistz72XWodWVSUBqTdTu02p04PrXCJKp1j9TBP2Zgx+nvqSbDUs2rYY68JRNV22BWhOA7M4Av9hr2wPsQMc9z+HVX+rdK5E59s2JpLCHVKFVtsw4Mr8gg3VdwLbED21p+8qAbJr81x6KXft0=
+	t=1722182852; cv=none; b=e8kRWXVLGrwtqg8NKsVJhVwF1bxCF3Q82/xm+Z43FhJj/XXUzze1J3sNFUemHit1pJp0JlTZo1ApuzWE7lyzWifouMqIzSOWg7tLGrD0ZGYqEKNfAHv4nB4cHTsk/kU+RSOlPNkgHdMJ4+HYDbls18uMnedh/k8EVH1ddwzMB6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722182851; c=relaxed/simple;
-	bh=YJyW18Cic3+oLsuGLQKOztB5FqyPIyN7YB2rAw9ucm8=;
+	s=arc-20240116; t=1722182852; c=relaxed/simple;
+	bh=lXMmkszlhFRgOggI49i6zKOqzCBeo3TSnuu/Y2jM26Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PldqwdAX4f+USW1oK5wkbHMRuJ2UmdWt1V2GKF7WPqlcYjfb1x86N2bELEVhl7CVqNMZLuegSymuQ5BoR5fOyxQwqbvTbsFoCUZOkJhv+L0hw0ei8UoHwddho71zMV64nb+jYtGhCMfYUOBS3dAB3te5HtZ1AJztehECraGeDVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pXTcptzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2163C4AF0B;
-	Sun, 28 Jul 2024 16:07:28 +0000 (UTC)
+	 MIME-Version; b=bJnA3pv17nxJ/kxsGjRyjG41wjeJ8f4hd1qWqps//ERMZ9KQATjIzMOcVotWM1o0rc5e6ZDALjYeru7JBx9G1iNx9UAky09Jy/3CKzVoUGPEcFVR+HUW/SLj9mxXsKTRZt6asDBFOEM3ML3pLa6+YuS4s8e7ZrWGVOXpYm+iR7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PldaCcLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAB4C116B1;
+	Sun, 28 Jul 2024 16:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722182850;
-	bh=YJyW18Cic3+oLsuGLQKOztB5FqyPIyN7YB2rAw9ucm8=;
+	s=k20201202; t=1722182852;
+	bh=lXMmkszlhFRgOggI49i6zKOqzCBeo3TSnuu/Y2jM26Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXTcptzspvA2X3f+Eyx4ODpDQl1JRxMgvnCRrvWGyT4gHr8Wp1ROOxR/PU7RMX7SV
-	 DjYYU64aiDpg05M98/rjJVJA+f5bCt/VAC0JXWw3t8zWqLTrSBl/M6RHsoSBBAZLbL
-	 gK+Hbp3OZSZNeImik0zzRA4HtC7DcXiIAWh1lUQRfq0eM1rW0HFvVODt9k+Lw1xi9j
-	 VlCrTIZdzGa5ZWsuaQbXy0JDZpaYcOGRlhGQ0VnSHy3kX6H+fM5ybeey8ISyEG1z4t
-	 Q8PkEFEY/e8vEAVsYimXx3Y2LuXf6KPXCqVa/Z0T5de3dldT8zziTjz/DHC0MjdhsQ
-	 i0u7nwmAno+zQ==
+	b=PldaCcLz0NzVheWV+r7yeptuXX3/VVHHXXA+iB4gHK+GFAbHayamqC7D2xtJ6BBlH
+	 yoA1MFnAkbcr30JXEdqgKs9APvgA4xB5uQnS99e14irAt+6Y4IsXC4154Yvrkzxh4F
+	 cLKvarRu21PYa26MYzPfW0+LP6TPSTOyfIFPcOo7+geqI0lcXS+MQesJ3HzV+nf8Ov
+	 PAb4W7mxDd9mLOUvmuSKzx6NWEgxCnF90EoquI+br91kVbBU7aNHKbc4hdfpQMuSWp
+	 4UvNdubFQ+Ze1ky2uK8mj+mAQxOuAfFJTGvhbe002kmJ/4i5LgYOoTJ2A78qHCFd4f
+	 MvPJCsLpYWQfw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	davem@davemloft.net,
-	siyanteng@loongson.cn,
-	devicetree@vger.kernel.org,
-	linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 08/17] MIPS: Loongson64: DTS: Fix PCIe port nodes for ls7a
-Date: Sun, 28 Jul 2024 12:06:44 -0400
-Message-ID: <20240728160709.2052627-8-sashal@kernel.org>
+	mahesh@linux.ibm.com,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 09/17] PCI/AER: Disable AER service on suspend
+Date: Sun, 28 Jul 2024 12:06:45 -0400
+Message-ID: <20240728160709.2052627-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728160709.2052627-1-sashal@kernel.org>
 References: <20240728160709.2052627-1-sashal@kernel.org>
@@ -71,157 +67,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-[ Upstream commit d89a415ff8d5e0aad4963f2d8ebb0f9e8110b7fa ]
+[ Upstream commit 5afc2f763edc5daae4722ee46fea4e627d01fa90 ]
 
-Add various required properties to silent warnings:
+If the link is powered off during suspend, electrical noise may cause
+errors that are logged via AER.  If the AER interrupt is enabled and shares
+an IRQ with PME, that causes a spurious wakeup during suspend.
 
-arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi:116.16-297.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
-arch/mips/boot/dts/loongson/loongson64_2core_2k1000.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
+Disable the AER interrupt during suspend to prevent this.  Clear error
+status before re-enabling IRQ interrupts during resume so we don't get an
+interrupt for errors that occurred during the suspend/resume process.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
+Link: https://lore.kernel.org/r/20240416043225.1462548-2-kai.heng.feng@canonical.com
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+[bhelgaas: drop pci_ancestor_pr3_present() etc, commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/loongson/loongson64-2k1000.dtsi  | 37 +++++++++++++++----
- 1 file changed, 30 insertions(+), 7 deletions(-)
+ drivers/pci/pcie/aer.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-index ee3e2153dd13f..b5593f7cc383b 100644
---- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-+++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-@@ -118,7 +118,6 @@ pci@1a000000 {
- 			device_type = "pci";
- 			#address-cells = <3>;
- 			#size-cells = <2>;
--			#interrupt-cells = <2>;
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index c9afe43628356..eeb9ea9044b43 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -1342,6 +1342,22 @@ static int aer_probe(struct pcie_device *dev)
+ 	return 0;
+ }
  
- 			reg = <0 0x1a000000 0 0x02000000>,
- 				<0xfe 0x00000000 0 0x20000000>;
-@@ -204,93 +203,117 @@ sata@8,0 {
- 				interrupt-parent = <&liointc0>;
- 			};
++static int aer_suspend(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++
++	aer_disable_rootport(rpc);
++	return 0;
++}
++
++static int aer_resume(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++
++	aer_enable_rootport(rpc);
++	return 0;
++}
++
+ /**
+  * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
+  * @dev: pointer to Root Port, RCEC, or RCiEP
+@@ -1413,6 +1429,8 @@ static struct pcie_port_service_driver aerdriver = {
+ 	.service	= PCIE_PORT_SERVICE_AER,
  
--			pci_bridge@9,0 {
-+			pcie@9,0 {
- 				compatible = "pci0014,7a19.0",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
- 						   "pciclass0604";
- 
- 				reg = <0x4800 0x0 0x0 0x0 0x0>;
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &liointc1 0 IRQ_TYPE_LEVEL_LOW>;
-+				ranges;
- 				external-facing;
- 			};
- 
--			pci_bridge@a,0 {
-+			pcie@a,0 {
- 				compatible = "pci0014,7a09.0",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
- 						   "pciclass0604";
- 
- 				reg = <0x5000 0x0 0x0 0x0 0x0>;
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &liointc1 1 IRQ_TYPE_LEVEL_LOW>;
-+				ranges;
- 				external-facing;
- 			};
- 
--			pci_bridge@b,0 {
-+			pcie@b,0 {
- 				compatible = "pci0014,7a09.0",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
- 						   "pciclass0604";
- 
- 				reg = <0x5800 0x0 0x0 0x0 0x0>;
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &liointc1 2 IRQ_TYPE_LEVEL_LOW>;
-+				ranges;
- 				external-facing;
- 			};
- 
--			pci_bridge@c,0 {
-+			pcie@c,0 {
- 				compatible = "pci0014,7a09.0",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
- 						   "pciclass0604";
- 
- 				reg = <0x6000 0x0 0x0 0x0 0x0>;
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &liointc1 3 IRQ_TYPE_LEVEL_LOW>;
-+				ranges;
- 				external-facing;
- 			};
- 
--			pci_bridge@d,0 {
-+			pcie@d,0 {
- 				compatible = "pci0014,7a19.0",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
- 						   "pciclass0604";
- 
- 				reg = <0x6800 0x0 0x0 0x0 0x0>;
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupts = <4 IRQ_TYPE_LEVEL_LOW>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &liointc1 4 IRQ_TYPE_LEVEL_LOW>;
-+				ranges;
- 				external-facing;
- 			};
- 
--			pci_bridge@e,0 {
-+			pcie@e,0 {
- 				compatible = "pci0014,7a09.0",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
- 						   "pciclass0604";
- 
- 				reg = <0x7000 0x0 0x0 0x0 0x0>;
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &liointc1 5 IRQ_TYPE_LEVEL_LOW>;
-+				ranges;
- 				external-facing;
- 			};
+ 	.probe		= aer_probe,
++	.suspend	= aer_suspend,
++	.resume		= aer_resume,
+ 	.remove		= aer_remove,
+ };
  
 -- 
 2.43.0
