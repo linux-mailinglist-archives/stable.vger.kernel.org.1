@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-62110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE1F93E32B
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:26:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FDC93E32F
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:27:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33A461F21EE4
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:26:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D0E81C208C9
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D391A257F;
-	Sun, 28 Jul 2024 00:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECA9145A03;
+	Sun, 28 Jul 2024 00:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LfKt60Vd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G6YAG59h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DCA1A2578;
-	Sun, 28 Jul 2024 00:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AC41459F7;
+	Sun, 28 Jul 2024 00:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722128163; cv=none; b=lqFJXa1UOyqngxfeeAmqJJdbTgABjcp+NAaXwlXQrmPK/In4MWpg0w3wQENjiqRQcW2tpblu0LXi9wkSVLYihbZVJJNt7euMySSwskkopmxfM/0RT1XUuHJRdJSuzKCM2eVgppzp7pxp/J6KqJnFRsBsdl5V/RFaDWHHyhyR8fw=
+	t=1722128169; cv=none; b=W+D/BYfEtsJaqYS2JlLVHIxSHKOi0BXMwws+RvYnuyWdcOSiCzx2cqNdo9hfVH561+Umfyw6b8VvBkMRbJrD4Oozs/KKRSJJ+pmU29q8PRkU8++BuQvpIfRArx0VgnEqzhnykoy43xNRRK7uAdzfPiXUGC2OnyqAW4CfgQoK+Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722128163; c=relaxed/simple;
-	bh=T3kT3aF+NaFwrOaCo+7NVvhnR2d0c2j/hp1l5u4t4WE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RV0Zm3GeCNPXyDywqozSK10eFyfkiz2u0BEBSn27ohA1+dk7HEuE1k1CG1BXQR71S8+lObmo0rTjBDqnULtVpBLZt2VNhwaS+94ntf/PZnwc3tdhYxce5R967xB5wd9TPVMuOrLDbFfq+HAv6fLiwpi3ChLShjGxpeImkHWOPzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LfKt60Vd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EE8C32781;
-	Sun, 28 Jul 2024 00:56:01 +0000 (UTC)
+	s=arc-20240116; t=1722128169; c=relaxed/simple;
+	bh=gy6QXuiiN10NZUo5qJCimcvef+4IP+hu4ho2/sIyk88=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XKde2vJqAkGiq60KtKydnNu4MfWlZQlkE8+nd/nQwFrZo2IvKITAjSZYag6yX+adMIQM2XPNQRRz03V5H0aaZ4Bv2Nx9ej/7kHaykJ9qiwlJe/wgwTgn5/Q+qonFemL48KDuStiBguMFghoRWoOjY9cRC5ekq5j7rd6JCAatMzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G6YAG59h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CA2C32781;
+	Sun, 28 Jul 2024 00:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722128162;
-	bh=T3kT3aF+NaFwrOaCo+7NVvhnR2d0c2j/hp1l5u4t4WE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LfKt60VdV+bkps7N3TYPxxGn+ZWco16dYikAKwz1tvZq7reqXzUq8Bsi6ENdBroOI
-	 UkvEuleiQLXtnJUXuTErHCw099hBBEbhFjd24l7cvdU3y3vP+kJObYmMXuiJxQY73b
-	 +w3DmpcmtuByguatm1PxDIlulMRIlkkeyKGjW4IL2mAe824cmQwPJwVYlV6Asknaqv
-	 AMC+QXbDkuv/AFY/fLvwYmJZOUABnqe6nDgJlNeKCz9HmD4aKCA/2mlci0es0X2PZI
-	 SmDyaHSP0ryR4hpcUUR+8zvfgOsf3nTvUjt13PavLJxLzZWdyeRr6SI/9hejxBRKJZ
-	 dmT5LHeR/GCOg==
+	s=k20201202; t=1722128169;
+	bh=gy6QXuiiN10NZUo5qJCimcvef+4IP+hu4ho2/sIyk88=;
+	h=From:To:Cc:Subject:Date:From;
+	b=G6YAG59hhNbr9MbPKStP7hGbXx7i37TuLkZTXdq5W446DziW+GuVcbA6LRWrnXecf
+	 rcANihc9ydUCnRmt61rbcefSZXbrwiVpm6unCnibTj6+KFiSwZ+WmGie+DpAqwogBk
+	 nJbRfUbTff0jmFfOKuYljfr4xeHbv4hoje7Qx56TuuZoUvrTqXZnayxue90oiR04Ai
+	 O3muesFq0VI5Qk28owBJCvgs8ho6D6dtvNMCTyfbDWS4XfPbQbGBuX0fHf5eqlfDxa
+	 rrXuCDurFIuWjSa/jhUzVa/W/Pto/cR+49bUg6PE4qulM5dqVCSU0STQwfScaAjQkb
+	 zZRgYZeoOr9zA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 6/6] btrfs: fix bitmap leak when loading free space cache on duplicate entry
-Date: Sat, 27 Jul 2024 20:55:47 -0400
-Message-ID: <20240728005549.1734443-6-sashal@kernel.org>
+	nic_swsd@realtek.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 1/6] r8169: remove detection of chip version 11 (early RTL8168b)
+Date: Sat, 27 Jul 2024 20:55:58 -0400
+Message-ID: <20240728005606.1735387-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240728005549.1734443-1-sashal@kernel.org>
-References: <20240728005549.1734443-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,39 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.164
+X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 320d8dc612660da84c3b70a28658bb38069e5a9a ]
+[ Upstream commit 982300c115d229565d7af8e8b38aa1ee7bb1f5bd ]
 
-If we failed to link a free space entry because there's already a
-conflicting entry for the same offset, we free the free space entry but
-we don't free the associated bitmap that we had just allocated before.
-Fix that by freeing the bitmap before freeing the entry.
+This early RTL8168b version was the first PCIe chip version, and it's
+quite quirky. Last sign of life is from more than 15 yrs ago.
+Let's remove detection of this chip version, we'll see whether anybody
+complains. If not, support for this chip version can be removed a few
+kernel versions later.
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/875cdcf4-843c-420a-ad5d-417447b68572@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/free-space-cache.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
-index 9161bc4f40649..0004488eeb060 100644
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -829,6 +829,7 @@ static int __load_free_space_cache(struct btrfs_root *root, struct inode *inode,
- 				spin_unlock(&ctl->tree_lock);
- 				btrfs_err(fs_info,
- 					"Duplicate entries in free space cache, dumping");
-+				kmem_cache_free(btrfs_free_space_bitmap_cachep, e->bitmap);
- 				kmem_cache_free(btrfs_free_space_cachep, e);
- 				goto free_cache;
- 			}
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index d24eb5ee152a5..7d3443ad8e797 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -2018,7 +2018,9 @@ static enum mac_version rtl8169_get_mac_version(u16 xid, bool gmii)
+ 		/* 8168B family. */
+ 		{ 0x7cf, 0x380,	RTL_GIGA_MAC_VER_12 },
+ 		{ 0x7c8, 0x380,	RTL_GIGA_MAC_VER_17 },
+-		{ 0x7c8, 0x300,	RTL_GIGA_MAC_VER_11 },
++		/* This one is very old and rare, let's see if anybody complains.
++		 * { 0x7c8, 0x300,	RTL_GIGA_MAC_VER_11 },
++		 */
+ 
+ 		/* 8101 family. */
+ 		{ 0x7c8, 0x448,	RTL_GIGA_MAC_VER_39 },
 -- 
 2.43.0
 
