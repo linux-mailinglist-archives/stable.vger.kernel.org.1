@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-62256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C8A93E7A9
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:13:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 764E893E7AB
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C0C02861D1
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:13:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20C6C1F21A6B
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98ACF13210D;
-	Sun, 28 Jul 2024 16:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FA91386C6;
+	Sun, 28 Jul 2024 16:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QaQTXGss"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQaa6gIS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5126B12FF65;
-	Sun, 28 Jul 2024 16:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37AE137905;
+	Sun, 28 Jul 2024 16:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722182771; cv=none; b=PdBZ3uDLg7YYMyjKtfOL4EjpBTOGo4HpFa4l/uiJw68xNUbX1nSHToyaLWWup70GO2QIaNRk3x+4bphutoh3aykmQNpiESLHeISGwR7u0Ttc+4/Yml+a4h5A8f4dfr071WVUX68jcczIWnz6XnY9Tf4f2t6fV7wPhgN+JL6Nxk4=
+	t=1722182775; cv=none; b=ODHQWHUaTyiuRmejGzqtC5dBrAt2b/d/mcKVeU9VPB6oLEhd5/QtFLMfedTId5Tccg+R/LTnp+jmaWTDpGNdPaaCmz+C7ZbIJy3NTDhEJAVFFVK0qXucGf8GqF2AVVlpV7GuGh10gkXahdZmKhn3PxfwAfTPHQahsNXeDqT0x/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722182771; c=relaxed/simple;
-	bh=5bbPBNWEJ0TWEF17tF+gO8exwZoTsQqVPRyvBIYCeFw=;
+	s=arc-20240116; t=1722182775; c=relaxed/simple;
+	bh=ZWwOIXhWJ16760WpJd2nj8bqfFlHut1jmYjqK1gtZ5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1CEGkiK89YfAVWu3LyFhx3ryVGJ2qrEDh9GpFcNqaZSIiHusmEe6ySjUQd3OVsl+JxVw9ANftd0kfBEMqrtPYu0JOb69kKUu/odxEZtpa4x2ZKIlvwu3hVS3Rx4yrvVK/HKCCPo00d1UDVXH5Y80hO/2sDw7FHtu/a5yHkGud4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QaQTXGss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD1DC4AF0B;
-	Sun, 28 Jul 2024 16:06:10 +0000 (UTC)
+	 MIME-Version; b=AzGFQLPZO2liv9tGJHA0R3Gj/wiJHNqWRuy8XbjoFpput6JGVhTkFmuLpQUqtBj1VN0cNG1WzZ1TecmxsdN+7nU9AZNaATWi7kOHlXyYjIWUhOTB7YnQ3PWkaA+tCCqL6TiAJsZ4Iz4rY5E/cUpJw2T823nph0AUfRfCqYXhmxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQaa6gIS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6907BC32782;
+	Sun, 28 Jul 2024 16:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722182771;
-	bh=5bbPBNWEJ0TWEF17tF+gO8exwZoTsQqVPRyvBIYCeFw=;
+	s=k20201202; t=1722182775;
+	bh=ZWwOIXhWJ16760WpJd2nj8bqfFlHut1jmYjqK1gtZ5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QaQTXGss6hEFyD/nyZP3lCaoqdjnD8ciMx9DiDjLHOZ2KxY0rl4KLHgMhXBSIseZa
-	 xzY4O2o4ICX4fXAtTFBJNioh36vkhYfkwn8hwvI4x6PeW+ytmitHbp3E+eTKqWtVgC
-	 gCng2jCFwX+TNEaNrXf7ptzb7yMgmgukLGqWEGw0Qxqbiifa+KqLAnVSoqXyXGlS1q
-	 JLro1LOgC0kGUYB+FO4gGdt/jvPLu0izYL3cIwvq3GxI9+4Is72pmx7MwwDMWsgpIh
-	 icWThO024ODKVCd81obbA5echYx4W2kDyKCXTwhCZlYo9eRY2phIyxEpVE4SC2DVWu
-	 8z7wHXs2lggHw==
+	b=oQaa6gISkRKHfHi55ZNSei5FMmzy9Wpp8s3JafPOw606y462WSYWbi9aU7e7ffX2z
+	 RLSyx7KcoGSh9nRlRVkcnrYDDWTQRERit6BlzD4dhrv+srcPCb8T9j0jo+kG43oBib
+	 yiicXUaWHSSteYwkTutobLCPew/GCx3XuWWTKk6/HqCR931YlbPcIHjOGODlP+ut1z
+	 kvBmV6Fwr3pfGnjhOpQKjCiOFOMIH+3XAf4qmzy1JNsG2jiyqUHVFLXAfnbq9YGiOR
+	 YrtiSG5osyEpNzeS6hUM7Yqf4pdCBMhyd/M2b1GADlI0+1CvEZOy0tKKSlGBYfyMyP
+	 dcWiiODu9VKlQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mahesh@linux.ibm.com,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 13/23] PCI/DPC: Disable DPC service on suspend
-Date: Sun, 28 Jul 2024 12:04:54 -0400
-Message-ID: <20240728160538.2051879-13-sashal@kernel.org>
+	cezary.rojewski@intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	ckeepax@opensource.cirrus.com,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 14/23] ASoC: Intel: sof_sdw: fix jack detection on ADL-N variant RVP
+Date: Sun, 28 Jul 2024 12:04:55 -0400
+Message-ID: <20240728160538.2051879-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728160538.2051879-1-sashal@kernel.org>
 References: <20240728160538.2051879-1-sashal@kernel.org>
@@ -67,131 +75,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 75c47c790f43c438761fc049fb9d438144a9db45 ]
+[ Upstream commit 65c90df918205bc84f5448550cde76a54dae5f52 ]
 
-If the link is powered off during suspend, electrical noise may cause
-errors that trigger DPC.  If the DPC interrupt is enabled and shares an IRQ
-with PME, that causes a spurious wakeup during suspend.
+Experimental tests show that JD2_100K is required, otherwise the jack
+is detected always even with nothing plugged-in.
 
-Disable DPC triggering and the DPC interrupt during suspend to prevent
-this.  Clear DPC interrupt status before re-enabling DPC interrupts during
-resume so we don't get an interrupt for errors that occurred during the
-suspend/resume process.
+To avoid matching with other known quirks the SKU information is used.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
-Link: https://lore.kernel.org/r/20240416043225.1462548-3-kai.heng.feng@canonical.com
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-[bhelgaas: clear status on resume, add comments, commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://patch.msgid.link/20240624121119.91552-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/dpc.c | 60 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 48 insertions(+), 12 deletions(-)
+ sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index a668820696dc0..2b6ef7efa3c11 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -412,13 +412,44 @@ void pci_dpc_init(struct pci_dev *pdev)
- 	}
- }
- 
-+static void dpc_enable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	int dpc = pdev->dpc_cap;
-+	u16 ctl;
-+
-+	/*
-+	 * Clear DPC Interrupt Status so we don't get an interrupt for an
-+	 * old event when setting DPC Interrupt Enable.
-+	 */
-+	pci_write_config_word(pdev, dpc + PCI_EXP_DPC_STATUS,
-+			      PCI_EXP_DPC_STATUS_INTERRUPT);
-+
-+	pci_read_config_word(pdev, dpc + PCI_EXP_DPC_CTL, &ctl);
-+	ctl &= ~PCI_EXP_DPC_CTL_EN_MASK;
-+	ctl |= PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
-+	pci_write_config_word(pdev, dpc + PCI_EXP_DPC_CTL, ctl);
-+}
-+
-+static void dpc_disable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	int dpc = pdev->dpc_cap;
-+	u16 ctl;
-+
-+	/* Disable DPC triggering and DPC interrupts */
-+	pci_read_config_word(pdev, dpc + PCI_EXP_DPC_CTL, &ctl);
-+	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
-+	pci_write_config_word(pdev, dpc + PCI_EXP_DPC_CTL, ctl);
-+}
-+
- #define FLAG(x, y) (((x) & (y)) ? '+' : '-')
- static int dpc_probe(struct pcie_device *dev)
- {
- 	struct pci_dev *pdev = dev->port;
- 	struct device *device = &dev->device;
- 	int status;
--	u16 ctl, cap;
-+	u16 cap;
- 
- 	if (!pcie_aer_is_native(pdev) && !pcie_ports_dpc_native)
- 		return -ENOTSUPP;
-@@ -433,11 +464,7 @@ static int dpc_probe(struct pcie_device *dev)
- 	}
- 
- 	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CAP, &cap);
--
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--	ctl &= ~PCI_EXP_DPC_CTL_EN_MASK;
--	ctl |= PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+	dpc_enable(dev);
- 
- 	pci_info(pdev, "enabled with IRQ %d\n", dev->irq);
- 	pci_info(pdev, "error containment capabilities: Int Msg #%d, RPExt%c PoisonedTLP%c SwTrigger%c RP PIO Log %d, DL_ActiveErr%c\n",
-@@ -450,14 +477,21 @@ static int dpc_probe(struct pcie_device *dev)
- 	return status;
- }
- 
--static void dpc_remove(struct pcie_device *dev)
-+static int dpc_suspend(struct pcie_device *dev)
- {
--	struct pci_dev *pdev = dev->port;
--	u16 ctl;
-+	dpc_disable(dev);
-+	return 0;
-+}
- 
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+static int dpc_resume(struct pcie_device *dev)
-+{
-+	dpc_enable(dev);
-+	return 0;
-+}
-+
-+static void dpc_remove(struct pcie_device *dev)
-+{
-+	dpc_disable(dev);
- }
- 
- static struct pcie_port_service_driver dpcdriver = {
-@@ -465,6 +499,8 @@ static struct pcie_port_service_driver dpcdriver = {
- 	.port_type	= PCIE_ANY_PORT,
- 	.service	= PCIE_PORT_SERVICE_DPC,
- 	.probe		= dpc_probe,
-+	.suspend	= dpc_suspend,
-+	.resume		= dpc_resume,
- 	.remove		= dpc_remove,
- };
- 
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index a878b6b3d1948..965d46968f95a 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -277,6 +277,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 					SOF_BT_OFFLOAD_SSP(2) |
+ 					SOF_SSP_BT_OFFLOAD_PRESENT),
+ 	},
++	{
++		.callback = sof_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "0000000000070000"),
++		},
++		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
++					RT711_JD2_100K),
++	},
+ 	{
+ 		.callback = sof_sdw_quirk_cb,
+ 		.matches = {
 -- 
 2.43.0
 
