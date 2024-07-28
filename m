@@ -1,114 +1,110 @@
-Return-Path: <stable+bounces-62311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61A893E852
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:28:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2946993E855
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7861F1F214BA
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:28:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D040E1F21B4F
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA3A18D4BB;
-	Sun, 28 Jul 2024 16:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBE256458;
+	Sun, 28 Jul 2024 16:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SF4aJjtP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kij7pyed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3777118D4B4;
-	Sun, 28 Jul 2024 16:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3399417756;
+	Sun, 28 Jul 2024 16:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722182983; cv=none; b=ENzxkVdaASRPnvsGof0DcdItBw4jlVI6egVKJR4iAgys44HyyGOjSfgsiA1viEmhqHAkghcQCs2ZycWjwYSxbjZsBUGvh35+3yAiqNMGWGSzJNBWB3tsb2z2zS3OtvJTHNZ8cJG/K4rEqSalAmcZ0vHDdE7YHOwcyE6tSLLnIt8=
+	t=1722182997; cv=none; b=Tqd0E7oAw/3ibnvVES58gJTTMl5Jske28TcgzsAzQqaWEIQEG5G1J4TMXFMw3mAWh/Tg5So8fmVU1IshVbbu9DIl5PShfugjKWSIrYVIHRXSnArmDHrT1723aKVOv+pGC4mQnASEJ3xbDI0nVQ9nn7rl1aj5F5fA8yo+oCLQ0UY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722182983; c=relaxed/simple;
-	bh=3M1mydcj+1vt01K91UiclDWJtHhgmUtBXw6S4fzmyT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/Jgr4VruR3nE5R/Kceo+SXe8C2E9WLfyf/Kl+LZ7U8eWpIQPlpHxtGY+kXc9n1VfZHUAIkyeqkVoJUt8jZyW6ED/RVLnPd3HKHPNs60q9ghkrkHf2YsZBLj44EVGxqUwG+y9OoMuaOmymJgon90Ti0fCDW0C1n96OJX+I/nc9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SF4aJjtP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC42DC4AF0A;
-	Sun, 28 Jul 2024 16:09:41 +0000 (UTC)
+	s=arc-20240116; t=1722182997; c=relaxed/simple;
+	bh=HMeSELUynsvJYfgBIX/+wU3WRg7Ji9njsKv3FGSyVTs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U7aXpLLtei2TJ4CQPETk3nP92XEwTF1JAcZfoI+VnGCNffzy/Jc6Yy3Cogk5CiIo0Xgz1RYN8BcHLFiswgrLEOp2SAxxmxQJts1iZhSuO+Eox8HSZbBA7ZmGuzp9qIvuIpsZRxUrIgzrtzGJ76S85ZXGuUstKKLij6WUNyr3C5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kij7pyed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08541C32782;
+	Sun, 28 Jul 2024 16:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722182983;
-	bh=3M1mydcj+1vt01K91UiclDWJtHhgmUtBXw6S4fzmyT4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SF4aJjtPvZi1TMTLw/I1druNiT34YWA8pU87lwWCThhUT3HZOTZpSqxCeKtSuSuCx
-	 G1urTeYsJFZHZlrsjVhY1neRA/pRpklIWOoWP9JNOAt/P6p7gi7XCt3N+I4L4doXkr
-	 cAchkT6J/dw/RlCAvzOJq2ngp+rjQwhZ00geUlNGeYR8gBwkhoUDFGP5nn8yC8Z7cX
-	 vLXcH01w9zF3OSeZ8j3/8vf2czSF9/dVIGR72jZzd6TB5rqY3BNIWX5PYRXZ7ZvlU+
-	 mCBSd/rwSAQJRYrMNMCMiuhyfBtKY6F5KXI1oAQyB0P1/ADpI7p0EDFpjI+xvSWaPf
-	 C4cI5KUckgQag==
+	s=k20201202; t=1722182997;
+	bh=HMeSELUynsvJYfgBIX/+wU3WRg7Ji9njsKv3FGSyVTs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Kij7pyedyvAjSCTXmbAMrE4zAcA2iavekMkTw3dcrD2PTzlQwDhoG7VPtloqZX3h4
+	 /6Xv0+Qj1Aoo7zpMYw7zZFBiiz2yIR5+jMkwP1C877xUZEuTcCy6TwaFSVzUpfv2PH
+	 SVzycjGmIQmXaTeK8nhKDQQKVgxxAseshEy77hJWSD5Re3gw2HrJuAiutNNUoS0eLh
+	 k1DtVF/lAmak3FXKlLmurDqntMj5zotCPlxjCY4zNrvBwHagfRx2pENsAan2+yK6xD
+	 lyEfBHWxbn/i+VtBsytrTGT2pqr//DBHSIHs3VU7sP7GDfFyNePPSVNfJ1PMmulbci
+	 hx66uU6fhpq6w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
-	syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com,
+Cc: Ajit Khaparde <ajit.khaparde@broadcom.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Andy Gospodarek <gospo@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	kl@kl.wtf,
-	peter.ujfalusi@linux.intel.com,
-	xristos.thes@gmail.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 13/13] ALSA: usb: Fix UBSAN warning in parse_audio_unit()
-Date: Sun, 28 Jul 2024 12:08:55 -0400
-Message-ID: <20240728160907.2053634-13-sashal@kernel.org>
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 01/11] PCI: Add ACS quirk for Broadcom BCM5760X NIC
+Date: Sun, 28 Jul 2024 12:09:34 -0400
+Message-ID: <20240728160954.2054068-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240728160907.2053634-1-sashal@kernel.org>
-References: <20240728160907.2053634-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.164
+X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ajit Khaparde <ajit.khaparde@broadcom.com>
 
-[ Upstream commit 2f38cf730caedaeacdefb7ff35b0a3c1168117f9 ]
+[ Upstream commit 524e057b2d66b61f9b63b6db30467ab7b0bb4796 ]
 
-A malformed USB descriptor may pass the lengthy mixer description with
-a lot of channels, and this may overflow the 32bit integer shift
-size, as caught by syzbot UBSAN test.  Although this won't cause any
-real trouble, it's better to address.
+The Broadcom BCM5760X NIC may be a multi-function device.
 
-This patch introduces a sanity check of the number of channels to bail
-out the parsing when too many channels are found.
+While it does not advertise an ACS capability, peer-to-peer transactions
+are not possible between the individual functions. So it is ok to treat
+them as fully isolated.
 
-Reported-by: syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/0000000000000adac5061d3c7355@google.com
-Link: https://patch.msgid.link/20240715123619.26612-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add an ACS quirk for this device so the functions can be in independent
+IOMMU groups and attached individually to userspace applications using
+VFIO.
+
+[kwilczynski: commit log]
+Link: https://lore.kernel.org/linux-pci/20240510204228.73435-1-ajit.khaparde@broadcom.com
+Signed-off-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Andy Gospodarek <gospo@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/pci/quirks.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index d818eee53c90a..f10634dc118d6 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1985,6 +1985,13 @@ static int parse_audio_feature_unit(struct mixer_build *state, int unitid,
- 		bmaControls = ftr->bmaControls;
- 	}
- 
-+	if (channels > 32) {
-+		usb_audio_info(state->chip,
-+			       "usbmixer: too many channels (%d) in unit %d\n",
-+			       channels, unitid);
-+		return -EINVAL;
-+	}
-+
- 	/* parse the source unit */
- 	err = parse_audio_unit(state, hdr->bSourceID);
- 	if (err < 0)
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 60a469bdc7e3e..39c42a1e8d9a3 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4945,6 +4945,10 @@ static const struct pci_dev_acs_enabled {
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1750, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1751, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1752, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1760, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1761, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
+ 	/* Amazon Annapurna Labs */
+ 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
 -- 
 2.43.0
 
