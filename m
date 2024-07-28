@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-62155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD4D93E631
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:44:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D94E93E635
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E6CC1C20E49
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:44:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F06D41F2163A
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A0473478;
-	Sun, 28 Jul 2024 15:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EFB6BFC7;
+	Sun, 28 Jul 2024 15:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k44i63x2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CagLrVLN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7A273466;
-	Sun, 28 Jul 2024 15:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CA21E487;
+	Sun, 28 Jul 2024 15:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181407; cv=none; b=MpHK39Y5oUW3qmfRsVNuVtItFRd6nQdpoq8jgV6JnsdkVlAEZ/TM+eCU6p/O024xCblKLGZfENqc2+deO9jugZCz1NleUI9N8aR2p9opX07Mti3ojPxjrsnTekbE8HPoJyqAWjq4FARD6sb4MiVBcUUJlZv3SSYRUe9d6oWjrYk=
+	t=1722181417; cv=none; b=GkYPmSce7bS4WxsghGzKS5aTEOa6G45NWOFT3fC2Btqql5AGELD2h75ORFMg3zMlz5jSi/tvUd48LdAV1bQ6OIOjqJAWu3P0xc7CWVWByzl8v1V0KMnkhhdH2CSZn4EST/audZXoxct/scwbvB6pxKe/kKli4jCkVg2KAy7h1WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181407; c=relaxed/simple;
-	bh=btrlw5K7Y/17sQ+h9eMqp5vAXw/5OjknoCfIgQbwb70=;
+	s=arc-20240116; t=1722181417; c=relaxed/simple;
+	bh=0GsaY9VrGRPabn9WDS9d3XvtsMkIwTkH0atVIZJV17s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EpHHyPQFhCr61iv9n9JM0agOEHMe1BnFwIn3MXQrL0UjciBRQ/mVreQ+rMsbKmqDu71HCjovPQ8/OxHyw8friGS87Xv54Cd12tyd5dZl4+Nl0v90O8mcNJzCACbUYO358uDdp3/bn3QulokPn6mZkLJFAuYe2773MckAvf7YZjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k44i63x2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461F8C4AF0B;
-	Sun, 28 Jul 2024 15:43:25 +0000 (UTC)
+	 MIME-Version; b=Q7HJvOkE4JTHEKHLMwgN5N2X0s9dCi9gW62hUViZK6KSpgx5mx/HYpuH+lhjjwFNnagE8mIT8mvrjdKCsa0+6yv2Yz6wuvSO50Xzh9n+WozD64+b1U8+WB3781IgEuJ89Pd5b4KguVy/vfDf91xeSfImwl8KvvJ5pDF3uoDQE1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CagLrVLN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88010C116B1;
+	Sun, 28 Jul 2024 15:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181407;
-	bh=btrlw5K7Y/17sQ+h9eMqp5vAXw/5OjknoCfIgQbwb70=;
+	s=k20201202; t=1722181416;
+	bh=0GsaY9VrGRPabn9WDS9d3XvtsMkIwTkH0atVIZJV17s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k44i63x2hNEz+frknLt0zdynP0sKuq/RBj/HoVZo6sBrZc/ge7JODo9nFh1Vo6O1e
-	 t4mRL2HaXq1KFdBWgBOeAe72YoSCOzK6Y5mVlQ7qPlDxAdK9APyjjOgkgSDfBPTUDI
-	 9Pd4PbUnvHL0Fj/VXR8Ugy0c5Cd8taB0hClKpQoZvDCGSTb8wd4H9LjL4/oST7y1pu
-	 B2pta9P8lo6QJv3pMOtqYDEOTNyOGBW3F5Vonrb4zi36bjVX0IxpZ5QxzMZD2ZJ2zZ
-	 T44Pn4VZl80/KYWRAfvwanA8MJXluvL8hSRSn5mY6ANpWcnS5tF26eMfbpi9DEBnim
-	 vGfC1upIB8FUA==
+	b=CagLrVLNKYZO5NLAuSiNC1EJfJ5IbPWGrPkrhiCzy+BEDPUNLtxWIjyok/DVLKMQP
+	 7NXiXLKeeNPrkhf5Jy/4GDf7X9dSGAXwyuSFrDUGMQxsCTtAloFSWUriw2+ZR3Qnxv
+	 RbmLm0m2pxbQaB8X+FhXKc0uhQNB1T4axmAAWHM6fsMYVfEkeCd7f+op6edW0kOx9j
+	 9bI1eOOJLZdItbF1cfRzK+qJxvfqlsky6STi/L/UAudz4DjfxFioh9TF3aCe41mL2U
+	 U/us1wNxJoVo1xJXVOcaEr8FN+Q2OqVYIWFvRKM1NSo0+IqfSEjkUdg4/zdAiJ48mP
+	 QOr5DPZ60cNtg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jesse Zhang <jesse.zhang@amd.com>,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
+Cc: Victor Skvortsov <victor.skvortsov@amd.com>,
+	Zhigang Luo <zhigang.luo@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
 	christian.koenig@amd.com,
@@ -54,12 +53,26 @@ Cc: Jesse Zhang <jesse.zhang@amd.com>,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
 	Hawking.Zhang@amd.com,
-	Stanley.Yang@amd.com,
+	mario.limonciello@amd.com,
+	lijo.lazar@amd.com,
+	Jun.Ma2@amd.com,
+	candice.li@amd.com,
+	victorchengchi.lu@amd.com,
+	andrealmeid@igalia.com,
+	hamza.mahfooz@amd.com,
+	Zhigang.Luo@amd.com,
+	surbhi.kakarya@amd.com,
+	sunran001@208suo.com,
+	chongli2@amd.com,
+	danijel.slivka@amd.com,
+	Jingwen.Chen2@amd.com,
+	YiPeng.Chai@amd.com,
+	bokun.zhang@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 11/34] drm/admgpu: fix dereferencing null pointer context
-Date: Sun, 28 Jul 2024 11:40:35 -0400
-Message-ID: <20240728154230.2046786-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 12/34] drm/amdgpu: Add lock around VF RLCG interface
+Date: Sun, 28 Jul 2024 11:40:36 -0400
+Message-ID: <20240728154230.2046786-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728154230.2046786-1-sashal@kernel.org>
 References: <20240728154230.2046786-1-sashal@kernel.org>
@@ -74,35 +87,76 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Victor Skvortsov <victor.skvortsov@amd.com>
 
-[ Upstream commit 030ffd4d43b433bc6671d9ec34fc12c59220b95d ]
+[ Upstream commit e864180ee49b4d30e640fd1e1d852b86411420c9 ]
 
-When user space sets an invalid ta type, the pointer context will be empty.
-So it need to check the pointer context before using it
+flush_gpu_tlb may be called from another thread while
+device_gpu_recover is running.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Suggested-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Both of these threads access registers through the VF
+RLCG interface during VF Full Access. Add a lock around this interface
+to prevent race conditions between these threads.
+
+Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
+Reviewed-by: Zhigang Luo <zhigang.luo@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c   | 6 ++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h   | 2 ++
+ 3 files changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-index ca5c86e5f7cd6..8e8afbd237bcd 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-@@ -334,7 +334,7 @@ static ssize_t ta_if_invoke_debugfs_write(struct file *fp, const char *buf, size
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 33f791d92ddf3..eb4a1f4318333 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4048,6 +4048,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	mutex_init(&adev->grbm_idx_mutex);
+ 	mutex_init(&adev->mn_lock);
+ 	mutex_init(&adev->virt.vf_errors.lock);
++	mutex_init(&adev->virt.rlcg_reg_lock);
+ 	hash_init(adev->mn_hash);
+ 	mutex_init(&adev->psp.mutex);
+ 	mutex_init(&adev->notifier_lock);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 54ab51a4ada77..972a58f0f4924 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -980,6 +980,9 @@ u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v, u32 f
+ 	scratch_reg1 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg1;
+ 	scratch_reg2 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg2;
+ 	scratch_reg3 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg3;
++
++	mutex_lock(&adev->virt.rlcg_reg_lock);
++
+ 	if (reg_access_ctrl->spare_int)
+ 		spare_int = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->spare_int;
  
- 	set_ta_context_funcs(psp, ta_type, &context);
+@@ -1036,6 +1039,9 @@ u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v, u32 f
+ 	}
  
--	if (!context->initialized) {
-+	if (!context || !context->initialized) {
- 		dev_err(adev->dev, "TA is not initialized\n");
- 		ret = -EINVAL;
- 		goto err_free_shared_buf;
+ 	ret = readl(scratch_reg0);
++
++	mutex_unlock(&adev->virt.rlcg_reg_lock);
++
+ 	return ret;
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+index 642f1fd287d83..0ec246c74570c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+@@ -272,6 +272,8 @@ struct amdgpu_virt {
+ 
+ 	/* the ucode id to signal the autoload */
+ 	uint32_t autoload_ucode_id;
++
++	struct mutex rlcg_reg_lock;
+ };
+ 
+ struct amdgpu_video_codec_info;
 -- 
 2.43.0
 
