@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-62081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6E193E2C8
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:16:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F1E93E2CD
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 604C81C20442
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:16:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F770B21390
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CDA194C71;
-	Sun, 28 Jul 2024 00:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A075E195383;
+	Sun, 28 Jul 2024 00:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RBufl0bl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HqMOX9KW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCBE194C68;
-	Sun, 28 Jul 2024 00:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55593194ADE;
+	Sun, 28 Jul 2024 00:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722128089; cv=none; b=JY5VPrfIOQcg90Y8ynwvejDV7ZdulV7p6aom6ks8NsgHDWH3hSIXw5uiz5JuLIKTB6+8kqas9+gqUtbjiMu36GAfajqqRce2SE9xBYTCnK1ZHl9bx5DPF8zUw3Su7/1DQOqhXPy0JiW3K3cbhPqzRHgxLclxoN8hCvQ+bigOri8=
+	t=1722128091; cv=none; b=En3o1ZmV4kneb3uxuEcSySRZmKnCXhvzFurcbD2/ajlmmX4ATQCiSK3o0EotpS8phct/P1vTFTa86nR7Dn5L7qYCfzvgUbXhN7DNBrDAmlYi4sycKXe3VTk9GH5yrOcL8bo60kuUWwJPW8iowf+tyEslAB22f4w2RNUh9bMAJHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722128089; c=relaxed/simple;
-	bh=UFjFLGyWMrNDUcEKM4QvLGE1aXNITIWrX5TYMzsTATw=;
+	s=arc-20240116; t=1722128091; c=relaxed/simple;
+	bh=Gd923LaDh7TxUFQuQq3G5OAX4Im5g0smbajmP5Z4ykk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZVeFbv0f6wd39mvs5q51Jx/2P7E9zB6Ok5HcUA6lZQJgY6h7c9wgfgFLsJEFL3Em2OXDO8BhOThVJUQZFcqhDT1eAUZFx2RenlON409l5wZfADacOmRj243sr95ajDRa/AqfYu7ytrTvCigfEks5ic3iCE14LZ7qKjSQmn9knY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RBufl0bl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17F4C4AF0E;
-	Sun, 28 Jul 2024 00:54:47 +0000 (UTC)
+	 MIME-Version; b=u926lVdvrSr1YHFeosB9zjk0UC34Pe0N6BHPB93V8aqTFvfBkCaaob2oTWBL6VYkKYogNJR75XOkipdtIR1byTeT1XARuq7Wf2p01rWIZGRbeomSAw7MEvE11THxPog8TPYQ8rbxGxQ9snNFjRWwyZBjQyp1XQFDQ3TEInXMrsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HqMOX9KW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7B7C4AF09;
+	Sun, 28 Jul 2024 00:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722128089;
-	bh=UFjFLGyWMrNDUcEKM4QvLGE1aXNITIWrX5TYMzsTATw=;
+	s=k20201202; t=1722128091;
+	bh=Gd923LaDh7TxUFQuQq3G5OAX4Im5g0smbajmP5Z4ykk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBufl0blouI9ulLRK6WumMOCzyhapaB5MDpVlDJkzfKzofYHbbfF17DaaQON7sXMj
-	 w42ddZlL6vXU8e9kMZo5LJrbhNEItVJTCnnhFSMOP/ec5bap9I5utUfJrD4Vke4naS
-	 tIGzAeJYd7i3y1P8vahfeKMwqSPaCiwzxGQ1400xxYF6j12yHTHx3F9rkUUFpCFIq3
-	 Gcvmwa6IWIO4RrVKYHheu2/hhZYSd9x3NhGve4qez5FLMbTDiYedRzDEYviBItBpjo
-	 IGmCwmmYXAWLw6+qU6B7eOtXBTiewTO4JXHUTPm65GFJuNy4utgH5OBNirEwRsY4zT
-	 j4RKp+zwyzZxA==
+	b=HqMOX9KW4rCimrGBjpNqIZOGSW0cYqfoKA1SB9dkQ9K8xTLF3rDkKzpqcR0ixVKe6
+	 TYQY8AIRVo/6ifmmq4TkuiSOjLvneT35h1YguBjkUSvqSVEIHWlmFxPOV4NNh/+cld
+	 MoPtM3qPi0oOFQSmeXO1ieYzhQF91vTAHUfL8GBIh6I0HAHbjAy30I08vtZ7CxprTH
+	 8bUuaAkcSbTO0YTZ4PG4HcKCM9q5P6CoMSFIElnDIoR3OaM1mZTnKnM0iEcORg/kg3
+	 OxqmvJbfzBxW8ABfRXbqrmPuO9hp4SCIOIMKX9ngsg4FxjvUTaY1+qrmXrEIvFjMP1
+	 /3oDkU8gkjNUg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+Cc: Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 03/15] wifi: ath12k: fix memory leak in ath12k_dp_rx_peer_frag_setup()
-Date: Sat, 27 Jul 2024 20:54:24 -0400
-Message-ID: <20240728005442.1729384-3-sashal@kernel.org>
+	saeedm@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 04/15] net/mlx5e: SHAMPO, Fix invalid WQ linked list unlink
+Date: Sat, 27 Jul 2024 20:54:25 -0400
+Message-ID: <20240728005442.1729384-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728005442.1729384-1-sashal@kernel.org>
 References: <20240728005442.1729384-1-sashal@kernel.org>
@@ -69,38 +71,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-[ Upstream commit 3d60041543189438cd1b03a1fa40ff6681c77970 ]
+[ Upstream commit fba8334721e266f92079632598e46e5f89082f30 ]
 
-Currently the resource allocated by crypto_alloc_shash() is not
-freed in case ath12k_peer_find() fails, resulting in memory leak.
+When all the strides in a WQE have been consumed, the WQE is unlinked
+from the WQ linked list (mlx5_wq_ll_pop()). For SHAMPO, it is possible
+to receive CQEs with 0 consumed strides for the same WQE even after the
+WQE is fully consumed and unlinked. This triggers an additional unlink
+for the same wqe which corrupts the linked list.
 
-Add crypto_free_shash() to fix it.
+Fix this scenario by accepting 0 sized consumed strides without
+unlinking the WQE again.
 
-This is found during code review, compile tested only.
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240526124226.24661-1-quic_bqiang@quicinc.com
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240603212219.1037656-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index dbcbe7e0cd2a7..a5b6e2e078d33 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2756,6 +2756,7 @@ int ath12k_dp_rx_peer_frag_setup(struct ath12k *ar, const u8 *peer_mac, int vdev
- 	peer = ath12k_peer_find(ab, vdev_id, peer_mac);
- 	if (!peer) {
- 		spin_unlock_bh(&ab->base_lock);
-+		crypto_free_shash(tfm);
- 		ath12k_warn(ab, "failed to find the peer to set up fragment info\n");
- 		return -ENOENT;
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 8d9743a5e42c7..79ec6fcc9e259 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -2374,6 +2374,9 @@ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cq
+ 	if (likely(wi->consumed_strides < rq->mpwqe.num_strides))
+ 		return;
+ 
++	if (unlikely(!cstrides))
++		return;
++
+ 	wq  = &rq->mpwqe.wq;
+ 	wqe = mlx5_wq_ll_get_wqe(wq, wqe_id);
+ 	mlx5_wq_ll_pop(wq, cqe->wqe_id, &wqe->next.next_wqe_index);
 -- 
 2.43.0
 
