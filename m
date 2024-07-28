@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-61983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5091093E1A4
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:48:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3BA93E1A9
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE7F1F2179A
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:48:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 657E2281C85
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D88A94D;
-	Sun, 28 Jul 2024 00:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022BFF9F8;
+	Sun, 28 Jul 2024 00:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IHthgf2u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXFme9W7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B307F8C1E;
-	Sun, 28 Jul 2024 00:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6475EEB1;
+	Sun, 28 Jul 2024 00:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127665; cv=none; b=W8ny64XU1ATKiRoygBpPrjlbohMxBOLRiFbQv0UysOMM7ziWjvU6QbK2jExXbYFZrXS3fWP1VW/Y3mAYP2/FvxwUQq9h7oYGMmA8k9PIsoeGwUrrD0ZoPzTY9GdyluyPXIpLy9f5Tp+sezjKyfSMDHvBLJcvW0b2Di5Z16LaW1M=
+	t=1722127667; cv=none; b=keWz2XFxLsZYjDdQj5s2Hct7PQ7Tzdu4/SyzMQru0P+iva3uDmWIvnxUfPE13Fn0DRwolNzEOfGOZiCOTuCvcU4K40THGCZdSgmF+SXdqI3uzPTGCXKFqkAPYi4V+UNuwE0auHNBpAUeFSm1+z+Gr3puqT58i54/pk4zIZO5Pi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127665; c=relaxed/simple;
-	bh=/T9kGZYYGRgCXgH2L71BmXyr5L6wYgN/ahRYRI/439I=;
+	s=arc-20240116; t=1722127667; c=relaxed/simple;
+	bh=w3FlVKxMbbv3EuRWb1BX7xihz/7lTVonfbO1GVY7dn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MEFNmgiL25KN5W7YoR4U4+Qli1HPVJ+1uRQHwp5MgpLKvrAYXndM3xMfo1HLPNj19ZawUWxcP13nEJ2uZ4XLwgte0cSTA5gpWxZP2R2oyUqdDJ5DR6+eIqLdzRnOBErh0Ji0Yfpx4EcqcT+bTNqo5Eqj8OtDLY9kNfIPXu8fI78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IHthgf2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9301CC4AF07;
-	Sun, 28 Jul 2024 00:47:44 +0000 (UTC)
+	 MIME-Version; b=XSq1K6g35WW2ibwjs/aylP/ybrIOAMT2ITZrPFfEgNF142X3wn/B44TkyIXd9oHnyuYJnc9rs1ex4qgF1/S40hTt14gKtbGvvWr1iviJpEntz4cZwLH6OeSwTIQGoMk6CSrhgXxTZwzbIZWy4FpY/w9kRRccx+lwCjcbKPQsI1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXFme9W7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA61C4AF07;
+	Sun, 28 Jul 2024 00:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127665;
-	bh=/T9kGZYYGRgCXgH2L71BmXyr5L6wYgN/ahRYRI/439I=;
+	s=k20201202; t=1722127667;
+	bh=w3FlVKxMbbv3EuRWb1BX7xihz/7lTVonfbO1GVY7dn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IHthgf2u58wSYWsD8u0IwCyNVMepJAMFDjiWBH2GnM/PSAAAyMQtZEsRoUAWp7KL6
-	 XuE2Oe6Ycen0Hgeo63qwFvFFFiMydaDhHzihWDCT9MZKiw74Oip3UnonfIp+2vt8MS
-	 VQSS1F1pSMLJet/i48jo7NeLcdMQzhByNUtEcWaV/+h01QZU6gaI0j4Hadn9Tz6RYK
-	 yMbyuIpKIxYH6a4dEz4hK5Ef4QFaNbKEvRrZH+Fl9MlE7aDIVr/8pKoRxgHXSxWjXI
-	 xDLIG3yCGUTmzIh0zMSCjbb9GloLsUbcIn+EYwp7mpscNfX/2mJ4lq7wJWAECr/rXa
-	 JHWaOdt/PfjuA==
+	b=IXFme9W7RKxsXzgWBC8yjbQyCyKwyTdiexXSvUAMh2UkFW/R1lrqSVk7hildUNo9N
+	 xvwZVfJeTcvVhyOcLi06Z3vFZM2PilileyDQ+2uky9qBPLzDtz5cMCYfU0oimQPYoF
+	 V0CA5dunun5vJkNQ2u+En2aLVP8hEHk6rip7uAffHBIc+RJTtuI6hIgmWAJ/6HO18E
+	 Wgqv8MmEgtvkiNuMJzV9kzmNt/Wv2oyQSEKKwDm0yyxqMToVPzakYby5G457BXl7Ct
+	 GvkDzmgsEyVHtaKdJ+2Q2AvrGBYBjtfzr5Vb8hG19OXp0X8F7dTrQ/oO4B0Hs3dwem
+	 aTAnm8y6s3UKw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hagar Hemdan <hagarhem@amazon.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+Cc: Wilken Gottwalt <wilken.gottwalt@posteo.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>,
-	linus.walleij@linaro.org,
-	brgl@bgdev.pl,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 03/16] gpio: prevent potential speculation leaks in gpio_device_get_desc()
-Date: Sat, 27 Jul 2024 20:47:20 -0400
-Message-ID: <20240728004739.1698541-3-sashal@kernel.org>
+	jdelvare@suse.com,
+	corbet@lwn.net,
+	linux-hwmon@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 04/16] hwmon: corsair-psu: add USB id of HX1200i Series 2023 psu
+Date: Sat, 27 Jul 2024 20:47:21 -0400
+Message-ID: <20240728004739.1698541-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728004739.1698541-1-sashal@kernel.org>
 References: <20240728004739.1698541-1-sashal@kernel.org>
@@ -67,52 +68,67 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Hagar Hemdan <hagarhem@amazon.com>
+From: Wilken Gottwalt <wilken.gottwalt@posteo.net>
 
-[ Upstream commit d795848ecce24a75dfd46481aee066ae6fe39775 ]
+[ Upstream commit b9c15c96ccb47ad860af2e075c5f3c90c4cd1730 ]
 
-Userspace may trigger a speculative read of an address outside the gpio
-descriptor array.
-Users can do that by calling gpio_ioctl() with an offset out of range.
-Offset is copied from user and then used as an array index to get
-the gpio descriptor without sanitization in gpio_device_get_desc().
+Add the usb id of the HX1200i Series 2023. Update the documentation
+accordingly. Also fix the version comments, there are no Series 2022
+products. That are legacy or first version products going back many
+many years.
 
-This change ensures that the offset is sanitized by using
-array_index_nospec() to mitigate any possibility of speculative
-information leaks.
-
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
-
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Link: https://lore.kernel.org/r/20240523085332.1801-1-hagarhem@amazon.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Wilken Gottwalt <wilken.gottwalt@posteo.net>
+Link: https://lore.kernel.org/r/ZlAZs4u0dU7JxtDf@monster.localdomain
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/hwmon/corsair-psu.rst | 6 +++---
+ drivers/hwmon/corsair-psu.c         | 7 ++++---
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index fa62367ee9290..1a9aadd4c803c 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -17,6 +17,7 @@
- #include <linux/list.h>
- #include <linux/lockdep.h>
- #include <linux/module.h>
-+#include <linux/nospec.h>
- #include <linux/of.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/seq_file.h>
-@@ -198,7 +199,7 @@ gpio_device_get_desc(struct gpio_device *gdev, unsigned int hwnum)
- 	if (hwnum >= gdev->ngpio)
- 		return ERR_PTR(-EINVAL);
+diff --git a/Documentation/hwmon/corsair-psu.rst b/Documentation/hwmon/corsair-psu.rst
+index 16db34d464dd6..7ed794087f848 100644
+--- a/Documentation/hwmon/corsair-psu.rst
++++ b/Documentation/hwmon/corsair-psu.rst
+@@ -15,11 +15,11 @@ Supported devices:
  
--	return &gdev->descs[hwnum];
-+	return &gdev->descs[array_index_nospec(hwnum, gdev->ngpio)];
- }
- EXPORT_SYMBOL_GPL(gpio_device_get_desc);
+   Corsair HX850i
  
+-  Corsair HX1000i (Series 2022 and 2023)
++  Corsair HX1000i (Legacy and Series 2023)
+ 
+-  Corsair HX1200i
++  Corsair HX1200i (Legacy and Series 2023)
+ 
+-  Corsair HX1500i (Series 2022 and 2023)
++  Corsair HX1500i (Legacy and Series 2023)
+ 
+   Corsair RM550i
+ 
+diff --git a/drivers/hwmon/corsair-psu.c b/drivers/hwmon/corsair-psu.c
+index 2c7c92272fe39..f8f22b8a67cdf 100644
+--- a/drivers/hwmon/corsair-psu.c
++++ b/drivers/hwmon/corsair-psu.c
+@@ -875,15 +875,16 @@ static const struct hid_device_id corsairpsu_idtable[] = {
+ 	{ HID_USB_DEVICE(0x1b1c, 0x1c04) }, /* Corsair HX650i */
+ 	{ HID_USB_DEVICE(0x1b1c, 0x1c05) }, /* Corsair HX750i */
+ 	{ HID_USB_DEVICE(0x1b1c, 0x1c06) }, /* Corsair HX850i */
+-	{ HID_USB_DEVICE(0x1b1c, 0x1c07) }, /* Corsair HX1000i Series 2022 */
+-	{ HID_USB_DEVICE(0x1b1c, 0x1c08) }, /* Corsair HX1200i */
++	{ HID_USB_DEVICE(0x1b1c, 0x1c07) }, /* Corsair HX1000i Legacy */
++	{ HID_USB_DEVICE(0x1b1c, 0x1c08) }, /* Corsair HX1200i Legacy */
+ 	{ HID_USB_DEVICE(0x1b1c, 0x1c09) }, /* Corsair RM550i */
+ 	{ HID_USB_DEVICE(0x1b1c, 0x1c0a) }, /* Corsair RM650i */
+ 	{ HID_USB_DEVICE(0x1b1c, 0x1c0b) }, /* Corsair RM750i */
+ 	{ HID_USB_DEVICE(0x1b1c, 0x1c0c) }, /* Corsair RM850i */
+ 	{ HID_USB_DEVICE(0x1b1c, 0x1c0d) }, /* Corsair RM1000i */
+ 	{ HID_USB_DEVICE(0x1b1c, 0x1c1e) }, /* Corsair HX1000i Series 2023 */
+-	{ HID_USB_DEVICE(0x1b1c, 0x1c1f) }, /* Corsair HX1500i Series 2022 and 2023 */
++	{ HID_USB_DEVICE(0x1b1c, 0x1c1f) }, /* Corsair HX1500i Legacy and Series 2023 */
++	{ HID_USB_DEVICE(0x1b1c, 0x1c23) }, /* Corsair HX1200i Series 2023 */
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(hid, corsairpsu_idtable);
 -- 
 2.43.0
 
