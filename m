@@ -1,78 +1,67 @@
-Return-Path: <stable+bounces-62156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D94E93E635
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:45:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D953993E639
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F06D41F2163A
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:45:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00EE11C21153
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EFB6BFC7;
-	Sun, 28 Jul 2024 15:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3746F31C;
+	Sun, 28 Jul 2024 15:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CagLrVLN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s2zAVf7f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CA21E487;
-	Sun, 28 Jul 2024 15:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86986EB5B;
+	Sun, 28 Jul 2024 15:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181417; cv=none; b=GkYPmSce7bS4WxsghGzKS5aTEOa6G45NWOFT3fC2Btqql5AGELD2h75ORFMg3zMlz5jSi/tvUd48LdAV1bQ6OIOjqJAWu3P0xc7CWVWByzl8v1V0KMnkhhdH2CSZn4EST/audZXoxct/scwbvB6pxKe/kKli4jCkVg2KAy7h1WY=
+	t=1722181421; cv=none; b=FnzkOChqhLoupCkIrKpOuRVjvkTjEytjtCXNk3HWAT9QjgHMn9e3Uxj+q2O98jMUoO0ZxlhtYbZoeHa8HMG+tV1ekPVZZg8dbWwAhb77UEYlH3QGvwpSYIMkhL2S11ccOq0Hf1hIdDCP5mtQ0QVW3t7djBxVxLJ9Zapd46xy/H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181417; c=relaxed/simple;
-	bh=0GsaY9VrGRPabn9WDS9d3XvtsMkIwTkH0atVIZJV17s=;
+	s=arc-20240116; t=1722181421; c=relaxed/simple;
+	bh=cOjTmRw7DRRmYduehcUrWIU3+NCFJLfBAU6fZHW4PZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7HJvOkE4JTHEKHLMwgN5N2X0s9dCi9gW62hUViZK6KSpgx5mx/HYpuH+lhjjwFNnagE8mIT8mvrjdKCsa0+6yv2Yz6wuvSO50Xzh9n+WozD64+b1U8+WB3781IgEuJ89Pd5b4KguVy/vfDf91xeSfImwl8KvvJ5pDF3uoDQE1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CagLrVLN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88010C116B1;
-	Sun, 28 Jul 2024 15:43:33 +0000 (UTC)
+	 MIME-Version; b=iCHPKqEruhURNXnLBNQgTNjkCPgtCVkJYo50G2mQ022npX7XMbKqzOGvkf9rPaRslRwuriCs7eDEnfweSb6jSDZvODcyq/8ZEj4gdOseUS+AmVTyHWdzHBIZ2mHoelMIBOiHfqHbuVbPg/PGbTLdhfVg4wWS0O27O9tN9NR3Xag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s2zAVf7f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D5BC32782;
+	Sun, 28 Jul 2024 15:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181416;
-	bh=0GsaY9VrGRPabn9WDS9d3XvtsMkIwTkH0atVIZJV17s=;
+	s=k20201202; t=1722181421;
+	bh=cOjTmRw7DRRmYduehcUrWIU3+NCFJLfBAU6fZHW4PZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CagLrVLNKYZO5NLAuSiNC1EJfJ5IbPWGrPkrhiCzy+BEDPUNLtxWIjyok/DVLKMQP
-	 7NXiXLKeeNPrkhf5Jy/4GDf7X9dSGAXwyuSFrDUGMQxsCTtAloFSWUriw2+ZR3Qnxv
-	 RbmLm0m2pxbQaB8X+FhXKc0uhQNB1T4axmAAWHM6fsMYVfEkeCd7f+op6edW0kOx9j
-	 9bI1eOOJLZdItbF1cfRzK+qJxvfqlsky6STi/L/UAudz4DjfxFioh9TF3aCe41mL2U
-	 U/us1wNxJoVo1xJXVOcaEr8FN+Q2OqVYIWFvRKM1NSo0+IqfSEjkUdg4/zdAiJ48mP
-	 QOr5DPZ60cNtg==
+	b=s2zAVf7f+M6jQlZdd6yKxAMJSUmyWRWOFNreXSFR+Vk/18RQsFl2oiHOjAMAHuFMv
+	 woopFLpN0xoK12OQhwjafq47g393EqJ4hWm8OVcB0dJkAc/JR9qJvyRC0mkY24M+H4
+	 VQRcSQ4vlecL02vrbwjV+RXwrcEz9HnusABvCbdnzuza4Fuxs+/yT+XI+vloLRcoUd
+	 flKVuwSLKVGNZW/nL7Mun1SwZQVn5JRZ0Op547zb5SQMNBALUBpMzJ0K93h3A1tksp
+	 /SSVuQrwNIzOlkmak3cHc26KpUa7NnLYj2/AOkdOrB1bemnaKkWeXJ5gfMgOvAzudJ
+	 sNyUHfwLxuNZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Victor Skvortsov <victor.skvortsov@amd.com>,
-	Zhigang Luo <zhigang.luo@amd.com>,
+Cc: Bob Zhou <bob.zhou@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	evan.quan@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	Hawking.Zhang@amd.com,
 	mario.limonciello@amd.com,
-	lijo.lazar@amd.com,
 	Jun.Ma2@amd.com,
-	candice.li@amd.com,
-	victorchengchi.lu@amd.com,
-	andrealmeid@igalia.com,
-	hamza.mahfooz@amd.com,
-	Zhigang.Luo@amd.com,
-	surbhi.kakarya@amd.com,
-	sunran001@208suo.com,
-	chongli2@amd.com,
-	danijel.slivka@amd.com,
-	Jingwen.Chen2@amd.com,
-	YiPeng.Chai@amd.com,
-	bokun.zhang@amd.com,
+	ruanjinjie@huawei.com,
+	lijo.lazar@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 12/34] drm/amdgpu: Add lock around VF RLCG interface
-Date: Sun, 28 Jul 2024 11:40:36 -0400
-Message-ID: <20240728154230.2046786-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 13/34] drm/amd/pm: Fix the null pointer dereference for vega10_hwmgr
+Date: Sun, 28 Jul 2024 11:40:37 -0400
+Message-ID: <20240728154230.2046786-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728154230.2046786-1-sashal@kernel.org>
 References: <20240728154230.2046786-1-sashal@kernel.org>
@@ -87,76 +76,112 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Victor Skvortsov <victor.skvortsov@amd.com>
+From: Bob Zhou <bob.zhou@amd.com>
 
-[ Upstream commit e864180ee49b4d30e640fd1e1d852b86411420c9 ]
+[ Upstream commit 50151b7f1c79a09117837eb95b76c2de76841dab ]
 
-flush_gpu_tlb may be called from another thread while
-device_gpu_recover is running.
+Check return value and conduct null pointer handling to avoid null pointer dereference.
 
-Both of these threads access registers through the VF
-RLCG interface during VF Full Access. Add a lock around this interface
-to prevent race conditions between these threads.
-
-Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
-Reviewed-by: Zhigang Luo <zhigang.luo@amd.com>
+Signed-off-by: Bob Zhou <bob.zhou@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c   | 6 ++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h   | 2 ++
- 3 files changed, 9 insertions(+)
+ .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 29 ++++++++++++++++---
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 33f791d92ddf3..eb4a1f4318333 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4048,6 +4048,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 	mutex_init(&adev->grbm_idx_mutex);
- 	mutex_init(&adev->mn_lock);
- 	mutex_init(&adev->virt.vf_errors.lock);
-+	mutex_init(&adev->virt.rlcg_reg_lock);
- 	hash_init(adev->mn_hash);
- 	mutex_init(&adev->psp.mutex);
- 	mutex_init(&adev->notifier_lock);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index 54ab51a4ada77..972a58f0f4924 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -980,6 +980,9 @@ u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v, u32 f
- 	scratch_reg1 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg1;
- 	scratch_reg2 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg2;
- 	scratch_reg3 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg3;
-+
-+	mutex_lock(&adev->virt.rlcg_reg_lock);
-+
- 	if (reg_access_ctrl->spare_int)
- 		spare_int = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->spare_int;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index 8d7dc0e5417ed..f4acdb2267416 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -3418,13 +3418,17 @@ static int vega10_find_dpm_states_clocks_in_dpm_table(struct pp_hwmgr *hwmgr, co
+ 	const struct vega10_power_state *vega10_ps =
+ 			cast_const_phw_vega10_power_state(states->pnew_state);
+ 	struct vega10_single_dpm_table *sclk_table = &(data->dpm_table.gfx_table);
+-	uint32_t sclk = vega10_ps->performance_levels
+-			[vega10_ps->performance_level_count - 1].gfx_clock;
+ 	struct vega10_single_dpm_table *mclk_table = &(data->dpm_table.mem_table);
+-	uint32_t mclk = vega10_ps->performance_levels
+-			[vega10_ps->performance_level_count - 1].mem_clock;
++	uint32_t sclk, mclk;
+ 	uint32_t i;
  
-@@ -1036,6 +1039,9 @@ u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v, u32 f
- 	}
- 
- 	ret = readl(scratch_reg0);
++	if (vega10_ps == NULL)
++		return -EINVAL;
++	sclk = vega10_ps->performance_levels
++			[vega10_ps->performance_level_count - 1].gfx_clock;
++	mclk = vega10_ps->performance_levels
++			[vega10_ps->performance_level_count - 1].mem_clock;
 +
-+	mutex_unlock(&adev->virt.rlcg_reg_lock);
+ 	for (i = 0; i < sclk_table->count; i++) {
+ 		if (sclk == sclk_table->dpm_levels[i].value)
+ 			break;
+@@ -3731,6 +3735,9 @@ static int vega10_generate_dpm_level_enable_mask(
+ 			cast_const_phw_vega10_power_state(states->pnew_state);
+ 	int i;
+ 
++	if (vega10_ps == NULL)
++		return -EINVAL;
 +
- 	return ret;
- }
+ 	PP_ASSERT_WITH_CODE(!vega10_trim_dpm_states(hwmgr, vega10_ps),
+ 			"Attempt to Trim DPM States Failed!",
+ 			return -1);
+@@ -4998,6 +5005,8 @@ static int vega10_check_states_equal(struct pp_hwmgr *hwmgr,
  
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-index 642f1fd287d83..0ec246c74570c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-@@ -272,6 +272,8 @@ struct amdgpu_virt {
+ 	vega10_psa = cast_const_phw_vega10_power_state(pstate1);
+ 	vega10_psb = cast_const_phw_vega10_power_state(pstate2);
++	if (vega10_psa == NULL || vega10_psb == NULL)
++		return -EINVAL;
  
- 	/* the ucode id to signal the autoload */
- 	uint32_t autoload_ucode_id;
+ 	/* If the two states don't even have the same number of performance levels
+ 	 * they cannot be the same state.
+@@ -5131,6 +5140,8 @@ static int vega10_set_sclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
+ 		return -EINVAL;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return -EINVAL;
+ 
+ 	vega10_ps->performance_levels
+ 	[vega10_ps->performance_level_count - 1].gfx_clock =
+@@ -5182,6 +5193,8 @@ static int vega10_set_mclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
+ 		return -EINVAL;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return -EINVAL;
+ 
+ 	vega10_ps->performance_levels
+ 	[vega10_ps->performance_level_count - 1].mem_clock =
+@@ -5423,6 +5436,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
+ 		return;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return;
 +
-+	struct mutex rlcg_reg_lock;
- };
+ 	max_level = vega10_ps->performance_level_count - 1;
  
- struct amdgpu_video_codec_info;
+ 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
+@@ -5445,6 +5461,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
+ 
+ 	ps = (struct pp_power_state *)((unsigned long)(hwmgr->ps) + hwmgr->ps_size * (hwmgr->num_ps - 1));
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return;
++
+ 	max_level = vega10_ps->performance_level_count - 1;
+ 
+ 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
+@@ -5635,6 +5654,8 @@ static int vega10_get_performance_level(struct pp_hwmgr *hwmgr, const struct pp_
+ 		return -EINVAL;
+ 
+ 	vega10_ps = cast_const_phw_vega10_power_state(state);
++	if (vega10_ps == NULL)
++		return -EINVAL;
+ 
+ 	i = index > vega10_ps->performance_level_count - 1 ?
+ 			vega10_ps->performance_level_count - 1 : index;
 -- 
 2.43.0
 
