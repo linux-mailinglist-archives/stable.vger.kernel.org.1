@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-62214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6332493E704
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:00:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF6C93E708
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:01:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 958D91C216A9
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:00:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DF621F215CE
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E9E12E1D6;
-	Sun, 28 Jul 2024 15:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72CC1494BF;
+	Sun, 28 Jul 2024 15:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i2sUt5wX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D7C3XA8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2129A79DC5;
-	Sun, 28 Jul 2024 15:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFA714901A;
+	Sun, 28 Jul 2024 15:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181746; cv=none; b=KtqbK7gkLp7b0bNsg/SlDawEBkbCyE+x8iEFvCzV6ytsdpmnlVa+lbzHB+ZLkHFHZ2jqR6kF6jW6Czf8v5qo02PZAK0sSe42R4gmTGwYUxWFmlK7P8KHxw5IQ59v21DRn+MJYdjUxdW58nCTA1bhBb+rmqkwuUKG6OCdI2q2SOI=
+	t=1722181748; cv=none; b=Q9iEKwizxu42DKTp0H0LkDVbB4kcGgQKm9nXZC+NSNI9IWw2CLgD05oOrOoGJVwkyPVBwN7X2go5F60EmN1GL7yDbYY0d2E8mtXnY0E0aW15xJuIngu0eievHws51/5r44e7sxmpqpmNxIsqxfyC/IP0EyvyBZWn+kpCTzKVSEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181746; c=relaxed/simple;
-	bh=fu9IFAHAFSVZXRrNmnKacWWm82vIqE+AmfedSfWIhuU=;
+	s=arc-20240116; t=1722181748; c=relaxed/simple;
+	bh=bW8puwp8UG1FE5R0NW0YGF8HexNK9uU3nHZPanPzjUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ndlnrdkhCAacEX9831MPzEQD+LdWv+hgrum0GNDkYfWv9PqSGqtNTfWIxok5RVNKwvR9+vClI6XdPrR0x2M27BcQbotXjiaZn6BqLbJ5TFL4b3XPJOQd+7DQyXauXsmvpn5UUUeexQEqhEaXfN2co82oWiCYm3y3l1GB19P3s2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i2sUt5wX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD13C116B1;
-	Sun, 28 Jul 2024 15:49:04 +0000 (UTC)
+	 MIME-Version; b=mtn0J42VuZ9RYzuLpjy3Vxy1m/0hD0WNSbWCTTMAjH4qN9Zm0f43HKw+tEe/3Kr/sg9fXjgmM/06KXfztiZUomxd2fopnzaPudeu2LzLyn34h7UY6CkMzWwBOmeqopSLXXkk7XyIf+vn28puon+O8L5RElEdLSo6OSFMpnUY2kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D7C3XA8d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EEAC4AF0B;
+	Sun, 28 Jul 2024 15:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181745;
-	bh=fu9IFAHAFSVZXRrNmnKacWWm82vIqE+AmfedSfWIhuU=;
+	s=k20201202; t=1722181748;
+	bh=bW8puwp8UG1FE5R0NW0YGF8HexNK9uU3nHZPanPzjUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2sUt5wX4EgiZq8+rNdmJh0Vgdl9dWal/pve8WQn4zQgO2LqmhDbSiCQTqFM9z3pC
-	 coGC2xylqH0NRAZARJpP2AkN8ZxVrfl1T+5KEBInVk+T83gbxKbn2dqzZio4jB0nHL
-	 0vCxRKm/Lz2F+67BnRBgR/mz4PXgst8np8yL8JlwOXH9EJSs4HBfZSzMJjuFPim+dg
-	 AYGGI5ZGqiJOLU/j6cIcDUgiVF4kyts6l2Qsc3uBqfjXwaayms5H8FvKepacaVaFaC
-	 PURyknU4D6BoD1bxVHrA9F/bXG+gTl0RHB7cZ2M4Nxlb4A1e5n9LM1uJRtWSKgm/W4
-	 2sjULA6QjI+Vw==
+	b=D7C3XA8dJqBGTqZXq4wTWx2+ABzWFguvPllZdgJk8PpXAzPgfsxzzUdIhUWVXYnQ7
+	 uwhxp022kNSOcBxVqAr3oDrN5B0CNQIeTLB8qlqiK4rkfcPZ31aHGoRlDa3LEnAarA
+	 dCItHQVfYhbwEj69CvEP3qjWp+par1WJuVdIKva4ljfl8MThgWUSlRF9chEMAFNO4g
+	 IL9b9F+TB2HK7fPC9Q+EL7wHKRSWSf4W8o4eP5oYOB/oUCdeQJrpBmaS1q6FZi1QVG
+	 KfGr/1U850/XFvQ+5Q21cisZjcv4vjoSL4wpa/bRJOiM8dDzr4zMZ/mqD58lf2vrRV
+	 /r1WU0qOyremw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+Cc: Benjamin Coddington <bcodding@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>,
-	gor@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 16/17] s390/sclp: Prevent release of buffer in I/O
-Date: Sun, 28 Jul 2024 11:47:26 -0400
-Message-ID: <20240728154805.2049226-16-sashal@kernel.org>
+	trondmy@kernel.org,
+	anna@kernel.org,
+	chuck.lever@oracle.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 17/17] SUNRPC: Fix a race to wake a sync task
+Date: Sun, 28 Jul 2024 11:47:27 -0400
+Message-ID: <20240728154805.2049226-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728154805.2049226-1-sashal@kernel.org>
 References: <20240728154805.2049226-1-sashal@kernel.org>
@@ -67,50 +74,51 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit bf365071ea92b9579d5a272679b74052a5643e35 ]
+[ Upstream commit ed0172af5d6fc07d1b40ca82f5ca3979300369f7 ]
 
-When a task waiting for completion of a Store Data operation is
-interrupted, an attempt is made to halt this operation. If this attempt
-fails due to a hardware or firmware problem, there is a chance that the
-SCLP facility might store data into buffers referenced by the original
-operation at a later time.
+We've observed NFS clients with sync tasks sleeping in __rpc_execute
+waiting on RPC_TASK_QUEUED that have not responded to a wake-up from
+rpc_make_runnable().  I suspect this problem usually goes unnoticed,
+because on a busy client the task will eventually be re-awoken by another
+task completion or xprt event.  However, if the state manager is draining
+the slot table, a sync task missing a wake-up can result in a hung client.
 
-Handle this situation by not releasing the referenced data buffers if
-the halt attempt fails. For current use cases, this might result in a
-leak of few pages of memory in case of a rare hardware/firmware
-malfunction.
+We've been able to prove that the waker in rpc_make_runnable() successfully
+calls wake_up_bit() (ie- there's no race to tk_runstate), but the
+wake_up_bit() call fails to wake the waiter.  I suspect the waker is
+missing the load of the bit's wait_queue_head, so waitqueue_active() is
+false.  There are some very helpful comments about this problem above
+wake_up_bit(), prepare_to_wait(), and waitqueue_active().
 
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fix this by inserting smp_mb__after_atomic() before the wake_up_bit(),
+which pairs with prepare_to_wait() calling set_current_state().
+
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_sd.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/sunrpc/sched.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/char/sclp_sd.c b/drivers/s390/char/sclp_sd.c
-index f9e164be7568f..944e75beb160c 100644
---- a/drivers/s390/char/sclp_sd.c
-+++ b/drivers/s390/char/sclp_sd.c
-@@ -320,8 +320,14 @@ static int sclp_sd_store_data(struct sclp_sd_data *result, u8 di)
- 			  &esize);
- 	if (rc) {
- 		/* Cancel running request if interrupted */
--		if (rc == -ERESTARTSYS)
--			sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL);
-+		if (rc == -ERESTARTSYS) {
-+			if (sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL)) {
-+				pr_warn("Could not stop Store Data request - leaking at least %zu bytes\n",
-+					(size_t)dsize * PAGE_SIZE);
-+				data = NULL;
-+				asce = 0;
-+			}
-+		}
- 		vfree(data);
- 		goto out;
- 	}
+diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
+index 6debf4fd42d4e..cef623ea15060 100644
+--- a/net/sunrpc/sched.c
++++ b/net/sunrpc/sched.c
+@@ -369,8 +369,10 @@ static void rpc_make_runnable(struct workqueue_struct *wq,
+ 	if (RPC_IS_ASYNC(task)) {
+ 		INIT_WORK(&task->u.tk_work, rpc_async_schedule);
+ 		queue_work(wq, &task->u.tk_work);
+-	} else
++	} else {
++		smp_mb__after_atomic();
+ 		wake_up_bit(&task->tk_runstate, RPC_TASK_QUEUED);
++	}
+ }
+ 
+ /*
 -- 
 2.43.0
 
