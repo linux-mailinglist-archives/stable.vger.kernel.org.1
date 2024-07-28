@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-62004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A8B93E1E2
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:53:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1665393E1E4
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC24E1C20B8E
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:53:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1F35281DF8
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA029811F1;
-	Sun, 28 Jul 2024 00:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331EF824AE;
+	Sun, 28 Jul 2024 00:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="odNYNAac"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HYpJ7U24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735B780617;
-	Sun, 28 Jul 2024 00:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42A082490;
+	Sun, 28 Jul 2024 00:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127708; cv=none; b=fym6OJe9t3MXY69kAXwzY4BxxB70H4+EThf6gxeVPsgfFSbEU8XkX8cXBPqAHAOZVNMG2n52HKzK4XJ81nd/y5dCjb/4gUYtr29uD5iFh2hStH9Ab+0lncviUtUQvKh+X/gNaupzhJAU1OcEsepd4Hkek9N2lVmtL28UhLcscH8=
+	t=1722127710; cv=none; b=Xy3Xzlvh2DGCtJhITfl/4QwqmZOUti/TDgB+m3yYt4BSHRGjrm+1KbpH503G2LI4wkRXsUzK/L0DHC6choptEeDi/T93S9gb2DNzbYgzXiXp1/LhmHpn5gKKL712autyu8nCB6E6U+E7OXouB0PTjdEfxF4/e1SL80QHqKlffH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127708; c=relaxed/simple;
-	bh=ZHPIC3z5mKcFU5quGPiAlq/c7cDr/avhdOWzlDzwzsk=;
+	s=arc-20240116; t=1722127710; c=relaxed/simple;
+	bh=Ig5dxFlfadmKxDH6p26EK15r6uyVpY0jahZAnc8GSQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VCbfG7xhLLLPaxOR4zvwQZgILGBn7XqdpWaPOdjObch1EixkJ0qN3g0/koSa+Q1c55+y+PNVHSDS+ncsUj6jS2DGqVjxVkY98aQ1TMmVpFblsu847c/yfk6Q2fH6SqFxiRGUjpshVpsqj3xcW2BR7rVdSdXquRMshRWLoFwnnvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odNYNAac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E47C4AF07;
-	Sun, 28 Jul 2024 00:48:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R10HQNmmOUl5/YcbdVLYtmwOjvqxsSUQVaWneVU5Y4gQEGj4dQXsW/0Hlr+pY5F/ZWEeWtEpZLPr/kLPEWE9f3rQ0DMOVm0CU+kmnx+7WVFlFqjBZMJTs1mZkq2Z+I0skILBRLA2qk20cCCW+DitWti/B7oGS6RMtBkN9uhQTmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HYpJ7U24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E4BC4AF07;
+	Sun, 28 Jul 2024 00:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127708;
-	bh=ZHPIC3z5mKcFU5quGPiAlq/c7cDr/avhdOWzlDzwzsk=;
+	s=k20201202; t=1722127709;
+	bh=Ig5dxFlfadmKxDH6p26EK15r6uyVpY0jahZAnc8GSQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=odNYNAac1uKgi4pbUHC1KVO8WckN++M2/mJXD7Ozq487kUZiJe9fEf9UThu4lILBz
-	 zGW9+TpFLtQNaQZOdRmFUZf8jLu6/ffRtQd/N4w6QryWbnP40TKb4WVgLRGiJMqOp0
-	 HeDKi/25w7ZaALyX6mztpknzYHjPNBmIpua6SdqNyYCpIg/hSwUamzs0dlyZfjOld2
-	 HiFT26GFDmHihCNyE1j38hwySJfWHp1nXdixeuY/V8tRIOb3W3TkI9VntBkiDS4LXd
-	 eVbO/kH5PxZMrrClPnm6zpeuqYFe90DyskcWOR/thKbqgp6XlMhIibPk8yNBgyPx52
-	 UBiAiRBn5f1lQ==
+	b=HYpJ7U24KId03oxv2eEOWShlZxlmQpRimdajU85F32iZYsph8LA0YC8jVWAKQMFV+
+	 c9bvaCAI1G2JKLrORGq+aoSCjYHt2VxKH5AmZsuYTGguGT6iDbEiF7te5BA0xEs2ke
+	 dRDmSCHZ3Kq76m4qc8z/iG71rxbupITI0OuetQ/2CRq+UTgD5fV0JY5J27SaDnIAKy
+	 vdyhw6JuZlSaj+NkrZOVRcPPsNlYmPrOv+L1dafk2WA727w1dXXULnuWZXm9FtiDOL
+	 nKCIi6Uodm+tJaeUUfNPiAb9Vqrk21n/aaEXNvk+5vi/orQ6CqsqVxEOX7qwkejDDa
+	 dDXEd8+IYUyKw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
+Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	neeraj.upadhyay@kernel.org,
-	joel@joelfernandes.org,
-	josh@joshtriplett.org,
-	boqun.feng@gmail.com,
-	urezki@gmail.com,
-	rcu@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 8/9] rcu: Fix rcu_barrier() VS post CPUHP_TEARDOWN_CPU invocation
-Date: Sat, 27 Jul 2024 20:48:09 -0400
-Message-ID: <20240728004812.1701139-8-sashal@kernel.org>
+	tglx@linutronix.de
+Subject: [PATCH AUTOSEL 6.6 9/9] clocksource/drivers/sh_cmt: Address race condition for clock events
+Date: Sat, 27 Jul 2024 20:48:10 -0400
+Message-ID: <20240728004812.1701139-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728004812.1701139-1-sashal@kernel.org>
 References: <20240728004812.1701139-1-sashal@kernel.org>
@@ -65,123 +60,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 55d4669ef1b76823083caecfab12a8bd2ccdcf64 ]
+[ Upstream commit db19d3aa77612983a02bd223b3f273f896b243cf ]
 
-When rcu_barrier() calls rcu_rdp_cpu_online() and observes a CPU off
-rnp->qsmaskinitnext, it means that all accesses from the offline CPU
-preceding the CPUHP_TEARDOWN_CPU are visible to RCU barrier, including
-callbacks expiration and counter updates.
+There is a race condition in the CMT interrupt handler. In the interrupt
+handler the driver sets a driver private flag, FLAG_IRQCONTEXT. This
+flag is used to indicate any call to set_next_event() should not be
+directly propagated to the device, but instead cached. This is done as
+the interrupt handler itself reprograms the device when needed before it
+completes and this avoids this operation to take place twice.
 
-However interrupts can still fire after stop_machine() re-enables
-interrupts and before rcutree_report_cpu_dead(). The related accesses
-happening between CPUHP_TEARDOWN_CPU and rnp->qsmaskinitnext clearing
-are _NOT_ guaranteed to be seen by rcu_barrier() without proper
-ordering, especially when callbacks are invoked there to the end, making
-rcutree_migrate_callback() bypass barrier_lock.
+It is unclear why this design was chosen, my suspicion is to allow the
+struct clock_event_device.event_handler callback, which is called while
+the FLAG_IRQCONTEXT is set, can update the next event without having to
+write to the device twice.
 
-The following theoretical race example can make rcu_barrier() hang:
+Unfortunately there is a race between when the FLAG_IRQCONTEXT flag is
+set and later cleared where the interrupt handler have already started to
+write the next event to the device. If set_next_event() is called in
+this window the value is only cached in the driver but not written. This
+leads to the board to misbehave, or worse lockup and produce a splat.
 
-CPU 0                                               CPU 1
------                                               -----
-//cpu_down()
-smpboot_park_threads()
-//ksoftirqd is parked now
-<IRQ>
-rcu_sched_clock_irq()
-   invoke_rcu_core()
-do_softirq()
-   rcu_core()
-      rcu_do_batch()
-         // callback storm
-         // rcu_do_batch() returns
-         // before completing all
-         // of them
-   // do_softirq also returns early because of
-   // timeout. It defers to ksoftirqd but
-   // it's parked
-</IRQ>
-stop_machine()
-   take_cpu_down()
-                                                    rcu_barrier()
-                                                        spin_lock(barrier_lock)
-                                                        // observes rcu_segcblist_n_cbs(&rdp->cblist) != 0
-<IRQ>
-do_softirq()
-   rcu_core()
-      rcu_do_batch()
-         //completes all pending callbacks
-         //smp_mb() implied _after_ callback number dec
-</IRQ>
+   rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+   rcu:     0-...!: (0 ticks this GP) idle=f5e0/0/0x0 softirq=519/519 fqs=0 (false positive?)
+   rcu:     (detected by 1, t=6502 jiffies, g=-595, q=77 ncpus=2)
+   Sending NMI from CPU 1 to CPUs 0:
+   NMI backtrace for cpu 0
+   CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.10.0-rc5-arm64-renesas-00019-g74a6f86eaf1c-dirty #20
+   Hardware name: Renesas Salvator-X 2nd version board based on r8a77965 (DT)
+   pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+   pc : tick_check_broadcast_expired+0xc/0x40
+   lr : cpu_idle_poll.isra.0+0x8c/0x168
+   sp : ffff800081c63d70
+   x29: ffff800081c63d70 x28: 00000000580000c8 x27: 00000000bfee5610
+   x26: 0000000000000027 x25: 0000000000000000 x24: 0000000000000000
+   x23: ffff00007fbb9100 x22: ffff8000818f1008 x21: ffff8000800ef07c
+   x20: ffff800081c79ec0 x19: ffff800081c70c28 x18: 0000000000000000
+   x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffffc2c717d8
+   x14: 0000000000000000 x13: ffff000009c18080 x12: ffff8000825f7fc0
+   x11: 0000000000000000 x10: ffff8000818f3cd4 x9 : 0000000000000028
+   x8 : ffff800081c79ec0 x7 : ffff800081c73000 x6 : 0000000000000000
+   x5 : 0000000000000000 x4 : ffff7ffffe286000 x3 : 0000000000000000
+   x2 : ffff7ffffe286000 x1 : ffff800082972900 x0 : ffff8000818f1008
+   Call trace:
+    tick_check_broadcast_expired+0xc/0x40
+    do_idle+0x9c/0x280
+    cpu_startup_entry+0x34/0x40
+    kernel_init+0x0/0x11c
+    do_one_initcall+0x0/0x260
+    __primary_switched+0x80/0x88
+   rcu: rcu_preempt kthread timer wakeup didn't happen for 6501 jiffies! g-595 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
+   rcu:     Possible timer handling issue on cpu=0 timer-softirq=262
+   rcu: rcu_preempt kthread starved for 6502 jiffies! g-595 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=0
+   rcu:     Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+   rcu: RCU grace-period kthread stack dump:
+   task:rcu_preempt     state:I stack:0     pid:15    tgid:15    ppid:2      flags:0x00000008
+   Call trace:
+    __switch_to+0xbc/0x100
+    __schedule+0x358/0xbe0
+    schedule+0x48/0x148
+    schedule_timeout+0xc4/0x138
+    rcu_gp_fqs_loop+0x12c/0x764
+    rcu_gp_kthread+0x208/0x298
+    kthread+0x10c/0x110
+    ret_from_fork+0x10/0x20
 
-rcutree_report_cpu_dead()
-   rnp->qsmaskinitnext &= ~rdp->grpmask;
+The design have been part of the driver since it was first merged in
+early 2009. It becomes increasingly harder to trigger the issue the
+older kernel version one tries. It only takes a few boots on v6.10-rc5,
+while hundreds of boots are needed to trigger it on v5.10.
 
-rcutree_migrate_callback()
-   // no callback, early return without locking
-   // barrier_lock
-                                                        //observes !rcu_rdp_cpu_online(rdp)
-                                                        rcu_barrier_entrain()
-                                                           rcu_segcblist_entrain()
-                                                              // Observe rcu_segcblist_n_cbs(rsclp) == 0
-                                                              // because no barrier between reading
-                                                              // rnp->qsmaskinitnext and rsclp->len
-                                                              rcu_segcblist_add_len()
-                                                                 smp_mb__before_atomic()
-                                                                 // will now observe the 0 count and empty
-                                                                 // list, but too late, we enqueue regardless
-                                                                 WRITE_ONCE(rsclp->len, rsclp->len + v);
-                                                        // ignored barrier callback
-                                                        // rcu barrier stall...
+Close the race condition by using the CMT channel lock for the two
+competing sections. The channel lock was added to the driver after its
+initial design.
 
-This could be solved with a read memory barrier, enforcing the message
-passing between rnp->qsmaskinitnext and rsclp->len, matching the full
-memory barrier after rsclp->len addition in rcu_segcblist_add_len()
-performed at the end of rcu_do_batch().
-
-However the rcu_barrier() is complicated enough and probably doesn't
-need too many more subtleties. CPU down is a slowpath and the
-barrier_lock seldom contended. Solve the issue with unconditionally
-locking the barrier_lock on rcutree_migrate_callbacks(). This makes sure
-that either rcu_barrier() sees the empty queue or its entrained
-callback will be migrated.
-
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://lore.kernel.org/r/20240702190230.3825292-1-niklas.soderlund+renesas@ragnatech.se
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/clocksource/sh_cmt.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 8cf6a6fef7965..583cc29080764 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -4595,11 +4595,15 @@ void rcutree_migrate_callbacks(int cpu)
- 	struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
- 	bool needwake;
+diff --git a/drivers/clocksource/sh_cmt.c b/drivers/clocksource/sh_cmt.c
+index 26919556ef5f0..b72b36e0abed8 100644
+--- a/drivers/clocksource/sh_cmt.c
++++ b/drivers/clocksource/sh_cmt.c
+@@ -528,6 +528,7 @@ static void sh_cmt_set_next(struct sh_cmt_channel *ch, unsigned long delta)
+ static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
+ {
+ 	struct sh_cmt_channel *ch = dev_id;
++	unsigned long flags;
  
--	if (rcu_rdp_is_offloaded(rdp) ||
--	    rcu_segcblist_empty(&rdp->cblist))
--		return;  /* No callbacks to migrate. */
-+	if (rcu_rdp_is_offloaded(rdp))
-+		return;
+ 	/* clear flags */
+ 	sh_cmt_write_cmcsr(ch, sh_cmt_read_cmcsr(ch) &
+@@ -558,6 +559,8 @@ static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
  
- 	raw_spin_lock_irqsave(&rcu_state.barrier_lock, flags);
-+	if (rcu_segcblist_empty(&rdp->cblist)) {
-+		raw_spin_unlock_irqrestore(&rcu_state.barrier_lock, flags);
-+		return;  /* No callbacks to migrate. */
-+	}
+ 	ch->flags &= ~FLAG_SKIPEVENT;
+ 
++	raw_spin_lock_irqsave(&ch->lock, flags);
 +
- 	WARN_ON_ONCE(rcu_rdp_cpu_online(rdp));
- 	rcu_barrier_entrain(rdp);
- 	my_rdp = this_cpu_ptr(&rcu_data);
+ 	if (ch->flags & FLAG_REPROGRAM) {
+ 		ch->flags &= ~FLAG_REPROGRAM;
+ 		sh_cmt_clock_event_program_verify(ch, 1);
+@@ -570,6 +573,8 @@ static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
+ 
+ 	ch->flags &= ~FLAG_IRQCONTEXT;
+ 
++	raw_spin_unlock_irqrestore(&ch->lock, flags);
++
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -780,12 +785,18 @@ static int sh_cmt_clock_event_next(unsigned long delta,
+ 				   struct clock_event_device *ced)
+ {
+ 	struct sh_cmt_channel *ch = ced_to_sh_cmt(ced);
++	unsigned long flags;
+ 
+ 	BUG_ON(!clockevent_state_oneshot(ced));
++
++	raw_spin_lock_irqsave(&ch->lock, flags);
++
+ 	if (likely(ch->flags & FLAG_IRQCONTEXT))
+ 		ch->next_match_value = delta - 1;
+ 	else
+-		sh_cmt_set_next(ch, delta - 1);
++		__sh_cmt_set_next(ch, delta - 1);
++
++	raw_spin_unlock_irqrestore(&ch->lock, flags);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
