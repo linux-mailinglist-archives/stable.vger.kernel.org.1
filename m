@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-62070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3143693E2A6
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:12:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303F193E2A8
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6300E1C21193
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:12:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5B58281862
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C322C192B67;
-	Sun, 28 Jul 2024 00:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0778A192B95;
+	Sun, 28 Jul 2024 00:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fyNo8UNZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YNu6EcgK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75278192B60;
-	Sun, 28 Jul 2024 00:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E5D192B8B;
+	Sun, 28 Jul 2024 00:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722128061; cv=none; b=gTnhXTUE62enKy0mwnsYNTQthZA+dtMfAyw8BrHXl6hH8BPbGrmwJwn51RqbbK47qLPDo4DE0iY90RYFYufopXMZBNh8dIOiItkOjwkWWPouT+vqht5sKCWt8XYRKH0eoKZg34oQQ/JUlBexuXROdUdOatAXhm6XG06qDL0ZPVM=
+	t=1722128063; cv=none; b=a7RT+mWd4RIOqsDTqR0AbCrqL+Anl1lNu7isLLtDO0TG2ANoroxk7Gk1ZUOW146OmstSSmsx9SVE34NzX/EZsd1l1kIaQRdlJBQz4XGHI0gNv8B/pNde2u5nnH5GFhspauW3h+yflVm6WGfQIzG5IKNIhsluZ2zF6mD4rCXcbM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722128061; c=relaxed/simple;
-	bh=o0NcRSSMSeFpC/3bL4/Dz8Ss4YnMFhGRnW2k0JyOfVA=;
+	s=arc-20240116; t=1722128063; c=relaxed/simple;
+	bh=4FIF7okYv/uUjF8tG+KxRZ13KnzZF5OxNpTQHjw7vWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJNIw1e6+ORmcwABEMLGgyP7TLodjKzUkTOJnC0ifRLKbn53WFfCZeg6c3IK2BE2VNrfhr7oldBJhzyj/U2kQbr45BKvV7yq3OaD94CWiyGm7NsnvK/S+24dxmqyxSXpWCr43cGW2LUU3iKNnidQyf2wczsldJgSmkZWd9TLXpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fyNo8UNZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623E7C4AF07;
-	Sun, 28 Jul 2024 00:54:19 +0000 (UTC)
+	 MIME-Version; b=Ft846s2Hq69IKlcQiTBwkiDF6J8n50e8PzKXuxteILwEY7hzLXmoM2j4Kc33bq0L6KrXMCbkR01ErQw7mI0JLtAO860DJq3WFt+vd8FHLlOmZa2LF1M+v/V8Q7Mfqb7NJZcA+5VmvEFPeOphMY+Uk63iLPtXPx770arGwdzS7A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YNu6EcgK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7DFC32781;
+	Sun, 28 Jul 2024 00:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722128061;
-	bh=o0NcRSSMSeFpC/3bL4/Dz8Ss4YnMFhGRnW2k0JyOfVA=;
+	s=k20201202; t=1722128063;
+	bh=4FIF7okYv/uUjF8tG+KxRZ13KnzZF5OxNpTQHjw7vWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyNo8UNZkqCwzTe5V8g21UQnLuaGtuh2rxuNWeJ40Yf+DHJzv//KwsQB9nVfBpOPb
-	 dVaU4T6bVQ1dh2pDMDk3HP91unbtcmw8MTnspcKurMPvHgidiwDvABEHMrT91tE0/1
-	 9Pu363DfXECXylYQ4qG54V+R4V/PkyU6SWmpY0JKyK6kPYuAseVBCRT3OU9uEPxqS8
-	 1/xRzTno0r6UE2JULP86/A7sQwxOVybJvs1TvT7PzaYJqviSOeiLXnR+P/0jz/mBQz
-	 slaRoLjTcDTcSsz54gk9mfK3O0/us34OREzL/NKc/QfMjp6AJDkViKfJiwwNUYWsJM
-	 Jn9oNIkPJvu2A==
+	b=YNu6EcgK2QEEY/B9sbKwJdVyA4hLOSdBhdLmOO85NlpVUVwAld9pF16TQtLC2Hmsd
+	 MefM7COcjJl3fpss+W4lTKYOkYwdAU0zZiFmOZPTrEnv3g8RQupMIUIRLZ/3kijVM5
+	 r/hQtBfOWEq4xeEqKKEEBKy2kk9Omucb20xNqtwJ6f2ZOla7r1ME2twgfCtac97ulB
+	 4TsggofFlEA94VxrgHniz9p2JoX65JuK68B2dJFNVGz0oXCuAFAz7FwAXWRNplf/31
+	 apGD8uTudRir5oj6B2o1yAkRCux9RBnMvOwVo0ur6HTF9AcKKUJDKiURbqndrI1yom
+	 44OOQpLorVU2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Andrew Lunn <andrew@lunn.ch>,
+Cc: Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	vkoul@kernel.org,
-	alexandre.torgue@foss.st.com,
-	joabreu@synopsys.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.10 19/27] net: stmmac: qcom-ethqos: enable SGMII loopback during DMA reset on sa8775p-ride-r3
-Date: Sat, 27 Jul 2024 20:53:02 -0400
-Message-ID: <20240728005329.1723272-19-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 20/27] mlxsw: pci: Lock configuration space of upstream bridge during reset
+Date: Sat, 27 Jul 2024 20:53:03 -0400
+Message-ID: <20240728005329.1723272-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728005329.1723272-1-sashal@kernel.org>
 References: <20240728005329.1723272-1-sashal@kernel.org>
@@ -76,117 +70,68 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 3c466d6537b99f801b3f68af3d8124d4312437a0 ]
+[ Upstream commit 0970836c348b6bc2ea77ce4348a136d6febfd440 ]
 
-On sa8775p-ride-r3 the RX clocks from the AQR115C PHY are not available at
-the time of the DMA reset. We can however extract the RX clock from the
-internal SERDES block. Once the link is up, we can revert to the
-previous state.
+The driver triggers a "Secondary Bus Reset" (SBR) by calling
+__pci_reset_function_locked() which asserts the SBR bit in the "Bridge
+Control Register" in the configuration space of the upstream bridge for
+2ms. This is done without locking the configuration space of the
+upstream bridge port, allowing user space to access it concurrently.
 
-The AQR115C PHY doesn't support in-band signalling so we can count on
-getting the link up notification and safely reuse existing callbacks
-which are already used by another HW quirk workaround which enables the
-functional clock to avoid a DMA reset due to timeout.
+Linux 6.11 will start warning about such unlocked resets [1][2]:
 
-Only enable loopback on revision 3 of the board - check the phy_mode to
-make sure.
+pcieport 0000:00:01.0: unlocked secondary bus reset via: pci_reset_bus_function+0x51c/0x6a0
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240703181500.28491-3-brgl@bgdev.pl
+Avoid the warning and the concurrent access by locking the configuration
+space of the upstream bridge prior to the reset and unlocking it
+afterwards.
+
+[1] https://lore.kernel.org/all/171711746953.1628941.4692125082286867825.stgit@dwillia2-xfh.jf.intel.com/
+[2] https://lore.kernel.org/all/20240531213150.GA610983@bhelgaas/
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://patch.msgid.link/9937b0afdb50f2f2825945393c94c093c04a5897.1720447210.git.petrm@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../stmicro/stmmac/dwmac-qcom-ethqos.c        | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/net/ethernet/mellanox/mlxsw/pci.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index 466c4002f00d4..3a7f3a8b06718 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -21,6 +21,7 @@
- #define RGMII_IO_MACRO_CONFIG2		0x1C
- #define RGMII_IO_MACRO_DEBUG1		0x20
- #define EMAC_SYSTEM_LOW_POWER_DEBUG	0x28
-+#define EMAC_WRAPPER_SGMII_PHY_CNTRL1	0xf4
- 
- /* RGMII_IO_MACRO_CONFIG fields */
- #define RGMII_CONFIG_FUNC_CLK_EN		BIT(30)
-@@ -79,6 +80,9 @@
- #define ETHQOS_MAC_CTRL_SPEED_MODE		BIT(14)
- #define ETHQOS_MAC_CTRL_PORT_SEL		BIT(15)
- 
-+/* EMAC_WRAPPER_SGMII_PHY_CNTRL1 bits */
-+#define SGMII_PHY_CNTRL1_SGMII_TX_TO_RX_LOOPBACK_EN	BIT(3)
-+
- #define SGMII_10M_RX_CLK_DVDR			0x31
- 
- struct ethqos_emac_por {
-@@ -95,6 +99,7 @@ struct ethqos_emac_driver_data {
- 	bool has_integrated_pcs;
- 	u32 dma_addr_width;
- 	struct dwmac4_addrs dwmac4_addrs;
-+	bool needs_sgmii_loopback;
- };
- 
- struct qcom_ethqos {
-@@ -114,6 +119,7 @@ struct qcom_ethqos {
- 	unsigned int num_por;
- 	bool rgmii_config_loopback_en;
- 	bool has_emac_ge_3;
-+	bool needs_sgmii_loopback;
- };
- 
- static int rgmii_readl(struct qcom_ethqos *ethqos, unsigned int offset)
-@@ -191,8 +197,22 @@ ethqos_update_link_clk(struct qcom_ethqos *ethqos, unsigned int speed)
- 	clk_set_rate(ethqos->link_clk, ethqos->link_clk_rate);
- }
- 
-+static void
-+qcom_ethqos_set_sgmii_loopback(struct qcom_ethqos *ethqos, bool enable)
-+{
-+	if (!ethqos->needs_sgmii_loopback ||
-+	    ethqos->phy_mode != PHY_INTERFACE_MODE_2500BASEX)
-+		return;
-+
-+	rgmii_updatel(ethqos,
-+		      SGMII_PHY_CNTRL1_SGMII_TX_TO_RX_LOOPBACK_EN,
-+		      enable ? SGMII_PHY_CNTRL1_SGMII_TX_TO_RX_LOOPBACK_EN : 0,
-+		      EMAC_WRAPPER_SGMII_PHY_CNTRL1);
-+}
-+
- static void ethqos_set_func_clk_en(struct qcom_ethqos *ethqos)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/pci.c b/drivers/net/ethernet/mellanox/mlxsw/pci.c
+index c0ced4d315f3d..d92f640bae575 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/pci.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/pci.c
+@@ -1599,6 +1599,7 @@ static int mlxsw_pci_reset_at_pci_disable(struct mlxsw_pci *mlxsw_pci,
  {
-+	qcom_ethqos_set_sgmii_loopback(ethqos, true);
- 	rgmii_updatel(ethqos, RGMII_CONFIG_FUNC_CLK_EN,
- 		      RGMII_CONFIG_FUNC_CLK_EN, RGMII_IO_MACRO_CONFIG);
+ 	struct pci_dev *pdev = mlxsw_pci->pdev;
+ 	char mrsr_pl[MLXSW_REG_MRSR_LEN];
++	struct pci_dev *bridge;
+ 	int err;
+ 
+ 	if (!pci_reset_sbr_supported) {
+@@ -1615,6 +1616,9 @@ static int mlxsw_pci_reset_at_pci_disable(struct mlxsw_pci *mlxsw_pci,
+ sbr:
+ 	device_lock_assert(&pdev->dev);
+ 
++	bridge = pci_upstream_bridge(pdev);
++	if (bridge)
++		pci_cfg_access_lock(bridge);
+ 	pci_cfg_access_lock(pdev);
+ 	pci_save_state(pdev);
+ 
+@@ -1624,6 +1628,8 @@ static int mlxsw_pci_reset_at_pci_disable(struct mlxsw_pci *mlxsw_pci,
+ 
+ 	pci_restore_state(pdev);
+ 	pci_cfg_access_unlock(pdev);
++	if (bridge)
++		pci_cfg_access_unlock(bridge);
+ 
+ 	return err;
  }
-@@ -277,6 +297,7 @@ static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
- 	.has_emac_ge_3 = true,
- 	.link_clk_name = "phyaux",
- 	.has_integrated_pcs = true,
-+	.needs_sgmii_loopback = true,
- 	.dma_addr_width = 36,
- 	.dwmac4_addrs = {
- 		.dma_chan = 0x00008100,
-@@ -674,6 +695,7 @@ static void ethqos_fix_mac_speed(void *priv, unsigned int speed, unsigned int mo
- {
- 	struct qcom_ethqos *ethqos = priv;
- 
-+	qcom_ethqos_set_sgmii_loopback(ethqos, false);
- 	ethqos->speed = speed;
- 	ethqos_update_link_clk(ethqos, speed);
- 	ethqos_configure(ethqos);
-@@ -809,6 +831,7 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
- 	ethqos->num_por = data->num_por;
- 	ethqos->rgmii_config_loopback_en = data->rgmii_config_loopback_en;
- 	ethqos->has_emac_ge_3 = data->has_emac_ge_3;
-+	ethqos->needs_sgmii_loopback = data->needs_sgmii_loopback;
- 
- 	ethqos->link_clk = devm_clk_get(dev, data->link_clk_name ?: "rgmii");
- 	if (IS_ERR(ethqos->link_clk))
 -- 
 2.43.0
 
