@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-62238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A3493E756
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:07:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBED493E758
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:08:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BF53B22C38
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:07:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEC041C20910
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EFE186E27;
-	Sun, 28 Jul 2024 15:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9352A186E5F;
+	Sun, 28 Jul 2024 15:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duVuOdqK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5UWE2Vr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347D51862B4;
-	Sun, 28 Jul 2024 15:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A33958ABC;
+	Sun, 28 Jul 2024 15:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181860; cv=none; b=j7C9fsTcmMm7jwQ9TE1ep7jyzHQtO7A32UjB3vpPhEF/1FHkwkmapy64MA6nw/k/7r1SmikRWUaisWW6CRl6h6F36e/nKQOxPaeFcqnV3fOdOnbCF/pJUXlhqG6qhNrK+aP0ghYt+EMNw1H3Gu1ACnuHEAZdn9yys4o/BkCUANM=
+	t=1722181867; cv=none; b=aZ+Ja7UPy9LTh1tn5RounxW2oyRR8mzQw7KPrKvpIUHUxfeyCLIrFKMU8bSI3Z7t/t9Bj3SMgmZ1dtaucFk1EnOBnL8kStsBaxeX2p8OnA11NIr7Np6IXbKA7WQmYzVCG1lqjGWnOaaIHKa28eWsNHpHroFIGBFYL+fo+5sh99w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181860; c=relaxed/simple;
-	bh=a7nhMQniC6d10qzvJKZZvj5y8Afd7AHY7Dq8/OGStE8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XPcpZFYdnSjruKnf9tb2Pj+xEKJ3ocJt8d5d8yUV7HkRuur/g3Yp4aLrdkmjwzo9duCbnF9gmoWqRxYk6cO0LfJtMCeAfIzsBlnWU+cpDiLBGQxBt8XUWNLOpRxqwOOVIEX6DF0lFYKGOVhAkg/bwltRWBThg50F/Zf+ah9dbBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=duVuOdqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BABC4AF0A;
-	Sun, 28 Jul 2024 15:50:58 +0000 (UTC)
+	s=arc-20240116; t=1722181867; c=relaxed/simple;
+	bh=Ae3xKWdVfHk3/6oXJfEi5ivORaAmro0kagRHeGZ73Y4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AI9hi9RwI8Ia3CseTN9s7L71EwpNLP1sZ0o+vWQUZmRhQ1bBLX9lNScxCVnOTrsM+aJofXdv52PYXsCgW56JpUFDu6RG+Dr3GfEGxOXA2GCkn2MSZLzEj6w9C9AqwcNQ/tYnxNr+qHilkeX5nRK7CLPIyQGINN8zJcMC4NsqaU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5UWE2Vr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868A8C32782;
+	Sun, 28 Jul 2024 15:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181860;
-	bh=a7nhMQniC6d10qzvJKZZvj5y8Afd7AHY7Dq8/OGStE8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duVuOdqKzOomYzXqgNmaUnEDvQXK1r9JsdequWQAkwCh9b3rDXLWwMBIr0AM2Gpb4
-	 RXyfUexGnxuNtyES8XNpiHivB+koUIvgT7BCzYQERlWfBHqffasA5fffR/0kylCk1G
-	 E7cmmh+MK/0X4o+fX+I9u4e3tV1Z34jQDYUxMMII0NKcJdl7zTHpiLsTUVo3NWQbtE
-	 WMjOJt1L63OMrsVdxd1Fk4Z/tlzXknaf+4gCxqtayVtZuxCMOodJuVQ9PEBXUybEx+
-	 Mb4oFrZ7ZUYD5qeRBeRpMTaYRJU3wSWduXrqDVyQq/Paby1MF8QL/V01zlGJ6Q6hU0
-	 YCeDZqk5AyipA==
+	s=k20201202; t=1722181867;
+	bh=Ae3xKWdVfHk3/6oXJfEi5ivORaAmro0kagRHeGZ73Y4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=e5UWE2Vr/QPmnBAFGRohWVFNqFuX2E5NG02N28pdewbjZ8zYgtOr2fhi4qtGFjIMW
+	 /qdcxlHZuTRh/mtGdAVqnjW+PV1RgYOkzbPwgpga3EjxHpKCtCLM2SpqTO4PqPSl5l
+	 1w4r2EavL3SmoOAK87qPWZcx5faIv5Wrj79uM8M5ZVcW33qqd+B4+MLmklBPvDPyko
+	 zZStR3DdscfOpoqXDYahHUwdRXYqb53gz4m3hqg/B54wnzL/iMJaFf+lotfrYvvpU7
+	 eg7CsQOn+jKaHe4Vkf0Snwb2jLvCKNP/ufAuTwaXXMzEy1aVNlDWolnbscUT1aQe72
+	 ysGSxTrCUMrGQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Coddington <bcodding@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+Cc: Ricardo Ribalda <ribalda@chromium.org>,
+	HungNien Chen <hn.chen@sunplusit.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Tomasz Figa <tfiga@chromium.org>,
 	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	chuck.lever@oracle.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 6/6] SUNRPC: Fix a race to wake a sync task
-Date: Sun, 28 Jul 2024 11:50:38 -0400
-Message-ID: <20240728155045.2050587-6-sashal@kernel.org>
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 1/5] media: uvcvideo: Ignore empty TS packets
+Date: Sun, 28 Jul 2024 11:50:56 -0400
+Message-ID: <20240728155103.2050728-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240728155045.2050587-1-sashal@kernel.org>
-References: <20240728155045.2050587-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,54 +63,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.281
+X-stable-base: Linux 4.19.319
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit ed0172af5d6fc07d1b40ca82f5ca3979300369f7 ]
+[ Upstream commit 5cd7c25f6f0576073b3d03bc4cfb1e8ca63a1195 ]
 
-We've observed NFS clients with sync tasks sleeping in __rpc_execute
-waiting on RPC_TASK_QUEUED that have not responded to a wake-up from
-rpc_make_runnable().  I suspect this problem usually goes unnoticed,
-because on a busy client the task will eventually be re-awoken by another
-task completion or xprt event.  However, if the state manager is draining
-the slot table, a sync task missing a wake-up can result in a hung client.
+Some SunplusIT cameras took a borderline interpretation of the UVC 1.5
+standard, and fill the PTS and SCR fields with invalid data if the
+package does not contain data.
 
-We've been able to prove that the waker in rpc_make_runnable() successfully
-calls wake_up_bit() (ie- there's no race to tk_runstate), but the
-wake_up_bit() call fails to wake the waiter.  I suspect the waker is
-missing the load of the bit's wait_queue_head, so waitqueue_active() is
-false.  There are some very helpful comments about this problem above
-wake_up_bit(), prepare_to_wait(), and waitqueue_active().
+"STC must be captured when the first video data of a video frame is put
+on the USB bus."
 
-Fix this by inserting smp_mb__after_atomic() before the wake_up_bit(),
-which pairs with prepare_to_wait() calling set_current_state().
+Some SunplusIT devices send, e.g.,
 
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
+buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
+buffer: 0xa7755c00 len 000668 header:0x8c stc 73779dba sof 070c pts 7376d37a
+
+While the UVC specification meant that the first two packets shouldn't
+have had the SCR bit set in the header.
+
+This borderline/buggy interpretation has been implemented in a variety
+of devices, from directly SunplusIT and from other OEMs that rebrand
+SunplusIT products. So quirking based on VID:PID will be problematic.
+
+All the affected modules have the following extension unit:
+VideoControl Interface Descriptor:
+  guidExtensionCode         {82066163-7050-ab49-b8cc-b3855e8d221d}
+
+But the vendor plans to use that GUID in the future and fix the bug,
+this means that we should use heuristic to figure out the broken
+packets.
+
+This patch takes care of this.
+
+lsusb of one of the affected cameras:
+
+Bus 001 Device 003: ID 1bcf:2a01 Sunplus Innovation Technology Inc.
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.01
+  bDeviceClass          239 Miscellaneous Device
+  bDeviceSubClass         2 ?
+  bDeviceProtocol         1 Interface Association
+  bMaxPacketSize0        64
+  idVendor           0x1bcf Sunplus Innovation Technology Inc.
+  idProduct          0x2a01
+  bcdDevice            0.02
+  iManufacturer           1 SunplusIT Inc
+  iProduct                2 HanChen Wise Camera
+  iSerial                 3 01.00.00
+  bNumConfigurations      1
+
+Tested-by: HungNien Chen <hn.chen@sunplusit.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Tomasz Figa <tfiga@chromium.org>
+Link: https://lore.kernel.org/r/20240323-resend-hwtimestamp-v10-2-b08e590d97c7@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/sched.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_video.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index a5c6a3d05741a..df83c59cde7fe 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -368,8 +368,10 @@ static void rpc_make_runnable(struct workqueue_struct *wq,
- 	if (RPC_IS_ASYNC(task)) {
- 		INIT_WORK(&task->u.tk_work, rpc_async_schedule);
- 		queue_work(wq, &task->u.tk_work);
--	} else
-+	} else {
-+		smp_mb__after_atomic();
- 		wake_up_bit(&task->tk_runstate, RPC_TASK_QUEUED);
-+	}
- }
+diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+index c57bc62251bb8..e2c1b98fb4a25 100644
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -473,6 +473,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	ktime_t time;
+ 	u16 host_sof;
+ 	u16 dev_sof;
++	u32 dev_stc;
  
- /*
+ 	switch (data[1] & (UVC_STREAM_PTS | UVC_STREAM_SCR)) {
+ 	case UVC_STREAM_PTS | UVC_STREAM_SCR:
+@@ -517,6 +518,34 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	if (dev_sof == stream->clock.last_sof)
+ 		return;
+ 
++	dev_stc = get_unaligned_le32(&data[header_size - 6]);
++
++	/*
++	 * STC (Source Time Clock) is the clock used by the camera. The UVC 1.5
++	 * standard states that it "must be captured when the first video data
++	 * of a video frame is put on the USB bus". This is generally understood
++	 * as requiring devices to clear the payload header's SCR bit before
++	 * the first packet containing video data.
++	 *
++	 * Most vendors follow that interpretation, but some (namely SunplusIT
++	 * on some devices) always set the `UVC_STREAM_SCR` bit, fill the SCR
++	 * field with 0's,and expect that the driver only processes the SCR if
++	 * there is data in the packet.
++	 *
++	 * Ignore all the hardware timestamp information if we haven't received
++	 * any data for this frame yet, the packet contains no data, and both
++	 * STC and SOF are zero. This heuristics should be safe on compliant
++	 * devices. This should be safe with compliant devices, as in the very
++	 * unlikely case where a UVC 1.1 device would send timing information
++	 * only before the first packet containing data, and both STC and SOF
++	 * happen to be zero for a particular frame, we would only miss one
++	 * clock sample from many and the clock recovery algorithm wouldn't
++	 * suffer from this condition.
++	 */
++	if (buf && buf->bytesused == 0 && len == header_size &&
++	    dev_stc == 0 && dev_sof == 0)
++		return;
++
+ 	stream->clock.last_sof = dev_sof;
+ 
+ 	host_sof = usb_get_current_frame_number(stream->dev->udev);
+@@ -554,7 +583,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	spin_lock_irqsave(&stream->clock.lock, flags);
+ 
+ 	sample = &stream->clock.samples[stream->clock.head];
+-	sample->dev_stc = get_unaligned_le32(&data[header_size - 6]);
++	sample->dev_stc = dev_stc;
+ 	sample->dev_sof = dev_sof;
+ 	sample->host_sof = host_sof;
+ 	sample->host_time = time;
 -- 
 2.43.0
 
