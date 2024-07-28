@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-61992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A143793E1C2
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:50:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320C793E1C5
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FCC62819E1
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:50:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C48BF1F217FF
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1C5482CD;
-	Sun, 28 Jul 2024 00:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660167470;
+	Sun, 28 Jul 2024 00:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pq+NXOZL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fW0ChuUW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1699247F4D;
-	Sun, 28 Jul 2024 00:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCE44CB5B;
+	Sun, 28 Jul 2024 00:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127683; cv=none; b=QO1VEDAu5VVmGSKOPmcL5uPyoBTg1XOkyXW8ScDKPIWzuHlpI/3Jg982tzk2UmvVkovRKoVTr3B2A3XyJ3YVyM9HfR5VBhNASv+x7zUE8jqr+90NtlRaYqLjCjB00OeLyK+jtuyAsC2Mm7mVUShUNMhmjdpeIQcRXnQB5omkj6I=
+	t=1722127685; cv=none; b=W7LjUfqqHxmApA7efndkBatiqlJ06JbNaP3cKdtST5KYM2K2Z3f4ngUvh6OvJDLB/jfXu9urKIReT8pU2eC7xP1h1n5BTYTtE9C5kjOWCfdGqu6E/X3J+Xf3NAII8kEljmiS9S6EbLHDHlGYkIaUb5AyWBsmE4WQmxkwFMkvgPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127683; c=relaxed/simple;
-	bh=khxLmE/KexPrqmoJqixnEExY2F0di46Bbsj2Br7SAmQ=;
+	s=arc-20240116; t=1722127685; c=relaxed/simple;
+	bh=/hrMYY5Mw+9qdFhlnzQzO3nNxs4wp8TSo2/mbk/Vhwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQ/WesQ5LoeW7hXIbzefjFPKXeW4rSmKCtMJ5bdvXSAtf1phPLyIjpBofyEl2+kLLNyb9T7Ax5Pky+JxHcGY833mNq1Hpprly/h/VkbcoKuBVJacHCAbtT9HQ2u2iSVkuVdjTCKT/PCIXxo/+4EH2Nzpf1tIcPm9NELCVLkVDV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pq+NXOZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7208DC4AF07;
-	Sun, 28 Jul 2024 00:48:01 +0000 (UTC)
+	 MIME-Version; b=WigygSAFqz2/s0GAH3o/73Dsib0Ao1ANqbOCfLKExfVgBGfcUk2hxwQZmLIJjQdVUVRRH9kphPU0lX9d3rOyqmbHj5B6Tm2IlXNwzCmQ/+sbYKrr1p1JrZQvDih8JERdearSVWx3HBOtG3NX+2oADUOs3gOde8mWtrAfJ3wDaTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fW0ChuUW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868D3C32781;
+	Sun, 28 Jul 2024 00:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127682;
-	bh=khxLmE/KexPrqmoJqixnEExY2F0di46Bbsj2Br7SAmQ=;
+	s=k20201202; t=1722127685;
+	bh=/hrMYY5Mw+9qdFhlnzQzO3nNxs4wp8TSo2/mbk/Vhwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pq+NXOZLcJbOtXKJkzuAzBAuIMVKya0zDssHlfMIeIMR48wDSe5glAQBCKSeF6fo2
-	 XvuWk19EtxpEN9hurx0km0gE9X4w820XTpR6ghuEX552ENIyLsZSLa3LVPDhG7Fj5q
-	 DOwx4PP7wXUXAvl7lyBnvrX3LgTiRFFYcd5fQQTZqHxBfgzDcGPoTC4+oVaZGF/kxS
-	 ov7FIPotqsoXNCr2QMQ8ikDj/byBdlBmhHNfpBFYEa6MN5U+E16r/YhZM9HXAbsNL/
-	 lEsACZN6VSYLR6xotFhM8s1Fgnv506a7SXUQvnOXDMbDZRUqWFSxPZM9uDyYEC2l8Z
-	 noXeQLcIgUNnw==
+	b=fW0ChuUWuGPIHikclzjq/3gFil/IuRsueetPVQVkTGyt7qide1vmMlDmGCo9ZwP6J
+	 IAAi0g8b8d2wLZlbZc84WNF6a+KcyTbH8A3wyVfEwMiObckacY/26HzCFwFlJXUSZV
+	 DNi5Tnxj1wzHhpeUW96T07rWpkjhp5t2PfJcxq08lMQZhuCgbELxfuqg1iwsIzkXqk
+	 C9Uchh8AHTWG98uzcmXtIOYy5vzLhD+3MjrzeYR7jsXkpB00DZnkye9AcrvIHFAVYG
+	 yLEQrJJwEuMr1+GoMdj62kuo2c1WKavtgV3CvKPYDkPFSAU40KeWI2IxL8nuXHjehV
+	 jzapIJRkjVEtg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Keith Busch <kbusch@kernel.org>,
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+	Anuj Gupta <anuj20.g@samsung.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
 	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	marcan@marcan.st,
-	sven@svenpeter.dev,
+	kbusch@kernel.org,
 	sagi@grimberg.me,
-	asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.10 12/16] nvme: apple: fix device reference counting
-Date: Sat, 27 Jul 2024 20:47:29 -0400
-Message-ID: <20240728004739.1698541-12-sashal@kernel.org>
+	linux-nvme@lists.infradead.org,
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 13/16] block: change rq_integrity_vec to respect the iterator
+Date: Sat, 27 Jul 2024 20:47:30 -0400
+Message-ID: <20240728004739.1698541-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728004739.1698541-1-sashal@kernel.org>
 References: <20240728004739.1698541-1-sashal@kernel.org>
@@ -71,85 +71,104 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Keith Busch <kbusch@kernel.org>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit b9ecbfa45516182cd062fecd286db7907ba84210 ]
+[ Upstream commit cf546dd289e0f6d2594c25e2fb4e19ee67c6d988 ]
 
-Drivers must call nvme_uninit_ctrl after a successful nvme_init_ctrl.
-Split the allocation side out to make the error handling boundary easier
-to navigate. The apple driver had been doing this wrong, leaking the
-controller device memory on a tagset failure.
+If we allocate a bio that is larger than NVMe maximum request size,
+attach integrity metadata to it and send it to the NVMe subsystem, the
+integrity metadata will be corrupted.
 
+Splitting the bio works correctly. The function bio_split will clone the
+bio, trim the iterator of the first bio and advance the iterator of the
+second bio.
+
+However, the function rq_integrity_vec has a bug - it returns the first
+vector of the bio's metadata and completely disregards the metadata
+iterator that was advanced when the bio was split. Thus, the second bio
+uses the same metadata as the first bio and this leads to metadata
+corruption.
+
+This commit changes rq_integrity_vec, so that it calls mp_bvec_iter_bvec
+instead of returning the first vector. mp_bvec_iter_bvec reads the
+iterator and uses it to build a bvec for the current position in the
+iterator.
+
+The "queue_max_integrity_segments(rq->q) > 1" check was removed, because
+the updated rq_integrity_vec function works correctly with multiple
+segments.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Link: https://lore.kernel.org/r/49d1afaa-f934-6ed2-a678-e0d428c63a65@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/apple.c | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ drivers/nvme/host/pci.c       |  6 +++---
+ include/linux/blk-integrity.h | 14 +++++++-------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/nvme/host/apple.c b/drivers/nvme/host/apple.c
-index 0cfa39361d3b6..25ecc1a005c5a 100644
---- a/drivers/nvme/host/apple.c
-+++ b/drivers/nvme/host/apple.c
-@@ -1388,7 +1388,7 @@ static void devm_apple_nvme_mempool_destroy(void *data)
- 	mempool_destroy(data);
- }
- 
--static int apple_nvme_probe(struct platform_device *pdev)
-+static struct apple_nvme *apple_nvme_alloc(struct platform_device *pdev)
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 102a9fb0c65ff..5d8035218de9b 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -826,9 +826,9 @@ static blk_status_t nvme_map_metadata(struct nvme_dev *dev, struct request *req,
+ 		struct nvme_command *cmnd)
  {
- 	struct device *dev = &pdev->dev;
- 	struct apple_nvme *anv;
-@@ -1396,7 +1396,7 @@ static int apple_nvme_probe(struct platform_device *pdev)
+ 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
++	struct bio_vec bv = rq_integrity_vec(req);
  
- 	anv = devm_kzalloc(dev, sizeof(*anv), GFP_KERNEL);
- 	if (!anv)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
+-	iod->meta_dma = dma_map_bvec(dev->dev, rq_integrity_vec(req),
+-			rq_dma_dir(req), 0);
++	iod->meta_dma = dma_map_bvec(dev->dev, &bv, rq_dma_dir(req), 0);
+ 	if (dma_mapping_error(dev->dev, iod->meta_dma))
+ 		return BLK_STS_IOERR;
+ 	cmnd->rw.metadata = cpu_to_le64(iod->meta_dma);
+@@ -967,7 +967,7 @@ static __always_inline void nvme_pci_unmap_rq(struct request *req)
+ 	        struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
  
- 	anv->dev = get_device(dev);
- 	anv->adminq.is_adminq = true;
-@@ -1516,10 +1516,26 @@ static int apple_nvme_probe(struct platform_device *pdev)
- 		goto put_dev;
+ 		dma_unmap_page(dev->dev, iod->meta_dma,
+-			       rq_integrity_vec(req)->bv_len, rq_dma_dir(req));
++			       rq_integrity_vec(req).bv_len, rq_dma_dir(req));
  	}
  
-+	return anv;
-+put_dev:
-+	put_device(anv->dev);
-+	return ERR_PTR(ret);
-+}
-+
-+static int apple_nvme_probe(struct platform_device *pdev)
-+{
-+	struct apple_nvme *anv;
-+	int ret;
-+
-+	anv = apple_nvme_alloc(pdev);
-+	if (IS_ERR(anv))
-+		return PTR_ERR(anv);
-+
- 	anv->ctrl.admin_q = blk_mq_alloc_queue(&anv->admin_tagset, NULL, NULL);
- 	if (IS_ERR(anv->ctrl.admin_q)) {
- 		ret = -ENOMEM;
--		goto put_dev;
-+		anv->ctrl.admin_q = NULL;
-+		goto out_uninit_ctrl;
- 	}
- 
- 	nvme_reset_ctrl(&anv->ctrl);
-@@ -1527,8 +1543,9 @@ static int apple_nvme_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--put_dev:
--	put_device(anv->dev);
-+out_uninit_ctrl:
-+	nvme_uninit_ctrl(&anv->ctrl);
-+	nvme_put_ctrl(&anv->ctrl);
- 	return ret;
+ 	if (blk_rq_nr_phys_segments(req))
+diff --git a/include/linux/blk-integrity.h b/include/linux/blk-integrity.h
+index 7428cb43952da..d16dd24719841 100644
+--- a/include/linux/blk-integrity.h
++++ b/include/linux/blk-integrity.h
+@@ -100,14 +100,13 @@ static inline bool blk_integrity_rq(struct request *rq)
  }
  
+ /*
+- * Return the first bvec that contains integrity data.  Only drivers that are
+- * limited to a single integrity segment should use this helper.
++ * Return the current bvec that contains the integrity data. bip_iter may be
++ * advanced to iterate over the integrity data.
+  */
+-static inline struct bio_vec *rq_integrity_vec(struct request *rq)
++static inline struct bio_vec rq_integrity_vec(struct request *rq)
+ {
+-	if (WARN_ON_ONCE(queue_max_integrity_segments(rq->q) > 1))
+-		return NULL;
+-	return rq->bio->bi_integrity->bip_vec;
++	return mp_bvec_iter_bvec(rq->bio->bi_integrity->bip_vec,
++				 rq->bio->bi_integrity->bip_iter);
+ }
+ #else /* CONFIG_BLK_DEV_INTEGRITY */
+ static inline int blk_rq_count_integrity_sg(struct request_queue *q,
+@@ -169,7 +168,8 @@ static inline int blk_integrity_rq(struct request *rq)
+ 
+ static inline struct bio_vec *rq_integrity_vec(struct request *rq)
+ {
+-	return NULL;
++	/* the optimizer will remove all calls to this function */
++	return (struct bio_vec){ };
+ }
+ #endif /* CONFIG_BLK_DEV_INTEGRITY */
+ #endif /* _LINUX_BLK_INTEGRITY_H */
 -- 
 2.43.0
 
