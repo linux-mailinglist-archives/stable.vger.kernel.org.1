@@ -1,65 +1,77 @@
-Return-Path: <stable+bounces-62145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45C993E5F7
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:42:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E5E93E5FD
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F2EC1F215B0
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:42:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03203B2102F
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464D153373;
-	Sun, 28 Jul 2024 15:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F1D6A8D2;
+	Sun, 28 Jul 2024 15:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fF1Cyo7e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KbcBhcob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0150441C64;
-	Sun, 28 Jul 2024 15:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A085541C64;
+	Sun, 28 Jul 2024 15:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181354; cv=none; b=o7/l+GWugB6+4+W/HjXkiGDwNLrVuuoOuBJF6VIU5MX3fXcGe5cKQ5F7Blp089Nhy+NcnmYhbI9KqsHz3iseRKyTg36w9DmTAJwxWersvMrZWwNEEtBGtS3K0G+tKq61W/z9OWatdY38wkznIpPCwk/RjjNmIaY6wS/fY52r2hc=
+	t=1722181359; cv=none; b=i4Rt0y1prrd1OiUKAtWctAtH5rsV+/z+P5OyI6kDdE4LKEu89pGxQhoiyWmHnnhBx0T9HPNOa5cLE34r9FzrdyXfl4eW0AbVH1IZbjnb4WiQKT9NDhbiWALQ5yJ3rXYRq9POGn33TpFEmvxQk6yM3KCUkzEvgQzceXB8LMNTiYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181354; c=relaxed/simple;
-	bh=8q5D2B9OW6lTxci4LEAhIIy1s+NJNtC4AYx42sA6Xts=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PF1fCajwbKkcn4bMJJMcwffM4uJlOOQkmqpMUp2pI8PGLnr0ozTj4MQNjKVd98u2MycvD99MfQigcJQ5jngSvG3d7Je2hfM0grFpxhWgMtn/B8UpJKl9JdCJjUkZVWP2ulMxUTsfSXV6LexC0CAxTGCY+nzfV6tpLjF2LPJzdxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fF1Cyo7e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011B4C116B1;
-	Sun, 28 Jul 2024 15:42:31 +0000 (UTC)
+	s=arc-20240116; t=1722181359; c=relaxed/simple;
+	bh=FR6ZHIVNzRpIwImRqh2JQDTV5HWYxLHkbIVgP0YcBxc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FpRGEujGEdpfHk/KflSRvZ1FBL0s1U362PlGiwfx76vwzMcpII8GfRFQCa469UTgMlF1fbWS9DJ0JPg1J371Xg4JNhY/zxRbpwBMT7QOPe7RV4gZ5xJO3NI7jFTdA8Fj8cIpYZMpeGrsR+DBvMz9QyRAjpFymIZ3CzLp1hm5r6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KbcBhcob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A86C116B1;
+	Sun, 28 Jul 2024 15:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181353;
-	bh=8q5D2B9OW6lTxci4LEAhIIy1s+NJNtC4AYx42sA6Xts=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fF1Cyo7eX1QOiKplbmpbh0dNRqh+QJP9ls93EcvUmxzYaqgtgFl7ORfhcS4oSvgoy
-	 ck0Gucc1TiHWsyzuhxG5CW45D38fwFaLoBFJGNj/0bvAVJ/lqL6vfv6lTiDWhPDAZJ
-	 fZMCLyGTpxouT9907MqOiwJJRNAVBTCSX0V/qq1KUs1RpoHVnxj3cC9yZE+yEtux7J
-	 6yg9ofcDGdxL4KRROkSXNdcaFlPdB55R65eVXdHW/Nsp72K3XfIyUfoGpyvVuN8NZK
-	 4jeDaSTiBY2mTif6LyMCSPySgQSoAuRzKbXVuEbV7YAbsLKvWnGTGTd9gA0zY8S1Yx
-	 PJFDjM7ezug/A==
+	s=k20201202; t=1722181359;
+	bh=FR6ZHIVNzRpIwImRqh2JQDTV5HWYxLHkbIVgP0YcBxc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KbcBhcobBL+yztXhVtG0tss5xwZ853gsqnvnC/vC+cko9B84nmf811Mli4r4KZB8H
+	 ZuQBhP58fMIz+sFkVwxxMaHYINbmKgrqDtmqSQRIJyXBjWJf1LHqlog/uIY4ZwRWE0
+	 f/OV8aUS2QkirM2WkNeP+VR+Xe2w9K6m4a7GvalagpL4HeSNO3Ex3E6QPVzfLecSXZ
+	 Aue5WyF+fyc+PTb9bQRc0aDit5JzmcSwcnN5Sj2toHEMh4tCr+hD5uhyQvxRw4k0qi
+	 SZYywSJfTUQT/odU2cDXB/fdmD/gU+jW1LecIdfNE2mfYlKYRAyjSdYA3c6uCdmXD9
+	 Nb1NAPpiAMXsQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
+Cc: Sung-huai Wang <danny.wang@amd.com>,
+	Robin Chen <robin.chen@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lucas.demarchi@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
+	hersenxs.wu@amd.com,
+	dennis.chan@amd.com,
+	alex.hung@amd.com,
+	hamza.mahfooz@amd.com,
+	chuntao.tso@amd.com,
+	george.shen@amd.com,
+	Bhawanpreet.Lakha@amd.com,
+	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 01/34] drm/xe/preempt_fence: enlarge the fence critical section
-Date: Sun, 28 Jul 2024 11:40:25 -0400
-Message-ID: <20240728154230.2046786-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 02/34] drm/amd/display: Handle HPD_IRQ for internal link
+Date: Sun, 28 Jul 2024 11:40:26 -0400
+Message-ID: <20240728154230.2046786-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240728154230.2046786-1-sashal@kernel.org>
+References: <20240728154230.2046786-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,56 +83,92 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Sung-huai Wang <danny.wang@amd.com>
 
-[ Upstream commit 3cd1585e57908b6efcd967465ef7685f40b2a294 ]
+[ Upstream commit 239b31bd5c3fef3698440bf6436b2068c6bb08a3 ]
 
-It is really easy to introduce subtle deadlocks in
-preempt_fence_work_func() since we operate on single global ordered-wq
-for signalling our preempt fences behind the scenes, so even though we
-signal a particular fence, everything in the callback should be in the
-fence critical section, since blocking in the callback will prevent
-other published fences from signalling. If we enlarge the fence critical
-section to cover the entire callback, then lockdep should be able to
-understand this better, and complain if we grab a sensitive lock like
-vm->lock, which is also held when waiting on preempt fences.
+[Why]
+TCON data is corrupted after electro static discharge test.
+Once the TCON data get corrupted, they will get themselves
+reset and send HPD_IRQ to source side.
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240418144630.299531-2-matthew.auld@intel.com
+[How]
+Support HPD_IRQ for internal link, and restore the PSR/Replay setup.
+
+Reviewed-by: Robin Chen <robin.chen@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Sung-huai Wang <danny.wang@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_preempt_fence.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ .../dc/link/protocols/link_dp_irq_handler.c   | 25 ++++++++++++-------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_preempt_fence.c b/drivers/gpu/drm/xe/xe_preempt_fence.c
-index 7d50c6e89d8e7..5b243b7feb59d 100644
---- a/drivers/gpu/drm/xe/xe_preempt_fence.c
-+++ b/drivers/gpu/drm/xe/xe_preempt_fence.c
-@@ -23,11 +23,19 @@ static void preempt_fence_work_func(struct work_struct *w)
- 		q->ops->suspend_wait(q);
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_irq_handler.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_irq_handler.c
+index 0fcf0b8530acf..659b8064d3618 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_irq_handler.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_irq_handler.c
+@@ -373,6 +373,7 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
+ 	union device_service_irq device_service_clear = {0};
+ 	enum dc_status result;
+ 	bool status = false;
++	bool allow_active = false;
  
- 	dma_fence_signal(&pfence->base);
--	dma_fence_end_signalling(cookie);
+ 	if (out_link_loss)
+ 		*out_link_loss = false;
+@@ -427,12 +428,6 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
+ 		return false;
+ 	}
+ 
+-	if (handle_hpd_irq_psr_sink(link))
+-		/* PSR-related error was detected and handled */
+-		return true;
 -
-+	/*
-+	 * Opt for keep everything in the fence critical section. This looks really strange since we
-+	 * have just signalled the fence, however the preempt fences are all signalled via single
-+	 * global ordered-wq, therefore anything that happens in this callback can easily block
-+	 * progress on the entire wq, which itself may prevent other published preempt fences from
-+	 * ever signalling.  Therefore try to keep everything here in the callback in the fence
-+	 * critical section. For example if something below grabs a scary lock like vm->lock,
-+	 * lockdep should complain since we also hold that lock whilst waiting on preempt fences to
-+	 * complete.
+-	handle_hpd_irq_replay_sink(link);
+-
+ 	/* If PSR-related error handled, Main link may be off,
+ 	 * so do not handle as a normal sink status change interrupt.
+ 	 */
+@@ -454,9 +449,8 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
+ 	 * If we got sink count changed it means
+ 	 * Downstream port status changed,
+ 	 * then DM should call DC to do the detection.
+-	 * NOTE: Do not handle link loss on eDP since it is internal link*/
+-	if ((link->connector_signal != SIGNAL_TYPE_EDP) &&
+-			dp_parse_link_loss_status(
 +	 */
- 	xe_vm_queue_rebind_worker(q->vm);
--
- 	xe_exec_queue_put(q);
-+	dma_fence_end_signalling(cookie);
- }
++	if (dp_parse_link_loss_status(
+ 					link,
+ 					&hpd_irq_dpcd_data)) {
+ 		/* Connectivity log: link loss */
+@@ -465,6 +459,11 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
+ 					sizeof(hpd_irq_dpcd_data),
+ 					"Status: ");
  
- static const char *
++		if (link->psr_settings.psr_feature_enabled)
++			edp_set_psr_allow_active(link, &allow_active, true, false, NULL);
++		else if (link->replay_settings.replay_allow_active)
++			edp_set_replay_allow_active(link, &allow_active, true, false, NULL);
++
+ 		if (defer_handling && has_left_work)
+ 			*has_left_work = true;
+ 		else
+@@ -477,6 +476,14 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
+ 		dp_trace_link_loss_increment(link);
+ 	}
+ 
++	if (*out_link_loss == false) {
++		if (handle_hpd_irq_psr_sink(link))
++			/* PSR-related error was detected and handled */
++			return true;
++
++		handle_hpd_irq_replay_sink(link);
++	}
++
+ 	if (link->type == dc_connection_sst_branch &&
+ 		hpd_irq_dpcd_data.bytes.sink_cnt.bits.SINK_COUNT
+ 			!= link->dpcd_sink_count)
 -- 
 2.43.0
 
