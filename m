@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-62280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2B593E7F4
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:19:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8622493E7F7
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:20:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F676B245FA
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:19:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D91FFB21530
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529DF148853;
-	Sun, 28 Jul 2024 16:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BFD149C54;
+	Sun, 28 Jul 2024 16:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXcGtptk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JUyqYbVw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E45F1487E3;
-	Sun, 28 Jul 2024 16:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB691494D5;
+	Sun, 28 Jul 2024 16:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722182871; cv=none; b=GxsfOg6cv3Xb+/WEnQeLLSDhdcfFp3qWDBGModGdG4jghZJ0iMzNQgR0q9HWXfJz9u2c3k51R82K7RC4xM4aAalNx/DSvbkFBzCYoflxJHZanWI1X+dYhA1GGTx7QJPnt6JDSUpTkuqUY7EZy1KyZ7tjPc7gQdn/J9VMIQg6vMA=
+	t=1722182873; cv=none; b=ec+UwQUeIfJyQ9D7vFN+khCUMo/6gRQyCRwUMNCQdIvJuhaUkW0UeG/a72rSkneLO6ln6XL4NjWTVYmrdCkjd7G6l/vzb4gzOF7IngSJiXBP+UwKGiY4lyRdk5w1pcSLg/4mi9OLXL01DSFzwzS+HcQQE3Sr54Q7xYEtuQn3SO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722182871; c=relaxed/simple;
-	bh=9vciI1GeMRDi0SPmD3oN9I8PJ4t02RNV7SGmTCZ/VIg=;
+	s=arc-20240116; t=1722182873; c=relaxed/simple;
+	bh=qOnhw1++BWyJ2X/uSE59EcgFPqdi8NgeYJwgN7VE8IA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXaBpE2GM+oFdHyUG3IRxaDCH+DLVFfh6veJoIc77mO2DY7RA1YoXLwYNl0dh9DsMRhJkpY0GEzuyKdUDYlW76OYBTN9cEaq9DFewmeKKyavFRXnfXCHJBPVI58VXCb5/7GMqme5kUugGnBJZGCVPz7RqCnOkhhqNUKGJXTQLRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXcGtptk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469A2C4AF0F;
-	Sun, 28 Jul 2024 16:07:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Scka+jlkt1wnaG2nF/Z7D4A6hUKh7Lns9bD+CRJaSKmgqa8OsaoMnu9fSITQdaUnKUhNeeDMUwIfolUtBuy/hCGqDyIwn1ZSriin4ynF13cB91BTXD+Kqbjv08xRtOlNbZ7xD0ThiPY70JU2FNK7GXl1SNzNXZL1qUELLF9LVFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JUyqYbVw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF7EC4AF0E;
+	Sun, 28 Jul 2024 16:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722182870;
-	bh=9vciI1GeMRDi0SPmD3oN9I8PJ4t02RNV7SGmTCZ/VIg=;
+	s=k20201202; t=1722182873;
+	bh=qOnhw1++BWyJ2X/uSE59EcgFPqdi8NgeYJwgN7VE8IA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXcGtptkK7qXnH6TshnXv5nsL7QW5pT/YzR+gb1NSlYP1Ts6bkpTKfIS02QsC6qMd
-	 smCCD8yQCXRkQy9nXN6Rhsj7sPROgO2VGuaW/WHmHAygyuF7VrcsO3i7in/h22Jt+K
-	 un+bkscKeyi/EdEp2Z8/VQLFmaCKoADwbWknOtne8ggMw2PqMduFkGmKiqsTtKo8CF
-	 ydf8bUZzqZfPfw+aQtHjO+BW7cfQchKjHUwJkKW2KRVDbt+Fmmbax7VzkF0K1hy8Cj
-	 2TsRjES9/FlJ6AfT+t1gD955gvgBo9VfmRtLeT2QAEbeZIH8WVdIxxO3moHkk1koU0
-	 HKIevj9PhRA/A==
+	b=JUyqYbVwTi3g34UYD7cP3/g/rQGzumgWoQLipEakrslds89rby0pJRu2n1Qrripd3
+	 oFyD0Iz5PfoVxVYlp6mzHeAa8qc91SmalCTJnZ4VR9rIEXBFmuSuDDtU8LqHFGJbR5
+	 zmLHBHrvSlLQ6E6gwqMFKK5Yv0lXe5s0z47fh8vDQru2ZgbexsOlQhO+f21/OrGvK3
+	 Tl5J5P3hymsjdwv+2b5MBisJmq02cqQIIehXQ8CDiAtDHLAfwGQ/dVrFPN/o8N3VwM
+	 AIeaF+7X/BwjXuKWd7toQroM6GeXDDRfn7U0ueNrkOSSL1Y1pF1o0vyUYBgy6Hntln
+	 rGbHNO/VWbQmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kyoungrul Kim <k831.kim@samsung.com>,
-	Minwoo Im <minwoo.im@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Jiwei Sun <sunjw10@lenovo.com>,
+	Adrian Huang <ahuang12@lenovo.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Nirmal Patel <nirmal.patel@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	peter.wang@mediatek.com,
-	manivannan.sadhasivam@linaro.org,
-	avri.altman@wdc.com,
-	beanhuo@micron.com,
-	ahalaney@redhat.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 14/17] scsi: ufs: core: Remove SCSI host only if added
-Date: Sun, 28 Jul 2024 12:06:50 -0400
-Message-ID: <20240728160709.2052627-14-sashal@kernel.org>
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 15/17] PCI: vmd: Create domain symlink before pci_bus_add_devices()
+Date: Sun, 28 Jul 2024 12:06:51 -0400
+Message-ID: <20240728160709.2052627-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728160709.2052627-1-sashal@kernel.org>
 References: <20240728160709.2052627-1-sashal@kernel.org>
@@ -68,67 +65,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Kyoungrul Kim <k831.kim@samsung.com>
+From: Jiwei Sun <sunjw10@lenovo.com>
 
-[ Upstream commit 7cbff570dbe8907e23bba06f6414899a0fbb2fcc ]
+[ Upstream commit f24c9bfcd423e2b2bb0d198456412f614ec2030a ]
 
-If host tries to remove ufshcd driver from a UFS device it would cause a
-kernel panic if ufshcd_async_scan fails during ufshcd_probe_hba before
-adding a SCSI host with scsi_add_host and MCQ is enabled since SCSI host
-has been defered after MCQ configuration introduced by commit 0cab4023ec7b
-("scsi: ufs: core: Defer adding host to SCSI if MCQ is supported").
+The vmd driver creates a "domain" symlink in sysfs for each VMD bridge.
+Previously this symlink was created after pci_bus_add_devices() added
+devices below the VMD bridge and emitted udev events to announce them to
+userspace.
 
-To guarantee that SCSI host is removed only if it has been added, set the
-scsi_host_added flag to true after adding a SCSI host and check whether it
-is set or not before removing it.
+This led to a race between userspace consumers of the udev events and the
+kernel creation of the symlink.  One such consumer is mdadm, which
+assembles block devices into a RAID array, and for devices below a VMD
+bridge, mdadm depends on the "domain" symlink.
 
-Signed-off-by: Kyoungrul Kim <k831.kim@samsung.com>
-Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
-Link: https://lore.kernel.org/r/20240627085104epcms2p5897a3870ea5c6416aa44f94df6c543d7@epcms2p5
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+If mdadm loses the race, it may be unable to assemble a RAID array, which
+may cause a boot failure or other issues, with complaints like this:
+
+  (udev-worker)[2149]: nvme1n1: '/sbin/mdadm -I /dev/nvme1n1'(err) 'mdadm: Unable to get real path for '/sys/bus/pci/drivers/vmd/0000:c7:00.5/domain/device''
+  (udev-worker)[2149]: nvme1n1: '/sbin/mdadm -I /dev/nvme1n1'(err) 'mdadm: /dev/nvme1n1 is not attached to Intel(R) RAID controller.'
+  (udev-worker)[2149]: nvme1n1: '/sbin/mdadm -I /dev/nvme1n1'(err) 'mdadm: No OROM/EFI properties for /dev/nvme1n1'
+  (udev-worker)[2149]: nvme1n1: '/sbin/mdadm -I /dev/nvme1n1'(err) 'mdadm: no RAID superblock on /dev/nvme1n1.'
+  (udev-worker)[2149]: nvme1n1: Process '/sbin/mdadm -I /dev/nvme1n1' failed with exit code 1.
+
+This symptom prevents the OS from booting successfully.
+
+After a NVMe disk is probed/added by the nvme driver, udevd invokes mdadm
+to detect if there is a mdraid associated with this NVMe disk, and mdadm
+determines if a NVMe device is connected to a particular VMD domain by
+checking the "domain" symlink. For example:
+
+  Thread A                   Thread B             Thread mdadm
+  vmd_enable_domain
+    pci_bus_add_devices
+      __driver_probe_device
+       ...
+       work_on_cpu
+         schedule_work_on
+         : wakeup Thread B
+                             nvme_probe
+                             : wakeup scan_work
+                               to scan nvme disk
+                               and add nvme disk
+                               then wakeup udevd
+                                                  : udevd executes
+                                                    mdadm command
+         flush_work                               main
+         : wait for nvme_probe done                ...
+      __driver_probe_device                        find_driver_devices
+      : probe next nvme device                     : 1) Detect domain symlink
+      ...                                            2) Find domain symlink
+      ...                                               from vmd sysfs
+      ...                                            3) Domain symlink not
+      ...                                               created yet; failed
+    sysfs_create_link
+    : create domain symlink
+
+Create the VMD "domain" symlink before invoking pci_bus_add_devices() to
+avoid this race.
+
+Suggested-by: Adrian Huang <ahuang12@lenovo.com>
+Link: https://lore.kernel.org/linux-pci/20240605124844.24293-1-sjiwei@163.com
+Signed-off-by: Jiwei Sun <sunjw10@lenovo.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Nirmal Patel <nirmal.patel@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pci/controller/vmd.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 808979a093505..df36b141d4431 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10114,7 +10114,8 @@ void ufshcd_remove(struct ufs_hba *hba)
- 	blk_mq_destroy_queue(hba->tmf_queue);
- 	blk_put_queue(hba->tmf_queue);
- 	blk_mq_free_tag_set(&hba->tmf_tag_set);
--	scsi_remove_host(hba->host);
-+	if (hba->scsi_host_added)
-+		scsi_remove_host(hba->host);
- 	/* disable interrupts */
- 	ufshcd_disable_intr(hba, hba->intr_mask);
- 	ufshcd_hba_stop(hba);
-@@ -10389,6 +10390,7 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- 			dev_err(hba->dev, "scsi_add_host failed\n");
- 			goto out_disable;
- 		}
-+		hba->scsi_host_added = true;
- 	}
+diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
+index 6ac0afae0ca18..8622d7507c869 100644
+--- a/drivers/pci/controller/vmd.c
++++ b/drivers/pci/controller/vmd.c
+@@ -925,6 +925,9 @@ static int vmd_enable_domain(struct vmd_dev *vmd, unsigned long features)
+ 		dev_set_msi_domain(&vmd->bus->dev,
+ 				   dev_get_msi_domain(&vmd->dev->dev));
  
- 	hba->tmf_tag_set = (struct blk_mq_tag_set) {
-@@ -10470,7 +10472,8 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- free_tmf_tag_set:
- 	blk_mq_free_tag_set(&hba->tmf_tag_set);
- out_remove_scsi_host:
--	scsi_remove_host(hba->host);
-+	if (hba->scsi_host_added)
-+		scsi_remove_host(hba->host);
- out_disable:
- 	hba->is_irq_enabled = false;
- 	ufshcd_hba_exit(hba);
++	WARN(sysfs_create_link(&vmd->dev->dev.kobj, &vmd->bus->dev.kobj,
++			       "domain"), "Can't create symlink to domain\n");
++
+ 	vmd_acpi_begin();
+ 
+ 	pci_scan_child_bus(vmd->bus);
+@@ -964,9 +967,6 @@ static int vmd_enable_domain(struct vmd_dev *vmd, unsigned long features)
+ 	pci_bus_add_devices(vmd->bus);
+ 
+ 	vmd_acpi_end();
+-
+-	WARN(sysfs_create_link(&vmd->dev->dev.kobj, &vmd->bus->dev.kobj,
+-			       "domain"), "Can't create symlink to domain\n");
+ 	return 0;
+ }
+ 
+@@ -1042,8 +1042,8 @@ static void vmd_remove(struct pci_dev *dev)
+ {
+ 	struct vmd_dev *vmd = pci_get_drvdata(dev);
+ 
+-	sysfs_remove_link(&vmd->dev->dev.kobj, "domain");
+ 	pci_stop_root_bus(vmd->bus);
++	sysfs_remove_link(&vmd->dev->dev.kobj, "domain");
+ 	pci_remove_root_bus(vmd->bus);
+ 	vmd_cleanup_srcu(vmd);
+ 	vmd_detach_resources(vmd);
 -- 
 2.43.0
 
