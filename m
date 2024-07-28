@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-61981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4F793E19D
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:47:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F8D93E1A0
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 943B01F21708
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:47:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1D2FB21579
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F89184D;
-	Sun, 28 Jul 2024 00:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C385680;
+	Sun, 28 Jul 2024 00:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQ9eu14+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pHbRRQNO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EFCA32;
-	Sun, 28 Jul 2024 00:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883994A0F;
+	Sun, 28 Jul 2024 00:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127662; cv=none; b=q38kHAUyo4x84IZfkw2uznzfja6Y9gZJ7G1R4nwv4D6FLbFRzZZqN60cZKKKnPTUg14bWQP+k7vQ9qwx0yVNEaYIHf3cNgHYe+uxnv9osCUEXkqAISUhKKCfydb2xwetK72/mbBitlPJL1bnaNzKuipsFYcvzs4HCL/TJKX0HYs=
+	t=1722127664; cv=none; b=A6t0soIEAz8mxtzTygAZ4ZsAoHpuRb1tY5+NMUkFEeojT/TeNIyBP7NmieEOvL1pu7sKVxjPLK8OLCWaGP2hwdDVs5YzBYncJaLW00+gKydaSJGGo6QTfALHGtyngd6AI4VLzP+vHaG6zCzOIqKy/5UVO8DHjUARP36P2U/gMR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127662; c=relaxed/simple;
-	bh=6GVrstaQLaIQb6kxuJeSsZibR8Kd7ku9m1ZJHzAaFt4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GSFBE/4QelDzzN/7sFGYTpAn6UH6MjdkmSMOc3qfOpk3elzcjDanZ6p9Xt/6RcyIhHeM/jbm9/7kkpsngJ2RAnHM9CcSsj1xrZMlkZM07QJom2ET838iLayIpXfzptH6diKH+pH7cpDhLq4q79qurQaFy/37U9dbpTVgHmsTIoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQ9eu14+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D24C32781;
-	Sun, 28 Jul 2024 00:47:41 +0000 (UTC)
+	s=arc-20240116; t=1722127664; c=relaxed/simple;
+	bh=BEIyAWylP77t48j6ey1gDYkt9tahkjG1LXsL0L3zBdY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=l12F9h8tkT12DHWZxNYRbP6B161pOIsEvJSXxsAxFb4QLJw3NNobJix9Wpr+KAlKdc4yTxjPvMtAC81CobJA+ciImTAjAcwTRHqZ8QTB9WaAz0jTFHuJf2DhJsOd3Vuzso+LeIowD8oE3GFHiS3yLezK36zx2cYe5wnXjJp47ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pHbRRQNO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA335C4AF0C;
+	Sun, 28 Jul 2024 00:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127662;
-	bh=6GVrstaQLaIQb6kxuJeSsZibR8Kd7ku9m1ZJHzAaFt4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZQ9eu14+vRIBf808ytWLhTISFwV4zmmaIzt+3XUQfyH5HW6QrpqFY6eT7p0tbEL7B
-	 zHrR67Y8aGGniVJSp8TuSiVJ9f539A2vr4nkSgwrc0L+FuF/8jUSEOZdn02S8Y99ap
-	 qy3JXgBVH1rmSZpdYYWTHe+/iVxle/yTKydxPBQjDiLI1eC1+G5R+iCrijiVTU5Gya
-	 7UEYSIC3F9769yZV/SuWc8jDwWELyY3D7zGqy/DbLxTR+D/fYjPZ+fLZlwSIVvVu++
-	 UVX3NEJ9wgXii3Navp9D2C91K1ii1+2t95/IIwnNtJZwaqkSdsyZahfGI0UbhZeYRZ
-	 +HRjMoaGhTo4Q==
+	s=k20201202; t=1722127664;
+	bh=BEIyAWylP77t48j6ey1gDYkt9tahkjG1LXsL0L3zBdY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pHbRRQNOpJIFsyYuPOCP8pa5ziq1t51yERM5hacoa83K6+UGm3OgyuMk9W3ghqb6y
+	 odPMftLN7/ZzGximNwmBgZc/LH/08+bR4r+Im0Y7peevINWsLFFSG2AUY27reU9Iho
+	 /Z0TgYS50v0tBa5i9U4rRLAXUXyGpdZjY8lYbxRfOllxq9+r5aWHrErPQTd1lpglc5
+	 5L5Uj9Rsq+Fbd4B2AYfn1GbNlf6LpaixxSDnQQ5B+IKRFIuolUyxsBVjIMWCXPQAg6
+	 +/oXpgDzCnCRYthn+u1hxem2bKqVLdK9HOeCVHqph4XHQZCGRx0K+4YTlkEkfVWuGk
+	 b2r2yly+RlenA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Justin Stitt <justinstitt@google.com>,
+	linux-hardening@vger.kernel.org,
+	Kees Cook <keescook@chromium.org>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	gregkh@linuxfoundation.org
-Subject: [PATCH AUTOSEL 6.10 01/16] regmap: kunit: Fix memory leaks in gen_regmap() and gen_raw_regmap()
-Date: Sat, 27 Jul 2024 20:47:18 -0400
-Message-ID: <20240728004739.1698541-1-sashal@kernel.org>
+	viro@zeniv.linux.org.uk,
+	nathan@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.10 02/16] fs: remove accidental overflow during wraparound check
+Date: Sat, 27 Jul 2024 20:47:19 -0400
+Message-ID: <20240728004739.1698541-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240728004739.1698541-1-sashal@kernel.org>
+References: <20240728004739.1698541-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,159 +71,85 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Justin Stitt <justinstitt@google.com>
 
-[ Upstream commit c3820641da87442251e0c00b6874ef1022da8f58 ]
+[ Upstream commit 23cc6ef6fd453b13502caae23130844e7d6ed0fe ]
 
-- Use kunit_kcalloc() to allocate the defaults table so that it will be
-  freed when the test case ends.
-- kfree() the buf and *data buffers on the error paths.
-- Use kunit_add_action_or_reset() instead of kunit_add_action() so that
-  if it fails it will call regmap_exit().
+Running syzkaller with the newly enabled signed integer overflow
+sanitizer produces this report:
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://msgid.link/r/20240411103724.54063-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[  195.401651] ------------[ cut here ]------------
+[  195.404808] UBSAN: signed-integer-overflow in ../fs/open.c:321:15
+[  195.408739] 9223372036854775807 + 562984447377399 cannot be represented in type 'loff_t' (aka 'long long')
+[  195.414683] CPU: 1 PID: 703 Comm: syz-executor.0 Not tainted 6.8.0-rc2-00039-g14de58dbe653-dirty #11
+[  195.420138] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  195.425804] Call Trace:
+[  195.427360]  <TASK>
+[  195.428791]  dump_stack_lvl+0x93/0xd0
+[  195.431150]  handle_overflow+0x171/0x1b0
+[  195.433640]  vfs_fallocate+0x459/0x4f0
+...
+[  195.490053] ------------[ cut here ]------------
+[  195.493146] UBSAN: signed-integer-overflow in ../fs/open.c:321:61
+[  195.497030] 9223372036854775807 + 562984447377399 cannot be represented in type 'loff_t' (aka 'long long)
+[  195.502940] CPU: 1 PID: 703 Comm: syz-executor.0 Not tainted 6.8.0-rc2-00039-g14de58dbe653-dirty #11
+[  195.508395] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  195.514075] Call Trace:
+[  195.515636]  <TASK>
+[  195.517000]  dump_stack_lvl+0x93/0xd0
+[  195.519255]  handle_overflow+0x171/0x1b0
+[  195.521677]  vfs_fallocate+0x4cb/0x4f0
+[  195.524033]  __x64_sys_fallocate+0xb2/0xf0
+
+Historically, the signed integer overflow sanitizer did not work in the
+kernel due to its interaction with `-fwrapv` but this has since been
+changed [1] in the newest version of Clang. It was re-enabled in the
+kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
+sanitizer").
+
+Let's use the check_add_overflow helper to first verify the addition
+stays within the bounds of its type (long long); then we can use that
+sum for the following check.
+
+Link: https://github.com/llvm/llvm-project/pull/82432 [1]
+Closes: https://github.com/KSPP/linux/issues/356
+Cc: linux-hardening@vger.kernel.org
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/r/20240513-b4-sio-vfs_fallocate-v2-1-db415872fb16@google.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-kunit.c | 72 +++++++++++++++++++-----------
- 1 file changed, 45 insertions(+), 27 deletions(-)
+ fs/open.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap-kunit.c b/drivers/base/regmap/regmap-kunit.c
-index be32cd4e84da4..292e86f601978 100644
---- a/drivers/base/regmap/regmap-kunit.c
-+++ b/drivers/base/regmap/regmap-kunit.c
-@@ -145,9 +145,9 @@ static struct regmap *gen_regmap(struct kunit *test,
- 	const struct regmap_test_param *param = test->param_value;
- 	struct regmap_test_priv *priv = test->priv;
- 	unsigned int *buf;
--	struct regmap *ret;
-+	struct regmap *ret = ERR_PTR(-ENOMEM);
- 	size_t size;
--	int i;
-+	int i, error;
- 	struct reg_default *defaults;
+diff --git a/fs/open.c b/fs/open.c
+index 278b3edcda444..1dd123ba34ee9 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -247,6 +247,7 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+ {
+ 	struct inode *inode = file_inode(file);
+ 	long ret;
++	loff_t sum;
  
- 	config->cache_type = param->cache;
-@@ -172,15 +172,17 @@ static struct regmap *gen_regmap(struct kunit *test,
+ 	if (offset < 0 || len <= 0)
+ 		return -EINVAL;
+@@ -319,8 +320,11 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+ 	if (!S_ISREG(inode->i_mode) && !S_ISBLK(inode->i_mode))
+ 		return -ENODEV;
  
- 	*data = kzalloc(sizeof(**data), GFP_KERNEL);
- 	if (!(*data))
--		return ERR_PTR(-ENOMEM);
-+		goto out_free;
- 	(*data)->vals = buf;
- 
- 	if (config->num_reg_defaults) {
--		defaults = kcalloc(config->num_reg_defaults,
--				   sizeof(struct reg_default),
--				   GFP_KERNEL);
-+		defaults = kunit_kcalloc(test,
-+					 config->num_reg_defaults,
-+					 sizeof(struct reg_default),
-+					 GFP_KERNEL);
- 		if (!defaults)
--			return ERR_PTR(-ENOMEM);
-+			goto out_free;
+-	/* Check for wrap through zero too */
+-	if (((offset + len) > inode->i_sb->s_maxbytes) || ((offset + len) < 0))
++	/* Check for wraparound */
++	if (check_add_overflow(offset, len, &sum))
++		return -EFBIG;
 +
- 		config->reg_defaults = defaults;
++	if (sum > inode->i_sb->s_maxbytes)
+ 		return -EFBIG;
  
- 		for (i = 0; i < config->num_reg_defaults; i++) {
-@@ -190,12 +192,19 @@ static struct regmap *gen_regmap(struct kunit *test,
- 	}
- 
- 	ret = regmap_init_ram(priv->dev, config, *data);
--	if (IS_ERR(ret)) {
--		kfree(buf);
--		kfree(*data);
--	} else {
--		kunit_add_action(test, regmap_exit_action, ret);
--	}
-+	if (IS_ERR(ret))
-+		goto out_free;
-+
-+	/* This calls regmap_exit() on failure, which frees buf and *data */
-+	error = kunit_add_action_or_reset(test, regmap_exit_action, ret);
-+	if (error)
-+		ret = ERR_PTR(error);
-+
-+	return ret;
-+
-+out_free:
-+	kfree(buf);
-+	kfree(*data);
- 
- 	return ret;
- }
-@@ -1497,9 +1506,9 @@ static struct regmap *gen_raw_regmap(struct kunit *test,
- 	struct regmap_test_priv *priv = test->priv;
- 	const struct regmap_test_param *param = test->param_value;
- 	u16 *buf;
--	struct regmap *ret;
-+	struct regmap *ret = ERR_PTR(-ENOMEM);
- 	size_t size = (config->max_register + 1) * config->reg_bits / 8;
--	int i;
-+	int i, error;
- 	struct reg_default *defaults;
- 
- 	config->cache_type = param->cache;
-@@ -1515,15 +1524,16 @@ static struct regmap *gen_raw_regmap(struct kunit *test,
- 
- 	*data = kzalloc(sizeof(**data), GFP_KERNEL);
- 	if (!(*data))
--		return ERR_PTR(-ENOMEM);
-+		goto out_free;
- 	(*data)->vals = (void *)buf;
- 
- 	config->num_reg_defaults = config->max_register + 1;
--	defaults = kcalloc(config->num_reg_defaults,
--			   sizeof(struct reg_default),
--			   GFP_KERNEL);
-+	defaults = kunit_kcalloc(test,
-+				 config->num_reg_defaults,
-+				 sizeof(struct reg_default),
-+				 GFP_KERNEL);
- 	if (!defaults)
--		return ERR_PTR(-ENOMEM);
-+		goto out_free;
- 	config->reg_defaults = defaults;
- 
- 	for (i = 0; i < config->num_reg_defaults; i++) {
-@@ -1536,7 +1546,8 @@ static struct regmap *gen_raw_regmap(struct kunit *test,
- 			defaults[i].def = be16_to_cpu(buf[i]);
- 			break;
- 		default:
--			return ERR_PTR(-EINVAL);
-+			ret = ERR_PTR(-EINVAL);
-+			goto out_free;
- 		}
- 	}
- 
-@@ -1548,12 +1559,19 @@ static struct regmap *gen_raw_regmap(struct kunit *test,
- 		config->num_reg_defaults = 0;
- 
- 	ret = regmap_init_raw_ram(priv->dev, config, *data);
--	if (IS_ERR(ret)) {
--		kfree(buf);
--		kfree(*data);
--	} else {
--		kunit_add_action(test, regmap_exit_action, ret);
--	}
-+	if (IS_ERR(ret))
-+		goto out_free;
-+
-+	/* This calls regmap_exit() on failure, which frees buf and *data */
-+	error = kunit_add_action_or_reset(test, regmap_exit_action, ret);
-+	if (error)
-+		ret = ERR_PTR(error);
-+
-+	return ret;
-+
-+out_free:
-+	kfree(buf);
-+	kfree(*data);
- 
- 	return ret;
- }
+ 	if (!file->f_op->fallocate)
 -- 
 2.43.0
 
