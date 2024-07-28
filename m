@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-62064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A210F93E291
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:10:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B8693E292
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:10:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7597B226EB
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:10:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35CAD1C203AD
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC3684D29;
-	Sun, 28 Jul 2024 00:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302AE19048F;
+	Sun, 28 Jul 2024 00:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="csY/luIM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RbGX/Pao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7197684D04;
-	Sun, 28 Jul 2024 00:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1579190484;
+	Sun, 28 Jul 2024 00:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722128050; cv=none; b=Hx39WpyREKaR4HeBOFfhkZhzRtfPkTCvTlXs5Tq/vXVF7lXE/+jWPLYLY8fbk0uOnVKd9uavmDXHL822YrXRMH03iC66s3TIL3ia5QYhLvcfzNmuctM2JuikAIo97U7wfmOFauGBtpFFjDSHGvZq5Up5vxqFEwqR8Zc4DsRblHs=
+	t=1722128051; cv=none; b=oPrhDruttMEoy9cPbfedaENiYQJZW/F6OoK6EjwyRMn7ss9+6UBWmSm+dy7QUUPu/7oMVR9D57GNgtfxgOsqynyvELWwZQ6cFkXG7Bwf5WPzoJr8yybr2S1WO9+ks5O9pPzN0jU+QFxJ3rBGeqXMbt+C+lz4f9zq+EjTjuw154U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722128050; c=relaxed/simple;
-	bh=SDVO3GDPKU++4qeTzaZ46nlcVWB8hVkyCPqQYt5psqc=;
+	s=arc-20240116; t=1722128051; c=relaxed/simple;
+	bh=hFhTy+RSHEXj5DLqDabhTcEBzSq6QB/gNVSJNkPGQQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkdNjKX3qNHcir3jDiM1ecjfSCihTzbMlf7gEMUl9WxI0EIXXXslJB1F8X3n/g0lr962VJamXMOKMwqJT3IZfVOW185SvAW1Sh+0PUDQ1b6AnMrG8yQmRlBPJlg7cXe6zGw2wK1HQpt37XSJrgLIbXwO2fe5frhV7BnwUyqgf4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=csY/luIM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCDCC4AF09;
-	Sun, 28 Jul 2024 00:54:07 +0000 (UTC)
+	 MIME-Version; b=cDh2zlFVyHixZD+p6Y02kLObXQjOcSAYnxCgf3MFhkLHhjv1zXU5cJ5y+fY41CEUNbpFM1NBXIPn2XSAmz3xFMMNzUQUXSihYm4BwITZZQ8b3fOdMvUzzc1BUy1hFeADMzXIMLs46f31OQQVRyJmnRCPLnyv0lXOnAONJFoRg70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RbGX/Pao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E05EC32781;
+	Sun, 28 Jul 2024 00:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722128049;
-	bh=SDVO3GDPKU++4qeTzaZ46nlcVWB8hVkyCPqQYt5psqc=;
+	s=k20201202; t=1722128050;
+	bh=hFhTy+RSHEXj5DLqDabhTcEBzSq6QB/gNVSJNkPGQQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=csY/luIMhTmHWKBm6tZHbp/Vcm+D8aT0BpY77eOjgcm4u1+JRXLly3kG85drYIIyE
-	 dWc/bYfT13TZ/OVQ/ye2mLA+KeZZ6Hw7/ggdBVyQ9ou0go5e/pYtfEomS3VlqhpxEn
-	 bNydMQO8EOw11t0Er33/Wh0Lpwol4HNMA/jLn1axF8teB4C/faitovmPWqbOTQ3LpX
-	 ZGTcWMA9ZmBhnO4VXGNfUk8IPSC+0X3SFRkLcJ0SHNVhtzM/u70w5sALaDDwekKPym
-	 48DYny4L7AmuZeNAuGJKFQPrQlSPGcRyDkFyC6MhiMP/pNiZdR0Gp71vsbNr4kXCiX
-	 ZnUQ4leNXwbjA==
+	b=RbGX/PaofACRWu6O/LaGlPbvYX0BiaYokC2RZX5rohQ52Pc4QDOON2ydxNVUrxDZa
+	 6UcJnEGMoEDHDyZ2gVspZ+/Ls6GVqpbY5bE3lTfHjUjrsv0/VnqZ8AoKF5x1ljD686
+	 ibdKhrWigKm9yprtJ1bChOMhB9gkC6J5LfHfpyaUKWxm/tZAga0X8ggzJdLl/aFtiI
+	 yRhgwxOihBKxQeEWx9y4kBYOON49xDrO4yS+wrTMSc9BbgZtRw/dXV/M/QEW5Oz4ff
+	 KS0vmDjZetSNqOru51A9+gQxG81XK7OTmn0W2JzO55IFkwYG7kVpyMvOWtmsyv3TVJ
+	 xwOhHnUuaHsuQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 13/27] wifi: mac80211: fix NULL dereference at band check in starting tx ba session
-Date: Sat, 27 Jul 2024 20:52:56 -0400
-Message-ID: <20240728005329.1723272-13-sashal@kernel.org>
+Cc: Roman Smirnov <r.smirnov@omp.ru>,
+	Jan Kara <jack@suse.com>,
+	Jan Kara <jack@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 14/27] udf: prevent integer overflow in udf_bitmap_free_blocks()
+Date: Sat, 27 Jul 2024 20:52:57 -0400
+Message-ID: <20240728005329.1723272-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728005329.1723272-1-sashal@kernel.org>
 References: <20240728005329.1723272-1-sashal@kernel.org>
@@ -71,107 +65,111 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit 021d53a3d87eeb9dbba524ac515651242a2a7e3b ]
+[ Upstream commit 56e69e59751d20993f243fb7dd6991c4e522424c ]
 
-In MLD connection, link_data/link_conf are dynamically allocated. They
-don't point to vif->bss_conf. So, there will be no chanreq assigned to
-vif->bss_conf and then the chan will be NULL. Tweak the code to check
-ht_supported/vht_supported/has_he/has_eht on sta deflink.
+An overflow may occur if the function is called with the last
+block and an offset greater than zero. It is necessary to add
+a check to avoid this.
 
-Crash log (with rtw89 version under MLO development):
-[ 9890.526087] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[ 9890.526102] #PF: supervisor read access in kernel mode
-[ 9890.526105] #PF: error_code(0x0000) - not-present page
-[ 9890.526109] PGD 0 P4D 0
-[ 9890.526114] Oops: 0000 [#1] PREEMPT SMP PTI
-[ 9890.526119] CPU: 2 PID: 6367 Comm: kworker/u16:2 Kdump: loaded Tainted: G           OE      6.9.0 #1
-[ 9890.526123] Hardware name: LENOVO 2356AD1/2356AD1, BIOS G7ETB3WW (2.73 ) 11/28/2018
-[ 9890.526126] Workqueue: phy2 rtw89_core_ba_work [rtw89_core]
-[ 9890.526203] RIP: 0010:ieee80211_start_tx_ba_session (net/mac80211/agg-tx.c:618 (discriminator 1)) mac80211
-[ 9890.526279] Code: f7 e8 d5 93 3e ea 48 83 c4 28 89 d8 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 49 8b 84 24 e0 f1 ff ff 48 8b 80 90 1b 00 00 <83> 38 03 0f 84 37 fe ff ff bb ea ff ff ff eb cc 49 8b 84 24 10 f3
-All code
-========
-   0:	f7 e8                	imul   %eax
-   2:	d5                   	(bad)
-   3:	93                   	xchg   %eax,%ebx
-   4:	3e ea                	ds (bad)
-   6:	48 83 c4 28          	add    $0x28,%rsp
-   a:	89 d8                	mov    %ebx,%eax
-   c:	5b                   	pop    %rbx
-   d:	41 5c                	pop    %r12
-   f:	41 5d                	pop    %r13
-  11:	41 5e                	pop    %r14
-  13:	41 5f                	pop    %r15
-  15:	5d                   	pop    %rbp
-  16:	c3                   	retq
-  17:	cc                   	int3
-  18:	cc                   	int3
-  19:	cc                   	int3
-  1a:	cc                   	int3
-  1b:	49 8b 84 24 e0 f1 ff 	mov    -0xe20(%r12),%rax
-  22:	ff
-  23:	48 8b 80 90 1b 00 00 	mov    0x1b90(%rax),%rax
-  2a:*	83 38 03             	cmpl   $0x3,(%rax)		<-- trapping instruction
-  2d:	0f 84 37 fe ff ff    	je     0xfffffffffffffe6a
-  33:	bb ea ff ff ff       	mov    $0xffffffea,%ebx
-  38:	eb cc                	jmp    0x6
-  3a:	49                   	rex.WB
-  3b:	8b                   	.byte 0x8b
-  3c:	84 24 10             	test   %ah,(%rax,%rdx,1)
-  3f:	f3                   	repz
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Code starting with the faulting instruction
-===========================================
-   0:	83 38 03             	cmpl   $0x3,(%rax)
-   3:	0f 84 37 fe ff ff    	je     0xfffffffffffffe40
-   9:	bb ea ff ff ff       	mov    $0xffffffea,%ebx
-   e:	eb cc                	jmp    0xffffffffffffffdc
-  10:	49                   	rex.WB
-  11:	8b                   	.byte 0x8b
-  12:	84 24 10             	test   %ah,(%rax,%rdx,1)
-  15:	f3                   	repz
-[ 9890.526285] RSP: 0018:ffffb8db09013d68 EFLAGS: 00010246
-[ 9890.526291] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff9308e0d656c8
-[ 9890.526295] RDX: 0000000000000000 RSI: ffffffffab99460b RDI: ffffffffab9a7685
-[ 9890.526300] RBP: ffffb8db09013db8 R08: 0000000000000000 R09: 0000000000000873
-[ 9890.526304] R10: ffff9308e0d64800 R11: 0000000000000002 R12: ffff9308e5ff6e70
-[ 9890.526308] R13: ffff930952500e20 R14: ffff9309192a8c00 R15: 0000000000000000
-[ 9890.526313] FS:  0000000000000000(0000) GS:ffff930b4e700000(0000) knlGS:0000000000000000
-[ 9890.526316] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 9890.526318] CR2: 0000000000000000 CR3: 0000000391c58005 CR4: 00000000001706f0
-[ 9890.526321] Call Trace:
-[ 9890.526324]  <TASK>
-[ 9890.526327] ? show_regs (arch/x86/kernel/dumpstack.c:479)
-[ 9890.526335] ? __die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434)
-[ 9890.526340] ? page_fault_oops (arch/x86/mm/fault.c:713)
-[ 9890.526347] ? search_module_extables (kernel/module/main.c:3256 (discriminator 3))
-[ 9890.526353] ? ieee80211_start_tx_ba_session (net/mac80211/agg-tx.c:618 (discriminator 1)) mac80211
+[JK: Make test cover also unalloc table freeing]
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Link: https://patch.msgid.link/20240617115217.22344-1-kevin_yang@realtek.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20240620072413.7448-1-r.smirnov@omp.ru
+Suggested-by: Jan Kara <jack@suse.com>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/agg-tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/udf/balloc.c | 36 +++++++++++++-----------------------
+ 1 file changed, 13 insertions(+), 23 deletions(-)
 
-diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
-index 21d55dc539f6c..677bbbac9f169 100644
---- a/net/mac80211/agg-tx.c
-+++ b/net/mac80211/agg-tx.c
-@@ -616,7 +616,9 @@ int ieee80211_start_tx_ba_session(struct ieee80211_sta *pubsta, u16 tid,
- 		return -EINVAL;
+diff --git a/fs/udf/balloc.c b/fs/udf/balloc.c
+index ab3ffc355949d..2192c4a1ba98b 100644
+--- a/fs/udf/balloc.c
++++ b/fs/udf/balloc.c
+@@ -18,6 +18,7 @@
+ #include "udfdecl.h"
  
- 	if (!pubsta->deflink.ht_cap.ht_supported &&
--	    sta->sdata->vif.bss_conf.chanreq.oper.chan->band != NL80211_BAND_6GHZ)
-+	    !pubsta->deflink.vht_cap.vht_supported &&
-+	    !pubsta->deflink.he_cap.has_he &&
-+	    !pubsta->deflink.eht_cap.has_eht)
- 		return -EINVAL;
+ #include <linux/bitops.h>
++#include <linux/overflow.h>
  
- 	if (WARN_ON_ONCE(!local->ops->ampdu_action))
+ #include "udf_i.h"
+ #include "udf_sb.h"
+@@ -129,7 +130,6 @@ static void udf_bitmap_free_blocks(struct super_block *sb,
+ {
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+ 	struct buffer_head *bh = NULL;
+-	struct udf_part_map *partmap;
+ 	unsigned long block;
+ 	unsigned long block_group;
+ 	unsigned long bit;
+@@ -138,19 +138,9 @@ static void udf_bitmap_free_blocks(struct super_block *sb,
+ 	unsigned long overflow;
+ 
+ 	mutex_lock(&sbi->s_alloc_mutex);
+-	partmap = &sbi->s_partmaps[bloc->partitionReferenceNum];
+-	if (bloc->logicalBlockNum + count < count ||
+-	    (bloc->logicalBlockNum + count) > partmap->s_partition_len) {
+-		udf_debug("%u < %d || %u + %u > %u\n",
+-			  bloc->logicalBlockNum, 0,
+-			  bloc->logicalBlockNum, count,
+-			  partmap->s_partition_len);
+-		goto error_return;
+-	}
+-
++	/* We make sure this cannot overflow when mounting the filesystem */
+ 	block = bloc->logicalBlockNum + offset +
+ 		(sizeof(struct spaceBitmapDesc) << 3);
+-
+ 	do {
+ 		overflow = 0;
+ 		block_group = block >> (sb->s_blocksize_bits + 3);
+@@ -380,7 +370,6 @@ static void udf_table_free_blocks(struct super_block *sb,
+ 				  uint32_t count)
+ {
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+-	struct udf_part_map *partmap;
+ 	uint32_t start, end;
+ 	uint32_t elen;
+ 	struct kernel_lb_addr eloc;
+@@ -389,16 +378,6 @@ static void udf_table_free_blocks(struct super_block *sb,
+ 	struct udf_inode_info *iinfo;
+ 
+ 	mutex_lock(&sbi->s_alloc_mutex);
+-	partmap = &sbi->s_partmaps[bloc->partitionReferenceNum];
+-	if (bloc->logicalBlockNum + count < count ||
+-	    (bloc->logicalBlockNum + count) > partmap->s_partition_len) {
+-		udf_debug("%u < %d || %u + %u > %u\n",
+-			  bloc->logicalBlockNum, 0,
+-			  bloc->logicalBlockNum, count,
+-			  partmap->s_partition_len);
+-		goto error_return;
+-	}
+-
+ 	iinfo = UDF_I(table);
+ 	udf_add_free_space(sb, sbi->s_partition, count);
+ 
+@@ -673,6 +652,17 @@ void udf_free_blocks(struct super_block *sb, struct inode *inode,
+ {
+ 	uint16_t partition = bloc->partitionReferenceNum;
+ 	struct udf_part_map *map = &UDF_SB(sb)->s_partmaps[partition];
++	uint32_t blk;
++
++	if (check_add_overflow(bloc->logicalBlockNum, offset, &blk) ||
++	    check_add_overflow(blk, count, &blk) ||
++	    bloc->logicalBlockNum + count > map->s_partition_len) {
++		udf_debug("Invalid request to free blocks: (%d, %u), off %u, "
++			  "len %u, partition len %u\n",
++			  partition, bloc->logicalBlockNum, offset, count,
++			  map->s_partition_len);
++		return;
++	}
+ 
+ 	if (map->s_partition_flags & UDF_PART_FLAG_UNALLOC_BITMAP) {
+ 		udf_bitmap_free_blocks(sb, map->s_uspace.s_bitmap,
 -- 
 2.43.0
 
