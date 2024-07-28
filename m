@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-62136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A9193E505
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 14:10:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6464C93E506
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 14:10:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96487B210CE
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 12:10:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20A861F21640
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 12:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1006037147;
-	Sun, 28 Jul 2024 12:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1184437147;
+	Sun, 28 Jul 2024 12:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="jKkdSUla"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="tbNFFELx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-43167.protonmail.ch (mail-43167.protonmail.ch [185.70.43.167])
+Received: from mail-40132.protonmail.ch (mail-40132.protonmail.ch [185.70.40.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C971E8472
-	for <stable@vger.kernel.org>; Sun, 28 Jul 2024 12:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66EB8472
+	for <stable@vger.kernel.org>; Sun, 28 Jul 2024 12:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722168604; cv=none; b=sVKhX9ktv9HGnBSHjOaArM6YQ0dgONAjclFn+i1qOWIBlW0/CC8rAucWLbPoswZlwqjCGrW6DDEKT6dGpLrzHiZgjeX/jKBG7EciFowtQ4HYINghgkRwFtTzd5RDAgeMTFErL3+zU/xlTUyxMcxWHpFrMAUEHM8RP4qSDN/YrH0=
+	t=1722168612; cv=none; b=omCTVtxOWtmc1uUXRYW8obEU0Gd+8mwAosZsMHlXtjnOOZj85j6of8yZakwWHJCd9Y4PAKbakAcJE64fyxBtRtXOe09+1kHhWa0JN4UHPH0u/PMSZ+xE2isIQa6bvwd4NIff3HoT+PRalEJa/kEZDVnmY6SX0uk6NGSgf/Xtw6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722168604; c=relaxed/simple;
-	bh=DJ0+aZtEj0tlvzzOMHpKTswqeirhVvMiNDMLCWc88r4=;
+	s=arc-20240116; t=1722168612; c=relaxed/simple;
+	bh=zYeI0RXOOsfL8/wFCi+vO2omAPFQKXW51I6FzL+Chhs=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qi79U2S+2H4meSq0Tc0ePm1HkgO+IOfZ9Wde7aBm8tYS7ny5jPC+dXoeT2AAERVa7sn5KiSGNv/PlWKu0I7pePrP/hwnfw/wVK8SKC82zmswuoe9F2Yul+fI1VhhI8jMZdYuPW5T49NrapIVkt+G4uhn1orX8ZQ1Y/NdfW4AdGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=jKkdSUla; arc=none smtp.client-ip=185.70.43.167
+	 MIME-Version:Content-Type; b=d4zapSeiIbm1zlQl/OifF7lrVLYbxJj9AkA+TTR8zdV/epLYDVK6Pp7yGDKk+hch0AmNNgi3uY4IzSdhcUuz96czpHCW4NQa6kG4b1td51qDGjJo9l5npFSktzHiln50EEHnKagdRlhhCwve76AkqesJtoB8tByAHc94FQtRoZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=tbNFFELx; arc=none smtp.client-ip=185.70.40.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1722168595; x=1722427795;
-	bh=Q6ujAQ2rqdbruPutUk79q/5IjtuZzJ+fzsg6fKKzv+8=;
+	s=protonmail3; t=1722168603; x=1722427803;
+	bh=KBafj0W+hLUSbIhjE/xmSCOMhfBOVKrA7riUOgwT7ls=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=jKkdSUlaUAwdnZnWbJPiHjMKcj3Pm2EFwSDPgp++DIXJmqYddvTPA0kAI0/VzzbD1
-	 RQP3UZ5EFoBjx+7Il8/yLvtZAKBWImmc9om3dtyjmOAu5ltowwidw9/32vdrmZ7WrP
-	 aRWCkR94k/PR+lmvwq4A0QeGXzyZd79JX4kt8o+Jmn2Ksh/Y0uJUHztxLiPxzfkZiK
-	 Il9du4BPpg1DaTl3gEP9v+1BHD4asLJTW5MnUFZfNQQ8UkCMgDFERZozlOzXM0Vhg4
-	 MsWcOEZzHt726z4f1jYRB+EHfSrhJy2wMODj9Y14Ceb5OcK5nBgUeUDZ6kW9bZUGJ5
-	 lNk/RLwUYycDw==
-Date: Sun, 28 Jul 2024 12:09:51 +0000
+	b=tbNFFELxiwRnTOYuG0OjdapxJCUF/SRLVtQz/F8JFHIdlAB4j1UliT1UcOzZxFd+O
+	 xIpp02nfos7F7zgh3E1VqWjdjq0AheeejVJZ+a6jwhEbEKNjreSuXtH6RJLMJOOZkC
+	 uwO9dbbcAEyCT0kbZEhZ69ri/5EC4G21Cl8sODBs7ilEDp+fC1ny3DpUHtoWSQ1AVW
+	 GTZH5c3P3jp2cYQazCxheVYoL9pmNTZ+qeQUXymBmovp7UZAAygdnGs6TbWJFyCOKo
+	 KIhGV0F3o2xBm7iXhGafAyr+CWI/8GmrSchTP7XpiaXMJVwowMuaVIYfymjhADEc5i
+	 npk9pyvgYNzvw==
+Date: Sun, 28 Jul 2024 12:09:57 +0000
 To: edmund.raile@protonmail.com
 From: Edmund Raile <edmund.raile@protonmail.com>
 Cc: stable@vger.kernel.org, "edmund . raile" <edmund.raile@proton.me>
-Subject: [PATCH v2 1/2] ALSA: firewire-lib: restore workqueue for process context
-Message-ID: <20240728120939.328861-2-edmund.raile@protonmail.com>
+Subject: [PATCH v2 2/2] ALSA: firewire-lib: prevent deadlock between process and softIRQ context
+Message-ID: <20240728120939.328861-3-edmund.raile@protonmail.com>
 In-Reply-To: <20240728120939.328861-1-edmund.raile@protonmail.com>
 References: <20240728120939.328861-1-edmund.raile@protonmail.com>
 Feedback-ID: 43016623:user:proton
-X-Pm-Message-ID: 3667ffde57767a52044605269e886e720afa453f
+X-Pm-Message-ID: 9b8365ad10f43456f1f131f5f136008c6460ef14
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,91 +62,106 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-prepare resolution of deadlock between process context and softIRQ
-context:
-restore workqueue previously used for process context:
-revert commit b5b519965c4c ("ALSA: firewire-lib: obsolete workqueue
-for period update")
+Commit 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event
+in process context") removed the process context workqueue from
+amdtp_domain_stream_pcm_pointer() and update_pcm_pointers() to remove
+its overhead.
+
+With RME Fireface 800, this lead to a regression since Kernels 5.14.0,
+causing a deadlock with eventual system freeze under ALSA operation:
+
+A. In the process context
+    * (lock A) Acquiring spin_lock by snd_pcm_stream_lock_irq() in
+=09snd_pcm_status64()
+    * (lock B) Then attempt to enter tasklet
+
+B. In the softIRQ context
+    * (lock B) Enter tasklet
+    * (lock A) Attempt to acquire spin_lock by
+=09snd_pcm_stream_lock_irqsave() in snd_pcm_period_elapsed()
+
+? tasklet_unlock_spin_wait
+ </NMI>
+ <TASK>
+ohci_flush_iso_completions firewire_ohci
+amdtp_domain_stream_pcm_pointer snd_firewire_lib
+snd_pcm_update_hw_ptr0 snd_pcm
+snd_pcm_status64 snd_pcm
+
+? native_queued_spin_lock_slowpath
+ </NMI>
+ <IRQ>
+_raw_spin_lock_irqsave
+snd_pcm_period_elapsed snd_pcm
+process_rx_packets snd_firewire_lib
+irq_target_callback snd_firewire_lib
+handle_it_packet firewire_ohci
+context_tasklet firewire_ohci
+
+Restore the process context work queue to prevent deadlock
+between ALSA substream process context spin_lock of
+snd_pcm_stream_lock_irq() in snd_pcm_status64()
+and OHCI 1394 IT softIRQ context spin_lock of
+snd_pcm_stream_lock_irqsave() in snd_pcm_period_elapsed().
 
 Cc: stable@vger.kernel.org
+Fixes: 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event i=
+n process context")
 Link: https://lore.kernel.org/r/kwryofzdmjvzkuw6j3clftsxmoolynljztxqwg76hze=
 o4simnl@jn3eo7pe642q/
 Reported-by: edmund.raile <edmund.raile@proton.me>
 Signed-off-by: Edmund Raile <edmund.raile@protonmail.com>
 ---
- sound/firewire/amdtp-stream.c | 15 +++++++++++++++
- sound/firewire/amdtp-stream.h |  1 +
- 2 files changed, 16 insertions(+)
+ sound/firewire/amdtp-stream.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
 diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
-index d35d0a420ee0..31201d506a21 100644
+index 31201d506a21..c037d7de1fdc 100644
 --- a/sound/firewire/amdtp-stream.c
 +++ b/sound/firewire/amdtp-stream.c
-@@ -77,6 +77,8 @@
- // overrun. Actual device can skip more, then this module stops the packet=
- streaming.
- #define IR_JUMBO_PAYLOAD_MAX_SKIP_CYCLES=095
-=20
-+static void pcm_period_work(struct work_struct *work);
-+
- /**
-  * amdtp_stream_init - initialize an AMDTP stream structure
-  * @s: the AMDTP stream to initialize
-@@ -105,6 +107,7 @@ int amdtp_stream_init(struct amdtp_stream *s, struct fw=
-_unit *unit,
- =09s->flags =3D flags;
- =09s->context =3D ERR_PTR(-1);
- =09mutex_init(&s->mutex);
-+=09INIT_WORK(&s->period_work, pcm_period_work);
- =09s->packet_index =3D 0;
-=20
- =09init_waitqueue_head(&s->ready_wait);
-@@ -347,6 +350,7 @@ EXPORT_SYMBOL(amdtp_stream_get_max_payload);
-  */
- void amdtp_stream_pcm_prepare(struct amdtp_stream *s)
- {
-+=09cancel_work_sync(&s->period_work);
- =09s->pcm_buffer_pointer =3D 0;
- =09s->pcm_period_pointer =3D 0;
- }
-@@ -624,6 +628,16 @@ static void update_pcm_pointers(struct amdtp_stream *s=
+@@ -615,16 +615,9 @@ static void update_pcm_pointers(struct amdtp_stream *s=
 ,
+ =09=09// The program in user process should periodically check the status =
+of intermediate
+ =09=09// buffer associated to PCM substream to process PCM frames in the b=
+uffer, instead
+ =09=09// of receiving notification of period elapsed by poll wait.
+-=09=09if (!pcm->runtime->no_period_wakeup) {
+-=09=09=09if (in_softirq()) {
+-=09=09=09=09// In software IRQ context for 1394 OHCI.
+-=09=09=09=09snd_pcm_period_elapsed(pcm);
+-=09=09=09} else {
+-=09=09=09=09// In process context of ALSA PCM application under acquired l=
+ock of
+-=09=09=09=09// PCM substream.
+-=09=09=09=09snd_pcm_period_elapsed_under_stream_lock(pcm);
+-=09=09=09}
+-=09=09}
++=09=09if (!pcm->runtime->no_period_wakeup)
++=09=09=09// wq used with amdtp_domain_stream_pcm_pointer() to prevent dead=
+lock
++=09=09=09queue_work(system_highpri_wq, &s->period_work);
  =09}
  }
 =20
-+static void pcm_period_work(struct work_struct *work)
-+{
-+=09struct amdtp_stream *s =3D container_of(work, struct amdtp_stream,
-+=09=09=09=09=09      period_work);
-+=09struct snd_pcm_substream *pcm =3D READ_ONCE(s->pcm);
-+
-+=09if (pcm)
-+=09=09snd_pcm_period_elapsed(pcm);
-+}
-+
- static int queue_packet(struct amdtp_stream *s, struct fw_iso_packet *para=
-ms,
- =09=09=09bool sched_irq)
- {
-@@ -1910,6 +1924,7 @@ static void amdtp_stream_stop(struct amdtp_stream *s)
- =09=09return;
+@@ -1866,9 +1859,11 @@ unsigned long amdtp_domain_stream_pcm_pointer(struct=
+ amdtp_domain *d,
+=20
+ =09// Process isochronous packets queued till recent isochronous cycle to =
+handle PCM frames.
+ =09if (irq_target && amdtp_stream_running(irq_target)) {
+-=09=09// In software IRQ context, the call causes dead-lock to disable the=
+ tasklet
+-=09=09// synchronously.
+-=09=09if (!in_softirq())
++=09=09// use wq to prevent deadlock between process context spin_lock
++=09=09// of snd_pcm_stream_lock_irq() in snd_pcm_status64() and
++=09=09// softIRQ context spin_lock of snd_pcm_stream_lock_irqsave()
++=09=09// in snd_pcm_period_elapsed()
++=09=09if ((!in_softirq()) && (current_work() !=3D &s->period_work))
+ =09=09=09fw_iso_context_flush_completions(irq_target->context);
  =09}
 =20
-+=09cancel_work_sync(&s->period_work);
- =09fw_iso_context_stop(s->context);
- =09fw_iso_context_destroy(s->context);
- =09s->context =3D ERR_PTR(-1);
-diff --git a/sound/firewire/amdtp-stream.h b/sound/firewire/amdtp-stream.h
-index a1ed2e80f91a..775db3fc4959 100644
---- a/sound/firewire/amdtp-stream.h
-+++ b/sound/firewire/amdtp-stream.h
-@@ -191,5 +191,6 @@ struct amdtp_stream {
-=20
- =09/* For a PCM substream processing. */
- =09struct snd_pcm_substream *pcm;
-+=09struct work_struct period_work;
- =09snd_pcm_uframes_t pcm_buffer_pointer;
- =09unsigned int pcm_period_pointer;
 --=20
 2.45.2
 
