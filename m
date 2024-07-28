@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-62317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A9A93E862
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:29:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E82993E867
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:29:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06AAD1C213EA
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:29:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2134AB25384
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD68A18F2C5;
-	Sun, 28 Jul 2024 16:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43C418F2EA;
+	Sun, 28 Jul 2024 16:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h3h3kgaR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jPD+TsJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7998C77F1B;
-	Sun, 28 Jul 2024 16:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF0778C68;
+	Sun, 28 Jul 2024 16:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722183011; cv=none; b=EYeV6zaD9O4Me3m4BiEVBxHyhP+m83yc6jvyWIpzfzD2ZsiPuJ52kWVsdfFDGxYcLYQZDd78F/2S1t2DQ/bj4qyLXDbNjqLIRXANYlsDpHsiO1F6JkCqIkqcE6RVmgFuJajfXQQo/T7tVZCopY6pUrWPuQRyS9XWaHnM6ETblho=
+	t=1722183014; cv=none; b=th+A7iT7LS4/2fd+A3n65PSMgdGuEoSmyxKQSSJLzZ7Dw19kSe63wBAYuWHzscypvZIQ6F/K7Oga7hm+/1hxxugGG25u2pOssCTXaLEHTGSWNDP9YcIsupD8G7nRkBKfcazidyCbksOrB/UcLdraann7IXRT2+/mzSyH2v03xYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722183011; c=relaxed/simple;
-	bh=NI/wuk2GObGxpebkzVtvqQ0eJI2ECKaCu0D1FjsKuHU=;
+	s=arc-20240116; t=1722183014; c=relaxed/simple;
+	bh=IiKPslQhoPMkXdwWwmKfLu5ZsNAFZC3dSPSZhdALLlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyDGtm7h+MPmrxQz3+Ql8KdvSOzmody6F1T89dmT6YrYV1IzJT/oy9MfjsIsFLZwM9UFUCBmSePA3Brsv4ECdmzOxWSVBw/1i1gEKVVl6HhGd9HXiesiemS9y5l9Xow/swvTYpnu3AbtylmH9eXmkJ0X592uQkeUxtZ5n9ICpR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h3h3kgaR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33FFC32782;
-	Sun, 28 Jul 2024 16:10:09 +0000 (UTC)
+	 MIME-Version; b=erBmGuaydQbVfxu1XWA3NTvU6Ite8go3Nwu/5d+fOivSVsml2f1oOpUIDh4w1NV0Hi5rm4Lvk65F57ZISwlDnybrPIe9i5seFjCRI9fwq56gEYRl7db9NJwzB7S0GoT9EdZo1/GiZRdnhIKjyGKRGNy2rDCfGOe4s0BAVu/phgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jPD+TsJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE8EC4AF0B;
+	Sun, 28 Jul 2024 16:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722183011;
-	bh=NI/wuk2GObGxpebkzVtvqQ0eJI2ECKaCu0D1FjsKuHU=;
+	s=k20201202; t=1722183014;
+	bh=IiKPslQhoPMkXdwWwmKfLu5ZsNAFZC3dSPSZhdALLlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h3h3kgaRIZOFKO3xmLy9V5UmrixQv28uxrhWMCtMPUfd8y2u80UK+FNuIEa4jtFG2
-	 puVSqf2nY7Zx7YLgXc5ohWOct6DtEgCYkIvNuSOC/LEaT7956jN1xDyHpdGBSM4DjI
-	 O0DV6+S000I0eiJRjMpYCCmuDopqwZE8i0HC8nxbXdgowJbu1b/8yUxIptF0odnTyF
-	 5KA+Eyvl2O1PsYMZqdG4GKWjvzZoRR+623rMB6NzyoeIcKdQVYCBY31VwZbLGDC/o+
-	 k3ag/1fDVP0Ok5off+0vOf9oRDCZTkQUVKjjmZob4C9QweM2YygAif8NWqmOQ7gttF
-	 oh1tOfigEP1Zw==
+	b=jPD+TsJe19aRoP0UL7tNYCdd8l3enpmTk4ayJ49uDNRxiXx8MWTQgDznPfDon0S5n
+	 xpkRGVVX7ur1RupQ+etSuWkYZ0Bsjb1Sf+j6GCxZ6GyZ8r+9kym9YScr+Q4iS9rIAR
+	 dnESb1AmL8uLMJBi6nDF1s10galQl9newfdvuLyppujnRbRl98pd47eDa9DRMGX44Y
+	 z4pieomoDW+5EyEMpv9enFTTECOh33nlBatjFSDluzeIU0LE3pqUSICZ5Dapw91HFA
+	 Rp34/pe3ps44/hEoDMlwEZ/OtqieS0ek8dYCG+0xjwp0dxdG+KdiPWz1muX1Bj2AQl
+	 wWBFqgN5jx6Vg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
-	Benson Leung <bleung@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Jameson Thies <jthies@google.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>,
-	lk@c--e.de,
-	saranya.gopal@intel.com,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 06/11] usb: typec: ucsi: Fix null pointer dereference in trace
-Date: Sun, 28 Jul 2024 12:09:39 -0400
-Message-ID: <20240728160954.2054068-6-sashal@kernel.org>
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 07/11] MIPS: Loongson64: DTS: Fix msi node for ls7a
+Date: Sun, 28 Jul 2024 12:09:40 -0400
+Message-ID: <20240728160954.2054068-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728160954.2054068-1-sashal@kernel.org>
 References: <20240728160954.2054068-1-sashal@kernel.org>
@@ -71,42 +69,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 99516f76db48e1a9d54cdfed63c1babcee4e71a5 ]
+[ Upstream commit 98a9e2ac3755a353eefea8c52e23d5b0c50f3899 ]
 
-ucsi_register_altmode checks IS_ERR for the alt pointer and treats
-NULL as valid. When CONFIG_TYPEC_DP_ALTMODE is not enabled,
-ucsi_register_displayport returns NULL which causes a NULL pointer
-dereference in trace. Rather than return NULL, call
-typec_port_register_altmode to register DisplayPort alternate mode
-as a non-controllable mode when CONFIG_TYPEC_DP_ALTMODE is not enabled.
+Add it to silent warning:
+arch/mips/boot/dts/loongson/ls7a-pch.dtsi:68.16-416.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
+arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts:32.31-40.4: Warning (interrupt_provider): /bus@10000000/msi-controller@2ff00000: Missing '#interrupt-cells' in interrupt provider
+arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
 
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
-Signed-off-by: Jameson Thies <jthies@google.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240510201244.2968152-2-jthies@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
-index 41e1a64da82e8..f75b1e2c05fec 100644
---- a/drivers/usb/typec/ucsi/ucsi.h
-+++ b/drivers/usb/typec/ucsi/ucsi.h
-@@ -365,7 +365,7 @@ ucsi_register_displayport(struct ucsi_connector *con,
- 			  bool override, int offset,
- 			  struct typec_altmode_desc *desc)
- {
--	return NULL;
-+	return typec_port_register_altmode(con->port, desc);
- }
- 
- static inline void
+diff --git a/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts b/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
+index c945f8565d543..fb180cb2b8e2c 100644
+--- a/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
++++ b/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
+@@ -33,6 +33,7 @@ msi: msi-controller@2ff00000 {
+ 		compatible = "loongson,pch-msi-1.0";
+ 		reg = <0 0x2ff00000 0 0x8>;
+ 		interrupt-controller;
++		#interrupt-cells = <1>;
+ 		msi-controller;
+ 		loongson,msi-base-vec = <64>;
+ 		loongson,msi-num-vecs = <192>;
 -- 
 2.43.0
 
