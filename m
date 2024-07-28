@@ -1,67 +1,76 @@
-Return-Path: <stable+bounces-62157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D953993E639
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:45:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5860D93E63C
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00EE11C21153
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:45:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B575BB20FF4
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3746F31C;
-	Sun, 28 Jul 2024 15:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47855745CB;
+	Sun, 28 Jul 2024 15:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s2zAVf7f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CHWLKxio"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86986EB5B;
-	Sun, 28 Jul 2024 15:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F7174E09;
+	Sun, 28 Jul 2024 15:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181421; cv=none; b=FnzkOChqhLoupCkIrKpOuRVjvkTjEytjtCXNk3HWAT9QjgHMn9e3Uxj+q2O98jMUoO0ZxlhtYbZoeHa8HMG+tV1ekPVZZg8dbWwAhb77UEYlH3QGvwpSYIMkhL2S11ccOq0Hf1hIdDCP5mtQ0QVW3t7djBxVxLJ9Zapd46xy/H4=
+	t=1722181433; cv=none; b=EtH9eH7jwRcT4YQfMp1XZdZMb+GT56oSsjPZq8mxFQRa9m9nqRXRYqLbezizSbycydp3fvC3wpUIH//o3YEfRUiimW/0LNX81EiJn5AN6tGAzSJl0y37wpM3TFqEcdBGzJrD98dPIO2BAumgKdb4weovDKVnC+30vnS/Z6sQWBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181421; c=relaxed/simple;
-	bh=cOjTmRw7DRRmYduehcUrWIU3+NCFJLfBAU6fZHW4PZU=;
+	s=arc-20240116; t=1722181433; c=relaxed/simple;
+	bh=4VFj1C+cmOKvrfeeMQBQMf8ONB392pwCRvakOWRT6mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCHPKqEruhURNXnLBNQgTNjkCPgtCVkJYo50G2mQ022npX7XMbKqzOGvkf9rPaRslRwuriCs7eDEnfweSb6jSDZvODcyq/8ZEj4gdOseUS+AmVTyHWdzHBIZ2mHoelMIBOiHfqHbuVbPg/PGbTLdhfVg4wWS0O27O9tN9NR3Xag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s2zAVf7f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D5BC32782;
-	Sun, 28 Jul 2024 15:43:39 +0000 (UTC)
+	 MIME-Version; b=fAHFV4TNBz454KYrYhKXh+eFOJ9Z0Bb8t6sfHe1CRhLIyCrU/qsTrHLd51bV0A+Es6De6pt6+kQsRbyN8jdOh36VkwKCFN2NhCuRmtiFGfPNg0yL+pHTRpnIqZGQtIsB4+9KJ7bt3C7xVJfpeo5BeJOZWZTMs6ra3dBTOnLvAkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CHWLKxio; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90A2C32782;
+	Sun, 28 Jul 2024 15:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181421;
-	bh=cOjTmRw7DRRmYduehcUrWIU3+NCFJLfBAU6fZHW4PZU=;
+	s=k20201202; t=1722181432;
+	bh=4VFj1C+cmOKvrfeeMQBQMf8ONB392pwCRvakOWRT6mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2zAVf7f+M6jQlZdd6yKxAMJSUmyWRWOFNreXSFR+Vk/18RQsFl2oiHOjAMAHuFMv
-	 woopFLpN0xoK12OQhwjafq47g393EqJ4hWm8OVcB0dJkAc/JR9qJvyRC0mkY24M+H4
-	 VQRcSQ4vlecL02vrbwjV+RXwrcEz9HnusABvCbdnzuza4Fuxs+/yT+XI+vloLRcoUd
-	 flKVuwSLKVGNZW/nL7Mun1SwZQVn5JRZ0Op547zb5SQMNBALUBpMzJ0K93h3A1tksp
-	 /SSVuQrwNIzOlkmak3cHc26KpUa7NnLYj2/AOkdOrB1bemnaKkWeXJ5gfMgOvAzudJ
-	 sNyUHfwLxuNZQ==
+	b=CHWLKxiov2VxaGqfBMSbsvXfQiblHJXgbftygYA55kH0AM8vx/rngjC3flHmq39HV
+	 PjDoXqtVhRGIh3Xohr+C4yhvBnPvFyuFm090hiaC8nU9HpohDfQJvlgB4/TglzNOoy
+	 1qHOp5dWu3A5+sWyy2lrzuGvqHGwb6jq2wKN4yOOX3PGhiyhSr7xVIp47CieXbAwLm
+	 uYfdjL1UI02tb6RYyxIrFBnWjgL3cPy3NoJakVmwmVKFi39cYp2JhCMA11d2Ju6HV0
+	 j0I/loTXfwdiUwZocHiGbb46dRI6ts++Dm2+swYP4TUUEn+wDfoDIDKh9oh6S/oMY+
+	 YBTW5QMlZOP2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bob Zhou <bob.zhou@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
+Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	evan.quan@amd.com,
+	sunpeng.li@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	mario.limonciello@amd.com,
-	Jun.Ma2@amd.com,
-	ruanjinjie@huawei.com,
-	lijo.lazar@amd.com,
+	wayne.lin@amd.com,
+	mwen@igalia.com,
+	alvin.lee2@amd.com,
+	dillon.varone@amd.com,
+	hanghong.ma@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 13/34] drm/amd/pm: Fix the null pointer dereference for vega10_hwmgr
-Date: Sun, 28 Jul 2024 11:40:37 -0400
-Message-ID: <20240728154230.2046786-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 14/34] drm/amd/display: Add null checks for 'stream' and 'plane' before dereferencing
+Date: Sun, 28 Jul 2024 11:40:38 -0400
+Message-ID: <20240728154230.2046786-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728154230.2046786-1-sashal@kernel.org>
 References: <20240728154230.2046786-1-sashal@kernel.org>
@@ -76,112 +85,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Bob Zhou <bob.zhou@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 50151b7f1c79a09117837eb95b76c2de76841dab ]
+[ Upstream commit 15c2990e0f0108b9c3752d7072a97d45d4283aea ]
 
-Check return value and conduct null pointer handling to avoid null pointer dereference.
+This commit adds null checks for the 'stream' and 'plane' variables in
+the dcn30_apply_idle_power_optimizations function. These variables were
+previously assumed to be null at line 922, but they were used later in
+the code without checking if they were null. This could potentially lead
+to a null pointer dereference, which would cause a crash.
 
-Signed-off-by: Bob Zhou <bob.zhou@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+The null checks ensure that 'stream' and 'plane' are not null before
+they are used, preventing potential crashes.
+
+Fixes the below static smatch checker:
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:938 dcn30_apply_idle_power_optimizations() error: we previously assumed 'stream' could be null (see line 922)
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:940 dcn30_apply_idle_power_optimizations() error: we previously assumed 'plane' could be null (see line 922)
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Cc: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Hersen Wu <hersenxs.wu@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 29 ++++++++++++++++---
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index 8d7dc0e5417ed..f4acdb2267416 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -3418,13 +3418,17 @@ static int vega10_find_dpm_states_clocks_in_dpm_table(struct pp_hwmgr *hwmgr, co
- 	const struct vega10_power_state *vega10_ps =
- 			cast_const_phw_vega10_power_state(states->pnew_state);
- 	struct vega10_single_dpm_table *sclk_table = &(data->dpm_table.gfx_table);
--	uint32_t sclk = vega10_ps->performance_levels
--			[vega10_ps->performance_level_count - 1].gfx_clock;
- 	struct vega10_single_dpm_table *mclk_table = &(data->dpm_table.mem_table);
--	uint32_t mclk = vega10_ps->performance_levels
--			[vega10_ps->performance_level_count - 1].mem_clock;
-+	uint32_t sclk, mclk;
- 	uint32_t i;
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
+index ed9141a67db37..5b09d95cc5b8f 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
+@@ -919,6 +919,9 @@ bool dcn30_apply_idle_power_optimizations(struct dc *dc, bool enable)
+ 			stream = dc->current_state->streams[0];
+ 			plane = (stream ? dc->current_state->stream_status[0].plane_states[0] : NULL);
  
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
-+	sclk = vega10_ps->performance_levels
-+			[vega10_ps->performance_level_count - 1].gfx_clock;
-+	mclk = vega10_ps->performance_levels
-+			[vega10_ps->performance_level_count - 1].mem_clock;
++			if (!stream || !plane)
++				return false;
 +
- 	for (i = 0; i < sclk_table->count; i++) {
- 		if (sclk == sclk_table->dpm_levels[i].value)
- 			break;
-@@ -3731,6 +3735,9 @@ static int vega10_generate_dpm_level_enable_mask(
- 			cast_const_phw_vega10_power_state(states->pnew_state);
- 	int i;
- 
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
-+
- 	PP_ASSERT_WITH_CODE(!vega10_trim_dpm_states(hwmgr, vega10_ps),
- 			"Attempt to Trim DPM States Failed!",
- 			return -1);
-@@ -4998,6 +5005,8 @@ static int vega10_check_states_equal(struct pp_hwmgr *hwmgr,
- 
- 	vega10_psa = cast_const_phw_vega10_power_state(pstate1);
- 	vega10_psb = cast_const_phw_vega10_power_state(pstate2);
-+	if (vega10_psa == NULL || vega10_psb == NULL)
-+		return -EINVAL;
- 
- 	/* If the two states don't even have the same number of performance levels
- 	 * they cannot be the same state.
-@@ -5131,6 +5140,8 @@ static int vega10_set_sclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
- 		return -EINVAL;
- 
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
- 
- 	vega10_ps->performance_levels
- 	[vega10_ps->performance_level_count - 1].gfx_clock =
-@@ -5182,6 +5193,8 @@ static int vega10_set_mclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
- 		return -EINVAL;
- 
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
- 
- 	vega10_ps->performance_levels
- 	[vega10_ps->performance_level_count - 1].mem_clock =
-@@ -5423,6 +5436,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
- 		return;
- 
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return;
-+
- 	max_level = vega10_ps->performance_level_count - 1;
- 
- 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
-@@ -5445,6 +5461,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
- 
- 	ps = (struct pp_power_state *)((unsigned long)(hwmgr->ps) + hwmgr->ps_size * (hwmgr->num_ps - 1));
- 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
-+	if (vega10_ps == NULL)
-+		return;
-+
- 	max_level = vega10_ps->performance_level_count - 1;
- 
- 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
-@@ -5635,6 +5654,8 @@ static int vega10_get_performance_level(struct pp_hwmgr *hwmgr, const struct pp_
- 		return -EINVAL;
- 
- 	vega10_ps = cast_const_phw_vega10_power_state(state);
-+	if (vega10_ps == NULL)
-+		return -EINVAL;
- 
- 	i = index > vega10_ps->performance_level_count - 1 ?
- 			vega10_ps->performance_level_count - 1 : index;
+ 			if (stream && plane) {
+ 				cursor_cache_enable = stream->cursor_position.enable &&
+ 						plane->address.grph.cursor_cache_addr.quad_part;
 -- 
 2.43.0
 
