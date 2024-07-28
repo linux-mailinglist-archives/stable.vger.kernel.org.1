@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-62240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F81993E75C
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:08:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FF793E760
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:08:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A749282A8B
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:08:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AE41282C89
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE7618734B;
-	Sun, 28 Jul 2024 15:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30DBF187562;
+	Sun, 28 Jul 2024 15:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wk7v/Mhn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MawS1EWf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B96187332;
-	Sun, 28 Jul 2024 15:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01E458ABC;
+	Sun, 28 Jul 2024 15:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181870; cv=none; b=d/JupZjgGRfD4qS2bzcH2LD2ZTzfWmbjobC996S9U+wM8uvieCa9NUCxPVvgYQV6XG5MxF0TjDJj+trwWcS7/uEHCSz2bpQDGrVA/W0X6Ng6ShXEFZEenyeZSVZ4nlvA8UHw3qaAp7OzkIezy2Jm7EwCm/V71qcGXU+O6B7S7ds=
+	t=1722181871; cv=none; b=FA3pZpyk4z6sclrXSTv4EK5pxvw0FJfnxnEiTkONnPQMukXBdvC3dwgm68eZFTxB3TqM3guPFou3Ya2gAVINdnJSRBJ0Qe5JwcL8zmeZxgakkAt3b729ZvcyTFnTmUjMq/6LKDWTyKC+gHN4BqR4xFNIve9U5khZ9nTHG7CIvH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181870; c=relaxed/simple;
-	bh=3obwsDjbzEGMccyYCCpmXzclqQ5EEWRoQDmNqY9TCD4=;
+	s=arc-20240116; t=1722181871; c=relaxed/simple;
+	bh=fG1BWjza7vx+HasoT6uIO9IERm54n4Elly/PXKrtU8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=grylfVeWF34nqKJ//ZdkfHGSHkrZ1lwZbL/lrkmF50XvuhpEaHJZj/T6Kae1CVqORa+upKS32muh1gpO95zRNKCrBSN8l+8UCRO3cNIc3UFoURJjPRgh6WjIiKPOTtinMxLEruHFbMhUO8f2bwDdCisw/Lm3toWs88BMFV8CQnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wk7v/Mhn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16EAC116B1;
-	Sun, 28 Jul 2024 15:51:07 +0000 (UTC)
+	 MIME-Version; b=PoPsfKkC8khO3VSeYSpSer9xpl2+O9aAkyZ8fC8dRPAF/GrKtcpgjHQW811DQ8ZbCvaQIguzaQkJxSolZ1X9V9xw6qB+faXanyX1hMHk0auuJfp51bXQcss87cXQryaaPXhAqwr+G7Giq4ugn5kpHfyl9+nmAl3GOeO7apn98pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MawS1EWf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C128C4AF0B;
+	Sun, 28 Jul 2024 15:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181868;
-	bh=3obwsDjbzEGMccyYCCpmXzclqQ5EEWRoQDmNqY9TCD4=;
+	s=k20201202; t=1722181870;
+	bh=fG1BWjza7vx+HasoT6uIO9IERm54n4Elly/PXKrtU8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wk7v/MhnnoDzUsfmixx6+aramLjjOaKsH867noilhzunCRz4euqexmbgnAKO7KcQt
-	 xOorAJ9IsSMXjC+nuvncCmCR133dZB8fZtl8o75wrTPmaH6N8Xzh8izN83uMhGnF+l
-	 4W2oD3VF8ZUeemSNToDvh3BJey9O0GdhAa58Zq4++pc9ActD/yBBfHmXshT2+v/HvT
-	 OvGutHFm2r9V9krv4HbhZ63jgv/wLA0zJxVqXL0Dv539DBNwZnMTA3NB5x4HCMj0+S
-	 EfEqxb08NcB8JNSTjnQuWCXwdb6Zcp44PB+4+FPeacJmnYq/7PD5E9sJiUPFGIjZxT
-	 Omg+y4xQhHC2Q==
+	b=MawS1EWfp/nq2SSrbGiuaeb6HOo5uW4XwPcBeQRbZ6lLRnJUZTixj4ImaDPNd/B1a
+	 +k+NKwCW24HMGaAnY4Tx6ERm3fyRDswQCh+gyVJJ/9Y/PWEI7+59XMtKAr/Ox58/Mz
+	 LGXeXDEOUznI295PpJrZ7KeIHiN7rRmuv99ePF/nw1BGNi5XLdPkd3v9SSA1DrWMwO
+	 KB6+tu0rXm8XgzSDPnke21pKBd8cN0/3DoG/wAUy8X8xLdUjO+g0MJwoKqnueeXIeI
+	 bW5LPuyinTrZCDfIdpyNKAJ+klhoHJ+tj19RLAq5E5npZtS12fx+5IbqlDzdlqe+59
+	 dzFFCLGJnudaA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michal Pecio <michal.pecio@gmail.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 2/5] media: uvcvideo: Fix the bandwdith quirk on USB 3.x
-Date: Sun, 28 Jul 2024 11:50:57 -0400
-Message-ID: <20240728155103.2050728-2-sashal@kernel.org>
+	jack@suse.com,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 3/5] jbd2: avoid memleak in jbd2_journal_write_metadata_buffer
+Date: Sun, 28 Jul 2024 11:50:58 -0400
+Message-ID: <20240728155103.2050728-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728155103.2050728-1-sashal@kernel.org>
 References: <20240728155103.2050728-1-sashal@kernel.org>
@@ -67,50 +68,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.319
 Content-Transfer-Encoding: 8bit
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit 9e3d55fbd160b3ca376599a68b4cddfdc67d4153 ]
+[ Upstream commit cc102aa24638b90e04364d64e4f58a1fa91a1976 ]
 
-The bandwidth fixup quirk doesn't know that SuperSpeed exists and has
-the same 8 service intervals per millisecond as High Speed, hence its
-calculations are wrong.
+The new_bh is from alloc_buffer_head, we should call free_buffer_head to
+free it in error case.
 
-Assume that all speeds from HS up use 8 intervals per millisecond.
-
-No further changes are needed, updated code has been confirmed to work
-with all speeds from FS to SS.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240414190040.2255a0bc@foxbook
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240514112438.1269037-2-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/jbd2/journal.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index e2c1b98fb4a25..3f0796141545d 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -212,13 +212,13 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
- 		/* Compute a bandwidth estimation by multiplying the frame
- 		 * size by the number of video frames per second, divide the
- 		 * result by the number of USB frames (or micro-frames for
--		 * high-speed devices) per second and add the UVC header size
--		 * (assumed to be 12 bytes long).
-+		 * high- and super-speed devices) per second and add the UVC
-+		 * header size (assumed to be 12 bytes long).
- 		 */
- 		bandwidth = frame->wWidth * frame->wHeight / 8 * format->bpp;
- 		bandwidth *= 10000000 / interval + 1;
- 		bandwidth /= 1000;
--		if (stream->dev->udev->speed == USB_SPEED_HIGH)
-+		if (stream->dev->udev->speed >= USB_SPEED_HIGH)
- 			bandwidth /= 8;
- 		bandwidth += 12;
- 
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 629928b19e487..08cff80f8c297 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -430,6 +430,7 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
+ 		tmp = jbd2_alloc(bh_in->b_size, GFP_NOFS);
+ 		if (!tmp) {
+ 			brelse(new_bh);
++			free_buffer_head(new_bh);
+ 			return -ENOMEM;
+ 		}
+ 		jbd_lock_bh_state(bh_in);
 -- 
 2.43.0
 
