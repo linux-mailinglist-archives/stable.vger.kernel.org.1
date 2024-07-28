@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-62024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9142593E216
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:58:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD7193E218
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41250281AB0
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:58:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29E9E1C20EB1
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C3E18308E;
-	Sun, 28 Jul 2024 00:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558BE186E59;
+	Sun, 28 Jul 2024 00:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t3HlZ27G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A4kKAQV6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003441741D5;
-	Sun, 28 Jul 2024 00:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E29C1482E6;
+	Sun, 28 Jul 2024 00:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127751; cv=none; b=I+ZWoF9vnFmmFI1ov4YBVYmPZIz3em3yzirOsORLl+BcT8t241WIaZrbwD1iSdB5OP34OnKtFFahxHBTNviflV6PzE4i+4ShRdfLacqSZgYuLrYmWlR8/cbM1ORcC8xDOJgGSnzUku85VlF4IRtCciAOycEt1WZ7JUzYZxvmN3U=
+	t=1722127752; cv=none; b=lZcvwyzUFa8VN4bDygp1UY6ri07ObyU7eAnQBVh7/wERTzEgauAJTo4OLgKIh/CqxBTcA1Mc/WMyeuDRALMqJBklYrI2BsTIkUZ3vcHZZQLVIlXivRzmEkP9OJ79cliW5Ilfxa+pyh4mv/wK5Gee858Urvk1DuXCA2mQryac5tI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127751; c=relaxed/simple;
-	bh=NtQtmXw1leWhSEYKdEncehqwVU5K3dFsmXR1G8gyOIQ=;
+	s=arc-20240116; t=1722127752; c=relaxed/simple;
+	bh=FrtTseLDIMMd7/SMO3y0M13NckE6tQ97/dDMxFhteyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewjAut3ob06dzyTxA9l9/vw4LkKZaTAYRsezPRgf4zn6xXCQBn4fBkFYAPz7Za9jtmCfmc18SKg28ONEP9R/YrcL4/CpLUkZKUDzTb5I+frmymRKeif1PoNWP1j60gUkqWaWB3lmv1qqT755E7rWLoebPZcCxR8WtgBRJJXAp3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t3HlZ27G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC63BC4AF09;
-	Sun, 28 Jul 2024 00:49:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TbYA4kLKM2KURnkL/VyC+YqT003zIv7fluc1PHAWxcsEgJFSBd6jSwK5f6pJOj4jxoebftgeyzdQqnZTzVKYdY4vreDulZldi6dyrldDjR7L4ngobeIBXE7bB4bJ0A1sF5LWEuJYgZpm3Jc2+GsXdje7jUOsj/730PRBWPI13DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A4kKAQV6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C029C4AF07;
+	Sun, 28 Jul 2024 00:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127750;
-	bh=NtQtmXw1leWhSEYKdEncehqwVU5K3dFsmXR1G8gyOIQ=;
+	s=k20201202; t=1722127751;
+	bh=FrtTseLDIMMd7/SMO3y0M13NckE6tQ97/dDMxFhteyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t3HlZ27GcV0sax5H8UsXwS4voLsVWTI0HjxeP5vFNeYi3zjznzCDNpu+UnHA6nQoN
-	 9JbE9JLaM41QjlZQ/5sRCCk7Pd7V+hz7dR/b0nnj5gaP7i3ljveHLOa8JWhiY3a6kC
-	 mFxUG9V7VDjjVTe1S76FUoetWp7HgskHCfciFeM5uh9bCoOTXUeaYQRZX4sQ0m7eb4
-	 B37z6Y42xN8vp6R4Uyy/HbaFwV86aTp+40ZqviQXd9E8jTpZ3f0gd0AtEV0pYqJVA2
-	 goiBxsSv6HEX/+k/fesi/MEdSeC6+NEmqlUKOifWpZsWBpAAI5QSRhIEn2WxgRvB50
-	 sVWg/78hISp0w==
+	b=A4kKAQV6za5J3nxxxgIY0fNVRGcWX6edb6L4rfKjjjhJXpGieLUb7Y1eopPTkkEtN
+	 GN2GExU0nTwBGn0zSy0TdXvxZ0RAzb4ZQ5HplpPCB5me5j0OJOB66/+ewhcpK3KD5/
+	 BMTOYityyAs+GK21rmSnrY4xpZ5qec7x5jUShqKZVIwRqtFL2xyvg5FHrE8fZ3cBq6
+	 uUsDpGp+Dk4od0F7hyhPpIHCi91GeBtc03GNXeYN5SmGcyaCwOT/5EpaxohntLomm6
+	 2FJ9zIuOfNDclEqoIuJhdj/jP7hAmHQdC6BXSQdejbiTzoIDYjq3oGJnM0yTwDIgMw
+	 hKKgD7fBUSxwQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.10 5/6] debugobjects: Annotate racy debug variables
-Date: Sat, 27 Jul 2024 20:48:58 -0400
-Message-ID: <20240728004901.1704470-5-sashal@kernel.org>
+Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	tglx@linutronix.de
+Subject: [PATCH AUTOSEL 5.10 6/6] clocksource/drivers/sh_cmt: Address race condition for clock events
+Date: Sat, 27 Jul 2024 20:48:59 -0400
+Message-ID: <20240728004901.1704470-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728004901.1704470-1-sashal@kernel.org>
 References: <20240728004901.1704470-1-sashal@kernel.org>
@@ -59,82 +60,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 5b5baba6222255d29626f63c41f101379ec5400b ]
+[ Upstream commit db19d3aa77612983a02bd223b3f273f896b243cf ]
 
-KCSAN has identified a potential data race in debugobjects, where the
-global variable debug_objects_maxchain is accessed for both reading and
-writing simultaneously in separate and parallel data paths. This results in
-the following splat printed by KCSAN:
+There is a race condition in the CMT interrupt handler. In the interrupt
+handler the driver sets a driver private flag, FLAG_IRQCONTEXT. This
+flag is used to indicate any call to set_next_event() should not be
+directly propagated to the device, but instead cached. This is done as
+the interrupt handler itself reprograms the device when needed before it
+completes and this avoids this operation to take place twice.
 
-  BUG: KCSAN: data-race in debug_check_no_obj_freed / debug_object_activate
+It is unclear why this design was chosen, my suspicion is to allow the
+struct clock_event_device.event_handler callback, which is called while
+the FLAG_IRQCONTEXT is set, can update the next event without having to
+write to the device twice.
 
-  write to 0xffffffff847ccfc8 of 4 bytes by task 734 on cpu 41:
-  debug_object_activate (lib/debugobjects.c:199 lib/debugobjects.c:564 lib/debugobjects.c:710)
-  call_rcu (kernel/rcu/rcu.h:227 kernel/rcu/tree.c:2719 kernel/rcu/tree.c:2838)
-  security_inode_free (security/security.c:1626)
-  __destroy_inode (./include/linux/fsnotify.h:222 fs/inode.c:287)
-  ...
-  read to 0xffffffff847ccfc8 of 4 bytes by task 384 on cpu 31:
-  debug_check_no_obj_freed (lib/debugobjects.c:1000 lib/debugobjects.c:1019)
-  kfree (mm/slub.c:2081 mm/slub.c:4280 mm/slub.c:4390)
-  percpu_ref_exit (lib/percpu-refcount.c:147)
-  css_free_rwork_fn (kernel/cgroup/cgroup.c:5357)
-  ...
-  value changed: 0x00000070 -> 0x00000071
+Unfortunately there is a race between when the FLAG_IRQCONTEXT flag is
+set and later cleared where the interrupt handler have already started to
+write the next event to the device. If set_next_event() is called in
+this window the value is only cached in the driver but not written. This
+leads to the board to misbehave, or worse lockup and produce a splat.
 
-The data race is actually harmless as this is just used for debugfs
-statistics, as all other debug variables.
+   rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+   rcu:     0-...!: (0 ticks this GP) idle=f5e0/0/0x0 softirq=519/519 fqs=0 (false positive?)
+   rcu:     (detected by 1, t=6502 jiffies, g=-595, q=77 ncpus=2)
+   Sending NMI from CPU 1 to CPUs 0:
+   NMI backtrace for cpu 0
+   CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.10.0-rc5-arm64-renesas-00019-g74a6f86eaf1c-dirty #20
+   Hardware name: Renesas Salvator-X 2nd version board based on r8a77965 (DT)
+   pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+   pc : tick_check_broadcast_expired+0xc/0x40
+   lr : cpu_idle_poll.isra.0+0x8c/0x168
+   sp : ffff800081c63d70
+   x29: ffff800081c63d70 x28: 00000000580000c8 x27: 00000000bfee5610
+   x26: 0000000000000027 x25: 0000000000000000 x24: 0000000000000000
+   x23: ffff00007fbb9100 x22: ffff8000818f1008 x21: ffff8000800ef07c
+   x20: ffff800081c79ec0 x19: ffff800081c70c28 x18: 0000000000000000
+   x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffffc2c717d8
+   x14: 0000000000000000 x13: ffff000009c18080 x12: ffff8000825f7fc0
+   x11: 0000000000000000 x10: ffff8000818f3cd4 x9 : 0000000000000028
+   x8 : ffff800081c79ec0 x7 : ffff800081c73000 x6 : 0000000000000000
+   x5 : 0000000000000000 x4 : ffff7ffffe286000 x3 : 0000000000000000
+   x2 : ffff7ffffe286000 x1 : ffff800082972900 x0 : ffff8000818f1008
+   Call trace:
+    tick_check_broadcast_expired+0xc/0x40
+    do_idle+0x9c/0x280
+    cpu_startup_entry+0x34/0x40
+    kernel_init+0x0/0x11c
+    do_one_initcall+0x0/0x260
+    __primary_switched+0x80/0x88
+   rcu: rcu_preempt kthread timer wakeup didn't happen for 6501 jiffies! g-595 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
+   rcu:     Possible timer handling issue on cpu=0 timer-softirq=262
+   rcu: rcu_preempt kthread starved for 6502 jiffies! g-595 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=0
+   rcu:     Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+   rcu: RCU grace-period kthread stack dump:
+   task:rcu_preempt     state:I stack:0     pid:15    tgid:15    ppid:2      flags:0x00000008
+   Call trace:
+    __switch_to+0xbc/0x100
+    __schedule+0x358/0xbe0
+    schedule+0x48/0x148
+    schedule_timeout+0xc4/0x138
+    rcu_gp_fqs_loop+0x12c/0x764
+    rcu_gp_kthread+0x208/0x298
+    kthread+0x10c/0x110
+    ret_from_fork+0x10/0x20
 
-Annotate all debug variables as racy explicitly, since these variables
-are known to be racy and harmless.
+The design have been part of the driver since it was first merged in
+early 2009. It becomes increasingly harder to trigger the issue the
+older kernel version one tries. It only takes a few boots on v6.10-rc5,
+while hundreds of boots are needed to trigger it on v5.10.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240611091813.1189860-1-leitao@debian.org
+Close the race condition by using the CMT channel lock for the two
+competing sections. The channel lock was added to the driver after its
+initial design.
+
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://lore.kernel.org/r/20240702190230.3825292-1-niklas.soderlund+renesas@ragnatech.se
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/debugobjects.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/clocksource/sh_cmt.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index b055741a5a4dd..d6ed4681d2e5c 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -81,16 +81,17 @@ static bool			obj_freeing;
- /* The number of objs on the global free list */
- static int			obj_nr_tofree;
+diff --git a/drivers/clocksource/sh_cmt.c b/drivers/clocksource/sh_cmt.c
+index 66e4872ab34f9..26dbf01d2ec5e 100644
+--- a/drivers/clocksource/sh_cmt.c
++++ b/drivers/clocksource/sh_cmt.c
+@@ -530,6 +530,7 @@ static void sh_cmt_set_next(struct sh_cmt_channel *ch, unsigned long delta)
+ static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
+ {
+ 	struct sh_cmt_channel *ch = dev_id;
++	unsigned long flags;
  
--static int			debug_objects_maxchain __read_mostly;
--static int __maybe_unused	debug_objects_maxchecked __read_mostly;
--static int			debug_objects_fixups __read_mostly;
--static int			debug_objects_warnings __read_mostly;
--static int			debug_objects_enabled __read_mostly
--				= CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT;
--static int			debug_objects_pool_size __read_mostly
--				= ODEBUG_POOL_SIZE;
--static int			debug_objects_pool_min_level __read_mostly
--				= ODEBUG_POOL_MIN_LEVEL;
-+static int __data_racy			debug_objects_maxchain __read_mostly;
-+static int __data_racy __maybe_unused	debug_objects_maxchecked __read_mostly;
-+static int __data_racy			debug_objects_fixups __read_mostly;
-+static int __data_racy			debug_objects_warnings __read_mostly;
-+static int __data_racy			debug_objects_enabled __read_mostly
-+					= CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT;
-+static int __data_racy			debug_objects_pool_size __read_mostly
-+					= ODEBUG_POOL_SIZE;
-+static int __data_racy			debug_objects_pool_min_level __read_mostly
-+					= ODEBUG_POOL_MIN_LEVEL;
+ 	/* clear flags */
+ 	sh_cmt_write_cmcsr(ch, sh_cmt_read_cmcsr(ch) &
+@@ -560,6 +561,8 @@ static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
+ 
+ 	ch->flags &= ~FLAG_SKIPEVENT;
+ 
++	raw_spin_lock_irqsave(&ch->lock, flags);
 +
- static const struct debug_obj_descr *descr_test  __read_mostly;
- static struct kmem_cache	*obj_cache __read_mostly;
+ 	if (ch->flags & FLAG_REPROGRAM) {
+ 		ch->flags &= ~FLAG_REPROGRAM;
+ 		sh_cmt_clock_event_program_verify(ch, 1);
+@@ -572,6 +575,8 @@ static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
  
+ 	ch->flags &= ~FLAG_IRQCONTEXT;
+ 
++	raw_spin_unlock_irqrestore(&ch->lock, flags);
++
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -770,12 +775,18 @@ static int sh_cmt_clock_event_next(unsigned long delta,
+ 				   struct clock_event_device *ced)
+ {
+ 	struct sh_cmt_channel *ch = ced_to_sh_cmt(ced);
++	unsigned long flags;
+ 
+ 	BUG_ON(!clockevent_state_oneshot(ced));
++
++	raw_spin_lock_irqsave(&ch->lock, flags);
++
+ 	if (likely(ch->flags & FLAG_IRQCONTEXT))
+ 		ch->next_match_value = delta - 1;
+ 	else
+-		sh_cmt_set_next(ch, delta - 1);
++		__sh_cmt_set_next(ch, delta - 1);
++
++	raw_spin_unlock_irqrestore(&ch->lock, flags);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
