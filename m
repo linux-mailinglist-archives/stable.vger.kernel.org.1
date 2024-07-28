@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-61985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D75593E1AD
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:48:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE7593E1AF
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D366AB21604
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:48:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 513251F2173C
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99D220ED;
-	Sun, 28 Jul 2024 00:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B205A2574B;
+	Sun, 28 Jul 2024 00:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nf8GTKLG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qe+UlxsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E8B1EB2A;
-	Sun, 28 Jul 2024 00:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A43A2C80;
+	Sun, 28 Jul 2024 00:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127671; cv=none; b=r/DDi0gWzk5ObqgoPrLMpgIIGSTMxg1Th4YH5tbgsaZQAQv7ksx7+OwTEA2H85JDMoGMOcXIbTIJX0uI9Ao1YpeML4qTaA8Dn7ncCkJWka62IlkzytkhFkS4m5J+uGLafwn1Ds/3L9qs6HBWIkkQHPd8etELSSt/8aOt5UPcHHE=
+	t=1722127673; cv=none; b=W1+UkakLxsGoCAR2OODb1xdtd2v61SH3Nju/2F82u7OBnx2mvYP2nEqfd003IqOmQ4f8dOqvXHKqwpq3bt0yTl86Bq/2c7tVc9zHWLMVAW0LXeEOsbSN+92/DnJbK5Qsm8c5Ze33mVkcqWcIoMiF6dXk37PqvFA70deB/+osreg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127671; c=relaxed/simple;
-	bh=2/8PERBmInLBugE1Jf8UdzfJ7qpT5FeuBgq5xNY2UpA=;
+	s=arc-20240116; t=1722127673; c=relaxed/simple;
+	bh=WPtZtrMFhL/pI8aihGmlerhhr2GtDKr2gXIaZgt7oyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evvfW41FaxzL7vobXR0R1JdKBxmtW2RVPk7epQMn3JRbtgH+QWLApKCFIvdbwhiBIrKSUelTQ/0Bjn3UIJ/ZmKcVtSda8KlZbZcy0R27kQ6FLLqUP48JGhQDODzXCSLrQ4WFImGtLIpbNPVL/J2CiE0Xa4VA/9C7bkNbLN9ACZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nf8GTKLG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69072C4AF07;
-	Sun, 28 Jul 2024 00:47:49 +0000 (UTC)
+	 MIME-Version; b=m3lIYoFTHFI2jgvEzaeeu+MuDAO78BhkLHDuCVg3kNHlKGROH33EF5e9RDhRvfzmptfUVaMyp0nUrcWfRJDc7ZOUJ11+M5k7c59iylhIV3nPZhhiKKrIsVH18kx2k63nw52e3f0VeZzC3l62vnfXc1VEJWrFaVVwMqEntxN7ypQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qe+UlxsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9133C4AF0E;
+	Sun, 28 Jul 2024 00:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127671;
-	bh=2/8PERBmInLBugE1Jf8UdzfJ7qpT5FeuBgq5xNY2UpA=;
+	s=k20201202; t=1722127672;
+	bh=WPtZtrMFhL/pI8aihGmlerhhr2GtDKr2gXIaZgt7oyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nf8GTKLG9y4LgRRBVEDc5MSYTSLF5moPyR9DLkFH/3TuL+oQk/17JTELfKZa5xRYg
-	 bx1x0/vzBY4cvN7cVn6KB887JBcI02/lOpU0VkUZUiO1Ns1S5j0hBl2yRtf+CiWjpW
-	 ldAGpel6TfBwofsic8l/IqG6yLde/gTLji+o5sDd1rRKP/4Tx3zUDOAJGsfkQE8GU1
-	 ZnAn17WCqh95ZkFU6FSSA3Ce2W2cxmw201QLFUpGZivp5IXfOyzLT0pIxEof+5wTTv
-	 itGEEpm971Njg2YM/bcVx95Yk5nbuizpsf/3GMLXQ4CKjfssrcF6GF7HO0ehVRcIYI
-	 bCCOGKon1Q3tQ==
+	b=Qe+UlxsFfMCjJaMcZDnotzigrSzUdm8whaAsHeGi0pYL6riyt6jbGrKzEzIwJ7tHA
+	 X1Ij7q6nQxjOhrLSssjmUqC+vtNWsIjaiof2EUdsC/bUZhYUOxYTc5zlKdDcuIKtnu
+	 mO4vI+zvhGyM5ImGoKIMiDkqHlmXcmEI9XxatF+teD+Nbwwhszu/ZVu9S5089ygy5r
+	 4EGak8oRO1AmO13YLjn6M+EGf//p240YCMwetFsZiaz+uRMdi6L4gpPM2P86KEhhQo
+	 5QKpejZkZ7bJOtuLGjq9noA6qk6ywQVgG+ITbqTi4tA3D8o0XQtjnnuDjNW67cNxS7
+	 eYfRdI3JrohHA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
+Cc: Ben Walsh <ben@jubnut.com>,
+	"Dustin L . Howett" <dustin@howett.net>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	neeraj.upadhyay@kernel.org,
-	joel@joelfernandes.org,
-	josh@joshtriplett.org,
-	boqun.feng@gmail.com,
-	urezki@gmail.com,
-	akpm@linux-foundation.org,
-	j.granados@samsung.com,
-	cyphar@cyphar.com,
-	rongtao@cestc.cn,
-	willy@infradead.org,
-	rcu@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 05/16] Revert "rcu-tasks: Fix synchronize_rcu_tasks() VS zap_pid_ns_processes()"
-Date: Sat, 27 Jul 2024 20:47:22 -0400
-Message-ID: <20240728004739.1698541-5-sashal@kernel.org>
+	bleung@chromium.org,
+	chrome-platform@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.10 06/16] platform/chrome: cros_ec_lpc: Add a new quirk for ACPI id
+Date: Sat, 27 Jul 2024 20:47:23 -0400
+Message-ID: <20240728004739.1698541-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728004739.1698541-1-sashal@kernel.org>
 References: <20240728004739.1698541-1-sashal@kernel.org>
@@ -76,126 +67,127 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Ben Walsh <ben@jubnut.com>
 
-[ Upstream commit 9855c37edf0009cc276cecfee09f7e76e2380212 ]
+[ Upstream commit 040159e0912c31fe959d8671f9700bda105ab63a ]
 
-This reverts commit 28319d6dc5e2ffefa452c2377dd0f71621b5bff0. The race
-it fixed was subject to conditions that don't exist anymore since:
+Framework Laptops' ACPI exposes the EC with id "PNP0C09". But
+"PNP0C09" is part of the ACPI standard; there are lots of computers
+with EC chips with this id, and most of them don't support the cros_ec
+protocol.
 
-	1612160b9127 ("rcu-tasks: Eliminate deadlocks involving do_exit() and RCU tasks")
+The driver could find the ACPI device by having "PNP0C09" in the
+acpi_match_table, but this would match devices which don't support the
+cros_ec protocol. Instead, add a new quirk "CROS_EC_LPC_QUIRK_ACPI_ID"
+which allows the id to be specified. This quirk is applied after the
+DMI check shows that the device is supported.
 
-This latter commit removes the use of SRCU that used to cover the
-RCU-tasks blind spot on exit between the tasklist's removal and the
-final preemption disabling. The task is now placed instead into a
-temporary list inside which voluntary sleeps are accounted as RCU-tasks
-quiescent states. This would disarm the deadlock initially reported
-against PID namespace exit.
-
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Tested-by: Dustin L. Howett <dustin@howett.net>
+Signed-off-by: Ben Walsh <ben@jubnut.com>
+Link: https://lore.kernel.org/r/20240605063351.14836-4-ben@jubnut.com
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcupdate.h |  2 --
- kernel/pid_namespace.c   | 17 -----------------
- kernel/rcu/tasks.h       | 16 +++-------------
- 3 files changed, 3 insertions(+), 32 deletions(-)
+ drivers/platform/chrome/cros_ec_lpc.c | 50 ++++++++++++++++++++-------
+ 1 file changed, 38 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index dfd2399f2cde0..61cb3de236af1 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -209,7 +209,6 @@ void synchronize_rcu_tasks_rude(void);
- 
- #define rcu_note_voluntary_context_switch(t) rcu_tasks_qs(t, false)
- void exit_tasks_rcu_start(void);
--void exit_tasks_rcu_stop(void);
- void exit_tasks_rcu_finish(void);
- #else /* #ifdef CONFIG_TASKS_RCU_GENERIC */
- #define rcu_tasks_classic_qs(t, preempt) do { } while (0)
-@@ -218,7 +217,6 @@ void exit_tasks_rcu_finish(void);
- #define call_rcu_tasks call_rcu
- #define synchronize_rcu_tasks synchronize_rcu
- static inline void exit_tasks_rcu_start(void) { }
--static inline void exit_tasks_rcu_stop(void) { }
- static inline void exit_tasks_rcu_finish(void) { }
- #endif /* #else #ifdef CONFIG_TASKS_RCU_GENERIC */
- 
-diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
-index 25f3cf679b358..bdf0087d64423 100644
---- a/kernel/pid_namespace.c
-+++ b/kernel/pid_namespace.c
-@@ -249,24 +249,7 @@ void zap_pid_ns_processes(struct pid_namespace *pid_ns)
- 		set_current_state(TASK_INTERRUPTIBLE);
- 		if (pid_ns->pid_allocated == init_pids)
- 			break;
--		/*
--		 * Release tasks_rcu_exit_srcu to avoid following deadlock:
--		 *
--		 * 1) TASK A unshare(CLONE_NEWPID)
--		 * 2) TASK A fork() twice -> TASK B (child reaper for new ns)
--		 *    and TASK C
--		 * 3) TASK B exits, kills TASK C, waits for TASK A to reap it
--		 * 4) TASK A calls synchronize_rcu_tasks()
--		 *                   -> synchronize_srcu(tasks_rcu_exit_srcu)
--		 * 5) *DEADLOCK*
--		 *
--		 * It is considered safe to release tasks_rcu_exit_srcu here
--		 * because we assume the current task can not be concurrently
--		 * reaped at this point.
--		 */
--		exit_tasks_rcu_stop();
- 		schedule();
--		exit_tasks_rcu_start();
- 	}
- 	__set_current_state(TASK_RUNNING);
- 
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index e1bf33018e6d5..4dc56b6e27c04 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -858,7 +858,7 @@ static void rcu_tasks_wait_gp(struct rcu_tasks *rtp)
- //	not know to synchronize with this RCU Tasks grace period) have
- //	completed exiting.  The synchronize_rcu() in rcu_tasks_postgp()
- //	will take care of any tasks stuck in the non-preemptible region
--//	of do_exit() following its call to exit_tasks_rcu_stop().
-+//	of do_exit() following its call to exit_tasks_rcu_finish().
- // check_all_holdout_tasks(), repeatedly until holdout list is empty:
- //	Scans the holdout list, attempting to identify a quiescent state
- //	for each task on the list.  If there is a quiescent state, the
-@@ -1220,7 +1220,7 @@ void exit_tasks_rcu_start(void)
-  * Remove the task from the "yet another list" because do_exit() is now
-  * non-preemptible, allowing synchronize_rcu() to wait beyond this point.
+diff --git a/drivers/platform/chrome/cros_ec_lpc.c b/drivers/platform/chrome/cros_ec_lpc.c
+index ddfbfec44f4cc..43e0914256a3c 100644
+--- a/drivers/platform/chrome/cros_ec_lpc.c
++++ b/drivers/platform/chrome/cros_ec_lpc.c
+@@ -39,6 +39,11 @@ static bool cros_ec_lpc_acpi_device_found;
+  * be used as the base port for EC mapped memory.
   */
--void exit_tasks_rcu_stop(void)
-+void exit_tasks_rcu_finish(void)
- {
- 	unsigned long flags;
- 	struct rcu_tasks_percpu *rtpcp;
-@@ -1231,22 +1231,12 @@ void exit_tasks_rcu_stop(void)
- 	raw_spin_lock_irqsave_rcu_node(rtpcp, flags);
- 	list_del_init(&t->rcu_tasks_exit_list);
- 	raw_spin_unlock_irqrestore_rcu_node(rtpcp, flags);
--}
+ #define CROS_EC_LPC_QUIRK_REMAP_MEMORY              BIT(0)
++/*
++ * Indicates that lpc_driver_data.quirk_acpi_id should be used to find
++ * the ACPI device.
++ */
++#define CROS_EC_LPC_QUIRK_ACPI_ID                   BIT(1)
  
--/*
-- * Contribute to protect against tasklist scan blind spot while the
-- * task is exiting and may be removed from the tasklist. See
-- * corresponding synchronize_srcu() for further details.
-- */
--void exit_tasks_rcu_finish(void)
--{
--	exit_tasks_rcu_stop();
--	exit_tasks_rcu_finish_trace(current);
-+	exit_tasks_rcu_finish_trace(t);
+ /**
+  * struct lpc_driver_data - driver data attached to a DMI device ID to indicate
+@@ -46,10 +51,12 @@ static bool cros_ec_lpc_acpi_device_found;
+  * @quirks: a bitfield composed of quirks from CROS_EC_LPC_QUIRK_*
+  * @quirk_mmio_memory_base: The first I/O port addressing EC mapped memory (used
+  *                          when quirk ...REMAP_MEMORY is set.)
++ * @quirk_acpi_id: An ACPI HID to be used to find the ACPI device.
+  */
+ struct lpc_driver_data {
+ 	u32 quirks;
+ 	u16 quirk_mmio_memory_base;
++	const char *quirk_acpi_id;
+ };
+ 
+ /**
+@@ -374,6 +381,26 @@ static void cros_ec_lpc_acpi_notify(acpi_handle device, u32 value, void *data)
+ 		pm_system_wakeup();
  }
  
- #else /* #ifdef CONFIG_TASKS_RCU */
- void exit_tasks_rcu_start(void) { }
--void exit_tasks_rcu_stop(void) { }
- void exit_tasks_rcu_finish(void) { exit_tasks_rcu_finish_trace(current); }
- #endif /* #else #ifdef CONFIG_TASKS_RCU */
++static acpi_status cros_ec_lpc_parse_device(acpi_handle handle, u32 level,
++					    void *context, void **retval)
++{
++	*(struct acpi_device **)context = acpi_fetch_acpi_dev(handle);
++	return AE_CTRL_TERMINATE;
++}
++
++static struct acpi_device *cros_ec_lpc_get_device(const char *id)
++{
++	struct acpi_device *adev = NULL;
++	acpi_status status = acpi_get_devices(id, cros_ec_lpc_parse_device,
++					      &adev, NULL);
++	if (ACPI_FAILURE(status)) {
++		pr_warn(DRV_NAME ": Looking for %s failed\n", id);
++		return NULL;
++	}
++
++	return adev;
++}
++
+ static int cros_ec_lpc_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -401,6 +428,16 @@ static int cros_ec_lpc_probe(struct platform_device *pdev)
+ 
+ 		if (quirks & CROS_EC_LPC_QUIRK_REMAP_MEMORY)
+ 			ec_lpc->mmio_memory_base = driver_data->quirk_mmio_memory_base;
++
++		if (quirks & CROS_EC_LPC_QUIRK_ACPI_ID) {
++			adev = cros_ec_lpc_get_device(driver_data->quirk_acpi_id);
++			if (!adev) {
++				dev_err(dev, "failed to get ACPI device '%s'",
++					driver_data->quirk_acpi_id);
++				return -ENODEV;
++			}
++			ACPI_COMPANION_SET(dev, adev);
++		}
+ 	}
+ 
+ 	/*
+@@ -661,23 +698,12 @@ static struct platform_device cros_ec_lpc_device = {
+ 	.name = DRV_NAME
+ };
+ 
+-static acpi_status cros_ec_lpc_parse_device(acpi_handle handle, u32 level,
+-					    void *context, void **retval)
+-{
+-	*(bool *)context = true;
+-	return AE_CTRL_TERMINATE;
+-}
+-
+ static int __init cros_ec_lpc_init(void)
+ {
+ 	int ret;
+-	acpi_status status;
+ 	const struct dmi_system_id *dmi_match;
+ 
+-	status = acpi_get_devices(ACPI_DRV_NAME, cros_ec_lpc_parse_device,
+-				  &cros_ec_lpc_acpi_device_found, NULL);
+-	if (ACPI_FAILURE(status))
+-		pr_warn(DRV_NAME ": Looking for %s failed\n", ACPI_DRV_NAME);
++	cros_ec_lpc_acpi_device_found = !!cros_ec_lpc_get_device(ACPI_DRV_NAME);
+ 
+ 	dmi_match = dmi_first_match(cros_ec_lpc_dmi_table);
  
 -- 
 2.43.0
