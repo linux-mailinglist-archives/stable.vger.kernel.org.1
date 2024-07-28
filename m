@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-62021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA8D93E20E
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:57:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F8E93E210
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF6BF1F21A3F
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:57:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D22FD1C20E26
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5682A1482F5;
-	Sun, 28 Jul 2024 00:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2C81487D5;
+	Sun, 28 Jul 2024 00:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="loQTUp7I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KksUn07I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1318A1482E6;
-	Sun, 28 Jul 2024 00:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3619E147C9E;
+	Sun, 28 Jul 2024 00:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127747; cv=none; b=T6pxC7/L0wSya3BYt8lnzSoSNmfkbLkY25qe7UxGarGBNA/KCB5sMnvt96LrFtAAlZ0Z7UTDFFdOPUlg8jougJIgJridvwL+6nsYSnsgkhRW6RQXLDCRgo2PKBLeMGwNejhq95n0WZ8vwRID75aKQKbkxQEjbLLEzElj6KpbBbc=
+	t=1722127748; cv=none; b=XYGy15E9X1S8LgK68v1b/NMR147bYncR19lumnGOWJ7jWr+e29McCqKg+hSeYZI7EP/uOYsZrAuEQhbqcz5Z1x/xUXaDtjDwp0rkD9hAXar32ZB0xa3VzIkNsshwj8InrmTC4IkNNROQGXkDqxXDdbijhIz3cE2rl3hi1k/ElFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127747; c=relaxed/simple;
-	bh=DQ3EGMYH3xEK71gRrN+2pTzCzyUMW+9aupaJNbPi4vM=;
+	s=arc-20240116; t=1722127748; c=relaxed/simple;
+	bh=JVnvXCJWQWoCIfTAbRgICsYUWtH69qY3iy7L1sdVggQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfE4apUVe5kcqwg9VDJ1aVwRv06z5MTipHfumg6WV882YDj4r5f6JbvGEyxwQcE2HjLFplJ4A50tEcIT0LEiIIrmkn/i/Bu7sirTT4zTAiB4ehSmBBaxmwD89F04Y8eRe/Tg0WgBGViVL9ahpF3GOsk1/KUfvcm2GlizTn9XKQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=loQTUp7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89E8C4AF07;
-	Sun, 28 Jul 2024 00:49:04 +0000 (UTC)
+	 MIME-Version; b=Me4DDxQ9LPpELHrDXKPmvdTdN9iM2Sy/fVXFX3s5rJdTXzoWrygYEbNtbHBVqC4fQxXDS5AGW8sxf1mX4ACZhOkMd5DiZCIzeLklTI97oeZQDHK99tbEAcDbFZX8FJERwvq1rsPl8gUueVGVnCzbLT2XStVARRkv4dwWPcp9wPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KksUn07I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F550C4AF12;
+	Sun, 28 Jul 2024 00:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127746;
-	bh=DQ3EGMYH3xEK71gRrN+2pTzCzyUMW+9aupaJNbPi4vM=;
+	s=k20201202; t=1722127748;
+	bh=JVnvXCJWQWoCIfTAbRgICsYUWtH69qY3iy7L1sdVggQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=loQTUp7I6rRegQ8slmO+nABJ72fDmTDNcxBnR841Pf8fZvSNp5f4L8EiWSTwdk2cr
-	 qpO4egM1h+CjlQuOMcA2T74DSH+k4MctF4J0nZrp24AGWmmLrcboGCO6SO1aq6gnSV
-	 5gn0ENZDXM/ccLg48niVjm8kyamJYj1y3L2QGSPTATbSmrqm5PZ+YMQUpWQe53n5Qr
-	 j51dQ540kndpkZIg8WRtB/PqYekbu435Pjh9Zsb5+/3zPYrklMSPyQZ3VK7z2Shx9Q
-	 NXmoY6Pe8+HUjxWx96DYvjzus0mNdEb8tOEKnukgNzU/eZpX8Q8pVXUYO1SS42HDRq
-	 CcvdSQSiHhlaQ==
+	b=KksUn07IDzHtBKfGooVZChUUUpf8EVN7NLmDfKE/stf/U4H438kiY3R89/CPZuQEP
+	 DNiLyaTH1mUJR6nPcHCfVP0+yezwFSE3j1KL1gJOKtAUuDLm+nUO/d+Y4We5du9iuF
+	 AFoZtk6wu5ViYuwvSah+DlcnsT23w+fMFiZ3ckqhLBSzniTYSYqv23xJCWYdL/JFYK
+	 4ZINiEgajguSfr+KoCztFhNVc7nQCPrqPMGXHdj1jDZ1hDjrV3Z3DUk3rlye/BPA4F
+	 l+93Jo81n1GVmakCWyFnSrIJ2zz/TK7jS82fTOIFcT+H8+ht8g6oalTTDldmuaP87K
+	 IEFGIWRgUUgGQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Paul E. McKenney" <paulmck@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	kasan-dev@googlegroups.com,
+Cc: Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	dave@stgolabs.net,
-	josh@joshtriplett.org,
-	frederic@kernel.org,
-	neeraj.upadhyay@kernel.org,
-	joel@joelfernandes.org,
-	boqun.feng@gmail.com,
-	urezki@gmail.com,
-	rcu@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 2/6] rcutorture: Fix rcu_torture_fwd_cb_cr() data race
-Date: Sat, 27 Jul 2024 20:48:55 -0400
-Message-ID: <20240728004901.1704470-2-sashal@kernel.org>
+	linux-raid@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 3/6] md: do not delete safemode_timer in mddev_suspend
+Date: Sat, 27 Jul 2024 20:48:56 -0400
+Message-ID: <20240728004901.1704470-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728004901.1704470-1-sashal@kernel.org>
 References: <20240728004901.1704470-1-sashal@kernel.org>
@@ -74,48 +66,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: "Paul E. McKenney" <paulmck@kernel.org>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 6040072f4774a575fa67b912efe7722874be337b ]
+[ Upstream commit a8768a134518e406d41799a3594aeb74e0889cf7 ]
 
-On powerpc systems, spinlock acquisition does not order prior stores
-against later loads.  This means that this statement:
+The deletion of safemode_timer in mddev_suspend() is redundant and
+potentially harmful now. If timer is about to be woken up but gets
+deleted, 'in_sync' will remain 0 until the next write, causing array
+to stay in the 'active' state instead of transitioning to 'clean'.
 
-	rfcp->rfc_next = NULL;
+Commit 0d9f4f135eb6 ("MD: Add del_timer_sync to mddev_suspend (fix
+nasty panic))" introduced this deletion for dm, because if timer fired
+after dm is destroyed, the resource which the timer depends on might
+have been freed.
 
-Can be reordered to follow this statement:
+However, commit 0dd84b319352 ("md: call __md_stop_writes in md_stop")
+added __md_stop_writes() to md_stop(), which is called before freeing
+resource. Timer is deleted in __md_stop_writes(), and the origin issue
+is resolved. Therefore, delete safemode_timer can be removed safely now.
 
-	WRITE_ONCE(*rfcpp, rfcp);
-
-Which is then a data race with rcu_torture_fwd_prog_cr(), specifically,
-this statement:
-
-	rfcpn = READ_ONCE(rfcp->rfc_next)
-
-KCSAN located this data race, which represents a real failure on powerpc.
-
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: Marco Elver <elver@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: <kasan-dev@googlegroups.com>
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240508092053.1447930-1-linan666@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/md.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 9f505688291e5..5c4bdbe76df04 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1867,7 +1867,7 @@ static void rcu_torture_fwd_cb_cr(struct rcu_head *rhp)
- 	spin_lock_irqsave(&rfp->rcu_fwd_lock, flags);
- 	rfcpp = rfp->rcu_fwd_cb_tail;
- 	rfp->rcu_fwd_cb_tail = &rfcp->rfc_next;
--	WRITE_ONCE(*rfcpp, rfcp);
-+	smp_store_release(rfcpp, rfcp);
- 	WRITE_ONCE(rfp->n_launders_cb, rfp->n_launders_cb + 1);
- 	i = ((jiffies - rfp->rcu_fwd_startat) / (HZ / FWD_CBS_HIST_DIV));
- 	if (i >= ARRAY_SIZE(rfp->n_launders_hist))
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 67ceab4573be4..f1f029243e0cb 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -524,7 +524,6 @@ void mddev_suspend(struct mddev *mddev)
+ 	clear_bit_unlock(MD_ALLOW_SB_UPDATE, &mddev->flags);
+ 	wait_event(mddev->sb_wait, !test_bit(MD_UPDATING_SB, &mddev->flags));
+ 
+-	del_timer_sync(&mddev->safemode_timer);
+ 	/* restrict memory reclaim I/O during raid array is suspend */
+ 	mddev->noio_flag = memalloc_noio_save();
+ }
 -- 
 2.43.0
 
