@@ -1,71 +1,57 @@
-Return-Path: <stable+bounces-62171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D42093E679
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:48:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D8C93E680
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:48:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27BAB28183A
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:48:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A994B211B6
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7C77346F;
-	Sun, 28 Jul 2024 15:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D81812C7FB;
+	Sun, 28 Jul 2024 15:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSlA7RkD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fVvGQW4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A63F12C54B;
-	Sun, 28 Jul 2024 15:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380F279DC7;
+	Sun, 28 Jul 2024 15:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181495; cv=none; b=NEhjlOxZ6RwngUSuNYnMXMMFcAZPD2bBFa3bcgqzNrd8PkbFZoYt5Kz64VK5AWp1IDT4rf96jjZseEwfR/59hZklQJX9trafDWexTWMo5R9y7ONvBONaHx6f4ui5MXy203ky7vUVDPfjcv9V8JcUrmoKUnHEJjWdpgt0rDoB6TU=
+	t=1722181497; cv=none; b=Rae/Nq3wO1bwuyx9tHjHqRI8QIh8k9ya1zHP8neidlhzbM/Qy549a+g5yzcI3uOCjE/pAj5tJBwY5KFQrnScp7nxzoa2QD++/WreYiXo4kDR9bLwnneuRFGzRjanmDVAYY+pMOVaO4XZmRayOOpxpWrA2U3LoEHmAkijGKcvZEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181495; c=relaxed/simple;
-	bh=st1HH7fQkFgalNZUCOts/V3zgBRfMJbXbK11tkG+L34=;
+	s=arc-20240116; t=1722181497; c=relaxed/simple;
+	bh=exxRV37Ako513hSB/j6t4F+oK/EExgBsefaCM8SAAMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKROMmUkSJEZdvlRuz6S1xvhyVzjMcttL5ghJZ67hd+2jWVwAruOkCQl+3NHJc7WXL+8hAWVp3I7dsPBRy+6uexVn5i6tI5ePerLFaFvU8BtNTX0EtIFpxrlXD8qOpkv7o3l0pXCzHcZivSNCBTSQeUe2oy7yEpA/ieWwIIQ1kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSlA7RkD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B774BC116B1;
-	Sun, 28 Jul 2024 15:44:52 +0000 (UTC)
+	 MIME-Version; b=n8T2oYGDcIo1X5BzIZu3gzJCFFQlSGoUms7FTzo7q1KYpZX24croDm1U/008uZT6MXIhbO7GX/9vNm9O3VXPWkhtvvb5p5/tDjj+G1DJ+lVlZ0GOjAvaeS5l2g5thRJCrmCeMaonVYLw1snNxJFR3jWiS1TRGpergbW4q8I3pNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fVvGQW4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0C4C32782;
+	Sun, 28 Jul 2024 15:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181495;
-	bh=st1HH7fQkFgalNZUCOts/V3zgBRfMJbXbK11tkG+L34=;
+	s=k20201202; t=1722181496;
+	bh=exxRV37Ako513hSB/j6t4F+oK/EExgBsefaCM8SAAMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSlA7RkDIDHeRdLV8dlclo1emYuz6bVlXTbj+LAuyyedk9u2SeC1YmP/pdIuCyVYH
-	 Tm2jDGe7naIt+iVvDlazzDijzEACzVfRMA1Rr/kS/f8yDrPMUzsQcvrNR1W1dr+P0K
-	 WIt0cK8VyM51Kg32mjOX+xydccmRcHvjNaLriNikbvmvlJ9KH0CxofsZBzWofdewSg
-	 QPeDP4X5dJUxAIAm9yX8AR82p4iTEXgN6u6LLVd/12PsOQ57Qdezl7Pa7806sYiUJY
-	 u1reLpMK5dn8+8Vw8AlDZHxD6X/Qugi2b+rqipqyP4JXSoLwtDNVj9qfNE9OGBvJZp
-	 BecJgUplcCczQ==
+	b=fVvGQW4L/zIZOWN9gkaU4x5UuCCnJoUMzT7t95nRRzzMS9r11WhmsIt/C/8+E6m5L
+	 FluBRz4Wgf4g+ptvyILSnrt/pEk0ukKHRUylQHIjt0kPUSEKg73EEauofizbEgVGMe
+	 ZsjhDDnTjkBOHyombXyyBdt3Ms5MkdFJyo/UzspF0oGrobrTGt+w9y7fR3MVkFOSny
+	 PaSujKiWFEu0cSLpBU3yryc6oCN315QjoslR3Y6py8M27EHQ6A1lXJeKsOIr/N0+1W
+	 P0hhIbWf4N025uiX0YaZcJNTZ7ZiUSLnhwmz3YEpeArrqLNreo+TlknOPZpB0hK/Uq
+	 tW5IxtbIYKU5w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Chi Zhiling <chizhiling@kylinos.cn>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	wayne.lin@amd.com,
-	alvin.lee2@amd.com,
-	mwen@igalia.com,
-	dillon.varone@amd.com,
-	aric.cyr@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 27/34] drm/amd/display: Fix NULL pointer dereference for DTN log in DCN401
-Date: Sun, 28 Jul 2024 11:40:51 -0400
-Message-ID: <20240728154230.2046786-27-sashal@kernel.org>
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 28/34] media: xc2028: avoid use-after-free in load_firmware_cb()
+Date: Sun, 28 Jul 2024 11:40:52 -0400
+Message-ID: <20240728154230.2046786-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728154230.2046786-1-sashal@kernel.org>
 References: <20240728154230.2046786-1-sashal@kernel.org>
@@ -80,155 +66,127 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+From: Chi Zhiling <chizhiling@kylinos.cn>
 
-[ Upstream commit 5af757124792817f8eb1bd0c80ad60fab519586b ]
+[ Upstream commit 68594cec291ff9523b9feb3f43fd853dcddd1f60 ]
 
-When users run the command:
+syzkaller reported use-after-free in load_firmware_cb() [1].
+The reason is because the module allocated a struct tuner in tuner_probe(),
+and then the module initialization failed, the struct tuner was released.
+A worker which created during module initialization accesses this struct
+tuner later, it caused use-after-free.
 
-cat /sys/kernel/debug/dri/0/amdgpu_dm_dtn_log
+The process is as follows:
 
-The following NULL pointer dereference happens:
+task-6504           worker_thread
+tuner_probe                             <= alloc dvb_frontend [2]
+...
+request_firmware_nowait                 <= create a worker
+...
+tuner_remove                            <= free dvb_frontend
+...
+                    request_firmware_work_func  <= the firmware is ready
+                    load_firmware_cb    <= but now the dvb_frontend has been freed
 
-[  +0.000003] BUG: kernel NULL pointer dereference, address: NULL
-[  +0.000005] #PF: supervisor instruction fetch in kernel mode
-[  +0.000002] #PF: error_code(0x0010) - not-present page
-[  +0.000002] PGD 0 P4D 0
-[  +0.000004] Oops: 0010 [#1] PREEMPT SMP NOPTI
-[  +0.000003] RIP: 0010:0x0
-[  +0.000008] Code: Unable to access opcode bytes at 0xffffffffffffffd6.
-[...]
-[  +0.000002] PKRU: 55555554
-[  +0.000002] Call Trace:
-[  +0.000002]  <TASK>
-[  +0.000003]  ? show_regs+0x65/0x70
-[  +0.000006]  ? __die+0x24/0x70
-[  +0.000004]  ? page_fault_oops+0x160/0x470
-[  +0.000006]  ? do_user_addr_fault+0x2b5/0x690
-[  +0.000003]  ? prb_read_valid+0x1c/0x30
-[  +0.000005]  ? exc_page_fault+0x8c/0x1a0
-[  +0.000005]  ? asm_exc_page_fault+0x27/0x30
-[  +0.000012]  dcn10_log_color_state+0xf9/0x510 [amdgpu]
-[  +0.000306]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  +0.000003]  ? vsnprintf+0x2fb/0x600
-[  +0.000009]  dcn10_log_hw_state+0xfd0/0xfe0 [amdgpu]
-[  +0.000218]  ? __mod_memcg_lruvec_state+0xe8/0x170
-[  +0.000008]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  +0.000002]  ? debug_smp_processor_id+0x17/0x20
-[  +0.000003]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  +0.000002]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  +0.000002]  ? set_ptes.isra.0+0x2b/0x90
-[  +0.000004]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  +0.000002]  ? _raw_spin_unlock+0x19/0x40
-[  +0.000004]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  +0.000002]  ? do_anonymous_page+0x337/0x700
-[  +0.000004]  dtn_log_read+0x82/0x120 [amdgpu]
-[  +0.000207]  full_proxy_read+0x66/0x90
-[  +0.000007]  vfs_read+0xb0/0x340
-[  +0.000005]  ? __count_memcg_events+0x79/0xe0
-[  +0.000002]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  +0.000003]  ? count_memcg_events.constprop.0+0x1e/0x40
-[  +0.000003]  ? handle_mm_fault+0xb2/0x370
-[  +0.000003]  ksys_read+0x6b/0xf0
-[  +0.000004]  __x64_sys_read+0x19/0x20
-[  +0.000003]  do_syscall_64+0x60/0x130
-[  +0.000004]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-[  +0.000003] RIP: 0033:0x7fdf32f147e2
-[...]
+To fix the issue, check the dvd_frontend in load_firmware_cb(), if it is
+null, report a warning and just return.
 
-This error happens when the color log tries to read the gamut remap
-information from DCN401 which is not initialized in the dcn401_dpp_funcs
-which leads to a null pointer dereference. This commit addresses this
-issue by adding a proper guard to access the gamut_remap callback in
-case the specific ASIC did not implement this function.
+[1]:
+    ==================================================================
+     BUG: KASAN: use-after-free in load_firmware_cb+0x1310/0x17a0
+     Read of size 8 at addr ffff8000d7ca2308 by task kworker/2:3/6504
 
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+     Call trace:
+      load_firmware_cb+0x1310/0x17a0
+      request_firmware_work_func+0x128/0x220
+      process_one_work+0x770/0x1824
+      worker_thread+0x488/0xea0
+      kthread+0x300/0x430
+      ret_from_fork+0x10/0x20
+
+     Allocated by task 6504:
+      kzalloc
+      tuner_probe+0xb0/0x1430
+      i2c_device_probe+0x92c/0xaf0
+      really_probe+0x678/0xcd0
+      driver_probe_device+0x280/0x370
+      __device_attach_driver+0x220/0x330
+      bus_for_each_drv+0x134/0x1c0
+      __device_attach+0x1f4/0x410
+      device_initial_probe+0x20/0x30
+      bus_probe_device+0x184/0x200
+      device_add+0x924/0x12c0
+      device_register+0x24/0x30
+      i2c_new_device+0x4e0/0xc44
+      v4l2_i2c_new_subdev_board+0xbc/0x290
+      v4l2_i2c_new_subdev+0xc8/0x104
+      em28xx_v4l2_init+0x1dd0/0x3770
+
+     Freed by task 6504:
+      kfree+0x238/0x4e4
+      tuner_remove+0x144/0x1c0
+      i2c_device_remove+0xc8/0x290
+      __device_release_driver+0x314/0x5fc
+      device_release_driver+0x30/0x44
+      bus_remove_device+0x244/0x490
+      device_del+0x350/0x900
+      device_unregister+0x28/0xd0
+      i2c_unregister_device+0x174/0x1d0
+      v4l2_device_unregister+0x224/0x380
+      em28xx_v4l2_init+0x1d90/0x3770
+
+     The buggy address belongs to the object at ffff8000d7ca2000
+      which belongs to the cache kmalloc-2k of size 2048
+     The buggy address is located 776 bytes inside of
+      2048-byte region [ffff8000d7ca2000, ffff8000d7ca2800)
+     The buggy address belongs to the page:
+     page:ffff7fe00035f280 count:1 mapcount:0 mapping:ffff8000c001f000 index:0x0
+     flags: 0x7ff800000000100(slab)
+     raw: 07ff800000000100 ffff7fe00049d880 0000000300000003 ffff8000c001f000
+     raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
+     page dumped because: kasan: bad access detected
+
+     Memory state around the buggy address:
+      ffff8000d7ca2200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+      ffff8000d7ca2280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+     >ffff8000d7ca2300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                           ^
+      ffff8000d7ca2380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+      ffff8000d7ca2400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+     ==================================================================
+
+[2]
+    Actually, it is allocated for struct tuner, and dvb_frontend is inside.
+
+Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/hwss/dcn10/dcn10_hwseq.c   | 49 ++++++++++---------
- 1 file changed, 27 insertions(+), 22 deletions(-)
+ drivers/media/tuners/xc2028.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-index 0c4aef8ffe2c5..3306684e805ac 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-@@ -288,6 +288,7 @@ static void dcn10_log_color_state(struct dc *dc,
+diff --git a/drivers/media/tuners/xc2028.c b/drivers/media/tuners/xc2028.c
+index 5a967edceca93..352b8a3679b72 100644
+--- a/drivers/media/tuners/xc2028.c
++++ b/drivers/media/tuners/xc2028.c
+@@ -1361,9 +1361,16 @@ static void load_firmware_cb(const struct firmware *fw,
+ 			     void *context)
  {
- 	struct dc_context *dc_ctx = dc->ctx;
- 	struct resource_pool *pool = dc->res_pool;
-+	bool is_gamut_remap_available = false;
- 	int i;
+ 	struct dvb_frontend *fe = context;
+-	struct xc2028_data *priv = fe->tuner_priv;
++	struct xc2028_data *priv;
+ 	int rc;
  
- 	DTN_INFO("DPP:    IGAM format    IGAM mode    DGAM mode    RGAM mode"
-@@ -300,16 +301,15 @@ static void dcn10_log_color_state(struct dc *dc,
- 		struct dcn_dpp_state s = {0};
- 
- 		dpp->funcs->dpp_read_state(dpp, &s);
--		dpp->funcs->dpp_get_gamut_remap(dpp, &s.gamut_remap);
-+		if (dpp->funcs->dpp_get_gamut_remap) {
-+			dpp->funcs->dpp_get_gamut_remap(dpp, &s.gamut_remap);
-+			is_gamut_remap_available = true;
-+		}
- 
- 		if (!s.is_enabled)
- 			continue;
- 
--		DTN_INFO("[%2d]:  %11xh  %11s    %9s    %9s"
--			 "  %12s  "
--			 "%010lld %010lld %010lld %010lld "
--			 "%010lld %010lld %010lld %010lld "
--			 "%010lld %010lld %010lld %010lld",
-+		DTN_INFO("[%2d]:  %11xh  %11s    %9s    %9s",
- 				dpp->inst,
- 				s.igam_input_format,
- 				(s.igam_lut_mode == 0) ? "BypassFixed" :
-@@ -328,22 +328,27 @@ static void dcn10_log_color_state(struct dc *dc,
- 					((s.rgam_lut_mode == 2) ? "Ycc" :
- 					((s.rgam_lut_mode == 3) ? "RAM" :
- 					((s.rgam_lut_mode == 4) ? "RAM" :
--								 "Unknown")))),
--				(s.gamut_remap.gamut_adjust_type == 0) ? "Bypass" :
--					((s.gamut_remap.gamut_adjust_type == 1) ? "HW" :
--										  "SW"),
--				s.gamut_remap.temperature_matrix[0].value,
--				s.gamut_remap.temperature_matrix[1].value,
--				s.gamut_remap.temperature_matrix[2].value,
--				s.gamut_remap.temperature_matrix[3].value,
--				s.gamut_remap.temperature_matrix[4].value,
--				s.gamut_remap.temperature_matrix[5].value,
--				s.gamut_remap.temperature_matrix[6].value,
--				s.gamut_remap.temperature_matrix[7].value,
--				s.gamut_remap.temperature_matrix[8].value,
--				s.gamut_remap.temperature_matrix[9].value,
--				s.gamut_remap.temperature_matrix[10].value,
--				s.gamut_remap.temperature_matrix[11].value);
-+								 "Unknown")))));
-+		if (is_gamut_remap_available)
-+			DTN_INFO("  %12s  "
-+				 "%010lld %010lld %010lld %010lld "
-+				 "%010lld %010lld %010lld %010lld "
-+				 "%010lld %010lld %010lld %010lld",
-+				 (s.gamut_remap.gamut_adjust_type == 0) ? "Bypass" :
-+					((s.gamut_remap.gamut_adjust_type == 1) ? "HW" : "SW"),
-+				 s.gamut_remap.temperature_matrix[0].value,
-+				 s.gamut_remap.temperature_matrix[1].value,
-+				 s.gamut_remap.temperature_matrix[2].value,
-+				 s.gamut_remap.temperature_matrix[3].value,
-+				 s.gamut_remap.temperature_matrix[4].value,
-+				 s.gamut_remap.temperature_matrix[5].value,
-+				 s.gamut_remap.temperature_matrix[6].value,
-+				 s.gamut_remap.temperature_matrix[7].value,
-+				 s.gamut_remap.temperature_matrix[8].value,
-+				 s.gamut_remap.temperature_matrix[9].value,
-+				 s.gamut_remap.temperature_matrix[10].value,
-+				 s.gamut_remap.temperature_matrix[11].value);
++	if (!fe) {
++		pr_warn("xc2028: No frontend in %s\n", __func__);
++		return;
++	}
 +
- 		DTN_INFO("\n");
- 	}
- 	DTN_INFO("\n");
++	priv = fe->tuner_priv;
++
+ 	tuner_dbg("request_firmware_nowait(): %s\n", fw ? "OK" : "error");
+ 	if (!fw) {
+ 		tuner_err("Could not load firmware %s.\n", priv->fname);
 -- 
 2.43.0
 
