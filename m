@@ -1,68 +1,67 @@
-Return-Path: <stable+bounces-62215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF6C93E708
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:01:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF02793E70D
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DF621F215CE
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:01:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E825281C94
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72CC1494BF;
-	Sun, 28 Jul 2024 15:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA4C12FF72;
+	Sun, 28 Jul 2024 15:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D7C3XA8d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GnJbnuLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFA714901A;
-	Sun, 28 Jul 2024 15:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5487879DC7;
+	Sun, 28 Jul 2024 15:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181748; cv=none; b=Q9iEKwizxu42DKTp0H0LkDVbB4kcGgQKm9nXZC+NSNI9IWw2CLgD05oOrOoGJVwkyPVBwN7X2go5F60EmN1GL7yDbYY0d2E8mtXnY0E0aW15xJuIngu0eievHws51/5r44e7sxmpqpmNxIsqxfyC/IP0EyvyBZWn+kpCTzKVSEI=
+	t=1722181771; cv=none; b=uGMBOTuY7mVXZYlUkc4RE6a9Uett2yPa1ZW1TMlNw9p3gKLtZ+IOyGJQBsMJGdr8pJ0f/7mEnJwMBSDDV7IqUZvgrutEkugFlpyv3t5dzRbMPC90ZQWpHYSj70DSqYEi53SCXxOaNY97jPgrSrhcTXKowzKs3rd9o6rY/oLmfWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181748; c=relaxed/simple;
-	bh=bW8puwp8UG1FE5R0NW0YGF8HexNK9uU3nHZPanPzjUI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtn0J42VuZ9RYzuLpjy3Vxy1m/0hD0WNSbWCTTMAjH4qN9Zm0f43HKw+tEe/3Kr/sg9fXjgmM/06KXfztiZUomxd2fopnzaPudeu2LzLyn34h7UY6CkMzWwBOmeqopSLXXkk7XyIf+vn28puon+O8L5RElEdLSo6OSFMpnUY2kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D7C3XA8d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EEAC4AF0B;
-	Sun, 28 Jul 2024 15:49:06 +0000 (UTC)
+	s=arc-20240116; t=1722181771; c=relaxed/simple;
+	bh=G8oQTjcYt4EIYN3WqlpBpoy1VAYDrd06NdL+PMqQDdQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Uo7NTgnKd/NLrtGfXZkCdu3h2N6jsLuaHEZTtoOFKvRnp6uE2UeHNk5+V7K4TqXH8CTI3MQRNy5aJl6QLkegK83we2xOuPYGuJ55D6aUXQe9rz8aZhjw+agmBhAO7zwkSRONUCx9VmX1n4ZMwj20UKWXReXAkB0DiCj7Sdy3uu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GnJbnuLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA09C116B1;
+	Sun, 28 Jul 2024 15:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181748;
-	bh=bW8puwp8UG1FE5R0NW0YGF8HexNK9uU3nHZPanPzjUI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7C3XA8dJqBGTqZXq4wTWx2+ABzWFguvPllZdgJk8PpXAzPgfsxzzUdIhUWVXYnQ7
-	 uwhxp022kNSOcBxVqAr3oDrN5B0CNQIeTLB8qlqiK4rkfcPZ31aHGoRlDa3LEnAarA
-	 dCItHQVfYhbwEj69CvEP3qjWp+par1WJuVdIKva4ljfl8MThgWUSlRF9chEMAFNO4g
-	 IL9b9F+TB2HK7fPC9Q+EL7wHKRSWSf4W8o4eP5oYOB/oUCdeQJrpBmaS1q6FZi1QVG
-	 KfGr/1U850/XFvQ+5Q21cisZjcv4vjoSL4wpa/bRJOiM8dDzr4zMZ/mqD58lf2vrRV
-	 /r1WU0qOyremw==
+	s=k20201202; t=1722181770;
+	bh=G8oQTjcYt4EIYN3WqlpBpoy1VAYDrd06NdL+PMqQDdQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GnJbnuLXEDZycHSo/tY0BjSfW75r2H6bMU2fC5/hL02zGdGLbrXYKU31SWnHlC+zA
+	 lPH4dFT5KbcXwvkB2vvS/bynbhvIKNi2YgLh+VDluA1Hg6Lx9c57JwZ7JxdJMcCM7z
+	 GQZiGRRlr8Z1EwXqS0xvtai0pzpH6vzLyvHOD1w2MHT8B5dVY9eC2Y9O0N4Fv0OzfT
+	 NmD0sk7vjcKCpveTSX4zUi/mxhloH0bu+7AYEnhwMvRgh5Xud57k7wotmNO7DEbkCA
+	 nqsabzD/mWQnOxfQSP23XXs3ISL9h1v/E/LYQIt/eZwqOvd0Jn2c0b+0LcXy+j+5/y
+	 z4SITfjmp1Pgg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Coddington <bcodding@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+Cc: Ma Jun <Jun.Ma2@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	chuck.lever@oracle.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 17/17] SUNRPC: Fix a race to wake a sync task
-Date: Sun, 28 Jul 2024 11:47:27 -0400
-Message-ID: <20240728154805.2049226-17-sashal@kernel.org>
+	evan.quan@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	mario.limonciello@amd.com,
+	sunran001@208suo.com,
+	alexious@zju.edu.cn,
+	ruanjinjie@huawei.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.15 01/10] drm/amdgpu/pm: Fix the null pointer dereference for smu7
+Date: Sun, 28 Jul 2024 11:48:59 -0400
+Message-ID: <20240728154927.2050160-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240728154805.2049226-1-sashal@kernel.org>
-References: <20240728154805.2049226-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,54 +70,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.102
+X-stable-base: Linux 5.15.164
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit ed0172af5d6fc07d1b40ca82f5ca3979300369f7 ]
+[ Upstream commit c02c1960c93eede587576625a1221205a68a904f ]
 
-We've observed NFS clients with sync tasks sleeping in __rpc_execute
-waiting on RPC_TASK_QUEUED that have not responded to a wake-up from
-rpc_make_runnable().  I suspect this problem usually goes unnoticed,
-because on a busy client the task will eventually be re-awoken by another
-task completion or xprt event.  However, if the state manager is draining
-the slot table, a sync task missing a wake-up can result in a hung client.
+optimize the code to avoid pass a null pointer (hwmgr->backend)
+to function smu7_update_edc_leakage_table.
 
-We've been able to prove that the waker in rpc_make_runnable() successfully
-calls wake_up_bit() (ie- there's no race to tk_runstate), but the
-wake_up_bit() call fails to wake the waiter.  I suspect the waker is
-missing the load of the bit's wait_queue_head, so waitqueue_active() is
-false.  There are some very helpful comments about this problem above
-wake_up_bit(), prepare_to_wait(), and waitqueue_active().
-
-Fix this by inserting smp_mb__after_atomic() before the wake_up_bit(),
-which pairs with prepare_to_wait() calling set_current_state().
-
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/sched.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 50 +++++++++----------
+ 1 file changed, 24 insertions(+), 26 deletions(-)
 
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index 6debf4fd42d4e..cef623ea15060 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -369,8 +369,10 @@ static void rpc_make_runnable(struct workqueue_struct *wq,
- 	if (RPC_IS_ASYNC(task)) {
- 		INIT_WORK(&task->u.tk_work, rpc_async_schedule);
- 		queue_work(wq, &task->u.tk_work);
--	} else
-+	} else {
-+		smp_mb__after_atomic();
- 		wake_up_bit(&task->tk_runstate, RPC_TASK_QUEUED);
-+	}
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 9bfc465d08fb0..2451cec031dda 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -2907,6 +2907,7 @@ static int smu7_update_edc_leakage_table(struct pp_hwmgr *hwmgr)
+ 
+ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ {
++	struct amdgpu_device *adev = hwmgr->adev;
+ 	struct smu7_hwmgr *data;
+ 	int result = 0;
+ 
+@@ -2943,40 +2944,37 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 	/* Initalize Dynamic State Adjustment Rule Settings */
+ 	result = phm_initializa_dynamic_state_adjustment_rule_settings(hwmgr);
+ 
+-	if (0 == result) {
+-		struct amdgpu_device *adev = hwmgr->adev;
++	if (result)
++		goto fail;
+ 
+-		data->is_tlu_enabled = false;
++	data->is_tlu_enabled = false;
+ 
+-		hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
++	hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
+ 							SMU7_MAX_HARDWARE_POWERLEVELS;
+-		hwmgr->platform_descriptor.hardwarePerformanceLevels = 2;
+-		hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
++	hwmgr->platform_descriptor.hardwarePerformanceLevels = 2;
++	hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
+ 
+-		data->pcie_gen_cap = adev->pm.pcie_gen_mask;
+-		if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
+-			data->pcie_spc_cap = 20;
+-		else
+-			data->pcie_spc_cap = 16;
+-		data->pcie_lane_cap = adev->pm.pcie_mlw_mask;
+-
+-		hwmgr->platform_descriptor.vbiosInterruptId = 0x20000400; /* IRQ_SOURCE1_SW_INT */
+-/* The true clock step depends on the frequency, typically 4.5 or 9 MHz. Here we use 5. */
+-		hwmgr->platform_descriptor.clockStep.engineClock = 500;
+-		hwmgr->platform_descriptor.clockStep.memoryClock = 500;
+-		smu7_thermal_parameter_init(hwmgr);
+-	} else {
+-		/* Ignore return value in here, we are cleaning up a mess. */
+-		smu7_hwmgr_backend_fini(hwmgr);
+-	}
++	data->pcie_gen_cap = adev->pm.pcie_gen_mask;
++	if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
++		data->pcie_spc_cap = 20;
++	else
++		data->pcie_spc_cap = 16;
++	data->pcie_lane_cap = adev->pm.pcie_mlw_mask;
++
++	hwmgr->platform_descriptor.vbiosInterruptId = 0x20000400; /* IRQ_SOURCE1_SW_INT */
++	/* The true clock step depends on the frequency, typically 4.5 or 9 MHz. Here we use 5. */
++	hwmgr->platform_descriptor.clockStep.engineClock = 500;
++	hwmgr->platform_descriptor.clockStep.memoryClock = 500;
++	smu7_thermal_parameter_init(hwmgr);
+ 
+ 	result = smu7_update_edc_leakage_table(hwmgr);
+-	if (result) {
+-		smu7_hwmgr_backend_fini(hwmgr);
+-		return result;
+-	}
++	if (result)
++		goto fail;
+ 
+ 	return 0;
++fail:
++	smu7_hwmgr_backend_fini(hwmgr);
++	return result;
  }
  
- /*
+ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
 -- 
 2.43.0
 
