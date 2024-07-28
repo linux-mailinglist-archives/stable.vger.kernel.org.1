@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-61993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-61994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320C793E1C5
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:50:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC9993E1C7
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C48BF1F217FF
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:50:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2BAC1F218F1
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660167470;
-	Sun, 28 Jul 2024 00:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E46E55769;
+	Sun, 28 Jul 2024 00:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fW0ChuUW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pgvxUSwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCE44CB5B;
-	Sun, 28 Jul 2024 00:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58805548F7;
+	Sun, 28 Jul 2024 00:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127685; cv=none; b=W7LjUfqqHxmApA7efndkBatiqlJ06JbNaP3cKdtST5KYM2K2Z3f4ngUvh6OvJDLB/jfXu9urKIReT8pU2eC7xP1h1n5BTYTtE9C5kjOWCfdGqu6E/X3J+Xf3NAII8kEljmiS9S6EbLHDHlGYkIaUb5AyWBsmE4WQmxkwFMkvgPk=
+	t=1722127687; cv=none; b=fv/ke2BjjuP9Jn86TLPObDVFYhVCnRRJHpkjz/8Sylrwki2l1lBcpng6iLCV2vbMKM5+30Flw/w76eRekija1SZgSA/SUhiK2hnRSpuBqoKxfb26x5/B8j4PdWKSMT2rjYRpFHipcjcdTcCwmKEdarQISu0HO0U4K3fNSkYMBcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127685; c=relaxed/simple;
-	bh=/hrMYY5Mw+9qdFhlnzQzO3nNxs4wp8TSo2/mbk/Vhwg=;
+	s=arc-20240116; t=1722127687; c=relaxed/simple;
+	bh=lItotgKCa+r1uULXTz9TQ0z1LBqfvJJEZVGeuzFOkUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WigygSAFqz2/s0GAH3o/73Dsib0Ao1ANqbOCfLKExfVgBGfcUk2hxwQZmLIJjQdVUVRRH9kphPU0lX9d3rOyqmbHj5B6Tm2IlXNwzCmQ/+sbYKrr1p1JrZQvDih8JERdearSVWx3HBOtG3NX+2oADUOs3gOde8mWtrAfJ3wDaTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fW0ChuUW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868D3C32781;
-	Sun, 28 Jul 2024 00:48:03 +0000 (UTC)
+	 MIME-Version; b=Z1fnFaB2M+50u4YnRa/hd7nScK+kmGeG21zJyg4adlA5+BvnRpff9PTbmgndarFa2YczpyUW6ExsmOAiZILxWSY4Tvc5fphjx/hMrqP+S8mBW5bmvrop55R/L6uvjTFqcBzOtxxqrNrBYmT7YoPgTYs9tctKT3IXMbPnQiHSD4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pgvxUSwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72785C4AF09;
+	Sun, 28 Jul 2024 00:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127685;
-	bh=/hrMYY5Mw+9qdFhlnzQzO3nNxs4wp8TSo2/mbk/Vhwg=;
+	s=k20201202; t=1722127686;
+	bh=lItotgKCa+r1uULXTz9TQ0z1LBqfvJJEZVGeuzFOkUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fW0ChuUWuGPIHikclzjq/3gFil/IuRsueetPVQVkTGyt7qide1vmMlDmGCo9ZwP6J
-	 IAAi0g8b8d2wLZlbZc84WNF6a+KcyTbH8A3wyVfEwMiObckacY/26HzCFwFlJXUSZV
-	 DNi5Tnxj1wzHhpeUW96T07rWpkjhp5t2PfJcxq08lMQZhuCgbELxfuqg1iwsIzkXqk
-	 C9Uchh8AHTWG98uzcmXtIOYy5vzLhD+3MjrzeYR7jsXkpB00DZnkye9AcrvIHFAVYG
-	 yLEQrJJwEuMr1+GoMdj62kuo2c1WKavtgV3CvKPYDkPFSAU40KeWI2IxL8nuXHjehV
-	 jzapIJRkjVEtg==
+	b=pgvxUSwjUnJSB7HWTCnL7HEV06MDe7Evu6nUz9BQgQWqi7/tMwoggH1YbyfzT/2xq
+	 4Knazyedf+fvWhF6Vh1ikN89Hw34GDW9qvYpizyFP54RUjOloXwXJ9piyAKV/bSRu8
+	 AniAN0NdN5okBN+7o/odG3/t70/EZuo6NJgo+D7mUxM+lK+7tXUnFpsMR0lZP8D6H7
+	 TGAfpXqTB0WTvDQJ07H+4mfRUU6+X7WaJkYwdUUtY12SoYcxTbDGAQSn5v2w5qE8vf
+	 hF03K9Ha9605wvDUfZza2Dp3qrKCHLoCvIaQnRzHdr4oGf76ANn8KpT4PYf+CdXVtK
+	 JnmkvSIa+3oBQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mikulas Patocka <mpatocka@redhat.com>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: James Morse <james.morse@arm.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Miguel Luis <miguel.luis@oracle.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kbusch@kernel.org,
-	sagi@grimberg.me,
-	linux-nvme@lists.infradead.org,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 13/16] block: change rq_integrity_vec to respect the iterator
-Date: Sat, 27 Jul 2024 20:47:30 -0400
-Message-ID: <20240728004739.1698541-13-sashal@kernel.org>
+	tglx@linutronix.de,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.10 14/16] irqchip/gic-v3: Don't return errors from gic_acpi_match_gicc()
+Date: Sat, 27 Jul 2024 20:47:31 -0400
+Message-ID: <20240728004739.1698541-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728004739.1698541-1-sashal@kernel.org>
 References: <20240728004739.1698541-1-sashal@kernel.org>
@@ -71,104 +71,70 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: James Morse <james.morse@arm.com>
 
-[ Upstream commit cf546dd289e0f6d2594c25e2fb4e19ee67c6d988 ]
+[ Upstream commit fa2dabe57220e6af78ed7a2f7016bf250a618204 ]
 
-If we allocate a bio that is larger than NVMe maximum request size,
-attach integrity metadata to it and send it to the NVMe subsystem, the
-integrity metadata will be corrupted.
+gic_acpi_match_gicc() is only called via gic_acpi_count_gicr_regions().
+It should only count the number of enabled redistributors, but it
+also tries to sanity check the GICC entry, currently returning an
+error if the Enabled bit is set, but the gicr_base_address is zero.
 
-Splitting the bio works correctly. The function bio_split will clone the
-bio, trim the iterator of the first bio and advance the iterator of the
-second bio.
+Adding support for the online-capable bit to the sanity check will
+complicate it, for no benefit. The existing check implicitly depends on
+gic_acpi_count_gicr_regions() previous failing to find any GICR regions
+(as it is valid to have gicr_base_address of zero if the redistributors
+are described via a GICR entry).
 
-However, the function rq_integrity_vec has a bug - it returns the first
-vector of the bio's metadata and completely disregards the metadata
-iterator that was advanced when the bio was split. Thus, the second bio
-uses the same metadata as the first bio and this leads to metadata
-corruption.
+Instead of complicating the check, remove it. Failures that happen at
+this point cause the irqchip not to register, meaning no irqs can be
+requested. The kernel grinds to a panic() pretty quickly.
 
-This commit changes rq_integrity_vec, so that it calls mp_bvec_iter_bvec
-instead of returning the first vector. mp_bvec_iter_bvec reads the
-iterator and uses it to build a bvec for the current position in the
-iterator.
+Without the check, MADT tables that exhibit this problem are still
+caught by gic_populate_rdist(), which helpfully also prints what went
+wrong:
+| CPU4: mpidr 100 has no re-distributor!
 
-The "queue_max_integrity_segments(rq->q) > 1" check was removed, because
-the updated rq_integrity_vec function works correctly with multiple
-segments.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/49d1afaa-f934-6ed2-a678-e0d428c63a65@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Tested-by: Miguel Luis <miguel.luis@oracle.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240529133446.28446-14-Jonathan.Cameron@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c       |  6 +++---
- include/linux/blk-integrity.h | 14 +++++++-------
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/irqchip/irq-gic-v3.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 102a9fb0c65ff..5d8035218de9b 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -826,9 +826,9 @@ static blk_status_t nvme_map_metadata(struct nvme_dev *dev, struct request *req,
- 		struct nvme_command *cmnd)
- {
- 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
-+	struct bio_vec bv = rq_integrity_vec(req);
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index 6fb276504bcc8..10af15f93d4d4 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -2415,19 +2415,10 @@ static int __init gic_acpi_match_gicc(union acpi_subtable_headers *header,
+ 	 * If GICC is enabled and has valid gicr base address, then it means
+ 	 * GICR base is presented via GICC
+ 	 */
+-	if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address) {
++	if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address)
+ 		acpi_data.enabled_rdists++;
+-		return 0;
+-	}
  
--	iod->meta_dma = dma_map_bvec(dev->dev, rq_integrity_vec(req),
--			rq_dma_dir(req), 0);
-+	iod->meta_dma = dma_map_bvec(dev->dev, &bv, rq_dma_dir(req), 0);
- 	if (dma_mapping_error(dev->dev, iod->meta_dma))
- 		return BLK_STS_IOERR;
- 	cmnd->rw.metadata = cpu_to_le64(iod->meta_dma);
-@@ -967,7 +967,7 @@ static __always_inline void nvme_pci_unmap_rq(struct request *req)
- 	        struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
- 
- 		dma_unmap_page(dev->dev, iod->meta_dma,
--			       rq_integrity_vec(req)->bv_len, rq_dma_dir(req));
-+			       rq_integrity_vec(req).bv_len, rq_dma_dir(req));
- 	}
- 
- 	if (blk_rq_nr_phys_segments(req))
-diff --git a/include/linux/blk-integrity.h b/include/linux/blk-integrity.h
-index 7428cb43952da..d16dd24719841 100644
---- a/include/linux/blk-integrity.h
-+++ b/include/linux/blk-integrity.h
-@@ -100,14 +100,13 @@ static inline bool blk_integrity_rq(struct request *rq)
+-	/*
+-	 * It's perfectly valid firmware can pass disabled GICC entry, driver
+-	 * should not treat as errors, skip the entry instead of probe fail.
+-	 */
+-	if (!acpi_gicc_is_usable(gicc))
+-		return 0;
+-
+-	return -ENODEV;
++	return 0;
  }
  
- /*
-- * Return the first bvec that contains integrity data.  Only drivers that are
-- * limited to a single integrity segment should use this helper.
-+ * Return the current bvec that contains the integrity data. bip_iter may be
-+ * advanced to iterate over the integrity data.
-  */
--static inline struct bio_vec *rq_integrity_vec(struct request *rq)
-+static inline struct bio_vec rq_integrity_vec(struct request *rq)
- {
--	if (WARN_ON_ONCE(queue_max_integrity_segments(rq->q) > 1))
--		return NULL;
--	return rq->bio->bi_integrity->bip_vec;
-+	return mp_bvec_iter_bvec(rq->bio->bi_integrity->bip_vec,
-+				 rq->bio->bi_integrity->bip_iter);
- }
- #else /* CONFIG_BLK_DEV_INTEGRITY */
- static inline int blk_rq_count_integrity_sg(struct request_queue *q,
-@@ -169,7 +168,8 @@ static inline int blk_integrity_rq(struct request *rq)
- 
- static inline struct bio_vec *rq_integrity_vec(struct request *rq)
- {
--	return NULL;
-+	/* the optimizer will remove all calls to this function */
-+	return (struct bio_vec){ };
- }
- #endif /* CONFIG_BLK_DEV_INTEGRITY */
- #endif /* _LINUX_BLK_INTEGRITY_H */
+ static int __init gic_acpi_count_gicr_regions(void)
 -- 
 2.43.0
 
