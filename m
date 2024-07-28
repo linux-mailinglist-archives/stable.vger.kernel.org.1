@@ -1,64 +1,67 @@
-Return-Path: <stable+bounces-62069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A7A93E2A1
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:12:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3143693E2A6
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C8091F20ECE
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:12:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6300E1C21193
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1698A1922DE;
-	Sun, 28 Jul 2024 00:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C322C192B67;
+	Sun, 28 Jul 2024 00:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h+pu5Djd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fyNo8UNZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F5D1922D5;
-	Sun, 28 Jul 2024 00:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75278192B60;
+	Sun, 28 Jul 2024 00:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722128058; cv=none; b=CenRAGGGln3ZzbBoio3yRnoxRkTJGo4iSRPyb89a6xmmLLa596kuNuMQ+VHalHU1BD5zup7q0H/qPMbagv0VcXdBlAeU8MjJ64qjez9Tpkdg+eZ0viY8Lh0EnOqjLpxp0cIpFahiRJCLwEX5E6G8A1ecQnRK4xJo4zBgk+RI2vQ=
+	t=1722128061; cv=none; b=gTnhXTUE62enKy0mwnsYNTQthZA+dtMfAyw8BrHXl6hH8BPbGrmwJwn51RqbbK47qLPDo4DE0iY90RYFYufopXMZBNh8dIOiItkOjwkWWPouT+vqht5sKCWt8XYRKH0eoKZg34oQQ/JUlBexuXROdUdOatAXhm6XG06qDL0ZPVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722128058; c=relaxed/simple;
-	bh=qJaxkqrUINhEqabIMrw6yRcJH7/Dz0xtSk/oXy0uUPs=;
+	s=arc-20240116; t=1722128061; c=relaxed/simple;
+	bh=o0NcRSSMSeFpC/3bL4/Dz8Ss4YnMFhGRnW2k0JyOfVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lxoplcel3rHgv6kNQUYybiS6eOnQaNDIVlPLe+j6bTRPIL3QOeCpu9KJWVOlF4gBOYMtY7SQYpDbdycWXMvkJp2RdwQToROAtXAgVBkHwffgdT7BCNiLpMsYP8qucJO0Sm2N51VAS/wNU4nfLPH1mTl8wNvkuNtZwkSAI0Koo54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h+pu5Djd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF979C32781;
-	Sun, 28 Jul 2024 00:54:16 +0000 (UTC)
+	 MIME-Version; b=HJNIw1e6+ORmcwABEMLGgyP7TLodjKzUkTOJnC0ifRLKbn53WFfCZeg6c3IK2BE2VNrfhr7oldBJhzyj/U2kQbr45BKvV7yq3OaD94CWiyGm7NsnvK/S+24dxmqyxSXpWCr43cGW2LUU3iKNnidQyf2wczsldJgSmkZWd9TLXpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fyNo8UNZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623E7C4AF07;
+	Sun, 28 Jul 2024 00:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722128058;
-	bh=qJaxkqrUINhEqabIMrw6yRcJH7/Dz0xtSk/oXy0uUPs=;
+	s=k20201202; t=1722128061;
+	bh=o0NcRSSMSeFpC/3bL4/Dz8Ss4YnMFhGRnW2k0JyOfVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h+pu5DjdGbi+aThi6KUIOMb4okkbmktIA9x93pyCpk6FU6dneKvY2P3Sd88VYu6x8
-	 gw1tlFeGSIGODJ2jJi/LZ9tXjt4bU3j9zNW3zeis94UURxzn/ZW1p69Vqvo02ccSVN
-	 r3vNbE6M0WCKP3cOsb4vrKpuGqW5j1hugRws6ftOn9XhGt9ICNX+JPf1cjGbuntK1l
-	 3S2LqsJJ02rfnM4gypo/OsAeM9wOkdJLNEh0MwD+Jl6I2Sa+gK6Dnn6cridJhQ99+C
-	 EGHV0ogep3IK2RGo7dPPQ2n51KC6HQ84SQVvVeacqvnRwoJIFhpnp3POriVfBBfKV9
-	 c8OfjT+Dnffyw==
+	b=fyNo8UNZkqCwzTe5V8g21UQnLuaGtuh2rxuNWeJ40Yf+DHJzv//KwsQB9nVfBpOPb
+	 dVaU4T6bVQ1dh2pDMDk3HP91unbtcmw8MTnspcKurMPvHgidiwDvABEHMrT91tE0/1
+	 9Pu363DfXECXylYQ4qG54V+R4V/PkyU6SWmpY0JKyK6kPYuAseVBCRT3OU9uEPxqS8
+	 1/xRzTno0r6UE2JULP86/A7sQwxOVybJvs1TvT7PzaYJqviSOeiLXnR+P/0jz/mBQz
+	 slaRoLjTcDTcSsz54gk9mfK3O0/us34OREzL/NKc/QfMjp6AJDkViKfJiwwNUYWsJM
+	 Jn9oNIkPJvu2A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
-	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
-	Thomas Kopp <thomas.kopp@microchip.com>,
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	manivannan.sadhasivam@linaro.org,
-	mailhol.vincent@wanadoo.fr,
+	vkoul@kernel.org,
+	alexandre.torgue@foss.st.com,
+	joabreu@synopsys.com,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	linux-can@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 18/27] can: mcp251xfd: tef: update workaround for erratum DS80000789E 6 of mcp2518fd
-Date: Sat, 27 Jul 2024 20:53:01 -0400
-Message-ID: <20240728005329.1723272-18-sashal@kernel.org>
+	mcoquelin.stm32@gmail.com,
+	netdev@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.10 19/27] net: stmmac: qcom-ethqos: enable SGMII loopback during DMA reset on sa8775p-ride-r3
+Date: Sat, 27 Jul 2024 20:53:02 -0400
+Message-ID: <20240728005329.1723272-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728005329.1723272-1-sashal@kernel.org>
 References: <20240728005329.1723272-1-sashal@kernel.org>
@@ -68,151 +71,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 3a0a88fcbaf9e027ecca3fe8775be9700b4d6460 ]
+[ Upstream commit 3c466d6537b99f801b3f68af3d8124d4312437a0 ]
 
-This patch updates the workaround for a problem similar to erratum
-DS80000789E 6 of the mcp2518fd, the other variants of the chip
-family (mcp2517fd and mcp251863) are probably also affected.
+On sa8775p-ride-r3 the RX clocks from the AQR115C PHY are not available at
+the time of the DMA reset. We can however extract the RX clock from the
+internal SERDES block. Once the link is up, we can revert to the
+previous state.
 
-Erratum DS80000789E 6 says "reading of the FIFOCI bits in the FIFOSTA
-register for an RX FIFO may be corrupted". However observation shows
-that this problem is not limited to RX FIFOs but also effects the TEF
-FIFO.
+The AQR115C PHY doesn't support in-band signalling so we can count on
+getting the link up notification and safely reuse existing callbacks
+which are already used by another HW quirk workaround which enables the
+functional clock to avoid a DMA reset due to timeout.
 
-In the bad case, the driver reads a too large head index. As the FIFO
-is implemented as a ring buffer, this results in re-handling old CAN
-transmit complete events.
+Only enable loopback on revision 3 of the board - check the phy_mode to
+make sure.
 
-Every transmit complete event contains with a sequence number that
-equals to the sequence number of the corresponding TX request. This
-way old TX complete events can be detected.
-
-If the original driver detects a non matching sequence number, it
-prints an info message and tries again later. As wrong sequence
-numbers can be explained by the erratum DS80000789E 6, demote the info
-message to debug level, streamline the code and update the comments.
-
-Keep the behavior: If an old CAN TX complete event is detected, abort
-the iteration and mark the number of valid CAN TX complete events as
-processed in the chip by incrementing the FIFO's tail index.
-
-Cc: Stefan Althöfer <Stefan.Althoefer@janztec.com>
-Cc: Thomas Kopp <thomas.kopp@microchip.com>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20240703181500.28491-3-brgl@bgdev.pl
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 71 +++++++------------
- 1 file changed, 27 insertions(+), 44 deletions(-)
+ .../stmicro/stmmac/dwmac-qcom-ethqos.c        | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-index b41fad3b37c06..5b0c7890d4b44 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-@@ -60,56 +60,39 @@ static int mcp251xfd_check_tef_tail(const struct mcp251xfd_priv *priv)
- 	return 0;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+index 466c4002f00d4..3a7f3a8b06718 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+@@ -21,6 +21,7 @@
+ #define RGMII_IO_MACRO_CONFIG2		0x1C
+ #define RGMII_IO_MACRO_DEBUG1		0x20
+ #define EMAC_SYSTEM_LOW_POWER_DEBUG	0x28
++#define EMAC_WRAPPER_SGMII_PHY_CNTRL1	0xf4
+ 
+ /* RGMII_IO_MACRO_CONFIG fields */
+ #define RGMII_CONFIG_FUNC_CLK_EN		BIT(30)
+@@ -79,6 +80,9 @@
+ #define ETHQOS_MAC_CTRL_SPEED_MODE		BIT(14)
+ #define ETHQOS_MAC_CTRL_PORT_SEL		BIT(15)
+ 
++/* EMAC_WRAPPER_SGMII_PHY_CNTRL1 bits */
++#define SGMII_PHY_CNTRL1_SGMII_TX_TO_RX_LOOPBACK_EN	BIT(3)
++
+ #define SGMII_10M_RX_CLK_DVDR			0x31
+ 
+ struct ethqos_emac_por {
+@@ -95,6 +99,7 @@ struct ethqos_emac_driver_data {
+ 	bool has_integrated_pcs;
+ 	u32 dma_addr_width;
+ 	struct dwmac4_addrs dwmac4_addrs;
++	bool needs_sgmii_loopback;
+ };
+ 
+ struct qcom_ethqos {
+@@ -114,6 +119,7 @@ struct qcom_ethqos {
+ 	unsigned int num_por;
+ 	bool rgmii_config_loopback_en;
+ 	bool has_emac_ge_3;
++	bool needs_sgmii_loopback;
+ };
+ 
+ static int rgmii_readl(struct qcom_ethqos *ethqos, unsigned int offset)
+@@ -191,8 +197,22 @@ ethqos_update_link_clk(struct qcom_ethqos *ethqos, unsigned int speed)
+ 	clk_set_rate(ethqos->link_clk, ethqos->link_clk_rate);
  }
  
--static int
--mcp251xfd_handle_tefif_recover(const struct mcp251xfd_priv *priv, const u32 seq)
--{
--	const struct mcp251xfd_tx_ring *tx_ring = priv->tx;
--	u32 tef_sta;
--	int err;
--
--	err = regmap_read(priv->map_reg, MCP251XFD_REG_TEFSTA, &tef_sta);
--	if (err)
--		return err;
--
--	if (tef_sta & MCP251XFD_REG_TEFSTA_TEFOVIF) {
--		netdev_err(priv->ndev,
--			   "Transmit Event FIFO buffer overflow.\n");
--		return -ENOBUFS;
--	}
--
--	netdev_info(priv->ndev,
--		    "Transmit Event FIFO buffer %s. (seq=0x%08x, tef_tail=0x%08x, tef_head=0x%08x, tx_head=0x%08x).\n",
--		    tef_sta & MCP251XFD_REG_TEFSTA_TEFFIF ?
--		    "full" : tef_sta & MCP251XFD_REG_TEFSTA_TEFNEIF ?
--		    "not empty" : "empty",
--		    seq, priv->tef->tail, priv->tef->head, tx_ring->head);
--
--	/* The Sequence Number in the TEF doesn't match our tef_tail. */
--	return -EAGAIN;
--}
--
- static int
- mcp251xfd_handle_tefif_one(struct mcp251xfd_priv *priv,
- 			   const struct mcp251xfd_hw_tef_obj *hw_tef_obj,
- 			   unsigned int *frame_len_ptr)
++static void
++qcom_ethqos_set_sgmii_loopback(struct qcom_ethqos *ethqos, bool enable)
++{
++	if (!ethqos->needs_sgmii_loopback ||
++	    ethqos->phy_mode != PHY_INTERFACE_MODE_2500BASEX)
++		return;
++
++	rgmii_updatel(ethqos,
++		      SGMII_PHY_CNTRL1_SGMII_TX_TO_RX_LOOPBACK_EN,
++		      enable ? SGMII_PHY_CNTRL1_SGMII_TX_TO_RX_LOOPBACK_EN : 0,
++		      EMAC_WRAPPER_SGMII_PHY_CNTRL1);
++}
++
+ static void ethqos_set_func_clk_en(struct qcom_ethqos *ethqos)
  {
- 	struct net_device_stats *stats = &priv->ndev->stats;
-+	u32 seq, tef_tail_masked, tef_tail;
- 	struct sk_buff *skb;
--	u32 seq, seq_masked, tef_tail_masked, tef_tail;
++	qcom_ethqos_set_sgmii_loopback(ethqos, true);
+ 	rgmii_updatel(ethqos, RGMII_CONFIG_FUNC_CLK_EN,
+ 		      RGMII_CONFIG_FUNC_CLK_EN, RGMII_IO_MACRO_CONFIG);
+ }
+@@ -277,6 +297,7 @@ static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
+ 	.has_emac_ge_3 = true,
+ 	.link_clk_name = "phyaux",
+ 	.has_integrated_pcs = true,
++	.needs_sgmii_loopback = true,
+ 	.dma_addr_width = 36,
+ 	.dwmac4_addrs = {
+ 		.dma_chan = 0x00008100,
+@@ -674,6 +695,7 @@ static void ethqos_fix_mac_speed(void *priv, unsigned int speed, unsigned int mo
+ {
+ 	struct qcom_ethqos *ethqos = priv;
  
--	seq = FIELD_GET(MCP251XFD_OBJ_FLAGS_SEQ_MCP2518FD_MASK,
-+	 /* Use the MCP2517FD mask on the MCP2518FD, too. We only
-+	  * compare 7 bits, this is enough to detect old TEF objects.
-+	  */
-+	seq = FIELD_GET(MCP251XFD_OBJ_FLAGS_SEQ_MCP2517FD_MASK,
- 			hw_tef_obj->flags);
--
--	/* Use the MCP2517FD mask on the MCP2518FD, too. We only
--	 * compare 7 bits, this should be enough to detect
--	 * net-yet-completed, i.e. old TEF objects.
--	 */
--	seq_masked = seq &
--		field_mask(MCP251XFD_OBJ_FLAGS_SEQ_MCP2517FD_MASK);
- 	tef_tail_masked = priv->tef->tail &
- 		field_mask(MCP251XFD_OBJ_FLAGS_SEQ_MCP2517FD_MASK);
--	if (seq_masked != tef_tail_masked)
--		return mcp251xfd_handle_tefif_recover(priv, seq);
-+
-+	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
-+	 * bits of a FIFOSTA register, here the TX FIFO tail index
-+	 * might be corrupted and we might process past the TEF FIFO's
-+	 * head into old CAN frames.
-+	 *
-+	 * Compare the sequence number of the currently processed CAN
-+	 * frame with the expected sequence number. Abort with
-+	 * -EBADMSG if an old CAN frame is detected.
-+	 */
-+	if (seq != tef_tail_masked) {
-+		netdev_dbg(priv->ndev, "%s: chip=0x%02x ring=0x%02x\n", __func__,
-+			   seq, tef_tail_masked);
-+		stats->tx_fifo_errors++;
-+
-+		return -EBADMSG;
-+	}
++	qcom_ethqos_set_sgmii_loopback(ethqos, false);
+ 	ethqos->speed = speed;
+ 	ethqos_update_link_clk(ethqos, speed);
+ 	ethqos_configure(ethqos);
+@@ -809,6 +831,7 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+ 	ethqos->num_por = data->num_por;
+ 	ethqos->rgmii_config_loopback_en = data->rgmii_config_loopback_en;
+ 	ethqos->has_emac_ge_3 = data->has_emac_ge_3;
++	ethqos->needs_sgmii_loopback = data->needs_sgmii_loopback;
  
- 	tef_tail = mcp251xfd_get_tef_tail(priv);
- 	skb = priv->can.echo_skb[tef_tail];
-@@ -223,12 +206,12 @@ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv)
- 		unsigned int frame_len = 0;
- 
- 		err = mcp251xfd_handle_tefif_one(priv, &hw_tef_obj[i], &frame_len);
--		/* -EAGAIN means the Sequence Number in the TEF
--		 * doesn't match our tef_tail. This can happen if we
--		 * read the TEF objects too early. Leave loop let the
--		 * interrupt handler call us again.
-+		/* -EBADMSG means we're affected by mcp2518fd erratum
-+		 * DS80000789E 6., i.e. the Sequence Number in the TEF
-+		 * doesn't match our tef_tail. Don't process any
-+		 * further and mark processed frames as good.
- 		 */
--		if (err == -EAGAIN)
-+		if (err == -EBADMSG)
- 			goto out_netif_wake_queue;
- 		if (err)
- 			return err;
+ 	ethqos->link_clk = devm_clk_get(dev, data->link_clk_name ?: "rgmii");
+ 	if (IS_ERR(ethqos->link_clk))
 -- 
 2.43.0
 
