@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-62227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A49E93E730
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:04:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F97F93E732
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:05:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8E37281C72
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:04:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0B3F1C213CD
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4FA13AD23;
-	Sun, 28 Jul 2024 15:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FC015957D;
+	Sun, 28 Jul 2024 15:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rwmZW9oM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g94b5bfP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD62D7BB15;
-	Sun, 28 Jul 2024 15:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADB115624C;
+	Sun, 28 Jul 2024 15:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181826; cv=none; b=GVXwySuBHPPYIzzwen55MvdnMh51OAX6NN0x962IiJc6+NbJ/lnZg7Z8inGcxlX+7+nXQCXcxsh6eThe+oO/X+Awjsr36AXH9/iSG7eqG8likXPHnmmhFNi2UQI7o+qtTXCy06LClmm0y4vYyTJGG2s8JEg5Qvq/IOhtdbhC/Rw=
+	t=1722181829; cv=none; b=jngPuZT7tU1ZY2kqovgu0+9s+E8cokOn0fOOEooHEfbq+gtNTsOp2OLMeIFgl2dSFxJA4KPnkNa5knCfW5Cbrl95d+Q+MBsd0oP/YQpkpMP6Yc1P4WDPfCHgfcwC2/Z2tiAWKd89JxTEver5jB8SU4yx75jNq/7nA798OHAYo/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181826; c=relaxed/simple;
-	bh=Bn9kvf+sAGaiNT+iir3AalUKn6iCn4BkWgeciZjK5M4=;
+	s=arc-20240116; t=1722181829; c=relaxed/simple;
+	bh=lmFJcHs+488W8cXJQa2E0P8tutKj8yx+pDCjfoiOiDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fuHrqzdiMxNbx3tie66I86gXZKYMnHJhSBCeUjex20/hS2rRVtYySF1qBoal2FalOcV/BIh5x3lGSbM+gBVg/40wyx+QkaL4iSzKB/m/N5mmYTlH9IQjKo7yPPjh95rqb7fw8MN5hmExd3Ij0SLaXNBUz3DjCRE6WVF1VbQNPc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rwmZW9oM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF20C32782;
-	Sun, 28 Jul 2024 15:50:24 +0000 (UTC)
+	 MIME-Version; b=EURgbuK5FFmqAals3cKSOfbHL0QmsoAs69RbDWN3Fjl6HXyLX8QvoiBaV0mjPGPP7NNOah1vqXdzLgcHLP8mqIvTaSZqMwFSiRMhf1LQZtmUUNlYSdlYuFF6kRdG6WUrhYySeESSIGdgGdIxcVP0qUl1YE++uLKL7+wjEQ9ZEdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g94b5bfP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418C9C4AF0B;
+	Sun, 28 Jul 2024 15:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181826;
-	bh=Bn9kvf+sAGaiNT+iir3AalUKn6iCn4BkWgeciZjK5M4=;
+	s=k20201202; t=1722181828;
+	bh=lmFJcHs+488W8cXJQa2E0P8tutKj8yx+pDCjfoiOiDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwmZW9oME+vgE5SeTn1DY1jGVFbYTwlNiy4P0pycW6qqkzepygOPZHakaulFRtaBu
-	 meoj8mDNqaKoxkAcSfbS/6t4O02S6ME5hUdjm83GexeOd4KiMKWEtX66nPJqlPTpE+
-	 6UPvr73YKABPomdvMEurycYb4YEV+nGQNlV58yciatMiHIxo5NtK/vptHoni4IAT+h
-	 vpbV3h2LLnu2375FslrVjvuMcpxYv7dqPG0SfsZ3jywoItDLozB//CfVFFOqL9DUZE
-	 HGyBHfhoExz1fJyT7L15HIPrOv+monsTJtSClMygpn44S/TOAF0B5Op+u46t07Ntl/
-	 u3K7GQJd//M8A==
+	b=g94b5bfPNqTNdspVrvWwU0SRlDqeTdlg/SaBMEYpD29Wh3z5kwH1l3x39x7Q2ENwh
+	 g3/+ynz2/uHIGb4VJoYeOL1uu8DRxI5VMXA2PZdLC/enVXg0cTl3y+clt1FUQx4/AY
+	 EWU6JXptLMTZF4vtWWdFs7Ifh4s+2g9sz2uFJvf5Y0C7yFOp59nt2yncDhbbRi5OZ3
+	 o1DBhD0sNcXj3gk9aczLwkakgCM1oRgTGxStYyXO0I06B+e0ZJl4+6rBBGWLcFCFGv
+	 r1xVwpcym4WXv2WsetYsPw2i44FjYmol+5XQ5iv8xi2kfKqrjtt1yQwf79o2S+18Yu
+	 L1t/x2/S545SA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ma Jun <Jun.Ma2@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Ricardo Ribalda <ribalda@chromium.org>,
+	HungNien Chen <hn.chen@sunplusit.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Tomasz Figa <tfiga@chromium.org>,
 	Sasha Levin <sashal@kernel.org>,
-	evan.quan@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	mario.limonciello@amd.com,
-	sunran001@208suo.com,
-	alexious@zju.edu.cn,
-	ruanjinjie@huawei.com,
-	lijo.lazar@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.10 2/7] drm/amdgpu/pm: Fix the null pointer dereference in apply_state_adjust_rules
-Date: Sun, 28 Jul 2024 11:49:56 -0400
-Message-ID: <20240728155014.2050414-2-sashal@kernel.org>
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 3/7] media: uvcvideo: Ignore empty TS packets
+Date: Sun, 28 Jul 2024 11:49:57 -0400
+Message-ID: <20240728155014.2050414-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728155014.2050414-1-sashal@kernel.org>
 References: <20240728155014.2050414-1-sashal@kernel.org>
@@ -77,102 +69,127 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit d19fb10085a49b77578314f69fff21562f7cd054 ]
+[ Upstream commit 5cd7c25f6f0576073b3d03bc4cfb1e8ca63a1195 ]
 
-Check the pointer value to fix potential null pointer
-dereference
+Some SunplusIT cameras took a borderline interpretation of the UVC 1.5
+standard, and fill the PTS and SCR fields with invalid data if the
+package does not contain data.
 
-Acked-by: Yang Wang<kevinyang.wang@amd.com>
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+"STC must be captured when the first video data of a video frame is put
+on the USB bus."
+
+Some SunplusIT devices send, e.g.,
+
+buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
+buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
+buffer: 0xa7755c00 len 000668 header:0x8c stc 73779dba sof 070c pts 7376d37a
+
+While the UVC specification meant that the first two packets shouldn't
+have had the SCR bit set in the header.
+
+This borderline/buggy interpretation has been implemented in a variety
+of devices, from directly SunplusIT and from other OEMs that rebrand
+SunplusIT products. So quirking based on VID:PID will be problematic.
+
+All the affected modules have the following extension unit:
+VideoControl Interface Descriptor:
+  guidExtensionCode         {82066163-7050-ab49-b8cc-b3855e8d221d}
+
+But the vendor plans to use that GUID in the future and fix the bug,
+this means that we should use heuristic to figure out the broken
+packets.
+
+This patch takes care of this.
+
+lsusb of one of the affected cameras:
+
+Bus 001 Device 003: ID 1bcf:2a01 Sunplus Innovation Technology Inc.
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.01
+  bDeviceClass          239 Miscellaneous Device
+  bDeviceSubClass         2 ?
+  bDeviceProtocol         1 Interface Association
+  bMaxPacketSize0        64
+  idVendor           0x1bcf Sunplus Innovation Technology Inc.
+  idProduct          0x2a01
+  bcdDevice            0.02
+  iManufacturer           1 SunplusIT Inc
+  iProduct                2 HanChen Wise Camera
+  iSerial                 3 01.00.00
+  bNumConfigurations      1
+
+Tested-by: HungNien Chen <hn.chen@sunplusit.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Tomasz Figa <tfiga@chromium.org>
+Link: https://lore.kernel.org/r/20240323-resend-hwtimestamp-v10-2-b08e590d97c7@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c    |  7 +++++--
- .../gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c    | 14 ++++++++------
- .../gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c  |  7 +++++--
- 3 files changed, 18 insertions(+), 10 deletions(-)
+ drivers/media/usb/uvc/uvc_video.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 7931528bc864b..5e72b7555edae 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -2983,8 +2983,7 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 			const struct pp_power_state *current_ps)
- {
- 	struct amdgpu_device *adev = hwmgr->adev;
--	struct smu7_power_state *smu7_ps =
--				cast_phw_smu7_power_state(&request_ps->hardware);
-+	struct smu7_power_state *smu7_ps;
- 	uint32_t sclk;
- 	uint32_t mclk;
- 	struct PP_Clocks minimum_clocks = {0};
-@@ -2998,6 +2997,10 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 	int32_t count;
- 	int32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
+diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+index 03dfe96bcebac..9a4c730943a90 100644
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -468,6 +468,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	ktime_t time;
+ 	u16 host_sof;
+ 	u16 dev_sof;
++	u32 dev_stc;
  
-+	smu7_ps = cast_phw_smu7_power_state(&request_ps->hardware);
-+	if (!smu7_ps)
-+		return -EINVAL;
+ 	switch (data[1] & (UVC_STREAM_PTS | UVC_STREAM_SCR)) {
+ 	case UVC_STREAM_PTS | UVC_STREAM_SCR:
+@@ -512,6 +513,34 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	if (dev_sof == stream->clock.last_sof)
+ 		return;
+ 
++	dev_stc = get_unaligned_le32(&data[header_size - 6]);
 +
- 	data->battery_state = (PP_StateUILabel_Battery ==
- 			request_ps->classification.ui_label);
- 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-index 35ed47ebaf09d..35d0ff57a5960 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-@@ -1051,16 +1051,18 @@ static int smu8_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 				struct pp_power_state  *prequest_ps,
- 			const struct pp_power_state *pcurrent_ps)
- {
--	struct smu8_power_state *smu8_ps =
--				cast_smu8_power_state(&prequest_ps->hardware);
--
--	const struct smu8_power_state *smu8_current_ps =
--				cast_const_smu8_power_state(&pcurrent_ps->hardware);
--
-+	struct smu8_power_state *smu8_ps;
-+	const struct smu8_power_state *smu8_current_ps;
- 	struct smu8_hwmgr *data = hwmgr->backend;
- 	struct PP_Clocks clocks = {0, 0, 0, 0};
- 	bool force_high;
- 
-+	smu8_ps = cast_smu8_power_state(&prequest_ps->hardware);
-+	smu8_current_ps = cast_const_smu8_power_state(&pcurrent_ps->hardware);
++	/*
++	 * STC (Source Time Clock) is the clock used by the camera. The UVC 1.5
++	 * standard states that it "must be captured when the first video data
++	 * of a video frame is put on the USB bus". This is generally understood
++	 * as requiring devices to clear the payload header's SCR bit before
++	 * the first packet containing video data.
++	 *
++	 * Most vendors follow that interpretation, but some (namely SunplusIT
++	 * on some devices) always set the `UVC_STREAM_SCR` bit, fill the SCR
++	 * field with 0's,and expect that the driver only processes the SCR if
++	 * there is data in the packet.
++	 *
++	 * Ignore all the hardware timestamp information if we haven't received
++	 * any data for this frame yet, the packet contains no data, and both
++	 * STC and SOF are zero. This heuristics should be safe on compliant
++	 * devices. This should be safe with compliant devices, as in the very
++	 * unlikely case where a UVC 1.1 device would send timing information
++	 * only before the first packet containing data, and both STC and SOF
++	 * happen to be zero for a particular frame, we would only miss one
++	 * clock sample from many and the clock recovery algorithm wouldn't
++	 * suffer from this condition.
++	 */
++	if (buf && buf->bytesused == 0 && len == header_size &&
++	    dev_stc == 0 && dev_sof == 0)
++		return;
 +
-+	if (!smu8_ps || !smu8_current_ps)
-+		return -EINVAL;
-+
- 	smu8_ps->need_dfs_bypass = true;
+ 	stream->clock.last_sof = dev_sof;
  
- 	data->battery_state = (PP_StateUILabel_Battery == prequest_ps->classification.ui_label);
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index 4dc27ec4d012d..10678b5199957 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -3232,8 +3232,7 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 			const struct pp_power_state *current_ps)
- {
- 	struct amdgpu_device *adev = hwmgr->adev;
--	struct vega10_power_state *vega10_ps =
--				cast_phw_vega10_power_state(&request_ps->hardware);
-+	struct vega10_power_state *vega10_ps;
- 	uint32_t sclk;
- 	uint32_t mclk;
- 	struct PP_Clocks minimum_clocks = {0};
-@@ -3251,6 +3250,10 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 	uint32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
- 	uint32_t latency;
+ 	host_sof = usb_get_current_frame_number(stream->dev->udev);
+@@ -549,7 +578,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	spin_lock_irqsave(&stream->clock.lock, flags);
  
-+	vega10_ps = cast_phw_vega10_power_state(&request_ps->hardware);
-+	if (!vega10_ps)
-+		return -EINVAL;
-+
- 	data->battery_state = (PP_StateUILabel_Battery ==
- 			request_ps->classification.ui_label);
- 
+ 	sample = &stream->clock.samples[stream->clock.head];
+-	sample->dev_stc = get_unaligned_le32(&data[header_size - 6]);
++	sample->dev_stc = dev_stc;
+ 	sample->dev_sof = dev_sof;
+ 	sample->host_sof = host_sof;
+ 	sample->host_time = time;
 -- 
 2.43.0
 
