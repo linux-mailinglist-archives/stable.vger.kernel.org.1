@@ -1,66 +1,69 @@
-Return-Path: <stable+bounces-62260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A462F93E7B2
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:14:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B9593E7B6
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:14:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6048F286412
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:14:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A600EB21BE7
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA52A7CF18;
-	Sun, 28 Jul 2024 16:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD45713C819;
+	Sun, 28 Jul 2024 16:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LsD/vWlJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p142hoRO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7169D57333;
-	Sun, 28 Jul 2024 16:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876BC57333;
+	Sun, 28 Jul 2024 16:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722182792; cv=none; b=pzzA6aaU1yxbEQTm6n/3eGoKCVaL5X457/x/qhRcLxfrRICLmAIPudnNaASdWulhQT+6BpwF9KHyI+DmMwXX3uF6cLgw7gvh1T/sLFwc8hFzJxEUR/OtDbg4nZjxY42bMxdqZo+bh8pPDEfyYXRn39e3tqdxSDHwOcsWiQUDiYQ=
+	t=1722182797; cv=none; b=cVrfhAKhXKZmn4iZ999sXTUHxKaGUR44qWpLEaSdA1nJIf+DosB8IG5JN3KdVRmXsfUJnVuml8DGak1o/dZ1hd+tnvJlrHbir7y9mNq8OETS4TBI589/LDVBCo8rheNvNvDyWYiMjKbBIJDz+iZYt+hfkACJxV9QNF/rne9yslI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722182792; c=relaxed/simple;
-	bh=gIToTiYNeW1cGs4mXVB1QJiyt+wWM33pHI3ZXBBaBfo=;
+	s=arc-20240116; t=1722182797; c=relaxed/simple;
+	bh=jKGObsaoSq6SDMNOqHtFHc7KfiGGps0r/Ps6xmjQd9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQp06gBC+J8yDR8Fsmw9QaitMIDGmt1BlmEzIm1RyuNHX3MbeUyAtCCphT2MPaPbZiEg6AYnz5uegrdX1Rl4XvMOMefMMle3Gweiwu40IfIMe2j2QOz4eBW7if/8nj7KFRGd3r0HOaD3h9+vxBppxZY3vmrPXeQTnRATm8/H8VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LsD/vWlJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE30DC4AF0A;
-	Sun, 28 Jul 2024 16:06:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BGyeEJ23fHIkrkjirkcFZ9fsKATqotJrSd/HH7sR/isjEWmBUOrzV8UGKPcvCQtVhyQwsAEnRoSIYeXMPyEu5AZE3welbsjPATsspidP7mDKj2EQK9Vvt0KQqMjVgUJ1KwHWmRi7g02inH7u5pM0RN5ffDjFghobc0slJvpT4tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p142hoRO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9E7C4AF0A;
+	Sun, 28 Jul 2024 16:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722182792;
-	bh=gIToTiYNeW1cGs4mXVB1QJiyt+wWM33pHI3ZXBBaBfo=;
+	s=k20201202; t=1722182797;
+	bh=jKGObsaoSq6SDMNOqHtFHc7KfiGGps0r/Ps6xmjQd9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LsD/vWlJzAiaXvpIBZn0Zslwt5yyowBupstPzDMNINcpHt0BD4adSKKgkkIW4nL+p
-	 99Tm07mW/Vz4r9xHuygPzDxYQd2DbRZv2RloijduHo2DpaZ9T+5BCFDOFb4rwkneJK
-	 NSQlpU4bY7xXCU2CnWATisBDIkr5p+9+iiL8yTCp1HZL7jESb6rolqZdQdsBQBjRQw
-	 CChW0owem/E7kuRkA+0Ku1/XBatmltjUNPqvYtTWofXPCqH/88rePaHy8Cl5qeux6q
-	 HsXGD+hcS3cIZy5u/UPGnAk4OHwDqwbXkUAfA+a9e6VHO21Nfz0rmr3oQgcadDAtMh
-	 RRlS6x9sSeTFw==
+	b=p142hoROMb7vOTXx6XuCXNMcg9XAzRhoLNJoGI8+PyIQMgD6MkYrL1qMSiwkSflW2
+	 mt0KuxOlYx+XlwnQT0ZzMMLQ+vXAT31SDxlYG2j7Apl93kOsVlXBGa//iDfUFMBm+X
+	 NigDedxjLrJYlW02GlsFr+Zfw78LQxZIaB3LIIC6QswlEedGxBPiJBmOVGI8QDVsB+
+	 2H7xydAqDKqIRwSQqywxz0PJ1kFC7lrhGcp94Vhn9wJreAvTSqQqkRnOaV3uHZsbEy
+	 UPZvtTSCyYGDnf/UmDJII2kP2NIrJ+kDbLG7G00HV5AKQSHyK0PR6XNJMjDgvxq4As
+	 g5t6JBPcDct2g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jiwei Sun <sunjw10@lenovo.com>,
-	Adrian Huang <ahuang12@lenovo.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+Cc: Kishon Vijay Abraham I <kishon@ti.com>,
+	Achal Verma <a-verma1@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	damian.muszynski@intel.com,
-	tero.kristo@linux.intel.com,
-	xin.zeng@intel.com,
-	siming.wan@intel.com,
-	ciunas.bennett@intel.com,
-	adam.guerin@intel.com,
-	qat-linux@intel.com,
-	linux-crypto@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 17/23] crypto: qat - initialize user_input.lock for rate_limiting
-Date: Sun, 28 Jul 2024 12:04:58 -0400
-Message-ID: <20240728160538.2051879-17-sashal@kernel.org>
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	bhelgaas@google.com,
+	manivannan.sadhasivam@linaro.org,
+	cassel@kernel.org,
+	u.kleine-koenig@pengutronix.de,
+	dlemoal@kernel.org,
+	yoshihiro.shimoda.uh@renesas.com,
+	amishin@t-argos.ru,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 18/23] PCI: keystone: Add workaround for Errata #i2037 (AM65x SR 1.0)
+Date: Sun, 28 Jul 2024 12:04:59 -0400
+Message-ID: <20240728160538.2051879-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728160538.2051879-1-sashal@kernel.org>
 References: <20240728160538.2051879-1-sashal@kernel.org>
@@ -70,93 +73,130 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Jiwei Sun <sunjw10@lenovo.com>
+From: Kishon Vijay Abraham I <kishon@ti.com>
 
-[ Upstream commit ccacbbc3176277bbfc324f85fa827d1a2656bedf ]
+[ Upstream commit 86f271f22bbb6391410a07e08d6ca3757fda01fa ]
 
-If the following configurations are set,
-CONFIG_DEBUG_RWSEMS=y
-CONFIG_DEBUG_LOCK_ALLOC=y
-CONFIG_RWSEM_SPIN_ON_OWNER=y
+Errata #i2037 in AM65x/DRA80xM Processors Silicon Revision 1.0
+(SPRZ452D_July 2018_Revised December 2019 [1]) mentions when an
+inbound PCIe TLP spans more than two internal AXI 128-byte bursts,
+the bus may corrupt the packet payload and the corrupt data may
+cause associated applications or the processor to hang.
 
-And run the following command,
-[root@localhost sys]# cat /sys/devices/pci0000:6b/0000:6b:00.0/qat_rl/pir
-The following warning log appears,
+The workaround for Errata #i2037 is to limit the maximum read
+request size and maximum payload size to 128 bytes. Add workaround
+for Errata #i2037 here.
 
-------------[ cut here ]------------
-DEBUG_RWSEMS_WARN_ON(sem->magic != sem): count = 0x0, magic = 0x0, owner = 0x1, curr 0xff11000119288040, list not empty
-WARNING: CPU: 131 PID: 1254984 at kernel/locking/rwsem.c:1280 down_read+0x439/0x7f0
-CPU: 131 PID: 1254984 Comm: cat Kdump: loaded Tainted: G        W          6.10.0-rc4+ #86 b2ae60c8ceabed15f4fd2dba03c1c5a5f7f4040c
-Hardware name: Lenovo ThinkServer SR660 V3/SR660 V3, BIOS T8E166X-2.54 05/30/2024
-RIP: 0010:down_read+0x439/0x7f0
-Code: 44 24 10 80 3c 02 00 0f 85 05 03 00 00 48 8b 13 41 54 48 c7 c6 a0 3e 0e b4 48 c7 c7 e0 3e 0e b4 4c 8b 4c 24 08 e8 77 d5 40 fd <0f> 0b 59 e9 bc fc ff ff 0f 1f 44 00 00 e9 e2 fd ff ff 4c 8d 7b 08
-RSP: 0018:ffa0000035f67a78 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: ff1100012b03a658 RCX: 0000000000000000
-RDX: 0000000080000002 RSI: 0000000000000008 RDI: 0000000000000001
-RBP: 1ff4000006becf53 R08: fff3fc0006becf17 R09: fff3fc0006becf17
-R10: fff3fc0006becf16 R11: ffa0000035f678b7 R12: ffffffffb40e3e60
-R13: ffffffffb627d1f4 R14: ff1100012b03a6d0 R15: ff1100012b03a6c8
-FS:  00007fa9ff9a6740(0000) GS:ff1100081e600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fa9ff984000 CR3: 00000002118ae006 CR4: 0000000000771ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- pir_show+0x5d/0xe0 [intel_qat 9e297e249ab040329cf58b657b06f418fd5c5855]
- dev_attr_show+0x3f/0xc0
- sysfs_kf_seq_show+0x1ce/0x400
- seq_read_iter+0x3fa/0x10b0
- vfs_read+0x6f5/0xb20
- ksys_read+0xe9/0x1d0
- do_syscall_64+0x8a/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fa9ff6fd9b2
-Code: c0 e9 b2 fe ff ff 50 48 8d 3d ea 1d 0c 00 e8 c5 fd 01 00 0f 1f 44 00 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 0f 05 <48> 3d 00 f0 ff ff 77 56 c3 0f 1f 44 00 00 48 83 ec 28 48 89 54 24
-RSP: 002b:00007ffc0616b968 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fa9ff6fd9b2
-RDX: 0000000000020000 RSI: 00007fa9ff985000 RDI: 0000000000000003
-RBP: 00007fa9ff985000 R08: 00007fa9ff984010 R09: 0000000000000000
-R10: 0000000000000022 R11: 0000000000000246 R12: 0000000000022000
-R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
- </TASK>
-irq event stamp: 0
-hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-hardirqs last disabled at (0): [<ffffffffb102c126>] copy_process+0x21e6/0x6e70
-softirqs last  enabled at (0): [<ffffffffb102c176>] copy_process+0x2236/0x6e70
-softirqs last disabled at (0): [<0000000000000000>] 0x0
----[ end trace 0000000000000000 ]---
+The errata and workaround is applicable only to AM65x SR 1.0 and
+later versions of the silicon will have this fixed.
 
-The rate_limiting->user_input.lock rwsem lock is not initialized before
-use. Let's initialize it.
+[1] -> https://www.ti.com/lit/er/sprz452i/sprz452i.pdf
 
-Signed-off-by: Jiwei Sun <sunjw10@lenovo.com>
-Reviewed-by: Adrian Huang <ahuang12@lenovo.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://lore.kernel.org/linux-pci/16e1fcae-1ea7-46be-b157-096e05661b15@siemens.com
+Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Achal Verma <a-verma1@ti.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_rl.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/controller/dwc/pci-keystone.c | 44 ++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_rl.c b/drivers/crypto/intel/qat/qat_common/adf_rl.c
-index 346ef8bee99d9..e782c23fc1bfc 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_rl.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_rl.c
-@@ -1106,6 +1106,7 @@ int adf_rl_init(struct adf_accel_dev *accel_dev)
- 	mutex_init(&rl->rl_lock);
- 	rl->device_data = &accel_dev->hw_device->rl_data;
- 	rl->accel_dev = accel_dev;
-+	init_rwsem(&rl->user_input.lock);
- 	accel_dev->rate_limiting = rl;
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index d3a7d14ee685a..25e365c0c5c79 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -34,6 +34,11 @@
+ #define PCIE_DEVICEID_SHIFT	16
  
- err_ret:
+ /* Application registers */
++#define PID				0x000
++#define RTL				GENMASK(15, 11)
++#define RTL_SHIFT			11
++#define AM6_PCI_PG1_RTL_VER		0x15
++
+ #define CMD_STATUS			0x004
+ #define LTSSM_EN_VAL		        BIT(0)
+ #define OB_XLAT_EN_VAL		        BIT(1)
+@@ -104,6 +109,8 @@
+ 
+ #define to_keystone_pcie(x)		dev_get_drvdata((x)->dev)
+ 
++#define PCI_DEVICE_ID_TI_AM654X		0xb00c
++
+ struct ks_pcie_of_data {
+ 	enum dw_pcie_device_mode mode;
+ 	const struct dw_pcie_host_ops *host_ops;
+@@ -525,7 +532,11 @@ static int ks_pcie_start_link(struct dw_pcie *pci)
+ static void ks_pcie_quirk(struct pci_dev *dev)
+ {
+ 	struct pci_bus *bus = dev->bus;
++	struct keystone_pcie *ks_pcie;
++	struct device *bridge_dev;
+ 	struct pci_dev *bridge;
++	u32 val;
++
+ 	static const struct pci_device_id rc_pci_devids[] = {
+ 		{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCIE_RC_K2HK),
+ 		 .class = PCI_CLASS_BRIDGE_PCI_NORMAL, .class_mask = ~0, },
+@@ -537,6 +548,11 @@ static void ks_pcie_quirk(struct pci_dev *dev)
+ 		 .class = PCI_CLASS_BRIDGE_PCI_NORMAL, .class_mask = ~0, },
+ 		{ 0, },
+ 	};
++	static const struct pci_device_id am6_pci_devids[] = {
++		{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM654X),
++		 .class = PCI_CLASS_BRIDGE_PCI << 8, .class_mask = ~0, },
++		{ 0, },
++	};
+ 
+ 	if (pci_is_root_bus(bus))
+ 		bridge = dev;
+@@ -558,10 +574,36 @@ static void ks_pcie_quirk(struct pci_dev *dev)
+ 	 */
+ 	if (pci_match_id(rc_pci_devids, bridge)) {
+ 		if (pcie_get_readrq(dev) > 256) {
+-			dev_info(&dev->dev, "limiting MRRS to 256\n");
++			dev_info(&dev->dev, "limiting MRRS to 256 bytes\n");
+ 			pcie_set_readrq(dev, 256);
+ 		}
+ 	}
++
++	/*
++	 * Memory transactions fail with PCI controller in AM654 PG1.0
++	 * when MRRS is set to more than 128 bytes. Force the MRRS to
++	 * 128 bytes in all downstream devices.
++	 */
++	if (pci_match_id(am6_pci_devids, bridge)) {
++		bridge_dev = pci_get_host_bridge_device(dev);
++		if (!bridge_dev && !bridge_dev->parent)
++			return;
++
++		ks_pcie = dev_get_drvdata(bridge_dev->parent);
++		if (!ks_pcie)
++			return;
++
++		val = ks_pcie_app_readl(ks_pcie, PID);
++		val &= RTL;
++		val >>= RTL_SHIFT;
++		if (val != AM6_PCI_PG1_RTL_VER)
++			return;
++
++		if (pcie_get_readrq(dev) > 128) {
++			dev_info(&dev->dev, "limiting MRRS to 128 bytes\n");
++			pcie_set_readrq(dev, 128);
++		}
++	}
+ }
+ DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, ks_pcie_quirk);
+ 
 -- 
 2.43.0
 
