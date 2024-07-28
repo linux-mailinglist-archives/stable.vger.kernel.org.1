@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-62328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448B793E885
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:32:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40ACB93E887
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1DB31F21CDD
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:32:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF974280CA8
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A244A190681;
-	Sun, 28 Jul 2024 16:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C666419149B;
+	Sun, 28 Jul 2024 16:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R47HiEX5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QNQaGNbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A608190674;
-	Sun, 28 Jul 2024 16:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D65E191491;
+	Sun, 28 Jul 2024 16:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722183049; cv=none; b=V0Izr7YTqtkWvLC5nLQI2RACr12vP5/Cc6cjYJ7xhZtFujooti27IZDonYZ41TZ6Wu19jirKRg88bBONCoyhvh+4TGjV1D17tpeopW39BuvQbkgVlCC11T7p518ipwIyHfQIEHpvSYh1UmpJWoijXiKNBUh0eyq5riR3gD5GWUU=
+	t=1722183052; cv=none; b=GW9i1W4SbJdmlo515vgsrE6RO3hZ0YpNa3/8JDy1iP2PfCydajX5tzXAq3941tazOKQzSd9thb4wGsbxRNbx/46mqm8uoGLI88LDBX5cNXKAKMrfdofP/nLQ6sBp4rsGK08VU1fqPr2FiK85zAF36Vld5IZDKq5xzFnC8FKYJrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722183049; c=relaxed/simple;
-	bh=PhczWNGiIaLzrMm+suZP1H39gXQ3OXBsZiq7hL34HCU=;
+	s=arc-20240116; t=1722183052; c=relaxed/simple;
+	bh=Juop5UgddgfGEmjsO6T3nbpR8y3z1NUs4nxOCY+2TZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzuhvuHf+LnmNZg//VfhOAictSmEcvlmXHD0RdrFGiQHAPg9fXdwQOlAZx37oW5XUNbAMFJupuZsF81z5DuWy/PvCpfhUsNxjwWyyS1K9vq09fRxvaTaixibei1S0gtkIuT9tM0/KXDuIZ27FsjLz0iuIMlGW4OLFAQNy9TaSxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R47HiEX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BE4C116B1;
-	Sun, 28 Jul 2024 16:10:47 +0000 (UTC)
+	 MIME-Version; b=aE8JlifaPhqbBCuRQXp/1WNRf5BEvtF12CAxHp11pRcxNL4672oIDykC3hvsFdHlKC7rJ8kwpbPNkeZhAhEus6ScXZSSIa7T3dpJKadUdTngOMZpkoy/d4Cp5RIRoxP94ylzCq6MEXIP3GU75P3sYRUSyLtdzpNckfrv1qtM8Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QNQaGNbB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BB0C32782;
+	Sun, 28 Jul 2024 16:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722183049;
-	bh=PhczWNGiIaLzrMm+suZP1H39gXQ3OXBsZiq7hL34HCU=;
+	s=k20201202; t=1722183052;
+	bh=Juop5UgddgfGEmjsO6T3nbpR8y3z1NUs4nxOCY+2TZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R47HiEX5aFn5IEikR0ly2eDb1EZ3GyO9SN6KDMxkCFtlS++ie+nYyVGsM+eCY9MSY
-	 0TpVJ3cIhGixS37doWrZoas10ELv32usPZeUjNWFOAfLHpP8j0bW1J8mC4ILMGBu9a
-	 kCnu6lan1OxIqbyZCveKrI/DO2ANvrQvy/znnKTcs3tQEo7vj2HyNJx35rID3+aA0P
-	 sQxxRstibqViASOJn+rCIbIW5k8YOFvjKuDsL2g9z8KQs+KSxMWteArFgwoI3XmTE3
-	 /q1wWNj+oxOEPxRgs8UMrPdHKX6RdXEdlYWT0gfFjhY+FFdP+6I4nUD5QYX30mV/GB
-	 EVjQMvykTOzSw==
+	b=QNQaGNbBQIWKiWLhotT3H0HI49llE9glgkGtdrxnczVc83nj5+E/mY/2k2IF8t8Ew
+	 gJIdUkN1A4wmkMdZScZZ6nibeT2Lz+lEEwz3rpzJlpAC+IgEMT8rImwqtDQVh6oQHN
+	 hnYCEprcAYaV+iq8HrsUcT2oRT2vr25pfgAf7BP1t70D6Bg0Bkb6jMBrnIjwnTcrf7
+	 5nNdp38WAaGBmcPur7VeUjFdTpXCAiIpnKfcgpqHIkL6hUcryVzIQHdgcMNshVvrlu
+	 48Mlzxe2O7cvRMOrVKoPUt4dep2tIYOLsAD/o5rgUv4gCobteg2vYyfx0+KSVMwjiz
+	 62pHuUdBVHpZg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
+Cc: Takashi Iwai <tiwai@suse.de>,
+	syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 6/7] PCI: Add missing bridge lock to pci_bus_lock()
-Date: Sun, 28 Jul 2024 12:10:26 -0400
-Message-ID: <20240728161033.2054341-6-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	kl@kl.wtf,
+	peter.ujfalusi@linux.intel.com,
+	xristos.thes@gmail.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 7/7] ALSA: usb: Fix UBSAN warning in parse_audio_unit()
+Date: Sun, 28 Jul 2024 12:10:27 -0400
+Message-ID: <20240728161033.2054341-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728161033.2054341-1-sashal@kernel.org>
 References: <20240728161033.2054341-1-sashal@kernel.org>
@@ -70,161 +70,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.281
 Content-Transfer-Encoding: 8bit
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit a4e772898f8bf2e7e1cf661a12c60a5612c4afab ]
+[ Upstream commit 2f38cf730caedaeacdefb7ff35b0a3c1168117f9 ]
 
-One of the true positives that the cfg_access_lock lockdep effort
-identified is this sequence:
+A malformed USB descriptor may pass the lengthy mixer description with
+a lot of channels, and this may overflow the 32bit integer shift
+size, as caught by syzbot UBSAN test.  Although this won't cause any
+real trouble, it's better to address.
 
-  WARNING: CPU: 14 PID: 1 at drivers/pci/pci.c:4886 pci_bridge_secondary_bus_reset+0x5d/0x70
-  RIP: 0010:pci_bridge_secondary_bus_reset+0x5d/0x70
-  Call Trace:
-   <TASK>
-   ? __warn+0x8c/0x190
-   ? pci_bridge_secondary_bus_reset+0x5d/0x70
-   ? report_bug+0x1f8/0x200
-   ? handle_bug+0x3c/0x70
-   ? exc_invalid_op+0x18/0x70
-   ? asm_exc_invalid_op+0x1a/0x20
-   ? pci_bridge_secondary_bus_reset+0x5d/0x70
-   pci_reset_bus+0x1d8/0x270
-   vmd_probe+0x778/0xa10
-   pci_device_probe+0x95/0x120
+This patch introduces a sanity check of the number of channels to bail
+out the parsing when too many channels are found.
 
-Where pci_reset_bus() users are triggering unlocked secondary bus resets.
-Ironically pci_bus_reset(), several calls down from pci_reset_bus(), uses
-pci_bus_lock() before issuing the reset which locks everything *but* the
-bridge itself.
-
-For the same motivation as adding:
-
-  bridge = pci_upstream_bridge(dev);
-  if (bridge)
-    pci_dev_lock(bridge);
-
-to pci_reset_function() for the "bus" and "cxl_bus" reset cases, add
-pci_dev_lock() for @bus->self to pci_bus_lock().
-
-Link: https://lore.kernel.org/r/171711747501.1628941.15217746952476635316.stgit@dwillia2-xfh.jf.intel.com
-Reported-by: Imre Deak <imre.deak@intel.com>
-Closes: http://lore.kernel.org/r/6657833b3b5ae_14984b29437@dwillia2-xfh.jf.intel.com.notmuch
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[bhelgaas: squash in recursive locking deadlock fix from Keith Busch:
-https://lore.kernel.org/r/20240711193650.701834-1-kbusch@meta.com]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Kalle Valo <kvalo@kernel.org>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reported-by: syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/0000000000000adac5061d3c7355@google.com
+Link: https://patch.msgid.link/20240715123619.26612-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ sound/usb/mixer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index deafd229ef8b4..41050a35631fa 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5200,10 +5200,12 @@ static void pci_bus_lock(struct pci_bus *bus)
- {
- 	struct pci_dev *dev;
- 
-+	pci_dev_lock(bus->self);
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
--		pci_dev_lock(dev);
- 		if (dev->subordinate)
- 			pci_bus_lock(dev->subordinate);
-+		else
-+			pci_dev_lock(dev);
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 67eb1293fa155..1374a4e093b3f 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1906,6 +1906,13 @@ static int parse_audio_feature_unit(struct mixer_build *state, int unitid,
+ 		bmaControls = ftr->bmaControls;
  	}
- }
  
-@@ -5215,8 +5217,10 @@ static void pci_bus_unlock(struct pci_bus *bus)
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
- 		if (dev->subordinate)
- 			pci_bus_unlock(dev->subordinate);
--		pci_dev_unlock(dev);
-+		else
-+			pci_dev_unlock(dev);
- 	}
-+	pci_dev_unlock(bus->self);
- }
- 
- /* Return 1 on successful lock, 0 on contention */
-@@ -5224,15 +5228,15 @@ static int pci_bus_trylock(struct pci_bus *bus)
- {
- 	struct pci_dev *dev;
- 
-+	if (!pci_dev_trylock(bus->self))
-+		return 0;
++	if (channels > 32) {
++		usb_audio_info(state->chip,
++			       "usbmixer: too many channels (%d) in unit %d\n",
++			       channels, unitid);
++		return -EINVAL;
++	}
 +
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
--		if (!pci_dev_trylock(dev))
--			goto unlock;
- 		if (dev->subordinate) {
--			if (!pci_bus_trylock(dev->subordinate)) {
--				pci_dev_unlock(dev);
-+			if (!pci_bus_trylock(dev->subordinate))
- 				goto unlock;
--			}
--		}
-+		} else if (!pci_dev_trylock(dev))
-+			goto unlock;
- 	}
- 	return 1;
- 
-@@ -5240,8 +5244,10 @@ static int pci_bus_trylock(struct pci_bus *bus)
- 	list_for_each_entry_continue_reverse(dev, &bus->devices, bus_list) {
- 		if (dev->subordinate)
- 			pci_bus_unlock(dev->subordinate);
--		pci_dev_unlock(dev);
-+		else
-+			pci_dev_unlock(dev);
- 	}
-+	pci_dev_unlock(bus->self);
- 	return 0;
- }
- 
-@@ -5273,9 +5279,10 @@ static void pci_slot_lock(struct pci_slot *slot)
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
- 		if (!dev->slot || dev->slot != slot)
- 			continue;
--		pci_dev_lock(dev);
- 		if (dev->subordinate)
- 			pci_bus_lock(dev->subordinate);
-+		else
-+			pci_dev_lock(dev);
- 	}
- }
- 
-@@ -5301,14 +5308,13 @@ static int pci_slot_trylock(struct pci_slot *slot)
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
- 		if (!dev->slot || dev->slot != slot)
- 			continue;
--		if (!pci_dev_trylock(dev))
--			goto unlock;
- 		if (dev->subordinate) {
- 			if (!pci_bus_trylock(dev->subordinate)) {
- 				pci_dev_unlock(dev);
- 				goto unlock;
- 			}
--		}
-+		} else if (!pci_dev_trylock(dev))
-+			goto unlock;
- 	}
- 	return 1;
- 
-@@ -5319,7 +5325,8 @@ static int pci_slot_trylock(struct pci_slot *slot)
- 			continue;
- 		if (dev->subordinate)
- 			pci_bus_unlock(dev->subordinate);
--		pci_dev_unlock(dev);
-+		else
-+			pci_dev_unlock(dev);
- 	}
- 	return 0;
- }
+ 	/* parse the source unit */
+ 	err = parse_audio_unit(state, hdr->bSourceID);
+ 	if (err < 0)
 -- 
 2.43.0
 
