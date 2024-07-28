@@ -1,68 +1,69 @@
-Return-Path: <stable+bounces-62198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A261593E6DB
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:56:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CBB93E6DD
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54E9C1F24E14
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:56:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 685401C21175
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4025B14534B;
-	Sun, 28 Jul 2024 15:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0106F30B;
+	Sun, 28 Jul 2024 15:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IYxo7L7K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FQvgyhNa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE0F14533F;
-	Sun, 28 Jul 2024 15:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36835FB8A;
+	Sun, 28 Jul 2024 15:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181646; cv=none; b=YRngxIlEefe3YuwjDW106aRbQBmC5QZspBBaWlfmg7Wvd4JaMu94MbIDRKWcVKSE5XkusGVsmONEUrzyZStkAPGm60udzFB4Y9Bdv2l/aS/qvd5fqWVdVneHG1o3P2ILpcJyV0ciOgnIJ6X3ASnCc14vROuQ9y+Jf4YQuYJrbWI=
+	t=1722181689; cv=none; b=QNElLDmAbreKpffU3GhJDIznJJ+M0YIP3O9rva3w/+CE5NHA6xKuYaHs2HDH/bfjyeYfwG98AcCcaWfXM0xEr1D62xNiQEFXxiLsnLgfSoM5RoCDFskJwg6e17LA+KUrxX/CHg65NdditCmQWdJvoSYbAYJa3Haqfvl2BLDa5p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181646; c=relaxed/simple;
-	bh=bW8puwp8UG1FE5R0NW0YGF8HexNK9uU3nHZPanPzjUI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/rEb5UX2FkN3se9zWpolIIi6lqYMuzghOWbsqJs+GldL27L9jNPYJ9SLgUVLja+NcDDyu7TjfOT3Qga4Az8tUYQ14+Gq3b0KDzKvxPIBfRoOr6bWgvj+f9a1enKRPRigAlKzJZRZLOP1bU931aYUvd6AjfhI7hunxyv37G2iys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IYxo7L7K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48FAC4AF0A;
-	Sun, 28 Jul 2024 15:47:23 +0000 (UTC)
+	s=arc-20240116; t=1722181689; c=relaxed/simple;
+	bh=b8xPcbDPWQ0enl/Z+Y300P9nbaYUbdbx0jb003AsVv8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T3cTcot5fUkEy4vTowGckLnPjJJQH/jz2tXnWHZMM0LCHH7VMt2pmlr8UBO2D6R8uHseTF6BQzu9ihecJM6SGM200CfBaxNVqXskytpR28qMQKLUyW4RhVAYIPWf32YLB4sVfeDJZigNPMwo9HWCukVz9Unw3hAf6BqqTWc3fDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FQvgyhNa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F63C116B1;
+	Sun, 28 Jul 2024 15:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181645;
-	bh=bW8puwp8UG1FE5R0NW0YGF8HexNK9uU3nHZPanPzjUI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IYxo7L7Kz748WVytalmYOGWWgfQBTxP5nG4PQB//BUJbrzOteDfwD+6/1YiJt/ZO5
-	 pLJFyR+gO0VvfoIiPrU7dIq2SMFxzho8EfIZH/qpQN5N02q3ORq1X4PI6/mB4PhGy0
-	 qwXZPJ00IoZN3Vq3a7nseEefJPDxVdT44LSja2zpuU/uJuVhfnyH2NodrTwfhJNgGR
-	 f3Qu/8oc8n0tIHFr8QNGxcEQDY7kI7TlRUK5GBjIpeURUFktjJrRPKz1wME0gDkVfG
-	 QHT93Ewd0yLC1rnMMw/sBC70tEOXFEmtnrcntuW3wQ2XBrfb4re0x3mufE2kqWj4Ko
-	 sANBbyjuVWXOw==
+	s=k20201202; t=1722181688;
+	bh=b8xPcbDPWQ0enl/Z+Y300P9nbaYUbdbx0jb003AsVv8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FQvgyhNa1aG820drJXkUwGpxBXD2OvNtDwqb1tRUhjM4+vUUVY81wfKBCZMs0bOOn
+	 pdW6bxvaxp4gAYwSPP410FW7QK2pEFR/h4GNMelD9l9sC1T0yU9ezY9kq1YzizMZdu
+	 kQi6gXGmtnubrxTTMDgj1KwlrHjb5znCfW3v8LCcehayVppHOPhcco2izv34Q9v/hJ
+	 waK7el9kK59N/NQ4QlHP53I5VTZw1p2sDTfR58P4J+PVkVrvpzR4M8RUlIM1QEnwtO
+	 ZQ7loFhTiDBo9GriJu0R0rDq9rHNxbv6XdVxGVyo8Y7E7TAhaBfcKgTPiRUfA1gImA
+	 LcP8NoOW2Cb5Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Coddington <bcodding@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+Cc: Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	chuck.lever@oracle.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 20/20] SUNRPC: Fix a race to wake a sync task
-Date: Sun, 28 Jul 2024 11:45:18 -0400
-Message-ID: <20240728154605.2048490-20-sashal@kernel.org>
+	evan.quan@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	lijo.lazar@amd.com,
+	kenneth.feng@amd.com,
+	sunil.khatri@amd.com,
+	sunran001@208suo.com,
+	mario.limonciello@amd.com,
+	Lang.Yu@amd.com,
+	le.ma@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.1 01/17] drm/amdgpu/pm: Fix the param type of set_power_profile_mode
+Date: Sun, 28 Jul 2024 11:47:11 -0400
+Message-ID: <20240728154805.2049226-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240728154605.2048490-1-sashal@kernel.org>
-References: <20240728154605.2048490-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,54 +72,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.43
+X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit ed0172af5d6fc07d1b40ca82f5ca3979300369f7 ]
+[ Upstream commit f683f24093dd94a831085fe0ea8e9dc4c6c1a2d1 ]
 
-We've observed NFS clients with sync tasks sleeping in __rpc_execute
-waiting on RPC_TASK_QUEUED that have not responded to a wake-up from
-rpc_make_runnable().  I suspect this problem usually goes unnoticed,
-because on a busy client the task will eventually be re-awoken by another
-task completion or xprt event.  However, if the state manager is draining
-the slot table, a sync task missing a wake-up can result in a hung client.
+Function .set_power_profile_mode need an array as input
+parameter. So define variable workload as an array to fix
+the below coverity warning.
 
-We've been able to prove that the waker in rpc_make_runnable() successfully
-calls wake_up_bit() (ie- there's no race to tk_runstate), but the
-wake_up_bit() call fails to wake the waiter.  I suspect the waker is
-missing the load of the bit's wait_queue_head, so waitqueue_active() is
-false.  There are some very helpful comments about this problem above
-wake_up_bit(), prepare_to_wait(), and waitqueue_active().
+"Passing &workload to function hwmgr->hwmgr_func->set_power_profile_mode
+which uses it as an array. This might corrupt or misinterpret adjacent
+memory locations"
 
-Fix this by inserting smp_mb__after_atomic() before the wake_up_bit(),
-which pairs with prepare_to_wait() calling set_current_state().
-
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/sched.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c |  8 ++++----
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c  |  8 ++++----
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c        | 16 ++++++++--------
+ 3 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index 6debf4fd42d4e..cef623ea15060 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -369,8 +369,10 @@ static void rpc_make_runnable(struct workqueue_struct *wq,
- 	if (RPC_IS_ASYNC(task)) {
- 		INIT_WORK(&task->u.tk_work, rpc_async_schedule);
- 		queue_work(wq, &task->u.tk_work);
--	} else
-+	} else {
-+		smp_mb__after_atomic();
- 		wake_up_bit(&task->tk_runstate, RPC_TASK_QUEUED);
-+	}
- }
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+index 179e1c593a53f..f3668911a88fd 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+@@ -928,7 +928,7 @@ static int pp_dpm_switch_power_profile(void *handle,
+ 		enum PP_SMC_POWER_PROFILE type, bool en)
+ {
+ 	struct pp_hwmgr *hwmgr = handle;
+-	long workload;
++	long workload[1];
+ 	uint32_t index;
  
- /*
+ 	if (!hwmgr || !hwmgr->pm_en)
+@@ -946,12 +946,12 @@ static int pp_dpm_switch_power_profile(void *handle,
+ 		hwmgr->workload_mask &= ~(1 << hwmgr->workload_prority[type]);
+ 		index = fls(hwmgr->workload_mask);
+ 		index = index > 0 && index <= Workload_Policy_Max ? index - 1 : 0;
+-		workload = hwmgr->workload_setting[index];
++		workload[0] = hwmgr->workload_setting[index];
+ 	} else {
+ 		hwmgr->workload_mask |= (1 << hwmgr->workload_prority[type]);
+ 		index = fls(hwmgr->workload_mask);
+ 		index = index <= Workload_Policy_Max ? index - 1 : 0;
+-		workload = hwmgr->workload_setting[index];
++		workload[0] = hwmgr->workload_setting[index];
+ 	}
+ 
+ 	if (type == PP_SMC_POWER_PROFILE_COMPUTE &&
+@@ -961,7 +961,7 @@ static int pp_dpm_switch_power_profile(void *handle,
+ 	}
+ 
+ 	if (hwmgr->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL)
+-		hwmgr->hwmgr_func->set_power_profile_mode(hwmgr, &workload, 0);
++		hwmgr->hwmgr_func->set_power_profile_mode(hwmgr, workload, 0);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
+index 1d829402cd2e2..f4bd8e9357e22 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
+@@ -269,7 +269,7 @@ int psm_adjust_power_state_dynamic(struct pp_hwmgr *hwmgr, bool skip_display_set
+ 						struct pp_power_state *new_ps)
+ {
+ 	uint32_t index;
+-	long workload;
++	long workload[1];
+ 
+ 	if (hwmgr->not_vf) {
+ 		if (!skip_display_settings)
+@@ -294,10 +294,10 @@ int psm_adjust_power_state_dynamic(struct pp_hwmgr *hwmgr, bool skip_display_set
+ 	if (hwmgr->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL) {
+ 		index = fls(hwmgr->workload_mask);
+ 		index = index > 0 && index <= Workload_Policy_Max ? index - 1 : 0;
+-		workload = hwmgr->workload_setting[index];
++		workload[0] = hwmgr->workload_setting[index];
+ 
+-		if (hwmgr->power_profile_mode != workload && hwmgr->hwmgr_func->set_power_profile_mode)
+-			hwmgr->hwmgr_func->set_power_profile_mode(hwmgr, &workload, 0);
++		if (hwmgr->power_profile_mode != workload[0] && hwmgr->hwmgr_func->set_power_profile_mode)
++			hwmgr->hwmgr_func->set_power_profile_mode(hwmgr, workload, 0);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+index 1d0693dad8185..91f0646eb3ee0 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -1834,7 +1834,7 @@ static int smu_adjust_power_state_dynamic(struct smu_context *smu,
+ {
+ 	int ret = 0;
+ 	int index = 0;
+-	long workload;
++	long workload[1];
+ 	struct smu_dpm_context *smu_dpm_ctx = &(smu->smu_dpm);
+ 
+ 	if (!skip_display_settings) {
+@@ -1874,10 +1874,10 @@ static int smu_adjust_power_state_dynamic(struct smu_context *smu,
+ 		smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM) {
+ 		index = fls(smu->workload_mask);
+ 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
+-		workload = smu->workload_setting[index];
++		workload[0] = smu->workload_setting[index];
+ 
+-		if (smu->power_profile_mode != workload)
+-			smu_bump_power_profile_mode(smu, &workload, 0);
++		if (smu->power_profile_mode != workload[0])
++			smu_bump_power_profile_mode(smu, workload, 0);
+ 	}
+ 
+ 	return ret;
+@@ -1927,7 +1927,7 @@ static int smu_switch_power_profile(void *handle,
+ {
+ 	struct smu_context *smu = handle;
+ 	struct smu_dpm_context *smu_dpm_ctx = &(smu->smu_dpm);
+-	long workload;
++	long workload[1];
+ 	uint32_t index;
+ 
+ 	if (!smu->pm_enabled || !smu->adev->pm.dpm_enabled)
+@@ -1940,17 +1940,17 @@ static int smu_switch_power_profile(void *handle,
+ 		smu->workload_mask &= ~(1 << smu->workload_prority[type]);
+ 		index = fls(smu->workload_mask);
+ 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
+-		workload = smu->workload_setting[index];
++		workload[0] = smu->workload_setting[index];
+ 	} else {
+ 		smu->workload_mask |= (1 << smu->workload_prority[type]);
+ 		index = fls(smu->workload_mask);
+ 		index = index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
+-		workload = smu->workload_setting[index];
++		workload[0] = smu->workload_setting[index];
+ 	}
+ 
+ 	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL &&
+ 		smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM)
+-		smu_bump_power_profile_mode(smu, &workload, 0);
++		smu_bump_power_profile_mode(smu, workload, 0);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
