@@ -1,69 +1,60 @@
-Return-Path: <stable+bounces-62165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DB493E65D
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:47:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA6193E663
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12AEE28109B
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:47:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 293FE281482
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE4578C84;
-	Sun, 28 Jul 2024 15:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE221823D1;
+	Sun, 28 Jul 2024 15:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aBsnnTeb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVLkdVGJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1AC6F30B;
-	Sun, 28 Jul 2024 15:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7440C81ADA;
+	Sun, 28 Jul 2024 15:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181478; cv=none; b=jW84epV2aG0ltZVDZd4/V9blb3GwoihSpuH4ERZuUyb8UHFxH1xTsn8hMepyBzetrQ6X00ch3hOM8ptAwT+iuw/gmKsoX3Zw3JAXG4lDvEs56YmkyS4VLLiNMEYE26yiP92mRqSI/lAm4aR5wVkdqoAa5izYccwkj49V3kUvT6Y=
+	t=1722181480; cv=none; b=tVDyzkt59Pzh66Dmf7qwaMwLZptpVNwDv1k94JdI2gOJpGmjdnlf9GOTzqgB8a5huIoBXr8vbq2Beplv/Cf6oWz4FMk8u1IH3bMSzMGtdEfuo7GDX6EgmWlSqa1KgEabO5lo2idt6QFoKN9rkOfaPDcdAUOv6sS6B2KV+fYHuZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181478; c=relaxed/simple;
-	bh=wTYvYkVYZyoLRinwSZxNj8Hn2zyab3zHtSkrx2lEGJk=;
+	s=arc-20240116; t=1722181480; c=relaxed/simple;
+	bh=sYqLLLkqbeBStOv9GEZsyA5OLxo/x9VoE601Yk1kU/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/xHqZME951ndqWoPvryave9WFkygLEvtkpcJEQ3VshtumAG748QinOPZWCdrJrzsWuKREMDOgLe3upVuIdlEfsbTr401Xp8lYCzKVATiL2DnItrU+1LL81uNp+xQtHkWoUWOG2ELYNSpHo/9noI162ziJDq4jSIg6CO+mgX/O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aBsnnTeb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73750C116B1;
-	Sun, 28 Jul 2024 15:44:35 +0000 (UTC)
+	 MIME-Version; b=MWRXinzwG1uqmgtnqpGEx8w5Br+C3M5bngYvvGTfLrrqtr8pGpiFlYqd6sWQ2lk1KxwAjXxyRzySVy4obsluVy1OYOBTOeFnwWJAhb9oep2tZB2HKTirc9gRXcxRofzp1JuE3zRZdif6hSF70cglgAoVPuS1n4z649s/0YqniJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVLkdVGJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D27C4AF0E;
+	Sun, 28 Jul 2024 15:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181478;
-	bh=wTYvYkVYZyoLRinwSZxNj8Hn2zyab3zHtSkrx2lEGJk=;
+	s=k20201202; t=1722181479;
+	bh=sYqLLLkqbeBStOv9GEZsyA5OLxo/x9VoE601Yk1kU/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aBsnnTebz6xZ451++Diae/gCV/Ke4QL4ALxaRKjA18O8lcEv+C9UJy9kcNYQnIwYF
-	 55+4bT5GSWme5JzL3LsyXayETUhRpF6znW/5N9QahXmJRUPvhIcH1i8JHi9+RgmNPf
-	 shy2QH41Ma7RlF7q8vdqpcBkj3TF8EOpnGzsQF2eVbZ4Rm5UyIiYVMmSq3gh6YDL8L
-	 DUjrpjJE2MYvAO8GjO0aDWgB9p4XVrAlEPQmuR8ZR9CS0KSlHMG4OVfVpAwVSV51xF
-	 J302BS2RFbuJPKiJa2z0DFpiLNjhQ3E7TdXgyPAmtcPwo7CGqGsgTZkAyyAQ5ZHiBz
-	 uUabRH3N6p44A==
+	b=WVLkdVGJhE1gXWeuEFjzYP5Txd3y5vNIdEe3PuZ7xwlGpeTyOOOcm5yUpmrDjuZ8b
+	 rp+yGc+9Uc8L6GWy3nbmUrdbHUPwkVXk1vVyHJ795X9FLv1OY/+gNg2vjL7rayzM54
+	 4r66iYuBWlK1dESWYoAcYu/rlOliKhOy0uMIZr4Hyuc9nXwHeRjRmJmXaG39WPOoyX
+	 EPsflpfSViviVPWdLyzL5vUyPBliJGcg9LkktTa8R6yiDH7b6Xt9I+SOEliYb7Roqe
+	 87qwQY1JcM1A1DQB3eq01vft5lDS6vfAXobPlCL3yMVoYBo+7VfT2sb2oidVp402sM
+	 kCL4N4ABZ5FQg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	roman.li@amd.com,
-	mario.limonciello@amd.com,
-	joshua@froggi.es,
-	wayne.lin@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 21/34] drm/amd/display: Add null checker before passing variables
-Date: Sun, 28 Jul 2024 11:40:45 -0400
-Message-ID: <20240728154230.2046786-21-sashal@kernel.org>
+	jacopo@jmondi.org,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 22/34] media: i2c: ov5647: replacing of_node_put with __free(device_node)
+Date: Sun, 28 Jul 2024 11:40:46 -0400
+Message-ID: <20240728154230.2046786-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728154230.2046786-1-sashal@kernel.org>
 References: <20240728154230.2046786-1-sashal@kernel.org>
@@ -78,57 +69,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Alex Hung <alex.hung@amd.com>
+From: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
 
-[ Upstream commit 8092aa3ab8f7b737a34b71f91492c676a843043a ]
+[ Upstream commit 971b4eef86ccb8b107ad2875993e510eec4fdeae ]
 
-Checks null pointer before passing variables to functions.
+Replace instance of of_node_put with __free(device_node)
+to protect against any memory leaks due to future changes
+in control flow.
 
-This fixes 3 NULL_RETURNS issues reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
+Acked-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/media/i2c/ov5647.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 3cdcadd41be1a..964bb6d0a3833 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2701,7 +2701,8 @@ static int dm_suspend(void *handle)
+diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
+index 7e1ecdf2485f7..0fb4d7bff9d14 100644
+--- a/drivers/media/i2c/ov5647.c
++++ b/drivers/media/i2c/ov5647.c
+@@ -1360,24 +1360,21 @@ static int ov5647_parse_dt(struct ov5647 *sensor, struct device_node *np)
+ 	struct v4l2_fwnode_endpoint bus_cfg = {
+ 		.bus_type = V4L2_MBUS_CSI2_DPHY,
+ 	};
+-	struct device_node *ep;
++	struct device_node *ep __free(device_node) =
++		of_graph_get_endpoint_by_regs(np, 0, -1);
+ 	int ret;
  
- 		dm->cached_dc_state = dc_state_create_copy(dm->dc->current_state);
+-	ep = of_graph_get_endpoint_by_regs(np, 0, -1);
+ 	if (!ep)
+ 		return -EINVAL;
  
--		dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
-+		if (dm->cached_dc_state)
-+			dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
+ 	ret = v4l2_fwnode_endpoint_parse(of_fwnode_handle(ep), &bus_cfg);
+ 	if (ret)
+-		goto out;
++		return ret;
  
- 		amdgpu_dm_commit_zero_streams(dm->dc);
+ 	sensor->clock_ncont = bus_cfg.bus.mipi_csi2.flags &
+ 			      V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK;
  
-@@ -6788,7 +6789,8 @@ static void create_eml_sink(struct amdgpu_dm_connector *aconnector)
- 		aconnector->dc_sink = aconnector->dc_link->local_sink ?
- 		aconnector->dc_link->local_sink :
- 		aconnector->dc_em_sink;
--		dc_sink_retain(aconnector->dc_sink);
-+		if (aconnector->dc_sink)
-+			dc_sink_retain(aconnector->dc_sink);
- 	}
+-out:
+-	of_node_put(ep);
+-
+-	return ret;
++	return 0;
  }
  
-@@ -7615,7 +7617,8 @@ static int amdgpu_dm_connector_get_modes(struct drm_connector *connector)
- 				drm_add_modes_noedid(connector, 1920, 1080);
- 	} else {
- 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
--		amdgpu_dm_connector_add_common_modes(encoder, connector);
-+		if (encoder)
-+			amdgpu_dm_connector_add_common_modes(encoder, connector);
- 		amdgpu_dm_connector_add_freesync_modes(connector, edid);
- 	}
- 	amdgpu_dm_fbc_init(connector);
+ static int ov5647_probe(struct i2c_client *client)
 -- 
 2.43.0
 
