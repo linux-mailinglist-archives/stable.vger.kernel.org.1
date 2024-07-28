@@ -1,69 +1,60 @@
-Return-Path: <stable+bounces-62190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDF893E6C1
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:53:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A4393E6C3
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AB911F24A7C
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:53:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77F601C2124A
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E0613E3E7;
-	Sun, 28 Jul 2024 15:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B2178C84;
+	Sun, 28 Jul 2024 15:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TvEnnHzH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ParbpZZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B2978C7A;
-	Sun, 28 Jul 2024 15:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAF813F42D;
+	Sun, 28 Jul 2024 15:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181630; cv=none; b=VrFR/zn7ZR5k0lgkE2TloiDz7jc+8CdO/czqUmbAm6anUwCXNW4vCV1wm26UJxmOKspozucv6O20FqeVwSi6lkmTIHgdwjkKoTRdgXhcbk+hWGQtL+iMk8rhZ5d/yRqMYo7y9C7IahukRgscPBb9s28RfXWXcOdabE6ALmsoTSE=
+	t=1722181633; cv=none; b=fdXuJ+tKj7qEeR+8qUZQE4DDqL8rYQZjowRGPLSB9k64J5X7HWP4CzRyTURLouDLu5c8HZV0K64q9lGUGE7UixfvSEm31Do4huzqSkc/bXvCIu4IBciyNZKTwStP7GSjSUKblRVAsL2fAAwjgHt/xJjuWPtSwf3OxS2hChGcc7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181630; c=relaxed/simple;
-	bh=8w5R5fcdDjRyKHGWoORciPpmcOKJ9u6P7eE6Ez03pdU=;
+	s=arc-20240116; t=1722181633; c=relaxed/simple;
+	bh=Ue4tQEe5O9NsyTF6ufv9FN3cJdb3ul05cX1au5Iwngw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FiaHglXeck9ulR4s/X20n1AB1FKFwVdpm+eLshgn7+176HX4n4oz6uv33r2v7nHVz3/0IMa9z/ea6cD7XljA80BJjFBp2muCiI9R7yOQMCFqDQXklu+Ao/4tlfgQMbneigxsdbH9L1t6T7FprgWFl2c3TC5X9wmLwMrtf/9C0ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TvEnnHzH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6F4C32782;
-	Sun, 28 Jul 2024 15:47:08 +0000 (UTC)
+	 MIME-Version; b=KK3I5viTH2N/pKK8MX90IoB8slgozDvHYylE5jklxP9znq0FV+Uv09nZHXRoHzSWxEvyBMtL7V/1SS0mI/PnKHXepUUBTjiidZWA+Zbz07MgELK7Fp8OOJQ/t6jlkQVcQeL3i4nu12Hm8upUMt/AW/nqnjR/HQcz53sp8becG/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ParbpZZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E827C4AF0A;
+	Sun, 28 Jul 2024 15:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181630;
-	bh=8w5R5fcdDjRyKHGWoORciPpmcOKJ9u6P7eE6Ez03pdU=;
+	s=k20201202; t=1722181632;
+	bh=Ue4tQEe5O9NsyTF6ufv9FN3cJdb3ul05cX1au5Iwngw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TvEnnHzHDEQFwY24jPMXAJhFYNxijlW4oIMLR3nyRqtA0QEO0YfEEf1E6Kai4Vn4I
-	 Vd+mnXR9dZr1rr+lAuP1o6hKcn3X2jVqB3gGlm4lkHdFIDZ/Cvkbfi1T3vvGI6YF9i
-	 mUvjergexTBH2VBK+VGmTI+guNhFeUhK8+Z4X7zD7T6QM2dojg6XcuqPP6zow5Kzqm
-	 jAUmVZgU7ILKfIJIw4SOSsShvAa7zT7OIwvQDsdOrfeRGKK6wBFHFOIUvk2zoD8caF
-	 XStQmMeJIjTuuoR8wdnTQHqcAlM5hGyYTecFWxWPwdDaDS8g1tm0WyF3k62aZobV2P
-	 EYaDZ07EpdeXw==
+	b=ParbpZZB+JpUgepf2bF37HNbva83AXM/eAlRNk20QuwmDagUSoVMKprGlAtR/f8rt
+	 gVd8lLdrHLoxUxO2glJ0GjJ6KFC9s1+V/bkoZ8RO2QGfjkwi2e0TjuaQQt51I61ZG1
+	 dDzy23ThiKSt71JYZ8/dJ207+Z0DgKMYlQYboqn0pFnwaL9ovmeGBooUYoPYC93+P9
+	 GsOZZeesjmugeGqPK3lq0wE/CrIw83wBa94ARsiyhOhO+ZxvKHBKyetBFPeDBw3Q58
+	 TyCp+oXjVxio5Ja7jrJ1D1x1c/X08LHbGuFQdrh7qC1EjITsWW8yU20/JlYdxqO8ag
+	 PCmJgGjHxN8rA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Ricardo Ribalda <ribalda@chromium.org>,
+	HungNien Chen <hn.chen@sunplusit.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Tomasz Figa <tfiga@chromium.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	roman.li@amd.com,
-	mario.limonciello@amd.com,
-	joshua@froggi.es,
-	wayne.lin@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 12/20] drm/amd/display: Add null checker before passing variables
-Date: Sun, 28 Jul 2024 11:45:10 -0400
-Message-ID: <20240728154605.2048490-12-sashal@kernel.org>
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 13/20] media: uvcvideo: Ignore empty TS packets
+Date: Sun, 28 Jul 2024 11:45:11 -0400
+Message-ID: <20240728154605.2048490-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728154605.2048490-1-sashal@kernel.org>
 References: <20240728154605.2048490-1-sashal@kernel.org>
@@ -78,57 +69,127 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Alex Hung <alex.hung@amd.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 8092aa3ab8f7b737a34b71f91492c676a843043a ]
+[ Upstream commit 5cd7c25f6f0576073b3d03bc4cfb1e8ca63a1195 ]
 
-Checks null pointer before passing variables to functions.
+Some SunplusIT cameras took a borderline interpretation of the UVC 1.5
+standard, and fill the PTS and SCR fields with invalid data if the
+package does not contain data.
 
-This fixes 3 NULL_RETURNS issues reported by Coverity.
+"STC must be captured when the first video data of a video frame is put
+on the USB bus."
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Some SunplusIT devices send, e.g.,
+
+buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
+buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
+buffer: 0xa7755c00 len 000668 header:0x8c stc 73779dba sof 070c pts 7376d37a
+
+While the UVC specification meant that the first two packets shouldn't
+have had the SCR bit set in the header.
+
+This borderline/buggy interpretation has been implemented in a variety
+of devices, from directly SunplusIT and from other OEMs that rebrand
+SunplusIT products. So quirking based on VID:PID will be problematic.
+
+All the affected modules have the following extension unit:
+VideoControl Interface Descriptor:
+  guidExtensionCode         {82066163-7050-ab49-b8cc-b3855e8d221d}
+
+But the vendor plans to use that GUID in the future and fix the bug,
+this means that we should use heuristic to figure out the broken
+packets.
+
+This patch takes care of this.
+
+lsusb of one of the affected cameras:
+
+Bus 001 Device 003: ID 1bcf:2a01 Sunplus Innovation Technology Inc.
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.01
+  bDeviceClass          239 Miscellaneous Device
+  bDeviceSubClass         2 ?
+  bDeviceProtocol         1 Interface Association
+  bMaxPacketSize0        64
+  idVendor           0x1bcf Sunplus Innovation Technology Inc.
+  idProduct          0x2a01
+  bcdDevice            0.02
+  iManufacturer           1 SunplusIT Inc
+  iProduct                2 HanChen Wise Camera
+  iSerial                 3 01.00.00
+  bNumConfigurations      1
+
+Tested-by: HungNien Chen <hn.chen@sunplusit.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Tomasz Figa <tfiga@chromium.org>
+Link: https://lore.kernel.org/r/20240323-resend-hwtimestamp-v10-2-b08e590d97c7@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/media/usb/uvc/uvc_video.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index c1a0fd47802a0..f66e2e89892f8 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2628,7 +2628,8 @@ static int dm_suspend(void *handle)
+diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+index 28dde08ec6c5d..dd8ab24b55907 100644
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -478,6 +478,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	ktime_t time;
+ 	u16 host_sof;
+ 	u16 dev_sof;
++	u32 dev_stc;
  
- 		dm->cached_dc_state = dc_copy_state(dm->dc->current_state);
+ 	switch (data[1] & (UVC_STREAM_PTS | UVC_STREAM_SCR)) {
+ 	case UVC_STREAM_PTS | UVC_STREAM_SCR:
+@@ -526,6 +527,34 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	if (dev_sof == stream->clock.last_sof)
+ 		return;
  
--		dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
-+		if (dm->cached_dc_state)
-+			dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
++	dev_stc = get_unaligned_le32(&data[header_size - 6]);
++
++	/*
++	 * STC (Source Time Clock) is the clock used by the camera. The UVC 1.5
++	 * standard states that it "must be captured when the first video data
++	 * of a video frame is put on the USB bus". This is generally understood
++	 * as requiring devices to clear the payload header's SCR bit before
++	 * the first packet containing video data.
++	 *
++	 * Most vendors follow that interpretation, but some (namely SunplusIT
++	 * on some devices) always set the `UVC_STREAM_SCR` bit, fill the SCR
++	 * field with 0's,and expect that the driver only processes the SCR if
++	 * there is data in the packet.
++	 *
++	 * Ignore all the hardware timestamp information if we haven't received
++	 * any data for this frame yet, the packet contains no data, and both
++	 * STC and SOF are zero. This heuristics should be safe on compliant
++	 * devices. This should be safe with compliant devices, as in the very
++	 * unlikely case where a UVC 1.1 device would send timing information
++	 * only before the first packet containing data, and both STC and SOF
++	 * happen to be zero for a particular frame, we would only miss one
++	 * clock sample from many and the clock recovery algorithm wouldn't
++	 * suffer from this condition.
++	 */
++	if (buf && buf->bytesused == 0 && len == header_size &&
++	    dev_stc == 0 && dev_sof == 0)
++		return;
++
+ 	stream->clock.last_sof = dev_sof;
  
- 		amdgpu_dm_commit_zero_streams(dm->dc);
+ 	host_sof = usb_get_current_frame_number(stream->dev->udev);
+@@ -564,7 +593,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	spin_lock_irqsave(&stream->clock.lock, flags);
  
-@@ -6483,7 +6484,8 @@ static void create_eml_sink(struct amdgpu_dm_connector *aconnector)
- 		aconnector->dc_sink = aconnector->dc_link->local_sink ?
- 		aconnector->dc_link->local_sink :
- 		aconnector->dc_em_sink;
--		dc_sink_retain(aconnector->dc_sink);
-+		if (aconnector->dc_sink)
-+			dc_sink_retain(aconnector->dc_sink);
- 	}
- }
- 
-@@ -7296,7 +7298,8 @@ static int amdgpu_dm_connector_get_modes(struct drm_connector *connector)
- 				drm_add_modes_noedid(connector, 1920, 1080);
- 	} else {
- 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
--		amdgpu_dm_connector_add_common_modes(encoder, connector);
-+		if (encoder)
-+			amdgpu_dm_connector_add_common_modes(encoder, connector);
- 		amdgpu_dm_connector_add_freesync_modes(connector, edid);
- 	}
- 	amdgpu_dm_fbc_init(connector);
+ 	sample = &stream->clock.samples[stream->clock.head];
+-	sample->dev_stc = get_unaligned_le32(&data[header_size - 6]);
++	sample->dev_stc = dev_stc;
+ 	sample->dev_sof = dev_sof;
+ 	sample->host_sof = host_sof;
+ 	sample->host_time = time;
 -- 
 2.43.0
 
