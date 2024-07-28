@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-62163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0248693E651
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:46:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FDFE93E657
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 17:46:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDF2A281A46
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:46:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16B61C20B8A
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 15:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C1D80623;
-	Sun, 28 Jul 2024 15:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4CE78C7D;
+	Sun, 28 Jul 2024 15:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BYWTuo68"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5tOxok8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4029378C63;
-	Sun, 28 Jul 2024 15:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B8178C7A;
+	Sun, 28 Jul 2024 15:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181467; cv=none; b=aZd8hHsLUmRHfoiav20t+p+bg70VGiSzxve9FzTfw44iiPC0SWoxaodAy2/DI2YnkSu52d9dnrmzhYWIUhlNWwL2sjLMycdwNZHBfnnc7xsobbmediq+pJy4DkQ4ZpsXSEx2UuXTLgeHkVhlQIuqgPalFc3AzqCKGYkbNIz5IIA=
+	t=1722181472; cv=none; b=Kr3L4QetJpovciJD6WqiDAIhB37smx8uX8kqgzh+t1z92rHTG6LDdiq16h325a9SDQNkwoFPw+rA0OkFo0UwjHuIZdIYA6iNpRhvL3v8y66v1Orcgf0J4RHYcpXXpVizcS1eTI8bgxWAQlhtegE+4XgHoQoNPfZ2BmoLrvqhTAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181467; c=relaxed/simple;
-	bh=HCiyyTk+fYVJuNT17/mU8KRklt1r7jud0B/vUVSoIzQ=;
+	s=arc-20240116; t=1722181472; c=relaxed/simple;
+	bh=PhUeR7yYmxaM6RyfVYIprb0Wbx/tF1HiF3qEf2iSiow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5R9fRfsXy6Q9yEoTZBwM6GeAEC6g2pjqDnYRaY7FwkmlIfCw1Tvu3rBNuHQRif8Ru+WZXxhEyDAF8LvY9tCOmW6+UMBaZvlLr0myf2Zqp3VMniuIRva8/uu9KOJawafvpfpfaRek38mC/N/rU4k65uZBJO/HLF3Cy/WVQOZEkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BYWTuo68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3333CC32782;
-	Sun, 28 Jul 2024 15:44:24 +0000 (UTC)
+	 MIME-Version; b=NEXWmPbZKGJrM2LR6/qB9ZD11tM3puOou8hqAmYy2RcI/cZix5ykku2sjn5TYbAN6AtNaOaE+oemF1AbW5gLQPRd46j/bh1GdQpAyVVVqbzHT8lkIfrnmejoEdVI6FQ5It47vvP7BErz4Xe/kN6M71IwHreMRRCnlBnrf15/m7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5tOxok8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62459C116B1;
+	Sun, 28 Jul 2024 15:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181466;
-	bh=HCiyyTk+fYVJuNT17/mU8KRklt1r7jud0B/vUVSoIzQ=;
+	s=k20201202; t=1722181472;
+	bh=PhUeR7yYmxaM6RyfVYIprb0Wbx/tF1HiF3qEf2iSiow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BYWTuo68AgMhdkoqKLti+ywrFTjNRXjZbLqA0J15dWhZegVcV7IqYOELpgWnlxKdd
-	 PDBc7rkzVA74gtmYAtIzaDzzoN2U512HbzNF/dR+SA7bOojv+vXplhK/z91lPmt5b2
-	 5MZeFHWkXn5wboUimsz5FeXn2hZc6wjt4PCw56IhKXPuvM4EZu4x4tj4xnYRvHwdVo
-	 oum/vE+jqwRWW77QnbumDyU8bW5PgVA+LLEktyrViIsbK8x4LK1HpFGSPI+ePC7670
-	 kWeyV9cDRVnCpC9C9YfJCngapyIKBn1qHKnYJLb9cjsBfjpTqw5R+RTCjJ+sWpla1r
-	 aRxr1n9KYcT2w==
+	b=A5tOxok8denubA8dZsbHkUq6IZpNfRkq5TSM6jgk0IserjfBNqzlUwwaPyEplJWc4
+	 U99wR6OP1ojJfreYZN86WmsKywQKnURJNbs2t6cj6ptnap8EjAFRkdhGANplKjJeIk
+	 495XJ1XkoBRTG4HLGKxMUYadBmtVQAcEIyrr0zJhW1jWCPlHkbwEuVkRsDdxrVsk1N
+	 SJ+2aUyVeUIBvrg1cUEwG2pxDC2RQqWmW6T+pBQpxjNBVDd1A2AvxLPUkG8wLh1/hu
+	 IVZzOhYFvA87ri9zK9c8mtaZ8239Ytl36TeZmeQcYQQqaGXvxMHzOzD9rZ73yHaqtU
+	 zSn45/rmDPTSg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Wayne Lin <wayne.lin@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
+Cc: Wenjing Liu <wenjing.liu@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
 	Zaeem Mohamed <zaeem.mohamed@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
@@ -57,17 +57,17 @@ Cc: Wayne Lin <wayne.lin@amd.com>,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	alex.hung@amd.com,
-	roman.li@amd.com,
-	hersenxs.wu@amd.com,
-	mario.limonciello@amd.com,
-	agustin.gutierrez@amd.com,
+	jun.lei@amd.com,
 	hamza.mahfooz@amd.com,
+	chiahsuan.chung@amd.com,
+	alvin.lee2@amd.com,
+	george.shen@amd.com,
+	alex.hung@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 19/34] drm/amd/display: Don't refer to dc_sink in is_dsc_need_re_compute
-Date: Sun, 28 Jul 2024 11:40:43 -0400
-Message-ID: <20240728154230.2046786-19-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 20/34] drm/amd/display: remove dpp pipes on failure to update pipe params
+Date: Sun, 28 Jul 2024 11:40:44 -0400
+Message-ID: <20240728154230.2046786-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728154230.2046786-1-sashal@kernel.org>
 References: <20240728154230.2046786-1-sashal@kernel.org>
@@ -82,67 +82,63 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Wayne Lin <wayne.lin@amd.com>
+From: Wenjing Liu <wenjing.liu@amd.com>
 
-[ Upstream commit fcf6a49d79923a234844b8efe830a61f3f0584e4 ]
+[ Upstream commit 3ddd9c83ff7ac0ead38188425b14d03dc2f2c133 ]
 
-[Why]
-When unplug one of monitors connected after mst hub, encounter null pointer dereference.
+[why]
+There are cases where update pipe params could fail but dpp pipes are already
+added to the state. In this case, we should remove dpp pipes so dc state is
+restored back. If it is not restored, dc state is corrupted after calling this
+function, so if we call the same interface with the corrupted state again, we
+may end up programming pipe topology based on a corrupted dc state.
 
-It's due to dc_sink get released immediately in early_unregister() or detect_ctx(). When
-commit new state which directly referring to info stored in dc_sink will cause null pointer
-dereference.
-
-[how]
-Remove redundant checking condition. Relevant condition should already be covered by checking
-if dsc_aux is null or not. Also reset dsc_aux to NULL when the connector is disconnected.
-
-Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
 Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c  | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index a5e1a93ddaea2..025938409145a 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -182,6 +182,8 @@ amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
- 		dc_sink_release(dc_sink);
- 		aconnector->dc_sink = NULL;
- 		aconnector->edid = NULL;
-+		aconnector->dsc_aux = NULL;
-+		port->passthrough_aux = NULL;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index a2ca66a268c2d..a51e5de6554ee 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -2701,6 +2701,7 @@ bool resource_append_dpp_pipes_for_plane_composition(
+ 		struct dc_plane_state *plane_state)
+ {
+ 	bool success;
++
+ 	if (otg_master_pipe->plane_state == NULL)
+ 		success = add_plane_to_opp_head_pipes(otg_master_pipe,
+ 				plane_state, new_ctx);
+@@ -2708,10 +2709,15 @@ bool resource_append_dpp_pipes_for_plane_composition(
+ 		success = acquire_secondary_dpp_pipes_and_add_plane(
+ 				otg_master_pipe, plane_state, new_ctx,
+ 				cur_ctx, pool);
+-	if (success)
++	if (success) {
+ 		/* when appending a plane mpc slice count changes from 0 to 1 */
+ 		success = update_pipe_params_after_mpc_slice_count_change(
+ 				plane_state, new_ctx, pool);
++		if (!success)
++			resource_remove_dpp_pipes_for_plane_composition(new_ctx,
++					pool, plane_state);
++	}
++
+ 	return success;
+ }
  
- 	aconnector->mst_status = MST_STATUS_DEFAULT;
-@@ -494,6 +496,8 @@ dm_dp_mst_detect(struct drm_connector *connector,
- 		dc_sink_release(aconnector->dc_sink);
- 		aconnector->dc_sink = NULL;
- 		aconnector->edid = NULL;
-+		aconnector->dsc_aux = NULL;
-+		port->passthrough_aux = NULL;
- 
- 		amdgpu_dm_set_mst_status(&aconnector->mst_status,
- 			MST_REMOTE_EDID | MST_ALLOCATE_NEW_PAYLOAD | MST_CLEAR_ALLOCATED_PAYLOAD,
-@@ -1233,14 +1237,6 @@ static bool is_dsc_need_re_compute(
- 		if (!aconnector || !aconnector->dsc_aux)
- 			continue;
- 
--		/*
--		 *	check if cached virtual MST DSC caps are available and DSC is supported
--		 *	as per specifications in their Virtual DPCD registers.
--		*/
--		if (!(aconnector->dc_sink->dsc_caps.dsc_dec_caps.is_dsc_supported ||
--			aconnector->dc_link->dpcd_caps.dsc_caps.dsc_basic_caps.fields.dsc_support.DSC_PASSTHROUGH_SUPPORT))
--			continue;
--
- 		stream_on_link[new_stream_on_link_num] = aconnector;
- 		new_stream_on_link_num++;
+@@ -2721,6 +2727,7 @@ void resource_remove_dpp_pipes_for_plane_composition(
+ 		const struct dc_plane_state *plane_state)
+ {
+ 	int i;
++
+ 	for (i = pool->pipe_count - 1; i >= 0; i--) {
+ 		struct pipe_ctx *pipe_ctx = &context->res_ctx.pipe_ctx[i];
  
 -- 
 2.43.0
