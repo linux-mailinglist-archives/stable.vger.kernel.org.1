@@ -1,129 +1,102 @@
-Return-Path: <stable+bounces-62132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B3393E44A
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 11:23:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 113E793E499
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 12:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B37CB1C20C52
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 09:23:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C557B21080
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 10:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CECE2562E;
-	Sun, 28 Jul 2024 09:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524593307B;
+	Sun, 28 Jul 2024 10:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGpqabrT"
+	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="MrjuEAza"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC531CFA9;
-	Sun, 28 Jul 2024 09:22:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4676629408
+	for <stable@vger.kernel.org>; Sun, 28 Jul 2024 10:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722158575; cv=none; b=AYpmHL+vwnLBbv3xtVP3ENktLS1KxL5S5lTgUCwb6Xqcp427bZQSZbNTMFr2Pg9KuiHJXuZb5sEDcDR+RBm8kQcBOUVPYsrzveo+wxnZG6cPYER43pSb/ELGV7LHo0L2Ook9eCg2IPZNF9Al55YVOZCivMVTtoBQyDAzWTk+m6k=
+	t=1722163038; cv=none; b=lrrSuK9JX2/s94J/Otq+RR/O+uv94j8h49zw0gZ68Nj9+ULZcIBe1eQYK9hAtLr0ypdy4FVIAE7qGz9CJppco/4byW8T+ySVbquXf1kzh0g8BXzIPkx7MGZaO71xF7r4hNxg0GJcMbt1GbzyBXxr2UbZNb+zciyLG45X2Wa70mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722158575; c=relaxed/simple;
-	bh=FgU7FBJsu3CA2q0gEsB+H8HSbPtAsX5dLkzDj863OPQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FUoMYPWnqDI7B7y9EYJDyHpyJJhn/sedyeFpKe9MZFzyJLK54wcwvNBJ4Zy1fHbXgGORbeyRoM2Iuzo/5qOplV/nfhY9AoIGv9MJh7ZyA3x6eoL3RMqHPH11ZIo6CzJNORjIL3IJ+Ow9hedB6vslt4ytSdLr37Fh0KgRQb5ab1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGpqabrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BEAC4AF0E;
-	Sun, 28 Jul 2024 09:22:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722158575;
-	bh=FgU7FBJsu3CA2q0gEsB+H8HSbPtAsX5dLkzDj863OPQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GGpqabrTtXjEWgKAHJfefGPE9MVm8cKKxafXlRJhDfxk/a3etchQaVHou5R0uSEaX
-	 zEUOpaxUGBPDSBCC5bYKchuZxurG8+n8Igs50mahBPvt9nOTsk1IQZIuIPkcrawUW8
-	 6DRsxtvOQwKM+LfNsrAP3SJ+GmzS5f7Yf+29T4IMVIGF2KNDJi7DZVnQ3GgX0zCywr
-	 PVebCj55yPxVyjdy+UdKAACcdoJzJUhzKvnGiqAZml/tE8clsO3mq/ERjfeF+yZckX
-	 ZHljbJZz8PRZA8TZ7u68Y8QunEpEULel/YdbTH0Hf0OfZBHQAWy5+Xq3KHGUQpmeFa
-	 znoS+UfCl08Gw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=wait-a-minute.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sY07A-00G2Rl-Ou;
-	Sun, 28 Jul 2024 10:22:52 +0100
-Date: Sun, 28 Jul 2024 10:22:53 +0100
-Message-ID: <87zfq150r6.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	James Morse <james.morse@arm.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Miguel Luis <miguel.luis@oracle.com>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	tglx@linutronix.de,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 6.10 14/16] irqchip/gic-v3: Don't return errors from gic_acpi_match_gicc()
-In-Reply-To: <20240728004739.1698541-14-sashal@kernel.org>
-References: <20240728004739.1698541-1-sashal@kernel.org>
-	<20240728004739.1698541-14-sashal@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1722163038; c=relaxed/simple;
+	bh=VSQZUQRsh6tb++bgERR7+cIgD3X5k9ByH1RTlxLNfRA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BHqDN6+5XsUox2BWxHaPwRfA08+sPGzyVHLHvlWrRbeaMslzWUbu61Nmw2ZQn7NRxPhXjZ6qn22SgThplUIUtCXfx6PEv0k7sn+dEp1nnvtvn4/npBP1dkJ0i1BwMhoB5zGi1diGsRrmp1S/P3RYt8hIr9RhQPNQZkrpYg5HDog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=MrjuEAza; arc=none smtp.client-ip=193.222.135.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 42027 invoked from network); 28 Jul 2024 12:37:06 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1722163027; bh=iktQfLVfo5uemDyHcZpaFp8tjax4KZZs1j7D2Ojd3uY=;
+          h=From:To:Cc:Subject;
+          b=MrjuEAzaLyvMJFAMd2XToE52gMrUFpD7wmwWZy9rYk8ZmZ7GTBwNryPZnCXUOsN+M
+           1iKgAzNzugyODegvuQUXt0AnpkXxN1bxLrATXCxIci1msjj0TtXvxqZgq03zwuaVpB
+           5UvMJznjutb/BFIrUSh61qzykQ381RGkaQu5oQfA=
+Received: from aaen12.neoplus.adsl.tpnet.pl (HELO localhost.localdomain) (mat.jonczyk@o2.pl@[83.4.117.12])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with SMTP
+          for <linux-raid@vger.kernel.org>; 28 Jul 2024 12:37:06 +0200
+From: =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+To: linux-raid@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] [DEBUG] md/raid1: check recovery_offset in raid1_check_read_range
+Date: Sun, 28 Jul 2024 12:36:34 +0200
+Message-Id: <20240728103634.208234-1-mat.jonczyk@o2.pl>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <9952f532-2554-44bf-b906-4880b2e88e3a@o2.pl>
+References: <9952f532-2554-44bf-b906-4880b2e88e3a@o2.pl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sashal@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, james.morse@arm.com, gshan@redhat.com, miguel.luis@oracle.com, rmk+kernel@armlinux.org.uk, Jonathan.Cameron@huawei.com, catalin.marinas@arm.com, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: 2f2b5c119b9786ddc6624fe8163a95cc
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [sXPU]                               
 
-On Sun, 28 Jul 2024 01:47:31 +0100,
-Sasha Levin <sashal@kernel.org> wrote:
-> 
-> From: James Morse <james.morse@arm.com>
-> 
-> [ Upstream commit fa2dabe57220e6af78ed7a2f7016bf250a618204 ]
-> 
-> gic_acpi_match_gicc() is only called via gic_acpi_count_gicr_regions().
-> It should only count the number of enabled redistributors, but it
-> also tries to sanity check the GICC entry, currently returning an
-> error if the Enabled bit is set, but the gicr_base_address is zero.
-> 
-> Adding support for the online-capable bit to the sanity check will
-> complicate it, for no benefit. The existing check implicitly depends on
-> gic_acpi_count_gicr_regions() previous failing to find any GICR regions
-> (as it is valid to have gicr_base_address of zero if the redistributors
-> are described via a GICR entry).
-> 
-> Instead of complicating the check, remove it. Failures that happen at
-> this point cause the irqchip not to register, meaning no irqs can be
-> requested. The kernel grinds to a panic() pretty quickly.
-> 
-> Without the check, MADT tables that exhibit this problem are still
-> caught by gic_populate_rdist(), which helpfully also prints what went
-> wrong:
-> | CPU4: mpidr 100 has no re-distributor!
-> 
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Miguel Luis <miguel.luis@oracle.com>
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Marc Zyngier <maz@kernel.org>
-> Link: https://lore.kernel.org/r/20240529133446.28446-14-Jonathan.Cameron@huawei.com
-> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+This should fix the filesystem corruption during RAID resync.
 
-Please drop this. It has no purpose being backported to stable.
+Checking this condition in raid1_check_read_range is not ideal, but this
+is only a debug patch.
 
-Thanks,
+Link: https://lore.kernel.org/lkml/20240724141906.10b4fc4e@peluse-desk5/T/#m671d6d3a7eda44d39d0882864a98824f52c52917
+Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Cc: Song Liu <song@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/md/raid1-10.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-	M.
-
+diff --git a/drivers/md/raid1-10.c b/drivers/md/raid1-10.c
+index 2ea1710a3b70..4ab896e8cb12 100644
+--- a/drivers/md/raid1-10.c
++++ b/drivers/md/raid1-10.c
+@@ -252,6 +252,10 @@ static inline int raid1_check_read_range(struct md_rdev *rdev,
+ 	sector_t first_bad;
+ 	int bad_sectors;
+ 
++	if (!test_bit(In_sync, &rdev->flags) &&
++	    rdev->recovery_offset < this_sector + *len)
++		return 0;
++
+ 	/* no bad block overlap */
+ 	if (!is_badblock(rdev, this_sector, *len, &first_bad, &bad_sectors))
+ 		return *len;
 -- 
-Without deviation from the norm, progress is not possible.
+2.25.1
+
 
