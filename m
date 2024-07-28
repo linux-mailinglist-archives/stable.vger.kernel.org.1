@@ -1,66 +1,69 @@
-Return-Path: <stable+bounces-62307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC2D93E847
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:27:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E8B293E84A
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0662EB20F6E
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:26:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCAE4B22B76
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DEF188CD7;
-	Sun, 28 Jul 2024 16:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87EA18A957;
+	Sun, 28 Jul 2024 16:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jt07ItmH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KB99Zw/L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C03E188CD5;
-	Sun, 28 Jul 2024 16:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CEE5F876;
+	Sun, 28 Jul 2024 16:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722182971; cv=none; b=sGy3/3MCRETY3rj1LikTIZx9osftZCPWY6SpCydS7d9HLSkJc3hykjdgaJEtBNdXTlQsqK1coGnTWKQSlGOQxafPzDZupDqDCdlXlAio8TEvrhMDiH5aSLwL0C9TfyoftgvtEBXaWbUjnjm0/PlYaFflwLpdjO+hvZWTsNx/QH0=
+	t=1722182976; cv=none; b=H5Rv51eoxoC5ciYwSYH3cFTWDERABxiGV3k5CLHYRUjmKHyLUo2RMXWT+9kNUGbCQR1/YB9GiMRYzAfQGrwOEP+HKzcB2wVKErvbxT3DdcZRyqhX/ME/KkzlEB+sbYLnQdyoKgr4K19ajxQzGhjz12T5qaa0UUTRrIAuyRQGmcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722182971; c=relaxed/simple;
-	bh=5a30SfJIZmq7iTMLZ4NkwPdCwdreEiJp3iMfcFRfd7E=;
+	s=arc-20240116; t=1722182976; c=relaxed/simple;
+	bh=L/eW066JthlnX5r6CTHNKVUVsCb4H4boNC7U3eSjmjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g//gWmwWn+l/hUBZb4EAifpz4wXrm2SoX7z15i6m+dnZ5XxvSXZ6D+a/Qk9lfZXONi3uebAOIBCDlTRLz3pvCM1DZdjHkVp27z4PI1gR5r1WOSUcTYc0TEmf98Bei/Vfvx2IMmTGU4xuVmwuW9FY4ciVYbGKL9fGPkQqTov/QtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jt07ItmH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D162C4AF0B;
-	Sun, 28 Jul 2024 16:09:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hwXxBFqmnJhavGtpvQWbXzs8t8PPomf5Wj+jGXlbErdm9/dBZR4vPsj/kB/EAMakNKIaQ9hmhKXyJXIvuoSpGv9tMp0xgsPJUyvoHynvxa2Si+6MPE/4fA+WrhC67Ooowvs+cdGwz7SYuakT+uUYHrkBPuoVjbJ0Th74Bwezd4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KB99Zw/L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4237C4AF12;
+	Sun, 28 Jul 2024 16:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722182971;
-	bh=5a30SfJIZmq7iTMLZ4NkwPdCwdreEiJp3iMfcFRfd7E=;
+	s=k20201202; t=1722182976;
+	bh=L/eW066JthlnX5r6CTHNKVUVsCb4H4boNC7U3eSjmjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jt07ItmHJeCxiBf7gD2Uyvny+IUjHLcZrVDgHNAsN19RRkDzRRWJzw9aCQnP0UEQW
-	 z1092sdvYvxYE9p7PK9FXv0yBidosWVuJ1oWtW1sD+QCLM8lL2IX8T9n96wamwARIz
-	 GrNp47wEzJK64SdPbKl26dDyxJpPzeM0m0SXeUqzqnQJJkkocTf+3x+OeTsDe6yA8R
-	 sWrC0BAqGrCmtiIZnYcnoIe6PEmdjjL15LM9tcxJkTTw5tmlevwZQtd8dGJhesCQ8F
-	 Sp79+JXod+dZ3/J6sUeXvEzNhX821KRj54ttOp/MvWPCy5g4gMXDYVN9uFf8Zf5cAL
-	 Js/k0HPjEeRzA==
+	b=KB99Zw/LHap6e59oE44t8c124EoT5tDbp7SFByzb5KICvSDrIxlByK8mI8t4mKK1V
+	 nNIKYO1nR5tTeb3bBAFi3fdH/c/wCQhs+fttWrIULY6nFe+hLSZu00JMAT8kJ3yktW
+	 +4uIPvFlXbAyWpmMs29g9xnjlR3DWr/CEiKykOH8rQPS8KEe84m/eVWP3ndEWSZ4tg
+	 2UdXpZ5R+35c7mr8hMFX3y5HoSti3GbBUDxZuyp8whhfmhvY4+H7LN0R/VSS9UKx0a
+	 aD8AHGgSSYNoNPU/dG0ME2fSQCUwAY82CymX7grekLGKSZxmut+FmvXT6kTlgt3VC6
+	 nCZ1qMB2L8gdg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Kishon Vijay Abraham I <kishon@ti.com>,
+	Achal Verma <a-verma1@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Sasha Levin <sashal@kernel.org>,
-	cezary.rojewski@intel.com,
-	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	ckeepax@opensource.cirrus.com,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 09/13] ASoC: Intel: sof_sdw: fix jack detection on ADL-N variant RVP
-Date: Sun, 28 Jul 2024 12:08:51 -0400
-Message-ID: <20240728160907.2053634-9-sashal@kernel.org>
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	bhelgaas@google.com,
+	manivannan.sadhasivam@linaro.org,
+	cassel@kernel.org,
+	u.kleine-koenig@pengutronix.de,
+	yoshihiro.shimoda.uh@renesas.com,
+	dlemoal@kernel.org,
+	amishin@t-argos.ru,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 10/13] PCI: keystone: Add workaround for Errata #i2037 (AM65x SR 1.0)
+Date: Sun, 28 Jul 2024 12:08:52 -0400
+Message-ID: <20240728160907.2053634-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728160907.2053634-1-sashal@kernel.org>
 References: <20240728160907.2053634-1-sashal@kernel.org>
@@ -70,48 +73,130 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.164
 Content-Transfer-Encoding: 8bit
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Kishon Vijay Abraham I <kishon@ti.com>
 
-[ Upstream commit 65c90df918205bc84f5448550cde76a54dae5f52 ]
+[ Upstream commit 86f271f22bbb6391410a07e08d6ca3757fda01fa ]
 
-Experimental tests show that JD2_100K is required, otherwise the jack
-is detected always even with nothing plugged-in.
+Errata #i2037 in AM65x/DRA80xM Processors Silicon Revision 1.0
+(SPRZ452D_July 2018_Revised December 2019 [1]) mentions when an
+inbound PCIe TLP spans more than two internal AXI 128-byte bursts,
+the bus may corrupt the packet payload and the corrupt data may
+cause associated applications or the processor to hang.
 
-To avoid matching with other known quirks the SKU information is used.
+The workaround for Errata #i2037 is to limit the maximum read
+request size and maximum payload size to 128 bytes. Add workaround
+for Errata #i2037 here.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://patch.msgid.link/20240624121119.91552-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The errata and workaround is applicable only to AM65x SR 1.0 and
+later versions of the silicon will have this fixed.
+
+[1] -> https://www.ti.com/lit/er/sprz452i/sprz452i.pdf
+
+Link: https://lore.kernel.org/linux-pci/16e1fcae-1ea7-46be-b157-096e05661b15@siemens.com
+Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Achal Verma <a-verma1@ti.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/pci/controller/dwc/pci-keystone.c | 44 ++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 089b6c7994f9a..cfa0c3eaffea7 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -258,6 +258,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					SOF_BT_OFFLOAD_SSP(2) |
- 					SOF_SSP_BT_OFFLOAD_PRESENT),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_PRODUCT_SKU, "0000000000070000"),
-+		},
-+		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
-+					RT711_JD2_100K),
-+	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index 09379e5f7724a..24031123a5504 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -35,6 +35,11 @@
+ #define PCIE_DEVICEID_SHIFT	16
+ 
+ /* Application registers */
++#define PID				0x000
++#define RTL				GENMASK(15, 11)
++#define RTL_SHIFT			11
++#define AM6_PCI_PG1_RTL_VER		0x15
++
+ #define CMD_STATUS			0x004
+ #define LTSSM_EN_VAL		        BIT(0)
+ #define OB_XLAT_EN_VAL		        BIT(1)
+@@ -105,6 +110,8 @@
+ 
+ #define to_keystone_pcie(x)		dev_get_drvdata((x)->dev)
+ 
++#define PCI_DEVICE_ID_TI_AM654X		0xb00c
++
+ struct ks_pcie_of_data {
+ 	enum dw_pcie_device_mode mode;
+ 	const struct dw_pcie_host_ops *host_ops;
+@@ -528,7 +535,11 @@ static int ks_pcie_start_link(struct dw_pcie *pci)
+ static void ks_pcie_quirk(struct pci_dev *dev)
+ {
+ 	struct pci_bus *bus = dev->bus;
++	struct keystone_pcie *ks_pcie;
++	struct device *bridge_dev;
+ 	struct pci_dev *bridge;
++	u32 val;
++
+ 	static const struct pci_device_id rc_pci_devids[] = {
+ 		{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCIE_RC_K2HK),
+ 		 .class = PCI_CLASS_BRIDGE_PCI << 8, .class_mask = ~0, },
+@@ -540,6 +551,11 @@ static void ks_pcie_quirk(struct pci_dev *dev)
+ 		 .class = PCI_CLASS_BRIDGE_PCI << 8, .class_mask = ~0, },
+ 		{ 0, },
+ 	};
++	static const struct pci_device_id am6_pci_devids[] = {
++		{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM654X),
++		 .class = PCI_CLASS_BRIDGE_PCI << 8, .class_mask = ~0, },
++		{ 0, },
++	};
+ 
+ 	if (pci_is_root_bus(bus))
+ 		bridge = dev;
+@@ -561,10 +577,36 @@ static void ks_pcie_quirk(struct pci_dev *dev)
+ 	 */
+ 	if (pci_match_id(rc_pci_devids, bridge)) {
+ 		if (pcie_get_readrq(dev) > 256) {
+-			dev_info(&dev->dev, "limiting MRRS to 256\n");
++			dev_info(&dev->dev, "limiting MRRS to 256 bytes\n");
+ 			pcie_set_readrq(dev, 256);
+ 		}
+ 	}
++
++	/*
++	 * Memory transactions fail with PCI controller in AM654 PG1.0
++	 * when MRRS is set to more than 128 bytes. Force the MRRS to
++	 * 128 bytes in all downstream devices.
++	 */
++	if (pci_match_id(am6_pci_devids, bridge)) {
++		bridge_dev = pci_get_host_bridge_device(dev);
++		if (!bridge_dev && !bridge_dev->parent)
++			return;
++
++		ks_pcie = dev_get_drvdata(bridge_dev->parent);
++		if (!ks_pcie)
++			return;
++
++		val = ks_pcie_app_readl(ks_pcie, PID);
++		val &= RTL;
++		val >>= RTL_SHIFT;
++		if (val != AM6_PCI_PG1_RTL_VER)
++			return;
++
++		if (pcie_get_readrq(dev) > 128) {
++			dev_info(&dev->dev, "limiting MRRS to 128 bytes\n");
++			pcie_set_readrq(dev, 128);
++		}
++	}
+ }
+ DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, ks_pcie_quirk);
+ 
 -- 
 2.43.0
 
