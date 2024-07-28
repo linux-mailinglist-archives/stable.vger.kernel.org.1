@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-62026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B1F93E21A
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:58:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F4993E21D
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8A81C21144
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:58:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 749F01C21016
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680F6187563;
-	Sun, 28 Jul 2024 00:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E09187850;
+	Sun, 28 Jul 2024 00:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLM+UzYI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JchrSEdr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF441482E6;
-	Sun, 28 Jul 2024 00:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DAC18784A;
+	Sun, 28 Jul 2024 00:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127756; cv=none; b=qy71ILHc0QtMFUJICzHeS4ilxSGMF3/STrr+yevxmXOcRNwMb21pPVFCJVmmSNzMULVWXi4sHSG2QZlvy4VWluQaA0SvDnOPbHAyAfIXoFs5+40UMrf0eXhWjU1mehjrhKLCyFnj+ig7IVTEqkr/wNcqcBz/rEEH91d0bmUT7kI=
+	t=1722127757; cv=none; b=Hu2JWKPGZ1hBcFvEq04Ik9cxAPn8kdQKxfjhhi0/9kyrdHoLD2IJZ73LK+65BbUTL6qT4xswqFSNKCVhzgh0voUwekwL77Hi5rerBftinD7g1eeqpg5BdCT3yOauiqI/wky/se/3u/tOA776M7kNHhTKKpEkvkRGpNcBTGLdBfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127756; c=relaxed/simple;
-	bh=rmo1xIe3QvVS8gnnbTfzFyIRP3x8ojUqhVF8GJE0lM0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OxNmLY7he3p23g1jq4V2aGTttn4HSeaNS/ikEpYHK2X+N0uUgF49+5196LwnOFpBdDkB/UzgWuzUfl04OCH31k3UF1oN+Bw/kVicJU//2reIyT+h8bSTxBbGEPoWLuL1wiufH9irhVn8M9IJHiEsRpDVTqnKQwd9zyB/QwLCu4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLM+UzYI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF1FC32781;
-	Sun, 28 Jul 2024 00:49:14 +0000 (UTC)
+	s=arc-20240116; t=1722127757; c=relaxed/simple;
+	bh=etv8VkN+fQ0b1P4YvAek6eRzsIgH6uAOhx1tMQyv6/o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kZwu7D3RC88JLsyWhM2KtvycJYvAN/5wRHAIwMkfyGUZpG64pVy/1OQbBMP6mvJXDapr3b00oGhJUltGKsciNshKSwz5FrpE5gfLWNjbqZq9lYW+zAOSUKs1oCn/G1DvXgHcklpZUiFPv8yxVQHMQh664HSSq50j99G709N5HMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JchrSEdr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71399C4AF07;
+	Sun, 28 Jul 2024 00:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127756;
-	bh=rmo1xIe3QvVS8gnnbTfzFyIRP3x8ojUqhVF8GJE0lM0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=hLM+UzYIXDc8lRN128ov1pkIrOc+i50oK4oUy7UQldDsYOAZhiGm6Mb2kknn5eNV3
-	 zyNXigz7BAtQoOrPSjInXl8BFmq+Y+TpeJJ2xi4koRdIIX7plihpcbzrVQUnwP/8DG
-	 aQulJf60sRZ6FaJMYLtjm/nFgXRSyvPs+x/4KNVnck1NM8VS0+ne/EU0kEOX/B3p2t
-	 YhIOjZ2ICNNnSe8A6zd5tq6hS9OWIxOSzr3rqV0ARgm77FZ3uDIJbrqZmDs9ongFTR
-	 Okx60B8+vcIu5lB0jdTAQw/3Svt+G+EIiCCPFKuocA6a6MNMuN6kNIH5P8ntgboX6K
-	 qIzeeuXL3WObw==
+	s=k20201202; t=1722127757;
+	bh=etv8VkN+fQ0b1P4YvAek6eRzsIgH6uAOhx1tMQyv6/o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JchrSEdrtTWUi7SUAxef3FK4ezLoCtPebzltD5UcNVPq0aTZ1PXoq4q6QA/Py9gTO
+	 Dd5g/GbgYC5RbijnXqwR3HMfPzkK0j6PY9fbEvfV7BoIvqY36UvTZRq1Gev4s5ek5v
+	 iE6orAY6cG3kamB4EswS2LkFu+StCOIVkVHBrIf2DoCrxjdX4vycOJCmsJPgPHuKYN
+	 5o2gw/Aeqfa68+wFY/PugfuHAr3LBIKrLQNPT8hBeaw6p/Gh+HT414bNPK4/SoZqM/
+	 md9NB8BDAB3IZy7q+AsVtZMsQe+obfe8fyUMFK7l36XPIQPepcgxgyg5pQqRYavWLy
+	 cojGOb4QDA0fw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Justin Stitt <justinstitt@google.com>,
-	linux-hardening@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	nathan@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.4 1/3] fs: remove accidental overflow during wraparound check
-Date: Sat, 27 Jul 2024 20:49:10 -0400
-Message-ID: <20240728004913.1705252-1-sashal@kernel.org>
+	linux-raid@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 2/3] md/raid5: avoid BUG_ON() while continue reshape after reassembling
+Date: Sat, 27 Jul 2024 20:49:11 -0400
+Message-ID: <20240728004913.1705252-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240728004913.1705252-1-sashal@kernel.org>
+References: <20240728004913.1705252-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,85 +65,91 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.281
 Content-Transfer-Encoding: 8bit
 
-From: Justin Stitt <justinstitt@google.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 23cc6ef6fd453b13502caae23130844e7d6ed0fe ]
+[ Upstream commit 305a5170dc5cf3d395bb4c4e9239bca6d0b54b49 ]
 
-Running syzkaller with the newly enabled signed integer overflow
-sanitizer produces this report:
+Currently, mdadm support --revert-reshape to abort the reshape while
+reassembling, as the test 07revert-grow. However, following BUG_ON()
+can be triggerred by the test:
 
-[  195.401651] ------------[ cut here ]------------
-[  195.404808] UBSAN: signed-integer-overflow in ../fs/open.c:321:15
-[  195.408739] 9223372036854775807 + 562984447377399 cannot be represented in type 'loff_t' (aka 'long long')
-[  195.414683] CPU: 1 PID: 703 Comm: syz-executor.0 Not tainted 6.8.0-rc2-00039-g14de58dbe653-dirty #11
-[  195.420138] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  195.425804] Call Trace:
-[  195.427360]  <TASK>
-[  195.428791]  dump_stack_lvl+0x93/0xd0
-[  195.431150]  handle_overflow+0x171/0x1b0
-[  195.433640]  vfs_fallocate+0x459/0x4f0
-...
-[  195.490053] ------------[ cut here ]------------
-[  195.493146] UBSAN: signed-integer-overflow in ../fs/open.c:321:61
-[  195.497030] 9223372036854775807 + 562984447377399 cannot be represented in type 'loff_t' (aka 'long long)
-[  195.502940] CPU: 1 PID: 703 Comm: syz-executor.0 Not tainted 6.8.0-rc2-00039-g14de58dbe653-dirty #11
-[  195.508395] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  195.514075] Call Trace:
-[  195.515636]  <TASK>
-[  195.517000]  dump_stack_lvl+0x93/0xd0
-[  195.519255]  handle_overflow+0x171/0x1b0
-[  195.521677]  vfs_fallocate+0x4cb/0x4f0
-[  195.524033]  __x64_sys_fallocate+0xb2/0xf0
+kernel BUG at drivers/md/raid5.c:6278!
+invalid opcode: 0000 [#1] PREEMPT SMP PTI
+irq event stamp: 158985
+CPU: 6 PID: 891 Comm: md0_reshape Not tainted 6.9.0-03335-g7592a0b0049a #94
+RIP: 0010:reshape_request+0x3f1/0xe60
+Call Trace:
+ <TASK>
+ raid5_sync_request+0x43d/0x550
+ md_do_sync+0xb7a/0x2110
+ md_thread+0x294/0x2b0
+ kthread+0x147/0x1c0
+ ret_from_fork+0x59/0x70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-Historically, the signed integer overflow sanitizer did not work in the
-kernel due to its interaction with `-fwrapv` but this has since been
-changed [1] in the newest version of Clang. It was re-enabled in the
-kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
-sanitizer").
+Root cause is that --revert-reshape update the raid_disks from 5 to 4,
+while reshape position is still set, and after reassembling the array,
+reshape position will be read from super block, then during reshape the
+checking of 'writepos' that is caculated by old reshape position will
+fail.
 
-Let's use the check_add_overflow helper to first verify the addition
-stays within the bounds of its type (long long); then we can use that
-sum for the following check.
+Fix this panic the easy way first, by converting the BUG_ON() to
+WARN_ON(), and stop the reshape if checkings fail.
 
-Link: https://github.com/llvm/llvm-project/pull/82432 [1]
-Closes: https://github.com/KSPP/linux/issues/356
-Cc: linux-hardening@vger.kernel.org
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/r/20240513-b4-sio-vfs_fallocate-v2-1-db415872fb16@google.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Noted that mdadm must fix --revert-shape as well, and probably md/raid
+should enhance metadata validation as well, however this means
+reassemble will fail and there must be user tools to fix the wrong
+metadata.
+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240611132251.1967786-13-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/open.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/md/raid5.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/fs/open.c b/fs/open.c
-index f1c2ec6790bb3..d88b7f3b4d9f1 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -230,6 +230,7 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
- {
- 	struct inode *inode = file_inode(file);
- 	long ret;
-+	loff_t sum;
- 
- 	if (offset < 0 || len <= 0)
- 		return -EINVAL;
-@@ -298,8 +299,11 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
- 	if (!S_ISREG(inode->i_mode) && !S_ISBLK(inode->i_mode))
- 		return -ENODEV;
- 
--	/* Check for wrap through zero too */
--	if (((offset + len) > inode->i_sb->s_maxbytes) || ((offset + len) < 0))
-+	/* Check for wraparound */
-+	if (check_add_overflow(offset, len, &sum))
-+		return -EFBIG;
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index bba5e61cc1456..41556f5d4dcba 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -5821,7 +5821,9 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
+ 	safepos = conf->reshape_safe;
+ 	sector_div(safepos, data_disks);
+ 	if (mddev->reshape_backwards) {
+-		BUG_ON(writepos < reshape_sectors);
++		if (WARN_ON(writepos < reshape_sectors))
++			return MaxSector;
 +
-+	if (sum > inode->i_sb->s_maxbytes)
- 		return -EFBIG;
+ 		writepos -= reshape_sectors;
+ 		readpos += reshape_sectors;
+ 		safepos += reshape_sectors;
+@@ -5839,14 +5841,18 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
+ 	 * to set 'stripe_addr' which is where we will write to.
+ 	 */
+ 	if (mddev->reshape_backwards) {
+-		BUG_ON(conf->reshape_progress == 0);
++		if (WARN_ON(conf->reshape_progress == 0))
++			return MaxSector;
++
+ 		stripe_addr = writepos;
+-		BUG_ON((mddev->dev_sectors &
+-			~((sector_t)reshape_sectors - 1))
+-		       - reshape_sectors - stripe_addr
+-		       != sector_nr);
++		if (WARN_ON((mddev->dev_sectors &
++		    ~((sector_t)reshape_sectors - 1)) -
++		    reshape_sectors - stripe_addr != sector_nr))
++			return MaxSector;
+ 	} else {
+-		BUG_ON(writepos != sector_nr + reshape_sectors);
++		if (WARN_ON(writepos != sector_nr + reshape_sectors))
++			return MaxSector;
++
+ 		stripe_addr = sector_nr;
+ 	}
  
- 	if (!file->f_op->fallocate)
 -- 
 2.43.0
 
