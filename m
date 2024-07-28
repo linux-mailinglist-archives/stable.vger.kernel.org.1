@@ -1,115 +1,120 @@
-Return-Path: <stable+bounces-62333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07DF93E893
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 150A193E8FE
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 21:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 758B6B22DCF
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:33:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C9E8B20A53
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 19:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B511922F3;
-	Sun, 28 Jul 2024 16:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC2A6F079;
+	Sun, 28 Jul 2024 19:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o4ruFJSA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+rOGDyC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFEF7FBB7;
-	Sun, 28 Jul 2024 16:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D002AD29;
+	Sun, 28 Jul 2024 19:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722183064; cv=none; b=VhXebyKWZpZpaBS1nTjSIASmvjf0thTcQSRO2Tt8cTyynTmBMqVzGFH4WD74R/ia+fhmWV/cIitBbxlP3c95AFF6T2xPvOk75mKiwwMYKoMi0U7gpIbR71kj1iftbSaIzAthMOJ+X70uD35tP3IuVYqA+uEAF+ketkE4OxtTFtA=
+	t=1722194044; cv=none; b=I4oYpXkSYHbc4s9DtCBinXYLgpr1IMKdoNO39qrJa8pa09LhDBwQZcS+A6oTqhww0REsrJ7pjRMKpenBOsHI3TVUYnOo+44+Kxi7XbmAJPGrI1x/POrNi+YgmFDiVCLqJNMwndKECqA2/BX4pcTlOlnJaONIOCfGvks+nh9mgsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722183064; c=relaxed/simple;
-	bh=k4+eVN+vaw5dF351vpZrGQ3K9Lgs02TzdsKCOYRzh68=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNafbdFUY8WoaWqsW8pKbPTlhS9gTJ1vWKJPOPdHXEt1MHp0KgQ23tc6TFkT1yi+JpaPZb5O4QkRDb4qZfMrLKe4pMeVuHwAWHVlSz1+Og010P6nEKLSr/DaFeBtwUwiPQoMjuC5VZAX/XlEbPOGvzgf7hFSgPO52c54dD3CNCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o4ruFJSA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485B8C4AF0A;
-	Sun, 28 Jul 2024 16:11:03 +0000 (UTC)
+	s=arc-20240116; t=1722194044; c=relaxed/simple;
+	bh=sMmbh7cUTqqovrR2AT6BBqOajFBHUkdjDZtKSwNRZH8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IVNL/4RUqJmXzfqLCGUxgyh6gO3A/MqoGsTbXWYxoJoZNpDFoRmpeVWukwIUte2aJ658TQSWR3TarXcXUqIz4CszGpEpfkO9/eN3FwLyejrjbydw3NqlA/z+5jaDEsEFF7Z8p82b/c98u94ZOs45LtajYNsbY/VLUDBQi3zmwUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+rOGDyC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA4DC4AF0C;
+	Sun, 28 Jul 2024 19:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722183064;
-	bh=k4+eVN+vaw5dF351vpZrGQ3K9Lgs02TzdsKCOYRzh68=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4ruFJSAC1cRNomquyIQrWbp+wmjlurc7rIGX3B28muXX8P/SSpbBucDK3zRHc+3o
-	 VsMW7tjiEbpt6L+KHdJD9/cKVaKjMvPT6htf3TNlhfzMqV86DUFUMrwTxV0dtaG7Hl
-	 vU9aX4p/rJit6OAF0q7qCWTkcLAqC46+zMLB/HQt3FB3Oaa4aFflwaNxOq5gTkiNkD
-	 7Fq9quS4KWp4Z9PlwX1wvqf2Yz/PoTR2kacHZtnPQ1t1afKepaoG9fHGzOXgSUUhV+
-	 vWpvVBJPz0iRqS/cD3Hl7CWsafjfu1kc+rplKGojYIcfv0XTl9d3L1VyhN32E9vXS2
-	 pzJIwoYnQoKHQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
-	syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com,
-	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	xristos.thes@gmail.com,
-	peter.ujfalusi@linux.intel.com,
-	kl@kl.wtf,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 4/4] ALSA: usb: Fix UBSAN warning in parse_audio_unit()
-Date: Sun, 28 Jul 2024 12:10:53 -0400
-Message-ID: <20240728161055.2054513-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240728161055.2054513-1-sashal@kernel.org>
-References: <20240728161055.2054513-1-sashal@kernel.org>
+	s=k20201202; t=1722194043;
+	bh=sMmbh7cUTqqovrR2AT6BBqOajFBHUkdjDZtKSwNRZH8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=R+rOGDyCe/5nYkHqIkfoDxNCUuoXBD0w/ddqWWoF1jhS+B0Kyyuk2m3W5Q7WwKFWV
+	 HbXJ3Kegb1sa2iHUflKafhsKDBBrSjNfcZOxQmrCmqsRXuDtLezhnPmzBaeYri/RA3
+	 avGCIFWWgJX9vQri9/mHE74oVZ+ao9vDhuVVZsrPQeKzmHZ/pAd180RTlLCb2MYBXz
+	 v1JbHi8QMBQ4b5WT/KcNvvgrF8gwEhmrr3sjnfEemv8lOFspEzRQNO5IldgpTGfQX7
+	 k8aJDu0T5XZr7GDlnvV75DaOGAl+fpgBrzWXxtAqxH82LAVa4mWcwlgtcukGhKwyto
+	 u0y1ulq4tUitg==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52efd530a4eso4371354e87.0;
+        Sun, 28 Jul 2024 12:14:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWhcvvic3fv9PtKB834sFxKQFCsobiDz1uO691QIlWev1vJjB7v9p9F56KYMMPTZ97pP8D+a5P1BLXWj49OQLLybzKH7/yHCyqhLTrh1r6RVYlbpQr/3WcXECdXEt9pBtyq/Cio4QdA28H8ho3aGA1VPnpiaPvC9iiwbRNQZQvxT4Dh
+X-Gm-Message-State: AOJu0YyYRudiaVrWC1CQWfbS0XFKAzBP0UfiStytc2RZq/N+xxeReu5O
+	liRPeOLiAoIHPe4XNzh5qBPApHn6pMYiOlA7dStglQnPmK57EoV5en8cbGDqaIkgkGou4fskcsN
+	BPhLzixzgxBeLvJ2bpeJucCurEEA=
+X-Google-Smtp-Source: AGHT+IEkz1TnHDlE9ler9A80e9defPOv4OL1EPJyuZN5JVOtMoef4fgodh9s71/x3g0iffQ+5rn3J1ZmWw+wvfxkaGI=
+X-Received: by 2002:a05:6512:1289:b0:52e:f95c:8b with SMTP id
+ 2adb3069b0e04-5309b279f98mr4853691e87.16.1722194042594; Sun, 28 Jul 2024
+ 12:14:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.319
-Content-Transfer-Encoding: 8bit
+References: <20240726-fix-x86-stack-protector-tests-v1-1-a30fe80e8925@kernel.org>
+In-Reply-To: <20240726-fix-x86-stack-protector-tests-v1-1-a30fe80e8925@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 29 Jul 2024 04:13:26 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATWv-OJM0oW8qbMk-HL0GgRkYKcRt+yZadhHB3NGR22uQ@mail.gmail.com>
+Message-ID: <CAK7LNATWv-OJM0oW8qbMk-HL0GgRkYKcRt+yZadhHB3NGR22uQ@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: Fix '-S -c' in x86 stack protector scripts
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, nicolas@fjasle.eu, 
+	maskray@google.com, morbo@google.com, justinstitt@google.com, kees@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Takashi Iwai <tiwai@suse.de>
+On Sat, Jul 27, 2024 at 3:05=E2=80=AFAM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
+>
+> After a recent change in clang to stop consuming all instances of '-S'
+> and '-c' [1], the stack protector scripts break due to the kernel's use
+> of -Werror=3Dunused-command-line-argument to catch cases where flags are
+> not being properly consumed by the compiler driver:
+>
+>   $ echo | clang -o - -x c - -S -c -Werror=3Dunused-command-line-argument
+>   clang: error: argument unused during compilation: '-c' [-Werror,-Wunuse=
+d-command-line-argument]
+>
+> This results in CONFIG_STACKPROTECTOR getting disabled because
+> CONFIG_CC_HAS_SANE_STACKPROTECTOR is no longer set.
+>
+> '-c' and '-S' both instruct the compiler to stop at different stages of
+> the pipeline ('-S' after compiling, '-c' after assembling), so having
+> them present together in the same command makes little sense. In this
+> case, the test wants to stop before assembling because it is looking at
+> the textual assembly output of the compiler for either '%fs' or '%gs',
+> so remove '-c' from the list of arguments to resolve the error.
+>
+> All versions of GCC continue to work after this change, along with
+> versions of clang that do or do not contain the change mentioned above.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 4f7fd4d7a791 ("[PATCH] Add the -fstack-protector option to the CFL=
+AGS")
+> Fixes: 60a5317ff0f4 ("x86: implement x86_32 stack protector")
+> Link: https://github.com/llvm/llvm-project/commit/6461e537815f7fa68cef068=
+42505353cf5600e9c [1]
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+> I think this could go via either -tip or Kbuild?
 
-[ Upstream commit 2f38cf730caedaeacdefb7ff35b0a3c1168117f9 ]
 
-A malformed USB descriptor may pass the lengthy mixer description with
-a lot of channels, and this may overflow the 32bit integer shift
-size, as caught by syzbot UBSAN test.  Although this won't cause any
-real trouble, it's better to address.
+Applied to linux-kbuild/fixes, and included in the pull request.
+Thanks!
 
-This patch introduces a sanity check of the number of channels to bail
-out the parsing when too many channels are found.
 
-Reported-by: syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/0000000000000adac5061d3c7355@google.com
-Link: https://patch.msgid.link/20240715123619.26612-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/usb/mixer.c | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index 6c8cdce8156be..fbfb729212d3b 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1921,6 +1921,13 @@ static int parse_audio_feature_unit(struct mixer_build *state, int unitid,
- 		bmaControls = ftr->bmaControls;
- 	}
- 
-+	if (channels > 32) {
-+		usb_audio_info(state->chip,
-+			       "usbmixer: too many channels (%d) in unit %d\n",
-+			       channels, unitid);
-+		return -EINVAL;
-+	}
-+
- 	/* parse the source unit */
- 	err = parse_audio_unit(state, hdr->bSourceID);
- 	if (err < 0)
--- 
-2.43.0
-
+--=20
+Best Regards
+Masahiro Yamada
 
