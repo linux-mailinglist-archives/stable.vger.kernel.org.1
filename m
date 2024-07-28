@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-62009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939ED93E1EF
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:54:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574A693E1F2
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E78F281F5B
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:54:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6E36281F61
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EDC12D747;
-	Sun, 28 Jul 2024 00:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108C612BF23;
+	Sun, 28 Jul 2024 00:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dEk/rlos"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ckWihFpk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738A212C81F;
-	Sun, 28 Jul 2024 00:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BCB136E0E;
+	Sun, 28 Jul 2024 00:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127720; cv=none; b=n2/4UVd2T6Oz9psA5c7VMhECNUBAMYlkrKDyX/L7rRXnUFX8JyVUTyxq2ZSvCQwZ8WvWZEDYpj7KQP2WwDfGlEK9e/YQfbz+82w1ycro73UUZxBIpT9zrTYtjE+SlojPnjsD6ndN6weXtgtzQGa9rSsKLTvgdgODSZ+iGL11YhM=
+	t=1722127721; cv=none; b=WAy+Y9jKoyYDRzXlAgd+313eZdZMimcmHIAxFmarRWINAg0jydvIZHLe7hRvqujwVp+tLU4scqEC94EMYEnHsnKMF2bcrYBO7gOu9AMocdksViSPdNdYBMAfpYaHf0pAOtLmCkNhcMW5tdO30SOyxV0xwSorSEQO5sqEEthOvOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127720; c=relaxed/simple;
-	bh=AZ+UVoLBwNSrbvt0gsjOx0wR4r61TkaG4buFBmRz/H4=;
+	s=arc-20240116; t=1722127721; c=relaxed/simple;
+	bh=AcadzY0sCdoddeGYQAtwr8J+b5iiKTJVXlXx9TUovNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcs+KfqAnS9saeJS2y/kvz50byPg7oIASUorc1DopZjuzbmJAl9WptQklSa8A9GjdRxdqgl8a1GuD/kIu8vUBEXkoNyWe+aeuvftYs+sTCgdkmvgMvlFv3B34dVitlHuTVHFJRrjTFA3pOvFBgyJzmtq04Rccj+jfM/5Riv3ajI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dEk/rlos; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519FAC4AF07;
-	Sun, 28 Jul 2024 00:48:39 +0000 (UTC)
+	 MIME-Version; b=NUSonKNdrCyf/L4Xd0AWB5NjZ46qR/xELJqLtS3E0tnZoZJ5tEEM8X1PmycfFj4pDE5RKlwfQWzJ0NiT+ihTi24x+AbuApXJTN8CrfTxsLRMgbi8s6m78DluUWMqeWWkK45qgP3TCGmjK81sBdiaXjLq1Vg1N3zd6zoFK4BOWxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ckWihFpk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965F8C32781;
+	Sun, 28 Jul 2024 00:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127720;
-	bh=AZ+UVoLBwNSrbvt0gsjOx0wR4r61TkaG4buFBmRz/H4=;
+	s=k20201202; t=1722127721;
+	bh=AcadzY0sCdoddeGYQAtwr8J+b5iiKTJVXlXx9TUovNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dEk/rlosKxwERFR8KeoYFjyBk79HHN9pfe26kiOg5pd6kZg7GLu8xidTZ5QXRcAMG
-	 q4jjX11bKxfjeJikWbVOA2InkoQ6TEobnhHcpwVLKoXKc1fh36S1ZJ/RhI7KFV3HIE
-	 JJGWWBvfmEJ86i3KX0iU7M6NZqjJugF8QPMriSCLKuzYDGw5c92fTCNP3zM6zm8dHQ
-	 OH6rF6jyliVavIFC8lmq0bxJDhw5nWFPBMhnlT+DAkDuvh7iirIXN/zxSuzaK09LbC
-	 KhH6rZn6fdep3RVjnod0xxaHAKYR+jLsJqZ0Y1tBtdPaqZyJPZy/9yErtHbdrIZvoU
-	 PaEycOI3Q5Haw==
+	b=ckWihFpkkwauUsDmMgC24DjOcABpe7m7scAgXG9OfRtadzjeCSgbPJ4wjx31zxIkB
+	 FJAEMjcH3yDpzBC4fthHSy1VflstF4TyFRsxiT26raIj8IU+JLQunahgX8EJiHX9tA
+	 kTFqVDZ3EIo4VDxR6jQBdIrTZ5U1pV++NZFENQ7soYPk7xsLEXsQd4ABUD/B+43xk4
+	 9AQoJ7Rzc0OBwJKuP4xd+bc3VwIc4dro1m5FBnntzgImYbD+KThPE1DtbDOSeFifJh
+	 S0eBClZg16DnK+V0gYOfeqPn61vrUh7S32UBsh3V+CQFsvBD2qPo8tTT+BOpYvoqNH
+	 wLV/Go15NMvEQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-raid@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 4/8] md/raid5: avoid BUG_ON() while continue reshape after reassembling
-Date: Sat, 27 Jul 2024 20:48:26 -0400
-Message-ID: <20240728004831.1702511-4-sashal@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 5/8] debugobjects: Annotate racy debug variables
+Date: Sat, 27 Jul 2024 20:48:27 -0400
+Message-ID: <20240728004831.1702511-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728004831.1702511-1-sashal@kernel.org>
 References: <20240728004831.1702511-1-sashal@kernel.org>
@@ -65,90 +64,76 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 305a5170dc5cf3d395bb4c4e9239bca6d0b54b49 ]
+[ Upstream commit 5b5baba6222255d29626f63c41f101379ec5400b ]
 
-Currently, mdadm support --revert-reshape to abort the reshape while
-reassembling, as the test 07revert-grow. However, following BUG_ON()
-can be triggerred by the test:
+KCSAN has identified a potential data race in debugobjects, where the
+global variable debug_objects_maxchain is accessed for both reading and
+writing simultaneously in separate and parallel data paths. This results in
+the following splat printed by KCSAN:
 
-kernel BUG at drivers/md/raid5.c:6278!
-invalid opcode: 0000 [#1] PREEMPT SMP PTI
-irq event stamp: 158985
-CPU: 6 PID: 891 Comm: md0_reshape Not tainted 6.9.0-03335-g7592a0b0049a #94
-RIP: 0010:reshape_request+0x3f1/0xe60
-Call Trace:
- <TASK>
- raid5_sync_request+0x43d/0x550
- md_do_sync+0xb7a/0x2110
- md_thread+0x294/0x2b0
- kthread+0x147/0x1c0
- ret_from_fork+0x59/0x70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+  BUG: KCSAN: data-race in debug_check_no_obj_freed / debug_object_activate
 
-Root cause is that --revert-reshape update the raid_disks from 5 to 4,
-while reshape position is still set, and after reassembling the array,
-reshape position will be read from super block, then during reshape the
-checking of 'writepos' that is caculated by old reshape position will
-fail.
+  write to 0xffffffff847ccfc8 of 4 bytes by task 734 on cpu 41:
+  debug_object_activate (lib/debugobjects.c:199 lib/debugobjects.c:564 lib/debugobjects.c:710)
+  call_rcu (kernel/rcu/rcu.h:227 kernel/rcu/tree.c:2719 kernel/rcu/tree.c:2838)
+  security_inode_free (security/security.c:1626)
+  __destroy_inode (./include/linux/fsnotify.h:222 fs/inode.c:287)
+  ...
+  read to 0xffffffff847ccfc8 of 4 bytes by task 384 on cpu 31:
+  debug_check_no_obj_freed (lib/debugobjects.c:1000 lib/debugobjects.c:1019)
+  kfree (mm/slub.c:2081 mm/slub.c:4280 mm/slub.c:4390)
+  percpu_ref_exit (lib/percpu-refcount.c:147)
+  css_free_rwork_fn (kernel/cgroup/cgroup.c:5357)
+  ...
+  value changed: 0x00000070 -> 0x00000071
 
-Fix this panic the easy way first, by converting the BUG_ON() to
-WARN_ON(), and stop the reshape if checkings fail.
+The data race is actually harmless as this is just used for debugfs
+statistics, as all other debug variables.
 
-Noted that mdadm must fix --revert-shape as well, and probably md/raid
-should enhance metadata validation as well, however this means
-reassemble will fail and there must be user tools to fix the wrong
-metadata.
+Annotate all debug variables as racy explicitly, since these variables
+are known to be racy and harmless.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240611132251.1967786-13-yukuai1@huaweicloud.com
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240611091813.1189860-1-leitao@debian.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ lib/debugobjects.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index ed99b449d8fd4..4315dabd32023 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -6316,7 +6316,9 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
- 	safepos = conf->reshape_safe;
- 	sector_div(safepos, data_disks);
- 	if (mddev->reshape_backwards) {
--		BUG_ON(writepos < reshape_sectors);
-+		if (WARN_ON(writepos < reshape_sectors))
-+			return MaxSector;
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 5dfa582dbadd2..de7af29937e51 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -78,16 +78,17 @@ static bool			obj_freeing;
+ /* The number of objs on the global free list */
+ static int			obj_nr_tofree;
+ 
+-static int			debug_objects_maxchain __read_mostly;
+-static int __maybe_unused	debug_objects_maxchecked __read_mostly;
+-static int			debug_objects_fixups __read_mostly;
+-static int			debug_objects_warnings __read_mostly;
+-static int			debug_objects_enabled __read_mostly
+-				= CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT;
+-static int			debug_objects_pool_size __read_mostly
+-				= ODEBUG_POOL_SIZE;
+-static int			debug_objects_pool_min_level __read_mostly
+-				= ODEBUG_POOL_MIN_LEVEL;
++static int __data_racy			debug_objects_maxchain __read_mostly;
++static int __data_racy __maybe_unused	debug_objects_maxchecked __read_mostly;
++static int __data_racy			debug_objects_fixups __read_mostly;
++static int __data_racy			debug_objects_warnings __read_mostly;
++static int __data_racy			debug_objects_enabled __read_mostly
++					= CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT;
++static int __data_racy			debug_objects_pool_size __read_mostly
++					= ODEBUG_POOL_SIZE;
++static int __data_racy			debug_objects_pool_min_level __read_mostly
++					= ODEBUG_POOL_MIN_LEVEL;
 +
- 		writepos -= reshape_sectors;
- 		readpos += reshape_sectors;
- 		safepos += reshape_sectors;
-@@ -6334,14 +6336,18 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
- 	 * to set 'stripe_addr' which is where we will write to.
- 	 */
- 	if (mddev->reshape_backwards) {
--		BUG_ON(conf->reshape_progress == 0);
-+		if (WARN_ON(conf->reshape_progress == 0))
-+			return MaxSector;
-+
- 		stripe_addr = writepos;
--		BUG_ON((mddev->dev_sectors &
--			~((sector_t)reshape_sectors - 1))
--		       - reshape_sectors - stripe_addr
--		       != sector_nr);
-+		if (WARN_ON((mddev->dev_sectors &
-+		    ~((sector_t)reshape_sectors - 1)) -
-+		    reshape_sectors - stripe_addr != sector_nr))
-+			return MaxSector;
- 	} else {
--		BUG_ON(writepos != sector_nr + reshape_sectors);
-+		if (WARN_ON(writepos != sector_nr + reshape_sectors))
-+			return MaxSector;
-+
- 		stripe_addr = sector_nr;
- 	}
+ static const struct debug_obj_descr *descr_test  __read_mostly;
+ static struct kmem_cache	*obj_cache __read_mostly;
  
 -- 
 2.43.0
