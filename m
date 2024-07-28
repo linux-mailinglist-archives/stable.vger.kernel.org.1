@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-62100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720C993E30A
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:23:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2348D93E30E
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 03:23:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E769B23586
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:23:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE5BB1F219E2
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 01:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CCD19FA9F;
-	Sun, 28 Jul 2024 00:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35E91A00F7;
+	Sun, 28 Jul 2024 00:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JNjecJRa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uQ+sEcGK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948BB19FA95;
-	Sun, 28 Jul 2024 00:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0B11A00EB;
+	Sun, 28 Jul 2024 00:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722128138; cv=none; b=jePZDGRREuQXTJOjpZV3E88ck9+9ChttiX6lQ6HVIEMkPkLjuR08SjFEpkWF+7VXunh5uFo0npFsUsyvbfbuIZTUObnC5I3PPRLOoOG/dde3t0Wxs5BWd9AY2jZEjPLizfhjZyx4gMDbYckfYoewCePs1qO4d9P86Vjrk3knTug=
+	t=1722128140; cv=none; b=EVhkAQnRU8nZWdnZQjdLg96jyinCnj73HkZx04n7K0kN7lqreYK0CTZMERTYT8jhfbqwHPL4+rYM4hIk5a1kih6A1NIaj7a6X3C5GzhP7WKGBDh4MvpuC4d/lWmprhkRk/Ck9lKy2yyQQSwckFi/FIkFf0Q2ZcY/WcFcmOr1dGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722128138; c=relaxed/simple;
-	bh=kFevJLBujr1xQ5pThVVFKbQjVbolhn003MqkEybtqMY=;
+	s=arc-20240116; t=1722128140; c=relaxed/simple;
+	bh=VpQvO4RAU5y+q4bkbshCLv8cjz3nvDeGcsm23WZUl7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSyk7rbPCEvemU8QfhuL69HZipKiKlRN+QCQwOqUAESk7ZT1y0PqGMUHICZc9evw8i0PbF1H9xoI1vw28XNzbmGG5xD+uuuAH+CA6QSHtKXdkgQgV3eWJDgQ+yicTN026LfgrzmiMOe7IEAyF0rGParU0hteI11K0zof9E0bDf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JNjecJRa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64DAC32781;
-	Sun, 28 Jul 2024 00:55:37 +0000 (UTC)
+	 MIME-Version; b=K3cgln9ixJ4JlxZLzAfI4R0ji+WqWKFXJKRjbgCuj+F9moFkR3Elq96ch/vLpC5LNw+zPvzR15nGNAOaryRptPDAqEV0S4xcfSBGa2JvfnP6b1tTKxpz4lyZtxevfDIhNZt6XqX0rwEMPwwLsHcia2o1lSRG3uBEb0xBOS89R/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uQ+sEcGK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5693C32781;
+	Sun, 28 Jul 2024 00:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722128138;
-	bh=kFevJLBujr1xQ5pThVVFKbQjVbolhn003MqkEybtqMY=;
+	s=k20201202; t=1722128140;
+	bh=VpQvO4RAU5y+q4bkbshCLv8cjz3nvDeGcsm23WZUl7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNjecJRa/r4FT/aYcfiToc0Di3t5MZZ2VtrkqjdMs+RVukbahH+E1Q5vytnkFM/+N
-	 HoI+0eYDjCeglmzBMnE9fdAgNJjy3iNSjGeJYHlfkTMjWKxDjmA5jGPN6Bqi+d1i9T
-	 uIF7nfcy2tCM60UKwgWgXuwYEzYt1DpjQgKkPCMzcYfV1MdCyjkv9EEdMHdjr4lrzT
-	 1FgJY1C5auBv+iLZOA5wmRYOtaWTn5CQr/GkqX1mg976nUIQKkYYrF+zTgc1YoZVqc
-	 X3HFtDZwTvX/tWweTdlbXAGWr6vyGJaQaqbQUJAgj6kvGKJNawf5E7wLubmHVGHGu4
-	 pprqm/lpttokQ==
+	b=uQ+sEcGKUbBuEwbsVGz20OPIrcbqT53bdLxqFzyHUg+ieMp0F+5ZYferUci9ByIny
+	 rAW0WMpm/RU4RGxXbZsrTCjmhX1eSKPfDcWTpLPnANxrFucWDzKafKktyvD7YBa9sI
+	 QU8WTkOo5RjOrx/ePl2Bq/tKnwo0wBtcP042ajL0gHNCe4BwFAN7rALlll2+FegM2p
+	 gBc9i61VYqrC4ck9TsUi/drVcGaaez8e7fDl/9CrqdLvsv+Iivu6f234uMg6bgqYGZ
+	 lWLISApNAS0mn6qOcXcXwduS+rH35xRdhltbjC+LDwDFcE025U+HGvMCRP5MBwlrmQ
+	 wJ6jstnBUIh8A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Roman Smirnov <r.smirnov@omp.ru>,
-	Jan Kara <jack@suse.com>,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.1 07/11] udf: prevent integer overflow in udf_bitmap_free_blocks()
-Date: Sat, 27 Jul 2024 20:55:12 -0400
-Message-ID: <20240728005522.1731999-7-sashal@kernel.org>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 08/11] wifi: nl80211: don't give key data to userspace
+Date: Sat, 27 Jul 2024 20:55:13 -0400
+Message-ID: <20240728005522.1731999-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728005522.1731999-1-sashal@kernel.org>
 References: <20240728005522.1731999-1-sashal@kernel.org>
@@ -65,111 +71,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 56e69e59751d20993f243fb7dd6991c4e522424c ]
+[ Upstream commit a7e5793035792cc46a1a4b0a783655ffa897dfe9 ]
 
-An overflow may occur if the function is called with the last
-block and an offset greater than zero. It is necessary to add
-a check to avoid this.
+When a key is requested by userspace, there's really no need
+to include the key data, the sequence counter is really what
+userspace needs in this case. The fact that it's included is
+just a historic quirk.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+Remove the key data.
 
-[JK: Make test cover also unalloc table freeing]
-
-Link: https://patch.msgid.link/20240620072413.7448-1-r.smirnov@omp.ru
-Suggested-by: Jan Kara <jack@suse.com>
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240627104411.b6a4f097e4ea.I7e6cc976cb9e8a80ef25a3351330f313373b4578@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/balloc.c | 36 +++++++++++++-----------------------
- 1 file changed, 13 insertions(+), 23 deletions(-)
+ net/wireless/nl80211.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/fs/udf/balloc.c b/fs/udf/balloc.c
-index f416b7fe092fc..aeaa6d1f0e015 100644
---- a/fs/udf/balloc.c
-+++ b/fs/udf/balloc.c
-@@ -22,6 +22,7 @@
- #include "udfdecl.h"
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 603fcd921bd22..214eee6105c7f 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4421,10 +4421,7 @@ static void get_key_callback(void *c, struct key_params *params)
+ 	struct nlattr *key;
+ 	struct get_key_cookie *cookie = c;
  
- #include <linux/bitops.h>
-+#include <linux/overflow.h>
+-	if ((params->key &&
+-	     nla_put(cookie->msg, NL80211_ATTR_KEY_DATA,
+-		     params->key_len, params->key)) ||
+-	    (params->seq &&
++	if ((params->seq &&
+ 	     nla_put(cookie->msg, NL80211_ATTR_KEY_SEQ,
+ 		     params->seq_len, params->seq)) ||
+ 	    (params->cipher &&
+@@ -4436,10 +4433,7 @@ static void get_key_callback(void *c, struct key_params *params)
+ 	if (!key)
+ 		goto nla_put_failure;
  
- #include "udf_i.h"
- #include "udf_sb.h"
-@@ -133,7 +134,6 @@ static void udf_bitmap_free_blocks(struct super_block *sb,
- {
- 	struct udf_sb_info *sbi = UDF_SB(sb);
- 	struct buffer_head *bh = NULL;
--	struct udf_part_map *partmap;
- 	unsigned long block;
- 	unsigned long block_group;
- 	unsigned long bit;
-@@ -142,19 +142,9 @@ static void udf_bitmap_free_blocks(struct super_block *sb,
- 	unsigned long overflow;
- 
- 	mutex_lock(&sbi->s_alloc_mutex);
--	partmap = &sbi->s_partmaps[bloc->partitionReferenceNum];
--	if (bloc->logicalBlockNum + count < count ||
--	    (bloc->logicalBlockNum + count) > partmap->s_partition_len) {
--		udf_debug("%u < %d || %u + %u > %u\n",
--			  bloc->logicalBlockNum, 0,
--			  bloc->logicalBlockNum, count,
--			  partmap->s_partition_len);
--		goto error_return;
--	}
--
-+	/* We make sure this cannot overflow when mounting the filesystem */
- 	block = bloc->logicalBlockNum + offset +
- 		(sizeof(struct spaceBitmapDesc) << 3);
--
- 	do {
- 		overflow = 0;
- 		block_group = block >> (sb->s_blocksize_bits + 3);
-@@ -384,7 +374,6 @@ static void udf_table_free_blocks(struct super_block *sb,
- 				  uint32_t count)
- {
- 	struct udf_sb_info *sbi = UDF_SB(sb);
--	struct udf_part_map *partmap;
- 	uint32_t start, end;
- 	uint32_t elen;
- 	struct kernel_lb_addr eloc;
-@@ -393,16 +382,6 @@ static void udf_table_free_blocks(struct super_block *sb,
- 	struct udf_inode_info *iinfo;
- 
- 	mutex_lock(&sbi->s_alloc_mutex);
--	partmap = &sbi->s_partmaps[bloc->partitionReferenceNum];
--	if (bloc->logicalBlockNum + count < count ||
--	    (bloc->logicalBlockNum + count) > partmap->s_partition_len) {
--		udf_debug("%u < %d || %u + %u > %u\n",
--			  bloc->logicalBlockNum, 0,
--			  bloc->logicalBlockNum, count,
--			  partmap->s_partition_len);
--		goto error_return;
--	}
--
- 	iinfo = UDF_I(table);
- 	udf_add_free_space(sb, sbi->s_partition, count);
- 
-@@ -677,6 +656,17 @@ void udf_free_blocks(struct super_block *sb, struct inode *inode,
- {
- 	uint16_t partition = bloc->partitionReferenceNum;
- 	struct udf_part_map *map = &UDF_SB(sb)->s_partmaps[partition];
-+	uint32_t blk;
-+
-+	if (check_add_overflow(bloc->logicalBlockNum, offset, &blk) ||
-+	    check_add_overflow(blk, count, &blk) ||
-+	    bloc->logicalBlockNum + count > map->s_partition_len) {
-+		udf_debug("Invalid request to free blocks: (%d, %u), off %u, "
-+			  "len %u, partition len %u\n",
-+			  partition, bloc->logicalBlockNum, offset, count,
-+			  map->s_partition_len);
-+		return;
-+	}
- 
- 	if (map->s_partition_flags & UDF_PART_FLAG_UNALLOC_BITMAP) {
- 		udf_bitmap_free_blocks(sb, map->s_uspace.s_bitmap,
+-	if ((params->key &&
+-	     nla_put(cookie->msg, NL80211_KEY_DATA,
+-		     params->key_len, params->key)) ||
+-	    (params->seq &&
++	if ((params->seq &&
+ 	     nla_put(cookie->msg, NL80211_KEY_SEQ,
+ 		     params->seq_len, params->seq)) ||
+ 	    (params->cipher &&
 -- 
 2.43.0
 
