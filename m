@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-62268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C34393E7CE
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:16:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F02193E7D0
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FBFB1C20A39
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:16:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A01F3B23CD0
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D991442FD;
-	Sun, 28 Jul 2024 16:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3AFD1448C9;
+	Sun, 28 Jul 2024 16:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HzV9bB36"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="erWJwJ+C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0117E143C7E;
-	Sun, 28 Jul 2024 16:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA6414431C;
+	Sun, 28 Jul 2024 16:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722182835; cv=none; b=Kz5ckfhyWSeec7LsHJs7HTx69Cljw40WlnPojEx4/T6KVZwCHiRNQtXQJ5w80KI/+fZPeROb6OFLebo6SCoN02uNFezQ2ZOhTrdpZSmRiM4mEzwLZaDSy4C2ZlrT+L5os1IzJHs1942+ZAXRx1dOkWpZ9TlBuO76D33yaD2OafI=
+	t=1722182836; cv=none; b=NbPhe8mqgIvEZ7P3WUJ5oV2AB/Ecmen/YSbWMhLwp1OFD9ad+8dubhVneGfjwvPoGdRgYh2wOrZLViiFxAdwVbLwZC+q1geA1jW+YKOIGFETmWMpiP8uT49vYyutfCes/sEZFbNfX7vSQqTcUaRoQTHpURBb5E9zREKfufNAbnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722182835; c=relaxed/simple;
-	bh=ZI5AWqvz0DyorLkp5KM0L+Vqbt9/YI6EUF0PAnQuU7I=;
+	s=arc-20240116; t=1722182836; c=relaxed/simple;
+	bh=SH10y7gd0gcz+ofnXhBupe1/Dl/xba400Ea4AucRzEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IQxQFsHSALOnq3HMFAfxrnSW1n7iQqL9eqvW2kCsFnaYid/wSwzG8BfOB4wFK8CJs26tF+bm+nInL60mXsW8jiENjqEZPTJ+ifPKRmf7Auj56LuOTwj5IMTF2B3tVOcyGD46RD/P+9kKZn21yQCjS16TB0OkJSxx6Hg8b3K281w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HzV9bB36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD04C4AF13;
-	Sun, 28 Jul 2024 16:07:12 +0000 (UTC)
+	 MIME-Version; b=gTO7FVNDPsSss+Gyk22OTQ6RblNedXAJmFBpKrKzlOUDcNHgKgYQKPP90uI60int5UjpqVwH6mrrr0LbEdm5vz7uSPsLR/R75YsGqYwN8F0dPBNC57Dhw3aejh4Eqt5FvnryYzx72GcfpME98M60FXt5Suk73TIOBm3PCrQoVF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=erWJwJ+C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D64C116B1;
+	Sun, 28 Jul 2024 16:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722182834;
-	bh=ZI5AWqvz0DyorLkp5KM0L+Vqbt9/YI6EUF0PAnQuU7I=;
+	s=k20201202; t=1722182836;
+	bh=SH10y7gd0gcz+ofnXhBupe1/Dl/xba400Ea4AucRzEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HzV9bB36UTtliBDdxwFQAe+RAuqocITYDuSLp8x+4dIxgWdgNJug6wGNf8dn7aN57
-	 q/98Pj8AF1GZM0PGrBcVv0axy+PFkGjGamRsqVplLnf+hDb96dxeGn/jISQAF16VfR
-	 NhHJSCoTBcmElYnlRB0pYth+HelKfxVFmyZsBiaJXtlV5b4vct/BQ8Mdk/ix4jXhYu
-	 P6gAL6LbfoBT30Vaw/uW6xlEKwNESMk0lbaJ8LJq4X7JvdKOPqYf9A14LnZTEbUcjp
-	 xT4D/Q+fMEtXDmTOStEX7oBd3pdys/jSR7JOyCWIWp7KjJY6+cn4916UqM889yl31j
-	 l7TESv2RnrOYQ==
+	b=erWJwJ+C5qZBxIpNPbOTolHz0mQaWdZ52te+FB8y2m3xgLacxkGt1trDrGTZZGS8W
+	 idp88P+AclW25AlLJIzsIT9hFTDUQxFC3b/6RVwYu8HTrd+dAu2I9KasTkkXh7xEht
+	 g4kYSDyI+6uL4oMCKPLUkIUb7cNmAdh95SPpYvKye09yeA6MF3nEO5XFiLiR40eSyO
+	 eo1iZg20JTDjvOeI+pMFQjy9uuD22MhgAdd0uEMameByXsCee93muxsSrhsJRWcXAa
+	 xjARBwRUjAmfmTSfJ7Ll5Mb42WozE0GrFzl+DmprPr+pSJMrBxQWN7Lzo+dJA4ubIV
+	 6MY5ZwEBxd4Fw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vidya Sagar <vidyas@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+Cc: Roger Quadros <rogerq@kernel.org>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Peter Chen <peter.chen@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	will@kernel.org,
-	lpieralisi@kernel.org,
-	kw@linux.com,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 02/17] PCI: Use preserve_config in place of pci_flags
-Date: Sun, 28 Jul 2024 12:06:38 -0400
-Message-ID: <20240728160709.2052627-2-sashal@kernel.org>
+	pawell@cadence.com,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 03/17] usb: cdns3: Add quirk flag to enable suspend residency
+Date: Sun, 28 Jul 2024 12:06:39 -0400
+Message-ID: <20240728160709.2052627-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728160709.2052627-1-sashal@kernel.org>
 References: <20240728160709.2052627-1-sashal@kernel.org>
@@ -69,75 +68,84 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit 7246a4520b4bf1494d7d030166a11b5226f6d508 ]
+[ Upstream commit 0aca19e4037a4143273e90f1b44666b78b4dde9b ]
 
-Use preserve_config in place of checking for PCI_PROBE_ONLY flag to enable
-support for "linux,pci-probe-only" on a per host bridge basis.
+Some platforms (e.g. ti,j721e-usb, ti,am64-usb) require
+this bit to be set to workaround a lockup issue with PHY
+short suspend intervals [1]. Add a platform quirk flag
+to indicate if Suspend Residency should be enabled.
 
-This also obviates the use of adding PCI_REASSIGN_ALL_BUS flag if
-!PCI_PROBE_ONLY, as pci_assign_unassigned_root_bus_resources() takes care
-of reassigning the resources that are not already claimed.
+[1] - https://www.ti.com/lit/er/sprz457h/sprz457h.pdf
+i2409 - USB: USB2 PHY locks up due to short suspend
 
-Link: https://lore.kernel.org/r/20240508174138.3630283-5-vidyas@nvidia.com
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20240516044537.16801-2-r-gunasekaran@ti.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pci-host-common.c |  4 ----
- drivers/pci/probe.c                      | 20 +++++++++-----------
- 2 files changed, 9 insertions(+), 15 deletions(-)
+ drivers/usb/cdns3/core.h |  1 +
+ drivers/usb/cdns3/drd.c  | 10 +++++++++-
+ drivers/usb/cdns3/drd.h  |  3 +++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
-index 6be3266cd7b5b..e2602e38ae452 100644
---- a/drivers/pci/controller/pci-host-common.c
-+++ b/drivers/pci/controller/pci-host-common.c
-@@ -73,10 +73,6 @@ int pci_host_common_probe(struct platform_device *pdev)
- 	if (IS_ERR(cfg))
- 		return PTR_ERR(cfg);
+diff --git a/drivers/usb/cdns3/core.h b/drivers/usb/cdns3/core.h
+index 81a9c9d6be08b..57d47348dc193 100644
+--- a/drivers/usb/cdns3/core.h
++++ b/drivers/usb/cdns3/core.h
+@@ -44,6 +44,7 @@ struct cdns3_platform_data {
+ 			bool suspend, bool wakeup);
+ 	unsigned long quirks;
+ #define CDNS3_DEFAULT_PM_RUNTIME_ALLOW	BIT(0)
++#define CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE	BIT(1)
+ };
  
--	/* Do not reassign resources if probe only */
--	if (!pci_has_flag(PCI_PROBE_ONLY))
--		pci_add_flags(PCI_REASSIGN_ALL_BUS);
--
- 	bridge->sysdata = cfg;
- 	bridge->ops = (struct pci_ops *)&ops->pci_ops;
- 	bridge->msi_domain = true;
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 43159965e09e9..217cf8a491eda 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -3080,20 +3080,18 @@ int pci_host_probe(struct pci_host_bridge *bridge)
+ /**
+diff --git a/drivers/usb/cdns3/drd.c b/drivers/usb/cdns3/drd.c
+index ee917f1b091c8..1b4ce2da1e4b8 100644
+--- a/drivers/usb/cdns3/drd.c
++++ b/drivers/usb/cdns3/drd.c
+@@ -389,7 +389,7 @@ static irqreturn_t cdns_drd_irq(int irq, void *data)
+ int cdns_drd_init(struct cdns *cdns)
+ {
+ 	void __iomem *regs;
+-	u32 state;
++	u32 state, reg;
+ 	int ret;
  
- 	bus = bridge->bus;
- 
-+	/* If we must preserve the resource configuration, claim now */
-+	if (bridge->preserve_config)
-+		pci_bus_claim_resources(bus);
+ 	regs = devm_ioremap_resource(cdns->dev, &cdns->otg_res);
+@@ -433,6 +433,14 @@ int cdns_drd_init(struct cdns *cdns)
+ 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
+ 					      &cdns->otg_v1_regs->ien;
+ 			writel(1, &cdns->otg_v1_regs->simulate);
 +
- 	/*
--	 * We insert PCI resources into the iomem_resource and
--	 * ioport_resource trees in either pci_bus_claim_resources()
--	 * or pci_bus_assign_resources().
-+	 * Assign whatever was left unassigned. If we didn't claim above,
-+	 * this will reassign everything.
- 	 */
--	if (pci_has_flag(PCI_PROBE_ONLY)) {
--		pci_bus_claim_resources(bus);
--	} else {
--		pci_bus_size_bridges(bus);
--		pci_bus_assign_resources(bus);
-+	pci_assign_unassigned_root_bus_resources(bus);
++			if (cdns->pdata &&
++			    (cdns->pdata->quirks & CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE)) {
++				reg = readl(&cdns->otg_v1_regs->susp_ctrl);
++				reg |= SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE;
++				writel(reg, &cdns->otg_v1_regs->susp_ctrl);
++			}
++
+ 			cdns->version  = CDNS3_CONTROLLER_V1;
+ 		} else {
+ 			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
+diff --git a/drivers/usb/cdns3/drd.h b/drivers/usb/cdns3/drd.h
+index d72370c321d39..1e2aee14d6293 100644
+--- a/drivers/usb/cdns3/drd.h
++++ b/drivers/usb/cdns3/drd.h
+@@ -193,6 +193,9 @@ struct cdns_otg_irq_regs {
+ /* OTGREFCLK - bitmasks */
+ #define OTGREFCLK_STB_CLK_SWITCH_EN	BIT(31)
  
--		list_for_each_entry(child, &bus->children, node)
--			pcie_bus_configure_settings(child);
--	}
-+	list_for_each_entry(child, &bus->children, node)
-+		pcie_bus_configure_settings(child);
- 
- 	pci_bus_add_devices(bus);
- 	return 0;
++/* SUPS_CTRL - bitmasks */
++#define SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE	BIT(17)
++
+ /* OVERRIDE - bitmasks */
+ #define OVERRIDE_IDPULLUP		BIT(0)
+ /* Only for CDNS3_CONTROLLER_V0 version */
 -- 
 2.43.0
 
