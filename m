@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-62140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B74D93E50F
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 14:27:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0387A93E511
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 14:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C23D1C20D90
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 12:27:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89E292811CF
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 12:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6790F47F4D;
-	Sun, 28 Jul 2024 12:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A915374C3;
+	Sun, 28 Jul 2024 12:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="PNzFgFyW"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="IWZxJ5YD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-40137.protonmail.ch (mail-40137.protonmail.ch [185.70.40.137])
+Received: from mail-40140.protonmail.ch (mail-40140.protonmail.ch [185.70.40.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74B7481D5
-	for <stable@vger.kernel.org>; Sun, 28 Jul 2024 12:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAEE208C4
+	for <stable@vger.kernel.org>; Sun, 28 Jul 2024 12:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722169610; cv=none; b=jv+fmr/FlScndRBv5j0EXCW7tNsQ27NNZt4KCXA5qaXG+Ns56tnCaAbpKgIHQTGG+Fg8LOSR+vDHTdZtT736tK3DixKaIGmacajHq9swTp227vkHXbar0B+RU3umGe+iyqNUXb+IU15Hj6ywJGqowePcAiwn5eteOyoxcKnuU3g=
+	t=1722169855; cv=none; b=jZlRDS/V3nzpI+NU6od9QRnG6M03XrCkOVc+a0fI/rpTp8AJ/ovA74+oMISDnbKt3cwx46JcPFLPWCUZjZyQSD3VeIrVxu3pe1w5GkR3XY7OOPba6JVo+PXrAFIYRyrTqFzFwe3o16rNxvXsztC+kAuF4iZxrfbQTwHi7i9Eki8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722169610; c=relaxed/simple;
-	bh=zYeI0RXOOsfL8/wFCi+vO2omAPFQKXW51I6FzL+Chhs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D7uXdD3YSXzBK9UuX02ouoFI7Lvho/B9mLDOUbQK3/Aa6yb6YeI7zfcdLmr771k1SW9+Kpdl+eYZrgjyqo/vB2SucnBr8sVpTKPVHBVtnBnVf9+LjR0aa+MeP3Y41YoNigioyKAd9WEG0rKqGYRZ+gmRltYr4UqGxp+wzbUQsQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=PNzFgFyW; arc=none smtp.client-ip=185.70.40.137
+	s=arc-20240116; t=1722169855; c=relaxed/simple;
+	bh=MAxeEGmgS9693J0PQhUIRbfqko2MsleF4u/sBRGsb4Y=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=nWfCBFWL6Ri1/eAnZOBsf6ZrHfl7tDK8kwRenHEnaKTRcBcCLm9Yoao6feiVOkczj9ZeJYaaqAVYpyjZvyve5myU6fuWoSRMJtR6ZlAsPlpPZVn7IOmgeiPPwItJV4QEBlhdZtGkLU9KzIjxXZtXhWe5fnFd/L/6cjkxZ3eXa2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=IWZxJ5YD; arc=none smtp.client-ip=185.70.40.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1722169606; x=1722428806;
-	bh=KBafj0W+hLUSbIhjE/xmSCOMhfBOVKrA7riUOgwT7ls=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=PNzFgFyWb4p0LeN6x70PPWCBUc4WMARzJSh2GaQJphAhFKVNxAqFMS0HLNUXMMA50
-	 6OcF86EhUGMNytJxoA7YUu1nEj0aJ0W9cTwGI4OXpOUy9jQIuWSogDD2ryNLiykApv
-	 CJkMsLkt6bQWfj68IEIZvWtWoLO6exjhw+gH9D1iPWDEt7+dlc7jAwhBwM7Em+R7/U
-	 EN1ea9PcF5ms7lIg6VyERaM4G9qCtc5jnUW7HKBHfwnb9X8XySsAeZFCVAqg2oZ4qP
-	 +u44D1rBNlaNs0OBiNuaM+vtzl5OK4B2zwyu4O6Yv+lYP2WwM3fdyxLwFAtFpt0PIa
-	 uAKcfJP1KesoA==
-Date: Sun, 28 Jul 2024 12:26:39 +0000
+	s=protonmail3; t=1722169851; x=1722429051;
+	bh=74jrJoeOKYDJalJmIabOoA19hszvpDADNvzc31C/j48=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=IWZxJ5YDL7Ce7juBsEy5OSPMznmEIgaAgmvapHjDzlImwKLcHLrrEoKzBgIfW5YdN
+	 V48cfG23FDwCwzrrPZs8aHZxPNLAAIHBBMZ03ku7C5e66JU/JSJSwJcTgUC4GsvUuQ
+	 ECTwsEbg6yRqJ5uab6snoarybnTc2J4y+Gby7YqzaoJ54hS6gVjREBAiNImL7wXFwS
+	 sapSzAjo1CrL1D7EcFaF7hxSeCSKU/Tr/y9l2LQrSPJVIwYTaiYR8Kt61lyo1bch6K
+	 /bTfUhPAyUbp29TSk+TQNpbGabhyTolAQHPQngciNHCYjrl2YcaAGQHfV2bg63cmHX
+	 Nsm5/QJa8zkLA==
+Date: Sun, 28 Jul 2024 12:30:47 +0000
 To: o-takashi@sakamocchi.jp, clemens@ladisch.de
 From: Edmund Raile <edmund.raile@protonmail.com>
 Cc: tiwai@suse.com, alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, edmund.raile@protonmail.com, stable@vger.kernel.org
-Subject: [PATCH v2 2/2] ALSA: firewire-lib: prevent deadlock between process and softIRQ context
-Message-ID: <20240728122614.329544-3-edmund.raile@protonmail.com>
-In-Reply-To: <20240728122614.329544-1-edmund.raile@protonmail.com>
-References: <20240728122614.329544-1-edmund.raile@protonmail.com>
+Subject: [PATCH v2 0/2] ALSA: firewire-lib: restore process context workqueue to prevent deadlock
+Message-ID: <20240728123041.330216-1-edmund.raile@protonmail.com>
 Feedback-ID: 43016623:user:proton
-X-Pm-Message-ID: de55fd5e8a28ebd761c5c600cc8525dc8a590299
+X-Pm-Message-ID: 500a5c58425b9882f4a46ffd67423ae483b9ae31
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,23 +58,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Commit 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event
-in process context") removed the process context workqueue from
-amdtp_domain_stream_pcm_pointer() and update_pcm_pointers() to remove
-its overhead.
-
-With RME Fireface 800, this lead to a regression since Kernels 5.14.0,
-causing a deadlock with eventual system freeze under ALSA operation:
+This patchset serves to prevent a deadlock between
+process context and softIRQ context:
 
 A. In the process context
     * (lock A) Acquiring spin_lock by snd_pcm_stream_lock_irq() in
-=09snd_pcm_status64()
+               snd_pcm_status64()
     * (lock B) Then attempt to enter tasklet
 
 B. In the softIRQ context
     * (lock B) Enter tasklet
-    * (lock A) Attempt to acquire spin_lock by
-=09snd_pcm_stream_lock_irqsave() in snd_pcm_period_elapsed()
+    * (lock A) Attempt to acquire spin_lock by snd_pcm_stream_lock_irqsave(=
+) in
+               snd_pcm_period_elapsed()
 
 ? tasklet_unlock_spin_wait
  </NMI>
@@ -98,70 +90,53 @@ irq_target_callback snd_firewire_lib
 handle_it_packet firewire_ohci
 context_tasklet firewire_ohci
 
-Restore the process context work queue to prevent deadlock
-between ALSA substream process context spin_lock of
-snd_pcm_stream_lock_irq() in snd_pcm_status64()
-and OHCI 1394 IT softIRQ context spin_lock of
-snd_pcm_stream_lock_irqsave() in snd_pcm_period_elapsed().
+The issue has been reported as a regression of kernel 5.14:
+Link: https://lore.kernel.org/regressions/kwryofzdmjvzkuw6j3clftsxmoolynljz=
+txqwg76hzeo4simnl@jn3eo7pe642q/T/#u
+("[REGRESSION] ALSA: firewire-lib: snd_pcm_period_elapsed deadlock with
+Fireface 800")
 
-Cc: stable@vger.kernel.org
-Fixes: 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event i=
-n process context")
-Link: https://lore.kernel.org/r/kwryofzdmjvzkuw6j3clftsxmoolynljztxqwg76hze=
-o4simnl@jn3eo7pe642q/
-Reported-by: edmund.raile <edmund.raile@proton.me>
-Signed-off-by: Edmund Raile <edmund.raile@protonmail.com>
----
- sound/firewire/amdtp-stream.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+Commit 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event
+in process context") removed the process context workqueue from
+amdtp_domain_stream_pcm_pointer() and update_pcm_pointers() to remove
+its overhead.
+Commit b5b519965c4c ("ALSA: firewire-lib: obsolete workqueue for period
+update") belongs to the same patch series and removed
+the now-unused workqueue entirely.
 
-diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
-index 31201d506a21..c037d7de1fdc 100644
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -615,16 +615,9 @@ static void update_pcm_pointers(struct amdtp_stream *s=
-,
- =09=09// The program in user process should periodically check the status =
-of intermediate
- =09=09// buffer associated to PCM substream to process PCM frames in the b=
-uffer, instead
- =09=09// of receiving notification of period elapsed by poll wait.
--=09=09if (!pcm->runtime->no_period_wakeup) {
--=09=09=09if (in_softirq()) {
--=09=09=09=09// In software IRQ context for 1394 OHCI.
--=09=09=09=09snd_pcm_period_elapsed(pcm);
--=09=09=09} else {
--=09=09=09=09// In process context of ALSA PCM application under acquired l=
-ock of
--=09=09=09=09// PCM substream.
--=09=09=09=09snd_pcm_period_elapsed_under_stream_lock(pcm);
--=09=09=09}
--=09=09}
-+=09=09if (!pcm->runtime->no_period_wakeup)
-+=09=09=09// wq used with amdtp_domain_stream_pcm_pointer() to prevent dead=
-lock
-+=09=09=09queue_work(system_highpri_wq, &s->period_work);
- =09}
- }
-=20
-@@ -1866,9 +1859,11 @@ unsigned long amdtp_domain_stream_pcm_pointer(struct=
- amdtp_domain *d,
-=20
- =09// Process isochronous packets queued till recent isochronous cycle to =
-handle PCM frames.
- =09if (irq_target && amdtp_stream_running(irq_target)) {
--=09=09// In software IRQ context, the call causes dead-lock to disable the=
- tasklet
--=09=09// synchronously.
--=09=09if (!in_softirq())
-+=09=09// use wq to prevent deadlock between process context spin_lock
-+=09=09// of snd_pcm_stream_lock_irq() in snd_pcm_status64() and
-+=09=09// softIRQ context spin_lock of snd_pcm_stream_lock_irqsave()
-+=09=09// in snd_pcm_period_elapsed()
-+=09=09if ((!in_softirq()) && (current_work() !=3D &s->period_work))
- =09=09=09fw_iso_context_flush_completions(irq_target->context);
- =09}
-=20
+Though being observed on RME Fireface 800, this issue would affect all
+Firewire audio interfaces using ohci amdtp + pcm streaming.
+
+ALSA streaming, especially under intensive CPU load will reveal this issue
+the soonest due to issuing more hardIRQs, with time to occurrence ranging
+from 2 secons to 30 minutes after starting playback.
+
+to reproduce the issue:
+direct ALSA playback to the device:
+  mpv --audio-device=3Dalsa/sysdefault:CARD=3DFireface800 Spor-Ignition.fla=
+c
+Time to occurrence: 2s to 30m
+Likelihood increased by:
+  - high CPU load
+    stress --cpu $(nproc)
+  - switching between applications via workspaces
+    tested with i915 in Xfce
+PulsaAudio / PipeWire conceal the issue as they run PCM substream
+without period wakeup mode, issuing less hardIRQs.
+
+Backport note:
+Also applies to and fixes on (tested):
+6.10.2, 6.9.12, 6.6.43, 6.1.102, 5.15.164
+
+Edmund Raile (2):
+  ALSA: firewire-lib: restore workqueue for process context
+  ALSA: firewire-lib: prevent deadlock between process and softIRQ
+    context
+
+ sound/firewire/amdtp-stream.c | 36 ++++++++++++++++++++++-------------
+ sound/firewire/amdtp-stream.h |  1 +
+ 2 files changed, 24 insertions(+), 13 deletions(-)
+
 --=20
 2.45.2
 
