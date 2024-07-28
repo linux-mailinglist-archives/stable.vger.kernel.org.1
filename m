@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-62257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764E893E7AB
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:13:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B6B93E7AD
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:13:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20C6C1F21A6B
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:13:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DC1B28619A
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FA91386C6;
-	Sun, 28 Jul 2024 16:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0611113A896;
+	Sun, 28 Jul 2024 16:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQaa6gIS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QKsGfflv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37AE137905;
-	Sun, 28 Jul 2024 16:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59BD13A405;
+	Sun, 28 Jul 2024 16:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722182775; cv=none; b=ODHQWHUaTyiuRmejGzqtC5dBrAt2b/d/mcKVeU9VPB6oLEhd5/QtFLMfedTId5Tccg+R/LTnp+jmaWTDpGNdPaaCmz+C7ZbIJy3NTDhEJAVFFVK0qXucGf8GqF2AVVlpV7GuGh10gkXahdZmKhn3PxfwAfTPHQahsNXeDqT0x/k=
+	t=1722182779; cv=none; b=dk8t/3fpvBdoU43EQnkh66Tzr/fNdrEB9fAXgb4ibyDwMmZ5apasDXZHsY7MI4/lXL/0sXnx6C3t/HcSei9xOg8i9rA3bOah6y2HKELH/lG9GH1m+MbQnYzmp4kfI/mAUjKql24CGuJE/qlq8yyTyqwdou+O5Gw8uzYt0KaFdyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722182775; c=relaxed/simple;
-	bh=ZWwOIXhWJ16760WpJd2nj8bqfFlHut1jmYjqK1gtZ5k=;
+	s=arc-20240116; t=1722182779; c=relaxed/simple;
+	bh=EtTQakw4m02zIxSMaQ7YLbjlLW5pHF9AEO1dzIMYgmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AzGFQLPZO2liv9tGJHA0R3Gj/wiJHNqWRuy8XbjoFpput6JGVhTkFmuLpQUqtBj1VN0cNG1WzZ1TecmxsdN+7nU9AZNaATWi7kOHlXyYjIWUhOTB7YnQ3PWkaA+tCCqL6TiAJsZ4Iz4rY5E/cUpJw2T823nph0AUfRfCqYXhmxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQaa6gIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6907BC32782;
-	Sun, 28 Jul 2024 16:06:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AU6aGCVYZTSbaieVR8GbYKgy4WBykMIWY11zKuxLDUR42iZiIdbJBZEq6pt9HAST+AJwGpwvrTVItlSGAWIkyuwtZFmFyisHiJGI5kOzv6DXg/ZAFWdZ5fDoYN4yW6iXjlHjbdDWoTw0hDnWS5hJGNkV83gEVYDLR5AVmYlXAw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QKsGfflv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCDAC116B1;
+	Sun, 28 Jul 2024 16:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722182775;
-	bh=ZWwOIXhWJ16760WpJd2nj8bqfFlHut1jmYjqK1gtZ5k=;
+	s=k20201202; t=1722182779;
+	bh=EtTQakw4m02zIxSMaQ7YLbjlLW5pHF9AEO1dzIMYgmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQaa6gISkRKHfHi55ZNSei5FMmzy9Wpp8s3JafPOw606y462WSYWbi9aU7e7ffX2z
-	 RLSyx7KcoGSh9nRlRVkcnrYDDWTQRERit6BlzD4dhrv+srcPCb8T9j0jo+kG43oBib
-	 yiicXUaWHSSteYwkTutobLCPew/GCx3XuWWTKk6/HqCR931YlbPcIHjOGODlP+ut1z
-	 kvBmV6Fwr3pfGnjhOpQKjCiOFOMIH+3XAf4qmzy1JNsG2jiyqUHVFLXAfnbq9YGiOR
-	 YrtiSG5osyEpNzeS6hUM7Yqf4pdCBMhyd/M2b1GADlI0+1CvEZOy0tKKSlGBYfyMyP
-	 dcWiiODu9VKlQ==
+	b=QKsGfflvTZNugby3u5AUiqd9kq3wJj4k169ZBv+x8Izfygk0D2CRj4IW/rG47t2ND
+	 Puq0GsmPN0yCsMXgvXm7z8Gzxo0dWpxylKGeOHmjQgggLTBC7TTLoYIQKSV/OevQkK
+	 UcBkUlBc5o0oznjUHrtADpoLQ8qv4qHMJytSObGUUzAkxMmseQpmeaujZnX5OtKbzh
+	 7SRIXIhmX+TjkrS2cmY+4XYJXlfv0k8xkgMrF+1RyJI5gPJSUQx2KGGVF2DULqkydC
+	 O057iu8M4x0hRdvDKlTjo2lRBo2RVGmYPJ9NGl3f1GbFteBrnmTv2nB3kK1GhhnHv0
+	 tbpWqzO6hXlEQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	cezary.rojewski@intel.com,
 	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
 	ranjani.sridharan@linux.intel.com,
 	kai.vehmanen@linux.intel.com,
 	perex@perex.cz,
@@ -58,9 +58,9 @@ Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	ckeepax@opensource.cirrus.com,
 	alsa-devel@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 14/23] ASoC: Intel: sof_sdw: fix jack detection on ADL-N variant RVP
-Date: Sun, 28 Jul 2024 12:04:55 -0400
-Message-ID: <20240728160538.2051879-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 15/23] ASoC: Intel: sof_sdw: add quirk for Dell SKU 0B8C
+Date: Sun, 28 Jul 2024 12:04:56 -0400
+Message-ID: <20240728160538.2051879-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728160538.2051879-1-sashal@kernel.org>
 References: <20240728160538.2051879-1-sashal@kernel.org>
@@ -70,6 +70,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
@@ -77,15 +78,16 @@ Content-Transfer-Encoding: 8bit
 
 From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 65c90df918205bc84f5448550cde76a54dae5f52 ]
+[ Upstream commit 92d5b5930e7d55ca07b483490d6298eee828bbe4 ]
 
-Experimental tests show that JD2_100K is required, otherwise the jack
-is detected always even with nothing plugged-in.
+Jack detection needs to rely on JD2, as most other Dell
+AlderLake-based devices.
 
-To avoid matching with other known quirks the SKU information is used.
-
+Closes: https://github.com/thesofproject/linux/issues/5021
 Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://patch.msgid.link/20240624121119.91552-2-pierre-louis.bossart@linux.intel.com
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20240624121119.91552-4-pierre-louis.bossart@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -93,21 +95,21 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+)
 
 diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index a878b6b3d1948..965d46968f95a 100644
+index 965d46968f95a..0b3b2c88d31ed 100644
 --- a/sound/soc/intel/boards/sof_sdw.c
 +++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -277,6 +277,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					SOF_BT_OFFLOAD_SSP(2) |
- 					SOF_SSP_BT_OFFLOAD_PRESENT),
+@@ -406,6 +406,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 		/* No Jack */
+ 		.driver_data = (void *)SOF_SDW_TGL_HDMI,
  	},
 +	{
 +		.callback = sof_sdw_quirk_cb,
 +		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_PRODUCT_SKU, "0000000000070000"),
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0B8C"),
 +		},
 +		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
-+					RT711_JD2_100K),
++					RT711_JD2),
 +	},
  	{
  		.callback = sof_sdw_quirk_cb,
