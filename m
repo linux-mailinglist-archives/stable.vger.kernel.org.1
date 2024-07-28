@@ -1,62 +1,68 @@
-Return-Path: <stable+bounces-62020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF8193E20B
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:57:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA8D93E20E
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB5BF2815D1
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:57:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF6BF1F21A3F
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1172A1474CF;
-	Sun, 28 Jul 2024 00:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5682A1482F5;
+	Sun, 28 Jul 2024 00:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IZyoEj3d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="loQTUp7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB899208DA;
-	Sun, 28 Jul 2024 00:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1318A1482E6;
+	Sun, 28 Jul 2024 00:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127744; cv=none; b=Oa5+opERdubGgO2hNOKP5TMcnuFUstZvSIPKUToFZ0XpmymV5ay9atnTx2ii8l6GAkMrXctF2g+G9prBqa8Y81IYwEp+MtnBUsmMdlUP2AZ8xBY+NLA7+h9aws+f4r3hYCL+lzwG2nWKWLBBYvavFMv/jJLzEsTp4pm0aLrdK10=
+	t=1722127747; cv=none; b=T6pxC7/L0wSya3BYt8lnzSoSNmfkbLkY25qe7UxGarGBNA/KCB5sMnvt96LrFtAAlZ0Z7UTDFFdOPUlg8jougJIgJridvwL+6nsYSnsgkhRW6RQXLDCRgo2PKBLeMGwNejhq95n0WZ8vwRID75aKQKbkxQEjbLLEzElj6KpbBbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127744; c=relaxed/simple;
-	bh=qlls8nadydMQdAhtVXES5HNSi8rNjEtYZjtPgyS4Ebo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GAaU9EGq8BlLO0uopcUB94SVQxX/tlipcO/++OtXLZ1q9GjN7knjZrfeVELBCNSewYGCWKX8vFRXsN3LxOywLQClDb4uWCfF4bIZyo2TW44v/lHM6J4eQB+TEC7GVj2LdMjsBVr8zTlj51YssGMZNsxoHj32JZ+sNI5A+7QcSFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZyoEj3d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7AADC32781;
-	Sun, 28 Jul 2024 00:49:02 +0000 (UTC)
+	s=arc-20240116; t=1722127747; c=relaxed/simple;
+	bh=DQ3EGMYH3xEK71gRrN+2pTzCzyUMW+9aupaJNbPi4vM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bfE4apUVe5kcqwg9VDJ1aVwRv06z5MTipHfumg6WV882YDj4r5f6JbvGEyxwQcE2HjLFplJ4A50tEcIT0LEiIIrmkn/i/Bu7sirTT4zTAiB4ehSmBBaxmwD89F04Y8eRe/Tg0WgBGViVL9ahpF3GOsk1/KUfvcm2GlizTn9XKQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=loQTUp7I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89E8C4AF07;
+	Sun, 28 Jul 2024 00:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127744;
-	bh=qlls8nadydMQdAhtVXES5HNSi8rNjEtYZjtPgyS4Ebo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IZyoEj3drJ6HrtU2I9bZ9HfP+3KB/y4tY/iqUemA9kUw8Zce0fWGPYubOksPZ+NGl
-	 QOOSfgvxevi94Jj/MYCTVwaPJqnJdBAHyXTNffq4nr4TIbNX1fwuMS1JviD2jYiFGz
-	 baD7ajGTDqk5zAuCcZlJhW3od320Nf69ly1yhDFIY6xcUV9Z5ZU18YZoEhm7g3yO7L
-	 +irzIvX/cYnHGEYJpOsmRPIs98mGIvayab2ncP9Ugyq40B8Y5NxDSB75/56PQMP/28
-	 c4/+1BdPvmA4c51XPeer4GjdvXTKPR081T9yqFkdrSMgz2P5XyLEtaMUvcGT7uvlhR
-	 FU1RZpXL4H2Ig==
+	s=k20201202; t=1722127746;
+	bh=DQ3EGMYH3xEK71gRrN+2pTzCzyUMW+9aupaJNbPi4vM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=loQTUp7I6rRegQ8slmO+nABJ72fDmTDNcxBnR841Pf8fZvSNp5f4L8EiWSTwdk2cr
+	 qpO4egM1h+CjlQuOMcA2T74DSH+k4MctF4J0nZrp24AGWmmLrcboGCO6SO1aq6gnSV
+	 5gn0ENZDXM/ccLg48niVjm8kyamJYj1y3L2QGSPTATbSmrqm5PZ+YMQUpWQe53n5Qr
+	 j51dQ540kndpkZIg8WRtB/PqYekbu435Pjh9Zsb5+/3zPYrklMSPyQZ3VK7z2Shx9Q
+	 NXmoY6Pe8+HUjxWx96DYvjzus0mNdEb8tOEKnukgNzU/eZpX8Q8pVXUYO1SS42HDRq
+	 CcvdSQSiHhlaQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Justin Stitt <justinstitt@google.com>,
-	linux-hardening@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+	Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	kasan-dev@googlegroups.com,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	nathan@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.10 1/6] fs: remove accidental overflow during wraparound check
-Date: Sat, 27 Jul 2024 20:48:54 -0400
-Message-ID: <20240728004901.1704470-1-sashal@kernel.org>
+	dave@stgolabs.net,
+	josh@joshtriplett.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joel@joelfernandes.org,
+	boqun.feng@gmail.com,
+	urezki@gmail.com,
+	rcu@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 2/6] rcutorture: Fix rcu_torture_fwd_cb_cr() data race
+Date: Sat, 27 Jul 2024 20:48:55 -0400
+Message-ID: <20240728004901.1704470-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240728004901.1704470-1-sashal@kernel.org>
+References: <20240728004901.1704470-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,85 +74,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Justin Stitt <justinstitt@google.com>
+From: "Paul E. McKenney" <paulmck@kernel.org>
 
-[ Upstream commit 23cc6ef6fd453b13502caae23130844e7d6ed0fe ]
+[ Upstream commit 6040072f4774a575fa67b912efe7722874be337b ]
 
-Running syzkaller with the newly enabled signed integer overflow
-sanitizer produces this report:
+On powerpc systems, spinlock acquisition does not order prior stores
+against later loads.  This means that this statement:
 
-[  195.401651] ------------[ cut here ]------------
-[  195.404808] UBSAN: signed-integer-overflow in ../fs/open.c:321:15
-[  195.408739] 9223372036854775807 + 562984447377399 cannot be represented in type 'loff_t' (aka 'long long')
-[  195.414683] CPU: 1 PID: 703 Comm: syz-executor.0 Not tainted 6.8.0-rc2-00039-g14de58dbe653-dirty #11
-[  195.420138] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  195.425804] Call Trace:
-[  195.427360]  <TASK>
-[  195.428791]  dump_stack_lvl+0x93/0xd0
-[  195.431150]  handle_overflow+0x171/0x1b0
-[  195.433640]  vfs_fallocate+0x459/0x4f0
-...
-[  195.490053] ------------[ cut here ]------------
-[  195.493146] UBSAN: signed-integer-overflow in ../fs/open.c:321:61
-[  195.497030] 9223372036854775807 + 562984447377399 cannot be represented in type 'loff_t' (aka 'long long)
-[  195.502940] CPU: 1 PID: 703 Comm: syz-executor.0 Not tainted 6.8.0-rc2-00039-g14de58dbe653-dirty #11
-[  195.508395] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  195.514075] Call Trace:
-[  195.515636]  <TASK>
-[  195.517000]  dump_stack_lvl+0x93/0xd0
-[  195.519255]  handle_overflow+0x171/0x1b0
-[  195.521677]  vfs_fallocate+0x4cb/0x4f0
-[  195.524033]  __x64_sys_fallocate+0xb2/0xf0
+	rfcp->rfc_next = NULL;
 
-Historically, the signed integer overflow sanitizer did not work in the
-kernel due to its interaction with `-fwrapv` but this has since been
-changed [1] in the newest version of Clang. It was re-enabled in the
-kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
-sanitizer").
+Can be reordered to follow this statement:
 
-Let's use the check_add_overflow helper to first verify the addition
-stays within the bounds of its type (long long); then we can use that
-sum for the following check.
+	WRITE_ONCE(*rfcpp, rfcp);
 
-Link: https://github.com/llvm/llvm-project/pull/82432 [1]
-Closes: https://github.com/KSPP/linux/issues/356
-Cc: linux-hardening@vger.kernel.org
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/r/20240513-b4-sio-vfs_fallocate-v2-1-db415872fb16@google.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Which is then a data race with rcu_torture_fwd_prog_cr(), specifically,
+this statement:
+
+	rfcpn = READ_ONCE(rfcp->rfc_next)
+
+KCSAN located this data race, which represents a real failure on powerpc.
+
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Marco Elver <elver@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: <kasan-dev@googlegroups.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/open.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ kernel/rcu/rcutorture.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/open.c b/fs/open.c
-index 694110929519c..be3eb6126d6da 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -230,6 +230,7 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
- {
- 	struct inode *inode = file_inode(file);
- 	long ret;
-+	loff_t sum;
- 
- 	if (offset < 0 || len <= 0)
- 		return -EINVAL;
-@@ -298,8 +299,11 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
- 	if (!S_ISREG(inode->i_mode) && !S_ISBLK(inode->i_mode))
- 		return -ENODEV;
- 
--	/* Check for wrap through zero too */
--	if (((offset + len) > inode->i_sb->s_maxbytes) || ((offset + len) < 0))
-+	/* Check for wraparound */
-+	if (check_add_overflow(offset, len, &sum))
-+		return -EFBIG;
-+
-+	if (sum > inode->i_sb->s_maxbytes)
- 		return -EFBIG;
- 
- 	if (!file->f_op->fallocate)
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 9f505688291e5..5c4bdbe76df04 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -1867,7 +1867,7 @@ static void rcu_torture_fwd_cb_cr(struct rcu_head *rhp)
+ 	spin_lock_irqsave(&rfp->rcu_fwd_lock, flags);
+ 	rfcpp = rfp->rcu_fwd_cb_tail;
+ 	rfp->rcu_fwd_cb_tail = &rfcp->rfc_next;
+-	WRITE_ONCE(*rfcpp, rfcp);
++	smp_store_release(rfcpp, rfcp);
+ 	WRITE_ONCE(rfp->n_launders_cb, rfp->n_launders_cb + 1);
+ 	i = ((jiffies - rfp->rcu_fwd_startat) / (HZ / FWD_CBS_HIST_DIV));
+ 	if (i >= ARRAY_SIZE(rfp->n_launders_hist))
 -- 
 2.43.0
 
