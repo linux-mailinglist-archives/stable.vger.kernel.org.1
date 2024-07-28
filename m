@@ -1,204 +1,152 @@
-Return-Path: <stable+bounces-62019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B3793E209
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:56:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF8193E20B
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 02:57:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D88D91C210C8
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:56:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB5BF2815D1
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 00:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC33B146A83;
-	Sun, 28 Jul 2024 00:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1172A1474CF;
+	Sun, 28 Jul 2024 00:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q820Slvg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IZyoEj3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681A8146A72;
-	Sun, 28 Jul 2024 00:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB899208DA;
+	Sun, 28 Jul 2024 00:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722127739; cv=none; b=smqmGv/qInJFuzsuH0OgZDtUyk1Nmkd8diCWjwMhND86RqikE2UXDQNBXnUBR5+Po4atU0s5j+FE9LZ6Mra6ofvgbJQW0Ao7gTW8cTZHufs16ZAI+sBl5VOa7i5ey7TqdfutHJhgcYRgSP6XraR7O45wVds6HgW8vo7K2QkXmTs=
+	t=1722127744; cv=none; b=Oa5+opERdubGgO2hNOKP5TMcnuFUstZvSIPKUToFZ0XpmymV5ay9atnTx2ii8l6GAkMrXctF2g+G9prBqa8Y81IYwEp+MtnBUsmMdlUP2AZ8xBY+NLA7+h9aws+f4r3hYCL+lzwG2nWKWLBBYvavFMv/jJLzEsTp4pm0aLrdK10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722127739; c=relaxed/simple;
-	bh=hkSIhH97x3sJT74g7flrbg0qXsG9B0OR7fZpp/z0xJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FxgJtaRrBXB3PkaaHGyYUYonYblGERymkT36xI9WMWUmIXP8goutk4AUWUeBIkp3n+nah9V+x3cRq4zeB0vCDCpW1LL+VCzOhkljq+8A5ndKND1hoDjBBFEV2jZpftOnE0Lj8pyMaxqFekcp9u0qRVE6mJKj0KQFS6ByFM8Iql4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q820Slvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77476C4AF0B;
-	Sun, 28 Jul 2024 00:48:58 +0000 (UTC)
+	s=arc-20240116; t=1722127744; c=relaxed/simple;
+	bh=qlls8nadydMQdAhtVXES5HNSi8rNjEtYZjtPgyS4Ebo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GAaU9EGq8BlLO0uopcUB94SVQxX/tlipcO/++OtXLZ1q9GjN7knjZrfeVELBCNSewYGCWKX8vFRXsN3LxOywLQClDb4uWCfF4bIZyo2TW44v/lHM6J4eQB+TEC7GVj2LdMjsBVr8zTlj51YssGMZNsxoHj32JZ+sNI5A+7QcSFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZyoEj3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7AADC32781;
+	Sun, 28 Jul 2024 00:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722127739;
-	bh=hkSIhH97x3sJT74g7flrbg0qXsG9B0OR7fZpp/z0xJ0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q820SlvgsxzKEGfqA+CCwC5gPLHbuVN6byScz8DgFb8HkiDP9sm7uhedotgHDoLE/
-	 sBfSPGT0zl3DNZUkXQe1/axXHqpLbpQdYPmmj1QEjqPSPQQNeIlr+k+iFHD7H5SO6s
-	 PbMaHOy+y/QP3KUrEU5Hx1DBrofC7I8pndYIP3J7Gt+9dSCSobLiVw0LXsZkWA99SJ
-	 5btlpsdp0A6AKe4daB2hr8LxLXal0vElyYybcpz19VoabL1w/ehnH+XRS5SJdzWHDl
-	 FDcrbwHC4t7DE0Z4YFqpQP2lnga5AyI0hLL1LCetsRKi5KNSkrgc6nFql4YBGHtxSB
-	 pms6k+ax48pcQ==
+	s=k20201202; t=1722127744;
+	bh=qlls8nadydMQdAhtVXES5HNSi8rNjEtYZjtPgyS4Ebo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IZyoEj3drJ6HrtU2I9bZ9HfP+3KB/y4tY/iqUemA9kUw8Zce0fWGPYubOksPZ+NGl
+	 QOOSfgvxevi94Jj/MYCTVwaPJqnJdBAHyXTNffq4nr4TIbNX1fwuMS1JviD2jYiFGz
+	 baD7ajGTDqk5zAuCcZlJhW3od320Nf69ly1yhDFIY6xcUV9Z5ZU18YZoEhm7g3yO7L
+	 +irzIvX/cYnHGEYJpOsmRPIs98mGIvayab2ncP9Ugyq40B8Y5NxDSB75/56PQMP/28
+	 c4/+1BdPvmA4c51XPeer4GjdvXTKPR081T9yqFkdrSMgz2P5XyLEtaMUvcGT7uvlhR
+	 FU1RZpXL4H2Ig==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+Cc: Justin Stitt <justinstitt@google.com>,
+	linux-hardening@vger.kernel.org,
+	Kees Cook <keescook@chromium.org>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de
-Subject: [PATCH AUTOSEL 5.15 6/6] clocksource/drivers/sh_cmt: Address race condition for clock events
-Date: Sat, 27 Jul 2024 20:48:47 -0400
-Message-ID: <20240728004848.1703616-6-sashal@kernel.org>
+	viro@zeniv.linux.org.uk,
+	nathan@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.10 1/6] fs: remove accidental overflow during wraparound check
+Date: Sat, 27 Jul 2024 20:48:54 -0400
+Message-ID: <20240728004901.1704470-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240728004848.1703616-1-sashal@kernel.org>
-References: <20240728004848.1703616-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.164
+X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Justin Stitt <justinstitt@google.com>
 
-[ Upstream commit db19d3aa77612983a02bd223b3f273f896b243cf ]
+[ Upstream commit 23cc6ef6fd453b13502caae23130844e7d6ed0fe ]
 
-There is a race condition in the CMT interrupt handler. In the interrupt
-handler the driver sets a driver private flag, FLAG_IRQCONTEXT. This
-flag is used to indicate any call to set_next_event() should not be
-directly propagated to the device, but instead cached. This is done as
-the interrupt handler itself reprograms the device when needed before it
-completes and this avoids this operation to take place twice.
+Running syzkaller with the newly enabled signed integer overflow
+sanitizer produces this report:
 
-It is unclear why this design was chosen, my suspicion is to allow the
-struct clock_event_device.event_handler callback, which is called while
-the FLAG_IRQCONTEXT is set, can update the next event without having to
-write to the device twice.
+[  195.401651] ------------[ cut here ]------------
+[  195.404808] UBSAN: signed-integer-overflow in ../fs/open.c:321:15
+[  195.408739] 9223372036854775807 + 562984447377399 cannot be represented in type 'loff_t' (aka 'long long')
+[  195.414683] CPU: 1 PID: 703 Comm: syz-executor.0 Not tainted 6.8.0-rc2-00039-g14de58dbe653-dirty #11
+[  195.420138] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  195.425804] Call Trace:
+[  195.427360]  <TASK>
+[  195.428791]  dump_stack_lvl+0x93/0xd0
+[  195.431150]  handle_overflow+0x171/0x1b0
+[  195.433640]  vfs_fallocate+0x459/0x4f0
+...
+[  195.490053] ------------[ cut here ]------------
+[  195.493146] UBSAN: signed-integer-overflow in ../fs/open.c:321:61
+[  195.497030] 9223372036854775807 + 562984447377399 cannot be represented in type 'loff_t' (aka 'long long)
+[  195.502940] CPU: 1 PID: 703 Comm: syz-executor.0 Not tainted 6.8.0-rc2-00039-g14de58dbe653-dirty #11
+[  195.508395] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  195.514075] Call Trace:
+[  195.515636]  <TASK>
+[  195.517000]  dump_stack_lvl+0x93/0xd0
+[  195.519255]  handle_overflow+0x171/0x1b0
+[  195.521677]  vfs_fallocate+0x4cb/0x4f0
+[  195.524033]  __x64_sys_fallocate+0xb2/0xf0
 
-Unfortunately there is a race between when the FLAG_IRQCONTEXT flag is
-set and later cleared where the interrupt handler have already started to
-write the next event to the device. If set_next_event() is called in
-this window the value is only cached in the driver but not written. This
-leads to the board to misbehave, or worse lockup and produce a splat.
+Historically, the signed integer overflow sanitizer did not work in the
+kernel due to its interaction with `-fwrapv` but this has since been
+changed [1] in the newest version of Clang. It was re-enabled in the
+kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
+sanitizer").
 
-   rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-   rcu:     0-...!: (0 ticks this GP) idle=f5e0/0/0x0 softirq=519/519 fqs=0 (false positive?)
-   rcu:     (detected by 1, t=6502 jiffies, g=-595, q=77 ncpus=2)
-   Sending NMI from CPU 1 to CPUs 0:
-   NMI backtrace for cpu 0
-   CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.10.0-rc5-arm64-renesas-00019-g74a6f86eaf1c-dirty #20
-   Hardware name: Renesas Salvator-X 2nd version board based on r8a77965 (DT)
-   pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-   pc : tick_check_broadcast_expired+0xc/0x40
-   lr : cpu_idle_poll.isra.0+0x8c/0x168
-   sp : ffff800081c63d70
-   x29: ffff800081c63d70 x28: 00000000580000c8 x27: 00000000bfee5610
-   x26: 0000000000000027 x25: 0000000000000000 x24: 0000000000000000
-   x23: ffff00007fbb9100 x22: ffff8000818f1008 x21: ffff8000800ef07c
-   x20: ffff800081c79ec0 x19: ffff800081c70c28 x18: 0000000000000000
-   x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffffc2c717d8
-   x14: 0000000000000000 x13: ffff000009c18080 x12: ffff8000825f7fc0
-   x11: 0000000000000000 x10: ffff8000818f3cd4 x9 : 0000000000000028
-   x8 : ffff800081c79ec0 x7 : ffff800081c73000 x6 : 0000000000000000
-   x5 : 0000000000000000 x4 : ffff7ffffe286000 x3 : 0000000000000000
-   x2 : ffff7ffffe286000 x1 : ffff800082972900 x0 : ffff8000818f1008
-   Call trace:
-    tick_check_broadcast_expired+0xc/0x40
-    do_idle+0x9c/0x280
-    cpu_startup_entry+0x34/0x40
-    kernel_init+0x0/0x11c
-    do_one_initcall+0x0/0x260
-    __primary_switched+0x80/0x88
-   rcu: rcu_preempt kthread timer wakeup didn't happen for 6501 jiffies! g-595 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
-   rcu:     Possible timer handling issue on cpu=0 timer-softirq=262
-   rcu: rcu_preempt kthread starved for 6502 jiffies! g-595 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=0
-   rcu:     Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-   rcu: RCU grace-period kthread stack dump:
-   task:rcu_preempt     state:I stack:0     pid:15    tgid:15    ppid:2      flags:0x00000008
-   Call trace:
-    __switch_to+0xbc/0x100
-    __schedule+0x358/0xbe0
-    schedule+0x48/0x148
-    schedule_timeout+0xc4/0x138
-    rcu_gp_fqs_loop+0x12c/0x764
-    rcu_gp_kthread+0x208/0x298
-    kthread+0x10c/0x110
-    ret_from_fork+0x10/0x20
+Let's use the check_add_overflow helper to first verify the addition
+stays within the bounds of its type (long long); then we can use that
+sum for the following check.
 
-The design have been part of the driver since it was first merged in
-early 2009. It becomes increasingly harder to trigger the issue the
-older kernel version one tries. It only takes a few boots on v6.10-rc5,
-while hundreds of boots are needed to trigger it on v5.10.
-
-Close the race condition by using the CMT channel lock for the two
-competing sections. The channel lock was added to the driver after its
-initial design.
-
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://lore.kernel.org/r/20240702190230.3825292-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://github.com/llvm/llvm-project/pull/82432 [1]
+Closes: https://github.com/KSPP/linux/issues/356
+Cc: linux-hardening@vger.kernel.org
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/r/20240513-b4-sio-vfs_fallocate-v2-1-db415872fb16@google.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/sh_cmt.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/open.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clocksource/sh_cmt.c b/drivers/clocksource/sh_cmt.c
-index d35548aa026fb..8e06767e0d4cb 100644
---- a/drivers/clocksource/sh_cmt.c
-+++ b/drivers/clocksource/sh_cmt.c
-@@ -529,6 +529,7 @@ static void sh_cmt_set_next(struct sh_cmt_channel *ch, unsigned long delta)
- static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
+diff --git a/fs/open.c b/fs/open.c
+index 694110929519c..be3eb6126d6da 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -230,6 +230,7 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
  {
- 	struct sh_cmt_channel *ch = dev_id;
-+	unsigned long flags;
+ 	struct inode *inode = file_inode(file);
+ 	long ret;
++	loff_t sum;
  
- 	/* clear flags */
- 	sh_cmt_write_cmcsr(ch, sh_cmt_read_cmcsr(ch) &
-@@ -559,6 +560,8 @@ static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
+ 	if (offset < 0 || len <= 0)
+ 		return -EINVAL;
+@@ -298,8 +299,11 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+ 	if (!S_ISREG(inode->i_mode) && !S_ISBLK(inode->i_mode))
+ 		return -ENODEV;
  
- 	ch->flags &= ~FLAG_SKIPEVENT;
- 
-+	raw_spin_lock_irqsave(&ch->lock, flags);
+-	/* Check for wrap through zero too */
+-	if (((offset + len) > inode->i_sb->s_maxbytes) || ((offset + len) < 0))
++	/* Check for wraparound */
++	if (check_add_overflow(offset, len, &sum))
++		return -EFBIG;
 +
- 	if (ch->flags & FLAG_REPROGRAM) {
- 		ch->flags &= ~FLAG_REPROGRAM;
- 		sh_cmt_clock_event_program_verify(ch, 1);
-@@ -571,6 +574,8 @@ static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
++	if (sum > inode->i_sb->s_maxbytes)
+ 		return -EFBIG;
  
- 	ch->flags &= ~FLAG_IRQCONTEXT;
- 
-+	raw_spin_unlock_irqrestore(&ch->lock, flags);
-+
- 	return IRQ_HANDLED;
- }
- 
-@@ -781,12 +786,18 @@ static int sh_cmt_clock_event_next(unsigned long delta,
- 				   struct clock_event_device *ced)
- {
- 	struct sh_cmt_channel *ch = ced_to_sh_cmt(ced);
-+	unsigned long flags;
- 
- 	BUG_ON(!clockevent_state_oneshot(ced));
-+
-+	raw_spin_lock_irqsave(&ch->lock, flags);
-+
- 	if (likely(ch->flags & FLAG_IRQCONTEXT))
- 		ch->next_match_value = delta - 1;
- 	else
--		sh_cmt_set_next(ch, delta - 1);
-+		__sh_cmt_set_next(ch, delta - 1);
-+
-+	raw_spin_unlock_irqrestore(&ch->lock, flags);
- 
- 	return 0;
- }
+ 	if (!file->f_op->fallocate)
 -- 
 2.43.0
 
