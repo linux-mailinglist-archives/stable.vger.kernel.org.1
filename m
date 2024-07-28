@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-62301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2833C93E830
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:25:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4A593E833
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:25:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CABDA1F21013
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:25:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EB461C21218
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB707186E5B;
-	Sun, 28 Jul 2024 16:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F31018734F;
+	Sun, 28 Jul 2024 16:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GLb7F4Ev"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZNocLoDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87336186E4F;
-	Sun, 28 Jul 2024 16:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED42718733E;
+	Sun, 28 Jul 2024 16:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722182954; cv=none; b=jGvV1y7gERFI8SQhvMnXKSDqqbemXo+8taPkGBtXLRybD5XjD+j/SixM0bT6W8b5+gZGG2i3uvJKiSrj4weBq58t4f8ajoxOTkf+XLFEsnIdqAHKCEVYlZYd4Swba1x6RylqKixQdojyzuXOHjkEYq1BMBwK9963FscDEfrwJjs=
+	t=1722182956; cv=none; b=iwnqXfj8vMIywmCBx2cyH/fML9SZiXnkBag1XvLi/MZ5qdn5BodSFEvzDUzCNoXgZ9w65gumLDhJRsqti5wcwv6zjnjX2hlcrs0KkD3h9dew9+9c9zCai5/HPTp8+gT+TFDlkoAm1szqE9Q20uELoL0Nb7oPfcT+R9AnQLivhC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722182954; c=relaxed/simple;
-	bh=bNWE2W3IXLygnyXMiD7vkYLRNmZ3V4s3MClWWoeFX+Y=;
+	s=arc-20240116; t=1722182956; c=relaxed/simple;
+	bh=TsJzhlXnYFhgFX62qPKwzT5GmLPzeuEjfJGh8pURNoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHQYDJmgeY0A32R0IjdR5jGkOzXqm1HInuOm744GPy48aaHzMqzUTSj2CJFjmI0c4r3314LqhaFnEMcGQFupBeOhOffhn7j16x6erhnoMUA/kt97TpBfsot2sgApwKL/2RQelsdRHi1i7xL2PmDq7dijRQywiLGoMMuGqVgwqws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GLb7F4Ev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CF7C116B1;
-	Sun, 28 Jul 2024 16:09:12 +0000 (UTC)
+	 MIME-Version; b=ppBTupD0nuRbhklSuNYR8RnGf/gaWV45Ccf9jQne2S3cwWM9DEZLtzgC7Qq4XM62HT2D0yKnhsu3QO/+LvStVFnk0x3o4OBR+dhBbI1enZ+QzgYNGGV471U/EmcczkQUPaytIHq7U9/Dtaw71mMDxaj25s6+ZULLDKXbkD5iDQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNocLoDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A436C4AF0E;
+	Sun, 28 Jul 2024 16:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722182954;
-	bh=bNWE2W3IXLygnyXMiD7vkYLRNmZ3V4s3MClWWoeFX+Y=;
+	s=k20201202; t=1722182955;
+	bh=TsJzhlXnYFhgFX62qPKwzT5GmLPzeuEjfJGh8pURNoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GLb7F4EvrxrqkpxZNeiaY//kxFyklTsBc4S+51DfawKkkRS1cQp9U23hYLuN8rm06
-	 htX2IuJhkKXJHfK/Yq8w+ddThbs+gWg2Xh0bkJaXCpAvlQ75o/ZIP1tEr6ifWP9850
-	 OOnQcEvzJMXhUrrFC5bFpbPsCB08YxF/XVvq5UFiON4Zj5Sedk9Q5ch3SOR3JM4nXZ
-	 rYPD/Afzc+SxseXkf0GPwY1N1f0a7CdSrg7omeaKvQQJgbiS6QZxv38u+3KqJ0oqQ4
-	 8krZqAb/xVWC6gs25YAU7KM6wi8UTh5Gj8/jLKEWA7k/50BnYQ9r1paodvVEnN9UdI
-	 JKeTASJ1kPdrw==
+	b=ZNocLoDb/lNnY3cxKGj1RXBV9CKn5XtfrUkkswTARHz+9QgUpKfC5ygrZ+3XzKtb5
+	 l5InXcnkyRxwrLFf8vfNAuV/TcZ3Fdx8cySLmOrNrjTr9F78yeG/QSoab9jphMXBzG
+	 eV3bd+dsd6RlcgZNjIm1xakuUOdlMOjgxmnGxK+R0IRvUEU6Vr3v9cqMrBIwcHjMaM
+	 Uu7ItLoG4F4l+8b8lC/ojDJswH5HPClw05Ooz8EALD3YkILhKJ+xPED+ERb9ZdFNNk
+	 ajib3GyIGf3q2X2pY3NFA/BfeIYmhQLnW+aw1BWIq6BUgxRpHkcOV+GgLzYuZWFov+
+	 lPOL3GMWbcCkQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Roger Quadros <rogerq@kernel.org>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Peter Chen <peter.chen@kernel.org>,
+Cc: Peng Hongchi <hongchi.peng@siengine.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	pawell@cadence.com,
+	hminas@synopsys.com,
 	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 03/13] usb: cdns3: Add quirk flag to enable suspend residency
-Date: Sun, 28 Jul 2024 12:08:45 -0400
-Message-ID: <20240728160907.2053634-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 04/13] usb: dwc2: gadget: Don't write invalid mapped sg entries into dma_desc with iommu enabled
+Date: Sun, 28 Jul 2024 12:08:46 -0400
+Message-ID: <20240728160907.2053634-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728160907.2053634-1-sashal@kernel.org>
 References: <20240728160907.2053634-1-sashal@kernel.org>
@@ -68,84 +66,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.164
 Content-Transfer-Encoding: 8bit
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Peng Hongchi <hongchi.peng@siengine.com>
 
-[ Upstream commit 0aca19e4037a4143273e90f1b44666b78b4dde9b ]
+[ Upstream commit 1134289b6b93d73721340b66c310fd985385e8fa ]
 
-Some platforms (e.g. ti,j721e-usb, ti,am64-usb) require
-this bit to be set to workaround a lockup issue with PHY
-short suspend intervals [1]. Add a platform quirk flag
-to indicate if Suspend Residency should be enabled.
+When using dma_map_sg() to map the scatterlist with iommu enabled,
+the entries in the scatterlist can be mergerd into less but longer
+entries in the function __finalise_sg(). So that the number of
+valid mapped entries is actually smaller than ureq->num_reqs,and
+there are still some invalid entries in the scatterlist with
+dma_addr=0xffffffff and len=0. Writing these invalid sg entries
+into the dma_desc can cause a data transmission error.
 
-[1] - https://www.ti.com/lit/er/sprz457h/sprz457h.pdf
-i2409 - USB: USB2 PHY locks up due to short suspend
+The function dma_map_sg() returns the number of valid map entries
+and the return value is assigned to usb_request::num_mapped_sgs in
+function usb_gadget_map_request_by_dev(). So that just write valid
+mapped entries into dma_desc according to the usb_request::num_mapped_sgs,
+and set the IOC bit if it's the last valid mapped entry.
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240516044537.16801-2-r-gunasekaran@ti.com
+This patch poses no risk to no-iommu situation, cause
+ureq->num_mapped_sgs equals ureq->num_sgs while using dma_direct_map_sg()
+to map the scatterlist whith iommu disabled.
+
+Signed-off-by: Peng Hongchi <hongchi.peng@siengine.com>
+Link: https://lore.kernel.org/r/20240523100315.7226-1-hongchi.peng@siengine.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/core.h |  1 +
- drivers/usb/cdns3/drd.c  | 10 +++++++++-
- drivers/usb/cdns3/drd.h  |  3 +++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/usb/dwc2/gadget.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/cdns3/core.h b/drivers/usb/cdns3/core.h
-index 1726799367d19..7d4b8311051d8 100644
---- a/drivers/usb/cdns3/core.h
-+++ b/drivers/usb/cdns3/core.h
-@@ -44,6 +44,7 @@ struct cdns3_platform_data {
- 			bool suspend, bool wakeup);
- 	unsigned long quirks;
- #define CDNS3_DEFAULT_PM_RUNTIME_ALLOW	BIT(0)
-+#define CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE	BIT(1)
- };
+diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
+index f6b2a4f2e59d9..4422da5613652 100644
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -886,10 +886,10 @@ static void dwc2_gadget_config_nonisoc_xfer_ddma(struct dwc2_hsotg_ep *hs_ep,
+ 	}
  
- /**
-diff --git a/drivers/usb/cdns3/drd.c b/drivers/usb/cdns3/drd.c
-index 33ba30f79b337..8e19ee72c1207 100644
---- a/drivers/usb/cdns3/drd.c
-+++ b/drivers/usb/cdns3/drd.c
-@@ -385,7 +385,7 @@ static irqreturn_t cdns_drd_irq(int irq, void *data)
- int cdns_drd_init(struct cdns *cdns)
- {
- 	void __iomem *regs;
--	u32 state;
-+	u32 state, reg;
- 	int ret;
+ 	/* DMA sg buffer */
+-	for_each_sg(ureq->sg, sg, ureq->num_sgs, i) {
++	for_each_sg(ureq->sg, sg, ureq->num_mapped_sgs, i) {
+ 		dwc2_gadget_fill_nonisoc_xfer_ddma_one(hs_ep, &desc,
+ 			sg_dma_address(sg) + sg->offset, sg_dma_len(sg),
+-			sg_is_last(sg));
++			(i == (ureq->num_mapped_sgs - 1)));
+ 		desc_count += hs_ep->desc_count;
+ 	}
  
- 	regs = devm_ioremap_resource(cdns->dev, &cdns->otg_res);
-@@ -429,6 +429,14 @@ int cdns_drd_init(struct cdns *cdns)
- 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
- 					      &cdns->otg_v1_regs->ien;
- 			writel(1, &cdns->otg_v1_regs->simulate);
-+
-+			if (cdns->pdata &&
-+			    (cdns->pdata->quirks & CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE)) {
-+				reg = readl(&cdns->otg_v1_regs->susp_ctrl);
-+				reg |= SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE;
-+				writel(reg, &cdns->otg_v1_regs->susp_ctrl);
-+			}
-+
- 			cdns->version  = CDNS3_CONTROLLER_V1;
- 		} else {
- 			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
-diff --git a/drivers/usb/cdns3/drd.h b/drivers/usb/cdns3/drd.h
-index d72370c321d39..1e2aee14d6293 100644
---- a/drivers/usb/cdns3/drd.h
-+++ b/drivers/usb/cdns3/drd.h
-@@ -193,6 +193,9 @@ struct cdns_otg_irq_regs {
- /* OTGREFCLK - bitmasks */
- #define OTGREFCLK_STB_CLK_SWITCH_EN	BIT(31)
- 
-+/* SUPS_CTRL - bitmasks */
-+#define SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE	BIT(17)
-+
- /* OVERRIDE - bitmasks */
- #define OVERRIDE_IDPULLUP		BIT(0)
- /* Only for CDNS3_CONTROLLER_V0 version */
 -- 
 2.43.0
 
