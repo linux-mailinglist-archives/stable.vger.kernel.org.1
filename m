@@ -1,124 +1,110 @@
-Return-Path: <stable+bounces-62243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9223F93E769
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:09:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C37393E77A
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E6DFB21CE8
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:09:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 116B01F21E81
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4BA188CB2;
-	Sun, 28 Jul 2024 15:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14DD78B4E;
+	Sun, 28 Jul 2024 16:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pdEllnmp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GszzGFoG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946B4188CA9;
-	Sun, 28 Jul 2024 15:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8722B4F8BB;
+	Sun, 28 Jul 2024 16:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181877; cv=none; b=pN4cdNc64JlDAL1izFoGVmBYTB2+2h5/n9rPzyZ9vlAEeIX90dIc58sj9vXeNwKqX2Cg2IfWiODC9DG1lqylDlFDt0Vcb7p5OFQCwmqnZOgaDc0HGbnnlUUBXfrk7tMbiNTZTcvxrH1g1kLpEnXysuD4MO6ffs58Vd1gK+bz1Fs=
+	t=1722182741; cv=none; b=MS7o9AzSRfm2e16vP50DHVELq3BuHaSOG2qt5H3rC5D9ICrpVMYzZwX2Sz1uOz13HMtPieQR3zAZ+1xVdB/QYo01b4DMESs3Ocr0aGYreee5oDQrnGhe5fSfLLhk1K4GqQZt15gJRYt6yBArNFaOfNkeBnyVsgH5HB9wd8YfitY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181877; c=relaxed/simple;
-	bh=SwC3DXWMQkHyaE4FsbLFHk4mNXw3o8n03RoNhtkQyVE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPKOBpAn73lxmgwZ1DHsy59PXz/CfbLWWRmXRat6iOcbaqcLQERmwYtQjAPnhrgMHaAW/P2hSQOjrmGJyiPeeGtAsG+FthGPJ3LNlVGd4HL9j17fzWZjkq/Qx6OHuwNeq99Ozee1nVsjmTUOjlB+YP3xd64geDDLZjMWRZmmv/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pdEllnmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9886BC116B1;
-	Sun, 28 Jul 2024 15:51:14 +0000 (UTC)
+	s=arc-20240116; t=1722182741; c=relaxed/simple;
+	bh=sC+ABeFiElt3XPZrsSXKGWNaeItAgfe1CrRJ7+e7gaQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=p7CAQPP2Nk+zdk8tXfNMAbtrArCDdU1qPA1b81GKvoZR6oSwLuoGXXTjD7ZNy/OI7Eu08EH/vHQH5jyUISREKsE3ic+plSeOJAp0+23fdVUqTRIM7pRRNaSZWw21z3sSI/u4ba1Ei9EIPKWMFgvEmqZ5FSudPWzZJHQbI2xBWI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GszzGFoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC30DC32782;
+	Sun, 28 Jul 2024 16:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181877;
-	bh=SwC3DXWMQkHyaE4FsbLFHk4mNXw3o8n03RoNhtkQyVE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pdEllnmp6yqUZ433/PgoIVM7FfV7L6WB6p4En0SugjC54uOzhmzHfK8+CoY9Kuu8b
-	 BcmUjex8rXVH4emnQmWQhBxIegx09JbMzc7IvDnGNtJCvkQ/iWdoKu8gqz/l8y9+Qx
-	 jqJ2H8wU94mVrwX/+FsmzhLtIq14dmlXaLdU0ufJS1g00d03o3qnT6G0A1iuZk84CV
-	 LgId9zmTRRWYRUe43uNlQGv3NZErPsr2Pci/1QsUHr0wvOaV0JATXSyKBO716RBZqs
-	 LfUmyxtsyUCIwtwF4v81xSTr6VpBIYMeOOZeNZRaacsp6asiW/4zZOKStYDLPfi3+d
-	 sjCYKXughtAtw==
+	s=k20201202; t=1722182741;
+	bh=sC+ABeFiElt3XPZrsSXKGWNaeItAgfe1CrRJ7+e7gaQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GszzGFoGzpxevR3nSBESEPZjLKE8uEtcg8Z3AwO4eLuwSwZ5DhazRgjAvcSuIRQKf
+	 4ov/Yui0lojoBApWroBMoj454soP5V/sPoMvLqwjcsWxYwe5OcTgaIj8z3vW3rV+R7
+	 jBKtGGZPDZrKKCDZp4f2LRiG7gLAul+0Qr8VbudSPv4Qell+QA3bRpQTNDpNBNkBSO
+	 HTX5HPIn5s9hen6Ynop20Q4czDAOsYQddimhJPGo+y2+NGaEsvEht281E5Yg813NI3
+	 4IruC7kiUN9/nuU/Yldy0lSPuYNoRTpXQPah8Wo5MJrN+UZT7vfta9GEPVayzQFYIR
+	 J4GO+ASE8+Bvg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Coddington <bcodding@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+Cc: Ajit Khaparde <ajit.khaparde@broadcom.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Andy Gospodarek <gospo@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	chuck.lever@oracle.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 5/5] SUNRPC: Fix a race to wake a sync task
-Date: Sun, 28 Jul 2024 11:51:00 -0400
-Message-ID: <20240728155103.2050728-5-sashal@kernel.org>
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 01/23] PCI: Add ACS quirk for Broadcom BCM5760X NIC
+Date: Sun, 28 Jul 2024 12:04:42 -0400
+Message-ID: <20240728160538.2051879-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240728155103.2050728-1-sashal@kernel.org>
-References: <20240728155103.2050728-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.319
+X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Ajit Khaparde <ajit.khaparde@broadcom.com>
 
-[ Upstream commit ed0172af5d6fc07d1b40ca82f5ca3979300369f7 ]
+[ Upstream commit 524e057b2d66b61f9b63b6db30467ab7b0bb4796 ]
 
-We've observed NFS clients with sync tasks sleeping in __rpc_execute
-waiting on RPC_TASK_QUEUED that have not responded to a wake-up from
-rpc_make_runnable().  I suspect this problem usually goes unnoticed,
-because on a busy client the task will eventually be re-awoken by another
-task completion or xprt event.  However, if the state manager is draining
-the slot table, a sync task missing a wake-up can result in a hung client.
+The Broadcom BCM5760X NIC may be a multi-function device.
 
-We've been able to prove that the waker in rpc_make_runnable() successfully
-calls wake_up_bit() (ie- there's no race to tk_runstate), but the
-wake_up_bit() call fails to wake the waiter.  I suspect the waker is
-missing the load of the bit's wait_queue_head, so waitqueue_active() is
-false.  There are some very helpful comments about this problem above
-wake_up_bit(), prepare_to_wait(), and waitqueue_active().
+While it does not advertise an ACS capability, peer-to-peer transactions
+are not possible between the individual functions. So it is ok to treat
+them as fully isolated.
 
-Fix this by inserting smp_mb__after_atomic() before the wake_up_bit(),
-which pairs with prepare_to_wait() calling set_current_state().
+Add an ACS quirk for this device so the functions can be in independent
+IOMMU groups and attached individually to userspace applications using
+VFIO.
 
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+[kwilczynski: commit log]
+Link: https://lore.kernel.org/linux-pci/20240510204228.73435-1-ajit.khaparde@broadcom.com
+Signed-off-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Andy Gospodarek <gospo@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/sched.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/quirks.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index 9af919364a001..92d88aa62085b 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -349,8 +349,10 @@ static void rpc_make_runnable(struct workqueue_struct *wq,
- 	if (RPC_IS_ASYNC(task)) {
- 		INIT_WORK(&task->u.tk_work, rpc_async_schedule);
- 		queue_work(wq, &task->u.tk_work);
--	} else
-+	} else {
-+		smp_mb__after_atomic();
- 		wake_up_bit(&task->tk_runstate, RPC_TASK_QUEUED);
-+	}
- }
- 
- /*
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 568410e64ce64..a2ce4e08edf5a 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5099,6 +5099,10 @@ static const struct pci_dev_acs_enabled {
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1750, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1751, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1752, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1760, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1761, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
+ 	/* Amazon Annapurna Labs */
+ 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
 -- 
 2.43.0
 
