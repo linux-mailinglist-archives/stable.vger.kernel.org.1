@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-62313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD2593E857
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:28:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5E793E85A
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 18:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 995E7281FBD
-	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:28:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C1391C20AC9
+	for <lists+stable@lfdr.de>; Sun, 28 Jul 2024 16:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B85C56B81;
-	Sun, 28 Jul 2024 16:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E5A18E74E;
+	Sun, 28 Jul 2024 16:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nTL/RXA4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAiGEkeo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0182A7347E;
-	Sun, 28 Jul 2024 16:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C0418E746;
+	Sun, 28 Jul 2024 16:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722183002; cv=none; b=TIo7xhXRhWNI2ANHJc35RCCR8Sfzrh+Petgs4CFeB27rnN3CW2XKFBu5iT713i6Zu0SkdBWH0lswANKwKU2gLjthMbpumCiHeXM074TfIYP/BvwIKAnXaGjC7FYp6L04vf0jMk72/wvaF40rfr4IyVkQ299agOwhlct+k0YXb+M=
+	t=1722183004; cv=none; b=W1vmN94DoSAc1KZJAUUtiCkxwb5Gs26gfaKaOUYhEyF/TSdqNc1U+PDWQkOp/HuBMcRjQeKAsQnQJrr7TO4hiAjWTC34nHiMLr80OKlID8DCUBqD2gKRPM3fw8cifUmpJoMiNcyYa/kOIHLYx9f4qwOts6pCaAjj7BcXCwNYRKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722183002; c=relaxed/simple;
-	bh=ZKrtN/ztZKHxME0bLtjP87f6YS3aHEf/izl9OPV/7s0=;
+	s=arc-20240116; t=1722183004; c=relaxed/simple;
+	bh=tMvgnZby+dAE+pK25M1ZIY1oQJT7T/0HB2onJQ+C2eY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKkwUBW1oledYaWZHI07/1iiHvtKyKLBMl16G1XO1mVfsOjaoaFguAl0QsGswD1dv58rm5ndtlXhpHUXyuT1A5Dm4x52P5+LsZi4RLeQ4JgE1RexsITDStg7UY76uWxr/txMjQvO0byPcLDIzCOug6TxpUjtEdAMSSVrsKgbVUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nTL/RXA4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFE3C4AF0F;
-	Sun, 28 Jul 2024 16:09:58 +0000 (UTC)
+	 MIME-Version; b=E0G+rzU2/J+iQSEFna1VP0bOTmaVmunPbCAbrH7sQJmzFiBb80TDFqWXwYxrBU70Onmvf6MsR8MaXxC5Up3LI/HyN2Er13XJ040efLK5KedxzDkfJlznrzNg8737hBh80IFYJIvgNNJB3o3IF1EPVuDy4KNxy/64SJ1VhUZVpa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAiGEkeo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A67C116B1;
+	Sun, 28 Jul 2024 16:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722183001;
-	bh=ZKrtN/ztZKHxME0bLtjP87f6YS3aHEf/izl9OPV/7s0=;
+	s=k20201202; t=1722183003;
+	bh=tMvgnZby+dAE+pK25M1ZIY1oQJT7T/0HB2onJQ+C2eY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTL/RXA4ECipN769puQtklsXGq/wreRweAWYVJNFCx41n1cUrx+Ve/Wr2T8RFGP+f
-	 ngW0od40rekXuYfjDe2DgkYYDDl90/xlt2Cd91UVHRgh8bJbsLEWhEYCQC1jBNZmi0
-	 U2mq4yH7UG08XrSlwgm19U80Gk3gxktF6KtDDQeh7f0m3f0UrwAgwaeiyQgnnKmLJC
-	 Oiqbz4TX/DYbtDUrA1QWQBtoxQB4eRGp9zLnaKIMK+1P7/ytcVZwr3S5o72vetYC+P
-	 u4fQBf8ZHnB4Sh2g0eaP3peCxicW10lM/oR0lNH0XRjRl0ylS3vEEWZX/kWDz6bm9C
-	 CrEnDHCO73T6g==
+	b=hAiGEkeozj/g9FRaOzmRmUfH91rB8VZIeGCYYpmmt8Yv481YZ3y9K0JcJbtPtQAH6
+	 NBpIPmPWTY8NfYo+t2nsaBgl5LaPo4wmlnlb/d5cf36qG6FeG6LARJgq1PyoXLdpDK
+	 aiWeEuPajjf9IDUI+7SDbQ28Y+5W/8D+76NwfYxmCjihbSz8GKXiHsZopf5KrR9gmo
+	 BfY351eBJeN25KsVDSZFc2tKsiSC9LWZapenm4Vmto27KnnjbhY6QQheFXFsB5Vor0
+	 bNv5qMLfC/wXOygTpQj250T53/3d4K7C2YGicSxVA2zY/inNuvuXuS6Mpy87XzQFkH
+	 DeUnlZuSD0aXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Vidya Sagar <vidyas@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	cezary.rojewski@intel.com,
-	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 02/11] ASoC: Intel: sof_sdw: Add quirks for some new Dell laptops
-Date: Sun, 28 Jul 2024 12:09:35 -0400
-Message-ID: <20240728160954.2054068-2-sashal@kernel.org>
+	will@kernel.org,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 03/11] PCI: Use preserve_config in place of pci_flags
+Date: Sun, 28 Jul 2024 12:09:36 -0400
+Message-ID: <20240728160954.2054068-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728160954.2054068-1-sashal@kernel.org>
 References: <20240728160954.2054068-1-sashal@kernel.org>
@@ -75,50 +69,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 91cdecaba791c74df6da0650e797fe1192cf2700 ]
+[ Upstream commit 7246a4520b4bf1494d7d030166a11b5226f6d508 ]
 
-Add quirks for some new Dell laptops using Cirrus amplifiers in a bridge
-configuration.
+Use preserve_config in place of checking for PCI_PROBE_ONLY flag to enable
+support for "linux,pci-probe-only" on a per host bridge basis.
 
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://msgid.link/r/20240527193552.165567-11-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This also obviates the use of adding PCI_REASSIGN_ALL_BUS flag if
+!PCI_PROBE_ONLY, as pci_assign_unassigned_root_bus_resources() takes care
+of reassigning the resources that are not already claimed.
+
+Link: https://lore.kernel.org/r/20240508174138.3630283-5-vidyas@nvidia.com
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/pci/controller/pci-host-common.c |  4 ----
+ drivers/pci/probe.c                      | 20 +++++++++-----------
+ 2 files changed, 9 insertions(+), 15 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 25bf73a7e7bfa..ad3694d36d969 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -234,6 +234,22 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 		},
- 		.driver_data = (void *)(RT711_JD2_100K),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CE3")
-+		},
-+		.driver_data = (void *)(SOF_SIDECAR_AMPS),
-+	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CE4")
-+		},
-+		.driver_data = (void *)(SOF_SIDECAR_AMPS),
-+	},
- 	{}
- };
+diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
+index 6ce34a1deecb2..2525bd0432616 100644
+--- a/drivers/pci/controller/pci-host-common.c
++++ b/drivers/pci/controller/pci-host-common.c
+@@ -71,10 +71,6 @@ int pci_host_common_probe(struct platform_device *pdev)
+ 	if (IS_ERR(cfg))
+ 		return PTR_ERR(cfg);
  
+-	/* Do not reassign resources if probe only */
+-	if (!pci_has_flag(PCI_PROBE_ONLY))
+-		pci_add_flags(PCI_REASSIGN_ALL_BUS);
+-
+ 	bridge->sysdata = cfg;
+ 	bridge->ops = (struct pci_ops *)&ops->pci_ops;
+ 
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 02a75f3b59208..b0ac721e047db 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -3018,20 +3018,18 @@ int pci_host_probe(struct pci_host_bridge *bridge)
+ 
+ 	bus = bridge->bus;
+ 
++	/* If we must preserve the resource configuration, claim now */
++	if (bridge->preserve_config)
++		pci_bus_claim_resources(bus);
++
+ 	/*
+-	 * We insert PCI resources into the iomem_resource and
+-	 * ioport_resource trees in either pci_bus_claim_resources()
+-	 * or pci_bus_assign_resources().
++	 * Assign whatever was left unassigned. If we didn't claim above,
++	 * this will reassign everything.
+ 	 */
+-	if (pci_has_flag(PCI_PROBE_ONLY)) {
+-		pci_bus_claim_resources(bus);
+-	} else {
+-		pci_bus_size_bridges(bus);
+-		pci_bus_assign_resources(bus);
++	pci_assign_unassigned_root_bus_resources(bus);
+ 
+-		list_for_each_entry(child, &bus->children, node)
+-			pcie_bus_configure_settings(child);
+-	}
++	list_for_each_entry(child, &bus->children, node)
++		pcie_bus_configure_settings(child);
+ 
+ 	pci_bus_add_devices(bus);
+ 	return 0;
 -- 
 2.43.0
 
