@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A51593EF89
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:12:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E1C93EF8A
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:12:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1A371F22B28
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 08:12:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F082D1F22B32
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 08:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40131384B9;
-	Mon, 29 Jul 2024 08:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21A9139CEF;
+	Mon, 29 Jul 2024 08:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YgAkoPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syAV9rwm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AE084FAD
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 08:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6347D137776
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 08:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722240732; cv=none; b=Wk/CoTHTMeW9yooZ/i5HUPlL6pQmtxGBXzWqWmXDovpi5sRQXR7bdABC/rotn/r4RAKUhlsfQJS8WfwANIkPhZLsP7mc6UROVdqZ4AISFWh3pzI5VYPy3bFvA607MIgjOcPijMMkWrtIi//Kz+r+yhgFuvdzUOzFtgLQS0B/0So=
+	t=1722240741; cv=none; b=pZDxv5HAR07QIIwgtgU5AJgXEnbVvtlJFR0ZQBKKpOvafmqhBcPfdi8HxJb0kqKkHgT+IxyDGIB5WVRl9YfcFcL2XGPKXgHyEmTFpgmbi5bJBvnMGxy3jloOXDOapweYCAXIcM2zaKhLlu2hv4N41oE71wHQ8A48MjDb+8g2wtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722240732; c=relaxed/simple;
-	bh=wpXgVFS9l88kYN/8IsqqZi7cimp0Emqy24U1eNb6Vrc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oi5NwcMr9zWiHDSd0Q0IO9FsqOjlioYPaLluHIyFYXLB581cEFGyYUrPj5HBUNal55dmFdV8PjOlONMWYbxDxt17kxuirn5gvWisCpAR5P51NI3BbiAQwNpWb1om/BGNvaoOFsRrctw8KP0man7oxJfcV/qUQaYZF+RCHTSny0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YgAkoPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DA4C32786;
-	Mon, 29 Jul 2024 08:12:11 +0000 (UTC)
+	s=arc-20240116; t=1722240741; c=relaxed/simple;
+	bh=ynD8hY35nBL/oH3NuCbGp174TDjj0tmXGVZsFoGSFrY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dSzCd15naDpIGdM92aVEMJK00ZpbldXwCpHPORE1xHzsp4MktqV45wZhjQb5V9kpPNYfmevbeW+n4j0bBI/xzWMuiJFPiHXhg+WuPMDe7YY9nuOM03x6lk1TzqdJKZGhEMYN0D3onaPgDXDPR8WwGRqxpawiQcNJ0koY0Mgz4lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syAV9rwm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6447DC32786;
+	Mon, 29 Jul 2024 08:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722240731;
-	bh=wpXgVFS9l88kYN/8IsqqZi7cimp0Emqy24U1eNb6Vrc=;
+	s=korg; t=1722240740;
+	bh=ynD8hY35nBL/oH3NuCbGp174TDjj0tmXGVZsFoGSFrY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2YgAkoPxP1Dgpo6Iq9DwSK4rE7aPIyZRDQWAdrwJXpbZhfTI6xQz89Fywsbia7Co6
-	 TDtUlMTJ5ioofOKs3WsotXrI7lw/rPdL50Uw2S0ohFmE8RYloR28lNwnGozfTbv1Ko
-	 qM2wAr3/GK33vAeFmWYle3VRoreXkVfcZ/gEHkJs=
-Subject: FAILED: patch "[PATCH] ipv4: fix source address selection with route leak" failed to apply to 5.10-stable tree
+	b=syAV9rwm2uwAMqonkT2OpBY4mcsibu2uJ/cK8qwtYvAB+UsetmFL57eGKpPnHLct5
+	 ws32my0J3B5661BjL3wesZ9AatHm6tYHFzN1D7/zlG1/36XcMBo/tuzvA5XKTe6k7s
+	 odJirNRVXS0vDLrcRXNWo0eQYIbGfe31XaUOfwZo=
+Subject: FAILED: patch "[PATCH] ipv4: fix source address selection with route leak" failed to apply to 5.4-stable tree
 To: nicolas.dichtel@6wind.com,dsahern@kernel.org,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 10:12:08 +0200
-Message-ID: <2024072908-desolate-jeeringly-c274@gregkh>
+Date: Mon, 29 Jul 2024 10:12:09 +0200
+Message-ID: <2024072909-turbine-disparity-9044@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6807352353561187a718e87204458999dbcbba1b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072908-desolate-jeeringly-c274@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072909-turbine-disparity-9044@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
