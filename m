@@ -1,171 +1,149 @@
-Return-Path: <stable+bounces-62613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D4D93FF6E
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 22:29:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D2893FF8D
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 22:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 339AC2847AB
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 20:29:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 428621C22441
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 20:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3896518C346;
-	Mon, 29 Jul 2024 20:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA17818C358;
+	Mon, 29 Jul 2024 20:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y1cjXrH1"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KQngmwtR"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392AE154C0D
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 20:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E951891AA
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 20:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722284692; cv=none; b=XOyeET8ZJvRQuDrOnoP+wUYF4ivNeKwiSDxyaByCTF9usr1BEm0TA9c+ZSFbG+tq/n6pGQRdVcnfhH8FWpDAlK2/sW4BRhr7hAYB9e9u9DWOBdvV54uKdt6nGfOtzG3OleFDiJMtk1LGjw+Z0h+S3WSPZ1OF0EJSUlPN5s1Tu28=
+	t=1722285072; cv=none; b=JHtGxdAXT6+9jWpuR6aKb2+TLaORogNfYT1GtfafhwSb24UPkVwGXKON0k5X/7Wl8+SUdGESTVWeJtYmDnK+k2N/6IkB1V3bHzS1rCUj95IOxGwwpsA1Sqoy1aTdgqgGm4RORbCa08T4qLxIcLOksKdUAxxHcUosXrPit3kseRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722284692; c=relaxed/simple;
-	bh=zwhmVijnEPlCslT6aN/fxmaAO3Scy4ayHjHDmVStI5U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SuOKXjz5g9pMQardSZ0sj/nJfFDVwS6iNMVGXYRLQmvn+z1Ym8bhRSSWS57SnDgN1MMV73IaUVlx8ffyM6lAAzOpTA3KP53o/ZNOCrHMV6H46mUI5+D3HFuTipjAhjMI9aU1fngCtyCkdj0RqBSQJNJ35+NCqie2Gvg6HMkVmjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y1cjXrH1; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722284689;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jn7ILdNLGnUdQlJqD2nf1+eOZa5aVTj170e8PuSmz6A=;
-	b=Y1cjXrH1U2qhARadCJpAfeDNKIZbd/qip/z3uzSqjk8DvUYu5iSeX7vZs4qAslCqoZGVXi
-	UK9koQQjjD5mDcl8T2bPCdER2sgEhCkeEgcNWOVEuiDbBMMekRIP+Jq4hKAfkYUBwLWzbg
-	6iVX3z5wQ1omFRlk4mXKqI+iYchoCwo=
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
- [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-581-FbzgGiOONxeDpuoQIdD0tw-1; Mon, 29 Jul 2024 16:24:47 -0400
-X-MC-Unique: FbzgGiOONxeDpuoQIdD0tw-1
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3983ed13f0bso63483205ab.2
-        for <stable@vger.kernel.org>; Mon, 29 Jul 2024 13:24:47 -0700 (PDT)
+	s=arc-20240116; t=1722285072; c=relaxed/simple;
+	bh=v1aS1lQVKXhrl5osmvtQvkwGB3PQXy+5n+7ZkC2IU7k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UpsbnBjUoalWRAfwA0OOfBPUX5r5YEgrXMr6uBUzATZIYaD83LDEX0ZcXzFRlrdI/flVWkpLlTUT343DntGdbUDxg1l4gvE5oCGSmwpfkb0lVCtMNgFfrDkao90BNZTgDGPdmZ9rjnFI67bM2snv8CrfMCsyaanMaScbs7NNkfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KQngmwtR; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-664ccd158b0so24531097b3.1
+        for <stable@vger.kernel.org>; Mon, 29 Jul 2024 13:31:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722285068; x=1722889868; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=v1aS1lQVKXhrl5osmvtQvkwGB3PQXy+5n+7ZkC2IU7k=;
+        b=KQngmwtRP5cPVG0MyedAHOP6kErCF9qnqQXLqr0rhQR4m72Sc4+f3Fa0g/AzKqqqFN
+         5wlO2pgjZjFdrEUTls+fT8doj63YCLamJPcVK3t5IIhdSlYP4zgBilApoCj3eAuxdYwh
+         hykS4C/9NCIRFmTg8hXUvM0LvYECA3k5rAkDBRZe+4hhslzNyY+u+xGagzbrcCxNIxmu
+         Npmw0WmgIa/yBuzm87mpqvULt4Gje1ZuqkW1zqvnWVT9hc4yVt8jr/4DTZh+oTAf0PPN
+         UMJFUkhza3ntX3rgNGu8BdKa3JgkazK+gThFhVOQoMJgra4FuA0lD8oOOqtsZtisX6oT
+         1NjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722284687; x=1722889487;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jn7ILdNLGnUdQlJqD2nf1+eOZa5aVTj170e8PuSmz6A=;
-        b=VanESoqsf4dF17Eb422lpLmu5gbkulVxhJLBWZkqvWW8+wBc0I1orvNTfIOVcUA78y
-         8NMZ8pKy87jmE84+T3zuO2mB7FhXqhT0HL2aNy7muvrJctV5jRmGAcfsrUr2hKqMxnyV
-         Jqtuw2XACrcL1kNSqo7y/Ud6ulhkB6b8PyeiO8cH0kyMnvLEdU/S2V3Km+aEae1MwPUU
-         ZO0j+FXlz29pT6yIkeqe2RWraqQegHySmTPC+u9hi5WfbIb8yNZd3I26k79vweHfbn/9
-         xjdP2Smp8Mf9/Z43DWo6AGBQw+O9zu8mELMeuTdmrmbulCLsx48fYxaavbtQBoJwdoll
-         J18g==
-X-Gm-Message-State: AOJu0Yx5qDxqyajU05tMRMTeFwu2DcMJFF7yH4uDghaS9NfEaqtT2Cs4
-	7VXzqexvMKDPTxUgiYDb3NuJQw+agEPjWEPhyQfOvn6I5O7ZcQ3n+uaeQm9kLkzdmEnfrAe6Bpj
-	2ymegPImeU1i7/wFvSNjdVfdpOR6SG/2oAHtXsywvJXMJ4ik8gqkMpQ==
-X-Received: by 2002:a05:6e02:b22:b0:375:a3d8:97be with SMTP id e9e14a558f8ab-39aec2dcd13mr108017975ab.9.1722284686834;
-        Mon, 29 Jul 2024 13:24:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGvi7/Mbp3h0p9Tggo6QfdlX2FM6ATtmdu1UETibOUcMnPuPANfh1roVXGZyKusSj7H+MrtGw==
-X-Received: by 2002:a05:6e02:b22:b0:375:a3d8:97be with SMTP id e9e14a558f8ab-39aec2dcd13mr108017795ab.9.1722284686470;
-        Mon, 29 Jul 2024 13:24:46 -0700 (PDT)
-Received: from [10.0.0.71] (sandeen.net. [63.231.237.45])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-39af6a3bab3sm16738875ab.69.2024.07.29.13.24.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jul 2024 13:24:46 -0700 (PDT)
-Message-ID: <c669a201-2646-4247-ad58-b767d1b331a2@redhat.com>
-Date: Mon, 29 Jul 2024 15:24:45 -0500
+        d=1e100.net; s=20230601; t=1722285068; x=1722889868;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v1aS1lQVKXhrl5osmvtQvkwGB3PQXy+5n+7ZkC2IU7k=;
+        b=DUDnNBSEfUzHsswI7P+VHmngu7sGCPZqcyf1rXcVzy4By1E76QPPZvXX1x4WBBjAdi
+         0E5H/ovYeRUn1pWb9AmPXIYfPxGB8drm4pP+RbnmnjI4Znp2vUeb8ctUshqccVF0apEN
+         LE8ch5Iy2m1rRZQN7NVPc4pqJBU0bRwUF1IDOTfw1d72RdCS74ctfgnuv+tz9jOe8qdQ
+         f3PSa1sgeiHJ98cldsqnVMJbqv41s5R4XggE7SInWfpyQSYchlYbsnfNXnDxynGIuDTS
+         8VaO6yx0jhYa89c9sKuq+e+fXttnhkn9izK5YyKKgbkzi+KwCyvCIJX5q0sUNo0C/aP7
+         E5JA==
+X-Forwarded-Encrypted: i=1; AJvYcCXdJWRDxrEPpF3pOmETPupZYc7IIbtZ77sz9MNQ6WEwK4lCdJpVD1iDJyLYDfKtyUHLXvrRQtHnN0bmyhvI8S0t/Zob4W2Z
+X-Gm-Message-State: AOJu0YxCMRSVoyatTqS3tFDPr4LYGX/sIDLPNfY/dJLDugto9XZZnl7/
+	KEeI6kY7K7lYWdBb2u5FoUGWy0QOkFOw62UpaZh2HRyjI6Q8GgHhjVfvMmCYUdvpnQr3rotbH39
+	6z1p1lCaVHwjHN04XishFm430cL2Nm9vqZqfTng==
+X-Google-Smtp-Source: AGHT+IE6PA+41Auz36YFIeCSe3gwULhATNq0ZrmnNpIMKRjzsevvjklMTd8qJRePRRiUM6vSVA+XVdVmqlOtJX4UP9w=
+X-Received: by 2002:a05:6902:c09:b0:e0b:3c55:747d with SMTP id
+ 3f1490d57ef6-e0b545af5f2mr9330015276.37.1722285068532; Mon, 29 Jul 2024
+ 13:31:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH v5.4.y] fuse: verify {g,u}id mount options correctly
-To: gregkh@linuxfoundation.org, brauner@kernel.org, josef@toxicpanda.com
-Cc: stable@vger.kernel.org
-References: <2024072914-sierra-aflutter-e231@gregkh>
-Content-Language: en-US
-From: Eric Sandeen <sandeen@redhat.com>
-In-Reply-To: <2024072914-sierra-aflutter-e231@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CAPDyKFocjOt+JyzcAqOfCnmTxBMZmPjMerSh6RZ-hSMajRhzEA@mail.gmail.com>
+ <CAPDyKFoWgX=r1QtrcpEF-Y4BkiOtVnz4jaztL9zggo-=uiKsUg@mail.gmail.com>
+ <20240711131637.opzrayksfadimgq4@vireshk-i7> <CAPDyKFqczrJzHApBOYRSg=MXzzd1_nSgQQ3QwKYLWzgZ+XY32A@mail.gmail.com>
+ <20240718030556.dmgzs24d2bk3hmpb@vireshk-i7> <CAPDyKFqCqDqSz2AGrNvkoWzn8-oYnS2fT1dyiMC8ZP1yqYvLKg@mail.gmail.com>
+ <20240725060211.e5pnfk46c6lxedpg@vireshk-i7> <CAPDyKFpSmZgxtmCtiTrFOwgj7ZpNpkDMhxsK0KnuGsWi1a9U5g@mail.gmail.com>
+ <20240725112519.d6ec7obtclsf3ace@vireshk-i7> <CAPDyKFqTtqYEFfaHq-jbxnp5gD7qm9TbLrah=k=VD2TRArvU8A@mail.gmail.com>
+ <20240729060550.crgrmbnlv66645w2@vireshk-i7>
+In-Reply-To: <20240729060550.crgrmbnlv66645w2@vireshk-i7>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 29 Jul 2024 22:30:31 +0200
+Message-ID: <CAPDyKFosi4dhf36iNaNgGN6RHLDunL1nEwD+A_aW2khxER59nQ@mail.gmail.com>
+Subject: Re: [PATCH] OPP: Fix support for required OPPs for multiple PM domains
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Nikunj Kela <nkela@quicinc.com>, Prasad Sodagudi <psodagud@quicinc.com>, linux-pm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-commit 049584807f1d797fc3078b68035450a9769eb5c3 upstream.
+On Mon, 29 Jul 2024 at 08:05, Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>
+> On 28-07-24, 22:05, Ulf Hansson wrote:
+> > > > > I think that design is rather correct, just like other frameworks. Just that we
+> > > > > need to do only set-level for genpds and nothing else. That will have exactly
+> > > > > the same behavior that you want.
+> > > >
+> > > > I don't quite understand what you are proposing. Do you want to add a
+> > > > separate path for opp-levels?
+> > >
+> > > Not separate paths, but ignore clk/regulator changes if the table belongs to a
+> > > genpd.
+> > >
+> > > > The problem with that would be that platforms (Tegra at least) are
+> > > > already using a combination of opp-level and clocks.
+> > >
+> > > If they are using both for a genpd's OPP table (and changes are made for both
+> > > opp-level and clock by the OPP core), then it should already be wrong, isn't it?
+> >
+> > They are changing the clock through the device's OPP table and the
+> > level (performance-state) via genpd's table (using required OPPs).
+> > This works fine as of today.
+>
+> There is a problem here I guess then. Lets say there are two devices A and B,
+> that depend on a genpd.
+>
+> A requests required OPP 5 (level 5, clk 1.4 GHz), followed by
+> B requests required OPP 3 (level 3, clk 1 GHz).
+>
+> After this level will be configured to 5 and clk to 1 GHz I think.
 
-As was done in
-0200679fc795 ("tmpfs: verify {g,u}id mount options correctly")
-we need to validate that the requested uid and/or gid is representable in
-the filesystem's idmapping.
+The level would be 5, as the aggregated votes in genpd would be
+correct in this case.
 
-Cribbing from the above commit log,
+In regards to the clocks, I assume this is handled correctly too, as
+the clocks are per device clocks that don't belong to the genpd.
 
-The contract for {g,u}id mount options and {g,u}id values in general set
-from userspace has always been that they are translated according to the
-caller's idmapping. In so far, fuse has been doing the correct thing.
-But since fuse is mountable in unprivileged contexts it is also
-necessary to verify that the resulting {k,g}uid is representable in the
-namespace of the superblock.
+>
+> > It's working today for *opp-level* only, because of the commit above.
+> > That's correct.
+>
+> Good.
+>
+> > My point is that calling dev_pm_opp_set_opp() recursively from
+> > _set_required_opps() doesn't make sense for the single PM domain case,
+> > as we can't assign a required-dev for it. This leads to an
+> > inconsistent behaviour when managing the required-OPPs.
+>
+> We won't be calling that because of the above patch. In case of a single dev,
+> the required device isn't set and so we will never end up calling
+> dev_pm_opp_set_opp() for a single genpd case.
 
-Fixes: c30da2e981a7 ("fuse: convert to use the new mount API")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+That's right, but why do we want to call dev_pm_opp_set_opp() for the
+multiple PM domain case then? It makes the behaviour inconsistent.
 
----
-
-(compile-tested only)
-
-This backport required working around several missing dependencies
-(fsc vs fc, invalfc vs invalf, integers vs. booleans) so probably best to
-just do the one-off backport here like this, vs a string of dependencies.
-
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 287e850fbd64..e558612be606 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -490,6 +490,8 @@ static int fuse_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 	struct fs_parse_result result;
- 	struct fuse_fs_context *ctx = fc->fs_private;
- 	int opt;
-+	kuid_t kuid;
-+	kgid_t kgid;
- 
- 	/*
- 	 * Ignore options coming from mount(MS_REMOUNT) for backward
-@@ -530,16 +532,30 @@ static int fuse_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 		break;
- 
- 	case OPT_USER_ID:
--		ctx->user_id = make_kuid(fc->user_ns, result.uint_32);
--		if (!uid_valid(ctx->user_id))
-+		kuid = make_kuid(fc->user_ns, result.uint_32);
-+		if (!uid_valid(kuid))
- 			return invalf(fc, "fuse: Invalid user_id");
-+		/*
-+		 * The requested uid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kuid_has_mapping(fc->user_ns, kuid))
-+			return invalf(fc, "fuse: Invalid user_id");
-+		ctx->user_id = kuid;
- 		ctx->user_id_present = 1;
- 		break;
- 
- 	case OPT_GROUP_ID:
--		ctx->group_id = make_kgid(fc->user_ns, result.uint_32);
--		if (!gid_valid(ctx->group_id))
-+		kgid = make_kgid(fc->user_ns, result.uint_32);
-+		if (!gid_valid(kgid))
-+			return invalf(fc, "fuse: Invalid group_id");
-+		/*
-+		 * The requested gid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kgid_has_mapping(fc->user_ns, kgid))
- 			return invalf(fc, "fuse: Invalid group_id");
-+		ctx->group_id = kgid;
- 		ctx->group_id_present = 1;
- 		break;
- 
-
+Kind regards
+Uffe
 
