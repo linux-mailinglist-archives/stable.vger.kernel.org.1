@@ -1,76 +1,78 @@
-Return-Path: <stable+bounces-62473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E72C993F338
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:52:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C0993F342
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEE83B208DA
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:52:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F6BD1C21E33
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AEA144D2B;
-	Mon, 29 Jul 2024 10:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56350144D31;
+	Mon, 29 Jul 2024 10:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBORLnwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IF16a7wn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14452144D1C
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159E828399
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722250314; cv=none; b=eFS7JJ9UHwauT7pbYWyFKK8JuWg9tv/4i8xvm1wxP2GRCkn7HftdtjXpqj9DEU2+OcRYS5N430fULtpbV0rhWAglACI3RaI+moYmDCbKKt92lTi1S3HBHB5AafCA95yKdGIl3yJGagu1FxonwYJzzu1VAQg1i/AkhJ5oOWIOJP4=
+	t=1722250338; cv=none; b=BopgxkLTIUNE6gB4GSkJOZ7Zj70K0l5MLArK6/wBzyuiYivUyxRv7m1qU4U5vjZEh5/e7E0GGP4bDNYQ1Qq+8/NWal9ztHLVEy/DbvWe/e7xivRiz+1aHhfSZvTRyxi3Kvxl8Ro4V5iNfCzdzyvuBZbjlvbF7n7NpFmcu8tNGlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722250314; c=relaxed/simple;
-	bh=/rfdnmCBlErAd+P5rZFApDAykpecH9IRSmOcX9FUvgo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HW28BDhl5cY8N+rJJ1rnCxYb6DisOptAbXc9DCcM7jy+IndpnNnhQcV2wWekFpThqquUoIC8Lwj/9wS7MMZeVQJKhDzh3Z4k6jPppc5tCLQqRrz30xA6jCc3Al+ePTuyeHunjOQdBBdf9iPP0rS+oIZOe1Ehz1zjSWw2WmCMJRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBORLnwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4E7C4AF0C;
-	Mon, 29 Jul 2024 10:51:52 +0000 (UTC)
+	s=arc-20240116; t=1722250338; c=relaxed/simple;
+	bh=2XXJudRRmNeNQVUO5xSGetLQy/VM14edU9RGVdW/d2s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZzCkoe6BV5mpFTsKDNuzVokdFiB01wALNVBfwFDbUD6i2ptmGlYPjkt6IUIXbsQXrkUW0od+dR99ZgdcloF/wrdNqGMay4OTpFO1hy4TySAu5yZHTYQFZm3iA7Iv1nFt2bNBjXeR5BIyTry6lT4xlJJDcLbdw5hWCQ0TdytbblE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IF16a7wn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261A5C32786;
+	Mon, 29 Jul 2024 10:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722250313;
-	bh=/rfdnmCBlErAd+P5rZFApDAykpecH9IRSmOcX9FUvgo=;
+	s=korg; t=1722250337;
+	bh=2XXJudRRmNeNQVUO5xSGetLQy/VM14edU9RGVdW/d2s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=aBORLnwI6+9sb6HgyygyKzPlebfFyJ1btniwbbleSxG6p9R4gcabSLayoMqaWuuOW
-	 nNY65be2ReOUS2fRCKL6cSY00ww+MUw46SaqnsnRqPHjrT4Alt0va9hbLkkfUK1hg0
-	 RgnkneybD9a7HCOZ2rX+VlkE/NTNkUX/NXZPbkxs=
-Subject: FAILED: patch "[PATCH] drivers: soc: xilinx: check return status of" failed to apply to 5.10-stable tree
-To: jay.buddhabhatti@amd.com,michal.simek@amd.com
+	b=IF16a7wnVfXgFYMpuvM29iHhxCPx+itWizOXSBYuyBwogjqyMN6uqExbjcxM7wV4d
+	 D1S0fBvpNMFfFr4HVLKCxUzpgmA5yZOUDvG+YzMtZJxahYIwbuoVYpVpeM/l8ADFug
+	 jkhTLMaiujrnK3gBy00y/f/L0QhU+Dy358qUpeLY=
+Subject: FAILED: patch "[PATCH] leds: triggers: Flush pending brightness before activating" failed to apply to 6.6-stable tree
+To: linux@weissschuh.net,dustin@howett.net,lee@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 12:51:42 +0200
-Message-ID: <2024072942-curse-primate-40bf@gregkh>
+Date: Mon, 29 Jul 2024 12:52:14 +0200
+Message-ID: <2024072914-fiddle-little-c002@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9b003e14801cf85a8cebeddc87bc9fc77100fdce
+git cherry-pick -x ab477b766edd3bfb6321a6e3df4c790612613fae
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072942-curse-primate-40bf@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072914-fiddle-little-c002@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-9b003e14801c ("drivers: soc: xilinx: check return status of get_api_version()")
-7fd890b89dea ("soc: xilinx: move PM_INIT_FINALIZE to zynqmp_pm_domains driver")
+ab477b766edd ("leds: triggers: Flush pending brightness before activating trigger")
+b1bbd20f35e1 ("leds: trigger: Call synchronize_rcu() before calling trig->activate()")
+822c91e72eac ("leds: trigger: Store brightness set by led_trigger_event()")
+c82a1662d454 ("leds: trigger: Remove unused function led_trigger_rename_static()")
 
 thanks,
 
@@ -78,48 +80,60 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9b003e14801cf85a8cebeddc87bc9fc77100fdce Mon Sep 17 00:00:00 2001
-From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-Date: Wed, 15 May 2024 04:23:45 -0700
-Subject: [PATCH] drivers: soc: xilinx: check return status of
- get_api_version()
+From ab477b766edd3bfb6321a6e3df4c790612613fae Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Thu, 13 Jun 2024 17:24:51 +0200
+Subject: [PATCH] leds: triggers: Flush pending brightness before activating
+ trigger
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Currently return status is not getting checked for get_api_version
-and because of that for x86 arch we are getting below smatch error.
+The race fixed in timer_trig_activate() between a blocking
+set_brightness() call and trigger->activate() can affect any trigger.
+So move the call to flush_work() into led_trigger_set() where it can
+avoid the race for all triggers.
 
-    CC      drivers/soc/xilinx/zynqmp_power.o
-drivers/soc/xilinx/zynqmp_power.c: In function 'zynqmp_pm_probe':
-drivers/soc/xilinx/zynqmp_power.c:295:12: warning: 'pm_api_version' is
-used uninitialized [-Wuninitialized]
-    295 |         if (pm_api_version < ZYNQMP_PM_VERSION)
-        |            ^
-    CHECK   drivers/soc/xilinx/zynqmp_power.c
-drivers/soc/xilinx/zynqmp_power.c:295 zynqmp_pm_probe() error:
-uninitialized symbol 'pm_api_version'.
-
-So, check return status of pm_get_api_version and return error in case
-of failure to avoid checking uninitialized pm_api_version variable.
-
-Fixes: b9b3a8be28b3 ("firmware: xilinx: Remove eemi ops for get_api_version")
-Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+Fixes: 0db37915d912 ("leds: avoid races with workqueue")
+Fixes: 8c0f693c6eff ("leds: avoid flush_work in atomic context")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240515112345.24673-1-jay.buddhabhatti@amd.com
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Tested-by: Dustin L. Howett <dustin@howett.net>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20240613-led-trigger-flush-v2-1-f4f970799d77@weissschuh.net
+Signed-off-by: Lee Jones <lee@kernel.org>
 
-diff --git a/drivers/soc/xilinx/zynqmp_power.c b/drivers/soc/xilinx/zynqmp_power.c
-index fced6bedca43..411d33f2fb05 100644
---- a/drivers/soc/xilinx/zynqmp_power.c
-+++ b/drivers/soc/xilinx/zynqmp_power.c
-@@ -288,7 +288,9 @@ static int zynqmp_pm_probe(struct platform_device *pdev)
- 	u32 pm_api_version, pm_family_code, pm_sub_family_code, node_id;
- 	struct mbox_client *client;
+diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+index 59deadb86335..78eb20093b2c 100644
+--- a/drivers/leds/led-triggers.c
++++ b/drivers/leds/led-triggers.c
+@@ -201,6 +201,12 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
+ 		 */
+ 		synchronize_rcu();
  
--	zynqmp_pm_get_api_version(&pm_api_version);
-+	ret = zynqmp_pm_get_api_version(&pm_api_version);
-+	if (ret)
-+		return ret;
++		/*
++		 * If "set brightness to 0" is pending in workqueue,
++		 * we don't want that to be reordered after ->activate()
++		 */
++		flush_work(&led_cdev->set_brightness_work);
++
+ 		ret = 0;
+ 		if (trig->activate)
+ 			ret = trig->activate(led_cdev);
+diff --git a/drivers/leds/trigger/ledtrig-timer.c b/drivers/leds/trigger/ledtrig-timer.c
+index b4688d1d9d2b..1d213c999d40 100644
+--- a/drivers/leds/trigger/ledtrig-timer.c
++++ b/drivers/leds/trigger/ledtrig-timer.c
+@@ -110,11 +110,6 @@ static int timer_trig_activate(struct led_classdev *led_cdev)
+ 		led_cdev->flags &= ~LED_INIT_DEFAULT_TRIGGER;
+ 	}
  
- 	/* Check PM API version number */
- 	if (pm_api_version < ZYNQMP_PM_VERSION)
+-	/*
+-	 * If "set brightness to 0" is pending in workqueue, we don't
+-	 * want that to be reordered after blink_set()
+-	 */
+-	flush_work(&led_cdev->set_brightness_work);
+ 	led_blink_set(led_cdev, &led_cdev->blink_delay_on,
+ 		      &led_cdev->blink_delay_off);
+ 
 
 
