@@ -1,113 +1,100 @@
-Return-Path: <stable+bounces-62424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D609B93F0C0
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:16:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5397793F0D5
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06AEF1C218B7
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:16:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A20B280E3F
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA56D13FD66;
-	Mon, 29 Jul 2024 09:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D492013D630;
+	Mon, 29 Jul 2024 09:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="am9e0J87"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Im04tpnp"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10C713F426;
-	Mon, 29 Jul 2024 09:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4D013D25E
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 09:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722244549; cv=none; b=mJBXGRDLyjrjqfxA/Ik3QsYn7m2MVBwbP5TcT4GTn62TOd/vRRv2yBdFDFN6YG5xFlS2NX6MGGLqNjd+8wRwCyimfANNbXMxFf3U36H2eGOpCvkCf24YS8t7i7ucOKFBUcl51HJMHxiQT7FjjTIDvosTV1T5mrJboEWBaO3y3wA=
+	t=1722244802; cv=none; b=BRSCJUVbj7y6MMuZWiFNoVelHGxh/+HBqSWw1csfzVNvMJXBNGv/thXip0/FvTDYV8sg4tVSSIdYYLhFHXJjAiHiD2Z85yu0qEK0hxDYVc1JvQzGSm4g4CqLNij1i2NYhgRCSijs7WwQ/+qWh+MRjWVRAnd+zztkfkVvhNilJOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722244549; c=relaxed/simple;
-	bh=r0o96E2ZjLMhjO/lFsnhJv7s8whn8xL05ptTQe+n+2w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BiIDokj5ss//eNyjpl4r9r/etAGAhV3QX9K8Zv+ML4NUdRo3S0FNIQOIpunPN7m1miEH6ezXQtCS0ok4ppe+8Ex4QJ/gYCcdvXlSBnOlXCaBZaRlUPHCoDxq4pav7TrvaTokkSv/Fwg09gKOJVu9U20Ho2KRt0JDdf/BYCEqRBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=am9e0J87; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=nkJMBQ+i71yMhGjEv1tjur3zZieRVTPrwZ+pVSBy+98=;
-	t=1722244547; x=1722676547; b=am9e0J87RhOaSW0sdyEardNr/N1QGIfObq+9rIPZWX69yN9
-	PcXCmpsYbzAkVWsg+Oc4LX8hEf9Zb5jfjv4MfPYNNIqhee4ZIdrwHenO6/nrmCKcC+PL1pTYIABLn
-	Xohp7bpSN68DW6jfAHV+bLWhgr2v6m68p1CSUz4eqyLQpVCl4PcL3japH2Y1j7mgxjIEVTeGQnzdi
-	efU9jRJ0sK3JGwaqIgYuEGO08dbVH+AGgetR7eNEWvHBp2dWFJdGSj66WNGrNZRp3zGPEeE7OExe9
-	HBAim71qc5M/WTMEoI+nBBGsPWmKvhRntwJ4I2aYGCvtfdInYoNCEPNYHSAMREYQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sYMTo-0004dm-Lx; Mon, 29 Jul 2024 11:15:44 +0200
-Message-ID: <ca007d54-c204-4f7f-9eca-5a282324b941@leemhuis.info>
-Date: Mon, 29 Jul 2024 11:15:44 +0200
+	s=arc-20240116; t=1722244802; c=relaxed/simple;
+	bh=C0PMAJvuAkhCf4LvFnhv/SQ0JEBYOCjCvGLuPyIoqzg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=slpz3dGqLxpPSw+Jg42XM3z5UzqqqT33yjfoLmyEJzZAUJZ89fbSIi8qexfYVVCKYe3I/9qAd8D+jeMXau7I8oUdq7ITyUT6UM0MpTWDSLpQu9TL/bM9f7BR0RylGhZaEZGTDDIISBDuOwmVP1Sgc2P54UJwVTf4DSi0rPPoO3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Im04tpnp; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1722244800; x=1753780800;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=C0PMAJvuAkhCf4LvFnhv/SQ0JEBYOCjCvGLuPyIoqzg=;
+  b=Im04tpnp8ECVWY8SmAYBoFiJ18vS459BXldfxRbm48mfedFQFWzwfEdX
+   3jJErJik5SMlFhifpmCjKqq3vIljXst/McVzgfXu0as0Zpi8vi0CkyUtp
+   HTTq0XzrONXjNOoKjg9rW+oSZG0sGTJrcnzyDzX4NmPeToMtJ8fsslyU0
+   dFW6XiaKfE8nS7Sr8AIjiB3X+6ALooZtdsyM0m6jU2wNd8DHjkLZbW0nc
+   +2jJ+Y833CamXW8J5BQmlIUCjRLO/y+PWsIb3eKQMWCWfi1oxM87ZrvAo
+   AJyO+rfrSTbW8uOzEDrFW1MCafHvyW4a4WZQCBTsb5+rzRUKye5aE/pA/
+   A==;
+X-CSE-ConnectionGUID: opPcV/+/TmuTNc9GKGZp4g==
+X-CSE-MsgGUID: pbITUbFnTnKOZ6WBDrxWtw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11147"; a="19589178"
+X-IronPort-AV: E=Sophos;i="6.09,245,1716274800"; 
+   d="scan'208";a="19589178"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2024 02:19:40 -0700
+X-CSE-ConnectionGUID: meLj4j0WTXe5+dxYf/K/lw==
+X-CSE-MsgGUID: d4zsx+M9T2yK1qjMIlUCcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,245,1716274800"; 
+   d="scan'208";a="58053959"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 29 Jul 2024 02:19:39 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sYMXZ-000rb4-2E;
+	Mon, 29 Jul 2024 09:19:37 +0000
+Date: Mon, 29 Jul 2024 17:19:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] fs/netfs/fscache_io: remove the obsolete "using_pgpriv2"
+ flag
+Message-ID: <Zqdemq9YS4vjc3vE@6724a33121ae>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] No image on 4k display port displays connected
- through usb-c dock in kernel 6.10
-To: Christian Heusel <christian@heusel.eu>,
- Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Greg KH <gregkh@linuxfoundation.org>, "Lin, Wayne" <Wayne.Lin@amd.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- ML dri-devel <dri-devel@lists.freedesktop.org>,
- "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
- "Wu, Hersen" <hersenxs.wu@amd.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "kevin@holm.dev" <kevin@holm.dev>
-References: <d74a7768e957e6ce88c27a5bece0c64dff132e24@holm.dev>
- <9ca719e4-2790-4804-b2cb-4812899adfe8@leemhuis.info>
- <fd8ece71459cd79f669efcfd25e4ce38b80d4164@holm.dev>
- <CO6PR12MB54897CE472F9271B25883DF6FCB72@CO6PR12MB5489.namprd12.prod.outlook.com>
- <e2050c2e-582f-4c6c-bf5f-54c5abd375cb@leemhuis.info>
- <b7f0f3e1-522b-4763-be31-dcee1948f7b3@heusel.eu>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Content-Language: en-US, de-DE
-In-Reply-To: <b7f0f3e1-522b-4763-be31-dcee1948f7b3@heusel.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1722244547;9e5f9408;
-X-HE-SMSGID: 1sYMTo-0004dm-Lx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240729091532.855688-1-max.kellermann@ionos.com>
 
-On 29.07.24 10:47, Christian Heusel wrote:
-> On 24/07/29 10:35AM, Linux regression tracking (Thorsten Leemhuis) wrote:
->> [+Greg +stable]
->>
->> On 29.07.24 10:16, Lin, Wayne wrote:
->>>
->>> Thanks for the report.
->>>
->>> Patch fa57924c76d995 ("drm/amd/display: Refactor function dm_dp_mst_is_port_support_mode()")
->>> is kind of correcting problems causing by commit:
->>> 4df96ba6676034 ("drm/amd/display: Add timing pixel encoding for mst mode validation")
->>>
->>> Sorry if it misses fixes tag and would suggest to backport to fix it. Thanks!
->>
->> Greg, seem it would be wise to pick up fa57924c76d995 for 6.10.y as
->> well, despite a lack of Fixes or stable tags.
->>
->> Ciao, Thorsten
-> 
-> The issue is that the fixing commit does not apply to the 6.10 series
-> without conflict and the offending commit does not revert cleanly
-> aswell.
+Hi,
 
-Hah, many thx, I should have checked that.
+Thanks for your patch.
 
-Lin, Wayne: could you maybe help out here and provide something for 6.10.y?
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Ciao, Thorsten
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] fs/netfs/fscache_io: remove the obsolete "using_pgpriv2" flag
+Link: https://lore.kernel.org/stable/20240729091532.855688-1-max.kellermann%40ionos.com
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
