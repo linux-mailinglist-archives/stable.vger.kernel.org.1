@@ -1,87 +1,78 @@
-Return-Path: <stable+bounces-62401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D445993EF1C
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:54:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F5F93EF1D
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 103981C21869
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:54:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A38A9284501
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7346E12C522;
-	Mon, 29 Jul 2024 07:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC648126F2A;
+	Mon, 29 Jul 2024 07:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHtrAsbs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RLFHUcA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D841EB2C
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4791EB2C
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722239658; cv=none; b=iTvcokTc7syPedu3vpPAmb0YX/yCKvH5tt9Sg9u/zBhrRV029zQ8OHgo3H9/JEOw2rwS52VCj19UXJbnWIyy2nZd8zLeoRYa7qxh1TI/LPzsTejqNXmUIjVT0Hg5OtraYx9fx247i96n31z96ENK+rR5ltznnFC3xfX/zme3OBk=
+	t=1722239663; cv=none; b=GelwpL+B7oiCoTfbuS8ElEtv3LzgfUgxR+2dNRQhlDlrjwHizMrl3xJMy70frotnbygOparuo1XNOYWKOuELvvBP3KOBMpxNKpcYb2pFmxoAJH8/OmO4OH/+Cj2uWcEPXb/CNf+0dvoGZe5BY+3Vey6Uz/tb64cU7SIjkx5enSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722239658; c=relaxed/simple;
-	bh=51znj/TlAlJ68hXn6Nww/iSUMkILA7P+DjAnvtZHcYw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FDrnAv+liaoDp6t2uvWA5ICNirHa34WXmFth8rvzHf/ZO0Si2ILJ42OFPgIRuP7wZS2PSzH/7dQprE4hLhHsbfNp6hIre9bBt7qFElFMGUlY7rvl3jBmge3qlfY5rW9qqOLxIGTPrSJLLp33h/BNqp3EMRZtF8nQMfOyoN2ggfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHtrAsbs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97979C32786;
-	Mon, 29 Jul 2024 07:54:17 +0000 (UTC)
+	s=arc-20240116; t=1722239663; c=relaxed/simple;
+	bh=Y/djasaofS9VPiEDGJa91gvU634fUTt6HHbPyBbZDKg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NGsWYFVlpYB7HyVisLkkbOpa9A7aVA/QO4FCr5vJFqmPV62I4SPPENZaymH0R1kzA7Nl7RSMAmindm6BeIDM8Nymydu6oJyw41weJcc16WQ5TqBIkoeb4tFOXh7zTmd+/bjJMITR2tW55Yh4BjfZ3cAOS3L6+lY2jFSu4FNn7Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RLFHUcA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B8D9C32786;
+	Mon, 29 Jul 2024 07:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722239658;
-	bh=51znj/TlAlJ68hXn6Nww/iSUMkILA7P+DjAnvtZHcYw=;
+	s=korg; t=1722239663;
+	bh=Y/djasaofS9VPiEDGJa91gvU634fUTt6HHbPyBbZDKg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=oHtrAsbszdTlSr1Y4BKhqxUWmN43mHuhdG4Ov/UUHVJ6i53M5/0lymAOxEWf+mdXO
-	 7Pyz/rq/bDmOyJVqbBp87+cRC1I6M1gITGGHSmoK+pakrYBJr9hRMqj/vLgDdBFbF/
-	 a4kK/NLbWXjKrQ0BMgaNnF6OC1mxSKg8zIo5qxJY=
-Subject: FAILED: patch "[PATCH] ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no" failed to apply to 4.19-stable tree
-To: ipylypiv@google.com,cassel@kernel.org,hare@suse.de
+	b=2RLFHUcAcZh6dYPtABFAKD+9Y8bjOiXSCGYaKxmcq3YjOsefzSDBxaHMs/UNVOIC0
+	 TM1mpFH03whRVaaCCOOhrlBBW/x/2ivyfgtdIVw5i4aL4/GTzKigBtHYOBz3b0Qfxg
+	 cKE99igioNOOcKXYXfk28hgNqMXvYuegsQ+/4zxY=
+Subject: FAILED: patch "[PATCH] sysctl: always initialize i_uid/i_gid" failed to apply to 6.6-stable tree
+To: linux@weissschuh.net,j.granados@samsung.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 09:54:08 +0200
-Message-ID: <2024072908-kissing-cornbread-2dc7@gregkh>
+Date: Mon, 29 Jul 2024 09:54:20 +0200
+Message-ID: <2024072920-unmarked-likewise-acb2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 28ab9769117ca944cb6eb537af5599aa436287a4
+git cherry-pick -x 98ca62ba9e2be5863c7d069f84f7166b45a5b2f4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072908-kissing-cornbread-2dc7@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072920-unmarked-likewise-acb2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error")
-f2b1e9c6f867 ("scsi: core: Introduce scsi_build_sense()")
-8148dfba29e7 ("scsi: 3w-xxxx: Whitespace cleanup")
-96e209be6ecb ("scsi: lpfc: Convert SCSI I/O completions to SLI-3 and SLI-4 handlers")
-da255e2e7cc8 ("scsi: lpfc: Convert SCSI path to use common I/O submission path")
-47ff4c510f02 ("scsi: lpfc: Enable common send_io interface for SCSI and NVMe")
-307e338097dc ("scsi: lpfc: Rework remote port ref counting and node freeing")
-7af29d455362 ("scsi: lpfc: Fix-up around 120 documentation issues")
-372c187b8a70 ("scsi: lpfc: Add an internal trace log buffer")
-317aeb83c92b ("scsi: lpfc: Add blk_io_poll support for latency improvment")
-f0020e428af7 ("scsi: lpfc: Add support to display if adapter dumps are available")
-86ee57a97a17 ("scsi: lpfc: Fix kdump hang on PPC")
-818dbde78e0f ("Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi")
+98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
+520713a93d55 ("sysctl: treewide: drop unused argument ctl_table_root::set_ownership(table)")
+f9436a5d0497 ("sysctl: allow to change limits for posix messages queues")
+50ec499b9a43 ("sysctl: allow change system v ipc sysctls inside ipc namespace")
 
 thanks,
 
@@ -89,65 +80,46 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 28ab9769117ca944cb6eb537af5599aa436287a4 Mon Sep 17 00:00:00 2001
-From: Igor Pylypiv <ipylypiv@google.com>
-Date: Tue, 2 Jul 2024 02:47:31 +0000
-Subject: [PATCH] ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no
- error
+From 98ca62ba9e2be5863c7d069f84f7166b45a5b2f4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Tue, 2 Apr 2024 23:10:34 +0200
+Subject: [PATCH] sysctl: always initialize i_uid/i_gid
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-SAT-5 revision 8 specification removed the text about the ANSI INCITS
-431-2007 compliance which was requiring SCSI/ATA Translation (SAT) to
-return descriptor format sense data for the ATA PASS-THROUGH commands
-regardless of the setting of the D_SENSE bit.
+Always initialize i_uid/i_gid inside the sysfs core so set_ownership()
+can safely skip setting them.
 
-Let's honor the D_SENSE bit for ATA PASS-THROUGH commands while
-generating the "ATA PASS-THROUGH INFORMATION AVAILABLE" sense data.
+Commit 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of
+i_uid/i_gid on /proc/sys inodes.") added defaults for i_uid/i_gid when
+set_ownership() was not implemented. It also missed adjusting
+net_ctl_set_ownership() to use the same default values in case the
+computation of a better value failed.
 
-SAT-5 revision 7
-================
+Fixes: 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of i_uid/i_gid on /proc/sys inodes.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Joel Granados <j.granados@samsung.com>
 
-12.2.2.8 Fixed format sense data
-
-Table 212 shows the fields returned in the fixed format sense data
-(see SPC-5) for ATA PASS-THROUGH commands. SATLs compliant with ANSI
-INCITS 431-2007, SCSI/ATA Translation (SAT) return descriptor format
-sense data for the ATA PASS-THROUGH commands regardless of the setting
-of the D_SENSE bit.
-
-SAT-5 revision 8
-================
-
-12.2.2.8 Fixed format sense data
-
-Table 211 shows the fields returned in the fixed format sense data
-(see SPC-5) for ATA PASS-THROUGH commands.
-
-Cc: stable@vger.kernel.org # 4.19+
-Reported-by: Niklas Cassel <cassel@kernel.org>
-Closes: https://lore.kernel.org/linux-ide/Zn1WUhmLglM4iais@ryzen.lan
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20240702024735.1152293-4-ipylypiv@google.com
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index a9d2a1cf4c3d..fdc2a3b59fc1 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -941,11 +941,8 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
- 				   &sense_key, &asc, &ascq);
- 		ata_scsi_set_sense(qc->dev, cmd, sense_key, asc, ascq);
- 	} else {
--		/*
--		 * ATA PASS-THROUGH INFORMATION AVAILABLE
--		 * Always in descriptor format sense.
--		 */
--		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
-+		/* ATA PASS-THROUGH INFORMATION AVAILABLE */
-+		ata_scsi_set_sense(qc->dev, cmd, RECOVERED_ERROR, 0, 0x1D);
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index b1c2c0b82116..dd7b462387a0 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -476,12 +476,10 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 			make_empty_dir_inode(inode);
  	}
- }
  
++	inode->i_uid = GLOBAL_ROOT_UID;
++	inode->i_gid = GLOBAL_ROOT_GID;
+ 	if (root->set_ownership)
+ 		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
+-	else {
+-		inode->i_uid = GLOBAL_ROOT_UID;
+-		inode->i_gid = GLOBAL_ROOT_GID;
+-	}
+ 
+ 	return inode;
+ }
 
 
