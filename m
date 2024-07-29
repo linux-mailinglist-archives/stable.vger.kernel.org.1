@@ -1,125 +1,190 @@
-Return-Path: <stable+bounces-62602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EAFE93FD4F
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 20:27:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE3D93FE28
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 21:17:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2B87B21E6D
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 18:27:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40EA21C2261E
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 19:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F62186E30;
-	Mon, 29 Jul 2024 18:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44523187322;
+	Mon, 29 Jul 2024 19:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="mwAiiQ1S"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jc/K2TBd"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C874515B555;
-	Mon, 29 Jul 2024 18:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F91084D34
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 19:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722277626; cv=none; b=ko9O0vTGSzk1GKZFpxv11pzSzJ93kBo/DgdLPRO2nRyfXEx0pSO+GP1a2SPbuK0xIdFb+uj7WvTVHXxPM6wcGCWdZJZdLsFi1Hjn1Y/Yg7voF1HjW+Egrc9Rzewr2PAOwXW+VtoQCit0s/b5jE7NgawlbcjOJSWT0D7uU55oKP8=
+	t=1722280632; cv=none; b=cQ5py5NLlMoxMGb3uijmVriarmR4powBiFjv68TwLAZX+T5P8X8qk9duFcy4O/TsiXNIHOfwUyy3Ulna42/lqNuOOouteGj2JfU3yBzTEfUz/ltn+luuaPWBL1XPRsslIp1dLSOd9fcggV5YihSQ5FTiuyqSgh4wZWIVKbNBWIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722277626; c=relaxed/simple;
-	bh=wlIq9v2JKAyPHah0itV7ONk1dla/SjhLhFuvbZXtDyA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YzzmLMO4t/ZrcqSz1HCuesJqoQT+qWtOxZlfRKQccb5INRgW8Bw2DzSZVkVhYRGcKUT93mRc52JM/LPEus0aGFKlnqRkB6QCdnEwVJTL5/LdKspWLAIDTO/e2CexLmgtdqRq2WT/ZXWCk0WbTUch3WJLJeEzr91FOR7/fjl60Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=mwAiiQ1S; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WXmzQ4XbKz6CmQwQ;
-	Mon, 29 Jul 2024 18:26:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1722277615; x=1724869616; bh=bSTt1oVOPEuRcu3bbOKC1kOd
-	5MVAN73nTu2skySOolk=; b=mwAiiQ1SEkEnvxrHwwFkHTNCwnsZ7KrOsyQARzsl
-	kjIGttgXNW5mQyDbCRffqFi620I5eW/5zF02d/lUIZyafHfO+JCNsh3Q+oh+bZol
-	FGxxLdcLHrzMNqtU5TmpbPU8mSHWDnLwFo3GvxG5b6L3gULP6ZR3lid6G5dCizjS
-	RBTVx3DUxe5Vdq2KpgvhJzRpGD+HKq7p5JO17BU90KvueX6Arl8cC2Jh87sGZ/fn
-	6KwVgtpiRB/cl4Ncz+Tta4/Uvj8YBBp2oKnhCflARDT/9CCpXpkAhBnQOwCuwzP8
-	ynF2sg78RNsBHm84jiJrs1ZPh/LQNch7VnVRwtxclMhzBg==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id apKa0hWoTMQ4; Mon, 29 Jul 2024 18:26:55 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WXmzK51c7z6CmQwN;
-	Mon, 29 Jul 2024 18:26:53 +0000 (UTC)
-Message-ID: <2bb22490-6209-4104-ae97-59d73fcb1d6d@acm.org>
-Date: Mon, 29 Jul 2024 11:26:51 -0700
+	s=arc-20240116; t=1722280632; c=relaxed/simple;
+	bh=oTOd9gPP4QrERl3DWb+wVhK1wYBB10A1Sk/cxYrPoXk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kRBUo7yuva9h9pRGfKvQpQBH/xcXDpN7suaUxwtf6CxgD7rYDtCwfY94WkuT4lYnoMiZZyy6Mn5ZNq+kK+qCCRUQNq7pTOXPhEMkYmvIolXZ8BHbMlQY6vTQ5h8ulBbhlPlDCUxaPx/F4NIaCfgasyEFb2WzgBIiU58n9CLyZuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jc/K2TBd; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7a103ac7be3so2054478a12.3
+        for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722280629; x=1722885429; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eeSq1lntMEqxIYgZnhZF+MXAqb+lpD75LFy3m84qBto=;
+        b=jc/K2TBdNbRFAP4+6RQqhvXmf830c3MMttHAB/xlVA7p6rzlYcb+vfFvVZkdFHlEy5
+         bl5CGMX2y7ORNppHcQA4O9hvz0IBRUK39pa7jThhcvA1SFFe/ch6Yw9lOWhqpli5Cwjg
+         G6ZwA+9YqLonj77E+DPmfMccV40ZbhCMqMkAaMPWh1p79+zu+NKVtpXdjeNb4aRx39We
+         c8gy1TxoD3dV15k2G7Qjc/EbFXGpnU4YDlqPHyJIsxWEGzS01WXRiFonle8o8lUjjrtk
+         NuM9aWNFCjuso3Y6daHM+8gdNiPWbCFJOHh6CPQ69lAnKLWVIS3vFLzkW4ZB2BhqT74J
+         ghyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722280629; x=1722885429;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eeSq1lntMEqxIYgZnhZF+MXAqb+lpD75LFy3m84qBto=;
+        b=HigNMcVYb1eeD0GUvGyCL+0RdegYqkSV54pVkdxyCY0q69APUUo+LtmMS/Mhu1EWgB
+         Asqi7BICd7hcMydrMRcftAm8nJ4YzWPeW4EbL2f5dpHDAGAVcHxe8hQiGYJcQdAgaADP
+         MeS6DUpaLo9RjO/HPjQWOgCq1U5TNa5Xxc+WtE43BW3W+exdeoZmV/a0kfmV3IdVUgsO
+         DJBTKaBkJJIgSN5UCkQiUwhARV04kVPA7t+BjlPf165j6AVXcvMW6BmSSO+5GK7QGYT0
+         BvTTKLqjZbNkT+dr5gaGfOIZQnkDQHxe3ZMixotb1HUMNh9eqimITAe92PI7lAxi7fBk
+         x6Fw==
+X-Gm-Message-State: AOJu0Yykom9g5XuVl6H9WT942gjdKOmbuyR+7195UeyJ9EGZ9UNGBOTc
+	4+nqj8a+7lQgXrg+XxAoA3DP284FIk8fnbI39LwRsfTJuBAjgh8aZN3CPg==
+X-Google-Smtp-Source: AGHT+IHe1Wf5ZXuLKVucbq/n+GtuFERBuNGBdnaCtqkXsp1d0HIUKc9cAYhqTvaabApRdR5C3ep+Ug==
+X-Received: by 2002:a05:6a21:998a:b0:1c4:9397:ff98 with SMTP id adf61e73a8af0-1c4a12a9998mr7844969637.18.1722280629294;
+        Mon, 29 Jul 2024 12:17:09 -0700 (PDT)
+Received: from carrot.. (i222-151-34-139.s42.a014.ap.plala.or.jp. [222.151.34.139])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead6e18a4sm7167487b3a.9.2024.07.29.12.17.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jul 2024 12:17:08 -0700 (PDT)
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 5.4 5.10 5.15 6.1 6.6] nilfs2: handle inconsistent state in nilfs_btnode_create_block()
+Date: Tue, 30 Jul 2024 04:17:04 +0900
+Message-Id: <20240729191704.10301-1-konishi.ryusuke@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scsi: ufs: core: Fix hba->last_dme_cmd_tstamp timestamp
- updating logic
-To: Vamshi Gajjela <vamshigajjela@google.com>,
- Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>
-Cc: Yaniv Gardi <ygardi@codeaurora.org>, linux-scsi@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240724135126.1786126-1-vamshigajjela@google.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240724135126.1786126-1-vamshigajjela@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 7/24/24 6:51 AM, Vamshi Gajjela wrote:
-> The ufshcd_add_delay_before_dme_cmd() always introduces a delay of
-> MIN_DELAY_BEFORE_DME_CMDS_US between DME commands even when it's not
-> required. The delay is added when the UFS host controller supplies the
-> quirk UFSHCD_QUIRK_DELAY_BEFORE_DME_CMDS.
-> 
-> Fix the logic to update hba->last_dme_cmd_tstamp to ensure subsequent
-> DME commands have the correct delay in the range of 0 to
-> MIN_DELAY_BEFORE_DME_CMDS_US.
-> 
-> Update the timestamp at the end of the function to ensure it captures
-> the latest time after any necessary delay has been applied.
-> 
-> Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
-> Fixes: cad2e03d8607 ("ufs: add support to allow non standard behaviours (quirks)")
-> Cc: stable@vger.kernel.org
-> ---
->   drivers/ufs/core/ufshcd.c | 11 ++++++++---
->   1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-> index dc757ba47522..406bda1585f6 100644
-> --- a/drivers/ufs/core/ufshcd.c
-> +++ b/drivers/ufs/core/ufshcd.c
-> @@ -4090,11 +4090,16 @@ static inline void ufshcd_add_delay_before_dme_cmd(struct ufs_hba *hba)
->   			min_sleep_time_us =
->   				MIN_DELAY_BEFORE_DME_CMDS_US - delta;
->   		else
-> -			return; /* no more delay required */
-> +			min_sleep_time_us = 0; /* no more delay required */
->   	}
->   
-> -	/* allow sleep for extra 50us if needed */
-> -	usleep_range(min_sleep_time_us, min_sleep_time_us + 50);
-> +	if (min_sleep_time_us > 0) {
-> +		/* allow sleep for extra 50us if needed */
-> +		usleep_range(min_sleep_time_us, min_sleep_time_us + 50);
-> +	}
-> +
-> +	/* update the last_dme_cmd_tstamp */
-> +	hba->last_dme_cmd_tstamp = ktime_get();
->   }
+commit 4811f7af6090e8f5a398fbdd766f903ef6c0d787 upstream.
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Syzbot reported that a buffer state inconsistency was detected in
+nilfs_btnode_create_block(), triggering a kernel bug.
+
+It is not appropriate to treat this inconsistency as a bug; it can occur
+if the argument block address (the buffer index of the newly created
+block) is a virtual block number and has been reallocated due to
+corruption of the bitmap used to manage its allocation state.
+
+So, modify nilfs_btnode_create_block() and its callers to treat it as a
+possible filesystem error, rather than triggering a kernel bug.
+
+Link: https://lkml.kernel.org/r/20240725052007.4562-1-konishi.ryusuke@gmail.com
+Fixes: a60be987d45d ("nilfs2: B-tree node cache")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=89cc4f2324ed37988b60
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+Please apply this patch to the stable trees indicated by the subject
+prefix instead of the failed patches or the one I asked you to drop.
+
+This patch is tailored to take page/folio conversion into account and
+can be applied from v4.11 to v6.7.
+
+Also, all the builds and tests I did on each stable tree passed.
+
+Thanks,
+Ryusuke Konishi
+
+ fs/nilfs2/btnode.c | 25 ++++++++++++++++++++-----
+ fs/nilfs2/btree.c  |  4 ++--
+ 2 files changed, 22 insertions(+), 7 deletions(-)
+
+diff --git a/fs/nilfs2/btnode.c b/fs/nilfs2/btnode.c
+index 5710833ac1cc..8fe348bceabe 100644
+--- a/fs/nilfs2/btnode.c
++++ b/fs/nilfs2/btnode.c
+@@ -51,12 +51,21 @@ nilfs_btnode_create_block(struct address_space *btnc, __u64 blocknr)
+ 
+ 	bh = nilfs_grab_buffer(inode, btnc, blocknr, BIT(BH_NILFS_Node));
+ 	if (unlikely(!bh))
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	if (unlikely(buffer_mapped(bh) || buffer_uptodate(bh) ||
+ 		     buffer_dirty(bh))) {
+-		brelse(bh);
+-		BUG();
++		/*
++		 * The block buffer at the specified new address was already
++		 * in use.  This can happen if it is a virtual block number
++		 * and has been reallocated due to corruption of the bitmap
++		 * used to manage its allocation state (if not, the buffer
++		 * clearing of an abandoned b-tree node is missing somewhere).
++		 */
++		nilfs_error(inode->i_sb,
++			    "state inconsistency probably due to duplicate use of b-tree node block address %llu (ino=%lu)",
++			    (unsigned long long)blocknr, inode->i_ino);
++		goto failed;
+ 	}
+ 	memset(bh->b_data, 0, i_blocksize(inode));
+ 	bh->b_bdev = inode->i_sb->s_bdev;
+@@ -67,6 +76,12 @@ nilfs_btnode_create_block(struct address_space *btnc, __u64 blocknr)
+ 	unlock_page(bh->b_page);
+ 	put_page(bh->b_page);
+ 	return bh;
++
++failed:
++	unlock_page(bh->b_page);
++	put_page(bh->b_page);
++	brelse(bh);
++	return ERR_PTR(-EIO);
+ }
+ 
+ int nilfs_btnode_submit_block(struct address_space *btnc, __u64 blocknr,
+@@ -217,8 +232,8 @@ int nilfs_btnode_prepare_change_key(struct address_space *btnc,
+ 	}
+ 
+ 	nbh = nilfs_btnode_create_block(btnc, newkey);
+-	if (!nbh)
+-		return -ENOMEM;
++	if (IS_ERR(nbh))
++		return PTR_ERR(nbh);
+ 
+ 	BUG_ON(nbh == obh);
+ 	ctxt->newbh = nbh;
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index 65659fa0372e..598f05867059 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -63,8 +63,8 @@ static int nilfs_btree_get_new_block(const struct nilfs_bmap *btree,
+ 	struct buffer_head *bh;
+ 
+ 	bh = nilfs_btnode_create_block(btnc, ptr);
+-	if (!bh)
+-		return -ENOMEM;
++	if (IS_ERR(bh))
++		return PTR_ERR(bh);
+ 
+ 	set_buffer_nilfs_volatile(bh);
+ 	*bhp = bh;
+-- 
+2.43.5
+
 
