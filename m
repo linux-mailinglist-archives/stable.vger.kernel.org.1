@@ -1,189 +1,244 @@
-Return-Path: <stable+bounces-62609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BFD793FE81
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 21:52:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81CB93FEDA
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 22:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE1911F229F5
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 19:52:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2914BB21F1A
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 20:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C57189F2C;
-	Mon, 29 Jul 2024 19:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC38A188CBC;
+	Mon, 29 Jul 2024 20:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DYDNzClN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L2KpEX/1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8B6187355
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 19:52:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E7743152;
+	Mon, 29 Jul 2024 20:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722282742; cv=none; b=TDyjTjyeVsSv8VyRDX8btoT83jZY+/scaUCHAYmGqDo1yNV5uVwFgrJwPZxFpdkZ82mo2vch0JLno1DBUrMiPqUUpfYgfqIQddKyEX4zyCJsaQXGstNLZluANZ8Eqqe9sUBXfEHwO5KeUihg9THk3q3ccraIbG3ccMRU3ZXsRMo=
+	t=1722283875; cv=none; b=FHMl//9TUbpDXhfYXgcSziszLCwtfWllUYkrMFsKS5b5OqFgCAFjsj3HEQjXwk727mErAE9fGur11rCmfmWd215Ya7R8qNHFh9F/XnAZZ+HQKu/ZruYqKpr506tn6gZpjStlagfUPgV8KFNZkMpyjCd9dyndZmcoVOOV8RKE9Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722282742; c=relaxed/simple;
-	bh=eAWrLr7syK4v9OEqvlyX0jICgB4CRiMGpoCpwqQgJpI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DnIHwI0Oe7cCJ9qYmS9AXRZN1gE4g9fbbsnG8+/I0XKriJzsgRL8D4BA9avFA+ZXiDnXNp7L+0GSzbXXnPxEHEEYIs7zq5xqCHcHMm21us/I+9RR1C94ElI6ZbWbQ4T5UBokLD9PtbWKLeiW+srxOgrdB5iVidsIy52Oooxrohk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DYDNzClN; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52f024f468bso5736423e87.1
-        for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:52:20 -0700 (PDT)
+	s=arc-20240116; t=1722283875; c=relaxed/simple;
+	bh=1HhYhvu5qPZnyoOhxtG9/REYK9y8WdoqX16CLuITjVU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pS94bksyaWWet6UMb9K7G7+kSWdFPxOpi6Cpc71IijcosiSPs8WFeSTk7mxw9SLFVTCWtmm4kY2sd72UcB7F+R6W8cayAY93kvh3adIH9yuKpCbOe6i8l0D9yBpusPfMS6xFa2P6WFpdfVTuJxgAbvIFE7Vt+zKFvltAQMCVsMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L2KpEX/1; arc=none smtp.client-ip=209.85.222.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-825dc62725cso1108176241.3;
+        Mon, 29 Jul 2024 13:11:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722282739; x=1722887539; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Nvigx8ftGFF7H3oC6jrwYCq182+kCMKq67geJyZJwro=;
-        b=DYDNzClN3HjqbPrO9e2tHHpL8Vua6aB0g5eAW6bFL+y0NslgYm1GZs+Z2h33uSrtcP
-         dqqQWBd4t3bHqrpU92YQjuSb111rT5KvHN1Ku2Amuafa20ab28NQdxPUmoZzVCyjV31E
-         eIQ6bx8khWnhMNK4O/Im4JMA+nqyhkJlrBTh9iy/ar8QN78VTmSjgyiUVK8R1EJ6IOif
-         z0BsvwiIb6pjlQFuLJMNEMZo2WUJ8FiST8An5/nNIk4siJOOC/zouJ/swmZB/HzzLrRY
-         bter5rw4aDWzfeh7HrkZ74uk+8SX/fFVHYNCGqE6L84MC/sCoc3hs79cRH1jLeNaN2sQ
-         9DPA==
+        d=gmail.com; s=20230601; t=1722283873; x=1722888673; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8tezPeWHMUA8ikyyOY2gU0vK8x1rpfFIrDZ2UW5GgM0=;
+        b=L2KpEX/1eZhYWcd4T4PVwt+svgb76lXCOm6bGbvOYSFFM32yLNsTuBASi8yLs4mUSD
+         /zn+JEATRiuTe9rih65NQbAR5ercNHyvsla6uEoFBASNv3sz5akQLhUhcPQUcK5DyOAs
+         pu9RBNap7x5r+J85fENrNowM2pVls+TUwkL0NE/XdaeI5+I2R1FasUvc/oa1DxbfwVyH
+         ugKih/LXv/L6bg2/tbitoTVNSRXki+M9r4VSdQYtzDLopP4zZhntpoAllqNYpuwotgum
+         GTNR5g5pPMAsfDL6AGmOTvPkFpAeHXpbjWO4L1kWGKGRrOOuEH2eyUyuuZIE/YadWh5Y
+         g6tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722282739; x=1722887539;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Nvigx8ftGFF7H3oC6jrwYCq182+kCMKq67geJyZJwro=;
-        b=HUwrtEsJoOsESyzlOup+/vbm/E9wLg+fCPT0F/ZP9Hlgk8RvG9t/nebWWGvXL6hWnf
-         NOwZ3cSkmqP9HTb/XZUJCERl3oIjTez1eGIC8+EAnH7Ny7Wxpz86x4OGx/ExVkec+sL4
-         wqneohtdfRiOCNrlQ6HW2AK4l6fQl4bC3dk6L2U5kkihSIEFawX8mKnGvHlxUQ2XjHbi
-         R81h0DvfB5tvwAQ2JsP9GbkB0vYKirdAp7UO7YaJ5k6hocSbrV0jxzak1PPbznk1euIh
-         4cRG2WFdqE8/VAQspsjXonmtY6cwXHfuEpfXhNXxx1mkbokQhFb6LWX8p1M7fcEzdRm1
-         InzA==
-X-Forwarded-Encrypted: i=1; AJvYcCWaCListXdJ3esxT1SaCyMrFFFuSDivxp4kGfGSBy2+bP06Sk1DOiOBQatETeYJLR2V6zHc10webaR0QseyOoPWnNhUValM
-X-Gm-Message-State: AOJu0YwvsbNnsudRy5d3WewrKbL3jtcqPBPehHjeB+yXwNiM/QOtrdGJ
-	/aLPd77uF7bm4MkPINXmD26PEIvq3gAQV8YASAoNTUz3NoosEmPvSSC4+dnq6eA=
-X-Google-Smtp-Source: AGHT+IGZlWDv3cUJamS7yAPDFJ6RuaWt80rzcBym584uDDeV+HSA4wGbfxK7k/Vq0NoejHp/4NZMYA==
-X-Received: by 2002:a05:6512:39c2:b0:52e:9f6b:64 with SMTP id 2adb3069b0e04-5309b280988mr6581712e87.34.1722282738946;
-        Mon, 29 Jul 2024 12:52:18 -0700 (PDT)
-Received: from umbar.lan ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52fd5bd1088sm1615590e87.106.2024.07.29.12.52.18
+        d=1e100.net; s=20230601; t=1722283873; x=1722888673;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8tezPeWHMUA8ikyyOY2gU0vK8x1rpfFIrDZ2UW5GgM0=;
+        b=E1KBKDT7UZyH0sxmDjNrd2LP8AQuvIqcxiqXV/Zc6Q7+6Ezokf7q9BVzzbbAekQeMK
+         4rXK9/1qonEdL9SqNvYl3BEuvlnSF1hmEgrlFwnuGOQjaM0RCn7ORKohwStXW4tWpEii
+         WkZUFSX2j3B6kAODgM6I+THkvQk51yEkno/lJrGPZqLudtJOkp8wT7XDArtbVAeGN+dh
+         /yxQQ9yhEtp1agOVWP5zNmj9lWp6HxtLw1j/h2+ZKsmVdsoVRDxBwp0L2824DqRbauou
+         1z0+ERMTOD9yq9TwKetdQs0C+YyxeirpI2sZKKoZHP1YxyQvC16kLpUBi3o8pjkknC/e
+         p7nw==
+X-Forwarded-Encrypted: i=1; AJvYcCVbr0Z/eNG6x6rDWK43oGNjw+E3Hw/MsPn/enMzPkGw2RxunA7VgXakXNd1fHFcr5LQfwO0XRoLicsRbviMmbVP3/Oa49iO
+X-Gm-Message-State: AOJu0YxZaxj2oA24+szeaKsaAAP/cj6iBijBIv5z0m/eWv8EAwj4KKRL
+	FghiMeFGi6a5is1lsjkJYg2fdasI5OlEkAz/2NUqsmMG6TCze+as7OYqEg==
+X-Google-Smtp-Source: AGHT+IEPlhYE4kXhM/k5XgUjpH2dok8Tvb5HOpwhDKFNLXOi+BBQgK+DxQt3EL5kO/CJ9PGG0PqMOw==
+X-Received: by 2002:a05:6102:291e:b0:493:c3b2:b5ba with SMTP id ada2fe7eead31-493fa15f37cmr11925430137.6.1722283872616;
+        Mon, 29 Jul 2024 13:11:12 -0700 (PDT)
+Received: from willemb.c.googlers.com.com (73.84.86.34.bc.googleusercontent.com. [34.86.84.73])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1dcc43dacsm482255685a.126.2024.07.29.13.11.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jul 2024 12:52:18 -0700 (PDT)
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Mon, 29 Jul 2024 22:52:14 +0300
-Subject: [PATCH v2 1/5] Revert "soc: qcom: smd-rpm: Match rpmsg channel
- instead of compatible"
+        Mon, 29 Jul 2024 13:11:11 -0700 (PDT)
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	mst@redhat.com,
+	jasowang@redhat.com,
+	arefev@swemel.ru,
+	alexander.duyck@gmail.com,
+	Willem de Bruijn <willemb@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] net: drop bad gso csum_start and offset in virtio_net_hdr
+Date: Mon, 29 Jul 2024 16:10:12 -0400
+Message-ID: <20240729201108.1615114-1-willemdebruijn.kernel@gmail.com>
+X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240729-fix-smd-rpm-v2-1-0776408a94c5@linaro.org>
-References: <20240729-fix-smd-rpm-v2-0-0776408a94c5@linaro.org>
-In-Reply-To: <20240729-fix-smd-rpm-v2-0-0776408a94c5@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>, 
- Stephan Gerhold <stephan@gerhold.net>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, 
- Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- linux-clk@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2654;
- i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=eAWrLr7syK4v9OEqvlyX0jICgB4CRiMGpoCpwqQgJpI=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmp/LwCTuCYU/6YSCjas4tG0SVviSh/CHbKxAIY
- fuevwTc63KJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZqfy8AAKCRCLPIo+Aiko
- 1al3B/sHtT2AVBPTL48APedB46dbqPApKIDMgtlWXbXRRqxinGGdDTVgPF+JEQXY43+bzpO5X9H
- kP603xOrJ0y9Iq+d5Xnz0sRHcKENQMXbiNV2jmpFwuoe/4SORdHShTmrwIpIC/65GegFokHc3Y9
- nP9aCSfF1WbV2JSzSRR7QKWoWbHk7o6a51sClz/cBepB3iOKObdLvbPLC5DOqgyjNFTHeN2orME
- 7lnDmaH7pnIV+5CQ/V7Q2rIHU+0pb9t9RlWC7uzdS05a+5x8UXmSAbHMugoo6OV7KqNRx3WfHGd
- FabAM4MlzKiRgXvJ4uG7ZXdhfEeONdh6eQ2G5BskecsAX0rw
-X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
- fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
+Content-Transfer-Encoding: 8bit
 
-The rpm_requests device nodes have the compatible node. As such the
-rpmsg core uses OF modalias instead of a native rpmsg modalias. Thus if
-smd-rpm is built as a module, it doesn't get autoloaded for the device.
+From: Willem de Bruijn <willemb@google.com>
 
-Revert the commit bcabe1e09135 ("soc: qcom: smd-rpm: Match rpmsg channel
-instead of compatible")
+Tighten csum_start and csum_offset checks in virtio_net_hdr_to_skb
+for GSO packets.
 
-Fixes: bcabe1e09135 ("soc: qcom: smd-rpm: Match rpmsg channel instead of compatible")
+The function already checks that a checksum requested with
+VIRTIO_NET_HDR_F_NEEDS_CSUM is in skb linear. But for GSO packets
+this might not hold for segs after segmentation.
+
+Syzkaller demonstrated to reach this warning in skb_checksum_help
+
+	offset = skb_checksum_start_offset(skb);
+	ret = -EINVAL;
+	if (WARN_ON_ONCE(offset >= skb_headlen(skb)))
+
+By injecting a TSO packet:
+
+WARNING: CPU: 1 PID: 3539 at net/core/dev.c:3284 skb_checksum_help+0x3d0/0x5b0
+ ip_do_fragment+0x209/0x1b20 net/ipv4/ip_output.c:774
+ ip_finish_output_gso net/ipv4/ip_output.c:279 [inline]
+ __ip_finish_output+0x2bd/0x4b0 net/ipv4/ip_output.c:301
+ iptunnel_xmit+0x50c/0x930 net/ipv4/ip_tunnel_core.c:82
+ ip_tunnel_xmit+0x2296/0x2c70 net/ipv4/ip_tunnel.c:813
+ __gre_xmit net/ipv4/ip_gre.c:469 [inline]
+ ipgre_xmit+0x759/0xa60 net/ipv4/ip_gre.c:661
+ __netdev_start_xmit include/linux/netdevice.h:4850 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4864 [inline]
+ xmit_one net/core/dev.c:3595 [inline]
+ dev_hard_start_xmit+0x261/0x8c0 net/core/dev.c:3611
+ __dev_queue_xmit+0x1b97/0x3c90 net/core/dev.c:4261
+ packet_snd net/packet/af_packet.c:3073 [inline]
+
+The geometry of the bad input packet at tcp_gso_segment:
+
+[   52.003050][ T8403] skb len=12202 headroom=244 headlen=12093 tailroom=0
+[   52.003050][ T8403] mac=(168,24) mac_len=24 net=(192,52) trans=244
+[   52.003050][ T8403] shinfo(txflags=0 nr_frags=1 gso(size=1552 type=3 segs=0))
+[   52.003050][ T8403] csum(0x60000c7 start=199 offset=1536
+ip_summed=3 complete_sw=0 valid=0 level=0)
+
+Mitigate with stricter input validation.
+
+csum_offset: for GSO packets, deduce the correct value from gso_type.
+This is already done for USO. Extend it to TSO. Let UFO be:
+udp[46]_ufo_fragment ignores these fields and always computes the
+checksum in software.
+
+csum_start: finding the real offset requires parsing to the transport
+header. Do not add a parser, use existing segmentation parsing. Thanks
+to SKB_GSO_DODGY, that also catches bad packets that are hw offloaded.
+Again test both TSO and USO. Do not test UFO for the above reason, and
+do not test UDP tunnel offload.
+
+GSO packet are almost always CHECKSUM_PARTIAL. USO packets may be
+CHECKSUM_NONE since commit 10154dbded6d6 ("udp: Allow GSO transmit
+from devices with no checksum offload"), but then still these fields
+are initialized correctly in udp4_hwcsum/udp6_hwcsum_outgoing. So no
+need to test for ip_summed == CHECKSUM_PARTIAL first.
+
+This revises an existing fix mentioned in the Fixes tag, which broke
+small packets with GSO offload, as detected by kselftests.
+
+Link: https://syzkaller.appspot.com/bug?extid=e1db31216c789f552871
+Link: https://lore.kernel.org/netdev/20240723223109.2196886-1-kuba@kernel.org
+Fixes: e269d79c7d35 ("net: missing check virtio")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+
 ---
- drivers/soc/qcom/smd-rpm.c | 35 ++++++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/soc/qcom/smd-rpm.c b/drivers/soc/qcom/smd-rpm.c
-index b7056aed4c7d..9d64283d2125 100644
---- a/drivers/soc/qcom/smd-rpm.c
-+++ b/drivers/soc/qcom/smd-rpm.c
-@@ -196,9 +196,6 @@ static int qcom_smd_rpm_probe(struct rpmsg_device *rpdev)
- {
- 	struct qcom_smd_rpm *rpm;
+v1->v2
+  - skb_transport_header instead of skb->transport_header (edumazet@)
+  - typo: migitate -> mitigate
+---
+ include/linux/virtio_net.h | 16 +++++-----------
+ net/ipv4/tcp_offload.c     |  3 +++
+ net/ipv4/udp_offload.c     |  4 ++++
+ 3 files changed, 12 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index d1d7825318c32..6c395a2600e8d 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -56,7 +56,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 	unsigned int thlen = 0;
+ 	unsigned int p_off = 0;
+ 	unsigned int ip_proto;
+-	u64 ret, remainder, gso_size;
  
--	if (!rpdev->dev.of_node)
--		return -EINVAL;
+ 	if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
+ 		switch (hdr->gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
+@@ -99,16 +98,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
+ 		u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
+ 
+-		if (hdr->gso_size) {
+-			gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
+-			ret = div64_u64_rem(skb->len, gso_size, &remainder);
+-			if (!(ret && (hdr->gso_size > needed) &&
+-						((remainder > needed) || (remainder == 0)))) {
+-				return -EINVAL;
+-			}
+-			skb_shinfo(skb)->tx_flags |= SKBFL_SHARED_FRAG;
+-		}
 -
- 	rpm = devm_kzalloc(&rpdev->dev, sizeof(*rpm), GFP_KERNEL);
- 	if (!rpm)
- 		return -ENOMEM;
-@@ -218,18 +215,38 @@ static void qcom_smd_rpm_remove(struct rpmsg_device *rpdev)
- 	of_platform_depopulate(&rpdev->dev);
- }
+ 		if (!pskb_may_pull(skb, needed))
+ 			return -EINVAL;
  
--static const struct rpmsg_device_id qcom_smd_rpm_id_table[] = {
--	{ .name = "rpm_requests", },
--	{ /* sentinel */ }
-+static const struct of_device_id qcom_smd_rpm_of_match[] = {
-+	{ .compatible = "qcom,rpm-apq8084" },
-+	{ .compatible = "qcom,rpm-ipq6018" },
-+	{ .compatible = "qcom,rpm-ipq9574" },
-+	{ .compatible = "qcom,rpm-msm8226" },
-+	{ .compatible = "qcom,rpm-msm8909" },
-+	{ .compatible = "qcom,rpm-msm8916" },
-+	{ .compatible = "qcom,rpm-msm8936" },
-+	{ .compatible = "qcom,rpm-msm8953" },
-+	{ .compatible = "qcom,rpm-msm8974" },
-+	{ .compatible = "qcom,rpm-msm8976" },
-+	{ .compatible = "qcom,rpm-msm8994" },
-+	{ .compatible = "qcom,rpm-msm8996" },
-+	{ .compatible = "qcom,rpm-msm8998" },
-+	{ .compatible = "qcom,rpm-sdm660" },
-+	{ .compatible = "qcom,rpm-sm6115" },
-+	{ .compatible = "qcom,rpm-sm6125" },
-+	{ .compatible = "qcom,rpm-sm6375" },
-+	{ .compatible = "qcom,rpm-qcm2290" },
-+	{ .compatible = "qcom,rpm-qcs404" },
-+	{}
- };
--MODULE_DEVICE_TABLE(rpmsg, qcom_smd_rpm_id_table);
-+MODULE_DEVICE_TABLE(of, qcom_smd_rpm_of_match);
+@@ -182,6 +171,11 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 			if (gso_type != SKB_GSO_UDP_L4)
+ 				return -EINVAL;
+ 			break;
++		case SKB_GSO_TCPV4:
++		case SKB_GSO_TCPV6:
++			if (skb->csum_offset != offsetof(struct tcphdr, check))
++				return -EINVAL;
++			break;
+ 		}
  
- static struct rpmsg_driver qcom_smd_rpm_driver = {
- 	.probe = qcom_smd_rpm_probe,
- 	.remove = qcom_smd_rpm_remove,
- 	.callback = qcom_smd_rpm_callback,
--	.id_table = qcom_smd_rpm_id_table,
--	.drv.name = "qcom_smd_rpm",
-+	.drv  = {
-+		.name  = "qcom_smd_rpm",
-+		.of_match_table = qcom_smd_rpm_of_match,
-+	},
- };
+ 		/* Kernel has a special handling for GSO_BY_FRAGS. */
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 4b791e74529e1..e4ad3311e1489 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -140,6 +140,9 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	if (thlen < sizeof(*th))
+ 		goto out;
  
- static int __init qcom_smd_rpm_init(void)
-
++	if (unlikely(skb_checksum_start(skb) != skb_transport_header(skb)))
++		goto out;
++
+ 	if (!pskb_may_pull(skb, thlen))
+ 		goto out;
+ 
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index aa2e0a28ca613..bc8a9da750fed 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -278,6 +278,10 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 	if (gso_skb->len <= sizeof(*uh) + mss)
+ 		return ERR_PTR(-EINVAL);
+ 
++	if (unlikely(skb_checksum_start(gso_skb) !=
++		     skb_transport_header(gso_skb)))
++		return ERR_PTR(-EINVAL);
++
+ 	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
+ 		/* Packet is from an untrusted source, reset gso_segs. */
+ 		skb_shinfo(gso_skb)->gso_segs = DIV_ROUND_UP(gso_skb->len - sizeof(*uh),
 -- 
-2.39.2
+2.46.0.rc1.232.g9752f9e123-goog
 
 
