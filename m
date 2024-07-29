@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1214293EEF9
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:50:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2E693EEFE
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:50:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91BCEB21305
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:49:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8804D1F20FB9
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2E312C522;
-	Mon, 29 Jul 2024 07:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A75512C474;
+	Mon, 29 Jul 2024 07:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eT6lRYGh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uPVnVyNV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE19712A177
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC42184A2F
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722239393; cv=none; b=exY4P0nem0H3QIEDaDiResnI4Uz+U61DFu0UJGpL5l86ZobAXSn/SRhwZtVPjJO8+hZit8fyo/EtZ0FpLCw2gNFhoLbjHWqkA7R26xAYbhFN+my7eqiiUaRoi2wOxI+tUSY+wFvrlz0R6MwCBBi5hS0pDLUn8AX6nySfEd6IAW8=
+	t=1722239414; cv=none; b=rrrovI734kw6QJx+jyxrB8RW3TY8LVqmeYMzDb/mIW9wnmUarfpZNbPEU6An3Zw4cV5JHrRvdzxSriKZEjghNmFUZbPUOixWJ0AdJAjwcRAxZyNUJi9pMT3XcoAINxwsAUOm8rivBr80C0W/d5SAJrurbl3LFd+WHi/Gg1J2zj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722239393; c=relaxed/simple;
-	bh=F0MLIVYSRlgFEULIbxZ+eUVKzGiw1teEcn8kgqz4Twg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tbPzrkPp+qWRzpECSIZwWCXQcfF4/MibDd2rgeu9F4tWJb6rEHp3IgPQE3uNng9v5g4YKJlbhoGrYv3svzChzhaVU3GdfqC7RMXFdI7KdvNax6s044TUe8FMGrJRj9kZASsbkFzrZx7+dphA3zGu5XLLpoIyTrFOuzKGF9T6irk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eT6lRYGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CF8C32786;
-	Mon, 29 Jul 2024 07:49:52 +0000 (UTC)
+	s=arc-20240116; t=1722239414; c=relaxed/simple;
+	bh=tTtzHw/8ZWQdbHZN5P9PeybU9B33U/Lbsw1ykrsdp/M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TUOphp1L8uyUNQwObzuIDsjL5wrn5wcdiWW25E3JVkLEIGtVDIqptCC23FGXKq3QHV05UHMzMqnnrRNARaTwxweIn/gLqtgAaysrSsOKkVqyu9n/yG9nL6XkdV/pdGCmKFL/nK6ghkQjpZlUquxs7xMju+nveqA1b2wQQ3LQ2gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uPVnVyNV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1B9C32786;
+	Mon, 29 Jul 2024 07:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722239393;
-	bh=F0MLIVYSRlgFEULIbxZ+eUVKzGiw1teEcn8kgqz4Twg=;
+	s=korg; t=1722239414;
+	bh=tTtzHw/8ZWQdbHZN5P9PeybU9B33U/Lbsw1ykrsdp/M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=eT6lRYGhm8f+28ymbbCXAUZmBLagNLV256atg/v0nedDjaEYkEE+z7O1+LVBc9tsq
-	 DPxTD7b7WHxjn8E5OGhuiBN12YiIQQW4HPyzbgGVwVQTnHKGd7LS1ZWJ6f37Mgy5BK
-	 Dr0/l0QWJfzO2kR3gfLTzqTBo7xZQYRJrkLbuowE=
-Subject: FAILED: patch "[PATCH] kernel: rerun task_work while freezing in get_signal()" failed to apply to 5.10-stable tree
-To: asml.silence@gmail.com,axboe@kernel.dk,ju.orth@gmail.com,oleg@redhat.com,tj@kernel.org
+	b=uPVnVyNV9kXG6IgBm1osI1+tHvlDdyvkvG7Za5aPvml61j/VCNtg1tt7ndtzVCy4T
+	 ADDJV68jqT4iKjHiqcht0vAlJie8SHyMwNyF4h3ApWozEgwsJFQKkwqJ8tkUTJG8IR
+	 OjMJg3EuQdgFBlDMcuMWoXs2FGhu8tt98A5s5aDU=
+Subject: FAILED: patch "[PATCH] ipv6: fix source address selection with route leak" failed to apply to 6.1-stable tree
+To: nicolas.dichtel@6wind.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 09:49:41 +0200
-Message-ID: <2024072941-nucleus-cannabis-e513@gregkh>
+Date: Mon, 29 Jul 2024 09:50:07 +0200
+Message-ID: <2024072907-unlaced-unlovely-6e01@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,34 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 943ad0b62e3c21f324c4884caa6cb4a871bca05c
+git cherry-pick -x 252442f2ae317d109ef0b4b39ce0608c09563042
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072941-nucleus-cannabis-e513@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072907-unlaced-unlovely-6e01@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-943ad0b62e3c ("kernel: rerun task_work while freezing in get_signal()")
-f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
-9963e444f71e ("sched: Widen TAKS_state literals")
-f9fc8cad9728 ("sched: Add TASK_ANY for wait_task_inactive()")
-9204a97f7ae8 ("sched: Change wait_task_inactive()s match_state")
-1fbcaa923ce2 ("freezer,umh: Clean up freezer/initrd interaction")
-5950e5d574c6 ("freezer: Have {,un}lock_system_sleep() save/restore flags")
-0b9d46fc5ef7 ("sched: Rename task_running() to task_on_cpu()")
-8386c414e27c ("PM: hibernate: defer device probing when resuming from hibernation")
-57b6de08b5f6 ("ptrace: Admit ptrace_stop can generate spuriuos SIGTRAPs")
-7b0fe1367ef2 ("ptrace: Document that wait_task_inactive can't fail")
-1930a6e739c4 ("Merge tag 'ptrace-cleanups-for-v5.18' of git://git.kernel.org/pub/scm/linux/kernel/git/ebiederm/user-namespace")
+252442f2ae31 ("ipv6: fix source address selection with route leak")
+fa17a6d8a5bd ("ipv6: lockless IPV6_ADDR_PREFERENCES implementation")
+859f8b265fc2 ("ipv6: lockless IPV6_FLOWINFO_SEND implementation")
+6b724bc4300b ("ipv6: lockless IPV6_MTU_DISCOVER implementation")
+83cd5eb654b3 ("ipv6: lockless IPV6_ROUTER_ALERT_ISOLATE implementation")
+3cccda8db2cf ("ipv6: move np->repflow to atomic flags")
+3fa29971c695 ("ipv6: lockless IPV6_RECVERR implemetation")
+1086ca7cce29 ("ipv6: lockless IPV6_DONTFRAG implementation")
+5121516b0c47 ("ipv6: lockless IPV6_AUTOFLOWLABEL implementation")
+6559c0ff3bc2 ("ipv6: lockless IPV6_MULTICAST_ALL implementation")
+dcae74622c05 ("ipv6: lockless IPV6_RECVERR_RFC4884 implementation")
+273784d3c574 ("ipv6: lockless IPV6_MINHOPCOUNT implementation")
+15f926c4457a ("ipv6: lockless IPV6_MTU implementation")
+2da23eb07c91 ("ipv6: lockless IPV6_MULTICAST_HOPS implementation")
+d986f52124e0 ("ipv6: lockless IPV6_MULTICAST_LOOP implementation")
+b0adfba7ee77 ("ipv6: lockless IPV6_UNICAST_HOPS implementation")
+8cdd9f1aaedf ("ipv6: fix ip6_sock_set_addr_preferences() typo")
+e3390b30a5df ("net: annotate data-races around sk->sk_tsflags")
+0f158b32a9b1 ("net: selectively purge error queue in IP_RECVERR / IPV6_RECVERR")
+08e39c0dfa29 ("inet: move inet->defer_connect to inet->inet_flags")
 
 thanks,
 
@@ -88,49 +96,87 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 943ad0b62e3c21f324c4884caa6cb4a871bca05c Mon Sep 17 00:00:00 2001
-From: Pavel Begunkov <asml.silence@gmail.com>
-Date: Wed, 10 Jul 2024 18:58:18 +0100
-Subject: [PATCH] kernel: rerun task_work while freezing in get_signal()
+From 252442f2ae317d109ef0b4b39ce0608c09563042 Mon Sep 17 00:00:00 2001
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Date: Wed, 10 Jul 2024 10:14:28 +0200
+Subject: [PATCH] ipv6: fix source address selection with route leak
 
-io_uring can asynchronously add a task_work while the task is getting
-freezed. TIF_NOTIFY_SIGNAL will prevent the task from sleeping in
-do_freezer_trap(), and since the get_signal()'s relock loop doesn't
-retry task_work, the task will spin there not being able to sleep
-until the freezing is cancelled / the task is killed / etc.
+By default, an address assigned to the output interface is selected when
+the source address is not specified. This is problematic when a route,
+configured in a vrf, uses an interface from another vrf (aka route leak).
+The original vrf does not own the selected source address.
 
-Run task_works in the freezer path. Keep the patch small and simple
-so it can be easily back ported, but we might need to do some cleaning
-after and look if there are other places with similar problems.
+Let's add a check against the output interface and call the appropriate
+function to select the source address.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/systemd/systemd/issues/33626
-Fixes: 12db8b690010c ("entry: Add support for TIF_NOTIFY_SIGNAL")
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/89ed3a52933370deaaf61a0a620a6ac91f1e754d.1720634146.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+CC: stable@vger.kernel.org
+Fixes: 0d240e7811c4 ("net: vrf: Implement get_saddr for IPv6")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://patch.msgid.link/20240710081521.3809742-3-nicolas.dichtel@6wind.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 1f9dd41c04be..60c737e423a1 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -2600,6 +2600,14 @@ static void do_freezer_trap(void)
- 	spin_unlock_irq(&current->sighand->siglock);
- 	cgroup_enter_frozen();
- 	schedule();
-+
-+	/*
-+	 * We could've been woken by task_work, run it to clear
-+	 * TIF_NOTIFY_SIGNAL. The caller will retry if necessary.
-+	 */
-+	clear_notify_signal();
-+	if (unlikely(task_work_pending(current)))
-+		task_work_run();
- }
+diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
+index a18ed24fed94..6dbdf60b342f 100644
+--- a/include/net/ip6_route.h
++++ b/include/net/ip6_route.h
+@@ -127,18 +127,26 @@ void rt6_age_exceptions(struct fib6_info *f6i, struct fib6_gc_args *gc_args,
  
- static int ptrace_signal(int signr, kernel_siginfo_t *info, enum pid_type type)
+ static inline int ip6_route_get_saddr(struct net *net, struct fib6_info *f6i,
+ 				      const struct in6_addr *daddr,
+-				      unsigned int prefs,
++				      unsigned int prefs, int l3mdev_index,
+ 				      struct in6_addr *saddr)
+ {
++	struct net_device *l3mdev;
++	struct net_device *dev;
++	bool same_vrf;
+ 	int err = 0;
+ 
+-	if (f6i && f6i->fib6_prefsrc.plen) {
+-		*saddr = f6i->fib6_prefsrc.addr;
+-	} else {
+-		struct net_device *dev = f6i ? fib6_info_nh_dev(f6i) : NULL;
++	rcu_read_lock();
+ 
+-		err = ipv6_dev_get_saddr(net, dev, daddr, prefs, saddr);
+-	}
++	l3mdev = dev_get_by_index_rcu(net, l3mdev_index);
++	if (!f6i || !f6i->fib6_prefsrc.plen || l3mdev)
++		dev = f6i ? fib6_info_nh_dev(f6i) : NULL;
++	same_vrf = !l3mdev || l3mdev_master_dev_rcu(dev) == l3mdev;
++	if (f6i && f6i->fib6_prefsrc.plen && same_vrf)
++		*saddr = f6i->fib6_prefsrc.addr;
++	else
++		err = ipv6_dev_get_saddr(net, same_vrf ? dev : l3mdev, daddr, prefs, saddr);
++
++	rcu_read_unlock();
+ 
+ 	return err;
+ }
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 27d8725445e3..784424ac4147 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1124,6 +1124,7 @@ static int ip6_dst_lookup_tail(struct net *net, const struct sock *sk,
+ 		from = rt ? rcu_dereference(rt->from) : NULL;
+ 		err = ip6_route_get_saddr(net, from, &fl6->daddr,
+ 					  sk ? READ_ONCE(inet6_sk(sk)->srcprefs) : 0,
++					  fl6->flowi6_l3mdev,
+ 					  &fl6->saddr);
+ 		rcu_read_unlock();
+ 
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 8d72ca0b086d..c9a9506b714d 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5689,7 +5689,7 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
+ 				goto nla_put_failure;
+ 	} else if (dest) {
+ 		struct in6_addr saddr_buf;
+-		if (ip6_route_get_saddr(net, rt, dest, 0, &saddr_buf) == 0 &&
++		if (ip6_route_get_saddr(net, rt, dest, 0, 0, &saddr_buf) == 0 &&
+ 		    nla_put_in6_addr(skb, RTA_PREFSRC, &saddr_buf))
+ 			goto nla_put_failure;
+ 	}
 
 
