@@ -1,238 +1,126 @@
-Return-Path: <stable+bounces-62498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E2793F49E
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 13:55:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F1193F4CA
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:03:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE26E1F22571
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:55:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 414F11C2201B
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20829146A70;
-	Mon, 29 Jul 2024 11:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15738145B0B;
+	Mon, 29 Jul 2024 12:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="2g3LkMPn";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qQ4M86Hl";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="2g3LkMPn";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qQ4M86Hl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgMWJrOJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4691465BF;
-	Mon, 29 Jul 2024 11:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A80143752
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722254066; cv=none; b=WHYLlyJNlZ8TZSRNN3NFrUCIS8VTWtZEnSVxKp02LmrtqhK1XBMrRp4UMr27nTlLt604DliaNFd2tCWDHZ0C7FzqKtUuWdJ0Cm9ijRM0/In0ZoNcbJi3KgxNf47Fl2BzX9098Oqm6FzPDSCwBvJu3GaOenO+trIiWlYWfdvXA90=
+	t=1722254584; cv=none; b=qs47PkN1iP2KFhr4xVkWzSGi589qNGrdjs2eKVFzGLny0NENIvtGGflrl4CbkQncIovJWsk5HDBNbpJCuOK9qYaSQmuc/gVbUnSI7ej9iu2SvFV3IRdnRpauSlZGbDAyeXKAgLA6ZXJU6EEDTH0YFKYv74+HEZ5q9LA1pAB5ei0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722254066; c=relaxed/simple;
-	bh=UrngsJxAjbcM3AqLgJFjWlmGMAo8MzvPgh7YUPnf/gk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LU5fHdrZGe+XvWAoNx+42iNFUk+eUhrequ5MQM3YJeYY8nlM441a8bJCz/WaSkb5OOTpjAX7MTxGHP25x8gkvLknEugFjD2DAGscU2aT7mIRiVo9uaTCiY4eMHpa/bvrDJSsCHV7pfpYla0agXwBPXP/esM+qRqmFdAnvLtWTB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=2g3LkMPn; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qQ4M86Hl; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=2g3LkMPn; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qQ4M86Hl; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5F3941F790;
-	Mon, 29 Jul 2024 11:54:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1722254063; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uX7eQ/l/4mqf+N2I4GzExoJxI/EcAEkLiNq+ZdMk+XE=;
-	b=2g3LkMPnPq6lrL+t2tOVYsxhaLYtJlMi12ywxUDpQuAAAIB8Z8Fnrj0/Nq/BMRHLVvonrs
-	XH+UAUS/NfqjI2ZV2z7Te5gBjhmq9nhyr6X3ERydbarvf+U1f+t67p8P9q0NCuoesghf4g
-	sr5j8I3YmMaR3oKAEi92aoxR2ISpiMw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1722254063;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uX7eQ/l/4mqf+N2I4GzExoJxI/EcAEkLiNq+ZdMk+XE=;
-	b=qQ4M86HlpJAvtYTKqfJxGRnzR3u7nQ533lmgZHpuMwPE0FQOfU8JfUDaAKtvEBJaEfNp+g
-	vTD5EqhAUppeoSDQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2g3LkMPn;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qQ4M86Hl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1722254063; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uX7eQ/l/4mqf+N2I4GzExoJxI/EcAEkLiNq+ZdMk+XE=;
-	b=2g3LkMPnPq6lrL+t2tOVYsxhaLYtJlMi12ywxUDpQuAAAIB8Z8Fnrj0/Nq/BMRHLVvonrs
-	XH+UAUS/NfqjI2ZV2z7Te5gBjhmq9nhyr6X3ERydbarvf+U1f+t67p8P9q0NCuoesghf4g
-	sr5j8I3YmMaR3oKAEi92aoxR2ISpiMw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1722254063;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uX7eQ/l/4mqf+N2I4GzExoJxI/EcAEkLiNq+ZdMk+XE=;
-	b=qQ4M86HlpJAvtYTKqfJxGRnzR3u7nQ533lmgZHpuMwPE0FQOfU8JfUDaAKtvEBJaEfNp+g
-	vTD5EqhAUppeoSDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 41618138A7;
-	Mon, 29 Jul 2024 11:54:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id RdDrD++Cp2bOOAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 29 Jul 2024 11:54:23 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id CFDB4A099C; Mon, 29 Jul 2024 13:54:18 +0200 (CEST)
-Date: Mon, 29 Jul 2024 13:54:18 +0200
-From: Jan Kara <jack@suse.cz>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Justin Stitt <justinstitt@google.com>,
-	linux-hardening@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-	Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>,
-	viro@zeniv.linux.org.uk, nathan@kernel.org,
-	linux-fsdevel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH AUTOSEL 6.10 02/16] fs: remove accidental overflow during
- wraparound check
-Message-ID: <20240729115418.xzfmanyqtipkuttx@quack3>
-References: <20240728004739.1698541-1-sashal@kernel.org>
- <20240728004739.1698541-2-sashal@kernel.org>
+	s=arc-20240116; t=1722254584; c=relaxed/simple;
+	bh=SvSTNcEsWtUdaSscemuUWBsXAIEn/rW+VBFSADKhwTw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uh3vlgTVvoWQ0++qCH3LmrYmto+qWowv0lQHSxE7ZWv9HtqseYowFs/y1kFRwvGX+qPVWPXk8GB/HDc65RLKFFK4VcUqiU9wesQEI6w8Wf128zbvbpl4laWynozktp4/+a3I/jmwnzGxU3P09OlvZpVnYiy98WD45iCaSdT/Eu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgMWJrOJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7637C32786;
+	Mon, 29 Jul 2024 12:03:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722254584;
+	bh=SvSTNcEsWtUdaSscemuUWBsXAIEn/rW+VBFSADKhwTw=;
+	h=Subject:To:Cc:From:Date:From;
+	b=FgMWJrOJgf7VziDyfTJanbdbiSbvbjON55zb5XJwxEhDzKCAm/K+Ck6YQT8Ws4DVC
+	 5j9tuDeKsxv8A+uvfLRYApc6Ons3n9TmLbzCW0TpU/IsU6n0FiHv6nC3y9XgKZK51n
+	 Z4sRGQdB4TS6IpiOR68cNvXc5swollRvxJFEgxdk=
+Subject: FAILED: patch "[PATCH] ALSA: hda/realtek: cs35l41: Fixup remaining asus strix models" failed to apply to 6.6-stable tree
+To: luke@ljones.dev,stable@vger.kernel.org,tiwai@suse.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Jul 2024 14:03:00 +0200
+Message-ID: <2024072959-wilt-balsamic-2f7d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240728004739.1698541-2-sashal@kernel.org>
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 5F3941F790
-X-Spam-Score: -3.81
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-3.81 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,chromium.org:email,suse.cz:email,suse.cz:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.cz:+]
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Sat 27-07-24 20:47:19, Sasha Levin wrote:
-> From: Justin Stitt <justinstitt@google.com>
-> 
-> [ Upstream commit 23cc6ef6fd453b13502caae23130844e7d6ed0fe ]
 
-Sasha, this commit is only about silencing false-positive UBSAN warning.
-Not sure if it is really a stable material...
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-								Honza
+To reproduce the conflict and resubmit, you may use the following commands:
 
-> 
-> Running syzkaller with the newly enabled signed integer overflow
-> sanitizer produces this report:
-> 
-> [  195.401651] ------------[ cut here ]------------
-> [  195.404808] UBSAN: signed-integer-overflow in ../fs/open.c:321:15
-> [  195.408739] 9223372036854775807 + 562984447377399 cannot be represented in type 'loff_t' (aka 'long long')
-> [  195.414683] CPU: 1 PID: 703 Comm: syz-executor.0 Not tainted 6.8.0-rc2-00039-g14de58dbe653-dirty #11
-> [  195.420138] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> [  195.425804] Call Trace:
-> [  195.427360]  <TASK>
-> [  195.428791]  dump_stack_lvl+0x93/0xd0
-> [  195.431150]  handle_overflow+0x171/0x1b0
-> [  195.433640]  vfs_fallocate+0x459/0x4f0
-> ...
-> [  195.490053] ------------[ cut here ]------------
-> [  195.493146] UBSAN: signed-integer-overflow in ../fs/open.c:321:61
-> [  195.497030] 9223372036854775807 + 562984447377399 cannot be represented in type 'loff_t' (aka 'long long)
-> [  195.502940] CPU: 1 PID: 703 Comm: syz-executor.0 Not tainted 6.8.0-rc2-00039-g14de58dbe653-dirty #11
-> [  195.508395] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> [  195.514075] Call Trace:
-> [  195.515636]  <TASK>
-> [  195.517000]  dump_stack_lvl+0x93/0xd0
-> [  195.519255]  handle_overflow+0x171/0x1b0
-> [  195.521677]  vfs_fallocate+0x4cb/0x4f0
-> [  195.524033]  __x64_sys_fallocate+0xb2/0xf0
-> 
-> Historically, the signed integer overflow sanitizer did not work in the
-> kernel due to its interaction with `-fwrapv` but this has since been
-> changed [1] in the newest version of Clang. It was re-enabled in the
-> kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
-> sanitizer").
-> 
-> Let's use the check_add_overflow helper to first verify the addition
-> stays within the bounds of its type (long long); then we can use that
-> sum for the following check.
-> 
-> Link: https://github.com/llvm/llvm-project/pull/82432 [1]
-> Closes: https://github.com/KSPP/linux/issues/356
-> Cc: linux-hardening@vger.kernel.org
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
-> Link: https://lore.kernel.org/r/20240513-b4-sio-vfs_fallocate-v2-1-db415872fb16@google.com
-> Reviewed-by: Jan Kara <jack@suse.cz>
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  fs/open.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/open.c b/fs/open.c
-> index 278b3edcda444..1dd123ba34ee9 100644
-> --- a/fs/open.c
-> +++ b/fs/open.c
-> @@ -247,6 +247,7 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
->  {
->  	struct inode *inode = file_inode(file);
->  	long ret;
-> +	loff_t sum;
->  
->  	if (offset < 0 || len <= 0)
->  		return -EINVAL;
-> @@ -319,8 +320,11 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
->  	if (!S_ISREG(inode->i_mode) && !S_ISBLK(inode->i_mode))
->  		return -ENODEV;
->  
-> -	/* Check for wrap through zero too */
-> -	if (((offset + len) > inode->i_sb->s_maxbytes) || ((offset + len) < 0))
-> +	/* Check for wraparound */
-> +	if (check_add_overflow(offset, len, &sum))
-> +		return -EFBIG;
-> +
-> +	if (sum > inode->i_sb->s_maxbytes)
->  		return -EFBIG;
->  
->  	if (!file->f_op->fallocate)
-> -- 
-> 2.43.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x e6e18021ddd0dc5af487fb86b6d7c964e062d692
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072959-wilt-balsamic-2f7d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+e6e18021ddd0 ("ALSA: hda/realtek: cs35l41: Fixup remaining asus strix models")
+2be46155d792 ("ALSA: hda/realtek: Adjust G814JZR to use SPI init for amp")
+0bfe105018bd ("ALSA: hda/realtek: cs35l41: Support ASUS ROG G634JYR")
+24b6332c2d4f ("ALSA: hda: Add Lenovo Legion 7i gen7 sound quirk")
+b5cb53fd3277 ("ALSA: hda/tas2781: add fixup for Lenovo 14ARB7")
+ba7053b4b4a4 ("ALSA: hda: Add driver properties for cs35l41 for Lenovo Legion Slim 7 Gen 8 serie")
+d110858a6925 ("ALSA: hda: cs35l41: Prevent firmware load if SPI speed too low")
+ee694e7db47e ("ALSA: hda: cs35l41: Support additional Dell models without _DSD")
+2b35b66d82dc ("ALSA: hda: cs35l41: Support additional ASUS Zenbook 2023 Models")
+b257187bcff4 ("ALSA: hda: cs35l41: Support additional ASUS Zenbook 2022 Models")
+b592ed2e1d78 ("ALSA: hda: cs35l41: Support additional ASUS ROG 2023 models")
+8c4c216db8fb ("ALSA: hda: cs35l41: Add config table to support many laptops without _DSD")
+f01b371b0794 ("ALSA: hda: cs35l41: Use reset label to get GPIO for HP Zbook Fury 17 G9")
+447106e92a0c ("ALSA: hda: cs35l41: Support mute notifications for CS35L41 HDA")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From e6e18021ddd0dc5af487fb86b6d7c964e062d692 Mon Sep 17 00:00:00 2001
+From: "Luke D. Jones" <luke@ljones.dev>
+Date: Tue, 23 Jul 2024 13:12:24 +1200
+Subject: [PATCH] ALSA: hda/realtek: cs35l41: Fixup remaining asus strix models
+
+Adjust quirks for 0x3a20, 0x3a30, 0x3a50 to match the 0x3a60. This
+set has now been confirmed to work with this patch.
+
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Fixes: 811dd426a9b1 ("ALSA: hda/realtek: Add quirks for Asus ROG 2024 laptops using CS35L41")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240723011224.115579-1-luke@ljones.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index c3a86a99f8c6..462194bf6954 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10359,10 +10359,10 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
+-	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
++	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+-	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a60, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x831a, "ASUS P901", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x834a, "ASUS S101", ALC269_FIXUP_STEREO_DMIC),
+
 
