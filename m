@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0A893EF0C
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:52:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D4A93EF0D
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 431B91C21B92
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:52:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ADF51C21B66
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E35112C522;
-	Mon, 29 Jul 2024 07:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8903512C522;
+	Mon, 29 Jul 2024 07:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkkQF4GG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWJjuALa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8A484A2F
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A05B84A2F
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722239537; cv=none; b=LCKkewGC/UJiDAdCz4OlobJQKf2FrBACGaEdqi4jbXsaQfL8P3rtCws2PZZNMAFxdV/FeBIB7xPwTi+JZIRZwHtf1GRw29S94pv1erTwKcsh9GMFN8NQaaxkmIm3WrEidpRYR3vFyr6Y/kBqIg11M3CJYe/R4wZH+c7hl7cl+gk=
+	t=1722239546; cv=none; b=gmP6zO01fx6p/b8jo7+atcTFvagj09nFQYHlQUTcoyJfvEz7MvvRpsYzJibYZDU3FZpGMpAXHhx319QocKfl1rTBgXenfdcirIuz6Z5dLFeqsQT9IOHMCFkRS5vAvWQhlrc03lj+ZpWYlL6ms3KhW3YLAOZKD+KztJbNLz22dJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722239537; c=relaxed/simple;
-	bh=d3vz/J2gQN14Rr6qsSsEQ//+fc+c199SWWgQloShnBQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IRRWqppaAEOH/la5hcNkFudeIrxAzTW3opiV4xnAlyCjqbVmO/aX9qv7L4xvRS/83vD+ghh6Uz88eYTBeGkWEc61TZ91FOacqr3Sib5ABBvLMktCnuDYPvmG7Bh+ie8udcg1XpmO3anojnnTgpLCtcM+SmEh+8qpDjs45z16W60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkkQF4GG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E381C4AF0B;
-	Mon, 29 Jul 2024 07:52:16 +0000 (UTC)
+	s=arc-20240116; t=1722239546; c=relaxed/simple;
+	bh=1Jn5uKaeK3fzgq+Vo7JDO5J8e/HRnXpbLBpSc6AJAjA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RC047KKnuoZgorz+nLjyAW/topN74s/hi0mT57tisjfZTshdrBxMGLHzOhwr3YFzt3ZQSzG9KLD21sjfK/11CSz4jIc40igLGj9aNWY5YN1xjtT2+n74qstvo2oxJsFysdsTkFpFtVqhmSEZmKwh5WkZSBHKbyLeJfSdFHbne4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWJjuALa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FD0C32786;
+	Mon, 29 Jul 2024 07:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722239537;
-	bh=d3vz/J2gQN14Rr6qsSsEQ//+fc+c199SWWgQloShnBQ=;
+	s=korg; t=1722239546;
+	bh=1Jn5uKaeK3fzgq+Vo7JDO5J8e/HRnXpbLBpSc6AJAjA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QkkQF4GGh1I214Ekm9Mfqm8qkHwtTbyYn1hibuHf1dGjZ77xhfLJytutePoVQakQB
-	 0u3Gfx7CKxyR38S3PmovOGwpTQqHpnvnb3D9/fWHJ0v9/9w8w66GJJDgB7bvdNFYQR
-	 7oN0OHB29AX2EhGgpfMlq92TdXScg2gsu1L+dccs=
-Subject: FAILED: patch "[PATCH] fuse: verify {g,u}id mount options correctly" failed to apply to 5.10-stable tree
+	b=pWJjuALav4haKqPiVciuD9mkMIJShxOOK6SJ3StacsM4X3uyF5ds8EsEp1+7f/5zS
+	 fefLPDwQkS6G47A5+sU7FeSvlLOSse8O+bqnNGRHZkMHplmTz9diLFNQggUhk4mSkS
+	 GnivAk3d/OvkxNIhYun4Z7NE4Je8j5AwPmOiWuvE=
+Subject: FAILED: patch "[PATCH] fuse: verify {g,u}id mount options correctly" failed to apply to 5.4-stable tree
 To: sandeen@redhat.com,brauner@kernel.org,josef@toxicpanda.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 09:52:08 +0200
-Message-ID: <2024072908-everglade-starved-66da@gregkh>
+Date: Mon, 29 Jul 2024 09:52:14 +0200
+Message-ID: <2024072914-sierra-aflutter-e231@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,31 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 525bd65aa759ec320af1dc06e114ed69733e9e23
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072908-everglade-starved-66da@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072914-sierra-aflutter-e231@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 525bd65aa759 ("fuse: verify {g,u}id mount options correctly")
 84c215075b57 ("fuse: name fs_context consistently")
+1dd539577c42 ("virtiofs: add a mount option to enable dax")
+f4fd4ae354ba ("virtiofs: get rid of no_mount_options")
+b330966f79fb ("fuse: reject options on reconfigure via fsconfig(2)")
+e8b20a474cf2 ("fuse: ignore 'data' argument of mount(..., MS_REMOUNT)")
+0189a2d367f4 ("fuse: use ->reconfigure() instead of ->remount_fs()")
+7fd3abfa8dd7 ("virtiofs: do not use fuse_fill_super_common() for device installation")
+c9d35ee049b4 ("Merge branch 'merge.nfs-fs_parse.1' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs")
 
 thanks,
 
