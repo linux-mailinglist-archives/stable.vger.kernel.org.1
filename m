@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C94F93F4E4
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:09:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F6393F4E6
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 614451C21A34
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:09:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 488C92826F2
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725C6146A9B;
-	Mon, 29 Jul 2024 12:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A7A146A9B;
+	Mon, 29 Jul 2024 12:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U556Cbua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6QNor9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3128980034
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CA280034
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722254996; cv=none; b=t7A381/fUV90qjFNku9WniDhulX6tjlwyNJVlhqKiPM5Fg8farn9Mswj0yHRofLaeU/Ss4D5R9NNrTI42PG0jOMSzCIeiVoxdqZW63SW8UcWh14PiPwXBp4h0B6cjrigySQYNpsXNAQ0KSqfOcHiE7v09o6MfF7Bdfv75NVBfTw=
+	t=1722255001; cv=none; b=b+YHGQDKy9iTCP+LyosCJyS5AwuI7+CrTarE+fAAWUYe9AXea0ona5iMe01hFVU6LRqobEcLjjYqAjS8Rl2SDXOQdUvkbuM8Naa0MDFd0+ZdbmtVGAJXn+F3vN5xo5s/M3Vh1lOMJ2zNJa6vaSm+G8A3wjqdDwsURsx6baQUgbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722254996; c=relaxed/simple;
-	bh=bvsf+EvqqBCvpfzHZS0s5j5zSZUP17QYBtXXCMTigT8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FYKQcONTCBROV/OYGbc0GJ1DbJsb06zxfWyX0kNtcxpm8ssyEagm/PbBvBGtPqOIpazzeQ4vt5gqeyDJqPC9T478A7rXJScilRGvsdawiEnqFC/sT8rhL7N5rnxgr0T9rY8bk7rwj9RWHB9p+xL9nb86uaOOEEmuDscaeW5HqR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U556Cbua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462F1C32786;
-	Mon, 29 Jul 2024 12:09:55 +0000 (UTC)
+	s=arc-20240116; t=1722255001; c=relaxed/simple;
+	bh=IBXmCqZGcgBLrMWHt0EkYKN/jl3XeONzvtNer83t1HM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h7PJFZP1EPzsmqevV5PE17kyfUqqvaX9Xo8k0aonKqhk829SQMmFaEG+Gi6eWSny6f/+icFr8Y9wo4eM+tOQt01mn0XCW8EXFTKDeHbbAXfNwI3nvlZJisfwKqZSLczb7M2bjJINmZ4sWaNVbGpuCP8AiNeN42soEFClym3/OPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6QNor9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3263C32786;
+	Mon, 29 Jul 2024 12:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722254995;
-	bh=bvsf+EvqqBCvpfzHZS0s5j5zSZUP17QYBtXXCMTigT8=;
+	s=korg; t=1722255001;
+	bh=IBXmCqZGcgBLrMWHt0EkYKN/jl3XeONzvtNer83t1HM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=U556Cbuayy7OdV/mZuPOmL8KbiHGGxMuj3o48z0uxc/NUm4ZCjLypyuGzzyqEkjPc
-	 9hRSycs7CIqUSgpJmjeXF6o/cMvlWRIapiyYg5cp6lCJGYcp8lzKHM9qH1bp/ojusK
-	 PQVA5qjTHtpKK1qrPYA8ZkyiDIrKfhXF30K92bfg=
-Subject: FAILED: patch "[PATCH] fbdev: vesafb: Detect VGA compatibility from screen info's" failed to apply to 6.1-stable tree
+	b=f6QNor9p7xVxfx9VZL7SlUHQVSPnAF5wLSBWpIHpDXJlRaFfE2OtBsQMZtTGSwiTa
+	 1OsGpkNmseGbikk6xPudRl6eEw4ZMAEPtGdEKuAd5CLbbdhriH4c4Re2PRQtaepOXZ
+	 Vw7O7lFWQo0FQhU0Y472XISYzTZ73PWK+lH/f/PY=
+Subject: FAILED: patch "[PATCH] fbdev: vesafb: Detect VGA compatibility from screen info's" failed to apply to 5.15-stable tree
 To: tzimmermann@suse.de,deller@gmx.de,javierm@redhat.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 14:09:52 +0200
-Message-ID: <2024072951-greeter-mummy-752b@gregkh>
+Date: Mon, 29 Jul 2024 14:09:57 +0200
+Message-ID: <2024072956-rockfish-extradite-7f79@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x c2bc958b2b03e361f14df99983bc64a39a7323a3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072951-greeter-mummy-752b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072956-rockfish-extradite-7f79@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -81,6 +81,10 @@ cedaf7cddd73 ("fbdev: Support NULL for name in option-string lookup")
 678573b8eee2 ("fbdev/vesafb: Do not use struct fb_info.apertures")
 4ef614be6557 ("fbdev/vesafb: Remove trailing whitespaces")
 9a758d8756da ("drm: Move nomodeset kernel parameter to drivers/video")
+7283f862bd99 ("drm: Implement DRM aperture helpers under video/")
+efc8f3229f84 ("MAINTAINERS: Broaden scope of simpledrm entry")
+fb84efa28a48 ("drm/aperture: Run fbdev removal before internal helpers")
+2518f226c60d ("Merge tag 'drm-next-2022-05-25' of git://anongit.freedesktop.org/drm/drm")
 
 thanks,
 
