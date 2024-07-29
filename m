@@ -1,176 +1,150 @@
-Return-Path: <stable+bounces-62496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034AC93F3D2
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 13:20:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86FB93F3DD
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 13:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEBDA1F225E0
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:20:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E574C1C209CA
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BF7145FEC;
-	Mon, 29 Jul 2024 11:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOaoFHzH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEE6145FE1;
+	Mon, 29 Jul 2024 11:20:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A249145B3F
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 11:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A051474CB;
+	Mon, 29 Jul 2024 11:20:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722252021; cv=none; b=grago57PM53LXNVOPwTZwxy2ALixX4ARnvw7hprsIdVof97PXJSy1NcAGv5VFa4ZmvshTz/2wPZ4GM68/R9sN8H3SFeHQ0KV0sHySyYexy5qDXCdz0EPf62q6T0ga8elso4MYLEbXwhciM/0aw4e1r9cUL0+41iH6+GxNRG4y7k=
+	t=1722252044; cv=none; b=U+shavhmuTpIa4iSVjoQayMpZDQqiLTIqXtgM/SXKLGkB2hkAqPGp1BbRmZFnj4sGRKq9ZrbGU3YhQ7ZvXagWN58+2R/xB1slOg1Sk7f82PEcv5LDMzqnu8bc7jGSNJ45kugroE8xzvzrdWu00J9Gd5iwQuhExgebXSy9+jflSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722252021; c=relaxed/simple;
-	bh=KYg1EYmKAfCHn06orEwHJHXpcT8AUlXNnondr0MxF3A=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CLo6aiNDtegNJjiazlUX7UZu7RsmfEpvyFfcCW2lwuSNKVduJCwaNX8Bry4PMTkwH2pEFC8RpX6CDJ1B55yjD1tYapPhWT6TwKA0WzOtpCdqLOkPdgMbuK25pMSQlQVjbJugI/ZjmfqFr/jBWsQY8HzLdi20A36n3bphboZoszc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOaoFHzH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5132EC4AF07;
-	Mon, 29 Jul 2024 11:20:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722252020;
-	bh=KYg1EYmKAfCHn06orEwHJHXpcT8AUlXNnondr0MxF3A=;
-	h=Subject:To:Cc:From:Date:From;
-	b=zOaoFHzH7Je/RdeMi0RxzpzWu75wiBPOQynUKUKVYPB03SU7nssAFF5HDZa2MDQId
-	 pmEDITn1AJjDnf3iflOSdqLpQsjCIJiD5RdQK66xpJZiBONrKPdhpKUAPcoS0fbXA/
-	 3VUhWyTqfsy+9QQ2H9wl1d79zsEtnauAmALHqu4E=
-Subject: FAILED: patch "[PATCH] jbd2: avoid infinite transaction commit loop" failed to apply to 5.15-stable tree
-To: jack@suse.cz,alex.coffin@maticrobots.com,tytso@mit.edu,yi.zhang@huawei.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 13:20:17 +0200
-Message-ID: <2024072917-thirty-clay-7316@gregkh>
+	s=arc-20240116; t=1722252044; c=relaxed/simple;
+	bh=lFE+6jmxKW+Mj+DaDRAbGZhKfQQBRW5huCxtvy5XFVA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uovG0secD1igS7IQhWEC3/FL5Cg9PNbbLrXMvvYhZLnVlVegxWef3gDkeRCoBIZ/LRnxJXHp95iBUGPEDXXlwUOyw04zWGQRslx1A1BMLxPPr+2S4I7xxMvBMNU6wYc2tZ2BETdqYh+lfTsG255v83kh+IWXLrLJ9kklJ3+lu7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+Received: from i5e86192c.versanet.de ([94.134.25.44] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1sYOQb-0003lq-S8; Mon, 29 Jul 2024 13:20:33 +0200
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To: Linus Walleij <linus.walleij@linaro.org>, Huang-Huang Bao <i@eh5.me>
+Cc: Richard Kojedzinszky <richard@kojedz.in>, linux-gpio@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Huang-Huang Bao <i@eh5.me>,
+ stable@vger.kernel.org
+Subject:
+ Re: [PATCH] pinctrl: rockchip: correct RK3328 iomux width flag for GPIO2-B
+ pins
+Date: Mon, 29 Jul 2024 13:20:32 +0200
+Message-ID: <10503834.DAOxP5AVGn@diego>
+In-Reply-To: <20240709105428.1176375-1-i@eh5.me>
+References: <20240709105428.1176375-1-i@eh5.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+
+Am Dienstag, 9. Juli 2024, 12:54:28 CEST schrieb Huang-Huang Bao:
+> The base iomux offsets for each GPIO pin line are accumulatively
+> calculated based off iomux width flag in rockchip_pinctrl_get_soc_data.
+> If the iomux width flag is one of IOMUX_WIDTH_4BIT, IOMUX_WIDTH_3BIT or
+> IOMUX_WIDTH_2BIT, the base offset for next pin line would increase by 8
+> bytes, otherwise it would increase by 4 bytes.
+> 
+> Despite most of GPIO2-B iomux have 2-bit data width, which can be fit
+> into 4 bytes space with write mask, it actually take 8 bytes width for
+> whole GPIO2-B line.
+> 
+> Commit e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328
+> GPIO2-B pins") wrongly set iomux width flag to 0, causing all base
+> iomux offset for line after GPIO2-B to be calculated wrong. Fix the
+> iomux width flag to IOMUX_WIDTH_2BIT so the offset after GPIO2-B is
+> correctly increased by 8, matching the actual width of GPIO2-B iomux.
+> 
+> Fixes: e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins")
+> Cc: stable@vger.kernel.org
+> Reported-by: Richard Kojedzinszky <richard@kojedz.in>
+> Closes: https://lore.kernel.org/linux-rockchip/4f29b743202397d60edfb3c725537415@kojedz.in/
+> Tested-by: Richard Kojedzinszky <richard@kojedz.in>
+> Signed-off-by: Huang-Huang Bao <i@eh5.me>
+
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+
+Thanks for providing the offset list below, now it matches
+the documentation
 
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> ---
+> 
+> I have double checked the iomux offsets in debug message match iomux
+> register definitions in "GRF Register Description" section in RK3328
+> TRM[1].
+> 
+> [1]: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
+> 
+> Kernel pinctrl debug message with dyndbg="file pinctrl-rockchip.c +p":
+>   rockchip-pinctrl pinctrl: bank 0, iomux 0 has iom_offset 0x0 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 0, iomux 1 has iom_offset 0x4 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 0, iomux 2 has iom_offset 0x8 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 0, iomux 3 has iom_offset 0xc drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 1, iomux 0 has iom_offset 0x10 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 1, iomux 1 has iom_offset 0x14 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 1, iomux 2 has iom_offset 0x18 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 1, iomux 3 has iom_offset 0x1c drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 2, iomux 0 has iom_offset 0x20 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 2, iomux 1 has iom_offset 0x24 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 2, iomux 2 has iom_offset 0x2c drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 2, iomux 3 has iom_offset 0x34 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 3, iomux 0 has iom_offset 0x38 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 3, iomux 1 has iom_offset 0x40 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 3, iomux 2 has iom_offset 0x48 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 3, iomux 3 has iom_offset 0x4c drv_offset 0x0
+> 
+> The "Closes" links to test report from original reporter with original
+> issue contained, which was not delivered to any mailing list thus not
+> available on the web.
+> 
+> Added CC stable as the problematic e8448a6c817c fixed by this patch was
+> recently merged to stable kernels.
+> 
+> Sorry for the inconvenience caused,
+> Huang-Huang
+> 
+>  drivers/pinctrl/pinctrl-rockchip.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+> index 3f56991f5b89..f6da91941fbd 100644
+> --- a/drivers/pinctrl/pinctrl-rockchip.c
+> +++ b/drivers/pinctrl/pinctrl-rockchip.c
+> @@ -3813,7 +3813,7 @@ static struct rockchip_pin_bank rk3328_pin_banks[] = {
+>  	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
+>  	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
+>  	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
+> -			     0,
+> +			     IOMUX_WIDTH_2BIT,
+>  			     IOMUX_WIDTH_3BIT,
+>  			     0),
+>  	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
+> 
+> base-commit: 4376e966ecb78c520b0faf239d118ecfab42a119
+> --
+> 2.45.2
+> 
 
-To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 27ba5b67312a944576addc4df44ac3b709aabede
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072917-thirty-clay-7316@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-Possible dependencies:
-
-27ba5b67312a ("jbd2: avoid infinite transaction commit loop")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 27ba5b67312a944576addc4df44ac3b709aabede Mon Sep 17 00:00:00 2001
-From: Jan Kara <jack@suse.cz>
-Date: Mon, 24 Jun 2024 19:01:19 +0200
-Subject: [PATCH] jbd2: avoid infinite transaction commit loop
-
-Commit 9f356e5a4f12 ("jbd2: Account descriptor blocks into
-t_outstanding_credits") started to account descriptor blocks into
-transactions outstanding credits. However it didn't appropriately
-decrease the maximum amount of credits available to userspace. Thus if
-the filesystem requests a transaction smaller than
-j_max_transaction_buffers but large enough that when descriptor blocks
-are added the size exceeds j_max_transaction_buffers, we confuse
-add_transaction_credits() into thinking previous handles have grown the
-transaction too much and enter infinite journal commit loop in
-start_this_handle() -> add_transaction_credits() trying to create
-transaction with enough credits available.
-
-Fix the problem by properly accounting for transaction space reserved
-for descriptor blocks when verifying requested transaction handle size.
-
-CC: stable@vger.kernel.org
-Fixes: 9f356e5a4f12 ("jbd2: Account descriptor blocks into t_outstanding_credits")
-Reported-by: Alexander Coffin <alex.coffin@maticrobots.com>
-Link: https://lore.kernel.org/all/CA+hUFcuGs04JHZ_WzA1zGN57+ehL2qmHOt5a7RMpo+rv6Vyxtw@mail.gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20240624170127.3253-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-
-diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
-index a095f1a3114b..66513c18ca29 100644
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -191,6 +191,13 @@ static void sub_reserved_credits(journal_t *journal, int blocks)
- 	wake_up(&journal->j_wait_reserved);
- }
- 
-+/* Maximum number of blocks for user transaction payload */
-+static int jbd2_max_user_trans_buffers(journal_t *journal)
-+{
-+	return journal->j_max_transaction_buffers -
-+				journal->j_transaction_overhead_buffers;
-+}
-+
- /*
-  * Wait until we can add credits for handle to the running transaction.  Called
-  * with j_state_lock held for reading. Returns 0 if handle joined the running
-@@ -240,12 +247,12 @@ __must_hold(&journal->j_state_lock)
- 		 * big to fit this handle? Wait until reserved credits are freed.
- 		 */
- 		if (atomic_read(&journal->j_reserved_credits) + total >
--		    journal->j_max_transaction_buffers) {
-+		    jbd2_max_user_trans_buffers(journal)) {
- 			read_unlock(&journal->j_state_lock);
- 			jbd2_might_wait_for_commit(journal);
- 			wait_event(journal->j_wait_reserved,
- 				   atomic_read(&journal->j_reserved_credits) + total <=
--				   journal->j_max_transaction_buffers);
-+				   jbd2_max_user_trans_buffers(journal));
- 			__acquire(&journal->j_state_lock); /* fake out sparse */
- 			return 1;
- 		}
-@@ -285,14 +292,14 @@ __must_hold(&journal->j_state_lock)
- 
- 	needed = atomic_add_return(rsv_blocks, &journal->j_reserved_credits);
- 	/* We allow at most half of a transaction to be reserved */
--	if (needed > journal->j_max_transaction_buffers / 2) {
-+	if (needed > jbd2_max_user_trans_buffers(journal) / 2) {
- 		sub_reserved_credits(journal, rsv_blocks);
- 		atomic_sub(total, &t->t_outstanding_credits);
- 		read_unlock(&journal->j_state_lock);
- 		jbd2_might_wait_for_commit(journal);
- 		wait_event(journal->j_wait_reserved,
- 			 atomic_read(&journal->j_reserved_credits) + rsv_blocks
--			 <= journal->j_max_transaction_buffers / 2);
-+			 <= jbd2_max_user_trans_buffers(journal) / 2);
- 		__acquire(&journal->j_state_lock); /* fake out sparse */
- 		return 1;
- 	}
-@@ -322,12 +329,12 @@ static int start_this_handle(journal_t *journal, handle_t *handle,
- 	 * size and limit the number of total credits to not exceed maximum
- 	 * transaction size per operation.
- 	 */
--	if ((rsv_blocks > journal->j_max_transaction_buffers / 2) ||
--	    (rsv_blocks + blocks > journal->j_max_transaction_buffers)) {
-+	if (rsv_blocks > jbd2_max_user_trans_buffers(journal) / 2 ||
-+	    rsv_blocks + blocks > jbd2_max_user_trans_buffers(journal)) {
- 		printk(KERN_ERR "JBD2: %s wants too many credits "
- 		       "credits:%d rsv_credits:%d max:%d\n",
- 		       current->comm, blocks, rsv_blocks,
--		       journal->j_max_transaction_buffers);
-+		       jbd2_max_user_trans_buffers(journal));
- 		WARN_ON(1);
- 		return -ENOSPC;
- 	}
 
 
