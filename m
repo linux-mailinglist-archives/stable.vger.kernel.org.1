@@ -1,157 +1,171 @@
-Return-Path: <stable+bounces-62453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C966B93F294
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:25:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A5993F2B3
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:30:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 829C82820D7
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:25:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D066B24D9D
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4E5143C75;
-	Mon, 29 Jul 2024 10:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1A02F5A;
+	Mon, 29 Jul 2024 10:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wvvq/LAK";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T5mN0OGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nndbvnin"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C5D1448C7;
-	Mon, 29 Jul 2024 10:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4031422D9
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722248693; cv=none; b=ClBwnt0CcABdx+BQndaaKRE5XC7PiABu5c+v4kDOJVSeiTvW8pXdUzthJRYSiiwkHYR9YHkWnLfj0hcbRy+VGINCe5n3UFTprSkuU1lonlr+g/sfVhQqq6tV/xTFlhuyejiVvvYOYRgp6/nx+OxeHDk67s/FQGYcRdB6rcPUc0c=
+	t=1722249007; cv=none; b=CUT+XV7riTJ9++eaSD3rfKuk0RQqHQW+3znDq+3TR4/hiYiw+jeJz9Gif6j1f0Q47zbU412vOpUQ1+pOVEzPfqIqYOzqpD5T0E4Jb1/ktxNHl4IDQrfKbezhKbH8qJExlR4WyUpdtQyti81HkrYs5z05I2Eq2FJsYNIxAuwLpXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722248693; c=relaxed/simple;
-	bh=at8u3DJ8ldslYFHKUFh5EDZh0NrJ9Pu5WUoQK6V+vDg=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=gxSqlZOmEBy918G53sXXyWn5Lfucc14A9Oaa/SGKJwGew1IbqbZh2RX9yD/udsXSpYgNhooIUwyOvgbzObWq3KCO/AwhSoXjLpbkgbeYD986H/dm8uVveZABC/bGYJj8P82Phqe+JGNZidxdMHM8LpIz6sPvtw2ORpk7OVuwWoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wvvq/LAK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T5mN0OGu; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 29 Jul 2024 10:24:49 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722248689;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0BVrPkutTcpIwTGJOb+VN/yLfSss6WtwpS1OtXXSDe4=;
-	b=Wvvq/LAK7mcOFKOBz8BlQyspWMTtvaa9vveSWkKOnw66rq5L0oKAyN8hdTlklxalA9YVvl
-	10XEoHI5lg67F6kdiW9oJzeEddYsUi+NG+MTlrgGu4XXGQqU77aX3AgzgMa8Tw4mxh9kiF
-	txpj+aupDvIRQYa5od7pkniKDAbGQlyA45sXEoKvOfzrbxpHYp1FVbXKsDHWcnXSjOyGwo
-	d5QllJTVSPH0UjlV4g6km3JovRh3rkrEsGNVTOYOga3t7mW5Szf7eGBK3O5+TZI7VVD8dW
-	KgpCwgQb2oTl/+y6j/kHmsBMjEg80Z3OOeGG7abaq7RIL5VBwNC9wMKkLWa9Tw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722248689;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0BVrPkutTcpIwTGJOb+VN/yLfSss6WtwpS1OtXXSDe4=;
-	b=T5mN0OGuGu47yhOzJDlb7kjoEzl1RBVU4F/Mk6/pk21xWpwhdGj/it1NZxHOYqJDLnnx11
-	Jc7t037lntmVD6Bw==
-From: "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/pt: Fix sampling synchronization
-Cc: Adrian Hunter <adrian.hunter@intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240715160712.127117-2-adrian.hunter@intel.com>
-References: <20240715160712.127117-2-adrian.hunter@intel.com>
+	s=arc-20240116; t=1722249007; c=relaxed/simple;
+	bh=7UUklws0zR9js3HLV8mC/c1gqzk2uBrjyjx8KbwFtEU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lb4/5W9sofqqDUZTI5gxux1OW05aqmhFysts+AR79xMHmOdDEYjl8sx3LMDxTeh2J/NWPJX6wCswG1uDzOMbRQpTqaeStvnUQSDUlDKt4zbolAcFhqeP/Gf5Vhk81d71E+ZnoqpErK/BgKEPtSFHh6guhnIWKwY4RrV3K4W4YyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nndbvnin; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A00C32786;
+	Mon, 29 Jul 2024 10:30:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722249006;
+	bh=7UUklws0zR9js3HLV8mC/c1gqzk2uBrjyjx8KbwFtEU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=nndbvninBVwrNVHIEsCV4MPd5x/BESzC/vwu0EOAJVwuZLPvmlWPmi1Ma0kVaD/GB
+	 nSZE8KAvRUsbE+Is5qn3N67d3mJkx76l8xv/SclJPXT30ZhOFm/JHOijyFrU/Xia1V
+	 VpbsrA0+Ao/t1PcPt3tkeJ/q8fdfLGQ7/8obAbX8=
+Subject: FAILED: patch "[PATCH] ext4: check the extent status again before inserting delalloc" failed to apply to 6.10-stable tree
+To: yi.zhang@huawei.com,jack@suse.cz,tytso@mit.edu
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Jul 2024 12:30:03 +0200
+Message-ID: <2024072903-oblong-old-80b6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172224868902.2215.217749808171783560.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     d92792a4b26e50b96ab734cbe203d8a4c932a7a9
-Gitweb:        https://git.kernel.org/tip/d92792a4b26e50b96ab734cbe203d8a4c932a7a9
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Mon, 15 Jul 2024 19:07:00 +03:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 29 Jul 2024 12:16:24 +02:00
+The patch below does not apply to the 6.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-perf/x86/intel/pt: Fix sampling synchronization
+To reproduce the conflict and resubmit, you may use the following commands:
 
-pt_event_snapshot_aux() uses pt->handle_nmi to determine if tracing
-needs to be stopped, however tracing can still be going because
-pt->handle_nmi is set to zero before tracing is stopped in pt_event_stop,
-whereas pt_event_snapshot_aux() requires that tracing must be stopped in
-order to copy a sample of trace from the buffer.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 0ea6560abb3bac1ffcfa4bf6b2c4d344fdc27b3c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072903-oblong-old-80b6@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
-Instead call pt_config_stop() always, which anyway checks config for
-RTIT_CTL_TRACEEN and does nothing if it is already clear.
+Possible dependencies:
 
-Note pt_event_snapshot_aux() can continue to use pt->handle_nmi to
-determine if the trace needs to be restarted afterwards.
+0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
 
-Fixes: 25e8920b301c ("perf/x86/intel/pt: Add sampling support")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 0ea6560abb3bac1ffcfa4bf6b2c4d344fdc27b3c Mon Sep 17 00:00:00 2001
+From: Zhang Yi <yi.zhang@huawei.com>
+Date: Fri, 17 May 2024 20:39:57 +0800
+Subject: [PATCH] ext4: check the extent status again before inserting delalloc
+ block
+
+ext4_da_map_blocks looks up for any extent entry in the extent status
+tree (w/o i_data_sem) and then the looks up for any ondisk extent
+mapping (with i_data_sem in read mode).
+
+If it finds a hole in the extent status tree or if it couldn't find any
+entry at all, it then takes the i_data_sem in write mode to add a da
+entry into the extent status tree. This can actually race with page
+mkwrite & fallocate path.
+
+Note that this is ok between
+1. ext4 buffered-write path v/s ext4_page_mkwrite(), because of the
+   folio lock
+2. ext4 buffered write path v/s ext4 fallocate because of the inode
+   lock.
+
+But this can race between ext4_page_mkwrite() & ext4 fallocate path
+
+ext4_page_mkwrite()             ext4_fallocate()
+ block_page_mkwrite()
+  ext4_da_map_blocks()
+   //find hole in extent status tree
+                                 ext4_alloc_file_blocks()
+                                  ext4_map_blocks()
+                                   //allocate block and unwritten extent
+   ext4_insert_delayed_block()
+    ext4_da_reserve_space()
+     //reserve one more block
+    ext4_es_insert_delayed_block()
+     //drop unwritten extent and add delayed extent by mistake
+
+Then, the delalloc extent is wrong until writeback and the extra
+reserved block can't be released any more and it triggers below warning:
+
+ EXT4-fs (pmem2): Inode 13 (00000000bbbd4d23): i_reserved_data_blocks(1) not cleared!
+
+Fix the problem by looking up extent status tree again while the
+i_data_sem is held in write mode. If it still can't find any entry, then
+we insert a new da entry into the extent status tree.
+
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240715160712.127117-2-adrian.hunter@intel.com
----
- arch/x86/events/intel/pt.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240517124005.347221-3-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 
-diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
-index b4aa8da..2959970 100644
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -1606,6 +1606,7 @@ static void pt_event_stop(struct perf_event *event, int mode)
- 	 * see comment in intel_pt_interrupt().
- 	 */
- 	WRITE_ONCE(pt->handle_nmi, 0);
-+	barrier();
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 168819b4db01..4b0d64a76e88 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1737,6 +1737,7 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 		if (ext4_es_is_hole(&es))
+ 			goto add_delayed;
  
- 	pt_config_stop(event);
++found:
+ 		/*
+ 		 * Delayed extent could be allocated by fallocate.
+ 		 * So we need to check it.
+@@ -1781,6 +1782,26 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
  
-@@ -1657,11 +1658,10 @@ static long pt_event_snapshot_aux(struct perf_event *event,
- 		return 0;
- 
- 	/*
--	 * Here, handle_nmi tells us if the tracing is on
-+	 * There is no PT interrupt in this mode, so stop the trace and it will
-+	 * remain stopped while the buffer is copied.
- 	 */
--	if (READ_ONCE(pt->handle_nmi))
--		pt_config_stop(event);
--
-+	pt_config_stop(event);
- 	pt_read_offset(buf);
- 	pt_update_head(pt);
- 
-@@ -1673,11 +1673,10 @@ static long pt_event_snapshot_aux(struct perf_event *event,
- 	ret = perf_output_copy_aux(&pt->handle, handle, from, to);
- 
- 	/*
--	 * If the tracing was on when we turned up, restart it.
--	 * Compiler barrier not needed as we couldn't have been
--	 * preempted by anything that touches pt->handle_nmi.
-+	 * Here, handle_nmi tells us if the tracing was on.
-+	 * If the tracing was on, restart it.
- 	 */
--	if (pt->handle_nmi)
-+	if (READ_ONCE(pt->handle_nmi))
- 		pt_config_start(event);
- 
- 	return ret;
+ add_delayed:
+ 	down_write(&EXT4_I(inode)->i_data_sem);
++	/*
++	 * Page fault path (ext4_page_mkwrite does not take i_rwsem)
++	 * and fallocate path (no folio lock) can race. Make sure we
++	 * lookup the extent status tree here again while i_data_sem
++	 * is held in write mode, before inserting a new da entry in
++	 * the extent status tree.
++	 */
++	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
++		if (!ext4_es_is_hole(&es)) {
++			up_write(&EXT4_I(inode)->i_data_sem);
++			goto found;
++		}
++	} else if (!ext4_has_inline_data(inode)) {
++		retval = ext4_map_query_blocks(NULL, inode, map);
++		if (retval) {
++			up_write(&EXT4_I(inode)->i_data_sem);
++			return retval;
++		}
++	}
++
+ 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
+ 	up_write(&EXT4_I(inode)->i_data_sem);
+ 	if (retval)
+
 
