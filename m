@@ -1,182 +1,150 @@
-Return-Path: <stable+bounces-62595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B1A93FC92
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 19:46:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA0993FCFB
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 20:01:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76EAE283841
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 17:46:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3E241F22D25
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 18:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C0583A17;
-	Mon, 29 Jul 2024 17:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D885181B82;
+	Mon, 29 Jul 2024 18:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="by4EvxFh"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="Gi8Xq6OP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4914C78C76
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 17:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B981607A1
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 18:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722275159; cv=none; b=SF7a3HSJEG3WhuUaYb++AyKOlQ+j7J0EEvrGEUmThMBhA2uU1JFgof+19W3zuUH6GWx+A/1CkYhWPUEqDWqvQ2rJ0mAJAl9H+czIa+jpPUF8NJjExogKXhNdZx0AZ6HT4rHjfokm+rHlQukjX7oozSxb3g4JVQQrp/MRMc/twpk=
+	t=1722276089; cv=none; b=te6VxEjp8tlEdUaN+I2/S1XzbOcahfNMC0sntzOU+2jPowlTHWyMdGKwQ+XzoCD4RgkYajB7YwM9ghXt6dVvrLR276tKSN9jLswhNLWZCmB5V+vdLCMEIdxTNYlDgetUH2aZWaoPR7hNFJpuZ9XIKh+fz14NYxel/9sUsQ1t3ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722275159; c=relaxed/simple;
-	bh=uCdgoIiavXN3puMXJE2UzYdCsJJPEwUFOwCTOxLwMiI=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=aIU8A1HGL4x8r0E5BPE94RPReflQ8jWDc1K4yRBPQgz5RRIY4OneL1i/jRDI8Z6tkT4jlQqsOFGEATBTnyOZZ3o8F/ZUAGZB/bWedUx8KB3fqWvRHrMd7FBernq/Sov/t0n10yk7PyEvdU+m1hwynkxr6JLkAmwfkmMmexdam+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=by4EvxFh; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1fc53171e56so1581825ad.3
-        for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:45:55 -0700 (PDT)
+	s=arc-20240116; t=1722276089; c=relaxed/simple;
+	bh=NxPxTGwFiATU9I0paB9I5SPNOKKKTOqx+SBrETwxHTo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tyClXoPHGTvuj7+zg/kkKeys/8Km9/nT8k1Xk4sveQ+7zbSJcYtf76yKILGAWFh1W7yd2V+88VPZX9pG4XH9TEvhLq0X3C8ylw+/SRL9V7diUzliIJ6I3jvhIgTzZUHdTBxMSSpMgwXcuLnT3BDgYgCxFJ/v/1FNqjYS9gQ1+MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=Gi8Xq6OP; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=g.harvard.edu
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-44ff50affc5so21031371cf.1
+        for <stable@vger.kernel.org>; Mon, 29 Jul 2024 11:01:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1722275154; x=1722879954; darn=vger.kernel.org;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7h2UzJDdTN5EnnSIS53uqREIsImTeXMJr90b+PzT8ds=;
-        b=by4EvxFhE39l+XEnEfdCfvFwMg3+R11FSbDKRzj0bokNnAYSDtY2ao/n238E0Zeotm
-         I79KpBQ0bNCc7B6UzR8jOKJK82X4zYyR3DcjFU9+OPQpyvGpS0yfRSp7cCySEwNdF+61
-         sh6lM7DAYpclJxoi1szg7dfGCyGEgNjrpyBDIkiAXPYgCm23kaSEP2IZ1tlWZtM0SU/8
-         lh8FShruZAq/3QE4gPnnnXOrIsh9l2eY2D5Er2kF/JVaaeQMD8gJ17Nye/89scmRdHX0
-         VzttZ9BJSDD/P7yssUtzHgfe1ArdXvClV42fYJdS+k0vPBUKZIhP9Br+oU6d70jXdfsK
-         Iraw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722275154; x=1722879954;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+        d=rowland.harvard.edu; s=google; t=1722276086; x=1722880886; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=7h2UzJDdTN5EnnSIS53uqREIsImTeXMJr90b+PzT8ds=;
-        b=h0IQ6vI+Je/Wb/RBemZA4ZpdZfrbfUvQUwVkcbqlE9/Xr8LYsZfmhRyvMc6WG/K+Mq
-         +i0JiBFnAkD3PXgydbrT72oSeph5ux6pgUZgDOvwZduvot4w5+wumL14Z1W7IunylA5u
-         D13146LEJJFAxfNLDJtB0fsOeaIr7fUAk7SiLnu2zCqkjkjfLyRZlue8UfpJJeefc0sq
-         b62keb3DIKqhw6RucszOT+g4tN7NQbuAn1Yx7U5qenlFmCj30xfCsBXdan3EuVEfNMCh
-         62e2gHXVUlSuKwzHdQIB649ZQbZ9xfICpcJu9Cku3CNJ/+q6134zeyGQPmzyX6wPq/V6
-         KkDw==
-X-Gm-Message-State: AOJu0Yx+HMVQL7yfuYBxYZDF+yazrIOhmEVKZZZQleto7g9B9jHTVc8/
-	QmYgsBJ2dclabZuCi69WebO4hUgarNoL2CTXCDZ+2mYLBByMqd/luapEj++WSgiuf28WzhpxL23
-	t
-X-Google-Smtp-Source: AGHT+IH1ERE8fbkXmWAsiMOXhA5DOJj7EBvZZ93WCR+gJmq+4kjavd86f7pTtyjHKYpFrhlVmU36Ww==
-X-Received: by 2002:a17:903:24d:b0:1fc:5cc8:bb1b with SMTP id d9443c01a7336-1fed6ca4e55mr105134775ad.7.1722275154496;
-        Mon, 29 Jul 2024 10:45:54 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7ee6a1esm86177275ad.164.2024.07.29.10.45.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jul 2024 10:45:53 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------0rU5Mazv2GPmM48d69i3HmwB"
-Message-ID: <2f9bc94b-2c6b-46b9-b772-8ec00a637de9@kernel.dk>
-Date: Mon, 29 Jul 2024 11:45:52 -0600
+        bh=Nd1WXiUiTtwYxOMtFvVlG67gP5owuM6QDVES/bBhfKI=;
+        b=Gi8Xq6OPZ4Y3aMQLojrKDSxIDgSOe3RPI6xt4MjEYVDrVCyhOOoNFouAJLjg3YFO46
+         d4lnr1SQGaEbAIWHXtOegwYeJhL4OiWlqqSXBgoU1/AlUODDcR9poUDNNKVF47f8rdqX
+         vC0FDp/1JtrnO75hsBrhKp9ITGPIjZzMFx+nlVScvfnwl+OyEEiXsQk9z5dqP8xHPZal
+         D89XqyayNSW1Qdk0KPH5jxzjPe1EEjXWhC9RKbwyXG3Xn4VQaYHefeKmn2+L1YXgWaqH
+         pUS1BZyH/VIZ78eyd3SQy0e3VyVAoCj/SNG0+pub3v1RGPgyr3N+xazZ7ptk9R76X7vm
+         xYFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722276086; x=1722880886;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nd1WXiUiTtwYxOMtFvVlG67gP5owuM6QDVES/bBhfKI=;
+        b=Nd+en2x28Qv1ZILTqs2yAH55cYGe28zRjZifa/M/12zwabjHhyDa+xq0mcVxG3CpT/
+         4aMsn2Dd78FHhFeNrL7CSJhplqOySHtNWdEw5PAAABgV3FehJXkqjEOhQ/5vWsfNs00j
+         QWf7HUSIgxEbEPuBLZJxPnxEjk4sj6NTIBSaXSv8zRmt7FRByWgu2l2RWe5bNLyIvU2c
+         F5sMPjP1y2bLAhYoihTZxbmCKyLgfZ7YdYmm+y7Xze6EYST7KpTUugazKGpRDPe/Ql8V
+         kkOXD96S6Gg8rW472QXNdRUfIaWVXNiZuIX2PPdTV7O1znVva6UNnbMIEyHsMhCLTBTE
+         dBTg==
+X-Forwarded-Encrypted: i=1; AJvYcCWEaA6BCQMQGxUeLKEwC6VGCF1VgvQkRvRWjZwLHw2qGJxRxtbHm+ZXZZj1y2qn7YjfVHBE2/22b3dGaM/Okc06043cXlbC
+X-Gm-Message-State: AOJu0YyqYDSKk5W+w5KgE+ySqF/7N5lSI9qIJvawgcXvuuhkjEx38gHR
+	XY9DnG0ZFW7VddMK6PfrX4nx7wf1dLKCCLRhteVLj21v+6Y4XUInQB7fzFklJA==
+X-Google-Smtp-Source: AGHT+IGVjAt2ihyHs5zn4xEcJd29SKFy9xWmbX66Bk6IjnJc3rfCed+UL/M7vTEtzJwl7uv6mxhVxQ==
+X-Received: by 2002:a05:622a:1791:b0:43f:fc16:6b3f with SMTP id d75a77b69052e-45004f1378dmr135514091cf.34.1722276086083;
+        Mon, 29 Jul 2024 11:01:26 -0700 (PDT)
+Received: from rowland.harvard.edu (iolanthe.rowland.org. [192.131.102.54])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44fe8147635sm44235931cf.31.2024.07.29.11.01.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jul 2024 11:01:25 -0700 (PDT)
+Date: Mon, 29 Jul 2024 14:01:22 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Marcello Sylvester Bauer <sylv@sylv.io>, andrey.konovalov@linux.dev,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Aleksandr Nogikh <nogikh@google.com>,
+	Marco Elver <elver@google.com>,
+	Alexander Potapenko <glider@google.com>, kasan-dev@googlegroups.com,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com,
+	syzbot+17ca2339e34a1d863aad@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: gadget: dummy_hcd: execute hrtimer callback in
+ softirq context
+Message-ID: <d4ed3fb2-0d59-4376-af12-de4cd2167b18@rowland.harvard.edu>
+References: <20240729022316.92219-1-andrey.konovalov@linux.dev>
+ <baae33f5602d8bcd38b48cd6ea4617c8e17d8650.camel@sylv.io>
+ <CA+fCnZcWvtnTrST3PrORdPwmo0m2rrE+S-hWD74ZU_4RD6mSPA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] io_uring/io-wq: limit retrying worker
- initialisation" failed to apply to 6.1-stable tree
-To: gregkh@linuxfoundation.org, asml.silence@gmail.com, ju.orth@gmail.com
-Cc: stable@vger.kernel.org
-References: <2024072923-bodacious-claw-442b@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2024072923-bodacious-claw-442b@gregkh>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+fCnZcWvtnTrST3PrORdPwmo0m2rrE+S-hWD74ZU_4RD6mSPA@mail.gmail.com>
 
-This is a multi-part message in MIME format.
---------------0rU5Mazv2GPmM48d69i3HmwB
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 7/29/24 1:55 AM, gregkh@linuxfoundation.org wrote:
+On Mon, Jul 29, 2024 at 06:14:30PM +0200, Andrey Konovalov wrote:
+> On Mon, Jul 29, 2024 at 10:26 AM Marcello Sylvester Bauer <sylv@sylv.io> wrote:
+> >
+> > Hi Andrey,
 > 
-> The patch below does not apply to the 6.1-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+> Hi Marcello,
 > 
-> To reproduce the conflict and resubmit, you may use the following commands:
+> > Thanks for investigating and finding the cause of this problem. I have
+> > already submitted an identical patch to change the hrtimer to softirq:
+> > https://lkml.org/lkml/2024/6/26/969
 > 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 0453aad676ff99787124b9b3af4a5f59fbe808e2
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072923-bodacious-claw-442b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> Ah, I missed that, that's great!
+> 
+> > However, your commit messages contain more useful information about the
+> > problem at hand. So I'm happy to drop my patch in favor of yours.
+> 
+> That's very considerate, thank you. I'll leave this up to Greg - I
+> don't mind using either patch.
+> 
+> > Btw, the same problem has also been reported by the intel kernel test
+> > robot. So we should add additional tags to mark this patch as the fix.
+> >
+> >
+> > Reported-by: kernel test robot <oliver.sang@intel.com>
+> > Closes:
+> > https://lore.kernel.org/oe-lkp/202406141323.413a90d2-lkp@intel.com
+> > Acked-by: Marcello Sylvester Bauer <sylv@sylv.io>
+> 
+> Let's also add the syzbot reports mentioned in your patch:
+> 
+> Reported-by: syzbot+c793a7eca38803212c61@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=c793a7eca38803212c61
+> Reported-by: syzbot+1e6e0b916b211bee1bd6@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=1e6e0b916b211bee1bd6
+> 
+> And I also found one more:
+> 
+> Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=edd9fe0d3a65b14588d5
 
-Here's a 6.1 variant.
+You need to be careful about claiming that this patch will fix those bug 
+reports.  At least one of them (the last one above) still fails with the 
+patch applied.  See:
 
--- 
-Jens Axboe
+https://lore.kernel.org/linux-usb/ade15714-6aa3-4988-8b45-719fc9d74727@rowland.harvard.edu/
 
+and the following response.
 
---------------0rU5Mazv2GPmM48d69i3HmwB
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-io_uring-io-wq-limit-retrying-worker-initialisation.patch"
-Content-Disposition: attachment;
- filename*0="0001-io_uring-io-wq-limit-retrying-worker-initialisation.pat";
- filename*1="ch"
-Content-Transfer-Encoding: base64
-
-RnJvbSAwNDUzYWFkNjc2ZmY5OTc4NzEyNGI5YjNhZjRhNWY1OWZiZTgwOGUyIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBQYXZlbCBCZWd1bmtvdiA8YXNtbC5zaWxlbmNlQGdt
-YWlsLmNvbT4KRGF0ZTogV2VkLCAxMCBKdWwgMjAyNCAxODo1ODoxNyArMDEwMApTdWJqZWN0
-OiBbUEFUQ0hdIGlvX3VyaW5nL2lvLXdxOiBsaW1pdCByZXRyeWluZyB3b3JrZXIgaW5pdGlh
-bGlzYXRpb24KCmNvbW1pdCAwNDUzYWFkNjc2ZmY5OTc4NzEyNGI5YjNhZjRhNWY1OWZiZTgw
-OGUyIHVwc3RyZWFtLgoKSWYgaW8td3Egd29ya2VyIGNyZWF0aW9uIGZhaWxzLCB3ZSByZXRy
-eSBpdCBieSBxdWV1ZWluZyB1cCBhIHRhc2tfd29yay4KdGFzS193b3JrIGlzIG5lZWRlZCBi
-ZWNhdXNlIGl0IHNob3VsZCBiZSBkb25lIGZyb20gdGhlIHVzZXIgcHJvY2Vzcwpjb250ZXh0
-LiBUaGUgcHJvYmxlbSBpcyB0aGF0IHJldHJpZXMgYXJlIG5vdCBsaW1pdGVkLCBhbmQgaWYg
-cXVldWVpbmcgYQp0YXNrX3dvcmsgaXMgdGhlIHJlYXNvbiBmb3IgdGhlIGZhaWx1cmUsIHdl
-IG1pZ2h0IGdldCBpbnRvIGFuIGluZmluaXRlCmxvb3AuCgpJdCBkb2Vzbid0IHNlZW0gdG8g
-aGFwcGVuIG5vdyBidXQgaXQgd291bGQgd2l0aCB0aGUgZm9sbG93aW5nIHBhdGNoCmV4ZWN1
-dGluZyB0YXNrX3dvcmsgaW4gdGhlIGZyZWV6ZXIncyBsb29wLiBGb3Igbm93LCBhcmJpdHJh
-cmlseSBsaW1pdCB0aGUKbnVtYmVyIG9mIGF0dGVtcHRzIHRvIGNyZWF0ZSBhIHdvcmtlci4K
-CkNjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnCkZpeGVzOiAzMTQ2Y2JhOTlhYTI4ICgiaW8t
-d3E6IG1ha2Ugd29ya2VyIGNyZWF0aW9uIHJlc2lsaWVudCBhZ2FpbnN0IHNpZ25hbHMiKQpS
-ZXBvcnRlZC1ieTogSnVsaWFuIE9ydGggPGp1Lm9ydGhAZ21haWwuY29tPgpTaWduZWQtb2Zm
-LWJ5OiBQYXZlbCBCZWd1bmtvdiA8YXNtbC5zaWxlbmNlQGdtYWlsLmNvbT4KTGluazogaHR0
-cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci84MjgwNDM2OTI1ZGI4ODQ0OGM3Yzg1YzY2NTZlZGVl
-MWE0MzAyOWVhLjE3MjA2MzQxNDYuZ2l0LmFzbWwuc2lsZW5jZUBnbWFpbC5jb20KU2lnbmVk
-LW9mZi1ieTogSmVucyBBeGJvZSA8YXhib2VAa2VybmVsLmRrPgotLS0KIGlvX3VyaW5nL2lv
-LXdxLmMgfCAxMCArKysrKysrLS0tCiAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCsp
-LCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2lvX3VyaW5nL2lvLXdxLmMgYi9pb191
-cmluZy9pby13cS5jCmluZGV4IDk4YWM5ZGJjZWMyZi4uMDQ1MDMxMThjZGMxIDEwMDY0NAot
-LS0gYS9pb191cmluZy9pby13cS5jCisrKyBiL2lvX3VyaW5nL2lvLXdxLmMKQEAgLTIyLDYg
-KzIyLDcgQEAKICNpbmNsdWRlICJpb191cmluZy5oIgogCiAjZGVmaW5lIFdPUktFUl9JRExF
-X1RJTUVPVVQJKDUgKiBIWikKKyNkZWZpbmUgV09SS0VSX0lOSVRfTElNSVQJMwogCiBlbnVt
-IHsKIAlJT19XT1JLRVJfRl9VUAkJPSAxLAkvKiB1cCBhbmQgYWN0aXZlICovCkBAIC01OCw2
-ICs1OSw3IEBAIHN0cnVjdCBpb193b3JrZXIgewogCXVuc2lnbmVkIGxvbmcgY3JlYXRlX3N0
-YXRlOwogCXN0cnVjdCBjYWxsYmFja19oZWFkIGNyZWF0ZV93b3JrOwogCWludCBjcmVhdGVf
-aW5kZXg7CisJaW50IGluaXRfcmV0cmllczsKIAogCXVuaW9uIHsKIAkJc3RydWN0IHJjdV9o
-ZWFkIHJjdTsKQEAgLTcyOSw3ICs3MzEsNyBAQCBzdGF0aWMgYm9vbCBpb193cV93b3JrX21h
-dGNoX2FsbChzdHJ1Y3QgaW9fd3Ffd29yayAqd29yaywgdm9pZCAqZGF0YSkKIAlyZXR1cm4g
-dHJ1ZTsKIH0KIAotc3RhdGljIGlubGluZSBib29sIGlvX3Nob3VsZF9yZXRyeV90aHJlYWQo
-bG9uZyBlcnIpCitzdGF0aWMgaW5saW5lIGJvb2wgaW9fc2hvdWxkX3JldHJ5X3RocmVhZChz
-dHJ1Y3QgaW9fd29ya2VyICp3b3JrZXIsIGxvbmcgZXJyKQogewogCS8qCiAJICogUHJldmVu
-dCBwZXJwZXR1YWwgdGFza193b3JrIHJldHJ5LCBpZiB0aGUgdGFzayAob3IgaXRzIGdyb3Vw
-KSBpcwpAQCAtNzM3LDYgKzczOSw4IEBAIHN0YXRpYyBpbmxpbmUgYm9vbCBpb19zaG91bGRf
-cmV0cnlfdGhyZWFkKGxvbmcgZXJyKQogCSAqLwogCWlmIChmYXRhbF9zaWduYWxfcGVuZGlu
-ZyhjdXJyZW50KSkKIAkJcmV0dXJuIGZhbHNlOworCWlmICh3b3JrZXItPmluaXRfcmV0cmll
-cysrID49IFdPUktFUl9JTklUX0xJTUlUKQorCQlyZXR1cm4gZmFsc2U7CiAKIAlzd2l0Y2gg
-KGVycikgewogCWNhc2UgLUVBR0FJTjoKQEAgLTc2Myw3ICs3NjcsNyBAQCBzdGF0aWMgdm9p
-ZCBjcmVhdGVfd29ya2VyX2NvbnQoc3RydWN0IGNhbGxiYWNrX2hlYWQgKmNiKQogCQlpb19p
-bml0X25ld193b3JrZXIod3FlLCB3b3JrZXIsIHRzayk7CiAJCWlvX3dvcmtlcl9yZWxlYXNl
-KHdvcmtlcik7CiAJCXJldHVybjsKLQl9IGVsc2UgaWYgKCFpb19zaG91bGRfcmV0cnlfdGhy
-ZWFkKFBUUl9FUlIodHNrKSkpIHsKKwl9IGVsc2UgaWYgKCFpb19zaG91bGRfcmV0cnlfdGhy
-ZWFkKHdvcmtlciwgUFRSX0VSUih0c2spKSkgewogCQlzdHJ1Y3QgaW9fd3FlX2FjY3QgKmFj
-Y3QgPSBpb193cWVfZ2V0X2FjY3Qod29ya2VyKTsKIAogCQlhdG9taWNfZGVjKCZhY2N0LT5u
-cl9ydW5uaW5nKTsKQEAgLTgzMCw3ICs4MzQsNyBAQCBzdGF0aWMgYm9vbCBjcmVhdGVfaW9f
-d29ya2VyKHN0cnVjdCBpb193cSAqd3EsIHN0cnVjdCBpb193cWUgKndxZSwgaW50IGluZGV4
-KQogCXRzayA9IGNyZWF0ZV9pb190aHJlYWQoaW9fd3FlX3dvcmtlciwgd29ya2VyLCB3cWUt
-Pm5vZGUpOwogCWlmICghSVNfRVJSKHRzaykpIHsKIAkJaW9faW5pdF9uZXdfd29ya2VyKHdx
-ZSwgd29ya2VyLCB0c2spOwotCX0gZWxzZSBpZiAoIWlvX3Nob3VsZF9yZXRyeV90aHJlYWQo
-UFRSX0VSUih0c2spKSkgeworCX0gZWxzZSBpZiAoIWlvX3Nob3VsZF9yZXRyeV90aHJlYWQo
-d29ya2VyLCBQVFJfRVJSKHRzaykpKSB7CiAJCWtmcmVlKHdvcmtlcik7CiAJCWdvdG8gZmFp
-bDsKIAl9IGVsc2Ugewo=
-
---------------0rU5Mazv2GPmM48d69i3HmwB--
+Alan Stern
 
