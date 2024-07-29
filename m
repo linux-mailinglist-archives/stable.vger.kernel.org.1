@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3C593F35F
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:58:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30FD093F362
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1A53B224B1
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:58:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB3571F22076
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5B4145335;
-	Mon, 29 Jul 2024 10:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683AD145344;
+	Mon, 29 Jul 2024 10:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzsfouSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrPUrS+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D12B13EFEE
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2940C1428F2
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722250671; cv=none; b=fVJ0gT9i8ARK3+9YgNlJr2xjlW/+dnBkuzXfsw6t/OfJUok+wVpwFE3kx1PY5fEyuDS4TgfpeUtukkK+cQVoHCkN2gWA5g/q7VPv8NVM7SzAgR85Ibu96qcrl2hrgPzdkf0leiNEHcBzdRPtZzUiLVkAznTDXS42176kV9JmQds=
+	t=1722250680; cv=none; b=ZAmxXoXdtGH9XxBGqRj/EwCQB7NEs8O+lexu0NThsHAlxLzIMbLSb627Hun2mmYW4CIUWz1K26kwbsMWRhBpqQwl6Z1EJmWc4rmFXYupfaK+M7Z69rsgYZW/HScn5JBYLSdknflHR45K6wpupiV9EyqzeJ9KdAZIdKh4omCtpQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722250671; c=relaxed/simple;
-	bh=cJ5w6nikbAFzfTYQBPZBqlxrVUk38jTq5fMwLom6jGk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jiD0i3X8Sdez00d5jSAzFIcVlUI7b+IyXdmdQcE7bmDLjTlvTqBqRaG/W39RDkx+29Qv591afCz4ucFnFHSBd6Hd4+QU4UK3eqJnXbD/deJbZxtpvj4OhxGxEFHsBNixzefEVkT/OTnZ1H4X0yyFooOmmV493pulXGxxV5QS4to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzsfouSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFB5C32786;
-	Mon, 29 Jul 2024 10:57:50 +0000 (UTC)
+	s=arc-20240116; t=1722250680; c=relaxed/simple;
+	bh=3H2RB1kGrFFTCrny6KLahH1z3EQyJqkoTfUofJjQEBc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lYPKgIsyjosHaIO1UjBnkGfzs0flXZpCZg9CCou+uULpIQsvCvPpojE1NFZyYuLMHcSNhZDKPLGsWKCheWkVCvaKJUxpMFIhYYZZVDCGt/CDGRJFbaFwNqtcDKpw8en5avxRJK5DPdhcVAu0i5I6aSpJMkcKbP3v9c96rqz1a0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrPUrS+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE48C32786;
+	Mon, 29 Jul 2024 10:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722250671;
-	bh=cJ5w6nikbAFzfTYQBPZBqlxrVUk38jTq5fMwLom6jGk=;
+	s=korg; t=1722250679;
+	bh=3H2RB1kGrFFTCrny6KLahH1z3EQyJqkoTfUofJjQEBc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mzsfouSV5ZD+HOtKK7TKOPiEYtUfLxNYC557TdQBFjOG+obq9cNESMfXGmEcukmiY
-	 E59lkTXQwuJ/9kvoQCQG+8eaI9yxcGrfQIKKge/soWgBGaPxUaVTAfZBlF03hH++Hk
-	 VMGlwMUNHgOIhmO+zSPn+TQY2/U0d2RKs/oY4fPs=
-Subject: FAILED: patch "[PATCH] KVM: nVMX: Add a helper to get highest pending from Posted" failed to apply to 6.6-stable tree
+	b=lrPUrS+YOtdUhpGyc3WlByzzx3Xorz1doDJ16r6RBRqp4OmsmX8tOLoB7FixY5DmZ
+	 vw/pfTgQg0+foWFwy+86GcS4gXS9HVLFByDX6fiKPn3fVtEuVglFMwAih7ejrk8l/X
+	 wouoCsjiEvBoo5xrL7i/zpaM49He1ak91E9fy+ZY=
+Subject: FAILED: patch "[PATCH] KVM: nVMX: Add a helper to get highest pending from Posted" failed to apply to 6.1-stable tree
 To: seanjc@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 12:57:47 +0200
-Message-ID: <2024072947-acutely-kindness-fc65@gregkh>
+Date: Mon, 29 Jul 2024 12:57:48 +0200
+Message-ID: <2024072948-cosponsor-jacket-16bb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x d83c36d822be44db4bad0c43bea99c8908f54117
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072947-acutely-kindness-fc65@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072948-cosponsor-jacket-16bb@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 d83c36d822be ("KVM: nVMX: Add a helper to get highest pending from Posted Interrupt vector")
 699f67512f04 ("KVM: VMX: Move posted interrupt descriptor out of VMX code")
 50a82b0eb88c ("KVM: VMX: Split off vmx_onhyperv.{ch} from hyperv.{ch}")
+662f6815786e ("KVM: VMX: Rename XSAVES control to follow KVM's preferred "ENABLE_XYZ"")
+1143c0b85c07 ("KVM: VMX: Recompute "XSAVES enabled" only after CPUID update")
+fbc722aac1ce ("KVM: VMX: Rename "KVM is using eVMCS" static key to match its wrapper")
+19f10315fd53 ("KVM: VMX: Stub out enable_evmcs static key for CONFIG_HYPERV=n")
+68ac4221497b ("KVM: nVMX: Move EVMCS1_SUPPORT_* macros to hyperv.c")
+93827a0a3639 ("KVM: VMX: Fix crash due to uninitialized current_vmcs")
+11633f69506d ("KVM: VMX: Always inline eVMCS read/write helpers")
+d83420c2d74e ("KVM: x86: Move CPU compat checks hook to kvm_x86_ops (from kvm_x86_init_ops)")
+325fc9579c2e ("KVM: SVM: Check for SVM support in CPU compatibility checks")
+8504ef2139e2 ("KVM: VMX: Shuffle support checks and hardware enabling code around")
+d41931324975 ("KVM: x86: Do VMX/SVM support checks directly in vendor code")
+462689b37f08 ("KVM: VMX: Use current CPU's info to perform "disabled by BIOS?" checks")
+8d20bd638167 ("KVM: x86: Unify pr_fmt to use module name for all KVM modules")
+3045c483eeee ("KVM: x86: Do CPU compatibility checks in x86 code")
+a578a0a9e352 ("KVM: Drop kvm_arch_{init,exit}() hooks")
+20deee32f553 ("KVM: RISC-V: Do arch init directly in riscv_kvm_init()")
+3fb8e89aa2a0 ("KVM: MIPS: Setup VZ emulation? directly from kvm_mips_init()")
 
 thanks,
 
