@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC4093EF09
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AD793EF0A
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3A931C21B65
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:51:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF7441C21B2B
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81AA12C522;
-	Mon, 29 Jul 2024 07:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F7612C522;
+	Mon, 29 Jul 2024 07:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7+iqaWQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efD7HN48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A3684A2F
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521F484A2F
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722239514; cv=none; b=ahD/Ronm+j3KuJ5eVyqZI6EwaodOwP9p7fDK2MD2JEoSzMxBdBIaPefSjI2CCqpGqV/sIh31VFluHpg/qhFniTInWttkXy1D3ZurIgOGaxBDEN4ByhgGC2+foqXd+xXXgKN8zZ8DSJ7V1IT7t0aCJw5XfkZTBNRx7aOElXGIBgc=
+	t=1722239523; cv=none; b=HJkp+/YgtCJX2CnxSFismrjH9lbQiktvepMnahU0qGYZy4wTW0NIPK9ZZhPPoDMfWxTNxGZ1faqIKgmf2yoB4ozwRTZD8fsP0lb5uXBGlFdlJ07g8nHiBse/ReOO4XXgnvWn0WIqNBZN+PcSf3YK1/dx4CHJaBQsL9wI2yZ1HFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722239514; c=relaxed/simple;
-	bh=aw5/HWggUmAQi2sGBuIECjtj5Lgei3Z/WGnzY4tVbdg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ims1Egs80kMEyhSdsNOV+oB3crirw426XptZkLGpqndCHBd5loBHjhFPHjsXGQ6WGRjFf6c1OGcX35HUfq+BxvqkntavG5sSTZcAKRWAWWIv5EPJst1gz36qq4JHjAN1sm9YNDIRlnfdC8BPloeh8mFr+SiY7xXwS9MEewapujI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7+iqaWQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC811C32786;
-	Mon, 29 Jul 2024 07:51:53 +0000 (UTC)
+	s=arc-20240116; t=1722239523; c=relaxed/simple;
+	bh=4XXgWxkzDknpCLvvrtvdccGPhjZgAHYHMy2fQ7SQJPY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MtXdYtCwB4xdF+Lmh3tuf7vvbOK2jymEjjT+SLjBZdqQDATVKOtcOaIEZT2qjPOrMpRn0q3hs91lqY+vTJOUuj0yIK8GEfR7G71Y2U6UfRz0CznK0FGgOmuXxO6E95a66bBNBANFVxW8ctgLM3w5+RrG6C8S55+qAGvAbE7BD6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efD7HN48; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B999CC32786;
+	Mon, 29 Jul 2024 07:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722239514;
-	bh=aw5/HWggUmAQi2sGBuIECjtj5Lgei3Z/WGnzY4tVbdg=;
+	s=korg; t=1722239523;
+	bh=4XXgWxkzDknpCLvvrtvdccGPhjZgAHYHMy2fQ7SQJPY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=b7+iqaWQDd/BMhZQAuavfYCz0RDmmsAR9Iru9BLSKAQYTMjR58rD9Di7tim4XrEQ2
-	 J5fbLYkG7GfNvEBudZHiJmaOQ/bW5vwiAp4DVTArWmNrHkph29FdEl+BFG6LUF5Io8
-	 FVvLJQIw51awumnMokp/ARKDxszM2sv0WQR5UBJ0=
-Subject: FAILED: patch "[PATCH] sched/fair: set_load_weight() must also call reweight_task()" failed to apply to 5.4-stable tree
+	b=efD7HN48GiJhSwAiZSRYY8uhg3DWziB/ucA6xahHnHA/nDi6llm3CT3iuvV+jEOx5
+	 pAQrfS/07drmtfVabCzm3tI7wjH04hTmEJE6TCqoB2wJvpIrrlKMA4dE2f4GdYDutH
+	 I+XSEllJgUMau5GwXR12VGIagwfs/55/Mq47TBoE=
+Subject: FAILED: patch "[PATCH] sched/fair: set_load_weight() must also call reweight_task()" failed to apply to 4.19-stable tree
 To: tj@kernel.org,peterz@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 09:51:50 +0200
-Message-ID: <2024072950-swab-uncharted-cf85@gregkh>
+Date: Mon, 29 Jul 2024 09:51:52 +0200
+Message-ID: <2024072951-crimson-ashamed-1d63@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,34 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x d329605287020c3d1c3b0dadc63d8208e7251382
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072950-swab-uncharted-cf85@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072951-crimson-ashamed-1d63@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 d32960528702 ("sched/fair: set_load_weight() must also call reweight_task() for SCHED_IDLE tasks")
 0dacee1bfa70 ("sched/pelt: Remove unused runnable load average")
 fe71bbb21ee1 ("sched/fair: calculate delta runnable load only when it's needed")
+8de6242cca17 ("sched/debug: Add new tracepoint to track PELT at se level")
+ba19f51fcb54 ("sched/debug: Add new tracepoints to track PELT at rq level")
+039ae8bcf7a5 ("sched/fair: Fix O(nr_cgroups) in the load balancing path")
+5d299eabea5a ("sched/fair: Add tmp_alone_branch assertion")
+23127296889f ("sched/fair: Update scale invariance of PELT")
+c40f7d74c741 ("sched/fair: Fix infinite loop in update_blocked_averages() by reverting a9e7f6544b9c")
+dfcb245e2848 ("sched: Fix various typos in comments")
+1da1843f9f03 ("sched/core: Create task_has_idle_policy() helper")
+4a465e3ebbc8 ("sched/fair: Remove setting task's se->runnable_weight during PELT update")
 
 thanks,
 
