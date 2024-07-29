@@ -1,143 +1,461 @@
-Return-Path: <stable+bounces-62337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDEF993EA44
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 02:27:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33EF493EA51
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 02:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB7801C21288
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 00:27:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F511B2112D
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 00:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32191FB5;
-	Mon, 29 Jul 2024 00:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CEA1C27;
+	Mon, 29 Jul 2024 00:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="iGzsKd82";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="M6Kqw8qu"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="XwDr3ScL"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh6-smtp.messagingengine.com (fhigh6-smtp.messagingengine.com [103.168.172.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D7C1877;
-	Mon, 29 Jul 2024 00:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431F8BE49;
+	Mon, 29 Jul 2024 00:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722212854; cv=none; b=CVbDm4ogm88Ruuc4cfsrCrRphoq7L+4rGFN3nrPz/NFrL71Y9pDU552F9fLXCoYQuoBhoK7n4HfGewgcbFCjywKuH6O+402xExleExq8XhzGB/QQlYfI4tFbPMJajCNH6TSRXG6SWrktZp6s0uDiAJIZwyB+vfP/tl/VZT0UcsU=
+	t=1722213333; cv=none; b=jynWGWxZhgiUM8zVoOvFshIkvZ+IDUBJdxbOfGEOpHSfMy5gKoIuJMOjtIqncZHdFpuj/UOihsZ+NmC+Z1kkNx/cj5xLw5H/C0dsAPYHuEaE9QzVEMxkQAbUYAZDUcvNzsR3apT/tjdN+J3qKlqSPvvE4fAB5bYGSD/MPiquSfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722212854; c=relaxed/simple;
-	bh=i7oXsCWfcO/9Kin2zf9lN96R2podeKV2ryanNLQwNYM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uovbhnFwlyHytt5av9P33ZrkWI89/Gzjm10jszaBCdfs53T5WtNBzsf5jF671HRa4Pj8ONmtzDSOXyG89tibebdwLDcqT/fdWJNjETQGqMPjheyj/zZ8Zk1x1o+fhDsMxvEsQiHBav90I/tCd5LSII5ahUsH/lMdrRhtv5D07eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; spf=pass smtp.mailfrom=sakamocchi.jp; dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b=iGzsKd82; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=M6Kqw8qu; arc=none smtp.client-ip=103.168.172.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 9F36811400BF;
-	Sun, 28 Jul 2024 20:27:29 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Sun, 28 Jul 2024 20:27:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1722212849; x=
-	1722299249; bh=k+zl1gJKs4RZGZe7zAg8h9HGt2WHFPnN6AkdANlRvyw=; b=i
-	GzsKd82m8jLdFjvZ0PiJe2bqUaCaYdh14RfPPCOQQk85FwwUDP1H0sMICGkIw5mp
-	n/rUSqGTvVx1zQfw9mX+AaV4memPKPa0I2Ilu9fnBVOOYjUYOCAdULNGzdkoj0r0
-	qKVT9Avh3NI+FCoSo28KLyTzQp4rm/csZltg8J6/XTL9+0VXCfbDrJ0Ka1xZWc8d
-	WFWRQOT2IZ2tV63uu1u70u5MqmSSNVg8nRNah8fU7dtP4mV2zxFeZsp8nQlKhyrK
-	fWu1LSiVpO3tRrrujtu8IHIUipfa92c2OXmhScNUJX7d72ArJatVMYfaJfoBzbeO
-	hWBScxGpjuC9JJKWiqIfg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1722212849; x=1722299249; bh=k+zl1gJKs4RZGZe7zAg8h9HGt2WH
-	FPnN6AkdANlRvyw=; b=M6Kqw8quxJ8fYgquzFOvZE6hNdY+IDdojSQszXZMCT/n
-	0f+D3vdfuUFlx3k+BzLzebc7Ne/xw6+UElgUh8h4DJ1DXWInmZtMDkRt1Gt9kwSD
-	IKNU3X7fSIdCFELltW0G7NUJjsLXlX+eSPdGKqpaow3QGsMR31VI3O024dz0Pab0
-	6mfv8luDj1brlYS0QhE6wdn7IorhIkLZHs3OUFcdUGCYxFOt3ZExpJrAxVC8/FXy
-	bAnIV2D66gflLtxZ2iEx7Dn+vZoy9dwUPnsQGrWs5RCMecMIs1OFHww9BqOm1kBs
-	0T8nb2CAKVbhtJRAQKTWHMUfoe69xB34yOn4JZxdHw==
-X-ME-Sender: <xms:8eGmZvrMTh9Yb5qKTn6_HWaCSS7CHeR0WIFjNghvBNx6cat4F21RAA>
-    <xme:8eGmZpr-IyuDjLCJW9s0ydSUIVUXR49WuS2pGE_xtMeyJ5VlekJdi9TeNtdkpZu9Q
-    a4XJQrMhNfVm63G2fg>
-X-ME-Received: <xmr:8eGmZsMbau5t3h7HHVFXGyGlOnruW3DKDCalGZNTVoJp38h_A4xAi7N9myw8QyYskqWVEBRqtLGkFngxBr2gy4BBlVZfs0MlubQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrjedugdefgecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefvrghkrghs
-    hhhiucfurghkrghmohhtohcuoehoqdhtrghkrghshhhisehsrghkrghmohgttghhihdrjh
-    hpqeenucggtffrrghtthgvrhhnpeekueeuvdetheffgeejkeduieeukeejteejfeffhfel
-    feeggfduffelheefueevtdenucffohhmrghinhepghhithdqshgtmhdrtghomhdpkhgvrh
-    hnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepohdqthgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjphdpnhgspghrtghpth
-    htoheptd
-X-ME-Proxy: <xmx:8eGmZi5wxs6sYGBKVzxLUevsrsIs0A6bJWGmZSyozQFEnBMKXFdGFg>
-    <xmx:8eGmZu7b8t18ywH8k4zYMlqJ-a9XuW4ugvccBUeupv1ycxS1OR-NQQ>
-    <xmx:8eGmZqgUTlb0UuGUr0XwwrsLkOSDnMrJlFan0C_uhtGTBj9BtKaJYw>
-    <xmx:8eGmZg5NSxNkdEQz_Dnc9qIGfrFY853WmYEEfULr8ngwWttC3f0QCg>
-    <xmx:8eGmZp0viGv67fXBTZdVve-soVOX0Ju1zjDKmYeFlidkO0m06K3REzmy>
-Feedback-ID: ie8e14432:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 28 Jul 2024 20:27:28 -0400 (EDT)
-Date: Mon, 29 Jul 2024 09:27:25 +0900
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-To: Edmund Raile <edmund.raile@protonmail.com>
-Cc: tiwai@suse.com, linux-sound@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] ALSA: firewire-lib: restore process context
- workqueue to prevent deadlock
-Message-ID: <20240729002725.GA33722@workstation.local>
-References: <20240728122614.329544-1-edmund.raile@protonmail.com>
+	s=arc-20240116; t=1722213333; c=relaxed/simple;
+	bh=Is9adxogrhVdBuvYTtU+g9EGkmDjPM+8gUoRVWuPJ7Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qwHS8k0kWhfepQpm/lVllByOeSIDWilmH9X7Ii8TfmuuAjBac22NEgh3KTelcAMIj0ZhtzJkJRwfNfLdKtoTFWXacHWE6cBMgmy23IMZx8XtV8KCoV7SWvluuWeWpXyfyRGS38POz5Vz+SpAWD+smS+rpJdbzy/2eoq1l3vfjZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=XwDr3ScL; arc=none smtp.client-ip=117.135.210.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=Q1ux3joHYsKx9ZZwmtarTr/KEJ/FgoSg290VwRwyfD0=;
+	b=XwDr3ScLL8xpyigTPkkebzZZDkUDyu20688GtvhX0v/obSsC4BSRjgD2WLFSns
+	7gwVdtocWil8jwODw65/2O4Wnqbm2cvvfLpj5HhVEy+VVYXzz9WIYQmAnPkAZAmS
+	nSpDtDYEYbxtgh3+DVNpZp18WvB6CHHNSE0DQrsuksjcI=
+Received: from [172.21.22.210] (unknown [118.242.3.34])
+	by gzga-smtp-mta-g1-1 (Coremail) with SMTP id _____wD3v2Kh46ZmQoOBAg--.6080S2;
+	Mon, 29 Jul 2024 08:34:43 +0800 (CST)
+Message-ID: <c1bf8b02-5c00-4759-a40f-0afdae5e3da9@126.com>
+Date: Mon, 29 Jul 2024 08:34:40 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240728122614.329544-1-edmund.raile@protonmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
+ LRU batch
+To: Chris Li <chrisl@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
+ Barry Song <21cnbao@gmail.com>, David Hildenbrand <david@redhat.com>,
+ baolin.wang@linux.alibaba.com, liuzixing@hygon.cn,
+ Hugh Dickins <hughd@google.com>
+References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
+ <CAF8kJuNP5iTj2p07QgHSGOJsiUfYpJ2f4R1Q5-3BN9JiD9W_KA@mail.gmail.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <CAF8kJuNP5iTj2p07QgHSGOJsiUfYpJ2f4R1Q5-3BN9JiD9W_KA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3v2Kh46ZmQoOBAg--.6080S2
+X-Coremail-Antispam: 1Uf129KBjvAXoW3trWDKrWDJFy8JFy7KF45Wrg_yoW8Wr4fXo
+	WfAw4jv3y8GF1SyFW8uFy7Ja13WwnagF1xtr4xAr4UAF42qryqkayxAF4kXr1fXr1jqFWU
+	uF9rJr1UK3y3tws3n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU7SoGUUUUU
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiGAUrG2VLcyfv9gAAsO
 
-Hi,
 
-On Sun, Jul 28, 2024 at 12:26:21PM +0000, Edmund Raile wrote:
-> This patchset serves to prevent a deadlock between
-> process context and softIRQ context:
 
-(snip)
-
-> Edmund Raile (2):
->   ALSA: firewire-lib: restore workqueue for process context
->   ALSA: firewire-lib: prevent deadlock between process and softIRQ
->     context
+在 2024/7/28 6:33, Chris Li 写道:
+> Hello Ge Yang,
 > 
->  sound/firewire/amdtp-stream.c | 36 ++++++++++++++++++++++-------------
->  sound/firewire/amdtp-stream.h |  1 +
->  2 files changed, 24 insertions(+), 13 deletions(-)
+> Sorry for joining this discussion late.
+> 
+> I recently found a regression on mm-unstable during my swap stress
+> test, using tmpfs to compile linux. The test hit OOM very soon after
+> the make spawn many cc processes.
+> 
+> This is preventing me from stress testing the swap allocator series on
+> mm-unstable and mm-stable. I finally spent some time doing a kernel
+> git bisect. It bisects down to this commit:
+> 
+> 33dfe9204f29b415bbc0abb1a50642d1ba94f5e9 is the first bad commit
+> commit 33dfe9204f29b415bbc0abb1a50642d1ba94f5e9
+> Author: yangge <yangge1116@126.com>
+> Date:   Wed Jul 3 20:02:33 2024 +0800
+>      mm/gup: clear the LRU flag of a page before adding to LRU batch
+>   mm/swap.c | 43 +++++++++++++++++++++++++++++++------------
+>   1 file changed, 31 insertions(+), 12 deletions(-)
+> bisect found first bad commit
+> 
+> 
+> Here the git bisect log:
+> $ git bisect log
+> # bad: [66ebbdfdeb093e097399b1883390079cd4c3022b] Merge tag
+> 'irq-msi-2024-07-22' of
+> git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+> # good: [0c3836482481200ead7b416ca80c68a29cfdaabd] Linux 6.10
+> git bisect start 'remotes/akpm/mm-stable' 'v6.10'
+> # good: [280e36f0d5b997173d014c07484c03a7f7750668] nsfs: use cleanup guard
+> git bisect good 280e36f0d5b997173d014c07484c03a7f7750668
+> # good: [07e773db19f16f4111795b658c4748da22c927bb] Merge tag
+> 'tpmdd-next-6.11-rc1-roundtwo' of
+> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd
+> git bisect good 07e773db19f16f4111795b658c4748da22c927bb
+> # good: [ef035628c326af9aa645af1b91fbb72fdfec874e] Merge tag
+> 'i2c-for-6.11-rc1-try2' of
+> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux
+> git bisect good ef035628c326af9aa645af1b91fbb72fdfec874e
+> # good: [2c9b3512402ed192d1f43f4531fb5da947e72bd0] Merge tag
+> 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm
+> git bisect good 2c9b3512402ed192d1f43f4531fb5da947e72bd0
+> # bad: [30d77b7eef019fa4422980806e8b7cdc8674493e] mm/mglru: fix
+> ineffective protection calculation
+> git bisect bad 30d77b7eef019fa4422980806e8b7cdc8674493e
+> # good: [c02525a33969000fa7b595b743deb4d79804916b] ftrace: unpoison
+> ftrace_regs in ftrace_ops_list_func()
+> git bisect good c02525a33969000fa7b595b743deb4d79804916b
+> # good: [8ef6fd0e9ea83a792ba53882ddc6e0d38ce0d636] Merge branch
+> 'mm-hotfixes-stable' into mm-stable to pick up "mm: fix crashes from
+> deferred split racing folio migration", needed by "mm: migrate: split
+> folio_migrate_mapping()".
+> git bisect good 8ef6fd0e9ea83a792ba53882ddc6e0d38ce0d636
+> # good: [a898530eea3d0ba08c17a60865995a3bb468d1bc] powerpc/64e: split
+> out nohash Book3E 64-bit code
+> git bisect good a898530eea3d0ba08c17a60865995a3bb468d1bc
+> # good: [00f58104202c472e487f0866fbd38832523fd4f9] mm: fix khugepaged
+> activation policy
+> git bisect good 00f58104202c472e487f0866fbd38832523fd4f9
+> # good: [53dabce2652fb854eae84609ce9c37429d5d87ba] mm, page_alloc: put
+> should_fail_alloc_page() back behing CONFIG_FAIL_PAGE_ALLOC
+> git bisect good 53dabce2652fb854eae84609ce9c37429d5d87ba
+> # good: [6ab42fe21c84d72da752923b4bd7075344f4a362] alloc_tag: fix
+> page_ext_get/page_ext_put sequence during page splitting
+> git bisect good 6ab42fe21c84d72da752923b4bd7075344f4a362
+> # bad: [33dfe9204f29b415bbc0abb1a50642d1ba94f5e9] mm/gup: clear the
+> LRU flag of a page before adding to LRU batch
+> git bisect bad 33dfe9204f29b415bbc0abb1a50642d1ba94f5e9
+> # good: [af649773fb25250cd22625af021fb6275c56a3ee] mm/numa_balancing:
+> teach mpol_to_str about the balancing mode
+> git bisect good af649773fb25250cd22625af021fb6275c56a3ee
+> # first bad commit: [33dfe9204f29b415bbc0abb1a50642d1ba94f5e9] mm/gup:
+> clear the LRU flag of a page before adding to LRU batch
+> 
+> I double checked this commit 33dfe9204f29b415bbc0abb1a50642d1ba94f5e9
+> ("mm/gup: clear the LRU flag of a page before adding to LRU batch")
+> fail the swap stress test very quickly.
+> 
+> The previous commit af649773fb25250cd22625af021fb6275c56a3ee
+> ("mm/numa_balancing: teach mpol_to_str about the balancing mode") can
+> pass the swap stress test fine.
+> 
+> Please feel free to send me patches to test out the issue. As it is, I
+> believe it is a regression on the swapping behavior.
+> 
 
-Thank you for your sending the revised patches, it looks better than the
-previous one. However, I have an additional request.
-
-In this case, it is enough to execute 'revert' subcommand[1] of git(1),
-like:
-
-$ git revert -s b5b519965c4c
-$ git revert -s 7ba5ca32fe6e
-
-It is permitted to add postscript to the commit comment generated by the
-above command. You see my recent post as an example[2].
-
-Just for safe, it is preferable to execute 'scripts/checkpatch.pl' in
-kernel tree to check the patchset generated by send-email subcommand[3].
-
-[1] https://git-scm.com/docs/git-revert
-[2] https://lore.kernel.org/lkml/20240725161648.130404-1-o-takashi@sakamocchi.jp/
-[3] https://git-scm.com/docs/git-send-email
+Thanks, I'm trying to reproduce this problem.
 
 
-Thanks
+> Here is the dmesg of the OOM kill:
+> 
+> [   93.326752] cc1 invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL),
+> order=0, oom_score_adj=0
+> [   93.327330] CPU: 3 PID: 5225 Comm: cc1 Tainted: G          I
+> 6.10.0-rc6+ #34
+> [   93.328277] Hardware name: HP ProLiant DL360 G7, BIOS P68 08/16/2015
+> [   93.328757] Call Trace:
+> [   93.328977]  <TASK>
+> [   93.329515]  dump_stack_lvl+0x5d/0x80
+> [   93.329842]  dump_header+0x44/0x18d
+> [   93.330422]  oom_kill_process.cold+0xa/0xaa
+> [   93.330723]  out_of_memory+0x219/0x4b0
+> [   93.331037]  mem_cgroup_out_of_memory+0x12d/0x160
+> [   93.331755]  try_charge_memcg+0x488/0x630
+> [   93.332044]  __mem_cgroup_charge+0x42/0xb0
+> [   93.332321]  do_anonymous_page+0x32a/0x8b0
+> [   93.332553]  ? __pte_offset_map+0x1b/0x180
+> [   93.332857]  __handle_mm_fault+0xc05/0x1080
+> [   93.333141]  ? sched_balance_trigger+0x14c/0x3f0
+> [   93.333840]  ? sched_tick+0xee/0x320
+> [   93.334142]  handle_mm_fault+0xcd/0x2a0
+> [   93.334419]  do_user_addr_fault+0x217/0x620
+> [   93.334694]  exc_page_fault+0x7e/0x180
+> [   93.334960]  asm_exc_page_fault+0x26/0x30
+> [   93.335194] RIP: 0033:0x147a0b3
+> [   93.335852] Code: a0 00 48 89 fb 49 89 f4 41 89 d5 74 7a 31 d2 31
+> f6 b9 01 00 00 00 bf 18 00 00 00 e8 97 b6 f8 ff 66 0f ef c0 66 41 83
+> 3c 24 2b <4c> 89 60 10 48 89 c5 49 89 c6 0f 11 00 74 7e 48 8b 43 08 80
+> 48 02
+> [   93.337577] RSP: 002b:00007ffe666e3e10 EFLAGS: 00010216
+> [   93.337966] RAX: 00007f4dd9d0e000 RBX: 00007ffe666e3e50 RCX: 00000000000000a9
+> [   93.338896] RDX: 0000000000000018 RSI: 0000000000000006 RDI: 00000000000000aa
+> [   93.339849] RBP: 00007f4dd9d0a0e0 R08: 0000000000000040 R09: 0000000000000001
+> [   93.340801] R10: 0000000000000000 R11: 0000000004c04560 R12: 00007f4dd9d04fd8
+> [   93.341675] R13: 0000000000000004 R14: 0000000000000000 R15: 000000007ffea943
+> [   93.342584]  </TASK>
+> [   93.342762] memory: usage 481280kB, limit 481280kB, failcnt 9789
+> [   93.343556] swap: usage 123404kB, limit 9007199254740988kB, failcnt 0
+> [   93.343984] Memory cgroup stats for /build-kernel-tmpfs:
+> [   93.344051] anon 461377536
+> [   93.344586] file 10264576
+> [   93.344795] kernel 20480000
+> [   93.344987] kernel_stack 2146304
+> [   93.345615] pagetables 9916416
+> [   93.346283] sec_pagetables 0
+> [   93.346878] percpu 54496
+> [   93.347080] sock 0
+> [   93.347607] vmalloc 0
+> [   93.347837] shmem 24576
+> [   93.347984] zswap 0
+> [   93.348510] zswapped 0
+> [   93.348661] file_mapped 9805824
+> [   93.349286] file_dirty 0
+> [   93.349484] file_writeback 0
+> [   93.350085] swapcached 24576
+> [   93.350706] anon_thp 213909504
+> [   93.351335] file_thp 0
+> [   93.351544] shmem_thp 0
+> [   93.351681] inactive_anon 180965376
+> [   93.352348] active_anon 291487744
+> [   93.352993] inactive_file 1298432
+> [   93.353632] active_file 7987200
+> [   93.354281] unevictable 0
+> [   93.354483] slab_reclaimable 943096
+> [   93.355085] slab_unreclaimable 6340520
+> [   93.355369] slab 7283616
+> [   93.355597] workingset_refault_anon 1138
+> [   93.355857] workingset_refault_file 180
+> [   93.356135] workingset_activate_anon 627
+> [   93.356410] workingset_activate_file 123
+> [   93.356694] workingset_restore_anon 579
+> [   93.357001] workingset_restore_file 115
+> [   93.382485] workingset_nodereclaim 0
+> [   93.457426] pgscan 101315
+> [   93.457631] pgsteal 51494
+> [   93.457843] pgscan_kswapd 0
+> [   93.458033] pgscan_direct 101315
+> [   93.458725] pgscan_khugepaged 0
+> [   93.459494] pgsteal_kswapd 0
+> [   93.460338] pgsteal_direct 51494
+> [   93.461046] pgsteal_khugepaged 0
+> [   93.461701] pgfault 994774
+> [   93.461895] pgmajfault 1839
+> [   93.462123] pgrefill 134581
+> [   93.462315] pgactivate 32506
+> [   93.463086] pgdeactivate 0
+> [   93.463314] pglazyfree 0
+> [   93.463527] pglazyfreed 0
+> [   93.463727] zswpin 0
+> [   93.463912] zswpout 0
+> [   93.464114] zswpwb 0
+> [   93.464321] thp_fault_alloc 485
+> [   93.464963] thp_collapse_alloc 0
+> [   93.465578] thp_swpout 4
+> [   93.465815] thp_swpout_fallback 0
+> [   93.466457] Tasks state (memory values in pages):
+> [   93.467153] [  pid  ]   uid  tgid total_vm      rss rss_anon
+> rss_file rss_shmem pgtables_bytes swapents oom_score_adj name
+> [   93.467917] [   1461]  1000  1461     1795      530       53
+> 477         0    45056        0             0 kbench
+> [   93.468600] [   4170]  1000  4170      636      321        0
+> 321         0    45056        0             0 time
+> [   93.569307] [   4171]  1000  4171     3071      810       48
+> 762         0    69632       48             0 make
+> [   93.570111] [   4172]  1000  4172     2706      827      144
+> 683         0    65536      192             0 make
+> [   93.571015] [   4951]  1000  4951     2733      791      144
+> 647         0    61440      192             0 make
+> [   93.571747] [   4956]  1000  4956     2560      852      144
+> 708         0    69632        0             0 make
+> [   93.572478] [   4957]  1000  4957     2541      803       96
+> 707         0    61440       96             0 make
+> [   93.573244] [   4958]  1000  4958     2541      750       96
+> 654         0    53248       48             0 make
+> [   93.574016] [   4960]  1000  4960     2565      753       96
+> 657         0    65536       48             0 make
+> [   93.674651] [   4961]  1000  4961     2538      837      144
+> 693         0    53248        0             0 make
+> [   93.675446] [   4962]  1000  4962     2569      845      192
+> 653         0    69632        0             0 make
+> [   93.676220] [   4963]  1000  4963     2567      852      192
+> 660         0    57344        0             0 make
+> [   93.676946] [   4964]  1000  4964     2536      901      192
+> 709         0    65536        0             0 make
+> [   93.677679] [   4965]  1000  4965     2540      887      192
+> 695         0    61440        0             0 make
+> [   93.678377] [   4967]  1000  4967     2563      853      144
+> 709         0    61440       48             0 make
+> [   93.679168] [   4969]  1000  4969     2538      836      144
+> 692         0    57344       48             0 make
+> [   93.679937] [   4973]  1000  4973     2535      827      144
+> 683         0    61440       48             0 make
+> [   93.680628] [   4976]  1000  4976     2571      878      192
+> 686         0    57344        0             0 make
+> [   93.681397] [   4977]  1000  4977     2534      850      192
+> 658         0    53248        0             0 make
+> [   93.682121] [   4978]  1000  4978     1797      766       48
+> 718         0    49152        0             0 sh
+> [   93.683272] [   4980]  1000  4980     2540      839      192
+> 647         0    65536       48             0 make
+> [   93.709270] [   4982]  1000  4982     2539      853      144
+> 709         0    65536        0             0 make
+> [   93.784725] [   4983]  1000  4983     1798      885       96
+> 789         0    61440        0             0 sh
+> [   93.785895] [   4984]  1000  4984     2539      878      192
+> 686         0    57344        0             0 make
+> [   93.786661] [   4986]  1000  4986     2537      863      192
+> 671         0    61440        0             0 make
+> [   93.787378] [   4988]  1000  4988     2540      824      144
+> 680         0    61440       48             0 make
+> [   93.788060] [   4989]  1000  4989     2538      792      144
+> 648         0    65536        0             0 make
+> [   93.788873] [   4990]  1000  4990     1282      810       48
+> 762         0    45056        0             0 gcc
+> 
+> Chris
+> 
+> On Fri, Jun 21, 2024 at 11:48 PM <yangge1116@126.com> wrote:
+>>
+>> From: yangge <yangge1116@126.com>
+>>
+>> If a large number of CMA memory are configured in system (for example, the
+>> CMA memory accounts for 50% of the system memory), starting a virtual
+>> virtual machine, it will call pin_user_pages_remote(..., FOLL_LONGTERM,
+>> ...) to pin memory.  Normally if a page is present and in CMA area,
+>> pin_user_pages_remote() will migrate the page from CMA area to non-CMA
+>> area because of FOLL_LONGTERM flag. But the current code will cause the
+>> migration failure due to unexpected page refcounts, and eventually cause
+>> the virtual machine fail to start.
+>>
+>> If a page is added in LRU batch, its refcount increases one, remove the
+>> page from LRU batch decreases one. Page migration requires the page is not
+>> referenced by others except page mapping. Before migrating a page, we
+>> should try to drain the page from LRU batch in case the page is in it,
+>> however, folio_test_lru() is not sufficient to tell whether the page is
+>> in LRU batch or not, if the page is in LRU batch, the migration will fail.
+>>
+>> To solve the problem above, we modify the logic of adding to LRU batch.
+>> Before adding a page to LRU batch, we clear the LRU flag of the page so
+>> that we can check whether the page is in LRU batch by folio_test_lru(page).
+>> Seems making the LRU flag of the page invisible a long time is no problem,
+>> because a new page is allocated from buddy and added to the lru batch,
+>> its LRU flag is also not visible for a long time.
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: yangge <yangge1116@126.com>
+>> ---
+>>   mm/swap.c | 43 +++++++++++++++++++++++++++++++------------
+>>   1 file changed, 31 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/mm/swap.c b/mm/swap.c
+>> index dc205bd..9caf6b0 100644
+>> --- a/mm/swap.c
+>> +++ b/mm/swap.c
+>> @@ -211,10 +211,6 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+>>          for (i = 0; i < folio_batch_count(fbatch); i++) {
+>>                  struct folio *folio = fbatch->folios[i];
+>>
+>> -               /* block memcg migration while the folio moves between lru */
+>> -               if (move_fn != lru_add_fn && !folio_test_clear_lru(folio))
+>> -                       continue;
+>> -
+>>                  folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
+>>                  move_fn(lruvec, folio);
+>>
+>> @@ -255,11 +251,16 @@ static void lru_move_tail_fn(struct lruvec *lruvec, struct folio *folio)
+>>   void folio_rotate_reclaimable(struct folio *folio)
+>>   {
+>>          if (!folio_test_locked(folio) && !folio_test_dirty(folio) &&
+>> -           !folio_test_unevictable(folio) && folio_test_lru(folio)) {
+>> +           !folio_test_unevictable(folio)) {
+>>                  struct folio_batch *fbatch;
+>>                  unsigned long flags;
+>>
+>>                  folio_get(folio);
+>> +               if (!folio_test_clear_lru(folio)) {
+>> +                       folio_put(folio);
+>> +                       return;
+>> +               }
+>> +
+>>                  local_lock_irqsave(&lru_rotate.lock, flags);
+>>                  fbatch = this_cpu_ptr(&lru_rotate.fbatch);
+>>                  folio_batch_add_and_move(fbatch, folio, lru_move_tail_fn);
+>> @@ -352,11 +353,15 @@ static void folio_activate_drain(int cpu)
+>>
+>>   void folio_activate(struct folio *folio)
+>>   {
+>> -       if (folio_test_lru(folio) && !folio_test_active(folio) &&
+>> -           !folio_test_unevictable(folio)) {
+>> +       if (!folio_test_active(folio) && !folio_test_unevictable(folio)) {
+>>                  struct folio_batch *fbatch;
+>>
+>>                  folio_get(folio);
+>> +               if (!folio_test_clear_lru(folio)) {
+>> +                       folio_put(folio);
+>> +                       return;
+>> +               }
+>> +
+>>                  local_lock(&cpu_fbatches.lock);
+>>                  fbatch = this_cpu_ptr(&cpu_fbatches.activate);
+>>                  folio_batch_add_and_move(fbatch, folio, folio_activate_fn);
+>> @@ -700,6 +705,11 @@ void deactivate_file_folio(struct folio *folio)
+>>                  return;
+>>
+>>          folio_get(folio);
+>> +       if (!folio_test_clear_lru(folio)) {
+>> +               folio_put(folio);
+>> +               return;
+>> +       }
+>> +
+>>          local_lock(&cpu_fbatches.lock);
+>>          fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate_file);
+>>          folio_batch_add_and_move(fbatch, folio, lru_deactivate_file_fn);
+>> @@ -716,11 +726,16 @@ void deactivate_file_folio(struct folio *folio)
+>>    */
+>>   void folio_deactivate(struct folio *folio)
+>>   {
+>> -       if (folio_test_lru(folio) && !folio_test_unevictable(folio) &&
+>> -           (folio_test_active(folio) || lru_gen_enabled())) {
+>> +       if (!folio_test_unevictable(folio) && (folio_test_active(folio) ||
+>> +           lru_gen_enabled())) {
+>>                  struct folio_batch *fbatch;
+>>
+>>                  folio_get(folio);
+>> +               if (!folio_test_clear_lru(folio)) {
+>> +                       folio_put(folio);
+>> +                       return;
+>> +               }
+>> +
+>>                  local_lock(&cpu_fbatches.lock);
+>>                  fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate);
+>>                  folio_batch_add_and_move(fbatch, folio, lru_deactivate_fn);
+>> @@ -737,12 +752,16 @@ void folio_deactivate(struct folio *folio)
+>>    */
+>>   void folio_mark_lazyfree(struct folio *folio)
+>>   {
+>> -       if (folio_test_lru(folio) && folio_test_anon(folio) &&
+>> -           folio_test_swapbacked(folio) && !folio_test_swapcache(folio) &&
+>> -           !folio_test_unevictable(folio)) {
+>> +       if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
+>> +           !folio_test_swapcache(folio) && !folio_test_unevictable(folio)) {
+>>                  struct folio_batch *fbatch;
+>>
+>>                  folio_get(folio);
+>> +               if (!folio_test_clear_lru(folio)) {
+>> +                       folio_put(folio);
+>> +                       return;
+>> +               }
+>> +
+>>                  local_lock(&cpu_fbatches.lock);
+>>                  fbatch = this_cpu_ptr(&cpu_fbatches.lru_lazyfree);
+>>                  folio_batch_add_and_move(fbatch, folio, lru_lazyfree_fn);
+>> --
+>> 2.7.4
+>>
+>>
 
-Takashi Sakamoto
 
