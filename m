@@ -1,81 +1,48 @@
-Return-Path: <stable+bounces-62565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C7A93F735
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 16:04:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 160A693F745
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 16:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84B09282347
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:04:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BCD0282638
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A521487C6;
-	Mon, 29 Jul 2024 14:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4B9153BEE;
+	Mon, 29 Jul 2024 14:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NbVN7KJB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1S0q3Gf"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C532D05D
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 14:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF272152160;
+	Mon, 29 Jul 2024 14:08:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722261888; cv=none; b=UtIDpjMMzbJS8W47WNNTXZL8JOFZ+aX8Hg1D2rpypB67O+D/TGBzpaeT03YxnE4wVkNAVs56fen4C6lUadQzeyTdCk9qAVx24WW3hZZhhTpaRBsp7TXA+9pYvuWxAI2XugSSCUGaNNQ/OBrJLCjxsFb7tWWZWJnH9cRjbp3CVTc=
+	t=1722262105; cv=none; b=FSPvPUWpGSCBJ7YTSZl1LxJxIHBbN9hvb5tcK3+tFiW87FAhSiDN36aS/AnCKGLPLHxXOiM0W+2LqTAAECcUWkWu/u0TOqdpHz69AZcZfeoWLdzVQbvTTp4zECIFqxuwDPbnBPfDHzIs52n5U2QgRrIa/aGOmDv0hnfmfBwshIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722261888; c=relaxed/simple;
-	bh=ZVd1wLbIXQ8ZLPr5bbxQq6cA26XTlob5JnFq04gG5/M=;
+	s=arc-20240116; t=1722262105; c=relaxed/simple;
+	bh=BgZEcDifjSfI4THHw40ebYV39UoGfOjYYXSc8EOrjl8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rWXaNVS0gsfU9nIvDzcJdrxxdh1nGJJ3Ohb9IozfASj2oPbHS5Opo/yLo4o4HmGyeL0N/zO07D9wkKylQab9QB+LQvBgRoDakZ2SmG6ZAFYnEJyQYYny9BYLDfk9S8wBS6CYBgDuPXs0+Omj0MXECUWcRL8FJ/nYZ2d322cJP1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NbVN7KJB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722261885;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=seITf6olqHoUMiJoGULrFR+dE+Vd4KusIJcWOZ1cpOc=;
-	b=NbVN7KJBTw5VIdPdUqHKLaDq5txE1zKUM0wMxll71czse1aY4ANf4BhZe7Ib9ZvcnZcWDd
-	4GNgBahXeyXH2+npZZddZaYoh3rb1jY025kkzbt+NHnTGRMX4nLw/OL343RQ1ul0wKJ/mg
-	oPywUX3pTp0yGhSqPPTEGoyMTAyPj7s=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-290-tXsN5YsTPo2HwN47bk_pcg-1; Mon, 29 Jul 2024 10:04:44 -0400
-X-MC-Unique: tXsN5YsTPo2HwN47bk_pcg-1
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2ef23ec8dceso37166361fa.0
-        for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:04:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722261883; x=1722866683;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=seITf6olqHoUMiJoGULrFR+dE+Vd4KusIJcWOZ1cpOc=;
-        b=Qty252y/A1VvNs8JXNm07N0C2DXIRy8Es0PHRZueJ4OPZsIaK4W9QwvfJ+YWS+0eEx
-         0OGw7j9uiYqmsydmC6LL59OHuaVsJf6pQ5QacmLAj2/FigXJ19MYtFlbw/ELkOqNfoDk
-         0b8gPUqsYC9y2nrfGGH+Hub7HDFdTuD2FCcxivzsGjIQ6cFXh8OexUzmdAsK2i9/4U4c
-         BsjZvDRkUbmgCFMpWyl6xrnn99Km30NZrAS+Xlemx8KLjkFu/4Zit27yyT6lVxlrpTbR
-         qckLha6oUsyzU93q5jEwWVjlrj0aKBOfQ8h0tO2sAlJceT1Gf0qnwPt/8itAzmTu484G
-         c/sA==
-X-Forwarded-Encrypted: i=1; AJvYcCVI2vX8kcNXWijpUOPd10m7OZglHyuAmpXRMYJRFlH/9uY51hIWFCZIS8obxZIBO6jLlFSRv3gbNqnKJ5tq00oHFjj3Xsv1
-X-Gm-Message-State: AOJu0YwChE7SDUWED+aTLm7lfcSMN19uAHDD/184KW4UB4y0+K110nlz
-	qnXGlt9+XaSkjT+GlAP267UnNW6/Vmieowzz30RdoMEXrUO6C3XR8EVdOUdSYIpuWg0LfO6yoPJ
-	pVURYjnZ02ucyx6XatZ53EOoA3yTAeC1swts8GSogi5xXgtxpbl5ryg==
-X-Received: by 2002:a2e:9953:0:b0:2ef:2d58:ec24 with SMTP id 38308e7fff4ca-2f12ecd30f5mr51524701fa.17.1722261882853;
-        Mon, 29 Jul 2024 07:04:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGyMeeB9M53Yzivgnz9CHhYXVGw9TozJ6xgxNvirs0R74PymTXNTcKBmv8+fRe64Owks2WqNg==
-X-Received: by 2002:a2e:9953:0:b0:2ef:2d58:ec24 with SMTP id 38308e7fff4ca-2f12ecd30f5mr51519091fa.17.1722261870236;
-        Mon, 29 Jul 2024 07:04:30 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42805730e68sm181131525e9.9.2024.07.29.07.04.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jul 2024 07:04:29 -0700 (PDT)
-Message-ID: <3a2ab0ea-3a07-45a0-ae0e-b9d48bf409bd@redhat.com>
-Date: Mon, 29 Jul 2024 16:04:28 +0200
+	 In-Reply-To:Content-Type; b=eDrQpWdyNV/r/ufJTe+lGszx6XXFR3oCoE9jOyMMhC/yoS/0yO/Ri1LoF+TM/aIXVHH9SB2Eay5g61qHrzasyE5xUP4KCwUb8cIsZi+x6UsUDqfEXxaDWpMlZS8//wavqwWqH/DrtQhl5nAIUjzGGvbx9tIwmyHDueK9Xq43DuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1S0q3Gf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF5AC4AF09;
+	Mon, 29 Jul 2024 14:08:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722262103;
+	bh=BgZEcDifjSfI4THHw40ebYV39UoGfOjYYXSc8EOrjl8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Z1S0q3Gfar+Kp2G40gSIjOaOtXHyA64OIUWBXijYwcwFR3BDaeTqLg1cDCfyaT5S1
+	 e0MEBJbY+tuRg4t3Cn5u8qGxHMNEih+a7oyYAYpR/LdHEfBE4O40/KwgdfMo6y1k0R
+	 ZeWEb/RBJRtx/5bej9B4LHTiNMfPT+to3DdUIdpChN2LRpMtI6uZwGVUToJmKQfAPk
+	 yhVgVq9T7IThaQRL4IQzUUDQ3v7Ly6zXyYoxkWmK18P43yTa+PyFplsY1ydbicIkNm
+	 KU9zDrtYW1izaCrd3i3kKgs8DTk3Qp019R/Kb0xeYtoNhqdMUKvZmedAy5LIsEF9p6
+	 OSaMnGhuc9gYw==
+Message-ID: <7537c281-2f0d-43e1-9260-2d469d5a1f21@kernel.org>
+Date: Mon, 29 Jul 2024 16:08:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,205 +50,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
- LRU batch
-To: yangge1116@126.com, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, liuzixing@hygon.cn
-References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
-From: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: imx335: Mention reset-gpio polarity
+To: Umang Jain <umang.jain@ideasonboard.com>, linux-media@vger.kernel.org
+Cc: stable@vger.kernel.org, Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Tommaso Merciai <tomm.merciai@gmail.com>,
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+References: <20240729110437.199428-1-umang.jain@ideasonboard.com>
+ <20240729110437.199428-2-umang.jain@ideasonboard.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <1719038884-1903-1-git-send-email-yangge1116@126.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240729110437.199428-2-umang.jain@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 22.06.24 08:48, yangge1116@126.com wrote:
-> From: yangge <yangge1116@126.com>
+On 29/07/2024 13:04, Umang Jain wrote:
+> Mention the reset-gpio polarity in the device tree bindings.
+> It is GPIO_ACTIVE_LOW according to the datasheet.
 > 
-> If a large number of CMA memory are configured in system (for example, the
-> CMA memory accounts for 50% of the system memory), starting a virtual
-> virtual machine, it will call pin_user_pages_remote(..., FOLL_LONGTERM,
-> ...) to pin memory.  Normally if a page is present and in CMA area,
-> pin_user_pages_remote() will migrate the page from CMA area to non-CMA
-> area because of FOLL_LONGTERM flag. But the current code will cause the
-> migration failure due to unexpected page refcounts, and eventually cause
-> the virtual machine fail to start.
-> 
-> If a page is added in LRU batch, its refcount increases one, remove the
-> page from LRU batch decreases one. Page migration requires the page is not
-> referenced by others except page mapping. Before migrating a page, we
-> should try to drain the page from LRU batch in case the page is in it,
-> however, folio_test_lru() is not sufficient to tell whether the page is
-> in LRU batch or not, if the page is in LRU batch, the migration will fail.
-> 
-> To solve the problem above, we modify the logic of adding to LRU batch.
-> Before adding a page to LRU batch, we clear the LRU flag of the page so
-> that we can check whether the page is in LRU batch by folio_test_lru(page).
-> Seems making the LRU flag of the page invisible a long time is no problem,
-> because a new page is allocated from buddy and added to the lru batch,
-> its LRU flag is also not visible for a long time.
-> 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: yangge <yangge1116@126.com>
+> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
 > ---
->   mm/swap.c | 43 +++++++++++++++++++++++++++++++------------
->   1 file changed, 31 insertions(+), 12 deletions(-)
-> 
-> diff --git a/mm/swap.c b/mm/swap.c
-> index dc205bd..9caf6b0 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -211,10 +211,6 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
->   	for (i = 0; i < folio_batch_count(fbatch); i++) {
->   		struct folio *folio = fbatch->folios[i];
->   
-> -		/* block memcg migration while the folio moves between lru */
-> -		if (move_fn != lru_add_fn && !folio_test_clear_lru(folio))
-> -			continue;
-> -
->   		folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
->   		move_fn(lruvec, folio);
->   
-> @@ -255,11 +251,16 @@ static void lru_move_tail_fn(struct lruvec *lruvec, struct folio *folio)
->   void folio_rotate_reclaimable(struct folio *folio)
->   {
->   	if (!folio_test_locked(folio) && !folio_test_dirty(folio) &&
-> -	    !folio_test_unevictable(folio) && folio_test_lru(folio)) {
-> +	    !folio_test_unevictable(folio)) {
->   		struct folio_batch *fbatch;
->   		unsigned long flags;
->   
->   		folio_get(folio);
-> +		if (!folio_test_clear_lru(folio)) {
-> +			folio_put(folio);
-> +			return;
-> +		}
-> +
->   		local_lock_irqsave(&lru_rotate.lock, flags);
->   		fbatch = this_cpu_ptr(&lru_rotate.fbatch);
->   		folio_batch_add_and_move(fbatch, folio, lru_move_tail_fn);
-> @@ -352,11 +353,15 @@ static void folio_activate_drain(int cpu)
->   
->   void folio_activate(struct folio *folio)
->   {
-> -	if (folio_test_lru(folio) && !folio_test_active(folio) &&
-> -	    !folio_test_unevictable(folio)) {
-> +	if (!folio_test_active(folio) && !folio_test_unevictable(folio)) {
->   		struct folio_batch *fbatch;
->   
->   		folio_get(folio);
-> +		if (!folio_test_clear_lru(folio)) {
-> +			folio_put(folio);
-> +			return;
-> +		}
-> +
->   		local_lock(&cpu_fbatches.lock);
->   		fbatch = this_cpu_ptr(&cpu_fbatches.activate);
->   		folio_batch_add_and_move(fbatch, folio, folio_activate_fn);
-> @@ -700,6 +705,11 @@ void deactivate_file_folio(struct folio *folio)
->   		return;
->   
->   	folio_get(folio);
-> +	if (!folio_test_clear_lru(folio)) {
-> +		folio_put(folio);
-> +		return;
-> +	}
-> +
->   	local_lock(&cpu_fbatches.lock);
->   	fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate_file);
->   	folio_batch_add_and_move(fbatch, folio, lru_deactivate_file_fn);
-> @@ -716,11 +726,16 @@ void deactivate_file_folio(struct folio *folio)
->    */
->   void folio_deactivate(struct folio *folio)
->   {
-> -	if (folio_test_lru(folio) && !folio_test_unevictable(folio) &&
-> -	    (folio_test_active(folio) || lru_gen_enabled())) {
-> +	if (!folio_test_unevictable(folio) && (folio_test_active(folio) ||
-> +	    lru_gen_enabled())) {
->   		struct folio_batch *fbatch;
->   
->   		folio_get(folio);
-> +		if (!folio_test_clear_lru(folio)) {
-> +			folio_put(folio);
-> +			return;
-> +		}
-> +
->   		local_lock(&cpu_fbatches.lock);
->   		fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate);
->   		folio_batch_add_and_move(fbatch, folio, lru_deactivate_fn);
-> @@ -737,12 +752,16 @@ void folio_deactivate(struct folio *folio)
->    */
->   void folio_mark_lazyfree(struct folio *folio)
->   {
-> -	if (folio_test_lru(folio) && folio_test_anon(folio) &&
-> -	    folio_test_swapbacked(folio) && !folio_test_swapcache(folio) &&
-> -	    !folio_test_unevictable(folio)) {
-> +	if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
-> +	    !folio_test_swapcache(folio) && !folio_test_unevictable(folio)) {
->   		struct folio_batch *fbatch;
->   
->   		folio_get(folio);
-> +		if (!folio_test_clear_lru(folio)) {
-> +			folio_put(folio);
-> +			return;
-> +		}
 
-Looking at this in more detail, I wonder if we can turn that to
+IdeasOnBoard folks are seasoned developers, although I noticed from time
+to time you do not cc all necessary addresses. I wonder why? Something
+is missing in internal guideline?
 
-if (!folio_test_clear_lru(folio))
-	return;
-folio_get(folio);
+That's not the first case, but pasting same form letter is a bit
+annoying, especially considering that *tools tell you to do correct
+stuff* and you do not need *person to tell you that*.
 
-In all cases? The caller must hold a reference, so this should be fine.
 
--- 
-Cheers,
+<form letter>
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
 
-David / dhildenb
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time.
+
+Please kindly resend and include all necessary To/Cc entries.
+</form letter>
+
+Best regards,
+Krzysztof
 
 
