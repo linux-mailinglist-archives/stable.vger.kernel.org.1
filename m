@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF82793F34C
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:54:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3440093F34D
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:54:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79E8828208D
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:54:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1EC7281560
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1448E14389B;
-	Mon, 29 Jul 2024 10:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F8614389B;
+	Mon, 29 Jul 2024 10:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGTwl3/Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbH/H0dr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA31028399
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468E428399
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722250447; cv=none; b=l7AqiQikhsPfz8LxnZHbl5CdJq5ZBv7jzKPBnCtNNYYALbkpnzoliSeJ0+JzPLXD2w4G64EqU+BN/iyTl40mBOPDOqRMU3SL5aT5cDh6ZteKAtx9zr+o/3efCAygSTRcDM46WN+5UuM4HyrjvqyUaap3VtQhx3V5bUXPFLDDjy4=
+	t=1722250453; cv=none; b=mygXGUdORcEAywft2K9JsEMZsX1vcR4lURVRoTNnp4D72RD6SsGVhmv8uDyohY/OhAPe9tvbari5AvZNEM2gt9poRZGDtdJmn2PRQvmbPmHhDnxawRelqm3fQBPviWZ4eX7hQ1doKYHVXzhZLFa0geG4oWcZAheF/YYSwhj5/uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722250447; c=relaxed/simple;
-	bh=1foJlU4QN7zjsjuQzKwnnJc+16Cc7HL7eQ/QubDaEMI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rmFDilBIhOoUbiutUJ2Pz6FyDUTTCFDpDbKvomLtLNqv3O3CMpcCSVizN20sDKEtsfXKbI0p4AkkNNRlQqXbbbGe8md1E5Y1PPbyZ0Ps45QHBZANb6ypyn8jL+CCfZBViP8Q5vlKf15q5UPj+0SRaejH4h44AhkfmvYVqBPRJTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGTwl3/Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39170C4AF0A;
-	Mon, 29 Jul 2024 10:54:06 +0000 (UTC)
+	s=arc-20240116; t=1722250453; c=relaxed/simple;
+	bh=EA30BineQ6wKhHgTEPMtiQpbn8xA2cCWCQGponunL8s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UZPwJI/pg9LrYDQKtvAl7Cz7fLl5utF++3o7goOXAm3yfGnkXdI0dtqtxa67zNzzw28W1jJy5z/sTuDuoVojYZUZsE0kQ8L650Vg6tmZH6gwL6tBuwEjgs4emFi0iLxA3mPaL4jvT5yf1S2XtHd1MNwmus6o//4rERi0z+h5TJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbH/H0dr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11DCC4AF0B;
+	Mon, 29 Jul 2024 10:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722250447;
-	bh=1foJlU4QN7zjsjuQzKwnnJc+16Cc7HL7eQ/QubDaEMI=;
+	s=korg; t=1722250453;
+	bh=EA30BineQ6wKhHgTEPMtiQpbn8xA2cCWCQGponunL8s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sGTwl3/YqVHduK94ait1SEhCLAOppiUV0C5KrV0oVc37/fBED0G05pqVMqV0aiFrf
-	 9TuO8QzQFkeB6Qxc5e8hZk5uW7WYYl6pm/TFrBkEcONCNPMBZAYkwH/p3fE8tVEshD
-	 VP8UqrXY2BEEtqoilXqnQjTvkwFNntVr8hY0OqhE=
-Subject: FAILED: patch "[PATCH] media: uvcvideo: Fix integer overflow calculating timestamp" failed to apply to 5.10-stable tree
+	b=UbH/H0drRyMT3HOMwB8T8X/dtlmPCvSN8Z8/jvlnvgFLefV5mkF3h896kXf1LOzl1
+	 u4pRE3X3IaqcuyNTQ4B+Jed9SYt0b0KD1bYtjOmqbSoh21iWkM7AZM4XTaBdw90OGW
+	 I8RBVj820AczRyPjhw/c2C5g48QWGCBOFGoxb/Rg=
+Subject: FAILED: patch "[PATCH] media: uvcvideo: Fix integer overflow calculating timestamp" failed to apply to 5.4-stable tree
 To: ribalda@chromium.org,laurent.pinchart@ideasonboard.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 12:53:59 +0200
-Message-ID: <2024072959-overpass-sapling-797e@gregkh>
+Date: Mon, 29 Jul 2024 12:54:01 +0200
+Message-ID: <2024072901-duct-manager-b71e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8676a5e796fa18f55897ca36a94b2adf7f73ebd1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072959-overpass-sapling-797e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072901-duct-manager-b71e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,17 @@ ed4c5fa4d804 ("media: uvcvideo: use dev_printk() for uvc_trace()")
 351509c604dc ("media: uvcvideo: Move guid to entity")
 dc9455ffae02 ("media: uvcvideo: Accept invalid bFormatIndex and bFrameIndex values")
 b400b6f28af0 ("media: uvcvideo: Force UVC version to 1.0a for 1bcf:0b40")
+8a652a17e3c0 ("media: uvcvideo: Ensure all probed info is returned to v4l2")
+f875bcc375c7 ("media: uvcvideo: Fix dereference of out-of-bound list iterator")
+d6834b4b58d1 ("media: uvcvideo: Set media controller entity functions")
+1771e9fb67e2 ("media: Use fallthrough pseudo-keyword")
+85872f861d4c ("media: venus: Mark last capture buffer")
+0febf9236970 ("media: venus: helpers: Done buffers per queue type")
+e6089feca460 ("media: m88ds3103: Add support for ds3103b demod")
+ab1eda449c6e ("media: venus: vdec: handle 10bit bitstreams")
+4ebf969375bc ("media: venus: introduce core selection")
+7482a983dea3 ("media: venus: redesign clocks and pm domains control")
+fd1ee315dcd4 ("media: venus: cache vb payload to be used by clock scaling")
 
 thanks,
 
