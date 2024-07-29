@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E1F93F4F8
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:14:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B128393F4F9
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E2DFB20DF0
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:14:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1D0F1C2144D
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB7B146D48;
-	Mon, 29 Jul 2024 12:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480A3146D48;
+	Mon, 29 Jul 2024 12:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wsd5ijLW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDrPtIwy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE47980034
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0793180034
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722255282; cv=none; b=SFYq5sWC5W8E340Br0Mt/lT+Y0R2JkPI7DBUkXSYN2UR15mLtrHJX6WSjMXLW9GGpQ3iDgK9yPSbDqVi6+5ZfGEmLEr/eZXwgH4GmXVTRy7mJ24UrLmgQCejDv7WONvn96WdjC1M1mJmoUAjl0eZFzIm7bFtuZ654vvWgCaHzkg=
+	t=1722255291; cv=none; b=O7arwoaZXdqPQXfqtYN312pNiq+3AwT17j1P9aIz2AKw74MN1M+jKIqDIlTvkwLgm2lG66XY0qiU0IGjRDrSUqmOpm/czy06wCxJcE+Fro3+tPrwpaWA3erY1yJHKNzqZW8FiFaJU3/Nc4XoxFHFevzhHux7HiMxD06PLipbpVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722255282; c=relaxed/simple;
-	bh=pFuew7TFWb2fHBTBXA4X/2O0qyan8QIOVMbfqcGruKQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JDdZAbBwT1PwdrsfgMtUzKGPhDzwLvksaLleDHaGBwojOKWpg3j36BtMzkfoaI39FkNTC304Fzi8IYdBm0BqBkc8b2ZthvXNiIZpesGnB5Lj5/HNjbPqL+DVlvlqs2cau6lEtFVwsGPLWSxngv5twj5XRWQZG8gUdZm1IeJq2R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wsd5ijLW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F99C32786;
-	Mon, 29 Jul 2024 12:14:41 +0000 (UTC)
+	s=arc-20240116; t=1722255291; c=relaxed/simple;
+	bh=tzHeaIyK5ejmt+zcINwIz5MyBxsH6D4DzI9H0XcvldE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nH0K1jaWqxLqMOBnkUZBesf0qAvdgv1XXtXrsfwnd7yam7s+AeOhU7HCcH06b38nhBrQZgVvaAYVynGasas5zZ5Rtp/aZbIY4laAQiWGEzw9q4FFurIJXG8JkWojPl3P052jtW6gcm48mePAQW/eO2wE5lRRaoOS+p4NUfAAKo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDrPtIwy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8C6C32786;
+	Mon, 29 Jul 2024 12:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722255282;
-	bh=pFuew7TFWb2fHBTBXA4X/2O0qyan8QIOVMbfqcGruKQ=;
+	s=korg; t=1722255290;
+	bh=tzHeaIyK5ejmt+zcINwIz5MyBxsH6D4DzI9H0XcvldE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Wsd5ijLW2iIN4IHHXj7Q0eszDv9JFu4J70ViYzdSNOJWA87xNh2kkqGb8RYTShpFz
-	 m2kpZ+W45niZ9mYmslSwP5ALOgwc8ZS9A+L0qA4H8ZPtsYi7zFVPoYzCmojDwTHgTL
-	 Fa4NCV+AuKZmdLu5mQsyfjmMnx5vpSPsK5KiLwOg=
-Subject: FAILED: patch "[PATCH] dev/parport: fix the array out-of-bounds risk" failed to apply to 5.4-stable tree
+	b=oDrPtIwybtnH2T7PcQhbSRJI1+cDT2jmdytzc/K/9skZ8HtkU1dUh/xyDLiD5+KiG
+	 +5KwA5vDJ1IMPE4kzC+2aPRn3LoDT31IPgc3Nz1Wyey9pQuu7U/lsUNcxnEbO/ap6j
+	 2OWqYXpp+0mPdWM/MeV+lVZTHaYhz6e3Zp24727Y=
+Subject: FAILED: patch "[PATCH] dev/parport: fix the array out-of-bounds risk" failed to apply to 4.19-stable tree
 To: tuhaowen@uniontech.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 14:14:38 +0200
-Message-ID: <2024072938-roundworm-wagon-ec6b@gregkh>
+Date: Mon, 29 Jul 2024 14:14:39 +0200
+Message-ID: <2024072939-dropbox-upheld-5fc6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x ab11dac93d2d568d151b1918d7b84c2d02bacbd5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072938-roundworm-wagon-ec6b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072939-dropbox-upheld-5fc6@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 ab11dac93d2d ("dev/parport: fix the array out-of-bounds risk")
 a6abfdff4fe5 ("parport: Standardize use of printmode")
 decf26f6ec25 ("parport: Convert printk(KERN_<LEVEL> to pr_<level>(")
+aa1f0fa374ed ("parport: parport_pc: Mark expected switch fall-through")
 
 thanks,
 
