@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A5993F2B3
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:30:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2382593F2B2
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D066B24D9D
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBFA8282538
 	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1A02F5A;
-	Mon, 29 Jul 2024 10:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD181428F2;
+	Mon, 29 Jul 2024 10:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nndbvnin"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFnqMM1l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4031422D9
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8A714430E
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722249007; cv=none; b=CUT+XV7riTJ9++eaSD3rfKuk0RQqHQW+3znDq+3TR4/hiYiw+jeJz9Gif6j1f0Q47zbU412vOpUQ1+pOVEzPfqIqYOzqpD5T0E4Jb1/ktxNHl4IDQrfKbezhKbH8qJExlR4WyUpdtQyti81HkrYs5z05I2Eq2FJsYNIxAuwLpXw=
+	t=1722249011; cv=none; b=XjnS3oCmLpZf8T3woO31O3tzJMVD/lnUWcUFeJemw7RorLR0He/+CUl+xW2l2G1GNmFlaShrrWVTJs9MQk5FE++1mn+VWoAftbnd5gQl/uuT4xIE+F/UGvzfOV2STeTcmG4XphDoFxmpUbyttCVA9yvaZcLxE8QoYcg2PGj8RtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722249007; c=relaxed/simple;
-	bh=7UUklws0zR9js3HLV8mC/c1gqzk2uBrjyjx8KbwFtEU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lb4/5W9sofqqDUZTI5gxux1OW05aqmhFysts+AR79xMHmOdDEYjl8sx3LMDxTeh2J/NWPJX6wCswG1uDzOMbRQpTqaeStvnUQSDUlDKt4zbolAcFhqeP/Gf5Vhk81d71E+ZnoqpErK/BgKEPtSFHh6guhnIWKwY4RrV3K4W4YyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nndbvnin; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A00C32786;
-	Mon, 29 Jul 2024 10:30:06 +0000 (UTC)
+	s=arc-20240116; t=1722249011; c=relaxed/simple;
+	bh=jJU7ZBkPuSYkvmv/0OyoccLBDV7NYPyQsxyqAsNQQjk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QjDqxzCwUlj0fBuJoTinK/TMTuVgqxce6bV9Z+EayDwbnVH9hT+K/ZloaohCUZ58yBP3f0f5tFbCQAI4PQNvgdsbsE3O0AKgCrXUY9eqWELwGtsJVJrVDeX/wfrVnKHqftdH+VvtkFvDLgcw+1dgPUB+FengX1RFoe5uCvM2SB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFnqMM1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB96C4AF0A;
+	Mon, 29 Jul 2024 10:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722249006;
-	bh=7UUklws0zR9js3HLV8mC/c1gqzk2uBrjyjx8KbwFtEU=;
+	s=korg; t=1722249010;
+	bh=jJU7ZBkPuSYkvmv/0OyoccLBDV7NYPyQsxyqAsNQQjk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=nndbvninBVwrNVHIEsCV4MPd5x/BESzC/vwu0EOAJVwuZLPvmlWPmi1Ma0kVaD/GB
-	 nSZE8KAvRUsbE+Is5qn3N67d3mJkx76l8xv/SclJPXT30ZhOFm/JHOijyFrU/Xia1V
-	 VpbsrA0+Ao/t1PcPt3tkeJ/q8fdfLGQ7/8obAbX8=
-Subject: FAILED: patch "[PATCH] ext4: check the extent status again before inserting delalloc" failed to apply to 6.10-stable tree
+	b=iFnqMM1l2xrE6EeEePWyIOvMp87PSVGjciP2Ti+n1vkFiT1ixGa7BkXm14uUOZAxn
+	 tB6ylzC/x8fMm9WNvi7rLq1obrbKecA4NJoN0bxUCRWxcbbVqmAJEaye7Ywe/+VDLK
+	 PIJIs58Q+ZFaRBOV+zHKNlDeVbocUaaAHNqP/Cgw=
+Subject: FAILED: patch "[PATCH] ext4: check the extent status again before inserting delalloc" failed to apply to 6.6-stable tree
 To: yi.zhang@huawei.com,jack@suse.cz,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 12:30:03 +0200
-Message-ID: <2024072903-oblong-old-80b6@gregkh>
+Date: Mon, 29 Jul 2024 12:30:05 +0200
+Message-ID: <2024072904-rule-emblem-471a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0ea6560abb3bac1ffcfa4bf6b2c4d344fdc27b3c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072903-oblong-old-80b6@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072904-rule-emblem-471a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
+acf795dc161f ("ext4: convert to exclusive lock while inserting delalloc extents")
+3fcc2b887a1b ("ext4: refactor ext4_da_map_blocks()")
 
 thanks,
 
