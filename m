@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E8193F182
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:47:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F03F093F184
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:47:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AFE11C209CA
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:47:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A84C9283A1E
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3BD14262C;
-	Mon, 29 Jul 2024 09:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E22A13F42F;
+	Mon, 29 Jul 2024 09:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fF2fVvgR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1T8lLxNH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9771422DF
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 09:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35A513DBB1
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 09:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722246452; cv=none; b=S5+o0TZPH4EUklakBy7ow3AGjeWW+FQHqkKrYbwIrIBsMYufFa9pCy8H2d5LUlXwwf6i92Xqhkh4ZmNXJiJquzmTzNouYK3JxBn59IXIXxUTnz7BRcZ291x9FaAw/olhYI8ARWw5qIQnCAz1t1Q9B5Em28+qv8rHkXr8BIU5sac=
+	t=1722246454; cv=none; b=uwgtnXvTPi81dZKdJCctqHRX5rAPGx/PshGdUP2pWQCJgDjTgC560TPxSkKzZN7NIN3/5P8UD99Ew8wKIsPBIgIqBwt44sNPvGZl/M3hGxJHtwVq8SpBm6v/hLEofat3+GWP5wF+Nxz9pNYjVmfIAVn9hCk9+3WsZtOk9mryNYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722246452; c=relaxed/simple;
-	bh=AqqBfMGBAWO/X9CYZ2dLBvkpJwd9oMVgRgYMEyu07po=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=L7x+vmWoFXDkPSofxTSaeV945MAfat5UqGfJ7PvAb8OXcOwTGO2wqFA47u5EVwmx3u3WYozh9nsSwUg4IceKuxQ3Ka6mTqujTwU5A998Ydbc0/wjDmYnvg5A9V0ifyAWIRVC9YGadTIHdazoQ10A651UNlO4bjM9XgRSaQaVJtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fF2fVvgR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C35C4AF11;
-	Mon, 29 Jul 2024 09:47:30 +0000 (UTC)
+	s=arc-20240116; t=1722246454; c=relaxed/simple;
+	bh=N2gCqsvygQddI5i7RbAM0fdeMNrbIprvlHXPSNKwjBM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hJ0GE5WKJ8Judagr846iUKIfHjS+mnrCbIbfmMX33df8UJlJUTU8NAltlPAiDC7YR0lt3m8TDJDUIMOz4xjJJ0aMpCapH7o4KaWQ0DB/EzxB+O2SMuNa55G/xhm8Jelj3pT/ywDZUWLZrRrjVrkXNjuWcoE40eKKl+AX/NyCNh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1T8lLxNH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A78FC32786;
+	Mon, 29 Jul 2024 09:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722246450;
-	bh=AqqBfMGBAWO/X9CYZ2dLBvkpJwd9oMVgRgYMEyu07po=;
+	s=korg; t=1722246454;
+	bh=N2gCqsvygQddI5i7RbAM0fdeMNrbIprvlHXPSNKwjBM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fF2fVvgR5V45yYAMLQ9vfco00eXjRg2Stg+Rvd+QpRWrC+vDBmiieKVuxE4dvUtf2
-	 vZNIm/tOfAjlgPzH/biC0emcKWtumv8sAGMLmmi2v5x7JBhIv6BLazR7p1zn/ZjDjh
-	 8eRCa9PXnlSRYv4PbUpdKrcP7zHn5x1G5qM01LFM=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Remove ASSERT if significance is zero in" failed to apply to 5.10-stable tree
+	b=1T8lLxNH2LZ4AEIpnUlK4t1rrBBh1hTBq6ToLG8Xw7zgaz5oMb2aLP/UG9lnMdQPl
+	 DI+SqSGjMHKot3zkIe41F8qQ4LfFl8l1oGTuS+lchcaTT3z5AsJKm+lwj8Fh0I5LDL
+	 4oEcjFuAUNzYALXTky9EW3XVgzyuaBNd1hdtNoBU=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Remove ASSERT if significance is zero in" failed to apply to 5.4-stable tree
 To: rodrigo.siqueira@amd.com,alexander.deucher@amd.com,aurabindo.pillai@amd.com,chaitanya.dhere@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Jul 2024 11:47:17 +0200
-Message-ID: <2024072916-grill-deniable-ee28@gregkh>
+Message-ID: <2024072917-footsie-stopwatch-c5d7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,41 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5302d1a06a2cd9855378122a07c9e0942f0f04a9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072916-grill-deniable-ee28@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072917-footsie-stopwatch-c5d7@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 5302d1a06a2c ("drm/amd/display: Remove ASSERT if significance is zero in math_ceil2")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
 70839da63605 ("drm/amd/display: Add new DCN401 sources")
 
 thanks,
