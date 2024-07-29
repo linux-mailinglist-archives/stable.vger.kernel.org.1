@@ -1,41 +1,42 @@
-Return-Path: <stable+bounces-62340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0459B93EAA1
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 03:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8900693EAA3
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 03:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEC8C1F214E9
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 01:43:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38FDE1F21392
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 01:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A501E2C1AC;
-	Mon, 29 Jul 2024 01:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5003B335B5;
+	Mon, 29 Jul 2024 01:43:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from smtpbg156.qq.com (smtpbg156.qq.com [15.184.82.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E157F257B;
-	Mon, 29 Jul 2024 01:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63C5257B;
+	Mon, 29 Jul 2024 01:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.82.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722217419; cv=none; b=GDrl9DqvetfqV3WYaNy+uVTXxb3tSM1DrMCZWse7bgMjdbMZUubKmEoWLEoP4qNDyl07+4+5/7qK098Zx0hrN7WKXSuXD1IRrifNkvZU4o4zJ3QEubV41aUz20SExvR6dvOXETeRpLRtXH12c9W/MS6J0cHcUYqY8RJK+lszghk=
+	t=1722217428; cv=none; b=Tvqd4b3h4hfnB/epVHA7e8JbNXmtG4NB8+2XAtgWTk5GnKlM7oblL/DX3+yME03cFrhEGSYwiG+Un61u7+vVkJvfALmUn7wxSkRdZeRAoyboQLs5aZFmYXK9BQvk3hO4tukGR5N+ykhAHIn5/qDL6pKV9BHCeCbR3t1wxeF5lEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722217419; c=relaxed/simple;
-	bh=6v33Qy88eR7kYjxr9TwQXM+CT2Z+vGrGXZO88GY2vvE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t8QAydtlaR0QtXUHnaJmcBIhNyBM3vTE+HI8tfOgbl6z28C965lmIVOVA+D68wpjnnZrnZ6cIKWjxlSe9qmZvWks69obes8upMS+sjqrB6UT8recxU+KnRo5xLbhr3g+2F1QX4RJKUYSelcjiVyzT1HTf77415cRmC5ko08hOzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=54.204.34.129
+	s=arc-20240116; t=1722217428; c=relaxed/simple;
+	bh=Oh39XAQDg5R86RZQSeaQMLqrjTFfCloBimtzrU5mKHI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Iq6WR55EzvVb+lfxcONAQxoSJfXa/6yzXLeyJkDaxMBZnBuoOM9ioTrha+8RA2S4rByqUGF88R9E6RUITmKiXDdI49uVEFDnD5OoLsFYE0wGMmG1u7YrMVLozJ0vfQzLWkGv8q4A6GXDoUVRdCJ4iUHuhVoaE4SkDpHCQkoYQ5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=15.184.82.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-X-QQ-mid: bizesmtpsz7t1722217400tj1cp6g
-X-QQ-Originating-IP: R0HGwCld4PqqFA+z2Z2ygOp7Nm3vNtcHlrfBu3WmytE=
+X-QQ-mid: bizesmtpsz7t1722217410t0n6dnj
+X-QQ-Originating-IP: Q0VegAvULdBG8j4khezVTp4/Mx+d7xGGpWepEWso0yM=
 Received: from uniontech.localdomain ( [113.57.152.160])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 29 Jul 2024 09:43:17 +0800 (CST)
+	id ; Mon, 29 Jul 2024 09:43:23 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 9795413247571200008
+X-BIZMAIL-ID: 359325207963766891
 From: Erpeng Xu <xuerpeng@uniontech.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org,
@@ -49,10 +50,12 @@ Cc: marcel@holtmann.org,
 	guanwentao@uniontech.com,
 	luiz.von.dentz@intel.com,
 	Erpeng Xu <xuerpeng@uniontech.com>
-Subject: [PATCH 6.10 1/2] Bluetooth: btusb: Add RTL8852BE device 0489:e125 to device tables
-Date: Mon, 29 Jul 2024 09:42:52 +0800
-Message-ID: <8AB7BB893B74C562+20240729014309.5699-1-xuerpeng@uniontech.com>
+Subject: [PATCH 6.10 2/2] Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x13d3:0x3591
+Date: Mon, 29 Jul 2024 09:42:53 +0800
+Message-ID: <AA0BD42C5ED9EF10+20240729014309.5699-2-xuerpeng@uniontech.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240729014309.5699-1-xuerpeng@uniontech.com>
+References: <20240729014309.5699-1-xuerpeng@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,18 +66,18 @@ Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5a-1
 
-From: Hilda Wu <hildawu@realtek.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 295ef07a9dae6182ad4b689aa8c6a7dbba21474c upstream
+commit 473a89b4ed7fd52a419340f7c540d5c8fc96fc75 upstream
 
-Add the support ID 0489:e125 to usb_device_id table for
-Realtek RTL8852B chip.
+Add the support ID(0x13d3, 0x3591) to usb_device_id table for
+Realtek RTL8852BE.
 
-The device info from /sys/kernel/debug/usb/devices as below.
+The device table is as follows:
 
-T:  Bus=01 Lev=01 Prnt=01 Port=07 Cnt=03 Dev#=  5 Spd=12   MxCh= 0
+T:  Bus=01 Lev=02 Prnt=03 Port=00 Cnt=01 Dev#=  5 Spd=12   MxCh= 0
 D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e125 Rev= 0.00
+P:  Vendor=13d3 ProdID=3591 Rev= 0.00
 S:  Manufacturer=Realtek
 S:  Product=Bluetooth Radio
 S:  SerialNumber=00e04c000001
@@ -102,7 +105,9 @@ I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
 E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
 E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
 
-Signed-off-by: Hilda Wu <hildawu@realtek.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Erpeng Xu <xuerpeng@uniontech.com>
 ---
@@ -110,18 +115,18 @@ Signed-off-by: Erpeng Xu <xuerpeng@uniontech.com>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index e384ef6ff050..aec6da3e37ef 100644
+index aec6da3e37ef..789c492df6fa 100644
 --- a/drivers/bluetooth/btusb.c
 +++ b/drivers/bluetooth/btusb.c
 @@ -555,6 +555,8 @@ static const struct usb_device_id quirks_table[] = {
  						     BTUSB_WIDEBAND_SPEECH },
  	{ USB_DEVICE(0x13d3, 0x3572), .driver_info = BTUSB_REALTEK |
  						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
++	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
 +						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
  
- 	/* Realtek 8852BT/8852BE-VT Bluetooth devices */
- 	{ USB_DEVICE(0x0bda, 0x8520), .driver_info = BTUSB_REALTEK |
 -- 
 2.45.2
 
