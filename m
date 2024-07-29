@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-62569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E38593F786
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 16:22:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90F993F78F
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 16:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 824671C218E9
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:22:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CAEF280D92
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F15156669;
-	Mon, 29 Jul 2024 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E5A15A86D;
+	Mon, 29 Jul 2024 14:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BBk2migj"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pKDlayyG"
 X-Original-To: stable@vger.kernel.org
 Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9114115534B;
-	Mon, 29 Jul 2024 14:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB9E155CBD;
+	Mon, 29 Jul 2024 14:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722262885; cv=none; b=WFyZCKVK4mIzTBALxr8zguRgjry4CG1s34zuB4DnTL5P+3XJTyApYv9ZlOYTIsW6XIuhS4f8kTJhwoxgz+hIpShxwt4BIheI5PD09QjrcIlFXZkgoLw3oWnSbz3ZbXfTto5yg6Oz98J1zZiFGnvnLVgPhH+t+yWIlbvbUwVKEDw=
+	t=1722262887; cv=none; b=EmTmaBeHgyt7BKrYocbVgTVMPCX5wtVFw2Lo3SnFypY30yPWyTP48BBFM9K0EDE5Lf28046eHUAg4ojxPiPkJJURvzWMdR0KgLvvHQJb2Dh5ihEHQECvN1iZeIml+DG6z313WO1JhMdx3T0XioEO2nIiOpuCESXS1czFA5utyDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722262885; c=relaxed/simple;
-	bh=LMXtIrcdC4H9G0lbWS6XSXvCMbNu5NBZqkE0JDrJLOA=;
+	s=arc-20240116; t=1722262887; c=relaxed/simple;
+	bh=o7cAGLslmZA+T1Zp4OWB10YqQV5FSDeXwMinAEvdo2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/QoiCKC8xyVLWtV6C+hJj9VJ9aI+7WhVWDGo1WlN3mGc4CPgOdex3IsGDer06kUgrEX930G37inQvxuDRyRXSK/OW5yy3mpqh3xRHifSIods9YI5/454OprVIbT3DggVbtpqV2sJzitx50hNuA7z/VjNwZoWEbYbXmaxd49zYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BBk2migj; arc=none smtp.client-ip=217.70.183.193
+	 MIME-Version; b=Lxf6T/8jbtWnYCd1q0wHgvWxoxOVqWO10r1zbSlUdgEw/68h+CIa1qnA+58GAtElpEG6li4X/8t+T7TC1bPuFmg6B+YYOzolf7xRqJoC//QbC82BnKBSQ7MlR3GNgChgmY/ARPNNndtM8IkYWujTXj6A/AFYyWS8EPqo1IcAC9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pKDlayyG; arc=none smtp.client-ip=217.70.183.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPA id 9EAE4240006;
-	Mon, 29 Jul 2024 14:21:15 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 2BBED24000D;
+	Mon, 29 Jul 2024 14:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1722262876;
+	t=1722262877;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=O1sNai9Jq2u7qPOllWQVrRFQ040G46WCUggP4JjIwzw=;
-	b=BBk2migjJPNgARSb4Y4tPh2TLnxHPLRxm9BEPmeTLeG+L+T98j321Hj7cfqcUtA17n+fIX
-	xCDNe2ZbNnPx9AhvjbRZsQk/RdLeHa6pwWkN/okkSNgIJLSSgxys53HStMEcs4QeGs4Bgr
-	PzzazAB8ZFiu/5BI+Z1mLi1AmNTx9VOOQ24rKkjcjPJxTq1mdORW6oUkQGhKHgIHFDEIlf
-	VbLCvPXcMXhwpskSFH5U27ENRUtWH9TmiQgFLn1UoZkTRI2yQdHFXjeISfvae36vFgYBaQ
-	Qup5Y7RTNBy6lruh9qNhZ3D7pktlHNwNH5o6a6JwLi8ES6LhOfAfhP8IbRQmmw==
+	bh=ECDVzrgNjvjBjKFw+cXG3YV6tgCkVLoJ7Bm/DlpwBr8=;
+	b=pKDlayyGCNuipek/kjpn+jCxN8qmz8EcVHCDoY3r3CGlQQ+eoIVlDPtx04fRNgOFFQSIEL
+	LCVnP4qJiblflp8QcG4tEj1P2M+79+DOWMRBOwmcaB+T3MTGOi+mUlgc+DytXIxXsUUvP6
+	AR+2Xmg3lK/pT4p34lFerag5mmsjkGaKxnXIhkXEowhfnkt+2LRoxNVgDvBPJap34/Jk4L
+	N+ZNWEwFuc6VxjBzdyRuZtbJJQ5SjvVGFs/y9wg5W/KwfLQGpgChWXcNqelejWlBo6zfpu
+	5LbzNqHovj+ehvwVHTrpzyZimWG8cdcokgcGd1pAzFUNo3qs2f993yeGom+G5Q==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -60,9 +60,9 @@ Cc: linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v1 01/36] soc: fsl: cpm1: qmc: Update TRNSYNC only in transparent mode
-Date: Mon, 29 Jul 2024 16:20:30 +0200
-Message-ID: <20240729142107.104574-2-herve.codina@bootlin.com>
+Subject: [PATCH v1 03/36] soc: fsl: cpm1: tsa: Fix tsa_write8()
+Date: Mon, 29 Jul 2024 16:20:32 +0200
+Message-ID: <20240729142107.104574-4-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240729142107.104574-1-herve.codina@bootlin.com>
 References: <20240729142107.104574-1-herve.codina@bootlin.com>
@@ -75,66 +75,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: herve.codina@bootlin.com
 
-The TRNSYNC feature is available (and enabled) only in transparent mode.
+The tsa_write8() parameter is an u32 value. This is not consistent with
+the function itself. Indeed, tsa_write8() writes an 8bits value.
 
-Since commit 7cc9bda9c163 ("soc: fsl: cpm1: qmc: Handle timeslot entries
-at channel start() and stop()") TRNSYNC register is updated in
-transparent and hdlc mode. In hdlc mode, the address of the TRNSYNC
-register is used by the QMC for other internal purpose. Even if no weird
-results were observed in hdlc mode, touching this register in this mode
-is wrong.
+Be consistent and use an u8 parameter value.
 
-Update TRNSYNC only in transparent mode.
-
-Fixes: 7cc9bda9c163 ("soc: fsl: cpm1: qmc: Handle timeslot entries at channel start() and stop()")
+Fixes: 1d4ba0b81c1c ("soc: fsl: cpm1: Add support for TSA")
 Cc: stable@vger.kernel.org
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- drivers/soc/fsl/qe/qmc.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ drivers/soc/fsl/qe/tsa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 76bb496305a0..bacabf731dcb 100644
---- a/drivers/soc/fsl/qe/qmc.c
-+++ b/drivers/soc/fsl/qe/qmc.c
-@@ -940,11 +940,13 @@ static int qmc_chan_start_rx(struct qmc_chan *chan)
- 		goto end;
- 	}
+diff --git a/drivers/soc/fsl/qe/tsa.c b/drivers/soc/fsl/qe/tsa.c
+index 6c5741cf5e9d..53968ea84c88 100644
+--- a/drivers/soc/fsl/qe/tsa.c
++++ b/drivers/soc/fsl/qe/tsa.c
+@@ -140,7 +140,7 @@ static inline void tsa_write32(void __iomem *addr, u32 val)
+ 	iowrite32be(val, addr);
+ }
  
--	ret = qmc_setup_chan_trnsync(chan->qmc, chan);
--	if (ret) {
--		dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
--			chan->id, ret);
--		goto end;
-+	if (chan->mode == QMC_TRANSPARENT) {
-+		ret = qmc_setup_chan_trnsync(chan->qmc, chan);
-+		if (ret) {
-+			dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
-+				chan->id, ret);
-+			goto end;
-+		}
- 	}
- 
- 	/* Restart the receiver */
-@@ -982,11 +984,13 @@ static int qmc_chan_start_tx(struct qmc_chan *chan)
- 		goto end;
- 	}
- 
--	ret = qmc_setup_chan_trnsync(chan->qmc, chan);
--	if (ret) {
--		dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
--			chan->id, ret);
--		goto end;
-+	if (chan->mode == QMC_TRANSPARENT) {
-+		ret = qmc_setup_chan_trnsync(chan->qmc, chan);
-+		if (ret) {
-+			dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
-+				chan->id, ret);
-+			goto end;
-+		}
- 	}
- 
- 	/*
+-static inline void tsa_write8(void __iomem *addr, u32 val)
++static inline void tsa_write8(void __iomem *addr, u8 val)
+ {
+ 	iowrite8(val, addr);
+ }
 -- 
 2.45.0
 
