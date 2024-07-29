@@ -1,134 +1,207 @@
-Return-Path: <stable+bounces-62585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D122793FA64
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 18:14:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE6893FA7B
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 18:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C118283B2A
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 16:14:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA5FF2841C9
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 16:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0515915B14C;
-	Mon, 29 Jul 2024 16:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA99A15F3E6;
+	Mon, 29 Jul 2024 16:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CH7o+GN6"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MCA8xd2n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39ABC80038;
-	Mon, 29 Jul 2024 16:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE80515ECF7
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 16:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722269684; cv=none; b=Jb2eS0cDxs/pU4i0axYW4j8P9n45g2U3QSF4mYaV/PRIqSILV4pwIbRJY84gBVH8eSDI6q1oVTlYNCEoVnayi9j79CHU/K6jSCIT32kRU+/EFUrE1Fh99hstzbcklcYg2nsSQTS44aCc+NmsAH9l0V7g3ZBV1O9rXItsJrsl6Bc=
+	t=1722270032; cv=none; b=agnX67gpIu+4+f3j714e9x9VEeUQMaYStykAmg5qJ/7uUEboeCfFv5eOL1btBqtLsi0oBaUVIVlCAR+I1QzII8JpIq4n+BiZVYtVI9Fvu1ShuVliWWyp6GrRobdBmUnD1GP9su6oXFElTMPwkO4m6m3Q1zwzuN6fS1DDDM2S9bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722269684; c=relaxed/simple;
-	bh=NCb9Ld2V+tyLAS+OJSGqh04B0fBxFGet5NP9pLw4hEo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dWtqLJQU+fCwBQMKM6fOjEHqJ9VcQDguwWke0hZaRRuODsMbnBf2oRlwV39eJf53bJmU6saKoQMucSpFHF2tAEML6auUN00ItQ9bZmIeY36+AvhqhzyTi8abMsWB6USCJhmXjURSUNCdy3USoKhr3EAj8wqRjq9vrjkvbiL0Z/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CH7o+GN6; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3687f8fcab5so1438069f8f.3;
-        Mon, 29 Jul 2024 09:14:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722269681; x=1722874481; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NCb9Ld2V+tyLAS+OJSGqh04B0fBxFGet5NP9pLw4hEo=;
-        b=CH7o+GN6+nlfETXWUpRHJNUW8C2FCuq3tbWpnLiB2A/ImkDCgW52H49dxBZerzsL+l
-         0rRekJ+5rXtVs6EilwF1x42PdelB2tJwN0y6d3rh0cN8b5CVZO7JQhiSumOBsI+BcJfw
-         T9oyNkBzpPGpUS35tYJXHJK1MQyxeJDqqnQTynkg9Ac6GTmLH8VLnk9oPJpdsiAFT9Hk
-         HRSzVjafMzviQpN2Va/zpPOX4ORbFwVfY9ZW9vWTiJicE4+6qbGDVywTV3whomgEJ2QJ
-         v6p7K2frGLIepaWbd7I3ax5+BaRpxLNnb08aiBiDlxyLo4df+JDkHDxuCsaSsuz3FsgN
-         yb8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722269681; x=1722874481;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NCb9Ld2V+tyLAS+OJSGqh04B0fBxFGet5NP9pLw4hEo=;
-        b=i+Es2B1yUw/5gqy5LdU0tsEUTQqoRHQQvXc3xXvA3AzVk+K6mZYf3BStNOEvXglgdX
-         JKYH23jOY9RAZYR71b8DOPXxUlFlQdi9hEj0zfXcKQihFLawz3401gQ1kTaBSMf9BPBS
-         27/n0Lv6IRY3M5GcgH569AYqjDCHfIRMTjpFusE3dqRmAFhzwBJifl5R22/UTkIt13T6
-         ilINMVuOzpM6Fud+fonEHEB6I78JPAhyXCrEgNpE1bbYFc2jc1MC2grJbPeyQ6EdfgXa
-         0aRIQ/JR1Rtjw7ClBSMNa6ENqCnl4l18d28b7ff+cTKU+qgymqG6vpFPdz3kv4+1dbCB
-         xTqA==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ5u38FxI3NrE9nUTx9KxnpGxIfF9mAhQNHi0Wj/AoHnyGJmMpGJ+zKoZQ8igOvMLVu5XnaBtO9X1l9WpKOw3Ao1L0l/x+kjoTKkCOYLbyLmPk86RXzHWeWOkgCaO4+RQA/qUlhWSWClDFf1KYU4DXfZERb0rjc8uP7Vil6yP1
-X-Gm-Message-State: AOJu0YzCVJcXmbs2Gga3Kytve0LkqkzgXlbbEe19Z4ELJHmrYX1wjdWY
-	luIhVtFxbXti5+L1IrCI899q4gFAXDW6fZf7/cpFv++sHA/OLIGdnCkcaHnw9Q40nsVxF85AbT0
-	NiCN7P7lu95pDUGPGYaXgQCQ94SQ=
-X-Google-Smtp-Source: AGHT+IH0iUHS+mfnOnQclj0rSTTnv/QTU5hLTWKAlViB+oUnmnavFRQv/N6b7puMEHLT0xEpDzIQ2UGOCU3CC/vmOZM=
-X-Received: by 2002:a5d:64c5:0:b0:368:7f4f:9ead with SMTP id
- ffacd0b85a97d-36b5cecf32amr6545711f8f.7.1722269681301; Mon, 29 Jul 2024
- 09:14:41 -0700 (PDT)
+	s=arc-20240116; t=1722270032; c=relaxed/simple;
+	bh=DUg5JFwyYXml/uolcp+r/rbm4g5UIFq85UmqbbzCzZg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IxGAAE2i1FB89H0SCsN3SD/ka0vGIb/tMgQtsLK3zAq65550PkD0JmCScS8eIMpBCmqZFwniWEn23GOShNH81JmkmrY84eJxVexaYu4kOBTm6P3MS+wifERPJlynLz+i2iAfm0QDtQJRhUJTxtCRbEubBi4eAiLiMTVYl0eZcNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MCA8xd2n; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722270030;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BPjOG63ucqIecfQUcEvOk2uVbkRV7p0tyL6NVisM1C4=;
+	b=MCA8xd2nhBo/pB1lmaxFN5ng1AlXwf0mJpF0+PiVeNUxo1lxFmL6VvIABDqF5BSrSeX5UE
+	yzNWcofD/qjcKOPbs2A12f/T0+eJOR0+i0NkiVW3et+4eZZyytAZfZPV+qG2Fu1OxmcYOL
+	wbDsnlKdA79apO1/MbqIUN848nAnhQI=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-561-pbazTEYXMY-3m3K78NsRKg-1; Mon,
+ 29 Jul 2024 12:20:26 -0400
+X-MC-Unique: pbazTEYXMY-3m3K78NsRKg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 407551955D4C;
+	Mon, 29 Jul 2024 16:20:22 +0000 (UTC)
+Received: from warthog.procyon.org.uk.com (unknown [10.42.28.216])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9A2B5195605F;
+	Mon, 29 Jul 2024 16:20:14 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Steve French <smfrench@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 01/24] fs/netfs/fscache_cookie: add missing "n_accesses" check
+Date: Mon, 29 Jul 2024 17:19:30 +0100
+Message-ID: <20240729162002.3436763-2-dhowells@redhat.com>
+In-Reply-To: <20240729162002.3436763-1-dhowells@redhat.com>
+References: <20240729162002.3436763-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240729022316.92219-1-andrey.konovalov@linux.dev> <baae33f5602d8bcd38b48cd6ea4617c8e17d8650.camel@sylv.io>
-In-Reply-To: <baae33f5602d8bcd38b48cd6ea4617c8e17d8650.camel@sylv.io>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Mon, 29 Jul 2024 18:14:30 +0200
-Message-ID: <CA+fCnZcWvtnTrST3PrORdPwmo0m2rrE+S-hWD74ZU_4RD6mSPA@mail.gmail.com>
-Subject: Re: [PATCH] usb: gadget: dummy_hcd: execute hrtimer callback in
- softirq context
-To: Marcello Sylvester Bauer <sylv@sylv.io>
-Cc: andrey.konovalov@linux.dev, Alan Stern <stern@rowland.harvard.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dmitry Vyukov <dvyukov@google.com>, 
-	Aleksandr Nogikh <nogikh@google.com>, Marco Elver <elver@google.com>, 
-	Alexander Potapenko <glider@google.com>, kasan-dev@googlegroups.com, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com, 
-	syzbot+17ca2339e34a1d863aad@syzkaller.appspotmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Mon, Jul 29, 2024 at 10:26=E2=80=AFAM Marcello Sylvester Bauer <sylv@syl=
-v.io> wrote:
->
-> Hi Andrey,
+From: Max Kellermann <max.kellermann@ionos.com>
 
-Hi Marcello,
+This fixes a NULL pointer dereference bug due to a data race which
+looks like this:
 
-> Thanks for investigating and finding the cause of this problem. I have
-> already submitted an identical patch to change the hrtimer to softirq:
-> https://lkml.org/lkml/2024/6/26/969
+  BUG: kernel NULL pointer dereference, address: 0000000000000008
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] SMP PTI
+  CPU: 33 PID: 16573 Comm: kworker/u97:799 Not tainted 6.8.7-cm4all1-hp+ #43
+  Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89 10/17/2018
+  Workqueue: events_unbound netfs_rreq_write_to_cache_work
+  RIP: 0010:cachefiles_prepare_write+0x30/0xa0
+  Code: 57 41 56 45 89 ce 41 55 49 89 cd 41 54 49 89 d4 55 53 48 89 fb 48 83 ec 08 48 8b 47 08 48 83 7f 10 00 48 89 34 24 48 8b 68 20 <48> 8b 45 08 4c 8b 38 74 45 49 8b 7f 50 e8 4e a9 b0 ff 48 8b 73 10
+  RSP: 0018:ffffb4e78113bde0 EFLAGS: 00010286
+  RAX: ffff976126be6d10 RBX: ffff97615cdb8438 RCX: 0000000000020000
+  RDX: ffff97605e6c4c68 RSI: ffff97605e6c4c60 RDI: ffff97615cdb8438
+  RBP: 0000000000000000 R08: 0000000000278333 R09: 0000000000000001
+  R10: ffff97605e6c4600 R11: 0000000000000001 R12: ffff97605e6c4c68
+  R13: 0000000000020000 R14: 0000000000000001 R15: ffff976064fe2c00
+  FS:  0000000000000000(0000) GS:ffff9776dfd40000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000008 CR3: 000000005942c002 CR4: 00000000001706f0
+  Call Trace:
+   <TASK>
+   ? __die+0x1f/0x70
+   ? page_fault_oops+0x15d/0x440
+   ? search_module_extables+0xe/0x40
+   ? fixup_exception+0x22/0x2f0
+   ? exc_page_fault+0x5f/0x100
+   ? asm_exc_page_fault+0x22/0x30
+   ? cachefiles_prepare_write+0x30/0xa0
+   netfs_rreq_write_to_cache_work+0x135/0x2e0
+   process_one_work+0x137/0x2c0
+   worker_thread+0x2e9/0x400
+   ? __pfx_worker_thread+0x10/0x10
+   kthread+0xcc/0x100
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x30/0x50
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork_asm+0x1b/0x30
+   </TASK>
+  Modules linked in:
+  CR2: 0000000000000008
+  ---[ end trace 0000000000000000 ]---
 
-Ah, I missed that, that's great!
+This happened because fscache_cookie_state_machine() was slow and was
+still running while another process invoked fscache_unuse_cookie();
+this led to a fscache_cookie_lru_do_one() call, setting the
+FSCACHE_COOKIE_DO_LRU_DISCARD flag, which was picked up by
+fscache_cookie_state_machine(), withdrawing the cookie via
+cachefiles_withdraw_cookie(), clearing cookie->cache_priv.
 
-> However, your commit messages contain more useful information about the
-> problem at hand. So I'm happy to drop my patch in favor of yours.
+At the same time, yet another process invoked
+cachefiles_prepare_write(), which found a NULL pointer in this code
+line:
 
-That's very considerate, thank you. I'll leave this up to Greg - I
-don't mind using either patch.
+  struct cachefiles_object *object = cachefiles_cres_object(cres);
 
-> Btw, the same problem has also been reported by the intel kernel test
-> robot. So we should add additional tags to mark this patch as the fix.
->
->
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes:
-> https://lore.kernel.org/oe-lkp/202406141323.413a90d2-lkp@intel.com
-> Acked-by: Marcello Sylvester Bauer <sylv@sylv.io>
+The next line crashes, obviously:
 
-Let's also add the syzbot reports mentioned in your patch:
+  struct cachefiles_cache *cache = object->volume->cache;
 
-Reported-by: syzbot+c793a7eca38803212c61@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3Dc793a7eca38803212c61
-Reported-by: syzbot+1e6e0b916b211bee1bd6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3D1e6e0b916b211bee1bd6
+During cachefiles_prepare_write(), the "n_accesses" counter is
+non-zero (via fscache_begin_operation()).  The cookie must not be
+withdrawn until it drops to zero.
 
-And I also found one more:
+The counter is checked by fscache_cookie_state_machine() before
+switching to FSCACHE_COOKIE_STATE_RELINQUISHING and
+FSCACHE_COOKIE_STATE_WITHDRAWING (in "case
+FSCACHE_COOKIE_STATE_FAILED"), but not for
+FSCACHE_COOKIE_STATE_LRU_DISCARDING ("case
+FSCACHE_COOKIE_STATE_ACTIVE").
 
-Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3Dedd9fe0d3a65b14588d5
+This patch adds the missing check.  With a non-zero access counter,
+the function returns and the next fscache_end_cookie_access() call
+will queue another fscache_cookie_state_machine() call to handle the
+still-pending FSCACHE_COOKIE_DO_LRU_DISCARD.
 
-Thank you!
+Fixes: 12bb21a29c19 ("fscache: Implement cookie user counting and resource pinning")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+cc: stable@vger.kernel.org
+---
+ fs/netfs/fscache_cookie.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
+index bce2492186d0..d4d4b3a8b106 100644
+--- a/fs/netfs/fscache_cookie.c
++++ b/fs/netfs/fscache_cookie.c
+@@ -741,6 +741,10 @@ static void fscache_cookie_state_machine(struct fscache_cookie *cookie)
+ 			spin_lock(&cookie->lock);
+ 		}
+ 		if (test_bit(FSCACHE_COOKIE_DO_LRU_DISCARD, &cookie->flags)) {
++			if (atomic_read(&cookie->n_accesses) != 0)
++				/* still being accessed: postpone it */
++				break;
++
+ 			__fscache_set_cookie_state(cookie,
+ 						   FSCACHE_COOKIE_STATE_LRU_DISCARDING);
+ 			wake = true;
+
 
