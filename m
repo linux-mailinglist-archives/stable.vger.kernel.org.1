@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B425C93EE4B
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:17:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92ADF93EE4D
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FEBD280C6D
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:16:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 322812812D1
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02277D3EC;
-	Mon, 29 Jul 2024 07:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF877D3EC;
+	Mon, 29 Jul 2024 07:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFEdIABp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJAGEY+a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC893D0C5
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21F63D0C5
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722237414; cv=none; b=sIP/4AAnDI0dY09Eo9zPxPy+ugXpb8SoSRgtz7ImGr/sT6cbafQldXP4xpzm4UnGjuTBmAOCf6mGXMReGIhoarVeJ2+I/IYl9Day8Q5vUZJl1X5eIc3Il4WNrILf14ANOCQdFYgK0iJuTG0Fifor/to4Ae01d+Fa0vbIX5UwCvw=
+	t=1722237424; cv=none; b=EXCeqDTXk4kINiWvAFc5FnVFy9rxCDU/B+lAnKTD5svPBNmIbwWLudIus+Qsp/wt7XneUbXrnuiJuNbX4ZsodPIf9cNYKmdZedv9ce5zeElZ4KPaVfEEo6Y7dq2jlvte5k1MyslTbtsi9nYJNlEqphxHaNBWsbuvneAKUINdmIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722237414; c=relaxed/simple;
-	bh=rrU6KOHBpPbmEhOuSEW8CqZ3Ury6wj/qDH7vTIPOSYY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=r4PA8U4gfn2ADy6iOV5XMnhNvuPRvIsP/FKRwZtxseCwGKJ+yP6pkKAHRHLtawHm2S3e42ddFOEYvQtcGQUQlZvCOPTF0VBbBjTmtGGpCWy8IbvQDe2k8BCVv9/OsX0daZOcVCoprN1UNimR98s8DYYczZ3KjT4SpsSZoNZb4eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFEdIABp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600EBC4AF0A;
-	Mon, 29 Jul 2024 07:16:53 +0000 (UTC)
+	s=arc-20240116; t=1722237424; c=relaxed/simple;
+	bh=WWx0FqtNucYvruTbJmx1l0wrE8xLt5YmVNgyO+qsTGM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=n2YvNd52q7RRXQ1K+1nWm5jtcOBgm//Cb23LKN5bG5pR5ZbXxQi6KUHRI8twZlZhtBJy+KuuAK2ulEWvWDqN3TXF8n1C+/T3W2dJGYWrD4ZLNi9AJYR6gFwignfJjeLBF+XxcD6+Fvkm6K0lUm86vrMX+wexi+ykhOt+7S7P4/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJAGEY+a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69C1C4AF0C;
+	Mon, 29 Jul 2024 07:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722237413;
-	bh=rrU6KOHBpPbmEhOuSEW8CqZ3Ury6wj/qDH7vTIPOSYY=;
+	s=korg; t=1722237424;
+	bh=WWx0FqtNucYvruTbJmx1l0wrE8xLt5YmVNgyO+qsTGM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=oFEdIABpRLbBocOoP1Va1FeU5fm2K7QfxrsCU/qoDHeWrTFyydjyh0FtSAJt4SRMH
-	 xu+m/xxmeqpU+tMoLtJzmjVr8EMOOLpOtTlcchk3ys9ZbCAIEPWHNpu9Lxb69KECmI
-	 UL+Z42G+fCXXaR0P2gWHeat0k/XkkFDahwFjS8Ug=
-Subject: FAILED: patch "[PATCH] mm/huge_memory: avoid PMD-size page cache if needed" failed to apply to 6.6-stable tree
+	b=FJAGEY+a0So2uzBPxXub//1Yg6Tz8QofAtPf2AANOrrU97Rg+Hf+BVrIkhynx2LoR
+	 HVF6xJcRDFqHLAOuN/mKoJ4VIa183n1o44epyBCkL+fQCqXTtz/uLFpC7HW0gFJNB9
+	 9i51wmVfM/8Z5/slhi8IGjJqpBfnAG0o+pC21zbg=
+Subject: FAILED: patch "[PATCH] mm/huge_memory: avoid PMD-size page cache if needed" failed to apply to 6.1-stable tree
 To: gshan@redhat.com,akpm@linux-foundation.org,baohua@kernel.org,baolin.wang@linux.alibaba.com,david@redhat.com,ddutile@redhat.com,peterx@redhat.com,ryan.roberts@arm.com,stable@vger.kernel.org,william.kucharski@oracle.com,willy@infradead.org,ziy@nvidia.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 09:16:50 +0200
-Message-ID: <2024072950-factsheet-cabbie-418a@gregkh>
+Date: Mon, 29 Jul 2024 09:16:53 +0200
+Message-ID: <2024072952-envision-salvation-6c3a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x d659b715e94ac039803d7601505d3473393fc0be
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072950-factsheet-cabbie-418a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072952-envision-salvation-6c3a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,21 @@ e0ffb29bc54d ("mm: simplify thp_vma_allowable_order")
 19eaf44954df ("mm: thp: support allocation of anonymous multi-size THP")
 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
 7a81751fcdeb ("mm/thp: fix "mm: thp: kill __transhuge_page_enabled()"")
+5003a2bdf688 ("mm: call update_mmu_cache_range() in more page fault handling paths")
+daa60ae64c65 ("mm,thp: fix smaps THPeligible output alignment")
+3db82b9374ca ("mm/memory: allow pte_offset_map[_lock]() to fail")
+3b65f437d9e8 ("mm: fix failure to unmap pte on highmem systems")
+2bad466cc9d9 ("mm/uffd: UFFD_FEATURE_WP_UNPOPULATED")
+3c556d2425b0 ("mm/thp: rename TRANSPARENT_HUGEPAGE_NEVER_DAX to _UNSUPPORTED")
+28d41a486331 ("mm: convert wp_page_copy() to use folios")
+cb3184deef10 ("mm: convert do_anonymous_page() to use a folio")
+6bc56a4d8553 ("mm: add vma_alloc_zeroed_movable_folio()")
+2cf1338454a8 ("mm: fix khugepaged with shmem_enabled=advise")
+d1751118c886 ("mm/uffd: detect pgtable allocation failures")
+a79390f5d6a7 ("mm/mprotect: use long for page accountings and retval")
+1ef488edd6c4 ("mm/mprotect: drop pgprot_t parameter from change_protection()")
+931298e103c2 ("mm/userfaultfd: rely on vma->vm_page_prot in uffd_wp_range()")
+fed15f1345dc ("mm/hugetlb: pre-allocate pgtable pages for uffd wr-protects")
 
 thanks,
 
