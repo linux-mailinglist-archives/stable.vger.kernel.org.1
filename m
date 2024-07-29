@@ -1,232 +1,93 @@
-Return-Path: <stable+bounces-62487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D6393F36E
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:58:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E44593F387
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 13:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2CAC1F22320
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:58:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BC4F282885
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06538145334;
-	Mon, 29 Jul 2024 10:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3261459E8;
+	Mon, 29 Jul 2024 11:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EM5kTQdx"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="hTq6Llmt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1D21428F2
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B40145330;
+	Mon, 29 Jul 2024 11:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722250716; cv=none; b=qt3Bl2cT06Wg0DKmDpJIZdvK1iqWUyG1D4Rm4X9JNRDioAtVIEKHgYOhOWtcx6BvbWHGJ12EV7bN77G8XampDm0wwA0S75tFCmoiEEskEAYcR2KHtNNOc92bLYGw6ZCZzYCu3Y2LZiXWXicorwvEBkpazdbGfnExzrwzQqn9ZNs=
+	t=1722251095; cv=none; b=GokZvqbssqXKxW6I4zFsLKqrlzO869UkJhUjffnG+DB6dueIl1PlcjBs/1Xzs8ZH+EUQUy1JjqsOMqYkNNGQ0FB7HaPeMvXaKFlgL2Iw9EYh+P573k7m5C8736neE/gjolWTDgHtrvQ0+r2rkEKnyVpzgs7BAfJLczQXNVF+tzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722250716; c=relaxed/simple;
-	bh=Z15HXiKdmclTqPuNGNt1vKkrzZed/zJXHzbt7QIYczY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=C5jikjPwgP3PTNNAirTsOK5kRzq5iX6T+hX6WdBFQv50n2PCz/xmYt6zxBRdu7P4lb8jUxy0vvl8JGtaILVebB4mOpkee9IBRZEMHi0uz90CZOPma61N9oujjrofXzwY/WgIwAOBoZD52gEOng90tjxGsRiA8olLXEGSx8THxq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EM5kTQdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05013C32786;
-	Mon, 29 Jul 2024 10:58:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722250716;
-	bh=Z15HXiKdmclTqPuNGNt1vKkrzZed/zJXHzbt7QIYczY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=EM5kTQdxI2QUOtbmTpX4skjyT/rPs2v2DhOvSKpSfFauWf50Lb0aGFwUU7r7eXdSt
-	 m7IniSMHD68fsFpcqSY0Fnw3zFDjp8jwraTX24fE6eD/73FnP+5b9ZUXOEB08ub6XM
-	 UkKZF7IoN7L3jMoT80jGT4qZ+9X8/34xdw5uXQSk=
-Subject: FAILED: patch "[PATCH] KVM: nVMX: Fold requested virtual interrupt check into" failed to apply to 6.1-stable tree
-To: seanjc@google.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 12:58:25 +0200
-Message-ID: <2024072925-straw-mashing-54f6@gregkh>
+	s=arc-20240116; t=1722251095; c=relaxed/simple;
+	bh=vCTnby+eSIVqYW3W/63JaNKMfr69tywndCVyZSA1SVs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I7IhOQCYgRO8lPM7F9ivuckSiIxu2cSJBgE81rsJ/w06aB2/2pHktejJosa8YEuPs31Q4RAciF2dFapGU4Ji5KfESE0HvHVzo0/4bdBiaWLDTqOWK0FSCtqgrX8KV3pl/ve+K2Ed3EjmF/tujFLkZA2OVN6F87ARvrgYLnpgu2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=hTq6Llmt; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from localhost.localdomain (unknown [IPv6:2405:201:2015:f873:55f8:639e:8e9f:12ec])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 17CB745A;
+	Mon, 29 Jul 2024 13:04:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1722251046;
+	bh=vCTnby+eSIVqYW3W/63JaNKMfr69tywndCVyZSA1SVs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hTq6LlmtICxa/WlqX6/E8fbBBQh95mAdrmG/AlaiLIeMnOmlW79Zg5bZ3TvZNhxaF
+	 yq8powpfyg6X8Wk5+DFpcG06zVLYNWnbow3Y7O6rHjrsU8UuIh+GG3Ky9qZRhoA2Mf
+	 zr84ySp9Zz03xObgqAmKiHcSSkGgFuwAUrDjmRV8=
+From: Umang Jain <umang.jain@ideasonboard.com>
+To: linux-media@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Umang Jain <umang.jain@ideasonboard.com>
+Subject: [PATCH v2 0/2] media: imx335: Fix reset-gpio handling
+Date: Mon, 29 Jul 2024 16:34:35 +0530
+Message-ID: <20240729110437.199428-1-umang.jain@ideasonboard.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+These couple of patches intends to fix the reset-gpio handling
+for imx335 driver.
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Patch 1/2 mentions reset-gpio polarity in DT binding example.
+It is ACTIVE_LOW according to the data sheet.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Patch 2/2 fixes the logical value of reset-gpio during
+power-on/power-off sequence.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 321ef62b0c5f6f57bb8500a2ca5986052675abbf
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072925-straw-mashing-54f6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+--
+Changes in v2:
+- Also include reset-gpio polarity, mention in DT binding
+- Add Fixes tag in 2/2
+- Set the reset line to high during init time in 2/2
 
-Possible dependencies:
+Link to v1:
+https://lore.kernel.org/linux-media/tyo5etjwsfznuk6vzwqmcphbu4pz4lskrg3fjieojq5qc3mg6s@6jbwavmapwmf/T/#m189ccfa77ddceda6c3b29be3306f1a27ed0934d6
 
-321ef62b0c5f ("KVM: nVMX: Fold requested virtual interrupt check into has_nested_events()")
-27c4fa42b11a ("KVM: nVMX: Check for pending posted interrupts when looking for nested events")
-e366f92ea99e ("KVM: SEV: Support SEV-SNP AP Creation NAE event")
-c63cf135cc99 ("KVM: SEV: Add support to handle RMP nested page faults")
-9b54e248d264 ("KVM: SEV: Add support to handle Page State Change VMGEXIT")
-d46b7b6a5f9e ("KVM: SEV: Add support to handle MSR based Page State Change VMGEXIT")
-0c76b1d08280 ("KVM: SEV: Add support to handle GHCB GPA register VMGEXIT")
-1dfe571c12cf ("KVM: SEV: Add initial SEV-SNP support")
-bbe10a5cc0c7 ("Merge branch 'kvm-sev-es-ghcbv2' into HEAD")
+Umang Jain (2):
+  dt-bindings: imx335: Mention reset-gpio polarity
+  media: imx335: Fix reset-gpio handling
 
-thanks,
+ .../devicetree/bindings/media/i2c/sony,imx335.yaml        | 2 ++
+ drivers/media/i2c/imx335.c                                | 8 ++++----
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 321ef62b0c5f6f57bb8500a2ca5986052675abbf Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Fri, 7 Jun 2024 10:26:08 -0700
-Subject: [PATCH] KVM: nVMX: Fold requested virtual interrupt check into
- has_nested_events()
-
-Check for a Requested Virtual Interrupt, i.e. a virtual interrupt that is
-pending delivery, in vmx_has_nested_events() and drop the one-off
-kvm_x86_ops.guest_apic_has_interrupt() hook.
-
-In addition to dropping a superfluous hook, this fixes a bug where KVM
-would incorrectly treat virtual interrupts _for L2_ as always enabled due
-to kvm_arch_interrupt_allowed(), by way of vmx_interrupt_blocked(),
-treating IRQs as enabled if L2 is active and vmcs12 is configured to exit
-on IRQs, i.e. KVM would treat a virtual interrupt for L2 as a valid wake
-event based on L1's IRQ blocking status.
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240607172609.3205077-6-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 566d19b02483..f91d413d7de1 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -85,7 +85,6 @@ KVM_X86_OP_OPTIONAL(update_cr8_intercept)
- KVM_X86_OP(refresh_apicv_exec_ctrl)
- KVM_X86_OP_OPTIONAL(hwapic_irr_update)
- KVM_X86_OP_OPTIONAL(hwapic_isr_update)
--KVM_X86_OP_OPTIONAL_RET0(guest_apic_has_interrupt)
- KVM_X86_OP_OPTIONAL(load_eoi_exitmap)
- KVM_X86_OP_OPTIONAL(set_virtual_apic_mode)
- KVM_X86_OP_OPTIONAL(set_apic_access_page_addr)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index b3b796f06801..2715c1d6a4db 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1715,7 +1715,6 @@ struct kvm_x86_ops {
- 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
- 	void (*hwapic_irr_update)(struct kvm_vcpu *vcpu, int max_irr);
- 	void (*hwapic_isr_update)(int isr);
--	bool (*guest_apic_has_interrupt)(struct kvm_vcpu *vcpu);
- 	void (*load_eoi_exitmap)(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
- 	void (*set_virtual_apic_mode)(struct kvm_vcpu *vcpu);
- 	void (*set_apic_access_page_addr)(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index d4ed681785fd..547fca3709fe 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -97,7 +97,6 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.required_apicv_inhibits = VMX_REQUIRED_APICV_INHIBITS,
- 	.hwapic_irr_update = vmx_hwapic_irr_update,
- 	.hwapic_isr_update = vmx_hwapic_isr_update,
--	.guest_apic_has_interrupt = vmx_guest_apic_has_interrupt,
- 	.sync_pir_to_irr = vmx_sync_pir_to_irr,
- 	.deliver_interrupt = vmx_deliver_interrupt,
- 	.dy_apicv_has_pending_interrupt = pi_has_pending_interrupt,
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 732340ff3300..7c57d6524f75 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -4060,6 +4060,10 @@ static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
- 
- 	vppr = *((u32 *)(vapic + APIC_PROCPRI));
- 
-+	max_irr = vmx_get_rvi();
-+	if ((max_irr & 0xf0) > (vppr & 0xf0))
-+		return true;
-+
- 	if (vmx->nested.pi_pending && vmx->nested.pi_desc &&
- 	    pi_test_on(vmx->nested.pi_desc)) {
- 		max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 7efb52328e5d..8ccdba6360aa 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4105,26 +4105,6 @@ void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu)
- 	}
- }
- 
--bool vmx_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
--{
--	struct vcpu_vmx *vmx = to_vmx(vcpu);
--	void *vapic_page;
--	u32 vppr;
--	int rvi;
--
--	if (WARN_ON_ONCE(!is_guest_mode(vcpu)) ||
--		!nested_cpu_has_vid(get_vmcs12(vcpu)) ||
--		WARN_ON_ONCE(!vmx->nested.virtual_apic_map.gfn))
--		return false;
--
--	rvi = vmx_get_rvi();
--
--	vapic_page = vmx->nested.virtual_apic_map.hva;
--	vppr = *((u32 *)(vapic_page + APIC_PROCPRI));
--
--	return ((rvi & 0xf0) > (vppr & 0xf0));
--}
--
- void vmx_msr_filter_changed(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
-diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index 502704596c83..d404227c164d 100644
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -49,7 +49,6 @@ void vmx_apicv_pre_state_restore(struct kvm_vcpu *vcpu);
- bool vmx_check_apicv_inhibit_reasons(enum kvm_apicv_inhibit reason);
- void vmx_hwapic_irr_update(struct kvm_vcpu *vcpu, int max_irr);
- void vmx_hwapic_isr_update(int max_isr);
--bool vmx_guest_apic_has_interrupt(struct kvm_vcpu *vcpu);
- int vmx_sync_pir_to_irr(struct kvm_vcpu *vcpu);
- void vmx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
- 			   int trig_mode, int vector);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 8cce76b93d83..cacca83b06aa 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -13108,12 +13108,6 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
- 		kvm_arch_free_memslot(kvm, old);
- }
- 
--static inline bool kvm_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
--{
--	return (is_guest_mode(vcpu) &&
--		static_call(kvm_x86_guest_apic_has_interrupt)(vcpu));
--}
--
- static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
- {
- 	if (!list_empty_careful(&vcpu->async_pf.done))
-@@ -13147,9 +13141,7 @@ static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
- 	if (kvm_test_request(KVM_REQ_UPDATE_PROTECTED_GUEST_STATE, vcpu))
- 		return true;
- 
--	if (kvm_arch_interrupt_allowed(vcpu) &&
--	    (kvm_cpu_has_interrupt(vcpu) ||
--	    kvm_guest_apic_has_interrupt(vcpu)))
-+	if (kvm_arch_interrupt_allowed(vcpu) && kvm_cpu_has_interrupt(vcpu))
- 		return true;
- 
- 	if (kvm_hv_has_stimer_pending(vcpu))
+-- 
+2.45.0
 
 
