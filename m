@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75EE593F50E
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:20:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53AE93F50F
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F877282C7E
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:20:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 564021F2230F
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C31147C89;
-	Mon, 29 Jul 2024 12:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF20147C60;
+	Mon, 29 Jul 2024 12:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkVCClOM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyW7z6jj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F1E1474D9
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA8114430A
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722255604; cv=none; b=qiW6TDUusPO+txpXoSGdNbAJZQhMWh9tUC85ULb+JHGY3e/FZX4KCUMQvVurXnQ+tcLqc6GmN4rCo9xKuIRG8WA80P7/4+FI/RKgvDtCYQ21qsyyKEmaRzM0efBEufKa6OZXUNcaGSXNgFQywtf9b0AASvKPu4YqstHaHsNQC6k=
+	t=1722255610; cv=none; b=N6E1qvDQM7D0Pjn70NQueh0NqE/jsO/JdEo/GOGENlQ13eww2eoeE0yKYv0EK0oziX+1UhELedp5CyMbwvHk7XhP7Cytq188RQSucQVo2l3MOoFPAU9WE+V+wGk48RKU14GK/OSaxebbmoPpYJl+ZmSXdLdoFykF3nR1MAKls74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722255604; c=relaxed/simple;
-	bh=q2R+2W20XMQep2sfMv79XdhtjqDSCRq4V9WAQ7Tl46k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q722DNdkIf/utfFzZkL410QXS6QMEZzlSs7RxcTf5gfOnEsPzQB4whK7F0runJBZMHkdRzqdtvpAXYyF5pnS160E+nj593pxEjw4F5Holrrh9g8euJGXZlNz/neZCLXADJXUXO1ky0b3UlPJu/d1z2P+SJj2ZGEwo6ldE/yvd6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkVCClOM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCCBC32786;
-	Mon, 29 Jul 2024 12:20:03 +0000 (UTC)
+	s=arc-20240116; t=1722255610; c=relaxed/simple;
+	bh=lxuczo1UQ2NGpzatXJXh/O1hXyhQMlybk+nT3bWiSm4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=J1fEx2CgjwNKlJoRU8nFJyNHX+WFsbBETsvlfB4Gq6+Ov1n0ek5EsGBbGjJ1l1cvDInNYl4ZVRKrnLRToiUb/eZmYMnjxU1JTgOho9cfqN7chIwdGSFi0xLkl1hjvwyHAt5wuiZmAa+Si2MS8Bdfhn7ZnzEj0XWNIly+WyymoCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyW7z6jj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C817C4AF0C;
+	Mon, 29 Jul 2024 12:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722255604;
-	bh=q2R+2W20XMQep2sfMv79XdhtjqDSCRq4V9WAQ7Tl46k=;
+	s=korg; t=1722255609;
+	bh=lxuczo1UQ2NGpzatXJXh/O1hXyhQMlybk+nT3bWiSm4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zkVCClOMgN3pyonLESpC/YNdHpNse3HnA6Is6cML/A9+sKjaEn0SdCrj4t3HUkKMI
-	 kISxAFKHH0dwcmsyWQnS0qPoORgtID0ubmuJueRzk75fHUvqps0WXghQe1absHiYDs
-	 cFpq74Vx8MmfdgjnYnTAODWSNkbSkv506AcRboSA=
-Subject: FAILED: patch "[PATCH] mm/page_alloc: fix pcp->count race between drain_pages_zone()" failed to apply to 6.1-stable tree
+	b=kyW7z6jj4TZwF823VuV9KbyuQH/XlV8A5WaB2FYYeBlPI4IKLS77hLAgUVKCE8E6U
+	 t9DtRtyx5RNat1vwYTJVB1tpFPKjuuvlnRE6KMUTqd54/aTTkTQFgKKYTG7YDf31qs
+	 mLvtu50RITKpK8E4SW66pXzgyrllD+qm57QGFy8w=
+Subject: FAILED: patch "[PATCH] mm/page_alloc: fix pcp->count race between drain_pages_zone()" failed to apply to 6.6-stable tree
 To: lizhijian@fujitsu.com,akpm@linux-foundation.org,david@redhat.com,stable@vger.kernel.org,vbabka@suse.cz,yaoxt.fnst@fujitsu.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 14:19:55 +0200
-Message-ID: <2024072954-blaspheme-safeness-fcbc@gregkh>
+Date: Mon, 29 Jul 2024 14:20:03 +0200
+Message-ID: <2024072902-yippee-superbowl-f065@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,26 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 66eca1021a42856d6af2a9802c99e160278aed91
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072954-blaspheme-safeness-fcbc@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072902-yippee-superbowl-f065@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 66eca1021a42 ("mm/page_alloc: fix pcp->count race between drain_pages_zone() vs __rmqueue_pcplist()")
 55f77df7d715 ("mm: page_alloc: control latency caused by zone PCP draining")
-574907741599 ("mm/page_alloc: leave IRQs enabled for per-cpu page allocations")
-c3e58a70425a ("mm/page_alloc: always remove pages from temporary list")
 
 thanks,
 
