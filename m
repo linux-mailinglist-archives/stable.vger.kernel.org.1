@@ -1,305 +1,269 @@
-Return-Path: <stable+bounces-62426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D26693F0E6
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:23:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6CDF93F10E
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:28:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46A652824D4
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:23:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8A821C21A23
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E5013DBB7;
-	Mon, 29 Jul 2024 09:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CEC13FD86;
+	Mon, 29 Jul 2024 09:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Z+559wMt"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="NuKJXL9P"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2076.outbound.protection.outlook.com [40.107.236.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B5713B783;
-	Mon, 29 Jul 2024 09:23:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722244992; cv=fail; b=qZYl4Dn+lnxCwS/g776z0DY2HBBi6MzW85xxDoe2gH4qX6Bn9qTmjW8j3fkJzi6lggbFpZ4qeXOX4PM8YljYDF1AIHFN70OsxMeWqsjzsRGCz8SRYn7AsMVRfI/m38m20sPX9g/7KHeyl0XKn4JfhvYU83VEyQTesvMjGLJYnb0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722244992; c=relaxed/simple;
-	bh=1pe5ayjVO+TBWro4Rh772Kk6qrjtCCCUs2TZpKIpdOU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=EY84RvavLz95tvtwy/FPS8WWyMVLSpCZeW0aywJnNowzlIQa1QiToA9mJwzs1fgU6eR0l6/q0QiFdXZyx/lnJ+EvMIWQLuVNU36MxJGH8nH/gFsIPdQkxptig4RUr3QDQpb1XiDjAdhlw7moKXovKCBgFIjs/4xXNQBCQE+qyxs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Z+559wMt; arc=fail smtp.client-ip=40.107.236.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hFoLPm7OiwF/cD7VtBTL1VE8wKopzNccxH/JERjWwF6K1e96gHcYU00VySvu+H8nrxs51vkl6p9dnTMRwJFj/G/q0JSxr6dU7RH9Q/8o62Ve8OvJmyWxDK82tvH9NBt7CjQiMNkFgj7eNyyOOd2JFGkKmQE+/UyQXNoIEUmFofU8QfLuy3xB/aDsHhAnHeZEblJ4QPLA8BwlIciZBDC5c3ASmGNsrnP63Fu/xP9wNMPSSdI1YUXc6B3Z8LX0IRt02ieuhSlzeBdImvgw9RCxm1FGQAAtBHeptmBQ3q5zKAgSnGjNvh1Ew+vCWCyiksYFPaaGMG9juWKlhWDhc6Kagw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1ez5zHb1ASZhOYrRqb5nNPrJOOu8t+3xJBO7EWyfIRQ=;
- b=SGoa7VACXnnHg630pImrHFX6G0rtrVf2rhOiEGZ4/y0Xvyl6akuN70tk4tNGK2Z0STuKldLDlfuRBaN/oCYmkV3X+7mKmvXisKJJGzF3x5krgZWNB4R0OA+CPYWMjD1P8qMVNIqc9OETXoyL+VJ3p5xXy4XtsiecEsmebvUCo+7nJzDY5NBzI7+7WJNSkG8t/+hQkz4N2f/QYmKVmnWlC1Iwh52c+V1kjQIeMqYNMUsqvnV4OT1ZIrXBvrBTfz8lxXVxMqzMxdL1pdAuu12GcHRmcxPf2tdGdMBFTMUvNzcSJ57vszZa4749+B3j9R4id4Ea9JbCYWl7zr3JlrH5nw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1ez5zHb1ASZhOYrRqb5nNPrJOOu8t+3xJBO7EWyfIRQ=;
- b=Z+559wMtYm33Udl7a8pCLatx5Q5jz9DOO0hc98LWWfpgKHSv8k2k7UPEyu7N1OgPFBPs+rPq9SA6WhmKwLkT7maR41VSp46YsLgZOXEpSxXAK2o15IEU7Nj7FRKej7rigrPOudZK8eKbujQt+djXKpewrtCfcT1LeJaDWMighdg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DM4PR12MB6639.namprd12.prod.outlook.com (2603:10b6:8:be::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.28; Mon, 29 Jul
- 2024 09:23:07 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.7807.026; Mon, 29 Jul 2024
- 09:23:07 +0000
-Message-ID: <fb530f45-df88-402a-9dc0-99298b88754c@amd.com>
-Date: Mon, 29 Jul 2024 11:23:00 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/radeon/evergreen_cs: fix int overflow errors in cs
- track offsets
-To: Alex Deucher <alexdeucher@gmail.com>
-Cc: Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
- Alex Deucher <alexander.deucher@amd.com>, Xinhui Pan <Xinhui.Pan@amd.com>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Jerome Glisse <jglisse@redhat.com>, Dave Airlie <airlied@redhat.com>,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
- stable@vger.kernel.org
-References: <20240725180950.15820-1-n.zhandarovich@fintech.ru>
- <e5199bf0-0861-4b79-8f32-d14a784b116f@amd.com>
- <CADnq5_PuzU12x=M09HaGkG7Yqg8Lk1M1nWDAut7iP09TT33D6g@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <CADnq5_PuzU12x=M09HaGkG7Yqg8Lk1M1nWDAut7iP09TT33D6g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR0P281CA0256.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b5::9) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582C913E3F6
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 09:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722245316; cv=none; b=ZRYdyj/IL071qZZQKudGVE801W3PeYP4astgKX9Ezird6qFM8vVUlPeqhPhRN6aTDZUW4Qnpl8F3jMwiZ9OFWB2lVP3DsXRqdWLSjeU+jPswb3bXuJbjHbvNTp7Y2wmglurXuqKv7BsmJ6BgK53lGyz9/M+PfLqrv0//lbe9fMg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722245316; c=relaxed/simple;
+	bh=KZWJF5oSY7HJ23Uf34KCCrdaHErkdUmBfHVE1m4vszo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZC7cfbsK5N5QnOEsiJ5SbZHluK6jRlfksefi1LKVL3Kdts9BKs7kJi181sScmxWIEnY4hIwI82HVURYW58DjGf7yd2g3TG6c6lFVsbWYKJ7owGWtPcHwQSEWB3/tx325bE8qApNqL7XuW4NgpBVoHgre/x5mou0IFhJst6SXyxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=NuKJXL9P; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a7a94aa5080so383492966b.3
+        for <stable@vger.kernel.org>; Mon, 29 Jul 2024 02:28:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1722245313; x=1722850113; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zb9VzgX66ul+EUSAfUjFvHjvcVAUBg0+FBC33/4bxE4=;
+        b=NuKJXL9PUu19RA3lXpYTqEgBSLFaSmKIw0KtxJT1+EPhlf+9dpsl500OEbmyo+MvUr
+         y1b4XV11/0sYA+1y6v2ZypdQF1rsCPlQa7NeBmzFpVyoDd0ON9WtplJ6h22CCwzkNT3d
+         VgMNXqdCsXohAmaenS6Noi8h9ycuAIOOb9r5nzsP8xxFE++zOZro3Z2v44bruptoHXwo
+         cVjfzcS4DfmvcrXbXfOvJpAcdZ0LXCUUcu14HMbZz6ZHV+uFSbMJclPScfgsNmLerIdn
+         jkuMdANWJfBSWVmj6abVi8Q+UgL4eagHPjc3meFdPKVdKWFy2Vrv7Z+fyLb1sFVGwtjB
+         k7Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722245313; x=1722850113;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Zb9VzgX66ul+EUSAfUjFvHjvcVAUBg0+FBC33/4bxE4=;
+        b=J4dSZ6xyPk7QAHgqP4CrF5whgqpxd2k+NtnN9YHOBsn/fXktG9OXRuVkmqVbow4YFo
+         xE9gfOjQ58zTDOuhOMiRGbMZIJvjGhHcNDMy5rEUrLODHddnMownxL9UJr3wi9QEYNKj
+         7OcgWQa8wAa5ljpbiA4JKSq/I2yZLbHLTZ32eu+EWkBYHKGqSj62O8RPeZXH2+Xck3+p
+         FOuu0oKgMA+K9uHL1E5i0UgUridio3uSgqmQXVCV+KZqtP9vTpxWo6d9hOaegPWq/W5c
+         dM5T0pXeW7nYYnA6Puw0/jeOZlyLd4PgZXUfoUJCRaxzyEP+g99GNmHeWjWdVQl1E8lw
+         +emQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV2FEedKLKak0a1qAFqNAllBTueIU4Vf702x1hXfLw6CMtS7HLDaFHGu3PAlMd3X/5YME04qGZa+BMiFNBaBllSYPGY27GW
+X-Gm-Message-State: AOJu0Yz/EPHiQmwQFgWU35uBsvYI1CDVS0EK/8BycRLgMjlHHgCLpKbq
+	CPwZJNQ9blaQFLnkXa8ZQnKshAFehCLPo0yLr8AmXd4KI0E9KUFtLdFvylezOqk=
+X-Google-Smtp-Source: AGHT+IF28YDU5y/QrxYQDHg2q9k8RB4sAVv0+DO2KSJGo95MGgcxetSe963dDXT1fw3tAw3zcm81yg==
+X-Received: by 2002:a17:907:1c19:b0:a7a:ab8a:380 with SMTP id a640c23a62f3a-a7d40145821mr598571666b.69.1722245312585;
+        Mon, 29 Jul 2024 02:28:32 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f03cd00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f03:cd00:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acad4ae4dsm479944366b.136.2024.07.29.02.28.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jul 2024 02:28:32 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: dhowells@redhat.com,
+	jlayton@kernel.org
+Cc: willy@infradead.org,
+	linux-cachefs@redhat.com,
+	linux-fsdevel@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Max Kellermann <max.kellermann@ionos.com>
+Subject: [PATCH v2] fs/netfs/fscache_io: remove the obsolete "using_pgpriv2" flag
+Date: Mon, 29 Jul 2024 11:28:28 +0200
+Message-ID: <20240729092828.857383-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DM4PR12MB6639:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5962bf7e-dffc-468c-3c71-08dcafb00e27
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NURPYTJVSlF3bnlNTWljSlpvY3hqazhESUpPM3ErN1FoZ0wxTHcxbnpwSnBm?=
- =?utf-8?B?dGp6bzVCVlFLNzJRSWtTc213VWY3Y29xcXowZ0FiVUxwY3hhZzlPV2UrdEhv?=
- =?utf-8?B?T09ONkNSdWl2OGFwVFVwL202VXNYVWdDWEdoaTMrUm1GNXExSVIzTklGUVdP?=
- =?utf-8?B?cFh6cmFpN0pGelA2ZnVDZGhuWlFXTEpSNkpFbEJIZEVDd2MvMWRaeHhKQnpW?=
- =?utf-8?B?K3F4NEpvamRERE9Gb0JlZGFNSW11Zk5hczhaODQvcElCVFU0YkxWRnpCc003?=
- =?utf-8?B?ZS9JYW0wbFU4VHdGUTVDY3gwVm1MOHByYkV2MG9QZGNMZit1aDgxTHpFOFZW?=
- =?utf-8?B?MitRaHlYZys2WUtKVGtxWFhsM2RnRTNBNkM1MHUzREp5RzF5V0greU5JeC9q?=
- =?utf-8?B?b05FYmNac1ZFZVBSdEtHNG1MUStjdlRFSmJFK0ZtazJ4YWI2cFBud1k4THl0?=
- =?utf-8?B?L2ljSFBiS0drdUoreGdiZFFuV0NUQktnb1FHVmd3aUptM1BqT3E3bmVNS3gx?=
- =?utf-8?B?RUlRWnJGUHFSK2RhZExybkY3RTRMaHlKY09zQWdiSDRNdmtjWHlFemFMTmhz?=
- =?utf-8?B?cXNvMDlLZVlzMHJDWDBwSFRpNUxOREVGZmxiWXZwaWI2dXRtL3B1eHZZSUhM?=
- =?utf-8?B?bmJ6VGVtZ0wxMmNrWTUrUld4Yi95OGNjVzhudllTU1NEckxidDhjN0lNWGx3?=
- =?utf-8?B?ZEdJazlRQ1FrNEVMNXpGaEplM29qdUhEOCtPbnRWMHFJYlRZR2xVRlhEYkk0?=
- =?utf-8?B?WTFzTm9FUlZwaW9kK0ZSclJXU25Ma2hteFgrTm5oaTU1VkM0b1c2UktpcDBY?=
- =?utf-8?B?dGF0VDQ4bGtIaVBBWXBORDloUFk4Z1hJckhBVk5SOEEzeGJqRzZQTWU5TUxD?=
- =?utf-8?B?R1FCK0FYSExMa1VvMWRVWE1EcmlqMWpyVkx3TVVOVjI2WldQRlNWU3dZM2xv?=
- =?utf-8?B?K2Ezdmd2WmhrbmlXanphRWdXd05oL2ZPWklWbCtEa0pVU0E1bmhSMGNhYTJI?=
- =?utf-8?B?Z1NURkg4azVDa3grc3huNm4zempwcEJ5NHNzbHE1SGkvd2Y3RXZSWVFMV0ht?=
- =?utf-8?B?Mk9adjc2b3krdTlKNlI5WUNKR3hYU1ozMFBaNXhqY2x2NC85d293RGhXVmlk?=
- =?utf-8?B?dURxdllPZlo5Z1RIOStSU2lLdjhtaldTRUtrclN6czRpcmhZMWw5V1ppSWl5?=
- =?utf-8?B?WHhFUGpJY3ZZYkdyVlgwQTdXeERaWVNzenFqVFJ2ZVFRY0RkUVNPTWorazdv?=
- =?utf-8?B?ZGM3MmNnM0R5bVgrL0ZBYXZLaXdLc0w5anFHcEJ1TDZtdUwxeVRGT1VCSDA5?=
- =?utf-8?B?S3JQUUlxQUZvbEMzS0JvUUJPWEJyRzQzZEViVHJhZ3I0eVZSTG16c2xkcTVi?=
- =?utf-8?B?dHpUbFhCT0xBRXVUUU1LVy9CNnphQnlxdGExZ2dZcDRKSFpJa29JUWVJY3pI?=
- =?utf-8?B?a0N6azlHTnovMkF4U3VIRFNzQjE0WkV3VVlzRVJCMjZPUGNZM1NueXZ1S3J3?=
- =?utf-8?B?M2g3czhSamw2QWIwQXczTXZuOVBlSFFTbmpZTnY4SDBVdzZIOGJacm9tcG5G?=
- =?utf-8?B?dktBaG9NcDQ1aWVKOU5YUVduMEpsbmdTbVloZW9CVWpzcFZoQjVqNUxibnVm?=
- =?utf-8?B?N2N0VTVPeFlKcUIyN3VTZTB4blIxV0VTYlZndVhMRDJhb2hUWkg1eE5FT3Iz?=
- =?utf-8?B?UWdkOEYxM1NFMC9rV2dleFJFQmJFZjAzYkFFdW5majRhVDhUSTlVcWhheGtV?=
- =?utf-8?B?TTAwMGFuZlFxZytWOXFNcmxENWZ6SFhUczBkcU5oYkc5T2ZmQTdsQUh1Rm5U?=
- =?utf-8?B?ZTVSUnlWbTBIaXdxOThndz09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eWxFb3E3d0FZeWNINm5sS08wcURYWVdPU1c2Qkc2YmFRMHU5ME1sRmRvL2tD?=
- =?utf-8?B?R2RZd21ETS9UNlVhUkxvRDgxcnhhWjNGKzJpMzlpYXl4KzJLUzJiWXhSTWk0?=
- =?utf-8?B?N0dzZkRUYVk0TWRjZXVwK0lQUXhXS0RiVXowSXBwYzFweXRxQXBtcWx5dGY2?=
- =?utf-8?B?UGlRR0FmY1RiUERvMlBoalM0cUxISFpWcFN6WmpvNW1FdG5tbkZ5UitSdER6?=
- =?utf-8?B?ZW5NUTh4VmlEb2g1VDU5S1lIdzhic1hPcXZKb09tdDBuYnRnQXBmTTFhQzlQ?=
- =?utf-8?B?L1l3L09raENZUHFIZ1NIVmhTalBUdHB6TXlpVHlCRWhiZHdtcjBibzlrd3I3?=
- =?utf-8?B?ZmxXSVN6TDloM1pSajRMaWZrNzNHa3RZN0JmWFFJR2NoYng4K1RkRWp6ZjdC?=
- =?utf-8?B?TnZsRnhFa0ZLMW1qbmZOcjdPS1ZtYkE0T0p3RU9NeTdrUUYrWEV3dUQ5ZFZW?=
- =?utf-8?B?Q01WMzg2eTdVM1d5Y1NaV0NBRFo0ZVM1RDk2eS9UdlV5SHZlUU9BYXJsQ3p2?=
- =?utf-8?B?VjRoMmprUnpXNDZuTThrUUoyK3c0VEpBZGJ2VE1jb2xqTmJrSGxqeUNlbTJC?=
- =?utf-8?B?anRIallzNzk4ZWVpTFBOYnpBRVJFemY3TzROZ1Q2dzI4UVljTTZKcUtxUjEx?=
- =?utf-8?B?dmlJd3BldXVuekUxTEJqdlN1dGhVT1hZOWErN0ZkYmk3ZnJaWDRQcU83KzB5?=
- =?utf-8?B?YkM3d1hyY3hDekg0c2ZuYWp1UHhlZGZXZFNOSHZORWxjVW8vUVVvQy9SUjhr?=
- =?utf-8?B?UG9sZkRsM0ZKZkY0Vm4vcUkvYXUwZGFlbE9lY0QxVFN3MnNSU0lKSHZ3Q3Yz?=
- =?utf-8?B?Z0l4bjdIZE43K2l1RDBOZ2N0T2YyZEhyT1BCM0FkYXhsdVN3bm5aNGprS2hS?=
- =?utf-8?B?SkZyMDFFdHM3b0N4dG8xc1lJQS80bWpvOTlzSUx4SGs0VEh4MU91cUtPcVdW?=
- =?utf-8?B?WVl6WGN6bWtmbFpneWIvSUdHbldmc25PUjYrQmJMMjdYSjgzTGRVd2tOUUdT?=
- =?utf-8?B?RGUrWHhsM1drZEpEUlRiNnVVSnZVcWR1TCs1d0ZDcklrZjAzQjRyTVhmS0Fa?=
- =?utf-8?B?bTdQaVJ2Lzd3NWhxUytNa0htL0NqelBNc1FFeHdna05GZWVuSDJCbE8wZHph?=
- =?utf-8?B?NUliM3ZTejIrd2dKWU9pYlE2REM3a0ZDVXp0Q2xxSURrVjd3VVlnUVFFT08r?=
- =?utf-8?B?Y1I0WUd1ZUpENHNSQ1l5V3oxK0VhU0k3a2NrNHdYVUZjVEs1VE1kSi9SVHZk?=
- =?utf-8?B?aHp2bE9OSXZoVzV0VXJLS3BJWElIOVd2dDlGa1pLQllwYzVnTDdidG5NL2RS?=
- =?utf-8?B?U3VuVVNWdnBqdWJ1SkgzZkIwZFVNNnVGQ2JnaUVqMWRCZW1XcVhubjI4aFUw?=
- =?utf-8?B?Sm1tWHV3U0lacXJRVDhEN0NvNDVPbUJzWnlxcmJ3dGYvSWVDREs4WTNRZmdG?=
- =?utf-8?B?V2FwNm03WHN5R1BIbk9VM0wrYmt4M0JrTmhtVHA5d25GWGVPWXhEZnc1eUF6?=
- =?utf-8?B?TExlN080Q1FMNVBzTnY4RjV1RGFrZmovWVVnUnBHZTZFK054WDFpSW1IalFh?=
- =?utf-8?B?Z212RGY5cWJzMitudWZ1dlpiU2xhQVVtRVRndGdoYU00M0p2QTVTdUFRUUlJ?=
- =?utf-8?B?MEV5NzdxRmZFRW41cnFLMGNFck9nMDdkc05SelFHWUF6SVZMMGNxd3IvU1gx?=
- =?utf-8?B?cFVKS012czJmdkpZeWttemVpbmk0ajJYVEpHZVB2Y1Z3R0Z5TDhqMW9GRUp6?=
- =?utf-8?B?REhyYVVRNlJ3NVJFcTNFUHJGZGt6cHRPVXRZMm1QYmRRZzJKMmxiNlpmMC9X?=
- =?utf-8?B?T3FOSEl5OXYrelpNWHhjSmh4c25GYXhuVDdEcUN2ZlR0WlFEaXlYV25sYWVG?=
- =?utf-8?B?alo0a0dnTDRQMXgrbFlOOFBXYi9Hc0laTEZUeUhSMGZqbmovTlBpOElGajho?=
- =?utf-8?B?K2pGOEcxRTEyTnMxM2p5TTJ0Y2Nya1E1d2dlS0lTN1FMWXBXOTdYc2VKSUw0?=
- =?utf-8?B?WVE1VTBqeTNKTHRHa05RTnRkK2FQN3o3eGt3cjg2dW5MY0tjNzVHWUxhcU9B?=
- =?utf-8?B?YUZoSTRzUUJTMWxpcXB6Qm1wUjNkVWpkTE40bnVDTGNodlpPRk02S3A0Smpv?=
- =?utf-8?Q?Shgs=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5962bf7e-dffc-468c-3c71-08dcafb00e27
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2024 09:23:07.1193
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L9FFV8UBEKEBCDbGUQCGlaChZ1lxrTu2+rSJhetMUEKGqyADuQvjTnlPbIyhzI7X
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6639
+Content-Transfer-Encoding: 8bit
 
-Am 26.07.24 um 14:52 schrieb Alex Deucher:
-> On Fri, Jul 26, 2024 at 3:05 AM Christian König
-> <christian.koenig@amd.com> wrote:
->> Am 25.07.24 um 20:09 schrieb Nikita Zhandarovich:
->>> Several cs track offsets (such as 'track->db_s_read_offset')
->>> either are initialized with or plainly take big enough values that,
->>> once shifted 8 bits left, may be hit with integer overflow if the
->>> resulting values end up going over u32 limit.
->>>
->>> Some debug prints take this into account (see according dev_warn() in
->>> evergreen_cs_track_validate_stencil()), even if the actual
->>> calculated value assigned to local 'offset' variable is missing
->>> similar proper expansion.
->>>
->>> Mitigate the problem by casting the type of right operands to the
->>> wider type of corresponding left ones in all such cases.
->>>
->>> Found by Linux Verification Center (linuxtesting.org) with static
->>> analysis tool SVACE.
->>>
->>> Fixes: 285484e2d55e ("drm/radeon: add support for evergreen/ni tiling informations v11")
->>> Cc: stable@vger.kernel.org
->> Well first of all the long cast doesn't makes the value 64bit, it
->> depends on the architecture.
->>
->> Then IIRC the underlying hw can only handle a 32bit address space so
->> having the offset as long is incorrect to begin with.
-> Evergreen chips support a 36 bit internal address space and NI and
-> newer support a 40 bit one, so this is applicable.
+This fixes a crash bug caused by commit ae678317b95e ("netfs: Remove
+deprecated use of PG_private_2 as a second writeback flag") by
+removing a leftover folio_end_private_2() call after all calls to
+folio_start_private_2() had been removed by the commit.
 
-In that case I strongly suggest that we replace the unsigned long with 
-u64 or otherwise we get different behavior on 32 and 64bit machines.
+By calling folio_end_private_2() without folio_start_private_2(), the
+folio refcounter breaks and causes trouble like RCU stalls and general
+protection faults.
 
-Regards,
-Christian.
+Cc: stable@vger.kernel.org
+Fixes: ae678317b95e ("netfs: Remove deprecated use of PG_private_2 as a second writeback flag")
+Link: https://lore.kernel.org/ceph-devel/CAKPOu+_DA8XiMAA2ApMj7Pyshve_YWknw8Hdt1=zCy9Y87R1qw@mail.gmail.com/
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ fs/ceph/addr.c          |  2 +-
+ fs/netfs/fscache_io.c   | 29 +----------------------------
+ include/linux/fscache.h | 30 ++++--------------------------
+ 3 files changed, 6 insertions(+), 55 deletions(-)
 
->
-> Alex
->
->> And finally that is absolutely not material for stable.
->>
->> Regards,
->> Christian.
->>
->>> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
->>> ---
->>> P.S. While I am not certain that track->cb_color_bo_offset[id]
->>> actually ends up taking values high enough to cause an overflow,
->>> nonetheless I thought it prudent to cast it to ulong as well.
->>>
->>>    drivers/gpu/drm/radeon/evergreen_cs.c | 18 +++++++++---------
->>>    1 file changed, 9 insertions(+), 9 deletions(-)
->>>
->>> diff --git a/drivers/gpu/drm/radeon/evergreen_cs.c b/drivers/gpu/drm/radeon/evergreen_cs.c
->>> index 1fe6e0d883c7..d734d221e2da 100644
->>> --- a/drivers/gpu/drm/radeon/evergreen_cs.c
->>> +++ b/drivers/gpu/drm/radeon/evergreen_cs.c
->>> @@ -433,7 +433,7 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
->>>                return r;
->>>        }
->>>
->>> -     offset = track->cb_color_bo_offset[id] << 8;
->>> +     offset = (unsigned long)track->cb_color_bo_offset[id] << 8;
->>>        if (offset & (surf.base_align - 1)) {
->>>                dev_warn(p->dev, "%s:%d cb[%d] bo base %ld not aligned with %ld\n",
->>>                         __func__, __LINE__, id, offset, surf.base_align);
->>> @@ -455,7 +455,7 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
->>>                                min = surf.nby - 8;
->>>                        }
->>>                        bsize = radeon_bo_size(track->cb_color_bo[id]);
->>> -                     tmp = track->cb_color_bo_offset[id] << 8;
->>> +                     tmp = (unsigned long)track->cb_color_bo_offset[id] << 8;
->>>                        for (nby = surf.nby; nby > min; nby--) {
->>>                                size = nby * surf.nbx * surf.bpe * surf.nsamples;
->>>                                if ((tmp + size * mslice) <= bsize) {
->>> @@ -476,10 +476,10 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
->>>                        }
->>>                }
->>>                dev_warn(p->dev, "%s:%d cb[%d] bo too small (layer size %d, "
->>> -                      "offset %d, max layer %d, bo size %ld, slice %d)\n",
->>> +                      "offset %ld, max layer %d, bo size %ld, slice %d)\n",
->>>                         __func__, __LINE__, id, surf.layer_size,
->>> -                     track->cb_color_bo_offset[id] << 8, mslice,
->>> -                     radeon_bo_size(track->cb_color_bo[id]), slice);
->>> +                     (unsigned long)track->cb_color_bo_offset[id] << 8,
->>> +                     mslice, radeon_bo_size(track->cb_color_bo[id]), slice);
->>>                dev_warn(p->dev, "%s:%d problematic surf: (%d %d) (%d %d %d %d %d %d %d)\n",
->>>                         __func__, __LINE__, surf.nbx, surf.nby,
->>>                        surf.mode, surf.bpe, surf.nsamples,
->>> @@ -608,7 +608,7 @@ static int evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
->>>                return r;
->>>        }
->>>
->>> -     offset = track->db_s_read_offset << 8;
->>> +     offset = (unsigned long)track->db_s_read_offset << 8;
->>>        if (offset & (surf.base_align - 1)) {
->>>                dev_warn(p->dev, "%s:%d stencil read bo base %ld not aligned with %ld\n",
->>>                         __func__, __LINE__, offset, surf.base_align);
->>> @@ -627,7 +627,7 @@ static int evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
->>>                return -EINVAL;
->>>        }
->>>
->>> -     offset = track->db_s_write_offset << 8;
->>> +     offset = (unsigned long)track->db_s_write_offset << 8;
->>>        if (offset & (surf.base_align - 1)) {
->>>                dev_warn(p->dev, "%s:%d stencil write bo base %ld not aligned with %ld\n",
->>>                         __func__, __LINE__, offset, surf.base_align);
->>> @@ -706,7 +706,7 @@ static int evergreen_cs_track_validate_depth(struct radeon_cs_parser *p)
->>>                return r;
->>>        }
->>>
->>> -     offset = track->db_z_read_offset << 8;
->>> +     offset = (unsigned long)track->db_z_read_offset << 8;
->>>        if (offset & (surf.base_align - 1)) {
->>>                dev_warn(p->dev, "%s:%d stencil read bo base %ld not aligned with %ld\n",
->>>                         __func__, __LINE__, offset, surf.base_align);
->>> @@ -722,7 +722,7 @@ static int evergreen_cs_track_validate_depth(struct radeon_cs_parser *p)
->>>                return -EINVAL;
->>>        }
->>>
->>> -     offset = track->db_z_write_offset << 8;
->>> +     offset = (unsigned long)track->db_z_write_offset << 8;
->>>        if (offset & (surf.base_align - 1)) {
->>>                dev_warn(p->dev, "%s:%d stencil write bo base %ld not aligned with %ld\n",
->>>                         __func__, __LINE__, offset, surf.base_align);
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index 8c16bc5250ef..485cbd1730d1 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -512,7 +512,7 @@ static void ceph_fscache_write_to_cache(struct inode *inode, u64 off, u64 len, b
+ 	struct fscache_cookie *cookie = ceph_fscache_cookie(ci);
+ 
+ 	fscache_write_to_cache(cookie, inode->i_mapping, off, len, i_size_read(inode),
+-			       ceph_fscache_write_terminated, inode, true, caching);
++			       ceph_fscache_write_terminated, inode, caching);
+ }
+ #else
+ static inline void ceph_fscache_write_to_cache(struct inode *inode, u64 off, u64 len, bool caching)
+diff --git a/fs/netfs/fscache_io.c b/fs/netfs/fscache_io.c
+index 38637e5c9b57..0d8f3f646598 100644
+--- a/fs/netfs/fscache_io.c
++++ b/fs/netfs/fscache_io.c
+@@ -166,30 +166,10 @@ struct fscache_write_request {
+ 	loff_t			start;
+ 	size_t			len;
+ 	bool			set_bits;
+-	bool			using_pgpriv2;
+ 	netfs_io_terminated_t	term_func;
+ 	void			*term_func_priv;
+ };
+ 
+-void __fscache_clear_page_bits(struct address_space *mapping,
+-			       loff_t start, size_t len)
+-{
+-	pgoff_t first = start / PAGE_SIZE;
+-	pgoff_t last = (start + len - 1) / PAGE_SIZE;
+-	struct page *page;
+-
+-	if (len) {
+-		XA_STATE(xas, &mapping->i_pages, first);
+-
+-		rcu_read_lock();
+-		xas_for_each(&xas, page, last) {
+-			folio_end_private_2(page_folio(page));
+-		}
+-		rcu_read_unlock();
+-	}
+-}
+-EXPORT_SYMBOL(__fscache_clear_page_bits);
+-
+ /*
+  * Deal with the completion of writing the data to the cache.
+  */
+@@ -198,10 +178,6 @@ static void fscache_wreq_done(void *priv, ssize_t transferred_or_error,
+ {
+ 	struct fscache_write_request *wreq = priv;
+ 
+-	if (wreq->using_pgpriv2)
+-		fscache_clear_page_bits(wreq->mapping, wreq->start, wreq->len,
+-					wreq->set_bits);
+-
+ 	if (wreq->term_func)
+ 		wreq->term_func(wreq->term_func_priv, transferred_or_error,
+ 				was_async);
+@@ -214,7 +190,7 @@ void __fscache_write_to_cache(struct fscache_cookie *cookie,
+ 			      loff_t start, size_t len, loff_t i_size,
+ 			      netfs_io_terminated_t term_func,
+ 			      void *term_func_priv,
+-			      bool using_pgpriv2, bool cond)
++			      bool cond)
+ {
+ 	struct fscache_write_request *wreq;
+ 	struct netfs_cache_resources *cres;
+@@ -232,7 +208,6 @@ void __fscache_write_to_cache(struct fscache_cookie *cookie,
+ 	wreq->mapping		= mapping;
+ 	wreq->start		= start;
+ 	wreq->len		= len;
+-	wreq->using_pgpriv2	= using_pgpriv2;
+ 	wreq->set_bits		= cond;
+ 	wreq->term_func		= term_func;
+ 	wreq->term_func_priv	= term_func_priv;
+@@ -260,8 +235,6 @@ void __fscache_write_to_cache(struct fscache_cookie *cookie,
+ abandon_free:
+ 	kfree(wreq);
+ abandon:
+-	if (using_pgpriv2)
+-		fscache_clear_page_bits(mapping, start, len, cond);
+ 	if (term_func)
+ 		term_func(term_func_priv, ret, false);
+ }
+diff --git a/include/linux/fscache.h b/include/linux/fscache.h
+index 9de27643607f..f8c52bddaa15 100644
+--- a/include/linux/fscache.h
++++ b/include/linux/fscache.h
+@@ -177,8 +177,7 @@ void __fscache_write_to_cache(struct fscache_cookie *cookie,
+ 			      loff_t start, size_t len, loff_t i_size,
+ 			      netfs_io_terminated_t term_func,
+ 			      void *term_func_priv,
+-			      bool using_pgpriv2, bool cond);
+-extern void __fscache_clear_page_bits(struct address_space *, loff_t, size_t);
++			      bool cond);
+ 
+ /**
+  * fscache_acquire_volume - Register a volume as desiring caching services
+@@ -573,24 +572,6 @@ int fscache_write(struct netfs_cache_resources *cres,
+ 	return ops->write(cres, start_pos, iter, term_func, term_func_priv);
+ }
+ 
+-/**
+- * fscache_clear_page_bits - Clear the PG_fscache bits from a set of pages
+- * @mapping: The netfs inode to use as the source
+- * @start: The start position in @mapping
+- * @len: The amount of data to unlock
+- * @caching: If PG_fscache has been set
+- *
+- * Clear the PG_fscache flag from a sequence of pages and wake up anyone who's
+- * waiting.
+- */
+-static inline void fscache_clear_page_bits(struct address_space *mapping,
+-					   loff_t start, size_t len,
+-					   bool caching)
+-{
+-	if (caching)
+-		__fscache_clear_page_bits(mapping, start, len);
+-}
+-
+ /**
+  * fscache_write_to_cache - Save a write to the cache and clear PG_fscache
+  * @cookie: The cookie representing the cache object
+@@ -600,7 +581,6 @@ static inline void fscache_clear_page_bits(struct address_space *mapping,
+  * @i_size: The new size of the inode
+  * @term_func: The function to call upon completion
+  * @term_func_priv: The private data for @term_func
+- * @using_pgpriv2: If we're using PG_private_2 to mark in-progress write
+  * @caching: If we actually want to do the caching
+  *
+  * Helper function for a netfs to write dirty data from an inode into the cache
+@@ -612,21 +592,19 @@ static inline void fscache_clear_page_bits(struct address_space *mapping,
+  * marked with PG_fscache.
+  *
+  * If given, @term_func will be called upon completion and supplied with
+- * @term_func_priv.  Note that if @using_pgpriv2 is set, the PG_private_2 flags
+- * will have been cleared by this point, so the netfs must retain its own pin
+- * on the mapping.
++ * @term_func_priv.
+  */
+ static inline void fscache_write_to_cache(struct fscache_cookie *cookie,
+ 					  struct address_space *mapping,
+ 					  loff_t start, size_t len, loff_t i_size,
+ 					  netfs_io_terminated_t term_func,
+ 					  void *term_func_priv,
+-					  bool using_pgpriv2, bool caching)
++					  bool caching)
+ {
+ 	if (caching)
+ 		__fscache_write_to_cache(cookie, mapping, start, len, i_size,
+ 					 term_func, term_func_priv,
+-					 using_pgpriv2, caching);
++					 caching);
+ 	else if (term_func)
+ 		term_func(term_func_priv, -ENOBUFS, false);
+ 
+-- 
+2.43.0
 
 
