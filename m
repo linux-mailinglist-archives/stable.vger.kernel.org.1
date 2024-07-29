@@ -1,166 +1,192 @@
-Return-Path: <stable+bounces-62561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB9393F6E6
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 15:43:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9648F93F6FF
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 15:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE8F51C21975
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 13:43:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AE792812EC
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 13:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD47C14D282;
-	Mon, 29 Jul 2024 13:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899F7149C54;
+	Mon, 29 Jul 2024 13:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MLXi+Rnj"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jvYJH/v+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h6KcEOre"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56248005C;
-	Mon, 29 Jul 2024 13:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3881E515;
+	Mon, 29 Jul 2024 13:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722260619; cv=none; b=gsjmwPU+sRZ4yClhiV1HNoeGIJUNDobqDV6/niNusNwOOXXbAZ9+MYXuUBsd1UqsosOekAjGXoP9EhnjSvbljh5LuhGmwIwemrrCfAjGQJDo31jRajU6IFtgwTfRMjyBi+TZQ7t10ye1lfcFf60IDLQx3W8VeKM7H7nMydd5Uio=
+	t=1722260993; cv=none; b=cgT/G3VlaqFN72I4bOHGPqCfK0Xan0KBZ8SEjly5FzwRu0YM0W2xacIn0rlioEnpUVBQLYCFRq79jjg8G0SwksqIXtrnOgnCRVzHIgHHHIGvOMhtTukaYJIoRcmh2Mao/8zJLx3XT8+ZOyRzpCUFugRstYnQhOPAaCS1BukBrF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722260619; c=relaxed/simple;
-	bh=zzsCJ7whFPZHlCzi0K9wdzqqFDFkagpKKuyBi2JGQ4U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CF5OV8hWiEyfqm+yoEr45t3bpBjx8UKrpUUDQvmxONd7RfDVIZS3bo19JsiXAOpG9CDDEIenr38YfifCD8GP3Cvpb5qosg/3NpT/N0xTndfWjC4T3tH1W8KvumV51BjkRIGoR+ttPe91BblZN/lLGziUEYcioKf0uF9T0xvx/mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MLXi+Rnj; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ef2cb7d562so46401451fa.3;
-        Mon, 29 Jul 2024 06:43:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722260616; x=1722865416; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hj4EojyPa3nkcWjxnXuz+mzsRSbP4+g7BeKvDtSYTtM=;
-        b=MLXi+RnjxgJlVa0Vo9qHNeXZcOkgXu6OuO7hHpP5lqLuaprMT7WBj4wiJME/Q1xAUA
-         VkGhDkLcAe9IasTetaxBDrVi7dHu6vqVZPLvHQYQJBYJvN1PUSLYqcbPjl2jAZ2v5KVM
-         XwgZjVzchvkCyaR1ZmW+uIUdXhcd4aPfceM9VD8weCekrlBVVyWsljACE4KQASPLJa3Q
-         0kvWxjlxhq9c/os5nKMosu4viGKuYzuklM5zGNe8Dh4Er3A83LznwS5lVIgL+yZiI3ZD
-         kAu/sBbVPGpGDhyC/pVXQ+ArIEVlzwogShK0tp1nGK/Rxx3cuh++dl1auXZqXOH8G7G0
-         5ufg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722260616; x=1722865416;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hj4EojyPa3nkcWjxnXuz+mzsRSbP4+g7BeKvDtSYTtM=;
-        b=Llp9P1oRfeZ7C2dRQXMHXJa+7C7uzThCiJuWUFBWZigmhcjmF3EflxzJNhwyVFeQpJ
-         Wucz6qMyUqIzIIC8d2VbIjctYcBQ32qs6uAPoJ9roxizFKyvIltZE4rrC351cz+k0PpX
-         GsN7872O3jL148EgPIjr//Khgy1tHTNN9XsUFJtyDlisGnkLp5VxrGUbsuwxdqXOnYUs
-         jm88/qZB24I747Q0dMaQLxbj7dlkRIR0Jk8JN9kj+8k2cKW6B452fNacpsEONXtTsQ3a
-         2dWutvx9vVtvT4r00Ztc+wxSag+EJfh+o5uLqrTTHHD0/uFM2QLE2pXz5kgQ+LCRNZMI
-         Op2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXAgEeVx1fhFfdXuZoI7+rdxeZDtzodce/WUMC3OWcB5WQl5HixtSd6lJjJdAuhlc8tMFP2yrFLhwKvP9Jb98YVJKDJye9UGYK5MnsixSYvflfAhJrjLHiKP+ypoqHq
-X-Gm-Message-State: AOJu0Yw5xjaxJpx6qtllimjUvPKjHOUW5s8mS993y+pHsytxNrJneg7r
-	dboSX/NHoTeb6ubCi1R+dFovHs/7XWdURjsaj5qHFqwBRcKCoDZd
-X-Google-Smtp-Source: AGHT+IFWcvfSA6H/Fveto0C2nD7ipfoGEYAQa8wj7qhQzrtiL/syC20upw4OQKo9ISarEXIM/YwY/A==
-X-Received: by 2002:a2e:8e95:0:b0:2ef:3258:4961 with SMTP id 38308e7fff4ca-2f12ecd295dmr63821791fa.15.1722260615456;
-        Mon, 29 Jul 2024 06:43:35 -0700 (PDT)
-Received: from sacco.station (net-2-44-141-41.cust.vodafonedsl.it. [2.44.141.41])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282113ddbcsm7278035e9.19.2024.07.29.06.43.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jul 2024 06:43:35 -0700 (PDT)
-From: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-To: johannes@sipsolutions.net,
-	sashal@kernel.org,
-	gregkh@linuxfoundation.org
-Cc: linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	javier.carrasco.cruz@gmail.com,
-	skhan@linuxfoundation.org,
-	stable@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com,
-	Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-Subject: [PATCH] wifi: mac80211: check basic rates validity
-Date: Mon, 29 Jul 2024 15:43:18 +0200
-Message-ID: <20240729134318.291424-1-vincenzo.mezzela@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1722260993; c=relaxed/simple;
+	bh=InQUFpstovCC9+CozNMQpL1aofE4McWvzqEyAI9oFNM=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Uzk/gi3pNph7/AoHMJnzjN6LFVMC/ltH0d5PdkTlPDEccGaokWlLIxv8LoLqfd4CBUiRaSvAfbpgst/X757WWl/MqZPLS/lajvjc65uTH5ee2tyjg+TBPUfrvTQfL9pvB+96ZJ/FU92FY8Cp56OKi0WH+yCvUxeu73AJMmxQq3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jvYJH/v+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h6KcEOre; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 29 Jul 2024 13:49:48 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1722260989;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YIB7jSreWeng1mkbqwds0aQJSGOn6JmUe1ENkpT7nRA=;
+	b=jvYJH/v+dAdS6MMVNmU8SLJGqpYkFfC2UfZGrEi55e5/2upLp16AA5Sm0SAqC6oGZwl3ZH
+	/vyMLEkEdzKeu7AwEz/qvGK56vUDdKn85AgsE6rypUj1CoI/iHOxbkyOOuvxO6XrVDrWCS
+	vEz6EP4ezQ5kqdHM/uSBVAEVU7XUN1M6YVw42iRtSHiT9lctLtQVfKGF7K6MFK4dBfNCnL
+	R7I5xbyrY20K6LzkGIAnmioah6mI1UlAnLYmLYwJQKP0/tLr8jDZ2z4sOdva/304RYZy4d
+	OychblfsJ3mXmTT8/3ZpRYvhICU4lE0y7IVRPDaBM9wNCLmrU8T0FT4AJT8CpA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1722260989;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YIB7jSreWeng1mkbqwds0aQJSGOn6JmUe1ENkpT7nRA=;
+	b=h6KcEOreUG073VtYPPlvLqabP4a5P26LyOkrOMrn1hrOiwJ+Q/1iryDUlysA1XYUFyKeSi
+	vUJr7p2UKoCCkFAA==
+From: "tip-bot2 for Arseniy Krasnov" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/meson-gpio: Convert
+ meson_gpio_irq_controller::lock to 'raw_spinlock_t'
+Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240729131850.3015508-1-avkrasnov@salutedevices.com>
+References: <20240729131850.3015508-1-avkrasnov@salutedevices.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <172226098842.2215.14904545855987442510.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+The following commit has been merged into the irq/urgent branch of tip:
 
-commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
+Commit-ID:     f872d4af79fe8c71ae291ce8875b477e1669a6c7
+Gitweb:        https://git.kernel.org/tip/f872d4af79fe8c71ae291ce8875b477e1669a6c7
+Author:        Arseniy Krasnov <avkrasnov@salutedevices.com>
+AuthorDate:    Mon, 29 Jul 2024 16:18:50 +03:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 29 Jul 2024 15:43:50 +02:00
 
-When userspace sets basic rates, it might send us some rates
-list that's empty or consists of invalid values only. We're
-currently ignoring invalid values and then may end up with a
-rates bitmap that's empty, which later results in a warning.
+irqchip/meson-gpio: Convert meson_gpio_irq_controller::lock to 'raw_spinlock_t'
 
-Reject the call if there were no valid rates.
+This lock is acquired under irq_desc::lock with interrupts disabled.
 
-[ Conflict resolution involved adjusting the patch to accommodate
-changes in the function signature of ieee80211_parse_bitrates and
-ieee80211_check_rate_mask ]
+When PREEMPT_RT is enabled, 'spinlock_t' becomes preemptible, which results
+in invalid lock acquire context;
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reported-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
-Tested-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=07bee335584b04e7c2f8
-Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+  [ BUG: Invalid wait context ]
+  swapper/0/1 is trying to lock:
+  ffff0000008fed30 (&ctl->lock){....}-{3:3}, at: meson_gpio_irq_update_bits0
+  other info that might help us debug this:
+  context-{5:5}
+  3 locks held by swapper/0/1:
+   #0: ffff0000003cd0f8 (&dev->mutex){....}-{4:4}, at: __driver_attach+0x90c
+   #1: ffff000004714650 (&desc->request_mutex){+.+.}-{4:4}, at: __setup_irq0
+   #2: ffff0000047144c8 (&irq_desc_lock_class){-.-.}-{2:2}, at: __setup_irq0
+  stack backtrace:
+  CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.9.9-sdkernel #1
+  Call trace:
+   _raw_spin_lock_irqsave+0x60/0x88
+   meson_gpio_irq_update_bits+0x34/0x70
+   meson8_gpio_irq_set_type+0x78/0xc4
+   meson_gpio_irq_set_type+0x30/0x60
+   __irq_set_trigger+0x60/0x180
+   __setup_irq+0x30c/0x6e0
+   request_threaded_irq+0xec/0x1a4
+
+Fixes: 215f4cc0fb20 ("irqchip/meson: Add support for gpio interrupt controller")
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240729131850.3015508-1-avkrasnov@salutedevices.com
 ---
-Hi,
-please note that a backport of the same patch for v5.15 is available at
-[1].
+ drivers/irqchip/irq-meson-gpio.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Thanks,
-Vincenzo
-
-- [1] https://lore.kernel.org/all/20240727125033.1774143-1-vincenzo.mezzela@gmail.com/
- net/mac80211/cfg.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 2c60fc165801..d121a3b460f4 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2577,6 +2577,17 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
- 	if (!sband)
- 		return -EINVAL;
+diff --git a/drivers/irqchip/irq-meson-gpio.c b/drivers/irqchip/irq-meson-gpio.c
+index 27e30ce..cd789fa 100644
+--- a/drivers/irqchip/irq-meson-gpio.c
++++ b/drivers/irqchip/irq-meson-gpio.c
+@@ -178,7 +178,7 @@ struct meson_gpio_irq_controller {
+ 	void __iomem *base;
+ 	u32 channel_irqs[MAX_NUM_CHANNEL];
+ 	DECLARE_BITMAP(channel_map, MAX_NUM_CHANNEL);
+-	spinlock_t lock;
++	raw_spinlock_t lock;
+ };
  
-+	if (params->basic_rates) {
-+		if (!ieee80211_parse_bitrates(sdata->vif.bss_conf.chandef.width,
-+					      wiphy->bands[sband->band],
-+					      params->basic_rates,
-+					      params->basic_rates_len,
-+					      &sdata->vif.bss_conf.basic_rates))
-+			return -EINVAL;
-+		changed |= BSS_CHANGED_BASIC_RATES;
-+		ieee80211_check_rate_mask(&sdata->deflink);
-+	}
-+
- 	if (params->use_cts_prot >= 0) {
- 		sdata->vif.bss_conf.use_cts_prot = params->use_cts_prot;
- 		changed |= BSS_CHANGED_ERP_CTS_PROT;
-@@ -2600,16 +2611,6 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
- 		changed |= BSS_CHANGED_ERP_SLOT;
+ static void meson_gpio_irq_update_bits(struct meson_gpio_irq_controller *ctl,
+@@ -187,14 +187,14 @@ static void meson_gpio_irq_update_bits(struct meson_gpio_irq_controller *ctl,
+ 	unsigned long flags;
+ 	u32 tmp;
+ 
+-	spin_lock_irqsave(&ctl->lock, flags);
++	raw_spin_lock_irqsave(&ctl->lock, flags);
+ 
+ 	tmp = readl_relaxed(ctl->base + reg);
+ 	tmp &= ~mask;
+ 	tmp |= val;
+ 	writel_relaxed(tmp, ctl->base + reg);
+ 
+-	spin_unlock_irqrestore(&ctl->lock, flags);
++	raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ }
+ 
+ static void meson_gpio_irq_init_dummy(struct meson_gpio_irq_controller *ctl)
+@@ -244,12 +244,12 @@ meson_gpio_irq_request_channel(struct meson_gpio_irq_controller *ctl,
+ 	unsigned long flags;
+ 	unsigned int idx;
+ 
+-	spin_lock_irqsave(&ctl->lock, flags);
++	raw_spin_lock_irqsave(&ctl->lock, flags);
+ 
+ 	/* Find a free channel */
+ 	idx = find_first_zero_bit(ctl->channel_map, ctl->params->nr_channels);
+ 	if (idx >= ctl->params->nr_channels) {
+-		spin_unlock_irqrestore(&ctl->lock, flags);
++		raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ 		pr_err("No channel available\n");
+ 		return -ENOSPC;
  	}
+@@ -257,7 +257,7 @@ meson_gpio_irq_request_channel(struct meson_gpio_irq_controller *ctl,
+ 	/* Mark the channel as used */
+ 	set_bit(idx, ctl->channel_map);
  
--	if (params->basic_rates) {
--		ieee80211_parse_bitrates(sdata->vif.bss_conf.chandef.width,
--					 wiphy->bands[sband->band],
--					 params->basic_rates,
--					 params->basic_rates_len,
--					 &sdata->vif.bss_conf.basic_rates);
--		changed |= BSS_CHANGED_BASIC_RATES;
--		ieee80211_check_rate_mask(&sdata->deflink);
--	}
--
- 	if (params->ap_isolate >= 0) {
- 		if (params->ap_isolate)
- 			sdata->flags |= IEEE80211_SDATA_DONT_BRIDGE_PACKETS;
--- 
-2.43.0
-
+-	spin_unlock_irqrestore(&ctl->lock, flags);
++	raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ 
+ 	/*
+ 	 * Setup the mux of the channel to route the signal of the pad
+@@ -567,7 +567,7 @@ static int meson_gpio_irq_of_init(struct device_node *node, struct device_node *
+ 	if (!ctl)
+ 		return -ENOMEM;
+ 
+-	spin_lock_init(&ctl->lock);
++	raw_spin_lock_init(&ctl->lock);
+ 
+ 	ctl->base = of_iomap(node, 0);
+ 	if (!ctl->base) {
 
