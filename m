@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92ADF93EE4D
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:17:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3C293EE52
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 322812812D1
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:17:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC6EE1C211EB
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF877D3EC;
-	Mon, 29 Jul 2024 07:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF037D3EC;
+	Mon, 29 Jul 2024 07:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJAGEY+a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aODDjdre"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21F63D0C5
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2962D6A8DB
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722237424; cv=none; b=EXCeqDTXk4kINiWvAFc5FnVFy9rxCDU/B+lAnKTD5svPBNmIbwWLudIus+Qsp/wt7XneUbXrnuiJuNbX4ZsodPIf9cNYKmdZedv9ce5zeElZ4KPaVfEEo6Y7dq2jlvte5k1MyslTbtsi9nYJNlEqphxHaNBWsbuvneAKUINdmIE=
+	t=1722237527; cv=none; b=ZVNzBIpUHJpt5+sQVppDsusIYvaz9lo8uUfHRwH4iibEV4P5+jXYFlTNeTNKyQhgd9zTkrnI805m5PxZvTrx3xWSXvmdaLt4kMTKlKohXArdI91q9CIbE6BVzMTOYs1l102SazNRo6dIFMuRpE0FSYVyS4tUORkuBNdajgoPsLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722237424; c=relaxed/simple;
-	bh=WWx0FqtNucYvruTbJmx1l0wrE8xLt5YmVNgyO+qsTGM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=n2YvNd52q7RRXQ1K+1nWm5jtcOBgm//Cb23LKN5bG5pR5ZbXxQi6KUHRI8twZlZhtBJy+KuuAK2ulEWvWDqN3TXF8n1C+/T3W2dJGYWrD4ZLNi9AJYR6gFwignfJjeLBF+XxcD6+Fvkm6K0lUm86vrMX+wexi+ykhOt+7S7P4/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJAGEY+a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69C1C4AF0C;
-	Mon, 29 Jul 2024 07:17:03 +0000 (UTC)
+	s=arc-20240116; t=1722237527; c=relaxed/simple;
+	bh=kjIE2CST4mFK3cagWHT8Ckb2kllZp/O5tPA5ohRvW00=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bgAWh8eXeBuE7OuvC5/n4Ci8K60CBl2HH56ND1qi+qN+P5ZcW6PsisucexHq9rO5isMP33yb8aMzcwLiNP8AAlamTupcLP/30XFdeL6fnIOhhTm8snJXZB4sKiEheL/eFHFw7Z5+ia15GUY4FhUAdRiVWoMGjdoCc6yqS4bogMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aODDjdre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C95C32786;
+	Mon, 29 Jul 2024 07:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722237424;
-	bh=WWx0FqtNucYvruTbJmx1l0wrE8xLt5YmVNgyO+qsTGM=;
+	s=korg; t=1722237526;
+	bh=kjIE2CST4mFK3cagWHT8Ckb2kllZp/O5tPA5ohRvW00=;
 	h=Subject:To:Cc:From:Date:From;
-	b=FJAGEY+a0So2uzBPxXub//1Yg6Tz8QofAtPf2AANOrrU97Rg+Hf+BVrIkhynx2LoR
-	 HVF6xJcRDFqHLAOuN/mKoJ4VIa183n1o44epyBCkL+fQCqXTtz/uLFpC7HW0gFJNB9
-	 9i51wmVfM/8Z5/slhi8IGjJqpBfnAG0o+pC21zbg=
-Subject: FAILED: patch "[PATCH] mm/huge_memory: avoid PMD-size page cache if needed" failed to apply to 6.1-stable tree
-To: gshan@redhat.com,akpm@linux-foundation.org,baohua@kernel.org,baolin.wang@linux.alibaba.com,david@redhat.com,ddutile@redhat.com,peterx@redhat.com,ryan.roberts@arm.com,stable@vger.kernel.org,william.kucharski@oracle.com,willy@infradead.org,ziy@nvidia.com
+	b=aODDjdreX5M5z3cg9kl0gGnhQ22rkyUvKBSKM7F+8a/B2OHclyCcHRBjaXBceF6ed
+	 SziqvL3w7NrWSGRNAdY5OXDfdKcj/jZanx0/VX3/SlCdLNEMK0z7grhc8Qy+7VR+Zn
+	 RqHWdfLQ8KkD/t/AngVG/8CubHFDDsKiZ7h6c5XA=
+Subject: FAILED: patch "[PATCH] mm: fix khugepaged activation policy" failed to apply to 6.10-stable tree
+To: ryan.roberts@arm.com,akpm@linux-foundation.org,baohua@kernel.org,baolin.wang@linux.alibaba.com,corbet@lwn.net,david@redhat.com,ioworker0@gmail.com,shy828301@gmail.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 09:16:53 +0200
-Message-ID: <2024072952-envision-salvation-6c3a@gregkh>
+Date: Mon, 29 Jul 2024 09:18:43 +0200
+Message-ID: <2024072942-compare-unworried-8aec@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x d659b715e94ac039803d7601505d3473393fc0be
+git cherry-pick -x 00f58104202c472e487f0866fbd38832523fd4f9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072952-envision-salvation-6c3a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072942-compare-unworried-8aec@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-d659b715e94a ("mm/huge_memory: avoid PMD-size page cache if needed")
-e0ffb29bc54d ("mm: simplify thp_vma_allowable_order")
-19eaf44954df ("mm: thp: support allocation of anonymous multi-size THP")
-3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
-7a81751fcdeb ("mm/thp: fix "mm: thp: kill __transhuge_page_enabled()"")
-5003a2bdf688 ("mm: call update_mmu_cache_range() in more page fault handling paths")
-daa60ae64c65 ("mm,thp: fix smaps THPeligible output alignment")
-3db82b9374ca ("mm/memory: allow pte_offset_map[_lock]() to fail")
-3b65f437d9e8 ("mm: fix failure to unmap pte on highmem systems")
-2bad466cc9d9 ("mm/uffd: UFFD_FEATURE_WP_UNPOPULATED")
-3c556d2425b0 ("mm/thp: rename TRANSPARENT_HUGEPAGE_NEVER_DAX to _UNSUPPORTED")
-28d41a486331 ("mm: convert wp_page_copy() to use folios")
-cb3184deef10 ("mm: convert do_anonymous_page() to use a folio")
-6bc56a4d8553 ("mm: add vma_alloc_zeroed_movable_folio()")
-2cf1338454a8 ("mm: fix khugepaged with shmem_enabled=advise")
-d1751118c886 ("mm/uffd: detect pgtable allocation failures")
-a79390f5d6a7 ("mm/mprotect: use long for page accountings and retval")
-1ef488edd6c4 ("mm/mprotect: drop pgprot_t parameter from change_protection()")
-931298e103c2 ("mm/userfaultfd: rely on vma->vm_page_prot in uffd_wp_range()")
-fed15f1345dc ("mm/hugetlb: pre-allocate pgtable pages for uffd wr-protects")
+00f58104202c ("mm: fix khugepaged activation policy")
+7f83bf14603e ("mm/huge_memory: mark racy access onhuge_anon_orders_always")
 
 thanks,
 
@@ -96,197 +78,196 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d659b715e94ac039803d7601505d3473393fc0be Mon Sep 17 00:00:00 2001
-From: Gavin Shan <gshan@redhat.com>
-Date: Mon, 15 Jul 2024 10:04:23 +1000
-Subject: [PATCH] mm/huge_memory: avoid PMD-size page cache if needed
+From 00f58104202c472e487f0866fbd38832523fd4f9 Mon Sep 17 00:00:00 2001
+From: Ryan Roberts <ryan.roberts@arm.com>
+Date: Thu, 4 Jul 2024 10:10:50 +0100
+Subject: [PATCH] mm: fix khugepaged activation policy
 
-xarray can't support arbitrary page cache size.  the largest and supported
-page cache size is defined as MAX_PAGECACHE_ORDER by commit 099d90642a71
-("mm/filemap: make MAX_PAGECACHE_ORDER acceptable to xarray").  However,
-it's possible to have 512MB page cache in the huge memory's collapsing
-path on ARM64 system whose base page size is 64KB.  512MB page cache is
-breaking the limitation and a warning is raised when the xarray entry is
-split as shown in the following example.
+Since the introduction of mTHP, the docuementation has stated that
+khugepaged would be enabled when any mTHP size is enabled, and disabled
+when all mTHP sizes are disabled.  There are 2 problems with this; 1.
+this is not what was implemented by the code and 2.  this is not the
+desirable behavior.
 
-[root@dhcp-10-26-1-207 ~]# cat /proc/1/smaps | grep KernelPageSize
-KernelPageSize:       64 kB
-[root@dhcp-10-26-1-207 ~]# cat /tmp/test.c
-   :
-int main(int argc, char **argv)
-{
-	const char *filename = TEST_XFS_FILENAME;
-	int fd = 0;
-	void *buf = (void *)-1, *p;
-	int pgsize = getpagesize();
-	int ret = 0;
+Desirable behavior is for khugepaged to be enabled when any PMD-sized THP
+is enabled, anon or file.  (Note that file THP is still controlled by the
+top-level control so we must always consider that, as well as the PMD-size
+mTHP control for anon).  khugepaged only supports collapsing to PMD-sized
+THP so there is no value in enabling it when PMD-sized THP is disabled.
+So let's change the code and documentation to reflect this policy.
 
-	if (pgsize != 0x10000) {
-		fprintf(stdout, "System with 64KB base page size is required!\n");
-		return -EPERM;
-	}
+Further, per-size enabled control modification events were not previously
+forwarded to khugepaged to give it an opportunity to start or stop.
+Consequently the following was resulting in khugepaged eroneously not
+being activated:
 
-	system("echo 0 > /sys/devices/virtual/bdi/253:0/read_ahead_kb");
-	system("echo 1 > /proc/sys/vm/drop_caches");
+  echo never > /sys/kernel/mm/transparent_hugepage/enabled
+  echo always > /sys/kernel/mm/transparent_hugepage/hugepages-2048kB/enabled
 
-	/* Open the xfs file */
-	fd = open(filename, O_RDONLY);
-	assert(fd > 0);
-
-	/* Create VMA */
-	buf = mmap(NULL, TEST_MEM_SIZE, PROT_READ, MAP_SHARED, fd, 0);
-	assert(buf != (void *)-1);
-	fprintf(stdout, "mapped buffer at 0x%p\n", buf);
-
-	/* Populate VMA */
-	ret = madvise(buf, TEST_MEM_SIZE, MADV_NOHUGEPAGE);
-	assert(ret == 0);
-	ret = madvise(buf, TEST_MEM_SIZE, MADV_POPULATE_READ);
-	assert(ret == 0);
-
-	/* Collapse VMA */
-	ret = madvise(buf, TEST_MEM_SIZE, MADV_HUGEPAGE);
-	assert(ret == 0);
-	ret = madvise(buf, TEST_MEM_SIZE, MADV_COLLAPSE);
-	if (ret) {
-		fprintf(stdout, "Error %d to madvise(MADV_COLLAPSE)\n", errno);
-		goto out;
-	}
-
-	/* Split xarray entry. Write permission is needed */
-	munmap(buf, TEST_MEM_SIZE);
-	buf = (void *)-1;
-	close(fd);
-	fd = open(filename, O_RDWR);
-	assert(fd > 0);
-	fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
- 		  TEST_MEM_SIZE - pgsize, pgsize);
-out:
-	if (buf != (void *)-1)
-		munmap(buf, TEST_MEM_SIZE);
-	if (fd > 0)
-		close(fd);
-
-	return ret;
-}
-
-[root@dhcp-10-26-1-207 ~]# gcc /tmp/test.c -o /tmp/test
-[root@dhcp-10-26-1-207 ~]# /tmp/test
- ------------[ cut here ]------------
- WARNING: CPU: 25 PID: 7560 at lib/xarray.c:1025 xas_split_alloc+0xf8/0x128
- Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib    \
- nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct      \
- nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4      \
- ip_set rfkill nf_tables nfnetlink vfat fat virtio_balloon drm fuse   \
- xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64 virtio_net  \
- sha1_ce net_failover virtio_blk virtio_console failover dimlib virtio_mmio
- CPU: 25 PID: 7560 Comm: test Kdump: loaded Not tainted 6.10.0-rc7-gavin+ #9
- Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-1.el9 05/24/2024
- pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
- pc : xas_split_alloc+0xf8/0x128
- lr : split_huge_page_to_list_to_order+0x1c4/0x780
- sp : ffff8000ac32f660
- x29: ffff8000ac32f660 x28: ffff0000e0969eb0 x27: ffff8000ac32f6c0
- x26: 0000000000000c40 x25: ffff0000e0969eb0 x24: 000000000000000d
- x23: ffff8000ac32f6c0 x22: ffffffdfc0700000 x21: 0000000000000000
- x20: 0000000000000000 x19: ffffffdfc0700000 x18: 0000000000000000
- x17: 0000000000000000 x16: ffffd5f3708ffc70 x15: 0000000000000000
- x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
- x11: ffffffffffffffc0 x10: 0000000000000040 x9 : ffffd5f3708e692c
- x8 : 0000000000000003 x7 : 0000000000000000 x6 : ffff0000e0969eb8
- x5 : ffffd5f37289e378 x4 : 0000000000000000 x3 : 0000000000000c40
- x2 : 000000000000000d x1 : 000000000000000c x0 : 0000000000000000
- Call trace:
-  xas_split_alloc+0xf8/0x128
-  split_huge_page_to_list_to_order+0x1c4/0x780
-  truncate_inode_partial_folio+0xdc/0x160
-  truncate_inode_pages_range+0x1b4/0x4a8
-  truncate_pagecache_range+0x84/0xa0
-  xfs_flush_unmap_range+0x70/0x90 [xfs]
-  xfs_file_fallocate+0xfc/0x4d8 [xfs]
-  vfs_fallocate+0x124/0x2f0
-  ksys_fallocate+0x4c/0xa0
-  __arm64_sys_fallocate+0x24/0x38
-  invoke_syscall.constprop.0+0x7c/0xd8
-  do_el0_svc+0xb4/0xd0
-  el0_svc+0x44/0x1d8
-  el0t_64_sync_handler+0x134/0x150
-  el0t_64_sync+0x17c/0x180
-
-Fix it by correcting the supported page cache orders, different sets for
-DAX and other files.  With it corrected, 512MB page cache becomes
-disallowed on all non-DAX files on ARM64 system where the base page size
-is 64KB.  After this patch is applied, the test program fails with error
--EINVAL returned from __thp_vma_allowable_orders() and the madvise()
-system call to collapse the page caches.
-
-Link: https://lkml.kernel.org/r/20240715000423.316491-1-gshan@redhat.com
-Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
-Signed-off-by: Gavin Shan <gshan@redhat.com>
+[ryan.roberts@arm.com: v3]
+  Link: https://lkml.kernel.org/r/20240705102849.2479686-1-ryan.roberts@arm.com
+Link: https://lkml.kernel.org/r/20240705102849.2479686-1-ryan.roberts@arm.com
+Link: https://lkml.kernel.org/r/20240704091051.2411934-1-ryan.roberts@arm.com
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
+Closes: https://lore.kernel.org/linux-mm/7a0bbe69-1e3d-4263-b206-da007791a5c4@redhat.com/
 Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
 Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: Barry Song <baohua@kernel.org>
-Cc: Don Dutile <ddutile@redhat.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: William Kucharski <william.kucharski@oracle.com>
-Cc: <stable@vger.kernel.org>	[5.17+]
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Lance Yang <ioworker0@gmail.com>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index a1bc9b24e29a..fe237825b95c 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -202,12 +202,11 @@ PMD-mappable transparent hugepage::
+ 
+ 	cat /sys/kernel/mm/transparent_hugepage/hpage_pmd_size
+ 
+-khugepaged will be automatically started when one or more hugepage
+-sizes are enabled (either by directly setting "always" or "madvise",
+-or by setting "inherit" while the top-level enabled is set to "always"
+-or "madvise"), and it'll be automatically shutdown when the last
+-hugepage size is disabled (either by directly setting "never", or by
+-setting "inherit" while the top-level enabled is set to "never").
++khugepaged will be automatically started when PMD-sized THP is enabled
++(either of the per-size anon control or the top-level control are set
++to "always" or "madvise"), and it'll be automatically shutdown when
++PMD-sized THP is disabled (when both the per-size anon control and the
++top-level control are "never")
+ 
+ Khugepaged controls
+ -------------------
 diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index cff002be83eb..e25d9ebfdf89 100644
+index cee3c5da8f0e..acb6ac24a07e 100644
 --- a/include/linux/huge_mm.h
 +++ b/include/linux/huge_mm.h
-@@ -74,14 +74,20 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr;
- #define THP_ORDERS_ALL_ANON	((BIT(PMD_ORDER + 1) - 1) & ~(BIT(0) | BIT(1)))
+@@ -128,18 +128,6 @@ static inline bool hugepage_global_always(void)
+ 			(1<<TRANSPARENT_HUGEPAGE_FLAG);
+ }
  
- /*
-- * Mask of all large folio orders supported for file THP.
-+ * Mask of all large folio orders supported for file THP. Folios in a DAX
-+ * file is never split and the MAX_PAGECACHE_ORDER limit does not apply to
-+ * it.
-  */
--#define THP_ORDERS_ALL_FILE	(BIT(PMD_ORDER) | BIT(PUD_ORDER))
-+#define THP_ORDERS_ALL_FILE_DAX		\
-+	(BIT(PMD_ORDER) | BIT(PUD_ORDER))
-+#define THP_ORDERS_ALL_FILE_DEFAULT	\
-+	((BIT(MAX_PAGECACHE_ORDER + 1) - 1) & ~BIT(0))
- 
- /*
-  * Mask of all large folio orders supported for THP.
-  */
--#define THP_ORDERS_ALL		(THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE)
-+#define THP_ORDERS_ALL	\
-+	(THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DAX | THP_ORDERS_ALL_FILE_DEFAULT)
- 
- #define TVA_SMAPS		(1 << 0)	/* Will be used for procfs */
- #define TVA_IN_PF		(1 << 1)	/* Page fault handler */
+-static inline bool hugepage_flags_enabled(void)
+-{
+-	/*
+-	 * We cover both the anon and the file-backed case here; we must return
+-	 * true if globally enabled, even when all anon sizes are set to never.
+-	 * So we don't need to look at huge_anon_orders_inherit.
+-	 */
+-	return hugepage_global_enabled() ||
+-	       READ_ONCE(huge_anon_orders_always) ||
+-	       READ_ONCE(huge_anon_orders_madvise);
+-}
+-
+ static inline int highest_order(unsigned long orders)
+ {
+ 	return fls_long(orders) - 1;
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 04b72912035d..f4be468e06a4 100644
+index 17fb072a0ca1..f8b5cbd4dd71 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -89,9 +89,17 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 	bool smaps = tva_flags & TVA_SMAPS;
- 	bool in_pf = tva_flags & TVA_IN_PF;
- 	bool enforce_sysfs = tva_flags & TVA_ENFORCE_SYSFS;
-+	unsigned long supported_orders;
-+
- 	/* Check the intersection of requested and supported orders. */
--	orders &= vma_is_anonymous(vma) ?
--			THP_ORDERS_ALL_ANON : THP_ORDERS_ALL_FILE;
-+	if (vma_is_anonymous(vma))
-+		supported_orders = THP_ORDERS_ALL_ANON;
-+	else if (vma_is_dax(vma))
-+		supported_orders = THP_ORDERS_ALL_FILE_DAX;
-+	else
-+		supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
-+
-+	orders &= supported_orders;
- 	if (!orders)
- 		return 0;
+@@ -502,6 +502,13 @@ static ssize_t thpsize_enabled_store(struct kobject *kobj,
+ 	} else
+ 		ret = -EINVAL;
  
++	if (ret > 0) {
++		int err;
++
++		err = start_stop_khugepaged();
++		if (err)
++			ret = err;
++	}
+ 	return ret;
+ }
+ 
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 409f67a817f1..a5ec03ef8722 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -413,6 +413,26 @@ static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *mm)
+ 	       test_bit(MMF_DISABLE_THP, &mm->flags);
+ }
+ 
++static bool hugepage_pmd_enabled(void)
++{
++	/*
++	 * We cover both the anon and the file-backed case here; file-backed
++	 * hugepages, when configured in, are determined by the global control.
++	 * Anon pmd-sized hugepages are determined by the pmd-size control.
++	 */
++	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
++	    hugepage_global_enabled())
++		return true;
++	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
++		return true;
++	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
++		return true;
++	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
++	    hugepage_global_enabled())
++		return true;
++	return false;
++}
++
+ void __khugepaged_enter(struct mm_struct *mm)
+ {
+ 	struct khugepaged_mm_slot *mm_slot;
+@@ -449,7 +469,7 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
+ 			  unsigned long vm_flags)
+ {
+ 	if (!test_bit(MMF_VM_HUGEPAGE, &vma->vm_mm->flags) &&
+-	    hugepage_flags_enabled()) {
++	    hugepage_pmd_enabled()) {
+ 		if (thp_vma_allowable_order(vma, vm_flags, TVA_ENFORCE_SYSFS,
+ 					    PMD_ORDER))
+ 			__khugepaged_enter(vma->vm_mm);
+@@ -2462,8 +2482,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 
+ static int khugepaged_has_work(void)
+ {
+-	return !list_empty(&khugepaged_scan.mm_head) &&
+-		hugepage_flags_enabled();
++	return !list_empty(&khugepaged_scan.mm_head) && hugepage_pmd_enabled();
+ }
+ 
+ static int khugepaged_wait_event(void)
+@@ -2536,7 +2555,7 @@ static void khugepaged_wait_work(void)
+ 		return;
+ 	}
+ 
+-	if (hugepage_flags_enabled())
++	if (hugepage_pmd_enabled())
+ 		wait_event_freezable(khugepaged_wait, khugepaged_wait_event());
+ }
+ 
+@@ -2567,7 +2586,7 @@ static void set_recommended_min_free_kbytes(void)
+ 	int nr_zones = 0;
+ 	unsigned long recommended_min;
+ 
+-	if (!hugepage_flags_enabled()) {
++	if (!hugepage_pmd_enabled()) {
+ 		calculate_min_free_kbytes();
+ 		goto update_wmarks;
+ 	}
+@@ -2617,7 +2636,7 @@ int start_stop_khugepaged(void)
+ 	int err = 0;
+ 
+ 	mutex_lock(&khugepaged_mutex);
+-	if (hugepage_flags_enabled()) {
++	if (hugepage_pmd_enabled()) {
+ 		if (!khugepaged_thread)
+ 			khugepaged_thread = kthread_run(khugepaged, NULL,
+ 							"khugepaged");
+@@ -2643,7 +2662,7 @@ int start_stop_khugepaged(void)
+ void khugepaged_min_free_kbytes_update(void)
+ {
+ 	mutex_lock(&khugepaged_mutex);
+-	if (hugepage_flags_enabled() && khugepaged_thread)
++	if (hugepage_pmd_enabled() && khugepaged_thread)
+ 		set_recommended_min_free_kbytes();
+ 	mutex_unlock(&khugepaged_mutex);
+ }
 
 
