@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B8593F32F
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:51:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7954D93F32E
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FDF9B229A3
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8F161C21743
 	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1446914372D;
-	Mon, 29 Jul 2024 10:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4701448EE;
+	Mon, 29 Jul 2024 10:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUYAEiHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04zUHggM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7004140E30
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC071448E7
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722250282; cv=none; b=RVoji5hs4OswsZzTPBJaLEzgV0sQ+KuOrBDlItS9LYfjS+WL2IdSS+Cuf5QROjhOVA1r/BcJ6l6ZhQaVClD56VlkiOMlqz8elUGyxAwQD/QwkGPqyIPgwktQHGfKd/YQ5avianJCWU/gaY1QmCztBnhI7ybngeyGpJWRJP05xgo=
+	t=1722250286; cv=none; b=d8IbwptIfGwXPy+YewhXwjqqoEryLF60avkR2mALQjpwIepXhYuuYFrNXMpXU1RDBN9krOoqQ/WKMjodYcCeJJqvKBHFr7Ava0HKiHRCW0xqlhHBj/v/TO4c7tTrmV6kFXrPSxc9DwlvpRKdfEjADjLmrKOq3V4CffdcAcveWUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722250282; c=relaxed/simple;
-	bh=euzWaowhKmZ/hzQESS8/1kB341OWDLlhNPy59Ur7eAg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nNk0yvFwVivO1rfu1oHD08O1jjOwz02WadLQ37JeCDdVH/fOmcnAIZbSqcqeEZy4FYTjV4uokOEqALbMBBRVieB2mVxC2phnBB6f9jQJZLD3ihzRoAEWlwNPWcwR+zE8zGfmoVanoachn1zOyKvXKp271CAefmJHI+DW2K4U+sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUYAEiHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2123C32786;
-	Mon, 29 Jul 2024 10:51:21 +0000 (UTC)
+	s=arc-20240116; t=1722250286; c=relaxed/simple;
+	bh=xEpS1E6USrzb3UNkDkQXAf6mXFjaNs9Xecvg06oxTqk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=t1XBvBBiJh+HGU8xeppdm45uRbMAJkQIP60eFsSNzQnD1kRhvXTd6OflVAwGw9T8+dC/6lpFRtGLQOc0r/RsSqoQy4MSQ493SGpvEmcyPxx2uixm7UPKM8DZT9zfMrN4L4Y0gmzR+7Tk6rezGjIkzU/OgCRLs8yOYQET3mH+/2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04zUHggM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFB2C4AF0A;
+	Mon, 29 Jul 2024 10:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722250282;
-	bh=euzWaowhKmZ/hzQESS8/1kB341OWDLlhNPy59Ur7eAg=;
+	s=korg; t=1722250286;
+	bh=xEpS1E6USrzb3UNkDkQXAf6mXFjaNs9Xecvg06oxTqk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wUYAEiHP73Y30Is8FtZPTKJcr6KjFwsu/hF2Zcm4PFIgCo3ijpd4eW19um4MSnI0p
-	 rliUVuBOcbvNolLTO6ODfDW9I3Vt9ofr/k+yYr3UvKu1AoNvovKXntQE/IxWsgWemx
-	 fd1oYJZrMoS5GaCC0b3LAaThaeUyDmFUCFQ4uHfg=
-Subject: FAILED: patch "[PATCH] cpufreq: qcom-nvmem: fix memory leaks in probe error paths" failed to apply to 6.1-stable tree
+	b=04zUHggMKuOQHYoOI9+EaIEgkVYz3r2t6tPgccWpCF2V1TlcZi/cOPIYIWN00JmP4
+	 kq2z8hv7jUJvKj5fqZXsQASJvN5PAh332KgTzn6IdNF5K0xmUML3VZiGb/bcF/VIdV
+	 kjNr5rzn8p/RpkNlbqpildx7XMqfSqRj6l+FtPd4=
+Subject: FAILED: patch "[PATCH] cpufreq: qcom-nvmem: fix memory leaks in probe error paths" failed to apply to 5.10-stable tree
 To: javier.carrasco.cruz@gmail.com,viresh.kumar@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 12:51:16 +0200
-Message-ID: <2024072916-lusty-flashy-062b@gregkh>
+Date: Mon, 29 Jul 2024 12:51:17 +0200
+Message-ID: <2024072917-chivalry-timid-afc3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x d01c84b97f19f1137211e90b0a910289a560019e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072916-lusty-flashy-062b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072917-chivalry-timid-afc3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 d01c84b97f19 ("cpufreq: qcom-nvmem: fix memory leaks in probe error paths")
 2a5d46c3ad6b ("cpufreq: qcom-nvmem: Simplify driver data allocation")
 402732324b17 ("cpufreq: qcom-nvmem: Convert to platform remove callback returning void")
+d78be404f97f ("cpufreq: qcom-nvmem: Switch to use dev_err_probe() helper")
+49cd000dc51b ("cpufreq: qcom-nvmem: Migrate to dev_pm_opp_set_config()")
+2ff8fe13ac6d ("cpufreq: qcom-cpufreq-nvmem: dev_pm_opp_put_*() accepts NULL argument")
 
 thanks,
 
