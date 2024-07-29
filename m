@@ -1,122 +1,152 @@
-Return-Path: <stable+bounces-62501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAFA093F4DB
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:06:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 790A493F4E3
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 557A32819AC
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:06:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 227211F216C8
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF63A146A8C;
-	Mon, 29 Jul 2024 12:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B544D146D48;
+	Mon, 29 Jul 2024 12:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="hkhheSnn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qkac8p/J"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0653145B37;
-	Mon, 29 Jul 2024 12:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C8F146A9B
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722254780; cv=none; b=hq0ZWIOYxx3SEFQMWzXz3T4yR/ufKLfItICAOI65PGnda2684Bp8cRSqbB9VKyaaXnCtc+eU+afyzFgr4uKTT57Si/ChgJxdvYLTBm9+0IAyWojqDglxEAeVpyW0hKVcW9xoA9lUxaLshZ0N/ZpqDpf9rfrM4rYjbcw4QQrRZi8=
+	t=1722254990; cv=none; b=lEJVKcBvWh1sJjeSMZ1MAszeUErVE93G9CC2nA4W8AW/c+icLEW3gPvNkcziHv8NcYgdfodPHi6QwXeQhXp3D/lCnod9y+BxIzqvWdozLYEK7hoVjcOS8iI0Cl+yc/CTJ8WBrXU7UcDiJ1dtqOkIBkEp67rkRps3mt+SGz6cOjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722254780; c=relaxed/simple;
-	bh=RelaqKDsjyfEAbhB5AiPyJ8qMD72m5Y657aORRZCsZM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t7+Enw+UYkccQ3iD08UgzonK2DZkPerkgNTD9/VgfNUf7GKMgyl1XZeITXHBs667a8RU0e3U6N6Obllu8eJxkSj9tVQ3pA3zjdtwUW0g7Ua13W19BcTZp5uJZeWIoNQbQW43c1wjUbYEPq1ZBaRPFQ77DyoORSVNQISXL6i7b4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=hkhheSnn; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [IPV6:2405:201:2015:f873:55d7:c02e:b2eb:ee3f] (unknown [IPv6:2405:201:2015:f873:55d7:c02e:b2eb:ee3f])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E74033E;
-	Mon, 29 Jul 2024 14:05:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1722254730;
-	bh=RelaqKDsjyfEAbhB5AiPyJ8qMD72m5Y657aORRZCsZM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hkhheSnn0jXDF+9dKqBVO8Idr372g+vSnHSyX7JHMamB1j4J7kE6gJoFU4/zGUITn
-	 AoCYNMULQdMS3Yo9kf8LfM1FkEIGl5e67T78cNfGioH/hKntSHxD4fymLc68gpyLZC
-	 PCEVR1E2IMKYcVb2nvvXaFaQ55fIVVVbwAmld4Y4=
-Message-ID: <2238e3e8-56f9-45e1-bd66-85953e091eb8@ideasonboard.com>
-Date: Mon, 29 Jul 2024 17:36:11 +0530
+	s=arc-20240116; t=1722254990; c=relaxed/simple;
+	bh=QlqiFt6Ov891zDz6d43Le/MfRbh4NiiCHltQbEYvdGU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PCPaLiDttVsC8bIt7L6x8OkK1221TksEhU4FSUlF4jiCC/aLO0XKHyb/69bNN/rp6XCngTSUL/ntMaj9CRFGMXXHmvNWI73617tY4RmjLlqizyikdDZQMMywzNS2t2JncgXSnCT3r3T0DRnhl8WycGYtb+qZ2sNxFS+79732iRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qkac8p/J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC41C32786;
+	Mon, 29 Jul 2024 12:09:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722254990;
+	bh=QlqiFt6Ov891zDz6d43Le/MfRbh4NiiCHltQbEYvdGU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Qkac8p/JCTVRsHQgf40Xy3dSHLzOhY2aNDJVSKeMec3lgy1TC0N2qF1eLiazujD+x
+	 wkiqI4Nqsx51yIwm41+CJ1hjzADsAhYdu/+duuxbU+gsqQ6OEQWpZIUL5Vt+1Zqudq
+	 bUHsSXeTcFPPJERH3jNJOZMUDkiHdZcvPUtCbiJ4=
+Subject: FAILED: patch "[PATCH] fbdev: vesafb: Detect VGA compatibility from screen info's" failed to apply to 6.6-stable tree
+To: tzimmermann@suse.de,deller@gmx.de,javierm@redhat.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Jul 2024 14:09:46 +0200
+Message-ID: <2024072945-reenter-waving-4e70@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: imx335: Mention reset-gpio polarity
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, stable@vger.kernel.org,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Tommaso Merciai <tomm.merciai@gmail.com>,
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-References: <20240729110437.199428-1-umang.jain@ideasonboard.com>
- <20240729110437.199428-2-umang.jain@ideasonboard.com>
- <20240729111006.GH2320@pendragon.ideasonboard.com>
-Content-Language: en-US
-From: Umang Jain <umang.jain@ideasonboard.com>
-In-Reply-To: <20240729111006.GH2320@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-Hi Laurent,
 
-On 29/07/24 4:40 pm, Laurent Pinchart wrote:
-> Hi Umang,
->
-> Thank you for the patch.
->
-> On Mon, Jul 29, 2024 at 04:34:36PM +0530, Umang Jain wrote:
->> Mention the reset-gpio polarity in the device tree bindings.
->> It is GPIO_ACTIVE_LOW according to the datasheet.
->>
->> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
->> ---
->>   Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
->> index 106c36ee966d..fb4c9d42ed1c 100644
->> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
->> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
->> @@ -92,6 +92,8 @@ examples:
->>               ovdd-supply = <&camera_vddo_1v8>;
->>               dvdd-supply = <&camera_vddd_1v2>;
->>   
->> +            reset-gpios = <&gpio 50 GPIO_ACTIVE_LOW>;
->> +
-> I think it's good to include this in the example, but it doesn't match
-> the commit message. I was expecting to see a change to the binding
-> rules, not to the example.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Currently the binding already states reset-gpio as
+To reproduce the conflict and resubmit, you may use the following commands:
 
-```
-   reset-gpios:
-     description: Reference to the GPIO connected to the XCLR pin, if any.
-     maxItems: 1
-```
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x c2bc958b2b03e361f14df99983bc64a39a7323a3
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072945-reenter-waving-4e70@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Pardon my limited knowledge here, do you mean something like :
+Possible dependencies:
 
-```
-   reset-gpios:
-     description: Reference to the GPIO connected to the XCLR pin 
-(active LOW), if any.
-     maxItems: 1
-```
+c2bc958b2b03 ("fbdev: vesafb: Detect VGA compatibility from screen info's VESA attributes")
+75fa9b7e375e ("video: Add helpers for decoding screen_info")
+3218286bbb78 ("fbdev/vesafb: Replace references to global screen_info by local pointer")
 
-or something else?
->
->>               port {
->>                   imx335: endpoint {
->>                       remote-endpoint = <&cam>;
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From c2bc958b2b03e361f14df99983bc64a39a7323a3 Mon Sep 17 00:00:00 2001
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Date: Mon, 17 Jun 2024 13:06:27 +0200
+Subject: [PATCH] fbdev: vesafb: Detect VGA compatibility from screen info's
+ VESA attributes
+
+Test the vesa_attributes field in struct screen_info for compatibility
+with VGA hardware. Vesafb currently tests bit 1 in screen_info's
+capabilities field which indicates a 64-bit lfb address and is
+unrelated to VGA compatibility.
+
+Section 4.4 of the Vesa VBE 2.0 specifications defines that bit 5 in
+the mode's attributes field signals VGA compatibility. The mode is
+compatible with VGA hardware if the bit is clear. In that case, the
+driver can access VGA state of the VBE's underlying hardware. The
+vesafb driver uses this feature to program the color LUT in palette
+modes. Without, colors might be incorrect.
+
+The problem got introduced in commit 89ec4c238e7a ("[PATCH] vesafb: Fix
+incorrect logo colors in x86_64"). It incorrectly stores the mode
+attributes in the screen_info's capabilities field and updates vesafb
+accordingly. Later, commit 5e8ddcbe8692 ("Video mode probing support for
+the new x86 setup code") fixed the screen_info, but did not update vesafb.
+Color output still tends to work, because bit 1 in capabilities is
+usually 0.
+
+Besides fixing the bug in vesafb, this commit introduces a helper that
+reads the correct bit from screen_info.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 5e8ddcbe8692 ("Video mode probing support for the new x86 setup code")
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Cc: <stable@vger.kernel.org> # v2.6.23+
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
+index 8ab64ae4cad3..5a161750a3ae 100644
+--- a/drivers/video/fbdev/vesafb.c
++++ b/drivers/video/fbdev/vesafb.c
+@@ -271,7 +271,7 @@ static int vesafb_probe(struct platform_device *dev)
+ 	if (si->orig_video_isVGA != VIDEO_TYPE_VLFB)
+ 		return -ENODEV;
+ 
+-	vga_compat = (si->capabilities & 2) ? 0 : 1;
++	vga_compat = !__screen_info_vbe_mode_nonvga(si);
+ 	vesafb_fix.smem_start = si->lfb_base;
+ 	vesafb_defined.bits_per_pixel = si->lfb_depth;
+ 	if (15 == vesafb_defined.bits_per_pixel)
+diff --git a/include/linux/screen_info.h b/include/linux/screen_info.h
+index 75303c126285..6a4a3cec4638 100644
+--- a/include/linux/screen_info.h
++++ b/include/linux/screen_info.h
+@@ -49,6 +49,16 @@ static inline u64 __screen_info_lfb_size(const struct screen_info *si, unsigned
+ 	return lfb_size;
+ }
+ 
++static inline bool __screen_info_vbe_mode_nonvga(const struct screen_info *si)
++{
++	/*
++	 * VESA modes typically run on VGA hardware. Set bit 5 signals that this
++	 * is not the case. Drivers can then not make use of VGA resources. See
++	 * Sec 4.4 of the VBE 2.0 spec.
++	 */
++	return si->vesa_attributes & BIT(5);
++}
++
+ static inline unsigned int __screen_info_video_type(unsigned int type)
+ {
+ 	switch (type) {
 
 
