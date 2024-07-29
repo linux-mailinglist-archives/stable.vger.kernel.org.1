@@ -1,108 +1,123 @@
-Return-Path: <stable+bounces-62411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B0593EF7F
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:11:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A51593EF89
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13505282D91
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 08:11:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1A371F22B28
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 08:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3406513A899;
-	Mon, 29 Jul 2024 08:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40131384B9;
+	Mon, 29 Jul 2024 08:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ov5C0Moz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YgAkoPx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70A413A868
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 08:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AE084FAD
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 08:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722240658; cv=none; b=lT1AbGS9PpIfQx4qSZ+UZ1lvZUu6WZoJPgVCZJ8K5yOKgc7tw4iwAtrmivAI1ug2YGyRgKHatQl/1cC+bGspIgVXgwX5Rp3z5INBcG58Cz1DdtCRnmcXNiR5qXSSFXVu+FSCgq+SMpE8CbQvPgYxClVWAcxDRjPmcVHjaPFOdac=
+	t=1722240732; cv=none; b=Wk/CoTHTMeW9yooZ/i5HUPlL6pQmtxGBXzWqWmXDovpi5sRQXR7bdABC/rotn/r4RAKUhlsfQJS8WfwANIkPhZLsP7mc6UROVdqZ4AISFWh3pzI5VYPy3bFvA607MIgjOcPijMMkWrtIi//Kz+r+yhgFuvdzUOzFtgLQS0B/0So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722240658; c=relaxed/simple;
-	bh=Kkc146JI8xg77BpASKBu7MSoir8VaoU5rXi7yBzW1AY=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hQxaF8Hvv9xYlaNtYDGh/3odxmv1BiAQgbvqNIAtq1lWqIOGFQyIpX1+7CzS8elnqyRMTQWa4OAorLG0WP2XVmRPEQi50iQ7X4IZUlKTn72u7jUTefiOJsj8sR+5nqKXDxTSiS/bdzyiEizcUNZesUTr0TDkdO3bMGeRofEeSzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ov5C0Moz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4191EC32786;
-	Mon, 29 Jul 2024 08:10:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722240657;
-	bh=Kkc146JI8xg77BpASKBu7MSoir8VaoU5rXi7yBzW1AY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ov5C0MozibaJeBCPCgd2K/HodOOrZEl/WsnT2d+lct7thMQ60xr/Ulxso2XZTJ5j/
-	 4cInSTzQmy4APxLF/yDMRab5LpX3FkEuq7tso0bRMS2q0i96JsojUiMBYxS5dLGDZb
-	 /FTNeg2NAXHbca2YicWFFJS3PFLl7PjTNNon93iKJi6YBcff6wMCbPHU2nd9g7h3Fg
-	 PUKHe8qAWLSaUSoAF63xzo727SPtMjibbZk4NgfKCgq7YQ/wjJqWmu8SKhzzrRejxZ
-	 liKmAL/LMA+qSfX+37XMwrbhNH+uPIELP996xDg8B81JfmKLzAhN4OfIcBcgqeETGq
-	 n3ylvto7iKQHA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sYLT5-00GEfN-7m;
-	Mon, 29 Jul 2024 09:10:55 +0100
-Date: Mon, 29 Jul 2024 09:10:54 +0100
-Message-ID: <86wml41uup.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: <gregkh@linuxfoundation.org>
-Cc: catalin.marinas@arm.com,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] irqchip/gic-v3: Fix 'broken_rdists' unused warning when !SMP" failed to apply to 6.10-stable tree
-In-Reply-To: <2024072916-brewing-cavalier-a90a@gregkh>
-References: <2024072916-brewing-cavalier-a90a@gregkh>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.3
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1722240732; c=relaxed/simple;
+	bh=wpXgVFS9l88kYN/8IsqqZi7cimp0Emqy24U1eNb6Vrc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oi5NwcMr9zWiHDSd0Q0IO9FsqOjlioYPaLluHIyFYXLB581cEFGyYUrPj5HBUNal55dmFdV8PjOlONMWYbxDxt17kxuirn5gvWisCpAR5P51NI3BbiAQwNpWb1om/BGNvaoOFsRrctw8KP0man7oxJfcV/qUQaYZF+RCHTSny0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YgAkoPx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DA4C32786;
+	Mon, 29 Jul 2024 08:12:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722240731;
+	bh=wpXgVFS9l88kYN/8IsqqZi7cimp0Emqy24U1eNb6Vrc=;
+	h=Subject:To:Cc:From:Date:From;
+	b=2YgAkoPxP1Dgpo6Iq9DwSK4rE7aPIyZRDQWAdrwJXpbZhfTI6xQz89Fywsbia7Co6
+	 TDtUlMTJ5ioofOKs3WsotXrI7lw/rPdL50Uw2S0ohFmE8RYloR28lNwnGozfTbv1Ko
+	 qM2wAr3/GK33vAeFmWYle3VRoreXkVfcZ/gEHkJs=
+Subject: FAILED: patch "[PATCH] ipv4: fix source address selection with route leak" failed to apply to 5.10-stable tree
+To: nicolas.dichtel@6wind.com,dsahern@kernel.org,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Jul 2024 10:12:08 +0200
+Message-ID: <2024072908-desolate-jeeringly-c274@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: gregkh@linuxfoundation.org, catalin.marinas@arm.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, 29 Jul 2024 08:51:16 +0100,
-<gregkh@linuxfoundation.org> wrote:
-> 
-> 
-> The patch below does not apply to the 6.10-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 080402007007ca1bed8bcb103625137a5c8446c6
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072916-brewing-cavalier-a90a@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
-> 
-> Possible dependencies:
-> 
-> 080402007007 ("irqchip/gic-v3: Fix 'broken_rdists' unused warning when !SMP and !ACPI")
-> d633da5d3ab1 ("irqchip/gic-v3: Add support for ACPI's disabled but 'online capable' CPUs")
-> fa2dabe57220 ("irqchip/gic-v3: Don't return errors from gic_acpi_match_gicc()")
 
-None of these three patches should be stable candidate for 6.10. They
-only matter to CPU hotplug, which is a new feature for 6.11 and has
-no purpose being backported.
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Thanks,
+To reproduce the conflict and resubmit, you may use the following commands:
 
-	M.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6807352353561187a718e87204458999dbcbba1b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072908-desolate-jeeringly-c274@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
--- 
-Without deviation from the norm, progress is not possible.
+Possible dependencies:
+
+680735235356 ("ipv4: fix source address selection with route leak")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 6807352353561187a718e87204458999dbcbba1b Mon Sep 17 00:00:00 2001
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Date: Wed, 10 Jul 2024 10:14:27 +0200
+Subject: [PATCH] ipv4: fix source address selection with route leak
+
+By default, an address assigned to the output interface is selected when
+the source address is not specified. This is problematic when a route,
+configured in a vrf, uses an interface from another vrf (aka route leak).
+The original vrf does not own the selected source address.
+
+Let's add a check against the output interface and call the appropriate
+function to select the source address.
+
+CC: stable@vger.kernel.org
+Fixes: 8cbb512c923d ("net: Add source address lookup op for VRF")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240710081521.3809742-2-nicolas.dichtel@6wind.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index f669da98d11d..8956026bc0a2 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -2270,6 +2270,15 @@ void fib_select_path(struct net *net, struct fib_result *res,
+ 		fib_select_default(fl4, res);
+ 
+ check_saddr:
+-	if (!fl4->saddr)
+-		fl4->saddr = fib_result_prefsrc(net, res);
++	if (!fl4->saddr) {
++		struct net_device *l3mdev;
++
++		l3mdev = dev_get_by_index_rcu(net, fl4->flowi4_l3mdev);
++
++		if (!l3mdev ||
++		    l3mdev_master_dev_rcu(FIB_RES_DEV(*res)) == l3mdev)
++			fl4->saddr = fib_result_prefsrc(net, res);
++		else
++			fl4->saddr = inet_select_addr(l3mdev, 0, RT_SCOPE_LINK);
++	}
+ }
+
 
