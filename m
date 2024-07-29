@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E24793EE59
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A95E693EE5A
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:20:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 826131F2503E
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:20:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BB511F2517F
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0988002A;
-	Mon, 29 Jul 2024 07:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CD38002A;
+	Mon, 29 Jul 2024 07:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OynZeyi3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvyteKEx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E736A8DB
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153C16A8DB
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722237615; cv=none; b=G+qWQXhAHsC2XzIphyvjcoscZzxgKnQLxu10iARCrWf6lLP4E2XnyaEP/8AmAXq4bP9cI1WzNaSK2KsdRrcm+EHQUzd3Fv/UoeEjIJ6BrjyX/1yLD9I2T2HxukQQEg51MEDBtsd0nmgumsm25BrbitqmX0wYeNWYzOVN9oM0m3w=
+	t=1722237624; cv=none; b=udr+HH/5Izjh/dYyQKmq+SLPkw7Q7WLVrkJmXsZy2XqkJcgYVaFQqyWpYnd+um5VRI3a/ag5nvx1lRiMu8z7MUImYvKYmsPj9tL01S25ri94qHjSDuMChEqjcoaXWpQYEJV7BLRz2cINhmZbHIqOJQzVwmROqpNUYQQ/jmKNWDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722237615; c=relaxed/simple;
-	bh=hXn/vE1APUsMyT3xCXJs8t5yrYTz8T0/CEiQDxRqv2k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JbUHgDno8WhqfQCO9nQRxeghvIXr9SeXcL/xOQIww454/wkWLcHFuU/cDV2W000xavY9ZwiNO8Jv41OopgM3TM5fTQDcHW1cQqhjUmOhLCg+CTHCYcYaJrPlvV+KaDGA1tGG91WORSl3ZmZ7bZS6TJfhDH72kwtuztwY+vTSetU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OynZeyi3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1C3C32786;
-	Mon, 29 Jul 2024 07:20:14 +0000 (UTC)
+	s=arc-20240116; t=1722237624; c=relaxed/simple;
+	bh=cj3tn1oxXbJHLI2Yb3zijlb6VE5dQaie431ZqZXGikE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cjqkM8b9vgZ7lSy8XJq4nV6pBGdIr16q6bBQlHGG1ssOYV1+2nQYqVxLGdUHRFLmUNYqePt7vFvOdTsLc3EEUQ3XepgdI3mdhFwZ9M0EhaAY3oiVHTbe3guuR+KgqgPcvwJRu+QGLEtx0834WFnxtMCgLavSaTYOWt3+PW/rYGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvyteKEx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D78CC32786;
+	Mon, 29 Jul 2024 07:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722237615;
-	bh=hXn/vE1APUsMyT3xCXJs8t5yrYTz8T0/CEiQDxRqv2k=;
+	s=korg; t=1722237623;
+	bh=cj3tn1oxXbJHLI2Yb3zijlb6VE5dQaie431ZqZXGikE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OynZeyi3xZO8MM+VE4t2E0vPZCtX9eKdy/TBdfdtPG0JQMKcayzv4OESggvH0HuSM
-	 47LR1REDR5r/QoNXFbqKRHIDSLQJC4nnvMgC3GAAmmJsn3lg2XHAnZDCmfX2L/XnNX
-	 hSvHzccjGP0PBfo/OHK4Hf95aJC1jHPUDSEgIj1I=
-Subject: FAILED: patch "[PATCH] mm/mglru: fix ineffective protection calculation" failed to apply to 6.10-stable tree
+	b=SvyteKExo7y+f2XYJmz8qfOvwKUAh2QE0oj2n74hFmFarxfS/d9CcNgPrbdEeNTmA
+	 XM2EjKaZnsEnVHVGQGoLvJh8nCHia/SfT/ypPo7TcXz8gFMWzG72c+lr9fKlTj2nuC
+	 A+CHIPVoUhWH+TO5aamvmw2IRaejMJHBkJ2gL93k=
+Subject: FAILED: patch "[PATCH] mm/mglru: fix ineffective protection calculation" failed to apply to 6.6-stable tree
 To: yuzhao@google.com,akpm@linux-foundation.org,stable@vger.kernel.org,tjmercier@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 09:20:11 +0200
-Message-ID: <2024072911-marshland-grab-ced7@gregkh>
+Date: Mon, 29 Jul 2024 09:20:12 +0200
+Message-ID: <2024072912-during-vitalize-fe0c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,29 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 30d77b7eef019fa4422980806e8b7cdc8674493e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072911-marshland-grab-ced7@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072912-during-vitalize-fe0c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 30d77b7eef01 ("mm/mglru: fix ineffective protection calculation")
 3f74e6bd3b84 ("mm/mglru: fix overshooting shrinker memory")
+4acef5694e01 ("mm/mglru: improve swappiness handling")
+745b13e647cd ("mm/mglru: remove CONFIG_MEMCG")
+4376807bf2d5 ("mm/mglru: reclaim offlined memcgs harder")
+8aa420617918 ("mm/mglru: respect min_ttl_ms with memcgs")
+5095a2b23987 ("mm/mglru: try to stop at high watermarks")
 
 thanks,
 
