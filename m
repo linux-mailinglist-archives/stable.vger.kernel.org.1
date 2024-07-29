@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2E693EEFE
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:50:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF2593EEFD
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8804D1F20FB9
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:50:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD3B51C21A00
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A75512C474;
-	Mon, 29 Jul 2024 07:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12CD712C522;
+	Mon, 29 Jul 2024 07:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uPVnVyNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtgPhvfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC42184A2F
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C620684A2F
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722239414; cv=none; b=rrrovI734kw6QJx+jyxrB8RW3TY8LVqmeYMzDb/mIW9wnmUarfpZNbPEU6An3Zw4cV5JHrRvdzxSriKZEjghNmFUZbPUOixWJ0AdJAjwcRAxZyNUJi9pMT3XcoAINxwsAUOm8rivBr80C0W/d5SAJrurbl3LFd+WHi/Gg1J2zj0=
+	t=1722239410; cv=none; b=Pxu5MjZaKH33PMvXda5dX4g3p4YFF5m9262aPiiMzcZ0iwVG8FUNgeqiyon2uR7ZPM0s330emsb9eYOU8U8RnLFYE8JDZqTS5EQvWbU9rC8xM8tuGHG1LE41eyzt0pX1GRvEiKhtPJYgV+xraFqYRFnY+dnUVMnTNbx/rvGHq/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722239414; c=relaxed/simple;
-	bh=tTtzHw/8ZWQdbHZN5P9PeybU9B33U/Lbsw1ykrsdp/M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TUOphp1L8uyUNQwObzuIDsjL5wrn5wcdiWW25E3JVkLEIGtVDIqptCC23FGXKq3QHV05UHMzMqnnrRNARaTwxweIn/gLqtgAaysrSsOKkVqyu9n/yG9nL6XkdV/pdGCmKFL/nK6ghkQjpZlUquxs7xMju+nveqA1b2wQQ3LQ2gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uPVnVyNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1B9C32786;
-	Mon, 29 Jul 2024 07:50:13 +0000 (UTC)
+	s=arc-20240116; t=1722239410; c=relaxed/simple;
+	bh=rrJ9UgKXgAjSyROPgnti1efRk1nLDZ3w68KoyNdf4pw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=H5XHHXIz9SbkmsnItDb7RTGpvbzzgqYCIzQJqoR0Z1xF4XZNPraXMplu0CN6AqphWeScFwRAdFqJeW5rTEfjv/doYcba4PNAQzRKv3Eoevo767sdvN2MWLyFCeykxmfCT3+yYu+/0GmWZoaRlKM6SCIWo+gdiMMgbjo9nLgSY8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LtgPhvfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF92C32786;
+	Mon, 29 Jul 2024 07:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722239414;
-	bh=tTtzHw/8ZWQdbHZN5P9PeybU9B33U/Lbsw1ykrsdp/M=;
+	s=korg; t=1722239410;
+	bh=rrJ9UgKXgAjSyROPgnti1efRk1nLDZ3w68KoyNdf4pw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uPVnVyNV9kXG6IgBm1osI1+tHvlDdyvkvG7Za5aPvml61j/VCNtg1tt7ndtzVCy4T
-	 ADDJV68jqT4iKjHiqcht0vAlJie8SHyMwNyF4h3ApWozEgwsJFQKkwqJ8tkUTJG8IR
-	 OjMJg3EuQdgFBlDMcuMWoXs2FGhu8tt98A5s5aDU=
-Subject: FAILED: patch "[PATCH] ipv6: fix source address selection with route leak" failed to apply to 6.1-stable tree
+	b=LtgPhvfU4ygYZBE0A/FUG46rLwGJvVqJ5K5sfryJJNo3Lm/z/KSzQL4iYSp6VeFSH
+	 3su/PN+BrXD///Yoc+5ysFeecipfkvEr05DwgmRv9IeAUip9DkYQwDgyZhpz0Css0D
+	 lYMhowVBS4XE9TKgiK/MTrHh+mFwSlXblaYv0cdc=
+Subject: FAILED: patch "[PATCH] ipv6: fix source address selection with route leak" failed to apply to 6.6-stable tree
 To: nicolas.dichtel@6wind.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Jul 2024 09:50:07 +0200
-Message-ID: <2024072907-unlaced-unlovely-6e01@gregkh>
+Message-ID: <2024072906-causation-conceal-2567@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 252442f2ae317d109ef0b4b39ce0608c09563042
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072907-unlaced-unlovely-6e01@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072906-causation-conceal-2567@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -85,10 +85,6 @@ dcae74622c05 ("ipv6: lockless IPV6_RECVERR_RFC4884 implementation")
 2da23eb07c91 ("ipv6: lockless IPV6_MULTICAST_HOPS implementation")
 d986f52124e0 ("ipv6: lockless IPV6_MULTICAST_LOOP implementation")
 b0adfba7ee77 ("ipv6: lockless IPV6_UNICAST_HOPS implementation")
-8cdd9f1aaedf ("ipv6: fix ip6_sock_set_addr_preferences() typo")
-e3390b30a5df ("net: annotate data-races around sk->sk_tsflags")
-0f158b32a9b1 ("net: selectively purge error queue in IP_RECVERR / IPV6_RECVERR")
-08e39c0dfa29 ("inet: move inet->defer_connect to inet->inet_flags")
 
 thanks,
 
