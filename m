@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC3893EF20
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:54:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C5A93EF21
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:54:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C80A28456C
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:54:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD9361C21BAC
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC79012C522;
-	Mon, 29 Jul 2024 07:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F9112C54D;
+	Mon, 29 Jul 2024 07:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVZTUeEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCM3oFN7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8B51EB2C
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E791EB2C
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722239675; cv=none; b=R43Z0szsVqNEyW/j12APIB/tnSZWVIB8+JBoqYKhVYjhMq2Cla92GjvV3AusvyG+AYsE5mcdYHvigVMeYtxUqOZxhOl9OpgJ1KLbLUhyt7RchDX5wOwV1Kd4kTErYfFydVTd2y/H/ZqT1Uv9apiY0UWgfdx6ac6D237X5BAS5sk=
+	t=1722239679; cv=none; b=r80mVYNc4r4pZ1UiulxODEF3VWXl4tRiFaxrSbvOURkYzezyff0uEzgCPLMA9azdTJ/W1WZQhV/A7zCMblTpGcvR8SQWnH3r7PzsfQg5Z7ZoRhh/MhRJGqgsFJZIa5FU0mWtds4IOQTjUb8pT1Xcqm2eJXTYWSrNmDU1LdZoimM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722239675; c=relaxed/simple;
-	bh=RWL5oGj/yM9S3+LpSgAjZH1y8COfAIeXWQY0+x9U80k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UxICPRXVtB0A/0N0fnLEqG9Hk1P2nTiivU8Plt63hDbR2ZqczKvBYdnb0k7JsyZV8oflLIc4h35QYpr5T3dcGlI9d5tpFi6m5UbbjFlRkLaTr9Xidk3RM4TGwkiNcBo7BOK8O7EaTNRKesibqbbqpnnPnW0RtybtuKxfeGT+pC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVZTUeEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E268DC32786;
-	Mon, 29 Jul 2024 07:54:34 +0000 (UTC)
+	s=arc-20240116; t=1722239679; c=relaxed/simple;
+	bh=NxIbxKp6vBdfba4v/X26gdt94slYLPPb8t73H34glkI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OE5fHPLAJQN6K8fQZmDGeihaujA1ty07rY50HimDfhRJA1zINDcAJgodt4OBXAML9raiZbUEP3NFFXv08zxZYBu6Nq4x64sHPo/pmb8dsDlD5OdkcP3NHcg6BOypljCW3f4DDEAYUQ02TrbCOUYxIdexOuBs/zsHlpUpPHLzmAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCM3oFN7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62571C32786;
+	Mon, 29 Jul 2024 07:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722239675;
-	bh=RWL5oGj/yM9S3+LpSgAjZH1y8COfAIeXWQY0+x9U80k=;
+	s=korg; t=1722239678;
+	bh=NxIbxKp6vBdfba4v/X26gdt94slYLPPb8t73H34glkI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=aVZTUeEFhyzHEcuxyO1VoeuQbjFNa4biqp8EJoQCcqlfDoA3oEII2hkxcWKz/cL5r
-	 GUpjzRBL6Z7aG43Ccsm4GdgDd+nasBBcCiJv90VnZsVsN7FoBjtb6TzoTstdnZchO7
-	 v2WiiYu+KcyHEPRdArCsnFYte4c1nZ4R0PhNzxDM=
-Subject: FAILED: patch "[PATCH] sysctl: always initialize i_uid/i_gid" failed to apply to 5.10-stable tree
+	b=CCM3oFN7JIo5KmxIKav4SITHHBsaNx1i19zXT3auHaid7m5kGDTNh+iems+knE0lS
+	 OehMgHCKwIkxdwit0CPzbSXWKS7NCt4DrRGS7EtlVgZjM5Ov5uDK6u+D2+RdVJ89fI
+	 w9uowLbjkd2lwUVgkWx93uCYNfet3ZW+lzLTk7m4=
+Subject: FAILED: patch "[PATCH] sysctl: always initialize i_uid/i_gid" failed to apply to 5.4-stable tree
 To: linux@weissschuh.net,j.granados@samsung.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 09:54:27 +0200
-Message-ID: <2024072927-tricolor-backfield-1bfe@gregkh>
+Date: Mon, 29 Jul 2024 09:54:28 +0200
+Message-ID: <2024072928-bunny-banana-9335@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 98ca62ba9e2be5863c7d069f84f7166b45a5b2f4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072927-tricolor-backfield-1bfe@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072928-bunny-banana-9335@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,13 @@ f9436a5d0497 ("sysctl: allow to change limits for posix messages queues")
 dc55e35f9e81 ("ipc: Store mqueue sysctls in the ipc namespace")
 0e9beb8a96f2 ("ipc/ipc_sysctl.c: remove fallback for !CONFIG_PROC_SYSCTL")
 5563cabdde7e ("ipc: check checkpoint_restore_ns_capable() to modify C/R proc files")
+32927393dc1c ("sysctl: pass kernel pointers to ->proc_handler")
+2374c09b1c8a ("sysctl: remove all extern declaration from sysctl.c")
+26363af56434 ("mm: remove watermark_boost_factor_sysctl_handler")
+6923aa0d8c62 ("mm/compaction: Disable compact_unevictable_allowed on RT")
+964b692daf30 ("mm/compaction: really limit compact_unevictable_allowed to 0 and 1")
+eaee41727e6d ("sysctl/sysrq: Remove __sysrq_enabled copy")
+0a6cad5df541 ("Merge branch 'vmwgfx-coherent' of git://people.freedesktop.org/~thomash/linux into drm-next")
 
 thanks,
 
