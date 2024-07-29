@@ -1,230 +1,161 @@
-Return-Path: <stable+bounces-62482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF19993F34E
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:54:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72AF793F360
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F16B1F21FAE
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:54:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15147B220F0
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6E81448EE;
-	Mon, 29 Jul 2024 10:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A0914534C;
+	Mon, 29 Jul 2024 10:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rm4yxXpe"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ltZDLshd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A20628399
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0653145344;
+	Mon, 29 Jul 2024 10:57:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722250456; cv=none; b=PEsMaPCEr0cZemIEwPWioQgmGkQ47092Ax0Ubm/a5rt/45nXLpvq/W8eTBZ0/MvWmv/ltkpCZZj1MgCaSJ/zbDkd4aze6yOPW0noUZbexWsSCtzltcldORw5QL+1lqHPKPUCP5jHTDgdJLQGMLeKO24YYc/ivZWujAJIr62HHPg=
+	t=1722250675; cv=none; b=LS/pyuDwq57tNVTFY36n881utBVj327HH+MrZJxNnWmcLnkDmKgrMl52oyAkiHx9IRbRR1NyPEHHLxHWU1M8VSt7mvmpGHExi2RYkjSriZ4HjtV/xDKhVKhLo1DGwa1yUCrRW3iZgN5M2kpCOKrG2usi+hFEaEzO5cpboDwOlRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722250456; c=relaxed/simple;
-	bh=tsrIk6ghoA2Pe4ySUtQK3tNTN9sHgt/eEPgBH3GL67I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rtsl9QRnih0XQHe4NqMHwg1dI7HxDEfKpzqqOfvT4FyGaD/mimrj1nr3AnymwWzM/Ncgnf2gHUalJKKo5ozcec0QV9nFeiHXmJJ+67fxuByANfpqKMP+EApGijpZKstkxghpzHJ2lM+8LwCwyrustRnaNGnQMpgUTlp8NBtlByQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rm4yxXpe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06592C4AF0A;
-	Mon, 29 Jul 2024 10:54:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722250456;
-	bh=tsrIk6ghoA2Pe4ySUtQK3tNTN9sHgt/eEPgBH3GL67I=;
-	h=Subject:To:Cc:From:Date:From;
-	b=rm4yxXpeEhheu2Xm4OKT/SQ5sgo84pwqj34X/6zQZBLTLCS+3FSvV23u1X4dWZ2q8
-	 W1deqpK2z1uU4gk9UVCWH1qt1TTUDyAMFRxYFfCh1PRSCv1Sp9dxayv4wSJZ3yzoAu
-	 Cjoz8l3H2MkxbYRjpeDaES68oPPDUkVFBdqjNUko=
-Subject: FAILED: patch "[PATCH] media: uvcvideo: Fix integer overflow calculating timestamp" failed to apply to 4.19-stable tree
-To: ribalda@chromium.org,laurent.pinchart@ideasonboard.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 12:54:04 +0200
-Message-ID: <2024072903-hamster-magical-c334@gregkh>
+	s=arc-20240116; t=1722250675; c=relaxed/simple;
+	bh=IoXGirG8rFJ+cAL8Qx1QIfbZ4c4yEdOZzq6rXHwas8s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ojzaJGblRYTg8VmwOX9lWuJzuX+C68mRfaGZzRQec9FqGCeI0+KEW54oK5zQD5A35Qf8pDY1xUUHx/Oq9+9fJYO2Z8jrgKsUGfDXORFT7pZhhOhufVdtgGilRFk5of73KqvczhfLZRSBHFNc3f3AxVCwL5hN5nLQOXUAjK+JkXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ltZDLshd; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46TAHO2R016748;
+	Mon, 29 Jul 2024 10:57:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	6aHtL8jzTdNbYvDxviLStizGdNixvfs7vF4J/jZ5Hqg=; b=ltZDLshdK9PFy7ZU
+	lLt+/QOUcRdDBJ/CMyC6E6YFayLggO2jx2cLVR0TqrnM4Lm96g+j54gq+5wsf8Fg
+	zL6YRbVQFAfIEOSPtJYwgtHEHGtmKvpSVPlDrF8H9O95bACBFKrN5lFl62PYk8Ec
+	IsmHK+8DEKSevvA6QsD/9ub8o0d1CyGtDJc1jGmPvrlJdYfD+LjOhjmkqcjY3SRA
+	O0/8tvaYSKSrSTAfjrpEx4ar3LCnTp92z28I2eF2tnXnypm5mOpMtOlZr5KYTNEe
+	7iMX96Nv99TMEVL2bdcC5Yw9RA3cCbaZ4B09NB4okFqpMvMz/x55hKvWVL8ydYhT
+	vUTg7g==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40ms433yfj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jul 2024 10:57:49 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46TAvnJr010564
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jul 2024 10:57:49 GMT
+Received: from [10.218.19.46] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 29 Jul
+ 2024 03:57:45 -0700
+Message-ID: <454fc2ec-6679-2d51-2a6a-580838d6ba59@quicinc.com>
+Date: Mon, 29 Jul 2024 16:27:42 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH] clk: qcom: camcc-sc8280xp: Remove always-on GDSC
+ hard-coding
+Content-Language: en-US
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen
+ Boyd <sboyd@kernel.org>
+CC: <dmitry.baryshkov@linaro.org>, <stable@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20240715-linux-next-24-07-13-sc8280xp-camcc-fixes-v1-1-fadb5d9445c1@linaro.org>
+ <f0d4b7a3-2b61-3d42-a430-34b30eeaa644@quicinc.com>
+ <86068581-0ce7-47b5-b1c6-fda4f7d1037f@linaro.org>
+ <02679111-1a35-b931-fecd-01c952553652@quicinc.com>
+ <ce14800d-7411-47c5-ad46-6baa6fb678f4@linaro.org>
+ <dd588276-8f1c-4389-7b3a-88f483b7072e@quicinc.com>
+ <610efa39-e476-45ae-bd2b-3a0b8ea485dc@linaro.org>
+ <6055cb14-de80-97bc-be23-7af8ffc89fcc@quicinc.com>
+ <a0ac4c3b-3c46-4c89-9947-d91ba06309f4@linaro.org>
+ <fe44268d-76bb-bdbd-e54e-39a38e4e5a49@quicinc.com>
+ <8d31cbfb-f223-4539-b61a-a30a12dfd99c@linaro.org>
+From: "Satya Priya Kakitapalli (Temp)" <quic_skakitap@quicinc.com>
+In-Reply-To: <8d31cbfb-f223-4539-b61a-a30a12dfd99c@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: g_4i_sY0F16XC2BjudF5JpvQL3Slxx_m
+X-Proofpoint-ORIG-GUID: g_4i_sY0F16XC2BjudF5JpvQL3Slxx_m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-29_09,2024-07-26_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ impostorscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
+ mlxlogscore=944 suspectscore=0 phishscore=0 priorityscore=1501
+ clxscore=1011 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407290074
 
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 7/27/2024 2:01 AM, Bryan O'Donoghue wrote:
+> On 26/07/2024 08:01, Satya Priya Kakitapalli (Temp) wrote:
+>>
+>> On 7/23/2024 2:59 PM, Bryan O'Donoghue wrote:
+>>> On 22/07/2024 09:57, Satya Priya Kakitapalli (Temp) wrote:
+>>>>> I have no idea. Why does it matter ?
+>>>>>
+>>>>
+>>>> This clock expected to be kept always ON, as per design, or else 
+>>>> the GDSC transition form ON to OFF (vice versa) wont work.
+>>>
+>>> Yes, parking to XO per this patch works for me. So I guess its 
+>>> already on and is left in that state by the park.
+>>>
+>>>> Want to know the clock status after bootup, to understand if the 
+>>>> clock got turned off during the late init. May I know exactly what 
+>>>> you have tested? Did you test the camera usecases as well?
+>>>
+>>> Of course.
+>>>
+>>> The camera works on x13s with this patch. That's what I mean by tested.
+>>>
+>>
+>> It might be working in your case, but it is not the HW design 
+>> recommended way to do. The same should not be propagated to other 
+>> target's camcc drivers, as I already observed it is not working on 
+>> SM8150.
+>
+> I don't think the argument here really stands up.
+>
+> We've established that the GDSC clock and PDs will remain on when the 
+> clock gets parked right ?
+>
+> Am I missing something obvious here ?
+>
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Yes, just parking the RCG at XO, does not ensure the branch clock, i.e, 
+the 'cam_cc_gdsc_clk' as always ON. When I compiled the camcc-sm8150 
+driver statically, I see that the clock is getting disabled in late_init 
+if it is modelled.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 8676a5e796fa18f55897ca36a94b2adf7f73ebd1
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072903-hamster-magical-c334@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
-Possible dependencies:
+Can you confirm if the camcc-sc8280xp driver is compiled statically or 
+as a module at your end?
 
-8676a5e796fa ("media: uvcvideo: Fix integer overflow calculating timestamp")
-9e56380ae625 ("media: uvcvideo: Rename debug functions")
-ed4c5fa4d804 ("media: uvcvideo: use dev_printk() for uvc_trace()")
-59e92bf62771 ("media: uvcvideo: New macro uvc_trace_cont")
-69df09547e7a ("media: uvcvideo: Use dev_ printk aliases")
-2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-351509c604dc ("media: uvcvideo: Move guid to entity")
-dc9455ffae02 ("media: uvcvideo: Accept invalid bFormatIndex and bFrameIndex values")
-b400b6f28af0 ("media: uvcvideo: Force UVC version to 1.0a for 1bcf:0b40")
-8a652a17e3c0 ("media: uvcvideo: Ensure all probed info is returned to v4l2")
-f875bcc375c7 ("media: uvcvideo: Fix dereference of out-of-bound list iterator")
-d6834b4b58d1 ("media: uvcvideo: Set media controller entity functions")
-1771e9fb67e2 ("media: Use fallthrough pseudo-keyword")
-85872f861d4c ("media: venus: Mark last capture buffer")
-0febf9236970 ("media: venus: helpers: Done buffers per queue type")
-e6089feca460 ("media: m88ds3103: Add support for ds3103b demod")
-ab1eda449c6e ("media: venus: vdec: handle 10bit bitstreams")
-4ebf969375bc ("media: venus: introduce core selection")
-7482a983dea3 ("media: venus: redesign clocks and pm domains control")
-fd1ee315dcd4 ("media: venus: cache vb payload to be used by clock scaling")
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 8676a5e796fa18f55897ca36a94b2adf7f73ebd1 Mon Sep 17 00:00:00 2001
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 10 Jun 2024 19:17:49 +0000
-Subject: [PATCH] media: uvcvideo: Fix integer overflow calculating timestamp
-
-The function uvc_video_clock_update() supports a single SOF overflow. Or
-in other words, the maximum difference between the first ant the last
-timestamp can be 4096 ticks or 4.096 seconds.
-
-This results in a maximum value for y2 of: 0x12FBECA00, that overflows
-32bits.
-y2 = (u32)ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
-
-Extend the size of y2 to u64 to support all its values.
-
-Without this patch:
- # yavta -s 1920x1080 -f YUYV -t 1/5 -c /dev/video0
-Device /dev/v4l/by-id/usb-Shine-Optics_Integrated_Camera_0001-video-index0 opened.
-Device `Integrated Camera: Integrated C' on `usb-0000:00:14.0-6' (driver 'uvcvideo') supports video, capture, without mplanes.
-Video format set: YUYV (56595559) 1920x1080 (stride 3840) field none buffer size 4147200
-Video format: YUYV (56595559) 1920x1080 (stride 3840) field none buffer size 4147200
-Current frame rate: 1/5
-Setting frame rate to: 1/5
-Frame rate set: 1/5
-8 buffers requested.
-length: 4147200 offset: 0 timestamp type/source: mono/SoE
-Buffer 0/0 mapped at address 0x7947ea94c000.
-length: 4147200 offset: 4149248 timestamp type/source: mono/SoE
-Buffer 1/0 mapped at address 0x7947ea557000.
-length: 4147200 offset: 8298496 timestamp type/source: mono/SoE
-Buffer 2/0 mapped at address 0x7947ea162000.
-length: 4147200 offset: 12447744 timestamp type/source: mono/SoE
-Buffer 3/0 mapped at address 0x7947e9d6d000.
-length: 4147200 offset: 16596992 timestamp type/source: mono/SoE
-Buffer 4/0 mapped at address 0x7947e9978000.
-length: 4147200 offset: 20746240 timestamp type/source: mono/SoE
-Buffer 5/0 mapped at address 0x7947e9583000.
-length: 4147200 offset: 24895488 timestamp type/source: mono/SoE
-Buffer 6/0 mapped at address 0x7947e918e000.
-length: 4147200 offset: 29044736 timestamp type/source: mono/SoE
-Buffer 7/0 mapped at address 0x7947e8d99000.
-0 (0) [-] none 0 4147200 B 507.554210 508.874282 242.836 fps ts mono/SoE
-1 (1) [-] none 2 4147200 B 508.886298 509.074289 0.751 fps ts mono/SoE
-2 (2) [-] none 3 4147200 B 509.076362 509.274307 5.261 fps ts mono/SoE
-3 (3) [-] none 4 4147200 B 509.276371 509.474336 5.000 fps ts mono/SoE
-4 (4) [-] none 5 4147200 B 509.476394 509.674394 4.999 fps ts mono/SoE
-5 (5) [-] none 6 4147200 B 509.676506 509.874345 4.997 fps ts mono/SoE
-6 (6) [-] none 7 4147200 B 509.876430 510.074370 5.002 fps ts mono/SoE
-7 (7) [-] none 8 4147200 B 510.076434 510.274365 5.000 fps ts mono/SoE
-8 (0) [-] none 9 4147200 B 510.276421 510.474333 5.000 fps ts mono/SoE
-9 (1) [-] none 10 4147200 B 510.476391 510.674429 5.001 fps ts mono/SoE
-10 (2) [-] none 11 4147200 B 510.676434 510.874283 4.999 fps ts mono/SoE
-11 (3) [-] none 12 4147200 B 510.886264 511.074349 4.766 fps ts mono/SoE
-12 (4) [-] none 13 4147200 B 511.070577 511.274304 5.426 fps ts mono/SoE
-13 (5) [-] none 14 4147200 B 511.286249 511.474301 4.637 fps ts mono/SoE
-14 (6) [-] none 15 4147200 B 511.470542 511.674251 5.426 fps ts mono/SoE
-15 (7) [-] none 16 4147200 B 511.672651 511.874337 4.948 fps ts mono/SoE
-16 (0) [-] none 17 4147200 B 511.873988 512.074462 4.967 fps ts mono/SoE
-17 (1) [-] none 18 4147200 B 512.075982 512.278296 4.951 fps ts mono/SoE
-18 (2) [-] none 19 4147200 B 512.282631 512.482423 4.839 fps ts mono/SoE
-19 (3) [-] none 20 4147200 B 518.986637 512.686333 0.149 fps ts mono/SoE
-20 (4) [-] none 21 4147200 B 518.342709 512.886386 -1.553 fps ts mono/SoE
-21 (5) [-] none 22 4147200 B 517.909812 513.090360 -2.310 fps ts mono/SoE
-22 (6) [-] none 23 4147200 B 517.590775 513.294454 -3.134 fps ts mono/SoE
-23 (7) [-] none 24 4147200 B 513.298465 513.494335 -0.233 fps ts mono/SoE
-24 (0) [-] none 25 4147200 B 513.510273 513.698375 4.721 fps ts mono/SoE
-25 (1) [-] none 26 4147200 B 513.698904 513.902327 5.301 fps ts mono/SoE
-26 (2) [-] none 27 4147200 B 513.895971 514.102348 5.074 fps ts mono/SoE
-27 (3) [-] none 28 4147200 B 514.099091 514.306337 4.923 fps ts mono/SoE
-28 (4) [-] none 29 4147200 B 514.310348 514.510567 4.734 fps ts mono/SoE
-29 (5) [-] none 30 4147200 B 514.509295 514.710367 5.026 fps ts mono/SoE
-30 (6) [-] none 31 4147200 B 521.532513 514.914398 0.142 fps ts mono/SoE
-31 (7) [-] none 32 4147200 B 520.885277 515.118385 -1.545 fps ts mono/SoE
-32 (0) [-] none 33 4147200 B 520.411140 515.318336 -2.109 fps ts mono/SoE
-33 (1) [-] none 34 4147200 B 515.325425 515.522278 -0.197 fps ts mono/SoE
-34 (2) [-] none 35 4147200 B 515.538276 515.726423 4.698 fps ts mono/SoE
-35 (3) [-] none 36 4147200 B 515.720767 515.930373 5.480 fps ts mono/SoE
-
-Cc: stable@vger.kernel.org
-Fixes: 66847ef013cc ("[media] uvcvideo: Add UVC timestamps support")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240610-hwtimestamp-followup-v1-2-f9eaed7be7f0@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index aebcf9b25a16..4dfc1b86bdee 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -760,11 +760,11 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
- 	unsigned long flags;
- 	u64 timestamp;
- 	u32 delta_stc;
--	u32 y1, y2;
-+	u32 y1;
- 	u32 x1, x2;
- 	u32 mean;
- 	u32 sof;
--	u64 y;
-+	u64 y, y2;
- 
- 	if (!uvc_hw_timestamps_param)
- 		return;
-@@ -816,7 +816,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
- 	sof = y;
- 
- 	uvc_dbg(stream->dev, CLOCK,
--		"%s: PTS %u y %llu.%06llu SOF %u.%06llu (x1 %u x2 %u y1 %u y2 %u SOF offset %u)\n",
-+		"%s: PTS %u y %llu.%06llu SOF %u.%06llu (x1 %u x2 %u y1 %u y2 %llu SOF offset %u)\n",
- 		stream->dev->name, buf->pts,
- 		y >> 16, div_u64((y & 0xffff) * 1000000, 65536),
- 		sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
-@@ -831,7 +831,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
- 		goto done;
- 
- 	y1 = NSEC_PER_SEC;
--	y2 = (u32)ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
-+	y2 = ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
- 
- 	/*
- 	 * Interpolated and host SOF timestamps can wrap around at slightly
-@@ -852,7 +852,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
- 	timestamp = ktime_to_ns(first->host_time) + y - y1;
- 
- 	uvc_dbg(stream->dev, CLOCK,
--		"%s: SOF %u.%06llu y %llu ts %llu buf ts %llu (x1 %u/%u/%u x2 %u/%u/%u y1 %u y2 %u)\n",
-+		"%s: SOF %u.%06llu y %llu ts %llu buf ts %llu (x1 %u/%u/%u x2 %u/%u/%u y1 %u y2 %llu)\n",
- 		stream->dev->name,
- 		sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
- 		y, timestamp, vbuf->vb2_buf.timestamp,
-
+> ---
+> bod
+>
 
