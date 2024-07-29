@@ -1,161 +1,152 @@
-Return-Path: <stable+bounces-62484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AF793F360
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:58:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3C593F35F
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15147B220F0
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:58:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1A53B224B1
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 10:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A0914534C;
-	Mon, 29 Jul 2024 10:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5B4145335;
+	Mon, 29 Jul 2024 10:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ltZDLshd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzsfouSV"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0653145344;
-	Mon, 29 Jul 2024 10:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D12B13EFEE
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 10:57:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722250675; cv=none; b=LS/pyuDwq57tNVTFY36n881utBVj327HH+MrZJxNnWmcLnkDmKgrMl52oyAkiHx9IRbRR1NyPEHHLxHWU1M8VSt7mvmpGHExi2RYkjSriZ4HjtV/xDKhVKhLo1DGwa1yUCrRW3iZgN5M2kpCOKrG2usi+hFEaEzO5cpboDwOlRE=
+	t=1722250671; cv=none; b=fVJ0gT9i8ARK3+9YgNlJr2xjlW/+dnBkuzXfsw6t/OfJUok+wVpwFE3kx1PY5fEyuDS4TgfpeUtukkK+cQVoHCkN2gWA5g/q7VPv8NVM7SzAgR85Ibu96qcrl2hrgPzdkf0leiNEHcBzdRPtZzUiLVkAznTDXS42176kV9JmQds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722250675; c=relaxed/simple;
-	bh=IoXGirG8rFJ+cAL8Qx1QIfbZ4c4yEdOZzq6rXHwas8s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ojzaJGblRYTg8VmwOX9lWuJzuX+C68mRfaGZzRQec9FqGCeI0+KEW54oK5zQD5A35Qf8pDY1xUUHx/Oq9+9fJYO2Z8jrgKsUGfDXORFT7pZhhOhufVdtgGilRFk5of73KqvczhfLZRSBHFNc3f3AxVCwL5hN5nLQOXUAjK+JkXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ltZDLshd; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46TAHO2R016748;
-	Mon, 29 Jul 2024 10:57:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	6aHtL8jzTdNbYvDxviLStizGdNixvfs7vF4J/jZ5Hqg=; b=ltZDLshdK9PFy7ZU
-	lLt+/QOUcRdDBJ/CMyC6E6YFayLggO2jx2cLVR0TqrnM4Lm96g+j54gq+5wsf8Fg
-	zL6YRbVQFAfIEOSPtJYwgtHEHGtmKvpSVPlDrF8H9O95bACBFKrN5lFl62PYk8Ec
-	IsmHK+8DEKSevvA6QsD/9ub8o0d1CyGtDJc1jGmPvrlJdYfD+LjOhjmkqcjY3SRA
-	O0/8tvaYSKSrSTAfjrpEx4ar3LCnTp92z28I2eF2tnXnypm5mOpMtOlZr5KYTNEe
-	7iMX96Nv99TMEVL2bdcC5Yw9RA3cCbaZ4B09NB4okFqpMvMz/x55hKvWVL8ydYhT
-	vUTg7g==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40ms433yfj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Jul 2024 10:57:49 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46TAvnJr010564
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Jul 2024 10:57:49 GMT
-Received: from [10.218.19.46] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 29 Jul
- 2024 03:57:45 -0700
-Message-ID: <454fc2ec-6679-2d51-2a6a-580838d6ba59@quicinc.com>
-Date: Mon, 29 Jul 2024 16:27:42 +0530
+	s=arc-20240116; t=1722250671; c=relaxed/simple;
+	bh=cJ5w6nikbAFzfTYQBPZBqlxrVUk38jTq5fMwLom6jGk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jiD0i3X8Sdez00d5jSAzFIcVlUI7b+IyXdmdQcE7bmDLjTlvTqBqRaG/W39RDkx+29Qv591afCz4ucFnFHSBd6Hd4+QU4UK3eqJnXbD/deJbZxtpvj4OhxGxEFHsBNixzefEVkT/OTnZ1H4X0yyFooOmmV493pulXGxxV5QS4to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzsfouSV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFB5C32786;
+	Mon, 29 Jul 2024 10:57:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722250671;
+	bh=cJ5w6nikbAFzfTYQBPZBqlxrVUk38jTq5fMwLom6jGk=;
+	h=Subject:To:Cc:From:Date:From;
+	b=mzsfouSV5ZD+HOtKK7TKOPiEYtUfLxNYC557TdQBFjOG+obq9cNESMfXGmEcukmiY
+	 E59lkTXQwuJ/9kvoQCQG+8eaI9yxcGrfQIKKge/soWgBGaPxUaVTAfZBlF03hH++Hk
+	 VMGlwMUNHgOIhmO+zSPn+TQY2/U0d2RKs/oY4fPs=
+Subject: FAILED: patch "[PATCH] KVM: nVMX: Add a helper to get highest pending from Posted" failed to apply to 6.6-stable tree
+To: seanjc@google.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Jul 2024 12:57:47 +0200
+Message-ID: <2024072947-acutely-kindness-fc65@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH] clk: qcom: camcc-sc8280xp: Remove always-on GDSC
- hard-coding
-Content-Language: en-US
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Bjorn Andersson
-	<andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen
- Boyd <sboyd@kernel.org>
-CC: <dmitry.baryshkov@linaro.org>, <stable@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20240715-linux-next-24-07-13-sc8280xp-camcc-fixes-v1-1-fadb5d9445c1@linaro.org>
- <f0d4b7a3-2b61-3d42-a430-34b30eeaa644@quicinc.com>
- <86068581-0ce7-47b5-b1c6-fda4f7d1037f@linaro.org>
- <02679111-1a35-b931-fecd-01c952553652@quicinc.com>
- <ce14800d-7411-47c5-ad46-6baa6fb678f4@linaro.org>
- <dd588276-8f1c-4389-7b3a-88f483b7072e@quicinc.com>
- <610efa39-e476-45ae-bd2b-3a0b8ea485dc@linaro.org>
- <6055cb14-de80-97bc-be23-7af8ffc89fcc@quicinc.com>
- <a0ac4c3b-3c46-4c89-9947-d91ba06309f4@linaro.org>
- <fe44268d-76bb-bdbd-e54e-39a38e4e5a49@quicinc.com>
- <8d31cbfb-f223-4539-b61a-a30a12dfd99c@linaro.org>
-From: "Satya Priya Kakitapalli (Temp)" <quic_skakitap@quicinc.com>
-In-Reply-To: <8d31cbfb-f223-4539-b61a-a30a12dfd99c@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: g_4i_sY0F16XC2BjudF5JpvQL3Slxx_m
-X-Proofpoint-ORIG-GUID: g_4i_sY0F16XC2BjudF5JpvQL3Slxx_m
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-29_09,2024-07-26_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
- mlxlogscore=944 suspectscore=0 phishscore=0 priorityscore=1501
- clxscore=1011 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407290074
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-On 7/27/2024 2:01 AM, Bryan O'Donoghue wrote:
-> On 26/07/2024 08:01, Satya Priya Kakitapalli (Temp) wrote:
->>
->> On 7/23/2024 2:59 PM, Bryan O'Donoghue wrote:
->>> On 22/07/2024 09:57, Satya Priya Kakitapalli (Temp) wrote:
->>>>> I have no idea. Why does it matter ?
->>>>>
->>>>
->>>> This clock expected to be kept always ON, as per design, or else 
->>>> the GDSC transition form ON to OFF (vice versa) wont work.
->>>
->>> Yes, parking to XO per this patch works for me. So I guess its 
->>> already on and is left in that state by the park.
->>>
->>>> Want to know the clock status after bootup, to understand if the 
->>>> clock got turned off during the late init. May I know exactly what 
->>>> you have tested? Did you test the camera usecases as well?
->>>
->>> Of course.
->>>
->>> The camera works on x13s with this patch. That's what I mean by tested.
->>>
->>
->> It might be working in your case, but it is not the HW design 
->> recommended way to do. The same should not be propagated to other 
->> target's camcc drivers, as I already observed it is not working on 
->> SM8150.
->
-> I don't think the argument here really stands up.
->
-> We've established that the GDSC clock and PDs will remain on when the 
-> clock gets parked right ?
->
-> Am I missing something obvious here ?
->
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Yes, just parking the RCG at XO, does not ensure the branch clock, i.e, 
-the 'cam_cc_gdsc_clk' as always ON. When I compiled the camcc-sm8150 
-driver statically, I see that the clock is getting disabled in late_init 
-if it is modelled.
+To reproduce the conflict and resubmit, you may use the following commands:
 
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x d83c36d822be44db4bad0c43bea99c8908f54117
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072947-acutely-kindness-fc65@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Can you confirm if the camcc-sc8280xp driver is compiled statically or 
-as a module at your end?
+Possible dependencies:
 
+d83c36d822be ("KVM: nVMX: Add a helper to get highest pending from Posted Interrupt vector")
+699f67512f04 ("KVM: VMX: Move posted interrupt descriptor out of VMX code")
+50a82b0eb88c ("KVM: VMX: Split off vmx_onhyperv.{ch} from hyperv.{ch}")
 
-> ---
-> bod
->
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From d83c36d822be44db4bad0c43bea99c8908f54117 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Fri, 7 Jun 2024 10:26:04 -0700
+Subject: [PATCH] KVM: nVMX: Add a helper to get highest pending from Posted
+ Interrupt vector
+
+Add a helper to retrieve the highest pending vector given a Posted
+Interrupt descriptor.  While the actual operation is straightforward, it's
+surprisingly easy to mess up, e.g. if one tries to reuse lapic.c's
+find_highest_vector(), which doesn't work with PID.PIR due to the APIC's
+IRR and ISR component registers being physically discontiguous (they're
+4-byte registers aligned at 16-byte intervals).
+
+To make PIR handling more consistent with respect to IRR and ISR handling,
+return -1 to indicate "no interrupt pending".
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240607172609.3205077-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 643935a0f70a..8f4db6e8f57c 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -12,6 +12,7 @@
+ #include "mmu.h"
+ #include "nested.h"
+ #include "pmu.h"
++#include "posted_intr.h"
+ #include "sgx.h"
+ #include "trace.h"
+ #include "vmx.h"
+@@ -3899,8 +3900,8 @@ static int vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
+ 	if (!pi_test_and_clear_on(vmx->nested.pi_desc))
+ 		return 0;
+ 
+-	max_irr = find_last_bit((unsigned long *)vmx->nested.pi_desc->pir, 256);
+-	if (max_irr != 256) {
++	max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
++	if (max_irr > 0) {
+ 		vapic_page = vmx->nested.virtual_apic_map.hva;
+ 		if (!vapic_page)
+ 			goto mmio_needed;
+diff --git a/arch/x86/kvm/vmx/posted_intr.h b/arch/x86/kvm/vmx/posted_intr.h
+index 6b2a0226257e..1715d2ab07be 100644
+--- a/arch/x86/kvm/vmx/posted_intr.h
++++ b/arch/x86/kvm/vmx/posted_intr.h
+@@ -1,6 +1,8 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #ifndef __KVM_X86_VMX_POSTED_INTR_H
+ #define __KVM_X86_VMX_POSTED_INTR_H
++
++#include <linux/find.h>
+ #include <asm/posted_intr.h>
+ 
+ void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu);
+@@ -12,4 +14,12 @@ int vmx_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
+ 		       uint32_t guest_irq, bool set);
+ void vmx_pi_start_assignment(struct kvm *kvm);
+ 
++static inline int pi_find_highest_vector(struct pi_desc *pi_desc)
++{
++	int vec;
++
++	vec = find_last_bit((unsigned long *)pi_desc->pir, 256);
++	return vec < 256 ? vec : -1;
++}
++
+ #endif /* __KVM_X86_VMX_POSTED_INTR_H */
+
 
