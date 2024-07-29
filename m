@@ -1,83 +1,89 @@
-Return-Path: <stable+bounces-62390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D4A93EF0D
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:52:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 437DE93EF0F
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ADF51C21B66
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:52:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 647211C21B7C
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8903512C522;
-	Mon, 29 Jul 2024 07:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3470E12C522;
+	Mon, 29 Jul 2024 07:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWJjuALa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9UXizMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A05B84A2F
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E772384A2F
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722239546; cv=none; b=gmP6zO01fx6p/b8jo7+atcTFvagj09nFQYHlQUTcoyJfvEz7MvvRpsYzJibYZDU3FZpGMpAXHhx319QocKfl1rTBgXenfdcirIuz6Z5dLFeqsQT9IOHMCFkRS5vAvWQhlrc03lj+ZpWYlL6ms3KhW3YLAOZKD+KztJbNLz22dJk=
+	t=1722239568; cv=none; b=YdqV+GthEzVQLLwyQ3iKiqYN1r5dfRA5GiTpZANmOCbIia6XFfnyFNDVo6SlJU3G771f8GMFaTtl6vLptNu1LAwDareOLYRAA0OkJsLblNkr2HD2+OurZuDJsD9d+pL5SxmLbkI+MDL8SD5MaEd1LQ6+KLX5jlzh1C2kvINWQVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722239546; c=relaxed/simple;
-	bh=1Jn5uKaeK3fzgq+Vo7JDO5J8e/HRnXpbLBpSc6AJAjA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RC047KKnuoZgorz+nLjyAW/topN74s/hi0mT57tisjfZTshdrBxMGLHzOhwr3YFzt3ZQSzG9KLD21sjfK/11CSz4jIc40igLGj9aNWY5YN1xjtT2+n74qstvo2oxJsFysdsTkFpFtVqhmSEZmKwh5WkZSBHKbyLeJfSdFHbne4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWJjuALa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FD0C32786;
-	Mon, 29 Jul 2024 07:52:25 +0000 (UTC)
+	s=arc-20240116; t=1722239568; c=relaxed/simple;
+	bh=pQNfZH6YfpDIDgft75M1T0Jrh8qhbG9WZk+x0CVpyko=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eaEM9UWO3eu01U44OsB42KesWpPMYByRcQxmAu8FEqFA0vPH4xAdkZb9Js6zH5Feb4663kE+6yKq/DCFVs8I0XFZBQi0ftrdALIwnVM0WcNPeEaZNd2e1b91oO0jClMGSz3afQNig4uhm0ckmMZrNBvDIEHX95EJ1YEbJwBB+gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9UXizMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63831C32786;
+	Mon, 29 Jul 2024 07:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722239546;
-	bh=1Jn5uKaeK3fzgq+Vo7JDO5J8e/HRnXpbLBpSc6AJAjA=;
+	s=korg; t=1722239567;
+	bh=pQNfZH6YfpDIDgft75M1T0Jrh8qhbG9WZk+x0CVpyko=;
 	h=Subject:To:Cc:From:Date:From;
-	b=pWJjuALav4haKqPiVciuD9mkMIJShxOOK6SJ3StacsM4X3uyF5ds8EsEp1+7f/5zS
-	 fefLPDwQkS6G47A5+sU7FeSvlLOSse8O+bqnNGRHZkMHplmTz9diLFNQggUhk4mSkS
-	 GnivAk3d/OvkxNIhYun4Z7NE4Je8j5AwPmOiWuvE=
-Subject: FAILED: patch "[PATCH] fuse: verify {g,u}id mount options correctly" failed to apply to 5.4-stable tree
-To: sandeen@redhat.com,brauner@kernel.org,josef@toxicpanda.com
+	b=L9UXizMYkAIUA/jgkpjZPneA+eN0G/DG9Fbp6hJvPWfeYDHkUCkrpY9Dm+PaHa6BJ
+	 Bm7B+mM5B+pWqsudMwdJrOkTRXsCkjfjQQgHaXCTvwID9wr/AZwMUN0h66a6FHWoyx
+	 dCz97d2ZToZJW5uh0F3X4LkxYFtEbONi/QAmVKls=
+Subject: FAILED: patch "[PATCH] ata: libata-scsi: Fix offsets for the fixed format sense data" failed to apply to 6.1-stable tree
+To: ipylypiv@google.com,akshatzen@google.com,cassel@kernel.org,hare@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 09:52:14 +0200
-Message-ID: <2024072914-sierra-aflutter-e231@gregkh>
+Date: Mon, 29 Jul 2024 09:52:44 +0200
+Message-ID: <2024072944-swoosh-muster-ccde@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 525bd65aa759ec320af1dc06e114ed69733e9e23
+git cherry-pick -x 38dab832c3f4154968f95b267a3bb789e87554b0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072914-sierra-aflutter-e231@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072944-swoosh-muster-ccde@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-525bd65aa759 ("fuse: verify {g,u}id mount options correctly")
-84c215075b57 ("fuse: name fs_context consistently")
-1dd539577c42 ("virtiofs: add a mount option to enable dax")
-f4fd4ae354ba ("virtiofs: get rid of no_mount_options")
-b330966f79fb ("fuse: reject options on reconfigure via fsconfig(2)")
-e8b20a474cf2 ("fuse: ignore 'data' argument of mount(..., MS_REMOUNT)")
-0189a2d367f4 ("fuse: use ->reconfigure() instead of ->remount_fs()")
-7fd3abfa8dd7 ("virtiofs: do not use fuse_fill_super_common() for device installation")
-c9d35ee049b4 ("Merge branch 'merge.nfs-fs_parse.1' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs")
+38dab832c3f4 ("ata: libata-scsi: Fix offsets for the fixed format sense data")
+ff8072d589dc ("ata: libata: remove references to non-existing error_handler()")
+3ac873c76d79 ("ata: libata-core: fix when to fetch sense data for successful commands")
+18bd7718b5c4 ("scsi: ata: libata: Handle completion of CDL commands using policy 0xD")
+eafe804bda7b ("scsi: ata: libata: Set read/write commands CDL index")
+df60f9c64576 ("scsi: ata: libata: Add ATA feature control sub-page translation")
+673b2fe6ff1d ("scsi: ata: libata-scsi: Add support for CDL pages mode sense")
+62e4a60e0cdb ("scsi: ata: libata: Detect support for command duration limits")
+bc9af4909406 ("ata: libata: Fix FUA handling in ata_build_rw_tf()")
+4d2e4980a528 ("ata: libata: cleanup fua support detection")
+87aab3c4cd59 ("ata: libata: move NCQ related ATA_DFLAGs")
+876293121f24 ("ata: scsi: rename flag ATA_QCFLAG_FAILED to ATA_QCFLAG_EH")
+b83ad9eec316 ("ata: libata-eh: Cleanup ata_scsi_cmd_error_handler()")
+3d8a3ae3d966 ("ata: libata: fix commands incorrectly not getting retried during NCQ error")
+4cb7c6f1ef96 ("ata: make use of ata_port_is_frozen() helper")
 
 thanks,
 
@@ -85,80 +91,140 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 525bd65aa759ec320af1dc06e114ed69733e9e23 Mon Sep 17 00:00:00 2001
-From: Eric Sandeen <sandeen@redhat.com>
-Date: Tue, 2 Jul 2024 17:22:41 -0500
-Subject: [PATCH] fuse: verify {g,u}id mount options correctly
+From 38dab832c3f4154968f95b267a3bb789e87554b0 Mon Sep 17 00:00:00 2001
+From: Igor Pylypiv <ipylypiv@google.com>
+Date: Tue, 2 Jul 2024 02:47:29 +0000
+Subject: [PATCH] ata: libata-scsi: Fix offsets for the fixed format sense data
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-As was done in
-0200679fc795 ("tmpfs: verify {g,u}id mount options correctly")
-we need to validate that the requested uid and/or gid is representable in
-the filesystem's idmapping.
+Correct the ATA PASS-THROUGH fixed format sense data offsets to conform
+to SPC-6 and SAT-5 specifications. Additionally, set the VALID bit to
+indicate that the INFORMATION field contains valid information.
 
-Cribbing from the above commit log,
+INFORMATION
+===========
 
-The contract for {g,u}id mount options and {g,u}id values in general set
-from userspace has always been that they are translated according to the
-caller's idmapping. In so far, fuse has been doing the correct thing.
-But since fuse is mountable in unprivileged contexts it is also
-necessary to verify that the resulting {k,g}uid is representable in the
-namespace of the superblock.
+SAT-5 Table 212 — "Fixed format sense data INFORMATION field for the ATA
+PASS-THROUGH commands" defines the following format:
 
-Fixes: c30da2e981a7 ("fuse: convert to use the new mount API")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/8f07d45d-c806-484d-a2e3-7a2199df1cd2@redhat.com
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
++------+------------+
+| Byte |   Field    |
++------+------------+
+|    0 | ERROR      |
+|    1 | STATUS     |
+|    2 | DEVICE     |
+|    3 | COUNT(7:0) |
++------+------------+
 
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 99e44ea7d875..32fe6fa72f46 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -755,6 +755,8 @@ static int fuse_parse_param(struct fs_context *fsc, struct fs_parameter *param)
- 	struct fs_parse_result result;
- 	struct fuse_fs_context *ctx = fsc->fs_private;
- 	int opt;
-+	kuid_t kuid;
-+	kgid_t kgid;
+SPC-6 Table 48 - "Fixed format sense data" specifies that the INFORMATION
+field starts at byte 3 in sense buffer resulting in the following offsets
+for the ATA PASS-THROUGH commands:
+
++------------+-------------------------+
+|   Field    |  Offset in sense buffer |
++------------+-------------------------+
+| ERROR      |  3                      |
+| STATUS     |  4                      |
+| DEVICE     |  5                      |
+| COUNT(7:0) |  6                      |
++------------+-------------------------+
+
+COMMAND-SPECIFIC INFORMATION
+============================
+
+SAT-5 Table 213 - "Fixed format sense data COMMAND-SPECIFIC INFORMATION
+field for ATA PASS-THROUGH" defines the following format:
+
++------+-------------------+
+| Byte |        Field      |
++------+-------------------+
+|    0 | FLAGS | LOG INDEX |
+|    1 | LBA (7:0)         |
+|    2 | LBA (15:8)        |
+|    3 | LBA (23:16)       |
++------+-------------------+
+
+SPC-6 Table 48 - "Fixed format sense data" specifies that
+the COMMAND-SPECIFIC-INFORMATION field starts at byte 8
+in sense buffer resulting in the following offsets for
+the ATA PASS-THROUGH commands:
+
+Offsets of these fields in the fixed sense format are as follows:
+
++-------------------+-------------------------+
+|       Field       |  Offset in sense buffer |
++-------------------+-------------------------+
+| FLAGS | LOG INDEX |  8                      |
+| LBA (7:0)         |  9                      |
+| LBA (15:8)        |  10                     |
+| LBA (23:16)       |  11                     |
++-------------------+-------------------------+
+
+Reported-by: Akshat Jain <akshatzen@google.com>
+Fixes: 11093cb1ef56 ("libata-scsi: generate correct ATA pass-through sense")
+Cc: stable@vger.kernel.org
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+Link: https://lore.kernel.org/r/20240702024735.1152293-2-ipylypiv@google.com
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index cdf29b178ddc..a0c68b0a00c4 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -855,7 +855,6 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+ 	struct scsi_cmnd *cmd = qc->scsicmd;
+ 	struct ata_taskfile *tf = &qc->result_tf;
+ 	unsigned char *sb = cmd->sense_buffer;
+-	unsigned char *desc = sb + 8;
+ 	u8 sense_key, asc, ascq;
  
- 	if (fsc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
- 		/*
-@@ -799,16 +801,30 @@ static int fuse_parse_param(struct fs_context *fsc, struct fs_parameter *param)
- 		break;
+ 	memset(sb, 0, SCSI_SENSE_BUFFERSIZE);
+@@ -877,7 +876,8 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+ 		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
+ 	}
  
- 	case OPT_USER_ID:
--		ctx->user_id = make_kuid(fsc->user_ns, result.uint_32);
--		if (!uid_valid(ctx->user_id))
-+		kuid =  make_kuid(fsc->user_ns, result.uint_32);
-+		if (!uid_valid(kuid))
- 			return invalfc(fsc, "Invalid user_id");
-+		/*
-+		 * The requested uid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kuid_has_mapping(fsc->user_ns, kuid))
-+			return invalfc(fsc, "Invalid user_id");
-+		ctx->user_id = kuid;
- 		ctx->user_id_present = true;
- 		break;
+-	if ((cmd->sense_buffer[0] & 0x7f) >= 0x72) {
++	if ((sb[0] & 0x7f) >= 0x72) {
++		unsigned char *desc;
+ 		u8 len;
  
- 	case OPT_GROUP_ID:
--		ctx->group_id = make_kgid(fsc->user_ns, result.uint_32);
--		if (!gid_valid(ctx->group_id))
-+		kgid = make_kgid(fsc->user_ns, result.uint_32);;
-+		if (!gid_valid(kgid))
- 			return invalfc(fsc, "Invalid group_id");
-+		/*
-+		 * The requested gid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kgid_has_mapping(fsc->user_ns, kgid))
-+			return invalfc(fsc, "Invalid group_id");
-+		ctx->group_id = kgid;
- 		ctx->group_id_present = true;
- 		break;
+ 		/* descriptor format */
+@@ -916,21 +916,21 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+ 		}
+ 	} else {
+ 		/* Fixed sense format */
+-		desc[0] = tf->error;
+-		desc[1] = tf->status;
+-		desc[2] = tf->device;
+-		desc[3] = tf->nsect;
+-		desc[7] = 0;
++		sb[0] |= 0x80;
++		sb[3] = tf->error;
++		sb[4] = tf->status;
++		sb[5] = tf->device;
++		sb[6] = tf->nsect;
+ 		if (tf->flags & ATA_TFLAG_LBA48)  {
+-			desc[8] |= 0x80;
++			sb[8] |= 0x80;
+ 			if (tf->hob_nsect)
+-				desc[8] |= 0x40;
++				sb[8] |= 0x40;
+ 			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
+-				desc[8] |= 0x20;
++				sb[8] |= 0x20;
+ 		}
+-		desc[9] = tf->lbal;
+-		desc[10] = tf->lbam;
+-		desc[11] = tf->lbah;
++		sb[9] = tf->lbal;
++		sb[10] = tf->lbam;
++		sb[11] = tf->lbah;
+ 	}
+ }
  
 
 
