@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F1193F4CA
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:03:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCDC93F4CB
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:03:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 414F11C2201B
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:03:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B229F280EC6
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15738145B0B;
-	Mon, 29 Jul 2024 12:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36EE145FF4;
+	Mon, 29 Jul 2024 12:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgMWJrOJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQ6spZoa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A80143752
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF5D143752
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722254584; cv=none; b=qs47PkN1iP2KFhr4xVkWzSGi589qNGrdjs2eKVFzGLny0NENIvtGGflrl4CbkQncIovJWsk5HDBNbpJCuOK9qYaSQmuc/gVbUnSI7ej9iu2SvFV3IRdnRpauSlZGbDAyeXKAgLA6ZXJU6EEDTH0YFKYv74+HEZ5q9LA1pAB5ei0=
+	t=1722254595; cv=none; b=hUWZ0kGto9finkC0hHV+UZfhHp3qOaBA2OfqNiOpvX5gCnivkao7MN1fRLqbsPk55GA2+96jz6hW9wi+r3WBtGTuhbxfLWtFKp1pV5bt2js4zjmryUUOlYNGOxXA31rMWmGuMccraSBDHubhlHFoblWoiSzynSSJ/T53ugek6FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722254584; c=relaxed/simple;
-	bh=SvSTNcEsWtUdaSscemuUWBsXAIEn/rW+VBFSADKhwTw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uh3vlgTVvoWQ0++qCH3LmrYmto+qWowv0lQHSxE7ZWv9HtqseYowFs/y1kFRwvGX+qPVWPXk8GB/HDc65RLKFFK4VcUqiU9wesQEI6w8Wf128zbvbpl4laWynozktp4/+a3I/jmwnzGxU3P09OlvZpVnYiy98WD45iCaSdT/Eu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgMWJrOJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7637C32786;
-	Mon, 29 Jul 2024 12:03:03 +0000 (UTC)
+	s=arc-20240116; t=1722254595; c=relaxed/simple;
+	bh=1QxdFpIeNYTZyCYkLkOQKyguFgY5TxKztxe1v1Y64JA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Xg3F8TKdlALGCnr2f4+yx7zArurrDX5bi62r8arHToAsMbxvC7Mx180Tg+pkNOgjTdwZFXWILBAzgJwaCFE7vdZYzwalyHbN3bzjKsgEDGufN/+tHPYuDQv2vdJJKbXeVBbiW1gk2oLEd+behjiSP8bMjWmkDsyYI2YKZoj92T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQ6spZoa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F49C32786;
+	Mon, 29 Jul 2024 12:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722254584;
-	bh=SvSTNcEsWtUdaSscemuUWBsXAIEn/rW+VBFSADKhwTw=;
+	s=korg; t=1722254595;
+	bh=1QxdFpIeNYTZyCYkLkOQKyguFgY5TxKztxe1v1Y64JA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=FgMWJrOJgf7VziDyfTJanbdbiSbvbjON55zb5XJwxEhDzKCAm/K+Ck6YQT8Ws4DVC
-	 5j9tuDeKsxv8A+uvfLRYApc6Ons3n9TmLbzCW0TpU/IsU6n0FiHv6nC3y9XgKZK51n
-	 Z4sRGQdB4TS6IpiOR68cNvXc5swollRvxJFEgxdk=
-Subject: FAILED: patch "[PATCH] ALSA: hda/realtek: cs35l41: Fixup remaining asus strix models" failed to apply to 6.6-stable tree
+	b=wQ6spZoar8A31z0uJ4bxb/WqHzzuNVvUAmljt0ZJqgf07X54yMBG1hoW9xDEBpFPg
+	 kAyJWicFCwV656bPRNhZYK4ECFThxckc5WlvwvTj6DFkSXQ75g6+kugvMTOsMmJyWn
+	 ShMYw1O/mF2PZZt8YLBWFHdbEAIoQzkWq3c2s3y8=
+Subject: FAILED: patch "[PATCH] ALSA: hda/realtek: cs35l41: Fixup remaining asus strix models" failed to apply to 6.1-stable tree
 To: luke@ljones.dev,stable@vger.kernel.org,tiwai@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 14:03:00 +0200
-Message-ID: <2024072959-wilt-balsamic-2f7d@gregkh>
+Date: Mon, 29 Jul 2024 14:03:03 +0200
+Message-ID: <2024072902-kooky-velocity-3391@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x e6e18021ddd0dc5af487fb86b6d7c964e062d692
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072959-wilt-balsamic-2f7d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072902-kooky-velocity-3391@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -83,6 +83,11 @@ b592ed2e1d78 ("ALSA: hda: cs35l41: Support additional ASUS ROG 2023 models")
 8c4c216db8fb ("ALSA: hda: cs35l41: Add config table to support many laptops without _DSD")
 f01b371b0794 ("ALSA: hda: cs35l41: Use reset label to get GPIO for HP Zbook Fury 17 G9")
 447106e92a0c ("ALSA: hda: cs35l41: Support mute notifications for CS35L41 HDA")
+93dc18e11b1a ("ALSA: hda/realtek: Add quirk for HP Victus 16-d1xxx to enable mute LED")
+581523ee3652 ("ALSA: hda: cs35l41: Override the _DSD for HP Zbook Fury 17 G9 to correct boost type")
+3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+ef4ba63f12b0 ("ALSA: hda: cs35l41: Support systems with missing _DSD properties")
+a32e0834df76 ("Merge tag 'asoc-v6.6-early' of https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound into for-next")
 
 thanks,
 
