@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72C493F519
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:22:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E5193F51A
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 14:22:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26B2B1F22616
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 543BB1C21923
 	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 12:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC249147C96;
-	Mon, 29 Jul 2024 12:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C67B147C76;
+	Mon, 29 Jul 2024 12:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWLipoVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxT8E9BY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882E91465A1
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7171474BF
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 12:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722255736; cv=none; b=JrxWOY+tkOwYhIIa8K0M53dTlPlRODEKFaozoDNtwfl8hLIyIDPeQNjYX0UFA/m2W2WAn57CTwfJuzKhZq/MHFB3Jih4VfawB2WiAoZPUm/rMTZJzIEGd5sn5k1whkxakmHsib/UGAWZkI/z/CAyJl5EOb46iY2gFQKiYeUy8pk=
+	t=1722255741; cv=none; b=HeLYYvg40E8Vr44uUNjNPMQBbYo79YJcsBGLN2K7LaIPTev50CjIopbKN1LurJ7Q5JicUlajqFili7yzleEcUk1rNDqdd5bh+mFAn79EXa52RAD4zd+Srv12nNnwS5O25l46Wa9fIjU6DItE4+uQTM8BxjhIiMP0wq1iLJGl0VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722255736; c=relaxed/simple;
-	bh=efzKWm2Tw1qb8fg3agUr1DHAuEFKvGQH2o5F/9V2C6E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ijDWwKl7cde7aI8VL3qO1VoW7aNJJ41NZ0rkS3x/gotIPsIRFhgWAslKxcPI6wKne13sik+6QnSnleBww6HjBQlAJTFiUXnnHQGrj3ssccDaOOAP35cOmEUzKGypAg0posXEZaITNJ7Mk/zTtXk1gA9BbV3lJTpKfvlicuILsd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWLipoVw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B4BC32786;
-	Mon, 29 Jul 2024 12:22:15 +0000 (UTC)
+	s=arc-20240116; t=1722255741; c=relaxed/simple;
+	bh=sBfc4aZtVGFLSf0keo1gqq9q3oxFtUOKDqEL1AWohLw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Tw/vkvxuy80duDKrJFt49zpb6ZZy970r+6jU9vodLPJlNtKMWI/sAgkk5nYbuybH/EsdAFuEuaTjjnnOr5djg2EQ28q/otnOklRMIUBZLN1xNZv4/VYF+9VutNT7V79TN40ZOJvE388+9gqkeDGJ2iYc7Z2vlCqSH+W82X8vVM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxT8E9BY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13E7C4AF07;
+	Mon, 29 Jul 2024 12:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722255736;
-	bh=efzKWm2Tw1qb8fg3agUr1DHAuEFKvGQH2o5F/9V2C6E=;
+	s=korg; t=1722255741;
+	bh=sBfc4aZtVGFLSf0keo1gqq9q3oxFtUOKDqEL1AWohLw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=XWLipoVwn+hUt2K2hbbb/QTGcttcXa6unfjiIZlgwyiaQYd/SQViEja3ffEYZkmjU
-	 wvim+9ZKKOBwKp14rBw4OFWTi7UzNJxR+lr5s5Z9ZHo0C0jRgnuViO5C2HXBn6M6vK
-	 lOvZi9N9WZBgCTry+k2O1n7U5GjDs8jBJLvBYcFY=
-Subject: FAILED: patch "[PATCH] nilfs2: fix incorrect inode allocation from reserved inodes" failed to apply to 6.10-stable tree
+	b=nxT8E9BY/aol6H13dWd72aHq3P/YKguEvedyk1eIusLKa4hxlLWzZNGQa7+PJfV1I
+	 IXN8ALfow8FWL5qKoJB3J89oXu0+iDj2UCppGjZd9MZQhS/78fkxW1JiIiBdgDw0C5
+	 iXaP7ddXV1oV2wV1mjhxxBtzkev4WHcMsi+LIBeY=
+Subject: FAILED: patch "[PATCH] nilfs2: fix incorrect inode allocation from reserved inodes" failed to apply to 6.6-stable tree
 To: konishi.ryusuke@gmail.com,akpm@linux-foundation.org,hdanton@sina.com,jack@suse.cz,stable@vger.kernel.org,willy@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 14:22:13 +0200
-Message-ID: <2024072913-overcrowd-affair-324f@gregkh>
+Date: Mon, 29 Jul 2024 14:22:15 +0200
+Message-ID: <2024072914-egotistic-crewmate-8f1b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x f41e355f8b48d894324a3fdc9727e08b1bce78e2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072913-overcrowd-affair-324f@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072914-egotistic-crewmate-8f1b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 f41e355f8b48 ("nilfs2: fix incorrect inode allocation from reserved inodes")
+af6eae646851 ("nilfs2: convert persistent object allocator to use kmap_local")
 
 thanks,
 
