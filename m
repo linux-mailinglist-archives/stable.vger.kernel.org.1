@@ -1,151 +1,102 @@
-Return-Path: <stable+bounces-62492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3302193F3A0
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 13:07:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F12B93F3AC
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 13:10:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D33A2845C0
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:07:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE0EEB21782
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 11:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839D714534D;
-	Mon, 29 Jul 2024 11:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07CA145A11;
+	Mon, 29 Jul 2024 11:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVQNzrRy"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WTm4G0wS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42166145337
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 11:06:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D6A140E29;
+	Mon, 29 Jul 2024 11:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722251190; cv=none; b=o8ZobbOP61zLJ+9x00kallIumvjl2BpMUJ3lCk9jUykdRbddwDPRkKbYUk9q2npf/rQ1lZBrJExN7Mrnu3aJKqXaX01pjciipHFMwYCkSfHsQf6hNbGWuRkCI1HDyDwDRRfiPMo66wLWQa2Ra+k9rfKT7OcssBP4bjex2FyJOd4=
+	t=1722251432; cv=none; b=Csf8QKYxySiowkekrxxSdLCphI/HYoOeAdjoCMKqTEwkY+pzG7yH16epzKxplfW0sTKqppOXpIfEUWv1AZ4HFMU8gAx5sAvsdiyPYMmTwgWIA7pYjYogzB9aDgz3K+moSR9BQ7utT/ubHoKSyShnfcKN8vJyi/DZcmEOrPhrshU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722251190; c=relaxed/simple;
-	bh=Jcx3GacQG8mgAEaytRK2pPC0nfe9f3OVZWKJlYTKTJ0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DmnJdHEN1vZUK8OLNI0bhmXSgIeYAjs3oMLam21bQy+jU7VEkqa8HUhae6ioSqgXIrTWpmvsRdND/WobzHt7EatjAFxVJp+YDtwa1s9EkeTMAgPQNQy9/JFRzyZ0gAj9IYsjG33tHAE2e2zJt2cfN83I443CIT4WAjZCu4KfnJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVQNzrRy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEDBC4AF0A;
-	Mon, 29 Jul 2024 11:06:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722251190;
-	bh=Jcx3GacQG8mgAEaytRK2pPC0nfe9f3OVZWKJlYTKTJ0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=WVQNzrRy1KlDeMSbp9FrmV0WUQ74XQy0UFxo26ZBDk3ZX3UEWbuWfnFpmptCQTu/4
-	 PiImw1N129pDWsuRc6YZad0thcySPUdk1JtmUwrN9lno2RT0PkbylfWgEJCRK2VOa/
-	 1iLhsVZAsLdbE8giOQj3j4EkQzadNK18DL1zHE4Q=
-Subject: FAILED: patch "[PATCH] KVM: nVMX: Check for pending posted interrupts when looking" failed to apply to 6.1-stable tree
-To: seanjc@google.com,jmattson@google.com,mlevitsk@redhat.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 13:06:19 +0200
-Message-ID: <2024072918-undivided-veneering-9883@gregkh>
+	s=arc-20240116; t=1722251432; c=relaxed/simple;
+	bh=SEuC/9UvNiVqA5f+ouNdsY0rFiwy5vDaj50NndaMQnI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mSv+Q9rG6NI8eVEce4HYoZ9nez6Yi+g3ZKDOKKJiJ9F4qkBLPFqkHbjjZmlwXqrFUKafSziU2i70eJUMDumYvjvWxnggOAw4HmQCguarq0YZuNWjwh+vRh/Tt5kQH1h36XaAwTi8+gX9cQs1bePWMi6ShGY+yuslGgJWKYwK/EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WTm4G0wS; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 13C5845A;
+	Mon, 29 Jul 2024 13:09:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1722251383;
+	bh=SEuC/9UvNiVqA5f+ouNdsY0rFiwy5vDaj50NndaMQnI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WTm4G0wSIBzUQEQaUWvY0C1Y2Tu8sPYNmdGt6cbYyCiDkiWjoX2xBVtxGiK7cXBet
+	 ZgPrdXqblQP2UDyoIXyEYinHKw4o9v71sNyDvBe91/wdEnMLGDYM/iZnTpJt/mJUMB
+	 c0TwJQw8rCo2m/sYXbqSvbR2qISoY9FYV9TtHpiE=
+Date: Mon, 29 Jul 2024 14:10:06 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Umang Jain <umang.jain@ideasonboard.com>
+Cc: linux-media@vger.kernel.org, stable@vger.kernel.org,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: imx335: Mention reset-gpio polarity
+Message-ID: <20240729111006.GH2320@pendragon.ideasonboard.com>
+References: <20240729110437.199428-1-umang.jain@ideasonboard.com>
+ <20240729110437.199428-2-umang.jain@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240729110437.199428-2-umang.jain@ideasonboard.com>
 
+Hi Umang,
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Thank you for the patch.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On Mon, Jul 29, 2024 at 04:34:36PM +0530, Umang Jain wrote:
+> Mention the reset-gpio polarity in the device tree bindings.
+> It is GPIO_ACTIVE_LOW according to the datasheet.
+> 
+> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
+> ---
+>  Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
+> index 106c36ee966d..fb4c9d42ed1c 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
+> @@ -92,6 +92,8 @@ examples:
+>              ovdd-supply = <&camera_vddo_1v8>;
+>              dvdd-supply = <&camera_vddd_1v2>;
+>  
+> +            reset-gpios = <&gpio 50 GPIO_ACTIVE_LOW>;
+> +
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 27c4fa42b11af780d49ce704f7fa67b3c2544df4
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072918-undivided-veneering-9883@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+I think it's good to include this in the example, but it doesn't match
+the commit message. I was expecting to see a change to the binding
+rules, not to the example.
 
-Possible dependencies:
+>              port {
+>                  imx335: endpoint {
+>                      remote-endpoint = <&cam>;
 
-27c4fa42b11a ("KVM: nVMX: Check for pending posted interrupts when looking for nested events")
+-- 
+Regards,
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 27c4fa42b11af780d49ce704f7fa67b3c2544df4 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Fri, 7 Jun 2024 10:26:07 -0700
-Subject: [PATCH] KVM: nVMX: Check for pending posted interrupts when looking
- for nested events
-
-Check for pending (and notified!) posted interrupts when checking if L2
-has a pending wake event, as fully posted/notified virtual interrupt is a
-valid wake event for HLT.
-
-Note that KVM must check vmx->nested.pi_pending to avoid prematurely
-waking L2, e.g. even if KVM sees a non-zero PID.PIR and PID.0N=1, the
-virtual interrupt won't actually be recognized until a notification IRQ is
-received by the vCPU or the vCPU does (nested) VM-Enter.
-
-Fixes: 26844fee6ade ("KVM: x86: never write to memory from kvm_vcpu_check_block()")
-Cc: stable@vger.kernel.org
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Reported-by: Jim Mattson <jmattson@google.com>
-Closes: https://lore.kernel.org/all/20231207010302.2240506-1-jmattson@google.com
-Link: https://lore.kernel.org/r/20240607172609.3205077-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 411fe7aa0793..732340ff3300 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -4034,8 +4034,40 @@ static bool nested_vmx_preemption_timer_pending(struct kvm_vcpu *vcpu)
- 
- static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
- {
--	return nested_vmx_preemption_timer_pending(vcpu) ||
--	       to_vmx(vcpu)->nested.mtf_pending;
-+	struct vcpu_vmx *vmx = to_vmx(vcpu);
-+	void *vapic = vmx->nested.virtual_apic_map.hva;
-+	int max_irr, vppr;
-+
-+	if (nested_vmx_preemption_timer_pending(vcpu) ||
-+	    vmx->nested.mtf_pending)
-+		return true;
-+
-+	/*
-+	 * Virtual Interrupt Delivery doesn't require manual injection.  Either
-+	 * the interrupt is already in GUEST_RVI and will be recognized by CPU
-+	 * at VM-Entry, or there is a KVM_REQ_EVENT pending and KVM will move
-+	 * the interrupt from the PIR to RVI prior to entering the guest.
-+	 */
-+	if (for_injection)
-+		return false;
-+
-+	if (!nested_cpu_has_vid(get_vmcs12(vcpu)) ||
-+	    __vmx_interrupt_blocked(vcpu))
-+		return false;
-+
-+	if (!vapic)
-+		return false;
-+
-+	vppr = *((u32 *)(vapic + APIC_PROCPRI));
-+
-+	if (vmx->nested.pi_pending && vmx->nested.pi_desc &&
-+	    pi_test_on(vmx->nested.pi_desc)) {
-+		max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
-+		if (max_irr > 0 && (max_irr & 0xf0) > (vppr & 0xf0))
-+			return true;
-+	}
-+
-+	return false;
- }
- 
- /*
-
+Laurent Pinchart
 
