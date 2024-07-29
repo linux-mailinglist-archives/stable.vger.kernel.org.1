@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03EB93EF14
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA24E93EF15
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7033E284444
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:53:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AE8A2844B6
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B17512C522;
-	Mon, 29 Jul 2024 07:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E161EB2C;
+	Mon, 29 Jul 2024 07:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iR7abp/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jt+wx3sg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF60784A2F
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5106D12C559
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722239625; cv=none; b=YAL7k7+nhDs9dBXxmEpitu8LOviseGTTkp+Y6ma5bkoz/x6Qw4Qr7XGrID9ELmsYbOXeVw1bhDsytYdCWW8d3FssmXxGLBGhYBGnuHmrTw5rKevYX+h/ZMFSzUJKdpJ9V7/ndGShWu5MPCXGxXXLR5jFhy/Fzz/Y54maEQpn538=
+	t=1722239629; cv=none; b=nxX0XPecplJpwcr8kPNo8KR3q12hcUrA64cYsr4sZaOmL5BrSuLpRgcsYR14MRR7dEF8zt/LKkssQAZUwWAVk8Dor8hoHYxupGl71tS19n4+GBnUexFZYARNjzaOoXuKCiq3teU1Q7QXgpFHJjN0BhWjqOiEQxaL3jVPHKhwvjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722239625; c=relaxed/simple;
-	bh=gVhzjbjWSYJ62XGZk9zml66caqqdAU4YOD8guGuzSso=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=k82Ubcx8UV10jfOIJ696x0wkQYFTOEbSulokwg+nHFNrFF//0bKoNhKOWNn94iYHPPY3boJA4LDqOWcMfPG/Tff71b8d+eDjFJh2LPkVpag0POQWF+x2G/e4ZO7xyogW3Mf2SLr9ARX5Fd0D3tD0FeaHseXft3iNcFMRJsljHQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iR7abp/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F982C32786;
-	Mon, 29 Jul 2024 07:53:45 +0000 (UTC)
+	s=arc-20240116; t=1722239629; c=relaxed/simple;
+	bh=D2DGEsf1YQQI4o3Hz2OdhyJz5wk2oHKAfaFV+nrDCBM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nx13ejm7+t2nd1OgmRpSOxv4/61TMoZ8EW0+HXFFgypMnWxU+ZnEz7b1sLnOsJDLxrQp+A76hSAIsy6BLgxvLkiNvrW95yJU5wGLI5Bkn/PEobbIYVHVbfYZZ20amev7OHE8d5ryoLv2pI+jxYbMtjFSTq63Vr0CkZY62JjNQzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jt+wx3sg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC8CC32786;
+	Mon, 29 Jul 2024 07:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722239625;
-	bh=gVhzjbjWSYJ62XGZk9zml66caqqdAU4YOD8guGuzSso=;
+	s=korg; t=1722239629;
+	bh=D2DGEsf1YQQI4o3Hz2OdhyJz5wk2oHKAfaFV+nrDCBM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iR7abp/T8KIsPSxTyzKiXvYxd9+EhtDmWjC003/UEVjd5HgmHvzb2gAU+8ypWK+dX
-	 hgYmOWzecvHcYsjgEix0nb9r1/ObgWF1zKnoHXdoDlCEgW2ak7P4EzJ0Vx2nJT2lHk
-	 7woDvZQiIonErOw3beS4GQ2sFn77SwU9qGRH2ykM=
-Subject: FAILED: patch "[PATCH] ata: libata-scsi: Do not overwrite valid sense data when" failed to apply to 6.1-stable tree
+	b=jt+wx3sg+fz5LIowttDdZ6p6+aLU2vkgoWuGfPhuOmbunQuW+rtH9LLDmxpeH3GUm
+	 iWV27WNo1NRaa98vk63ddMJSLqfTydIuBV1iV0yQ/UVcbnzaVblB9DYmySSBlH/8Jk
+	 o4wJTe1c682OW5wQDf063QX2zBhb1iB7kZpG5Zgk=
+Subject: FAILED: patch "[PATCH] ata: libata-scsi: Do not overwrite valid sense data when" failed to apply to 5.15-stable tree
 To: ipylypiv@google.com,cassel@kernel.org,dlemoal@kernel.org,hare@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 09:53:42 +0200
-Message-ID: <2024072942-ditzy-tropical-a9b7@gregkh>
+Date: Mon, 29 Jul 2024 09:53:43 +0200
+Message-ID: <2024072943-backup-snaking-6c85@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 97981926224afe17ba3e22e0c2b7dd8b516ee574
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072942-ditzy-tropical-a9b7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072943-backup-snaking-6c85@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -86,6 +86,9 @@ bc9af4909406 ("ata: libata: Fix FUA handling in ata_build_rw_tf()")
 b83ad9eec316 ("ata: libata-eh: Cleanup ata_scsi_cmd_error_handler()")
 3d8a3ae3d966 ("ata: libata: fix commands incorrectly not getting retried during NCQ error")
 4cb7c6f1ef96 ("ata: make use of ata_port_is_frozen() helper")
+cb6e73aaadff ("ata: libata-eh: Remove the unneeded result variable")
+066de3b9d93b ("ata: libata-core: Simplify ata_build_rw_tf()")
+e00923c59e68 ("ata: libata: Rename ATA_DFLAG_NCQ_PRIO_ENABLE")
 
 thanks,
 
