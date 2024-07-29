@@ -1,90 +1,80 @@
-Return-Path: <stable+bounces-62407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56DF93EF22
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:54:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DB293EF23
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 09:55:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00D811C21BEB
-	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:54:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 233251C21B23
+	for <lists+stable@lfdr.de>; Mon, 29 Jul 2024 07:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF7D126F2A;
-	Mon, 29 Jul 2024 07:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14350126F2A;
+	Mon, 29 Jul 2024 07:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlxMkBzt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="He5DTcjo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE5A1EB2C
-	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C949B1EB2C
+	for <stable@vger.kernel.org>; Mon, 29 Jul 2024 07:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722239683; cv=none; b=LHm3nNnLRl/rO92HvyntKQqks+HncAebDNTBBPfCn/QwaVbTfx3RfOq6yxII6xu1pec5KtUoALQe0J41Haz4CTqMjmWvsxoM9Kw1e+Y1oCoyBKBDyRADfiqGGw4Tng+384JXDZARgEGSYyqqO5vzYyYxVfSviMklnkaz6JoDIso=
+	t=1722239726; cv=none; b=Bk+aigtka8HYru3cYFBFqueNw0P77Zw3B/OyMLeh/QcJVNgfI0czD3+16e9TpGncXn3TGWl87JaET/e30h7L+0dJNd5QyJqNIlnsdmBVZKsVBQfHdtlYgDvCZOYlceXHRK1T4V9rSiNzS/OycbIjokfLv9XVbQ3ii7FYTCuk+M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722239683; c=relaxed/simple;
-	bh=YQh91umVKtHRgSl5oZhjVbtfRbMPe1STbApefrZx/Pg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CUcxD80SYvkSyxxWxYOWKtqxWRsHJeGFE1YAK+QEE0XSiVJCuD+lFKa0QQkQi/ce4a8AyVejtoukwI6Bl8RO4cu9KjRZpFiARhDTKE00n/JX0rzLwrt2n65yq0I/3/qzz8bL3HeytvbUIPW/R2QiBpWrqBdEo7MJNixLSO0FyN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlxMkBzt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797F9C32786;
-	Mon, 29 Jul 2024 07:54:42 +0000 (UTC)
+	s=arc-20240116; t=1722239726; c=relaxed/simple;
+	bh=Sc+ZCX6UpDjUSmZ+I9DeWV3FMS82f4C56DT0ETCp8hA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UgQRPcM50/zbGpsInKbXxt60mA1fhZQydI9ci6RnsB3c3EowwhBtkTzpNwlJfsmZizkXKwi+dHcLVnDIVpHt+9FNJO13Gw7mEcu0Au7rJyBKHXz/3Y+xbSNBf6Cy4iuiIFgy82QmZmzuoEZSaShSn5yAWOJAj72KNKgTwyRw/fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=He5DTcjo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F1FC32786;
+	Mon, 29 Jul 2024 07:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722239683;
-	bh=YQh91umVKtHRgSl5oZhjVbtfRbMPe1STbApefrZx/Pg=;
+	s=korg; t=1722239726;
+	bh=Sc+ZCX6UpDjUSmZ+I9DeWV3FMS82f4C56DT0ETCp8hA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RlxMkBztpr5EwJZ+GWAywRzioTXIvlMNZd1RtLnpIyoemWymRDVvxLfsKoglFZslm
-	 /w7Q5XxPCVR7XT1R1mh8xc6k7MAQ1Y/gWTwxRRrb5WhjEhmVjF9qdOp0HqOI3wtMlg
-	 GoYmanKeB0wCDyGcmmKz1KuVK/dzmPRuYE3oMrCY=
-Subject: FAILED: patch "[PATCH] sysctl: always initialize i_uid/i_gid" failed to apply to 4.19-stable tree
-To: linux@weissschuh.net,j.granados@samsung.com
+	b=He5DTcjou2/7T7RtOD2Act3ruOaIf+OA+9yI/olqJnQUYH7Q06GxmU+30s0lGIuOd
+	 2qNSfXNdHQ58Z5IK5gQipkVyN+m/4Xp/LKb/EZwuQwZ6edNnys6kPe1M0o4uCZrLSK
+	 yrIX4sE1WPBpnOXKftIbHmHcAVNg/ekHsnFf0ohk=
+Subject: FAILED: patch "[PATCH] io_uring/io-wq: limit retrying worker initialisation" failed to apply to 6.1-stable tree
+To: asml.silence@gmail.com,axboe@kernel.dk,ju.orth@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jul 2024 09:54:29 +0200
-Message-ID: <2024072929-ocelot-buccaneer-e755@gregkh>
+Date: Mon, 29 Jul 2024 09:55:23 +0200
+Message-ID: <2024072923-bodacious-claw-442b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 98ca62ba9e2be5863c7d069f84f7166b45a5b2f4
+git cherry-pick -x 0453aad676ff99787124b9b3af4a5f59fbe808e2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072929-ocelot-buccaneer-e755@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072923-bodacious-claw-442b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
-520713a93d55 ("sysctl: treewide: drop unused argument ctl_table_root::set_ownership(table)")
-f9436a5d0497 ("sysctl: allow to change limits for posix messages queues")
-50ec499b9a43 ("sysctl: allow change system v ipc sysctls inside ipc namespace")
-0889f44e2810 ("ipc: Check permissions for checkpoint_restart sysctls at open time")
-1f5c135ee509 ("ipc: Store ipc sysctls in the ipc namespace")
-dc55e35f9e81 ("ipc: Store mqueue sysctls in the ipc namespace")
-0e9beb8a96f2 ("ipc/ipc_sysctl.c: remove fallback for !CONFIG_PROC_SYSCTL")
-5563cabdde7e ("ipc: check checkpoint_restore_ns_capable() to modify C/R proc files")
-32927393dc1c ("sysctl: pass kernel pointers to ->proc_handler")
-2374c09b1c8a ("sysctl: remove all extern declaration from sysctl.c")
-26363af56434 ("mm: remove watermark_boost_factor_sysctl_handler")
-6923aa0d8c62 ("mm/compaction: Disable compact_unevictable_allowed on RT")
-964b692daf30 ("mm/compaction: really limit compact_unevictable_allowed to 0 and 1")
-eaee41727e6d ("sysctl/sysrq: Remove __sysrq_enabled copy")
-0a6cad5df541 ("Merge branch 'vmwgfx-coherent' of git://people.freedesktop.org/~thomash/linux into drm-next")
+0453aad676ff ("io_uring/io-wq: limit retrying worker initialisation")
+8a565304927f ("io_uring/io-wq: Use set_bit() and test_bit() at worker->flags")
+eb47943f2238 ("io-wq: Drop struct io_wqe")
+dfd63baf892c ("io-wq: Move wq accounting to io_wq")
+da64d6db3bd3 ("io_uring: One wqe per wq")
+01e68ce08a30 ("io_uring/io-wq: stop setting PF_NO_SETAFFINITY on io-wq workers")
 
 thanks,
 
@@ -92,46 +82,83 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 98ca62ba9e2be5863c7d069f84f7166b45a5b2f4 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 2 Apr 2024 23:10:34 +0200
-Subject: [PATCH] sysctl: always initialize i_uid/i_gid
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 0453aad676ff99787124b9b3af4a5f59fbe808e2 Mon Sep 17 00:00:00 2001
+From: Pavel Begunkov <asml.silence@gmail.com>
+Date: Wed, 10 Jul 2024 18:58:17 +0100
+Subject: [PATCH] io_uring/io-wq: limit retrying worker initialisation
 
-Always initialize i_uid/i_gid inside the sysfs core so set_ownership()
-can safely skip setting them.
+If io-wq worker creation fails, we retry it by queueing up a task_work.
+tasK_work is needed because it should be done from the user process
+context. The problem is that retries are not limited, and if queueing a
+task_work is the reason for the failure, we might get into an infinite
+loop.
 
-Commit 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of
-i_uid/i_gid on /proc/sys inodes.") added defaults for i_uid/i_gid when
-set_ownership() was not implemented. It also missed adjusting
-net_ctl_set_ownership() to use the same default values in case the
-computation of a better value failed.
+It doesn't seem to happen now but it would with the following patch
+executing task_work in the freezer's loop. For now, arbitrarily limit the
+number of attempts to create a worker.
 
-Fixes: 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of i_uid/i_gid on /proc/sys inodes.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Joel Granados <j.granados@samsung.com>
+Fixes: 3146cba99aa28 ("io-wq: make worker creation resilient against signals")
+Reported-by: Julian Orth <ju.orth@gmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/8280436925db88448c7c85c6656edee1a43029ea.1720634146.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index b1c2c0b82116..dd7b462387a0 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -476,12 +476,10 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
- 			make_empty_dir_inode(inode);
- 	}
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index 913c92249522..f1e7c670add8 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -23,6 +23,7 @@
+ #include "io_uring.h"
  
-+	inode->i_uid = GLOBAL_ROOT_UID;
-+	inode->i_gid = GLOBAL_ROOT_GID;
- 	if (root->set_ownership)
- 		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
--	else {
--		inode->i_uid = GLOBAL_ROOT_UID;
--		inode->i_gid = GLOBAL_ROOT_GID;
--	}
+ #define WORKER_IDLE_TIMEOUT	(5 * HZ)
++#define WORKER_INIT_LIMIT	3
  
- 	return inode;
+ enum {
+ 	IO_WORKER_F_UP		= 0,	/* up and active */
+@@ -58,6 +59,7 @@ struct io_worker {
+ 
+ 	unsigned long create_state;
+ 	struct callback_head create_work;
++	int init_retries;
+ 
+ 	union {
+ 		struct rcu_head rcu;
+@@ -745,7 +747,7 @@ static bool io_wq_work_match_all(struct io_wq_work *work, void *data)
+ 	return true;
  }
+ 
+-static inline bool io_should_retry_thread(long err)
++static inline bool io_should_retry_thread(struct io_worker *worker, long err)
+ {
+ 	/*
+ 	 * Prevent perpetual task_work retry, if the task (or its group) is
+@@ -753,6 +755,8 @@ static inline bool io_should_retry_thread(long err)
+ 	 */
+ 	if (fatal_signal_pending(current))
+ 		return false;
++	if (worker->init_retries++ >= WORKER_INIT_LIMIT)
++		return false;
+ 
+ 	switch (err) {
+ 	case -EAGAIN:
+@@ -779,7 +783,7 @@ static void create_worker_cont(struct callback_head *cb)
+ 		io_init_new_worker(wq, worker, tsk);
+ 		io_worker_release(worker);
+ 		return;
+-	} else if (!io_should_retry_thread(PTR_ERR(tsk))) {
++	} else if (!io_should_retry_thread(worker, PTR_ERR(tsk))) {
+ 		struct io_wq_acct *acct = io_wq_get_acct(worker);
+ 
+ 		atomic_dec(&acct->nr_running);
+@@ -846,7 +850,7 @@ static bool create_io_worker(struct io_wq *wq, int index)
+ 	tsk = create_io_thread(io_wq_worker, worker, NUMA_NO_NODE);
+ 	if (!IS_ERR(tsk)) {
+ 		io_init_new_worker(wq, worker, tsk);
+-	} else if (!io_should_retry_thread(PTR_ERR(tsk))) {
++	} else if (!io_should_retry_thread(worker, PTR_ERR(tsk))) {
+ 		kfree(worker);
+ 		goto fail;
+ 	} else {
 
 
