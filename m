@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E3A941BE8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A74D9418BA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62694283BEF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B98C51F233AB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF590189539;
-	Tue, 30 Jul 2024 17:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39C41A619E;
+	Tue, 30 Jul 2024 16:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRTMLRkj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J98TTxTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AAA161901;
-	Tue, 30 Jul 2024 17:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EE11A618D;
+	Tue, 30 Jul 2024 16:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358841; cv=none; b=U+yBvld+btjfUyzPtJwuGmztcQAIjUxsw2o8wYoU9btK0jSi1XN4dReSnQkaFvHaFoC0mOSvsZ9w5NTfaWq/jKVSRUTAGQjKyyv7SzDwitMWx5v4e3sMkRqn1wIpUJVWdW4c25pUXm8BzkkwDEpBtOe4UwT53AdJu8uvcix8tlk=
+	t=1722356653; cv=none; b=sIeOJpOgh5pjmcqDz2p4d2Jry7in9AceLdlSo/3OV8+H8tlW3j0GhfgYomSHR+1c3zDGb6VSlrqvM4Nn4sixzI0H/Z16u99AQUsHRWFmjBnWu+u6eDDKg6pP1x43WIGejyHRY4WjGKHbtvlGWWxr1QSGC2eoCP3w3+0Od7weQMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358841; c=relaxed/simple;
-	bh=QX6LD+veOcn5y8tWrgG6rAyhqcIyHycG2FcuGLXR6pA=;
+	s=arc-20240116; t=1722356653; c=relaxed/simple;
+	bh=InpgMew2tWuRXwi0qLsWU6SqYYFTdUd3uEQfSyYH8b0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkKPgwaxMEhQVqAfyI40fN9pibcuxdikFBaGEfg88jktYJqDu18QPE2pVWx88TeInsfWcNQYVK26zZ5Rkpe2CsiCKMUU+Km9UI9cExnTCWvVC6t9hoEZgQVc7nSx0Dwv9GuoF7Jtd6tUlX2vmSknShh7TP0tuX42Ud2PXf1flXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRTMLRkj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F27C32782;
-	Tue, 30 Jul 2024 17:00:40 +0000 (UTC)
+	 MIME-Version; b=FfHUZWsJVlawvrAJdSyPM9Oykq7ZZkB68GkRUzdTVIV+z2dC0zwd4PQ3voHW+H4JKCwFenFaIffmWhfMVcOH10gAdPdsTKujNMrGcjzPmDlxV69D+spNDY8j3N0Yo0ISgPOtUfwZ/iVxQ4vHpw79b1hzqqRLsq4+InpxSeMwJ48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J98TTxTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F159C4AF0A;
+	Tue, 30 Jul 2024 16:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358841;
-	bh=QX6LD+veOcn5y8tWrgG6rAyhqcIyHycG2FcuGLXR6pA=;
+	s=korg; t=1722356653;
+	bh=InpgMew2tWuRXwi0qLsWU6SqYYFTdUd3uEQfSyYH8b0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RRTMLRkj67nLMGRGsJaxZB+eHQG1OisOcdNexCWnejFarFUjzk2j1bU9A8S7l/DN2
-	 hDJ7Acs/S/e1TqhHENnwGv+sRH6fLlxM1SEGiYRemjn1CvDOKO64WRahDdYeroJ1un
-	 Z2Ha5JQH23qhwO2FznxVXFJot9lV33wXoen8QLME=
+	b=J98TTxTdxKScSyRjJe+YS0uOx3dmZZiSfxupaIXIqBqVUxMU4TbwD7j1IXg6kQDX7
+	 zovC2sQem1Kkn2O0Ql9ZI+F07/IPNSeGI/jC5ohVx9kMwGJ8D6KFTZrfafIzt5BpA9
+	 97pnMN3Gn7gqpROYBO2ujiqmw3WK+LoKjQVNYNPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Sven Peter <sven@svenpeter.dev>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 401/809] KVM: PPC: Book3S HV: Fix the get_one_reg of SDAR
+Subject: [PATCH 6.6 170/568] Bluetooth: hci_bcm4377: Use correct unit for timeouts
 Date: Tue, 30 Jul 2024 17:44:37 +0200
-Message-ID: <20240730151740.524602422@linuxfoundation.org>
+Message-ID: <20240730151646.529698431@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+From: Sven Peter <sven@svenpeter.dev>
 
-[ Upstream commit 009f6f42c67e9de737d6d3d199f92b21a8cb9622 ]
+[ Upstream commit 56c695a823e4ee1e5294a8340d5afe5de73828ec ]
 
-The kvmppc_get_one_reg_hv() for SDAR is wrongly getting the SIAR
-instead of SDAR, possibly a paste error emanating from the previous
-refactoring.
+BCM4377_TIMEOUT is always used to wait for completitions and their API
+expects a timeout in jiffies instead of msecs.
 
-Patch fixes the wrong get_one_reg() for the same.
-
-Fixes: ebc88ea7a6ad ("KVM: PPC: Book3S HV: Use accessors for VCPU registers")
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/171759278410.1480.16404209606556979576.stgit@linux.ibm.com
+Fixes: 8a06127602de ("Bluetooth: hci_bcm4377: Add new driver for BCM4377 PCIe boards")
+Signed-off-by: Sven Peter <sven@svenpeter.dev>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv.c | 2 +-
+ drivers/bluetooth/hci_bcm4377.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index a4f34f94c86f7..b576781d58d54 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -2305,7 +2305,7 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
- 		*val = get_reg_val(id, kvmppc_get_siar_hv(vcpu));
- 		break;
- 	case KVM_REG_PPC_SDAR:
--		*val = get_reg_val(id, kvmppc_get_siar_hv(vcpu));
-+		*val = get_reg_val(id, kvmppc_get_sdar_hv(vcpu));
- 		break;
- 	case KVM_REG_PPC_SIER:
- 		*val = get_reg_val(id, kvmppc_get_sier_hv(vcpu, 0));
+diff --git a/drivers/bluetooth/hci_bcm4377.c b/drivers/bluetooth/hci_bcm4377.c
+index cf36cdac652d6..0dc3ca3d41073 100644
+--- a/drivers/bluetooth/hci_bcm4377.c
++++ b/drivers/bluetooth/hci_bcm4377.c
+@@ -32,7 +32,7 @@ enum bcm4377_chip {
+ #define BCM4378_DEVICE_ID 0x5f69
+ #define BCM4387_DEVICE_ID 0x5f71
+ 
+-#define BCM4377_TIMEOUT 1000
++#define BCM4377_TIMEOUT msecs_to_jiffies(1000)
+ 
+ /*
+  * These devices only support DMA transactions inside a 32bit window
 -- 
 2.43.0
 
