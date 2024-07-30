@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-63062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1A3941716
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:07:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1190941A7D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:44:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB76D1C23197
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:07:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6667E2851E9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF1918800E;
-	Tue, 30 Jul 2024 16:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCDD18801C;
+	Tue, 30 Jul 2024 16:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVYyIDGy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9fFGc4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C131B18455E;
-	Tue, 30 Jul 2024 16:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD210187FF6;
+	Tue, 30 Jul 2024 16:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355541; cv=none; b=sPFuLtMMsBjSbWdokWtEv/obFWUxeMhCVGOndu88s4Aat7LJ4/pESRQTwgQuVOOsIFqXSUo3cGT9blZUmDfNEcOWHMgQr5ejc9acRFSxBzQ+u1ZKQ1zBO/mUy3md4nUEewV1iotPsMdA7rKmSFNW/Cae1zA/qbzNWW2xXlSYVFo=
+	t=1722357851; cv=none; b=ePMd6dBEH3eBhXkbbqIXFFYlI6DTSuRH5+cjRBpUYpSHE396CQESzHaMoXH6+oEAF5SBbLh3bUp/177pW0003IFYEZb8xK+SDSsQtzKUajTHPBirm17Se3VJ4NeCPanIjoBUqAoRuFrocOTtZNX8RtN83gvp370tKGjiRnCwyfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355541; c=relaxed/simple;
-	bh=bCpkECuQ5c94ztaRNaGmJOv1wIg3YYnOjjVt1U28B8k=;
+	s=arc-20240116; t=1722357851; c=relaxed/simple;
+	bh=CjZQqRUX+H3XDlOqNIbd1R7ON0TTMLz0+3B5s0eeq+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jd++/Dlk1BPps+uBHOZ42ue5hdpBOpIBrEl6rsu6RD5nOXZ+8WOkLQRPuZ1KenOQAWU877z9b+RKKVP5+g/K5EEYHowj8ILPlQjG+KlE/AZeQ8uISIt1vjz3Dgd7RFkqDU/nNjQONhR2muk/b69kGbug07NC20S23X08SDwLhNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVYyIDGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EC0C32782;
-	Tue, 30 Jul 2024 16:05:41 +0000 (UTC)
+	 MIME-Version; b=JEwWiuk3nMUHx5/sg/FNCO7jOrrtnh6MK4MrpcAw5L8JRP8W25QKA3cN9F4100ljSwGGdxCxyyZTfsJKtPJX4ETo2nLdVgTV8bzHdBQcfi2hKM0FUmcr6DCHtKP1HV4sOx1mq2sZT01P0edF0nsyLK3TajsziC3Q/6Dw/zNl5PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9fFGc4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40784C4AF0C;
+	Tue, 30 Jul 2024 16:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355541;
-	bh=bCpkECuQ5c94ztaRNaGmJOv1wIg3YYnOjjVt1U28B8k=;
+	s=korg; t=1722357851;
+	bh=CjZQqRUX+H3XDlOqNIbd1R7ON0TTMLz0+3B5s0eeq+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVYyIDGy7iz1rK6YwxmZ1WVn10ZQooHgx9+phGjrq0oeWJYEuah3XoM2pqwL8koJj
-	 3qPHB5nZehVl3c5JCbWdhxFKJf50z3l8xYt/8mYNrFaYnXsC1wPTUw3lSZAkRVsjss
-	 lm5A4/tMRbeqFZqz4LsFZXW+MPpJLYDlgECChSOU=
+	b=k9fFGc4dKaOuATZrK1WLmToZYqW+TxyvG1m5c8S1WwgKJdHRJwEVOG+eEm6YDd/mh
+	 1RaHYWGq4pVek1Zt7yPDEhbTXiTCgLmQFNjGMspu/YmHG6UTKrjnq9MBcviofye61U
+	 MOGYoGLrO/FvDRo1v+dt/i+0lNk8JqZjJL9w4tWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Junhao Xie <bigfoot@classfun.cn>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/568] ARM: dts: imx6qdl-kontron-samx6i: fix PHY reset
+Subject: [PATCH 6.10 298/809] drm/msm/dpu: drop duplicate drm formats from wb2_formats arrays
 Date: Tue, 30 Jul 2024 17:42:54 +0200
-Message-ID: <20240730151642.478905868@linuxfoundation.org>
+Message-ID: <20240730151736.363443929@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Junhao Xie <bigfoot@classfun.cn>
 
-[ Upstream commit edfea889a049abe80f0d55c0365bf60fbade272f ]
+[ Upstream commit 6ed817592638348e83facfe6a4deedb8d5e83357 ]
 
-The PHY reset line is connected to both the SoC (GPIO1_25) and
-the CPLD. We must not use the GPIO1_25 as it will drive against
-the output buffer of the CPLD. Instead there is another GPIO
-(GPIO2_01), an input to the CPLD, which will tell the CPLD to
-assert the PHY reset line.
+There are duplicate items in wb2_formats_rgb and wb2_formats_rgb_yuv,
+which cause weston assertions failed.
 
-Fixes: 2a51f9dae13d ("ARM: dts: imx6qdl-kontron-samx6i: Add iMX6-based Kontron SMARC-sAMX6i module")
-Fixes: 5694eed98cca ("ARM: dts: imx6qdl-kontron-samx6i: move phy reset into phy-node")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+weston: libweston/drm-formats.c:131: weston_drm_format_array_add_format:
+Assertion `!weston_drm_format_array_find_format(formats, format)' failed.
+
+Signed-off-by: Junhao Xie <bigfoot@classfun.cn>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Fixes: 8c16b988ba2d ("drm/msm/dpu: introduce separate wb2_format arrays for rgb and yuv")
+Fixes: 53324b99bd7b ("drm/msm/dpu: add writeback blocks to the sm8250 DPU catalog")
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/596847/
+Link: https://lore.kernel.org/r/20240524150128.1878297-2-bigfoot@classfun.cn
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-index d8c1dfb8c9abb..d6c049b9a9c69 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-@@ -269,7 +269,7 @@ mdio {
- 		ethphy: ethernet-phy@1 {
- 			compatible = "ethernet-phy-ieee802.3-c22";
- 			reg = <1>;
--			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
-+			reset-gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
- 			reset-assert-us = <1000>;
- 		};
- 	};
-@@ -516,7 +516,7 @@ MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL 0x1b0b0
- 			MX6QDL_PAD_ENET_MDIO__ENET_MDIO       0x1b0b0
- 			MX6QDL_PAD_ENET_MDC__ENET_MDC         0x1b0b0
- 			MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK  0x1b0b0
--			MX6QDL_PAD_ENET_CRS_DV__GPIO1_IO25    0x1b0b0 /* RST_GBE0_PHY# */
-+			MX6QDL_PAD_NANDF_D1__GPIO2_IO01       0x1b0b0 /* RST_GBE0_PHY# */
- 		>;
- 	};
- 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+index f2b6eac7601dd..9b72977feafa4 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+@@ -220,12 +220,9 @@ static const u32 wb2_formats_rgb[] = {
+ 	DRM_FORMAT_RGBA4444,
+ 	DRM_FORMAT_RGBX4444,
+ 	DRM_FORMAT_XRGB4444,
+-	DRM_FORMAT_BGR565,
+ 	DRM_FORMAT_BGR888,
+-	DRM_FORMAT_ABGR8888,
+ 	DRM_FORMAT_BGRA8888,
+ 	DRM_FORMAT_BGRX8888,
+-	DRM_FORMAT_XBGR8888,
+ 	DRM_FORMAT_ABGR1555,
+ 	DRM_FORMAT_BGRA5551,
+ 	DRM_FORMAT_XBGR1555,
+@@ -254,12 +251,9 @@ static const u32 wb2_formats_rgb_yuv[] = {
+ 	DRM_FORMAT_RGBA4444,
+ 	DRM_FORMAT_RGBX4444,
+ 	DRM_FORMAT_XRGB4444,
+-	DRM_FORMAT_BGR565,
+ 	DRM_FORMAT_BGR888,
+-	DRM_FORMAT_ABGR8888,
+ 	DRM_FORMAT_BGRA8888,
+ 	DRM_FORMAT_BGRX8888,
+-	DRM_FORMAT_XBGR8888,
+ 	DRM_FORMAT_ABGR1555,
+ 	DRM_FORMAT_BGRA5551,
+ 	DRM_FORMAT_XBGR1555,
 -- 
 2.43.0
 
