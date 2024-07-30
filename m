@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-64457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73623941DE7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EFEC941BC9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EB422891BC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB4661F2411A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814E21A76C1;
-	Tue, 30 Jul 2024 17:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78BF18990F;
+	Tue, 30 Jul 2024 16:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wsT13Oh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIYCvDou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FD11A76B4;
-	Tue, 30 Jul 2024 17:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E706189907;
+	Tue, 30 Jul 2024 16:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360185; cv=none; b=QGs35nMl1+FkepPhtyyGE/KqeSCvm6XttKSN350mLLsDoqIrkZgE9WdHnYz+eRHZWSF1SIIm8vlkRNLFo+zZbrnL/52MLg+DlyYegS0iKk9I1uufRNeQaxI8qIz8vEQ1JFuIACpo7gfQh8UZAQY2yCgtw7171noYuxY2i8rpZtk=
+	t=1722358737; cv=none; b=FdM/Ua+i3O7ucKwkxZdpQ7GVidND0AaUvsKk/rslLjPKNidS1WYAdK7P+jV/Vewv4jDxJhMhnR7TJgvgmt1mWlu8gcIAvmeQtNS5Tpc8fviTlm73VhxRQH2QiNgDjZLV4qr7oLCqKgFPXs+PSheraMzc5BbtN9EaqkT8pK3BBew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360185; c=relaxed/simple;
-	bh=lkMXPKWDcmnQDP9GAuorZssSE0uXk7a0cO2Ye68oj+g=;
+	s=arc-20240116; t=1722358737; c=relaxed/simple;
+	bh=vdQcpiBNTTbAc3HrSrHzecZBmSvwMTIMMKrpQ3FD+90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9J/EayRownOn4OJLa7YsiYwiydr5ICVyfLHKS2iM0WqfV87HyOHEMr7nlEqYY8cvgZF37FUbcYp3747CFotdXcchxD742bEVQ2Qv2wUhhcEnafBWHG2CO8K66fXrkUhk6K2QQCR5yT36hAvSq/yh256Bm5efK7bqhsom0x3vrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wsT13Oh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6665C4AF0A;
-	Tue, 30 Jul 2024 17:23:04 +0000 (UTC)
+	 MIME-Version; b=f5S5dsGJqcNWKgmEzT4E4AZ2G84n/kapKn54TWjU5ejyqjwbb7MAUxM6AmqPQ9ytGSW4AYDuuIJVyGd238ojwC7JZ2Niflbt5tP4NB1ws9yD0OPv+6fZoTAzpYCqiZZRwikLtnsG4OZ2+W9DTmXeUipedN+uVKwx4Dk5KdpQ1BI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIYCvDou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C40C4AF0A;
+	Tue, 30 Jul 2024 16:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360185;
-	bh=lkMXPKWDcmnQDP9GAuorZssSE0uXk7a0cO2Ye68oj+g=;
+	s=korg; t=1722358737;
+	bh=vdQcpiBNTTbAc3HrSrHzecZBmSvwMTIMMKrpQ3FD+90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1wsT13OhHx+hC/dr2vX/EYeqE7b//jLSH/vF2ZR48BsWczclQBKOFmBkeBZiDodSR
-	 BE18KsqXejI6c1ccJ3fEGICJLdESoB0L5yzEpb9Hlydbgm/HlUToXlRs0o2fLmlj/i
-	 6ihhQha9vDtOe0qiBFd2SKUzcoO87t/TVIuNBLkU=
+	b=QIYCvDouUeldQiZ2Sdv8uFA8Sh/81ZOla0uA1xoayGCY4EcBWkE4Gtp+eFymHKG4y
+	 DS7jORiBxIw87b1hIaXIw28aoZhiJyp851cDlRQc2NM1xHXVg58lnw8Is5xITMbsyP
+	 EXb36J8Siif104mavNgN25mCtHz7r7Uu9v5NUL5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.10 621/809] KVM: nVMX: Add a helper to get highest pending from Posted Interrupt vector
+	Ritvik Budhiraja <rbudhiraja@microsoft.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	David Howells <dhowell@redhat.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 390/568] cifs: fix potential null pointer use in destroy_workqueue in init_cifs error path
 Date: Tue, 30 Jul 2024 17:48:17 +0200
-Message-ID: <20240730151749.370285505@linuxfoundation.org>
+Message-ID: <20240730151655.107373926@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit d83c36d822be44db4bad0c43bea99c8908f54117 upstream.
+commit 193cc89ea0ca1da311877d2b4bb5e9f03bcc82a2 upstream.
 
-Add a helper to retrieve the highest pending vector given a Posted
-Interrupt descriptor.  While the actual operation is straightforward, it's
-surprisingly easy to mess up, e.g. if one tries to reuse lapic.c's
-find_highest_vector(), which doesn't work with PID.PIR due to the APIC's
-IRR and ISR component registers being physically discontiguous (they're
-4-byte registers aligned at 16-byte intervals).
+Dan Carpenter reported a Smack static checker warning:
+   fs/smb/client/cifsfs.c:1981 init_cifs()
+   error: we previously assumed 'serverclose_wq' could be null (see line 1895)
 
-To make PIR handling more consistent with respect to IRR and ISR handling,
-return -1 to indicate "no interrupt pending".
+The patch which introduced the serverclose workqueue used the wrong
+oredering in error paths in init_cifs() for freeing it on errors.
 
+Fixes: 173217bd7336 ("smb3: retrying on failed server close")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240607172609.3205077-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: Ritvik Budhiraja <rbudhiraja@microsoft.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: David Howells <dhowell@redhat.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/nested.c      |    5 +++--
- arch/x86/kvm/vmx/posted_intr.h |   10 ++++++++++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ fs/smb/client/cifsfs.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -12,6 +12,7 @@
- #include "mmu.h"
- #include "nested.h"
- #include "pmu.h"
-+#include "posted_intr.h"
- #include "sgx.h"
- #include "trace.h"
- #include "vmx.h"
-@@ -3899,8 +3900,8 @@ static int vmx_complete_nested_posted_in
- 	if (!pi_test_and_clear_on(vmx->nested.pi_desc))
- 		return 0;
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -1885,12 +1885,12 @@ init_cifs(void)
+ 					   WQ_FREEZABLE|WQ_MEM_RECLAIM, 0);
+ 	if (!serverclose_wq) {
+ 		rc = -ENOMEM;
+-		goto out_destroy_serverclose_wq;
++		goto out_destroy_deferredclose_wq;
+ 	}
  
--	max_irr = find_last_bit((unsigned long *)vmx->nested.pi_desc->pir, 256);
--	if (max_irr != 256) {
-+	max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
-+	if (max_irr > 0) {
- 		vapic_page = vmx->nested.virtual_apic_map.hva;
- 		if (!vapic_page)
- 			goto mmio_needed;
---- a/arch/x86/kvm/vmx/posted_intr.h
-+++ b/arch/x86/kvm/vmx/posted_intr.h
-@@ -1,6 +1,8 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #ifndef __KVM_X86_VMX_POSTED_INTR_H
- #define __KVM_X86_VMX_POSTED_INTR_H
-+
-+#include <linux/find.h>
- #include <asm/posted_intr.h>
+ 	rc = cifs_init_inodecache();
+ 	if (rc)
+-		goto out_destroy_deferredclose_wq;
++		goto out_destroy_serverclose_wq;
  
- void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu);
-@@ -12,4 +14,12 @@ int vmx_pi_update_irte(struct kvm *kvm,
- 		       uint32_t guest_irq, bool set);
- void vmx_pi_start_assignment(struct kvm *kvm);
- 
-+static inline int pi_find_highest_vector(struct pi_desc *pi_desc)
-+{
-+	int vec;
-+
-+	vec = find_last_bit((unsigned long *)pi_desc->pir, 256);
-+	return vec < 256 ? vec : -1;
-+}
-+
- #endif /* __KVM_X86_VMX_POSTED_INTR_H */
+ 	rc = init_mids();
+ 	if (rc)
+@@ -1952,6 +1952,8 @@ out_destroy_mids:
+ 	destroy_mids();
+ out_destroy_inodecache:
+ 	cifs_destroy_inodecache();
++out_destroy_serverclose_wq:
++	destroy_workqueue(serverclose_wq);
+ out_destroy_deferredclose_wq:
+ 	destroy_workqueue(deferredclose_wq);
+ out_destroy_cifsoplockd_wq:
+@@ -1962,8 +1964,6 @@ out_destroy_decrypt_wq:
+ 	destroy_workqueue(decrypt_wq);
+ out_destroy_cifsiod_wq:
+ 	destroy_workqueue(cifsiod_wq);
+-out_destroy_serverclose_wq:
+-	destroy_workqueue(serverclose_wq);
+ out_clean_proc:
+ 	cifs_proc_clean();
+ 	return rc;
 
 
 
