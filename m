@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C44941B0D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CED941DF3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D6A01C23297
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 303A5B26D21
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA22B18801C;
-	Tue, 30 Jul 2024 16:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E091A76B5;
+	Tue, 30 Jul 2024 17:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMBVBbK1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFHmaKct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DF9188013;
-	Tue, 30 Jul 2024 16:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10701A76AE;
+	Tue, 30 Jul 2024 17:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358230; cv=none; b=Xw9flTwEwcL5FfYl6DgvNJ9NjXmg5fOjInyFVPLsinSWQkjhAIdQ51CPhBXqAIwZm3XhTy89Q4Vqiz6jaeTNoSFkWoCOnML4WTdo2+HDxBBjoheOme75lkdRmdZu9bKazm2F6iB/E6vdIELH0pyShvrjkWpELTW37g76fDd63L0=
+	t=1722360023; cv=none; b=O4n1dluDzc/Gc+DJGdW2f8eFCttwaTlhcxTC1X3roYE/Rt5En1FRHUyDSpwZ2Zv1ZuZtTt+3cbu26TcQ6zF9TJ813Drnxvp05GNjNpv8/YebSFsKhjru07FyQ6C87OyU2nFSqrtpffnq5v48WggATNe0Y9WQxTccSag2tPKBeco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358230; c=relaxed/simple;
-	bh=W3FDE2GdhYErqV0V4nWFN+/55Mt1Qudw4PzZaxdM5Fo=;
+	s=arc-20240116; t=1722360023; c=relaxed/simple;
+	bh=PPrePIxLhDPpoIKU7ibelMbUEOsB5zBWB/IIeSX82wQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmCVCt+509+sfuETlqT/1nBsGKMSP/3Dw0z4KFWwWpSPw4+5cTR+1eZL6FMhAx3qWjjkRCqrTkV+OVxF1QzCclnqX6X5nEFz2PzJnYmxGfMoeHkO31dQsZUptmf7BaAmqw3GDFoMeqpzkWdoiKSAv2bS+zlZ7cJerERF/PCN9bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMBVBbK1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E4FC32782;
-	Tue, 30 Jul 2024 16:50:29 +0000 (UTC)
+	 MIME-Version; b=nP6qyyyUeXviPtWj6Qukv5i6L3OXfFW0FDxmWQyElapUD+xE69IYqmLljDd2pctTNw8sL6QSn4FBBUJf93vB1zFBIQrqSp7h7c6nIRuUO0gq0/E7VIlnb/TYJ68PyiIsDVhXToGitRxjyY357QW26o7xrxCH4QiuYin2lN8PTlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFHmaKct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C96C32782;
+	Tue, 30 Jul 2024 17:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358230;
-	bh=W3FDE2GdhYErqV0V4nWFN+/55Mt1Qudw4PzZaxdM5Fo=;
+	s=korg; t=1722360022;
+	bh=PPrePIxLhDPpoIKU7ibelMbUEOsB5zBWB/IIeSX82wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMBVBbK19iI7YcNTbNKDJIAJowfF7kHzwLHZNsoeDZQr3ib5r/crHYL5PFZr6mOHt
-	 1fg7D6ZI8ccMfQ+Nz9Z0v/pBwGXXJUAPtZHORWqZtYXnEQrafezqBu4f2xJ0TJP5EB
-	 u6cnw9FAvWEEyRgku7P7KKWjAe5adXnsmsHph0Qg=
+	b=gFHmaKctRjz/B/xQFpu9wS5QOubu+s/IIr4vT6Y6JKHLAcrmNg8mX97xvnXJIqS51
+	 U7klWWlsr/TQdJc2VciveA1NIkoh6dhADdwtxggVWfTiN6gkxgWtQjmKv3us4LtJaU
+	 BV0cekRE4nlq45ap8GVrFVmbaYAbjUHOpu4KAzkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 342/568] pinctrl: renesas: r8a779g0: Fix TPU suffixes
+	syzbot+3ae6be33a50b5aae4dab@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.10 573/809] hfs: fix to initialize fields of hfs_inode_info after hfs_alloc_inode()
 Date: Tue, 30 Jul 2024 17:47:29 +0200
-Message-ID: <20240730151653.236511749@linuxfoundation.org>
+Message-ID: <20240730151747.407835978@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,286 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 3d144ef10a448f89065dcff39c40d90ac18e035e ]
+commit 26a2ed107929a855155429b11e1293b83e6b2a8b upstream.
 
-The Timer Pulse Unit channels have two alternate pin groups:
-"tpu_to[0-3]" and "tpu_to[0-3]_a".
+Syzbot reports uninitialized value access issue as below:
 
-Increase uniformity by adopting R-Car V4M naming:
-  - Rename "tpu_to[0-3]_a" to "tpu_to[0-3]_b",
-  - Rename "tpu_to[0-3]" to "tpu_to[0-3]_a",
+loop0: detected capacity change from 0 to 64
+=====================================================
+BUG: KMSAN: uninit-value in hfs_revalidate_dentry+0x307/0x3f0 fs/hfs/sysdep.c:30
+ hfs_revalidate_dentry+0x307/0x3f0 fs/hfs/sysdep.c:30
+ d_revalidate fs/namei.c:862 [inline]
+ lookup_fast+0x89e/0x8e0 fs/namei.c:1649
+ walk_component fs/namei.c:2001 [inline]
+ link_path_walk+0x817/0x1480 fs/namei.c:2332
+ path_lookupat+0xd9/0x6f0 fs/namei.c:2485
+ filename_lookup+0x22e/0x740 fs/namei.c:2515
+ user_path_at_empty+0x8b/0x390 fs/namei.c:2924
+ user_path_at include/linux/namei.h:57 [inline]
+ do_mount fs/namespace.c:3689 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x66b/0x810 fs/namespace.c:3875
+ __x64_sys_mount+0xe4/0x140 fs/namespace.c:3875
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
-Fixes: 050442ae4c74f830 ("pinctrl: renesas: r8a779g0: Add pins, groups and functions")
-Fixes: 85a9cbe4c57bb958 ("pinctrl: renesas: r8a779g0: Add missing TPU0TOx_A")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/0dd9428bc24e97e1001ed3976b1cb98966f5e7e3.1717754960.git.geert+renesas@glider.be
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: KMSAN: uninit-value in hfs_ext_read_extent fs/hfs/extent.c:196 [inline]
+BUG: KMSAN: uninit-value in hfs_get_block+0x92d/0x1620 fs/hfs/extent.c:366
+ hfs_ext_read_extent fs/hfs/extent.c:196 [inline]
+ hfs_get_block+0x92d/0x1620 fs/hfs/extent.c:366
+ block_read_full_folio+0x4ff/0x11b0 fs/buffer.c:2271
+ hfs_read_folio+0x55/0x60 fs/hfs/inode.c:39
+ filemap_read_folio+0x148/0x4f0 mm/filemap.c:2426
+ do_read_cache_folio+0x7c8/0xd90 mm/filemap.c:3553
+ do_read_cache_page mm/filemap.c:3595 [inline]
+ read_cache_page+0xfb/0x2f0 mm/filemap.c:3604
+ read_mapping_page include/linux/pagemap.h:755 [inline]
+ hfs_btree_open+0x928/0x1ae0 fs/hfs/btree.c:78
+ hfs_mdb_get+0x260c/0x3000 fs/hfs/mdb.c:204
+ hfs_fill_super+0x1fb1/0x2790 fs/hfs/super.c:406
+ mount_bdev+0x628/0x920 fs/super.c:1359
+ hfs_mount+0xcd/0xe0 fs/hfs/super.c:456
+ legacy_get_tree+0x167/0x2e0 fs/fs_context.c:610
+ vfs_get_tree+0xdc/0x5d0 fs/super.c:1489
+ do_new_mount+0x7a9/0x16f0 fs/namespace.c:3145
+ path_mount+0xf98/0x26a0 fs/namespace.c:3475
+ do_mount fs/namespace.c:3488 [inline]
+ __do_sys_mount fs/namespace.c:3697 [inline]
+ __se_sys_mount+0x919/0x9e0 fs/namespace.c:3674
+ __ia32_sys_mount+0x15b/0x1b0 fs/namespace.c:3674
+ do_syscall_32_irqs_on arch/x86/entry/common.c:112 [inline]
+ __do_fast_syscall_32+0xa2/0x100 arch/x86/entry/common.c:178
+ do_fast_syscall_32+0x37/0x80 arch/x86/entry/common.c:203
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:246
+ entry_SYSENTER_compat_after_hwframe+0x70/0x82
+
+Uninit was created at:
+ __alloc_pages+0x9a6/0xe00 mm/page_alloc.c:4590
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ alloc_slab_page mm/slub.c:2190 [inline]
+ allocate_slab mm/slub.c:2354 [inline]
+ new_slab+0x2d7/0x1400 mm/slub.c:2407
+ ___slab_alloc+0x16b5/0x3970 mm/slub.c:3540
+ __slab_alloc mm/slub.c:3625 [inline]
+ __slab_alloc_node mm/slub.c:3678 [inline]
+ slab_alloc_node mm/slub.c:3850 [inline]
+ kmem_cache_alloc_lru+0x64d/0xb30 mm/slub.c:3879
+ alloc_inode_sb include/linux/fs.h:3018 [inline]
+ hfs_alloc_inode+0x5a/0xc0 fs/hfs/super.c:165
+ alloc_inode+0x83/0x440 fs/inode.c:260
+ new_inode_pseudo fs/inode.c:1005 [inline]
+ new_inode+0x38/0x4f0 fs/inode.c:1031
+ hfs_new_inode+0x61/0x1010 fs/hfs/inode.c:186
+ hfs_mkdir+0x54/0x250 fs/hfs/dir.c:228
+ vfs_mkdir+0x49a/0x700 fs/namei.c:4126
+ do_mkdirat+0x529/0x810 fs/namei.c:4149
+ __do_sys_mkdirat fs/namei.c:4164 [inline]
+ __se_sys_mkdirat fs/namei.c:4162 [inline]
+ __x64_sys_mkdirat+0xc8/0x120 fs/namei.c:4162
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+It missed to initialize .tz_secondswest, .cached_start and .cached_blocks
+fields in struct hfs_inode_info after hfs_alloc_inode(), fix it.
+
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+3ae6be33a50b5aae4dab@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-fsdevel/0000000000005ad04005ee48897f@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20240616013841.2217-1-chao@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/renesas/pfc-r8a779g0.c | 128 ++++++++++++-------------
- 1 file changed, 63 insertions(+), 65 deletions(-)
+ fs/hfs/inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
-index 8c19b892441a3..bb843e333c880 100644
---- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
-+++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
-@@ -119,8 +119,8 @@
- #define GPSR2_11	F_(CANFD0_RX,		IP1SR2_15_12)
- #define GPSR2_10	F_(CANFD0_TX,		IP1SR2_11_8)
- #define GPSR2_9		F_(CAN_CLK,		IP1SR2_7_4)
--#define GPSR2_8		F_(TPU0TO0,		IP1SR2_3_0)
--#define GPSR2_7		F_(TPU0TO1,		IP0SR2_31_28)
-+#define GPSR2_8		F_(TPU0TO0_A,		IP1SR2_3_0)
-+#define GPSR2_7		F_(TPU0TO1_A,		IP0SR2_31_28)
- #define GPSR2_6		F_(FXR_TXDB,		IP0SR2_27_24)
- #define GPSR2_5		F_(FXR_TXENB_N_A,	IP0SR2_23_20)
- #define GPSR2_4		F_(RXDB_EXTFXR,		IP0SR2_19_16)
-@@ -332,29 +332,29 @@
+--- a/fs/hfs/inode.c
++++ b/fs/hfs/inode.c
+@@ -200,6 +200,7 @@ struct inode *hfs_new_inode(struct inode
+ 	HFS_I(inode)->flags = 0;
+ 	HFS_I(inode)->rsrc_inode = NULL;
+ 	HFS_I(inode)->fs_blocks = 0;
++	HFS_I(inode)->tz_secondswest = sys_tz.tz_minuteswest * 60;
+ 	if (S_ISDIR(mode)) {
+ 		inode->i_size = 2;
+ 		HFS_SB(sb)->folder_count++;
+@@ -275,6 +276,8 @@ void hfs_inode_read_fork(struct inode *i
+ 	for (count = 0, i = 0; i < 3; i++)
+ 		count += be16_to_cpu(ext[i].count);
+ 	HFS_I(inode)->first_blocks = count;
++	HFS_I(inode)->cached_start = 0;
++	HFS_I(inode)->cached_blocks = 0;
  
- /* IP3SR1 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
- #define IP3SR1_3_0	FM(HRX3_A)		FM(SCK3_A)		FM(MSIOF4_SS2)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP3SR1_7_4	FM(HSCK3_A)		FM(CTS3_N_A)		FM(MSIOF4_SCK)		FM(TPU0TO0_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP3SR1_11_8	FM(HRTS3_N_A)		FM(RTS3_N_A)		FM(MSIOF4_TXD)		FM(TPU0TO1_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP3SR1_7_4	FM(HSCK3_A)		FM(CTS3_N_A)		FM(MSIOF4_SCK)		FM(TPU0TO0_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP3SR1_11_8	FM(HRTS3_N_A)		FM(RTS3_N_A)		FM(MSIOF4_TXD)		FM(TPU0TO1_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP3SR1_15_12	FM(HCTS3_N_A)		FM(RX3_A)		FM(MSIOF4_RXD)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP3SR1_19_16	FM(HTX3_A)		FM(TX3_A)		FM(MSIOF4_SYNC)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- 
- /* SR2 */
- /* IP0SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
--#define IP0SR2_3_0	FM(FXR_TXDA)		FM(CANFD1_TX)		FM(TPU0TO2_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP0SR2_7_4	FM(FXR_TXENA_N_A)	FM(CANFD1_RX)		FM(TPU0TO3_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP0SR2_3_0	FM(FXR_TXDA)		FM(CANFD1_TX)		FM(TPU0TO2_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP0SR2_7_4	FM(FXR_TXENA_N_A)	FM(CANFD1_RX)		FM(TPU0TO3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_11_8	FM(RXDA_EXTFXR)		FM(CANFD5_TX_A)		FM(IRQ5)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_15_12	FM(CLK_EXTFXR)		FM(CANFD5_RX_A)		FM(IRQ4_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_19_16	FM(RXDB_EXTFXR)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_23_20	FM(FXR_TXENB_N_A)	F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_27_24	FM(FXR_TXDB)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP0SR2_31_28	FM(TPU0TO1)		FM(CANFD6_TX)		F_(0, 0)		FM(TCLK2_C)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP0SR2_31_28	FM(TPU0TO1_A)		FM(CANFD6_TX)		F_(0, 0)		FM(TCLK2_C)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- 
- /* IP1SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
--#define IP1SR2_3_0	FM(TPU0TO0)		FM(CANFD6_RX)		F_(0, 0)		FM(TCLK1_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP1SR2_3_0	FM(TPU0TO0_A)		FM(CANFD6_RX)		F_(0, 0)		FM(TCLK1_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR2_7_4	FM(CAN_CLK)		FM(FXR_TXENA_N_B)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR2_11_8	FM(CANFD0_TX)		FM(FXR_TXENB_N_B)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR2_15_12	FM(CANFD0_RX)		FM(STPWT_EXTFXR)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP1SR2_19_16	FM(CANFD2_TX)		FM(TPU0TO2)		F_(0, 0)		FM(TCLK3_C)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP1SR2_23_20	FM(CANFD2_RX)		FM(TPU0TO3)		FM(PWM1_B)		FM(TCLK4_C)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP1SR2_19_16	FM(CANFD2_TX)		FM(TPU0TO2_A)		F_(0, 0)		FM(TCLK3_C)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP1SR2_23_20	FM(CANFD2_RX)		FM(TPU0TO3_A)		FM(PWM1_B)		FM(TCLK4_C)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR2_27_24	FM(CANFD3_TX)		F_(0, 0)		FM(PWM2)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR2_31_28	FM(CANFD3_RX)		F_(0, 0)		FM(PWM3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- 
-@@ -871,12 +871,12 @@ static const u16 pinmux_data[] = {
- 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	HSCK3_A),
- 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	CTS3_N_A),
- 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	MSIOF4_SCK),
--	PINMUX_IPSR_GPSR(IP3SR1_7_4,	TPU0TO0_A),
-+	PINMUX_IPSR_GPSR(IP3SR1_7_4,	TPU0TO0_B),
- 
- 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	HRTS3_N_A),
- 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	RTS3_N_A),
- 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	MSIOF4_TXD),
--	PINMUX_IPSR_GPSR(IP3SR1_11_8,	TPU0TO1_A),
-+	PINMUX_IPSR_GPSR(IP3SR1_11_8,	TPU0TO1_B),
- 
- 	PINMUX_IPSR_GPSR(IP3SR1_15_12,	HCTS3_N_A),
- 	PINMUX_IPSR_GPSR(IP3SR1_15_12,	RX3_A),
-@@ -889,11 +889,11 @@ static const u16 pinmux_data[] = {
- 	/* IP0SR2 */
- 	PINMUX_IPSR_GPSR(IP0SR2_3_0,	FXR_TXDA),
- 	PINMUX_IPSR_GPSR(IP0SR2_3_0,	CANFD1_TX),
--	PINMUX_IPSR_GPSR(IP0SR2_3_0,	TPU0TO2_A),
-+	PINMUX_IPSR_GPSR(IP0SR2_3_0,	TPU0TO2_B),
- 
- 	PINMUX_IPSR_GPSR(IP0SR2_7_4,	FXR_TXENA_N_A),
- 	PINMUX_IPSR_GPSR(IP0SR2_7_4,	CANFD1_RX),
--	PINMUX_IPSR_GPSR(IP0SR2_7_4,	TPU0TO3_A),
-+	PINMUX_IPSR_GPSR(IP0SR2_7_4,	TPU0TO3_B),
- 
- 	PINMUX_IPSR_GPSR(IP0SR2_11_8,	RXDA_EXTFXR),
- 	PINMUX_IPSR_GPSR(IP0SR2_11_8,	CANFD5_TX_A),
-@@ -909,12 +909,12 @@ static const u16 pinmux_data[] = {
- 
- 	PINMUX_IPSR_GPSR(IP0SR2_27_24,	FXR_TXDB),
- 
--	PINMUX_IPSR_GPSR(IP0SR2_31_28,	TPU0TO1),
-+	PINMUX_IPSR_GPSR(IP0SR2_31_28,	TPU0TO1_A),
- 	PINMUX_IPSR_GPSR(IP0SR2_31_28,	CANFD6_TX),
- 	PINMUX_IPSR_GPSR(IP0SR2_31_28,	TCLK2_C),
- 
- 	/* IP1SR2 */
--	PINMUX_IPSR_GPSR(IP1SR2_3_0,	TPU0TO0),
-+	PINMUX_IPSR_GPSR(IP1SR2_3_0,	TPU0TO0_A),
- 	PINMUX_IPSR_GPSR(IP1SR2_3_0,	CANFD6_RX),
- 	PINMUX_IPSR_GPSR(IP1SR2_3_0,	TCLK1_B),
- 
-@@ -928,11 +928,11 @@ static const u16 pinmux_data[] = {
- 	PINMUX_IPSR_GPSR(IP1SR2_15_12,	STPWT_EXTFXR),
- 
- 	PINMUX_IPSR_GPSR(IP1SR2_19_16,	CANFD2_TX),
--	PINMUX_IPSR_GPSR(IP1SR2_19_16,	TPU0TO2),
-+	PINMUX_IPSR_GPSR(IP1SR2_19_16,	TPU0TO2_A),
- 	PINMUX_IPSR_GPSR(IP1SR2_19_16,	TCLK3_C),
- 
- 	PINMUX_IPSR_GPSR(IP1SR2_23_20,	CANFD2_RX),
--	PINMUX_IPSR_GPSR(IP1SR2_23_20,	TPU0TO3),
-+	PINMUX_IPSR_GPSR(IP1SR2_23_20,	TPU0TO3_A),
- 	PINMUX_IPSR_GPSR(IP1SR2_23_20,	PWM1_B),
- 	PINMUX_IPSR_GPSR(IP1SR2_23_20,	TCLK4_C),
- 
-@@ -2403,64 +2403,63 @@ static const unsigned int ssi_ctrl_mux[] = {
- 	SSI_SCK_MARK, SSI_WS_MARK,
- };
- 
--/* - TPU ------------------------------------------------------------------- */
--static const unsigned int tpu_to0_pins[] = {
--	/* TPU0TO0 */
-+/* - TPU -------------------------------------------------------------------- */
-+static const unsigned int tpu_to0_a_pins[] = {
-+	/* TPU0TO0_A */
- 	RCAR_GP_PIN(2, 8),
- };
--static const unsigned int tpu_to0_mux[] = {
--	TPU0TO0_MARK,
-+static const unsigned int tpu_to0_a_mux[] = {
-+	TPU0TO0_A_MARK,
- };
--static const unsigned int tpu_to1_pins[] = {
--	/* TPU0TO1 */
-+static const unsigned int tpu_to1_a_pins[] = {
-+	/* TPU0TO1_A */
- 	RCAR_GP_PIN(2, 7),
- };
--static const unsigned int tpu_to1_mux[] = {
--	TPU0TO1_MARK,
-+static const unsigned int tpu_to1_a_mux[] = {
-+	TPU0TO1_A_MARK,
- };
--static const unsigned int tpu_to2_pins[] = {
--	/* TPU0TO2 */
-+static const unsigned int tpu_to2_a_pins[] = {
-+	/* TPU0TO2_A */
- 	RCAR_GP_PIN(2, 12),
- };
--static const unsigned int tpu_to2_mux[] = {
--	TPU0TO2_MARK,
-+static const unsigned int tpu_to2_a_mux[] = {
-+	TPU0TO2_A_MARK,
- };
--static const unsigned int tpu_to3_pins[] = {
--	/* TPU0TO3 */
-+static const unsigned int tpu_to3_a_pins[] = {
-+	/* TPU0TO3_A */
- 	RCAR_GP_PIN(2, 13),
- };
--static const unsigned int tpu_to3_mux[] = {
--	TPU0TO3_MARK,
-+static const unsigned int tpu_to3_a_mux[] = {
-+	TPU0TO3_A_MARK,
- };
- 
--/* - TPU_A ------------------------------------------------------------------- */
--static const unsigned int tpu_to0_a_pins[] = {
--	/* TPU0TO0_A */
-+static const unsigned int tpu_to0_b_pins[] = {
-+	/* TPU0TO0_B */
- 	RCAR_GP_PIN(1, 25),
- };
--static const unsigned int tpu_to0_a_mux[] = {
--	TPU0TO0_A_MARK,
-+static const unsigned int tpu_to0_b_mux[] = {
-+	TPU0TO0_B_MARK,
- };
--static const unsigned int tpu_to1_a_pins[] = {
--	/* TPU0TO1_A */
-+static const unsigned int tpu_to1_b_pins[] = {
-+	/* TPU0TO1_B */
- 	RCAR_GP_PIN(1, 26),
- };
--static const unsigned int tpu_to1_a_mux[] = {
--	TPU0TO1_A_MARK,
-+static const unsigned int tpu_to1_b_mux[] = {
-+	TPU0TO1_B_MARK,
- };
--static const unsigned int tpu_to2_a_pins[] = {
--	/* TPU0TO2_A */
-+static const unsigned int tpu_to2_b_pins[] = {
-+	/* TPU0TO2_B */
- 	RCAR_GP_PIN(2, 0),
- };
--static const unsigned int tpu_to2_a_mux[] = {
--	TPU0TO2_A_MARK,
-+static const unsigned int tpu_to2_b_mux[] = {
-+	TPU0TO2_B_MARK,
- };
--static const unsigned int tpu_to3_a_pins[] = {
--	/* TPU0TO3_A */
-+static const unsigned int tpu_to3_b_pins[] = {
-+	/* TPU0TO3_B */
- 	RCAR_GP_PIN(2, 1),
- };
--static const unsigned int tpu_to3_a_mux[] = {
--	TPU0TO3_A_MARK,
-+static const unsigned int tpu_to3_b_mux[] = {
-+	TPU0TO3_B_MARK,
- };
- 
- /* - TSN0 ------------------------------------------------ */
-@@ -2702,14 +2701,14 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
- 	SH_PFC_PIN_GROUP(ssi_data),
- 	SH_PFC_PIN_GROUP(ssi_ctrl),
- 
--	SH_PFC_PIN_GROUP(tpu_to0),		/* suffix might be updated */
--	SH_PFC_PIN_GROUP(tpu_to0_a),		/* suffix might be updated */
--	SH_PFC_PIN_GROUP(tpu_to1),		/* suffix might be updated */
--	SH_PFC_PIN_GROUP(tpu_to1_a),		/* suffix might be updated */
--	SH_PFC_PIN_GROUP(tpu_to2),		/* suffix might be updated */
--	SH_PFC_PIN_GROUP(tpu_to2_a),		/* suffix might be updated */
--	SH_PFC_PIN_GROUP(tpu_to3),		/* suffix might be updated */
--	SH_PFC_PIN_GROUP(tpu_to3_a),		/* suffix might be updated */
-+	SH_PFC_PIN_GROUP(tpu_to0_a),
-+	SH_PFC_PIN_GROUP(tpu_to0_b),
-+	SH_PFC_PIN_GROUP(tpu_to1_a),
-+	SH_PFC_PIN_GROUP(tpu_to1_b),
-+	SH_PFC_PIN_GROUP(tpu_to2_a),
-+	SH_PFC_PIN_GROUP(tpu_to2_b),
-+	SH_PFC_PIN_GROUP(tpu_to3_a),
-+	SH_PFC_PIN_GROUP(tpu_to3_b),
- 
- 	SH_PFC_PIN_GROUP(tsn0_link),
- 	SH_PFC_PIN_GROUP(tsn0_phy_int),
-@@ -3020,15 +3019,14 @@ static const char * const ssi_groups[] = {
- };
- 
- static const char * const tpu_groups[] = {
--	/* suffix might be updated */
--	"tpu_to0",
- 	"tpu_to0_a",
--	"tpu_to1",
-+	"tpu_to0_b",
- 	"tpu_to1_a",
--	"tpu_to2",
-+	"tpu_to1_b",
- 	"tpu_to2_a",
--	"tpu_to3",
-+	"tpu_to2_b",
- 	"tpu_to3_a",
-+	"tpu_to3_b",
- };
- 
- static const char * const tsn0_groups[] = {
--- 
-2.43.0
-
+ 	inode->i_size = HFS_I(inode)->phys_size = log_size;
+ 	HFS_I(inode)->fs_blocks = (log_size + sb->s_blocksize - 1) >> sb->s_blocksize_bits;
 
 
 
