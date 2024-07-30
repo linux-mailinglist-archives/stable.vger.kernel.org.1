@@ -1,129 +1,123 @@
-Return-Path: <stable+bounces-62735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07031940ED9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:20:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3190940EF0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:24:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B76CB283844
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:20:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 560E6B235D3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B024194AD7;
-	Tue, 30 Jul 2024 10:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93276197A86;
+	Tue, 30 Jul 2024 10:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3rSuNUk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhENFo4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A49208DA;
-	Tue, 30 Jul 2024 10:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51712208DA
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 10:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722334843; cv=none; b=XAoi0+AenvXUULUyd3j8CjQ8COmA245dj2p9ejaLNs6uw2JXPgl5BF3CwxOYHljUuhtPkq70to9XNg6Gq+Bc8IO+ZJpyWMg9DRRoE1qQ0qwv1+WIq2OMCbxnm5xyCM2oKit1NmcdbrMqj1qd7N65KBoZ+r/y1vkDUq77K6duQmo=
+	t=1722335044; cv=none; b=XpAlx9m+z7ggODGSXH/POzXdvK+sLsdAhZpV94wkYyUyXYnHCvzaP/jAxMoNqRmRmDq92IHqkLF4434DNXXSqk1HkUI6eaCA5mYWnFcIjD7kqFTwTPzWhu46VOOepaPVXW225+OZGefOpjlAThvVJ5bnzAKW7653LWV62D5CRs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722334843; c=relaxed/simple;
-	bh=5kuY+GXkSu2+PSobo1SL9QjXJZESAQjxDibn3e5uTmw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kVTbJurL6WNG+G9ct3ISc2fu4JurG7u0e9+r3ZeRMUZT1xpw+3Y/XrOCYGXMfP/bQNQOf0cK3YmEn8jgwG9HrgMdeaeept1hjda93QJv9nNmQKE3Zb1vL7O5t176aNHf4SmuNwwAbyC2NXkQNYN4KKXboi5JxUXwMbIBns3ZgTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3rSuNUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302FCC4AF09;
-	Tue, 30 Jul 2024 10:20:42 +0000 (UTC)
+	s=arc-20240116; t=1722335044; c=relaxed/simple;
+	bh=oh0GK6L2wAagJslrzH/zvC9y+zTcmwCBc/z7wbq0WbU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OY9Lza9Td8dIKafyPnsDmwDhGRRiN69p+Pt9aPPyRgQa/p9rV2iLUPZlOPZFNMP10uoWp1cMeWr1sakxmXxLQOq0QnYdxIO9hC1KSkiihUc5FyXoEvKv2M0y8zf/iNq1AW5VMz2z56GMMDSGTHhEQGCnyqfFFU8UoGkE7dF9YQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhENFo4j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62369C32782;
+	Tue, 30 Jul 2024 10:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722334842;
-	bh=5kuY+GXkSu2+PSobo1SL9QjXJZESAQjxDibn3e5uTmw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m3rSuNUkYKBBuYyJOOw9KBi/Rfc/IV1bBGaLZFuUQmm9Klpg2ck7HkjLM1rFY+rY0
-	 ikFf1AIJ3o6hKN4NEm+1kny/iuHxkLdPjB5H7XglDGmzc8dX72kycNB7f/421/bkED
-	 gNBNqqwSXm0g0BrkV0yMNUOkBRDo8p7Qt94FvEqo=
-Date: Tue, 30 Jul 2024 12:20:39 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: wujing <realwujing@qq.com>
-Cc: dongml2@chinatelecom.cn, linux-kernel@vger.kernel.org,
-	menglong8.dong@gmail.com, mingo@redhat.com, peterz@infradead.org,
-	stable@vger.kernel.org, yuanql9@chinatelecom.cn
-Subject: Re: Re: [PATCH] sched/fair: Correct CPU selection from isolated
- domain
-Message-ID: <2024073000-uncouple-stipend-2062@gregkh>
-References: <2024073011-operating-pointless-7ab9@gregkh>
- <tencent_16253196C5C7F0141593B633CA21A0150505@qq.com>
+	s=korg; t=1722335044;
+	bh=oh0GK6L2wAagJslrzH/zvC9y+zTcmwCBc/z7wbq0WbU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xhENFo4j7ATyfahlFcgZDECYQZE0yaMtinQUL++Jng+d0TflkBEodDz4LTrxomGYa
+	 9G8snRRqNlr7qSOqMwILOsVLiYMPtMfH4zWLeOAE1hsKwoG6xJvR2Km53hlhkTMPiM
+	 sp+D4pE+ndVwAFYnLwLvOn6JFvfiUtADSH0TVfR4=
+Subject: FAILED: patch "[PATCH] mtd: rawnand: lpx32xx: Fix dma_request_chan() error checks" failed to apply to 6.6-stable tree
+To: piotr.wojtaszczyk@timesys.com,miquel.raynal@bootlin.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 30 Jul 2024 12:23:57 +0200
+Message-ID: <2024073057-pasture-amused-2fe9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_16253196C5C7F0141593B633CA21A0150505@qq.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 30, 2024 at 06:11:06PM +0800, wujing wrote:
-> > On Tue, Jul 30, 2024 at 05:40:17PM +0800, wujing wrote:
-> > > > What "current patch"?
-> > > >
-> > > > confused,
-> > > >
-> > > > greg k-h
-> > >
-> > > The current patch is in my first email.
-> >
-> > What message exactly?  I don't see any such message on the stable list.
-> >
-> > > Please ignore the previous two emails.
-> > > The "current patch" mentioned in the earlier emails refers to the upstream
-> > > status, but the latest upstream patch can no longer be applied to linux-4.19.y.
-> >
-> > Again, please read:
-> >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> > for how to do this properly.
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> The email you just replied to is correct.
-> 
-> I reviewed the link in the email, and according to the link,
-> the patch I submitted meets the third criterion. I have noted
-> Upstream commit <8aeaffef8c6e> in the patch log.
-> 
-> 
-> 
-> >From 9d4ecc9314088c2b0aa39c2248fb5e64042f1eef Mon Sep 17 00:00:00 2001
-> From: wujing <realwujing@gmail.com>
-> Date: Tue, 30 Jul 2024 15:35:53 +0800
-> Subject: [PATCH] sched/fair: Correct CPU selection from isolated domain
-> 
-> We encountered an issue where the kernel thread `ksmd` runs on the PMD
-> dedicated isolated core, leading to high latency in OVS packets.
-> 
-> Upon analysis, we discovered that this is caused by the current
-> select_idle_smt() function not taking the sched_domain mask into account.
-> 
-> Upstream commit <8aeaffef8c6e>
-> 
-> Kernel version: linux-4.19.y
 
-This is not in a format that I can take.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Also, this does not match that commit id, so you need to document it
-really really well why this is different.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-And you lost the original authorship information, and the reviews.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x a503f91a3645651a39baf97f1aed90d5d9f9bda9
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073057-pasture-amused-2fe9@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-And finally, we can't take a change for 4.19.y that is also not in newer
-kernel releases, because if we did that, and you upgraded, you would
-have a regression.
+Possible dependencies:
 
-But most importantly, why are you still doing stuff on 4.19.y?  This
-kernel is going to go end-of-life very soon, and you should already have
-all of your systems that rely on it off of it by now, or planned to
-within a few months.  To not do that is to ensure that you will end up
-with insecure systems when the end-of-life deadline happens.
+a503f91a3645 ("mtd: rawnand: lpx32xx: Fix dma_request_chan() error checks")
+478211867460 ("mtd: rawnand: lpx32xx: Request DMA channels using DT entries")
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a503f91a3645651a39baf97f1aed90d5d9f9bda9 Mon Sep 17 00:00:00 2001
+From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+Date: Fri, 5 Jul 2024 13:51:35 +0200
+Subject: [PATCH] mtd: rawnand: lpx32xx: Fix dma_request_chan() error checks
+
+The dma_request_chan() returns error pointer in case of error, while
+dma_request_channel() returns NULL in case of error therefore different
+error checks are needed for the two.
+
+Fixes: 7326d3fb1ee3 ("mtd: rawnand: lpx32xx: Request DMA channels using DT entries")
+Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240705115139.126522-1-piotr.wojtaszczyk@timesys.com
+
+diff --git a/drivers/mtd/nand/raw/lpc32xx_mlc.c b/drivers/mtd/nand/raw/lpc32xx_mlc.c
+index 92cebe871bb4..b9c3adc54c01 100644
+--- a/drivers/mtd/nand/raw/lpc32xx_mlc.c
++++ b/drivers/mtd/nand/raw/lpc32xx_mlc.c
+@@ -575,7 +575,7 @@ static int lpc32xx_dma_setup(struct lpc32xx_nand_host *host)
+ 	dma_cap_mask_t mask;
+ 
+ 	host->dma_chan = dma_request_chan(mtd->dev.parent, "rx-tx");
+-	if (!host->dma_chan) {
++	if (IS_ERR(host->dma_chan)) {
+ 		/* fallback to request using platform data */
+ 		if (!host->pdata || !host->pdata->dma_filter) {
+ 			dev_err(mtd->dev.parent, "no DMA platform data\n");
+diff --git a/drivers/mtd/nand/raw/lpc32xx_slc.c b/drivers/mtd/nand/raw/lpc32xx_slc.c
+index 3b7e3d259785..ade971e4cc3b 100644
+--- a/drivers/mtd/nand/raw/lpc32xx_slc.c
++++ b/drivers/mtd/nand/raw/lpc32xx_slc.c
+@@ -722,7 +722,7 @@ static int lpc32xx_nand_dma_setup(struct lpc32xx_nand_host *host)
+ 	dma_cap_mask_t mask;
+ 
+ 	host->dma_chan = dma_request_chan(mtd->dev.parent, "rx-tx");
+-	if (!host->dma_chan) {
++	if (IS_ERR(host->dma_chan)) {
+ 		/* fallback to request using platform data */
+ 		if (!host->pdata || !host->pdata->dma_filter) {
+ 			dev_err(mtd->dev.parent, "no DMA platform data\n");
+
 
