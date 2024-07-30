@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-64287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0462941D2A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CF1941834
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52C0F1F215CD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF484B29587
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8007A18B462;
-	Tue, 30 Jul 2024 17:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD0C18C927;
+	Tue, 30 Jul 2024 16:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StqESLZl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdcNCHsI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D825188017;
-	Tue, 30 Jul 2024 17:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC53818C92A;
+	Tue, 30 Jul 2024 16:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359621; cv=none; b=qXQqkwP0Iw3+ASTC/K1fMcc76vFjawBlbTGrsfVSTLbKhTIUq38azVT5pweKZrRKMhIhPydyqNVgsq6+QyaYsHhCa8hTeR4YVvNWwlFJVFhTDjz4dXLWxJrIhopAqJHndwE532ilsFpr7pcSfJhPatBHR/qyqeT8xrW0uI4OvGw=
+	t=1722356061; cv=none; b=LOGxvHdmdniw49EL6XDKJ0+IIKIxX9qqCQGO9iFLljL3FZ3Nl7Keq2nwHn0BLx6lVG+UmYTdcwVy7WP49PHhJEJgKQrO1QgF6rzTBLoDPg89uoIfU3CVxSpgQZGcgP7/HM0ZEinxCI87fcOYdu94j0NMNQETf7MxroWKcPwB5Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359621; c=relaxed/simple;
-	bh=04FrcmAqCtKs0VT4W2miMjyamEmw74A6W0jFyfpESP0=;
+	s=arc-20240116; t=1722356061; c=relaxed/simple;
+	bh=NgFsJZuonOwYFRzu/+zVUhLA0Wos/dC7DymkNwNhPj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKhRVgRYKAPVk4GYwNyNtaRndZs2pxzibL3iQsDd09Ni1DfbklVgFAHCzF5HW272Ru+mQwZ0HCFe87G0CMzsIMPlCdggW8ri9f3InsTV79MJed6F42ngMFFrLnDRUv8vbLBVR/1TLozcm4u2r78GV28sjVocqvjFHuzWzln2ajM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StqESLZl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07E0C32782;
-	Tue, 30 Jul 2024 17:13:40 +0000 (UTC)
+	 MIME-Version; b=Cwydu7rvr6iqf74ogWwSRkkJ1+vYfAWDR+A3MHuOTKPkWoyiG0oNPHAwLsb6Gc2Y1tSs4MR+fDFJkrjIuKQmyVR7cNlWMk8vJ8wCgLgs9oh8HCSKIjfemqDzgspbmY5f2c14PYma7MhCug/H/Wrj2+WTys/6XBKNdea3gzx/e/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdcNCHsI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4763C32782;
+	Tue, 30 Jul 2024 16:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359621;
-	bh=04FrcmAqCtKs0VT4W2miMjyamEmw74A6W0jFyfpESP0=;
+	s=korg; t=1722356061;
+	bh=NgFsJZuonOwYFRzu/+zVUhLA0Wos/dC7DymkNwNhPj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StqESLZlAd0JEFQ/hHLjDCTY5pZCgnwycPpYiavdjr5jaqy/jTcJg+1mKhSHRwn6S
-	 bikwIwQHcguQ/Hg41uZdyZwFAGDK30ggJ6FEbCCDQBEXl6yRMWMRV0sfWXHSmm/7L2
-	 rfm7LhblZ2sAmKPABy6j+BktfDpFRDCWc+a6KGXQ=
+	b=mdcNCHsIqfKbYlGuR/xqvrFUD7clqZ0yzQdNnGoSGruhhQVoX6Tdjv/DXB9axoFm1
+	 CIq6VnJUtO1m1+J4V2WPqUnq2vlB3n8lEq2nrmLMP+98L/s7Y+u8btQ9ib99phjIG6
+	 0ARAp42jU5x3p4mozhpEYJmzCDNJ7EsMAKphCIYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Lance Yang <ioworker0@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 509/809] fs/proc/task_mmu: dont indicate PM_MMAP_EXCLUSIVE without PM_PRESENT
+Subject: [PATCH 6.1 152/440] drm/mediatek: Add OVL compatible name for MT8195
 Date: Tue, 30 Jul 2024 17:46:25 +0200
-Message-ID: <20240730151744.840004574@linuxfoundation.org>
+Message-ID: <20240730151621.816762863@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit da7f31ed0f4df8f61e8195e527aa83dd54896ba3 ]
+[ Upstream commit 6fb7a0985fd16868b5d72eb3e3de7524a6000e6e ]
 
-Relying on the mapcount for non-present PTEs that reference pages doesn't
-make any sense: they are not accounted in the mapcount, so page_mapcount()
-== 1 won't return the result we actually want to know.
+Add OVL compatible name for MT8195.
+Without this commit, DRM won't work after modifying the device tree.
 
-While we don't check the mapcount for migration entries already, we could
-end up checking it for swap, hwpoison, device exclusive, ...  entries,
-which we really shouldn't.
-
-There is one exception: device private entries, which we consider
-fake-present (e.g., incremented the mapcount).  But we won't care about
-that for now for PM_MMAP_EXCLUSIVE, because indicating PM_SWAP for them
-although they are fake-present already sounds suspiciously wrong.
-
-Let's never indicate PM_MMAP_EXCLUSIVE without PM_PRESENT.
-
-Link: https://lkml.kernel.org/r/20240607122357.115423-3-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Lance Yang <ioworker0@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 2c1f057e5be6 ("fs/proc/task_mmu: properly detect PM_MMAP_EXCLUSIVE per page of PMD-mapped THPs")
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-7-a9d62d2e2c7e@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/task_mmu.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 76ad35df3b1ee..22892cdb74cef 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1418,7 +1418,6 @@ static pagemap_entry_t pte_to_pagemap_entry(struct pagemapread *pm,
- {
- 	u64 frame = 0, flags = 0;
- 	struct page *page = NULL;
--	bool migration = false;
- 
- 	if (pte_present(pte)) {
- 		if (pm->show_pfn)
-@@ -1450,7 +1449,6 @@ static pagemap_entry_t pte_to_pagemap_entry(struct pagemapread *pm,
- 			    (offset << MAX_SWAPFILES_SHIFT);
- 		}
- 		flags |= PM_SWAP;
--		migration = is_migration_entry(entry);
- 		if (is_pfn_swap_entry(entry))
- 			page = pfn_swap_entry_to_page(entry);
- 		if (pte_marker_entry_uffd_wp(entry))
-@@ -1459,7 +1457,7 @@ static pagemap_entry_t pte_to_pagemap_entry(struct pagemapread *pm,
- 
- 	if (page && !PageAnon(page))
- 		flags |= PM_FILE;
--	if (page && !migration && page_mapcount(page) == 1)
-+	if (page && (flags & PM_PRESENT) && page_mapcount(page) == 1)
- 		flags |= PM_MMAP_EXCLUSIVE;
- 	if (vma->vm_flags & VM_SOFTDIRTY)
- 		flags |= PM_SOFT_DIRTY;
-@@ -1476,7 +1474,6 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 	pte_t *pte, *orig_pte;
- 	int err = 0;
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	bool migration = false;
- 
- 	ptl = pmd_trans_huge_lock(pmdp, vma);
- 	if (ptl) {
-@@ -1520,14 +1517,13 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 			if (pmd_swp_uffd_wp(pmd))
- 				flags |= PM_UFFD_WP;
- 			VM_BUG_ON(!is_pmd_migration_entry(pmd));
--			migration = is_migration_entry(entry);
- 			page = pfn_swap_entry_to_page(entry);
- 		}
- #endif
- 
- 		if (page && !PageAnon(page))
- 			flags |= PM_FILE;
--		if (page && !migration && page_mapcount(page) == 1)
-+		if (page && (flags & PM_PRESENT) && page_mapcount(page) == 1)
- 			flags |= PM_MMAP_EXCLUSIVE;
- 
- 		for (; addr != end; addr += PAGE_SIZE) {
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index 25639fbfd374a..905275df09800 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -598,6 +598,8 @@ static const struct of_device_id mtk_ddp_comp_dt_ids[] = {
+ 	  .data = (void *)MTK_DISP_OVL },
+ 	{ .compatible = "mediatek,mt8192-disp-ovl",
+ 	  .data = (void *)MTK_DISP_OVL },
++	{ .compatible = "mediatek,mt8195-disp-ovl",
++	  .data = (void *)MTK_DISP_OVL },
+ 	{ .compatible = "mediatek,mt8183-disp-ovl-2l",
+ 	  .data = (void *)MTK_DISP_OVL_2L },
+ 	{ .compatible = "mediatek,mt8192-disp-ovl-2l",
 -- 
 2.43.0
 
