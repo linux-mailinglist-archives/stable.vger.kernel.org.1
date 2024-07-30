@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0BD941DD5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFE394191A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B931E289125
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D00F9286C10
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1481A76C9;
-	Tue, 30 Jul 2024 17:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1B01A6198;
+	Tue, 30 Jul 2024 16:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SS2o+cK5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBN867TA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291151A76AE;
-	Tue, 30 Jul 2024 17:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190821A6161;
+	Tue, 30 Jul 2024 16:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360109; cv=none; b=onwxsQJXALarDADgbC5thYLPJTwCaAmcoCQKsFyk9ePcLNRRoFFLqkZXtrk+tku5e7NfmyrZTEiMryuIsN878owpihub4YMQEsCIQIeSeo9O1BMOAKOF1w21MU7/drKNVE+wiUA/1FqQtAxEOCg8woAy8oLL8QqPXSM6MMfY7ng=
+	t=1722356938; cv=none; b=eiX7F92Io4CTWVLqDZKoReZRFGYgLUrB0ime8iJb2zoRvhpVG1The3xgHO204tT3FE/BwtVdX4yQx/p97oO0yfNo0iS5b5JPCyG54U5cx/9DeXvAdQdGW6Dpjwi4UdN9tu9hTG2pwm460hf+QyBnaEPtlZL1VV8iTs8uwV7sKF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360109; c=relaxed/simple;
-	bh=xyYPyAMdRmyx8kaTnYGQZiAtKq1KyAtVStohmTwy4GA=;
+	s=arc-20240116; t=1722356938; c=relaxed/simple;
+	bh=bdGvri8pleFNzuPh2vHGjzHxCYMFIadQz9Za1OYjHyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pn51pHSXsEt5TGOpsQUtMG4svczCC4Ruo5Fo49izw+9EBqgrBy09ObV90dHMP5+FqrP1DJRuFceai7hXqFluzlXg1RlejGXR08oq/kYdUs1gFjF7DxISje2exkjHYK2NKs1wpxzN71S6FdbfCrs0jpq6m6aCTJuSBJfpb9FPoXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SS2o+cK5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBF9C32782;
-	Tue, 30 Jul 2024 17:21:48 +0000 (UTC)
+	 MIME-Version; b=FYVh9655bZIJ5Qj5pq0DwWY2SNBCJbJX93hJ85Ooqk+TO3txWPMHF/Wlq68xMM/SlM3NZZ/Vr6Gbr/xqfG3Mnhalve7Js5zDwmxCMKnup/LR6dZxHRBXxLCn0cPao3T5TuqeKS9reSIioCbUooryEnMiQWAd5VVmbhU1fU3Hdak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBN867TA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F39C32782;
+	Tue, 30 Jul 2024 16:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360109;
-	bh=xyYPyAMdRmyx8kaTnYGQZiAtKq1KyAtVStohmTwy4GA=;
+	s=korg; t=1722356938;
+	bh=bdGvri8pleFNzuPh2vHGjzHxCYMFIadQz9Za1OYjHyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SS2o+cK5+FteDtVcIH8e2OynXw/fTuOAAGHvSf4eYJvU7OlgZWFGeJSNjpYGFLCwk
-	 JxBaYODaMsKfbuc1L5gV+HBIFJm0fv0Cs8P4CdWqAJPOQteVDhLe/2iT9S18iuB4PA
-	 8LpC3bS3BpopE1e5bkv7e/nlb66Syi5LA88CMR/k=
+	b=ZBN867TABtKLcRVH4bMJUk0t+kE0nWNrxhWsVfc4KADUgtFb160o6pLYrJNAlc30z
+	 RiZkql9mPPYjCFDT/EewKu2HrZw2eBpZq9OienxWDL5o9nDzsoo29LlW3SGW9kRAc0
+	 LeObDBfiZy83XMqpJisYSVJ37C/j0afZtqYCY6VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chih-Kang Chang <gary.chang@realtek.com>,
-	Po-Hao Huang <phhuang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.10 600/809] wifi: rtw89: fix HW scan not aborting properly
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 243/440] fs/ntfs3: Add missing .dirty_folio in address_space_operations
 Date: Tue, 30 Jul 2024 17:47:56 +0200
-Message-ID: <20240730151748.528011438@linuxfoundation.org>
+Message-ID: <20240730151625.344576712@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Po-Hao Huang <phhuang@realtek.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 669b692247d4516e252c898c0e7366a09d84d1be upstream.
+[ Upstream commit 0f9579d9e0331b6255132ac06bdf2c0a01cceb90 ]
 
-There is a length limit on the commands we send to firmware, so
-dividing to two commands is sometimes required when scanning.
-When aborting scan, we should not send second scan command to
-firmware after the first one is finished. This could cause some
-unexpected errors when we cannot receive firmware events
-(e.g. in suspend).
+After switching from pages to folio [1], it became evident that
+the initialization of .dirty_folio for page cache operations was missed for
+compressed files.
 
-Another case is scan happens before suspending, ieee80211_do_stop() is
-called to abort scan and driver indicate scan completion by
-ieee80211_scan_completed(), which queues event to scan work. But scan work
-might be late to execute after ieee80211_do_stop(). To correct this, driver
-indicates ieee80211_scan_completed() before returning, so that
-ieee80211_do_stop() can flush scan work properly.
+[1] https://lore.kernel.org/ntfs3/20240422193203.3534108-1-willy@infradead.org
 
-Fixes: bcbefbd032df ("wifi: rtw89: add wait/completion for abort scan")
-Cc: stable@vger.kernel.org
-Co-developed-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/20240517013350.11278-1-pkshih@realtek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c  |    9 ++++++++-
- drivers/net/wireless/realtek/rtw89/mac.c |    5 ++++-
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ fs/ntfs3/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -6245,7 +6245,14 @@ void rtw89_hw_scan_abort(struct rtw89_de
- 
- 	ret = rtw89_hw_scan_offload(rtwdev, vif, false);
- 	if (ret)
--		rtw89_hw_scan_complete(rtwdev, vif, true);
-+		rtw89_warn(rtwdev, "rtw89_hw_scan_offload failed ret %d\n", ret);
-+
-+	/* Indicate ieee80211_scan_completed() before returning, which is safe
-+	 * because scan abort command always waits for completion of
-+	 * RTW89_SCAN_END_SCAN_NOTIFY, so that ieee80211_stop() can flush scan
-+	 * work properly.
-+	 */
-+	rtw89_hw_scan_complete(rtwdev, vif, true);
- }
- 
- static bool rtw89_is_any_vif_connected_or_connecting(struct rtw89_dev *rtwdev)
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -4757,6 +4757,9 @@ rtw89_mac_c2h_scanofld_rsp(struct rtw89_
- 		}
- 		return;
- 	case RTW89_SCAN_END_SCAN_NOTIFY:
-+		if (rtwdev->scan_info.abort)
-+			return;
-+
- 		if (rtwvif && rtwvif->scan_req &&
- 		    last_chan < rtwvif->scan_req->n_channels) {
- 			ret = rtw89_hw_scan_offload(rtwdev, vif, true);
-@@ -4765,7 +4768,7 @@ rtw89_mac_c2h_scanofld_rsp(struct rtw89_
- 				rtw89_warn(rtwdev, "HW scan failed: %d\n", ret);
- 			}
- 		} else {
--			rtw89_hw_scan_complete(rtwdev, vif, rtwdev->scan_info.abort);
-+			rtw89_hw_scan_complete(rtwdev, vif, false);
- 		}
- 		break;
- 	case RTW89_SCAN_ENTER_OP_NOTIFY:
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 0130b8583bf5a..28cbae3954315 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1967,5 +1967,6 @@ const struct address_space_operations ntfs_aops = {
+ const struct address_space_operations ntfs_aops_cmpr = {
+ 	.read_folio	= ntfs_read_folio,
+ 	.readahead	= ntfs_readahead,
++	.dirty_folio	= block_dirty_folio,
+ };
+ // clang-format on
+-- 
+2.43.0
+
 
 
 
