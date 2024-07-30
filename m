@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA40A941924
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F9F941CC7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85881286CFC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 471071C212E1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAA81078F;
-	Tue, 30 Jul 2024 16:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30D618801A;
+	Tue, 30 Jul 2024 17:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/uyGgGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWZND7/G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0705C1A618E;
-	Tue, 30 Jul 2024 16:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728E883A17;
+	Tue, 30 Jul 2024 17:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356964; cv=none; b=gB9KnKEVenHEAFOpfDbE0EDaAoE52LWw+ZJgDlPnKnHwmOwcO3bFA06brzclljIuO/otODjJbCB0KierRDAkf9iHrcH5OMi7qm7De7cUt+9ep12LYh4SPWFLBBZWB4lOxX1jqHILXFcnbMlY6GvE30Z+Lz7io0lPOC1Y0zy5qOs=
+	t=1722359315; cv=none; b=atSEUEbUS+q/24SN0KRfNAAaMq+xjUKUuXRfOJWNMHcqNvBXtPOM08bJBVKmLBReXnMPTyVBJH9iqMpW6/XZ1c3Zp3rc9JJ93KAmJavjf4CNfMF+erT+NL3t6sov8iGIC7SVB10I6iO8AanitPuAiZwQZHUyIcj1o/el1pOhBKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356964; c=relaxed/simple;
-	bh=uzg9PcyPKyZ0zCdvZ+YxGzDDMgDbWx2Q6qlZGB2Jzsg=;
+	s=arc-20240116; t=1722359315; c=relaxed/simple;
+	bh=o/5nrUtKEsG7fgjqOn6hf2btpX9z3vXa0Ui1fFG3LtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpgTvzY1pekAjNYuUya5SGMqlpCH3MZOLlVqxl4cHgaS7HlXhyoF+UN7KyJiPwFnZdZXzWqT/8BrE0s3iqRnwgMDyo3FSPQjfJvE/+aPmx+P+rrwVPwwI3iOsj92PAjPIM2WzMAmjwXScXXdZ6+PCZkZQmBcyXA5b0iumLr1Ew0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/uyGgGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E74C32782;
-	Tue, 30 Jul 2024 16:29:23 +0000 (UTC)
+	 MIME-Version; b=IFLfblDkSzXEYXyO1M3+CMBI+WDSjaaA4f9LnpbBiO4ZFzSemXraXvB1VBsz0JzTRaargspbqmd1ZSWNuQWpfpQxvBIwW0lnBzZAm57Mr9I/LZy7WW0JmdzSWRJ0Z1VtqlZ6mEtiVox50OabEtfssaTzrA9v/n3INjaPqiTBS5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWZND7/G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B99C32782;
+	Tue, 30 Jul 2024 17:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356963;
-	bh=uzg9PcyPKyZ0zCdvZ+YxGzDDMgDbWx2Q6qlZGB2Jzsg=;
+	s=korg; t=1722359315;
+	bh=o/5nrUtKEsG7fgjqOn6hf2btpX9z3vXa0Ui1fFG3LtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/uyGgGMzCC5JYHFIY9F5fSX+vJFA9fQvKdaZ9T3nfoTGEOYrj/JMJyGMW6nONYCg
-	 0MMiuNmWzDb71+bu24aIzuKgzQaprnIXbZXFNALVNbyGev67ixKu/3bki773cH8Cwz
-	 LKUKj7Dohepfq2QPQIwPCTdQ33jMxxMKQzhWQygY=
+	b=fWZND7/GMYk2MUQHKb6VW3z716x0CgNU1ezJqrppFHcwiDKXQq3Xcn8oGs5zbz8aF
+	 8f+F7fAOifMuvN1X2x+ZGTKmHoK1fIJKCAq5/J+vtKKH0l0tXYuGKLuTcao2MJwT3/
+	 G3Va7HYUA7ObRbTn1arA2AlEOBPOMi1qUCqoa+A4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Schaefer <dhs@frame.work>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 205/568] media: uvcvideo: Override default flags
-Date: Tue, 30 Jul 2024 17:45:12 +0200
-Message-ID: <20240730151647.887459782@linuxfoundation.org>
+Subject: [PATCH 6.10 437/809] dm-raid: Fix WARN_ON_ONCE check for sync_thread in raid_resume
+Date: Tue, 30 Jul 2024 17:45:13 +0200
+Message-ID: <20240730151741.963550782@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Schaefer <dhs@frame.work>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 86419686e66da5b90a07fb8a40ab138fe97189b5 ]
+[ Upstream commit 3199a34bfaf7561410e0be1e33a61eba870768fc ]
 
-When the UVC device has a control that is readonly it doesn't set the
-SET_CUR flag. For example the privacy control has SET_CUR flag set in
-the defaults in the `uvc_ctrls` variable. Even if the device does not
-have it set, it's not cleared by uvc_ctrl_get_flags().
+rm-raid devices will occasionally trigger the following warning when
+being resumed after a table load because DM_RECOVERY_RUNNING is set:
 
-Originally written with assignment in commit 859086ae3636 ("media:
-uvcvideo: Apply flags from device to actual properties"). But changed to
-|= in commit 0dc68cabdb62 ("media: uvcvideo: Prevent setting unavailable
-flags"). It would not clear the default flags.
+WARNING: CPU: 7 PID: 5660 at drivers/md/dm-raid.c:4105 raid_resume+0xee/0x100 [dm_raid]
 
-With this patch applied the correct flags are reported to user space.
-Tested with:
+The failing check is:
+WARN_ON_ONCE(test_bit(MD_RECOVERY_RUNNING, &mddev->recovery));
 
-```
-> v4l2-ctl --list-ctrls | grep privacy
-privacy 0x009a0910 (bool)   : default=0 value=0 flags=read-only
-```
+This check is designed to make sure that the sync thread isn't
+registered, but md_check_recovery can set MD_RECOVERY_RUNNING without
+the sync_thread ever getting registered. Instead of checking if
+MD_RECOVERY_RUNNING is set, check if sync_thread is non-NULL.
 
-Signed-off-by: Daniel Schaefer <dhs@frame.work>
-Fixes: 0dc68cabdb62 ("media: uvcvideo: Prevent setting unavailable flags")
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240602065053.36850-1-dhs@frame.work
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: 16c4770c75b1 ("dm-raid: really frozen sync_thread during suspend")
+Suggested-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/md/dm-raid.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index e59a463c27618..07158e9451fed 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -2029,7 +2029,13 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
- 	else
- 		ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id,
- 				     dev->intfnum, info->selector, data, 1);
--	if (!ret)
-+
-+	if (!ret) {
-+		info->flags &= ~(UVC_CTRL_FLAG_GET_CUR |
-+				 UVC_CTRL_FLAG_SET_CUR |
-+				 UVC_CTRL_FLAG_AUTO_UPDATE |
-+				 UVC_CTRL_FLAG_ASYNCHRONOUS);
-+
- 		info->flags |= (data[0] & UVC_CONTROL_CAP_GET ?
- 				UVC_CTRL_FLAG_GET_CUR : 0)
- 			    |  (data[0] & UVC_CONTROL_CAP_SET ?
-@@ -2038,6 +2044,7 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
- 				UVC_CTRL_FLAG_AUTO_UPDATE : 0)
- 			    |  (data[0] & UVC_CONTROL_CAP_ASYNCHRONOUS ?
- 				UVC_CTRL_FLAG_ASYNCHRONOUS : 0);
-+	}
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index abe88d1e67358..b149ac46a990e 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -4101,10 +4101,11 @@ static void raid_resume(struct dm_target *ti)
+ 		if (mddev->delta_disks < 0)
+ 			rs_set_capacity(rs);
  
- 	kfree(data);
- 	return ret;
++		mddev_lock_nointr(mddev);
+ 		WARN_ON_ONCE(!test_bit(MD_RECOVERY_FROZEN, &mddev->recovery));
+-		WARN_ON_ONCE(test_bit(MD_RECOVERY_RUNNING, &mddev->recovery));
++		WARN_ON_ONCE(rcu_dereference_protected(mddev->sync_thread,
++						       lockdep_is_held(&mddev->reconfig_mutex)));
+ 		clear_bit(RT_FLAG_RS_FROZEN, &rs->runtime_flags);
+-		mddev_lock_nointr(mddev);
+ 		mddev->ro = 0;
+ 		mddev->in_sync = 0;
+ 		md_unfrozen_sync_thread(mddev);
 -- 
 2.43.0
 
