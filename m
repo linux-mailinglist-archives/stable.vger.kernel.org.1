@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-63531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1231D94196E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C1194191B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4426E1C22A15
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 570161C235EC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5231898ED;
-	Tue, 30 Jul 2024 16:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EF71A6196;
+	Tue, 30 Jul 2024 16:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrIbCp/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HG0X8aSB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDBB1A6192;
-	Tue, 30 Jul 2024 16:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742271A6161;
+	Tue, 30 Jul 2024 16:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357126; cv=none; b=YuC0XH21KKK222e+vsGQXpRHrHgO+oB1HA6498TSHR33QSJEFMeCc0KUy53ViT6B97QgfJLKxKv/WoH43ycFRMueKQfyGwOmlqIZ2aPIir3gQBjWeH7lMSmLqjcGpGA44fVpGLqCIhQIhUz9P1KYnXgNqCWH/RysMA/Md1uaZPM=
+	t=1722356941; cv=none; b=h21FUiz2Pr9OcGacwjUB8FyX/PHRWC4AulqNV96QZeSubTiBU8rPyCJ3i4AKojx2ztDWPVhrKVRSxO31dw1piFQp5kVvxUvuJLauQq5ctL8CsYYpxDfOJnSsNYx8TUwN5NjP/faK2NmUtDhuXQqnXd9JvFu9RqeZ0OCUhpdQ544=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357126; c=relaxed/simple;
-	bh=LblBgt9YUkWIRuvOHPCGKjELgYPhSkY9Vk1PDlAyMTM=;
+	s=arc-20240116; t=1722356941; c=relaxed/simple;
+	bh=fGVbRV5dCK439TYXjV0xHekroXHb6meZ1aIV7brjods=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUzcQABTNJiV02yCYDfuEmqIY6MdUmJoGtHBlMtgNeGdJoHwlfehHFCIovE79U/WMenWdPz5j7P9uU+ziaIsLHs9GszyzYC3daaJF3c5Bo9hkR4BwXgMptuAg4uyFzhjthyKqgTBo45HXR5jxTinTfxstgMaDxIJGydh0Gi7Ieg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrIbCp/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C84BC32782;
-	Tue, 30 Jul 2024 16:32:06 +0000 (UTC)
+	 MIME-Version; b=H8faweGjn2pnLm6xHStXXpXvOlQRHAeHlNqT8zBX0JvkYkSDKqsp3tOpIli1odZMTt8gBQ7bR6bfIVVaYnhDY6CFVoyc0inS+iYus3NzeLBRT6rRsu0aZ9Zsb+VKLyiF6rZ+R0rvs1mQh/hpMFw93VVsvv7oXhf+O6X8R774uy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HG0X8aSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49C3C32782;
+	Tue, 30 Jul 2024 16:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357126;
-	bh=LblBgt9YUkWIRuvOHPCGKjELgYPhSkY9Vk1PDlAyMTM=;
+	s=korg; t=1722356941;
+	bh=fGVbRV5dCK439TYXjV0xHekroXHb6meZ1aIV7brjods=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RrIbCp/wM9+idIqWv3P4HpYHgVLMqwKzHwOG3YwsjUKaH9MUtexx0T/vjdy8FNuMH
-	 kzk33vYsRUOK5+s+867SuYFeM/EfBv3tpu0bmgomhDwQ2dAQtnhznjxy0roN6mO4Xp
-	 vGobjefHTSKF7U1LOKvSi8vXJpirGVhXo1ZRTgNY=
+	b=HG0X8aSB4wKZKHfiI0Ug2+Xwhcde+u8LBpKThUI8Ye+TiGZs3bUIU84F/wmFc+jPD
+	 +PW6dg9JbR/RBj5uhQeyiLIdeKYShNRXmgiaLV5HN8z3SzjJm+UGAt6+gx7McImuNb
+	 Lsg8yhDffblBCOR9Et8zamUOiRMwg/1YPPgA0iiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Majewski <lukma@denx.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 202/809] net: dsa: ksz_common: Allow only up to two HSR HW offloaded ports for KSZ9477
-Date: Tue, 30 Jul 2024 17:41:18 +0200
-Message-ID: <20240730151732.587137544@linuxfoundation.org>
+Subject: [PATCH 6.10 203/809] bpf: Change bpf_session_cookie return value to __u64 *
+Date: Tue, 30 Jul 2024 17:41:19 +0200
+Message-ID: <20240730151732.625983622@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -69,65 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lukasz Majewski <lukma@denx.de>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit dcec8d291da8813b5e1c7c0967ae63463a8521f6 ]
+[ Upstream commit 717d6313bba1b3179f0bf1026aaec6b7e26f484e ]
 
-The KSZ9477 allows HSR in-HW offloading for any of two selected ports.
-This patch adds check if one tries to use more than two ports with
-HSR offloading enabled.
+This reverts [1] and changes return value for bpf_session_cookie
+in bpf selftests. Having long * might lead to problems on 32-bit
+architectures.
 
-The problem is with RedBox configuration (HSR-SAN) - when configuring:
-ip link add name hsr0 type hsr slave1 lan1 slave2 lan2 interlink lan3 \
-	supervision 45 version 1
-
-The lan1 (port0) and lan2 (port1) are correctly configured as ports, which
-can use HSR offloading on ksz9477.
-
-However, when we do already have two bits set in hsr_ports, we need to
-return (-ENOTSUPP), so the interlink port (lan3) would be used with
-SW based HSR RedBox support.
-
-Otherwise, I do see some strange network behavior, as some HSR frames are
-visible on non-HSR network and vice versa.
-
-This causes the switch connected to interlink port (lan3) to drop frames
-and no communication is possible.
-
-Moreover, conceptually - the interlink (i.e. HSR-SAN port - lan3/port2)
-shall be only supported in software as it is also possible to use ksz9477
-with only SW based HSR (i.e. port0/1 -> hsr0 with offloading, port2 ->
-HSR-SAN/interlink, port4/5 -> hsr1 with SW based HSR).
-
-Fixes: 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)")
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 2b8dd87332cd ("bpf: Make bpf_session_cookie() kfunc return long *")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240619081624.1620152-1-jolsa@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/trace/bpf_trace.c                                        | 2 +-
+ tools/testing/selftests/bpf/bpf_kfuncs.h                        | 2 +-
+ tools/testing/selftests/bpf/progs/kprobe_multi_session_cookie.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 0580b2fee21c3..baa1eeb9a1b04 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -3917,6 +3917,13 @@ static int ksz_hsr_join(struct dsa_switch *ds, int port, struct net_device *hsr,
- 		return -EOPNOTSUPP;
- 	}
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index bc16e21a2a443..d1daeab1bbc14 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -3527,7 +3527,7 @@ __bpf_kfunc bool bpf_session_is_return(void)
+ 	return session_ctx->is_return;
+ }
  
-+	/* KSZ9477 can only perform HSR offloading for up to two ports */
-+	if (hweight8(dev->hsr_ports) >= 2) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Cannot offload more than two ports - using software HSR");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	/* Self MAC address filtering, to avoid frames traversing
- 	 * the HSR ring more than once.
- 	 */
+-__bpf_kfunc long *bpf_session_cookie(void)
++__bpf_kfunc __u64 *bpf_session_cookie(void)
+ {
+ 	struct bpf_session_run_ctx *session_ctx;
+ 
+diff --git a/tools/testing/selftests/bpf/bpf_kfuncs.h b/tools/testing/selftests/bpf/bpf_kfuncs.h
+index be91a69193158..3b6675ab40861 100644
+--- a/tools/testing/selftests/bpf/bpf_kfuncs.h
++++ b/tools/testing/selftests/bpf/bpf_kfuncs.h
+@@ -77,5 +77,5 @@ extern int bpf_verify_pkcs7_signature(struct bpf_dynptr *data_ptr,
+ 				      struct bpf_key *trusted_keyring) __ksym;
+ 
+ extern bool bpf_session_is_return(void) __ksym __weak;
+-extern long *bpf_session_cookie(void) __ksym __weak;
++extern __u64 *bpf_session_cookie(void) __ksym __weak;
+ #endif
+diff --git a/tools/testing/selftests/bpf/progs/kprobe_multi_session_cookie.c b/tools/testing/selftests/bpf/progs/kprobe_multi_session_cookie.c
+index d49070803e221..0835b5edf6858 100644
+--- a/tools/testing/selftests/bpf/progs/kprobe_multi_session_cookie.c
++++ b/tools/testing/selftests/bpf/progs/kprobe_multi_session_cookie.c
+@@ -25,7 +25,7 @@ int BPF_PROG(trigger)
+ 
+ static int check_cookie(__u64 val, __u64 *result)
+ {
+-	long *cookie;
++	__u64 *cookie;
+ 
+ 	if (bpf_get_current_pid_tgid() >> 32 != pid)
+ 		return 1;
 -- 
 2.43.0
 
