@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A739417EB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF41F941A4D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16D371F246A7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:17:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA70A2816B4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85DB18B468;
-	Tue, 30 Jul 2024 16:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208B2189502;
+	Tue, 30 Jul 2024 16:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0P2COrO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvsJXnDG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644F618991C;
-	Tue, 30 Jul 2024 16:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3ABC1A6169;
+	Tue, 30 Jul 2024 16:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356058; cv=none; b=YMU1e1OBibdOpPiUnQ8BkS2weCi/pEj+ENnhQUkmG0XRgeW2cx5Ra2RY0qeJTG6K+YGI1D/UQCEn9IM7kozqoXNOgujXimvCejbbcp0o7axoHq/Vh+uEORBown34DRCnp74/R78Nx0u1Sg3y540flvP80BCrAdZTvittMoUC5v8=
+	t=1722357740; cv=none; b=lEOpDVmG5ThnqGiVVRYUG/cNEHfzFXAFz233bO6fSqta/5dyr+4qa+XMP/ApDPte2DIlJoeFW9ndwxuyv9FqSTDS09SSCV1Vr2LEIbtXxJvpWbIFR2EUST8LNtuL3xyi52uTYxAyWcA212uyb6SComi04P5E17jkyckFPCWbrBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356058; c=relaxed/simple;
-	bh=J4vuVOQpvC5z8ioVagU9tXSmIM/+tPBO8El+2NozX4E=;
+	s=arc-20240116; t=1722357740; c=relaxed/simple;
+	bh=/RKHR3GcrgrZYyb1Z2ntPa1SzEYPY9xb8kR0IBgCJok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKbi7E+7RL/iF7qqb3DGcfZ+AvU5ox+VTRa0ouQJRdd4IfZOi90S3XQjxzMXLLhKtNodhVhGKNiFRLfB8pF+SjIk3+XU0RWI7u0nKnVjNdHJzVziID1M+qD8ndsD0qtHdx3V1Y8CrlgeaUdHJ2Dq/6A74FYN+y2vTQ6MTuAmb0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0P2COrO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE58FC4AF0E;
-	Tue, 30 Jul 2024 16:14:17 +0000 (UTC)
+	 MIME-Version; b=GjcY4cWr2wTQMBXC0JHotd+6zDcincBpZC3aBOHgDgwXVoDuNJDxNk40JSxD/GqgSqbK4GzbsBeQkoRLKl0VqZSITNCi8lY3rwRNNVMZsgbn1WC5ujaMOVxSNIpT4RG2OmDKd6ok/dbt7AtNvU3cje1XOH9wINjQDuKkXOnWG4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvsJXnDG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E03C32782;
+	Tue, 30 Jul 2024 16:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356058;
-	bh=J4vuVOQpvC5z8ioVagU9tXSmIM/+tPBO8El+2NozX4E=;
+	s=korg; t=1722357740;
+	bh=/RKHR3GcrgrZYyb1Z2ntPa1SzEYPY9xb8kR0IBgCJok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0P2COrOpaQV9qByYmLd6IlUj3I0UdBF2dTqixmmYEO0/77LeV0sdjMDfvbDZXYD5
-	 ohTLgwcWDHVXWwyfyaU8963l18djiNJ+BmY+4k2KafAYrwA2r5iYLwkLd0oNPnXisB
-	 eqtTpRU5mpjgfpLqyZOFoj7awyhqM1PBMT+myh3Q=
+	b=XvsJXnDGrkMMNQqZCvoRAwV09DADs/Fzy3Dc9U62J0Av1chURikay2ra1+J0J4Lrr
+	 LizlfcUOMIyjg9yhbD/8cToqktHMIFOXsyZSSE8i771YbcWTPtC5jFvCcR5wssLUSw
+	 /wOfv0KwBEdJLl5DQoVKRgdKE/Itg7IQU2swg/fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/440] media: dvb-usb: Fix unexpected infinite loop in dvb_usb_read_remote_control()
+Subject: [PATCH 6.6 263/568] usb: typec-mux: nb7vpq904m: unregister typec switch on probe error and remove
 Date: Tue, 30 Jul 2024 17:46:10 +0200
-Message-ID: <20240730151621.234094943@linuxfoundation.org>
+Message-ID: <20240730151650.155815873@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 2052138b7da52ad5ccaf74f736d00f39a1c9198c ]
+[ Upstream commit 74b64e760ee3433c0f8d95715038c869bcddacf7 ]
 
-Infinite log printing occurs during fuzz test:
+Add the missing call to typec_switch_put() when probe fails and
+the nb7vpq904m_remove() call is called.
 
-  rc rc1: DViCO FusionHDTV DVB-T USB (LGZ201) as ...
-  ...
-  dvb-usb: schedule remote query interval to 100 msecs.
-  dvb-usb: DViCO FusionHDTV DVB-T USB (LGZ201) successfully initialized ...
-  dvb-usb: bulk message failed: -22 (1/0)
-  dvb-usb: bulk message failed: -22 (1/0)
-  dvb-usb: bulk message failed: -22 (1/0)
-  ...
-  dvb-usb: bulk message failed: -22 (1/0)
-
-Looking into the codes, there is a loop in dvb_usb_read_remote_control(),
-that is in rc_core_dvb_usb_remote_init() create a work that will call
-dvb_usb_read_remote_control(), and this work will reschedule itself at
-'rc_interval' intervals to recursively call dvb_usb_read_remote_control(),
-see following code snippet:
-
-  rc_core_dvb_usb_remote_init() {
-    ...
-    INIT_DELAYED_WORK(&d->rc_query_work, dvb_usb_read_remote_control);
-    schedule_delayed_work(&d->rc_query_work,
-                          msecs_to_jiffies(rc_interval));
-    ...
-  }
-
-  dvb_usb_read_remote_control() {
-    ...
-    err = d->props.rc.core.rc_query(d);
-    if (err)
-      err(...)  // Did not return even if query failed
-    schedule_delayed_work(&d->rc_query_work,
-                          msecs_to_jiffies(rc_interval));
-  }
-
-When the infinite log printing occurs, the query callback
-'d->props.rc.core.rc_query' is cxusb_rc_query(). And the log is due to
-the failure of finding a valid 'generic_bulk_ctrl_endpoint'
-in usb_bulk_msg(), see following code snippet:
-
-  cxusb_rc_query() {
-    cxusb_ctrl_msg() {
-      dvb_usb_generic_rw() {
-        ret = usb_bulk_msg(d->udev, usb_sndbulkpipe(d->udev,
-                           d->props.generic_bulk_ctrl_endpoint),...);
-        if (ret)
-          err("bulk message failed: %d (%d/%d)",ret,wlen,actlen);
-          ...
-      }
-  ...
-  }
-
-By analyzing the corresponding USB descriptor, it shows that the
-bNumEndpoints is 0 in its interface descriptor, but
-the 'generic_bulk_ctrl_endpoint' is 1, that means user don't configure
-a valid endpoint for 'generic_bulk_ctrl_endpoint', therefore this
-'invalid' USB device should be rejected before it calls into
-dvb_usb_read_remote_control().
-
-To fix it, we need to add endpoint check for 'generic_bulk_ctrl_endpoint'.
-And as Sean suggested, the same check and clear halts should be done for
-'generic_bulk_ctrl_endpoint_response'. So introduce
-dvb_usb_check_bulk_endpoint() to do it for both of them.
-
-Fixes: 4d43e13f723e ("V4L/DVB (4643): Multi-input patch for DVB-USB device")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 348359e7c232 ("usb: typec: nb7vpq904m: Add an error handling path in nb7vpq904m_probe()")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 88d8f3ac9c67 ("usb: typec: add support for the nb7vpq904m Type-C Linear Redriver")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606-topic-sm8x50-upstream-retimer-broadcast-mode-v2-2-c6f6eae479c3@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb/dvb-usb-init.c | 35 +++++++++++++++++++++---
- 1 file changed, 31 insertions(+), 4 deletions(-)
+ drivers/usb/typec/mux/nb7vpq904m.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/dvb-usb/dvb-usb-init.c b/drivers/media/usb/dvb-usb/dvb-usb-init.c
-index 58eea8ab54779..6cf6d08cc4ec9 100644
---- a/drivers/media/usb/dvb-usb/dvb-usb-init.c
-+++ b/drivers/media/usb/dvb-usb/dvb-usb-init.c
-@@ -23,11 +23,40 @@ static int dvb_usb_force_pid_filter_usage;
- module_param_named(force_pid_filter_usage, dvb_usb_force_pid_filter_usage, int, 0444);
- MODULE_PARM_DESC(force_pid_filter_usage, "force all dvb-usb-devices to use a PID filter, if any (default: 0).");
+diff --git a/drivers/usb/typec/mux/nb7vpq904m.c b/drivers/usb/typec/mux/nb7vpq904m.c
+index cda206cf0c387..596639dad31d7 100644
+--- a/drivers/usb/typec/mux/nb7vpq904m.c
++++ b/drivers/usb/typec/mux/nb7vpq904m.c
+@@ -453,7 +453,7 @@ static int nb7vpq904m_probe(struct i2c_client *client)
  
-+static int dvb_usb_check_bulk_endpoint(struct dvb_usb_device *d, u8 endpoint)
-+{
-+	if (endpoint) {
-+		int ret;
+ 	ret = nb7vpq904m_parse_data_lanes_mapping(nb7);
+ 	if (ret)
+-		return ret;
++		goto err_switch_put;
+ 
+ 	ret = regulator_enable(nb7->vcc_supply);
+ 	if (ret)
+@@ -496,6 +496,9 @@ static int nb7vpq904m_probe(struct i2c_client *client)
+ 	gpiod_set_value(nb7->enable_gpio, 0);
+ 	regulator_disable(nb7->vcc_supply);
+ 
++err_switch_put:
++	typec_switch_put(nb7->typec_switch);
 +
-+		ret = usb_pipe_type_check(d->udev, usb_sndbulkpipe(d->udev, endpoint));
-+		if (ret)
-+			return ret;
-+		ret = usb_pipe_type_check(d->udev, usb_rcvbulkpipe(d->udev, endpoint));
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
-+}
+ 	return ret;
+ }
+ 
+@@ -509,6 +512,8 @@ static void nb7vpq904m_remove(struct i2c_client *client)
+ 	gpiod_set_value(nb7->enable_gpio, 0);
+ 
+ 	regulator_disable(nb7->vcc_supply);
 +
-+static void dvb_usb_clear_halt(struct dvb_usb_device *d, u8 endpoint)
-+{
-+	if (endpoint) {
-+		usb_clear_halt(d->udev, usb_sndbulkpipe(d->udev, endpoint));
-+		usb_clear_halt(d->udev, usb_rcvbulkpipe(d->udev, endpoint));
-+	}
-+}
-+
- static int dvb_usb_adapter_init(struct dvb_usb_device *d, short *adapter_nrs)
- {
- 	struct dvb_usb_adapter *adap;
- 	int ret, n, o;
++	typec_switch_put(nb7->typec_switch);
+ }
  
-+	ret = dvb_usb_check_bulk_endpoint(d, d->props.generic_bulk_ctrl_endpoint);
-+	if (ret)
-+		return ret;
-+	ret = dvb_usb_check_bulk_endpoint(d, d->props.generic_bulk_ctrl_endpoint_response);
-+	if (ret)
-+		return ret;
- 	for (n = 0; n < d->props.num_adapters; n++) {
- 		adap = &d->adapter[n];
- 		adap->dev = d;
-@@ -103,10 +132,8 @@ static int dvb_usb_adapter_init(struct dvb_usb_device *d, short *adapter_nrs)
- 	 * when reloading the driver w/o replugging the device
- 	 * sometimes a timeout occurs, this helps
- 	 */
--	if (d->props.generic_bulk_ctrl_endpoint != 0) {
--		usb_clear_halt(d->udev, usb_sndbulkpipe(d->udev, d->props.generic_bulk_ctrl_endpoint));
--		usb_clear_halt(d->udev, usb_rcvbulkpipe(d->udev, d->props.generic_bulk_ctrl_endpoint));
--	}
-+	dvb_usb_clear_halt(d, d->props.generic_bulk_ctrl_endpoint);
-+	dvb_usb_clear_halt(d, d->props.generic_bulk_ctrl_endpoint_response);
- 
- 	return 0;
- 
+ static const struct i2c_device_id nb7vpq904m_table[] = {
 -- 
 2.43.0
 
