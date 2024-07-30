@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD32941D5E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0888F941B2C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C54A21C23A49
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48143B2886A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F5F1898EC;
-	Tue, 30 Jul 2024 17:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8B41898EB;
+	Tue, 30 Jul 2024 16:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lp4Q7Lo0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeIFJmlV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6E51A76DD;
-	Tue, 30 Jul 2024 17:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCC1189503;
+	Tue, 30 Jul 2024 16:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359779; cv=none; b=STObh2ElfI68Lyjd28yRB4MXhpqGQ5LSv2DGKtFxMYJsS2WB3FV/4VKSIkSRfaiV/BZd3TQuzy1cEJuuPHm1ZH7zH/qV3XPaZ7c9nN/yeR38I0OUFPLK6ZSis4gjK1EBjdixXOgX0ZRjRyJvHROdL7T0r9DqS5sfzHiHbNu/itk=
+	t=1722357892; cv=none; b=trl+TmN6nCjSGSfu/Ru5jtwsV1n1zbzVvqom5cq2F+ZhG9cMRlDmsC3pDT6EdeTKRq96UOdOmWYuYpVJMSTuaOCI9KOgV1L7/Y9jVBE6MX7HqCtM3uOiJspkcC9jG1OWzZhecT6WP0nWBQmo+r2FFBZppMOZat/LOsX6NTSLVNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359779; c=relaxed/simple;
-	bh=HSRFZ7A4pdtj+5SRLbcZcFSconct94JKnZ3brLEzs1s=;
+	s=arc-20240116; t=1722357892; c=relaxed/simple;
+	bh=b3J+ol486K2B/+0116NegKXvw31DcIscUTFk/Swa2Ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gh0a0BxgWJ5AGb8RGgWM6vUeKF8aMX88TV3aLcPTNfq+rIMNw5RN3pe18Yv961fZSscfdPzfJp7T9I5yVQi6PUHO9d+2tMx0plZAl7rOfuS7/4E9vrROLodiTHpiULHKvDMcv0/xqRAuz4JbNiReuEKqySMwm2+nJzsT6V2xn/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lp4Q7Lo0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DD8C32782;
-	Tue, 30 Jul 2024 17:16:17 +0000 (UTC)
+	 MIME-Version; b=UXaRDdTKBLxZX29eCcSF6evSnRYFC4Ksl0Jpuy4O57l8S63+7F1ZHGsSyKsxC4OFI3O6/I3F9dEpEpXdYyxflPlrE7Z3nPe5Ri/ju5RTX3beP8GYLCPk/HISPlFF6XubmOanSESxWykA+t+sxwweiq6dPpt+c4UQ9n4t1Bj/kSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeIFJmlV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B3FC4AF0E;
+	Tue, 30 Jul 2024 16:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359779;
-	bh=HSRFZ7A4pdtj+5SRLbcZcFSconct94JKnZ3brLEzs1s=;
+	s=korg; t=1722357892;
+	bh=b3J+ol486K2B/+0116NegKXvw31DcIscUTFk/Swa2Ec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lp4Q7Lo0j+Iwff3054Oo2iS63ioiWCjUU6DSVszhX/XGXTTj9tcgOkdmYWJJVrnXV
-	 SQVhy6sdmr2CjxvFwAHJkhPOLZWAM1+FFJyKJEke0m/roprCeewopk7H5fW3NPu0Fu
-	 xBh3IUzsijP+/cN+Q6YTW2egNtzFBvdvtLc8hvI0=
+	b=zeIFJmlV6BOisSuJreA6AhjPMDmpi5d8hFPuqcb4gFPG9+Mo5dzetROBP5RHpZpTs
+	 o8zTaTklllPU63MuufbIImpHH5ouYw6ENMnP2ZwloSkhjA3rNoLgdRxcfOWW9Fw9xA
+	 qJ3l66I2rh0MVJwYHAHpDIdcBn0F8wlesD5LTDdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 531/809] mailbox: mtk-cmdq: Move devm_mbox_controller_register() after devm_pm_runtime_enable()
-Date: Tue, 30 Jul 2024 17:46:47 +0200
-Message-ID: <20240730151745.710533982@linuxfoundation.org>
+Subject: [PATCH 6.6 301/568] RDMA/hns: Fix missing pagesize and alignment check in FRMR
+Date: Tue, 30 Jul 2024 17:46:48 +0200
+Message-ID: <20240730151651.640390628@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit a8bd68e4329f9a0ad1b878733e0f80be6a971649 ]
+[ Upstream commit d387d4b54eb84208bd4ca13572e106851d0a0819 ]
 
-When mtk-cmdq unbinds, a WARN_ON message with condition
-pm_runtime_get_sync() < 0 occurs.
+The offset requires 128B alignment and the page size ranges from
+4K to 128M.
 
-According to the call tracei below:
-  cmdq_mbox_shutdown
-  mbox_free_channel
-  mbox_controller_unregister
-  __devm_mbox_controller_unregister
-  ...
-
-The root cause can be deduced to be calling pm_runtime_get_sync() after
-calling pm_runtime_disable() as observed below:
-1. CMDQ driver uses devm_mbox_controller_register() in cmdq_probe()
-   to bind the cmdq device to the mbox_controller, so
-   devm_mbox_controller_unregister() will automatically unregister
-   the device bound to the mailbox controller when the device-managed
-   resource is removed. That means devm_mbox_controller_unregister()
-   and cmdq_mbox_shoutdown() will be called after cmdq_remove().
-2. CMDQ driver also uses devm_pm_runtime_enable() in cmdq_probe() after
-   devm_mbox_controller_register(), so that devm_pm_runtime_disable()
-   will be called after cmdq_remove(), but before
-   devm_mbox_controller_unregister().
-
-To fix this problem, cmdq_probe() needs to move
-devm_mbox_controller_register() after devm_pm_runtime_enable() to make
-devm_pm_runtime_disable() be called after
-devm_mbox_controller_unregister().
-
-Fixes: 623a6143a845 ("mailbox: mediatek: Add Mediatek CMDQ driver")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Fixes: 68a997c5d28c ("RDMA/hns: Add FRMR support for hip08")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240710133705.896445-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mtk-cmdq-mailbox.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_device.h | 4 ++++
+ drivers/infiniband/hw/hns/hns_roce_mr.c     | 5 +++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
-index 4aa394e91109c..63b5e3fe75281 100644
---- a/drivers/mailbox/mtk-cmdq-mailbox.c
-+++ b/drivers/mailbox/mtk-cmdq-mailbox.c
-@@ -662,12 +662,6 @@ static int cmdq_probe(struct platform_device *pdev)
- 		cmdq->mbox.chans[i].con_priv = (void *)&cmdq->thread[i];
- 	}
+diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
+index b3719579a24b3..cd593d651e4ca 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_device.h
++++ b/drivers/infiniband/hw/hns/hns_roce_device.h
+@@ -82,6 +82,7 @@
+ #define MR_TYPE_DMA				0x03
  
--	err = devm_mbox_controller_register(dev, &cmdq->mbox);
--	if (err < 0) {
--		dev_err(dev, "failed to register mailbox: %d\n", err);
--		return err;
--	}
--
- 	platform_set_drvdata(pdev, cmdq);
+ #define HNS_ROCE_FRMR_MAX_PA			512
++#define HNS_ROCE_FRMR_ALIGN_SIZE		128
  
- 	WARN_ON(clk_bulk_prepare(cmdq->pdata->gce_num, cmdq->clocks));
-@@ -695,6 +689,12 @@ static int cmdq_probe(struct platform_device *pdev)
- 	pm_runtime_set_autosuspend_delay(dev, CMDQ_MBOX_AUTOSUSPEND_DELAY_MS);
- 	pm_runtime_use_autosuspend(dev);
+ #define PKEY_ID					0xffff
+ #define NODE_DESC_SIZE				64
+@@ -183,6 +184,9 @@ enum {
+ #define HNS_HW_PAGE_SHIFT			12
+ #define HNS_HW_PAGE_SIZE			(1 << HNS_HW_PAGE_SHIFT)
  
-+	err = devm_mbox_controller_register(dev, &cmdq->mbox);
-+	if (err < 0) {
-+		dev_err(dev, "failed to register mailbox: %d\n", err);
-+		return err;
-+	}
++#define HNS_HW_MAX_PAGE_SHIFT			27
++#define HNS_HW_MAX_PAGE_SIZE			(1 << HNS_HW_MAX_PAGE_SHIFT)
 +
- 	return 0;
- }
+ struct hns_roce_uar {
+ 	u64		pfn;
+ 	unsigned long	index;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index 190e62da98e4b..980261969b0c0 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -423,6 +423,11 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
+ 	int ret, sg_num = 0;
  
++	if (!IS_ALIGNED(*sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
++	    ibmr->page_size < HNS_HW_PAGE_SIZE ||
++	    ibmr->page_size > HNS_HW_MAX_PAGE_SIZE)
++		return sg_num;
++
+ 	mr->npages = 0;
+ 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
+ 				 sizeof(dma_addr_t), GFP_KERNEL);
 -- 
 2.43.0
 
