@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9701D941BF0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B3D941D90
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FFEC284266
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453371F26E6E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90988189522;
-	Tue, 30 Jul 2024 17:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E68188011;
+	Tue, 30 Jul 2024 17:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGtdQxG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Y0nnXlz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AEA83A17;
-	Tue, 30 Jul 2024 17:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06001184556;
+	Tue, 30 Jul 2024 17:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358872; cv=none; b=RokDACwF1yMQdHs+N+JDxwJPKXwCZ7uKn3ObRoDXsa2hKxbcFgZNeqICwA+pLzCLu8Ads1q8bNUQiIWvfLPpwQ02KSfD8NGMs10wZCr2YoBlGmVHTInFZWHtpqa4QU/RqX1IhTvifbQCXq26I8aDpiDhHriPmuy0bi9X/jlsMyg=
+	t=1722359917; cv=none; b=E+o0Vx44/IQ7nXrMvPY7dv+CP9D8oFP0lugPZ35RGZksnWUPYjHiRT3SCfvCei4bn61vJyGVD+LGOhfzKWj00vu5cTUtR3hQ/um+gQPspQe6Wqt+mtkaqu5OmxCK1a0rJ7rTIO3UkNLbA/tsZQxIJrnua+5RbePkWLpQH1e5SDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358872; c=relaxed/simple;
-	bh=8BEEc+NnXBZsKH4VgEyfddxmj2SAxBf7MsIJDIfpknQ=;
+	s=arc-20240116; t=1722359917; c=relaxed/simple;
+	bh=gyZiBnueBe51sbRO7zaUcAuIROHLnkf4WCE7olvg4ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCCqny8iKZUmBnq3F8szh+WV5Nu3yKGrtYjlm8v66pX79Uz5J0iOW13Pn34JXz0jMVKAfiri0RmYN1WsBch2a2CKelQmyfvh0/ROhUXXf0KeKXucnws8tKeFHfzhGY5I1c2/0YRLdS+al9193ledCC+M56OSoyT2EanDED2cG5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGtdQxG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56FE7C4AF0A;
-	Tue, 30 Jul 2024 17:01:11 +0000 (UTC)
+	 MIME-Version; b=cTpUwnc14nV9Z77yWVTkDlaeNTnAg3PCvb8ZLKkzbv1UViyQ+kuWZkbqtwVx4NlN0SP4a/IpaW18b2pj231ImgOgiklD42Tu3ZQosb8bArGO+KBLcVoAGFYL25dTfnNGoLXkAQFCKLBh947oInN8eofC6NvNhhS0BxSciWLYWG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Y0nnXlz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D800C4AF0C;
+	Tue, 30 Jul 2024 17:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358871;
-	bh=8BEEc+NnXBZsKH4VgEyfddxmj2SAxBf7MsIJDIfpknQ=;
+	s=korg; t=1722359916;
+	bh=gyZiBnueBe51sbRO7zaUcAuIROHLnkf4WCE7olvg4ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGtdQxG8CAh9itR6wzn7S9F/wrLS6kuP8cOxcbqofe/mPJ+PgzRMiBsnugsXsy5pO
-	 U1mmSB5gGxCZ5Y/QLy8355+6/N/acf0zSyhtf9YUIHTOGAKb8f5mrsP9uRtzo+ledd
-	 VcCeGaXDFmRoD71mfbYFbwLJNiCxR+aYn8sCBKeo=
+	b=2Y0nnXlzM0AecBeqopmvPUjywBJDdKlnHQtECBxcogjtyZaDMK058LeNPVB5bJt/U
+	 3iHCn1eaUMuKFs142Agc0UrzWzQG2/nmwFo5+AEnLzDyddbpPzBkCeJM3MgGJxrZIl
+	 0RcAKjcUY3GM/QFAkdbk18pClE0eZwXuqIysl2VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Tremblay <vincent@vtremblay.dev>,
+	Steve Wilkins <steve.wilkins@raymarine.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 429/440] spidev: Add Silicon Labs EM3581 device compatible
+Subject: [PATCH 6.6 555/568] spi: microchip-core: ensure TX and RX FIFOs are empty at start of a transfer
 Date: Tue, 30 Jul 2024 17:51:02 +0200
-Message-ID: <20240730151632.534983164@linuxfoundation.org>
+Message-ID: <20240730151701.852127991@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Tremblay <vincent@vtremblay.dev>
+From: Steve Wilkins <steve.wilkins@raymarine.com>
 
-[ Upstream commit c67d90e058550403a3e6f9b05bfcdcfa12b1815c ]
+[ Upstream commit 9cf71eb0faef4bff01df4264841b8465382d7927 ]
 
-Add compatible string for Silicon Labs EM3581 device.
+While transmitting with rx_len == 0, the RX FIFO is not going to be
+emptied in the interrupt handler. A subsequent transfer could then
+read crap from the previous transfer out of the RX FIFO into the
+start RX buffer. The core provides a register that will empty the RX and
+TX FIFOs, so do that before each transfer.
 
-Signed-off-by: Vincent Tremblay <vincent@vtremblay.dev>
-Link: https://lore.kernel.org/r/20221227023550.569547-2-vincent@vtremblay.dev
+Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
+Signed-off-by: Steve Wilkins <steve.wilkins@raymarine.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20240715-flammable-provoke-459226d08e70@wendy
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: fc28d1c1fe3b ("spi: spidev: add correct compatible for Rohm BH2228FV")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-microchip-core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 71c3db60e9687..2be7138acc38a 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -700,6 +700,7 @@ static const struct spi_device_id spidev_spi_ids[] = {
- 	{ .name = "m53cpld" },
- 	{ .name = "spi-petra" },
- 	{ .name = "spi-authenta" },
-+	{ .name = "em3581" },
- 	{},
- };
- MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
-@@ -726,6 +727,7 @@ static const struct of_device_id spidev_dt_ids[] = {
- 	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
- 	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
- 	{ .compatible = "micron,spi-authenta", .data = &spidev_of_check },
-+	{ .compatible = "silabs,em3581", .data = &spidev_of_check },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
+index 6f59754c33472..aa05127c8696c 100644
+--- a/drivers/spi/spi-microchip-core.c
++++ b/drivers/spi/spi-microchip-core.c
+@@ -91,6 +91,8 @@
+ #define REG_CONTROL2		(0x28)
+ #define REG_COMMAND		(0x2c)
+ #define  COMMAND_CLRFRAMECNT	BIT(4)
++#define  COMMAND_TXFIFORST		BIT(3)
++#define  COMMAND_RXFIFORST		BIT(2)
+ #define REG_PKTSIZE		(0x30)
+ #define REG_CMD_SIZE		(0x34)
+ #define REG_HWSTATUS		(0x38)
+@@ -493,6 +495,8 @@ static int mchp_corespi_transfer_one(struct spi_controller *host,
+ 	mchp_corespi_set_xfer_size(spi, (spi->tx_len > FIFO_DEPTH)
+ 				   ? FIFO_DEPTH : spi->tx_len);
+ 
++	mchp_corespi_write(spi, REG_COMMAND, COMMAND_RXFIFORST | COMMAND_TXFIFORST);
++
+ 	mchp_corespi_write(spi, REG_SLAVE_SELECT, spi->pending_slave_select);
+ 
+ 	while (spi->tx_len)
 -- 
 2.43.0
 
