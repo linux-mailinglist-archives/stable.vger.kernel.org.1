@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05682941B61
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5468941D69
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFBB81F210B3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 801D028B6B7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B824189514;
-	Tue, 30 Jul 2024 16:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF4C1A76A9;
+	Tue, 30 Jul 2024 17:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxi8a0Sb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymBoz66b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012CF1A6195;
-	Tue, 30 Jul 2024 16:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D561A76A4;
+	Tue, 30 Jul 2024 17:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358458; cv=none; b=cNvFzCUXzHH7s4B0/3/lvxSuN6nqs+gHF0++rmuXjYfnJ7gEeMRnqEiMo8rCUMG1NCZkkrgBC00MJ4dQQFjirF+Q1ag4oSiIXY4CQvhG552OgDzU4GihZLr58pJ5C+qbnrLDHG9+gPyLEi8R8tTm3i4RcQo8V5RwiQA/QkYQk6w=
+	t=1722359818; cv=none; b=f3m1RzE+UorK7EqbJwB34iz5S/jI/EyqcU2jy5Y6dWBbZwpR3eHOdRlLWR1iWpwwy+8h6vsEco23EZA/mkNwO5n9wbD4A97COYYSxwbseR9/5BPjCpLlmf3zcTMnFDfPkshHKD/qqfvMVgP8l22Wq9UNx/NVq7Zx/mgwOUa5TbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358458; c=relaxed/simple;
-	bh=X/Jlp0LBfmcc3CG+NlO5lXUXid4hIB7qHw9D6jDC3t8=;
+	s=arc-20240116; t=1722359818; c=relaxed/simple;
+	bh=e/GtWJ0IDF4pVJapzj00/41+0deX5Qb57kLiAHfGdzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tuJG9KUbuJ8d9P6RQLwmK8Oy/Cc+tyz0p8cj2PRHSVkxDwpsN2zgmFWnuRttUGaBc481nNPgvPGOb76du7HDEH7BXNbCUe/+PSjyK78/SyYOTEs6Zto1+hO6WcKRcJa0thF/wG3x5X/YpzukwIygD/H3QoJrbrHwkZPjl0wyTu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jxi8a0Sb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75653C32782;
-	Tue, 30 Jul 2024 16:54:17 +0000 (UTC)
+	 MIME-Version; b=mqpGOgB2lTac3lmPU+rKpXsTSholM026gi/L98VfYDcfflpIU1zvyFq39mXMejROwbFlfb5oS92Y84SgCvm6QwEqYCnA7E6UdN7DpRtFgh8Z5FRAH9NkuGRJEaZt24i/ophrr6y2brKZaJPfn4I3QvG16KjG2dJMYco3nfHWfoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymBoz66b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F01F9C32782;
+	Tue, 30 Jul 2024 17:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358457;
-	bh=X/Jlp0LBfmcc3CG+NlO5lXUXid4hIB7qHw9D6jDC3t8=;
+	s=korg; t=1722359818;
+	bh=e/GtWJ0IDF4pVJapzj00/41+0deX5Qb57kLiAHfGdzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jxi8a0SbYQtQMuFCZ8P5uGS2sWH8hdjjFLP09hW8SKoPo6ah2zqD976mux6THHONk
-	 dXoekg1iQKqtcyQK/p5wYZPNIAhrP2ZAwC4sAPE66UkjXa26WsLm0xbowJfLAnke9N
-	 LAv978A+eIzxYpbV2ozNsUVmvne4t0k7wuiyRYOc=
+	b=ymBoz66bJsIC9FfEG5ENxsCvOPcaO8tbxkZDldlkiT5nuWYqOe3Uyg8JOpzwIN9X1
+	 4k75oGt2WyvQTHfllvdsS7wXPbOT0E6swh+Rvm2liWUUd9xIpv5W83qrRBqxY/FczI
+	 rAMAl9LAdnYWdxLZeKwe3IMm17guMMxKkATo7+08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com,
-	Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-Subject: [PATCH 6.1 392/440] wifi: mac80211: check basic rates validity
+	syzbot+241c815bda521982cb49@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 518/568] jfs: Fix array-index-out-of-bounds in diFree
 Date: Tue, 30 Jul 2024 17:50:25 +0200
-Message-ID: <20240730151631.116892046@linuxfoundation.org>
+Message-ID: <20240730151700.403295481@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
+[ Upstream commit f73f969b2eb39ad8056f6c7f3a295fa2f85e313a ]
 
-When userspace sets basic rates, it might send us some rates
-list that's empty or consists of invalid values only. We're
-currently ignoring invalid values and then may end up with a
-rates bitmap that's empty, which later results in a warning.
-
-Reject the call if there were no valid rates.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reported-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
-Tested-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=07bee335584b04e7c2f8
-Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+241c815bda521982cb49@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ fs/jfs/jfs_imap.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2577,6 +2577,17 @@ static int ieee80211_change_bss(struct w
- 	if (!sband)
- 		return -EINVAL;
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index eeedf606cf9d4..4bc589c4dcca9 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -290,7 +290,7 @@ int diSync(struct inode *ipimap)
+ int diRead(struct inode *ip)
+ {
+ 	struct jfs_sb_info *sbi = JFS_SBI(ip->i_sb);
+-	int iagno, ino, extno, rc;
++	int iagno, ino, extno, rc, agno;
+ 	struct inode *ipimap;
+ 	struct dinode *dp;
+ 	struct iag *iagp;
+@@ -339,8 +339,11 @@ int diRead(struct inode *ip)
  
-+	if (params->basic_rates) {
-+		if (!ieee80211_parse_bitrates(sdata->vif.bss_conf.chandef.width,
-+					      wiphy->bands[sband->band],
-+					      params->basic_rates,
-+					      params->basic_rates_len,
-+					      &sdata->vif.bss_conf.basic_rates))
-+			return -EINVAL;
-+		changed |= BSS_CHANGED_BASIC_RATES;
-+		ieee80211_check_rate_mask(&sdata->deflink);
-+	}
-+
- 	if (params->use_cts_prot >= 0) {
- 		sdata->vif.bss_conf.use_cts_prot = params->use_cts_prot;
- 		changed |= BSS_CHANGED_ERP_CTS_PROT;
-@@ -2600,16 +2611,6 @@ static int ieee80211_change_bss(struct w
- 		changed |= BSS_CHANGED_ERP_SLOT;
- 	}
+ 	/* get the ag for the iag */
+ 	agstart = le64_to_cpu(iagp->agstart);
++	agno = BLKTOAG(agstart, JFS_SBI(ip->i_sb));
  
--	if (params->basic_rates) {
--		ieee80211_parse_bitrates(sdata->vif.bss_conf.chandef.width,
--					 wiphy->bands[sband->band],
--					 params->basic_rates,
--					 params->basic_rates_len,
--					 &sdata->vif.bss_conf.basic_rates);
--		changed |= BSS_CHANGED_BASIC_RATES;
--		ieee80211_check_rate_mask(&sdata->deflink);
--	}
--
- 	if (params->ap_isolate >= 0) {
- 		if (params->ap_isolate)
- 			sdata->flags |= IEEE80211_SDATA_DONT_BRIDGE_PACKETS;
+ 	release_metapage(mp);
++	if (agno >= MAXAG || agno < 0)
++		return -EIO;
+ 
+ 	rel_inode = (ino & (INOSPERPAGE - 1));
+ 	pageno = blkno >> sbi->l2nbperpage;
+-- 
+2.43.0
+
 
 
 
