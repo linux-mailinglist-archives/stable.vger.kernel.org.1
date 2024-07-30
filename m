@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81682941D42
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AECBD941E84
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B38501C210F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 599EA1F2504A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E5518A6A7;
-	Tue, 30 Jul 2024 17:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDD11A76D4;
+	Tue, 30 Jul 2024 17:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+pBsjCI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQTopR7N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7108218A6BC;
-	Tue, 30 Jul 2024 17:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4656E1A76CB;
+	Tue, 30 Jul 2024 17:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359693; cv=none; b=bgrT+V+u+ntwvF+Dv2D7JG5gHOeTfE4bw16EF7n2fLmSSYsnfRNoGOoWGDLva/px5uVcNu9pWeQW9An6yDg6rKBKar9wDyBDcWwfrW0x66ZRZMHIsVUnK9ouG2zPkK3GwnwpljS//ZWnRPf+nu2jPGZfGOSCSNsfYp6y/sxenTM=
+	t=1722360589; cv=none; b=IGOfc/GmAvx/1C6IUU4oGH6v8Tgm2N5Uvnw+2y3h1GFY9X77SvrTjc9T5A5z58kKzgKVMp8miAEBLDxCihxesZoKvbxV22FJHFtqRCL3pgFi8yYjf5LUSiIY3QZDm/oFVncQNdSkoNRKxBMlFH/rY5BPfpuTt8C5JZvrFT4vBf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359693; c=relaxed/simple;
-	bh=lQbPPyugxsi3iO2gXGDFZZL9m+7DVzSN4SQXSviOW90=;
+	s=arc-20240116; t=1722360589; c=relaxed/simple;
+	bh=tE7cJSEL+QIgK+FA4Gi5e4gqQJSU1Th2sWM37YU0sJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oifm+7DochaxmQC0la59nPm/bPv4Jq0ni914sLGMLsi0DoJJ98AJ4vFst5ZRz65wLhb0NJdMchgYk36MkNF3NcWREQWXsrmxpZdchS/xdtAPurVpc/3uo0lrAb6Hk+s+ooCZOYGX2JptIi01ok//xWnXv7x5nBTIgVBQm0BjzXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+pBsjCI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9309C4AF0F;
-	Tue, 30 Jul 2024 17:14:52 +0000 (UTC)
+	 MIME-Version; b=NaiE4MRiTczGtwtRlLWKhn9ZK56rSVKJWVh0XXr2GumGf6HJeGE/ep3sNgtXUi+Xpu95NcAiI5tRe0qP0xyt3KN+DnlXlg1BbqRF8K9dMwgQUmdQF51QOTVMgbetqznQ0jWZMftVdPIz12IUHMMgNXw57JYsf+U1d7MqrPZH+xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQTopR7N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8259C4AF0E;
+	Tue, 30 Jul 2024 17:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359693;
-	bh=lQbPPyugxsi3iO2gXGDFZZL9m+7DVzSN4SQXSviOW90=;
+	s=korg; t=1722360589;
+	bh=tE7cJSEL+QIgK+FA4Gi5e4gqQJSU1Th2sWM37YU0sJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1+pBsjCIEQfMGS697hVeMSIngBCluRpZr7mOOedbJd5JSUUIQznaw1x1yPYqzgHpi
-	 5Ytk/cdibLnQeBb5qx3kk+8TGBpJuM673xXibub8yaMkw91b7/AoAoFFUKhQiDqwHN
-	 a+2Oc770wmSmn9FifYzzyVPFPBWlc4MubXpvx8NM=
+	b=LQTopR7NYaQutf27oByoGHxyr8kxIl1WtX7iH4dYPLCZ/nj2ebwxXwIkw9oaWaR0m
+	 WhjIjNLkP60JnCkKeI3aVr+ydI/vpcMvgP7bfTys9SZKv/eJAnzqds6oWSs1rb+FqV
+	 iXqbR5lmwo8X3WWiIf4HepNBTEl3FXWiYwxr6aao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunseong Kim <yskelg@gmail.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.6 514/568] s390/mm: Fix VM_FAULT_HWPOISON handling in do_exception()
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 745/809] um: time-travel: fix time-travel-start option
 Date: Tue, 30 Jul 2024 17:50:21 +0200
-Message-ID: <20240730151700.113056142@linuxfoundation.org>
+Message-ID: <20240730151754.381069312@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit df39038cd89525d465c2c8827eb64116873f141a upstream.
+[ Upstream commit 7d0a8a490aa3a2a82de8826aaf1dfa38575cb77a ]
 
-There is no support for HWPOISON, MEMORY_FAILURE, or ARCH_HAS_COPY_MC on
-s390. Therefore we do not expect to see VM_FAULT_HWPOISON in
-do_exception().
+We need to have the = as part of the option so that the
+value can be parsed properly. Also document that it must
+be given in nanoseconds, not seconds.
 
-However, since commit af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more
-general"), it is possible to see VM_FAULT_HWPOISON in combination with
-PTE_MARKER_POISONED, even on architectures that do not support HWPOISON
-otherwise. In this case, we will end up on the BUG() in do_exception().
-
-Fix this by treating VM_FAULT_HWPOISON the same as VM_FAULT_SIGBUS, similar
-to x86 when MEMORY_FAILURE is not configured. Also print unexpected fault
-flags, for easier debugging.
-
-Note that VM_FAULT_HWPOISON_LARGE is not expected, because s390 cannot
-support swap entries on other levels than PTE level.
-
-Cc: stable@vger.kernel.org # 6.6+
-Fixes: af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more general")
-Reported-by: Yunseong Kim <yskelg@gmail.com>
-Tested-by: Yunseong Kim <yskelg@gmail.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Message-ID: <20240715180416.3632453-1-gerald.schaefer@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Yunseong Kim <yskelg@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 065038706f77 ("um: Support time travel mode")
+Link: https://patch.msgid.link/20240417102744.14b9a9d4eba0.Ib22e9136513126b2099d932650f55f193120cd97@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/fault.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/um/kernel/time.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/s390/mm/fault.c
-+++ b/arch/s390/mm/fault.c
-@@ -331,14 +331,16 @@ static noinline void do_fault_error(stru
- 				do_no_context(regs, fault);
- 			else
- 				do_sigsegv(regs, SEGV_MAPERR);
--		} else if (fault & VM_FAULT_SIGBUS) {
-+		} else if (fault & (VM_FAULT_SIGBUS | VM_FAULT_HWPOISON)) {
- 			/* Kernel mode? Handle exceptions or die */
- 			if (!user_mode(regs))
- 				do_no_context(regs, fault);
- 			else
- 				do_sigbus(regs);
--		} else
-+		} else {
-+			pr_emerg("Unexpected fault flags: %08x\n", fault);
- 			BUG();
-+		}
- 		break;
- 	}
+diff --git a/arch/um/kernel/time.c b/arch/um/kernel/time.c
+index a8bfe8be15260..5b5fd8f68d9c1 100644
+--- a/arch/um/kernel/time.c
++++ b/arch/um/kernel/time.c
+@@ -875,9 +875,9 @@ static int setup_time_travel_start(char *str)
+ 	return 1;
  }
+ 
+-__setup("time-travel-start", setup_time_travel_start);
++__setup("time-travel-start=", setup_time_travel_start);
+ __uml_help(setup_time_travel_start,
+-"time-travel-start=<seconds>\n"
++"time-travel-start=<nanoseconds>\n"
+ "Configure the UML instance's wall clock to start at this value rather than\n"
+ "the host's wall clock at the time of UML boot.\n");
+ #endif
+-- 
+2.43.0
+
 
 
 
