@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-63228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1419A9417FD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 727849417FF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45BB01C201EE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27E3A1F256FC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781B11A619C;
-	Tue, 30 Jul 2024 16:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234D81A619E;
+	Tue, 30 Jul 2024 16:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="db9NEN/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUcJN5iK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347A01A618F;
-	Tue, 30 Jul 2024 16:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E951A619D;
+	Tue, 30 Jul 2024 16:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356142; cv=none; b=sdFfY8SYSj5ilrYOHmn5TqMKPgiZrmp87R5fG3GAaz6F2PKQZ0vF7wo1eBFrkF77nnGJ4GGhduywg+q514YHWfB+cwRFz3zpZbnF3vGgXuHtfXwta3+OR72mTppZkCKlLcJxS7L9ImWjTaglMLaiQbv0C+TarbotBFQ+y+gVsEg=
+	t=1722356151; cv=none; b=b6kg9oOhvg/r+WkjXJqW/wY2dfqKMU9ULGf3s27VYtSWxAdoaJ0GbDtOULopaopn5i1nrV9CQrGqumQPUzPR4lUrlzexz+ljxaYmu8d/XhpkJgzTx0duuo18naIIGkaLXLuXHLG42kjyPSXKqKVMF7Q6LHR3R96YnekPs2RQLtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356142; c=relaxed/simple;
-	bh=Fa5tb5zgqcee6av3BwehimY4qh0ylHrTtyUMdAAn3jQ=;
+	s=arc-20240116; t=1722356151; c=relaxed/simple;
+	bh=dneC8eWXOMLhgc0rjGcT8snXxUE7xgeEQVOEKdSOMuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxiDpd3jjtRHmL9vk13GFI2FAwbP2/1oqL9zBXR7LQiOErLuy0ziCEDb51/bv5VUdSkAE1OO5MGGTDA3PohhSuNifckg72ULDmZQpFwVzh6PhQbF9OEjaLb9UIBXB1UXR6HjZI3FTN3PUmgFDtprp18xrz5VnBJVMXBQQvPWU5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=db9NEN/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1335C32782;
-	Tue, 30 Jul 2024 16:15:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NrhXDAZXgxBspE5SZYoyF+yBtbMowa7YAf4LaU3fAbnmkiSTPJGd4FbOYhfZKW76xYnsyh0vMxXB1rZzkK+SM+rTTF2ykoYvFvKp25sY0JGqOa+2imqsT8DP+dBm40NtdX0mapv8Gt3+Lgg07bpBE6sBGoUYjdgEM7ran59JqZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUcJN5iK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FE9C32782;
+	Tue, 30 Jul 2024 16:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356141;
-	bh=Fa5tb5zgqcee6av3BwehimY4qh0ylHrTtyUMdAAn3jQ=;
+	s=korg; t=1722356151;
+	bh=dneC8eWXOMLhgc0rjGcT8snXxUE7xgeEQVOEKdSOMuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=db9NEN/ggdXWmRecHowxfuL7LeLDF2DqXT9Vzb+TeJot64Qh7xKgZ3MlOnDyDkBTm
-	 GTDtUsG9g4NunLyjdu49yYONi9/ikGSCqQyDS0zdeEUCCgQCU/5y1NGhkNqzcOUzg2
-	 RzEBt4LKhVyoApv46Ti0In93TJoQOB1KzLopwp9E=
+	b=RUcJN5iKijEG9YCrORsvWRfeku7p5jzA5+4+v9oAp/0tfWEXYgdY7jtDX5YHPbmAn
+	 FmuX4S3ustly1PUwF2Nb6fBvGwxxDwuCUTGl5tvv/byNlgIV698BJdsRwbSyV4y307
+	 y23vJVjRxHdXw+jYUnVK4FTP1cXwi3LIDN+09XtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	=?UTF-8?q?Nicolas=20Pomar=C3=A8de?= <npomarede@corp.free.fr>,
+	Christian Zietz <czietz@gmx.net>,
+	Eero Tamminen <oak@helsinkinet.fi>,
+	Michael Schmitz <schmitzmic@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 123/809] arm64: dts: renesas: r9a08g045: Add missing hypervisor virtual timer IRQ
-Date: Tue, 30 Jul 2024 17:39:59 +0200
-Message-ID: <20240730151729.475587169@linuxfoundation.org>
+Subject: [PATCH 6.10 124/809] m68k: atari: Fix TT bootup freeze / unexpected (SCU) interrupt messages
+Date: Tue, 30 Jul 2024 17:40:00 +0200
+Message-ID: <20240730151729.515330613@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -60,45 +63,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Eero Tamminen <oak@helsinkinet.fi>
 
-[ Upstream commit 10f9badc473d43ebfddd1ddedbcb8eb3f8f3fdd9 ]
+[ Upstream commit f70065a9fd988983b2c693631b801f25a615fc04 ]
 
-Add the missing fifth interrupt to the device node that represents the
-ARM architected timer.  While at it, add an interrupt-names property for
-clarity,
+Avoid freeze on Atari TT / MegaSTe boot with continuous messages of:
 
-Fixes: e20396d65b959a65 ("arm64: dts: renesas: Add initial DTSI for RZ/G3S SoC")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/884c683fb6c1d1bf7d0d383a8df8f65a0a424dc7.1718890849.git.geert+renesas@glider.be
+	unexpected interrupt from 112
+
+Which was due to VBL interrupt being enabled in SCU sys mask, but there
+being no handler for that any more.
+
+(Bug and fix were first verified on real Atari TT HW by Christian,
+ this patch later on in Hatari emulator.)
+
+Fixes: 1fa0b29f3a43f9dd ("fbdev: Kill Atari vblank cursor blinking")
+Reported-by: Nicolas Pomarède <npomarede@corp.free.fr>
+Closes: https://listengine.tuxfamily.org/lists.tuxfamily.org/hatari-devel/2024/06/msg00016.html
+Closes: https://lore.kernel.org/all/9aa793d7-82ed-4fbd-bce5-60810d8a9119@helsinkinet.fi
+Tested-by: Christian Zietz <czietz@gmx.net>
+Signed-off-by: Eero Tamminen <oak@helsinkinet.fi>
+Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/20240624144901.5236-1-oak@helsinkinet.fi
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r9a08g045.dtsi | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/m68k/atari/ataints.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a08g045.dtsi b/arch/arm64/boot/dts/renesas/r9a08g045.dtsi
-index f5f3f4f4c8d67..a2adc4e27ce97 100644
---- a/arch/arm64/boot/dts/renesas/r9a08g045.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a08g045.dtsi
-@@ -294,6 +294,9 @@ timer {
- 		interrupts-extended = <&gic GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
- 				      <&gic GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
- 				      <&gic GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
--				      <&gic GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
-+				      <&gic GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>,
-+				      <&gic GIC_PPI 12 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-names = "sec-phys", "phys", "virt", "hyp-phys",
-+				  "hyp-virt";
- 	};
- };
+diff --git a/arch/m68k/atari/ataints.c b/arch/m68k/atari/ataints.c
+index 23256434191c3..0465444ceb216 100644
+--- a/arch/m68k/atari/ataints.c
++++ b/arch/m68k/atari/ataints.c
+@@ -301,11 +301,7 @@ void __init atari_init_IRQ(void)
+ 
+ 	if (ATARIHW_PRESENT(SCU)) {
+ 		/* init the SCU if present */
+-		tt_scu.sys_mask = 0x10;		/* enable VBL (for the cursor) and
+-									 * disable HSYNC interrupts (who
+-									 * needs them?)  MFP and SCC are
+-									 * enabled in VME mask
+-									 */
++		tt_scu.sys_mask = 0x0;		/* disable all interrupts */
+ 		tt_scu.vme_mask = 0x60;		/* enable MFP and SCC ints */
+ 	} else {
+ 		/* If no SCU and no Hades, the HSYNC interrupt needs to be
 -- 
 2.43.0
 
