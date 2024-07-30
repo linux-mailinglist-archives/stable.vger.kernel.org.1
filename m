@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-62934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 639A4941653
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E982C941657
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15E1A1F25677
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A92B1283297
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EAFC1BA888;
-	Tue, 30 Jul 2024 15:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2391BBBE6;
+	Tue, 30 Jul 2024 15:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZ2VNyMD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqZXRC73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014CF1BD002;
-	Tue, 30 Jul 2024 15:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B83E1BBBCA;
+	Tue, 30 Jul 2024 15:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355114; cv=none; b=WD7CavaR4ElSdyvbEHSu43ZKscBwf3OozBdDhZs1JN/QrJON70K/zQKDtKh7xfq+IQCJ7EABB036R44l68Sifv14X0Kn5Qs8e3LNNrynFGFjX1mpy1+B1TjrK3wLj6UuYWoegLqXrLFmvG3DF1aI2gklvSY4lDDQ+lDP/moq7dM=
+	t=1722355124; cv=none; b=QmhYKtBx/jrFef1+6CdP0TOhOHzvazlrCcGJAMOaUwiyqmUcZVnr6OOAuWF5ZHTKmR6foieV9iM99g7J0VsuAAGJ1LjIdba9tdBCh0fCAt4/qlv6CLwIf2hs1fODJnxNa+FtR39wzzs8jZl7yRp/toWm6JWyQbTFGdE7JHCxVTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355114; c=relaxed/simple;
-	bh=1sH7SrQaK0U0IN7tHRZYLmjpRH7Vpoc7AFy4C0CVl8M=;
+	s=arc-20240116; t=1722355124; c=relaxed/simple;
+	bh=1ji2cuHQjkUakXQpkCMJA9XwwH6FwEtpt3CUBPjH8X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nao0NNkzmD9XKhYdk2ttCbhZq8Hrb7mcmo6FlwTPqJZAB6CW/UnN8hXMD5f6YUl9EbFo8kG4OQo/tQwuC3z+rTNKaQRM/8m7yxyk0ZkLc1AQLDSb3PXM+Y1BXBG3ZWkppz713ffrc5melWfSYSK3koDFvj2NMJdE0gQ+ZlV9FHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZ2VNyMD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8785C32782;
-	Tue, 30 Jul 2024 15:58:32 +0000 (UTC)
+	 MIME-Version; b=gu6h+KOfU7pkvxPsHGuSc8dFF7sZIq5Y+nlfOUtAJxItfZ0SlobBTlRMc/o7nGYt0kpzbgdV9tnGF9LOb56lbP4TXwRJDMZMUAhaJvFzWoaVOw6lSSBF4fPfnzE28wJHIaKiU84S6p2gfnVuosTv8/4E8twn5P1HFr25x9hkzyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqZXRC73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9E1C4AF0A;
+	Tue, 30 Jul 2024 15:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355113;
-	bh=1sH7SrQaK0U0IN7tHRZYLmjpRH7Vpoc7AFy4C0CVl8M=;
+	s=korg; t=1722355124;
+	bh=1ji2cuHQjkUakXQpkCMJA9XwwH6FwEtpt3CUBPjH8X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZ2VNyMDBQeSXaQVAquDoNnaS5yRUBC5fPEby+VwIxyfGk0UnFDlhZA3NNQdh4vOk
-	 un63GXiqU2KR+WQvAuOS+ovl6uxuD8nVlJIt2s3fKThtaCDgulJNBNfroHvM/25L+N
-	 D7Jo9uf7ZAgw0KwHDsmAwhWONS44i4XZNgKkF6bo=
+	b=yqZXRC73jZTCOo3k2y+5NkTVX+hozzT9WgoegRC9RcWm+AJu/+rDDoN1nwIke1Zm7
+	 pcSHYNjOffmBBsx9u8NRGJRxCX8XojnQoFFugRqXVCpUZcfu98wJlqG5nBSXZwRY0K
+	 c3f5NzzzUYIN0Hf2PXAzN+2oCxpKpgMzOccq/VqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/440] arm64: dts: mediatek: mt8183-kukui-jacuzzi: Add ports node for anx7625
-Date: Tue, 30 Jul 2024 17:44:52 +0200
-Message-ID: <20240730151618.072251070@linuxfoundation.org>
+Subject: [PATCH 6.1 060/440] arm64: dts: amlogic: gx: correct hdmi clocks
+Date: Tue, 30 Jul 2024 17:44:53 +0200
+Message-ID: <20240730151618.111079695@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,66 +66,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 4055416e6c51347e7dd5784065263fe0ced0bb7d ]
+[ Upstream commit 0602ba0dcd0e76067a0b7543e92b2de3fb231073 ]
 
-The anx7625 binding requires a "ports" node as a container for the
-"port" nodes. The jacuzzi dtsi file is missing it.
+The clocks provided to HDMI tx are not consistent between gx and g12:
+* gx receives the peripheral clock as 'isfr' while g12 receives it as
+  'iahb'
+* g12 gets the HDMI system clock as 'isfr' but gx does not even get it.
+  It surely needs that clock since the driver is directly poking around
+  the clock controller's registers for that clock.
 
-Add a "ports" node under the anx7625 node, and move the port related
-nodes and properties under it.
+Align gx SoCs with g12 and provide:
+ * the HDMI peripheral clock as 'iahb'
+ * the HDMI system clock as 'isfr'
 
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240131083931.3970388-1-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 6939db7e0dbf ("ARM64: dts: meson-gx: Add support for HDMI output")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20240626152733.1350376-2-jbrunet@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/mediatek/mt8183-kukui-jacuzzi.dtsi    | 25 +++++++++++--------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi | 4 ++--
+ arch/arm64/boot/dts/amlogic/meson-gxl.dtsi  | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-index 3d95625f1b0b4..d7fc924a9d0e3 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-@@ -168,21 +168,24 @@ anx_bridge: anx7625@58 {
- 		vdd18-supply = <&pp1800_mipibrdg>;
- 		vdd33-supply = <&vddio_mipibrdg>;
- 
--		#address-cells = <1>;
--		#size-cells = <0>;
--		port@0 {
--			reg = <0>;
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
- 
--			anx7625_in: endpoint {
--				remote-endpoint = <&dsi_out>;
-+			port@0 {
-+				reg = <0>;
-+
-+				anx7625_in: endpoint {
-+					remote-endpoint = <&dsi_out>;
-+				};
- 			};
--		};
- 
--		port@1 {
--			reg = <1>;
-+			port@1 {
-+				reg = <1>;
- 
--			anx7625_out: endpoint {
--				remote-endpoint = <&panel_in>;
-+				anx7625_out: endpoint {
-+					remote-endpoint = <&panel_in>;
-+				};
- 			};
- 		};
- 	};
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
+index 7c029f552a23b..256c46771db78 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
+@@ -311,8 +311,8 @@ &hdmi_tx {
+ 		 <&reset RESET_HDMI_SYSTEM_RESET>,
+ 		 <&reset RESET_HDMI_TX>;
+ 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
+-	clocks = <&clkc CLKID_HDMI_PCLK>,
+-		 <&clkc CLKID_CLK81>,
++	clocks = <&clkc CLKID_HDMI>,
++		 <&clkc CLKID_HDMI_PCLK>,
+ 		 <&clkc CLKID_GCLK_VENCI_INT0>;
+ 	clock-names = "isfr", "iahb", "venci";
+ };
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
+index 3500229350522..a689bd14ece99 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
+@@ -323,8 +323,8 @@ &hdmi_tx {
+ 		 <&reset RESET_HDMI_SYSTEM_RESET>,
+ 		 <&reset RESET_HDMI_TX>;
+ 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
+-	clocks = <&clkc CLKID_HDMI_PCLK>,
+-		 <&clkc CLKID_CLK81>,
++	clocks = <&clkc CLKID_HDMI>,
++		 <&clkc CLKID_HDMI_PCLK>,
+ 		 <&clkc CLKID_GCLK_VENCI_INT0>;
+ 	clock-names = "isfr", "iahb", "venci";
+ };
 -- 
 2.43.0
 
