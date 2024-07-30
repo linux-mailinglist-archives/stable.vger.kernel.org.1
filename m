@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-64200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2794A941CCC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A1894173A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5060F1C23A0E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 834871C2339D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5232218E02D;
-	Tue, 30 Jul 2024 17:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8931898F8;
+	Tue, 30 Jul 2024 16:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKi2DVqU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nK8nmgj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E50E189522;
-	Tue, 30 Jul 2024 17:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EF0187FF2;
+	Tue, 30 Jul 2024 16:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359326; cv=none; b=FQA8knGpGBosVWyOnF/Cze/qWbRbJJ9jxdeH42YxwbeC/IQGqkVvZRNNeCLLtHqb1OgFqV9BXx/lEa2mzKwe+Wir0lPkaYrrEi2f1WyGOKCB/OJDm2yvTQxZwzEvIlM/6eht9ug3vNC9vWy8Krua6cfZ5zWnf5yldzu7saMr8SA=
+	t=1722355618; cv=none; b=fw77q71Lb/oKD1U8N06YNr9r0NiW7yx38s+CUSYGePwCchCQsifg0e1SmhLognCwLEsrThtPpv9O+TbvG9OnDiez5mzU/+7BqkNWWK5aOy8K7lN7lOVP/Fk9/UsSzysmBwlTJy+ZyXBBQvTUQiTnRgTygmP8pD4WJAoaxlnklw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359326; c=relaxed/simple;
-	bh=RyVZbSd7CF820TGyFFbVoc+e0IPNncA4ExtnBQwvfYM=;
+	s=arc-20240116; t=1722355618; c=relaxed/simple;
+	bh=jRyw7OYceTvh4HMWnFwKjbLdQdrsJAgN268a16fMmN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CX/GdwtA4X6GaNrGoVrXY/BhkMTtp1PVnh+jKNowWC85Demg+thPcjBD0H5OlRqjemPLo7dQ0VwzSXHh4w77qQIFrTQZQmvL5Cjant+nFh0fq1CLqJ4Z2DQl+GrJeve/1dFW5oPN5q1Gej7EgxHhrnOqZtgymaT6zqsYsmKoctU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKi2DVqU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7E3C32782;
-	Tue, 30 Jul 2024 17:08:45 +0000 (UTC)
+	 MIME-Version; b=g4zmGLrcCa8w/oOx2ram3TdusVQedIJzguaVNQIABQZDsgZkDyYMumMHkNYe5PERIcy6rzugiG+tRE+bySM39xcxGk9PIwR/pDxD1VEvgp98AzQz4+Mp943KycH2YNXdFLJNeP90ttSY2geIhWjrjuKO3ue9kOdqGU0znJZiteI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nK8nmgj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E556BC32782;
+	Tue, 30 Jul 2024 16:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359325;
-	bh=RyVZbSd7CF820TGyFFbVoc+e0IPNncA4ExtnBQwvfYM=;
+	s=korg; t=1722355618;
+	bh=jRyw7OYceTvh4HMWnFwKjbLdQdrsJAgN268a16fMmN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKi2DVqUIxcECwv/EnO1jDJ4Pp3ioSTZva9bM69X3nsJZd7hiv3tyZcaUzKls4/6f
-	 STz/uftWfWfVrzubjQFyT25O/rvzzPU/43Bk0tgDokv0ujvZhUK0/mQBOfMqDJRYW7
-	 wOARB8nnhyt8EksHE1pNiXelzEVINCJgSWr8v4/8=
+	b=2nK8nmgje6iinCPTBvMkAI8U0X+Tto6Wl1drJOeA66vZrKIiEt+DCpiRE8+lJv1Js
+	 ww6xJlA9YCX8Egq/gO5lYn0MB4TeQGZz5R1AwhAWrQVUpwuzpp0TBBrrhpHBw3lvL9
+	 A0kLZCrwH3d93F9cMmkAHFOpMVDknIvFucci+tAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Pan-Doh <pandoh@google.com>,
-	Sudheer Dantuluri <dantuluris@google.com>,
-	Gary Zibrat <gzibrat@google.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Will Deacon <will@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 468/809] iommu/vt-d: Fix identity map bounds in si_domain_init()
+Subject: [PATCH 6.1 111/440] perf: Prevent passing zero nr_pages to rb_alloc_aux()
 Date: Tue, 30 Jul 2024 17:45:44 +0200
-Message-ID: <20240730151743.220085645@linuxfoundation.org>
+Message-ID: <20240730151620.227877381@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,45 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Pan-Doh <pandoh@google.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 31000732d56b43765d51e08cccb68818fbc0032c ]
+[ Upstream commit dbc48c8f41c208082cfa95e973560134489e3309 ]
 
-Intel IOMMU operates on inclusive bounds (both generally aas well as
-iommu_domain_identity_map()). Meanwhile, for_each_mem_pfn_range() uses
-exclusive bounds for end_pfn. This creates an off-by-one error when
-switching between the two.
+nr_pages is unsigned long but gets passed to rb_alloc_aux() as an int,
+and is stored as an int.
 
-Fixes: c5395d5c4a82 ("intel-iommu: Clean up iommu_domain_identity_map()")
-Signed-off-by: Jon Pan-Doh <pandoh@google.com>
-Tested-by: Sudheer Dantuluri <dantuluris@google.com>
-Suggested-by: Gary Zibrat <gzibrat@google.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240709234913.2749386-1-pandoh@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Only power-of-2 values are accepted, so if nr_pages is a 64_bit value, it
+will be passed to rb_alloc_aux() as zero.
+
+That is not ideal because:
+ 1. the value is incorrect
+ 2. rb_alloc_aux() is at risk of misbehaving, although it manages to
+ return -ENOMEM in that case, it is a result of passing zero to get_order()
+ even though the get_order() result is documented to be undefined in that
+ case.
+
+Fix by simply validating the maximum supported value in the first place.
+Use -ENOMEM error code for consistency with the current error code that
+is returned in that case.
+
+Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240624201101.60186-6-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index fd11a080380c8..f55ec1fd7942a 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -2071,7 +2071,7 @@ static int __init si_domain_init(int hw)
- 		for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
- 			ret = iommu_domain_identity_map(si_domain,
- 					mm_to_dma_pfn_start(start_pfn),
--					mm_to_dma_pfn_end(end_pfn));
-+					mm_to_dma_pfn_end(end_pfn-1));
- 			if (ret)
- 				return ret;
- 		}
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 413a69aecf5c7..b8333b8e6a782 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6307,6 +6307,8 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+ 			return -EINVAL;
+ 
+ 		nr_pages = vma_size / PAGE_SIZE;
++		if (nr_pages > INT_MAX)
++			return -ENOMEM;
+ 
+ 		mutex_lock(&event->mmap_mutex);
+ 		ret = -EINVAL;
 -- 
 2.43.0
 
