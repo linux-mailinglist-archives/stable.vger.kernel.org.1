@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A8C941959
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03236941ABC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C32C3B2793C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A048D1F2360E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F8B189B97;
-	Tue, 30 Jul 2024 16:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188341898E0;
+	Tue, 30 Jul 2024 16:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3jEi9cf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIHgjeJt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B805C189B85;
-	Tue, 30 Jul 2024 16:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE47189900;
+	Tue, 30 Jul 2024 16:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356431; cv=none; b=uibKLBypmULkAeH7GP3NvIfrlWnDCHQC3jCCJi6r1urFwYjU/LeJqF4QH3mpBFkVqY8+osLIePMjlHpI/VJew/8ui8dw5f5hMNXSGVRDWKlPhJ4e8+tsfy12qNeZvkISqjpYSnjlMbSQqPEwqVkEjbMxF3vWZsjiFi4MAh4+/ZI=
+	t=1722358012; cv=none; b=Lp9WXZ8AZ99Tfc9Mz4GqsWINE6HKvaieuNsmpBMv5zRjw8dLICFmbrwWp/UIHI2p4LJINyq8yClHFYjK0tzkNinQ6DKF/XjhCYUGDgp2/wS4vK8hdxAALNnicCtegrQyzUteGDjAyyupflzbnj+syNgmgfA9xlTylRKo0N2UynI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356431; c=relaxed/simple;
-	bh=jzfDbByuOS3Ziofk87OG6Q8/47M/5Hb7yRWL8d5jsgE=;
+	s=arc-20240116; t=1722358012; c=relaxed/simple;
+	bh=dos7FBrflt6ouehK+u3vLhuNoqbO938qJMz2qwPBXLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lLwYp47gnhw8S7LDTFhJ6F8LYLgn+6KA7ErtHlb0RlUZuhatyG/eLll+04+vmO7tTo5FAkBn95kJOCVqM+98zJ7S9yPdR9GwTCTYawyXYMvSDXekZdqw6LroNjLykOwUCmmw6nITBO26aWbMsJNSHXmaagMjSPerY2T7x3FhUZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3jEi9cf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390C8C4AF0E;
-	Tue, 30 Jul 2024 16:20:31 +0000 (UTC)
+	 MIME-Version; b=K5uOIjL7m9ktvPmEmFf9vTWOUBEUGydAKePGDAnO6l68aYmZFo2xfoz8+u2wKuVB+U5EjT/fVibIHgkbrgMEy2NLTPCr+1W80SmiViDleg/G08DnGUlrNuAxETvzv7upisyRj1RsS4aM+1cMeVC1XBb/7JTKizea25jVdSP2nYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIHgjeJt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3725EC32782;
+	Tue, 30 Jul 2024 16:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356431;
-	bh=jzfDbByuOS3Ziofk87OG6Q8/47M/5Hb7yRWL8d5jsgE=;
+	s=korg; t=1722358012;
+	bh=dos7FBrflt6ouehK+u3vLhuNoqbO938qJMz2qwPBXLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q3jEi9cf3fKkbrd3cxePAKE7sAPxcN9aC1t5xlhrAoSUFcEfZOBTeR+gJahLofCNM
-	 /jPwCHED4MwDWMOqyMvqKst5zXMbbt9CzsavdLhZpyebIYuNIuJhK/YebFobeZMWEj
-	 kIh8sZpNVRHiKsJPwFR+FrvOQrf0BaT2vDGagZcI=
+	b=sIHgjeJt/6jpEYxIjn/NAYyltqw+xV/8si2123EHhc9TKcXAeSBzBJ/nGiaW1X85A
+	 KXkQvHbQb7ue5ZwdmZ+8GTFA1SA0PmUTZ/ekYjlr6z0/Mi2IR01sX80aMWJqVBA7Dd
+	 4u4fp4uMynfvp5A0VFllgR686GE6Na9uFKqvzodg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Russell Currey <ruscur@russell.cc>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Martin Willi <martin@strongswan.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 191/440] powerpc/pseries: Add helper to get PLPKS password length
+Subject: [PATCH 6.6 317/568] net: dsa: mv88e6xxx: Limit chip-wide frame size config to CPU ports
 Date: Tue, 30 Jul 2024 17:47:04 +0200
-Message-ID: <20240730151623.332666446@linuxfoundation.org>
+Message-ID: <20240730151652.260546453@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell Currey <ruscur@russell.cc>
+From: Martin Willi <martin@strongswan.org>
 
-[ Upstream commit 9ee76bd5c7e39b622660cc14833ead1967f2038d ]
+[ Upstream commit 66b6095c264e1b4e0a441c6329861806504e06c6 ]
 
-Add helper function to get the PLPKS password length. This will be used
-in a later patch to support passing the password between kernels over
-kexec.
+Marvell chips not supporting per-port jumbo frame size configurations use
+a chip-wide frame size configuration. In the commit referenced with the
+Fixes tag, the setting is applied just for the last port changing its MTU.
 
-Signed-off-by: Russell Currey <ruscur@russell.cc>
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20230210080401.345462-23-ajd@linux.ibm.com
-Stable-dep-of: 932bed412170 ("powerpc/kexec_file: fix cpus node update to FDT")
+While configuring CPU ports accounts for tagger overhead, user ports do
+not. When setting the MTU for a user port, the chip-wide setting is
+reduced to not include the tagger overhead, resulting in an potentially
+insufficient maximum frame size for the CPU port. Specifically, sending
+full-size frames from the CPU port on a MV88E6097 having a user port MTU
+of 1500 bytes results in dropped frames.
+
+As, by design, the CPU port MTU is adjusted for any user port change,
+apply the chip-wide setting only for CPU ports.
+
+Fixes: 1baf0fac10fb ("net: dsa: mv88e6xxx: Use chip-wide max frame size for MTU")
+Suggested-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: Martin Willi <martin@strongswan.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/plpks.h       | 5 +++++
- arch/powerpc/platforms/pseries/plpks.c | 5 +++++
- 2 files changed, 10 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
-index 8dab5c26c1e41..9e2219b0202db 100644
---- a/arch/powerpc/include/asm/plpks.h
-+++ b/arch/powerpc/include/asm/plpks.h
-@@ -153,6 +153,11 @@ u32 plpks_get_maxlargeobjectsize(void);
-  */
- u64 plpks_get_signedupdatealgorithms(void);
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 354d4af134562..3877744193e2a 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -3490,7 +3490,8 @@ static int mv88e6xxx_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
+ 	mv88e6xxx_reg_lock(chip);
+ 	if (chip->info->ops->port_set_jumbo_size)
+ 		ret = chip->info->ops->port_set_jumbo_size(chip, port, new_mtu);
+-	else if (chip->info->ops->set_max_frame_size)
++	else if (chip->info->ops->set_max_frame_size &&
++		 dsa_is_cpu_port(ds, port))
+ 		ret = chip->info->ops->set_max_frame_size(chip, new_mtu);
+ 	mv88e6xxx_reg_unlock(chip);
  
-+/**
-+ * Returns the length of the PLPKS password in bytes.
-+ */
-+u16 plpks_get_passwordlen(void);
-+
- #endif // CONFIG_PSERIES_PLPKS
- 
- #endif // _ASM_POWERPC_PLPKS_H
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index 2b659f2b01214..eea251105e394 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -348,6 +348,11 @@ u64 plpks_get_signedupdatealgorithms(void)
- 	return signedupdatealgorithms;
- }
- 
-+u16 plpks_get_passwordlen(void)
-+{
-+	return ospasswordlength;
-+}
-+
- bool plpks_is_available(void)
- {
- 	int rc;
 -- 
 2.43.0
 
