@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A0F941DCC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49859941BAA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A067B2A002
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:21:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DAE0B23906
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCAC188011;
-	Tue, 30 Jul 2024 17:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61A71898E0;
+	Tue, 30 Jul 2024 16:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4Qmx/6F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IifFBoWm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A291A76DD;
-	Tue, 30 Jul 2024 17:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D131A619E;
+	Tue, 30 Jul 2024 16:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360064; cv=none; b=QXoya7+RjAetWFquOFaRKbfB2laVqpwZqNMK/wRZELL9X3BR4Vits+Z1oRBTBEqC1Tdfqh8Codag8nisKJzR03hwN9V4y4KgPCLF0bDDtW4Jv9QEXbrGeeBDSctWaJ/APEUYsX/NBco5/V7g+xTcRk2v9r4Pp4MAGSEQ6ihv+ac=
+	t=1722358354; cv=none; b=BOEkPhEdlWAF3KnD57HkQvrOczscoHxv9X7Kr5CtGg1o2hycRfZxAXKXlzJvA+wE12s7/Ny9AfNrQip5eIwg2wDbtbL59vrUTV0H97k/GctpfXTlTNIyHbMqNeRxIv7nv4LshvJeSkg4RIq4DCU20N+qNovwa125vH36tn92E5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360064; c=relaxed/simple;
-	bh=jBpXa+xh8BVh2MEQUtxZBuZsk2dfGzG/dy2WdPbuFaU=;
+	s=arc-20240116; t=1722358354; c=relaxed/simple;
+	bh=D3yevytANEwQe6x4oE720RuexFSZN9folyPdDgidZK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3m7ppW3mOV0RtPZIO+qssvkEk2m3C2s00pKYEoeGF7HG+vZjS403gbmV7L9OhLVL9iw+RiaODjiweLXlHk98Ih1OSBsRU57lBVQMsF0dljUqH8mJ7sC101vb+V7RSX5MkYkLcCaWaSAm0YSfL6sGKhKWUzrj1mZ9Dnvvi+HXj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4Qmx/6F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4D4C32782;
-	Tue, 30 Jul 2024 17:21:03 +0000 (UTC)
+	 MIME-Version; b=oR2CkPRKkmoonEasLNtvcw4clj375clU6ydgwOKi3yn/Fz6yVTS3YyZ5VmpbDGY/HNtLLdVU7M006+NWn778AmPqoss+P6IMqO+yBFpF4QZuBJo9iQ5k2nQ2uyBCBYRDyqG/zyI/nJBFkfiyBO5Ygb0ppDRIVKF6gHbNs8eS4Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IifFBoWm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21F1C32782;
+	Tue, 30 Jul 2024 16:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360064;
-	bh=jBpXa+xh8BVh2MEQUtxZBuZsk2dfGzG/dy2WdPbuFaU=;
+	s=korg; t=1722358354;
+	bh=D3yevytANEwQe6x4oE720RuexFSZN9folyPdDgidZK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4Qmx/6Fz97Yu0abOSo0A0vqsSPzQJ5SZvYAe0E7okmAZLKw2akDw21Zj6VYGuMRo
-	 6mEeliaQJRlLiXjH4nT/otbkHotiHTsMUzCAxP9l7Bbr+e5e/pFHruJxVgoWXWZwLn
-	 eJyNCxTZY3rtC7VKd/L1JikDVlF57E+5e5kSL33A=
+	b=IifFBoWmOs4L257bObUcWVeCUx9+ZddrCJM0HJi6TambFdP6GJklDBOFjuD3UkvIC
+	 QdTAQ8rlAeSOmWcfHkp3ZpeBBwEZbWJGA9E0gEAgbeFGl1M4cuI50LzTl1bME/2+q1
+	 a5K6hmixAkLi5EdZiowmza4OnKq8XYGTSbz5NSQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.10 585/809] cifs: fix reconnect with SMB1 UNIX Extensions
+	linke li <lilinke99@qq.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 354/568] sbitmap: use READ_ONCE to access map->word
 Date: Tue, 30 Jul 2024 17:47:41 +0200
-Message-ID: <20240730151747.935630897@linuxfoundation.org>
+Message-ID: <20240730151653.702927655@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: linke li <lilinke99@qq.com>
 
-commit a214384ce26b6111ea8c8d58fa82a1ca63996c38 upstream.
+[ Upstream commit 6ad0d7e0f4b68f87a98ea2b239123b7d865df86b ]
 
-When mounting with the SMB1 Unix Extensions (e.g. mounts
-to Samba with vers=1.0), reconnects no longer reset the
-Unix Extensions (SetFSInfo SET_FILE_UNIX_BASIC) after tcon so most
-operations (e.g. stat, ls, open, statfs) will fail continuously
-with:
-        "Operation not supported"
-if the connection ever resets (e.g. due to brief network disconnect)
+In __sbitmap_queue_get_batch(), map->word is read several times, and
+update atomically using atomic_long_try_cmpxchg(). But the first two read
+of map->word is not protected.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch moves the statement val = READ_ONCE(map->word) forward,
+eliminating unprotected accesses to map->word within the function.
+It is aimed at reducing the number of benign races reported by KCSAN in
+order to focus future debugging effort on harmful races.
+
+Signed-off-by: linke li <lilinke99@qq.com>
+Link: https://lore.kernel.org/r/tencent_0B517C25E519D3D002194E8445E86C04AD0A@qq.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 72d04bdcf3f7 ("sbitmap: fix io hung due to race on sbitmap_word::cleared")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ lib/sbitmap.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -3686,6 +3686,7 @@ error:
- }
- #endif
+diff --git a/lib/sbitmap.c b/lib/sbitmap.c
+index d0a5081dfd122..d1247f34d584e 100644
+--- a/lib/sbitmap.c
++++ b/lib/sbitmap.c
+@@ -499,18 +499,18 @@ unsigned long __sbitmap_queue_get_batch(struct sbitmap_queue *sbq, int nr_tags,
+ 		struct sbitmap_word *map = &sb->map[index];
+ 		unsigned long get_mask;
+ 		unsigned int map_depth = __map_depth(sb, index);
++		unsigned long val;
  
-+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
- /*
-  * Issue a TREE_CONNECT request.
-  */
-@@ -3807,11 +3808,25 @@ CIFSTCon(const unsigned int xid, struct
- 		else
- 			tcon->Flags = 0;
- 		cifs_dbg(FYI, "Tcon flags: 0x%x\n", tcon->Flags);
--	}
+ 		sbitmap_deferred_clear(map);
+-		if (map->word == (1UL << (map_depth - 1)) - 1)
++		val = READ_ONCE(map->word);
++		if (val == (1UL << (map_depth - 1)) - 1)
+ 			goto next;
  
-+		/*
-+		 * reset_cifs_unix_caps calls QFSInfo which requires
-+		 * need_reconnect to be false, but we would not need to call
-+		 * reset_caps if this were not a reconnect case so must check
-+		 * need_reconnect flag here.  The caller will also clear
-+		 * need_reconnect when tcon was successful but needed to be
-+		 * cleared earlier in the case of unix extensions reconnect
-+		 */
-+		if (tcon->need_reconnect && tcon->unix_ext) {
-+			cifs_dbg(FYI, "resetting caps for %s\n", tcon->tree_name);
-+			tcon->need_reconnect = false;
-+			reset_cifs_unix_caps(xid, tcon, NULL, NULL);
-+		}
-+	}
- 	cifs_buf_release(smb_buffer);
- 	return rc;
- }
-+#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+-		nr = find_first_zero_bit(&map->word, map_depth);
++		nr = find_first_zero_bit(&val, map_depth);
+ 		if (nr + nr_tags <= map_depth) {
+ 			atomic_long_t *ptr = (atomic_long_t *) &map->word;
+-			unsigned long val;
  
- static void delayed_free(struct rcu_head *p)
- {
+ 			get_mask = ((1UL << nr_tags) - 1) << nr;
+-			val = READ_ONCE(map->word);
+ 			while (!atomic_long_try_cmpxchg(ptr, &val,
+ 							  get_mask | val))
+ 				;
+-- 
+2.43.0
+
 
 
 
