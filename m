@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831B5941DD9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A75BF941B89
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 390D71F27B52
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3173F1F21988
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6886B189503;
-	Tue, 30 Jul 2024 17:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34BD189514;
+	Tue, 30 Jul 2024 16:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFJMd3iZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHrdY3hv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226DF1A76A1;
-	Tue, 30 Jul 2024 17:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9D6184549;
+	Tue, 30 Jul 2024 16:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360128; cv=none; b=iUzykRbaGHsPgI89rlvfOsHxpXvbEOP/RbAKi6lYPeLEm08DVtHHWPG2uwe+XZsfGKXTyq1zNRBAagu81hlScCDNpAneEagDZuzojWR/hAL+aWBs5F6WydYo3Tluad7mrqcymr4JFHBlAxjo0H4AcjO5X5WfBmVjhP8BoenzONA=
+	t=1722358570; cv=none; b=FdFCpdNX/0HNScjzl46J7o9xb5BfG4QJqBk4i1TBCt39zftBAtlA+x3VpG++j5l/7VehyY2JSKCZ830hAFclelPKQW5gHDqrGEZmRd6jFENw2o/7FScEe5IPZiWEumVsIfONmMfToL6G+f9f/br4Hso47NXKAMJDGTs+0caoE0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360128; c=relaxed/simple;
-	bh=p9GL39TNNOGFUydRIDt1Bcm9G0UPsCsfFTkGjwyHdTU=;
+	s=arc-20240116; t=1722358570; c=relaxed/simple;
+	bh=25Ie7mdrX1mE4IjC4Gd/yXeEl/qplN2rhRODNSMXeDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FFlbOmyjKETenyTEaWiwNwJpKFNqeby97VCWG9QtpL9yQbosrJeiLRK7wk3/edpzjzbnP+/T7vh2oSVrVbRBaPQyXDX3T+DqDV2o0mN7p8X8LdturU5NSMNgj8gzMxorhYhvgUNqiDgen8Rxnl8aQFQLAQWTHuXfTQlEgLK+JxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFJMd3iZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D3FCC32782;
-	Tue, 30 Jul 2024 17:22:07 +0000 (UTC)
+	 MIME-Version; b=CAw7IbOl7KasNnKHKBnorcRj5fQm5X4IPfAcdJiVoPchCl10squx4o4rXtLh46SzMoXTdlO+4PPcGC/OsPH9nWdrKcUZ8S7fNC6YsRgunHRy7ntBq1PTqaacpskcTREEo+nHMjfdnR20zEkyvheAAsI1ZbW0qQSukkgH12BIr+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHrdY3hv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0546C32782;
+	Tue, 30 Jul 2024 16:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360128;
-	bh=p9GL39TNNOGFUydRIDt1Bcm9G0UPsCsfFTkGjwyHdTU=;
+	s=korg; t=1722358570;
+	bh=25Ie7mdrX1mE4IjC4Gd/yXeEl/qplN2rhRODNSMXeDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wFJMd3iZuzDR24XXi9rkM+AMAtTncANZoPdrEOcD0lY2Ww2FZ5eJdteL2Fz2rig0+
-	 V1sDn8bVQga4EB/xfpyJJP7J6JiNqWd14PpRKQfE+5htf1cOnJqZoaBl5ZS8Wqi8ns
-	 6R7qOOCa4Hvne48WE/wQO6S9DQJpz40LpE9I3fYU=
+	b=hHrdY3hvGRaU7/F2WSPVgNBpoLHsLLe4nLPZzA24pDITfyAuEpX5YUU8FiCoEt5sa
+	 YTs4dYpfJ5QmzT6apjIdesQ/X4UyxEKY15t6PaXP5IiR9Pne93hP2s97DSPLyeeLZB
+	 UbmhhL6Uty6zhK5SgHcnuehgPdP2SAvaz9u3VMTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Ofir Gal <ofir.gal@volumez.com>,
-	Song Liu <song@kernel.org>
-Subject: [PATCH 6.10 606/809] md/md-bitmap: fix writing non bitmap pages
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.6 375/568] sched/fair: set_load_weight() must also call reweight_task() for SCHED_IDLE tasks
 Date: Tue, 30 Jul 2024 17:48:02 +0200
-Message-ID: <20240730151748.769964597@linuxfoundation.org>
+Message-ID: <20240730151654.520601922@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ofir Gal <ofir.gal@volumez.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit ab99a87542f194f28e2364a42afbf9fb48b1c724 upstream.
+commit d329605287020c3d1c3b0dadc63d8208e7251382 upstream.
 
-__write_sb_page() rounds up the io size to the optimal io size if it
-doesn't exceed the data offset, but it doesn't check the final size
-exceeds the bitmap length.
+When a task's weight is being changed, set_load_weight() is called with
+@update_load set. As weight changes aren't trivial for the fair class,
+set_load_weight() calls fair.c::reweight_task() for fair class tasks.
 
-For example:
-page count      - 1
-page size       - 4K
-data offset     - 1M
-optimal io size - 256K
+However, set_load_weight() first tests task_has_idle_policy() on entry and
+skips calling reweight_task() for SCHED_IDLE tasks. This is buggy as
+SCHED_IDLE tasks are just fair tasks with a very low weight and they would
+incorrectly skip load, vlag and position updates.
 
-The final io size would be 256K (64 pages) but md_bitmap_storage_alloc()
-allocated 1 page, the IO would write 1 valid page and 63 pages that
-happens to be allocated afterwards. This leaks memory to the raid device
-superblock.
+Fix it by updating reweight_task() to take struct load_weight as idle weight
+can't be expressed with prio and making set_load_weight() call
+reweight_task() for SCHED_IDLE tasks too when @update_load is set.
 
-This issue caused a data transfer failure in nvme-tcp. The network
-drivers checks the first page of an IO with sendpage_ok(), it returns
-true if the page isn't a slabpage and refcount >= 1. If the page
-!sendpage_ok() the network driver disables MSG_SPLICE_PAGES.
-
-As of now the network layer assumes all the pages of the IO are
-sendpage_ok() when MSG_SPLICE_PAGES is on.
-
-The bitmap pages aren't slab pages, the first page of the IO is
-sendpage_ok(), but the additional pages that happens to be allocated
-after the bitmap pages might be !sendpage_ok(). That cause
-skb_splice_from_iter() to stop the data transfer, in the case below it
-hangs 'mdadm --create'.
-
-The bug is reproducible, in order to reproduce we need nvme-over-tcp
-controllers with optimal IO size bigger than PAGE_SIZE. Creating a raid
-with bitmap over those devices reproduces the bug.
-
-In order to simulate large optimal IO size you can use dm-stripe with a
-single device.
-Script to reproduce the issue on top of brd devices using dm-stripe is
-attached below (will be added to blktest).
-
-I have added some logs to test the theory:
-...
-md: created bitmap (1 pages) for device md127
-__write_sb_page before md_super_write offset: 16, size: 262144. pfn: 0x53ee
-=== __write_sb_page before md_super_write. logging pages ===
-pfn: 0x53ee, slab: 0 <-- the only page that allocated for the bitmap
-pfn: 0x53ef, slab: 1
-pfn: 0x53f0, slab: 0
-pfn: 0x53f1, slab: 0
-pfn: 0x53f2, slab: 0
-pfn: 0x53f3, slab: 1
-...
-nvme_tcp: sendpage_ok - pfn: 0x53ee, len: 262144, offset: 0
-skbuff: before sendpage_ok() - pfn: 0x53ee
-skbuff: before sendpage_ok() - pfn: 0x53ef
-WARNING at net/core/skbuff.c:6848 skb_splice_from_iter+0x142/0x450
-skbuff: !sendpage_ok - pfn: 0x53ef. is_slab: 1, page_count: 1
-...
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Ofir Gal <ofir.gal@volumez.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240607072748.3182199-1-ofir.gal@volumez.com
+Fixes: 9059393e4ec1 ("sched/fair: Use reweight_entity() for set_user_nice()")
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org # v4.15+
+Link: http://lkml.kernel.org/r/20240624102331.GI31592@noisy.programming.kicks-ass.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md-bitmap.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/sched/core.c  |   23 ++++++++++-------------
+ kernel/sched/fair.c  |    7 +++----
+ kernel/sched/sched.h |    2 +-
+ 3 files changed, 14 insertions(+), 18 deletions(-)
 
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -227,6 +227,8 @@ static int __write_sb_page(struct md_rde
- 	struct block_device *bdev;
- 	struct mddev *mddev = bitmap->mddev;
- 	struct bitmap_storage *store = &bitmap->storage;
-+	unsigned int bitmap_limit = (bitmap->storage.file_pages - pg_index) <<
-+		PAGE_SHIFT;
- 	loff_t sboff, offset = mddev->bitmap_info.offset;
- 	sector_t ps = pg_index * PAGE_SIZE / SECTOR_SIZE;
- 	unsigned int size = PAGE_SIZE;
-@@ -269,11 +271,9 @@ static int __write_sb_page(struct md_rde
- 		if (size == 0)
- 			/* bitmap runs in to data */
- 			return -EINVAL;
--	} else {
--		/* DATA METADATA BITMAP - no problems */
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1304,27 +1304,24 @@ int tg_nop(struct task_group *tg, void *
+ static void set_load_weight(struct task_struct *p, bool update_load)
+ {
+ 	int prio = p->static_prio - MAX_RT_PRIO;
+-	struct load_weight *load = &p->se.load;
++	struct load_weight lw;
+ 
+-	/*
+-	 * SCHED_IDLE tasks get minimal weight:
+-	 */
+ 	if (task_has_idle_policy(p)) {
+-		load->weight = scale_load(WEIGHT_IDLEPRIO);
+-		load->inv_weight = WMULT_IDLEPRIO;
+-		return;
++		lw.weight = scale_load(WEIGHT_IDLEPRIO);
++		lw.inv_weight = WMULT_IDLEPRIO;
++	} else {
++		lw.weight = scale_load(sched_prio_to_weight[prio]);
++		lw.inv_weight = sched_prio_to_wmult[prio];
  	}
  
--	md_super_write(mddev, rdev, sboff + ps, (int) size, page);
-+	md_super_write(mddev, rdev, sboff + ps, (int)min(size, bitmap_limit), page);
- 	return 0;
+ 	/*
+ 	 * SCHED_OTHER tasks have to update their load when changing their
+ 	 * weight
+ 	 */
+-	if (update_load && p->sched_class == &fair_sched_class) {
+-		reweight_task(p, prio);
+-	} else {
+-		load->weight = scale_load(sched_prio_to_weight[prio]);
+-		load->inv_weight = sched_prio_to_wmult[prio];
+-	}
++	if (update_load && p->sched_class == &fair_sched_class)
++		reweight_task(p, &lw);
++	else
++		p->se.load = lw;
  }
  
+ #ifdef CONFIG_UCLAMP_TASK
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3791,15 +3791,14 @@ static void reweight_entity(struct cfs_r
+ 	}
+ }
+ 
+-void reweight_task(struct task_struct *p, int prio)
++void reweight_task(struct task_struct *p, const struct load_weight *lw)
+ {
+ 	struct sched_entity *se = &p->se;
+ 	struct cfs_rq *cfs_rq = cfs_rq_of(se);
+ 	struct load_weight *load = &se->load;
+-	unsigned long weight = scale_load(sched_prio_to_weight[prio]);
+ 
+-	reweight_entity(cfs_rq, se, weight);
+-	load->inv_weight = sched_prio_to_wmult[prio];
++	reweight_entity(cfs_rq, se, lw->weight);
++	load->inv_weight = lw->inv_weight;
+ }
+ 
+ static inline int throttled_hierarchy(struct cfs_rq *cfs_rq);
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2435,7 +2435,7 @@ extern void init_sched_dl_class(void);
+ extern void init_sched_rt_class(void);
+ extern void init_sched_fair_class(void);
+ 
+-extern void reweight_task(struct task_struct *p, int prio);
++extern void reweight_task(struct task_struct *p, const struct load_weight *lw);
+ 
+ extern void resched_curr(struct rq *rq);
+ extern void resched_cpu(int cpu);
 
 
 
