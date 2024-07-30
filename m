@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A808594197D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC7C941980
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B1361F25B35
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 767BC286C4C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18E81A619C;
-	Tue, 30 Jul 2024 16:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29551A6199;
+	Tue, 30 Jul 2024 16:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwVlaq9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TWMhXpL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA7F1A617E;
-	Tue, 30 Jul 2024 16:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627F71A617E;
+	Tue, 30 Jul 2024 16:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357180; cv=none; b=aolX+3Smmy0WoUkOf2MpQ4jRz5gdq7zhE+mArLSdb/PXf3w0HA//XrKth2uQG0pP0ZVQR8tuLbMhH+95FqfFVDOc+Y+Xmmah2XgmG6B4HL9Vi1lNQ/m1i2dhYunUaPoLm4XuETWwDAyh3N/MK9XR0upcCkHaXupk+wh2GCn1eTE=
+	t=1722357190; cv=none; b=BvEFIoxl9Opk1p6krxKi+4RaBSgEMRO0mNtV3BfYQgkM5nXdvZ3NIWF5H1xdrNcpuGZfpWfk0l93q8rUSSYJBGu7nQjxXpEvgpSEOXJTi976YtexGT3ORyrxRWkfmSs6rgni8kN9YhzVk3N4xG8Xy9GWx9Ju3jCs8DrtG4qrwIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357180; c=relaxed/simple;
-	bh=8qCRcau7r/isL8d2ld6n8WelIEqBEHWgDSwofF3vn8w=;
+	s=arc-20240116; t=1722357190; c=relaxed/simple;
+	bh=l2g4YjY6FS0dXfS+1vTCN4BshcT12srYe665In2wvOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kJtATh+dJqLgPVWSIrEjX9i4t0tdHqm34z5ERwEDBuPfgr81uqqjCdbheIiSq5pgMzj3KuPS66MzD9aHaMTXnpQpZIm+6TKYbURHO78T1I9ikBBRi7vUT22IAFHlKdlQ7o3DEofgNhq+ocFhIKRA6JeDXN6f93ZNKZPOZwJxtlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwVlaq9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C52C32782;
-	Tue, 30 Jul 2024 16:32:59 +0000 (UTC)
+	 MIME-Version; b=LW+CJWic4uoWR/Gm8f/iXmlZGkJuANHTE1147FdwWf3kHc3FrM7Egv/Z+LVI2rR+/yFveDehcHjVXyVIh/KiMiNbKpukswvTx6c3K1C+/wdKFMIKU8WgLlHU9fm0x73zwh+drJpp3QGws3aAxDjjlMh924HjWtKMaSedSj57iig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TWMhXpL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09A0C32782;
+	Tue, 30 Jul 2024 16:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357180;
-	bh=8qCRcau7r/isL8d2ld6n8WelIEqBEHWgDSwofF3vn8w=;
+	s=korg; t=1722357190;
+	bh=l2g4YjY6FS0dXfS+1vTCN4BshcT12srYe665In2wvOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WwVlaq9pglzgPTc1stPeXzMhteIOKNN4iw6vfmw1wWHlIc+PurdTtTAMqhlGF71wV
-	 q1xFOQHiwUUpPYtc7PH1nwFpr7kfgNJhhzd+MAYlzWpvOxMNPb5l3MiwNrOj5jYmfg
-	 kG9NQlbzl6T/zLnuIqEEX9xZznkck8o2hf2N7nNI=
+	b=1TWMhXpL7bPjqkAHzymnYhwFNHveth+IZVqngpJGFhknOM/vyZcb3We2uHTb/3pc/
+	 60H2VYze7aJvoIDUm9UX1rDrSvBk13zxtE2K/Q2aMm61273Il9EouLl3t8ZBc1eruc
+	 1/6vcJLT59enDF76rRPy5NRbmk3UmDji7DAvVnOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Leon Romanovsky <leonro@nvidia.com>,
 	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 230/809] xfrm: fix netdev reference count imbalance
-Date: Tue, 30 Jul 2024 17:41:46 +0200
-Message-ID: <20240730151733.692273168@linuxfoundation.org>
+Subject: [PATCH 6.10 231/809] xfrm: call xfrm_dev_policy_delete when kill policy
+Date: Tue, 30 Jul 2024 17:41:47 +0200
+Message-ID: <20240730151733.730771449@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -70,38 +70,86 @@ Content-Transfer-Encoding: 8bit
 
 From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 9199b915e9fad7f5eff6160d24ff6b38e970107d ]
+[ Upstream commit 89a2aefe4b084686c2ffc1ee939585111ea4fc0f ]
 
-In cited commit, netdev_tracker_alloc() is called for the newly
-allocated xfrm state, but dev_hold() is missed, which causes netdev
-reference count imbalance, because netdev_put() is called when the
-state is freed in xfrm_dev_state_free(). Fix the issue by replacing
-netdev_tracker_alloc() with netdev_hold().
+xfrm_policy_kill() is called at different places to delete xfrm
+policy. It will call xfrm_pol_put(). But xfrm_dev_policy_delete() is
+not called to free the policy offloaded to hardware.
 
-Fixes: f8a70afafc17 ("xfrm: add TX datapath support for IPsec packet offload mode")
+The three commits cited here are to handle this issue by calling
+xfrm_dev_policy_delete() outside xfrm_get_policy(). But they didn't
+cover all the cases. An example, which is not handled for now, is
+xfrm_policy_insert(). It is called when XFRM_MSG_UPDPOLICY request is
+received. Old policy is replaced by new one, but the offloaded policy
+is not deleted, so driver doesn't have the chance to release hardware
+resources.
+
+To resolve this issue for all cases, move xfrm_dev_policy_delete()
+into xfrm_policy_kill(), so the offloaded policy can be deleted from
+hardware when it is called, which avoids hardware resources leakage.
+
+Fixes: 919e43fad516 ("xfrm: add an interface to offload policy")
+Fixes: bf06fcf4be0f ("xfrm: add missed call to delete offloaded policies")
+Fixes: 982c3aca8bac ("xfrm: delete offloaded policy")
 Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
 Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_state.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/xfrm/xfrm_policy.c | 5 ++---
+ net/xfrm/xfrm_user.c   | 1 -
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 936f9348e5f63..67b2a399a48a7 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1331,8 +1331,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 			xso->dev = xdo->dev;
- 			xso->real_dev = xdo->real_dev;
- 			xso->flags = XFRM_DEV_OFFLOAD_FLAG_ACQ;
--			netdev_tracker_alloc(xso->dev, &xso->dev_tracker,
--					     GFP_ATOMIC);
-+			netdev_hold(xso->dev, &xso->dev_tracker, GFP_ATOMIC);
- 			error = xso->dev->xfrmdev_ops->xdo_dev_state_add(x, NULL);
- 			if (error) {
- 				xso->dir = 0;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 66e07de2de35c..56b88ad88db6f 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -452,6 +452,8 @@ EXPORT_SYMBOL(xfrm_policy_destroy);
+ 
+ static void xfrm_policy_kill(struct xfrm_policy *policy)
+ {
++	xfrm_dev_policy_delete(policy);
++
+ 	write_lock_bh(&policy->lock);
+ 	policy->walk.dead = 1;
+ 	write_unlock_bh(&policy->lock);
+@@ -1850,7 +1852,6 @@ int xfrm_policy_flush(struct net *net, u8 type, bool task_valid)
+ 
+ 		__xfrm_policy_unlink(pol, dir);
+ 		spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
+-		xfrm_dev_policy_delete(pol);
+ 		cnt++;
+ 		xfrm_audit_policy_delete(pol, 1, task_valid);
+ 		xfrm_policy_kill(pol);
+@@ -1891,7 +1892,6 @@ int xfrm_dev_policy_flush(struct net *net, struct net_device *dev,
+ 
+ 		__xfrm_policy_unlink(pol, dir);
+ 		spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
+-		xfrm_dev_policy_delete(pol);
+ 		cnt++;
+ 		xfrm_audit_policy_delete(pol, 1, task_valid);
+ 		xfrm_policy_kill(pol);
+@@ -2342,7 +2342,6 @@ int xfrm_policy_delete(struct xfrm_policy *pol, int dir)
+ 	pol = __xfrm_policy_unlink(pol, dir);
+ 	spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
+ 	if (pol) {
+-		xfrm_dev_policy_delete(pol);
+ 		xfrm_policy_kill(pol);
+ 		return 0;
+ 	}
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index e83c687bd64ee..77355422ce82a 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2455,7 +2455,6 @@ static int xfrm_get_policy(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 					    NETLINK_CB(skb).portid);
+ 		}
+ 	} else {
+-		xfrm_dev_policy_delete(xp);
+ 		xfrm_audit_policy_delete(xp, err ? 0 : 1, true);
+ 
+ 		if (err != 0)
 -- 
 2.43.0
 
