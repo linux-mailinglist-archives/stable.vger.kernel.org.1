@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDAC4941DD3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04388941AEF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FB441F27A8D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AED441F222ED
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085A91A76C5;
-	Tue, 30 Jul 2024 17:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530A718455B;
+	Tue, 30 Jul 2024 16:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jt7k/HTd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCn2nDix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76431A76BD;
-	Tue, 30 Jul 2024 17:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1326514831F;
+	Tue, 30 Jul 2024 16:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360099; cv=none; b=VaBfK2BqjtTd5q4u/uyC0kxaAsC93DsX5/i4zhxbA2BUfjbsq2a6jUMjKnDTd1lznbw0vM0qdg//i60LNjV1jxnaR6tG6pBUfnUHVrzBpz79gb9uhXq8uKBVQpc16S6PT8M7zjPJfow3UsHayOHDXmYepI7M418654T17URhSJA=
+	t=1722358155; cv=none; b=Wv9wjfU9avVbolPrWy9DRCWQqD7O0rIRr2K1R0osTWhJANJltjUus/E/htKeEBEZxXhwMT4USCifo4Q3lAG8rPTNKpq231bb/6/NuclCs6JvZUuaoaNkJ/ouDtSrJfjh6O4GTkqnSS1zREMqi6aN6IMFQRSSHOglmYpc/RbyUUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360099; c=relaxed/simple;
-	bh=Vvhkqryfytxq+75kPq5UQUKSI5fckhvHD0016/jJ81c=;
+	s=arc-20240116; t=1722358155; c=relaxed/simple;
+	bh=Oe3/miXESfy9blb9UGjqyvAABoWBle9g8SJw/JF/pDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Df3o5N50JlZNaWVgRKtYlWk8XSDy/+lpR05+3mEe/pnzMKBgrWtYKBIRI9tqmi44vTh4N/XgOpoJN7PAKWLTDEVjt3wIj7XbtX7T8HylUsxQvFBQMIvPp2mNdrOUEEnaoaYhr1lKzqYPfeEECaafU3kqAUkUwOtF3j7oSRfy9FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jt7k/HTd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12025C32782;
-	Tue, 30 Jul 2024 17:21:38 +0000 (UTC)
+	 MIME-Version; b=bWyNY5OOzuGR2nND3Ii5jQ/cMttPMDrzBrvJrHijhIs34SAHbbx0rc1wfZcxPYZBL6chkvCUE9O64q3OQ/9894OW9FJyhcMNQHoX3CaV1nw4BHniVsqAmsnlmHBi7S1kiLzi5hLW2A84lv4sdwSLkaNWZsmLhEKeqrJXDEvFJIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCn2nDix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAEAC32782;
+	Tue, 30 Jul 2024 16:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360099;
-	bh=Vvhkqryfytxq+75kPq5UQUKSI5fckhvHD0016/jJ81c=;
+	s=korg; t=1722358155;
+	bh=Oe3/miXESfy9blb9UGjqyvAABoWBle9g8SJw/JF/pDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jt7k/HTd0W/T2nnE3ezLYusX/NmW56cOefnKHHJyufcEkFwKGpHK+yQjJIGSpV3yt
-	 1JIsGbwf5HkB72z7xgEyfnTUe7eKSIvP2gtvjCkjp7VtsNu2ggEeLNAOFAEtpcKM/K
-	 N1GVs5zaSFabQxvjQ0ofL48kefXxxZPhPFXcW9Kw=
+	b=rCn2nDixuJntWMgz9CINTVy0sk2qKVm9Fx5TI74PzlKloZ7gFvxw4UsZiNyfbZHkZ
+	 KurJmUikwnmI3svViGCdMXF1P6g2CEcgS2rC4USy4u2LZyblQEhoI9eR7mR9rZkg6Q
+	 4ggQKt1LmXvRDXL4WuZDzRuImgzqJztK25LX2o+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akshat Jain <akshatzen@google.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>
-Subject: [PATCH 6.10 565/809] ata: libata-scsi: Fix offsets for the fixed format sense data
-Date: Tue, 30 Jul 2024 17:47:21 +0200
-Message-ID: <20240730151747.084906011@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 335/568] pinctrl: renesas: r8a779g0: Fix CANFD5 suffix
+Date: Tue, 30 Jul 2024 17:47:22 +0200
+Message-ID: <20240730151652.964277594@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,146 +59,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 38dab832c3f4154968f95b267a3bb789e87554b0 upstream.
+[ Upstream commit 77fa9007ac31e80674beadc452d3f3614f283e18 ]
 
-Correct the ATA PASS-THROUGH fixed format sense data offsets to conform
-to SPC-6 and SAT-5 specifications. Additionally, set the VALID bit to
-indicate that the INFORMATION field contains valid information.
+CAN-FD instance 5 has two alternate pin groups: "canfd5" and "canfd5_b".
+Rename the former to "canfd5_a" to increase uniformity.
 
-INFORMATION
-===========
+While at it, remove the unneeded separator.
 
-SAT-5 Table 212 — "Fixed format sense data INFORMATION field for the ATA
-PASS-THROUGH commands" defines the following format:
-
-+------+------------+
-| Byte |   Field    |
-+------+------------+
-|    0 | ERROR      |
-|    1 | STATUS     |
-|    2 | DEVICE     |
-|    3 | COUNT(7:0) |
-+------+------------+
-
-SPC-6 Table 48 - "Fixed format sense data" specifies that the INFORMATION
-field starts at byte 3 in sense buffer resulting in the following offsets
-for the ATA PASS-THROUGH commands:
-
-+------------+-------------------------+
-|   Field    |  Offset in sense buffer |
-+------------+-------------------------+
-| ERROR      |  3                      |
-| STATUS     |  4                      |
-| DEVICE     |  5                      |
-| COUNT(7:0) |  6                      |
-+------------+-------------------------+
-
-COMMAND-SPECIFIC INFORMATION
-============================
-
-SAT-5 Table 213 - "Fixed format sense data COMMAND-SPECIFIC INFORMATION
-field for ATA PASS-THROUGH" defines the following format:
-
-+------+-------------------+
-| Byte |        Field      |
-+------+-------------------+
-|    0 | FLAGS | LOG INDEX |
-|    1 | LBA (7:0)         |
-|    2 | LBA (15:8)        |
-|    3 | LBA (23:16)       |
-+------+-------------------+
-
-SPC-6 Table 48 - "Fixed format sense data" specifies that
-the COMMAND-SPECIFIC-INFORMATION field starts at byte 8
-in sense buffer resulting in the following offsets for
-the ATA PASS-THROUGH commands:
-
-Offsets of these fields in the fixed sense format are as follows:
-
-+-------------------+-------------------------+
-|       Field       |  Offset in sense buffer |
-+-------------------+-------------------------+
-| FLAGS | LOG INDEX |  8                      |
-| LBA (7:0)         |  9                      |
-| LBA (15:8)        |  10                     |
-| LBA (23:16)       |  11                     |
-+-------------------+-------------------------+
-
-Reported-by: Akshat Jain <akshatzen@google.com>
-Fixes: 11093cb1ef56 ("libata-scsi: generate correct ATA pass-through sense")
-Cc: stable@vger.kernel.org
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Link: https://lore.kernel.org/r/20240702024735.1152293-2-ipylypiv@google.com
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
+Fixes: 050442ae4c74f830 ("pinctrl: renesas: r8a779g0: Add pins, groups and functions")
+Fixes: c2b4b2cd632d17e7 ("pinctrl: renesas: r8a779g0: Add missing CANFD5_B")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/10b22d54086ed11cdfeb0004583029ccf249bdb9.1717754960.git.geert+renesas@glider.be
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/pinctrl/renesas/pfc-r8a779g0.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -855,7 +855,6 @@ static void ata_gen_passthru_sense(struc
- 	struct scsi_cmnd *cmd = qc->scsicmd;
- 	struct ata_taskfile *tf = &qc->result_tf;
- 	unsigned char *sb = cmd->sense_buffer;
--	unsigned char *desc = sb + 8;
- 	u8 sense_key, asc, ascq;
+diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+index d2de526a3b588..d90ba8b6b4b42 100644
+--- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
++++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+@@ -341,8 +341,8 @@
+ /* IP0SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+ #define IP0SR2_3_0	FM(FXR_TXDA)		FM(CANFD1_TX)		FM(TPU0TO2_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR2_7_4	FM(FXR_TXENA_N)		FM(CANFD1_RX)		FM(TPU0TO3_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR2_11_8	FM(RXDA_EXTFXR)		FM(CANFD5_TX)		FM(IRQ5)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR2_15_12	FM(CLK_EXTFXR)		FM(CANFD5_RX)		FM(IRQ4_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR2_11_8	FM(RXDA_EXTFXR)		FM(CANFD5_TX_A)		FM(IRQ5)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR2_15_12	FM(CLK_EXTFXR)		FM(CANFD5_RX_A)		FM(IRQ4_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR2_19_16	FM(RXDB_EXTFXR)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR2_23_20	FM(FXR_TXENB_N)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR2_27_24	FM(FXR_TXDB)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+@@ -896,11 +896,11 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP0SR2_7_4,	TPU0TO3_A),
  
- 	memset(sb, 0, SCSI_SENSE_BUFFERSIZE);
-@@ -877,7 +876,8 @@ static void ata_gen_passthru_sense(struc
- 		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
- 	}
+ 	PINMUX_IPSR_GPSR(IP0SR2_11_8,	RXDA_EXTFXR),
+-	PINMUX_IPSR_GPSR(IP0SR2_11_8,	CANFD5_TX),
++	PINMUX_IPSR_GPSR(IP0SR2_11_8,	CANFD5_TX_A),
+ 	PINMUX_IPSR_GPSR(IP0SR2_11_8,	IRQ5),
  
--	if ((cmd->sense_buffer[0] & 0x7f) >= 0x72) {
-+	if ((sb[0] & 0x7f) >= 0x72) {
-+		unsigned char *desc;
- 		u8 len;
+ 	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CLK_EXTFXR),
+-	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CANFD5_RX),
++	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CANFD5_RX_A),
+ 	PINMUX_IPSR_GPSR(IP0SR2_15_12,	IRQ4_B),
  
- 		/* descriptor format */
-@@ -916,21 +916,21 @@ static void ata_gen_passthru_sense(struc
- 		}
- 	} else {
- 		/* Fixed sense format */
--		desc[0] = tf->error;
--		desc[1] = tf->status;
--		desc[2] = tf->device;
--		desc[3] = tf->nsect;
--		desc[7] = 0;
-+		sb[0] |= 0x80;
-+		sb[3] = tf->error;
-+		sb[4] = tf->status;
-+		sb[5] = tf->device;
-+		sb[6] = tf->nsect;
- 		if (tf->flags & ATA_TFLAG_LBA48)  {
--			desc[8] |= 0x80;
-+			sb[8] |= 0x80;
- 			if (tf->hob_nsect)
--				desc[8] |= 0x40;
-+				sb[8] |= 0x40;
- 			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
--				desc[8] |= 0x20;
-+				sb[8] |= 0x20;
- 		}
--		desc[9] = tf->lbal;
--		desc[10] = tf->lbam;
--		desc[11] = tf->lbah;
-+		sb[9] = tf->lbal;
-+		sb[10] = tf->lbam;
-+		sb[11] = tf->lbah;
- 	}
- }
+ 	PINMUX_IPSR_GPSR(IP0SR2_19_16,	RXDB_EXTFXR),
+@@ -1531,15 +1531,14 @@ static const unsigned int canfd4_data_mux[] = {
+ };
  
+ /* - CANFD5 ----------------------------------------------------------------- */
+-static const unsigned int canfd5_data_pins[] = {
+-	/* CANFD5_TX, CANFD5_RX */
++static const unsigned int canfd5_data_a_pins[] = {
++	/* CANFD5_TX_A, CANFD5_RX_A */
+ 	RCAR_GP_PIN(2, 2), RCAR_GP_PIN(2, 3),
+ };
+-static const unsigned int canfd5_data_mux[] = {
+-	CANFD5_TX_MARK, CANFD5_RX_MARK,
++static const unsigned int canfd5_data_a_mux[] = {
++	CANFD5_TX_A_MARK, CANFD5_RX_A_MARK,
+ };
+ 
+-/* - CANFD5_B ----------------------------------------------------------------- */
+ static const unsigned int canfd5_data_b_pins[] = {
+ 	/* CANFD5_TX_B, CANFD5_RX_B */
+ 	RCAR_GP_PIN(1, 8), RCAR_GP_PIN(1, 9),
+@@ -2578,8 +2577,8 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
+ 	SH_PFC_PIN_GROUP(canfd2_data),
+ 	SH_PFC_PIN_GROUP(canfd3_data),
+ 	SH_PFC_PIN_GROUP(canfd4_data),
+-	SH_PFC_PIN_GROUP(canfd5_data),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(canfd5_data_b),	/* suffix might be updated */
++	SH_PFC_PIN_GROUP(canfd5_data_a),
++	SH_PFC_PIN_GROUP(canfd5_data_b),
+ 	SH_PFC_PIN_GROUP(canfd6_data),
+ 	SH_PFC_PIN_GROUP(canfd7_data),
+ 	SH_PFC_PIN_GROUP(can_clk),
+@@ -2788,8 +2787,7 @@ static const char * const canfd4_groups[] = {
+ };
+ 
+ static const char * const canfd5_groups[] = {
+-	/* suffix might be updated */
+-	"canfd5_data",
++	"canfd5_data_a",
+ 	"canfd5_data_b",
+ };
+ 
+-- 
+2.43.0
+
 
 
 
