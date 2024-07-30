@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8D69417D4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:16:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0336A941D1C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A62A71F2464C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:16:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 775991F215CD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192F4184556;
-	Tue, 30 Jul 2024 16:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BC718A6A1;
+	Tue, 30 Jul 2024 17:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfSSUDPK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p71UBqSs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E0918455D;
-	Tue, 30 Jul 2024 16:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E02189537;
+	Tue, 30 Jul 2024 17:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355992; cv=none; b=hxUwtvoO+Pi7xsjWZgpvqAMJJQi3KP1BRD5SwLt+MYV0b1WcMVhhJL5M+z5wj1LJlsrutnRjky0BWa+xzjCnG759DSTuV4T9vIJyOYnwerL2TBo9VyE7ayFJSSXs5h8rRSr8pKww7QiY6EOWvlWl4fryUx976myOKzwlqI5eKeY=
+	t=1722359577; cv=none; b=r+cN8zYnnDnhtyTbuiGYONSPvd5WZAbEnGrT+TeFLzw+/VRPygGK6oiD+hudUOZ2KidNJLqHirEJYLcsSmJOmIlloLfToe1eyxXc5OqJ67d6wglzV+7AxNJhSry12hryUAGb3hAXOcVNAyeJbBj4+oswieTYkk6NpaRhqI5ftq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355992; c=relaxed/simple;
-	bh=bRVgDxQU1hWdEIpwvSdKQV/hL8/Dlo1i9a3cyotH/U8=;
+	s=arc-20240116; t=1722359577; c=relaxed/simple;
+	bh=2wA1MGifnhS3OAePbuRoHjrZQy0/U75X/6QGcl4bxxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rzGNMT4wUimkyLfmollJDl9FmD6CUWGh7Hf55oySYgcw4VEdaqROrPR94iSP3bq6H+nSxForVRLNF7qcvIMbKS5p5Ca2OwVbdU7ko5SNnUjozBJB/XtQQD4o/YL2GCtgxcAllyNGhPKBjgFSn1zl0XJGdZ6F26WLg4uXLVSeymM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfSSUDPK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06FADC4AF0A;
-	Tue, 30 Jul 2024 16:13:11 +0000 (UTC)
+	 MIME-Version; b=OvOQFmfBnij58vU3hZGXHcJeE1Kd2Yfu5XdhuSdXuP3TPBDikyHh0p7cawafTg+ITuF5tEgWcurXPInoxfoNSfM9eUmp3JBwgTZkLL+T3aDOlsaEAWA4VXfZIP6PU8NEko8MVVVANdAEPSUmKOSfqdtovoxGtxAC7VKNyXo0cPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p71UBqSs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05758C32782;
+	Tue, 30 Jul 2024 17:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355992;
-	bh=bRVgDxQU1hWdEIpwvSdKQV/hL8/Dlo1i9a3cyotH/U8=;
+	s=korg; t=1722359577;
+	bh=2wA1MGifnhS3OAePbuRoHjrZQy0/U75X/6QGcl4bxxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfSSUDPKJBypdi/pR+6fQPB6Ep3skIol8T1j+VozdxqbQuHX2djSrnE+PJEt/8gxZ
-	 +fePz/Moljz+klZLF/DUMLeCZBlLX2GNl66/eW5wW8hSGCabw6wljlzZYQAp1JR1/K
-	 v9yFNpB1CbBtAONADcJZQZ9Wx4edIeZ1ina7mToc=
+	b=p71UBqSsCgWFFqQbbeWhY0Q/VjJSCJHGhkbuZk3EO3NIyDXzAJoW+VazaOSzWYNSY
+	 VaC4j3Aekeew+0GTfxuVgwSV+CXntaHDZOHYNRE+4Xol8U6BHaYlswhZssUf0l0nS9
+	 WsQa4sIzubu/SOAiigu0PaE1EaIrZ3u+lntwfHps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/440] media: rcar-vin: Fix YUYV8_1X16 handling for CSI-2
+Subject: [PATCH 6.10 503/809] pinctrl: renesas: r8a779g0: Fix (H)SCIF3 suffixes
 Date: Tue, 30 Jul 2024 17:46:19 +0200
-Message-ID: <20240730151621.583628752@linuxfoundation.org>
+Message-ID: <20240730151744.604025752@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +59,364 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 9caf253e8ad6f4c66f5591bac900f9f68b6b6620 ]
+[ Upstream commit 5350f38150a171322b50c0a48efa671885f87050 ]
 
-The YUYV8_1X16 and UYVY8_1X16 formats are treated as 'ITU-R
-BT.601/BT.1358 16-bit YCbCr-422 input' (YUV16 - 0x5) in the R-Car VIN
-driver and are thus disallowed when capturing frames from the R-Car
-CSI-2 interface according to the hardware manual.
+(H)SCIF instance 3 has two alternate pin groups: "hscif3" and
+"hscif3_a", resp. "scif3" and "scif3_a", but the actual meanings of the
+pins within the groups do not match.
 
-As the 1X16 format variants are meant to be used with serial busses they
-have to be treated as 'YCbCr-422 8-bit data input' (0x1) when capturing
-from CSI-2, which is a valid setting for CSI-2.
+Increase uniformity by adopting R-Car V4M naming:
+  - Rename "hscif3_a" to "hscif3_b",
+  - Rename "hscif3" to "hscif3_a",
+  - Rename "scif3" to "scif3_b".
 
-Commit 78b3f9d75a62 ("media: rcar-vin: Add check that input interface
-and format are valid") disallowed capturing YUV16 when using the CSI-2
-interface. Fix this by using YUV8_BT601 for YCbCr422 when CSI-2 is in
-use.
+While at it, remove unneeded separators.
 
-Fixes: 78b3f9d75a62 ("media: rcar-vin: Add check that input interface and format are valid")
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://lore.kernel.org/r/20240617161135.130719-2-jacopo.mondi@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
+Fixes: 050442ae4c74f830 ("pinctrl: renesas: r8a779g0: Add pins, groups and functions")
+Fixes: 213b713255defaa6 ("pinctrl: renesas: r8a779g0: Add missing HSCIF3_A")
+Fixes: 49e4697656bdd1cd ("pinctrl: renesas: r8a779g0: Add missing SCIF3")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/61fdde58e369e8070ffd3c5811c089e6219c7ecc.1717754960.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/renesas/rcar-vin/rcar-dma.c   | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/pinctrl/renesas/pfc-r8a779g0.c | 192 ++++++++++++-------------
+ 1 file changed, 94 insertions(+), 98 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-index ef5adffae1972..8bfb020b2f260 100644
---- a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-+++ b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-@@ -665,12 +665,22 @@ static int rvin_setup(struct rvin_dev *vin)
- 	 */
- 	switch (vin->mbus_code) {
- 	case MEDIA_BUS_FMT_YUYV8_1X16:
--		/* BT.601/BT.1358 16bit YCbCr422 */
--		vnmc |= VNMC_INF_YUV16;
-+		if (vin->is_csi)
-+			/* YCbCr422 8-bit */
-+			vnmc |= VNMC_INF_YUV8_BT601;
-+		else
-+			/* BT.601/BT.1358 16bit YCbCr422 */
-+			vnmc |= VNMC_INF_YUV16;
- 		input_is_yuv = true;
- 		break;
- 	case MEDIA_BUS_FMT_UYVY8_1X16:
--		vnmc |= VNMC_INF_YUV16 | VNMC_YCAL;
-+		if (vin->is_csi)
-+			/* YCbCr422 8-bit */
-+			vnmc |= VNMC_INF_YUV8_BT601;
-+		else
-+			/* BT.601/BT.1358 16bit YCbCr422 */
-+			vnmc |= VNMC_INF_YUV16;
-+		vnmc |= VNMC_YCAL;
- 		input_is_yuv = true;
- 		break;
- 	case MEDIA_BUS_FMT_UYVY8_2X8:
+diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+index 7b64429c35ad3..e3c720ea76e32 100644
+--- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
++++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+@@ -77,11 +77,11 @@
+ #define GPSR0_0		F_(GP0_00,		IP0SR0_3_0)
+ 
+ /* GPSR1 */
+-#define GPSR1_28	F_(HTX3,		IP3SR1_19_16)
+-#define GPSR1_27	F_(HCTS3_N,		IP3SR1_15_12)
+-#define GPSR1_26	F_(HRTS3_N,		IP3SR1_11_8)
+-#define GPSR1_25	F_(HSCK3,		IP3SR1_7_4)
+-#define GPSR1_24	F_(HRX3,		IP3SR1_3_0)
++#define GPSR1_28	F_(HTX3_A,		IP3SR1_19_16)
++#define GPSR1_27	F_(HCTS3_N_A,		IP3SR1_15_12)
++#define GPSR1_26	F_(HRTS3_N_A,		IP3SR1_11_8)
++#define GPSR1_25	F_(HSCK3_A,		IP3SR1_7_4)
++#define GPSR1_24	F_(HRX3_A,		IP3SR1_3_0)
+ #define GPSR1_23	F_(GP1_23,		IP2SR1_31_28)
+ #define GPSR1_22	F_(AUDIO_CLKIN,		IP2SR1_27_24)
+ #define GPSR1_21	F_(AUDIO_CLKOUT,	IP2SR1_23_20)
+@@ -301,11 +301,11 @@
+ 
+ /* SR1 */
+ /* IP0SR1 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+-#define IP0SR1_3_0	FM(MSIOF1_SS2)		FM(HTX3_A)		FM(TX3)			F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_7_4	FM(MSIOF1_SS1)		FM(HCTS3_N_A)		FM(RX3)			F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_11_8	FM(MSIOF1_SYNC)		FM(HRTS3_N_A)		FM(RTS3_N)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_15_12	FM(MSIOF1_SCK)		FM(HSCK3_A)		FM(CTS3_N)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_19_16	FM(MSIOF1_TXD)		FM(HRX3_A)		FM(SCK3)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_3_0	FM(MSIOF1_SS2)		FM(HTX3_B)		FM(TX3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_7_4	FM(MSIOF1_SS1)		FM(HCTS3_N_B)		FM(RX3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_11_8	FM(MSIOF1_SYNC)		FM(HRTS3_N_B)		FM(RTS3_N_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_15_12	FM(MSIOF1_SCK)		FM(HSCK3_B)		FM(CTS3_N_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_19_16	FM(MSIOF1_TXD)		FM(HRX3_B)		FM(SCK3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR1_23_20	FM(MSIOF1_RXD)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR1_27_24	FM(MSIOF0_SS2)		FM(HTX1_B)		FM(TX1_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR1_31_28	FM(MSIOF0_SS1)		FM(HRX1_B)		FM(RX1_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+@@ -331,11 +331,11 @@
+ #define IP2SR1_31_28	F_(0, 0)		FM(TCLK2)		FM(MSIOF4_SS1)		FM(IRQ3_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ 
+ /* IP3SR1 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+-#define IP3SR1_3_0	FM(HRX3)		FM(SCK3_A)		FM(MSIOF4_SS2)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_7_4	FM(HSCK3)		FM(CTS3_N_A)		FM(MSIOF4_SCK)		FM(TPU0TO0_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_11_8	FM(HRTS3_N)		FM(RTS3_N_A)		FM(MSIOF4_TXD)		FM(TPU0TO1_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_15_12	FM(HCTS3_N)		FM(RX3_A)		FM(MSIOF4_RXD)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_19_16	FM(HTX3)		FM(TX3_A)		FM(MSIOF4_SYNC)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_3_0	FM(HRX3_A)		FM(SCK3_A)		FM(MSIOF4_SS2)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_7_4	FM(HSCK3_A)		FM(CTS3_N_A)		FM(MSIOF4_SCK)		FM(TPU0TO0_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_11_8	FM(HRTS3_N_A)		FM(RTS3_N_A)		FM(MSIOF4_TXD)		FM(TPU0TO1_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_15_12	FM(HCTS3_N_A)		FM(RX3_A)		FM(MSIOF4_RXD)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_19_16	FM(HTX3_A)		FM(TX3_A)		FM(MSIOF4_SYNC)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ 
+ /* SR2 */
+ /* IP0SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+@@ -776,24 +776,24 @@ static const u16 pinmux_data[] = {
+ 
+ 	/* IP0SR1 */
+ 	PINMUX_IPSR_GPSR(IP0SR1_3_0,	MSIOF1_SS2),
+-	PINMUX_IPSR_GPSR(IP0SR1_3_0,	HTX3_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_3_0,	TX3),
++	PINMUX_IPSR_GPSR(IP0SR1_3_0,	HTX3_B),
++	PINMUX_IPSR_GPSR(IP0SR1_3_0,	TX3_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_7_4,	MSIOF1_SS1),
+-	PINMUX_IPSR_GPSR(IP0SR1_7_4,	HCTS3_N_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_7_4,	RX3),
++	PINMUX_IPSR_GPSR(IP0SR1_7_4,	HCTS3_N_B),
++	PINMUX_IPSR_GPSR(IP0SR1_7_4,	RX3_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_11_8,	MSIOF1_SYNC),
+-	PINMUX_IPSR_GPSR(IP0SR1_11_8,	HRTS3_N_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_11_8,	RTS3_N),
++	PINMUX_IPSR_GPSR(IP0SR1_11_8,	HRTS3_N_B),
++	PINMUX_IPSR_GPSR(IP0SR1_11_8,	RTS3_N_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_15_12,	MSIOF1_SCK),
+-	PINMUX_IPSR_GPSR(IP0SR1_15_12,	HSCK3_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_15_12,	CTS3_N),
++	PINMUX_IPSR_GPSR(IP0SR1_15_12,	HSCK3_B),
++	PINMUX_IPSR_GPSR(IP0SR1_15_12,	CTS3_N_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_19_16,	MSIOF1_TXD),
+-	PINMUX_IPSR_GPSR(IP0SR1_19_16,	HRX3_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_19_16,	SCK3),
++	PINMUX_IPSR_GPSR(IP0SR1_19_16,	HRX3_B),
++	PINMUX_IPSR_GPSR(IP0SR1_19_16,	SCK3_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_23_20,	MSIOF1_RXD),
+ 
+@@ -864,25 +864,25 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP2SR1_31_28,	IRQ3_B),
+ 
+ 	/* IP3SR1 */
+-	PINMUX_IPSR_GPSR(IP3SR1_3_0,	HRX3),
++	PINMUX_IPSR_GPSR(IP3SR1_3_0,	HRX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_3_0,	SCK3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_3_0,	MSIOF4_SS2),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_7_4,	HSCK3),
++	PINMUX_IPSR_GPSR(IP3SR1_7_4,	HSCK3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	CTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	MSIOF4_SCK),
+ 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	TPU0TO0_A),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_11_8,	HRTS3_N),
++	PINMUX_IPSR_GPSR(IP3SR1_11_8,	HRTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	RTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	MSIOF4_TXD),
+ 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	TPU0TO1_A),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_15_12,	HCTS3_N),
++	PINMUX_IPSR_GPSR(IP3SR1_15_12,	HCTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_15_12,	RX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_15_12,	MSIOF4_RXD),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_19_16,	HTX3),
++	PINMUX_IPSR_GPSR(IP3SR1_19_16,	HTX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_19_16,	TX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_19_16,	MSIOF4_SYNC),
+ 
+@@ -1666,49 +1666,48 @@ static const unsigned int hscif2_ctrl_mux[] = {
+ };
+ 
+ /* - HSCIF3 ----------------------------------------------------------------- */
+-static const unsigned int hscif3_data_pins[] = {
+-	/* HRX3, HTX3 */
++static const unsigned int hscif3_data_a_pins[] = {
++	/* HRX3_A, HTX3_A */
+ 	RCAR_GP_PIN(1, 24), RCAR_GP_PIN(1, 28),
+ };
+-static const unsigned int hscif3_data_mux[] = {
+-	HRX3_MARK, HTX3_MARK,
++static const unsigned int hscif3_data_a_mux[] = {
++	HRX3_A_MARK, HTX3_A_MARK,
+ };
+-static const unsigned int hscif3_clk_pins[] = {
+-	/* HSCK3 */
++static const unsigned int hscif3_clk_a_pins[] = {
++	/* HSCK3_A */
+ 	RCAR_GP_PIN(1, 25),
+ };
+-static const unsigned int hscif3_clk_mux[] = {
+-	HSCK3_MARK,
++static const unsigned int hscif3_clk_a_mux[] = {
++	HSCK3_A_MARK,
+ };
+-static const unsigned int hscif3_ctrl_pins[] = {
+-	/* HRTS3_N, HCTS3_N */
++static const unsigned int hscif3_ctrl_a_pins[] = {
++	/* HRTS3_N_A, HCTS3_N_A */
+ 	RCAR_GP_PIN(1, 26), RCAR_GP_PIN(1, 27),
+ };
+-static const unsigned int hscif3_ctrl_mux[] = {
+-	HRTS3_N_MARK, HCTS3_N_MARK,
++static const unsigned int hscif3_ctrl_a_mux[] = {
++	HRTS3_N_A_MARK, HCTS3_N_A_MARK,
+ };
+ 
+-/* - HSCIF3_A ----------------------------------------------------------------- */
+-static const unsigned int hscif3_data_a_pins[] = {
+-	/* HRX3_A, HTX3_A */
++static const unsigned int hscif3_data_b_pins[] = {
++	/* HRX3_B, HTX3_B */
+ 	RCAR_GP_PIN(1, 4), RCAR_GP_PIN(1, 0),
+ };
+-static const unsigned int hscif3_data_a_mux[] = {
+-	HRX3_A_MARK, HTX3_A_MARK,
++static const unsigned int hscif3_data_b_mux[] = {
++	HRX3_B_MARK, HTX3_B_MARK,
+ };
+-static const unsigned int hscif3_clk_a_pins[] = {
+-	/* HSCK3_A */
++static const unsigned int hscif3_clk_b_pins[] = {
++	/* HSCK3_B */
+ 	RCAR_GP_PIN(1, 3),
+ };
+-static const unsigned int hscif3_clk_a_mux[] = {
+-	HSCK3_A_MARK,
++static const unsigned int hscif3_clk_b_mux[] = {
++	HSCK3_B_MARK,
+ };
+-static const unsigned int hscif3_ctrl_a_pins[] = {
+-	/* HRTS3_N_A, HCTS3_N_A */
++static const unsigned int hscif3_ctrl_b_pins[] = {
++	/* HRTS3_N_B, HCTS3_N_B */
+ 	RCAR_GP_PIN(1, 2), RCAR_GP_PIN(1, 1),
+ };
+-static const unsigned int hscif3_ctrl_a_mux[] = {
+-	HRTS3_N_A_MARK, HCTS3_N_A_MARK,
++static const unsigned int hscif3_ctrl_b_mux[] = {
++	HRTS3_N_B_MARK, HCTS3_N_B_MARK,
+ };
+ 
+ /* - I2C0 ------------------------------------------------------------------- */
+@@ -2304,29 +2303,6 @@ static const unsigned int scif1_ctrl_b_mux[] = {
+ };
+ 
+ /* - SCIF3 ------------------------------------------------------------------ */
+-static const unsigned int scif3_data_pins[] = {
+-	/* RX3, TX3 */
+-	RCAR_GP_PIN(1, 1), RCAR_GP_PIN(1, 0),
+-};
+-static const unsigned int scif3_data_mux[] = {
+-	RX3_MARK, TX3_MARK,
+-};
+-static const unsigned int scif3_clk_pins[] = {
+-	/* SCK3 */
+-	RCAR_GP_PIN(1, 4),
+-};
+-static const unsigned int scif3_clk_mux[] = {
+-	SCK3_MARK,
+-};
+-static const unsigned int scif3_ctrl_pins[] = {
+-	/* RTS3_N, CTS3_N */
+-	RCAR_GP_PIN(1, 2), RCAR_GP_PIN(1, 3),
+-};
+-static const unsigned int scif3_ctrl_mux[] = {
+-	RTS3_N_MARK, CTS3_N_MARK,
+-};
+-
+-/* - SCIF3_A ------------------------------------------------------------------ */
+ static const unsigned int scif3_data_a_pins[] = {
+ 	/* RX3_A, TX3_A */
+ 	RCAR_GP_PIN(1, 27), RCAR_GP_PIN(1, 28),
+@@ -2349,6 +2325,28 @@ static const unsigned int scif3_ctrl_a_mux[] = {
+ 	RTS3_N_A_MARK, CTS3_N_A_MARK,
+ };
+ 
++static const unsigned int scif3_data_b_pins[] = {
++	/* RX3_B, TX3_B */
++	RCAR_GP_PIN(1, 1), RCAR_GP_PIN(1, 0),
++};
++static const unsigned int scif3_data_b_mux[] = {
++	RX3_B_MARK, TX3_B_MARK,
++};
++static const unsigned int scif3_clk_b_pins[] = {
++	/* SCK3_B */
++	RCAR_GP_PIN(1, 4),
++};
++static const unsigned int scif3_clk_b_mux[] = {
++	SCK3_B_MARK,
++};
++static const unsigned int scif3_ctrl_b_pins[] = {
++	/* RTS3_N_B, CTS3_N_B */
++	RCAR_GP_PIN(1, 2), RCAR_GP_PIN(1, 3),
++};
++static const unsigned int scif3_ctrl_b_mux[] = {
++	RTS3_N_B_MARK, CTS3_N_B_MARK,
++};
++
+ /* - SCIF4 ------------------------------------------------------------------ */
+ static const unsigned int scif4_data_pins[] = {
+ 	/* RX4, TX4 */
+@@ -2593,12 +2591,12 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
+ 	SH_PFC_PIN_GROUP(hscif2_data),
+ 	SH_PFC_PIN_GROUP(hscif2_clk),
+ 	SH_PFC_PIN_GROUP(hscif2_ctrl),
+-	SH_PFC_PIN_GROUP(hscif3_data),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_clk),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_ctrl),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_data_a),	/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_clk_a),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_ctrl_a),	/* suffix might be updated */
++	SH_PFC_PIN_GROUP(hscif3_data_a),
++	SH_PFC_PIN_GROUP(hscif3_clk_a),
++	SH_PFC_PIN_GROUP(hscif3_ctrl_a),
++	SH_PFC_PIN_GROUP(hscif3_data_b),
++	SH_PFC_PIN_GROUP(hscif3_clk_b),
++	SH_PFC_PIN_GROUP(hscif3_ctrl_b),
+ 
+ 	SH_PFC_PIN_GROUP(i2c0),
+ 	SH_PFC_PIN_GROUP(i2c1),
+@@ -2689,12 +2687,12 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
+ 	SH_PFC_PIN_GROUP(scif1_data_b),
+ 	SH_PFC_PIN_GROUP(scif1_clk_b),
+ 	SH_PFC_PIN_GROUP(scif1_ctrl_b),
+-	SH_PFC_PIN_GROUP(scif3_data),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_clk),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_ctrl),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_data_a),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_clk_a),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_ctrl_a),		/* suffix might be updated */
++	SH_PFC_PIN_GROUP(scif3_data_a),
++	SH_PFC_PIN_GROUP(scif3_clk_a),
++	SH_PFC_PIN_GROUP(scif3_ctrl_a),
++	SH_PFC_PIN_GROUP(scif3_data_b),
++	SH_PFC_PIN_GROUP(scif3_clk_b),
++	SH_PFC_PIN_GROUP(scif3_ctrl_b),
+ 	SH_PFC_PIN_GROUP(scif4_data),
+ 	SH_PFC_PIN_GROUP(scif4_clk),
+ 	SH_PFC_PIN_GROUP(scif4_ctrl),
+@@ -2823,13 +2821,12 @@ static const char * const hscif2_groups[] = {
+ };
+ 
+ static const char * const hscif3_groups[] = {
+-	/* suffix might be updated */
+-	"hscif3_data",
+-	"hscif3_clk",
+-	"hscif3_ctrl",
+ 	"hscif3_data_a",
+ 	"hscif3_clk_a",
+ 	"hscif3_ctrl_a",
++	"hscif3_data_b",
++	"hscif3_clk_b",
++	"hscif3_ctrl_b",
+ };
+ 
+ static const char * const i2c0_groups[] = {
+@@ -2999,13 +2996,12 @@ static const char * const scif1_groups[] = {
+ };
+ 
+ static const char * const scif3_groups[] = {
+-	/* suffix might be updated */
+-	"scif3_data",
+-	"scif3_clk",
+-	"scif3_ctrl",
+ 	"scif3_data_a",
+ 	"scif3_clk_a",
+ 	"scif3_ctrl_a",
++	"scif3_data_b",
++	"scif3_clk_b",
++	"scif3_ctrl_b",
+ };
+ 
+ static const char * const scif4_groups[] = {
 -- 
 2.43.0
 
