@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9E09419BE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FC09419C2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93F28288172
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BEB41F26A7C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C474EB2B;
-	Tue, 30 Jul 2024 16:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27AA14D29B;
+	Tue, 30 Jul 2024 16:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvElBNpr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdxJTytN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA738BE8;
-	Tue, 30 Jul 2024 16:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F44E433A9;
+	Tue, 30 Jul 2024 16:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357356; cv=none; b=oo3z6Wqx4BZYKgrjN65MNuid8J96XGVmT/WGnFFJPPqfUFjMMNT3Dxq/6refMLUWuzsoevKSfHwBAeWkyGoTSz/LN8xX074d2AZiH78APdNvZrxq3MVy3Ryoa6voGa2G/IF9VknD8UH6Ll23HAIRtuYJZkeAAJJlJS2wTT2j/Wo=
+	t=1722357367; cv=none; b=s9dCrJJMAgl02gKG90Kr6urfWvaUGcYgv8qMKd0VF522rXfKCGKb28VblwSJhea2f7gMW0DvGH2D4xrg3nqpW8wmhq5euoHa8+hFISatcZ1hayZ8H/55Nk6IgdunCQtP7xDNDZRmrp1qdFqzBBPVDyIN1j+bDiHFhLTBLEH+hhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357356; c=relaxed/simple;
-	bh=zkB/NECdDHTSBsPzDmUDIF/tW8g/toVkX62H5iy1Wj0=;
+	s=arc-20240116; t=1722357367; c=relaxed/simple;
+	bh=FmtZ1JT7Ma+69melpQWpUSvprCLInWk6IDMj8Neqbcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=krZ/V6sDnx0DSQNjDZqfS046eadhINYoEF6PbJq7KVcm+Eur5I8mtX0Fy9X4n5fG5ntgJ/5YJfwsB0vl9vUIcL5biJ6yexMH7pi587wFiJMgByAroAbapAKxlC3kLpehkdYLihOulqR86ysfygrPw/x8ksuXnzJ45A/3Xj0fEuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvElBNpr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 572AFC32782;
-	Tue, 30 Jul 2024 16:35:56 +0000 (UTC)
+	 MIME-Version; b=hFNnp1Gcc3M4VJpWOQGXIwaJe4kKg2dG+0OoxIiV8Sa1W23mwDslAN1CCVYY7Xa+FE3NwPOjpkoOTu5FRnI5FWEGUT165CRN53fD+J7Y9Mibd/nlPe/S1CTZwIPwB21Px0xlD6cIa3qhvcqtHhbEvBzIpJh90knEqSmWxF06NAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdxJTytN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F9CC4AF0E;
+	Tue, 30 Jul 2024 16:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357356;
-	bh=zkB/NECdDHTSBsPzDmUDIF/tW8g/toVkX62H5iy1Wj0=;
+	s=korg; t=1722357367;
+	bh=FmtZ1JT7Ma+69melpQWpUSvprCLInWk6IDMj8Neqbcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WvElBNpr7GCgIQ4gIYa0o5FIMmFgsoNKkpE7d0oBuwl2cA8MYRVLEpTDfOML8TbWB
-	 +1a0MUbhRVT0an1AZObrxQABRqsUVp4dwzUAttrgmTkB01P9WdqeWuaJ/4MR0aMMip
-	 wY0T/iFMQJHmMYoOXWgOWBxHPa5bTnhJCb/r1g1I=
+	b=BdxJTytNPQXR2+DREo3uW7dtL82kcy/2zbTARUmIFqJfmTAp9k/Geit8637OjCqMU
+	 Ecco0HlO51qqDDR1o+TUhX5ra6VuejbMu4cT0XDE7bH0iJDl/P37Ho1GOu6D8c8qFS
+	 19kC4+MZdbIkh0L2IRgjEHyaLpYjycAaorfbpQRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 246/809] bpf: Eliminate remaining "make W=1" warnings in kernel/bpf/btf.o
-Date: Tue, 30 Jul 2024 17:42:02 +0200
-Message-ID: <20240730151734.316754331@linuxfoundation.org>
+Subject: [PATCH 6.10 247/809] bpf: fix overflow check in adjust_jmp_off()
+Date: Tue, 30 Jul 2024 17:42:03 +0200
+Message-ID: <20240730151734.355061063@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -61,62 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
-[ Upstream commit 2454075f8e2915cebbe52a1195631bc7efe2b7e1 ]
+[ Upstream commit 4a04b4f0de59dd5c621e78f15803ee0b0544eeb8 ]
 
-As reported by Mirsad [1] we still see format warnings in kernel/bpf/btf.o
-at W=1 warning level:
+adjust_jmp_off() incorrectly used the insn->imm field for all overflow check,
+which is incorrect as that should only be done or the BPF_JMP32 | BPF_JA case,
+not the general jump instruction case. Fix it by using insn->off for overflow
+check in the general case.
 
-  CC      kernel/bpf/btf.o
-./kernel/bpf/btf.c: In function ‘btf_type_seq_show_flags’:
-./kernel/bpf/btf.c:7553:21: warning: assignment left-hand side might be a candidate for a format attribute [-Wsuggest-attribute=format]
- 7553 |         sseq.showfn = btf_seq_show;
-      |                     ^
-./kernel/bpf/btf.c: In function ‘btf_type_snprintf_show’:
-./kernel/bpf/btf.c:7604:31: warning: assignment left-hand side might be a candidate for a format attribute [-Wsuggest-attribute=format]
- 7604 |         ssnprintf.show.showfn = btf_snprintf_show;
-      |                               ^
-
-Combined with CONFIG_WERROR=y these can halt the build.
-
-The fix (annotating the structure field with __printf())
-suggested by Mirsad resolves these. Apologies I missed this last time.
-No other W=1 warnings were observed in kernel/bpf after this fix.
-
-[1] https://lore.kernel.org/bpf/92c9d047-f058-400c-9c7d-81d4dc1ef71b@gmail.com/
-
-Fixes: b3470da314fd ("bpf: annotate BTF show functions with __printf")
-Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Suggested-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240712092859.1390960-1-alan.maguire@oracle.com
+Fixes: 5337ac4c9b80 ("bpf: Fix the corner case with may_goto and jump to the 1st insn.")
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Link: https://lore.kernel.org/r/20240712080127.136608-2-shung-hsi.yu@suse.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 2 +-
+ kernel/bpf/verifier.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 3a2e55cc13e50..fe360b5b211d1 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -414,7 +414,7 @@ const char *btf_type_str(const struct btf_type *t)
- struct btf_show {
- 	u64 flags;
- 	void *target;	/* target of show operation (seq file, buffer) */
--	void (*showfn)(struct btf_show *show, const char *fmt, va_list args);
-+	__printf(2, 0) void (*showfn)(struct btf_show *show, const char *fmt, va_list args);
- 	const struct btf *btf;
- 	/* below are used during iteration */
- 	struct {
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index e1e08e62a2f2f..6b422c275f78c 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -18768,7 +18768,7 @@ static int adjust_jmp_off(struct bpf_prog *prog, u32 tgt_idx, u32 delta)
+ 		} else {
+ 			if (i + 1 + insn->off != tgt_idx)
+ 				continue;
+-			if (signed_add16_overflows(insn->imm, delta))
++			if (signed_add16_overflows(insn->off, delta))
+ 				return -ERANGE;
+ 			insn->off += delta;
+ 		}
 -- 
 2.43.0
 
