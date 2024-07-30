@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-63056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2C794170A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:07:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EBF7941730
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:08:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 270BB1F24835
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:07:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFF4FB20BA3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FA818C916;
-	Tue, 30 Jul 2024 16:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDBC3DAC16;
+	Tue, 30 Jul 2024 16:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+2Mp0pj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeGV+9Rq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6A918C903;
-	Tue, 30 Jul 2024 16:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20B73DAC15;
+	Tue, 30 Jul 2024 16:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355520; cv=none; b=PVWL23EONm/OM5xnhrUTN33BqDRGhJuuAsf+u0GPnHKS5GQgI3d59slhUqUKOSrOdY2T0O3UaJcS/fv9V/h0SPn0aDPZI5Yr1A+AIRWwWzlXMzNICPG9V11iYvTsq44F2U9EEfSdsFIFo8RqC63/eCqhFxMSeXR3duy2xAFULqI=
+	t=1722355591; cv=none; b=Z/7Nei0s3YoDQD3usOh4CsCMGGhqeHuxqoeuRii+a/PwMXr+mhQKbbcF6R36YPX2e7HAc2mOih+MU3zyX/vCtEJZLM/LqZjT1aapIECxOmpQxtvbaLgF6ane4jwnsfWB2Sg0bNfPnlPbAmwcb1200m4eHU9amctVg98tUVvMrV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355520; c=relaxed/simple;
-	bh=YI6+lp9QH+DZToK/rpUtrDSSZX1ssvB2FxLbA3LqoW4=;
+	s=arc-20240116; t=1722355591; c=relaxed/simple;
+	bh=4B/x6oOvg44ANdWndCWA0XpnqZh+kwHazcPDQHLflSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CL/sHGuZG/A7jvj2sW5zu0WlYtcLAgd0eR8yj9NWC+vi1Hd2gSxPQkAEfcO4LcFTzQOEk+iUtF//+IqYfPuROwJ6jylXMwytsRlLX2mofpvieacXbHsFlyVmM2c9xWxjnTc68p9EHycQWMAU71dUus/iel6RhRtPPjv6dXrKkd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+2Mp0pj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DC3C4AF0C;
-	Tue, 30 Jul 2024 16:05:20 +0000 (UTC)
+	 MIME-Version; b=GMkxTWsygVAxSE0fkw+GQbBSfvEC3Me5svN/hcAoq5Rex41EwO0hks3NseSWzM+rSjXYI2HdSoY24nojoxF0rCVWRFbVhGkxAIESYsyiTN7hTbg8CGIaWY7padLLPTJ1WFihNz2Hna8OvcOObUOSHCnRGe59imLcY6uMT7+CNPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeGV+9Rq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FABC32782;
+	Tue, 30 Jul 2024 16:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355520;
-	bh=YI6+lp9QH+DZToK/rpUtrDSSZX1ssvB2FxLbA3LqoW4=;
+	s=korg; t=1722355591;
+	bh=4B/x6oOvg44ANdWndCWA0XpnqZh+kwHazcPDQHLflSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+2Mp0pji9cDldwoX/zvUWm5ML5hpHb0WchyMryHjd5OIJ1b/zYzzg2C3WFayJhBu
-	 ciSkT/z1V7ZyLJvaBD3EM3PzqJRSuGMbrcTRFOXpBzJKcPvVTGztb1sZDM1x6Rmo5y
-	 5Poyz2Na47mdt1K7l0Eh9SmO51x6kwlLW/Pm7ME0=
+	b=IeGV+9Rq/bTHHFC7daZhGz1KiKHdV5NYv+dx28W1Mz3mcLyhdcrKSw/nRbFZXDhyA
+	 Ry/6QrGKQLbIPcXS1zsvEKgT4PK0kv7LPAQNQ6Uge9qmdAp+fqPSYvMPl0YgEaDn1z
+	 tjFe2bXAsGrJXKjWUVCcd+Saw6YBnBOzQ5s5nVcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yassine Oudjana <y.oudjana@protonmail.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 053/809] arm64: dts: qcom: msm8996-xiaomi-common: drop excton from the USB PHY
-Date: Tue, 30 Jul 2024 17:38:49 +0200
-Message-ID: <20240730151726.742736976@linuxfoundation.org>
+Subject: [PATCH 6.10 054/809] arm64: dts: qcom: sdm850-lenovo-yoga-c630: fix IPA firmware path
+Date: Tue, 30 Jul 2024 17:38:50 +0200
+Message-ID: <20240730151726.781083598@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -70,34 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit c1aefeae8cb7b71c1bb6d33b1bda7fc322094e16 ]
+[ Upstream commit cae4c862d8b2d7debb07e6d831e079520163ac4f ]
 
-The USB PHYs don't use extcon connectors, drop the extcon property from
-the hsusb_phy1 node.
+Specify firmware path for the IPA network controller on the Lenovo Yoga
+C630 laptop. Without this property IPA tries to load firmware from the
+default location, which likely will fail.
 
-Fixes: 46680fe9ba61 ("arm64: dts: qcom: msm8996: Add support for the Xiaomi MSM8996 platform")
-Cc: Yassine Oudjana <y.oudjana@protonmail.com>
+Fixes: 2e01e0c21459 ("arm64: dts: qcom: sdm850-yoga: Enable IPA")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-13-f1fd15c33fb3@linaro.org
+Link: https://lore.kernel.org/r/20240527-yoga-ipa-fw-v1-1-99ac1f5db283@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm850-lenovo-yoga-c630.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-index 5ab583be9e0a0..0386636a29f05 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-@@ -405,7 +405,6 @@ &usb3_dwc3 {
- 
- &hsusb_phy1 {
+diff --git a/arch/arm64/boot/dts/qcom/sdm850-lenovo-yoga-c630.dts b/arch/arm64/boot/dts/qcom/sdm850-lenovo-yoga-c630.dts
+index 47dc42f6e936c..8e30f8cc0916c 100644
+--- a/arch/arm64/boot/dts/qcom/sdm850-lenovo-yoga-c630.dts
++++ b/arch/arm64/boot/dts/qcom/sdm850-lenovo-yoga-c630.dts
+@@ -494,6 +494,7 @@ ecsh: hid@5c {
+ &ipa {
+ 	qcom,gsi-loader = "self";
+ 	memory-region = <&ipa_fw_mem>;
++	firmware-name = "qcom/sdm850/LENOVO/81JL/ipa_fws.elf";
  	status = "okay";
--	extcon = <&typec>;
+ };
  
- 	vdda-pll-supply = <&vreg_l12a_1p8>;
- 	vdda-phy-dpdm-supply = <&vreg_l24a_3p075>;
 -- 
 2.43.0
 
