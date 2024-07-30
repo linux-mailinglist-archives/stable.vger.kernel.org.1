@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-62928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B19941648
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:58:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61AD1941651
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B09C01F25228
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:58:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F04BEB2717F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF601BE22E;
-	Tue, 30 Jul 2024 15:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A951BC08F;
+	Tue, 30 Jul 2024 15:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMJCtzqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQAqo/f8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B311BBBE6;
-	Tue, 30 Jul 2024 15:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ED41BC07A;
+	Tue, 30 Jul 2024 15:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355093; cv=none; b=tifby2FsaTpkUPNLEb88+LYjKdGUF82Q5n6TBqP6M4ny3EXk9sC5aEQKRoxv6tLXf3nsDDj3oaPRQvHm7aiz46hkEnDqQwOhXrxQf48imMwA4hg/m8JddPWqWXWfOWFH9dgJlQ7qsjYDfL2jB7HtDko6N31aQrJiXjXQVMf5p0I=
+	t=1722355107; cv=none; b=WjK56CTVzxrtpqFrsoSrSHd25/h0Fz846m1m5JWzAvnjIa6yjltaCRqVDr0MRnEoUyx67LtA8jQD0A+HAvb9y7OkRgEwpnVc1MJE6Z9kSJeKfEXwK6WSF219HjSIx3Q1fuI0SHBtAilV/BUS5TSX761/iN99eWFckFjVLcfUqtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355093; c=relaxed/simple;
-	bh=8A49cbA/l2RPLp/tlsQjbCRcLLX50Ynp1CjTHasxcIE=;
+	s=arc-20240116; t=1722355107; c=relaxed/simple;
+	bh=68tWB734qiod7TeOYJ33vi7NrSooXIrVD3kau6SwDlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwy4i944Ai9YO75XGzGtXMtcLMSo5Ix7v464av+udfPelH3ClsvEgAcu/deewJL8fwqSZCcUmxS2zON+nbckdJydkvfkLEZUHKx++gwvdq51accyxZHlPk+M4Ds1np1njeK17mKhh77U0ChoHhiA5ofZHuzO3n4ESt3DSXR++Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMJCtzqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06DBC32782;
-	Tue, 30 Jul 2024 15:58:12 +0000 (UTC)
+	 MIME-Version; b=GCV1/IjcbQa7aLivd9IDeX7mroMu+SQ2l2wB9KDIwsr8R54XHXWFoMBmpsJqebQDO/iJS6kSbTwHHnwwpudb64FMzcU0rgOBlHNib4Mf8w13IQDdZVbzjrobHJbj3EnFlAwuYYqRz5Fv4hvV8BAdDdHQn5TM0VyNflnozVNHgMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQAqo/f8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11967C32782;
+	Tue, 30 Jul 2024 15:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355093;
-	bh=8A49cbA/l2RPLp/tlsQjbCRcLLX50Ynp1CjTHasxcIE=;
+	s=korg; t=1722355106;
+	bh=68tWB734qiod7TeOYJ33vi7NrSooXIrVD3kau6SwDlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMJCtzqzoNOpTH7mbYUn300xQu7gJsfOb1OXWImjC0Azj6mBQ9otjToK7X+X4t7xW
-	 7qo5+pDUyceN6lcYDRzsuF0EW8Htlh/s39ohlbIEsmH7y1MYpIzsEgLBqj4SUzDDCi
-	 ncBcDJcZQx2JF2dukJkzFpJ/69/RtGp1EGknP7wY=
+	b=gQAqo/f8v5RXOEHc/XFWL0elr02tztl4rWo1yH9KJYeiw3y9GAZfk17TzBDnGDzy2
+	 fEBA/zSs395QgKVzRQ0MqfCGrZg+ONuxFFfhHk22LPp8+IhunihGzlkzsej1mpn7tK
+	 zH4yoKF+eg7RofMtp7JzoAPaU8YjMbNWxFfbqdv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/568] hwmon: (max6697) Fix swapped temp{1,8} critical alarms
-Date: Tue, 30 Jul 2024 17:42:14 +0200
-Message-ID: <20240730151640.894929983@linuxfoundation.org>
+Subject: [PATCH 6.6 028/568] arm64: dts: qcom: sc8180x: Correct PCIe slave ports
+Date: Tue, 30 Jul 2024 17:42:15 +0200
+Message-ID: <20240730151640.938107005@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,46 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit 1ea3fd1eb9869fcdcbc9c68f9728bfc47b9503f1 ]
+[ Upstream commit dc402e084a9e0cc714ffd6008dce3c63281b8142 ]
 
-The critical alarm bit for the local temperature sensor (temp1) is in
-bit 7 of register 0x45 (not bit 6), and the critical alarm bit for remote
-temperature sensor 7 (temp8) is in bit 6 (not bit 7).
+The interconnects property was clearly copy-pasted between the 4 PCIe
+controllers, giving all four the cpu-pcie path destination of SLAVE_0.
 
-This only affects MAX6581 since all other chips supported by this driver
-do not support those critical alarms.
+The four ports are all associated with CN0, but update the property for
+correctness sake.
 
-Fixes: 5372d2d71c46 ("hwmon: Driver for Maxim MAX6697 and compatibles")
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: d20b6c84f56a ("arm64: dts: qcom: sc8180x: Add PCIe instances")
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240525-sc8180x-pcie-interconnect-port-fix-v1-1-f86affa02392@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max6697.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8180x.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/max6697.c b/drivers/hwmon/max6697.c
-index 8a5a54d2b3d0e..a338dd4e990d5 100644
---- a/drivers/hwmon/max6697.c
-+++ b/drivers/hwmon/max6697.c
-@@ -429,14 +429,14 @@ static SENSOR_DEVICE_ATTR_RO(temp6_max_alarm, alarm, 20);
- static SENSOR_DEVICE_ATTR_RO(temp7_max_alarm, alarm, 21);
- static SENSOR_DEVICE_ATTR_RO(temp8_max_alarm, alarm, 23);
+diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+index dd207eb81360a..9163c1419cc12 100644
+--- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+@@ -1853,7 +1853,7 @@ pcie3: pci@1c08000 {
+ 			power-domains = <&gcc PCIE_3_GDSC>;
  
--static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 14);
-+static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 15);
- static SENSOR_DEVICE_ATTR_RO(temp2_crit_alarm, alarm, 8);
- static SENSOR_DEVICE_ATTR_RO(temp3_crit_alarm, alarm, 9);
- static SENSOR_DEVICE_ATTR_RO(temp4_crit_alarm, alarm, 10);
- static SENSOR_DEVICE_ATTR_RO(temp5_crit_alarm, alarm, 11);
- static SENSOR_DEVICE_ATTR_RO(temp6_crit_alarm, alarm, 12);
- static SENSOR_DEVICE_ATTR_RO(temp7_crit_alarm, alarm, 13);
--static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 15);
-+static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 14);
+ 			interconnects = <&aggre2_noc MASTER_PCIE_3 0 &mc_virt SLAVE_EBI_CH0 0>,
+-					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_0 0>;
++					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_3 0>;
+ 			interconnect-names = "pcie-mem", "cpu-pcie";
  
- static SENSOR_DEVICE_ATTR_RO(temp2_fault, alarm, 1);
- static SENSOR_DEVICE_ATTR_RO(temp3_fault, alarm, 2);
+ 			phys = <&pcie3_phy>;
+@@ -1952,7 +1952,7 @@ pcie1: pci@1c10000 {
+ 			power-domains = <&gcc PCIE_1_GDSC>;
+ 
+ 			interconnects = <&aggre2_noc MASTER_PCIE_1 0 &mc_virt SLAVE_EBI_CH0 0>,
+-					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_0 0>;
++					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_1 0>;
+ 			interconnect-names = "pcie-mem", "cpu-pcie";
+ 
+ 			phys = <&pcie1_phy>;
+@@ -2051,7 +2051,7 @@ pcie2: pci@1c18000 {
+ 			power-domains = <&gcc PCIE_2_GDSC>;
+ 
+ 			interconnects = <&aggre2_noc MASTER_PCIE_2 0 &mc_virt SLAVE_EBI_CH0 0>,
+-					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_0 0>;
++					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_2 0>;
+ 			interconnect-names = "pcie-mem", "cpu-pcie";
+ 
+ 			phys = <&pcie2_phy>;
 -- 
 2.43.0
 
