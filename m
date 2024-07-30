@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11450941CF1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824F7941E59
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FA931C23830
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 368B3283A4A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B604818E021;
-	Tue, 30 Jul 2024 17:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFDE1A76BE;
+	Tue, 30 Jul 2024 17:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxLeGok+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlTmaPus"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7015F18A6D0;
-	Tue, 30 Jul 2024 17:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6F01A76B2;
+	Tue, 30 Jul 2024 17:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359421; cv=none; b=bjwoq9fK2eQ3cJh1yRQnEB15g4xluvKxsSjU8zWsGL6cA9ASipqFRyu3VqBVXfF8YHOdHryatreimFD+NgpxRkrLE9FrvZGJ6uEbeTiHgeke6KA8gYwdXDq1c6sfZbXg4udy6FxFLbBGKVrEv9fUmJzZoUGWZfSlkrr+K56nRIo=
+	t=1722360480; cv=none; b=efBg6HKyK3Gh2iahuypbaUNWWTRnnTr17sg86yB5z4alK/g0euhjYTeYNZ4vNk7Z1yMqSDBD3rp6jqIRtNWK+Ck6PCAR9akVbBT3GAFHozRqFs8PHhBglY2ODWE8vEkOST0UWD6qb9ILqvNVUxREo067Mfxtzvl2qqxEAV+3Q3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359421; c=relaxed/simple;
-	bh=bSXdVHhIuluOZSPqOHac6nid2xjZFYFe5uPlelqIyQ8=;
+	s=arc-20240116; t=1722360480; c=relaxed/simple;
+	bh=n8Y5SqSYYabcl7KOyGqOfant0VivXjZop2lqsgSgVJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JbITlvj7iTWUDdJayK2DurfjSzMast6Rmb/p1dHcU3cowmtRWMEY3yRE+MU5AEHh4g5aWFEiJg1cNgbkuMDZssS2w5sKonYIlpoQ682tLeG4ZjodQD6vFBeyKtRzoXumxTH6uAPKzkMXJWGEXneVOdj8m/M85efhKsdItkSh6qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxLeGok+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15ACC32782;
-	Tue, 30 Jul 2024 17:10:20 +0000 (UTC)
+	 MIME-Version; b=Saky7V9HHcn7gexfotI/mW10A/9n+odc7CSDgz+2HW4ejT37345PDi+LvskC6RAbXf3psa6VtubKXaaj6CzRjxDoZVglHCkYOe7pluqskdC8+JY5tqEJ7u2uN9nR/F1hs8aINCKHKm2HWflk3HC293uvPerIP8gTO+zDfLPOFRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlTmaPus; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9105CC32782;
+	Tue, 30 Jul 2024 17:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359421;
-	bh=bSXdVHhIuluOZSPqOHac6nid2xjZFYFe5uPlelqIyQ8=;
+	s=korg; t=1722360480;
+	bh=n8Y5SqSYYabcl7KOyGqOfant0VivXjZop2lqsgSgVJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxLeGok+w7IHh8aqp+sFWoP8IPAgSPJ7+d69mfAxwHPuX9eOUP4u8NW/fy+RsrL9A
-	 O2rmC1X3rfnNmYIucmI0h/AFm0hXcKFm4SDOx59PbQF/RjqsltDDc2hE4wOgS7wkfn
-	 neemKVNqxKl7hGhgAnLGrdCf0lpX7txHSVLjYJKY=
+	b=FlTmaPusdjbfP2SX86twqqk4DYKEWpSmluTrUtRnizu/od4wEzbLrdtwSuS3P+uc5
+	 tNrTQXfNixy+nk+t1WtYw0yvpGf91vmuIn+NpDwUsp96ClJBMH7QH5MhAEIwzRAYkN
+	 84yhiPrmaaWKWMSUPKb9PPT5P86NDdbQ9FP8HbSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.6 480/568] drm/i915/dp: Reset intel_dp->link_trained before retraining the link
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.10 711/809] ASoC: codecs: wcd939x: Fix typec mux and switch leak during device removal
 Date: Tue, 30 Jul 2024 17:49:47 +0200
-Message-ID: <20240730151658.786867130@linuxfoundation.org>
+Message-ID: <20240730151753.014962280@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,181 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit d13e2a6e95e6b87f571c837c71a3d05691def9bb upstream.
+commit 9f3ae72c5dbca9ba558c752f1ef969ed6908be01 upstream.
 
-Regularly retraining a link during an atomic commit happens with the
-given pipe/link already disabled and hence intel_dp->link_trained being
-false. Ensure this also for retraining a DP SST link via direct calls to
-the link training functions (vs. an actual commit as for DP MST). So far
-nothing depended on this, however the next patch will depend on
-link_trained==false for changing the LTTPR mode to non-transparent.
+Driver does not unregister typec structures (typec_mux_dev and
+typec_switch_desc) during removal leading to leaks.  Fix this by moving
+typec registering parts to separate function and using devm interface to
+release them.  This also makes code a bit simpler:
+ - Smaller probe() function with less error paths and no #ifdefs,
+ - No need to store typec_mux_dev and typec_switch_desc in driver state
+   container structure.
 
-Cc: <stable@vger.kernel.org> # v5.15+
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240708190029.271247-2-imre.deak@intel.com
-(cherry picked from commit a4d5ce61765c08ab364aa4b327f6739b646e6cfa)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: stable@vger.kernel.org
+Fixes: 10f514bd172a ("ASoC: codecs: Add WCD939x Codec driver")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20240701122616.414158-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/wcd939x.c |  113 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 66 insertions(+), 47 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -4374,6 +4374,8 @@ int intel_dp_retrain_link(struct intel_e
- 		    !intel_dp_mst_is_master_trans(crtc_state))
- 			continue;
+--- a/sound/soc/codecs/wcd939x.c
++++ b/sound/soc/codecs/wcd939x.c
+@@ -182,8 +182,6 @@ struct wcd939x_priv {
+ 	/* typec handling */
+ 	bool typec_analog_mux;
+ #if IS_ENABLED(CONFIG_TYPEC)
+-	struct typec_mux_dev *typec_mux;
+-	struct typec_switch_dev *typec_sw;
+ 	enum typec_orientation typec_orientation;
+ 	unsigned long typec_mode;
+ 	struct typec_switch *typec_switch;
+@@ -3528,6 +3526,68 @@ static const struct component_master_ops
+ 	.unbind = wcd939x_unbind,
+ };
  
-+		intel_dp->link_trained = false;
++static void __maybe_unused wcd939x_typec_mux_unregister(void *data)
++{
++	struct typec_mux_dev *typec_mux = data;
 +
- 		intel_dp_check_frl_training(intel_dp);
- 		intel_dp_pcon_dsc_configure(intel_dp, crtc_state);
- 		intel_dp_start_link_train(intel_dp, crtc_state);
++	typec_mux_unregister(typec_mux);
++}
++
++static void __maybe_unused wcd939x_typec_switch_unregister(void *data)
++{
++	struct typec_switch_dev *typec_sw = data;
++
++	typec_switch_unregister(typec_sw);
++}
++
++static int wcd939x_add_typec(struct wcd939x_priv *wcd939x, struct device *dev)
++{
++#if IS_ENABLED(CONFIG_TYPEC)
++	int ret;
++	struct typec_mux_dev *typec_mux;
++	struct typec_switch_dev *typec_sw;
++	struct typec_mux_desc mux_desc = {
++		.drvdata = wcd939x,
++		.fwnode = dev_fwnode(dev),
++		.set = wcd939x_typec_mux_set,
++	};
++	struct typec_switch_desc sw_desc = {
++		.drvdata = wcd939x,
++		.fwnode = dev_fwnode(dev),
++		.set = wcd939x_typec_switch_set,
++	};
++
++	/*
++	 * Is USBSS is used to mux analog lines,
++	 * register a typec mux/switch to get typec events
++	 */
++	if (!wcd939x->typec_analog_mux)
++		return 0;
++
++	typec_mux = typec_mux_register(dev, &mux_desc);
++	if (IS_ERR(typec_mux))
++		return dev_err_probe(dev, PTR_ERR(typec_mux),
++				     "failed to register typec mux\n");
++
++	ret = devm_add_action_or_reset(dev, wcd939x_typec_mux_unregister,
++				       typec_mux);
++	if (ret)
++		return ret;
++
++	typec_sw = typec_switch_register(dev, &sw_desc);
++	if (IS_ERR(typec_sw))
++		return dev_err_probe(dev, PTR_ERR(typec_sw),
++				     "failed to register typec switch\n");
++
++	ret = devm_add_action_or_reset(dev, wcd939x_typec_switch_unregister,
++				       typec_sw);
++	if (ret)
++		return ret;
++#endif
++
++	return 0;
++}
++
+ static int wcd939x_add_slave_components(struct wcd939x_priv *wcd939x,
+ 					struct device *dev,
+ 					struct component_match **matchptr)
+@@ -3576,42 +3636,13 @@ static int wcd939x_probe(struct platform
+ 		return -EINVAL;
+ 	}
+ 
+-#if IS_ENABLED(CONFIG_TYPEC)
+-	/*
+-	 * Is USBSS is used to mux analog lines,
+-	 * register a typec mux/switch to get typec events
+-	 */
+-	if (wcd939x->typec_analog_mux) {
+-		struct typec_mux_desc mux_desc = {
+-			.drvdata = wcd939x,
+-			.fwnode = dev_fwnode(dev),
+-			.set = wcd939x_typec_mux_set,
+-		};
+-		struct typec_switch_desc sw_desc = {
+-			.drvdata = wcd939x,
+-			.fwnode = dev_fwnode(dev),
+-			.set = wcd939x_typec_switch_set,
+-		};
+-
+-		wcd939x->typec_mux = typec_mux_register(dev, &mux_desc);
+-		if (IS_ERR(wcd939x->typec_mux)) {
+-			ret = dev_err_probe(dev, PTR_ERR(wcd939x->typec_mux),
+-					    "failed to register typec mux\n");
+-			goto err_disable_regulators;
+-		}
+-
+-		wcd939x->typec_sw = typec_switch_register(dev, &sw_desc);
+-		if (IS_ERR(wcd939x->typec_sw)) {
+-			ret = dev_err_probe(dev, PTR_ERR(wcd939x->typec_sw),
+-					    "failed to register typec switch\n");
+-			goto err_unregister_typec_mux;
+-		}
+-	}
+-#endif /* CONFIG_TYPEC */
++	ret = wcd939x_add_typec(wcd939x, dev);
++	if (ret)
++		goto err_disable_regulators;
+ 
+ 	ret = wcd939x_add_slave_components(wcd939x, dev, &match);
+ 	if (ret)
+-		goto err_unregister_typec_switch;
++		goto err_disable_regulators;
+ 
+ 	wcd939x_reset(wcd939x);
+ 
+@@ -3628,18 +3659,6 @@ static int wcd939x_probe(struct platform
+ 
+ 	return 0;
+ 
+-#if IS_ENABLED(CONFIG_TYPEC)
+-err_unregister_typec_mux:
+-	if (wcd939x->typec_analog_mux)
+-		typec_mux_unregister(wcd939x->typec_mux);
+-#endif /* CONFIG_TYPEC */
+-
+-err_unregister_typec_switch:
+-#if IS_ENABLED(CONFIG_TYPEC)
+-	if (wcd939x->typec_analog_mux)
+-		typec_switch_unregister(wcd939x->typec_sw);
+-#endif /* CONFIG_TYPEC */
+-
+ err_disable_regulators:
+ 	regulator_bulk_disable(WCD939X_MAX_SUPPLY, wcd939x->supplies);
+ 	regulator_bulk_free(WCD939X_MAX_SUPPLY, wcd939x->supplies);
 
 
 
