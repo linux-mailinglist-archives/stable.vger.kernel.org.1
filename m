@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7B094190D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC9F941912
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A40581F23664
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9F93283071
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC411A6196;
-	Tue, 30 Jul 2024 16:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692BD1A618F;
+	Tue, 30 Jul 2024 16:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LfOClUzl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7Aw/IIY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7041A6160;
-	Tue, 30 Jul 2024 16:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EA91A6160;
+	Tue, 30 Jul 2024 16:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356912; cv=none; b=iL+5De9uh72qOR1Xtn8mv75IIzZQlHjkZUgZTqw6D5P3kTh8vIAkzK1JPNshm0fTM4e0oFw3dPBT5fyMooKqlRLE43EIV2pUF/8pEUwCA3fgFfuS+Uc4YlTg0Nv4BGsOyC6FmqqqC4OQ6Dcs55WCxCy6p5Jkfo5Ceb11NfgFefA=
+	t=1722356929; cv=none; b=JuW5s8eJPGlrtIPhdS5LGmfDQMxsbUiDuVlEj3kgHzF3XoqVgD1k6KsbnSBGQdbwQD0uNLVb5MzpFl8iz0oTgTYrRQjEhTrNAzfyhIOiZqpIm46QM/bGuCsvcEGtDtKMasBzCY6VNo9QX50pIzm8gInTvleEJzcbrrMxhM39hG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356912; c=relaxed/simple;
-	bh=OifE3YPDdfAZu8Uosxv8slmeO8REvSRVe4SQ0rltgSM=;
+	s=arc-20240116; t=1722356929; c=relaxed/simple;
+	bh=LKYkrMmt2fCV5jOONjAMns314v2ShM9VLqMUk4SBQwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKO6ocYSatv6fd2Sm1JP8EsRJPxLpKdfy2ow6H/jgqJqKEv5bpC9x57q/yyXe3pTRHHdvQ9ygB+an8QBjfieVIpwe5ml4Vj6eR0XKPK1xSQdOzDdhwlp2vHNOI5o351bVD6l9XxXHbQc/luYxaIU3662ZrvZ+ODsGgoGFny4Xgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LfOClUzl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC92C32782;
-	Tue, 30 Jul 2024 16:28:31 +0000 (UTC)
+	 MIME-Version; b=YlV5nzZ1bs/4GEkbFXDMmvIkdGIgNJ8XBsp/Cx78kbuXUW4eea1N07mSYw7USuyvjZQ1BDCzQVNY8KxWFVSkpbXxCrOGT169X33h3LgSZ0EsXWEO56U6G3Nt7qpc0oFwvG8KUaw1Yly9fc+j9yVBCxCm1ten0MkkEh/Hnhgclnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7Aw/IIY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C07EC4AF0E;
+	Tue, 30 Jul 2024 16:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356912;
-	bh=OifE3YPDdfAZu8Uosxv8slmeO8REvSRVe4SQ0rltgSM=;
+	s=korg; t=1722356928;
+	bh=LKYkrMmt2fCV5jOONjAMns314v2ShM9VLqMUk4SBQwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LfOClUzl6CnerK+iDsmZ/FDsEImlHDbJkJw2U2ptmMD2KkDoA0OHLIVKjmfOA2Lz8
-	 vGEq6lod7IOxl0yhYMKQZk8ldGGODTcLtePLJj1Ai2JmU+UVlUwmOvLVTHuNgGp9/h
-	 Qv6HY80MDgz3Jy34Xf1MnaE7e8ONoLxAwPwChZsU=
+	b=l7Aw/IIYuP0rotV8mLVhAphLh+Mni7QMSofXZ+vK7eVW0ZH2nSWrfea/jYJEe8IkI
+	 iQZ+7DpMauU1NUPkDn9ANCXIqL6M3toUaHEXxGTz3QsWRJ+eGHmpB2EKyvY6/si5RM
+	 1GstL0+nURxGo8fhqEuiuBXgOMKWzquSF8co2/PE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0333a6f4b88bcd68a62f@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
+	Sean Christopherson <seanjc@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 181/809] udf: Fix lock ordering in udf_evict_inode()
-Date: Tue, 30 Jul 2024 17:40:57 +0200
-Message-ID: <20240730151731.760010586@linuxfoundation.org>
+Subject: [PATCH 6.10 182/809] sched/core: Move preempt_model_*() helpers from sched.h to preempt.h
+Date: Tue, 30 Jul 2024 17:40:58 +0200
+Message-ID: <20240730151731.798941125@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,97 +67,129 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 8832fc1e502687869606bb0a7b79848ed3bf036f ]
+[ Upstream commit f0dc887f21d18791037c0166f652c67da761f16f ]
 
-udf_evict_inode() calls udf_setsize() to truncate deleted inode.
-However inode deletion through udf_evict_inode() can happen from inode
-reclaim context and udf_setsize() grabs mapping->invalidate_lock which
-isn't generally safe to acquire from fs reclaim context since we
-allocate pages under mapping->invalidate_lock for example in a page
-fault path.  This is however not a real deadlock possibility as by the
-time udf_evict_inode() is called, nobody can be accessing the inode,
-even less work with its page cache. So this is just a lockdep triggering
-false positive. Fix the problem by moving mapping->invalidate_lock
-locking outsize of udf_setsize() into udf_setattr() as grabbing
-mapping->invalidate_lock from udf_evict_inode() is pointless.
+Move the declarations and inlined implementations of the preempt_model_*()
+helpers to preempt.h so that they can be referenced in spinlock.h without
+creating a potential circular dependency between spinlock.h and sched.h.
 
-Reported-by: syzbot+0333a6f4b88bcd68a62f@syzkaller.appspotmail.com
-Fixes: b9a861fd527a ("udf: Protect truncate and file type conversion with invalidate_lock")
-Signed-off-by: Jan Kara <jack@suse.cz>
+No functional change intended.
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Ankur Arora <ankur.a.arora@oracle.com>
+Link: https://lkml.kernel.org/r/20240528003521.979836-2-ankur.a.arora@oracle.com
+Stable-dep-of: c793a62823d1 ("sched/core: Drop spinlocks on contention iff kernel is preemptible")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/file.c  |  2 ++
- fs/udf/inode.c | 11 ++++-------
- 2 files changed, 6 insertions(+), 7 deletions(-)
+ include/linux/preempt.h | 41 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/sched.h   | 41 -----------------------------------------
+ 2 files changed, 41 insertions(+), 41 deletions(-)
 
-diff --git a/fs/udf/file.c b/fs/udf/file.c
-index 97c59585208ca..3a4179de316b4 100644
---- a/fs/udf/file.c
-+++ b/fs/udf/file.c
-@@ -232,7 +232,9 @@ static int udf_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+diff --git a/include/linux/preempt.h b/include/linux/preempt.h
+index 7233e9cf1bab6..ce76f1a457225 100644
+--- a/include/linux/preempt.h
++++ b/include/linux/preempt.h
+@@ -481,4 +481,45 @@ DEFINE_LOCK_GUARD_0(preempt, preempt_disable(), preempt_enable())
+ DEFINE_LOCK_GUARD_0(preempt_notrace, preempt_disable_notrace(), preempt_enable_notrace())
+ DEFINE_LOCK_GUARD_0(migrate, migrate_disable(), migrate_enable())
  
- 	if ((attr->ia_valid & ATTR_SIZE) &&
- 	    attr->ia_size != i_size_read(inode)) {
-+		filemap_invalidate_lock(inode->i_mapping);
- 		error = udf_setsize(inode, attr->ia_size);
-+		filemap_invalidate_unlock(inode->i_mapping);
- 		if (error)
- 			return error;
- 	}
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index 2fb21c5ffccfe..08767bd21eb7f 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -1250,7 +1250,6 @@ int udf_setsize(struct inode *inode, loff_t newsize)
- 	if (IS_APPEND(inode) || IS_IMMUTABLE(inode))
- 		return -EPERM;
++#ifdef CONFIG_PREEMPT_DYNAMIC
++
++extern bool preempt_model_none(void);
++extern bool preempt_model_voluntary(void);
++extern bool preempt_model_full(void);
++
++#else
++
++static inline bool preempt_model_none(void)
++{
++	return IS_ENABLED(CONFIG_PREEMPT_NONE);
++}
++static inline bool preempt_model_voluntary(void)
++{
++	return IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY);
++}
++static inline bool preempt_model_full(void)
++{
++	return IS_ENABLED(CONFIG_PREEMPT);
++}
++
++#endif
++
++static inline bool preempt_model_rt(void)
++{
++	return IS_ENABLED(CONFIG_PREEMPT_RT);
++}
++
++/*
++ * Does the preemption model allow non-cooperative preemption?
++ *
++ * For !CONFIG_PREEMPT_DYNAMIC kernels this is an exact match with
++ * CONFIG_PREEMPTION; for CONFIG_PREEMPT_DYNAMIC this doesn't work as the
++ * kernel is *built* with CONFIG_PREEMPTION=y but may run with e.g. the
++ * PREEMPT_NONE model.
++ */
++static inline bool preempt_model_preemptible(void)
++{
++	return preempt_model_full() || preempt_model_rt();
++}
++
+ #endif /* __LINUX_PREEMPT_H */
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index a5f4b48fca184..76214d7c819de 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2064,47 +2064,6 @@ extern int __cond_resched_rwlock_write(rwlock_t *lock);
+ 	__cond_resched_rwlock_write(lock);					\
+ })
  
--	filemap_invalidate_lock(inode->i_mapping);
- 	iinfo = UDF_I(inode);
- 	if (newsize > inode->i_size) {
- 		if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
-@@ -1263,11 +1262,11 @@ int udf_setsize(struct inode *inode, loff_t newsize)
- 			}
- 			err = udf_expand_file_adinicb(inode);
- 			if (err)
--				goto out_unlock;
-+				return err;
- 		}
- 		err = udf_extend_file(inode, newsize);
- 		if (err)
--			goto out_unlock;
-+			return err;
- set_size:
- 		truncate_setsize(inode, newsize);
- 	} else {
-@@ -1285,14 +1284,14 @@ int udf_setsize(struct inode *inode, loff_t newsize)
- 		err = block_truncate_page(inode->i_mapping, newsize,
- 					  udf_get_block);
- 		if (err)
--			goto out_unlock;
-+			return err;
- 		truncate_setsize(inode, newsize);
- 		down_write(&iinfo->i_data_sem);
- 		udf_clear_extent_cache(inode);
- 		err = udf_truncate_extents(inode);
- 		up_write(&iinfo->i_data_sem);
- 		if (err)
--			goto out_unlock;
-+			return err;
- 	}
- update_time:
- 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
-@@ -1300,8 +1299,6 @@ int udf_setsize(struct inode *inode, loff_t newsize)
- 		udf_sync_inode(inode);
- 	else
- 		mark_inode_dirty(inode);
--out_unlock:
--	filemap_invalidate_unlock(inode->i_mapping);
- 	return err;
- }
- 
+-#ifdef CONFIG_PREEMPT_DYNAMIC
+-
+-extern bool preempt_model_none(void);
+-extern bool preempt_model_voluntary(void);
+-extern bool preempt_model_full(void);
+-
+-#else
+-
+-static inline bool preempt_model_none(void)
+-{
+-	return IS_ENABLED(CONFIG_PREEMPT_NONE);
+-}
+-static inline bool preempt_model_voluntary(void)
+-{
+-	return IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY);
+-}
+-static inline bool preempt_model_full(void)
+-{
+-	return IS_ENABLED(CONFIG_PREEMPT);
+-}
+-
+-#endif
+-
+-static inline bool preempt_model_rt(void)
+-{
+-	return IS_ENABLED(CONFIG_PREEMPT_RT);
+-}
+-
+-/*
+- * Does the preemption model allow non-cooperative preemption?
+- *
+- * For !CONFIG_PREEMPT_DYNAMIC kernels this is an exact match with
+- * CONFIG_PREEMPTION; for CONFIG_PREEMPT_DYNAMIC this doesn't work as the
+- * kernel is *built* with CONFIG_PREEMPTION=y but may run with e.g. the
+- * PREEMPT_NONE model.
+- */
+-static inline bool preempt_model_preemptible(void)
+-{
+-	return preempt_model_full() || preempt_model_rt();
+-}
+-
+ static __always_inline bool need_resched(void)
+ {
+ 	return unlikely(tif_need_resched());
 -- 
 2.43.0
 
