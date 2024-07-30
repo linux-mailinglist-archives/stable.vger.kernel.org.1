@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D15619418CD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80748941915
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 868C01F20B67
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3ED61C22EB3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1721A619B;
-	Tue, 30 Jul 2024 16:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F981184549;
+	Tue, 30 Jul 2024 16:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tfHPFlp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0jyqIc1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3821C1A6161;
-	Tue, 30 Jul 2024 16:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18531A619C;
+	Tue, 30 Jul 2024 16:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356712; cv=none; b=aqqJei7W6u0R39KmmAQ4pGgI3gfS/nKbQw37Yjf310H13NmeLyzX9FFpaUeXZyFuVpONoVCwQ1FwlrX7ggyjqJLaN1MFavjkthB0EP/gy110Eegkr5B6gYvY5wWyWvOgy4l2s6MjlNbJIlADL5o7ohqYeaKmgHrn+jFaj3LkG28=
+	t=1722356931; cv=none; b=rcwm+9FjHZIwCiFX3gAC4smSSe5JtsqOiEla2PeLSH+fQ4f+/+hKSxBrBP73m9yfoJGLrHmiNEwVja6ZHhQ5REZ9EMS7GCSr9BFpb3LRmm7AR0kBU5+I4WAoSxT8/M29TM5MZnG9pz4SqY6BRZO4x2oN1nLyXX6dcHLCknKm4fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356712; c=relaxed/simple;
-	bh=8SaPuN4NzdGHKgv8E//+bZYA1N6LVe1uSMB+S3BqMvo=;
+	s=arc-20240116; t=1722356931; c=relaxed/simple;
+	bh=EVa5lMGtVSHBRDpdeGdxkV910Myiy8eS0B+ENS1stRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MgiQ/CWrL5ltc3uNQMJSg1C2/7S3mB6yS9Gk2CzfA6dOlDcyYfQeXsLQ8hJXbO5n+2t2/Ru3CzopLmcP6uVR4kWgBbbOYmsrssIFX9fC7RlFtZSUqnoe/zUHAfrnvE/ocKrjdTbr6vJQJehoOZKEhmNWqp8ufhsli+hIsWbFVU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tfHPFlp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA93C32782;
-	Tue, 30 Jul 2024 16:25:11 +0000 (UTC)
+	 MIME-Version; b=dAcnPWoPubJTomjVnjm5lwiXivhm9hIAiovL+OUEuH8X54+OvvCJZcxCXD9jzmQVxxl76OEklnGqtBb84ku8otF6TZQn2s5b0cxeepxqb8wlnY0ggmsAPGWwF1JlzhVxv/9Izx3OuxN9s7ry6nY4E5CCUR80F9lQJvR4p4X29VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0jyqIc1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B54FC4AF10;
+	Tue, 30 Jul 2024 16:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356712;
-	bh=8SaPuN4NzdGHKgv8E//+bZYA1N6LVe1uSMB+S3BqMvo=;
+	s=korg; t=1722356931;
+	bh=EVa5lMGtVSHBRDpdeGdxkV910Myiy8eS0B+ENS1stRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tfHPFlphj9CvI3xH0qgoep1AfQsejWn8udr3iY/fA58mQifkZCxZ+WGA1GdLV5ge
-	 CM+F4MiU2Nloi+Z50dp0jvGY/5yTNu1KoiroQfhiLsQp85ZPFnbchjRYTZz7LrjvVQ
-	 XA+rfSDEJ3+QLJeyPffd/ACxyVL8QDEj1vajt94w=
+	b=G0jyqIc1JJD6wh5JshyoQD4GcMf21l15C/GzmhgCE+RYgizbuatQ94wotPNuN1pMY
+	 +LRcKqI+HdXVsQgse4HdO0O3xnSTpVqePI423sjcod8n+KLZZ/yZNhE8pv5jlhXO5V
+	 qsrSKZMKJNQdHZzmqxlGIo1iuS9NPjAvPsGGrMV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 176/809] tcp: fix races in tcp_v[46]_err()
-Date: Tue, 30 Jul 2024 17:40:52 +0200
-Message-ID: <20240730151731.556210382@linuxfoundation.org>
+Subject: [PATCH 6.10 177/809] hns3: avoid linking objects into multiple modules
+Date: Tue, 30 Jul 2024 17:40:53 +0200
+Message-ID: <20240730151731.600789041@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,81 +67,271 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit fde6f897f2a184546bf5516ac736523ef24dc6a7 ]
+[ Upstream commit e3bbb994a7e0ead1e028c5a8ec5f8526b4a9c5c9 ]
 
-These functions have races when they:
+Each object file contains information about which module it gets linked
+into, so linking the same file into multiple modules now causes a warning:
 
-1) Write sk->sk_err
-2) call sk_error_report(sk)
-3) call tcp_done(sk)
+scripts/Makefile.build:254: drivers/net/ethernet/hisilicon/hns3/Makefile: hns3_common/hclge_comm_cmd.o is added to multiple modules: hclge hclgevf
+scripts/Makefile.build:254: drivers/net/ethernet/hisilicon/hns3/Makefile: hns3_common/hclge_comm_rss.o is added to multiple modules: hclge hclgevf
+scripts/Makefile.build:254: drivers/net/ethernet/hisilicon/hns3/Makefile: hns3_common/hclge_comm_tqp_stats.o is added to multiple modules: hclge hclgevf
 
-As described in prior patches in this series:
+Change the way that hns3 is built by moving the three common files into a
+separate module with exported symbols instead.
 
-An smp_wmb() is missing.
-We should call tcp_done() before sk_error_report(sk)
-to have consistent tcp_poll() results on SMP hosts.
-
-Use tcp_done_with_error() where we centralized the
-correct sequence.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20240528125253.1966136-5-edumazet@google.com
+Fixes: 5f20be4e90e6 ("net: hns3: refactor hns3 makefile to support hns3_common module")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20240528161603.2443125-1-arnd@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 11 +++--------
- net/ipv6/tcp_ipv6.c | 10 +++-------
- 2 files changed, 6 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/Makefile       | 11 +++++------
+ .../hisilicon/hns3/hns3_common/hclge_comm_cmd.c    | 11 +++++++++++
+ .../hisilicon/hns3/hns3_common/hclge_comm_rss.c    | 14 ++++++++++++++
+ .../hns3/hns3_common/hclge_comm_tqp_stats.c        |  5 +++++
+ 4 files changed, 35 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index b710958393e64..a541659b6562b 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -611,15 +611,10 @@ int tcp_v4_err(struct sk_buff *skb, u32 info)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/Makefile b/drivers/net/ethernet/hisilicon/hns3/Makefile
+index 8e9293e57bfd5..e8af26da1fc1e 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/Makefile
++++ b/drivers/net/ethernet/hisilicon/hns3/Makefile
+@@ -15,15 +15,14 @@ hns3-objs = hns3_enet.o hns3_ethtool.o hns3_debugfs.o
  
- 		ip_icmp_error(sk, skb, err, th->dest, info, (u8 *)th);
+ hns3-$(CONFIG_HNS3_DCB) += hns3_dcbnl.o
  
--		if (!sock_owned_by_user(sk)) {
--			WRITE_ONCE(sk->sk_err, err);
+-obj-$(CONFIG_HNS3_HCLGEVF) += hclgevf.o
++obj-$(CONFIG_HNS3_HCLGEVF) += hclgevf.o hclge-common.o
+ 
+-hclgevf-objs = hns3vf/hclgevf_main.o hns3vf/hclgevf_mbx.o  hns3vf/hclgevf_devlink.o hns3vf/hclgevf_regs.o \
+-		hns3_common/hclge_comm_cmd.o hns3_common/hclge_comm_rss.o hns3_common/hclge_comm_tqp_stats.o
++hclge-common-objs += hns3_common/hclge_comm_cmd.o hns3_common/hclge_comm_rss.o hns3_common/hclge_comm_tqp_stats.o
+ 
+-obj-$(CONFIG_HNS3_HCLGE) += hclge.o
++hclgevf-objs = hns3vf/hclgevf_main.o hns3vf/hclgevf_mbx.o  hns3vf/hclgevf_devlink.o hns3vf/hclgevf_regs.o
++
++obj-$(CONFIG_HNS3_HCLGE) += hclge.o hclge-common.o
+ hclge-objs = hns3pf/hclge_main.o hns3pf/hclge_mdio.o hns3pf/hclge_tm.o hns3pf/hclge_regs.o \
+ 		hns3pf/hclge_mbx.o hns3pf/hclge_err.o  hns3pf/hclge_debugfs.o hns3pf/hclge_ptp.o hns3pf/hclge_devlink.o \
+-		hns3_common/hclge_comm_cmd.o hns3_common/hclge_comm_rss.o hns3_common/hclge_comm_tqp_stats.o
 -
--			sk_error_report(sk);
--
--			tcp_done(sk);
--		} else {
-+		if (!sock_owned_by_user(sk))
-+			tcp_done_with_error(sk, err);
-+		else
- 			WRITE_ONCE(sk->sk_err_soft, err);
--		}
- 		goto out;
+ 
+ hclge-$(CONFIG_HNS3_DCB) += hns3pf/hclge_dcb.o
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
+index ea40b594dbac7..4ad4e8ab2f1f3 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
+@@ -48,6 +48,7 @@ void hclge_comm_cmd_reuse_desc(struct hclge_desc *desc, bool is_read)
+ 	else
+ 		desc->flag &= cpu_to_le16(~HCLGE_COMM_CMD_FLAG_WR);
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_cmd_reuse_desc);
+ 
+ static void hclge_comm_set_default_capability(struct hnae3_ae_dev *ae_dev,
+ 					      bool is_pf)
+@@ -72,6 +73,7 @@ void hclge_comm_cmd_setup_basic_desc(struct hclge_desc *desc,
+ 	if (is_read)
+ 		desc->flag |= cpu_to_le16(HCLGE_COMM_CMD_FLAG_WR);
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_cmd_setup_basic_desc);
+ 
+ int hclge_comm_firmware_compat_config(struct hnae3_ae_dev *ae_dev,
+ 				      struct hclge_comm_hw *hw, bool en)
+@@ -517,6 +519,7 @@ int hclge_comm_cmd_send(struct hclge_comm_hw *hw, struct hclge_desc *desc,
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_cmd_send);
+ 
+ static void hclge_comm_cmd_uninit_regs(struct hclge_comm_hw *hw)
+ {
+@@ -553,6 +556,7 @@ void hclge_comm_cmd_uninit(struct hnae3_ae_dev *ae_dev,
+ 	hclge_comm_free_cmd_desc(&cmdq->csq);
+ 	hclge_comm_free_cmd_desc(&cmdq->crq);
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_cmd_uninit);
+ 
+ int hclge_comm_cmd_queue_init(struct pci_dev *pdev, struct hclge_comm_hw *hw)
+ {
+@@ -591,6 +595,7 @@ int hclge_comm_cmd_queue_init(struct pci_dev *pdev, struct hclge_comm_hw *hw)
+ 	hclge_comm_free_cmd_desc(&hw->cmq.csq);
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_cmd_queue_init);
+ 
+ void hclge_comm_cmd_init_ops(struct hclge_comm_hw *hw,
+ 			     const struct hclge_comm_cmq_ops *ops)
+@@ -602,6 +607,7 @@ void hclge_comm_cmd_init_ops(struct hclge_comm_hw *hw,
+ 		cmdq->ops.trace_cmd_get = ops->trace_cmd_get;
  	}
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_cmd_init_ops);
  
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 729faf8bd366a..3385faf1d5dcb 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -490,14 +490,10 @@ static int tcp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ int hclge_comm_cmd_init(struct hnae3_ae_dev *ae_dev, struct hclge_comm_hw *hw,
+ 			u32 *fw_version, bool is_pf,
+@@ -672,3 +678,8 @@ int hclge_comm_cmd_init(struct hnae3_ae_dev *ae_dev, struct hclge_comm_hw *hw,
  
- 		ipv6_icmp_error(sk, skb, err, th->dest, ntohl(info), (u8 *)th);
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_cmd_init);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("HNS3: Hisilicon Ethernet PF/VF Common Library");
++MODULE_AUTHOR("Huawei Tech. Co., Ltd.");
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_rss.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_rss.c
+index b4ae2160aff4f..4e2bb6556b1ce 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_rss.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_rss.c
+@@ -62,6 +62,7 @@ int hclge_comm_rss_init_cfg(struct hnae3_handle *nic,
  
--		if (!sock_owned_by_user(sk)) {
--			WRITE_ONCE(sk->sk_err, err);
--			sk_error_report(sk);		/* Wake people up to see the error (see connect in sock.c) */
--
--			tcp_done(sk);
--		} else {
-+		if (!sock_owned_by_user(sk))
-+			tcp_done_with_error(sk, err);
-+		else
- 			WRITE_ONCE(sk->sk_err_soft, err);
--		}
- 		goto out;
- 	case TCP_LISTEN:
- 		break;
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_rss_init_cfg);
+ 
+ void hclge_comm_get_rss_tc_info(u16 rss_size, u8 hw_tc_map, u16 *tc_offset,
+ 				u16 *tc_valid, u16 *tc_size)
+@@ -78,6 +79,7 @@ void hclge_comm_get_rss_tc_info(u16 rss_size, u8 hw_tc_map, u16 *tc_offset,
+ 		tc_offset[i] = (hw_tc_map & BIT(i)) ? rss_size * i : 0;
+ 	}
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_get_rss_tc_info);
+ 
+ int hclge_comm_set_rss_tc_mode(struct hclge_comm_hw *hw, u16 *tc_offset,
+ 			       u16 *tc_valid, u16 *tc_size)
+@@ -113,6 +115,7 @@ int hclge_comm_set_rss_tc_mode(struct hclge_comm_hw *hw, u16 *tc_offset,
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_set_rss_tc_mode);
+ 
+ int hclge_comm_set_rss_hash_key(struct hclge_comm_rss_cfg *rss_cfg,
+ 				struct hclge_comm_hw *hw, const u8 *key,
+@@ -143,6 +146,7 @@ int hclge_comm_set_rss_hash_key(struct hclge_comm_rss_cfg *rss_cfg,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_set_rss_hash_key);
+ 
+ int hclge_comm_set_rss_tuple(struct hnae3_ae_dev *ae_dev,
+ 			     struct hclge_comm_hw *hw,
+@@ -185,11 +189,13 @@ int hclge_comm_set_rss_tuple(struct hnae3_ae_dev *ae_dev,
+ 	rss_cfg->rss_tuple_sets.ipv6_fragment_en = req->ipv6_fragment_en;
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_set_rss_tuple);
+ 
+ u32 hclge_comm_get_rss_key_size(struct hnae3_handle *handle)
+ {
+ 	return HCLGE_COMM_RSS_KEY_SIZE;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_get_rss_key_size);
+ 
+ int hclge_comm_parse_rss_hfunc(struct hclge_comm_rss_cfg *rss_cfg,
+ 			       const u8 hfunc, u8 *hash_algo)
+@@ -217,6 +223,7 @@ void hclge_comm_rss_indir_init_cfg(struct hnae3_ae_dev *ae_dev,
+ 	for (i = 0; i < ae_dev->dev_specs.rss_ind_tbl_size; i++)
+ 		rss_cfg->rss_indirection_tbl[i] = i % rss_cfg->rss_size;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_rss_indir_init_cfg);
+ 
+ int hclge_comm_get_rss_tuple(struct hclge_comm_rss_cfg *rss_cfg, int flow_type,
+ 			     u8 *tuple_sets)
+@@ -250,6 +257,7 @@ int hclge_comm_get_rss_tuple(struct hclge_comm_rss_cfg *rss_cfg, int flow_type,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_get_rss_tuple);
+ 
+ static void
+ hclge_comm_append_rss_msb_info(struct hclge_comm_rss_ind_tbl_cmd *req,
+@@ -304,6 +312,7 @@ int hclge_comm_set_rss_indir_table(struct hnae3_ae_dev *ae_dev,
+ 	}
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_set_rss_indir_table);
+ 
+ int hclge_comm_set_rss_input_tuple(struct hclge_comm_hw *hw,
+ 				   struct hclge_comm_rss_cfg *rss_cfg)
+@@ -332,6 +341,7 @@ int hclge_comm_set_rss_input_tuple(struct hclge_comm_hw *hw,
+ 			"failed to configure rss input, ret = %d.\n", ret);
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_set_rss_input_tuple);
+ 
+ void hclge_comm_get_rss_hash_info(struct hclge_comm_rss_cfg *rss_cfg, u8 *key,
+ 				  u8 *hfunc)
+@@ -355,6 +365,7 @@ void hclge_comm_get_rss_hash_info(struct hclge_comm_rss_cfg *rss_cfg, u8 *key,
+ 	if (key)
+ 		memcpy(key, rss_cfg->rss_hash_key, HCLGE_COMM_RSS_KEY_SIZE);
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_get_rss_hash_info);
+ 
+ void hclge_comm_get_rss_indir_tbl(struct hclge_comm_rss_cfg *rss_cfg,
+ 				  u32 *indir, u16 rss_ind_tbl_size)
+@@ -367,6 +378,7 @@ void hclge_comm_get_rss_indir_tbl(struct hclge_comm_rss_cfg *rss_cfg,
+ 	for (i = 0; i < rss_ind_tbl_size; i++)
+ 		indir[i] = rss_cfg->rss_indirection_tbl[i];
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_get_rss_indir_tbl);
+ 
+ int hclge_comm_set_rss_algo_key(struct hclge_comm_hw *hw, const u8 hfunc,
+ 				const u8 *key)
+@@ -408,6 +420,7 @@ int hclge_comm_set_rss_algo_key(struct hclge_comm_hw *hw, const u8 hfunc,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_set_rss_algo_key);
+ 
+ static u8 hclge_comm_get_rss_hash_bits(struct ethtool_rxnfc *nfc)
+ {
+@@ -502,3 +515,4 @@ u64 hclge_comm_convert_rss_tuple(u8 tuple_sets)
+ 
+ 	return tuple_data;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_convert_rss_tuple);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
+index 618f66d9586b3..2b31188ff5558 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
+@@ -26,6 +26,7 @@ u64 *hclge_comm_tqps_get_stats(struct hnae3_handle *handle, u64 *data)
+ 
+ 	return buff;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_tqps_get_stats);
+ 
+ int hclge_comm_tqps_get_sset_count(struct hnae3_handle *handle)
+ {
+@@ -33,6 +34,7 @@ int hclge_comm_tqps_get_sset_count(struct hnae3_handle *handle)
+ 
+ 	return kinfo->num_tqps * HCLGE_COMM_QUEUE_PAIR_SIZE;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_tqps_get_sset_count);
+ 
+ u8 *hclge_comm_tqps_get_strings(struct hnae3_handle *handle, u8 *data)
+ {
+@@ -56,6 +58,7 @@ u8 *hclge_comm_tqps_get_strings(struct hnae3_handle *handle, u8 *data)
+ 
+ 	return buff;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_tqps_get_strings);
+ 
+ int hclge_comm_tqps_update_stats(struct hnae3_handle *handle,
+ 				 struct hclge_comm_hw *hw)
+@@ -99,6 +102,7 @@ int hclge_comm_tqps_update_stats(struct hnae3_handle *handle,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_tqps_update_stats);
+ 
+ void hclge_comm_reset_tqp_stats(struct hnae3_handle *handle)
+ {
+@@ -113,3 +117,4 @@ void hclge_comm_reset_tqp_stats(struct hnae3_handle *handle)
+ 		memset(&tqp->tqp_stats, 0, sizeof(tqp->tqp_stats));
+ 	}
+ }
++EXPORT_SYMBOL_GPL(hclge_comm_reset_tqp_stats);
 -- 
 2.43.0
 
