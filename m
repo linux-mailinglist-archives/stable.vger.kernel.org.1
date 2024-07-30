@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F17941CBC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F32F941E5F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1838D1F21528
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0CD6B255BB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF98B18B466;
-	Tue, 30 Jul 2024 17:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B171A76C3;
+	Tue, 30 Jul 2024 17:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhzWQY/x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzvbwiTC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA5E18C903;
-	Tue, 30 Jul 2024 17:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DD11A76B3;
+	Tue, 30 Jul 2024 17:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359263; cv=none; b=qcnx5ah1D5wGbXgJQ2TdtBXp0bbkIlQ42xhZHRL8qXFAZG7JYmPReRhRA14QXb2zt5ESRykNOzvAqoKrxesw8agoaeQblZYFmq/H0OhJmnlki7ETKiwywZfYdgStBPvYRLDuNRlX/sBHKTuysccBZyrgJWAXbmgUnlRb8/WVvMI=
+	t=1722360398; cv=none; b=CzcAR1LU8KpddjOAco8Vuu4rzviaMvEFASwD+FmiNeekisuq8Rp/z+DWroIZDkRCtBg5i2wgLdVwI3TVgMtC/3FQknBMtQ6hUbyLqbglrpI0Cj33HOdXekEpvsW6hi1Nxv8oXuAy4f5zA+nrMEvklA3kBfvqS+cBHaz50KpPCxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359263; c=relaxed/simple;
-	bh=ItUpoBNRIa66cCZGhitCxAsHVF8cbrT4mFj4vsb/3wc=;
+	s=arc-20240116; t=1722360398; c=relaxed/simple;
+	bh=ZzjJDd0P6WefGbk2xi6SKF3apxH+ZbKILVhXU7Uk1iM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJ8YaYM8Rleak2BdHL4xNvuPGvr/uhK19M0ErmuYLP+OALXkOMwbrMFnrJDf5c1dltpcvrPI6cHxRrDkQOq9XmAk347LoQKgyBbcVZfpCUElyLGYdEluEuRAtXNV2VdXNV9WJHIKrbYr3hk53LABXWdyc2OBci2uAwmrb6GyCxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhzWQY/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A83C32782;
-	Tue, 30 Jul 2024 17:07:42 +0000 (UTC)
+	 MIME-Version; b=BZ1YeSufye8GQImlD2HKSv74g7ipSC2Nya2TL8yQEt6y9ThfhQ0AzS6ZKzjamxvZ8yd75JUF+2PtsEmQn9zJOQdZxP3Zki7LntkC7zhf8Gk0Ch/aRuT+h68axHmlQvLdmWqR1kD2Q1Re/VQ29C9S53RpayxPyZaOBTU7aVzf6Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzvbwiTC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03F8C4AF0C;
+	Tue, 30 Jul 2024 17:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359263;
-	bh=ItUpoBNRIa66cCZGhitCxAsHVF8cbrT4mFj4vsb/3wc=;
+	s=korg; t=1722360398;
+	bh=ZzjJDd0P6WefGbk2xi6SKF3apxH+ZbKILVhXU7Uk1iM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qhzWQY/x+4UME4oZY7IOsQxTna5mImTmgs1OqThczsL2UvqSdlN99wI7eYfcqjzmu
-	 1cFNjQFJ2F266I3bCaJ76lCPV/nfPcXxFVCH+zTMzx088rJBcfTNKZN8aqSWsVl8yO
-	 5cvnRu7qfv/cPKDq3aWkCIzuExli8BFc3Bm/dXmE=
+	b=qzvbwiTCvJsu8hgzDK5vd7ZGBZn3z0qAGJMWAV0duRKPGngo1vxA9xBW1CZPTPk3G
+	 rxOTA5KYm/xIc2UW57fAmQJfL/kFLAZlWca9tpVFaPLXMB69PCX7qgp8X5GSeOsnef
+	 Ny2KuaySzJyhogy5vg/awV/HCeInqDqHpa9znmig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.6 455/568] irqchip/imx-irqsteer: Handle runtime power management correctly
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.10 686/809] scsi: qla2xxx: Use QP lock to search for bsg
 Date: Tue, 30 Jul 2024 17:49:22 +0200
-Message-ID: <20240730151657.794601950@linuxfoundation.org>
+Message-ID: <20240730151752.006917006@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +63,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 33b1c47d1fc0b5f06a393bb915db85baacba18ea upstream.
+commit c449b4198701d828e40d60a2abd30970b74a1d75 upstream.
 
-The power domain is automatically activated from clk_prepare(). However, on
-certain platforms like i.MX8QM and i.MX8QXP, the power-on handling invokes
-sleeping functions, which triggers the 'scheduling while atomic' bug in the
-context switch path during device probing:
+On bsg timeout, hardware_lock is used as part of search for the srb.
+Instead, qpair lock should be used to iterate through different qpair.
 
- BUG: scheduling while atomic: kworker/u13:1/48/0x00000002
- Call trace:
-  __schedule_bug+0x54/0x6c
-  __schedule+0x7f0/0xa94
-  schedule+0x5c/0xc4
-  schedule_preempt_disabled+0x24/0x40
-  __mutex_lock.constprop.0+0x2c0/0x540
-  __mutex_lock_slowpath+0x14/0x20
-  mutex_lock+0x48/0x54
-  clk_prepare_lock+0x44/0xa0
-  clk_prepare+0x20/0x44
-  imx_irqsteer_resume+0x28/0xe0
-  pm_generic_runtime_resume+0x2c/0x44
-  __genpd_runtime_resume+0x30/0x80
-  genpd_runtime_resume+0xc8/0x2c0
-  __rpm_callback+0x48/0x1d8
-  rpm_callback+0x6c/0x78
-  rpm_resume+0x490/0x6b4
-  __pm_runtime_resume+0x50/0x94
-  irq_chip_pm_get+0x2c/0xa0
-  __irq_do_set_handler+0x178/0x24c
-  irq_set_chained_handler_and_data+0x60/0xa4
-  mxc_gpio_probe+0x160/0x4b0
-
-Cure this by implementing the irq_bus_lock/sync_unlock() interrupt chip
-callbacks and handle power management in them as they are invoked from
-non-atomic context.
-
-[ tglx: Rewrote change log, added Fixes tag ]
-
-Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240703163250.47887-1-shenwei.wang@nxp.com
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-11-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-imx-irqsteer.c |   24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_bsg.c |   96 ++++++++++++++++++++++++-----------------
+ 1 file changed, 57 insertions(+), 39 deletions(-)
 
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -36,6 +36,7 @@ struct irqsteer_data {
- 	int			channel;
- 	struct irq_domain	*domain;
- 	u32			*saved_reg;
-+	struct device		*dev;
- };
- 
- static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
-@@ -72,10 +73,26 @@ static void imx_irqsteer_irq_mask(struct
- 	raw_spin_unlock_irqrestore(&data->lock, flags);
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -3059,17 +3059,61 @@ skip_chip_chk:
+ 	return ret;
  }
  
-+static void imx_irqsteer_irq_bus_lock(struct irq_data *d)
-+{
-+	struct irqsteer_data *data = d->chip_data;
+-int
+-qla24xx_bsg_timeout(struct bsg_job *bsg_job)
++static bool qla_bsg_found(struct qla_qpair *qpair, struct bsg_job *bsg_job)
+ {
++	bool found = false;
+ 	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
+ 	scsi_qla_host_t *vha = shost_priv(fc_bsg_to_shost(bsg_job));
+ 	struct qla_hw_data *ha = vha->hw;
+-	srb_t *sp;
+-	int cnt, que;
++	srb_t *sp = NULL;
++	int cnt;
+ 	unsigned long flags;
+ 	struct req_que *req;
+ 
++	spin_lock_irqsave(qpair->qp_lock_ptr, flags);
++	req = qpair->req;
 +
-+	pm_runtime_get_sync(data->dev);
++	for (cnt = 1; cnt < req->num_outstanding_cmds; cnt++) {
++		sp = req->outstanding_cmds[cnt];
++		if (sp &&
++		    (sp->type == SRB_CT_CMD ||
++		     sp->type == SRB_ELS_CMD_HST ||
++		     sp->type == SRB_ELS_CMD_HST_NOLOGIN) &&
++		    sp->u.bsg_job == bsg_job) {
++			req->outstanding_cmds[cnt] = NULL;
++			spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
++
++			if (!ha->flags.eeh_busy && ha->isp_ops->abort_command(sp)) {
++				ql_log(ql_log_warn, vha, 0x7089,
++						"mbx abort_command failed.\n");
++				bsg_reply->result = -EIO;
++			} else {
++				ql_dbg(ql_dbg_user, vha, 0x708a,
++						"mbx abort_command success.\n");
++				bsg_reply->result = 0;
++			}
++			/* ref: INIT */
++			kref_put(&sp->cmd_kref, qla2x00_sp_release);
++
++			found = true;
++			goto done;
++		}
++	}
++	spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
++
++done:
++	return found;
 +}
 +
-+static void imx_irqsteer_irq_bus_sync_unlock(struct irq_data *d)
++int
++qla24xx_bsg_timeout(struct bsg_job *bsg_job)
 +{
-+	struct irqsteer_data *data = d->chip_data;
++	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
++	scsi_qla_host_t *vha = shost_priv(fc_bsg_to_shost(bsg_job));
++	struct qla_hw_data *ha = vha->hw;
++	int i;
++	struct qla_qpair *qpair;
 +
-+	pm_runtime_put_autosuspend(data->dev);
-+}
+ 	ql_log(ql_log_info, vha, 0x708b, "%s CMD timeout. bsg ptr %p.\n",
+ 	    __func__, bsg_job);
+ 
+@@ -3079,48 +3123,22 @@ qla24xx_bsg_timeout(struct bsg_job *bsg_
+ 		qla_pci_set_eeh_busy(vha);
+ 	}
+ 
++	if (qla_bsg_found(ha->base_qpair, bsg_job))
++		goto done;
 +
- static const struct irq_chip imx_irqsteer_irq_chip = {
--	.name		= "irqsteer",
--	.irq_mask	= imx_irqsteer_irq_mask,
--	.irq_unmask	= imx_irqsteer_irq_unmask,
-+	.name			= "irqsteer",
-+	.irq_mask		= imx_irqsteer_irq_mask,
-+	.irq_unmask		= imx_irqsteer_irq_unmask,
-+	.irq_bus_lock		= imx_irqsteer_irq_bus_lock,
-+	.irq_bus_sync_unlock	= imx_irqsteer_irq_bus_sync_unlock,
- };
+ 	/* find the bsg job from the active list of commands */
+-	spin_lock_irqsave(&ha->hardware_lock, flags);
+-	for (que = 0; que < ha->max_req_queues; que++) {
+-		req = ha->req_q_map[que];
+-		if (!req)
++	for (i = 0; i < ha->max_qpairs; i++) {
++		qpair = vha->hw->queue_pair_map[i];
++		if (!qpair)
+ 			continue;
+-
+-		for (cnt = 1; cnt < req->num_outstanding_cmds; cnt++) {
+-			sp = req->outstanding_cmds[cnt];
+-			if (sp &&
+-			    (sp->type == SRB_CT_CMD ||
+-			     sp->type == SRB_ELS_CMD_HST ||
+-			     sp->type == SRB_ELS_CMD_HST_NOLOGIN ||
+-			     sp->type == SRB_FXIOCB_BCMD) &&
+-			    sp->u.bsg_job == bsg_job) {
+-				req->outstanding_cmds[cnt] = NULL;
+-				spin_unlock_irqrestore(&ha->hardware_lock, flags);
+-
+-				if (!ha->flags.eeh_busy && ha->isp_ops->abort_command(sp)) {
+-					ql_log(ql_log_warn, vha, 0x7089,
+-					    "mbx abort_command failed.\n");
+-					bsg_reply->result = -EIO;
+-				} else {
+-					ql_dbg(ql_dbg_user, vha, 0x708a,
+-					    "mbx abort_command success.\n");
+-					bsg_reply->result = 0;
+-				}
+-				spin_lock_irqsave(&ha->hardware_lock, flags);
+-				goto done;
+-
+-			}
+-		}
++		if (qla_bsg_found(qpair, bsg_job))
++			goto done;
+ 	}
+-	spin_unlock_irqrestore(&ha->hardware_lock, flags);
++
+ 	ql_log(ql_log_info, vha, 0x708b, "SRB not found to abort.\n");
+ 	bsg_reply->result = -ENXIO;
+-	return 0;
  
- static int imx_irqsteer_irq_map(struct irq_domain *h, unsigned int irq,
-@@ -150,6 +167,7 @@ static int imx_irqsteer_probe(struct pla
- 	if (!data)
- 		return -ENOMEM;
+ done:
+-	spin_unlock_irqrestore(&ha->hardware_lock, flags);
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+ 	return 0;
+ }
  
-+	data->dev = &pdev->dev;
- 	data->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(data->regs)) {
- 		dev_err(&pdev->dev, "failed to initialize reg\n");
 
 
 
