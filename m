@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0761941D13
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757FB941A06
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D1D81F24CB7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 299291F248D2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F15189BB1;
-	Tue, 30 Jul 2024 17:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB32183CD5;
+	Tue, 30 Jul 2024 16:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+19jpX9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NB6Ezpp0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84171898E0;
-	Tue, 30 Jul 2024 17:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5481A6192;
+	Tue, 30 Jul 2024 16:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359553; cv=none; b=TVIdclqkOxa4Zgz4I3jQb7y9Jc5hFHQlz8YbLC64XnUUecBnXErDLpB9HXLq00IhwBFDaUjDB6OgOnaXxwICBa67tyZ9fz2CBl58uNsyBG0B7NzrPdZNpP1AtJQYEAnNM/y8n2ZLsxtH8TwbASyxqpDG7+GYO9KK/y0pa++eleo=
+	t=1722357555; cv=none; b=dHLNjNrJMyh+I6KTdWD7U0cgP7neCHIovkwABiX00VBBGy5iFic0YC141GC987VZoYpROA2YMy1cQ5Z5Yo4rp7Hr/EZ+boIWLVfE3DZO7cxU2GbuYvQbMV3IIgQCFd2qMIgepE6GsAhHo1cTTYQzpJhyqcCxKNXJXLO/EJEVQbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359553; c=relaxed/simple;
-	bh=h/GN1qafrlp0irfiDzAsPH55zbXfsKxeh4iSK0mx1tM=;
+	s=arc-20240116; t=1722357555; c=relaxed/simple;
+	bh=UYpN1fXeGxmI7mqw28kPeiviea+oNcqQG/sWSRPZZtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EFfwn4PGQQvLzVzRnC4xK72M+PfSIf/Oq9a+MPvkFn4L+0iFvPguJrDPRJnvF4AXHQfR8FMZikAcq98yzNhsrLVD/4y+o5E2wA1q3RXF9BYFwpRNaA9JRQ9romw0741yFynkTrJ/0VbN0i0IuPJLkm+pAhpgU6WYoiF3eRJ45CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+19jpX9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A16FC4AF0C;
-	Tue, 30 Jul 2024 17:12:32 +0000 (UTC)
+	 MIME-Version; b=DfI+lQ6MwQrH89VomByk0kjh4k1Z0QuuDWH8kKNyMy/iTz2m8TnYlJ9+IPYHqUiH+kdkBCs+is5dJz/HfAQAjfpBRNoFZER5pcmLM1lL16j4Mvv9hYBydGjXuRN7Iyl602BZXlwmrpYF9QGiy+y6Pi9Kht/pSsZWHrNaHpdGmuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NB6Ezpp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59CBC32782;
+	Tue, 30 Jul 2024 16:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359553;
-	bh=h/GN1qafrlp0irfiDzAsPH55zbXfsKxeh4iSK0mx1tM=;
+	s=korg; t=1722357555;
+	bh=UYpN1fXeGxmI7mqw28kPeiviea+oNcqQG/sWSRPZZtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+19jpX98Sl1jsGyG83FmVOAwsv1DHZlxTBRDF2HBzdhspsfrBw2dS7jzRTmUBzX+
-	 NsS2xx1YahHS3VWrk4Ao+N7SemqpAS5Rj2CGFIkYPh6xUXc63IcreNo1ZunT101uph
-	 6CJNgqM+Kn8J4h6eaJoyORW16NzRAqmL0vCRQh/w=
+	b=NB6Ezpp0/tdtTdDTwsn+vIeuP5RvvJhDpSBVY/iRPWFSajJoFRnxvCoaj63iAYzxD
+	 scaaKITKa5IKgGP4j+rKUJdvARYs4S7EORPgDS8EAcY5PNJWaUuADQ+syRoNBtDmFz
+	 MYj979TWKV0P1DaNRhAiE4NXI+Nra0tTS+QSNgv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 500/809] pinctrl: renesas: r8a779g0: Fix CANFD5 suffix
+Subject: [PATCH 6.6 269/568] clk: qcom: gpucc-sa8775p: Update wait_val fields for GPU GDSCs
 Date: Tue, 30 Jul 2024 17:46:16 +0200
-Message-ID: <20240730151744.485395361@linuxfoundation.org>
+Message-ID: <20240730151650.394504600@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit 77fa9007ac31e80674beadc452d3f3614f283e18 ]
+[ Upstream commit 211681998d706d1e0fff6b62f89efcdf29c24978 ]
 
-CAN-FD instance 5 has two alternate pin groups: "canfd5" and "canfd5_b".
-Rename the former to "canfd5_a" to increase uniformity.
+Update wait_val fields as per the default hardware values of the GDSC as
+otherwise it would lead to GDSC FSM state stuck causing power on/off
+failures of the GSDC.
 
-While at it, remove the unneeded separator.
-
-Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
-Fixes: 050442ae4c74f830 ("pinctrl: renesas: r8a779g0: Add pins, groups and functions")
-Fixes: c2b4b2cd632d17e7 ("pinctrl: renesas: r8a779g0: Add missing CANFD5_B")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/10b22d54086ed11cdfeb0004583029ccf249bdb9.1717754960.git.geert+renesas@glider.be
+Fixes: 0afa16afc36d ("clk: qcom: add the GPUCC driver for sa8775p")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240612-sa8775p-v2-gcc-gpucc-fixes-v2-6-adcc756a23df@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pfc-r8a779g0.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ drivers/clk/qcom/gpucc-sa8775p.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
-index d2de526a3b588..d90ba8b6b4b42 100644
---- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
-+++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
-@@ -341,8 +341,8 @@
- /* IP0SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
- #define IP0SR2_3_0	FM(FXR_TXDA)		FM(CANFD1_TX)		FM(TPU0TO2_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_7_4	FM(FXR_TXENA_N)		FM(CANFD1_RX)		FM(TPU0TO3_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP0SR2_11_8	FM(RXDA_EXTFXR)		FM(CANFD5_TX)		FM(IRQ5)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP0SR2_15_12	FM(CLK_EXTFXR)		FM(CANFD5_RX)		FM(IRQ4_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP0SR2_11_8	FM(RXDA_EXTFXR)		FM(CANFD5_TX_A)		FM(IRQ5)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP0SR2_15_12	FM(CLK_EXTFXR)		FM(CANFD5_RX_A)		FM(IRQ4_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_19_16	FM(RXDB_EXTFXR)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_23_20	FM(FXR_TXENB_N)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_27_24	FM(FXR_TXDB)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-@@ -896,11 +896,11 @@ static const u16 pinmux_data[] = {
- 	PINMUX_IPSR_GPSR(IP0SR2_7_4,	TPU0TO3_A),
+diff --git a/drivers/clk/qcom/gpucc-sa8775p.c b/drivers/clk/qcom/gpucc-sa8775p.c
+index abcaefa01e386..0d9a8379efaa8 100644
+--- a/drivers/clk/qcom/gpucc-sa8775p.c
++++ b/drivers/clk/qcom/gpucc-sa8775p.c
+@@ -523,6 +523,9 @@ static struct clk_regmap *gpu_cc_sa8775p_clocks[] = {
  
- 	PINMUX_IPSR_GPSR(IP0SR2_11_8,	RXDA_EXTFXR),
--	PINMUX_IPSR_GPSR(IP0SR2_11_8,	CANFD5_TX),
-+	PINMUX_IPSR_GPSR(IP0SR2_11_8,	CANFD5_TX_A),
- 	PINMUX_IPSR_GPSR(IP0SR2_11_8,	IRQ5),
+ static struct gdsc cx_gdsc = {
+ 	.gdscr = 0x9108,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.gds_hw_ctrl = 0x953c,
+ 	.pd = {
+ 		.name = "cx_gdsc",
+@@ -533,6 +536,9 @@ static struct gdsc cx_gdsc = {
  
- 	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CLK_EXTFXR),
--	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CANFD5_RX),
-+	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CANFD5_RX_A),
- 	PINMUX_IPSR_GPSR(IP0SR2_15_12,	IRQ4_B),
- 
- 	PINMUX_IPSR_GPSR(IP0SR2_19_16,	RXDB_EXTFXR),
-@@ -1531,15 +1531,14 @@ static const unsigned int canfd4_data_mux[] = {
- };
- 
- /* - CANFD5 ----------------------------------------------------------------- */
--static const unsigned int canfd5_data_pins[] = {
--	/* CANFD5_TX, CANFD5_RX */
-+static const unsigned int canfd5_data_a_pins[] = {
-+	/* CANFD5_TX_A, CANFD5_RX_A */
- 	RCAR_GP_PIN(2, 2), RCAR_GP_PIN(2, 3),
- };
--static const unsigned int canfd5_data_mux[] = {
--	CANFD5_TX_MARK, CANFD5_RX_MARK,
-+static const unsigned int canfd5_data_a_mux[] = {
-+	CANFD5_TX_A_MARK, CANFD5_RX_A_MARK,
- };
- 
--/* - CANFD5_B ----------------------------------------------------------------- */
- static const unsigned int canfd5_data_b_pins[] = {
- 	/* CANFD5_TX_B, CANFD5_RX_B */
- 	RCAR_GP_PIN(1, 8), RCAR_GP_PIN(1, 9),
-@@ -2578,8 +2577,8 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
- 	SH_PFC_PIN_GROUP(canfd2_data),
- 	SH_PFC_PIN_GROUP(canfd3_data),
- 	SH_PFC_PIN_GROUP(canfd4_data),
--	SH_PFC_PIN_GROUP(canfd5_data),		/* suffix might be updated */
--	SH_PFC_PIN_GROUP(canfd5_data_b),	/* suffix might be updated */
-+	SH_PFC_PIN_GROUP(canfd5_data_a),
-+	SH_PFC_PIN_GROUP(canfd5_data_b),
- 	SH_PFC_PIN_GROUP(canfd6_data),
- 	SH_PFC_PIN_GROUP(canfd7_data),
- 	SH_PFC_PIN_GROUP(can_clk),
-@@ -2788,8 +2787,7 @@ static const char * const canfd4_groups[] = {
- };
- 
- static const char * const canfd5_groups[] = {
--	/* suffix might be updated */
--	"canfd5_data",
-+	"canfd5_data_a",
- 	"canfd5_data_b",
- };
- 
+ static struct gdsc gx_gdsc = {
+ 	.gdscr = 0x905c,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "gx_gdsc",
+ 		.power_on = gdsc_gx_do_nothing_enable,
 -- 
 2.43.0
 
