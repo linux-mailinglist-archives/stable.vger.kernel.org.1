@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-63948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD7B941B66
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D36D794182B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68F2C282808
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10BD51C227C3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0FC1898F8;
-	Tue, 30 Jul 2024 16:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2CB18B492;
+	Tue, 30 Jul 2024 16:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/TNxvdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ccejt6YU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B291A6195;
-	Tue, 30 Jul 2024 16:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CED918B46E;
+	Tue, 30 Jul 2024 16:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358471; cv=none; b=PxlduF4KHYgMcc5cpdXm+o48k/j21nyLZAGEO6ra8G5yA7GEde74UhgNutN5FeNfLep18nmai4SJAeckKN3ain8jQBb8dNT6m93gw5zwRx/LAcXl18VKPFGRqYjNmM+l5hTi/r1tfftcKgj6v42nEbkvN12pyGLJt6uPXhaCwP8=
+	t=1722356286; cv=none; b=tbfYq7eIOaVcaAHCBb6QkJGhIb9BiZxUc3DJnDVnP/LXs9h7WHhNQw2C+PmwWb7wmCIuBfH3TGak+o2A08t5XfTxSC/I+n7JR6jbOp2WmQccdmSKAYBHHzSGg/IXzvq479eanlqNYVGZNb7NlQXPE6QlBnN5+fo6VeEI5tJJyEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358471; c=relaxed/simple;
-	bh=Hd3Jdqo8dupcR9uYXngVVChpPPnePU+NOuL9/eBKQTs=;
+	s=arc-20240116; t=1722356286; c=relaxed/simple;
+	bh=FIN7XkBiwa7M7UvZozSjljOtg+SJZ5Ki3KMw9Aj6Ee0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prdubS5ysVbXmTi1+Uo0jPamhKs5ld0O7yr/ULua6nYatyqaKC91h6MwKqIME82P4zTYCOFbx6GgXvUx7+IDGFWv+nCg+4lRu+ZdNCSQTCHzSvnlTLeozoajD8wpVuZpd9hS76Z4Tj8uEznJlVanXARmZLNMqvlSqbiEdy2GzOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/TNxvdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D13C32782;
-	Tue, 30 Jul 2024 16:54:30 +0000 (UTC)
+	 MIME-Version; b=cJtpcdGiWBI6RXKWf6PumpufUHe5CXRz3KV/VbkIgtxZbMgpnQBY+0aLg2k5HwCLBxJM8jY29/nTnFOXIpr103VvuxnX5aokIWeRt7Dg7RyUytNaSwaoLouUD11UIYZnZiqr/N+qfpHE5HmzY0uwCSjUCZQj8RoSq75SBGQp2cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ccejt6YU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2AF6C32782;
+	Tue, 30 Jul 2024 16:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358471;
-	bh=Hd3Jdqo8dupcR9uYXngVVChpPPnePU+NOuL9/eBKQTs=;
+	s=korg; t=1722356286;
+	bh=FIN7XkBiwa7M7UvZozSjljOtg+SJZ5Ki3KMw9Aj6Ee0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/TNxvdhN8+algcCRlUBn5fDV/fHTGGUCPk23tual3nnt92JD3/2YrJfZ3ZLR7/Vx
-	 ZgLSUbAUVJ6sxAks2iyqR4e4uO8Gq+2YcMjHvimTY8DnmTtpykrLYIylJWRn1aG6f0
-	 fhIdCLObYA0YGJLHCOuKDKSQpjhBxa3yO+4Jk5CU=
+	b=Ccejt6YUiOA1D+5+od1rWpx8zKdJZCeh3v77zFK17FuLZef/LXcG6wi4KlgypZb4l
+	 EmjyONgOM4hhuAddrgvaYMN+QxAFqexqp4Yfmy9fxTC6BFMoqHg20M1quh2WffP21j
+	 2/GHRw3G0aLqHAOZVskWXEu57hPjX84Xhnxjlyzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Nathan Hebert <nhebert@chromium.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Yue Sun <samsun1006219@gmail.com>,
+	Xingwei Lee <xrivendell7@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 362/809] media: venus: flush all buffers in output plane streamoff
+Subject: [PATCH 6.6 131/568] perf/x86: Serialize set_attr_rdpmc()
 Date: Tue, 30 Jul 2024 17:43:58 +0200
-Message-ID: <20240730151738.947897084@linuxfoundation.org>
+Message-ID: <20240730151644.991186863@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit e750a4b1224142bd8dd057b0d5adf8a5608b7e77 ]
+[ Upstream commit bb9bb45f746b0f9457de9c3fc4da143a6351bdc9 ]
 
-For scenarios, when source change is followed by VIDIOC_STREAMOFF
-on output plane, driver should discard any queued OUTPUT
-buffers, which are not decoded or dequeued.
-Flush with HFI_FLUSH_INPUT does not have any actual impact.
-So, fix it, by invoking HFI_FLUSH_ALL, which will flush all
-queued buffers.
+Yue and Xingwei reported a jump label failure. It's caused by the lack of
+serialization in set_attr_rdpmc():
 
-Fixes: 85872f861d4c ("media: venus: Mark last capture buffer")
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Nathan Hebert <nhebert@chromium.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+CPU0                           CPU1
+
+Assume: x86_pmu.attr_rdpmc == 0
+
+if (val != x86_pmu.attr_rdpmc) {
+  if (val == 0)
+    ...
+  else if (x86_pmu.attr_rdpmc == 0)
+    static_branch_dec(&rdpmc_never_available_key);
+
+				if (val != x86_pmu.attr_rdpmc) {
+				   if (val == 0)
+				      ...
+				   else if (x86_pmu.attr_rdpmc == 0)
+     FAIL, due to imbalance --->      static_branch_dec(&rdpmc_never_available_key);
+
+The reported BUG() is a consequence of the above and of another bug in the
+jump label core code. The core code needs a separate fix, but that cannot
+prevent the imbalance problem caused by set_attr_rdpmc().
+
+Prevent this by serializing set_attr_rdpmc() locally.
+
+Fixes: a66734297f78 ("perf/x86: Add /sys/devices/cpu/rdpmc=2 to allow rdpmc for all tasks")
+Closes: https://lore.kernel.org/r/CAEkJfYNzfW1vG=ZTMdz_Weoo=RXY1NDunbxnDaLyj8R4kEoE_w@mail.gmail.com
+Reported-by: Yue Sun <samsun1006219@gmail.com>
+Reported-by: Xingwei Lee <xrivendell7@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20240610124406.359476013@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/vdec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-index 29130a9441e70..0d2ab95bec0f6 100644
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -1255,7 +1255,7 @@ static int vdec_stop_output(struct venus_inst *inst)
- 		break;
- 	case VENUS_DEC_STATE_INIT:
- 	case VENUS_DEC_STATE_CAPTURE_SETUP:
--		ret = hfi_session_flush(inst, HFI_FLUSH_INPUT, true);
-+		ret = hfi_session_flush(inst, HFI_FLUSH_ALL, true);
- 		break;
- 	default:
- 		break;
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index c688cb22dcd6d..8811fedc9776a 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -2547,6 +2547,7 @@ static ssize_t set_attr_rdpmc(struct device *cdev,
+ 			      struct device_attribute *attr,
+ 			      const char *buf, size_t count)
+ {
++	static DEFINE_MUTEX(rdpmc_mutex);
+ 	unsigned long val;
+ 	ssize_t ret;
+ 
+@@ -2560,6 +2561,8 @@ static ssize_t set_attr_rdpmc(struct device *cdev,
+ 	if (x86_pmu.attr_rdpmc_broken)
+ 		return -ENOTSUPP;
+ 
++	guard(mutex)(&rdpmc_mutex);
++
+ 	if (val != x86_pmu.attr_rdpmc) {
+ 		/*
+ 		 * Changing into or out of never available or always available,
 -- 
 2.43.0
 
